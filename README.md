@@ -1,6 +1,7 @@
 # bl-monorepo
 
 # TODOs:
+
 - Update READMEs
 - check if Typescript rules are strict enough
 - Check if TS configs have correct targets and versions

@@ -1,0 +1,8 @@
+:root {
+  --vh: 100%;
+}
+
+/* Hide Edge's reveal-button in password fields in favor of our own */
+::-ms-reveal {
+  display: none;
+}

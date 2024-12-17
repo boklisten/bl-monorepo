@@ -1,0 +1,13 @@
+/dist
+/node_modules
+.tscache
+.idea
+.env
+*.log
+src/config/secrets.ts
+
+\.nyc_output/
+
+*.swp
+Session.vim
+.DS_Store

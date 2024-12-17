@@ -15,10 +15,8 @@ jobs:
         with:
           node-version: "22"
           cache: "yarn"
-
       - name: Install dependencies
         run: yarn install --frozen-lockfile
-
       - name: Cache node_modules
         uses: actions/cache@v4
         with:
@@ -38,7 +36,6 @@ jobs:
         with:
           path: node_modules
           key: ${{ runner.os }}-node_modules-${{ hashFiles('**/yarn.lock') }}
-
       - name: Prettier Check
         run: yarn prettier:check
 
@@ -53,7 +50,6 @@ jobs:
         with:
           path: node_modules
           key: ${{ runner.os }}-node_modules-${{ hashFiles('**/yarn.lock') }}
-
       - name: Type Check
         run: yarn typecheck
 
@@ -68,7 +64,6 @@ jobs:
         with:
           path: node_modules
           key: ${{ runner.os }}-node_modules-${{ hashFiles('**/yarn.lock') }}
-
       - name: Lint Frontend
         run: yarn workspace frontend lint
 
@@ -83,7 +78,6 @@ jobs:
         with:
           path: node_modules
           key: ${{ runner.os }}-node_modules-${{ hashFiles('**/yarn.lock') }}
-
       - name: Lint Backend
         run: yarn workspace backend lint
 
@@ -98,7 +92,6 @@ jobs:
         with:
           path: node_modules
           key: ${{ runner.os }}-node_modules-${{ hashFiles('**/yarn.lock') }}
-
       - name: Build Backend
         run: yarn workspace backend build
 
@@ -113,7 +106,6 @@ jobs:
         with:
           path: node_modules
           key: ${{ runner.os }}-node_modules-${{ hashFiles('**/yarn.lock') }}
-
       - name: Build Frontend
         env:
           NEXT_PUBLIC_API_URL: https://staging.api.boklisten.no/
@@ -124,7 +116,7 @@ jobs:
   test_backend:
     name: Test Backend
     runs-on: ubuntu-latest
-    needs: [build_backend]
+    needs: install
     steps:
       - uses: actions/checkout@v4
       - name: Restore Dependencies
@@ -132,6 +124,5 @@ jobs:
         with:
           path: node_modules
           key: ${{ runner.os }}-node_modules-${{ hashFiles('**/yarn.lock') }}
-
       - name: Test Backend
         run: yarn workspace backend test

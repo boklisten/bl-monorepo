@@ -1,28 +1,8 @@
 {
-  "name": "@boklisten/bl-model",
-  "version": "0.26.7",
-  "description": "generic classes for use in all boklisten apps",
-  "license": "MIT",
-  "main": "index.js",
-  "typings": "index.d.ts",
-  "scripts": {
-    "build": "tsc",
-    "prettier": "prettier --write '**/*.{ts,md}' --ignore-path=.gitignore",
-    "prettier:check": "prettier --check '**/*.{ts,md}' --ignore-path=.gitignore",
-    "blink": "yarn build && cp package.json dist && cd dist && yarn link",
-    "pub": "npm version patch && npm run build && cp package.json README.md dist && cd dist && npm publish --registry https://registry.npmjs.org/"
-  },
+  "name": "shared",
+  "version": "1.0.0",
+  "license": "UNLICENSED",
+  "scripts": {},
   "dependencies": {},
-  "devDependencies": {
-    "prettier": "^3.4.2"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/boklisten/bl-model.git"
-  },
-  "author": "",
-  "bugs": {
-    "url": "https://github.com/boklisten/bl-model/issues"
-  },
-  "homepage": "https://github.com/boklisten/bl-model#readme"
+  "devDependencies": {}
 }

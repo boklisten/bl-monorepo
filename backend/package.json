@@ -1,20 +1,14 @@
 {
-  "name": "@boklisten/bl-api",
-  "version": "1.13.9",
-  "description": "",
-  "main": "./dist/index.js",
-  "exports": "./dist/index.js",
+  "name": "backend",
+  "version": "1.0.0",
+  "license": "UNLICENSED",
   "scripts": {
     "dev": "tsx watch ./src/index.ts",
     "build": "pkgroll --minify --tsconfig=tsconfig.build.json",
     "serve": "node ./dist/index.js",
-    "prettier": "prettier --write . --ignore-path=.gitignore",
-    "prettier:check": "prettier --check . --ignore-path=.gitignore",
     "lint": "eslint src --ignore-pattern \"**/*.spec.ts\"",
-    "type-check": "tsc --noEmit",
     "test": "API_ENV=test mocha \"src/**/*.spec.ts\""
   },
-  "license": "ISC",
   "dependencies": {
     "@boklisten/bl-email": "^1.8.2",
     "@boklisten/bl-post-office": "^0.5.56",
@@ -78,19 +72,9 @@
     "eslint-plugin-no-relative-import-paths": "^1.5.5",
     "mocha": "^10.7.3",
     "pkgroll": "^2.5.1",
-    "prettier": "^3.4.2",
     "sinon": "^18.0.0",
     "sinon-chai": "^3.6.0",
     "tsx": "^4.19.2",
     "typescript-eslint": "^8.18.0"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+ssh://git@github.com/boklisten/bl_api.git"
-  },
-  "private": false,
-  "bugs": {
-    "url": "https://github.com/boklisten/bl_api/issues"
-  },
-  "homepage": "https://github.com/boklisten/bl_api#readme"
+  }
 }

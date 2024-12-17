@@ -6,7 +6,7 @@
     "declaration": true,
     "outDir": "./dist",
     "strictNullChecks": true,
-    "strict": false,
+    "strict": false
   },
   "include": ["src/**/*"],
   "exclude": ["node_modules", "**/*.spec.ts"]

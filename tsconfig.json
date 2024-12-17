@@ -2,7 +2,7 @@
   "extends": "./tsconfig.base.json",
   "files": [],
   "references": [
-    { "path": "./shared"},
+    { "path": "./shared" },
     { "path": "./backend" },
     { "path": "./frontend" }
   ]

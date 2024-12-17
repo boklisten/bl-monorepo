@@ -1,19 +1,16 @@
-import {
-  BlapiResponse,
-  BlError,
-  PasswordResetConfirmationRequest,
-  PendingPasswordReset,
-} from "@boklisten/bl-model";
-
-import { LocalLoginHandler } from "@/auth/local/local-login.handler";
-import { SystemUser } from "@/auth/permission/permission.service";
-import { BlCollectionName } from "@/collections/bl-collection";
-import { pendingPasswordResetSchema } from "@/collections/pending-password-reset/pending-password-reset.schema";
-import { SeCrypto } from "@/crypto/se.crypto";
-import { Operation } from "@/operation/operation";
-import { BlApiRequest } from "@/request/bl-api-request";
-import { SEResponseHandler } from "@/response/se.response.handler";
-import { BlDocumentStorage } from "@/storage/blDocumentStorage";
+import { LocalLoginHandler } from "@backend/auth/local/local-login.handler";
+import { SystemUser } from "@backend/auth/permission/permission.service";
+import { BlCollectionName } from "@backend/collections/bl-collection";
+import { pendingPasswordResetSchema } from "@backend/collections/pending-password-reset/pending-password-reset.schema";
+import { SeCrypto } from "@backend/crypto/se.crypto";
+import { Operation } from "@backend/operation/operation";
+import { BlApiRequest } from "@backend/request/bl-api-request";
+import { SEResponseHandler } from "@backend/response/se.response.handler";
+import { BlDocumentStorage } from "@backend/storage/blDocumentStorage";
+import { BlError } from "@shared/bl-error/bl-error";
+import { BlapiResponse } from "@shared/blapi-response/blapi-response";
+import { PasswordResetConfirmationRequest } from "@shared/password-reset/password-reset-confirmation-request";
+import { PendingPasswordReset } from "@shared/password-reset/pending-password-reset";
 
 export class ConfirmPendingPasswordResetOperation implements Operation {
   constructor(

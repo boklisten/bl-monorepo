@@ -1,7 +1,6 @@
-import { BlError } from "@boklisten/bl-model";
+import { RefreshTokenSecret } from "@backend/auth/token/refresh/refresh-token.secret";
+import { BlError } from "@shared/bl-error/bl-error";
 import { verify } from "jsonwebtoken";
-
-import { RefreshTokenSecret } from "@/auth/token/refresh/refresh-token.secret";
 
 export class RefreshTokenValidator {
   private refreshTokenSecret: RefreshTokenSecret;

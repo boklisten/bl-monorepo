@@ -1,17 +1,19 @@
+import { dateService } from "@backend/blc/date.service";
+import { BlCollectionName } from "@backend/collections/bl-collection";
+import { itemSchema } from "@backend/collections/item/item.schema";
+import { assertEnv, BlEnvironment } from "@backend/config/environment";
+import { logger } from "@backend/logger/logger";
+import { EMAIL_SETTINGS } from "@backend/messenger/email/email-settings";
+import { OrderEmailHandler } from "@backend/messenger/email/order-email/order-email-handler";
+import {
+  CustomerDetailWithCustomerItem,
+  MessengerService,
+} from "@backend/messenger/messenger-service";
+import { BlDocumentStorage } from "@backend/storage/blDocumentStorage";
 import { EmailHandler } from "@boklisten/bl-email";
 import { EmailOrder } from "@boklisten/bl-email/dist/ts/template/email-order";
 import { EmailSetting } from "@boklisten/bl-email/dist/ts/template/email-setting";
 import { EmailUser } from "@boklisten/bl-email/dist/ts/template/email-user";
-import {
-  BlError,
-  CustomerItem,
-  Delivery,
-  Item,
-  Message,
-  Order,
-  OrderItem,
-  UserDetail,
-} from "@boklisten/bl-model";
 import {
   ItemList,
   MessageOptions,
@@ -20,19 +22,14 @@ import {
   Recipient,
 } from "@boklisten/bl-post-office";
 import sgMail from "@sendgrid/mail";
-
-import { dateService } from "@/blc/date.service";
-import { BlCollectionName } from "@/collections/bl-collection";
-import { itemSchema } from "@/collections/item/item.schema";
-import { assertEnv, BlEnvironment } from "@/config/environment";
-import { logger } from "@/logger/logger";
-import { EMAIL_SETTINGS } from "@/messenger/email/email-settings";
-import { OrderEmailHandler } from "@/messenger/email/order-email/order-email-handler";
-import {
-  CustomerDetailWithCustomerItem,
-  MessengerService,
-} from "@/messenger/messenger-service";
-import { BlDocumentStorage } from "@/storage/blDocumentStorage";
+import { BlError } from "@shared/bl-error/bl-error";
+import { CustomerItem } from "@shared/customer-item/customer-item";
+import { Delivery } from "@shared/delivery/delivery";
+import { Item } from "@shared/item/item";
+import { Message } from "@shared/message/message";
+import { Order } from "@shared/order/order";
+import { OrderItem } from "@shared/order/order-item/order-item";
+import { UserDetail } from "@shared/user/user-detail/user-detail";
 
 export class EmailService implements MessengerService {
   private _emailHandler: EmailHandler;

@@ -1,8 +1,7 @@
 import "mocha";
+import { DbQueryExpandFilter } from "@backend/query/expand-filter/db-query-expand-filter";
 import chai, { expect } from "chai";
 import chaiAsPromised from "chai-as-promised";
-
-import { DbQueryExpandFilter } from "@/query/expand-filter/db-query-expand-filter";
 
 chai.use(chaiAsPromised);
 

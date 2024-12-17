@@ -1,6 +1,5 @@
+import DynamicLink from "@frontend/components/DynamicLink";
 import { Typography } from "@mui/material";
-
-import DynamicLink from "@/components/DynamicLink";
 
 export default function TermsAndConditionsDisclaimer() {
   return (

@@ -1,9 +1,9 @@
-import { BlapiResponse, BlapiErrorResponse } from "@boklisten/bl-model";
+import { BlErrorHandler } from "@backend/bl-error/bl-error-handler";
+import { BlEnvironment, assertEnv } from "@backend/config/environment";
+import { logger } from "@backend/logger/logger";
+import { BlapiErrorResponse } from "@shared/blapi-response/blapi-error-response";
+import { BlapiResponse } from "@shared/blapi-response/blapi-response";
 import { Response } from "express";
-
-import { BlErrorHandler } from "@/bl-error/bl-error-handler";
-import { BlEnvironment, assertEnv } from "@/config/environment";
-import { logger } from "@/logger/logger";
 
 export class SEResponseHandler {
   errorHandler: BlErrorHandler;

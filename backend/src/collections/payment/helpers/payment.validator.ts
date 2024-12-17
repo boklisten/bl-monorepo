@@ -1,10 +1,13 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { Payment, Order, BlError, Delivery } from "@boklisten/bl-model";
 
-import { BlCollectionName } from "@/collections/bl-collection";
-import { deliverySchema } from "@/collections/delivery/delivery.schema";
-import { orderSchema } from "@/collections/order/order.schema";
-import { BlDocumentStorage } from "@/storage/blDocumentStorage";
+import { BlCollectionName } from "@backend/collections/bl-collection";
+import { deliverySchema } from "@backend/collections/delivery/delivery.schema";
+import { orderSchema } from "@backend/collections/order/order.schema";
+import { BlDocumentStorage } from "@backend/storage/blDocumentStorage";
+import { BlError } from "@shared/bl-error/bl-error";
+import { Delivery } from "@shared/delivery/delivery";
+import { Order } from "@shared/order/order";
+import { Payment } from "@shared/payment/payment";
 
 export class PaymentValidator {
   private orderStorage?: BlDocumentStorage<Order>;

@@ -1,23 +1,20 @@
-import {
-  AccessToken,
-  BlError,
-  Order,
-  SerializedSignature,
-  UserDetail,
-} from "@boklisten/bl-model";
-
-import { BlCollectionName } from "@/collections/bl-collection";
-import { orderSchema } from "@/collections/order/order.schema";
+import { BlCollectionName } from "@backend/collections/bl-collection";
+import { orderSchema } from "@backend/collections/order/order.schema";
 import {
   deserializeSignature,
   isUnderage,
   serializeSignature,
   signOrders,
-} from "@/collections/signature/helpers/signature.helper";
-import { Signature } from "@/collections/signature/signature.schema";
-import { userDetailSchema } from "@/collections/user-detail/user-detail.schema";
-import { Hook } from "@/hook/hook";
-import { BlDocumentStorage } from "@/storage/blDocumentStorage";
+} from "@backend/collections/signature/helpers/signature.helper";
+import { Signature } from "@backend/collections/signature/signature.schema";
+import { userDetailSchema } from "@backend/collections/user-detail/user-detail.schema";
+import { Hook } from "@backend/hook/hook";
+import { BlDocumentStorage } from "@backend/storage/blDocumentStorage";
+import { BlError } from "@shared/bl-error/bl-error";
+import { Order } from "@shared/order/order";
+import { SerializedSignature } from "@shared/signature/serialized-signature";
+import { AccessToken } from "@shared/token/access-token";
+import { UserDetail } from "@shared/user/user-detail/user-detail";
 
 export class SignaturePostHook extends Hook {
   private userDetailStorage: BlDocumentStorage<UserDetail>;

@@ -1,9 +1,8 @@
-import { BlError } from "@boklisten/bl-model";
+import { logger } from "@backend/logger/logger";
+import { BlError } from "@shared/bl-error/bl-error";
 import { stringify } from "qs";
 import request from "request";
 import rp from "request-promise";
-
-import { logger } from "@/logger/logger";
 
 // TODO: request and request-promise is deprecated, rewrite to use fetch
 export class HttpHandler {

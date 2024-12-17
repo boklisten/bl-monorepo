@@ -1,12 +1,11 @@
+import { APP_CONFIG } from "@backend/application-config";
+import { AccessToken } from "@backend/auth/token/access-token/access-token";
+import { AccessTokenSecret } from "@backend/auth/token/access-token/access-token.secret";
+import { RefreshToken } from "@backend/auth/token/refresh/refresh-token";
+import { SEToken } from "@backend/auth/token/se.token";
+import { TokenConfig } from "@backend/auth/token/token.config";
 import passport from "passport";
 import { ExtractJwt, Strategy } from "passport-jwt";
-
-import { APP_CONFIG } from "@/application-config";
-import { AccessToken } from "@/auth/token/access-token/access-token";
-import { AccessTokenSecret } from "@/auth/token/access-token/access-token.secret";
-import { RefreshToken } from "@/auth/token/refresh/refresh-token";
-import { SEToken } from "@/auth/token/se.token";
-import { TokenConfig } from "@/auth/token/token.config";
 
 export class AccessTokenAuth {
   private accessTokenSecret: AccessTokenSecret;

@@ -1,14 +1,13 @@
 "use client";
-import { CustomerItemType } from "@boklisten/bl-model";
-import { MessageMethod } from "@boklisten/bl-model/message/message-method/message-method";
+import CustomerItemTypePicker from "@frontend/components/admin/communication/CustomerItemTypePicker";
+import DeadlinePicker from "@frontend/components/admin/communication/DeadlinePicker";
+import MessageMethodPicker from "@frontend/components/admin/communication/MessageMethodPicker";
+import MultiBranchPicker from "@frontend/components/admin/communication/MultiBranchPicker";
 import { Grid2, Typography } from "@mui/material";
+import { CustomerItemType } from "@shared/customer-item/customer-item-type";
+import { MessageMethod } from "@shared/message/message-method/message-method";
 import { PageContainer } from "@toolpad/core";
 import { useState } from "react";
-
-import CustomerItemTypePicker from "@/components/admin/communication/CustomerItemTypePicker";
-import DeadlinePicker from "@/components/admin/communication/DeadlinePicker";
-import MessageMethodPicker from "@/components/admin/communication/MessageMethodPicker";
-import MultiBranchPicker from "@/components/admin/communication/MultiBranchPicker";
 
 export default function RemindersPage() {
   const [deadline, setDeadline] = useState<Date | null>(null);

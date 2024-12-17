@@ -1,10 +1,9 @@
 import "mocha";
-import { AccessToken } from "@boklisten/bl-model";
+import { BranchGetHook } from "@backend/collections/branch/hook/branch-get.hook";
+import { AccessToken } from "@shared/token/access-token";
 import chai, { expect } from "chai";
 import chaiAsPromised from "chai-as-promised";
 import sinonChai from "sinon-chai";
-
-import { BranchGetHook } from "@/collections/branch/hook/branch-get.hook";
 
 chai.use(chaiAsPromised);
 chai.use(sinonChai);

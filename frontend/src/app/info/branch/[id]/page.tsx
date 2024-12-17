@@ -1,11 +1,11 @@
-import { Branch, OpeningHour } from "@boklisten/bl-model";
+import BlFetcher from "@frontend/api/blFetcher";
+import LinkableBranchInfo from "@frontend/components/LinkableBranchInfo";
+import BL_CONFIG from "@frontend/utils/bl-config";
+import { assertBlApiError } from "@frontend/utils/types";
+import { Branch } from "@shared/branch/branch";
+import { OpeningHour } from "@shared/opening-hour/opening-hour";
 import moment from "moment";
 import { Metadata } from "next";
-
-import BlFetcher from "@/api/blFetcher";
-import LinkableBranchInfo from "@/components/LinkableBranchInfo";
-import BL_CONFIG from "@/utils/bl-config";
-import { assertBlApiError } from "@/utils/types";
 
 interface Params {
   params: Promise<{ id: string }>;

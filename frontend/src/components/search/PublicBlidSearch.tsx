@@ -1,4 +1,10 @@
 "use client";
+import { isLoggedIn } from "@frontend/api/auth";
+import BlFetcher from "@frontend/api/blFetcher";
+import DynamicLink from "@frontend/components/DynamicLink";
+import ScannerModal from "@frontend/components/scanner/ScannerModal";
+import BL_CONFIG from "@frontend/utils/bl-config";
+import useIsHydrated from "@frontend/utils/useIsHydrated";
 import { Phone } from "@mui/icons-material";
 import EmailIcon from "@mui/icons-material/Email";
 import QrCodeScannerIcon from "@mui/icons-material/QrCodeScanner";
@@ -15,13 +21,6 @@ import TextField from "@mui/material/TextField";
 import { Box } from "@mui/system";
 import moment from "moment";
 import { useState } from "react";
-
-import { isLoggedIn } from "@/api/auth";
-import BlFetcher from "@/api/blFetcher";
-import DynamicLink from "@/components/DynamicLink";
-import ScannerModal from "@/components/scanner/ScannerModal";
-import BL_CONFIG from "@/utils/bl-config";
-import useIsHydrated from "@/utils/useIsHydrated";
 
 interface PublicBlidLookupResult {
   handoutBranch: string;

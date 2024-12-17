@@ -1,17 +1,17 @@
-import { BlapiErrorResponse, BlError } from "@boklisten/bl-model";
+import { LocalLoginCreator } from "@backend/auth/local/local-login-creator/local-login-creator";
+import { HashedPasswordGenerator } from "@backend/auth/local/password/hashed-password-generator";
+import { SaltGenerator } from "@backend/auth/local/salt/salt-generator";
+import { SystemUser } from "@backend/auth/permission/permission.service";
+import { BlCollectionName } from "@backend/collections/bl-collection";
+import { LocalLogin } from "@backend/collections/local-login/local-login";
+import { localLoginSchema } from "@backend/collections/local-login/local-login.schema";
+import { SeCrypto } from "@backend/crypto/se.crypto";
+import { isNullish } from "@backend/helper/typescript-helpers";
+import { SEDbQuery } from "@backend/query/se.db-query";
+import { BlDocumentStorage } from "@backend/storage/blDocumentStorage";
+import { BlError } from "@shared/bl-error/bl-error";
+import { BlapiErrorResponse } from "@shared/blapi-response/blapi-error-response";
 import isEmail from "validator/lib/isEmail";
-
-import { LocalLoginCreator } from "@/auth/local/local-login-creator/local-login-creator";
-import { HashedPasswordGenerator } from "@/auth/local/password/hashed-password-generator";
-import { SaltGenerator } from "@/auth/local/salt/salt-generator";
-import { SystemUser } from "@/auth/permission/permission.service";
-import { BlCollectionName } from "@/collections/bl-collection";
-import { LocalLogin } from "@/collections/local-login/local-login";
-import { localLoginSchema } from "@/collections/local-login/local-login.schema";
-import { SeCrypto } from "@/crypto/se.crypto";
-import { isNullish } from "@/helper/typescript-helpers";
-import { SEDbQuery } from "@/query/se.db-query";
-import { BlDocumentStorage } from "@/storage/blDocumentStorage";
 
 export class LocalLoginHandler {
   private localLoginStorage: BlDocumentStorage<LocalLogin>;

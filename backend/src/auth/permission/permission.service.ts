@@ -1,9 +1,9 @@
-import { BlDocument, UserPermission } from "@boklisten/bl-model";
-
 import {
   BlDocumentPermission,
   BlEndpointRestriction,
-} from "@/collections/bl-collection";
+} from "@backend/collections/bl-collection";
+import { BlDocument } from "@shared/bl-document/bl-document";
+import { UserPermission } from "@shared/permission/user-permission";
 
 export class SystemUser {
   id = "SYSTEM";

@@ -1,10 +1,10 @@
-import { Invoice, BlError } from "@boklisten/bl-model";
-
-import { BlCollectionName } from "@/collections/bl-collection";
-import { InvoiceActive } from "@/collections/invoice/helpers/invoice-active";
-import { invoiceSchema } from "@/collections/invoice/invoice.schema";
-import { SEDbQueryBuilder } from "@/query/se.db-query-builder";
-import { BlDocumentStorage } from "@/storage/blDocumentStorage";
+import { BlCollectionName } from "@backend/collections/bl-collection";
+import { InvoiceActive } from "@backend/collections/invoice/helpers/invoice-active";
+import { invoiceSchema } from "@backend/collections/invoice/invoice.schema";
+import { SEDbQueryBuilder } from "@backend/query/se.db-query-builder";
+import { BlDocumentStorage } from "@backend/storage/blDocumentStorage";
+import { BlError } from "@shared/bl-error/bl-error";
+import { Invoice } from "@shared/invoice/invoice";
 
 export class CustomerInvoiceActive {
   private queryBuilder: SEDbQueryBuilder;

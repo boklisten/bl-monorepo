@@ -1,7 +1,6 @@
-import { Branch } from "@boklisten/bl-model";
+import { ToSchema } from "@backend/helper/typescript-helpers";
+import { Branch } from "@shared/branch/branch";
 import { Schema } from "mongoose";
-
-import { ToSchema } from "@/helper/typescript-helpers";
 
 export const branchSchema = new Schema<ToSchema<Branch>>({
   name: {

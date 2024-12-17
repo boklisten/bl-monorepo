@@ -17,7 +17,6 @@
   "license": "ISC",
   "dependencies": {
     "@boklisten/bl-email": "^1.8.2",
-    "@boklisten/bl-model": "^0.26.7",
     "@boklisten/bl-post-office": "^0.5.56",
     "@napi-rs/image": "^1.9.2",
     "@sendgrid/mail": "^8.1.4",
@@ -83,7 +82,6 @@
     "sinon": "^18.0.0",
     "sinon-chai": "^3.6.0",
     "tsx": "^4.19.2",
-    "typescript": "^5.7.2",
     "typescript-eslint": "^8.18.0"
   },
   "repository": {

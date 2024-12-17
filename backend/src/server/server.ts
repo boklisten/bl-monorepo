@@ -1,6 +1,10 @@
 // IMPORTANT TO KEEP THIS ON TOP
 import "dotenv/config";
 
+import { initAuthEndpoints } from "@backend/auth/initAuthEndpoints";
+import { CollectionEndpointCreator } from "@backend/collection-endpoint/collection-endpoint-creator";
+import { assertEnv, BlEnvironment } from "@backend/config/environment";
+import { logger } from "@backend/logger/logger";
 import cors from "cors";
 import express, {
   json,
@@ -12,11 +16,6 @@ import express, {
 import session from "express-session";
 import mongoose from "mongoose";
 import passport from "passport";
-
-import { initAuthEndpoints } from "@/auth/initAuthEndpoints";
-import { CollectionEndpointCreator } from "@/collection-endpoint/collection-endpoint-creator";
-import { assertEnv, BlEnvironment } from "@/config/environment";
-import { logger } from "@/logger/logger";
 
 export class Server {
   public readonly app = express();
@@ -95,9 +94,9 @@ export class Server {
         saveUninitialized: false,
         secret: assertEnv(BlEnvironment.SESSION_SECRET),
         cookie: { secure: assertEnv(BlEnvironment.API_ENV) === "production" },
-      }) as RequestHandler,
+      }) as unknown as RequestHandler,
     );
-    this.app.use(passport.initialize() as RequestHandler);
+    this.app.use(passport.initialize() as unknown as RequestHandler);
     this.app.use(passport.session());
 
     const debugLogPath = (req: Request, _res: Response, next: () => void) => {

@@ -1,4 +1,5 @@
-import { AccessToken, Item } from "@boklisten/bl-model";
+import { Item } from "@shared/item/item";
+import { AccessToken } from "@shared/token/access-token";
 
 export class ItemPatchHook {
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment

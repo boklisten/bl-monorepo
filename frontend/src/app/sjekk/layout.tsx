@@ -1,1 +1,1 @@
-export { default } from "@/components/PublicPageLayout";
+export { default } from "@frontend/components/PublicPageLayout";

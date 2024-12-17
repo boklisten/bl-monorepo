@@ -1,12 +1,11 @@
-import { BlError } from "@boklisten/bl-model";
+import { LocalLoginCreator } from "@backend/auth/local/local-login-creator/local-login-creator";
+import { LocalLoginHandler } from "@backend/auth/local/local-login.handler";
+import { LocalLoginPasswordValidator } from "@backend/auth/local/password/local-login-password.validator";
+import { UserHandler } from "@backend/auth/user/user.handler";
+import { LocalLogin } from "@backend/collections/local-login/local-login";
+import { User } from "@backend/collections/user/user";
+import { BlError } from "@shared/bl-error/bl-error";
 import isEmail from "validator/lib/isEmail";
-
-import { LocalLoginCreator } from "@/auth/local/local-login-creator/local-login-creator";
-import { LocalLoginHandler } from "@/auth/local/local-login.handler";
-import { LocalLoginPasswordValidator } from "@/auth/local/password/local-login-password.validator";
-import { UserHandler } from "@/auth/user/user.handler";
-import { LocalLogin } from "@/collections/local-login/local-login";
-import { User } from "@/collections/user/user";
 
 export class LocalLoginValidator {
   constructor(

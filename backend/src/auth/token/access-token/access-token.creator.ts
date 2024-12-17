@@ -1,9 +1,9 @@
-import { BlError, UserPermission } from "@boklisten/bl-model";
+import { AccessTokenSecret } from "@backend/auth/token/access-token/access-token.secret";
+import { RefreshTokenValidator } from "@backend/auth/token/refresh/refresh-token.validator";
+import { TokenConfig } from "@backend/auth/token/token.config";
+import { BlError } from "@shared/bl-error/bl-error";
+import { UserPermission } from "@shared/permission/user-permission";
 import { sign } from "jsonwebtoken";
-
-import { AccessTokenSecret } from "@/auth/token/access-token/access-token.secret";
-import { RefreshTokenValidator } from "@/auth/token/refresh/refresh-token.validator";
-import { TokenConfig } from "@/auth/token/token.config";
 
 export class AccessTokenCreator {
   private refreshTokenValidator: RefreshTokenValidator;

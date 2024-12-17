@@ -1,8 +1,7 @@
 import "mocha";
-import { Invoice } from "@boklisten/bl-model";
+import { InvoiceActive } from "@backend/collections/invoice/helpers/invoice-active";
+import { Invoice } from "@shared/invoice/invoice";
 import { expect } from "chai";
-
-import { InvoiceActive } from "@/collections/invoice/helpers/invoice-active";
 
 describe("InvoiceActive", () => {
   const invoiceActive = new InvoiceActive();

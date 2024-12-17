@@ -1,10 +1,12 @@
 import "mocha";
-import { Order, BlError, Item, Branch } from "@boklisten/bl-model";
+import { OrderItemBuyValidator } from "@backend/collections/order/helpers/order-validator/order-item-validator/order-item-buy-validator/order-item-buy-validator";
+import { PriceService } from "@backend/price/price.service";
+import { BlError } from "@shared/bl-error/bl-error";
+import { Branch } from "@shared/branch/branch";
+import { Item } from "@shared/item/item";
+import { Order } from "@shared/order/order";
 import chai, { expect } from "chai";
 import chaiAsPromised from "chai-as-promised";
-
-import { OrderItemBuyValidator } from "@/collections/order/helpers/order-validator/order-item-validator/order-item-buy-validator/order-item-buy-validator";
-import { PriceService } from "@/price/price.service";
 
 chai.use(chaiAsPromised);
 

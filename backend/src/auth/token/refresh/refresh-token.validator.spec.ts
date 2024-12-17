@@ -1,14 +1,14 @@
 import "mocha";
-import { BlError } from "@boklisten/bl-model";
+
+import { AccessToken } from "@backend/auth/token/access-token/access-token";
+import { RefreshToken } from "@backend/auth/token/refresh/refresh-token";
+import { RefreshTokenCreator } from "@backend/auth/token/refresh/refresh-token.creator";
+import { RefreshTokenValidator } from "@backend/auth/token/refresh/refresh-token.validator";
+import { TokenConfig } from "@backend/auth/token/token.config";
+import { BlError } from "@shared/bl-error/bl-error";
 import chai from "chai";
 import chaiAsPromised from "chai-as-promised";
 import { sign } from "jsonwebtoken";
-
-import { AccessToken } from "@/auth/token/access-token/access-token";
-import { RefreshToken } from "@/auth/token/refresh/refresh-token";
-import { RefreshTokenCreator } from "@/auth/token/refresh/refresh-token.creator";
-import { RefreshTokenValidator } from "@/auth/token/refresh/refresh-token.validator";
-import { TokenConfig } from "@/auth/token/token.config";
 
 chai.use(chaiAsPromised);
 

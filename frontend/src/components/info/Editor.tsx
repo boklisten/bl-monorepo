@@ -1,10 +1,10 @@
 "use client";
+import { isAdmin } from "@frontend/api/auth";
 import { Button, Container } from "@mui/material";
 import { convertFromRaw, convertToRaw, EditorState } from "draft-js";
 import dynamic from "next/dynamic";
 import { useEffect, useState } from "react";
 
-import { isAdmin } from "@/api/auth";
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 
 const Editor = dynamic(

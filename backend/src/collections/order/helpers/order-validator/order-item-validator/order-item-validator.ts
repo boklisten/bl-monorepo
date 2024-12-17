@@ -1,15 +1,18 @@
-import { Order, OrderItem, BlError, Branch, Item } from "@boklisten/bl-model";
-
-import { BlCollectionName } from "@/collections/bl-collection";
-import { itemSchema } from "@/collections/item/item.schema";
-import { OrderFieldValidator } from "@/collections/order/helpers/order-validator/order-field-validator/order-field-validator";
-import { OrderItemBuyValidator } from "@/collections/order/helpers/order-validator/order-item-validator/order-item-buy-validator/order-item-buy-validator";
-import { OrderItemExtendValidator } from "@/collections/order/helpers/order-validator/order-item-validator/order-item-extend-validator/order-item-extend-validator";
-import { OrderItemPartlyPaymentValidator } from "@/collections/order/helpers/order-validator/order-item-validator/order-item-partly-payment-validator/order-item-partly-payment-validator";
-import { OrderItemRentValidator } from "@/collections/order/helpers/order-validator/order-item-validator/order-item-rent-validator/order-item-rent-validator";
-import { isNotNullish } from "@/helper/typescript-helpers";
-import { PriceService } from "@/price/price.service";
-import { BlDocumentStorage } from "@/storage/blDocumentStorage";
+import { BlCollectionName } from "@backend/collections/bl-collection";
+import { itemSchema } from "@backend/collections/item/item.schema";
+import { OrderFieldValidator } from "@backend/collections/order/helpers/order-validator/order-field-validator/order-field-validator";
+import { OrderItemBuyValidator } from "@backend/collections/order/helpers/order-validator/order-item-validator/order-item-buy-validator/order-item-buy-validator";
+import { OrderItemExtendValidator } from "@backend/collections/order/helpers/order-validator/order-item-validator/order-item-extend-validator/order-item-extend-validator";
+import { OrderItemPartlyPaymentValidator } from "@backend/collections/order/helpers/order-validator/order-item-validator/order-item-partly-payment-validator/order-item-partly-payment-validator";
+import { OrderItemRentValidator } from "@backend/collections/order/helpers/order-validator/order-item-validator/order-item-rent-validator/order-item-rent-validator";
+import { isNotNullish } from "@backend/helper/typescript-helpers";
+import { PriceService } from "@backend/price/price.service";
+import { BlDocumentStorage } from "@backend/storage/blDocumentStorage";
+import { BlError } from "@shared/bl-error/bl-error";
+import { Branch } from "@shared/branch/branch";
+import { Item } from "@shared/item/item";
+import { Order } from "@shared/order/order";
+import { OrderItem } from "@shared/order/order-item/order-item";
 
 export class OrderItemValidator {
   private orderItemFieldValidator: OrderFieldValidator;

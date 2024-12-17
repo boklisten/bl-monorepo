@@ -1,14 +1,15 @@
 import "mocha";
-import { Branch, OpeningHour, BlError } from "@boklisten/bl-model";
+import { BlCollectionName } from "@backend/collections/bl-collection";
+import { OpeningHourHelper } from "@backend/collections/opening-hour/helpers/opening-hour-helper";
+import { BlDocumentStorage } from "@backend/storage/blDocumentStorage";
+import { BlError } from "@shared/bl-error/bl-error";
+import { Branch } from "@shared/branch/branch";
+import { OpeningHour } from "@shared/opening-hour/opening-hour";
 import chai from "chai";
 import chaiAsPromised from "chai-as-promised";
 import moment from "moment-timezone";
 import sinon from "sinon";
 import sinonChai from "sinon-chai";
-
-import { BlCollectionName } from "@/collections/bl-collection";
-import { OpeningHourHelper } from "@/collections/opening-hour/helpers/opening-hour-helper";
-import { BlDocumentStorage } from "@/storage/blDocumentStorage";
 
 chai.use(chaiAsPromised);
 chai.use(sinonChai);

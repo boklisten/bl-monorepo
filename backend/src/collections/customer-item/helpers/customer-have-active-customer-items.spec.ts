@@ -1,12 +1,13 @@
 import "mocha";
-import { BlError, CustomerItem } from "@boklisten/bl-model";
+import { BlCollectionName } from "@backend/collections/bl-collection";
+import { CustomerHaveActiveCustomerItems } from "@backend/collections/customer-item/helpers/customer-have-active-customer-items";
+import { BlDocumentStorage } from "@backend/storage/blDocumentStorage";
+import { BlError } from "@shared/bl-error/bl-error";
+import { CustomerItem } from "@shared/customer-item/customer-item";
 import chai, { expect } from "chai";
 import chaiAsPromised from "chai-as-promised";
 import sinon from "sinon";
 
-import { BlCollectionName } from "@/collections/bl-collection";
-import { CustomerHaveActiveCustomerItems } from "@/collections/customer-item/helpers/customer-have-active-customer-items";
-import { BlDocumentStorage } from "@/storage/blDocumentStorage";
 chai.use(chaiAsPromised);
 
 describe("CustomerHaveActiveCustomerItems", () => {

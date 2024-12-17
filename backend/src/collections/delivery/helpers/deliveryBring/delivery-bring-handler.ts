@@ -1,6 +1,5 @@
-import { Delivery, Order, BlError } from "@boklisten/bl-model";
-
-import { isNullish } from "@/helper/typescript-helpers";
+import { isNullish } from "@backend/helper/typescript-helpers";
+import { BlError } from "@shared/bl-error/bl-error";
 
 export class DeliveryBringHandler {
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment

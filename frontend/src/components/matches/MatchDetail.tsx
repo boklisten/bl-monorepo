@@ -1,16 +1,16 @@
 "use client";
-import { MatchVariant, MatchWithDetails } from "@boklisten/bl-model";
+import BlFetcher from "@frontend/api/blFetcher";
+import { getAccessTokenBody } from "@frontend/api/token";
+import DynamicLink from "@frontend/components/DynamicLink";
+import StandMatchDetail from "@frontend/components/matches/StandMatchDetail";
+import UserMatchDetail from "@frontend/components/matches/UserMatchDetail";
+import BL_CONFIG from "@frontend/utils/bl-config";
+import theme from "@frontend/utils/theme";
 import { ArrowBack } from "@mui/icons-material";
 import { Alert, Button, Card, Container, Skeleton } from "@mui/material";
+import { MatchVariant } from "@shared/match/match";
+import { MatchWithDetails } from "@shared/match/match-dtos";
 import useSWR from "swr";
-
-import BlFetcher from "@/api/blFetcher";
-import { getAccessTokenBody } from "@/api/token";
-import DynamicLink from "@/components/DynamicLink";
-import StandMatchDetail from "@/components/matches/StandMatchDetail";
-import UserMatchDetail from "@/components/matches/UserMatchDetail";
-import BL_CONFIG from "@/utils/bl-config";
-import theme from "@/utils/theme";
 
 const MatchDetail = ({ matchId }: { matchId: string }) => {
   const { data: accessToken, error: tokenError } = useSWR("userId", () =>

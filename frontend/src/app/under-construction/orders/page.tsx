@@ -1,12 +1,11 @@
 "use client";
-import { Order } from "@boklisten/bl-model";
+import BlFetcher from "@frontend/api/blFetcher";
+import { getAccessTokenBody } from "@frontend/api/token";
+import OrderHistory from "@frontend/components/OrderHistory";
+import BL_CONFIG from "@frontend/utils/bl-config";
 import { Card } from "@mui/material";
+import { Order } from "@shared/order/order";
 import { useEffect, useState } from "react";
-
-import BlFetcher from "@/api/blFetcher";
-import { getAccessTokenBody } from "@/api/token";
-import OrderHistory from "@/components/OrderHistory";
-import BL_CONFIG from "@/utils/bl-config";
 
 const OrdersPage = () => {
   const [orders, setOrders] = useState<Order[]>();

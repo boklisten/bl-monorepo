@@ -1,9 +1,10 @@
-import { Delivery, BlError, Order } from "@boklisten/bl-model";
-
-import { DeliveryBranchHandler } from "@/collections/delivery/helpers/deliveryBranch/delivery-branch-handler";
-import { DeliveryBringHandler } from "@/collections/delivery/helpers/deliveryBring/delivery-bring-handler";
-import { isNullish } from "@/helper/typescript-helpers";
-import { BlDocumentStorage } from "@/storage/blDocumentStorage";
+import { DeliveryBranchHandler } from "@backend/collections/delivery/helpers/deliveryBranch/delivery-branch-handler";
+import { DeliveryBringHandler } from "@backend/collections/delivery/helpers/deliveryBring/delivery-bring-handler";
+import { isNullish } from "@backend/helper/typescript-helpers";
+import { BlDocumentStorage } from "@backend/storage/blDocumentStorage";
+import { BlError } from "@shared/bl-error/bl-error";
+import { Delivery } from "@shared/delivery/delivery";
+import { Order } from "@shared/order/order";
 
 export class DeliveryValidator {
   private deliveryBranchHandler: DeliveryBranchHandler;

@@ -1,9 +1,8 @@
+import Footer from "@frontend/components/Footer";
+import NavBar from "@frontend/components/NavBar";
 import { Container } from "@mui/material";
 import { Box } from "@mui/system";
 import { ReactNode } from "react";
-
-import Footer from "@/components/Footer";
-import NavBar from "@/components/NavBar";
 
 export default function PublicPageLayout({
   children,

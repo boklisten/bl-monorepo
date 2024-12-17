@@ -1,9 +1,13 @@
-import { BlapiErrorResponse, BlError } from "@boklisten/bl-model";
+import {
+  fetchNewTokens,
+  getAccessToken,
+  haveAccessToken,
+} from "@frontend/api/token";
+import BL_CONFIG from "@frontend/utils/bl-config";
+import { assertBlApiError, verifyBlApiError } from "@frontend/utils/types";
+import { BlError } from "@shared/bl-error/bl-error";
+import { BlapiErrorResponse } from "@shared/blapi-response/blapi-error-response";
 import { HTTP_METHOD } from "next/dist/server/web/http";
-
-import { fetchNewTokens, getAccessToken, haveAccessToken } from "@/api/token";
-import BL_CONFIG from "@/utils/bl-config";
-import { assertBlApiError, verifyBlApiError } from "@/utils/types";
 
 const createHeaders = (): Headers => {
   const headers = new Headers({ "Content-Type": "application/json" });

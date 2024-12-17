@@ -1,4 +1,3 @@
-import { UserPermission } from "@boklisten/bl-model";
 import {
   AccountCircle,
   Business,
@@ -18,6 +17,7 @@ import {
   Storage,
   Storefront,
 } from "@mui/icons-material";
+import { UserPermission } from "@shared/permission/user-permission";
 import { Navigation } from "@toolpad/core";
 
 const EMPLOYEE_LINKS: Navigation = [

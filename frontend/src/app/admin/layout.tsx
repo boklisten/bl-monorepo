@@ -1,13 +1,12 @@
 "use client";
+import { getUserPermission } from "@frontend/api/auth";
+import PagePermissionGuard from "@frontend/components/PagePermissionGuard";
+import { getAdminPagesNavigationLinks } from "@frontend/utils/adminNavigation";
+import theme from "@frontend/utils/theme";
 import { DashboardLayout, Navigation } from "@toolpad/core";
 import { AppProvider } from "@toolpad/core/nextjs";
 import Image from "next/image";
 import { ReactNode, useEffect, useState } from "react";
-
-import { getUserPermission } from "@/api/auth";
-import PagePermissionGuard from "@/components/PagePermissionGuard";
-import { getAdminPagesNavigationLinks } from "@/utils/adminNavigation";
-import theme from "@/utils/theme";
 
 export default function AdminLayout({ children }: { children: ReactNode }) {
   const [navLinks, setNavLinks] = useState<Navigation>([]);

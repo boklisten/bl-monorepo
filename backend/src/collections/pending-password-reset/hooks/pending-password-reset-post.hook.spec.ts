@@ -1,18 +1,15 @@
-import {
-  BlError,
-  PasswordResetRequest,
-  PendingPasswordReset,
-} from "@boklisten/bl-model";
+import { UserHandler } from "@backend/auth/user/user.handler";
+import { PendingPasswordResetPostHook } from "@backend/collections/pending-password-reset/hooks/pending-password-reset-post.hook";
+import { User } from "@backend/collections/user/user";
+import { SeCrypto } from "@backend/crypto/se.crypto";
+import { Messenger } from "@backend/messenger/messenger";
+import { BlError } from "@shared/bl-error/bl-error";
+import { PasswordResetRequest } from "@shared/password-reset/password-reset-request";
 import chai, { expect } from "chai";
 import chaiAsPromised from "chai-as-promised";
-import "mocha";
 import sinon from "sinon";
 
-import { UserHandler } from "@/auth/user/user.handler";
-import { PendingPasswordResetPostHook } from "@/collections/pending-password-reset/hooks/pending-password-reset-post.hook";
-import { User } from "@/collections/user/user";
-import { SeCrypto } from "@/crypto/se.crypto";
-import { Messenger } from "@/messenger/messenger";
+import "mocha";
 
 chai.use(chaiAsPromised);
 

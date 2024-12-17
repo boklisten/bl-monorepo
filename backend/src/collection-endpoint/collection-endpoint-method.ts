@@ -1,21 +1,21 @@
+import { CollectionEndpointAuth } from "@backend/collection-endpoint/collection-endpoint-auth/collection-endpoint-auth";
+import { CollectionEndpointDocumentAuth } from "@backend/collection-endpoint/collection-endpoint-document/collection-endpoint-document-auth";
+import { CollectionEndpointOperation } from "@backend/collection-endpoint/collection-endpoint-operation";
 import {
-  AccessToken,
-  BlapiResponse,
-  BlDocument,
-  BlError,
-} from "@boklisten/bl-model";
+  BlDocumentPermission,
+  BlEndpoint,
+} from "@backend/collections/bl-collection";
+import { ApiPath } from "@backend/config/api-path";
+import { isBoolean, isNotNullish } from "@backend/helper/typescript-helpers";
+import { Hook } from "@backend/hook/hook";
+import { BlApiRequest } from "@backend/request/bl-api-request";
+import { SEResponseHandler } from "@backend/response/se.response.handler";
+import { BlDocumentStorage } from "@backend/storage/blDocumentStorage";
+import { BlDocument } from "@shared/bl-document/bl-document";
+import { BlError } from "@shared/bl-error/bl-error";
+import { BlapiResponse } from "@shared/blapi-response/blapi-response";
+import { AccessToken } from "@shared/token/access-token";
 import { NextFunction, Request, Response, Router } from "express";
-
-import { CollectionEndpointAuth } from "@/collection-endpoint/collection-endpoint-auth/collection-endpoint-auth";
-import { CollectionEndpointDocumentAuth } from "@/collection-endpoint/collection-endpoint-document/collection-endpoint-document-auth";
-import { CollectionEndpointOperation } from "@/collection-endpoint/collection-endpoint-operation";
-import { BlDocumentPermission, BlEndpoint } from "@/collections/bl-collection";
-import { ApiPath } from "@/config/api-path";
-import { isBoolean, isNotNullish } from "@/helper/typescript-helpers";
-import { Hook } from "@/hook/hook";
-import { BlApiRequest } from "@/request/bl-api-request";
-import { SEResponseHandler } from "@/response/se.response.handler";
-import { BlDocumentStorage } from "@/storage/blDocumentStorage";
 
 export abstract class CollectionEndpointMethod<T extends BlDocument> {
   protected _collectionUri: string;

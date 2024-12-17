@@ -1,26 +1,23 @@
-import {
-  BlapiResponse,
-  BlError,
-  CustomerItem,
-  Match,
-  Order,
-} from "@boklisten/bl-model";
-
-import { BlCollectionName } from "@/collections/bl-collection";
-import { customerItemSchema } from "@/collections/customer-item/customer-item.schema";
-import { MatchFinder } from "@/collections/match/helpers/match-finder-2/match-finder";
-import assignMeetingInfoToMatches from "@/collections/match/helpers/match-finder-2/match-meeting-info";
-import { matchSchema } from "@/collections/match/match.schema";
+import { BlCollectionName } from "@backend/collections/bl-collection";
+import { customerItemSchema } from "@backend/collections/customer-item/customer-item.schema";
+import { MatchFinder } from "@backend/collections/match/helpers/match-finder-2/match-finder";
+import assignMeetingInfoToMatches from "@backend/collections/match/helpers/match-finder-2/match-meeting-info";
+import { matchSchema } from "@backend/collections/match/match.schema";
 import {
   candidateMatchToMatch,
   getMatchableReceivers,
   getMatchableSenders,
   verifyMatcherSpec,
-} from "@/collections/match/operations/match-generate-operation-helper";
-import { orderSchema } from "@/collections/order/order.schema";
-import { Operation } from "@/operation/operation";
-import { BlApiRequest } from "@/request/bl-api-request";
-import { BlDocumentStorage } from "@/storage/blDocumentStorage";
+} from "@backend/collections/match/operations/match-generate-operation-helper";
+import { orderSchema } from "@backend/collections/order/order.schema";
+import { Operation } from "@backend/operation/operation";
+import { BlApiRequest } from "@backend/request/bl-api-request";
+import { BlDocumentStorage } from "@backend/storage/blDocumentStorage";
+import { BlError } from "@shared/bl-error/bl-error";
+import { BlapiResponse } from "@shared/blapi-response/blapi-response";
+import { CustomerItem } from "@shared/customer-item/customer-item";
+import { Match } from "@shared/match/match";
+import { Order } from "@shared/order/order";
 
 export class MatchGenerateOperation implements Operation {
   private readonly _customerItemStorage: BlDocumentStorage<CustomerItem>;

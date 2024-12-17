@@ -1,10 +1,9 @@
-import { CustomerItem } from "@boklisten/bl-model";
-
-import { BlCollectionName } from "@/collections/bl-collection";
-import { customerItemSchema } from "@/collections/customer-item/customer-item.schema";
-import { CustomerItemActive } from "@/collections/customer-item/helpers/customer-item-active";
-import { SEDbQueryBuilder } from "@/query/se.db-query-builder";
-import { BlDocumentStorage } from "@/storage/blDocumentStorage";
+import { BlCollectionName } from "@backend/collections/bl-collection";
+import { customerItemSchema } from "@backend/collections/customer-item/customer-item.schema";
+import { CustomerItemActive } from "@backend/collections/customer-item/helpers/customer-item-active";
+import { SEDbQueryBuilder } from "@backend/query/se.db-query-builder";
+import { BlDocumentStorage } from "@backend/storage/blDocumentStorage";
+import { CustomerItem } from "@shared/customer-item/customer-item";
 
 export class CustomerItemActiveBlid {
   private readonly _customerItemStorage: BlDocumentStorage<CustomerItem>;

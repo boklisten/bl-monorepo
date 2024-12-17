@@ -1,4 +1,14 @@
-import { BlDocument, BlError, UserPermission } from "@boklisten/bl-model";
+import { PermissionService } from "@backend/auth/permission/permission.service";
+import { BlCollectionName } from "@backend/collections/bl-collection";
+import { logger } from "@backend/logger/logger";
+import { ExpandFilter } from "@backend/query/expand-filter/db-query-expand-filter";
+import { SEDbQuery } from "@backend/query/se.db-query";
+import { BlStorageHandler } from "@backend/storage/blStorageHandler";
+import { MongooseModelCreator } from "@backend/storage/mongoDb/mongoose-schema-creator";
+import { NestedDocument } from "@backend/storage/nested-document";
+import { BlDocument } from "@shared/bl-document/bl-document";
+import { BlError } from "@shared/bl-error/bl-error";
+import { UserPermission } from "@shared/permission/user-permission";
 import {
   FilterQuery,
   Model,
@@ -9,15 +19,6 @@ import {
   UpdateWithAggregationPipeline,
   UpdateWriteOpResult,
 } from "mongoose";
-
-import { PermissionService } from "@/auth/permission/permission.service";
-import { BlCollectionName } from "@/collections/bl-collection";
-import { logger } from "@/logger/logger";
-import { ExpandFilter } from "@/query/expand-filter/db-query-expand-filter";
-import { SEDbQuery } from "@/query/se.db-query";
-import { BlStorageHandler } from "@/storage/blStorageHandler";
-import { MongooseModelCreator } from "@/storage/mongoDb/mongoose-schema-creator";
-import { NestedDocument } from "@/storage/nested-document";
 
 export class MongoDbBlStorageHandler<T extends BlDocument>
   implements BlStorageHandler<T>

@@ -1,4 +1,4 @@
-import { Order } from "@boklisten/bl-model";
+import { Order } from "@shared/order/order";
 
 export class BranchValidator {
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment

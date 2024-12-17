@@ -1,19 +1,20 @@
+import { SEDbQuery } from "@backend/query/se.db-query";
+import { BlDocumentStorage } from "@backend/storage/blDocumentStorage";
+import { BlError } from "@shared/bl-error/bl-error";
+import { Item } from "@shared/item/item";
 import {
-  BlError,
-  Item,
   Match,
+  MatchVariant,
+  StandMatch,
+  UserMatch,
+} from "@shared/match/match";
+import {
   MatchRelevantItemDetails,
   MatchRelevantUserDetails,
-  MatchVariant,
   MatchWithDetails,
-  StandMatch,
-  UniqueItem,
-  UserDetail,
-  UserMatch,
-} from "@boklisten/bl-model";
-
-import { SEDbQuery } from "@/query/se.db-query";
-import { BlDocumentStorage } from "@/storage/blDocumentStorage";
+} from "@shared/match/match-dtos";
+import { UniqueItem } from "@shared/unique-item/unique-item";
+import { UserDetail } from "@shared/user/user-detail/user-detail";
 
 function selectMatchRelevantUserDetails({
   name,

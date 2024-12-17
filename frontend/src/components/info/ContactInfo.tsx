@@ -1,12 +1,11 @@
 "use client";
+import DynamicLink from "@frontend/components/DynamicLink";
+import { contactInfo } from "@frontend/utils/constants";
 import EmailIcon from "@mui/icons-material/Email";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
 import PhoneIphoneIcon from "@mui/icons-material/PhoneIphone";
 import { Typography } from "@mui/material";
 import { Box } from "@mui/system";
-
-import DynamicLink from "@/components/DynamicLink";
-import { contactInfo } from "@/utils/constants";
 
 const ContactInfo = () => {
   return (

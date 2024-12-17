@@ -1,7 +1,6 @@
+import { assertEnv, BlEnvironment } from "@backend/config/environment";
+import { logger } from "@backend/logger/logger";
 import twilio from "twilio";
-
-import { assertEnv, BlEnvironment } from "@/config/environment";
-import { logger } from "@/logger/logger";
 
 const client = twilio(
   assertEnv(BlEnvironment.TWILIO_SMS_SID),

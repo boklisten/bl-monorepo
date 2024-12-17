@@ -1,8 +1,7 @@
+import theme from "@frontend/utils/theme";
 import { CheckCircle } from "@mui/icons-material";
 import { Box, LinearProgress, linearProgressClasses } from "@mui/material";
 import { FC, ReactElement } from "react";
-
-import theme from "@/utils/theme";
 
 const ProgressBar: FC<{
   percentComplete: number;

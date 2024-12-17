@@ -5,7 +5,7 @@ export class SignatureMetadata extends BlDocument {
 
   signingName: string;
   signedByGuardian: boolean;
-  creationTime: Date;
+  override creationTime: Date;
 }
 
 export class SerializedSignature extends SignatureMetadata {

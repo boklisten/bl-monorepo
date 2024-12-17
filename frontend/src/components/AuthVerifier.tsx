@@ -1,14 +1,13 @@
 "use client";
 
+import { isLoggedIn } from "@frontend/api/auth";
+import BlFetcher from "@frontend/api/blFetcher";
+import { get } from "@frontend/api/storage";
+import { getAccessTokenBody } from "@frontend/api/token";
+import { selectRedirectTarget } from "@frontend/components/AuthLinker";
+import BL_CONFIG from "@frontend/utils/bl-config";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
-
-import { isLoggedIn } from "@/api/auth";
-import BlFetcher from "@/api/blFetcher";
-import { get } from "@/api/storage";
-import { getAccessTokenBody } from "@/api/token";
-import { selectRedirectTarget } from "@/components/AuthLinker";
-import BL_CONFIG from "@/utils/bl-config";
 
 export default function AuthVerifier() {
   const router = useRouter();

@@ -1,7 +1,6 @@
-import { EditableText } from "@boklisten/bl-model";
+import { ToSchema } from "@backend/helper/typescript-helpers";
+import { EditableText } from "@shared/editable-text/editable-text";
 import { Schema } from "mongoose";
-
-import { ToSchema } from "@/helper/typescript-helpers";
 
 export const editableTextSchema = new Schema<ToSchema<EditableText>>({
   text: {

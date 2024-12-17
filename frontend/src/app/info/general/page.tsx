@@ -1,10 +1,9 @@
+import DynamicNav from "@frontend/components/info/DynamicNav";
+import Editor from "@frontend/components/info/Editor";
+import { infoPageTabs } from "@frontend/utils/constants";
+import { editorData } from "@frontend/utils/mockData";
 import { Card } from "@mui/material";
 import { Metadata } from "next";
-
-import DynamicNav from "@/components/info/DynamicNav";
-import Editor from "@/components/info/Editor";
-import { infoPageTabs } from "@/utils/constants";
-import { editorData } from "@/utils/mockData";
 
 export const metadata: Metadata = {
   title: "Generell informasjon",

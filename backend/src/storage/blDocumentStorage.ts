@@ -1,5 +1,13 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { BlDocument, BlError, UserPermission } from "@boklisten/bl-model";
+
+import { BlCollectionName } from "@backend/collections/bl-collection";
+import { SEDbQuery } from "@backend/query/se.db-query";
+import { BlStorageHandler } from "@backend/storage/blStorageHandler";
+import { MongoDbBlStorageHandler } from "@backend/storage/mongoDb/mongoDb.blStorageHandler";
+import { NestedDocument } from "@backend/storage/nested-document";
+import { BlDocument } from "@shared/bl-document/bl-document";
+import { BlError } from "@shared/bl-error/bl-error";
+import { UserPermission } from "@shared/permission/user-permission";
 import {
   FilterQuery,
   PipelineStage,
@@ -8,12 +16,6 @@ import {
   UpdateWithAggregationPipeline,
   UpdateWriteOpResult,
 } from "mongoose";
-
-import { BlCollectionName } from "@/collections/bl-collection";
-import { SEDbQuery } from "@/query/se.db-query";
-import { BlStorageHandler } from "@/storage/blStorageHandler";
-import { MongoDbBlStorageHandler } from "@/storage/mongoDb/mongoDb.blStorageHandler";
-import { NestedDocument } from "@/storage/nested-document";
 
 export class BlDocumentStorage<T extends BlDocument>
   implements BlStorageHandler<T>

@@ -1,11 +1,11 @@
-import { BlapiResponse, BlError } from "@boklisten/bl-model";
+import { RefreshToken } from "@backend/auth/token/refresh/refresh-token";
+import { RefreshTokenValidator } from "@backend/auth/token/refresh/refresh-token.validator";
+import { TokenHandler } from "@backend/auth/token/token.handler";
+import { ApiPath } from "@backend/config/api-path";
+import { SEResponseHandler } from "@backend/response/se.response.handler";
+import { BlError } from "@shared/bl-error/bl-error";
+import { BlapiResponse } from "@shared/blapi-response/blapi-response";
 import { Router } from "express";
-
-import { RefreshToken } from "@/auth/token/refresh/refresh-token";
-import { RefreshTokenValidator } from "@/auth/token/refresh/refresh-token.validator";
-import { TokenHandler } from "@/auth/token/token.handler";
-import { ApiPath } from "@/config/api-path";
-import { SEResponseHandler } from "@/response/se.response.handler";
 
 export class TokenEndpoint {
   private apiPath: ApiPath;

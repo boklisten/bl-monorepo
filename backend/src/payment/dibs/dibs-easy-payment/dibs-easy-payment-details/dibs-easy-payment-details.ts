@@ -1,5 +1,5 @@
-import { DibsEasyPaymentDetailsCard } from "@/payment/dibs/dibs-easy-payment/dibs-easy-payment-details/dibs-easy-payment-details-card";
-import { DibsEasyPaymentDetailsInvoiceDetail } from "@/payment/dibs/dibs-easy-payment/dibs-easy-payment-details/dibs-easy-payment-details-invoice-detail";
+import { DibsEasyPaymentDetailsCard } from "@backend/payment/dibs/dibs-easy-payment/dibs-easy-payment-details/dibs-easy-payment-details-card";
+import { DibsEasyPaymentDetailsInvoiceDetail } from "@backend/payment/dibs/dibs-easy-payment/dibs-easy-payment-details/dibs-easy-payment-details-invoice-detail";
 
 export interface DibsEasyPaymentDetails {
   paymentType: string;

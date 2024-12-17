@@ -1,31 +1,28 @@
-import {
-  BlapiResponse,
-  BlError,
-  Branch,
-  CustomerItem,
-  Item,
-  Order,
-  OrderItem,
-  UniqueItem,
-} from "@boklisten/bl-model";
+import { SystemUser } from "@backend/auth/permission/permission.service";
+import { BlCollectionName } from "@backend/collections/bl-collection";
+import { branchSchema } from "@backend/collections/branch/branch.schema";
+import { customerItemSchema } from "@backend/collections/customer-item/customer-item.schema";
+import { CustomerItemActiveBlid } from "@backend/collections/customer-item/helpers/customer-item-active-blid";
+import { OrderToCustomerItemGenerator } from "@backend/collections/customer-item/helpers/order-to-customer-item-generator";
+import { itemSchema } from "@backend/collections/item/item.schema";
+import { OrderActive } from "@backend/collections/order/helpers/order-active/order-active";
+import { OrderItemMovedFromOrderHandler } from "@backend/collections/order/helpers/order-item-moved-from-order-handler/order-item-moved-from-order-handler";
+import { OrderValidator } from "@backend/collections/order/helpers/order-validator/order-validator";
+import { orderSchema } from "@backend/collections/order/order.schema";
+import { uniqueItemSchema } from "@backend/collections/unique-item/unique-item.schema";
+import { Operation } from "@backend/operation/operation";
+import { SEDbQuery } from "@backend/query/se.db-query";
+import { BlApiRequest } from "@backend/request/bl-api-request";
+import { BlDocumentStorage } from "@backend/storage/blDocumentStorage";
+import { BlError } from "@shared/bl-error/bl-error";
+import { BlapiResponse } from "@shared/blapi-response/blapi-response";
+import { Branch } from "@shared/branch/branch";
+import { CustomerItem } from "@shared/customer-item/customer-item";
+import { Item } from "@shared/item/item";
+import { Order } from "@shared/order/order";
+import { OrderItem } from "@shared/order/order-item/order-item";
+import { UniqueItem } from "@shared/unique-item/unique-item";
 import { ObjectId } from "mongodb";
-
-import { SystemUser } from "@/auth/permission/permission.service";
-import { BlCollectionName } from "@/collections/bl-collection";
-import { branchSchema } from "@/collections/branch/branch.schema";
-import { customerItemSchema } from "@/collections/customer-item/customer-item.schema";
-import { CustomerItemActiveBlid } from "@/collections/customer-item/helpers/customer-item-active-blid";
-import { OrderToCustomerItemGenerator } from "@/collections/customer-item/helpers/order-to-customer-item-generator";
-import { itemSchema } from "@/collections/item/item.schema";
-import { OrderActive } from "@/collections/order/helpers/order-active/order-active";
-import { OrderItemMovedFromOrderHandler } from "@/collections/order/helpers/order-item-moved-from-order-handler/order-item-moved-from-order-handler";
-import { OrderValidator } from "@/collections/order/helpers/order-validator/order-validator";
-import { orderSchema } from "@/collections/order/order.schema";
-import { uniqueItemSchema } from "@/collections/unique-item/unique-item.schema";
-import { Operation } from "@/operation/operation";
-import { SEDbQuery } from "@/query/se.db-query";
-import { BlApiRequest } from "@/request/bl-api-request";
-import { BlDocumentStorage } from "@/storage/blDocumentStorage";
 
 const blidNotActiveFeedback =
   "Denne bliden er ikke tilknyttet noen bok. Registrer den i bl-admin for å dele den ut.";

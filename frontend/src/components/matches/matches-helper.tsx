@@ -1,8 +1,11 @@
-import { Match, MatchVariant, MatchWithDetails } from "@boklisten/bl-model";
+import {
+  StandMatchWithDetails,
+  UserMatchWithDetails,
+} from "@frontend/utils/types";
 import { Typography } from "@mui/material";
+import { Match, MatchVariant } from "@shared/match/match";
+import { MatchWithDetails } from "@shared/match/match-dtos";
 import { ReactNode } from "react";
-
-import { StandMatchWithDetails, UserMatchWithDetails } from "@/utils/types";
 
 export interface ItemStatus {
   id: string;

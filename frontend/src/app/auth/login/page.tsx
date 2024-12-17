@@ -1,8 +1,7 @@
+import SignIn from "@frontend/components/user/SignIn";
 import { Card } from "@mui/material";
 import { Metadata } from "next";
 import { Suspense } from "react";
-
-import SignIn from "@/components/user/SignIn";
 
 export const metadata: Metadata = {
   title: "Logg inn",

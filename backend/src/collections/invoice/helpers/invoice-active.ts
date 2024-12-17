@@ -1,4 +1,4 @@
-import { Invoice } from "@boklisten/bl-model";
+import { Invoice } from "@shared/invoice/invoice";
 
 export class InvoiceActive {
   public isActive(invoice: Invoice): boolean {

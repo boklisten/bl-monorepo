@@ -1,14 +1,15 @@
 import "mocha";
-import { BlError, UserDetail } from "@boklisten/bl-model";
+
+import { BlCollectionName } from "@backend/collections/bl-collection";
+import { User } from "@backend/collections/user/user";
+import { UserDetailPermissionOperation } from "@backend/collections/user-detail/operations/permission/user-detail-permission.operation";
+import { SEResponseHandler } from "@backend/response/se.response.handler";
+import { BlDocumentStorage } from "@backend/storage/blDocumentStorage";
+import { BlError } from "@shared/bl-error/bl-error";
+import { UserDetail } from "@shared/user/user-detail/user-detail";
 import chai, { expect } from "chai";
 import chaiAsPromised from "chai-as-promised";
 import sinon from "sinon";
-
-import { BlCollectionName } from "@/collections/bl-collection";
-import { User } from "@/collections/user/user";
-import { UserDetailPermissionOperation } from "@/collections/user-detail/operations/permission/user-detail-permission.operation";
-import { SEResponseHandler } from "@/response/se.response.handler";
-import { BlDocumentStorage } from "@/storage/blDocumentStorage";
 chai.use(chaiAsPromised);
 
 describe("UserDetailPermissionOperation", () => {

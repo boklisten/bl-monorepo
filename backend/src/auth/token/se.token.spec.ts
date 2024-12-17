@@ -1,9 +1,8 @@
 import "mocha";
-import { BlError } from "@boklisten/bl-model";
+import { JwtPayload, SEToken } from "@backend/auth/token/se.token";
+import { BlError } from "@shared/bl-error/bl-error";
 import chai from "chai";
 import chaiAsPromised from "chai-as-promised";
-
-import { JwtPayload, SEToken } from "@/auth/token/se.token";
 
 chai.use(chaiAsPromised);
 

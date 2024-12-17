@@ -1,12 +1,11 @@
+import BlFetcher from "@frontend/api/blFetcher";
+import { UserEditorFields } from "@frontend/components/user/user-detail-editor/useUserDetailEditorForm";
+import BL_CONFIG from "@frontend/utils/bl-config";
 import moment from "moment/moment";
 import { RegisterOptions } from "react-hook-form";
 import isEmail from "validator/lib/isEmail";
 import isMobilePhone from "validator/lib/isMobilePhone";
 import isPostalCode from "validator/lib/isPostalCode";
-
-import BlFetcher from "@/api/blFetcher";
-import { UserEditorFields } from "@/components/user/user-detail-editor/useUserDetailEditorForm";
-import BL_CONFIG from "@/utils/bl-config";
 
 export const fieldValidators: {
   [K in keyof UserEditorFields]: RegisterOptions<UserEditorFields>;

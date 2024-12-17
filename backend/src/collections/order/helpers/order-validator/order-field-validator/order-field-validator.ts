@@ -1,6 +1,7 @@
-import { Order, OrderItem, BlError } from "@boklisten/bl-model";
-
-import { isNullish, isNumber } from "@/helper/typescript-helpers";
+import { isNullish, isNumber } from "@backend/helper/typescript-helpers";
+import { BlError } from "@shared/bl-error/bl-error";
+import { Order } from "@shared/order/order";
+import { OrderItem } from "@shared/order/order-item/order-item";
 
 export class OrderFieldValidator {
   validate(order: Order): Promise<boolean> {

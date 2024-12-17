@@ -1,20 +1,15 @@
 import {
-  CustomerItem,
-  Match,
-  Order,
-  StandMatch,
-  UserMatch,
-} from "@boklisten/bl-model";
-import { ObjectId } from "mongodb";
-
-import {
   CandidateMatchVariant,
   MatchableUser,
   MatchLocation,
   MatchWithMeetingInfo,
-} from "@/collections/match/helpers/match-finder-2/match-types";
-import { isBoolean, isNotNullish } from "@/helper/typescript-helpers";
-import { BlDocumentStorage } from "@/storage/blDocumentStorage";
+} from "@backend/collections/match/helpers/match-finder-2/match-types";
+import { isBoolean, isNotNullish } from "@backend/helper/typescript-helpers";
+import { BlDocumentStorage } from "@backend/storage/blDocumentStorage";
+import { CustomerItem } from "@shared/customer-item/customer-item";
+import { Match, StandMatch, UserMatch } from "@shared/match/match";
+import { Order } from "@shared/order/order";
+import { ObjectId } from "mongodb";
 
 /**
  * The information required to generate matches.

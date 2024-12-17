@@ -1,21 +1,20 @@
+import { FacebookAuth } from "@backend/auth/facebook/facebook.auth";
+import { GoogleAuth } from "@backend/auth/google/google.auth";
+import { LocalLoginCreator } from "@backend/auth/local/local-login-creator/local-login-creator";
+import { LocalLoginHandler } from "@backend/auth/local/local-login.handler";
+import { LocalLoginValidator } from "@backend/auth/local/local-login.validator";
+import { LocalAuth } from "@backend/auth/local/local.auth";
+import { HashedPasswordGenerator } from "@backend/auth/local/password/hashed-password-generator";
+import { LocalLoginPasswordValidator } from "@backend/auth/local/password/local-login-password.validator";
+import { ProviderIdGenerator } from "@backend/auth/local/provider-id/provider-id-generator";
+import { SaltGenerator } from "@backend/auth/local/salt/salt-generator";
+import { AccessTokenAuth } from "@backend/auth/token/access-token/access-token.auth";
+import { TokenEndpoint } from "@backend/auth/token/token.endpoint";
+import { TokenHandler } from "@backend/auth/token/token.handler";
+import { UserHandler } from "@backend/auth/user/user.handler";
+import { SeCrypto } from "@backend/crypto/se.crypto";
+import { SEResponseHandler } from "@backend/response/se.response.handler";
 import { Router } from "express";
-
-import { FacebookAuth } from "@/auth/facebook/facebook.auth";
-import { GoogleAuth } from "@/auth/google/google.auth";
-import { LocalLoginCreator } from "@/auth/local/local-login-creator/local-login-creator";
-import { LocalLoginHandler } from "@/auth/local/local-login.handler";
-import { LocalLoginValidator } from "@/auth/local/local-login.validator";
-import { LocalAuth } from "@/auth/local/local.auth";
-import { HashedPasswordGenerator } from "@/auth/local/password/hashed-password-generator";
-import { LocalLoginPasswordValidator } from "@/auth/local/password/local-login-password.validator";
-import { ProviderIdGenerator } from "@/auth/local/provider-id/provider-id-generator";
-import { SaltGenerator } from "@/auth/local/salt/salt-generator";
-import { AccessTokenAuth } from "@/auth/token/access-token/access-token.auth";
-import { TokenEndpoint } from "@/auth/token/token.endpoint";
-import { TokenHandler } from "@/auth/token/token.handler";
-import { UserHandler } from "@/auth/user/user.handler";
-import { SeCrypto } from "@/crypto/se.crypto";
-import { SEResponseHandler } from "@/response/se.response.handler";
 
 export function initAuthEndpoints(router: Router) {
   const userHandler = new UserHandler();

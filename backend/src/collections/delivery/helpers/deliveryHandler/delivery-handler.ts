@@ -1,20 +1,17 @@
-import {
-  Delivery,
-  Order,
-  BlError,
-  AccessToken,
-  Item,
-  DeliveryInfoBring,
-  Branch,
-} from "@boklisten/bl-model";
-
-import { BlCollectionName } from "@/collections/bl-collection";
-import { branchSchema } from "@/collections/branch/branch.schema";
-import { deliverySchema } from "@/collections/delivery/delivery.schema";
-import { BringDeliveryService } from "@/collections/delivery/helpers/deliveryBring/bringDelivery.service";
-import { itemSchema } from "@/collections/item/item.schema";
-import { orderSchema } from "@/collections/order/order.schema";
-import { BlDocumentStorage } from "@/storage/blDocumentStorage";
+import { BlCollectionName } from "@backend/collections/bl-collection";
+import { branchSchema } from "@backend/collections/branch/branch.schema";
+import { deliverySchema } from "@backend/collections/delivery/delivery.schema";
+import { BringDeliveryService } from "@backend/collections/delivery/helpers/deliveryBring/bringDelivery.service";
+import { itemSchema } from "@backend/collections/item/item.schema";
+import { orderSchema } from "@backend/collections/order/order.schema";
+import { BlDocumentStorage } from "@backend/storage/blDocumentStorage";
+import { BlError } from "@shared/bl-error/bl-error";
+import { Branch } from "@shared/branch/branch";
+import { Delivery } from "@shared/delivery/delivery";
+import { DeliveryInfoBring } from "@shared/delivery/delivery-info/delivery-info-bring";
+import { Item } from "@shared/item/item";
+import { Order } from "@shared/order/order";
+import { AccessToken } from "@shared/token/access-token";
 
 export class DeliveryHandler {
   private orderStorage: BlDocumentStorage<Order>;

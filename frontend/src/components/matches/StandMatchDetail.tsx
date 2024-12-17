@@ -1,16 +1,15 @@
-import { Alert, Typography } from "@mui/material";
-
 import {
   calculateFulfilledStandMatchItems,
   calculateItemStatuses,
   ItemStatus,
   MatchHeader,
-} from "@/components/matches/matches-helper";
-import { StandMatchTitle } from "@/components/matches/matchesList/helper";
-import ProgressBar from "@/components/matches/matchesList/ProgressBar";
-import MatchItemTable from "@/components/matches/MatchItemTable";
-import MeetingInfo from "@/components/matches/MeetingInfo";
-import { StandMatchWithDetails } from "@/utils/types";
+} from "@frontend/components/matches/matches-helper";
+import { StandMatchTitle } from "@frontend/components/matches/matchesList/helper";
+import ProgressBar from "@frontend/components/matches/matchesList/ProgressBar";
+import MatchItemTable from "@frontend/components/matches/MatchItemTable";
+import MeetingInfo from "@frontend/components/matches/MeetingInfo";
+import { StandMatchWithDetails } from "@frontend/utils/types";
+import { Alert, Typography } from "@mui/material";
 
 const StandMatchDetail = ({ match }: { match: StandMatchWithDetails }) => {
   const { fulfilledHandoffItems, fulfilledPickupItems } =

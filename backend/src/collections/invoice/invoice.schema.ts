@@ -1,7 +1,6 @@
-import { Invoice } from "@boklisten/bl-model";
+import { ToSchema } from "@backend/helper/typescript-helpers";
+import { Invoice } from "@shared/invoice/invoice";
 import { Schema } from "mongoose";
-
-import { ToSchema } from "@/helper/typescript-helpers";
 
 export const invoiceSchema = new Schema<ToSchema<Invoice>>({
   duedate: {

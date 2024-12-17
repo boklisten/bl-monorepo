@@ -1,13 +1,14 @@
-import { BlError, Branch, Order } from "@boklisten/bl-model";
-
-import { BlCollectionName } from "@/collections/bl-collection";
-import { branchSchema } from "@/collections/branch/branch.schema";
-import { BranchValidator } from "@/collections/order/helpers/order-validator/branch-validator/branch-validator";
-import { OrderFieldValidator } from "@/collections/order/helpers/order-validator/order-field-validator/order-field-validator";
-import { OrderItemValidator } from "@/collections/order/helpers/order-validator/order-item-validator/order-item-validator";
-import { OrderPlacedValidator } from "@/collections/order/helpers/order-validator/order-placed-validator/order-placed-validator";
-import { OrderUserDetailValidator } from "@/collections/order/helpers/order-validator/order-user-detail-validator/order-user-detail-validator";
-import { BlDocumentStorage } from "@/storage/blDocumentStorage";
+import { BlCollectionName } from "@backend/collections/bl-collection";
+import { branchSchema } from "@backend/collections/branch/branch.schema";
+import { BranchValidator } from "@backend/collections/order/helpers/order-validator/branch-validator/branch-validator";
+import { OrderFieldValidator } from "@backend/collections/order/helpers/order-validator/order-field-validator/order-field-validator";
+import { OrderItemValidator } from "@backend/collections/order/helpers/order-validator/order-item-validator/order-item-validator";
+import { OrderPlacedValidator } from "@backend/collections/order/helpers/order-validator/order-placed-validator/order-placed-validator";
+import { OrderUserDetailValidator } from "@backend/collections/order/helpers/order-validator/order-user-detail-validator/order-user-detail-validator";
+import { BlDocumentStorage } from "@backend/storage/blDocumentStorage";
+import { BlError } from "@shared/bl-error/bl-error";
+import { Branch } from "@shared/branch/branch";
+import { Order } from "@shared/order/order";
 
 export class OrderValidator {
   private orderPlacedValidator: OrderPlacedValidator;

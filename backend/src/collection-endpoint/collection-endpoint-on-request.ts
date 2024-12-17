@@ -1,7 +1,6 @@
-import { BlDocument } from "@boklisten/bl-model";
-
-import { CollectionEndpointMethod } from "@/collection-endpoint/collection-endpoint-method";
-import { BlApiRequest } from "@/request/bl-api-request";
+import { CollectionEndpointMethod } from "@backend/collection-endpoint/collection-endpoint-method";
+import { BlApiRequest } from "@backend/request/bl-api-request";
+import { BlDocument } from "@shared/bl-document/bl-document";
 
 export interface CollectionEndpointOnRequest<T extends BlDocument>
   extends CollectionEndpointMethod<T> {

@@ -1,4 +1,5 @@
-import { Branch } from "@boklisten/bl-model";
+import BlFetcher from "@frontend/api/blFetcher";
+import BL_CONFIG from "@frontend/utils/bl-config";
 import { Button, Typography } from "@mui/material";
 import Box from "@mui/material/Box";
 import Checkbox from "@mui/material/Checkbox";
@@ -9,11 +10,9 @@ import ListItemText from "@mui/material/ListItemText";
 import MenuItem from "@mui/material/MenuItem";
 import OutlinedInput from "@mui/material/OutlinedInput";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
+import { Branch } from "@shared/branch/branch";
 import { useState } from "react";
 import useSWR from "swr";
-
-import BlFetcher from "@/api/blFetcher";
-import BL_CONFIG from "@/utils/bl-config";
 
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;

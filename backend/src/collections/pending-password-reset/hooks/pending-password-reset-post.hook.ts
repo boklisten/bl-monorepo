@@ -1,13 +1,10 @@
-import {
-  BlError,
-  PasswordResetRequest,
-  PendingPasswordReset,
-} from "@boklisten/bl-model";
-
-import { UserHandler } from "@/auth/user/user.handler";
-import { SeCrypto } from "@/crypto/se.crypto";
-import { Hook } from "@/hook/hook";
-import { Messenger } from "@/messenger/messenger";
+import { UserHandler } from "@backend/auth/user/user.handler";
+import { SeCrypto } from "@backend/crypto/se.crypto";
+import { Hook } from "@backend/hook/hook";
+import { Messenger } from "@backend/messenger/messenger";
+import { BlError } from "@shared/bl-error/bl-error";
+import { PasswordResetRequest } from "@shared/password-reset/password-reset-request";
+import { PendingPasswordReset } from "@shared/password-reset/pending-password-reset";
 
 export class PendingPasswordResetPostHook extends Hook {
   constructor(

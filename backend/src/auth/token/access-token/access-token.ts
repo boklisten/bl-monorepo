@@ -1,4 +1,4 @@
-import { UserPermission } from "@boklisten/bl-model";
+import { UserPermission } from "@shared/permission/user-permission";
 
 export interface AccessToken {
   iss: string;

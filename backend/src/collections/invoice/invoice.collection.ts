@@ -2,8 +2,8 @@ import {
   BlCollection,
   BlCollectionName,
   BlEndpoint,
-} from "@/collections/bl-collection";
-import { invoiceSchema } from "@/collections/invoice/invoice.schema";
+} from "@backend/collections/bl-collection";
+import { invoiceSchema } from "@backend/collections/invoice/invoice.schema";
 
 export class InvoiceCollection implements BlCollection {
   collectionName = BlCollectionName.Invoices;

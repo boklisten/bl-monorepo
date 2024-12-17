@@ -1,0 +1,14 @@
+{
+  "private": true,
+  "workspaces": [
+    "frontend",
+    "backend",
+    "types"
+  ],
+  "scripts": {
+    "typecheck": "tsc -b"
+  },
+  "devDependencies": {
+    "typescript": "^5.7.2"
+  }
+}

@@ -1,13 +1,13 @@
-import { AccessToken, BlError, BlapiResponse } from "@boklisten/bl-model";
-import { NextFunction, Request, Response, Router } from "express";
-
-import { CollectionEndpointAuth } from "@/collection-endpoint/collection-endpoint-auth/collection-endpoint-auth";
+import { CollectionEndpointAuth } from "@backend/collection-endpoint/collection-endpoint-auth/collection-endpoint-auth";
 import {
   BlEndpointMethod,
   BlEndpointOperation,
-} from "@/collections/bl-collection";
-import { BlApiRequest } from "@/request/bl-api-request";
-import { SEResponseHandler } from "@/response/se.response.handler";
+} from "@backend/collections/bl-collection";
+import { BlApiRequest } from "@backend/request/bl-api-request";
+import { SEResponseHandler } from "@backend/response/se.response.handler";
+import { BlError } from "@shared/bl-error/bl-error";
+import { BlapiResponse } from "@shared/blapi-response/blapi-response";
+import { NextFunction, Request, Response, Router } from "express";
 
 export class CollectionEndpointOperation {
   private _collectionEndpointAuth: CollectionEndpointAuth;

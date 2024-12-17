@@ -1,4 +1,4 @@
-import { assertEnv, BlEnvironment } from "@/config/environment";
+import { assertEnv, BlEnvironment } from "@backend/config/environment";
 
 export class RefreshTokenSecret {
   get(): string {

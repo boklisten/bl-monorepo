@@ -1,7 +1,7 @@
-import { BlError, CustomerItem } from "@boklisten/bl-model";
-
-import { isNullish } from "@/helper/typescript-helpers";
-import { BlDocumentStorage } from "@/storage/blDocumentStorage";
+import { isNullish } from "@backend/helper/typescript-helpers";
+import { BlDocumentStorage } from "@backend/storage/blDocumentStorage";
+import { BlError } from "@shared/bl-error/bl-error";
+import { CustomerItem } from "@shared/customer-item/customer-item";
 
 export class CustomerItemValidator {
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment

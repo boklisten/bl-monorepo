@@ -1,31 +1,6 @@
-import {
-  // used for jsdoc
-  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-  // @ts-ignore
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  MatchBase,
-  // used for jsdoc
-  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-  // @ts-ignore
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  StandMatch,
-  // used for jsdoc
-  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-  // @ts-ignore
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  UserMatch,
-  // used for jsdoc
-  Match,
-  // used for jsdoc
-  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-  // @ts-ignore
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  MatchVariant,
-} from "@boklisten/bl-model";
+import { BlCollectionName } from "@backend/collections/bl-collection";
+import { ToSchema } from "@backend/helper/typescript-helpers";
 import { Schema } from "mongoose";
-
-import { BlCollectionName } from "@/collections/bl-collection";
-import { ToSchema } from "@/helper/typescript-helpers";
 
 const { ObjectId } = Schema.Types;
 

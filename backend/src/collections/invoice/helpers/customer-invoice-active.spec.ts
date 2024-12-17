@@ -1,12 +1,13 @@
 import "mocha";
-import { BlError, Invoice } from "@boklisten/bl-model";
+import { BlCollectionName } from "@backend/collections/bl-collection";
+import { CustomerInvoiceActive } from "@backend/collections/invoice/helpers/customer-invoice-active";
+import { BlDocumentStorage } from "@backend/storage/blDocumentStorage";
+import { BlError } from "@shared/bl-error/bl-error";
+import { Invoice } from "@shared/invoice/invoice";
 import chai, { expect } from "chai";
 import chaiAsPromised from "chai-as-promised";
 import sinon from "sinon";
 
-import { BlCollectionName } from "@/collections/bl-collection";
-import { CustomerInvoiceActive } from "@/collections/invoice/helpers/customer-invoice-active";
-import { BlDocumentStorage } from "@/storage/blDocumentStorage";
 chai.use(chaiAsPromised);
 
 describe("CustomerInvoiceActive", () => {

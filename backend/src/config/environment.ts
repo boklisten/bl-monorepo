@@ -1,6 +1,5 @@
-import { BlError } from "@boklisten/bl-model";
-
-import { isNullish } from "@/helper/typescript-helpers";
+import { isNullish } from "@backend/helper/typescript-helpers";
+import { BlError } from "@shared/bl-error/bl-error";
 
 export enum BlEnvironment {
   PORT = "PORT",

@@ -3,10 +3,10 @@ import {
   BlCollectionName,
   BlDocumentPermission,
   BlEndpoint,
-} from "@/collections/bl-collection";
-import { GenerateUniqueIdsOperation } from "@/collections/unique-item/operations/generate-unique-ids-operation";
-import { UniqueItemActiveOperation } from "@/collections/unique-item/operations/unique-item-active.operation";
-import { uniqueItemSchema } from "@/collections/unique-item/unique-item.schema";
+} from "@backend/collections/bl-collection";
+import { GenerateUniqueIdsOperation } from "@backend/collections/unique-item/operations/generate-unique-ids-operation";
+import { UniqueItemActiveOperation } from "@backend/collections/unique-item/operations/unique-item-active.operation";
+import { uniqueItemSchema } from "@backend/collections/unique-item/unique-item.schema";
 
 export class UniqueItemCollection implements BlCollection {
   public collectionName = BlCollectionName.UniqueItems;

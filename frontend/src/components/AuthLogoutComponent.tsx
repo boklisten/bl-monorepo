@@ -1,7 +1,6 @@
 "use client";
+import { logout } from "@frontend/api/auth";
 import { useEffect } from "react";
-
-import { logout } from "@/api/auth";
 
 export default function AuthLogoutComponent() {
   useEffect(() => {

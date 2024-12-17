@@ -1,4 +1,5 @@
-import { BlDocument, AccessToken } from "@boklisten/bl-model";
+import { BlDocument } from "@shared/bl-document/bl-document";
+import { AccessToken } from "@shared/token/access-token";
 
 export class Hook {
   public before(

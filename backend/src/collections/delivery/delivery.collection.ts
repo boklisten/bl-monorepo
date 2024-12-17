@@ -2,11 +2,11 @@ import {
   BlCollection,
   BlCollectionName,
   BlEndpoint,
-} from "@/collections/bl-collection";
-import { deliverySchema } from "@/collections/delivery/delivery.schema";
-import { DeliveryPatchHook } from "@/collections/delivery/hooks/delivery.patch.hook";
-import { DeliveryPostHook } from "@/collections/delivery/hooks/delivery.post.hook";
-import { PostalCodeLookupOperation } from "@/collections/delivery/operations/postal-code-lookup.operation";
+} from "@backend/collections/bl-collection";
+import { deliverySchema } from "@backend/collections/delivery/delivery.schema";
+import { DeliveryPatchHook } from "@backend/collections/delivery/hooks/delivery.patch.hook";
+import { DeliveryPostHook } from "@backend/collections/delivery/hooks/delivery.post.hook";
+import { PostalCodeLookupOperation } from "@backend/collections/delivery/operations/postal-code-lookup.operation";
 
 export class DeliveryCollection implements BlCollection {
   public collectionName = BlCollectionName.Deliveries;

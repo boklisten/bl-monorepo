@@ -1,9 +1,8 @@
+import ContactInfo from "@frontend/components/info/ContactInfo";
+import DynamicNav from "@frontend/components/info/DynamicNav";
+import { infoPageTabs } from "@frontend/utils/constants";
 import { Card, Typography } from "@mui/material";
 import { Metadata } from "next";
-
-import ContactInfo from "@/components/info/ContactInfo";
-import DynamicNav from "@/components/info/DynamicNav";
-import { infoPageTabs } from "@/utils/constants";
 
 export const metadata: Metadata = {
   title: "Kontakt oss",

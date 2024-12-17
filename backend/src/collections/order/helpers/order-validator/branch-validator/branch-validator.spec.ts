@@ -1,9 +1,9 @@
 import "mocha";
-import { Branch, OrderItem } from "@boklisten/bl-model";
+import { BranchValidator } from "@backend/collections/order/helpers/order-validator/branch-validator/branch-validator";
+import { Branch } from "@shared/branch/branch";
+import { OrderItem } from "@shared/order/order-item/order-item";
 import chai from "chai";
 import chaiAsPromised from "chai-as-promised";
-
-import { BranchValidator } from "@/collections/order/helpers/order-validator/branch-validator/branch-validator";
 
 chai.use(chaiAsPromised);
 

@@ -1,6 +1,6 @@
-import { BlError, BlapiErrorResponse } from "@boklisten/bl-model";
-
-import { logger } from "@/logger/logger";
+import { logger } from "@backend/logger/logger";
+import { BlError } from "@shared/bl-error/bl-error";
+import { BlapiErrorResponse } from "@shared/blapi-response/blapi-error-response";
 
 export class BlErrorHandler {
   public createBlapiErrorResponse(err: unknown): BlapiErrorResponse {

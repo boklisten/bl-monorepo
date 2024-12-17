@@ -1,18 +1,14 @@
-import {
-  BlError,
-  Delivery,
-  Item,
-  Order,
-  AccessToken,
-} from "@boklisten/bl-model";
-
-import { BlCollectionName } from "@/collections/bl-collection";
-import { BringDeliveryService } from "@/collections/delivery/helpers/deliveryBring/bringDelivery.service";
-import { DeliveryHandler } from "@/collections/delivery/helpers/deliveryHandler/delivery-handler";
-import { DeliveryValidator } from "@/collections/delivery/helpers/deliveryValidator/delivery-validator";
-import { orderSchema } from "@/collections/order/order.schema";
-import { Hook } from "@/hook/hook";
-import { BlDocumentStorage } from "@/storage/blDocumentStorage";
+import { BlCollectionName } from "@backend/collections/bl-collection";
+import { BringDeliveryService } from "@backend/collections/delivery/helpers/deliveryBring/bringDelivery.service";
+import { DeliveryHandler } from "@backend/collections/delivery/helpers/deliveryHandler/delivery-handler";
+import { DeliveryValidator } from "@backend/collections/delivery/helpers/deliveryValidator/delivery-validator";
+import { orderSchema } from "@backend/collections/order/order.schema";
+import { Hook } from "@backend/hook/hook";
+import { BlDocumentStorage } from "@backend/storage/blDocumentStorage";
+import { BlError } from "@shared/bl-error/bl-error";
+import { Delivery } from "@shared/delivery/delivery";
+import { Order } from "@shared/order/order";
+import { AccessToken } from "@shared/token/access-token";
 
 export class DeliveryPostHook extends Hook {
   private orderStorage: BlDocumentStorage<Order>;

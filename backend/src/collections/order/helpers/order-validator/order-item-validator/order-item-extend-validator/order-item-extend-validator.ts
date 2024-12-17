@@ -1,8 +1,10 @@
-import { OrderItem, CustomerItem, BlError, Branch } from "@boklisten/bl-model";
-
-import { BlCollectionName } from "@/collections/bl-collection";
-import { customerItemSchema } from "@/collections/customer-item/customer-item.schema";
-import { BlDocumentStorage } from "@/storage/blDocumentStorage";
+import { BlCollectionName } from "@backend/collections/bl-collection";
+import { customerItemSchema } from "@backend/collections/customer-item/customer-item.schema";
+import { BlDocumentStorage } from "@backend/storage/blDocumentStorage";
+import { BlError } from "@shared/bl-error/bl-error";
+import { Branch } from "@shared/branch/branch";
+import { CustomerItem } from "@shared/customer-item/customer-item";
+import { OrderItem } from "@shared/order/order-item/order-item";
 
 export class OrderItemExtendValidator {
   private customerItemStorage: BlDocumentStorage<CustomerItem>;

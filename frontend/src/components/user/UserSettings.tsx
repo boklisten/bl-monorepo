@@ -1,14 +1,13 @@
 "use client";
-import { UserDetail } from "@boklisten/bl-model";
+import BlFetcher from "@frontend/api/blFetcher";
+import { getAccessTokenBody } from "@frontend/api/token";
+import UserDetailEditor from "@frontend/components/user/user-detail-editor/UserDetailEditor";
+import UserDetailEditorSkeleton from "@frontend/components/user/user-detail-editor/UserDetailEditorSkeleton";
+import BL_CONFIG from "@frontend/utils/bl-config";
 import { Card } from "@mui/material";
+import { UserDetail } from "@shared/user/user-detail/user-detail";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-
-import BlFetcher from "@/api/blFetcher";
-import { getAccessTokenBody } from "@/api/token";
-import UserDetailEditor from "@/components/user/user-detail-editor/UserDetailEditor";
-import UserDetailEditorSkeleton from "@/components/user/user-detail-editor/UserDetailEditorSkeleton";
-import BL_CONFIG from "@/utils/bl-config";
 
 const UserSettings = () => {
   const router = useRouter();

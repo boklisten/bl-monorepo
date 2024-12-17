@@ -1,4 +1,7 @@
-import { Order, UserDetail, Message, CustomerItem } from "@boklisten/bl-model";
+import { CustomerItem } from "@shared/customer-item/customer-item";
+import { Message } from "@shared/message/message";
+import { Order } from "@shared/order/order";
+import { UserDetail } from "@shared/user/user-detail/user-detail";
 
 export interface CustomerDetailWithCustomerItem {
   customerDetail: UserDetail;

@@ -12,9 +12,7 @@
     "blink": "yarn build && cp package.json dist && cd dist && yarn link",
     "pub": "npm version patch && npm run build && cp package.json README.md dist && cd dist && npm publish --registry https://registry.npmjs.org/"
   },
-  "dependencies": {
-    "typescript": "^5.7.2"
-  },
+  "dependencies": {},
   "devDependencies": {
     "prettier": "^3.4.2"
   },

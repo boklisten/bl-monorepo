@@ -1,9 +1,8 @@
-import { BlError } from "@boklisten/bl-model";
+import { RefreshTokenSecret } from "@backend/auth/token/refresh/refresh-token.secret";
+import { TokenConfig } from "@backend/auth/token/token.config";
+import { BlError } from "@shared/bl-error/bl-error";
 import { sign } from "jsonwebtoken";
 import isEmail from "validator/lib/isEmail";
-
-import { RefreshTokenSecret } from "@/auth/token/refresh/refresh-token.secret";
-import { TokenConfig } from "@/auth/token/token.config";
 
 export class RefreshTokenCreator {
   private refreshTokenSecret: RefreshTokenSecret;

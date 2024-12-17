@@ -1,18 +1,14 @@
-import {
-  BlapiResponse,
-  BlError,
-  Match,
-  MatchVariant,
-} from "@boklisten/bl-model";
+import { BlCollectionName } from "@backend/collections/bl-collection";
+import { matchSchema } from "@backend/collections/match/match.schema";
+import { getAllMatchesForUser } from "@backend/collections/match/operations/match-operation-utils";
+import { isBoolean } from "@backend/helper/typescript-helpers";
+import { Operation } from "@backend/operation/operation";
+import { BlApiRequest } from "@backend/request/bl-api-request";
+import { BlDocumentStorage } from "@backend/storage/blDocumentStorage";
+import { BlError } from "@shared/bl-error/bl-error";
+import { BlapiResponse } from "@shared/blapi-response/blapi-response";
+import { Match, MatchVariant } from "@shared/match/match";
 import { ObjectId } from "mongodb";
-
-import { BlCollectionName } from "@/collections/bl-collection";
-import { matchSchema } from "@/collections/match/match.schema";
-import { getAllMatchesForUser } from "@/collections/match/operations/match-operation-utils";
-import { isBoolean } from "@/helper/typescript-helpers";
-import { Operation } from "@/operation/operation";
-import { BlApiRequest } from "@/request/bl-api-request";
-import { BlDocumentStorage } from "@/storage/blDocumentStorage";
 
 export interface MatchLockSpec {
   customerId: string;

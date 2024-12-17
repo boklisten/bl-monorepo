@@ -1,13 +1,12 @@
+import BlidScanner, {
+  determineScannedTextType,
+} from "@frontend/components/scanner/BlidScanner";
+import ManualBlidSearchModal from "@frontend/components/scanner/ManualBlidSearchModal";
+import ScannerFeedback from "@frontend/components/scanner/ScannerFeedback";
+import { assertBlApiError, TextType } from "@frontend/utils/types";
 import { Close, InputRounded } from "@mui/icons-material";
 import { AlertColor, Box, Button, Card, Modal, Stack } from "@mui/material";
 import { ReactNode, useState } from "react";
-
-import BlidScanner, {
-  determineScannedTextType,
-} from "@/components/scanner/BlidScanner";
-import ManualBlidSearchModal from "@/components/scanner/ManualBlidSearchModal";
-import ScannerFeedback from "@/components/scanner/ScannerFeedback";
-import { assertBlApiError, TextType } from "@/utils/types";
 
 interface Feedback {
   text: string;

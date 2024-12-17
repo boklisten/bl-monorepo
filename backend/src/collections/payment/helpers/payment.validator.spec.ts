@@ -1,12 +1,15 @@
 import "mocha";
-import { Payment, Order, BlError, Delivery } from "@boklisten/bl-model";
+import { BlCollectionName } from "@backend/collections/bl-collection";
+import { PaymentValidator } from "@backend/collections/payment/helpers/payment.validator";
+import { BlDocumentStorage } from "@backend/storage/blDocumentStorage";
+import { BlError } from "@shared/bl-error/bl-error";
+import { Delivery } from "@shared/delivery/delivery";
+import { Order } from "@shared/order/order";
+import { Payment } from "@shared/payment/payment";
 import chai, { expect } from "chai";
 import chaiAsPromised from "chai-as-promised";
 import sinon from "sinon";
 
-import { BlCollectionName } from "@/collections/bl-collection";
-import { PaymentValidator } from "@/collections/payment/helpers/payment.validator";
-import { BlDocumentStorage } from "@/storage/blDocumentStorage";
 chai.use(chaiAsPromised);
 
 describe("PaymentValidator", () => {

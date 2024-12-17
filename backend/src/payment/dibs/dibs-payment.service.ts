@@ -1,19 +1,16 @@
-import {
-  BlError,
-  Delivery,
-  Order,
-  OrderItem,
-  UserDetail,
-} from "@boklisten/bl-model";
-
-import { APP_CONFIG } from "@/application-config";
-import { UserDetailHelper } from "@/collections/user-detail/helpers/user-detail.helper";
-import { assertEnv, BlEnvironment } from "@/config/environment";
-import { HttpHandler } from "@/http/http.handler";
-import { DibsEasyItem } from "@/payment/dibs/dibs-easy-item/dibs-easy-item";
-import { DibsEasyOrder } from "@/payment/dibs/dibs-easy-order/dibs-easy-order";
-import { DibsEasyPayment } from "@/payment/dibs/dibs-easy-payment/dibs-easy-payment";
-import { BlDocumentStorage } from "@/storage/blDocumentStorage";
+import { APP_CONFIG } from "@backend/application-config";
+import { UserDetailHelper } from "@backend/collections/user-detail/helpers/user-detail.helper";
+import { assertEnv, BlEnvironment } from "@backend/config/environment";
+import { HttpHandler } from "@backend/http/http.handler";
+import { DibsEasyItem } from "@backend/payment/dibs/dibs-easy-item/dibs-easy-item";
+import { DibsEasyOrder } from "@backend/payment/dibs/dibs-easy-order/dibs-easy-order";
+import { DibsEasyPayment } from "@backend/payment/dibs/dibs-easy-payment/dibs-easy-payment";
+import { BlDocumentStorage } from "@backend/storage/blDocumentStorage";
+import { BlError } from "@shared/bl-error/bl-error";
+import { Delivery } from "@shared/delivery/delivery";
+import { Order } from "@shared/order/order";
+import { OrderItem } from "@shared/order/order-item/order-item";
+import { UserDetail } from "@shared/user/user-detail/user-detail";
 
 export class DibsPaymentService {
   private _userDetailHelper: UserDetailHelper;

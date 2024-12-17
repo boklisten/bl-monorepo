@@ -1,11 +1,13 @@
-import { BlError, Order, Payment, AccessToken } from "@boklisten/bl-model";
-
-import { BlCollectionName } from "@/collections/bl-collection";
-import { orderSchema } from "@/collections/order/order.schema";
-import { PaymentDibsHandler } from "@/collections/payment/helpers/dibs/payment-dibs-handler";
-import { PaymentValidator } from "@/collections/payment/helpers/payment.validator";
-import { Hook } from "@/hook/hook";
-import { BlDocumentStorage } from "@/storage/blDocumentStorage";
+import { BlCollectionName } from "@backend/collections/bl-collection";
+import { orderSchema } from "@backend/collections/order/order.schema";
+import { PaymentDibsHandler } from "@backend/collections/payment/helpers/dibs/payment-dibs-handler";
+import { PaymentValidator } from "@backend/collections/payment/helpers/payment.validator";
+import { Hook } from "@backend/hook/hook";
+import { BlDocumentStorage } from "@backend/storage/blDocumentStorage";
+import { BlError } from "@shared/bl-error/bl-error";
+import { Order } from "@shared/order/order";
+import { Payment } from "@shared/payment/payment";
+import { AccessToken } from "@shared/token/access-token";
 
 export class PaymentPostHook extends Hook {
   private orderStorage: BlDocumentStorage<Order>;

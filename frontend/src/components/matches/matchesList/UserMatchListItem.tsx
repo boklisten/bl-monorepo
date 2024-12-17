@@ -1,20 +1,19 @@
-import { Box, Typography } from "@mui/material";
-import { FC } from "react";
-
 import {
   calculateFulfilledUserMatchItems,
   isMatchBegun,
   isMatchFulfilled,
   isUserSenderInMatch,
-} from "@/components/matches/matches-helper";
+} from "@frontend/components/matches/matches-helper";
 import {
   formatActionsString,
   UserMatchTitle,
-} from "@/components/matches/matchesList/helper";
-import MatchListItemBox from "@/components/matches/matchesList/MatchListItemBox";
-import ProgressBar from "@/components/matches/matchesList/ProgressBar";
-import MeetingInfo from "@/components/matches/MeetingInfo";
-import { UserMatchWithDetails } from "@/utils/types";
+} from "@frontend/components/matches/matchesList/helper";
+import MatchListItemBox from "@frontend/components/matches/matchesList/MatchListItemBox";
+import ProgressBar from "@frontend/components/matches/matchesList/ProgressBar";
+import MeetingInfo from "@frontend/components/matches/MeetingInfo";
+import { UserMatchWithDetails } from "@frontend/utils/types";
+import { Box, Typography } from "@mui/material";
+import { FC } from "react";
 
 const UserMatchListItem: FC<{
   match: UserMatchWithDetails;

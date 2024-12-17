@@ -1,4 +1,4 @@
-import { DibsEasyPaymentRefundOrderItem } from "@/payment/dibs/dibs-easy-payment/dibs-easy-payment-refund/dibs-easy-payment-refund-order-item";
+import { DibsEasyPaymentRefundOrderItem } from "@backend/payment/dibs/dibs-easy-payment/dibs-easy-payment-refund/dibs-easy-payment-refund-order-item";
 
 export interface DibsEasyPaymentRefund {
   refundId: string;

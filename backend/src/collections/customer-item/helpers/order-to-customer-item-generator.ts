@@ -1,13 +1,10 @@
-import {
-  Order,
-  CustomerItem,
-  OrderItem,
-  UserDetail,
-} from "@boklisten/bl-model";
-
-import { BlCollectionName } from "@/collections/bl-collection";
-import { userDetailSchema } from "@/collections/user-detail/user-detail.schema";
-import { BlDocumentStorage } from "@/storage/blDocumentStorage";
+import { BlCollectionName } from "@backend/collections/bl-collection";
+import { userDetailSchema } from "@backend/collections/user-detail/user-detail.schema";
+import { BlDocumentStorage } from "@backend/storage/blDocumentStorage";
+import { CustomerItem } from "@shared/customer-item/customer-item";
+import { Order } from "@shared/order/order";
+import { OrderItem } from "@shared/order/order-item/order-item";
+import { UserDetail } from "@shared/user/user-detail/user-detail";
 
 export class OrderToCustomerItemGenerator {
   private _userDetailStorage: BlDocumentStorage<UserDetail>;

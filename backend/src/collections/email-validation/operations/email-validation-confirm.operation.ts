@@ -1,16 +1,17 @@
-import { BlapiResponse, BlError, UserDetail } from "@boklisten/bl-model";
+import { SystemUser } from "@backend/auth/permission/permission.service";
+import { BlCollectionName } from "@backend/collections/bl-collection";
+import { EmailValidation } from "@backend/collections/email-validation/email-validation";
+import { emailValidationSchema } from "@backend/collections/email-validation/email-validation.schema";
+import { userDetailSchema } from "@backend/collections/user-detail/user-detail.schema";
+import { isNullish } from "@backend/helper/typescript-helpers";
+import { Operation } from "@backend/operation/operation";
+import { BlApiRequest } from "@backend/request/bl-api-request";
+import { SEResponseHandler } from "@backend/response/se.response.handler";
+import { BlDocumentStorage } from "@backend/storage/blDocumentStorage";
+import { BlError } from "@shared/bl-error/bl-error";
+import { BlapiResponse } from "@shared/blapi-response/blapi-response";
+import { UserDetail } from "@shared/user/user-detail/user-detail";
 import { NextFunction, Request, Response } from "express";
-
-import { SystemUser } from "@/auth/permission/permission.service";
-import { BlCollectionName } from "@/collections/bl-collection";
-import { EmailValidation } from "@/collections/email-validation/email-validation";
-import { emailValidationSchema } from "@/collections/email-validation/email-validation.schema";
-import { userDetailSchema } from "@/collections/user-detail/user-detail.schema";
-import { isNullish } from "@/helper/typescript-helpers";
-import { Operation } from "@/operation/operation";
-import { BlApiRequest } from "@/request/bl-api-request";
-import { SEResponseHandler } from "@/response/se.response.handler";
-import { BlDocumentStorage } from "@/storage/blDocumentStorage";
 
 export class EmailValidationConfirmOperation implements Operation {
   private _emailValidationStorage: BlDocumentStorage<EmailValidation>;

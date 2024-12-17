@@ -1,10 +1,10 @@
 import "mocha";
+
+import { SEDbQuery } from "@backend/query/se.db-query";
+import { SEDbQueryBuilder } from "@backend/query/se.db-query-builder";
+import { ValidParam } from "@backend/query/valid-param/db-query-valid-params";
 import chai, { expect } from "chai";
 import chaiAsPromised from "chai-as-promised";
-
-import { SEDbQuery } from "@/query/se.db-query";
-import { SEDbQueryBuilder } from "@/query/se.db-query-builder";
-import { ValidParam } from "@/query/valid-param/db-query-valid-params";
 
 chai.use(chaiAsPromised);
 

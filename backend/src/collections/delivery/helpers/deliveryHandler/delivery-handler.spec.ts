@@ -1,13 +1,15 @@
 import "mocha";
 
-import { BlError, Order, Delivery, AccessToken } from "@boklisten/bl-model";
+import { BlCollectionName } from "@backend/collections/bl-collection";
+import { DeliveryHandler } from "@backend/collections/delivery/helpers/deliveryHandler/delivery-handler";
+import { BlDocumentStorage } from "@backend/storage/blDocumentStorage";
+import { BlError } from "@shared/bl-error/bl-error";
+import { Delivery } from "@shared/delivery/delivery";
+import { Order } from "@shared/order/order";
+import { AccessToken } from "@shared/token/access-token";
 import chai, { expect } from "chai";
 import chaiAsPromised from "chai-as-promised";
 import sinon from "sinon";
-
-import { BlCollectionName } from "@/collections/bl-collection";
-import { DeliveryHandler } from "@/collections/delivery/helpers/deliveryHandler/delivery-handler";
-import { BlDocumentStorage } from "@/storage/blDocumentStorage";
 
 chai.use(chaiAsPromised);
 

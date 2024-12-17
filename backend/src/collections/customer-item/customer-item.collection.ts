@@ -3,13 +3,13 @@ import {
   BlCollectionName,
   BlDocumentPermission,
   BlEndpoint,
-} from "@/collections/bl-collection";
-import { CustomerItemGenerateReportOperation } from "@/collections/customer-item/customer-item-generate-report.operation";
-import { customerItemSchema } from "@/collections/customer-item/customer-item.schema";
-import { CustomerItemPostHook } from "@/collections/customer-item/hooks/customer-item-post.hook";
-import { PublicBlidLookupOperation } from "@/collections/customer-item/public-blid-lookup.operation";
-import { itemSchema } from "@/collections/item/item.schema";
-import { userDetailSchema } from "@/collections/user-detail/user-detail.schema";
+} from "@backend/collections/bl-collection";
+import { CustomerItemGenerateReportOperation } from "@backend/collections/customer-item/customer-item-generate-report.operation";
+import { customerItemSchema } from "@backend/collections/customer-item/customer-item.schema";
+import { CustomerItemPostHook } from "@backend/collections/customer-item/hooks/customer-item-post.hook";
+import { PublicBlidLookupOperation } from "@backend/collections/customer-item/public-blid-lookup.operation";
+import { itemSchema } from "@backend/collections/item/item.schema";
+import { userDetailSchema } from "@backend/collections/user-detail/user-detail.schema";
 
 export class CustomerItemCollection implements BlCollection {
   collectionName = BlCollectionName.CustomerItems;

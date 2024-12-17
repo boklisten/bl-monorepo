@@ -1,20 +1,21 @@
-import { BlapiResponse, BlError, UserDetail } from "@boklisten/bl-model";
+import { PermissionService } from "@backend/auth/permission/permission.service";
+import { UserHandler } from "@backend/auth/user/user.handler";
+import { BlCollectionName } from "@backend/collections/bl-collection";
+import { LocalLogin } from "@backend/collections/local-login/local-login";
+import { localLoginSchema } from "@backend/collections/local-login/local-login.schema";
+import { User } from "@backend/collections/user/user";
+import { UserSchema } from "@backend/collections/user/user.schema";
+import { userDetailSchema } from "@backend/collections/user-detail/user-detail.schema";
+import { isNotNullish, isNullish } from "@backend/helper/typescript-helpers";
+import { Operation } from "@backend/operation/operation";
+import { BlApiRequest } from "@backend/request/bl-api-request";
+import { SEResponseHandler } from "@backend/response/se.response.handler";
+import { BlDocumentStorage } from "@backend/storage/blDocumentStorage";
+import { BlError } from "@shared/bl-error/bl-error";
+import { BlapiResponse } from "@shared/blapi-response/blapi-response";
+import { UserDetail } from "@shared/user/user-detail/user-detail";
 import { Request, Response } from "express";
 import isEmail from "validator/lib/isEmail";
-
-import { PermissionService } from "@/auth/permission/permission.service";
-import { UserHandler } from "@/auth/user/user.handler";
-import { BlCollectionName } from "@/collections/bl-collection";
-import { LocalLogin } from "@/collections/local-login/local-login";
-import { localLoginSchema } from "@/collections/local-login/local-login.schema";
-import { User } from "@/collections/user/user";
-import { UserSchema } from "@/collections/user/user.schema";
-import { userDetailSchema } from "@/collections/user-detail/user-detail.schema";
-import { isNotNullish, isNullish } from "@/helper/typescript-helpers";
-import { Operation } from "@/operation/operation";
-import { BlApiRequest } from "@/request/bl-api-request";
-import { SEResponseHandler } from "@/response/se.response.handler";
-import { BlDocumentStorage } from "@/storage/blDocumentStorage";
 
 export class UserDetailChangeEmailOperation implements Operation {
   private _permissionService: PermissionService;

@@ -1,24 +1,21 @@
 import "mocha";
+import { BlCollectionName } from "@backend/collections/bl-collection";
+import { EmailService } from "@backend/messenger/email/email-service";
+import { BlDocumentStorage } from "@backend/storage/blDocumentStorage";
 import { EmailHandler, EmailLog } from "@boklisten/bl-email";
-import {
-  BlError,
-  UserDetail,
-  CustomerItem,
-  Item,
-  Message,
-} from "@boklisten/bl-model";
 import {
   PostOffice,
   Recipient,
   MessageOptions,
 } from "@boklisten/bl-post-office";
+import { BlError } from "@shared/bl-error/bl-error";
+import { CustomerItem } from "@shared/customer-item/customer-item";
+import { Item } from "@shared/item/item";
+import { Message } from "@shared/message/message";
+import { UserDetail } from "@shared/user/user-detail/user-detail";
 import chai, { expect } from "chai";
 import chaiAsPromised from "chai-as-promised";
 import sinon from "sinon";
-
-import { BlCollectionName } from "@/collections/bl-collection";
-import { EmailService } from "@/messenger/email/email-service";
-import { BlDocumentStorage } from "@/storage/blDocumentStorage";
 
 class MockPostOffice extends PostOffice {
   constructor() {

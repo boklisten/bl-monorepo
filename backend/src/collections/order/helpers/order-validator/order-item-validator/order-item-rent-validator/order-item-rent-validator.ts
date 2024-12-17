@@ -1,10 +1,12 @@
-import { Branch, OrderItem, Item, BlError, Order } from "@boklisten/bl-model";
-
-import { BlCollectionName } from "@/collections/bl-collection";
-import { OrderItemRentPeriodValidator } from "@/collections/order/helpers/order-validator/order-item-validator/order-item-rent-validator/order-item-rent-period-validator/order-item-rent-period-validator";
-import { orderSchema } from "@/collections/order/order.schema";
-import { isNullish } from "@/helper/typescript-helpers";
-import { BlDocumentStorage } from "@/storage/blDocumentStorage";
+import { BlCollectionName } from "@backend/collections/bl-collection";
+import { OrderItemRentPeriodValidator } from "@backend/collections/order/helpers/order-validator/order-item-validator/order-item-rent-validator/order-item-rent-period-validator/order-item-rent-period-validator";
+import { orderSchema } from "@backend/collections/order/order.schema";
+import { isNullish } from "@backend/helper/typescript-helpers";
+import { BlDocumentStorage } from "@backend/storage/blDocumentStorage";
+import { BlError } from "@shared/bl-error/bl-error";
+import { Branch } from "@shared/branch/branch";
+import { Item } from "@shared/item/item";
+import { OrderItem } from "@shared/order/order-item/order-item";
 
 export class OrderItemRentValidator {
   private orderItemRentPeriodValidator: OrderItemRentPeriodValidator;

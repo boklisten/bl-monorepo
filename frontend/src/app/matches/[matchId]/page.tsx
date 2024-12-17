@@ -1,6 +1,5 @@
+import MatchDetail from "@frontend/components/matches/MatchDetail";
 import { Metadata } from "next";
-
-import MatchDetail from "@/components/matches/MatchDetail";
 
 export const metadata: Metadata = {
   title: "Overlevering av bøker",

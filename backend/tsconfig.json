@@ -1,32 +1,6 @@
 {
-  "compilerOptions": {
-    "lib": ["esnext"],
-    "module": "CommonJS",
-    "target": "es2020",
-    "esModuleInterop": true,
-    "isolatedModules": true,
-    "skipLibCheck": true,
-    "resolveJsonModule": true,
-    "outDir": "./dist",
-    "removeComments": true,
-    "baseUrl": "./",
-    "typeRoots": ["./node_modules/@types"],
-
-    "experimentalDecorators": true,
-    "emitDecoratorMetadata": true,
-
-    "strict": true,
-    "exactOptionalPropertyTypes": true,
-    "noImplicitReturns": true,
-    "noFallthroughCasesInSwitch": true,
-    "noUncheckedIndexedAccess": true,
-    "noImplicitOverride": true,
-    "noPropertyAccessFromIndexSignature": true,
-    "forceConsistentCasingInFileNames": true,
-    "paths": {
-      "@/*": ["./src/*"]
-    }
-  },
+  "extends": "../tsconfig.base.json",
   "include": ["src/**/*"],
-  "exclude": ["node_modules"]
+  "exclude": ["node_modules"],
+  "references": [{ "path": "../shared" }]
 }

@@ -1,9 +1,8 @@
 import "mocha";
+import { MongooseModelCreator } from "@backend/storage/mongoDb/mongoose-schema-creator";
 import chai, { expect } from "chai";
 import chaiAsPromised from "chai-as-promised";
 import { ObjectId } from "mongodb";
-
-import { MongooseModelCreator } from "@/storage/mongoDb/mongoose-schema-creator";
 
 chai.use(chaiAsPromised);
 

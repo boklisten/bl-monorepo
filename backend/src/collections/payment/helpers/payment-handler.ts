@@ -1,18 +1,15 @@
-import {
-  AccessToken,
-  BlError,
-  Order,
-  Payment,
-  Delivery,
-} from "@boklisten/bl-model";
-
-import { BlCollectionName } from "@/collections/bl-collection";
-import { deliverySchema } from "@/collections/delivery/delivery.schema";
-import { PaymentDibsConfirmer } from "@/collections/payment/helpers/dibs/payment-dibs-confirmer";
-import { paymentSchema } from "@/collections/payment/payment.schema";
-import { UserDetailHelper } from "@/collections/user-detail/helpers/user-detail.helper";
-import { DibsPaymentService } from "@/payment/dibs/dibs-payment.service";
-import { BlDocumentStorage } from "@/storage/blDocumentStorage";
+import { BlCollectionName } from "@backend/collections/bl-collection";
+import { deliverySchema } from "@backend/collections/delivery/delivery.schema";
+import { PaymentDibsConfirmer } from "@backend/collections/payment/helpers/dibs/payment-dibs-confirmer";
+import { paymentSchema } from "@backend/collections/payment/payment.schema";
+import { UserDetailHelper } from "@backend/collections/user-detail/helpers/user-detail.helper";
+import { DibsPaymentService } from "@backend/payment/dibs/dibs-payment.service";
+import { BlDocumentStorage } from "@backend/storage/blDocumentStorage";
+import { BlError } from "@shared/bl-error/bl-error";
+import { Delivery } from "@shared/delivery/delivery";
+import { Order } from "@shared/order/order";
+import { Payment } from "@shared/payment/payment";
+import { AccessToken } from "@shared/token/access-token";
 
 export class PaymentHandler {
   private paymentStorage: BlDocumentStorage<Payment>;

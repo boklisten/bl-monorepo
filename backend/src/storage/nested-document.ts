@@ -1,6 +1,5 @@
+import { BlCollectionName } from "@backend/collections/bl-collection";
 import { Schema } from "mongoose";
-
-import { BlCollectionName } from "@/collections/bl-collection";
 
 export interface NestedDocument {
   field: string;

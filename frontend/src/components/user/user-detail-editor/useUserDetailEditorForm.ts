@@ -1,4 +1,12 @@
-import { UserDetail } from "@boklisten/bl-model";
+import { getAccessTokenBody } from "@frontend/api/token";
+import { registerUser, updateUserDetails } from "@frontend/api/user";
+import { executeReturnRedirect } from "@frontend/components/AuthLinker";
+import {
+  PostalCityState,
+  usePostalCity,
+} from "@frontend/components/user/fields/PostalCodeField";
+import { assertBlApiError } from "@frontend/utils/types";
+import { UserDetail } from "@shared/user/user-detail/user-detail";
 import moment, { Moment } from "moment/moment";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -11,15 +19,6 @@ import {
   UseFormRegister,
   UseFormSetError,
 } from "react-hook-form";
-
-import { getAccessTokenBody } from "@/api/token";
-import { registerUser, updateUserDetails } from "@/api/user";
-import { executeReturnRedirect } from "@/components/AuthLinker";
-import {
-  PostalCityState,
-  usePostalCity,
-} from "@/components/user/fields/PostalCodeField";
-import { assertBlApiError } from "@/utils/types";
 
 export interface UserEditorFields {
   email: string;

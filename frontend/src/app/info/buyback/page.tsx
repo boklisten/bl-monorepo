@@ -1,13 +1,12 @@
-import { Item } from "@boklisten/bl-model";
+import BlFetcher from "@frontend/api/blFetcher";
+import BuybackList from "@frontend/components/info/BuybackList";
+import DynamicNav from "@frontend/components/info/DynamicNav";
+import BL_CONFIG from "@frontend/utils/bl-config";
+import { infoPageTabs } from "@frontend/utils/constants";
+import { assertBlApiError } from "@frontend/utils/types";
 import { Card } from "@mui/material";
+import { Item } from "@shared/item/item";
 import { Metadata } from "next";
-
-import BlFetcher from "@/api/blFetcher";
-import BuybackList from "@/components/info/BuybackList";
-import DynamicNav from "@/components/info/DynamicNav";
-import BL_CONFIG from "@/utils/bl-config";
-import { infoPageTabs } from "@/utils/constants";
-import { assertBlApiError } from "@/utils/types";
 
 export const metadata: Metadata = {
   title: "Innkjøpsliste",

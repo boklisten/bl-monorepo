@@ -1,12 +1,12 @@
-import { AccessToken, BlError } from "@boklisten/bl-model";
-
-import { BlCollectionName } from "@/collections/bl-collection";
-import { LocalLogin } from "@/collections/local-login/local-login";
-import { localLoginSchema } from "@/collections/local-login/local-login.schema";
-import { User } from "@/collections/user/user";
-import { UserSchema } from "@/collections/user/user.schema";
-import { SEDbQueryBuilder } from "@/query/se.db-query-builder";
-import { BlDocumentStorage } from "@/storage/blDocumentStorage";
+import { BlCollectionName } from "@backend/collections/bl-collection";
+import { LocalLogin } from "@backend/collections/local-login/local-login";
+import { localLoginSchema } from "@backend/collections/local-login/local-login.schema";
+import { User } from "@backend/collections/user/user";
+import { UserSchema } from "@backend/collections/user/user.schema";
+import { SEDbQueryBuilder } from "@backend/query/se.db-query-builder";
+import { BlDocumentStorage } from "@backend/storage/blDocumentStorage";
+import { BlError } from "@shared/bl-error/bl-error";
+import { AccessToken } from "@shared/token/access-token";
 
 export class UserDeleteAllInfo {
   private queryBuilder: SEDbQueryBuilder;

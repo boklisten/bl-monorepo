@@ -1,37 +1,36 @@
 import {
-  BlapiResponse,
-  BlError,
-  CustomerItem,
-  Match,
-  MatchVariant,
-  Order,
-  OrderItem,
-  OrderItemType,
-  StandMatch,
-  UserDetail,
-  UserMatch,
-  UserPermission,
-} from "@boklisten/bl-model";
-import { NextFunction, Request, Response } from "express";
-
-import {
   PermissionService,
   SystemUser,
-} from "@/auth/permission/permission.service";
-import { BlCollectionName } from "@/collections/bl-collection";
-import { customerItemSchema } from "@/collections/customer-item/customer-item.schema";
-import { OrderToCustomerItemGenerator } from "@/collections/customer-item/helpers/order-to-customer-item-generator";
-import { matchSchema } from "@/collections/match/match.schema";
-import { OrderPlacedHandler } from "@/collections/order/helpers/order-placed-handler/order-placed-handler";
-import { OrderValidator } from "@/collections/order/helpers/order-validator/order-validator";
-import { orderSchema } from "@/collections/order/order.schema";
-import { userDetailSchema } from "@/collections/user-detail/user-detail.schema";
-import { isNotNullish } from "@/helper/typescript-helpers";
-import { Operation } from "@/operation/operation";
-import { SEDbQueryBuilder } from "@/query/se.db-query-builder";
-import { BlApiRequest } from "@/request/bl-api-request";
-import { SEResponseHandler } from "@/response/se.response.handler";
-import { BlDocumentStorage } from "@/storage/blDocumentStorage";
+} from "@backend/auth/permission/permission.service";
+import { BlCollectionName } from "@backend/collections/bl-collection";
+import { customerItemSchema } from "@backend/collections/customer-item/customer-item.schema";
+import { OrderToCustomerItemGenerator } from "@backend/collections/customer-item/helpers/order-to-customer-item-generator";
+import { matchSchema } from "@backend/collections/match/match.schema";
+import { OrderPlacedHandler } from "@backend/collections/order/helpers/order-placed-handler/order-placed-handler";
+import { OrderValidator } from "@backend/collections/order/helpers/order-validator/order-validator";
+import { orderSchema } from "@backend/collections/order/order.schema";
+import { userDetailSchema } from "@backend/collections/user-detail/user-detail.schema";
+import { isNotNullish } from "@backend/helper/typescript-helpers";
+import { Operation } from "@backend/operation/operation";
+import { SEDbQueryBuilder } from "@backend/query/se.db-query-builder";
+import { BlApiRequest } from "@backend/request/bl-api-request";
+import { SEResponseHandler } from "@backend/response/se.response.handler";
+import { BlDocumentStorage } from "@backend/storage/blDocumentStorage";
+import { BlError } from "@shared/bl-error/bl-error";
+import { BlapiResponse } from "@shared/blapi-response/blapi-response";
+import { CustomerItem } from "@shared/customer-item/customer-item";
+import {
+  Match,
+  MatchVariant,
+  StandMatch,
+  UserMatch,
+} from "@shared/match/match";
+import { Order } from "@shared/order/order";
+import { OrderItem } from "@shared/order/order-item/order-item";
+import { OrderItemType } from "@shared/order/order-item/order-item-type";
+import { UserPermission } from "@shared/permission/user-permission";
+import { UserDetail } from "@shared/user/user-detail/user-detail";
+import { NextFunction, Request, Response } from "express";
 
 export class OrderPlaceOperation implements Operation {
   private _queryBuilder: SEDbQueryBuilder;

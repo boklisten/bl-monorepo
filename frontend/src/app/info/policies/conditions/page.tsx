@@ -1,11 +1,13 @@
+import DynamicNav from "@frontend/components/info/DynamicNav";
+import DynamicSubNav from "@frontend/components/info/DynamicSubNav";
+import Editor from "@frontend/components/info/Editor";
+import {
+  infoPageTabs,
+  termsAndConditionsTabs,
+} from "@frontend/utils/constants";
+import { editorData } from "@frontend/utils/mockData";
 import { Card } from "@mui/material";
 import { Metadata } from "next";
-
-import DynamicNav from "@/components/info/DynamicNav";
-import DynamicSubNav from "@/components/info/DynamicSubNav";
-import Editor from "@/components/info/Editor";
-import { infoPageTabs, termsAndConditionsTabs } from "@/utils/constants";
-import { editorData } from "@/utils/mockData";
 
 export const metadata: Metadata = {
   title: "Betingelser",

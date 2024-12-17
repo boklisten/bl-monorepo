@@ -1,9 +1,8 @@
 import "mocha";
-import { BlError } from "@boklisten/bl-model";
+import { Blid } from "@backend/auth/blid/blid";
+import { BlError } from "@shared/bl-error/bl-error";
 import chai from "chai";
 import chaiAsPromised from "chai-as-promised";
-
-import { Blid } from "@/auth/blid/blid";
 
 chai.use(chaiAsPromised);
 

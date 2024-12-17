@@ -1,4 +1,5 @@
-import { Branch, OpeningHour } from "@boklisten/bl-model";
+import BranchSelect from "@frontend/components/BranchSelect";
+import ContactInfo from "@frontend/components/info/ContactInfo";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
 import { Box, Typography, Alert } from "@mui/material";
 import Paper from "@mui/material/Paper";
@@ -8,11 +9,11 @@ import TableCell from "@mui/material/TableCell";
 import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
+import { Branch } from "@shared/branch/branch";
+import { OpeningHour } from "@shared/opening-hour/opening-hour";
 import moment from "moment";
-import "moment/locale/nb";
 
-import BranchSelect from "@/components/BranchSelect";
-import ContactInfo from "@/components/info/ContactInfo";
+import "moment/locale/nb";
 
 const compareOpeningHours = (a: OpeningHour, b: OpeningHour): number => {
   if (a.from < b.from) {

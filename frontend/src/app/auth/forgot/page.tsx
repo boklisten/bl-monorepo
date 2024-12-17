@@ -1,4 +1,7 @@
 "use client";
+import BlFetcher from "@frontend/api/blFetcher";
+import DynamicLink from "@frontend/components/DynamicLink";
+import blConfig from "@frontend/utils/bl-config";
 import {
   Box,
   Button,
@@ -12,10 +15,6 @@ import {
 import { useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import isEmail from "validator/lib/isEmail";
-
-import BlFetcher from "@/api/blFetcher";
-import DynamicLink from "@/components/DynamicLink";
-import blConfig from "@/utils/bl-config";
 
 interface ForgotFields {
   email: string;

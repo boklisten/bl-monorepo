@@ -1,8 +1,7 @@
 import "mocha";
+import { DbQueryBooleanFilter } from "@backend/query/boolean-filter/db-query-boolean-filter";
 import chai, { expect } from "chai";
 import chaiAsPromised from "chai-as-promised";
-
-import { DbQueryBooleanFilter } from "@/query/boolean-filter/db-query-boolean-filter";
 
 chai.use(chaiAsPromised);
 

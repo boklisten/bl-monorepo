@@ -1,15 +1,15 @@
-import { UserDetail, BlError } from "@boklisten/bl-model";
-
-import { Blid } from "@/auth/blid/blid";
-import { LocalLoginHandler } from "@/auth/local/local-login.handler";
-import { SystemUser } from "@/auth/permission/permission.service";
-import { BlCollectionName } from "@/collections/bl-collection";
-import { EmailValidationHelper } from "@/collections/email-validation/helpers/email-validation.helper";
-import { User } from "@/collections/user/user";
-import { UserSchema } from "@/collections/user/user.schema";
-import { userDetailSchema } from "@/collections/user-detail/user-detail.schema";
-import { SEDbQuery } from "@/query/se.db-query";
-import { BlDocumentStorage } from "@/storage/blDocumentStorage";
+import { Blid } from "@backend/auth/blid/blid";
+import { LocalLoginHandler } from "@backend/auth/local/local-login.handler";
+import { SystemUser } from "@backend/auth/permission/permission.service";
+import { BlCollectionName } from "@backend/collections/bl-collection";
+import { EmailValidationHelper } from "@backend/collections/email-validation/helpers/email-validation.helper";
+import { User } from "@backend/collections/user/user";
+import { UserSchema } from "@backend/collections/user/user.schema";
+import { userDetailSchema } from "@backend/collections/user-detail/user-detail.schema";
+import { SEDbQuery } from "@backend/query/se.db-query";
+import { BlDocumentStorage } from "@backend/storage/blDocumentStorage";
+import { BlError } from "@shared/bl-error/bl-error";
+import { UserDetail } from "@shared/user/user-detail/user-detail";
 
 export class UserHandler {
   private blid: Blid;

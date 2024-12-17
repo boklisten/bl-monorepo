@@ -1,10 +1,10 @@
-import { BlapiResponse, BlError } from "@boklisten/bl-model";
-
-import { assertEnv, BlEnvironment } from "@/config/environment";
-import { isNullish } from "@/helper/typescript-helpers";
-import { HttpHandler } from "@/http/http.handler";
-import { Operation } from "@/operation/operation";
-import { BlApiRequest } from "@/request/bl-api-request";
+import { assertEnv, BlEnvironment } from "@backend/config/environment";
+import { isNullish } from "@backend/helper/typescript-helpers";
+import { HttpHandler } from "@backend/http/http.handler";
+import { Operation } from "@backend/operation/operation";
+import { BlApiRequest } from "@backend/request/bl-api-request";
+import { BlError } from "@shared/bl-error/bl-error";
+import { BlapiResponse } from "@shared/blapi-response/blapi-response";
 
 interface SimplifiedBringPostalCodeResponse {
   postal_codes?:

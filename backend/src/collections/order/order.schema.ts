@@ -1,7 +1,6 @@
-import { Order } from "@boklisten/bl-model";
+import { ToSchema } from "@backend/helper/typescript-helpers";
+import { Order } from "@shared/order/order";
 import { Schema } from "mongoose";
-
-import { ToSchema } from "@/helper/typescript-helpers";
 
 export const orderSchema = new Schema<ToSchema<Order>>({
   amount: {

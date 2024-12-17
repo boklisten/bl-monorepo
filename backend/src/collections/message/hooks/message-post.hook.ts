@@ -1,12 +1,14 @@
-import { AccessToken, BlError, Message, UserDetail } from "@boklisten/bl-model";
-
-import { PermissionService } from "@/auth/permission/permission.service";
-import { BlCollectionName } from "@/collections/bl-collection";
-import { userDetailSchema } from "@/collections/user-detail/user-detail.schema";
-import { Hook } from "@/hook/hook";
-import { Messenger } from "@/messenger/messenger";
-import { MessengerReminder } from "@/messenger/reminder/messenger-reminder";
-import { BlDocumentStorage } from "@/storage/blDocumentStorage";
+import { PermissionService } from "@backend/auth/permission/permission.service";
+import { BlCollectionName } from "@backend/collections/bl-collection";
+import { userDetailSchema } from "@backend/collections/user-detail/user-detail.schema";
+import { Hook } from "@backend/hook/hook";
+import { Messenger } from "@backend/messenger/messenger";
+import { MessengerReminder } from "@backend/messenger/reminder/messenger-reminder";
+import { BlDocumentStorage } from "@backend/storage/blDocumentStorage";
+import { BlError } from "@shared/bl-error/bl-error";
+import { Message } from "@shared/message/message";
+import { AccessToken } from "@shared/token/access-token";
+import { UserDetail } from "@shared/user/user-detail/user-detail";
 
 export class MessagePostHook extends Hook {
   private readonly messengerReminder: MessengerReminder;

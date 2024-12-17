@@ -1,10 +1,10 @@
-import { BlError, Order } from "@boklisten/bl-model";
-
-import { SystemUser } from "@/auth/permission/permission.service";
-import { BlCollectionName } from "@/collections/bl-collection";
-import { orderSchema } from "@/collections/order/order.schema";
-import { isNullish } from "@/helper/typescript-helpers";
-import { BlDocumentStorage } from "@/storage/blDocumentStorage";
+import { SystemUser } from "@backend/auth/permission/permission.service";
+import { BlCollectionName } from "@backend/collections/bl-collection";
+import { orderSchema } from "@backend/collections/order/order.schema";
+import { isNullish } from "@backend/helper/typescript-helpers";
+import { BlDocumentStorage } from "@backend/storage/blDocumentStorage";
+import { BlError } from "@shared/bl-error/bl-error";
+import { Order } from "@shared/order/order";
 
 interface OrderItemToUpdate {
   itemId: string;

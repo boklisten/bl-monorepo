@@ -1,14 +1,14 @@
 import "mocha";
-import { BlDocument, BlError } from "@boklisten/bl-model";
-import chai, { expect } from "chai";
-import chaiAsPromised from "chai-as-promised";
-
-import { CollectionEndpointDocumentAuth } from "@/collection-endpoint/collection-endpoint-document/collection-endpoint-document-auth";
+import { CollectionEndpointDocumentAuth } from "@backend/collection-endpoint/collection-endpoint-document/collection-endpoint-document-auth";
 import {
   BlDocumentPermission,
   BlEndpointRestriction,
-} from "@/collections/bl-collection";
-import { BlApiRequest } from "@/request/bl-api-request";
+} from "@backend/collections/bl-collection";
+import { BlApiRequest } from "@backend/request/bl-api-request";
+import { BlDocument } from "@shared/bl-document/bl-document";
+import { BlError } from "@shared/bl-error/bl-error";
+import chai, { expect } from "chai";
+import chaiAsPromised from "chai-as-promised";
 
 chai.use(chaiAsPromised);
 

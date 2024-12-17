@@ -1,17 +1,19 @@
 import "mocha";
-import { BlError, AccessToken, UserDetail } from "@boklisten/bl-model";
+
+import { BlCollectionName } from "@backend/collections/bl-collection";
+import { CustomerHaveActiveCustomerItems } from "@backend/collections/customer-item/helpers/customer-have-active-customer-items";
+import { CustomerInvoiceActive } from "@backend/collections/invoice/helpers/customer-invoice-active";
+import { OrderActive } from "@backend/collections/order/helpers/order-active/order-active";
+import { UserCanDeleteUserDetail } from "@backend/collections/user-detail/helpers/user-can-delete-user-detail";
+import { UserDeleteAllInfo } from "@backend/collections/user-detail/helpers/user-delete-all-info";
+import { UserDetailDeleteHook } from "@backend/collections/user-detail/hooks/user-detail-delete.hook";
+import { BlDocumentStorage } from "@backend/storage/blDocumentStorage";
+import { BlError } from "@shared/bl-error/bl-error";
+import { AccessToken } from "@shared/token/access-token";
+import { UserDetail } from "@shared/user/user-detail/user-detail";
 import chai, { expect } from "chai";
 import chaiAsPromised from "chai-as-promised";
 import sinon from "sinon";
-
-import { BlCollectionName } from "@/collections/bl-collection";
-import { CustomerHaveActiveCustomerItems } from "@/collections/customer-item/helpers/customer-have-active-customer-items";
-import { CustomerInvoiceActive } from "@/collections/invoice/helpers/customer-invoice-active";
-import { OrderActive } from "@/collections/order/helpers/order-active/order-active";
-import { UserCanDeleteUserDetail } from "@/collections/user-detail/helpers/user-can-delete-user-detail";
-import { UserDeleteAllInfo } from "@/collections/user-detail/helpers/user-delete-all-info";
-import { UserDetailDeleteHook } from "@/collections/user-detail/hooks/user-detail-delete.hook";
-import { BlDocumentStorage } from "@/storage/blDocumentStorage";
 
 chai.use(chaiAsPromised);
 

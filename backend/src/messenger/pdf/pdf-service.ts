@@ -1,12 +1,12 @@
+import { isNotNullish } from "@backend/helper/typescript-helpers";
+import { OrderEmailHandler } from "@backend/messenger/email/order-email/order-email-handler";
 import { EmailAttachment, EmailHandler, PdfHandler } from "@boklisten/bl-email";
 import { EmailOrder } from "@boklisten/bl-email/dist/ts/template/email-order";
 import { EmailSetting } from "@boklisten/bl-email/dist/ts/template/email-setting";
 import { EmailUser } from "@boklisten/bl-email/dist/ts/template/email-user";
-import { Order, UserDetail } from "@boklisten/bl-model";
+import { Order } from "@shared/order/order";
+import { UserDetail } from "@shared/user/user-detail/user-detail";
 import moment from "moment";
-
-import { isNotNullish } from "@/helper/typescript-helpers";
-import { OrderEmailHandler } from "@/messenger/email/order-email/order-email-handler";
 
 export class PdfService {
   private _pdfHandler: PdfHandler;

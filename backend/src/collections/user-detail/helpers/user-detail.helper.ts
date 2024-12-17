@@ -1,10 +1,11 @@
-import { AccessToken, BlError, UserDetail } from "@boklisten/bl-model";
-
-import { BlCollectionName } from "@/collections/bl-collection";
-import { userDetailSchema } from "@/collections/user-detail/user-detail.schema";
-import { isNullish } from "@/helper/typescript-helpers";
-import { DibsEasyPayment } from "@/payment/dibs/dibs-easy-payment/dibs-easy-payment";
-import { BlDocumentStorage } from "@/storage/blDocumentStorage";
+import { BlCollectionName } from "@backend/collections/bl-collection";
+import { userDetailSchema } from "@backend/collections/user-detail/user-detail.schema";
+import { isNullish } from "@backend/helper/typescript-helpers";
+import { DibsEasyPayment } from "@backend/payment/dibs/dibs-easy-payment/dibs-easy-payment";
+import { BlDocumentStorage } from "@backend/storage/blDocumentStorage";
+import { BlError } from "@shared/bl-error/bl-error";
+import { AccessToken } from "@shared/token/access-token";
+import { UserDetail } from "@shared/user/user-detail/user-detail";
 
 export class UserDetailHelper {
   private _userDetailStorage: BlDocumentStorage<UserDetail>;

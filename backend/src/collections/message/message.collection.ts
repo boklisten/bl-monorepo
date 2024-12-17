@@ -2,11 +2,11 @@ import {
   BlCollection,
   BlCollectionName,
   BlEndpoint,
-} from "@/collections/bl-collection";
-import { MessagePostHook } from "@/collections/message/hooks/message-post.hook";
-import { messageSchema } from "@/collections/message/message.schema";
-import { SendgridEventOperation } from "@/collections/message/operations/sendgrid-event.operation";
-import { TwilioSmsEventOperation } from "@/collections/message/operations/twillio-sms-event.operation";
+} from "@backend/collections/bl-collection";
+import { MessagePostHook } from "@backend/collections/message/hooks/message-post.hook";
+import { messageSchema } from "@backend/collections/message/message.schema";
+import { SendgridEventOperation } from "@backend/collections/message/operations/sendgrid-event.operation";
+import { TwilioSmsEventOperation } from "@backend/collections/message/operations/twillio-sms-event.operation";
 
 export class MessageCollection implements BlCollection {
   public collectionName = BlCollectionName.Messages;

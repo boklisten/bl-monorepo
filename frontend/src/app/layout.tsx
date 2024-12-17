@@ -1,17 +1,16 @@
+import AuthLinker from "@frontend/components/AuthLinker";
+import CustomThemeProvider from "@frontend/components/CustomThemeProvider";
+import DynamicHeightProvider from "@frontend/components/DynamicHeightProvider";
+import CustomLocalizationProvider from "@frontend/components/LocalizationProvider";
 import CssBaseline from "@mui/material/CssBaseline";
 import { Metadata } from "next";
 import { ReactNode, Suspense } from "react";
-
-import AuthLinker from "@/components/AuthLinker";
-import CustomThemeProvider from "@/components/CustomThemeProvider";
-import DynamicHeightProvider from "@/components/DynamicHeightProvider";
-import CustomLocalizationProvider from "@/components/LocalizationProvider";
 
 import "@fontsource/roboto/300.css";
 import "@fontsource/roboto/400.css";
 import "@fontsource/roboto/500.css";
 import "@fontsource/roboto/700.css";
-import "@/globals.css";
+import "@frontend/globals.css";
 
 export const metadata: Metadata = {
   title: {

@@ -1,15 +1,14 @@
 import "react-quill/dist/quill.snow.css";
 
+import BlFetcher from "@frontend/api/blFetcher";
+import { EditorProps } from "@frontend/components/editableText/EditableTextElement";
+import { EditableTextRenderer } from "@frontend/components/editableText/EditableTextRenderer";
+import BL_CONFIG from "@frontend/utils/bl-config";
+import useExitInterceptor from "@frontend/utils/useExitInterceptor";
 import { Box, Button, Container, styled } from "@mui/material";
 import dynamic from "next/dynamic";
 import { useRef, useState } from "react";
 import ReactQuill from "react-quill";
-
-import BlFetcher from "@/api/blFetcher";
-import { EditorProps } from "@/components/editableText/EditableTextElement";
-import { EditableTextRenderer } from "@/components/editableText/EditableTextRenderer";
-import BL_CONFIG from "@/utils/bl-config";
-import useExitInterceptor from "@/utils/useExitInterceptor";
 
 const Quill = styled(
   dynamic<ReactQuill.ReactQuillProps>(import("react-quill"), { ssr: false }),

@@ -1,7 +1,6 @@
-import { Item } from "@boklisten/bl-model";
+import { ToSchema } from "@backend/helper/typescript-helpers";
+import { Item } from "@shared/item/item";
 import { Schema } from "mongoose";
-
-import { ToSchema } from "@/helper/typescript-helpers";
 
 export const itemSchema = new Schema<ToSchema<Item>>({
   title: {

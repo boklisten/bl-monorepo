@@ -1,7 +1,7 @@
-import { CustomerItemType } from "@boklisten/bl-model";
 import { Box, Typography } from "@mui/material";
 import ToggleButton from "@mui/material/ToggleButton";
 import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
+import { CustomerItemType } from "@shared/customer-item/customer-item-type";
 import { useState } from "react";
 
 export default function CustomerItemTypePicker({

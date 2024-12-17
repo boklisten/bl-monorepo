@@ -1,11 +1,11 @@
 import "mocha";
-import { BlError, CustomerItem } from "@boklisten/bl-model";
+import { BlCollectionName } from "@backend/collections/bl-collection";
+import { CustomerItemValidator } from "@backend/collections/customer-item/validators/customer-item-validator";
+import { BlDocumentStorage } from "@backend/storage/blDocumentStorage";
+import { BlError } from "@shared/bl-error/bl-error";
+import { CustomerItem } from "@shared/customer-item/customer-item";
 import chai, { expect } from "chai";
 import chaiAsPromised from "chai-as-promised";
-
-import { BlCollectionName } from "@/collections/bl-collection";
-import { CustomerItemValidator } from "@/collections/customer-item/validators/customer-item-validator";
-import { BlDocumentStorage } from "@/storage/blDocumentStorage";
 
 chai.use(chaiAsPromised);
 

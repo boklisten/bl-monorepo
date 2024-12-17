@@ -1,9 +1,8 @@
+import { ItemStatus } from "@frontend/components/matches/matches-helper";
+import ProgressBar from "@frontend/components/matches/matchesList/ProgressBar";
+import MatchItemTable from "@frontend/components/matches/MatchItemTable";
 import { Box, Typography } from "@mui/material";
 import { useEffect } from "react";
-
-import { ItemStatus } from "@/components/matches/matches-helper";
-import ProgressBar from "@/components/matches/matchesList/ProgressBar";
-import MatchItemTable from "@/components/matches/MatchItemTable";
 
 export default function MatchScannerContent({
   expectedItems,

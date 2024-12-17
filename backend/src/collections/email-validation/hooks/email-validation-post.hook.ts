@@ -1,8 +1,7 @@
-import { AccessToken, BlError } from "@boklisten/bl-model";
-
-import { EmailValidation } from "@/collections/email-validation/email-validation";
-import { EmailValidationHelper } from "@/collections/email-validation/helpers/email-validation.helper";
-import { Hook } from "@/hook/hook";
+import { EmailValidation } from "@backend/collections/email-validation/email-validation";
+import { EmailValidationHelper } from "@backend/collections/email-validation/helpers/email-validation.helper";
+import { Hook } from "@backend/hook/hook";
+import { BlError } from "@shared/bl-error/bl-error";
 
 export class EmailValidationPostHook extends Hook {
   private _emailValidationHelper: EmailValidationHelper;

@@ -1,11 +1,10 @@
 import "mocha";
-import { BlError } from "@boklisten/bl-model";
+import { LocalLoginPasswordValidator } from "@backend/auth/local/password/local-login-password.validator";
+import { SeCrypto } from "@backend/crypto/se.crypto";
+import { BlError } from "@shared/bl-error/bl-error";
 import chai from "chai";
 import chaiAsPromised from "chai-as-promised";
 import sinon from "sinon";
-
-import { LocalLoginPasswordValidator } from "@/auth/local/password/local-login-password.validator";
-import { SeCrypto } from "@/crypto/se.crypto";
 
 chai.use(chaiAsPromised);
 

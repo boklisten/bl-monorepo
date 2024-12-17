@@ -1,27 +1,23 @@
-import {
-  AccessToken,
-  BlError,
-  CustomerItem,
-  Order,
-  OrderItem,
-  OrderItemType,
-  UserDetail,
-} from "@boklisten/bl-model";
-
-import { BlCollectionName } from "@/collections/bl-collection";
-import { CustomerItemHandler } from "@/collections/customer-item/helpers/customer-item-handler";
-import { OrderItemMovedFromOrderHandler } from "@/collections/order/helpers/order-item-moved-from-order-handler/order-item-moved-from-order-handler";
-import { orderSchema } from "@/collections/order/order.schema";
-import { PaymentHandler } from "@/collections/payment/helpers/payment-handler";
-import { userHasValidSignature } from "@/collections/signature/helpers/signature.helper";
+import { BlCollectionName } from "@backend/collections/bl-collection";
+import { CustomerItemHandler } from "@backend/collections/customer-item/helpers/customer-item-handler";
+import { OrderItemMovedFromOrderHandler } from "@backend/collections/order/helpers/order-item-moved-from-order-handler/order-item-moved-from-order-handler";
+import { orderSchema } from "@backend/collections/order/order.schema";
+import { PaymentHandler } from "@backend/collections/payment/helpers/payment-handler";
+import { userHasValidSignature } from "@backend/collections/signature/helpers/signature.helper";
 import {
   Signature,
   signatureSchema,
-} from "@/collections/signature/signature.schema";
-import { userDetailSchema } from "@/collections/user-detail/user-detail.schema";
-import { logger } from "@/logger/logger";
-import { Messenger } from "@/messenger/messenger";
-import { BlDocumentStorage } from "@/storage/blDocumentStorage";
+} from "@backend/collections/signature/signature.schema";
+import { userDetailSchema } from "@backend/collections/user-detail/user-detail.schema";
+import { logger } from "@backend/logger/logger";
+import { Messenger } from "@backend/messenger/messenger";
+import { BlDocumentStorage } from "@backend/storage/blDocumentStorage";
+import { BlError } from "@shared/bl-error/bl-error";
+import { Order } from "@shared/order/order";
+import { OrderItem } from "@shared/order/order-item/order-item";
+import { OrderItemType } from "@shared/order/order-item/order-item-type";
+import { AccessToken } from "@shared/token/access-token";
+import { UserDetail } from "@shared/user/user-detail/user-detail";
 
 export class OrderPlacedHandler {
   private readonly orderStorage: BlDocumentStorage<Order>;

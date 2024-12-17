@@ -1,17 +1,17 @@
-import { BlDocument, BlError } from "@boklisten/bl-model";
+import { PermissionService } from "@backend/auth/permission/permission.service";
+import { CollectionEndpointDelete } from "@backend/collection-endpoint/collection-endpoint-delete/collection-endpoint-delete";
+import { CollectionEndpointGetAll } from "@backend/collection-endpoint/collection-endpoint-get-all/collection-endpoint-get-all";
+import { CollectionEndpointGetId } from "@backend/collection-endpoint/collection-endpoint-get-id/collection-endpoint-get-id";
+import { CollectionEndpointPatch } from "@backend/collection-endpoint/collection-endpoint-patch/collection-endpoint-patch";
+import { CollectionEndpointPost } from "@backend/collection-endpoint/collection-endpoint-post/collection-endpoint-post";
+import { CollectionEndpointPut } from "@backend/collection-endpoint/collection-endpoint-put/collection-endpoint-put";
+import { BlCollection, BlEndpoint } from "@backend/collections/bl-collection";
+import { ApiPath } from "@backend/config/api-path";
+import { logger } from "@backend/logger/logger";
+import { BlDocumentStorage } from "@backend/storage/blDocumentStorage";
+import { BlDocument } from "@shared/bl-document/bl-document";
+import { BlError } from "@shared/bl-error/bl-error";
 import { Router } from "express";
-
-import { PermissionService } from "@/auth/permission/permission.service";
-import { CollectionEndpointDelete } from "@/collection-endpoint/collection-endpoint-delete/collection-endpoint-delete";
-import { CollectionEndpointGetAll } from "@/collection-endpoint/collection-endpoint-get-all/collection-endpoint-get-all";
-import { CollectionEndpointGetId } from "@/collection-endpoint/collection-endpoint-get-id/collection-endpoint-get-id";
-import { CollectionEndpointPatch } from "@/collection-endpoint/collection-endpoint-patch/collection-endpoint-patch";
-import { CollectionEndpointPost } from "@/collection-endpoint/collection-endpoint-post/collection-endpoint-post";
-import { CollectionEndpointPut } from "@/collection-endpoint/collection-endpoint-put/collection-endpoint-put";
-import { BlCollection, BlEndpoint } from "@/collections/bl-collection";
-import { ApiPath } from "@/config/api-path";
-import { logger } from "@/logger/logger";
-import { BlDocumentStorage } from "@/storage/blDocumentStorage";
 
 export class CollectionEndpoint<T extends BlDocument> {
   private _documentStorage: BlDocumentStorage<T>;

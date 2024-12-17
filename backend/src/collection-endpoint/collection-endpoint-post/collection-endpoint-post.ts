@@ -1,9 +1,8 @@
-import { BlDocument, BlError } from "@boklisten/bl-model";
-
-import { CollectionEndpointMethod } from "@/collection-endpoint/collection-endpoint-method";
-import { CollectionEndpointOnRequest } from "@/collection-endpoint/collection-endpoint-on-request";
-import { BlApiRequest } from "@/request/bl-api-request";
-
+import { CollectionEndpointMethod } from "@backend/collection-endpoint/collection-endpoint-method";
+import { CollectionEndpointOnRequest } from "@backend/collection-endpoint/collection-endpoint-on-request";
+import { BlApiRequest } from "@backend/request/bl-api-request";
+import { BlDocument } from "@shared/bl-document/bl-document";
+import { BlError } from "@shared/bl-error/bl-error";
 export class CollectionEndpointPost<T extends BlDocument>
   extends CollectionEndpointMethod<T>
   implements CollectionEndpointOnRequest<T>

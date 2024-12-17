@@ -1,19 +1,15 @@
-import {
-  AccessToken,
-  BlapiResponse,
-  BlError,
-  Order,
-} from "@boklisten/bl-model";
+import { BlCollectionName } from "@backend/collections/bl-collection";
+import { OrderPlacedHandler } from "@backend/collections/order/helpers/order-placed-handler/order-placed-handler";
+import { orderSchema } from "@backend/collections/order/order.schema";
+import { Operation } from "@backend/operation/operation";
+import { SEDbQueryBuilder } from "@backend/query/se.db-query-builder";
+import { BlApiRequest } from "@backend/request/bl-api-request";
+import { SEResponseHandler } from "@backend/response/se.response.handler";
+import { BlDocumentStorage } from "@backend/storage/blDocumentStorage";
+import { BlError } from "@shared/bl-error/bl-error";
+import { Order } from "@shared/order/order";
+import { AccessToken } from "@shared/token/access-token";
 import { NextFunction, Request, Response } from "express";
-
-import { BlCollectionName } from "@/collections/bl-collection";
-import { OrderPlacedHandler } from "@/collections/order/helpers/order-placed-handler/order-placed-handler";
-import { orderSchema } from "@/collections/order/order.schema";
-import { Operation } from "@/operation/operation";
-import { SEDbQueryBuilder } from "@/query/se.db-query-builder";
-import { BlApiRequest } from "@/request/bl-api-request";
-import { SEResponseHandler } from "@/response/se.response.handler";
-import { BlDocumentStorage } from "@/storage/blDocumentStorage";
 
 export class OrderConfirmOperation implements Operation {
   private _queryBuilder: SEDbQueryBuilder;

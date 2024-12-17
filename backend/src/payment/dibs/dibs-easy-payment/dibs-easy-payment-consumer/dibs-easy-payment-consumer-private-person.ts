@@ -1,4 +1,4 @@
-import { DibsEasyPaymentConsumerPhone } from "@/payment/dibs/dibs-easy-payment/dibs-easy-payment-consumer/dibs-easy-payment-consumer-phone";
+import { DibsEasyPaymentConsumerPhone } from "@backend/payment/dibs/dibs-easy-payment/dibs-easy-payment-consumer/dibs-easy-payment-consumer-phone";
 
 export interface DibsEasyPaymentConsumerPrivatePerson {
   dateOfBirth: Date;

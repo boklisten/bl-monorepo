@@ -1,21 +1,18 @@
-import { EmailAttachment } from "@boklisten/bl-email";
-import {
-  Delivery,
-  Order,
-  UserDetail,
-  CustomerItem,
-  Message,
-} from "@boklisten/bl-model";
-
-import { BlCollectionName } from "@/collections/bl-collection";
-import { deliverySchema } from "@/collections/delivery/delivery.schema";
-import { EmailService } from "@/messenger/email/email-service";
+import { BlCollectionName } from "@backend/collections/bl-collection";
+import { deliverySchema } from "@backend/collections/delivery/delivery.schema";
+import { EmailService } from "@backend/messenger/email/email-service";
 import {
   MessengerService,
   CustomerDetailWithCustomerItem,
-} from "@/messenger/messenger-service";
-import { PdfService } from "@/messenger/pdf/pdf-service";
-import { BlDocumentStorage } from "@/storage/blDocumentStorage";
+} from "@backend/messenger/messenger-service";
+import { PdfService } from "@backend/messenger/pdf/pdf-service";
+import { BlDocumentStorage } from "@backend/storage/blDocumentStorage";
+import { EmailAttachment } from "@boklisten/bl-email";
+import { CustomerItem } from "@shared/customer-item/customer-item";
+import { Delivery } from "@shared/delivery/delivery";
+import { Message } from "@shared/message/message";
+import { Order } from "@shared/order/order";
+import { UserDetail } from "@shared/user/user-detail/user-detail";
 
 export class Messenger implements MessengerService {
   private readonly _emailService: EmailService;

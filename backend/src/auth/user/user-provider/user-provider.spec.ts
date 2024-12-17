@@ -1,13 +1,12 @@
-import { BlError } from "@boklisten/bl-model";
+import { BlError } from "@shared/bl-error/bl-error";
 import chai, { expect } from "chai";
 import chaiAsPromised from "chai-as-promised";
 import "mocha";
 import sinon from "sinon";
-
-import { LocalLoginHandler } from "@/auth/local/local-login.handler";
-import { TokenHandler } from "@/auth/token/token.handler";
-import { UserProvider } from "@/auth/user/user-provider/user-provider";
-import { UserHandler } from "@/auth/user/user.handler";
+import { LocalLoginHandler } from "@backend/auth/local/local-login.handler";
+import { TokenHandler } from "@backend/auth/token/token.handler";
+import { UserProvider } from "@backend/auth/user/user-provider/user-provider";
+import { UserHandler } from "@backend/auth/user/user.handler";
 
 chai.use(chaiAsPromised);
 

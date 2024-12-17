@@ -1,8 +1,8 @@
 "use client";
-import { PageContainer } from "@toolpad/core";
 
-import AdminNavigationCards from "@/components/AdminNavigationCards";
-import { COMMUNICATION_SUB_PAGES } from "@/utils/adminNavigation";
+import AdminNavigationCards from "@frontend/components/AdminNavigationCards";
+import { COMMUNICATION_SUB_PAGES } from "@frontend/utils/adminNavigation";
+import { PageContainer } from "@toolpad/core";
 
 export default function CommunicationRootPage() {
   /**

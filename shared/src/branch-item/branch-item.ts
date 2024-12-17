@@ -1,4 +1,4 @@
-import { BlDocument } from "..";
+import { BlDocument } from "@shared/bl-document/bl-document";
 
 export class BranchItem extends BlDocument {
   branch: string;
@@ -16,7 +16,7 @@ export class BranchItem extends BlDocument {
   partlyPaymentAtBranch?: boolean; // is it possible to partly pay item in bladmin
   liveAtBranch?: boolean; // is this item live at branch
 
-  active?: boolean;
+  override active?: boolean;
   sharedItems?: string[];
   categories?: string[];
 }

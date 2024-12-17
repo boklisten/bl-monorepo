@@ -1,19 +1,19 @@
-import { DbQueryBooleanFilter } from "@/query/boolean-filter/db-query-boolean-filter";
-import { DbQueryDateFilter } from "@/query/date-filter/db-query-date-filter";
-import { DbQueryExpandFilter } from "@/query/expand-filter/db-query-expand-filter";
-import { DbQueryLimitFilter } from "@/query/limit-filter/db-query-limit-filter";
-import { DbQueryNumberFilter } from "@/query/number-filter/db-query-number-filter";
-import { DbQueryObjectIdFilter } from "@/query/object-id-filter/db-query-object-id-filter";
-import { DbQueryOnlyGetFilter } from "@/query/only-get-filter/db-query-only-get-filter";
-import { DbQueryRegexFilter } from "@/query/regex-filter/db-query-regex-filter";
-import { SEDbQuery } from "@/query/se.db-query";
-import { DbQuerySkipFilter } from "@/query/skip-filter/db-query-skip-filter";
-import { DbQuerySortFilter } from "@/query/sort-filter/db-query-sort-filter";
-import { DbQueryStringFilter } from "@/query/string-filter/db-query-string-filter";
+import { DbQueryBooleanFilter } from "@backend/query/boolean-filter/db-query-boolean-filter";
+import { DbQueryDateFilter } from "@backend/query/date-filter/db-query-date-filter";
+import { DbQueryExpandFilter } from "@backend/query/expand-filter/db-query-expand-filter";
+import { DbQueryLimitFilter } from "@backend/query/limit-filter/db-query-limit-filter";
+import { DbQueryNumberFilter } from "@backend/query/number-filter/db-query-number-filter";
+import { DbQueryObjectIdFilter } from "@backend/query/object-id-filter/db-query-object-id-filter";
+import { DbQueryOnlyGetFilter } from "@backend/query/only-get-filter/db-query-only-get-filter";
+import { DbQueryRegexFilter } from "@backend/query/regex-filter/db-query-regex-filter";
+import { SEDbQuery } from "@backend/query/se.db-query";
+import { DbQuerySkipFilter } from "@backend/query/skip-filter/db-query-skip-filter";
+import { DbQuerySortFilter } from "@backend/query/sort-filter/db-query-sort-filter";
+import { DbQueryStringFilter } from "@backend/query/string-filter/db-query-string-filter";
 import {
   DbQueryValidParams,
   ValidParam,
-} from "@/query/valid-param/db-query-valid-params";
+} from "@backend/query/valid-param/db-query-valid-params";
 
 export class SEDbQueryBuilder {
   private dbQueryBooleanFilter: DbQueryBooleanFilter;

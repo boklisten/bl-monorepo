@@ -1,13 +1,12 @@
-import { BlError } from "@boklisten/bl-model";
+import { APP_CONFIG } from "@backend/application-config";
+import { UserProvider } from "@backend/auth/user/user-provider/user-provider";
+import { ApiPath } from "@backend/config/api-path";
+import { assertEnv, BlEnvironment } from "@backend/config/environment";
+import { SEResponseHandler } from "@backend/response/se.response.handler";
+import { BlError } from "@shared/bl-error/bl-error";
 import { Router } from "express";
 import passport from "passport";
 import { Profile, Strategy, StrategyOptions } from "passport-facebook";
-
-import { APP_CONFIG } from "@/application-config";
-import { UserProvider } from "@/auth/user/user-provider/user-provider";
-import { ApiPath } from "@/config/api-path";
-import { assertEnv, BlEnvironment } from "@/config/environment";
-import { SEResponseHandler } from "@/response/se.response.handler";
 
 export class FacebookAuth {
   private apiPath: ApiPath;

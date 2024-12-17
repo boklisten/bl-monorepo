@@ -30,7 +30,6 @@ Every class can now be used by importing it into your project and classes.
 Example usage:
 
 ```typescript
-import { Branch, CustomerItem } from "@boklisten/bl-model";
 
 class SampleClass {
   branch: Branch;

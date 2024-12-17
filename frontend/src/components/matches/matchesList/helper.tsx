@@ -1,9 +1,11 @@
+import theme from "@frontend/utils/theme";
+import {
+  StandMatchWithDetails,
+  UserMatchWithDetails,
+} from "@frontend/utils/types";
 import { KeyboardDoubleArrowRight, SwapHoriz } from "@mui/icons-material";
 import { SxProps, Typography } from "@mui/material";
 import { Box } from "@mui/system";
-
-import theme from "@/utils/theme";
-import { StandMatchWithDetails, UserMatchWithDetails } from "@/utils/types";
 
 export function formatActionsString(handoffItems: number, pickupItems: number) {
   const hasHandoffItems = handoffItems > 0;

@@ -1,11 +1,11 @@
 "use client";
+
+import { isLoggedIn } from "@frontend/api/auth";
+import DynamicLink from "@frontend/components/DynamicLink";
+import { MatchesList } from "@frontend/components/matches/matchesList/MatchesList";
+import useIsHydrated from "@frontend/utils/useIsHydrated";
 import { Alert } from "@mui/material";
 import Button from "@mui/material/Button";
-
-import { isLoggedIn } from "@/api/auth";
-import DynamicLink from "@/components/DynamicLink";
-import { MatchesList } from "@/components/matches/matchesList/MatchesList";
-import useIsHydrated from "@/utils/useIsHydrated";
 
 export default function Matches() {
   const hydrated = useIsHydrated();

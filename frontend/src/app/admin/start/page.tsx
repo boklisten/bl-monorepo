@@ -1,11 +1,10 @@
 "use client";
+import { getUserPermission } from "@frontend/api/auth";
+import AdminNavigationCards from "@frontend/components/AdminNavigationCards";
+import { getAdminPagesNavigationLinks } from "@frontend/utils/adminNavigation";
 import { Typography } from "@mui/material";
 import { Navigation, PageContainer } from "@toolpad/core";
 import { useEffect, useState } from "react";
-
-import { getUserPermission } from "@/api/auth";
-import AdminNavigationCards from "@/components/AdminNavigationCards";
-import { getAdminPagesNavigationLinks } from "@/utils/adminNavigation";
 
 export default function AdminStartPage() {
   const [navLinks, setNavLinks] = useState<Navigation>([]);

@@ -1,9 +1,8 @@
+import Matches from "@frontend/components/matches/Matches";
 import { Typography } from "@mui/material";
 import { Box } from "@mui/system";
 import { Metadata } from "next";
 import { Suspense } from "react";
-
-import Matches from "@/components/matches/Matches";
 
 export const metadata: Metadata = {
   title: "Mine overleveringer",

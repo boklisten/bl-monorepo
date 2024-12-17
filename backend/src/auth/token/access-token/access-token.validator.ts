@@ -1,8 +1,7 @@
-import { BlError } from "@boklisten/bl-model";
+import { AccessToken } from "@backend/auth/token/access-token/access-token";
+import { AccessTokenSecret } from "@backend/auth/token/access-token/access-token.secret";
+import { BlError } from "@shared/bl-error/bl-error";
 import { verify } from "jsonwebtoken";
-
-import { AccessToken } from "@/auth/token/access-token/access-token";
-import { AccessTokenSecret } from "@/auth/token/access-token/access-token.secret";
 
 export class AccessTokenValidator {
   private accessTokenSecret: AccessTokenSecret;

@@ -1,26 +1,23 @@
-import {
-  BlError,
-  CustomerItem,
-  Match,
-  Order,
-  SignatureMetadata,
-  UserDetail,
-} from "@boklisten/bl-model";
+import { BlCollectionName } from "@backend/collections/bl-collection";
+import { OrderToCustomerItemGenerator } from "@backend/collections/customer-item/helpers/order-to-customer-item-generator";
+import { OrderPlacedHandler } from "@backend/collections/order/helpers/order-placed-handler/order-placed-handler";
+import { OrderValidator } from "@backend/collections/order/helpers/order-validator/order-validator";
+import { OrderPlaceOperation } from "@backend/collections/order/operations/place/order-place.operation";
+import { Signature } from "@backend/collections/signature/signature.schema";
+import { SEResponseHandler } from "@backend/response/se.response.handler";
+import { BlDocumentStorage } from "@backend/storage/blDocumentStorage";
+import { BlError } from "@shared/bl-error/bl-error";
+import { CustomerItem } from "@shared/customer-item/customer-item";
+import { Match } from "@shared/match/match";
+import { Order } from "@shared/order/order";
+import { SignatureMetadata } from "@shared/signature/serialized-signature";
+import { UserDetail } from "@shared/user/user-detail/user-detail";
 import chai, { expect } from "chai";
 import chaiAsPromised from "chai-as-promised";
-import "mocha";
 import moment from "moment-timezone";
 import sinon from "sinon";
 
-import { BlCollectionName } from "@/collections/bl-collection";
-import { OrderToCustomerItemGenerator } from "@/collections/customer-item/helpers/order-to-customer-item-generator";
-import { OrderPlacedHandler } from "@/collections/order/helpers/order-placed-handler/order-placed-handler";
-import { OrderValidator } from "@/collections/order/helpers/order-validator/order-validator";
-import { OrderPlaceOperation } from "@/collections/order/operations/place/order-place.operation";
-import { Signature } from "@/collections/signature/signature.schema";
-import { SEResponseHandler } from "@/response/se.response.handler";
-import { BlDocumentStorage } from "@/storage/blDocumentStorage";
-
+import "mocha";
 chai.use(chaiAsPromised);
 
 describe("OrderPlaceOperation", () => {

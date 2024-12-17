@@ -1,4 +1,7 @@
-import { BlDocument, UserPermission } from "@boklisten/bl-model";
+import { SEDbQuery } from "@backend/query/se.db-query";
+import { NestedDocument } from "@backend/storage/nested-document";
+import { BlDocument } from "@shared/bl-document/bl-document";
+import { UserPermission } from "@shared/permission/user-permission";
 import {
   FilterQuery,
   PipelineStage,
@@ -6,9 +9,6 @@ import {
   UpdateWithAggregationPipeline,
   UpdateWriteOpResult,
 } from "mongoose";
-
-import { SEDbQuery } from "@/query/se.db-query";
-import { NestedDocument } from "@/storage/nested-document";
 
 export interface BlStorageHandler<T extends BlDocument> {
   get(

@@ -1,11 +1,10 @@
-import { BlDocument, BlError } from "@boklisten/bl-model";
-
-import { CollectionEndpointMethod } from "@/collection-endpoint/collection-endpoint-method";
-import { CollectionEndpointOnRequest } from "@/collection-endpoint/collection-endpoint-on-request";
-import { SEDbQuery } from "@/query/se.db-query";
-import { SEDbQueryBuilder } from "@/query/se.db-query-builder";
-import { BlApiRequest } from "@/request/bl-api-request";
-
+import { CollectionEndpointMethod } from "@backend/collection-endpoint/collection-endpoint-method";
+import { CollectionEndpointOnRequest } from "@backend/collection-endpoint/collection-endpoint-on-request";
+import { SEDbQuery } from "@backend/query/se.db-query";
+import { SEDbQueryBuilder } from "@backend/query/se.db-query-builder";
+import { BlApiRequest } from "@backend/request/bl-api-request";
+import { BlDocument } from "@shared/bl-document/bl-document";
+import { BlError } from "@shared/bl-error/bl-error";
 export class CollectionEndpointGetAll<T extends BlDocument>
   extends CollectionEndpointMethod<T>
   implements CollectionEndpointOnRequest<T>

@@ -1,16 +1,15 @@
+import { SystemUser } from "@backend/auth/permission/permission.service";
+import { Signature } from "@backend/collections/signature/signature.schema";
+import { logger } from "@backend/logger/logger";
+import { BlDocumentStorage } from "@backend/storage/blDocumentStorage";
+import { Transformer } from "@napi-rs/image";
+import { BlError } from "@shared/bl-error/bl-error";
+import { Order } from "@shared/order/order";
 import {
-  BlError,
-  Order,
   SerializedSignature,
   SignatureMetadata,
-  UserDetail,
-} from "@boklisten/bl-model";
-import { Transformer } from "@napi-rs/image";
-
-import { SystemUser } from "@/auth/permission/permission.service";
-import { Signature } from "@/collections/signature/signature.schema";
-import { logger } from "@/logger/logger";
-import { BlDocumentStorage } from "@/storage/blDocumentStorage";
+} from "@shared/signature/serialized-signature";
+import { UserDetail } from "@shared/user/user-detail/user-detail";
 
 const qualityFactor = 10;
 

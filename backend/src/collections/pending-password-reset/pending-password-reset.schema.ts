@@ -1,7 +1,6 @@
-import { PendingPasswordReset } from "@boklisten/bl-model";
+import { ToSchema } from "@backend/helper/typescript-helpers";
+import { PendingPasswordReset } from "@shared/password-reset/pending-password-reset";
 import { Schema } from "mongoose";
-
-import { ToSchema } from "@/helper/typescript-helpers";
 
 export const pendingPasswordResetSchema = new Schema<
   ToSchema<PendingPasswordReset>

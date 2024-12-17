@@ -1,9 +1,8 @@
-import { UserDetail } from "@boklisten/bl-model";
-
-import BlFetcher from "@/api/blFetcher";
-import { parseTokensFromResponseDataAndStore } from "@/api/token";
-import BL_CONFIG from "@/utils/bl-config";
-import { AuthResponse } from "@/utils/types";
+import BlFetcher from "@frontend/api/blFetcher";
+import { parseTokensFromResponseDataAndStore } from "@frontend/api/token";
+import BL_CONFIG from "@frontend/utils/bl-config";
+import { AuthResponse } from "@frontend/utils/types";
+import { UserDetail } from "@shared/user/user-detail/user-detail";
 
 export const login = async (
   username: string,

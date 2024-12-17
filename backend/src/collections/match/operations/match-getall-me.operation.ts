@@ -1,21 +1,18 @@
-import {
-  BlapiResponse,
-  Item,
-  Match,
-  UniqueItem,
-  UserDetail,
-} from "@boklisten/bl-model";
-
-import { BlCollectionName } from "@/collections/bl-collection";
-import { itemSchema } from "@/collections/item/item.schema";
-import { matchSchema } from "@/collections/match/match.schema";
-import { addDetailsToAllMatches } from "@/collections/match/operations/match-getall-me-operation-helper";
-import { getAllMatchesForUser } from "@/collections/match/operations/match-operation-utils";
-import { uniqueItemSchema } from "@/collections/unique-item/unique-item.schema";
-import { userDetailSchema } from "@/collections/user-detail/user-detail.schema";
-import { Operation } from "@/operation/operation";
-import { BlApiRequest } from "@/request/bl-api-request";
-import { BlDocumentStorage } from "@/storage/blDocumentStorage";
+import { BlCollectionName } from "@backend/collections/bl-collection";
+import { itemSchema } from "@backend/collections/item/item.schema";
+import { matchSchema } from "@backend/collections/match/match.schema";
+import { addDetailsToAllMatches } from "@backend/collections/match/operations/match-getall-me-operation-helper";
+import { getAllMatchesForUser } from "@backend/collections/match/operations/match-operation-utils";
+import { uniqueItemSchema } from "@backend/collections/unique-item/unique-item.schema";
+import { userDetailSchema } from "@backend/collections/user-detail/user-detail.schema";
+import { Operation } from "@backend/operation/operation";
+import { BlApiRequest } from "@backend/request/bl-api-request";
+import { BlDocumentStorage } from "@backend/storage/blDocumentStorage";
+import { BlapiResponse } from "@shared/blapi-response/blapi-response";
+import { Item } from "@shared/item/item";
+import { Match } from "@shared/match/match";
+import { UniqueItem } from "@shared/unique-item/unique-item";
+import { UserDetail } from "@shared/user/user-detail/user-detail";
 
 export class GetMyMatchesOperation implements Operation {
   private readonly _userDetailStorage: BlDocumentStorage<UserDetail>;

@@ -1,6 +1,5 @@
-import { AccessToken, Item } from "@boklisten/bl-model";
-
-import { Hook } from "@/hook/hook";
+import { Hook } from "@backend/hook/hook";
+import { Item } from "@shared/item/item";
 
 export class ItemPostHook extends Hook {
   public override before(

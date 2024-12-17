@@ -1,12 +1,11 @@
 import "mocha";
-import { AccessToken } from "@boklisten/bl-model";
-import chai, { assert } from "chai";
-import chaiAsPromised from "chai-as-promised";
-
 import {
   UserDetailUpdateHook,
   UserDetailPatch,
-} from "@/collections/user-detail/hooks/user-detail-update.hook";
+} from "@backend/collections/user-detail/hooks/user-detail-update.hook";
+import { AccessToken } from "@shared/token/access-token";
+import chai, { assert } from "chai";
+import chaiAsPromised from "chai-as-promised";
 
 chai.use(chaiAsPromised);
 

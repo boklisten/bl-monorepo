@@ -1,9 +1,10 @@
 import "mocha";
-import { BlError, Item, OrderItem } from "@boklisten/bl-model";
+import { ItemValidator } from "@backend/collections/order/helpers/order-validator/item-validator/item-validator";
+import { BlError } from "@shared/bl-error/bl-error";
+import { Item } from "@shared/item/item";
+import { OrderItem } from "@shared/order/order-item/order-item";
 import chai, { expect } from "chai";
 import chaiAsPromised from "chai-as-promised";
-
-import { ItemValidator } from "@/collections/order/helpers/order-validator/item-validator/item-validator";
 
 chai.use(chaiAsPromised);
 

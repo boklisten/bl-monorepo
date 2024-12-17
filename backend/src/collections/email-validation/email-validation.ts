@@ -1,4 +1,4 @@
-import { BlDocument } from "@boklisten/bl-model";
+import { BlDocument } from "@shared/bl-document/bl-document";
 
 export class EmailValidation extends BlDocument {
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment

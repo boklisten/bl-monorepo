@@ -1,8 +1,7 @@
-import { SerializedSignature } from "@boklisten/bl-model";
-
-import { serializeSignature } from "@/collections/signature/helpers/signature.helper";
-import { Signature } from "@/collections/signature/signature.schema";
-import { Hook } from "@/hook/hook";
+import { serializeSignature } from "@backend/collections/signature/helpers/signature.helper";
+import { Signature } from "@backend/collections/signature/signature.schema";
+import { Hook } from "@backend/hook/hook";
+import { SerializedSignature } from "@shared/signature/serialized-signature";
 
 export class SignatureGetIdHook extends Hook {
   public override async after(

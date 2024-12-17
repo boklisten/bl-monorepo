@@ -1,18 +1,15 @@
-import {
-  BlError,
-  Branch,
-  CustomerItem,
-  OrderItem,
-  Period,
-} from "@boklisten/bl-model";
+import { SystemUser } from "@backend/auth/permission/permission.service";
+import { BlCollectionName } from "@backend/collections/bl-collection";
+import { branchSchema } from "@backend/collections/branch/branch.schema";
+import { customerItemSchema } from "@backend/collections/customer-item/customer-item.schema";
+import { SEDbQueryBuilder } from "@backend/query/se.db-query-builder";
+import { BlDocumentStorage } from "@backend/storage/blDocumentStorage";
+import { BlError } from "@shared/bl-error/bl-error";
+import { Branch } from "@shared/branch/branch";
+import { CustomerItem } from "@shared/customer-item/customer-item";
+import { OrderItem } from "@shared/order/order-item/order-item";
+import { Period } from "@shared/period/period";
 import moment from "moment-timezone";
-
-import { SystemUser } from "@/auth/permission/permission.service";
-import { BlCollectionName } from "@/collections/bl-collection";
-import { branchSchema } from "@/collections/branch/branch.schema";
-import { customerItemSchema } from "@/collections/customer-item/customer-item.schema";
-import { SEDbQueryBuilder } from "@/query/se.db-query-builder";
-import { BlDocumentStorage } from "@/storage/blDocumentStorage";
 
 export class CustomerItemHandler {
   private _customerItemStorage: BlDocumentStorage<CustomerItem>;

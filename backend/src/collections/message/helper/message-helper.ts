@@ -1,7 +1,7 @@
-import { Message, BlError } from "@boklisten/bl-model";
-
-import { SEDbQueryBuilder } from "@/query/se.db-query-builder";
-import { BlDocumentStorage } from "@/storage/blDocumentStorage";
+import { SEDbQueryBuilder } from "@backend/query/se.db-query-builder";
+import { BlDocumentStorage } from "@backend/storage/blDocumentStorage";
+import { BlError } from "@shared/bl-error/bl-error";
+import { Message } from "@shared/message/message";
 
 export class MessageHelper {
   private queryBuilder: SEDbQueryBuilder;

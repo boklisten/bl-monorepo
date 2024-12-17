@@ -1,7 +1,8 @@
-import { BlError, Payment, AccessToken } from "@boklisten/bl-model";
-
-import { PermissionService } from "@/auth/permission/permission.service";
-import { Hook } from "@/hook/hook";
+import { PermissionService } from "@backend/auth/permission/permission.service";
+import { Hook } from "@backend/hook/hook";
+import { BlError } from "@shared/bl-error/bl-error";
+import { Payment } from "@shared/payment/payment";
+import { AccessToken } from "@shared/token/access-token";
 
 export class PaymentGetAllHook extends Hook {
   private _permissionService: PermissionService;

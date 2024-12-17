@@ -1,20 +1,17 @@
 import "mocha";
-import {
-  AccessToken,
-  BlError,
-  CustomerItem,
-  Order,
-  UserDetail,
-} from "@boklisten/bl-model";
+import { BlCollectionName } from "@backend/collections/bl-collection";
+import { CustomerItemPostHook } from "@backend/collections/customer-item/hooks/customer-item-post.hook";
+import { CustomerItemValidator } from "@backend/collections/customer-item/validators/customer-item-validator";
+import { BlDocumentStorage } from "@backend/storage/blDocumentStorage";
+import { BlError } from "@shared/bl-error/bl-error";
+import { CustomerItem } from "@shared/customer-item/customer-item";
+import { Order } from "@shared/order/order";
+import { AccessToken } from "@shared/token/access-token";
+import { UserDetail } from "@shared/user/user-detail/user-detail";
 import chai, { expect } from "chai";
 import chaiAsPromised from "chai-as-promised";
 import sinon from "sinon";
 import sinonChai from "sinon-chai";
-
-import { BlCollectionName } from "@/collections/bl-collection";
-import { CustomerItemPostHook } from "@/collections/customer-item/hooks/customer-item-post.hook";
-import { CustomerItemValidator } from "@/collections/customer-item/validators/customer-item-validator";
-import { BlDocumentStorage } from "@/storage/blDocumentStorage";
 
 chai.use(chaiAsPromised);
 chai.use(sinonChai);

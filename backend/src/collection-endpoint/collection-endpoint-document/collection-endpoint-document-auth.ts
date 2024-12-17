@@ -1,13 +1,12 @@
-import { BlDocument, BlError } from "@boklisten/bl-model";
-
-import { PermissionService } from "@/auth/permission/permission.service";
+import { PermissionService } from "@backend/auth/permission/permission.service";
 import {
   BlDocumentPermission,
   BlEndpointRestriction,
-} from "@/collections/bl-collection";
-import { isNullish } from "@/helper/typescript-helpers";
-import { BlApiRequest } from "@/request/bl-api-request";
-
+} from "@backend/collections/bl-collection";
+import { isNullish } from "@backend/helper/typescript-helpers";
+import { BlApiRequest } from "@backend/request/bl-api-request";
+import { BlDocument } from "@shared/bl-document/bl-document";
+import { BlError } from "@shared/bl-error/bl-error";
 export class CollectionEndpointDocumentAuth<T extends BlDocument> {
   private _permissionService: PermissionService;
 

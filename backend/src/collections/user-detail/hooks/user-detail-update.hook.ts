@@ -1,6 +1,7 @@
-import { AccessToken, BlError, UserDetail } from "@boklisten/bl-model";
-
-import { Hook } from "@/hook/hook";
+import { Hook } from "@backend/hook/hook";
+import { BlError } from "@shared/bl-error/bl-error";
+import { AccessToken } from "@shared/token/access-token";
+import { UserDetail } from "@shared/user/user-detail/user-detail";
 
 export class UserDetailUpdateHook extends Hook {
   private cleanUserInput = (dirtyText: string): string => {

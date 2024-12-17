@@ -1,15 +1,16 @@
 import "mocha";
-import { BlapiResponse, BlError, UserDetail } from "@boklisten/bl-model";
+import { BlCollectionName } from "@backend/collections/bl-collection";
+import { EmailValidation } from "@backend/collections/email-validation/email-validation";
+import { EmailValidationConfirmOperation } from "@backend/collections/email-validation/operations/email-validation-confirm.operation";
+import { SEResponseHandler } from "@backend/response/se.response.handler";
+import { BlDocumentStorage } from "@backend/storage/blDocumentStorage";
+import { BlError } from "@shared/bl-error/bl-error";
+import { BlapiResponse } from "@shared/blapi-response/blapi-response";
+import { UserDetail } from "@shared/user/user-detail/user-detail";
 import chai, { expect } from "chai";
 import chaiAsPromised from "chai-as-promised";
 import { Request, Response } from "express";
 import sinon from "sinon";
-
-import { BlCollectionName } from "@/collections/bl-collection";
-import { EmailValidation } from "@/collections/email-validation/email-validation";
-import { EmailValidationConfirmOperation } from "@/collections/email-validation/operations/email-validation-confirm.operation";
-import { SEResponseHandler } from "@/response/se.response.handler";
-import { BlDocumentStorage } from "@/storage/blDocumentStorage";
 
 chai.use(chaiAsPromised);
 

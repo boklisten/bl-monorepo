@@ -1,8 +1,7 @@
 import "mocha";
+import { SEDbQuery } from "@backend/query/se.db-query";
 import chai, { expect } from "chai";
 import chaiAsPromised from "chai-as-promised";
-
-import { SEDbQuery } from "@/query/se.db-query";
 
 chai.use(chaiAsPromised);
 

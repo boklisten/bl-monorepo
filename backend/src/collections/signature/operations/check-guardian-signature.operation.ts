@@ -1,21 +1,22 @@
-import { BlapiResponse, BlError, UserDetail } from "@boklisten/bl-model";
-import { CheckGuardianSignatureSpec } from "@boklisten/bl-model/signature/serialized-signature";
-import { ObjectId } from "mongodb";
-
-import { BlCollectionName } from "@/collections/bl-collection";
+import { BlCollectionName } from "@backend/collections/bl-collection";
 import {
   getValidUserSignature,
   isGuardianSignatureRequired,
   isUnderage,
-} from "@/collections/signature/helpers/signature.helper";
+} from "@backend/collections/signature/helpers/signature.helper";
 import {
   Signature,
   signatureSchema,
-} from "@/collections/signature/signature.schema";
-import { userDetailSchema } from "@/collections/user-detail/user-detail.schema";
-import { Operation } from "@/operation/operation";
-import { BlApiRequest } from "@/request/bl-api-request";
-import { BlDocumentStorage } from "@/storage/blDocumentStorage";
+} from "@backend/collections/signature/signature.schema";
+import { userDetailSchema } from "@backend/collections/user-detail/user-detail.schema";
+import { Operation } from "@backend/operation/operation";
+import { BlApiRequest } from "@backend/request/bl-api-request";
+import { BlDocumentStorage } from "@backend/storage/blDocumentStorage";
+import { BlError } from "@shared/bl-error/bl-error";
+import { BlapiResponse } from "@shared/blapi-response/blapi-response";
+import { CheckGuardianSignatureSpec } from "@shared/signature/serialized-signature";
+import { UserDetail } from "@shared/user/user-detail/user-detail";
+import { ObjectId } from "mongodb";
 
 export class CheckGuardianSignatureOperation implements Operation {
   private readonly _userDetailStorage: BlDocumentStorage<UserDetail>;

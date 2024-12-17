@@ -1,4 +1,5 @@
-import { BlError, UserPermission } from "@boklisten/bl-model";
+import { BlError } from "@shared/bl-error/bl-error";
+import { UserPermission } from "@shared/permission/user-permission";
 import { sign, verify } from "jsonwebtoken";
 
 export interface JwtPayload {

@@ -1,6 +1,6 @@
 import crypto from "crypto";
 
-import { BlError } from "@boklisten/bl-model";
+import { BlError } from "@shared/bl-error/bl-error";
 
 export class SeCrypto {
   public cipher(msg: string): Promise<string> {

@@ -1,11 +1,11 @@
-import { AccessToken, BlError } from "@boklisten/bl-model";
-
-import { CustomerHaveActiveCustomerItems } from "@/collections/customer-item/helpers/customer-have-active-customer-items";
-import { CustomerInvoiceActive } from "@/collections/invoice/helpers/customer-invoice-active";
-import { OrderActive } from "@/collections/order/helpers/order-active/order-active";
-import { UserCanDeleteUserDetail } from "@/collections/user-detail/helpers/user-can-delete-user-detail";
-import { UserDeleteAllInfo } from "@/collections/user-detail/helpers/user-delete-all-info";
-import { Hook } from "@/hook/hook";
+import { CustomerHaveActiveCustomerItems } from "@backend/collections/customer-item/helpers/customer-have-active-customer-items";
+import { CustomerInvoiceActive } from "@backend/collections/invoice/helpers/customer-invoice-active";
+import { OrderActive } from "@backend/collections/order/helpers/order-active/order-active";
+import { UserCanDeleteUserDetail } from "@backend/collections/user-detail/helpers/user-can-delete-user-detail";
+import { UserDeleteAllInfo } from "@backend/collections/user-detail/helpers/user-delete-all-info";
+import { Hook } from "@backend/hook/hook";
+import { BlError } from "@shared/bl-error/bl-error";
+import { AccessToken } from "@shared/token/access-token";
 
 export class UserDetailDeleteHook extends Hook {
   constructor(

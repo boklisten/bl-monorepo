@@ -1,12 +1,11 @@
 import "mocha";
-import { Message } from "@boklisten/bl-model";
+import { BlCollectionName } from "@backend/collections/bl-collection";
+import { SendgridEventOperation } from "@backend/collections/message/operations/sendgrid-event.operation";
+import { BlDocumentStorage } from "@backend/storage/blDocumentStorage";
+import { Message } from "@shared/message/message";
 import chai, { expect } from "chai";
 import chaiAsPromised from "chai-as-promised";
 import sinon from "sinon";
-
-import { BlCollectionName } from "@/collections/bl-collection";
-import { SendgridEventOperation } from "@/collections/message/operations/sendgrid-event.operation";
-import { BlDocumentStorage } from "@/storage/blDocumentStorage";
 
 chai.use(chaiAsPromised);
 

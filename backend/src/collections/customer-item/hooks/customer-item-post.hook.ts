@@ -1,18 +1,15 @@
-import {
-  AccessToken,
-  BlError,
-  CustomerItem,
-  Order,
-  UserDetail,
-} from "@boklisten/bl-model";
-
-import { BlCollectionName } from "@/collections/bl-collection";
-import { CustomerItemValidator } from "@/collections/customer-item/validators/customer-item-validator";
-import { orderSchema } from "@/collections/order/order.schema";
-import { UserDetailHelper } from "@/collections/user-detail/helpers/user-detail.helper";
-import { userDetailSchema } from "@/collections/user-detail/user-detail.schema";
-import { Hook } from "@/hook/hook";
-import { BlDocumentStorage } from "@/storage/blDocumentStorage";
+import { BlCollectionName } from "@backend/collections/bl-collection";
+import { CustomerItemValidator } from "@backend/collections/customer-item/validators/customer-item-validator";
+import { orderSchema } from "@backend/collections/order/order.schema";
+import { UserDetailHelper } from "@backend/collections/user-detail/helpers/user-detail.helper";
+import { userDetailSchema } from "@backend/collections/user-detail/user-detail.schema";
+import { Hook } from "@backend/hook/hook";
+import { BlDocumentStorage } from "@backend/storage/blDocumentStorage";
+import { BlError } from "@shared/bl-error/bl-error";
+import { CustomerItem } from "@shared/customer-item/customer-item";
+import { Order } from "@shared/order/order";
+import { AccessToken } from "@shared/token/access-token";
+import { UserDetail } from "@shared/user/user-detail/user-detail";
 
 export class CustomerItemPostHook extends Hook {
   private _customerItemValidator: CustomerItemValidator;

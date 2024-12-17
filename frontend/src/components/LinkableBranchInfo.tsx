@@ -1,19 +1,19 @@
 "use client";
-import { Branch, OpeningHour } from "@boklisten/bl-model";
+import BlFetcher from "@frontend/api/blFetcher";
+import BranchSelect from "@frontend/components/BranchSelect";
+import BranchInfo from "@frontend/components/info/BranchInfo";
+import DynamicNav from "@frontend/components/info/DynamicNav";
+import BL_CONFIG from "@frontend/utils/bl-config";
+import { infoPageTabs } from "@frontend/utils/constants";
+import { assertBlApiError } from "@frontend/utils/types";
+import { useGlobalState } from "@frontend/utils/useGlobalState";
 import { Card, Typography } from "@mui/material";
 import { Box } from "@mui/system";
+import { Branch } from "@shared/branch/branch";
+import { OpeningHour } from "@shared/opening-hour/opening-hour";
 import moment from "moment/moment";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-
-import BlFetcher from "@/api/blFetcher";
-import BranchSelect from "@/components/BranchSelect";
-import BranchInfo from "@/components/info/BranchInfo";
-import DynamicNav from "@/components/info/DynamicNav";
-import BL_CONFIG from "@/utils/bl-config";
-import { infoPageTabs } from "@/utils/constants";
-import { assertBlApiError } from "@/utils/types";
-import { useGlobalState } from "@/utils/useGlobalState";
 
 interface BranchData {
   branch: Branch | null;

@@ -1,9 +1,6 @@
 import "mocha";
-import chai, { assert, expect } from "chai";
-import chaiAsPromised from "chai-as-promised";
-import sinonChai from "sinon-chai";
 
-import { MatchFinder } from "@/collections/match/helpers/match-finder-2/match-finder";
+import { MatchFinder } from "@backend/collections/match/helpers/match-finder-2/match-finder";
 import {
   calculateNumberOfMatchesPerType,
   createFakeMatchableUser,
@@ -14,17 +11,23 @@ import {
   seededRandom,
   shuffler,
   createMatchableUsersWithIdSuffix,
-} from "@/collections/match/helpers/match-finder-2/match-testing-utils";
+} from "@backend/collections/match/helpers/match-finder-2/match-testing-utils";
 import {
   CandidateMatchVariant,
   CandidateStandMatch,
   MatchableUser,
-} from "@/collections/match/helpers/match-finder-2/match-types";
-import otto_treider_test_users_year_0 from "@/collections/match/helpers/match-finder-2/test-data/test_users_year_0.json";
-import otto_treider_test_users_year_1 from "@/collections/match/helpers/match-finder-2/test-data/test_users_year_1.json";
-import otto_treider_test_users_year_2 from "@/collections/match/helpers/match-finder-2/test-data/test_users_year_2.json";
-import ullern_test_users from "@/collections/match/helpers/match-finder-2/test-data/ullern_test_users.json";
-import { difference, intersect } from "@/collections/match/helpers/set-methods";
+} from "@backend/collections/match/helpers/match-finder-2/match-types";
+import otto_treider_test_users_year_0 from "@backend/collections/match/helpers/match-finder-2/test-data/test_users_year_0.json";
+import otto_treider_test_users_year_1 from "@backend/collections/match/helpers/match-finder-2/test-data/test_users_year_1.json";
+import otto_treider_test_users_year_2 from "@backend/collections/match/helpers/match-finder-2/test-data/test_users_year_2.json";
+import ullern_test_users from "@backend/collections/match/helpers/match-finder-2/test-data/ullern_test_users.json";
+import {
+  difference,
+  intersect,
+} from "@backend/collections/match/helpers/set-methods";
+import chai, { assert, expect } from "chai";
+import chaiAsPromised from "chai-as-promised";
+import sinonChai from "sinon-chai";
 
 chai.use(chaiAsPromised);
 chai.use(sinonChai);

@@ -1,6 +1,6 @@
-import { BlError } from "@boklisten/bl-model";
+import { isNullish } from "@backend/helper/typescript-helpers";
+import { BlError } from "@shared/bl-error/bl-error";
 
-import { isNullish } from "@/helper/typescript-helpers";
 export class OrderHookBefore {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   validate(requestJsonBody: any): Promise<boolean> {

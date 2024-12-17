@@ -1,4 +1,5 @@
 "use client";
+import DynamicLink from "@frontend/components/DynamicLink";
 import {
   Card,
   CardActionArea,
@@ -8,8 +9,6 @@ import {
   Typography,
 } from "@mui/material";
 import { Navigation, NavigationPageItem } from "@toolpad/core";
-
-import DynamicLink from "@/components/DynamicLink";
 
 export default function AdminNavigationCards({
   navLinks,

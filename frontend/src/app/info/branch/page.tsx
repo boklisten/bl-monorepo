@@ -1,6 +1,5 @@
+import LinkableBranchInfo from "@frontend/components/LinkableBranchInfo";
 import { Metadata } from "next";
-
-import LinkableBranchInfo from "@/components/LinkableBranchInfo";
 
 export const metadata: Metadata = {
   title: "Skoler og åpningstider",

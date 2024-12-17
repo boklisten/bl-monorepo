@@ -1,7 +1,6 @@
+import { User } from "@backend/collections/user/user";
+import { ToSchema } from "@backend/helper/typescript-helpers";
 import { Schema } from "mongoose";
-
-import { User } from "@/collections/user/user";
-import { ToSchema } from "@/helper/typescript-helpers";
 
 export const UserSchema = new Schema<ToSchema<User>>({
   userDetail: Schema.Types.ObjectId,

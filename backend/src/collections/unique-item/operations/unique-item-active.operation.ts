@@ -1,13 +1,14 @@
-import { UniqueItem, BlapiResponse, BlError } from "@boklisten/bl-model";
+import { BlCollectionName } from "@backend/collections/bl-collection";
+import { CustomerItemActiveBlid } from "@backend/collections/customer-item/helpers/customer-item-active-blid";
+import { uniqueItemSchema } from "@backend/collections/unique-item/unique-item.schema";
+import { Operation } from "@backend/operation/operation";
+import { BlApiRequest } from "@backend/request/bl-api-request";
+import { SEResponseHandler } from "@backend/response/se.response.handler";
+import { BlDocumentStorage } from "@backend/storage/blDocumentStorage";
+import { BlError } from "@shared/bl-error/bl-error";
+import { BlapiResponse } from "@shared/blapi-response/blapi-response";
+import { UniqueItem } from "@shared/unique-item/unique-item";
 import { NextFunction, Request, Response } from "express";
-
-import { BlCollectionName } from "@/collections/bl-collection";
-import { CustomerItemActiveBlid } from "@/collections/customer-item/helpers/customer-item-active-blid";
-import { uniqueItemSchema } from "@/collections/unique-item/unique-item.schema";
-import { Operation } from "@/operation/operation";
-import { BlApiRequest } from "@/request/bl-api-request";
-import { SEResponseHandler } from "@/response/se.response.handler";
-import { BlDocumentStorage } from "@/storage/blDocumentStorage";
 
 export class UniqueItemActiveOperation implements Operation {
   constructor(

@@ -1,12 +1,11 @@
 import "mocha";
-import { BlError, Item } from "@boklisten/bl-model";
+import { APP_CONFIG } from "@backend/application-config";
+import { BringDeliveryService } from "@backend/collections/delivery/helpers/deliveryBring/bringDelivery.service";
+import { HttpHandler } from "@backend/http/http.handler";
+import { BlError } from "@shared/bl-error/bl-error";
 import chai from "chai";
 import chaiAsPromised from "chai-as-promised";
 import sinon from "sinon";
-
-import { APP_CONFIG } from "@/application-config";
-import { BringDeliveryService } from "@/collections/delivery/helpers/deliveryBring/bringDelivery.service";
-import { HttpHandler } from "@/http/http.handler";
 
 chai.use(chaiAsPromised);
 

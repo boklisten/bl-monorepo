@@ -1,17 +1,16 @@
-import { BlError } from "@boklisten/bl-model";
+import { BooleanFilter } from "@backend/query/boolean-filter/db-query-boolean-filter";
+import { DateFilter } from "@backend/query/date-filter/db-query-date-filter";
+import { ExpandFilter } from "@backend/query/expand-filter/db-query-expand-filter";
+import { LimitFilter } from "@backend/query/limit-filter/db-query-limit-filter";
+import { NumberFilter } from "@backend/query/number-filter/db-query-number-filter";
+import { ObjectIdFilter } from "@backend/query/object-id-filter/db-query-object-id-filter";
+import { OnlyGetFilter } from "@backend/query/only-get-filter/db-query-only-get-filter";
+import { RegexFilter } from "@backend/query/regex-filter/db-query-regex-filter";
+import { SkipFilter } from "@backend/query/skip-filter/db-query-skip-filter";
+import { SortFilter } from "@backend/query/sort-filter/db-query-sort-filter";
+import { StringFilter } from "@backend/query/string-filter/db-query-string-filter";
+import { BlError } from "@shared/bl-error/bl-error";
 import { ObjectId } from "mongodb";
-
-import { BooleanFilter } from "@/query/boolean-filter/db-query-boolean-filter";
-import { DateFilter } from "@/query/date-filter/db-query-date-filter";
-import { ExpandFilter } from "@/query/expand-filter/db-query-expand-filter";
-import { LimitFilter } from "@/query/limit-filter/db-query-limit-filter";
-import { NumberFilter } from "@/query/number-filter/db-query-number-filter";
-import { ObjectIdFilter } from "@/query/object-id-filter/db-query-object-id-filter";
-import { OnlyGetFilter } from "@/query/only-get-filter/db-query-only-get-filter";
-import { RegexFilter } from "@/query/regex-filter/db-query-regex-filter";
-import { SkipFilter } from "@/query/skip-filter/db-query-skip-filter";
-import { SortFilter } from "@/query/sort-filter/db-query-sort-filter";
-import { StringFilter } from "@/query/string-filter/db-query-string-filter";
 
 export class SEDbQuery {
   booleanFilters: BooleanFilter[];

@@ -1,16 +1,17 @@
-import { BlError, PendingPasswordReset } from "@boklisten/bl-model";
+import { LocalLoginHandler } from "@backend/auth/local/local-login.handler";
+import { BlCollectionName } from "@backend/collections/bl-collection";
+import { ConfirmPendingPasswordResetOperation } from "@backend/collections/pending-password-reset/operations/confirm-pending-password-reset.operation";
+import { SeCrypto } from "@backend/crypto/se.crypto";
+import { BlApiRequest } from "@backend/request/bl-api-request";
+import { SEResponseHandler } from "@backend/response/se.response.handler";
+import { BlDocumentStorage } from "@backend/storage/blDocumentStorage";
+import { BlError } from "@shared/bl-error/bl-error";
+import { PendingPasswordReset } from "@shared/password-reset/pending-password-reset";
 import chai, { expect } from "chai";
 import chaiAsPromised from "chai-as-promised";
-import "mocha";
 import sinon from "sinon";
 
-import { LocalLoginHandler } from "@/auth/local/local-login.handler";
-import { BlCollectionName } from "@/collections/bl-collection";
-import { ConfirmPendingPasswordResetOperation } from "@/collections/pending-password-reset/operations/confirm-pending-password-reset.operation";
-import { SeCrypto } from "@/crypto/se.crypto";
-import { BlApiRequest } from "@/request/bl-api-request";
-import { SEResponseHandler } from "@/response/se.response.handler";
-import { BlDocumentStorage } from "@/storage/blDocumentStorage";
+import "mocha";
 
 chai.use(chaiAsPromised);
 

@@ -1,12 +1,14 @@
-import { Delivery, Order, BlError, AccessToken } from "@boklisten/bl-model";
-
-import { BlCollectionName } from "@/collections/bl-collection";
-import { deliverySchema } from "@/collections/delivery/delivery.schema";
-import { DeliveryHandler } from "@/collections/delivery/helpers/deliveryHandler/delivery-handler";
-import { DeliveryValidator } from "@/collections/delivery/helpers/deliveryValidator/delivery-validator";
-import { orderSchema } from "@/collections/order/order.schema";
-import { Hook } from "@/hook/hook";
-import { BlDocumentStorage } from "@/storage/blDocumentStorage";
+import { BlCollectionName } from "@backend/collections/bl-collection";
+import { deliverySchema } from "@backend/collections/delivery/delivery.schema";
+import { DeliveryHandler } from "@backend/collections/delivery/helpers/deliveryHandler/delivery-handler";
+import { DeliveryValidator } from "@backend/collections/delivery/helpers/deliveryValidator/delivery-validator";
+import { orderSchema } from "@backend/collections/order/order.schema";
+import { Hook } from "@backend/hook/hook";
+import { BlDocumentStorage } from "@backend/storage/blDocumentStorage";
+import { BlError } from "@shared/bl-error/bl-error";
+import { Delivery } from "@shared/delivery/delivery";
+import { Order } from "@shared/order/order";
+import { AccessToken } from "@shared/token/access-token";
 
 export class DeliveryPatchHook extends Hook {
   private deliveryValidator?: DeliveryValidator;

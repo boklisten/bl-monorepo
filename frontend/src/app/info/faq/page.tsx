@@ -1,10 +1,9 @@
+import DynamicNav from "@frontend/components/info/DynamicNav";
+import EditableQNA from "@frontend/components/info/EditableQna";
+import { infoPageTabs } from "@frontend/utils/constants";
+import { QNAs } from "@frontend/utils/mockData";
 import { Card } from "@mui/material";
 import { Metadata } from "next";
-
-import DynamicNav from "@/components/info/DynamicNav";
-import EditableQNA from "@/components/info/EditableQna";
-import { infoPageTabs } from "@/utils/constants";
-import { QNAs } from "@/utils/mockData";
 
 export const metadata: Metadata = {
   title: "Spørsmål og svar",

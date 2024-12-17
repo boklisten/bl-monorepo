@@ -1,7 +1,7 @@
 import { IncomingHttpHeaders } from "http";
 
-import { APP_CONFIG } from "@/application-config";
-import { BlEnvironment, assertEnv } from "@/config/environment";
+import { APP_CONFIG } from "@backend/application-config";
+import { BlEnvironment, assertEnv } from "@backend/config/environment";
 
 export class ApiPath {
   private readonly baseHost: string;

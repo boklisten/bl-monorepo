@@ -1,8 +1,7 @@
+import PasswordReset from "@frontend/components/user/PasswordReset";
 import { Card, Container, Typography } from "@mui/material";
 import { Box } from "@mui/system";
 import { Metadata } from "next";
-
-import PasswordReset from "@/components/user/PasswordReset";
 
 export const metadata: Metadata = {
   title: "Lag nytt passord",

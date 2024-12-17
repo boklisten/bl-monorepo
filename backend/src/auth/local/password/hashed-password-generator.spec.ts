@@ -1,11 +1,10 @@
 import "mocha";
-import { BlError } from "@boklisten/bl-model";
+import { HashedPasswordGenerator } from "@backend/auth/local/password/hashed-password-generator";
+import { SaltGenerator } from "@backend/auth/local/salt/salt-generator";
+import { SeCrypto } from "@backend/crypto/se.crypto";
+import { BlError } from "@shared/bl-error/bl-error";
 import chai from "chai";
 import chaiAsPromised from "chai-as-promised";
-
-import { HashedPasswordGenerator } from "@/auth/local/password/hashed-password-generator";
-import { SaltGenerator } from "@/auth/local/salt/salt-generator";
-import { SeCrypto } from "@/crypto/se.crypto";
 
 chai.use(chaiAsPromised);
 

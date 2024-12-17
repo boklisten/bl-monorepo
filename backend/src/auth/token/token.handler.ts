@@ -1,13 +1,12 @@
-import { BlError } from "@boklisten/bl-model";
-
-import { APP_CONFIG } from "@/application-config";
-import { AccessToken } from "@/auth/token/access-token/access-token";
-import { AccessTokenCreator } from "@/auth/token/access-token/access-token.creator";
-import { RefreshToken } from "@/auth/token/refresh/refresh-token";
-import { RefreshTokenCreator } from "@/auth/token/refresh/refresh-token.creator";
-import { TokenConfig } from "@/auth/token/token.config";
-import { UserHandler } from "@/auth/user/user.handler";
-import { User } from "@/collections/user/user";
+import { APP_CONFIG } from "@backend/application-config";
+import { AccessToken } from "@backend/auth/token/access-token/access-token";
+import { AccessTokenCreator } from "@backend/auth/token/access-token/access-token.creator";
+import { RefreshToken } from "@backend/auth/token/refresh/refresh-token";
+import { RefreshTokenCreator } from "@backend/auth/token/refresh/refresh-token.creator";
+import { TokenConfig } from "@backend/auth/token/token.config";
+import { UserHandler } from "@backend/auth/user/user.handler";
+import { User } from "@backend/collections/user/user";
+import { BlError } from "@shared/bl-error/bl-error";
 
 export class TokenHandler {
   private refreshTokenCreator: RefreshTokenCreator;

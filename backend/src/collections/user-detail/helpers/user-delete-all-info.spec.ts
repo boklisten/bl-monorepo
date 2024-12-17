@@ -1,14 +1,16 @@
 import "mocha";
-import { BlError, AccessToken, UserDetail } from "@boklisten/bl-model";
+
+import { BlCollectionName } from "@backend/collections/bl-collection";
+import { LocalLogin } from "@backend/collections/local-login/local-login";
+import { User } from "@backend/collections/user/user";
+import { UserDeleteAllInfo } from "@backend/collections/user-detail/helpers/user-delete-all-info";
+import { BlDocumentStorage } from "@backend/storage/blDocumentStorage";
+import { BlError } from "@shared/bl-error/bl-error";
+import { AccessToken } from "@shared/token/access-token";
+import { UserDetail } from "@shared/user/user-detail/user-detail";
 import chai, { expect } from "chai";
 import chaiAsPromised from "chai-as-promised";
 import sinon from "sinon";
-
-import { BlCollectionName } from "@/collections/bl-collection";
-import { LocalLogin } from "@/collections/local-login/local-login";
-import { User } from "@/collections/user/user";
-import { UserDeleteAllInfo } from "@/collections/user-detail/helpers/user-delete-all-info";
-import { BlDocumentStorage } from "@/storage/blDocumentStorage";
 chai.use(chaiAsPromised);
 
 describe("UserDeleteAllInfo", () => {

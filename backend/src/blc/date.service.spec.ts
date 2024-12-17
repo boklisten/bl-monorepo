@@ -1,8 +1,7 @@
+import { dateService } from "@backend/blc/date.service";
 import chai, { expect } from "chai";
 import chaiAsPromised from "chai-as-promised";
 import moment from "moment-timezone";
-
-import { dateService } from "@/blc/date.service";
 
 chai.use(chaiAsPromised);
 

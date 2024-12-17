@@ -1,19 +1,15 @@
-import {
-  BlapiResponse,
-  BlError,
-  Match,
-  MatchVariant,
-  UserDetail,
-} from "@boklisten/bl-model";
-
-import { BlCollectionName } from "@/collections/bl-collection";
-import { difference } from "@/collections/match/helpers/set-methods";
-import { matchSchema } from "@/collections/match/match.schema";
-import { userDetailSchema } from "@/collections/user-detail/user-detail.schema";
-import { sendSMS } from "@/messenger/sms/sms-service";
-import { Operation } from "@/operation/operation";
-import { BlApiRequest } from "@/request/bl-api-request";
-import { BlDocumentStorage } from "@/storage/blDocumentStorage";
+import { BlCollectionName } from "@backend/collections/bl-collection";
+import { difference } from "@backend/collections/match/helpers/set-methods";
+import { matchSchema } from "@backend/collections/match/match.schema";
+import { userDetailSchema } from "@backend/collections/user-detail/user-detail.schema";
+import { sendSMS } from "@backend/messenger/sms/sms-service";
+import { Operation } from "@backend/operation/operation";
+import { BlApiRequest } from "@backend/request/bl-api-request";
+import { BlDocumentStorage } from "@backend/storage/blDocumentStorage";
+import { BlError } from "@shared/bl-error/bl-error";
+import { BlapiResponse } from "@shared/blapi-response/blapi-response";
+import { Match, MatchVariant } from "@shared/match/match";
+import { UserDetail } from "@shared/user/user-detail/user-detail";
 
 export interface MatchNotifySpec {
   target: "senders" | "receivers" | "stand-only" | "all";

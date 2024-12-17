@@ -1,11 +1,9 @@
-import { BlError } from "@boklisten/bl-model";
-
 import {
   MatchableUser,
   CandidateMatch,
   CandidateStandMatch,
   CandidateMatchVariant,
-} from "@/collections/match/helpers/match-finder-2/match-types";
+} from "@backend/collections/match/helpers/match-finder-2/match-types";
 import {
   calculateItemImbalances,
   calculateUnmatchableItems,
@@ -20,13 +18,14 @@ import {
   tryFindPartialMatch,
   tryFindTwoWayMatch,
   updateItemImbalances,
-} from "@/collections/match/helpers/match-finder-2/match-utils";
+} from "@backend/collections/match/helpers/match-finder-2/match-utils";
 import {
   difference,
   hasDifference,
   intersect,
   union,
-} from "@/collections/match/helpers/set-methods";
+} from "@backend/collections/match/helpers/set-methods";
+import { BlError } from "@shared/bl-error/bl-error";
 
 export class MatchFinder {
   public senders: MatchableUser[];

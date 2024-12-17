@@ -1,7 +1,6 @@
-import { CustomerItem } from "@boklisten/bl-model";
+import { ToSchema } from "@backend/helper/typescript-helpers";
+import { CustomerItem } from "@shared/customer-item/customer-item";
 import { Schema } from "mongoose";
-
-import { ToSchema } from "@/helper/typescript-helpers";
 
 export const customerItemSchema = new Schema<ToSchema<CustomerItem>>({
   item: {

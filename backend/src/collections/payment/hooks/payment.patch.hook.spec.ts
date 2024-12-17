@@ -1,14 +1,16 @@
 import "mocha";
-import { AccessToken, BlError, Payment } from "@boklisten/bl-model";
+
+import { BlCollectionName } from "@backend/collections/bl-collection";
+import { PaymentDibsHandler } from "@backend/collections/payment/helpers/dibs/payment-dibs-handler";
+import { PaymentValidator } from "@backend/collections/payment/helpers/payment.validator";
+import { PaymentPatchHook } from "@backend/collections/payment/hooks/payment.patch.hook";
+import { BlDocumentStorage } from "@backend/storage/blDocumentStorage";
+import { BlError } from "@shared/bl-error/bl-error";
+import { Payment } from "@shared/payment/payment";
+import { AccessToken } from "@shared/token/access-token";
 import chai, { expect } from "chai";
 import chaiAsPromised from "chai-as-promised";
 import sinon from "sinon";
-
-import { BlCollectionName } from "@/collections/bl-collection";
-import { PaymentDibsHandler } from "@/collections/payment/helpers/dibs/payment-dibs-handler";
-import { PaymentValidator } from "@/collections/payment/helpers/payment.validator";
-import { PaymentPatchHook } from "@/collections/payment/hooks/payment.patch.hook";
-import { BlDocumentStorage } from "@/storage/blDocumentStorage";
 
 chai.use(chaiAsPromised);
 

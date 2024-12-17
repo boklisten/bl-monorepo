@@ -1,12 +1,12 @@
-import { BlError, UserDetail } from "@boklisten/bl-model";
-
-import { SystemUser } from "@/auth/permission/permission.service";
-import { BlCollectionName } from "@/collections/bl-collection";
-import { EmailValidation } from "@/collections/email-validation/email-validation";
-import { emailValidationSchema } from "@/collections/email-validation/email-validation.schema";
-import { userDetailSchema } from "@/collections/user-detail/user-detail.schema";
-import { Messenger } from "@/messenger/messenger";
-import { BlDocumentStorage } from "@/storage/blDocumentStorage";
+import { SystemUser } from "@backend/auth/permission/permission.service";
+import { BlCollectionName } from "@backend/collections/bl-collection";
+import { EmailValidation } from "@backend/collections/email-validation/email-validation";
+import { emailValidationSchema } from "@backend/collections/email-validation/email-validation.schema";
+import { userDetailSchema } from "@backend/collections/user-detail/user-detail.schema";
+import { Messenger } from "@backend/messenger/messenger";
+import { BlDocumentStorage } from "@backend/storage/blDocumentStorage";
+import { BlError } from "@shared/bl-error/bl-error";
+import { UserDetail } from "@shared/user/user-detail/user-detail";
 
 export class EmailValidationHelper {
   private readonly _messenger: Messenger;

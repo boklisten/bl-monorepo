@@ -1,23 +1,21 @@
 import "mocha";
-import {
-  BlError,
-  Order,
-  CustomerItem,
-  Payment,
-  AccessToken,
-  UserDetail,
-} from "@boklisten/bl-model";
+
+import { BlCollectionName } from "@backend/collections/bl-collection";
+import { CustomerItemHandler } from "@backend/collections/customer-item/helpers/customer-item-handler";
+import { OrderItemMovedFromOrderHandler } from "@backend/collections/order/helpers/order-item-moved-from-order-handler/order-item-moved-from-order-handler";
+import { OrderPlacedHandler } from "@backend/collections/order/helpers/order-placed-handler/order-placed-handler";
+import { PaymentHandler } from "@backend/collections/payment/helpers/payment-handler";
+import { Messenger } from "@backend/messenger/messenger";
+import { BlDocumentStorage } from "@backend/storage/blDocumentStorage";
+import { BlError } from "@shared/bl-error/bl-error";
+import { CustomerItem } from "@shared/customer-item/customer-item";
+import { Order } from "@shared/order/order";
+import { Payment } from "@shared/payment/payment";
+import { AccessToken } from "@shared/token/access-token";
+import { UserDetail } from "@shared/user/user-detail/user-detail";
 import chai, { expect } from "chai";
 import chaiAsPromised from "chai-as-promised";
 import sinon from "sinon";
-
-import { BlCollectionName } from "@/collections/bl-collection";
-import { CustomerItemHandler } from "@/collections/customer-item/helpers/customer-item-handler";
-import { OrderItemMovedFromOrderHandler } from "@/collections/order/helpers/order-item-moved-from-order-handler/order-item-moved-from-order-handler";
-import { OrderPlacedHandler } from "@/collections/order/helpers/order-placed-handler/order-placed-handler";
-import { PaymentHandler } from "@/collections/payment/helpers/payment-handler";
-import { Messenger } from "@/messenger/messenger";
-import { BlDocumentStorage } from "@/storage/blDocumentStorage";
 
 chai.use(chaiAsPromised);
 

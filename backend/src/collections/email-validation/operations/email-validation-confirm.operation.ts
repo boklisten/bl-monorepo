@@ -39,7 +39,7 @@ export class EmailValidationConfirmOperation implements Operation {
     blApiRequest: BlApiRequest,
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
-    req?: Request,
+    request?: Request,
     res?: Response,
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
@@ -70,14 +70,14 @@ export class EmailValidationConfirmOperation implements Operation {
               resolve(true);
             })
             .catch((updateUserDetailError: BlError) => {
-              const err = new BlError(
+              const error = new BlError(
                 `could not update userDetail "${emailValidation.id}" with emailConfirmed true`,
               ).add(updateUserDetailError);
 
               // eslint-disable-next-line @typescript-eslint/ban-ts-comment
               // @ts-ignore
-              this._resHandler.sendErrorResponse(res, err);
-              reject(err);
+              this._resHandler.sendErrorResponse(res, error);
+              reject(error);
             });
         })
         .catch((getEmailValidationError: BlError) => {

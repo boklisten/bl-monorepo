@@ -1,4 +1,4 @@
-export class PasswordResetConfirmationRequest {
+export interface PasswordResetConfirmationRequest {
   resetToken: string;
   newPassword: string;
 }

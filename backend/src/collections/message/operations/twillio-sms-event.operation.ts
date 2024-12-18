@@ -26,7 +26,7 @@ export class TwilioSmsEventOperation implements Operation {
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    req?: Request,
+    request?: Request,
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -78,13 +78,13 @@ export class TwilioSmsEventOperation implements Operation {
     try {
       const message = await this._messageStorage.get(blMessageId);
       await this.updateMessageWithTwilioSmsEvent(message, twilioEvent);
-    } catch (e) {
-      logger.warn(`could not update sendgrid event ${e}`);
+    } catch (error) {
+      logger.warn(`could not update sendgrid event ${error}`);
       // if we dont find the message, there is no worries in not handling it
       // this is just for logging anyway, and we can handle some losses
       return true;
     }
-    return undefined;
+    return;
   }
 
   private async updateMessageWithTwilioSmsEvent(

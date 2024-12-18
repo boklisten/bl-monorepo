@@ -108,17 +108,17 @@ export class OrderEmailHandler {
 
     return await this._emailHandler
       .sendOrderReceipt(emailSetting, emailOrder, emailUser, withAgreement)
-      .catch((e) => {
+      .catch((error) => {
         throw new BlError("Unable to send order receipt email")
           .code(200)
-          .add(e);
+          .add(error);
       });
   }
 
   private paymentNeeded(order: Order): boolean {
     return (
       order.amount > 0 &&
-      (!Array.isArray(order.payments) || !order.payments.length)
+      (!Array.isArray(order.payments) || order.payments.length === 0)
     );
   }
 
@@ -219,8 +219,8 @@ export class OrderEmailHandler {
     try {
       emailOrderDelivery = await this.extractEmailOrderDeliveryFromOrder(order);
       emailOrderPayment = await this.extractEmailOrderPaymentFromOrder(order);
-    } catch (e) {
-      throw new BlError("could not create email based on order" + e);
+    } catch (error) {
+      throw new BlError("could not create email based on order" + error);
     }
 
     emailOrder.showDelivery = emailOrderDelivery.showDelivery;
@@ -234,7 +234,7 @@ export class OrderEmailHandler {
     emailOrder.showPayment = emailOrderPayment.showPayment;
     emailOrder.payment = emailOrderPayment.payment;
 
-    return Promise.resolve(emailOrder);
+    return emailOrder;
   }
 
   private shouldShowDeadline(order: Order) {
@@ -246,7 +246,7 @@ export class OrderEmailHandler {
   private extractEmailOrderPaymentFromOrder(
     order: Order,
   ): Promise<{ payment: unknown; showPayment: boolean }> {
-    if (!Array.isArray(order.payments) || !order.payments.length) {
+    if (!Array.isArray(order.payments) || order.payments.length === 0) {
       return Promise.resolve({ payment: null, showPayment: false });
     }
 
@@ -305,12 +305,12 @@ export class OrderEmailHandler {
     return this._deliveryStorage
       .get(deliveryId)
       .then((delivery: Delivery) => {
-        return delivery.method !== "bring"
-          ? { delivery: null, showDelivery: false }
-          : {
+        return delivery.method === "bring"
+          ? {
               delivery: this.deliveryToEmailDelivery(delivery),
               showDelivery: true,
-            };
+            }
+          : { delivery: null, showDelivery: false };
       })
       .catch((getDeliveryError: BlError) => {
         throw getDeliveryError;
@@ -322,17 +322,17 @@ export class OrderEmailHandler {
       return null;
     }
 
-    const paymentObj = {
+    const paymentObject = {
       method: "",
       amount: "",
       cardInfo: null,
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore
-      taxAmount: !isNaN(payment.taxAmount)
+      taxAmount: isNaN(payment.taxAmount)
         ? // eslint-disable-next-line @typescript-eslint/ban-ts-comment
           // @ts-ignore
-          payment.taxAmount.toString()
-        : null,
+          null
+        : payment.taxAmount?.toString(),
       paymentId: "",
       status: this.translatePaymentConfirmed(),
       creationTime: payment.creationTime
@@ -346,46 +346,48 @@ export class OrderEmailHandler {
 
     if (payment.method === "dibs") {
       if (payment.info) {
-        const paymentInfo: DibsEasyPayment = payment.info as DibsEasyPayment;
+        // fixme baaaad type conversion
+        const paymentInfo: DibsEasyPayment =
+          payment.info as unknown as DibsEasyPayment;
         if (paymentInfo.paymentDetails) {
           if (paymentInfo.paymentDetails.paymentMethod) {
-            paymentObj.method = paymentInfo.paymentDetails.paymentMethod;
+            paymentObject.method = paymentInfo.paymentDetails.paymentMethod;
           }
 
           if (paymentInfo.paymentDetails.cardDetails?.maskedPan) {
             // eslint-disable-next-line @typescript-eslint/ban-ts-comment
             // @ts-ignore
-            paymentObj.cardInfo = `***${this.stripTo4LastDigits(
+            paymentObject.cardInfo = `***${this.stripTo4LastDigits(
               paymentInfo.paymentDetails.cardDetails.maskedPan,
             )}`;
           }
         }
 
         if (paymentInfo.orderDetails?.amount) {
-          paymentObj.amount = (
-            parseInt(paymentInfo.orderDetails.amount.toString()) / 100
+          paymentObject.amount = (
+            Number.parseInt(paymentInfo.orderDetails.amount.toString()) / 100
           ).toString();
         }
 
         if (paymentInfo.paymentId) {
-          paymentObj.paymentId = paymentInfo.paymentId;
+          paymentObject.paymentId = paymentInfo.paymentId;
         }
       }
     } else {
       if (payment.method) {
-        paymentObj.method = payment.method;
+        paymentObject.method = payment.method;
       }
 
       if (payment.amount) {
-        paymentObj.amount = payment.amount.toString();
+        paymentObject.amount = payment.amount.toString();
       }
 
       if (payment.id) {
-        paymentObj.paymentId = payment.id;
+        paymentObject.paymentId = payment.id;
       }
     }
 
-    return paymentObj;
+    return paymentObject;
   }
 
   private deliveryToEmailDelivery(delivery: Delivery) {
@@ -437,8 +439,10 @@ export class OrderEmailHandler {
     }));
   }
 
-  private stripTo4LastDigits(cardNum: string) {
-    return cardNum && cardNum.length > 4 ? cardNum.slice(-4) : cardNum;
+  private stripTo4LastDigits(cardNumber: string) {
+    return cardNumber && cardNumber.length > 4
+      ? cardNumber.slice(-4)
+      : cardNumber;
   }
 
   private translatePaymentConfirmed(): string {
@@ -483,23 +487,21 @@ export class OrderEmailHandler {
     );
 
     if (onlyHandout) {
-      return Promise.resolve(false);
+      return false;
     }
 
     if (!rentFound) {
-      return Promise.resolve(false);
+      return false;
     }
 
-    if (customerDetail.dob) {
-      if (moment(customerDetail.dob).isValid()) {
-        if (
-          moment(customerDetail.dob).isAfter(
-            moment(new Date()).subtract(18, "years"),
-          )
-        ) {
-          return Promise.resolve(true); // the user is under the age of 18
-        }
-      }
+    if (
+      customerDetail.dob &&
+      moment(customerDetail.dob).isValid() &&
+      moment(customerDetail.dob).isAfter(
+        moment(new Date()).subtract(18, "years"),
+      )
+    ) {
+      return true; // the user is under the age of 18
     }
 
     return await this.isBranchResponsible(branchId);

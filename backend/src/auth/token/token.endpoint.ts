@@ -22,9 +22,9 @@ export class TokenEndpoint {
   }
 
   createPostEndpoint() {
-    this.router.post(this.apiPath.createPath("token"), (req, res) => {
-      if (req.body && req.body["refreshToken"]) {
-        this.refreshTokenValidator.validate(req.body["refreshToken"]).then(
+    this.router.post(this.apiPath.createPath("token"), (request, res) => {
+      if (request.body && request.body["refreshToken"]) {
+        this.refreshTokenValidator.validate(request.body["refreshToken"]).then(
           // eslint-disable-next-line @typescript-eslint/ban-ts-comment
           // @ts-ignore
           (refreshToken: RefreshToken) => {
@@ -42,7 +42,7 @@ export class TokenEndpoint {
                 this.resHandler.sendErrorResponse(
                   res,
                   new BlError("could not create tokens")
-                    .store("oldRefreshToken", req.body["refreshToken"])
+                    .store("oldRefreshToken", request.body["refreshToken"])
                     .code(906)
                     .add(createTokenError),
                 );

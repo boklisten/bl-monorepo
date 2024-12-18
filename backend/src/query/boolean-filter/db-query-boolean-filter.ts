@@ -25,20 +25,20 @@ export class DbQueryBooleanFilter {
   ): BooleanFilter[] {
     const booleanFilters: BooleanFilter[] = [];
 
-    for (const param in query) {
-      if (validBooleanParams.indexOf(param) > -1) {
+    for (const parameter in query) {
+      if (validBooleanParams.includes(parameter)) {
         let value = false;
-        if (query[param] === "true") {
+        if (query[parameter] === "true") {
           value = true;
-        } else if (query[param] === "false") {
+        } else if (query[parameter] === "false") {
           value = false;
         } else {
           throw new TypeError(
-            'value "' + query[param] + '" could not be parsed to boolean',
+            'value "' + query[parameter] + '" could not be parsed to boolean',
           );
         }
 
-        booleanFilters.push({ fieldName: param, value: value });
+        booleanFilters.push({ fieldName: parameter, value: value });
       }
     }
 

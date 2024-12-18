@@ -1,3 +1,3 @@
-export class PasswordResetRequest {
+export interface PasswordResetRequest {
   email: string;
 }

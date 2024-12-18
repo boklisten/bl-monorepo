@@ -1,11 +1,11 @@
-import crypto from "crypto";
+import crypto from "node:crypto";
 
 import { BlError } from "@shared/bl-error/bl-error";
 
 export class SeCrypto {
-  public cipher(msg: string): Promise<string> {
+  public cipher(message: string): Promise<string> {
     return new Promise((resolve, reject) => {
-      if (msg.length <= 0)
+      if (message.length <= 0)
         reject(
           new BlError("msg to short")
             .className("SeCrypto")
@@ -15,16 +15,16 @@ export class SeCrypto {
       const key = crypto.randomBytes(32);
       const iv = crypto.randomBytes(16);
       const cipher = crypto.createCipheriv("aes-256-cbc", Buffer.from(key), iv);
-      const encrypted = cipher.update(msg);
+      const encrypted = cipher.update(message);
       resolve(Buffer.concat([encrypted, cipher.final()]).toString("hex"));
     });
   }
 
-  public hash(msg: string, salt: string): Promise<string> {
+  public hash(message: string, salt: string): Promise<string> {
     return new Promise((resolve, reject) => {
       const blError = new BlError("").className("SeCrypto").methodName("hash");
 
-      if (!msg || msg.length <= 0)
+      if (!message || message.length <= 0)
         return reject(blError.msg("msg is empty or undefined"));
       if (!salt || salt.length <= 0)
         return reject(blError.msg("salt is empty or undefined"));
@@ -40,7 +40,7 @@ export class SeCrypto {
         return reject(blError.msg("could not hash the provided message"));
       });
 
-      cryptoHash.write(msg + salt);
+      cryptoHash.write(message + salt);
 
       cryptoHash.end();
     });

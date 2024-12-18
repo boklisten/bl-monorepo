@@ -40,18 +40,17 @@ export class OpeningHourHelper {
     let firstAvailableOpeningHour;
 
     for (const openingHour of openingHours) {
-      if (moment(openingHour.from).isAfter(moment())) {
-        if (
-          !firstAvailableOpeningHour ||
-          moment(openingHour.from).isBefore(firstAvailableOpeningHour.from)
-        ) {
-          if (after) {
-            if (moment(openingHour.from).isAfter(after)) {
-              firstAvailableOpeningHour = openingHour;
-            }
-          } else {
+      if (
+        moment(openingHour.from).isAfter(moment()) &&
+        (!firstAvailableOpeningHour ||
+          moment(openingHour.from).isBefore(firstAvailableOpeningHour.from))
+      ) {
+        if (after) {
+          if (moment(openingHour.from).isAfter(after)) {
             firstAvailableOpeningHour = openingHour;
           }
+        } else {
+          firstAvailableOpeningHour = openingHour;
         }
       }
     }

@@ -1,6 +1,6 @@
 import { Hook } from "@backend/hook/hook";
 import { Operation } from "@backend/operation/operation";
-import { ValidParam } from "@backend/query/valid-param/db-query-valid-params";
+import { ValidParameter } from "@backend/query/valid-param/db-query-valid-params";
 import { NestedDocument } from "@backend/storage/nested-document";
 import { UserPermission } from "@shared/permission/user-permission";
 import { Schema } from "mongoose";
@@ -59,7 +59,7 @@ export type BlEndpointMethod =
 export interface BlEndpoint {
   method: BlEndpointMethod;
   hook?: Hook; //an optional hook for this endpoint
-  validQueryParams?: ValidParam[];
+  validQueryParams?: ValidParameter[];
   nestedDocuments?: NestedDocument[]; // what nested documents should be retrieved at request
   restriction?: BlEndpointRestriction; //this endpoint is only accessible to the user that created it
   operations?: BlEndpointOperation[];

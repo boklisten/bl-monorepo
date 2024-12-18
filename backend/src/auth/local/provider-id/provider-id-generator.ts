@@ -1,4 +1,4 @@
-import crypto from "crypto";
+import crypto from "node:crypto";
 
 import { SeCrypto } from "@backend/crypto/se.crypto";
 import { BlError } from "@shared/bl-error/bl-error";
@@ -18,8 +18,8 @@ export class ProviderIdGenerator {
           reject(blError.msg("could not generate random bytes").data(error));
 
         this.seCrypto.hash(username, buffer.toString("hex")).then(
-          (hashedMsg: string) => {
-            resolve(hashedMsg);
+          (hashedMessage: string) => {
+            resolve(hashedMessage);
           },
           (error: BlError) => {
             reject(

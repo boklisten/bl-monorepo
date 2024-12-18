@@ -1,9 +1,9 @@
-import { Period } from "../../period/period";
+import { Period } from "@shared/period/period";
 
-export type OrderItemExtendInfo = {
+export interface OrderItemExtendInfo {
   from: Date;
   to: Date;
   numberOfPeriods: 1;
   periodType: Period;
   customerItem: string; // the id of the customer item
-};
+}

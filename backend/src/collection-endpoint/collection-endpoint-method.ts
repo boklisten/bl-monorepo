@@ -44,28 +44,35 @@ export abstract class CollectionEndpointMethod<T extends BlDocument> {
 
   public create() {
     switch (this._endpoint.method) {
-      case "getAll":
+      case "getAll": {
         this.routerGetAll();
         break;
-      case "getId":
+      }
+      case "getId": {
         this.routerGetId();
         break;
-      case "post":
+      }
+      case "post": {
         this.routerPost();
         break;
-      case "patch":
+      }
+      case "patch": {
         this.routerPatch();
         break;
-      case "delete":
+      }
+      case "delete": {
         this.routerDelete();
         break;
-      case "put":
+      }
+      case "put": {
         this.routerPut();
         break;
-      default:
+      }
+      default: {
         throw new BlError(
           `the endpoint "${this._endpoint.method}" is not supported`,
         );
+      }
     }
 
     this.createOperations(this._endpoint);
@@ -91,14 +98,14 @@ export abstract class CollectionEndpointMethod<T extends BlDocument> {
     }
   }
 
-  private handleRequest(req: Request, res: Response, next: NextFunction) {
+  private handleRequest(request: Request, res: Response, next: NextFunction) {
     let userAccessToken: AccessToken;
     let blApiRequest: BlApiRequest;
 
     this._collectionEndpointAuth
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore
-      .authenticate(this._endpoint.restriction, req, res, next)
+      .authenticate(this._endpoint.restriction, request, res, next)
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore
       .then((accessToken?: AccessToken) => {
@@ -108,25 +115,25 @@ export abstract class CollectionEndpointMethod<T extends BlDocument> {
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore
         return this._endpoint.hook.before(
-          req.body,
+          request.body,
           accessToken,
           // eslint-disable-next-line @typescript-eslint/ban-ts-comment
           // @ts-ignore
-          req.params.id,
-          req.query,
+          request.params.id,
+          request.query,
         );
       })
       .then((hookData?: unknown) => {
         // this is the endpoint specific request handler
-        let data = req.body;
+        let data = request.body;
 
         if (isNotNullish(hookData) && !isBoolean(hookData)) {
           data = hookData;
         }
 
         blApiRequest = {
-          documentId: req.params["id"],
-          query: req.query,
+          documentId: request.params["id"],
+          query: request.query,
           data: data,
           user: {
             id: userAccessToken.sub,

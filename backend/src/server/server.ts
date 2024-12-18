@@ -26,7 +26,7 @@ export class Server {
     logger.silly("| |__ | | __ _ _ __ (_)");
     logger.silly("| '_ \\| |/ _` | '_ \\| |");
     logger.silly("| |_) | | (_| | |_) | |");
-    logger.silly("|_.__/|_|\\__,_| .__/|_|");
+    logger.silly(String.raw`|_.__/|_|\__,_| .__/|_|`);
     logger.silly("               |_|");
 
     this.initialServerConfig();
@@ -53,8 +53,8 @@ export class Server {
 
     await mongoose.connect(mongoUri, {
       maxPoolSize: 10,
-      connectTimeoutMS: 10000,
-      socketTimeoutMS: 45000,
+      connectTimeoutMS: 10_000,
+      socketTimeoutMS: 45_000,
     });
     this.serverStart();
   }
@@ -99,21 +99,25 @@ export class Server {
     this.app.use(passport.initialize() as unknown as RequestHandler);
     this.app.use(passport.session());
 
-    const debugLogPath = (req: Request, _res: Response, next: () => void) => {
-      if (req.method !== "OPTIONS") {
+    const debugLogPath = (
+      request: Request,
+      _res: Response,
+      next: () => void,
+    ) => {
+      if (request.method !== "OPTIONS") {
         // no point in showing all the preflight requests
-        logger.debug(`-> ${req.method} ${req.url}`);
+        logger.debug(`-> ${request.method} ${request.url}`);
         if (
           !(
-            req.url.includes("auth") &&
+            request.url.includes("auth") &&
             assertEnv(BlEnvironment.API_ENV) === "production"
           )
         ) {
           let body: string;
           try {
-            body = JSON.stringify(req.body);
+            body = JSON.stringify(request.body);
           } catch {
-            body = req.body.toString("utf8");
+            body = request.body.toString("utf8");
           }
 
           logger.silly(`-> ${body}`);
@@ -122,12 +126,12 @@ export class Server {
       next();
     };
 
-    this.app.get("*", (req, res, next) => {
+    this.app.get("*", (request, res, next) => {
       if (
-        req.headers["x-forwarded-proto"] !== "https" &&
+        request.headers["x-forwarded-proto"] !== "https" &&
         assertEnv(BlEnvironment.API_ENV) === "production"
       ) {
-        res.redirect("https://" + req.hostname + req.url);
+        res.redirect("https://" + request.hostname + request.url);
       } else {
         next();
       }
@@ -163,8 +167,8 @@ export class Server {
       logger.info("ready to take requests!");
     });
 
-    this.app.on("uncaughtException", (err) => {
-      logger.warn("uncaught exception:" + err);
+    this.app.on("uncaughtException", (error) => {
+      logger.warn("uncaught exception:" + error);
     });
   }
 }

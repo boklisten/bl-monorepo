@@ -1,8 +1,7 @@
-import { PaymentMethod } from "../payment/payment-method/payment-method";
+import { PaymentMethod } from "@shared/payment/payment-method/payment-method";
+import { Period } from "@shared/period/period";
 
-import { Period } from "../period/period";
-
-export class BranchPaymentInfo {
+export interface BranchPaymentInfo {
   responsible: boolean; // if set the branch is responsible for payment, not the customer
   responsibleForDelivery?: boolean; // if set the customer does not need to pay for the delivery
   payLater?: boolean; // if set the customer can pay the order later at branch

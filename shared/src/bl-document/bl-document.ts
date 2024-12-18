@@ -1,7 +1,7 @@
-import { Comment } from "../comment/comment";
-import { UserPermission } from "../permission/user-permission";
+import { Comment } from "@shared/comment/comment";
+import { UserPermission } from "@shared/permission/user-permission";
 
-export class BlDocument {
+export interface BlDocument {
   id: string;
   blid?: string;
   lastUpdated?: Date;

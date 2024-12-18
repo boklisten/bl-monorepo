@@ -2,12 +2,17 @@ export class BlapiErrorResponse {
   httpStatus: number;
   code: number | undefined;
   msg: string | undefined;
-  data: any;
+  data: unknown;
 
-  constructor(httpStatus: number, code?: number, msg?: string, data?: any) {
+  constructor(
+    httpStatus: number,
+    code?: number,
+    message?: string,
+    data?: unknown,
+  ) {
     this.httpStatus = httpStatus;
     this.code = code;
-    this.msg = msg;
+    this.msg = message;
     this.data = data;
   }
 }

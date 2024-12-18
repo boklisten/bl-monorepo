@@ -17,15 +17,15 @@ export class DbQueryStringFilter {
     const stringFilters: StringFilter[] = [];
 
     try {
-      for (const param in query) {
-        if (validStringParams.includes(param)) {
+      for (const parameter in query) {
+        if (validStringParams.includes(parameter)) {
           stringFilters.push({
-            fieldName: param,
+            fieldName: parameter,
             // eslint-disable-next-line @typescript-eslint/ban-ts-comment
             // @ts-expect-error
-            value: Array.isArray(query[param])
-              ? query[param]
-              : this.getStringParamValue(query[param]),
+            value: Array.isArray(query[parameter])
+              ? query[parameter]
+              : this.getStringParamValue(query[parameter]),
           });
         }
       }
@@ -47,18 +47,18 @@ export class DbQueryStringFilter {
     }
   }
 
-  private getStringParamValue(param: string): string {
-    if (this.validateStringParam(param)) {
-      return param;
+  private getStringParamValue(parameter: string): string {
+    if (this.validateStringParam(parameter)) {
+      return parameter;
     }
     throw new TypeError(
-      'the paramterer of value "' + param + '" is not a valid string',
+      'the paramterer of value "' + parameter + '" is not a valid string',
     );
   }
 
-  private validateStringParam(param: string): boolean {
+  private validateStringParam(parameter: string): boolean {
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
-    return param && typeof param === "string" && param.length > 0;
+    return parameter && typeof parameter === "string" && parameter.length > 0;
   }
 }

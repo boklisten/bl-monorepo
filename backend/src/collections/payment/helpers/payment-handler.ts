@@ -84,18 +84,23 @@ export class PaymentHandler {
     accessToken: AccessToken,
   ): Promise<boolean> {
     switch (payment.method) {
-      case "dibs":
+      case "dibs": {
         return this.confirmMethodDibs(order, payment, accessToken);
-      case "card":
+      }
+      case "card": {
         return this.confirmMethodCard(order, payment);
-      case "cash":
+      }
+      case "cash": {
         return this.confirmMethodCash(order, payment);
-      case "vipps":
+      }
+      case "vipps": {
         return this.confirmMethodVipps(order, payment);
-      default:
+      }
+      default: {
         return Promise.reject(
           new BlError(`payment method "${payment.method}" not supported`),
         );
+      }
     }
   }
 

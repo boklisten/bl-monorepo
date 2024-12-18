@@ -1,11 +1,7 @@
-import { BlDocument } from "../bl-document/bl-document";
-import { OrderItem } from "./order-item/order-item";
-import { Branch } from "../branch/branch";
-import { UserDetail } from "../user/user-detail/user-detail";
-import { Payment } from "../payment/payment";
-import { Delivery } from "../delivery/delivery";
+import { BlDocument } from "@shared/bl-document/bl-document";
+import { OrderItem } from "@shared/order/order-item/order-item";
 
-export class Order extends BlDocument {
+export interface Order extends BlDocument {
   amount: number; // the total amount of this order
   orderItems: OrderItem[]; // orderitems for this order, needs to be at least one item
   branch: string; // the branch this order was added on

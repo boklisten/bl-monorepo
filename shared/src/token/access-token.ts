@@ -1,6 +1,6 @@
-import { UserPermission } from "../permission/user-permission";
+import { UserPermission } from "@shared/permission/user-permission";
 
-export class AccessToken {
+export interface AccessToken {
   iss: string;
   aud: string;
   iat: number;

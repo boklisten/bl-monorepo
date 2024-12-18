@@ -1,51 +1,44 @@
 // @ts-check
-// remember:       "plugin:deprecation/recommended",
 import eslint from "@eslint/js";
+import nextPlugin from "@next/eslint-plugin-next";
 import eslintConfigPrettier from "eslint-config-prettier";
-import deprecationPlugin from "eslint-plugin-deprecation";
+import pluginCypress from "eslint-plugin-cypress/flat";
 import importPlugin from "eslint-plugin-import";
+import jsxA11y from "eslint-plugin-jsx-a11y";
 import noRelativeImportPathsPlugin from "eslint-plugin-no-relative-import-paths";
+import reactPlugin from "eslint-plugin-react";
+import hooksPlugin from "eslint-plugin-react-hooks";
 import tseslint from "typescript-eslint";
-//import tsParser from "@typescript-eslint/parser";
-//import ts from "@typescript-eslint/eslint-plugin";
 
-// TODO: enable eslint-plugin-import (absolute imports) when it is properly supported with flat configs
+// TODO: add eslint-plugin-react-compiler when released
 
 export default tseslint.config(
   eslint.configs.recommended,
   tseslint.configs.strict,
   tseslint.configs.stylistic,
-  // importPlugin.flatConfigs.recommended,
-  // importPlugin.flatConfigs.typescript,
+  reactPlugin.configs.flat.recommended,
+  reactPlugin.configs.flat["jsx-runtime"],
+  pluginCypress.configs.recommended,
+  pluginCypress.configs.globals,
+  jsxA11y.flatConfigs.recommended,
   {
-    files: ["**/*.{js,mjs,cjs,ts}"],
+    files: ["**/*.{js,jsx,mjs,cjs,ts,tsx}"],
     plugins: {
+      "@next/next": nextPlugin,
+      "react-hooks": hooksPlugin,
       "no-relative-import-paths": noRelativeImportPathsPlugin,
       import: importPlugin,
-      deprecation: deprecationPlugin,
     },
-    /*
-          languageOptions: {
-            parser: tsParser,
-            parserOptions: {
-              project: ["tsconfig.json"],
-            },
-          },
-      */
+    settings: {
+      react: {
+        version: "detect",
+      },
+    },
     rules: {
-      //...ts.configs["recommended-requiring-type-checking"].rules,
-      //...ts.configs["stylistic-type-checked"].rules,
-      "@typescript-eslint/no-unused-vars": [
-        "error",
-        { argsIgnorePattern: "^_" },
-      ],
-      "no-relative-import-paths/no-relative-import-paths": [
-        "error",
-        {
-          rootDir: "src",
-          prefix: "@",
-        },
-      ],
+      ...nextPlugin.configs.recommended.rules,
+      ...nextPlugin.configs["core-web-vitals"].rules,
+      ...hooksPlugin.configs.recommended.rules,
+      "no-relative-import-paths/no-relative-import-paths": "error",
       /** @see https://medium.com/weekly-webtips/how-to-sort-imports-like-a-pro-in-typescript-4ee8afd7258a */
       "import/order": [
         "error",

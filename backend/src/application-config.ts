@@ -44,7 +44,7 @@ export const APP_CONFIG = {
     mongoDb: {
       basePath: "mongodb://",
       host: "localhost",
-      port: 27017,
+      port: 27_017,
     },
   },
   prod: {

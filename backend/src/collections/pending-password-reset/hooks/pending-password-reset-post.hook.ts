@@ -32,12 +32,12 @@ export class PendingPasswordResetPostHook extends Hook {
       .getByUsername(normalizedEmail)
       .catch((getUserError: BlError) => {
         throw new BlError(`username "${normalizedEmail}" not found`)
-          .code(10702)
+          .code(10_702)
           .add(getUserError);
       });
 
     if (!user.active) {
-      throw new BlError("user.active is false").code(10703);
+      throw new BlError("user.active is false").code(10_703);
     }
 
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
@@ -63,7 +63,7 @@ export class PendingPasswordResetPostHook extends Hook {
       .catch(() => {
         throw new BlError(
           `Unable to send password reset email to ${normalizedEmail}`,
-        ).code(10200);
+        ).code(10_200);
       });
 
     return {

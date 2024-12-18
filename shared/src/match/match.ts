@@ -1,21 +1,41 @@
-import { BlDocument } from "../bl-document/bl-document";
+import { BlDocument } from "@shared/bl-document/bl-document";
+import { Comment } from "@shared/comment/comment";
+import { UserPermission } from "@shared/permission/user-permission";
 
 export enum MatchVariant {
   UserMatch = "UserMatch",
   StandMatch = "StandMatch",
 }
 
-export class MatchBase extends BlDocument {
+export class MatchBase implements BlDocument {
   meetingInfo: {
     location: string;
     date: Date | null;
   };
   orders: string[];
-  // active until orders have been generated and fulfilled for all expected items
+
+  // Required by BlDocument
+  id: string;
+  blid?: string;
+  lastUpdated?: Date;
+  creationTime?: Date;
+  comments?: Comment[];
+  active?: boolean;
+  user?: {
+    id: string;
+    permission?: UserPermission;
+  };
+  viewableFor?: string[];
+  viewableForPermission?: UserPermission;
+  editableFor?: string[];
+  archived?: boolean;
+  // End BlDocument fields ---
 
   constructor(handoffInfo: MatchBase["meetingInfo"]) {
-    super();
     this.meetingInfo = handoffInfo;
+
+    this.id = "";
+    this.orders = [];
   }
 }
 
@@ -27,10 +47,10 @@ export class UserMatch extends MatchBase {
   // unique items which have been received by the receiver from anyone
   receivedBlIds: string[] = [];
   // if true, disallow handing the items out or in at a stand, only allow match exchange
-  itemsLockedToMatch: boolean = true;
+  itemsLockedToMatch = true;
   // when receiver items have overrides, the generated customer items will
   // get the deadline specified in the override instead of using the branch period deadline
-  deadlineOverrides: { [item: string]: string };
+  deadlineOverrides: Record<string, string>;
 
   constructor(
     public sender: string,
@@ -38,7 +58,7 @@ export class UserMatch extends MatchBase {
     // items which are expected to be handed over from sender to receiver
     public expectedItems: string[],
     meetingInfo: MatchBase["meetingInfo"],
-    deadlineOverrides: { [item: string]: string },
+    deadlineOverrides: Record<string, string>,
   ) {
     super(meetingInfo);
     this.deadlineOverrides = deadlineOverrides;

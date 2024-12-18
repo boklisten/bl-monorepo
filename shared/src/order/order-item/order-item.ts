@@ -1,11 +1,8 @@
-import { OrderItemInfo } from "./order-item-info";
-import { OrderItemType } from "./order-item-type";
-import { PaymentDiscount } from "../../payment/payment-discount/payment-discount";
-import { Item } from "../../item/item";
-import { CustomerItem } from "../../customer-item/customer-item";
-import { Order } from "../order";
+import { OrderItemInfo } from "@shared/order/order-item/order-item-info";
+import { OrderItemType } from "@shared/order/order-item/order-item-type";
+import { PaymentDiscount } from "@shared/payment/payment-discount/payment-discount";
 
-export class OrderItem {
+export interface OrderItem {
   type: OrderItemType; //the operation on this OrderItem
   item: string; //id of/or the item
   blid?: string; // BLID of item

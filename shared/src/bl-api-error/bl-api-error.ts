@@ -2,9 +2,9 @@ export class BlApiError {
   msg?: string;
   code?: number;
 
-  constructor(msg?: string, code?: number) {
-    if (msg) {
-      this.msg = msg;
+  constructor(message?: string, code?: number) {
+    if (message) {
+      this.msg = message;
     }
 
     if (code) {

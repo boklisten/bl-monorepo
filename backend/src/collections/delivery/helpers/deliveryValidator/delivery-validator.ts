@@ -38,16 +38,19 @@ export class DeliveryValidator {
     order: Order,
   ): Promise<boolean> {
     switch (delivery.method) {
-      case "branch":
+      case "branch": {
         return this.deliveryBranchHandler.validate(delivery);
-      case "bring":
+      }
+      case "bring": {
         return this.deliveryBringHandler.validate(delivery, order);
-      default:
+      }
+      default: {
         return Promise.reject(
           new BlError(
             `delivery.method "${delivery.method}" is not supported`,
           ).store("delivery", delivery),
         );
+      }
     }
   }
 }

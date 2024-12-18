@@ -12,7 +12,7 @@ import { DbQuerySortFilter } from "@backend/query/sort-filter/db-query-sort-filt
 import { DbQueryStringFilter } from "@backend/query/string-filter/db-query-string-filter";
 import {
   DbQueryValidParams,
-  ValidParam,
+  ValidParameter,
 } from "@backend/query/valid-param/db-query-valid-params";
 
 export class SEDbQueryBuilder {
@@ -46,54 +46,57 @@ export class SEDbQueryBuilder {
   }
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  public getDbQuery(query: any, validQueryParams: ValidParam[]): SEDbQuery {
+  public getDbQuery(query: any, validQueryParams: ValidParameter[]): SEDbQuery {
     this.dbQueryValidParams = new DbQueryValidParams(validQueryParams);
 
-    const dbQuery: SEDbQuery = new SEDbQuery();
+    const databaseQuery: SEDbQuery = new SEDbQuery();
 
     if (
       !query ||
       (Object.keys(query).length === 0 && query.constructor === Object)
     ) {
-      return dbQuery;
+      return databaseQuery;
     }
 
     try {
-      dbQuery.booleanFilters = this.dbQueryBooleanFilter.getBooleanFilters(
-        query,
-        this.dbQueryValidParams.getValidBooleanParams(),
-      );
-      dbQuery.dateFilters = this.dbQueryDateFilter.getDateFilters(
+      databaseQuery.booleanFilters =
+        this.dbQueryBooleanFilter.getBooleanFilters(
+          query,
+          this.dbQueryValidParams.getValidBooleanParams(),
+        );
+      databaseQuery.dateFilters = this.dbQueryDateFilter.getDateFilters(
         query,
         this.dbQueryValidParams.getValidDateParams(),
       );
-      dbQuery.limitFilter = this.dbQueryLimitFilter.getLimitFilter(query);
-      dbQuery.numberFilters = this.dbQueryNumberFilter.getNumberFilters(
+      databaseQuery.limitFilter = this.dbQueryLimitFilter.getLimitFilter(query);
+      databaseQuery.numberFilters = this.dbQueryNumberFilter.getNumberFilters(
         query,
         this.dbQueryValidParams.getValidNumberParams(),
       );
-      dbQuery.onlyGetFilters = this.dbQueryOnlyGetFilter.getOnlyGetFilters(
-        query,
-        this.dbQueryValidParams.getAllValidParams(),
-      );
-      dbQuery.regexFilters = this.dbQueryRegexFilter.getRegexFilters(
-        query,
-        this.dbQueryValidParams.getValidStringParams(),
-      );
-      dbQuery.skipFilter = this.dbQuerySkipFilter.getSkipFilter(query);
-      dbQuery.sortFilters = this.dbQuerySortFilter.getSortFilters(
-        query,
-        this.dbQueryValidParams.getAllValidParams(),
-      );
-      dbQuery.stringFilters = this.dbQueryStringFilter.getStringFilters(
+      databaseQuery.onlyGetFilters =
+        this.dbQueryOnlyGetFilter.getOnlyGetFilters(
+          query,
+          this.dbQueryValidParams.getAllValidParams(),
+        );
+      databaseQuery.regexFilters = this.dbQueryRegexFilter.getRegexFilters(
         query,
         this.dbQueryValidParams.getValidStringParams(),
       );
-      dbQuery.objectIdFilters = this.dbQueryObjectIdFilter.getObjectIdFilters(
+      databaseQuery.skipFilter = this.dbQuerySkipFilter.getSkipFilter(query);
+      databaseQuery.sortFilters = this.dbQuerySortFilter.getSortFilters(
         query,
-        this.dbQueryValidParams.getValidObjectIdParams(),
+        this.dbQueryValidParams.getAllValidParams(),
       );
-      dbQuery.expandFilters = this.dbQueryExpandFilter.getExpandFilters(
+      databaseQuery.stringFilters = this.dbQueryStringFilter.getStringFilters(
+        query,
+        this.dbQueryValidParams.getValidStringParams(),
+      );
+      databaseQuery.objectIdFilters =
+        this.dbQueryObjectIdFilter.getObjectIdFilters(
+          query,
+          this.dbQueryValidParams.getValidObjectIdParams(),
+        );
+      databaseQuery.expandFilters = this.dbQueryExpandFilter.getExpandFilters(
         query,
         this.dbQueryValidParams.getValidExpandParams(),
       );
@@ -115,6 +118,6 @@ export class SEDbQueryBuilder {
       throw new Error("Error when building query, reason: " + error.message);
     }
 
-    return dbQuery;
+    return databaseQuery;
   }
 }

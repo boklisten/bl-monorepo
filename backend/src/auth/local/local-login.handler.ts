@@ -43,11 +43,13 @@ export class LocalLoginHandler {
           new BlError(`username "${username}" is not a valid email`),
         );
 
-      const dbQuery = new SEDbQuery();
-      dbQuery.stringFilters = [{ fieldName: "username", value: username }];
+      const databaseQuery = new SEDbQuery();
+      databaseQuery.stringFilters = [
+        { fieldName: "username", value: username },
+      ];
 
       this.localLoginStorage
-        .getByQuery(dbQuery)
+        .getByQuery(databaseQuery)
         .then((localLogins: LocalLogin[]) => {
           if (localLogins.length !== 1) {
             return reject(
@@ -77,8 +79,8 @@ export class LocalLoginHandler {
   ): Promise<boolean> {
     try {
       await this.get(username);
-    } catch (e) {
-      if (e instanceof BlError && e.getCode() === 702) {
+    } catch (error) {
+      if (error instanceof BlError && error.getCode() === 702) {
         await this.createDefaultLocalLogin(username);
       } else {
         throw new BlError("could not create default localLogin");
@@ -111,10 +113,10 @@ export class LocalLoginHandler {
       await this.localLoginStorage.add(defaultLocalLogin, new SystemUser());
 
       return true;
-    } catch (e) {
+    } catch (error) {
       throw new BlError("could not create default localLogin").store(
         "localLoginCreationError",
-        e,
+        error,
       );
     }
   }

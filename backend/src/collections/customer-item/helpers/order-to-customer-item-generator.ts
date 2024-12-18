@@ -53,19 +53,22 @@ export class OrderToCustomerItemGenerator {
     order: Order,
     orderItem: OrderItem,
   ): CustomerItem {
-    if (orderItem.type === "partly-payment") {
-      return this.createPartlyPaymentCustomerItem(
-        customerDetail,
-        order,
-        orderItem,
-      );
-    } else if (
-      orderItem.type === "rent" ||
-      orderItem.type === "match-receive"
-    ) {
-      return this.createRentCustomerItem(customerDetail, order, orderItem);
-    } else if (orderItem.type === "loan") {
-      return this.createLoanCustomerItem(customerDetail, order, orderItem);
+    switch (orderItem.type) {
+      case "partly-payment": {
+        return this.createPartlyPaymentCustomerItem(
+          customerDetail,
+          order,
+          orderItem,
+        );
+      }
+      case "rent":
+      case "match-receive": {
+        return this.createRentCustomerItem(customerDetail, order, orderItem);
+      }
+      case "loan": {
+        return this.createLoanCustomerItem(customerDetail, order, orderItem);
+      }
+      // No default
     }
 
     throw new Error(`orderItem type "${orderItem.type}" is not supported`);

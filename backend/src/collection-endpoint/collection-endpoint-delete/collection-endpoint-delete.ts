@@ -21,8 +21,8 @@ export class CollectionEndpointDelete<T extends BlDocument>
           // @ts-ignore
           permission: blApiRequest.user.permission,
         })
-        .then((doc: T) => {
-          return [doc];
+        .then((document_: T) => {
+          return [document_];
         })
         .catch((blError) => {
           throw blError;
@@ -33,14 +33,16 @@ export class CollectionEndpointDelete<T extends BlDocument>
   override async validateDocumentPermission(
     blApiRequest: BlApiRequest,
   ): Promise<BlApiRequest> {
-    const doc = await this._documentStorage.get(blApiRequest.documentId ?? "");
+    const document_ = await this._documentStorage.get(
+      blApiRequest.documentId ?? "",
+    );
     if (
-      doc &&
+      document_ &&
       blApiRequest.user?.permission === "customer" &&
-      doc.user?.id !== blApiRequest.user.id
+      document_.user?.id !== blApiRequest.user.id
     ) {
       throw new BlError(
-        `user "${blApiRequest.user?.id}" cannot delete document owned by ${doc.user?.id}`,
+        `user "${blApiRequest.user?.id}" cannot delete document owned by ${document_.user?.id}`,
       ).code(904);
     }
     return blApiRequest;

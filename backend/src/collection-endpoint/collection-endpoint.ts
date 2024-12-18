@@ -31,28 +31,35 @@ export class CollectionEndpoint<T extends BlDocument> {
   public create() {
     for (const endpoint of this._collection.endpoints) {
       switch (endpoint.method) {
-        case "getAll":
+        case "getAll": {
           this.createGetAll(endpoint);
           break;
-        case "getId":
+        }
+        case "getId": {
           this.createGetId(endpoint);
           break;
-        case "post":
+        }
+        case "post": {
           this.createPost(endpoint);
           break;
-        case "patch":
+        }
+        case "patch": {
           this.createPatch(endpoint);
           break;
-        case "put":
+        }
+        case "put": {
           this.createPut(endpoint);
           break;
-        case "delete":
+        }
+        case "delete": {
           this.createDelete(endpoint);
           break;
-        default:
+        }
+        default: {
           throw new BlError(
             `the collection endpoint method "${endpoint.method}" is not supported`,
           );
+        }
       }
     }
   }

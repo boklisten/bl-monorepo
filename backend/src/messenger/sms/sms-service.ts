@@ -27,9 +27,9 @@ export async function sendSMS(
       from: "Boklisten",
     });
     logger.info(`successfully sent SMS to "${toNumber}"`);
-  } catch (e) {
-    logger.error(`failed to send SMS to "${toNumber}", reason: ${e}`);
-    throw e;
+  } catch (error) {
+    logger.error(`failed to send SMS to "${toNumber}", reason: ${error}`);
+    throw error;
   }
 }
 

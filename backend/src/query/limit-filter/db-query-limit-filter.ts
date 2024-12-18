@@ -18,17 +18,17 @@ export class DbQueryLimitFilter {
           '" is not a valid number, number must be valid and over 0',
       );
 
-    const limitNum = parseInt(query.limit);
+    const limitNumber = Number.parseInt(query.limit);
 
-    return { limit: limitNum };
+    return { limit: limitNumber };
   }
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   validNumber(limit: any) {
-    const limitStr = limit.toString();
+    const limitString = limit.toString();
 
-    for (const n of limitStr) {
-      if (!parseInt(n) && n !== "0") return false;
+    for (const n of limitString) {
+      if (!Number.parseInt(n) && n !== "0") return false;
     }
 
     return true;

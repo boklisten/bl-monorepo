@@ -35,14 +35,14 @@ export class DibsPaymentService {
           assertEnv(BlEnvironment.DIBS_SECRET_KEY),
         )
         .then((responseData) => {
-          if (responseData) {
+          if (
+            responseData && // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+            // @ts-ignore
+            responseData["paymentId"]
+          ) {
             // eslint-disable-next-line @typescript-eslint/ban-ts-comment
             // @ts-ignore
-            if (responseData["paymentId"]) {
-              // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-              // @ts-ignore
-              return resolve(responseData["paymentId"]);
-            }
+            return resolve(responseData["paymentId"]);
           }
           return reject(
             new BlError("did not get the paymentId back from dibs"),

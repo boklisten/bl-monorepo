@@ -1,4 +1,4 @@
-import crypto from "crypto";
+import crypto from "node:crypto";
 
 import { BlError } from "@shared/bl-error/bl-error";
 

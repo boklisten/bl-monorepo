@@ -5,7 +5,7 @@ import { NextFunction, Request, Response } from "express";
 export interface Operation {
   run(
     blApiRequest: BlApiRequest,
-    req?: Request,
+    request?: Request,
     res?: Response,
     next?: NextFunction,
   ): Promise<boolean | BlapiResponse>;

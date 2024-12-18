@@ -19,8 +19,8 @@ export class OrderItemPartlyPaymentValidator {
 
     try {
       this.validateFields(orderItem);
-    } catch (e) {
-      return Promise.reject(e);
+    } catch (error) {
+      return Promise.reject(error);
     }
 
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment

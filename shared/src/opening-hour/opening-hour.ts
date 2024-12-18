@@ -1,6 +1,6 @@
-import { BlDocument } from "../bl-document/bl-document";
+import { BlDocument } from "@shared/bl-document/bl-document";
 
-export class OpeningHour extends BlDocument {
+export interface OpeningHour extends BlDocument {
   from: Date;
   to: Date;
   branch: string;

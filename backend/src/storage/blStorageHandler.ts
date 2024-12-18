@@ -24,7 +24,7 @@ export interface BlStorageHandler<T extends BlDocument> {
   ): Promise<T[]>;
 
   getByQuery(
-    dbQuery: SEDbQuery,
+    databaseQuery: SEDbQuery,
     nestedDocuments?: NestedDocument[],
   ): Promise<T[]>;
 
@@ -33,7 +33,10 @@ export interface BlStorageHandler<T extends BlDocument> {
     nestedDocuments?: NestedDocument[],
   ): Promise<T[]>;
 
-  add(doc: T, user: { id: string; permission: UserPermission }): Promise<T>;
+  add(
+    document_: T,
+    user: { id: string; permission: UserPermission },
+  ): Promise<T>;
 
   addMany(docs: T[]): Promise<T[]>;
 

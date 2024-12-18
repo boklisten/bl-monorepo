@@ -1,4 +1,4 @@
-import { IncomingHttpHeaders } from "http";
+import { IncomingHttpHeaders } from "node:http";
 
 import { APP_CONFIG } from "@backend/application-config";
 import { BlEnvironment, assertEnv } from "@backend/config/environment";
@@ -7,22 +7,21 @@ export class ApiPath {
   private readonly baseHost: string;
 
   constructor() {
-    if (assertEnv(BlEnvironment.API_ENV) === "production") {
-      this.baseHost = APP_CONFIG.path.host;
-    } else {
-      this.baseHost = APP_CONFIG.path.local.host;
-    }
+    this.baseHost =
+      assertEnv(BlEnvironment.API_ENV) === "production"
+        ? APP_CONFIG.path.host
+        : APP_CONFIG.path.local.host;
   }
 
   public createPath(customPath: string): string {
     return assertEnv(BlEnvironment.SERVER_PATH) + customPath;
   }
 
-  public retrieveRefererPath(reqHeaders: IncomingHttpHeaders) {
+  public retrieveRefererPath(requestHeaders: IncomingHttpHeaders) {
     let refererUrl = null;
 
-    const refererPath = reqHeaders["referer"];
-    const reffererPath = reqHeaders["refferer"];
+    const refererPath = requestHeaders["referer"];
+    const reffererPath = requestHeaders["refferer"];
 
     if (refererPath) {
       refererUrl = this.retrieveBasePath(refererPath);

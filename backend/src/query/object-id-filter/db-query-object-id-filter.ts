@@ -27,26 +27,26 @@ export class DbQueryObjectIdFilter {
     }
 
     try {
-      for (const param in query) {
-        if (validStringParams.includes(param)) {
-          if (Array.isArray(query[param])) {
-            const valueArr: (string | Types.ObjectId)[] = [];
-            query[param].forEach((paramValue: string) => {
-              valueArr.push(this.getStringParamValue(paramValue));
-              valueArr.push(this.getObjectIdParamValue(paramValue));
+      for (const parameter in query) {
+        if (validStringParams.includes(parameter)) {
+          if (Array.isArray(query[parameter])) {
+            const valueArray: (string | Types.ObjectId)[] = [];
+            query[parameter].forEach((parameterValue: string) => {
+              valueArray.push(this.getStringParamValue(parameterValue));
+              valueArray.push(this.getObjectIdParamValue(parameterValue));
             });
             objectIdFilters.push({
-              fieldName: param,
-              value: valueArr,
+              fieldName: parameter,
+              value: valueArray,
             });
           } else {
-            const valueArr = [
-              this.getStringParamValue(query[param]),
-              this.getObjectIdParamValue(query[param]),
+            const valueArray = [
+              this.getStringParamValue(query[parameter]),
+              this.getObjectIdParamValue(query[parameter]),
             ];
             objectIdFilters.push({
-              fieldName: param,
-              value: valueArr,
+              fieldName: parameter,
+              value: valueArray,
             });
           }
         }
@@ -70,27 +70,28 @@ export class DbQueryObjectIdFilter {
     }
   }
 
-  private getObjectIdParamValue(param: string): Types.ObjectId {
-    if (this.validateStringParam(param)) {
-      return new Types.ObjectId(param);
+  private getObjectIdParamValue(parameter: string): Types.ObjectId {
+    if (this.validateStringParam(parameter)) {
+      return new Types.ObjectId(parameter);
     }
     throw new TypeError(
-      'the paramterer of value "' + param + '" is not a valid string',
+      'the paramterer of value "' + parameter + '" is not a valid string',
     );
   }
 
-  private getStringParamValue(param: string): string {
-    if (this.validateStringParam(param)) {
-      return param;
+  private getStringParamValue(parameter: string): string {
+    if (this.validateStringParam(parameter)) {
+      return parameter;
     }
     throw new TypeError(
-      'the paramterer of value "' + param + '" is not a valid string',
+      'the paramterer of value "' + parameter + '" is not a valid string',
     );
   }
 
-  private validateStringParam(param?: string): boolean {
+  private validateStringParam(parameter?: string): boolean {
     return (
-      (param?.length ?? 0) > 0 && new Types.ObjectId(param).toString() === param
+      (parameter?.length ?? 0) > 0 &&
+      new Types.ObjectId(parameter).toString() === parameter
     );
   }
 }

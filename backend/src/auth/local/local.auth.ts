@@ -45,25 +45,21 @@ export class LocalAuth {
             );
           },
           (validateError: BlError) => {
-            if (
-              validateError.getCode() === 908 ||
+            return validateError.getCode() === 908 ||
               validateError.getCode() === 901 ||
               validateError.getCode() === 702
-            ) {
-              return done(
-                null,
-                false,
-                new BlError("username or password is wrong")
-                  .code(908)
-                  .add(validateError),
-              );
-            } else {
-              return done(
-                null,
-                false,
-                new BlError("could not login").code(900).add(validateError),
-              );
-            }
+              ? done(
+                  null,
+                  false,
+                  new BlError("username or password is wrong")
+                    .code(908)
+                    .add(validateError),
+                )
+              : done(
+                  null,
+                  false,
+                  new BlError("could not login").code(900).add(validateError),
+                );
           },
         );
       }),
@@ -73,7 +69,7 @@ export class LocalAuth {
   private createAuthLogin(router: Router) {
     router.post(
       this.apiPath.createPath("auth/local/login"),
-      (req, res, next) => {
+      (request, res, next) => {
         passport.authenticate(
           "local",
           (
@@ -81,11 +77,9 @@ export class LocalAuth {
             jwTokens: { accessToken: string; refreshToken: string },
             blError: BlError,
           ) => {
-            if (blError) {
-              if (!(blError instanceof BlError)) {
-                blError = new BlError("unknown error").code(500);
-                return this.resHandler.sendErrorResponse(res, blError);
-              }
+            if (blError && !(blError instanceof BlError)) {
+              blError = new BlError("unknown error").code(500);
+              return this.resHandler.sendErrorResponse(res, blError);
             }
 
             if (error) {
@@ -96,7 +90,7 @@ export class LocalAuth {
               return this.resHandler.sendErrorResponse(res, blError);
             }
 
-            req.login(jwTokens, (error) => {
+            request.login(jwTokens, (error) => {
               if (error) return next(error);
               this.respondWithTokens(res, {
                 accessToken: jwTokens.accessToken,
@@ -104,7 +98,7 @@ export class LocalAuth {
               });
             });
           },
-        )(req, res, next);
+        )(request, res, next);
       },
     );
   }
@@ -126,36 +120,44 @@ export class LocalAuth {
     router: Router,
     localLoginValidator: LocalLoginValidator,
   ) {
-    router.post(this.apiPath.createPath("auth/local/register"), (req, res) => {
-      localLoginValidator.create(req.body.username, req.body.password).then(
-        () => {
-          this.tokenHandler.createTokens(req.body.username).then(
-            (tokens: { accessToken: string; refreshToken: string }) => {
-              this.respondWithTokens(res, tokens);
-            },
-            (createTokensError: BlError) => {
-              this.resHandler.sendErrorResponse(
-                res,
-                new BlError("could not create tokens")
-                  .add(createTokensError)
-                  .code(906),
+    router.post(
+      this.apiPath.createPath("auth/local/register"),
+      (request, res) => {
+        localLoginValidator
+          .create(request.body.username, request.body.password)
+          .then(
+            () => {
+              this.tokenHandler.createTokens(request.body.username).then(
+                (tokens: { accessToken: string; refreshToken: string }) => {
+                  this.respondWithTokens(res, tokens);
+                },
+                (createTokensError: BlError) => {
+                  this.resHandler.sendErrorResponse(
+                    res,
+                    new BlError("could not create tokens")
+                      .add(createTokensError)
+                      .code(906),
+                  );
+                },
               );
             },
+            (loginValidatorCreateError: BlError) => {
+              if (loginValidatorCreateError.getCode() === 903) {
+                this.resHandler.sendErrorResponse(
+                  res,
+                  loginValidatorCreateError,
+                );
+              } else {
+                this.resHandler.sendErrorResponse(
+                  res,
+                  new BlError("could not create user")
+                    .add(loginValidatorCreateError)
+                    .code(907),
+                );
+              }
+            },
           );
-        },
-        (loginValidatorCreateError: BlError) => {
-          if (loginValidatorCreateError.getCode() === 903) {
-            this.resHandler.sendErrorResponse(res, loginValidatorCreateError);
-          } else {
-            this.resHandler.sendErrorResponse(
-              res,
-              new BlError("could not create user")
-                .add(loginValidatorCreateError)
-                .code(907),
-            );
-          }
-        },
-      );
-    });
+      },
+    );
   }
 }

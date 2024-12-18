@@ -5,7 +5,7 @@ import { UserDetail } from "@shared/user/user-detail/user-detail";
 
 export class UserDetailUpdateHook extends Hook {
   private cleanUserInput = (dirtyText: string): string => {
-    const withCoalescedSpaces = dirtyText.replace(/\s+/gu, " ").trim();
+    const withCoalescedSpaces = dirtyText.replaceAll(/\s+/gu, " ").trim();
     const separators = withCoalescedSpaces.match(/[ -]/g);
     const caseCorrectedWordParts = withCoalescedSpaces
       .split(/[ -]/g)

@@ -19,14 +19,16 @@ export class CollectionEndpointPut<T extends BlDocument>
   override async validateDocumentPermission(
     blApiRequest: BlApiRequest,
   ): Promise<BlApiRequest> {
-    const doc = await this._documentStorage.get(blApiRequest.documentId ?? "");
+    const document_ = await this._documentStorage.get(
+      blApiRequest.documentId ?? "",
+    );
     if (
-      doc &&
+      document_ &&
       blApiRequest.user?.permission === "customer" &&
-      doc.user?.id !== blApiRequest.user.id
+      document_.user?.id !== blApiRequest.user.id
     ) {
       throw new BlError(
-        `user "${blApiRequest.user?.id}" cannot put document owned by ${doc.user?.id}`,
+        `user "${blApiRequest.user?.id}" cannot put document owned by ${document_.user?.id}`,
       ).code(904);
     }
     return blApiRequest;

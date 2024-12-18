@@ -22,16 +22,16 @@ function groupMatchesBySender(
   userMatches: CandidateUserMatch[],
 ): SenderWithMatches[] {
   return userMatches
-    .reduce((acc, match) => {
-      const foundSender = acc.find(
+    .reduce((accumulator, match) => {
+      const foundSender = accumulator.find(
         (sender) => sender.senderId === match.senderId,
       );
       if (foundSender) {
         foundSender.matches.push(match);
       } else {
-        acc.push({ senderId: match.senderId, matches: [match] });
+        accumulator.push({ senderId: match.senderId, matches: [match] });
       }
-      return acc;
+      return accumulator;
     }, [] as SenderWithMatches[])
     .sort((a, b) => (a.matches.length > b.matches.length ? -1 : 1));
 }
@@ -54,22 +54,22 @@ function findEarliestLocationTime(
   ) {
     return startTime;
   }
-  const prevMeetingTime = existingMeetingTimes?.at(-1);
+  const previousMeetingTime = existingMeetingTimes?.at(-1);
   const simultaneousMatches = existingMeetingTimes.filter(
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
-    (meetingTime) => meetingTime.getTime() === prevMeetingTime.getTime(),
+    (meetingTime) => meetingTime.getTime() === previousMeetingTime.getTime(),
   );
 
   if (simultaneousMatches.length < location.simultaneousMatchLimit) {
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
-    return prevMeetingTime;
+    return previousMeetingTime;
   }
 
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   // @ts-ignore
-  return new Date(prevMeetingTime.getTime() + meetingDurationInMS);
+  return new Date(previousMeetingTime.getTime() + meetingDurationInMS);
 }
 
 /**
@@ -87,10 +87,10 @@ function findEarliestPossibleMeetingTime(
 ): Date {
   let earliestPossibleTime = startTime;
   for (const user of users) {
-    const prevUserTime = userMeetingTimes[user]?.at(-1);
-    if (prevUserTime && prevUserTime >= earliestPossibleTime) {
+    const previousUserTime = userMeetingTimes[user]?.at(-1);
+    if (previousUserTime && previousUserTime >= earliestPossibleTime) {
       earliestPossibleTime = new Date(
-        prevUserTime.getTime() + meetingDurationInMS,
+        previousUserTime.getTime() + meetingDurationInMS,
       );
     }
   }
@@ -214,22 +214,17 @@ function assignMeetingInfoToMatches(
   const sendersWithMatches = groupMatchesBySender(userMatches);
 
   const userMeetingTimes: Record<string, Date[]> = userMatches.reduce(
-    (acc, userMatch) => ({
-      ...acc,
+    (accumulator, userMatch) => ({
+      ...accumulator,
       [userMatch.senderId]: [],
       [userMatch.receiverId]: [],
     }),
     {},
   );
 
-  const locationMeetingTimes: Record<string, Date[]> =
-    userMatchLocations.reduce(
-      (acc, location) => ({
-        ...acc,
-        [location.name]: [],
-      }),
-      {},
-    );
+  const locationMeetingTimes: Record<string, Date[]> = Object.fromEntries(
+    userMatchLocations.map((location) => [location.name, []]),
+  );
 
   let locationIndex = 0;
   const userMatchesWithMeetingInfo: UserMatchWithMeetingInfo[] = [];
@@ -307,7 +302,7 @@ function assignMeetingInfoToMatches(
             .reduce((latestTime, next) => {
               const potentialTime =
                 next.meetingInfo.date.getTime() + meetingDurationInMS;
-              return potentialTime > latestTime ? potentialTime : latestTime;
+              return Math.max(potentialTime, latestTime);
             }, startTime.getTime()),
         ),
       },

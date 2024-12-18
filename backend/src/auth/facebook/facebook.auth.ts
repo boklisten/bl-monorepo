@@ -91,12 +91,12 @@ export class FacebookAuth {
   private createCallbackGet(router: Router) {
     router.get(
       this.apiPath.createPath("auth/facebook/callback"),
-      (req, res) => {
+      (request, res) => {
         passport.authenticate(
           APP_CONFIG.login.facebook.name, // eslint-disable-next-line @typescript-eslint/ban-ts-comment
           // @ts-ignore
-          (err, tokens, blError: BlError) => {
-            if (!tokens && (err || blError)) {
+          (error, tokens, blError: BlError) => {
+            if (!tokens && (error || blError)) {
               return res.redirect(
                 assertEnv(BlEnvironment.CLIENT_URI) +
                   APP_CONFIG.path.client.auth.socialLoginFailure,
@@ -108,11 +108,11 @@ export class FacebookAuth {
                 res,
                 tokens.accessToken,
                 tokens.refreshToken,
-                this.apiPath.retrieveRefererPath(req.headers) ?? undefined,
+                this.apiPath.retrieveRefererPath(request.headers) ?? undefined,
               );
             }
           },
-        )(req, res);
+        )(request, res);
       },
     );
   }

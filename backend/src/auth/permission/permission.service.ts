@@ -26,32 +26,32 @@ export class PermissionService {
     );
   }
   public hasPermissionField(
-    obj: unknown,
-  ): obj is { permission: UserPermission } {
+    object: unknown,
+  ): object is { permission: UserPermission } {
     return (
-      typeof obj === "object" &&
-      obj !== null &&
-      "permission" in obj &&
-      this.isPermission(obj.permission)
+      typeof object === "object" &&
+      object !== null &&
+      "permission" in object &&
+      this.isPermission(object.permission)
     );
   }
 
   public getLowestPermission(
     userPermissions: UserPermission[],
   ): UserPermission {
-    if (userPermissions.some((permission) => permission === "customer")) {
+    if (userPermissions.includes("customer")) {
       return "customer";
     }
 
-    if (userPermissions.some((permission) => permission === "employee")) {
+    if (userPermissions.includes("employee")) {
       return "employee";
     }
 
-    if (userPermissions.some((permission) => permission === "manager")) {
+    if (userPermissions.includes("manager")) {
       return "manager";
     }
 
-    if (userPermissions.some((permission) => permission === "admin")) {
+    if (userPermissions.includes("admin")) {
       return "admin";
     }
 

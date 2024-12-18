@@ -17,13 +17,15 @@ export class OrderHookBefore {
 
       try {
         this.checkMinimumRequiredFields(requestJsonBody);
-      } catch (e) {
-        if (e instanceof BlError) {
-          reject(new BlError("the request body is not valid").add(e).code(701));
+      } catch (error) {
+        if (error instanceof BlError) {
+          reject(
+            new BlError("the request body is not valid").add(error).code(701),
+          );
         }
         reject(
           new BlError("unkown error, request body is not valid")
-            .store("error", e)
+            .store("error", error)
             .code(701),
         );
       }

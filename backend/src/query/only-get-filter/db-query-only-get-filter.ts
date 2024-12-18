@@ -26,14 +26,16 @@ export class DbQueryOnlyGetFilter {
     og: any,
     validOnlyGetParams: string[],
   ): OnlyGetFilter[] {
-    const onlyGetParamArray = Array.isArray(og) ? og : [og];
+    const onlyGetParameterArray = Array.isArray(og) ? og : [og];
 
-    return onlyGetParamArray.map((onlyGetParam) => {
-      if (!validOnlyGetParams.includes(onlyGetParam))
-        throw ReferenceError(
-          'the parameter "' + onlyGetParam + '" is not in validOnlyGetParams',
+    return onlyGetParameterArray.map((onlyGetParameter) => {
+      if (!validOnlyGetParams.includes(onlyGetParameter))
+        throw new ReferenceError(
+          'the parameter "' +
+            onlyGetParameter +
+            '" is not in validOnlyGetParams',
         );
-      return { fieldName: onlyGetParam, value: 1 };
+      return { fieldName: onlyGetParameter, value: 1 };
     });
   }
 }

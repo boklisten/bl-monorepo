@@ -1,6 +1,6 @@
-import { BlDocument } from "../../bl-document/bl-document";
+import { BlDocument } from "@shared/bl-document/bl-document";
 
-export class UserDetail extends BlDocument {
+export interface UserDetail extends BlDocument {
   name: string;
   email: string;
   phone: string;

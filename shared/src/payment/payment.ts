@@ -1,9 +1,9 @@
-import { BlDocument } from "../bl-document/bl-document";
-import { PaymentDiscount } from "./payment-discount/payment-discount";
-import { PaymentInfo } from "./payment-info/payment-info";
-import { PaymentMethod } from "./payment-method/payment-method";
+import { BlDocument } from "@shared/bl-document/bl-document";
+import { PaymentDiscount } from "@shared/payment/payment-discount/payment-discount";
+import { PaymentInfo } from "@shared/payment/payment-info/payment-info";
+import { PaymentMethod } from "@shared/payment/payment-method/payment-method";
 
-export class Payment extends BlDocument {
+export interface Payment extends BlDocument {
   method: PaymentMethod; //the method used for payment
   order: string; // the id order this payment is for
   amount: number; //the total amount for this payment

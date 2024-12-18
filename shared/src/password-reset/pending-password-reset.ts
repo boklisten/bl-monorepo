@@ -1,6 +1,6 @@
-import { BlDocument } from "../bl-document/bl-document";
+import { BlDocument } from "@shared/bl-document/bl-document";
 
-export class PendingPasswordReset extends BlDocument {
+export interface PendingPasswordReset extends BlDocument {
   email: string;
   tokenHash: string;
   salt: string;

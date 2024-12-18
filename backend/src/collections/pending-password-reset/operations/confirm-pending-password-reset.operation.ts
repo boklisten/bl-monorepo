@@ -145,7 +145,7 @@ function validatePendingPasswordResetNotExpired(
   if (
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
-    new Date().getTime() - pendingPasswordReset.creationTime.getTime() >
+    Date.now() - pendingPasswordReset.creationTime.getTime() >
     ms_in_week
   ) {
     throw new BlError(

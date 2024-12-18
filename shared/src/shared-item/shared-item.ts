@@ -1,10 +1,10 @@
-import { BlDocument } from "../bl-document/bl-document";
+import { BlDocument } from "@shared/bl-document/bl-document";
 
 /**
  * A SharedItem is a duplicate of a item with a unique id so it can be traced through the system.
  * It can only be one item, but many sharedItems can point to one item.
  */
-export class SharedItem extends BlDocument {
+export interface SharedItem extends BlDocument {
   item: string; // the item this shared item is a "duplicate" of
   currentlyHeldBy: "branch" | "customer"; // is it currently held by a customer or a branch
   currentlyHeldById: string; //if it is held by a branch this is the id of the branch, otherwise for a customer

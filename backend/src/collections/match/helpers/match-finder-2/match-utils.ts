@@ -76,7 +76,7 @@ export function groupUsersByNumberOfItems(
   );
 
   const sortedUserGroups: MatchableUser[][] = [
-    ...Array(maxNumberOfItems + 1),
+    ...new Array(maxNumberOfItems + 1),
   ].map(() => []);
 
   for (const user of users) {
@@ -189,11 +189,11 @@ export function countItemOccurrences(
   users: MatchableUser[],
 ): Record<string, number> {
   return users
-    .flatMap((user) => Array.from(user.items))
+    .flatMap((user) => [...user.items])
     .reduce(
-      (acc: Record<string, number>, next) => ({
-        ...acc,
-        [next]: acc[next] ? acc[next] + 1 : 1,
+      (accumulator: Record<string, number>, next) => ({
+        ...accumulator,
+        [next]: accumulator[next] ? accumulator[next] + 1 : 1,
       }),
       {},
     );
@@ -241,7 +241,7 @@ export function canMatchPerfectlyWithStand(
   itemImbalances: Record<string, number>,
   userIsSender: boolean,
 ): boolean {
-  return Array.from(user.items).every((item) => {
+  return [...user.items].every((item) => {
     return userIsSender
       ? (itemImbalances[item] ?? 0) > 0
       : (itemImbalances[item] ?? 0) < 0;

@@ -2,8 +2,8 @@ import { ToSchema } from "@backend/helper/typescript-helpers";
 import { SignatureMetadata } from "@shared/signature/serialized-signature";
 import { Schema } from "mongoose";
 
-export class Signature extends SignatureMetadata {
-  image!: Buffer;
+export interface Signature extends SignatureMetadata {
+  image: Buffer;
 }
 
 export const signatureSchema = new Schema<ToSchema<Signature>>({

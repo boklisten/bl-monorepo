@@ -58,15 +58,15 @@ export class OrderValidator {
       await this.orderItemValidator.validate(branch, order, isAdmin);
       await this.branchValidator.validate(order);
       await this.orderPlacedValidator.validate(order);
-    } catch (e) {
-      if (e instanceof BlError) {
-        return Promise.reject(e);
+    } catch (error) {
+      if (error instanceof BlError) {
+        return Promise.reject(error);
       }
       return Promise.reject(
-        new BlError("order could not be validated").store("error", e),
+        new BlError("order could not be validated").store("error", error),
       );
     }
-    return Promise.resolve(true);
+    return true;
   }
 
   private mustHaveCustomer(order: Order): boolean {

@@ -35,7 +35,7 @@ export class GoogleAuth {
             assertEnv(BlEnvironment.BL_API_URI) +
             this.apiPath.createPath("auth/google/callback"),
         },
-        async (req, accessToken, refreshToken, profile, done) => {
+        async (request, accessToken, refreshToken, profile, done) => {
           const provider = APP_CONFIG.login.google.name;
           const providerId = profile.id;
           const username = this.retrieveUsername(profile);
@@ -86,32 +86,35 @@ export class GoogleAuth {
   }
 
   private createCallbackGet(router: Router) {
-    router.get(this.apiPath.createPath("auth/google/callback"), (req, res) => {
-      passport.authenticate(
-        APP_CONFIG.login.google.name, // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
-        (err, tokens, blError: BlError) => {
-          const resHandler = new SEResponseHandler();
+    router.get(
+      this.apiPath.createPath("auth/google/callback"),
+      (request, res) => {
+        passport.authenticate(
+          APP_CONFIG.login.google.name, // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+          // @ts-ignore
+          (error, tokens, blError: BlError) => {
+            const resHandler = new SEResponseHandler();
 
-          if (!tokens && (err || blError)) {
-            return res.redirect(
-              assertEnv(BlEnvironment.CLIENT_URI) +
-                APP_CONFIG.path.client.auth.socialLoginFailure,
-            );
-          }
+            if (!tokens && (error || blError)) {
+              return res.redirect(
+                assertEnv(BlEnvironment.CLIENT_URI) +
+                  APP_CONFIG.path.client.auth.socialLoginFailure,
+              );
+            }
 
-          if (tokens) {
-            return resHandler.sendAuthTokens(
-              res,
-              tokens.accessToken,
-              tokens.refreshToken,
-              // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-              // @ts-ignore
-              this.apiPath.retrieveRefererPath(req.headers),
-            );
-          }
-        },
-      )(req, res);
-    });
+            if (tokens) {
+              return resHandler.sendAuthTokens(
+                res,
+                tokens.accessToken,
+                tokens.refreshToken,
+                // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                // @ts-ignore
+                this.apiPath.retrieveRefererPath(request.headers),
+              );
+            }
+          },
+        )(request, res);
+      },
+    );
   }
 }

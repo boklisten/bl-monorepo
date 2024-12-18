@@ -29,8 +29,11 @@ export class CollectionEndpointDocumentAuth<T extends BlDocument> {
         return Promise.reject(new BlError("blApiRequest is null or undefined"));
       }
 
-      for (const doc of docs) {
-        if (isNullish(doc.viewableFor) || doc.viewableFor.length <= 0) {
+      for (const document_ of docs) {
+        if (
+          isNullish(document_.viewableFor) ||
+          document_.viewableFor.length <= 0
+        ) {
           if (restriction.restricted) {
             if (
               !this._permissionService.haveRestrictedDocumentPermission(
@@ -40,7 +43,7 @@ export class CollectionEndpointDocumentAuth<T extends BlDocument> {
                 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
                 // @ts-ignore
                 blApiRequest.user.permission,
-                doc,
+                document_,
                 restriction,
                 documentPermission,
               )
@@ -60,26 +63,26 @@ export class CollectionEndpointDocumentAuth<T extends BlDocument> {
           let permissionValid = false;
 
           if (
-            !this._permissionService.haveRestrictedDocumentPermission(
+            this._permissionService.haveRestrictedDocumentPermission(
               // eslint-disable-next-line @typescript-eslint/ban-ts-comment
               // @ts-ignore
               blApiRequest.user.id,
               // eslint-disable-next-line @typescript-eslint/ban-ts-comment
               // @ts-ignore
               blApiRequest.user.permission,
-              doc,
+              document_,
               restriction,
               documentPermission,
             )
           ) {
-            for (const id of doc.viewableFor) {
+            permissionValid = true;
+          } else {
+            for (const id of document_.viewableFor) {
               if (id.toString() === blApiRequest.user?.id.toString()) {
                 permissionValid = true;
                 break;
               }
             }
-          } else {
-            permissionValid = true;
           }
 
           if (!permissionValid) {

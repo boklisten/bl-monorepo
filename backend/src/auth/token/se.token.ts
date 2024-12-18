@@ -32,7 +32,7 @@ export class SEToken {
       this.options = options;
     } else {
       this.options = {
-        exp: 57600, //16 hours
+        exp: 57_600, //16 hours
         aud: "boklisten.co",
         iss: "boklisten.co",
       };
@@ -123,29 +123,27 @@ export class SEToken {
     },
   ): Promise<JwtPayload> {
     return new Promise((resolve, reject) => {
-      if (validLoginOptions) {
-        if (!validLoginOptions.restrictedToUserOrAbove) {
-          if (
-            validLoginOptions.permissions &&
-            !this.validatePermissions(
-              jwtPayload.permission,
-              validLoginOptions.permissions,
-            )
-          ) {
-            return reject(
-              new BlError(
-                'lacking the given permissions, "' +
-                  jwtPayload.permission.toString() +
-                  '" does not include all the permissions of "' +
-                  validLoginOptions.permissions.toString() +
-                  '"',
-              )
-                .className("SeToken")
-                .methodName("validateToken")
-                .code(905),
-            );
-          }
-        }
+      if (
+        validLoginOptions &&
+        !validLoginOptions.restrictedToUserOrAbove &&
+        validLoginOptions.permissions &&
+        !this.validatePermissions(
+          jwtPayload.permission,
+          validLoginOptions.permissions,
+        )
+      ) {
+        return reject(
+          new BlError(
+            'lacking the given permissions, "' +
+              jwtPayload.permission.toString() +
+              '" does not include all the permissions of "' +
+              validLoginOptions.permissions.toString() +
+              '"',
+          )
+            .className("SeToken")
+            .methodName("validateToken")
+            .code(905),
+        );
       }
 
       resolve(jwtPayload);
@@ -196,9 +194,8 @@ export class SEToken {
       if (tokenPermission === "admin") return true;
     }
 
-    if (lowestPermission === "employee") {
-      if (tokenPermission === "admin") return true;
-    }
+    if (lowestPermission === "employee" && tokenPermission === "admin")
+      return true;
 
     return false;
   }

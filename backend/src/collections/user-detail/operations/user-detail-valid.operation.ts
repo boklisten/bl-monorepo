@@ -28,7 +28,7 @@ export class UserDetailValidOperation implements Operation {
 
   async run(
     blApiRequest: BlApiRequest,
-    _req?: Request,
+    _request?: Request,
     res?: Response,
   ): Promise<boolean> {
     try {
@@ -60,13 +60,13 @@ export class UserDetailValidOperation implements Operation {
       }
 
       return true;
-    } catch (err) {
+    } catch (error) {
       const responseError: BlError = new BlError(
         "userDetail could not be validated",
       );
 
-      if (err instanceof BlError) {
-        responseError.add(err);
+      if (error instanceof BlError) {
+        responseError.add(error);
       }
 
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment

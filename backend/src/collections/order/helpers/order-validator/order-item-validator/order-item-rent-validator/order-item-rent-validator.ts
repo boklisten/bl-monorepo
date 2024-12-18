@@ -34,15 +34,15 @@ export class OrderItemRentValidator {
         branch.paymentInfo,
         item.price,
       );
-      return Promise.resolve(true);
-    } catch (e) {
-      if (e instanceof BlError) {
-        return Promise.reject(e);
+      return true;
+    } catch (error) {
+      if (error instanceof BlError) {
+        return Promise.reject(error);
       }
       return Promise.reject(
         new BlError(
           "unknown error, could not validate orderItem type rent",
-        ).store("error", e),
+        ).store("error", error),
       );
     }
   }

@@ -44,10 +44,12 @@ export class UserHandler {
       if (!username)
         return reject(new BlError("username is empty or undefined"));
 
-      const dbQuery = new SEDbQuery();
-      dbQuery.stringFilters = [{ fieldName: "username", value: username }];
+      const databaseQuery = new SEDbQuery();
+      databaseQuery.stringFilters = [
+        { fieldName: "username", value: username },
+      ];
 
-      this.userStorage.getByQuery(dbQuery).then(
+      this.userStorage.getByQuery(databaseQuery).then(
         (docs: User[]) => {
           if (docs.length > 1) {
             this.handleIfMultipleUsersWithSameEmail(docs)
@@ -103,7 +105,7 @@ export class UserHandler {
           // @ts-ignore
           .update(selectedUser, { primary: true }, new SystemUser())
           .then(() => {
-            const promiseArr = users.map((user) =>
+            const promiseArray = users.map((user) =>
               this.userStorage.update(
                 user.id,
                 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
@@ -113,7 +115,7 @@ export class UserHandler {
               ),
             );
 
-            return Promise.all(promiseArr)
+            return Promise.all(promiseArray)
               .then(() => {
                 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
                 // @ts-ignore
@@ -145,14 +147,14 @@ export class UserHandler {
       if (!providerId || providerId.length <= 0)
         reject(blError.msg("providerId is empty of undefined"));
 
-      const dbQuery = new SEDbQuery();
-      dbQuery.stringFilters = [
+      const databaseQuery = new SEDbQuery();
+      databaseQuery.stringFilters = [
         { fieldName: "login.provider", value: provider },
         { fieldName: "login.providerId", value: providerId },
       ];
 
       this.userStorage
-        .getByQuery(dbQuery)
+        .getByQuery(databaseQuery)
         .then((users: User[]) => {
           // eslint-disable-next-line @typescript-eslint/ban-ts-comment
           // @ts-ignore
@@ -255,13 +257,13 @@ export class UserHandler {
         id: blid,
         permission: newUser.permission,
       });
-    } catch (e) {
+    } catch (error) {
       const blError = new BlError("user creation failed").code(903);
 
-      if (e instanceof BlError) {
-        blError.add(e);
+      if (error instanceof BlError) {
+        blError.add(error);
       } else {
-        blError.store("UserCreationError", e);
+        blError.store("UserCreationError", error);
       }
 
       throw blError;
@@ -307,15 +309,15 @@ export class UserHandler {
       );
     }
 
-    const dbQuery = new SEDbQuery();
-    dbQuery.stringFilters = [
+    const databaseQuery = new SEDbQuery();
+    databaseQuery.stringFilters = [
       { fieldName: "login.provider", value: provider },
       { fieldName: "login.providerId", value: providerId },
     ];
 
     return new Promise((resolve, reject) => {
       this.userStorage
-        .getByQuery(dbQuery)
+        .getByQuery(databaseQuery)
         .then(() => {
           resolve();
         })

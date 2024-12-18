@@ -73,34 +73,37 @@ export class MatchNotifyOperation implements Operation {
 
     let targetCustomerIds: Set<string>;
     switch (matchNotifySpec.target) {
-      case "senders":
+      case "senders": {
         targetCustomerIds = senderCustomerIds;
         break;
-      case "receivers":
+      }
+      case "receivers": {
         targetCustomerIds = receiverCustomerIds;
         break;
-      case "stand-only":
+      }
+      case "stand-only": {
         targetCustomerIds = standOnlyCustomerIds;
         break;
+      }
       case "all":
-      default:
+      default: {
         targetCustomerIds = new Set([
           ...senderCustomerIds,
           ...receiverCustomerIds,
           ...standOnlyCustomerIds,
         ]);
         break;
+      }
     }
 
     return new BlapiResponse(
       await Promise.allSettled(
-        (
-          await this._userDetailStorage.getMany(Array.from(targetCustomerIds))
-        ).map((customer) =>
-          sendSMS(
-            customer.phone,
-            `${matchNotifySpec.message} Logg inn med: ${customer.email} Mvh Boklisten.no`,
-          ),
+        (await this._userDetailStorage.getMany([...targetCustomerIds])).map(
+          (customer) =>
+            sendSMS(
+              customer.phone,
+              `${matchNotifySpec.message} Logg inn med: ${customer.email} Mvh Boklisten.no`,
+            ),
         ),
       ),
     );

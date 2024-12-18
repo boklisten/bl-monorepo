@@ -35,21 +35,20 @@ export class DbQueryDateFilter {
       throw new TypeError("the given query can not be null or undefined");
 
     try {
-      for (const param in query) {
-        if (Object.prototype.hasOwnProperty.call(query, param)) {
-          if (validDateParams.indexOf(param) > -1) {
-            if (Array.isArray(query[param])) {
-              return this.generateMultipleDateFilter(param, query[param]);
-            } else {
-              return [this.generateSingleDayFilter(param, query[param])];
-            }
-          }
+      for (const parameter in query) {
+        if (
+          Object.prototype.hasOwnProperty.call(query, parameter) &&
+          validDateParams.includes(parameter)
+        ) {
+          return Array.isArray(query[parameter])
+            ? this.generateMultipleDateFilter(parameter, query[parameter])
+            : [this.generateSingleDayFilter(parameter, query[parameter])];
         }
       }
 
       return [];
-    } catch (e) {
-      if (e instanceof SyntaxError) {
+    } catch (error) {
+      if (error instanceof SyntaxError) {
         throw new SyntaxError();
       }
     }
@@ -70,7 +69,7 @@ export class DbQueryDateFilter {
     const operation = this.getOperation(value);
 
     if (operation) {
-      value = value.slice(1, value.length);
+      value = value.slice(1);
     }
 
     let momentDate;
@@ -122,13 +121,11 @@ export class DbQueryDateFilter {
 
   private getOperation(value: string): string {
     for (const operationIdentifier of this.operationIdentifiers) {
-      if (value.length >= operationIdentifier.atIndex) {
-        if (
-          operationIdentifier.opIdentifier ===
-          value[operationIdentifier.atIndex]
-        ) {
-          return operationIdentifier.op;
-        }
+      if (
+        value.length >= operationIdentifier.atIndex &&
+        operationIdentifier.opIdentifier === value[operationIdentifier.atIndex]
+      ) {
+        return operationIdentifier.op;
       }
     }
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment

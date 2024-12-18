@@ -69,14 +69,17 @@ export class PaymentPatchHook extends Hook {
     accessToken: AccessToken,
   ): Promise<Payment> {
     switch (payment.method) {
-      case "later":
+      case "later": {
         return this.handlePaymentLater(payment, accessToken);
-      case "dibs":
+      }
+      case "dibs": {
         return this.paymentDibsHandler.handleDibsPayment(payment, accessToken);
-      default:
+      }
+      default: {
         return Promise.reject(
           new BlError(`payment.method "${payment.method}" not supported`),
         );
+      }
     }
   }
 

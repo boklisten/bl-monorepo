@@ -1,3 +1,3 @@
-export class DeliveryInfoBranch {
+export interface DeliveryInfoBranch {
   branch: string;
 }

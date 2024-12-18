@@ -15,7 +15,7 @@ export class BranchGetHook extends Hook {
     branches: Branch[],
     accessToken: AccessToken,
   ): Promise<Branch[]> {
-    branches.forEach((branch) => this.resolveBranchItems(branch, accessToken));
+    for (const branch of branches) this.resolveBranchItems(branch, accessToken);
 
     return Promise.resolve(branches);
   }
@@ -25,13 +25,7 @@ export class BranchGetHook extends Hook {
       branch.isBranchItemsLive !== undefined &&
       branch.isBranchItemsLive !== null
     ) {
-      if (!accessToken) {
-        // no user found must be "online" (bl-web)
-        if (!branch.isBranchItemsLive.online) {
-          // should not show branchItems
-          branch.branchItems = [];
-        }
-      } else {
+      if (accessToken) {
         if (
           this.permissionService.isPermissionEqualOrOver(
             accessToken.permission,
@@ -43,20 +37,26 @@ export class BranchGetHook extends Hook {
 
         // have a user
         if (
-          !this.permissionService.isPermissionEqualOrOver(
+          this.permissionService.isPermissionEqualOrOver(
             accessToken.permission,
             "employee",
           )
         ) {
+          if (!branch.isBranchItemsLive.atBranch) {
+            branch.branchItems = [];
+          }
+        } else {
           // user is customer
           if (!branch.isBranchItemsLive.online) {
             // user must be "online" (bl-web)
             branch.branchItems = [];
           }
-        } else {
-          if (!branch.isBranchItemsLive.atBranch) {
-            branch.branchItems = [];
-          }
+        }
+      } else {
+        // no user found must be "online" (bl-web)
+        if (!branch.isBranchItemsLive.online) {
+          // should not show branchItems
+          branch.branchItems = [];
         }
       }
     }

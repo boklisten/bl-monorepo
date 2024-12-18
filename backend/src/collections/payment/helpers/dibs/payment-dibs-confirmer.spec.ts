@@ -48,7 +48,7 @@ describe("PaymentDibsConfirmer", () => {
         id: "payment1",
         info: { paymentId: "dibs1" },
         amount: 120,
-      } as Payment;
+      } as unknown as Payment;
 
       const order = {
         id: "order1",
@@ -76,7 +76,7 @@ describe("PaymentDibsConfirmer", () => {
         id: "payment1",
         info: { paymentId: "dibs1" },
         amount: 110,
-      } as Payment;
+      } as unknown as Payment;
 
       const order = {
         id: "order1",
@@ -104,7 +104,7 @@ describe("PaymentDibsConfirmer", () => {
         id: "payment1",
         info: { paymentId: "dibs1" },
         amount: 120,
-      } as Payment;
+      } as unknown as Payment;
 
       const order = {
         id: "order1",

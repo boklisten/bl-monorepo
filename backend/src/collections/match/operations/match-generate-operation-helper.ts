@@ -32,21 +32,23 @@ export function candidateMatchToMatch(
   deadlineOverrides: Record<string, string>,
 ): Match {
   switch (candidate.variant) {
-    case CandidateMatchVariant.StandMatch:
+    case CandidateMatchVariant.StandMatch: {
       return new StandMatch(
         candidate.userId,
-        Array.from(candidate.handoffItems),
-        Array.from(candidate.pickupItems),
+        [...candidate.handoffItems],
+        [...candidate.pickupItems],
         candidate.meetingInfo,
       );
-    case CandidateMatchVariant.UserMatch:
+    }
+    case CandidateMatchVariant.UserMatch: {
       return new UserMatch(
         candidate.senderId,
         candidate.receiverId,
-        Array.from(candidate.items),
+        [...candidate.items],
         candidate.meetingInfo,
         deadlineOverrides,
       );
+    }
   }
 }
 
@@ -106,7 +108,7 @@ export async function getMatchableSenders(
       groupByCustomerStep,
     ])) as { id: string; items: string[] }[];
   }
-  console.log("aggSenders: ", aggregatedSenders);
+  console.log("aggSenders:", aggregatedSenders);
 
   return aggregatedSenders.map((sender) => ({
     id: sender.id,
@@ -221,7 +223,7 @@ export function verifyMatcherSpec(
     !isNaN(new Date(m["startTime"]).getTime()) &&
     typeof m["deadlineBefore"] === "string" &&
     !isNaN(new Date(m["deadlineBefore"]).getTime()) &&
-    new Date(m["deadlineBefore"]).getTime() > new Date().getTime() &&
+    new Date(m["deadlineBefore"]).getTime() > Date.now() &&
     typeof m["matchMeetingDurationInMS"] === "number" &&
     !isNaN(m["matchMeetingDurationInMS"]) &&
     isBoolean(m["includeSenderItemsFromOtherBranches"]) &&

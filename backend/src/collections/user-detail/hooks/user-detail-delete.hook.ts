@@ -47,10 +47,10 @@ export class UserDetailDeleteHook extends Hook {
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore
       await this.userDeleteAllInfo.deleteAllInfo(id, accessToken);
-    } catch (e) {
+    } catch (error) {
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore
-      throw new BlError(`user "${id}" could not be deleted: ${e.message}`);
+      throw new BlError(`user "${id}" could not be deleted: ${error.message}`);
     }
 
     return true;

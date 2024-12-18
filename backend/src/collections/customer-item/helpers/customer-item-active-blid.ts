@@ -30,11 +30,12 @@ export class CustomerItemActiveBlid {
   }
 
   async getActiveCustomerItems(blid: string): Promise<CustomerItem[]> {
-    const dbQuery = this.dbQueryBuilder.getDbQuery({ blid: blid }, [
+    const databaseQuery = this.dbQueryBuilder.getDbQuery({ blid: blid }, [
       { fieldName: "blid", type: "string" },
     ]);
 
-    const customerItems = await this._customerItemStorage.getByQuery(dbQuery);
+    const customerItems =
+      await this._customerItemStorage.getByQuery(databaseQuery);
 
     const activeCustomerItems = customerItems.filter((customerItem) =>
       this.customerItemActive.isActive(customerItem),

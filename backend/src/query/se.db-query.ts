@@ -40,55 +40,55 @@ export class SEDbQuery {
   }
 
   getFilter() {
-    const filterObj = {};
-    const orArr = [];
+    const filterObject = {};
+    const orArray = [];
 
     for (const booleanFilter of this.booleanFilters) {
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore
-      filterObj[booleanFilter.fieldName] = booleanFilter.value;
+      filterObject[booleanFilter.fieldName] = booleanFilter.value;
     }
 
     for (const dateFilter of this.dateFilters) {
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore
-      filterObj[dateFilter.fieldName] = dateFilter.op;
+      filterObject[dateFilter.fieldName] = dateFilter.op;
     }
 
     for (const numberFilter of this.numberFilters) {
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore
-      filterObj[numberFilter.fieldName] = numberFilter.op;
+      filterObject[numberFilter.fieldName] = numberFilter.op;
     }
 
     for (const stringFilter of this.stringFilters) {
       if (Array.isArray(stringFilter.value)) {
-        const arr = stringFilter.value;
-        for (const stringValue of arr) {
-          const multipleValuesFilterObj = {};
+        const array = stringFilter.value;
+        for (const stringValue of array) {
+          const multipleValuesFilterObject = {};
           // eslint-disable-next-line @typescript-eslint/ban-ts-comment
           // @ts-ignore
-          multipleValuesFilterObj[stringFilter.fieldName] = stringValue;
-          orArr.push(multipleValuesFilterObj);
+          multipleValuesFilterObject[stringFilter.fieldName] = stringValue;
+          orArray.push(multipleValuesFilterObject);
         }
       } else {
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore
-        filterObj[stringFilter.fieldName] = stringFilter.value;
+        filterObject[stringFilter.fieldName] = stringFilter.value;
       }
     }
 
     for (const objectIdFilter of this.objectIdFilters) {
       if (Array.isArray(objectIdFilter.value)) {
-        const arr = objectIdFilter.value;
-        for (const stringValue of arr) {
+        const array = objectIdFilter.value;
+        for (const stringValue of array) {
           if (!ObjectId.isValid(stringValue))
             throw new BlError(`Invalid ObjectID: ${stringValue}`).code(701);
-          const multipleValuesFilterObj = {};
+          const multipleValuesFilterObject = {};
           // eslint-disable-next-line @typescript-eslint/ban-ts-comment
           // @ts-ignore
-          multipleValuesFilterObj[objectIdFilter.fieldName] = stringValue;
-          orArr.push(multipleValuesFilterObj);
+          multipleValuesFilterObject[objectIdFilter.fieldName] = stringValue;
+          orArray.push(multipleValuesFilterObject);
         }
       } else {
         if (!ObjectId.isValid(objectIdFilter.value))
@@ -97,36 +97,36 @@ export class SEDbQuery {
           );
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore
-        filterObj[objectIdFilter.fieldName] = objectIdFilter.value;
+        filterObject[objectIdFilter.fieldName] = objectIdFilter.value;
       }
     }
 
     for (const regexFilter of this.regexFilters) {
-      const regexFilterObj = {};
+      const regexFilterObject = {};
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore
-      regexFilterObj[regexFilter.fieldName] = regexFilter.op;
-      orArr.push(regexFilterObj);
+      regexFilterObject[regexFilter.fieldName] = regexFilter.op;
+      orArray.push(regexFilterObject);
     }
 
-    if (orArr.length > 0) {
+    if (orArray.length > 0) {
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore
-      filterObj["$or"] = orArr;
+      filterObject["$or"] = orArray;
     }
 
-    return filterObj;
+    return filterObject;
   }
 
   getOgFilter() {
-    const ogFilterObj = {};
+    const ogFilterObject = {};
 
     for (const ogFilter of this.onlyGetFilters) {
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore
-      ogFilterObj[ogFilter.fieldName] = ogFilter.value;
+      ogFilterObject[ogFilter.fieldName] = ogFilter.value;
     }
-    return ogFilterObj;
+    return ogFilterObject;
   }
 
   getLimitFilter(): number {
@@ -142,14 +142,14 @@ export class SEDbQuery {
   }
 
   getSortFilter() {
-    const sortFilterObj = {};
+    const sortFilterObject = {};
 
     for (const sortFilter of this.sortFilters) {
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore
-      sortFilterObj[sortFilter.fieldName] = sortFilter.direction;
+      sortFilterObject[sortFilter.fieldName] = sortFilter.direction;
     }
 
-    return sortFilterObj;
+    return sortFilterObject;
   }
 }

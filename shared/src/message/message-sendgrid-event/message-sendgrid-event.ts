@@ -1,4 +1,4 @@
-export type SendgridEvent = {
+export interface SendgridEvent {
   email: string; // email of the recipient
   timestamp: number; // unix timestamp when message was sent
   event:
@@ -24,6 +24,6 @@ export type SendgridEvent = {
   tls?: boolean; // if it was used TLS encryption or not
   url?: string; // url of where the event originated
   attempt?: number; // the number of times sendgrid has attempted to deliver this message
-  category: any; // a custom tag for organizing our emails
+  category: unknown; // a custom tag for organizing our emails
   type?: string; // indicates wheter the bounce event was a hard bounce (type=bounce) or block (type=block)
-};
+}

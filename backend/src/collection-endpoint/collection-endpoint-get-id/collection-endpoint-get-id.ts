@@ -14,8 +14,8 @@ export class CollectionEndpointGetId<T extends BlDocument>
       this._documentStorage // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore
         .get(blApiRequest.documentId, blApiRequest.user.permission)
-        .then((doc: T) => {
-          resolve([doc]);
+        .then((document_: T) => {
+          resolve([document_]);
         })
         .catch((blError: BlError) => {
           reject(blError);

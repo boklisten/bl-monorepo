@@ -21,9 +21,9 @@ export class HttpHandler {
       }
 
       logger.debug(`R-> POST ${url}`);
-      request.post(options, (err, res, body) => {
-        if (err) {
-          logger.verbose(`<-R ERROR ${err}`);
+      request.post(options, (error, res, body) => {
+        if (error) {
+          logger.verbose(`<-R ERROR ${error}`);
           return reject(new BlError(`error on request to "${url}"`));
         }
 
@@ -32,7 +32,7 @@ export class HttpHandler {
             return resolve(body);
           }
 
-          logger.verbose(`<-R ERROR ${err}`);
+          logger.verbose(`<-R ERROR ${error}`);
 
           return reject(
             new BlError(

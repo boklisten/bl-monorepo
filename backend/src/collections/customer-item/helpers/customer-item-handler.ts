@@ -44,19 +44,15 @@ export class CustomerItemHandler {
     const customerItem = await this._customerItemStorage.get(customerItemId);
 
     if (customerItem.returned) {
-      return Promise.reject(
-        new BlError("can not extend when returned is true"),
-      );
+      throw new BlError("can not extend when returned is true");
     }
 
     if (orderItem.type !== "extend") {
-      return Promise.reject(new BlError('orderItem.type is not "extend"'));
+      throw new BlError('orderItem.type is not "extend"');
     }
 
     if (!orderItem.info || !orderItem.info["periodType"]) {
-      return Promise.reject(
-        new BlError('orderItem info is not present when type is "extend"'),
-      );
+      throw new BlError('orderItem info is not present when type is "extend"');
     }
 
     const branch = await this._branchStorage.get(branchId);
@@ -105,7 +101,7 @@ export class CustomerItemHandler {
     orderItem: OrderItem,
   ) {
     if (orderItem.type !== "buyout") {
-      return Promise.reject(`orderItem.type is not "buyout"`);
+      throw `orderItem.type is not "buyout"`;
     }
 
     const customerItem = await this._customerItemStorage.get(customerItemId);
@@ -141,7 +137,7 @@ export class CustomerItemHandler {
     employeeId: string,
   ) {
     if (orderItem.type !== "return") {
-      return Promise.reject(`orderItem.type is not "return"`);
+      throw `orderItem.type is not "return"`;
     }
 
     const customerItem = await this._customerItemStorage.get(customerItemId);
@@ -178,7 +174,7 @@ export class CustomerItemHandler {
     orderItem: OrderItem,
   ) {
     if (orderItem.type !== "cancel") {
-      return Promise.reject(`orderItem.type is not "cancel"`);
+      throw `orderItem.type is not "cancel"`;
     }
 
     const customerItem = await this._customerItemStorage.get(customerItemId);
@@ -214,7 +210,7 @@ export class CustomerItemHandler {
     orderItem: OrderItem,
   ) {
     if (orderItem.type !== "buyback") {
-      return Promise.reject(`orderItem.type is not "buyback"`);
+      throw `orderItem.type is not "buyback"`;
     }
 
     const customerItem = await this._customerItemStorage.get(customerItemId);
@@ -266,8 +262,8 @@ export class CustomerItemHandler {
 
     let query;
 
-    const dbQueryBuilder = new SEDbQueryBuilder();
-    let dbQuery;
+    const databaseQueryBuilder = new SEDbQueryBuilder();
+    let databaseQuery;
 
     if (type) {
       if (type === "loan") {
@@ -282,7 +278,7 @@ export class CustomerItemHandler {
         type: type,
       };
 
-      dbQuery = dbQueryBuilder.getDbQuery(query, [
+      databaseQuery = databaseQueryBuilder.getDbQuery(query, [
         { fieldName: "customer", type: "object-id" },
         { fieldName: "deadline", type: "date" },
         { fieldName: "returned", type: "boolean" },
@@ -299,7 +295,7 @@ export class CustomerItemHandler {
         buyout: "false",
       };
 
-      dbQuery = dbQueryBuilder.getDbQuery(query, [
+      databaseQuery = databaseQueryBuilder.getDbQuery(query, [
         { fieldName: "customer", type: "object-id" },
         { fieldName: "deadline", type: "date" },
         { fieldName: "returned", type: "boolean" },
@@ -308,7 +304,7 @@ export class CustomerItemHandler {
       ]);
     }
 
-    return await this._customerItemStorage.getByQuery(dbQuery);
+    return await this._customerItemStorage.getByQuery(databaseQuery);
   }
 
   private getExtendPeriod(

@@ -11,21 +11,21 @@ export class PriceService {
     return +price.toFixed(2); // the plus changes the output to a number
   }
 
-  public round(num: number): number {
+  public round(number_: number): number {
     if (this.up) {
-      return this.roundUp(num);
+      return this.roundUp(number_);
     } else if (this.down) {
-      return this.roundDown(num);
+      return this.roundDown(number_);
     } else {
-      return num;
+      return number_;
     }
   }
 
-  private roundDown(num: number): number {
-    return parseInt((num / 10).toString(), 10) * 10;
+  private roundDown(number_: number): number {
+    return Number.parseInt((number_ / 10).toString(), 10) * 10;
   }
 
-  private roundUp(num: number): number {
-    return parseInt((num / 10).toString(), 10) * 10 + 10;
+  private roundUp(number_: number): number {
+    return Number.parseInt((number_ / 10).toString(), 10) * 10 + 10;
   }
 }

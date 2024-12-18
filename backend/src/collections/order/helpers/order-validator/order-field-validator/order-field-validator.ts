@@ -11,14 +11,14 @@ export class OrderFieldValidator {
       for (const orderItem of order.orderItems) {
         this.validateOrderItemFields(orderItem);
       }
-    } catch (e) {
-      if (e instanceof BlError) {
-        return Promise.reject(e);
+    } catch (error) {
+      if (error instanceof BlError) {
+        return Promise.reject(error);
       }
       return Promise.reject(
         new BlError("unknown error, orderItem could not be validated").store(
           "error",
-          e,
+          error,
         ),
       );
     }

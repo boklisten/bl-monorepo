@@ -84,15 +84,15 @@ export class OrderPlacedHandler {
       await this._orderItemMovedFromOrderHandler.updateOrderItems(placedOrder);
       await this.updateUserDetailWithPlacedOrder(placedOrder, accessToken);
       // Don't await to improve performance
-      this.sendOrderConfirmationMail(placedOrder).catch((e) =>
-        logger.warn(`could not send order confirmation mail: ${e}`),
+      this.sendOrderConfirmationMail(placedOrder).catch((error) =>
+        logger.warn(`could not send order confirmation mail: ${error}`),
       );
 
       return placedOrder;
-    } catch (e) {
+    } catch (error) {
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore
-      throw new BlError("could not update order: " + e).add(e);
+      throw new BlError("could not update order: " + error).add(error);
     }
   }
 
@@ -117,45 +117,62 @@ export class OrderPlacedHandler {
         }
 
         if (customerItemId !== null) {
-          if (orderItem.type === "extend") {
-            await this._customerItemHandler.extend(
-              customerItemId,
-              orderItem,
-              order.branch,
-              order.id,
-            );
-          } else if (orderItem.type === "buyout") {
-            await this._customerItemHandler.buyout(
-              customerItemId,
-              order.id,
-              orderItem,
-            );
-          } else if (orderItem.type === "buyback") {
-            await this._customerItemHandler.buyback(
-              customerItemId,
-              order.id,
-              orderItem,
-            );
-          } else if (orderItem.type === "cancel") {
-            await this._customerItemHandler.cancel(
-              customerItemId,
-              order.id,
-              orderItem,
-            );
-          } else if (orderItem.type === "return") {
-            await this._customerItemHandler.return(
-              customerItemId,
-              order.id,
-              orderItem,
-              order.branch,
-              accessToken.details,
-            );
+          switch (orderItem.type) {
+            case "extend": {
+              await this._customerItemHandler.extend(
+                customerItemId,
+                orderItem,
+                order.branch,
+                order.id,
+              );
+
+              break;
+            }
+            case "buyout": {
+              await this._customerItemHandler.buyout(
+                customerItemId,
+                order.id,
+                orderItem,
+              );
+
+              break;
+            }
+            case "buyback": {
+              await this._customerItemHandler.buyback(
+                customerItemId,
+                order.id,
+                orderItem,
+              );
+
+              break;
+            }
+            case "cancel": {
+              await this._customerItemHandler.cancel(
+                customerItemId,
+                order.id,
+                orderItem,
+              );
+
+              break;
+            }
+            case "return": {
+              await this._customerItemHandler.return(
+                customerItemId,
+                order.id,
+                orderItem,
+                order.branch,
+                accessToken.details,
+              );
+
+              break;
+            }
+            // No default
           }
         }
       }
     }
 
-    return Promise.resolve(order);
+    return order;
   }
 
   private updateUserDetailWithPlacedOrder(
@@ -171,7 +188,9 @@ export class OrderPlacedHandler {
         .then((userDetail: UserDetail) => {
           const orders = userDetail.orders ?? [];
 
-          if (!orders.includes(order.id)) {
+          if (orders.includes(order.id)) {
+            resolve(true);
+          } else {
             orders.push(order.id);
 
             this.userDetailStorage
@@ -188,8 +207,6 @@ export class OrderPlacedHandler {
                   new BlError("could not update userDetail with placed order"),
                 );
               });
-          } else {
-            resolve(true);
           }
         })
         .catch((getUserDetailError: BlError) => {
@@ -207,11 +224,9 @@ export class OrderPlacedHandler {
       return;
     }
     const customerDetail = await this.userDetailStorage.get(order.customer);
-    if (order.handoutByDelivery) {
-      await this._messenger.sendDeliveryInformation(customerDetail, order);
-    } else {
-      await this._messenger.orderPlaced(customerDetail, order);
-    }
+    await (order.handoutByDelivery
+      ? this._messenger.sendDeliveryInformation(customerDetail, order)
+      : this._messenger.orderPlaced(customerDetail, order));
   }
 
   /**

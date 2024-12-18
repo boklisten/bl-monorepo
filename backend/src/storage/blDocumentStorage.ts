@@ -44,8 +44,8 @@ export class BlDocumentStorage<T extends BlDocument>
     return new Promise((resolve, reject) => {
       this.mongoDbHandler
         .get(id, userPermission)
-        .then((doc: T) => {
-          resolve(doc);
+        .then((document_: T) => {
+          resolve(document_);
         })
         .catch((blError: BlError) => {
           reject(blError);
@@ -54,12 +54,12 @@ export class BlDocumentStorage<T extends BlDocument>
   }
 
   getByQuery(
-    dbQuery: SEDbQuery,
+    databaseQuery: SEDbQuery,
     nestedDocuments?: NestedDocument[],
   ): Promise<T[]> {
     return new Promise((resolve, reject) => {
       this.mongoDbHandler
-        .getByQuery(dbQuery, nestedDocuments)
+        .getByQuery(databaseQuery, nestedDocuments)
         .then((docs: T[]) => {
           resolve(docs);
         })
@@ -106,12 +106,15 @@ export class BlDocumentStorage<T extends BlDocument>
     });
   }
 
-  add(doc: T, user: { id: string; permission: UserPermission }): Promise<T> {
+  add(
+    document_: T,
+    user: { id: string; permission: UserPermission },
+  ): Promise<T> {
     return new Promise((resolve, reject) => {
       this.mongoDbHandler
-        .add(doc, user)
-        .then((addedDoc: T) => {
-          resolve(addedDoc);
+        .add(document_, user)
+        .then((addedDocument: T) => {
+          resolve(addedDocument);
         })
         .catch((blError: BlError) => {
           reject(blError);
@@ -131,8 +134,8 @@ export class BlDocumentStorage<T extends BlDocument>
     return new Promise((resolve, reject) => {
       this.mongoDbHandler
         .update(id, data, user)
-        .then((updatedDoc: T) => {
-          resolve(updatedDoc);
+        .then((updatedDocument: T) => {
+          resolve(updatedDocument);
         })
         .catch((blError: BlError) => {
           reject(blError);
@@ -158,8 +161,8 @@ export class BlDocumentStorage<T extends BlDocument>
     return new Promise((resolve, reject) => {
       this.mongoDbHandler
         .remove(id, user)
-        .then((deletedDoc: T) => {
-          resolve(deletedDoc);
+        .then((deletedDocument: T) => {
+          resolve(deletedDocument);
         })
         .catch((blError: BlError) => {
           reject(blError);

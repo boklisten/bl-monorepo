@@ -32,21 +32,21 @@ export class OrderItemBuyValidator {
       this.validateOrderItemFields(orderItem, item);
 
       await this.validateOrderItemPriceTypeBuy(orderItem, item);
-    } catch (e) {
-      if (e instanceof BlError) {
-        return Promise.reject(e);
+    } catch (error) {
+      if (error instanceof BlError) {
+        return Promise.reject(error);
       }
       return Promise.reject(
         new BlError(
           "unknown error, could not validate price of orderItems, error: " +
             // eslint-disable-next-line @typescript-eslint/ban-ts-comment
             // @ts-ignore
-            e.message,
-        ).store("error", e),
+            error.message,
+        ).store("error", error),
       );
     }
 
-    return Promise.resolve(true);
+    return true;
   }
 
   private validateOrderItemFields(orderItem: OrderItem, item: Item): boolean {

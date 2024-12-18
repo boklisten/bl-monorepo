@@ -46,7 +46,7 @@ function mapItemIdsToItemDetails(
   itemsMap: Map<string, Item>,
 ): Record<string, MatchRelevantItemDetails> {
   return Object.fromEntries(
-    Array.from(new Set(itemIds.map(String))).map((itemId) => {
+    [...new Set(itemIds.map(String))].map((itemId) => {
       const item = itemsMap.get(itemId);
       if (item === undefined) {
         throw new BlError(
@@ -107,15 +107,15 @@ export async function addDetailsToAllMatches(
   itemStorage: BlDocumentStorage<Item>,
   uniqueItemStorage: BlDocumentStorage<UniqueItem>,
 ): Promise<MatchWithDetails[]> {
-  const userIds = Array.from(
-    matches.reduce(
+  const userIds = [
+    ...matches.reduce(
       (userIds, match) =>
         match._variant === MatchVariant.UserMatch
           ? new Set([...userIds, match.sender, match.receiver])
           : new Set([...userIds, match.customer]),
       new Set<string>(),
     ),
-  );
+  ];
   const userDetailsMap = new Map(
     await Promise.all(
       userIds.map((id) =>
@@ -126,17 +126,17 @@ export async function addDetailsToAllMatches(
     ),
   );
 
-  const blIdsToMap = Array.from(
-    matches.reduce(
+  const blIdsToMap = [
+    ...matches.reduce(
       (blIds, match) =>
         match._variant === MatchVariant.UserMatch
           ? new Set([...blIds, ...match.receivedBlIds, ...match.deliveredBlIds])
           : blIds,
       new Set<string>(),
     ),
-  );
-  const itemsToMapFromExpectedItems = Array.from(
-    matches.reduce(
+  ];
+  const itemsToMapFromExpectedItems = [
+    ...matches.reduce(
       (items, match) =>
         match._variant === MatchVariant.UserMatch
           ? new Set([...items, ...match.expectedItems.map(String)])
@@ -147,7 +147,7 @@ export async function addDetailsToAllMatches(
             ]),
       new Set<string>(),
     ),
-  );
+  ];
   const blIdsToItemIdMap = new Map(
     await Promise.all(
       blIdsToMap.map((blId) => {
@@ -162,15 +162,15 @@ export async function addDetailsToAllMatches(
       }),
     ),
   );
-  const itemsToMapFromBlIds = Array.from(
-    Array.from(blIdsToItemIdMap.values()).reduce(
+  const itemsToMapFromBlIds = [
+    ...[...blIdsToItemIdMap.values()].reduce(
       (itemIds, itemId) => new Set([...itemIds, itemId]),
       new Set<string>(),
     ),
-  );
-  const itemsToMap = Array.from(
-    new Set([...itemsToMapFromExpectedItems, ...itemsToMapFromBlIds]),
-  );
+  ];
+  const itemsToMap = [
+    ...new Set([...itemsToMapFromExpectedItems, ...itemsToMapFromBlIds]),
+  ];
   const itemsMap = new Map(
     (await itemStorage.getMany(itemsToMap)).map((item) => [item.id, item]),
   );

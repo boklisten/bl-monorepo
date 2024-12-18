@@ -66,63 +66,63 @@ export class UserDetailHelper {
 
     const userDetailUpdateObject = {};
 
-    if (isNullish(userDetail.name) || userDetail.name.length <= 0) {
+    if (
+      (isNullish(userDetail.name) || userDetail.name.length <= 0) && // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
+      dibsUserDetail.firstName &&
+      dibsUserDetail?.lastName
+    ) {
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore
-      if (dibsUserDetail.firstName && dibsUserDetail.lastName) {
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      userDetailUpdateObject["name"] = // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore
-        userDetailUpdateObject["name"] = // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-          // @ts-ignore
-          dibsUserDetail.firstName + " " + dibsUserDetail.lastName;
-      }
+        dibsUserDetail.firstName + " " + dibsUserDetail.lastName;
     }
 
-    if (isNullish(userDetail.phone) || userDetail.phone.length <= 0) {
+    if (
+      (isNullish(userDetail.phone) || userDetail.phone.length <= 0) &&
+      dibsUserDetail?.phoneNumber.number
+    ) {
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore
-      if (dibsUserDetail.phoneNumber && dibsUserDetail.phoneNumber.number) {
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
-        userDetailUpdateObject["phone"] = dibsUserDetail.phoneNumber.number;
-      }
+      userDetailUpdateObject["phone"] = dibsUserDetail.phoneNumber.number;
     }
 
-    if (isNullish(userDetail.address) || userDetail.address.length <= 0) {
+    if (
+      (isNullish(userDetail.address) || userDetail.address.length <= 0) && // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
+      dibsShippingAddress.addressLine1
+    ) {
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore
-      if (dibsShippingAddress.addressLine1) {
+      userDetailUpdateObject["address"] =
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore
-        userDetailUpdateObject["address"] =
-          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-          // @ts-ignore
-          dibsShippingAddress.addressLine1 +
-          " " +
-          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-          // @ts-ignore
-          dibsShippingAddress.addressLine2;
-      }
+        dibsShippingAddress.addressLine1 +
+        " " +
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
+        dibsShippingAddress.addressLine2;
     }
 
-    if (isNullish(userDetail.postCity) || userDetail.postCity.length <= 0) {
+    if (
+      (isNullish(userDetail.postCity) || userDetail.postCity.length <= 0) && // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
+      dibsShippingAddress.city
+    ) {
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore
-      if (dibsShippingAddress.city) {
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
-        userDetailUpdateObject["postCity"] = dibsShippingAddress.city;
-      }
+      userDetailUpdateObject["postCity"] = dibsShippingAddress.city;
     }
 
-    if (isNullish(userDetail.postCode) || userDetail.postCode.length <= 0) {
+    if (
+      (isNullish(userDetail.postCode) || userDetail.postCode.length <= 0) && // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
+      dibsShippingAddress.postalCode
+    ) {
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore
-      if (dibsShippingAddress.postalCode) {
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
-        userDetailUpdateObject["postCode"] = dibsShippingAddress.postalCode;
-      }
+      userDetailUpdateObject["postCode"] = dibsShippingAddress.postalCode;
     }
 
     return userDetailUpdateObject;
@@ -138,20 +138,14 @@ export class UserDetailHelper {
 
   public getFirstName(name: string) {
     const splitName = name.trimEnd().split(" ");
-    if (splitName.length <= 1) {
-      return name.trim();
-    } else {
-      return splitName.slice(0, -1).join(" ").trim();
-    }
+    return splitName.length <= 1
+      ? name.trim()
+      : splitName.slice(0, -1).join(" ").trim();
   }
 
   public getLastName(name: string) {
     const splitName = name.trimEnd().split(" ");
-    if (splitName.length <= 1) {
-      return "";
-    } else {
-      return splitName.slice(-1).join(" ");
-    }
+    return splitName.length <= 1 ? "" : splitName.slice(-1).join(" ");
   }
 
   public getInvalidUserDetailFields(userDetail: UserDetail) {

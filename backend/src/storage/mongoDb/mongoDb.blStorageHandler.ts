@@ -42,7 +42,7 @@ export class MongoDbBlStorageHandler<T extends BlDocument>
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     userPermission?: UserPermission,
   ): Promise<T> {
-    const doc = (await this.mongooseModel
+    const document_ = (await this.mongooseModel
       .findById<T>(id)
       .lean({ transform: MongooseModelCreator.transformObject })
       .exec()
@@ -53,28 +53,28 @@ export class MongoDbBlStorageHandler<T extends BlDocument>
         );
       })) as T;
 
-    if (!doc) {
+    if (!document_) {
       throw new BlError(`object "${id}" not found`).code(702);
     }
-    return doc;
+    return document_;
   }
 
   public async getByQuery(
-    dbQuery: SEDbQuery,
+    databaseQuery: SEDbQuery,
     allowedNestedDocuments?: NestedDocument[],
   ): Promise<T[]> {
     logger.silly(
-      `mongoose.find(${JSON.stringify(dbQuery.getFilter())}, ${JSON.stringify(
-        dbQuery.getOgFilter(),
-      )}).limit(${dbQuery.getLimitFilter()}).skip(${dbQuery.getSkipFilter()}).sort(${JSON.stringify(
-        dbQuery.getSortFilter(),
+      `mongoose.find(${JSON.stringify(databaseQuery.getFilter())}, ${JSON.stringify(
+        databaseQuery.getOgFilter(),
+      )}).limit(${databaseQuery.getLimitFilter()}).skip(${databaseQuery.getSkipFilter()}).sort(${JSON.stringify(
+        databaseQuery.getSortFilter(),
       )})`,
     );
     const docs = (await this.mongooseModel
-      .find<T>(dbQuery.getFilter(), dbQuery.getOgFilter())
-      .limit(dbQuery.getLimitFilter())
-      .skip(dbQuery.getSkipFilter())
-      .sort(dbQuery.getSortFilter())
+      .find<T>(databaseQuery.getFilter(), databaseQuery.getOgFilter())
+      .limit(databaseQuery.getLimitFilter())
+      .skip(databaseQuery.getSkipFilter())
+      .sort(databaseQuery.getSortFilter())
       .lean({ transform: MongooseModelCreator.transformObject })
       .exec()
       .catch((error) => {
@@ -88,16 +88,14 @@ export class MongoDbBlStorageHandler<T extends BlDocument>
       throw new BlError("not found").code(702);
     }
 
-    const expandFilters = dbQuery.getExpandFilter();
-    if (allowedNestedDocuments && allowedNestedDocuments.length > 0) {
-      return await this.retrieveNestedDocuments(
-        docs,
-        allowedNestedDocuments,
-        expandFilters,
-      );
-    } else {
-      return docs;
-    }
+    const expandFilters = databaseQuery.getExpandFilter();
+    return allowedNestedDocuments && allowedNestedDocuments.length > 0
+      ? await this.retrieveNestedDocuments(
+          docs,
+          allowedNestedDocuments,
+          expandFilters,
+        )
+      : docs;
   }
 
   public async getMany(
@@ -105,12 +103,12 @@ export class MongoDbBlStorageHandler<T extends BlDocument>
     userPermission?: UserPermission,
   ): Promise<T[]> {
     try {
-      const idArr = ids.map((id) => new Types.ObjectId(id));
+      const idArray = ids.map((id) => new Types.ObjectId(id));
       // if user have admin privileges, he can also get documents that are inactive
       const filter =
         userPermission && this.permissionService.isAdmin(userPermission)
-          ? { _id: { $in: idArr } }
-          : { _id: { $in: idArr }, active: true };
+          ? { _id: { $in: idArray } }
+          : { _id: { $in: idArray }, active: true };
 
       return (await this.mongooseModel
         .find<T>(filter)
@@ -147,7 +145,7 @@ export class MongoDbBlStorageHandler<T extends BlDocument>
       userPermission && this.permissionService.isAdmin(userPermission)
         ? {}
         : { active: true };
-    const doc = (await this.mongooseModel
+    const document_ = (await this.mongooseModel
       .find<T>(filter)
       .lean({ transform: MongooseModelCreator.transformObject })
       .exec()
@@ -158,29 +156,29 @@ export class MongoDbBlStorageHandler<T extends BlDocument>
         );
       })) as T[];
 
-    if (!doc) {
+    if (!document_) {
       throw new BlError(`getAll returned null`);
     }
-    return doc;
+    return document_;
   }
 
   public async add(
-    doc: T,
+    document_: T,
     user?: { id: string; permission: UserPermission },
   ): Promise<T> {
     try {
       if (user) {
-        doc.user = user;
+        document_.user = user;
       }
 
       const newDocument = new this.mongooseModel({
-        ...doc,
-        ...(doc.id && { _id: doc.id }),
+        ...document_,
+        ...(document_.id && { _id: document_.id }),
       });
       return (await newDocument.save()).toObject();
     } catch (error) {
       throw this.handleError(
-        new BlError("error when trying to add document").data(doc),
+        new BlError("error when trying to add document").data(document_),
         error,
       );
     }
@@ -188,7 +186,7 @@ export class MongoDbBlStorageHandler<T extends BlDocument>
 
   public async addMany(docs: T[]): Promise<T[]> {
     const insertedDocs = await this.mongooseModel.insertMany(docs);
-    return insertedDocs.map((doc) => doc.toObject());
+    return insertedDocs.map((document_) => document_.toObject());
   }
 
   public async update(
@@ -203,7 +201,7 @@ export class MongoDbBlStorageHandler<T extends BlDocument>
     // Don't update the user of a document after creation
     delete newData["user"];
 
-    const doc = (await this.mongooseModel
+    const document_ = (await this.mongooseModel
       .findOneAndUpdate<T>({ _id: id }, newData, { new: true })
       .lean({ transform: MongooseModelCreator.transformObject })
       .exec()
@@ -218,11 +216,11 @@ export class MongoDbBlStorageHandler<T extends BlDocument>
         );
       })) as T;
 
-    if (!doc) {
+    if (!document_) {
       throw new BlError(`could not find document with id "${id}"`).code(702);
     }
 
-    return doc;
+    return document_;
   }
 
   public async updateMany(
@@ -255,7 +253,7 @@ export class MongoDbBlStorageHandler<T extends BlDocument>
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     user: { id: string; permission: UserPermission },
   ): Promise<T> {
-    const doc = (await this.mongooseModel
+    const document_ = (await this.mongooseModel
       .findByIdAndDelete<T>(id)
       .lean({ transform: MongooseModelCreator.transformObject })
       .exec()
@@ -266,10 +264,10 @@ export class MongoDbBlStorageHandler<T extends BlDocument>
         );
       })) as T;
 
-    if (!doc) {
+    if (!document_) {
       throw new BlError(`could not remove document with id "${id}"`).code(702);
     }
-    return doc;
+    return document_;
   }
 
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
@@ -314,8 +312,12 @@ export class MongoDbBlStorageHandler<T extends BlDocument>
 
     try {
       return await Promise.all(
-        docs.map((doc) =>
-          this.getNestedDocuments(doc, expandedNestedDocuments, userPermission),
+        docs.map((document_) =>
+          this.getNestedDocuments(
+            document_,
+            expandedNestedDocuments,
+            userPermission,
+          ),
         ),
       );
     } catch (error) {
@@ -330,19 +332,19 @@ export class MongoDbBlStorageHandler<T extends BlDocument>
   }
 
   private async getNestedDocuments(
-    doc: T,
+    document_: T,
     nestedDocuments: NestedDocument[],
     userPermission?: UserPermission,
   ): Promise<T> {
     const nestedDocumentsPromArray = nestedDocuments.flatMap((nestedDocument) =>
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore
-      doc && doc[nestedDocument.field]
+      document_ && document_[nestedDocument.field]
         ? [
             this.getNestedDocument(
               // eslint-disable-next-line @typescript-eslint/ban-ts-comment
               // @ts-ignore
-              doc[nestedDocument.field],
+              document_[nestedDocument.field],
               nestedDocument,
               userPermission,
             ),
@@ -353,15 +355,15 @@ export class MongoDbBlStorageHandler<T extends BlDocument>
     try {
       const nestedDocs = await Promise.all(nestedDocumentsPromArray);
 
-      for (let i = 0; i < nestedDocuments.length; i++) {
+      for (const [index, nestedDocument] of nestedDocuments.entries()) {
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore
-        doc[nestedDocuments[i].field] = nestedDocs[i];
+        document_[nestedDocument.field] = nestedDocs[index];
       }
 
-      return doc;
+      return document_;
     } catch {
-      return doc;
+      return document_;
     }
   }
 

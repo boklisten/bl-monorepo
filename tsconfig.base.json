@@ -1,7 +1,6 @@
-// TODO: hinder imports between @frontend and @backend
 {
   "compilerOptions": {
-    "target": "es2020",
+    "target": "es2022",
     "module": "commonjs",
     "lib": ["esnext"],
     "esModuleInterop": true,
@@ -20,9 +19,7 @@
     "noImplicitOverride": true,
     "noPropertyAccessFromIndexSignature": true,
     "forceConsistentCasingInFileNames": true,
-
     "baseUrl": ".",
-    "moduleResolution": "node",
     "paths": {
       "@shared/*": ["shared/src/*"],
       "@frontend/*": ["frontend/src/*"],

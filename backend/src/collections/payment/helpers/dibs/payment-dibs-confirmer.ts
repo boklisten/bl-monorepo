@@ -61,9 +61,9 @@ export class PaymentDibsConfirmer {
         { info: dibsEasyPaymentDetails },
         { id: accessToken.details, permission: accessToken.permission },
       );
-    } catch (e) {
+    } catch (error) {
       throw new BlError(
-        "payment could not be updated with dibs information:" + e,
+        "payment could not be updated with dibs information:" + error,
       );
     }
 
@@ -87,7 +87,10 @@ export class PaymentDibsConfirmer {
     if (
       isNullish(dibsEasyPaymentDetails.summary) ||
       isNullish(dibsEasyPaymentDetails.summary.reservedAmount) ||
-      parseInt("" + dibsEasyPaymentDetails.summary.reservedAmount, 10) !==
+      Number.parseInt(
+        "" + dibsEasyPaymentDetails.summary.reservedAmount,
+        10,
+      ) !==
         payment.amount * 100
     ) {
       throw new BlError(

@@ -1,10 +1,10 @@
-import { Period } from "../../period/period";
+import { Period } from "@shared/period/period";
 
-export type OrderItemBuybackInfo = {
+export interface OrderItemBuybackInfo {
   buybackAmount?: number; // the amount the employee pays to buyback
   customerItem?: string;
   from?: Date;
   to?: Date;
   numberOfPeriods?: number;
   periodType?: Period;
-};
+}

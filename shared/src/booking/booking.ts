@@ -1,6 +1,6 @@
-import { BlDocument } from "../bl-document/bl-document";
+import { BlDocument } from "@shared/bl-document/bl-document";
 
-export class Booking extends BlDocument {
+export interface Booking extends BlDocument {
   from: Date;
   to: Date;
   customer: string;

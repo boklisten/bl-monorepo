@@ -88,7 +88,7 @@ export class PaymentPostHook extends Hook {
   ): Promise<Payment> {
     return new Promise((resolve, reject) => {
       switch (payment.method) {
-        case "dibs":
+        case "dibs": {
           return payment.amount < 0
             ? resolve(payment)
             : this.paymentDibsHandler
@@ -99,8 +99,10 @@ export class PaymentPostHook extends Hook {
                 .catch((blError: BlError) => {
                   reject(blError);
                 });
-        default:
+        }
+        default: {
           return resolve(payment);
+        }
       }
     });
   }
@@ -115,7 +117,7 @@ export class PaymentPostHook extends Hook {
         .then((order: Order) => {
           const paymentIds = order.payments ?? [];
 
-          if (paymentIds.indexOf(payment.id) > -1) {
+          if (paymentIds.includes(payment.id)) {
             reject(
               new BlError(
                 `order.payments already includes payment "${payment.id}"`,

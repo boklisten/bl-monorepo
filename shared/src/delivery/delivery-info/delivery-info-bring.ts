@@ -1,4 +1,4 @@
-export class DeliveryInfoBring {
+export interface DeliveryInfoBring {
   amount: number;
   estimatedDelivery: Date;
   taxAmount?: number;

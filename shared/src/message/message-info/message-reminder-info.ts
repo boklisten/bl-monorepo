@@ -1,3 +1,3 @@
-export type MessageReminderInfo = {
+export interface MessageReminderInfo {
   deadline: Date;
-};
+}

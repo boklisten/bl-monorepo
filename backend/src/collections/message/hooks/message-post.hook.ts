@@ -34,31 +34,27 @@ export class MessagePostHook extends Hook {
     message: Message,
     accessToken: AccessToken,
   ): Promise<Message> {
-    if (typeof message.messageType === "undefined" || !message.messageType) {
+    if (message.messageType === undefined || !message.messageType) {
       throw new BlError("messageType is not defined").code(701);
     }
 
-    if (
-      typeof message.messageSubtype === "undefined" ||
-      !message.messageSubtype
-    ) {
+    if (message.messageSubtype === undefined || !message.messageSubtype) {
       throw new BlError("messageSubtype is not defined").code(701);
     }
 
-    if (message.messageType === "reminder") {
-      if (
-        !this.permissionService.isPermissionEqualOrOver(
-          accessToken.permission,
-          "admin",
-        )
-      ) {
-        throw new BlError("no permission").code(904);
-      }
+    if (
+      message.messageType === "reminder" &&
+      !this.permissionService.isPermissionEqualOrOver(
+        accessToken.permission,
+        "admin",
+      )
+    ) {
+      throw new BlError("no permission").code(904);
     }
 
     switch (message.messageType) {
       case "custom-reminder":
-      case "reminder":
+      case "reminder": {
         if (
           message.messageType === "custom-reminder" &&
           message.messageMethod !== "sms"
@@ -68,14 +64,18 @@ export class MessagePostHook extends Hook {
           );
         }
         return await this.onRemind(message);
-      case "generic":
+      }
+      case "generic": {
         return await this.onGeneric(message);
-      case "match":
+      }
+      case "match": {
         return await this.onMatch(message);
-      default:
+      }
+      default: {
         throw new BlError(
           `MessageType "${message.messageType}" is not supported`,
         ).code(701);
+      }
     }
   }
 
@@ -88,8 +88,8 @@ export class MessagePostHook extends Hook {
         ).code(702);
       });
     // Do not await to improve performance
-    this.messenger.send(message, userDetail).catch((e) => {
-      throw new BlError(`Could not send generic message`).code(200).add(e);
+    this.messenger.send(message, userDetail).catch((error) => {
+      throw new BlError(`Could not send generic message`).code(200).add(error);
     });
     return message;
   }
@@ -104,16 +104,16 @@ export class MessagePostHook extends Hook {
       });
 
     // Do not await to improve performance
-    this.messenger.send(message, userDetail).catch((e) => {
-      throw new BlError(`Could not send match message`).code(200).add(e);
+    this.messenger.send(message, userDetail).catch((error) => {
+      throw new BlError(`Could not send match message`).code(200).add(error);
     });
     return message;
   }
 
   private async onRemind(message: Message): Promise<Message> {
     // Do not await to improve performance
-    this.messengerReminder.remindCustomer(message).catch((e) => {
-      throw new BlError(`Could not send reminder message`).code(200).add(e);
+    this.messengerReminder.remindCustomer(message).catch((error) => {
+      throw new BlError(`Could not send reminder message`).code(200).add(error);
     });
     return message;
   }

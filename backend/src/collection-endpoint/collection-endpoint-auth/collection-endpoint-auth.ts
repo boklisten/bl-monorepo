@@ -10,25 +10,25 @@ export class CollectionEndpointAuth {
 
   public authenticate(
     restriction: BlEndpointRestriction,
-    req: Request,
+    request: Request,
     res: Response,
     next: NextFunction,
   ): Promise<AccessToken | boolean> {
     return new Promise((resolve, reject) => {
-      if (restriction || isNotNullish(req.headers["authorization"])) {
+      if (restriction || isNotNullish(request.headers["authorization"])) {
         // it is a restriction on this endpoint and authentication is required, also try if there are sent with a auth header
         passport.authenticate(
           this._authStrategy,
-          (_err: unknown, tokens: { accessToken: AccessToken }) => {
+          (_error: unknown, tokens: { accessToken: AccessToken }) => {
             try {
               this.validateAuth(restriction, tokens.accessToken);
               return resolve(tokens.accessToken);
-            } catch (e) {
+            } catch (error) {
               // if authorization tokens is not valid
-              return reject(e);
+              return reject(error);
             }
           },
-        )(req, res, next);
+        )(request, res, next);
       } else {
         // no authentication needed
         return resolve(true);
@@ -44,12 +44,14 @@ export class CollectionEndpointAuth {
       throw new BlError("accessToken invalid").code(910);
     }
 
-    if (restriction && restriction.permissions) {
-      if (restriction.permissions.indexOf(accessToken.permission) <= -1) {
-        throw new BlError(
-          `user "${accessToken.sub}" with permission "${accessToken.permission}" does not have access to this endpoint`,
-        ).code(904);
-      }
+    if (
+      restriction &&
+      restriction.permissions &&
+      restriction.permissions.indexOf(accessToken.permission) <= -1
+    ) {
+      throw new BlError(
+        `user "${accessToken.sub}" with permission "${accessToken.permission}" does not have access to this endpoint`,
+      ).code(904);
     }
 
     return true;

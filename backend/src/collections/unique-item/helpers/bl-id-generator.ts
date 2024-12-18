@@ -90,12 +90,12 @@ function createBlIdCanvas(id: string): Canvas {
 
   const blIdCanvas = new Canvas(totalWidth, totalHeight);
 
-  const printCtx = blIdCanvas.getContext("2d");
-  printCtx.fillStyle = "white";
-  printCtx.fillRect(0, 0, totalWidth, totalHeight);
+  const printContext = blIdCanvas.getContext("2d");
+  printContext.fillStyle = "white";
+  printContext.fillRect(0, 0, totalWidth, totalHeight);
 
-  printCtx.drawImage(qrcodeCanvas, 0, PRINTER_DIMENSIONS.qrcode.paddingTop);
-  printCtx.drawImage(
+  printContext.drawImage(qrcodeCanvas, 0, PRINTER_DIMENSIONS.qrcode.paddingTop);
+  printContext.drawImage(
     barcodeCanvas,
     qrcodeCanvas.width + PRINTER_DIMENSIONS.label.spaceBetween,
     0,
@@ -104,9 +104,9 @@ function createBlIdCanvas(id: string): Canvas {
   return blIdCanvas;
 }
 
-async function addIdPagesToDoc(
+async function addIdPagesToDocument(
   id: string,
-  doc: PDFKit.PDFDocument,
+  document_: PDFKit.PDFDocument,
 ): Promise<void> {
   const canvas = createBlIdCanvas(id);
   const pngBuffers: Buffer[] = [];
@@ -118,27 +118,27 @@ async function addIdPagesToDoc(
 
   const pngBuffer = Buffer.concat(pngBuffers);
 
-  for (let i = 0; i < 2; i++) {
-    doc.addPage({
+  for (let index = 0; index < 2; index++) {
+    document_.addPage({
       size: [canvas.width, canvas.height],
     });
-    doc.image(pngBuffer, 0, 0, { width: canvas.width });
+    document_.image(pngBuffer, 0, 0, { width: canvas.width });
   }
 }
 
 async function generateBlIdPDF(): Promise<Buffer> {
   const ids = generateBlIds(400);
-  const doc = new PDFDocument({ autoFirstPage: false });
+  const document_ = new PDFDocument({ autoFirstPage: false });
 
   for (const id of ids) {
-    await addIdPagesToDoc(id, doc);
+    await addIdPagesToDocument(id, document_);
   }
 
-  doc.end();
+  document_.end();
 
   const buffers: Buffer[] = [];
 
-  for await (const chunk of doc) {
+  for await (const chunk of document_) {
     buffers.push(chunk as Buffer);
   }
 

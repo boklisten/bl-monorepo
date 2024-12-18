@@ -68,14 +68,14 @@ export class OrderItemValidator {
         await this.validateOrderItemBasedOnType(branch, item, orderItem);
         this.validateOrderItemAmounts(orderItem);
       }
-    } catch (e) {
-      if (e instanceof BlError) {
-        return Promise.reject(e);
+    } catch (error) {
+      if (error instanceof BlError) {
+        return Promise.reject(error);
       }
       return Promise.reject(
         new BlError("unknown error, orderItem could not be validated").store(
           "error",
-          e,
+          error,
         ),
       );
     }
@@ -102,26 +102,30 @@ export class OrderItemValidator {
     orderItem: OrderItem,
   ): Promise<boolean> {
     switch (orderItem.type) {
-      case "rent":
+      case "rent": {
         return await this.orderItemRentValidator.validate(
           branch,
           orderItem,
           item,
         );
-      case "partly-payment":
+      }
+      case "partly-payment": {
         return await this.orderItemPartlyPaymentValidator.validate(
           orderItem,
           item,
           branch,
         );
-      case "buy":
+      }
+      case "buy": {
         return await this.orderItemBuyValidator.validate(
           branch,
           orderItem,
           item,
         );
-      case "extend":
+      }
+      case "extend": {
         return await this.orderItemExtendValidator.validate(branch, orderItem);
+      }
     }
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore

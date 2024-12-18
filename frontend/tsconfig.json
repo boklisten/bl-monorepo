@@ -1,15 +1,15 @@
 {
   "extends": "../tsconfig.base.json",
   "compilerOptions": {
-    "target": "es2015",
     "lib": ["dom", "dom.iterable", "esnext"],
     "allowJs": true,
     "checkJs": true,
     "noEmit": true,
-    "strictPropertyInitialization": false, // TODO: enable this for stricter checks
     "module": "esnext",
-    "moduleResolution": "node", // Switch from "bundler" to "node"
+    "moduleResolution": "bundler",
     "jsx": "preserve",
+    "composite": true,
+    "declaration": true,
     "incremental": true,
     "plugins": [
       {

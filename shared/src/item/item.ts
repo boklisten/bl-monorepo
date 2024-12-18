@@ -1,14 +1,22 @@
-import { BlDocument } from "../bl-document/bl-document";
-import { ItemType } from "./item-type";
+import { BlDocument } from "@shared/bl-document/bl-document";
+import { ItemType } from "@shared/item/item-type";
 
-export class Item extends BlDocument {
+export interface Item extends BlDocument {
   title: string;
   type: ItemType;
+  digital: boolean;
   price: number;
   taxRate: number;
-  digital?: boolean;
-  info?: any;
-  desc?: string;
-  buyback?: boolean;
-  categories?: string[];
+  info: {
+    isbn: number;
+    subject: string;
+    year: number;
+    price: Record<string, number>;
+    weight: string;
+    distributor: string;
+    discount: number;
+    publisher: string;
+  };
+  buyback: boolean;
+  categories: string[];
 }

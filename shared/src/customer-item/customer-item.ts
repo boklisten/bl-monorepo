@@ -1,10 +1,6 @@
-import { BlDocument } from "../bl-document/bl-document";
-import { Period } from "../period/period";
-import { UserDetail } from "../user/user-detail/user-detail";
-import { SharedItem } from "../shared-item/shared-item";
-import { Order } from "../order/order";
-import { Item } from "../item/item";
-import { CustomerItemType } from "./customer-item-type";
+import { BlDocument } from "@shared/bl-document/bl-document";
+import { CustomerItemType } from "@shared/customer-item/customer-item-type";
+import { Period } from "@shared/period/period";
 
 /**
  * A CustomerItem is a item that the customer is holding, either by renting
@@ -12,9 +8,9 @@ import { CustomerItemType } from "./customer-item-type";
  * It holds information about the rental period such as the deadline.
  * it can either be handed out by a Branch or another Customer.
  */
-export class CustomerItem extends BlDocument {
+export interface CustomerItem extends BlDocument {
   item: string; // what item is this customerItem for
-  override blid?: string; // the unique id for this customer item
+  blid?: string; // the unique id for this customer item
   type?: CustomerItemType; // type is used to determine how to handle the customerItem
   age?: "new" | "used"; // describes if the item is new or used
   customer: string; // the id/or the customer

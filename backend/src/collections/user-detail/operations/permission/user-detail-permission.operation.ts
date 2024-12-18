@@ -35,7 +35,7 @@ export class UserDetailPermissionOperation implements Operation {
 
   async run(
     blApiRequest: BlApiRequest,
-    _req?: Request,
+    _request?: Request,
     res?: Response,
   ): Promise<boolean> {
     if (!this._permissionService.hasPermissionField(blApiRequest.data)) {

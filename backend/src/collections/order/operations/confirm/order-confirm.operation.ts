@@ -65,7 +65,7 @@ export class OrderConfirmOperation implements Operation {
   }
 
   private async hasOpenOrderWithOrderItems(order: Order) {
-    const dbQuery = this._queryBuilder.getDbQuery(
+    const databaseQuery = this._queryBuilder.getDbQuery(
       { customer: order.customer, placed: "true" },
       [
         { fieldName: "customer", type: "object-id" },
@@ -76,7 +76,7 @@ export class OrderConfirmOperation implements Operation {
     try {
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore
-      const existingOrders = await this._orderStorage.getByQuery(dbQuery);
+      const existingOrders = await this._orderStorage.getByQuery(databaseQuery);
       const alreadyOrderedItems =
         this.filterOrdersByAlreadyOrdered(existingOrders);
 
@@ -102,7 +102,7 @@ export class OrderConfirmOperation implements Operation {
     blApiRequest: BlApiRequest,
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
-    req?: Request,
+    request?: Request,
     res?: Response,
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
@@ -144,8 +144,8 @@ export class OrderConfirmOperation implements Operation {
         order,
         accessToken,
       );
-    } catch (e) {
-      throw new BlError("order could not be placed:" + e);
+    } catch (error) {
+      throw new BlError("order could not be placed:" + error);
     } // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
     this._resHandler.sendResponse(res, new BlapiResponse([placedOrder]));

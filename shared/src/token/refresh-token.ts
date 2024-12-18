@@ -1,4 +1,4 @@
-export class RefreshToken {
+export interface RefreshToken {
   iss: string; // what server issued the token
   aud: string; // where the token is valid
   iat: number; // at what time the token was issued at

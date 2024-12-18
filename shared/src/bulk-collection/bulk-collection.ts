@@ -1,4 +1,4 @@
-export type ScannedBook = {
+export interface ScannedBook {
   blid: string;
   title: string;
   customerName: string;
@@ -10,4 +10,4 @@ export type ScannedBook = {
   customerId: string;
   collectedAt?: string;
   orderId?: string;
-};
+}

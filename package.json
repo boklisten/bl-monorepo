@@ -3,15 +3,28 @@
   "workspaces": [
     "frontend",
     "backend",
-    "types"
+    "shared"
   ],
   "scripts": {
     "prettier": "prettier --write '**/*.{js,mjs,ts,tsx,md,json,yml,css}' --ignore-path=.gitignore",
     "prettier:check": "prettier --check '**/*.{js,mjs,ts,tsx,md,json,yml,css}' --ignore-path=.gitignore",
-    "typecheck": "tsc --noEmit"
+    "lint": "eslint . --ignore-pattern '**/*.spec.ts' --ignore-pattern '**/dist/*' --ignore-pattern '**/.next/*'",
+    "typecheck": "yarn workspace shared tsc && yarn workspace backend tsc --noEmit && yarn workspace frontend tsc --noEmit"
   },
   "devDependencies": {
+    "@eslint/js": "^9.17.0",
+    "@next/eslint-plugin-next": "^15.1.0",
+    "@types/node": "^22.10.2",
+    "eslint": "9.17.0",
+    "eslint-config-prettier": "^9.1.0",
+    "eslint-plugin-cypress": "^4.1.0",
+    "eslint-plugin-import": "^2.31.0",
+    "eslint-plugin-jsx-a11y": "^6.10.2",
+    "eslint-plugin-no-relative-import-paths": "^1.5.5",
+    "eslint-plugin-react": "^7.37.2",
+    "eslint-plugin-react-hooks": "^5.1.0",
     "prettier": "^3.4.2",
-    "typescript": "^5.7.2"
+    "typescript": "^5.7.2",
+    "typescript-eslint": "^8.18.0"
   }
 }

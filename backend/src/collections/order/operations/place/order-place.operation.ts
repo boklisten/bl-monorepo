@@ -115,7 +115,7 @@ export class OrderPlaceOperation implements Operation {
   }
 
   private async hasOpenOrderWithOrderItems(order: Order) {
-    const dbQuery = this._queryBuilder.getDbQuery(
+    const databaseQuery = this._queryBuilder.getDbQuery(
       { customer: order.customer, placed: "true" },
       [
         { fieldName: "customer", type: "object-id" },
@@ -126,7 +126,7 @@ export class OrderPlaceOperation implements Operation {
     try {
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore
-      const existingOrders = await this._orderStorage.getByQuery(dbQuery);
+      const existingOrders = await this._orderStorage.getByQuery(databaseQuery);
       const alreadyOrderedItems =
         this.filterOrdersByAlreadyOrdered(existingOrders);
 
@@ -326,7 +326,7 @@ export class OrderPlaceOperation implements Operation {
       await this._matchStorage.update(
         standMatchId,
         {
-          deliveredItems: Array.from(deliveredItems),
+          deliveredItems: [...deliveredItems],
         },
         new SystemUser(),
       );
@@ -357,7 +357,7 @@ export class OrderPlaceOperation implements Operation {
       await this._matchStorage.update(
         standMatchId,
         {
-          receivedItems: Array.from(receivedItems),
+          receivedItems: [...receivedItems],
         },
         new SystemUser(),
       );
@@ -388,7 +388,7 @@ export class OrderPlaceOperation implements Operation {
     for (const [matchId, receivedBlIds] of matchToReceivedBlIdsMap.entries()) {
       await this._matchStorage.update(
         matchId,
-        { receivedBlIds: Array.from(receivedBlIds) },
+        { receivedBlIds: [...receivedBlIds] },
         new SystemUser(),
       );
     }
@@ -421,7 +421,7 @@ export class OrderPlaceOperation implements Operation {
     ] of matchToDeliveredBlIdsMap.entries()) {
       await this._matchStorage.update(
         matchId,
-        { deliveredBlIds: Array.from(deliveredBlIds) },
+        { deliveredBlIds: [...deliveredBlIds] },
         new SystemUser(),
       );
     }
@@ -456,7 +456,7 @@ export class OrderPlaceOperation implements Operation {
     blApiRequest: BlApiRequest,
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
-    req?: Request,
+    request?: Request,
     res?: Response,
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore

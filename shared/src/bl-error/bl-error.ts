@@ -1,13 +1,13 @@
 export class BlError extends Error {
   private _code: number;
-  private _className: string;
-  private _methodName: string;
+  private _className: string | undefined;
+  private _methodName: string | undefined;
   private _errorStack: BlError[];
-  private _data: any;
-  private _store: { key: string; value: any }[];
+  private _data: unknown;
+  private _store: { key: string; value: unknown }[];
 
-  constructor(msg: string) {
-    super(msg);
+  constructor(message: string) {
+    super(message);
     this._errorStack = [];
     this._store = [];
     this._code = 0;
@@ -18,21 +18,22 @@ export class BlError extends Error {
     return this;
   }
 
-  store(key: string, value: any) {
+  store(key: string, value: unknown) {
     this._store.push({ key: key, value: value });
     return this;
   }
 
-  getStore(): { key: string; value: any }[] {
+  getStore(): { key: string; value: unknown }[] {
     return this._store;
   }
 
-  data(data: any): BlError {
+  data(data: unknown): BlError {
+    // @ts-expect-error fixme bad typing
     this.data = data;
     return this;
   }
 
-  getData(): any {
+  getData() {
     return this._data;
   }
 
@@ -45,7 +46,7 @@ export class BlError extends Error {
     return this;
   }
 
-  getClassName(): string {
+  getClassName(): string | undefined {
     return this._className;
   }
 
@@ -54,12 +55,12 @@ export class BlError extends Error {
     return this;
   }
 
-  getMethodName(): string {
+  getMethodName(): string | undefined {
     return this._methodName;
   }
 
-  msg(msg: string): BlError {
-    this.message = msg;
+  msg(message: string): BlError {
+    this.message = message;
     return this;
   }
 
@@ -88,8 +89,8 @@ export class BlError extends Error {
     console.log("\t>BlError[" + blError.getCode() + "]: " + blError.getMsg());
 
     if (blError.errorStack && blError.errorStack.length > 0) {
-      for (let err of blError.errorStack) {
-        this.printErrorStack(err);
+      for (const error of blError.errorStack) {
+        this.printErrorStack(error);
       }
     }
   }

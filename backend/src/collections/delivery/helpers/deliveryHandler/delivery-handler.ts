@@ -48,7 +48,7 @@ export class DeliveryHandler {
     accessToken?: AccessToken,
   ): Promise<Delivery> {
     switch (delivery.method) {
-      case "branch":
+      case "branch": {
         return this.updateOrderWithDeliveryMethodBranch(
           delivery,
           order,
@@ -56,7 +56,8 @@ export class DeliveryHandler {
           // @ts-ignore
           accessToken,
         );
-      case "bring":
+      }
+      case "bring": {
         return this.updateOrderWithDeliveryMethodBring(
           delivery,
           order,
@@ -64,6 +65,7 @@ export class DeliveryHandler {
           // @ts-ignore
           accessToken,
         );
+      }
     }
   }
 
@@ -77,7 +79,7 @@ export class DeliveryHandler {
         return delivery;
       })
       .catch((blError: BlError) => {
-        return Promise.reject(blError);
+        throw blError;
       });
   }
 
@@ -130,9 +132,7 @@ export class DeliveryHandler {
         return true;
       })
       .catch((blError: BlError) => {
-        return Promise.reject(
-          new BlError("could not update order").add(blError),
-        );
+        throw new BlError("could not update order").add(blError);
       });
   }
 

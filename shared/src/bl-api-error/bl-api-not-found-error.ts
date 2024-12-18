@@ -1,11 +1,11 @@
-import { BlApiError } from "./bl-api-error";
+import { BlApiError } from "@shared/bl-api-error/bl-api-error";
 
 export class BlApiNotFoundError extends BlApiError {
   name?: string;
   path?: string;
 
-  constructor(msg?: string, code?: number, path?: string) {
-    super(msg, code);
+  constructor(message?: string, code?: number, path?: string) {
+    super(message, code);
 
     this.name = "BlApiNotFoundError";
 

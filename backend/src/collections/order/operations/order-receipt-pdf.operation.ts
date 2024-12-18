@@ -35,7 +35,7 @@ export class OrderReceiptPdfOperation implements Operation {
     blApiRequest: BlApiRequest,
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
-    req?: Request,
+    request?: Request,
     res?: Response,
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore

@@ -19,7 +19,7 @@ export class CustomerInvoiceActive {
   }
 
   public async haveActiveInvoices(userId: string): Promise<boolean> {
-    const dbQuery = this.queryBuilder.getDbQuery(
+    const databaseQuery = this.queryBuilder.getDbQuery(
       { "customerInfo.userDetail": userId },
       [{ fieldName: "customerInfo.userDetail", type: "object-id" }],
     );
@@ -27,9 +27,9 @@ export class CustomerInvoiceActive {
     try {
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore
-      invoices = await this.invoiceStorage.getByQuery(dbQuery);
-    } catch (e) {
-      if (e instanceof BlError && e.getCode() == 702) {
+      invoices = await this.invoiceStorage.getByQuery(databaseQuery);
+    } catch (error) {
+      if (error instanceof BlError && error.getCode() == 702) {
         return false;
       }
     }

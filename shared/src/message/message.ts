@@ -1,18 +1,18 @@
-import { BlDocument } from "../bl-document/bl-document";
-import { MessageType } from "./message-type/message-type";
-import { MessageSubtype } from "./message-subtype/message-subtype";
-import { MessageMethod } from "./message-method/message-method";
-import { MessageReminderInfo } from "./message-info/message-reminder-info";
-import { MessageReceiptInfo } from "./message-info/message-receipt-info";
-import { TextBlock } from "../text-block/text-block";
-import { SendgridEvent } from "./message-sendgrid-event/message-sendgrid-event";
+import { BlDocument } from "@shared/bl-document/bl-document";
+import { MessageReceiptInfo } from "@shared/message/message-info/message-receipt-info";
+import { MessageReminderInfo } from "@shared/message/message-info/message-reminder-info";
+import { MessageMethod } from "@shared/message/message-method/message-method";
+import { SendgridEvent } from "@shared/message/message-sendgrid-event/message-sendgrid-event";
+import { MessageSubtype } from "@shared/message/message-subtype/message-subtype";
+import { MessageType } from "@shared/message/message-type/message-type";
+import { TextBlock } from "@shared/text-block/text-block";
 
 /*
  * A message is something that is sent to a customer
  * for example a reminder about delivering items.
  * It can be a email, direct message, sms, or all.
  */
-export class Message extends BlDocument {
+export interface Message extends BlDocument {
   // what type of message, ex 'reminder', 'alert', 'direct'
   messageType: MessageType;
   // what type of subtype, ex: 'partly-payment', 'rent'
@@ -28,7 +28,7 @@ export class Message extends BlDocument {
   // info based on the specific message type
   info?: MessageReminderInfo | MessageReceiptInfo;
   events?: SendgridEvent[]; // events for this message, can be sendgrid events
-  smsEvents?: any[]; // sms events for this message
+  smsEvents?: unknown[]; // sms events for this message
   htmlContent?: string; // html content for generic messages
   customContent?: string; // custom content to use when not using sequence number
   subject?: string; // subject for generic html

@@ -31,25 +31,31 @@ export class CollectionEndpointOperation {
       this._method,
     );
     switch (this._method) {
-      case "getId":
+      case "getId": {
         this._router.get(uri, this.handleRequest.bind(this));
         break;
-      case "getAll":
+      }
+      case "getAll": {
         this._router.get(uri, this.handleRequest.bind(this));
         break;
-      case "patch":
+      }
+      case "patch": {
         this._router.patch(uri, this.handleRequest.bind(this));
         break;
-      case "post":
+      }
+      case "post": {
         this._router.post(uri, this.handleRequest.bind(this));
         break;
-      case "put":
+      }
+      case "put": {
         this._router.put(uri, this.handleRequest.bind(this));
         break;
-      default:
+      }
+      default: {
         throw new Error(
           `endpoint operation method "${this._method}" is currently not supported`,
         );
+      }
     }
   }
 
@@ -71,22 +77,22 @@ export class CollectionEndpointOperation {
     return uri;
   }
 
-  private handleRequest(req: Request, res: Response, next: NextFunction) {
+  private handleRequest(request: Request, res: Response, next: NextFunction) {
     let blApiRequest: BlApiRequest;
 
     this._collectionEndpointAuth
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore
-      .authenticate(this._operation.restriction, req, res, next)
+      .authenticate(this._operation.restriction, request, res, next)
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore
       .then((accessToken?: AccessToken) => {
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore
         blApiRequest = {
-          documentId: req.params["id"],
-          query: req.query,
-          data: req.body,
+          documentId: request.params["id"],
+          query: request.query,
+          data: request.body,
           user: {
             // eslint-disable-next-line @typescript-eslint/ban-ts-comment
             // @ts-ignore
@@ -101,7 +107,7 @@ export class CollectionEndpointOperation {
         };
 
         this._operation.operation
-          .run(blApiRequest, req, res, next)
+          .run(blApiRequest, request, res, next)
           .then((blapiResponse: BlapiResponse | boolean) => {
             if (typeof blapiResponse === "boolean") {
               return;
@@ -109,8 +115,8 @@ export class CollectionEndpointOperation {
 
             this._responseHandler.sendResponse(res, blapiResponse);
           })
-          .catch((err) => {
-            this._responseHandler.sendErrorResponse(res, err);
+          .catch((error) => {
+            this._responseHandler.sendErrorResponse(res, error);
           });
       })
       .catch((blError: BlError) =>

@@ -10,7 +10,7 @@ import { BlError } from "@shared/bl-error/bl-error";
 import { CustomerItem } from "@shared/customer-item/customer-item";
 import { Match } from "@shared/match/match";
 import { Order } from "@shared/order/order";
-import { SignatureMetadata } from "@shared/signature/serialized-signature";
+import { SIGNATURE_NUM_MONTHS_VALID } from "@shared/signature/serialized-signature";
 import { UserDetail } from "@shared/user/user-detail/user-detail";
 import chai, { expect } from "chai";
 import chaiAsPromised from "chai-as-promised";
@@ -136,7 +136,7 @@ describe("OrderPlaceOperation", () => {
       signedByGuardian: true,
       id: "validSignature",
       creationTime: moment()
-        .subtract(SignatureMetadata.NUM_MONTHS_VALID / 2, "months")
+        .subtract(SIGNATURE_NUM_MONTHS_VALID / 2, "months")
         .toDate(),
     };
 

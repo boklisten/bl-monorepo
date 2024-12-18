@@ -39,11 +39,7 @@ export class DbQueryExpandFilter {
   ): ExpandFilter[] {
     let expandFilterArray = [];
 
-    if (!Array.isArray(expand)) {
-      expandFilterArray = [expand];
-    } else {
-      expandFilterArray = expand;
-    }
+    expandFilterArray = Array.isArray(expand) ? expand : [expand];
 
     const expandFilters: ExpandFilter[] = [];
 

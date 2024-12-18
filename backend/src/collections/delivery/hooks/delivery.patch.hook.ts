@@ -59,7 +59,7 @@ export class DeliveryPatchHook extends Hook {
         return true;
       })
       .catch((blError: BlError) => {
-        return Promise.reject(blError);
+        throw blError;
       });
   }
 

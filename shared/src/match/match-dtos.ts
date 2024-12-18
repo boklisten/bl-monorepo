@@ -1,6 +1,6 @@
-import { StandMatch, UserMatch } from "./match";
-import { UserDetail } from "../user/user-detail/user-detail";
-import { Item } from "../item/item";
+import { Item } from "@shared/item/item";
+import { StandMatch, UserMatch } from "@shared/match/match";
+import { UserDetail } from "@shared/user/user-detail/user-detail";
 
 export type MatchRelevantUserDetails = Pick<UserDetail, "name" | "phone">;
 
@@ -11,12 +11,8 @@ export type MatchWithDetails = (
   | (UserMatch & {
       senderDetails: MatchRelevantUserDetails;
       receiverDetails: MatchRelevantUserDetails;
-      blIdToItemMap: {
-        [blId: string]: string;
-      };
+      blIdToItemMap: Record<string, string>;
     })
 ) & {
-  itemDetails: {
-    [itemId: string]: MatchRelevantItemDetails;
-  };
+  itemDetails: Record<string, MatchRelevantItemDetails>;
 };

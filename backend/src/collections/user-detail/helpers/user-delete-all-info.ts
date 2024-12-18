@@ -38,13 +38,14 @@ export class UserDeleteAllInfo {
     userDetailId: string,
     accessToken: AccessToken,
   ): Promise<User> {
-    const dbQuery = this.queryBuilder.getDbQuery({ userDetail: userDetailId }, [
-      { fieldName: "userDetail", type: "object-id" },
-    ]);
+    const databaseQuery = this.queryBuilder.getDbQuery(
+      { userDetail: userDetailId },
+      [{ fieldName: "userDetail", type: "object-id" }],
+    );
 
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
-    const users = await this.userStorage.getByQuery(dbQuery);
+    const users = await this.userStorage.getByQuery(databaseQuery);
 
     if (users.length > 1) {
       throw new BlError(
@@ -69,7 +70,7 @@ export class UserDeleteAllInfo {
     username: string,
     accessToken: AccessToken,
   ): Promise<boolean> {
-    const localLoginDbQuery = this.queryBuilder.getDbQuery(
+    const localLoginDatabaseQuery = this.queryBuilder.getDbQuery(
       { username: username },
       [{ fieldName: "username", type: "string" }],
     );
@@ -77,7 +78,7 @@ export class UserDeleteAllInfo {
     const localLogins =
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore
-      await this.localLoginStorage.getByQuery(localLoginDbQuery);
+      await this.localLoginStorage.getByQuery(localLoginDatabaseQuery);
     const localLogin = localLogins[0];
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore

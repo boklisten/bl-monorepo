@@ -161,10 +161,10 @@ export async function getAllMatchesForUser(
 
   try {
     return (await matchStorage.getByQuery(query)) as Match[];
-  } catch (e) {
-    if (e instanceof BlError && e.getCode() === 702) {
+  } catch (error) {
+    if (error instanceof BlError && error.getCode() === 702) {
       return [];
     }
-    throw e;
+    throw error;
   }
 }

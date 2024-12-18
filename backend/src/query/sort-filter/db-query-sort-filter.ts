@@ -48,7 +48,7 @@ export class DbQuerySortFilter {
     const sval = this.getBaseSortParam(sortValue);
 
     if (!validSortParams.includes(sval))
-      throw ReferenceError(
+      throw new ReferenceError(
         'sort parameter "' + sval + '" is not in validSortParams',
       );
 

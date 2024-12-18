@@ -1,23 +1,23 @@
-import { BlDocument } from "../bl-document/bl-document";
+import { BlDocument } from "@shared/bl-document/bl-document";
 
-export class SignatureMetadata extends BlDocument {
-  static readonly NUM_MONTHS_VALID = 4 * 12;
+export const SIGNATURE_NUM_MONTHS_VALID = 4 * 12;
 
+export interface SignatureMetadata extends BlDocument {
   signingName: string;
   signedByGuardian: boolean;
-  override creationTime: Date;
+  creationTime: Date;
 }
 
-export class SerializedSignature extends SignatureMetadata {
+export interface SerializedSignature extends SignatureMetadata {
   base64EncodedImage: string;
 }
 
-export class SerializedGuardianSignature {
+export interface SerializedGuardianSignature {
   customerId: string;
   base64EncodedImage: string;
   signingName: string;
 }
 
-export class CheckGuardianSignatureSpec {
+export interface CheckGuardianSignatureSpec {
   customerId: string;
 }

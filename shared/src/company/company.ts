@@ -1,4 +1,4 @@
-import { BlDocument } from "../bl-document/bl-document";
+import { BlDocument } from "@shared/bl-document/bl-document";
 
 export interface Company extends BlDocument {
   name: string;

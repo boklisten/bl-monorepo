@@ -72,13 +72,16 @@ export class MongooseModelCreator<T> {
     return schema;
   }
 
-  public static transformObject(doc: unknown, ret?: unknown): void {
+  public static transformObject(
+    document_: unknown,
+    returnValue?: unknown,
+  ): void {
     // Mongoose isn't sure which parameter to use, so try both :/
-    if (!ret && doc) ret = doc;
-    if (!ret) return;
+    if (!returnValue && document_) returnValue = document_;
+    if (!returnValue) return;
     // Arrays are also "object" and can be handled the same way
-    if (typeof ret === "object") {
-      const document = ret as Record<string, unknown>;
+    if (typeof returnValue === "object") {
+      const document = returnValue as Record<string, unknown>;
       // Translate _id to id only if id does not already exist
       // (embedded documents such as BlDocument.user may have an id field which is different from the _id field)
       if ("_id" in document && !("id" in document))

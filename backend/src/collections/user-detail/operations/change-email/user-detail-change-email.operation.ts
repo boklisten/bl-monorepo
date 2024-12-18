@@ -43,7 +43,7 @@ export class UserDetailChangeEmailOperation implements Operation {
 
   async run(
     blApiRequest: BlApiRequest,
-    _req?: Request,
+    _request?: Request,
     res?: Response,
   ): Promise<boolean> {
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment

@@ -1,9 +1,7 @@
-import { BlDocument } from "../bl-document/bl-document";
-import { CustomerItem } from "../customer-item/customer-item";
-import { UserDetail } from "../user/user-detail/user-detail";
-import { CustomerItemType } from "../customer-item/customer-item-type";
+import { BlDocument } from "@shared/bl-document/bl-document";
+import { CustomerItemType } from "@shared/customer-item/customer-item-type";
 
-export class Invoice extends BlDocument {
+export interface Invoice extends BlDocument {
   duedate: Date;
   type?: CustomerItemType;
   customerHavePayed?: boolean;

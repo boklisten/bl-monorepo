@@ -41,14 +41,14 @@ export class UserCanDeleteUserDetail {
       return false;
     }
 
-    const dbQuery = this.queryBuilder.getDbQuery(
+    const databaseQuery = this.queryBuilder.getDbQuery(
       { username: userDetailToDelete.email },
       [{ fieldName: "username", type: "string" }],
     );
 
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
-    const users = await this.userStorage.getByQuery(dbQuery);
+    const users = await this.userStorage.getByQuery(databaseQuery);
     const userToDelete = users[0];
 
     return !(

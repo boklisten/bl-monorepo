@@ -39,24 +39,20 @@ export class BringDeliveryService {
     freeDelivery: boolean,
   ): Promise<DeliveryInfoBring> {
     if (isNullish(facilityAddress) || isNullish(shipmentAddress)) {
-      return Promise.reject(
-        new BlError(
-          "required fields facilityAddress or shipmentAddress are null or undefined",
-        ),
+      throw new BlError(
+        "required fields facilityAddress or shipmentAddress are null or undefined",
       );
     }
     if (!items || items.length <= 0) {
-      return Promise.reject(new BlError("items is empty or undefined"));
+      throw new BlError("items is empty or undefined");
     }
 
     if (!facilityAddress.postalCode || facilityAddress.postalCode.length <= 0) {
-      return Promise.reject(
-        new BlError("fromPostalCode is empty or undefined"),
-      );
+      throw new BlError("fromPostalCode is empty or undefined");
     }
 
     if (!shipmentAddress.postalCode || shipmentAddress.postalCode.length <= 0) {
-      return Promise.reject(new BlError("toPostalCode is empty or undefined"));
+      throw new BlError("toPostalCode is empty or undefined");
     }
 
     const bringAuthHeaders = {
@@ -79,7 +75,7 @@ export class BringDeliveryService {
     }
     const product = this.decideProduct(items);
     if (freeDelivery) {
-      return Promise.resolve({
+      return {
         amount: 0,
         taxAmount: 0,
         estimatedDelivery: moment()
@@ -90,7 +86,7 @@ export class BringDeliveryService {
         from: facilityAddress.postalCode,
         to: shipmentAddress.postalCode,
         product,
-      });
+      };
     }
     return new Promise((resolve, reject) => {
       const bringDelivery = this.createBringDelivery(
@@ -113,15 +109,15 @@ export class BringDeliveryService {
               responseData,
               product,
             );
-          } catch (e) {
-            if (e instanceof BlError) {
-              return reject(e);
+          } catch (error) {
+            if (error instanceof BlError) {
+              return reject(error);
             }
 
             return reject(
               new BlError(
                 "unkown error, could not parse the data from bring api",
-              ).store("error", e),
+              ).store("error", error),
             );
           }
 
@@ -215,9 +211,7 @@ export class BringDeliveryService {
 
     deliveryInfoBring = this.getBringProduct(
       deliveryInfoBring,
-      responseData["consignments"][0]["products"][
-        responseData["consignments"][0]["products"].length - 1
-      ],
+      responseData["consignments"][0]["products"].at(-1),
     );
 
     if (deliveryInfoBring.amount === -1) {
@@ -240,10 +234,10 @@ export class BringDeliveryService {
     const priceWithoutAdditionalService =
       priceInfo["priceWithoutAdditionalServices"];
     if (priceWithoutAdditionalService) {
-      deliveryInfoBring.amount = parseInt(
+      deliveryInfoBring.amount = Number.parseInt(
         priceWithoutAdditionalService["amountWithVAT"],
       );
-      deliveryInfoBring.taxAmount = parseInt(
+      deliveryInfoBring.taxAmount = Number.parseInt(
         priceWithoutAdditionalService["vat"],
       );
     }
@@ -253,7 +247,10 @@ export class BringDeliveryService {
       const workingDays = expectedDelivery["workingDays"];
       if (workingDays) {
         deliveryInfoBring.estimatedDelivery = moment()
-          .add(parseInt(workingDays) + APP_CONFIG.delivery.deliveryDays, "days")
+          .add(
+            Number.parseInt(workingDays) + APP_CONFIG.delivery.deliveryDays,
+            "days",
+          )
           .toDate();
       }
     }

@@ -7,6 +7,7 @@ import { BlError } from "@shared/bl-error/bl-error";
 import { Order } from "@shared/order/order";
 import {
   SerializedSignature,
+  SIGNATURE_NUM_MONTHS_VALID,
   SignatureMetadata,
 } from "@shared/signature/serialized-signature";
 import { UserDetail } from "@shared/user/user-detail/user-detail";
@@ -28,8 +29,8 @@ export async function deserializeBase64EncodedImage(
   }
   return await new Transformer(Buffer.from(base64EncodedImage, "base64"))
     .webp(qualityFactor)
-    .catch((e) => {
-      throw new BlError(`Unable to transform to WebP`).code(701).add(e);
+    .catch((error) => {
+      throw new BlError(`Unable to transform to WebP`).code(701).add(error);
     });
 }
 
@@ -46,8 +47,7 @@ export async function getValidUserSignature(
   userDetail: UserDetail,
   signatureStorage: BlDocumentStorage<Signature>,
 ): Promise<Signature | null> {
-  const newestSignatureId =
-    userDetail.signatures[userDetail.signatures.length - 1];
+  const newestSignatureId = userDetail.signatures.at(-1);
   if (newestSignatureId == undefined) return null;
 
   const signature = await signatureStorage.get(newestSignatureId);
@@ -90,7 +90,7 @@ export function isSignatureExpired(signature: SignatureMetadata): boolean {
   const now = new Date();
   const oldestAllowedSignatureTime = new Date(
     now.getFullYear(),
-    now.getMonth() - SignatureMetadata.NUM_MONTHS_VALID,
+    now.getMonth() - SIGNATURE_NUM_MONTHS_VALID,
     now.getDate(),
   );
 
@@ -116,9 +116,9 @@ export async function signOrders(
       .map(async (order) => {
         return await orderStorage
           .update(order.id, { pendingSignature: false }, new SystemUser())
-          .catch((e) =>
+          .catch((error) =>
             logger.error(
-              `While processing new signature, unable to update order ${order.id}: ${e}`,
+              `While processing new signature, unable to update order ${order.id}: ${error}`,
             ),
           );
       }),

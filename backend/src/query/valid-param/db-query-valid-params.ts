@@ -1,12 +1,12 @@
-export interface ValidParam {
+export interface ValidParameter {
   fieldName: string;
   type: "string" | "number" | "boolean" | "date" | "expand" | "object-id";
 }
 
 export class DbQueryValidParams {
-  private validParams: ValidParam[];
+  private validParams: ValidParameter[];
 
-  constructor(validParams: ValidParam[]) {
+  constructor(validParams: ValidParameter[]) {
     this.validParams = validParams;
   }
 
@@ -35,12 +35,12 @@ export class DbQueryValidParams {
   }
 
   public getAllValidParams(): string[] {
-    return this.validParams.map((validParam) => validParam.fieldName);
+    return this.validParams.map((validParameter) => validParameter.fieldName);
   }
 
   private getValidParamsBasedOnType(type: string) {
     return this.validParams
-      .filter((validParam) => validParam.type === type)
-      .map((validParam) => validParam.fieldName);
+      .filter((validParameter) => validParameter.type === type)
+      .map((validParameter) => validParameter.fieldName);
   }
 }

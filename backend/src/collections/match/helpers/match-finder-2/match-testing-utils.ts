@@ -9,21 +9,21 @@ import {
 
 export function seededRandom(seed: number) {
   return function () {
-    let t = (seed += 0x6d2b79f5);
+    let t = (seed += 0x6d_2b_79_f5);
     t = Math.imul(t ^ (t >>> 15), t | 1);
     t ^= t + Math.imul(t ^ (t >>> 7), t | 61);
-    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+    return ((t ^ (t >>> 14)) >>> 0) / 4_294_967_296;
   };
 }
 
 export function calculateNumberOfMatchesPerType(matches: CandidateMatch[]) {
   return matches.reduce(
-    (acc, match) => ({
+    (accumulator, match) => ({
       standMatches:
-        acc.standMatches +
+        accumulator.standMatches +
         (match.variant === CandidateMatchVariant.StandMatch ? 1 : 0),
       userMatches:
-        acc.userMatches +
+        accumulator.userMatches +
         (match.variant === CandidateMatchVariant.UserMatch ? 1 : 0),
     }),
     { standMatches: 0, userMatches: 0 },
@@ -71,7 +71,7 @@ export function createUserGroup(
   size: number,
   ...items: string[]
 ): MatchableUser[] {
-  return [...Array(size)].map((_, id) =>
+  return [...new Array(size)].map((_, id) =>
     createFakeMatchableUser(id + idSuffix, ...items),
   );
 }
@@ -104,13 +104,13 @@ export function groupMatchesByUser(matches: CandidateMatch[]) {
 export const shuffler =
   (randomizer: () => number) =>
   <T>(list: T[]): T[] => {
-    for (let i = 0; i < list.length; i++) {
-      const random = i + Math.floor(randomizer() * (list.length - i));
-      const temp = list[random];
+    for (let index = 0; index < list.length; index++) {
+      const random = index + Math.floor(randomizer() * (list.length - index));
+      const temporary = list[random];
       // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-      list[random] = list[i]!;
+      list[random] = list[index]!;
       // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-      list[i] = temp!;
+      list[index] = temporary!;
     }
     return list;
   };
@@ -137,11 +137,11 @@ export function printPerformanceMetrics(matches: CandidateMatch[]) {
   for (const user of groupedUsers) {
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
-    const prevValue = userCounts[user.matches.length];
+    const previousValue = userCounts[user.matches.length];
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
     userCounts[user.matches.length] =
-      prevValue === undefined ? 1 : prevValue + 1;
+      previousValue === undefined ? 1 : previousValue + 1;
   }
   console.log(`
 NoMatches: ${matches.length},

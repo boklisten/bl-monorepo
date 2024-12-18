@@ -1,7 +1,7 @@
 import "mocha";
 import {
   DbQueryValidParams,
-  ValidParam,
+  ValidParameter,
 } from "@backend/query/valid-param/db-query-valid-params";
 import chai, { expect } from "chai";
 import chaiAsPromised from "chai-as-promised";
@@ -16,7 +16,7 @@ describe("DbQueryValidParams", () => {
     });
 
     it('should return array like ["name", "desc"] ', () => {
-      const validParams: ValidParam[] = [];
+      const validParams: ValidParameter[] = [];
       validParams.push({ fieldName: "age", type: "number" });
       validParams.push({ fieldName: "price", type: "number" });
       const dbQueryValidParams: DbQueryValidParams = new DbQueryValidParams(
@@ -28,7 +28,9 @@ describe("DbQueryValidParams", () => {
     });
 
     it("should return empty array if none of the validParams are of type number", () => {
-      const validParams: ValidParam[] = [{ fieldName: "name", type: "string" }];
+      const validParams: ValidParameter[] = [
+        { fieldName: "name", type: "string" },
+      ];
       const dbQueryValidParams: DbQueryValidParams = new DbQueryValidParams(
         validParams,
       );
@@ -38,7 +40,7 @@ describe("DbQueryValidParams", () => {
 
   describe("getValidStringParams()", () => {
     it("should return string array with names of all validParams with type string", () => {
-      const validParams: ValidParam[] = [
+      const validParams: ValidParameter[] = [
         { fieldName: "name", type: "string" },
         { fieldName: "desc", type: "string" },
       ];
@@ -51,7 +53,9 @@ describe("DbQueryValidParams", () => {
     });
 
     it('should return empty array if no validParams with type "string" is given', () => {
-      const validParams: ValidParam[] = [{ fieldName: "age", type: "number" }];
+      const validParams: ValidParameter[] = [
+        { fieldName: "age", type: "number" },
+      ];
 
       const dbQueryValidParams: DbQueryValidParams = new DbQueryValidParams(
         validParams,

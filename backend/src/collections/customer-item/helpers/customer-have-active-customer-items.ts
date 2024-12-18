@@ -19,7 +19,7 @@ export class CustomerHaveActiveCustomerItems {
   }
 
   public async haveActiveCustomerItems(userId: string): Promise<boolean> {
-    const dbQuery = this.queryBuilder.getDbQuery({ customer: userId }, [
+    const databaseQuery = this.queryBuilder.getDbQuery({ customer: userId }, [
       { fieldName: "customer", type: "object-id" },
     ]);
     let customerItems: CustomerItem[];
@@ -27,14 +27,12 @@ export class CustomerHaveActiveCustomerItems {
     try {
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore
-      customerItems = await this._customerItemStorage.getByQuery(dbQuery);
-    } catch (e) {
-      if (e instanceof BlError) {
-        if (e.getCode() == 702) {
-          return false;
-        }
+      customerItems = await this._customerItemStorage.getByQuery(databaseQuery);
+    } catch (error) {
+      if (error instanceof BlError && error.getCode() == 702) {
+        return false;
       }
-      throw e;
+      throw error;
     }
 
     return customerItems.some((customerItem) =>

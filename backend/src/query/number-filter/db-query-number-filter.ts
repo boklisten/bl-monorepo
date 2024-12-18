@@ -30,21 +30,17 @@ export class DbQueryNumberFilter {
     if (validNumberParams.length <= 0) return [];
 
     try {
-      for (const param in query) {
-        if (validNumberParams.includes(param)) {
-          let numberFilter: NumberFilter;
-
-          if (Array.isArray(query[param])) {
-            numberFilter = this.generateNumberFilterForParamWithMultipleValues(
-              param,
-              query[param],
-            );
-          } else {
-            numberFilter = this.generateNumberFilterForParamWithSingleValue(
-              param,
-              query[param],
-            );
-          }
+      for (const parameter in query) {
+        if (validNumberParams.includes(parameter)) {
+          const numberFilter = Array.isArray(query[parameter])
+            ? this.generateNumberFilterForParamWithMultipleValues(
+                parameter,
+                query[parameter],
+              )
+            : this.generateNumberFilterForParamWithSingleValue(
+                parameter,
+                query[parameter],
+              );
 
           numberFilters.push(numberFilter);
         }
@@ -111,12 +107,10 @@ export class DbQueryNumberFilter {
   }
 
   private validateNumberFilter(numberFilter: NumberFilter) {
-    if (numberFilter.op.$eq) {
-      if (numberFilter.op.$gt || numberFilter.op.$lt)
-        throw new SyntaxError(
-          "numberFilter cannot combine eq operation with other operations",
-        );
-    }
+    if (numberFilter.op.$eq && (numberFilter.op.$gt || numberFilter.op.$lt))
+      throw new SyntaxError(
+        "numberFilter cannot combine eq operation with other operations",
+      );
 
     return numberFilter;
   }
@@ -154,10 +148,10 @@ export class DbQueryNumberFilter {
     return foundOperation ?? this.equalOperation;
   }
 
-  private extractNumberFromQueryString(num: string): number {
-    if (num.split("").some((n) => isNaN(parseInt(n, 10)))) {
-      throw TypeError('value "' + num + '" is not a valid number');
+  private extractNumberFromQueryString(number_: string): number {
+    if (number_.split("").some((n) => isNaN(Number.parseInt(n, 10)))) {
+      throw new TypeError('value "' + number_ + '" is not a valid number');
     }
-    return parseInt(num, 10);
+    return Number.parseInt(number_, 10);
   }
 }

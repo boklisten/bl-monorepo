@@ -2,7 +2,7 @@ import "mocha";
 
 import { SEDbQuery } from "@backend/query/se.db-query";
 import { SEDbQueryBuilder } from "@backend/query/se.db-query-builder";
-import { ValidParam } from "@backend/query/valid-param/db-query-valid-params";
+import { ValidParameter } from "@backend/query/valid-param/db-query-valid-params";
 import chai, { expect } from "chai";
 import chaiAsPromised from "chai-as-promised";
 
@@ -41,7 +41,7 @@ describe("DbQueryBuilder", () => {
       result.limitFilter = { limit: 3 };
       result.onlyGetFilters = [{ fieldName: "name", value: 1 }];
 
-      const validParams: ValidParam[] = [
+      const validParams: ValidParameter[] = [
         { fieldName: "name", type: "string" },
         { fieldName: "age", type: "number" },
         { fieldName: "price", type: "number" },

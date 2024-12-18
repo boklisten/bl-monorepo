@@ -1,8 +1,8 @@
 export class BlapiResponse {
-  documentName: string;
-  data: any[];
+  documentName: string | undefined;
+  data: unknown;
 
-  constructor(data: any[]) {
+  constructor(data: unknown) {
     this.data = data;
   }
 }

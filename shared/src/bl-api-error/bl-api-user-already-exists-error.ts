@@ -1,5 +1,5 @@
-import { BlApiError } from "./bl-api-error";
-import { UserPermission } from "../permission/user-permission";
+import { BlApiError } from "@shared/bl-api-error/bl-api-error";
+import { UserPermission } from "@shared/permission/user-permission";
 
 export class BlApiUserAlreadyExistsError extends BlApiError {
   permission?: UserPermission;
@@ -7,12 +7,12 @@ export class BlApiUserAlreadyExistsError extends BlApiError {
   name?: string;
 
   constructor(
-    msg?: string,
+    message?: string,
     code?: number,
     permission?: UserPermission,
     permissionRequired?: UserPermission,
   ) {
-    super(msg, code);
+    super(message, code);
 
     this.name = "BlApiUserAlreadyExistsError";
 

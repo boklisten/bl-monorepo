@@ -1,5 +1,5 @@
-import { BlDocument } from "../bl-document/bl-document";
+import { BlDocument } from "@shared/bl-document/bl-document";
 
-export class EditableText extends BlDocument {
+export interface EditableText extends BlDocument {
   text: string;
 }

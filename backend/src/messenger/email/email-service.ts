@@ -108,8 +108,8 @@ export class EmailService implements MessengerService {
 
     try {
       await this._postOffice.send([recipient], messageOptions);
-    } catch (e) {
-      logger.error(`could not send generic mail: ${e}`);
+    } catch (error) {
+      logger.error(`could not send generic mail: ${error}`);
     }
   }
 
@@ -152,8 +152,8 @@ export class EmailService implements MessengerService {
         await this.sendToGuardian(customerDetail, recipient, messageOptions);
       }
       return true;
-    } catch (e) {
-      logger.error(`could not send reminder: ${e}`);
+    } catch (error) {
+      logger.error(`could not send reminder: ${error}`);
       return true;
     }
   }
@@ -183,18 +183,22 @@ export class EmailService implements MessengerService {
     voice: boolean;
   } {
     switch (message.messageMethod) {
-      case "all":
+      case "all": {
         return { email: true, sms: true, voice: false };
-      case "email":
+      }
+      case "email": {
         return { email: true, sms: false, voice: false };
-      case "sms":
+      }
+      case "sms": {
         return { email: false, sms: true, voice: false };
-      default:
+      }
+      default: {
         return {
           email: false,
           sms: false,
           voice: false,
         };
+      }
     }
   }
 
@@ -309,9 +313,9 @@ export class EmailService implements MessengerService {
   }
 
   private formatDeadline(deadline?: Date): string {
-    return deadline != undefined
-      ? dateService.toPrintFormat(deadline, "Europe/Oslo")
-      : "";
+    return deadline == undefined
+      ? ""
+      : dateService.toPrintFormat(deadline, "Europe/Oslo");
   }
   private getCustomerItemLeftToPayTotal(customerItems: CustomerItem[]): number {
     return customerItems.reduce(
@@ -406,8 +410,8 @@ export class EmailService implements MessengerService {
 
     await this._emailHandler
       .sendDelivery(emailSetting, emailOrder, emailUser)
-      .catch((e) => {
-        throw new BlError("Unable to send delivery email").code(200).add(e);
+      .catch((error) => {
+        throw new BlError("Unable to send delivery email").code(200).add(error);
       });
   }
 

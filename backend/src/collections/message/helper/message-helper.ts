@@ -11,7 +11,7 @@ export class MessageHelper {
   }
 
   public async isAdded(message: Message) {
-    const dbQuery = this.queryBuilder.getDbQuery(
+    const databaseQuery = this.queryBuilder.getDbQuery(
       {
         messageType: message.messageType,
         messageSubtype: message.messageSubtype,
@@ -31,11 +31,11 @@ export class MessageHelper {
     );
 
     try {
-      const docs = await this.messageStorage.getByQuery(dbQuery);
+      const docs = await this.messageStorage.getByQuery(databaseQuery);
       if (docs) {
-        for (const doc of docs) {
+        for (const document_ of docs) {
           if (
-            JSON.stringify(doc.htmlContent) ===
+            JSON.stringify(document_.htmlContent) ===
             JSON.stringify(message.htmlContent)
           ) {
             return true;
@@ -43,14 +43,12 @@ export class MessageHelper {
         }
       }
       return false;
-    } catch (e) {
-      if (e instanceof BlError) {
-        if (e.getCode() === 702) {
-          // not found
-          return false;
-        }
+    } catch (error) {
+      if (error instanceof BlError && error.getCode() === 702) {
+        // not found
+        return false;
       }
-      throw e;
+      throw error;
     }
   }
 }

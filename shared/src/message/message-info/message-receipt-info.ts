@@ -1,3 +1,3 @@
-export type MessageReceiptInfo = {
+export interface MessageReceiptInfo {
   orderId: string;
-};
+}

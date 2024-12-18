@@ -170,8 +170,8 @@ export class OrderItemRentPeriodValidator {
         }
         return true;
       })
-      .catch((err) => {
-        throw err;
+      .catch((error) => {
+        throw error;
       });
   }
 

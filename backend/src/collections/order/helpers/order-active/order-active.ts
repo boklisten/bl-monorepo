@@ -17,7 +17,7 @@ export class OrderActive {
   }
 
   public async getActiveOrders(userId: string): Promise<Order[]> {
-    const dbQuery = this._queryBuilder.getDbQuery({ customer: userId }, [
+    const databaseQuery = this._queryBuilder.getDbQuery({ customer: userId }, [
       { fieldName: "customer", type: "object-id" },
     ]);
 
@@ -26,14 +26,12 @@ export class OrderActive {
     try {
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore
-      orders = await this._orderStorage.getByQuery(dbQuery);
-    } catch (e) {
-      if (e instanceof BlError) {
-        if (e.getCode() === 702) {
-          return [];
-        }
+      orders = await this._orderStorage.getByQuery(databaseQuery);
+    } catch (error) {
+      if (error instanceof BlError && error.getCode() === 702) {
+        return [];
       }
-      throw e;
+      throw error;
     }
 
     return orders.filter((order) => this.isOrderActive(order));

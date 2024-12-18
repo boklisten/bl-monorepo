@@ -28,7 +28,7 @@ export default function AdminLayout({ children }: { children: ReactNode }) {
             alt="logo"
           />
         ),
-        homeUrl: "start",
+        homeUrl: "/admin/start",
       }}
     >
       <DashboardLayout>{children}</DashboardLayout>

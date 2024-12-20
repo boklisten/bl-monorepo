@@ -14,7 +14,7 @@ const ContactInfo = () => {
         <PhoneIphoneIcon />
         <Box sx={{ display: "flex", flexDirection: "column", ml: 1 }}>
           <Typography variant="body1">Ring oss</Typography>
-          <DynamicLink href={`tel:+${contactInfo.phone}`}>
+          <DynamicLink href={`tel:${contactInfo.phone}`}>
             {contactInfo.phone}
           </DynamicLink>
         </Box>

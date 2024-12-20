@@ -29,7 +29,7 @@ export const termsAndConditionsTabs: LinkTabProps[] = [
 
 export const contactInfo = {
   email: "info@boklisten.no",
-  phone: "+4791002211",
+  phone: "91002211",
   address: "Postboks 8, 1316 Eiksmarka",
 };
 

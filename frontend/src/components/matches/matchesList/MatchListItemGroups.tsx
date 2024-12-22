@@ -1,7 +1,6 @@
 import StandMatchListItem from "@frontend/components/matches/matchesList/StandMatchListItem";
 import UserMatchListItem from "@frontend/components/matches/matchesList/UserMatchListItem";
-import { Typography } from "@mui/material";
-import { Box } from "@mui/system";
+import { Typography, Box } from "@mui/material";
 import { MatchVariant } from "@shared/match/match";
 import { MatchWithDetails } from "@shared/match/match-dtos";
 import { FC } from "react";

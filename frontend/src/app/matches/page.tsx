@@ -1,6 +1,5 @@
 import Matches from "@frontend/components/matches/Matches";
-import { Typography } from "@mui/material";
-import { Box } from "@mui/system";
+import { Typography, Box } from "@mui/material";
 import { Metadata } from "next";
 import { Suspense } from "react";
 

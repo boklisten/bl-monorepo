@@ -9,11 +9,11 @@ import {
   InputAdornment,
   Stack,
   Tooltip,
+  Box,
 } from "@mui/material";
 import Button from "@mui/material/Button";
 import Grid from "@mui/material/Grid";
 import TextField from "@mui/material/TextField";
-import { Box } from "@mui/system";
 import { useSearchParams } from "next/navigation";
 import React, { useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";

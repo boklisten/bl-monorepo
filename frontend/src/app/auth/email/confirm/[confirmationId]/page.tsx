@@ -1,6 +1,5 @@
 import EmailConfirmer from "@frontend/components/EmailConfirmer";
-import { Card, Container } from "@mui/material";
-import { Box } from "@mui/system";
+import { Box, Card, Container } from "@mui/material";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {

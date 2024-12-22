@@ -1,16 +1,11 @@
 {
   "private": true,
   "license": "UNLICENSED",
-  "workspaces": [
-    "frontend",
-    "backend",
-    "shared"
-  ],
   "scripts": {
     "prettier": "prettier --write '**/*.{js,mjs,ts,tsx,md,json,yml,css}' --ignore-path=.gitignore",
     "prettier:check": "prettier --check '**/*.{js,mjs,ts,tsx,md,json,yml,css}' --ignore-path=.gitignore",
     "lint": "eslint . --ignore-pattern '**/*.spec.ts' --ignore-pattern '**/dist/*' --ignore-pattern '**/.next/*'",
-    "typecheck": "yarn workspace shared tsc && yarn workspace backend tsc --noEmit && yarn workspace frontend tsc --noEmit"
+    "typecheck": "pnpm --filter shared exec tsc && pnpm --filter backend exec tsc --noEmit && pnpm --filter frontend exec tsc --noEmit"
   },
   "devDependencies": {
     "@eslint/js": "^9.17.0",

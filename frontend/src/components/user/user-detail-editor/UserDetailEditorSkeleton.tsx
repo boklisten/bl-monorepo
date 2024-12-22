@@ -1,5 +1,4 @@
-import { Container, Skeleton, Stack, Typography } from "@mui/material";
-import { Box } from "@mui/system";
+import { Container, Skeleton, Stack, Typography, Box } from "@mui/material";
 
 export default function UserDetailEditorSkeleton({
   isSignUp,

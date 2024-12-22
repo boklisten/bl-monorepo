@@ -1,4 +1,5 @@
 name: CI
+
 on:
   push:
     branches: [main]
@@ -15,24 +16,10 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: "22"
-          cache: "yarn"
+          cache: "pnpm"
 
-      - name: Restore node_modules from cache
-        id: cache-node-modules
-        uses: actions/cache@v4
-        with:
-          path: |
-            node_modules
-            frontend/node_modules
-            backend/node_modules
-            shared/node_modules
-          key: ${{ runner.os }}-node_modules-${{ hashFiles('**/yarn.lock') }}
-          restore-keys: |
-            ${{ runner.os }}-node_modules-
-
-      - name: Install dependencies (if no cache)
-        if: steps.cache-node-modules.outputs.cache-hit != 'true'
-        run: yarn install --frozen-lockfile
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
 
   code_style:
     name: Prettier Check
@@ -41,18 +28,8 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Restore node_modules from cache
-        uses: actions/cache@v4
-        with:
-          path: |
-            node_modules
-            frontend/node_modules
-            backend/node_modules
-            shared/node_modules
-          key: ${{ runner.os }}-node_modules-${{ hashFiles('**/yarn.lock') }}
-
       - name: Prettier Check
-        run: yarn prettier:check
+        run: pnpm run prettier:check
 
   type_check:
     name: Type Check
@@ -61,18 +38,8 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Restore node_modules from cache
-        uses: actions/cache@v4
-        with:
-          path: |
-            node_modules
-            frontend/node_modules
-            backend/node_modules
-            shared/node_modules
-          key: ${{ runner.os }}-node_modules-${{ hashFiles('**/yarn.lock') }}
-
       - name: Type Check
-        run: yarn typecheck
+        run: pnpm run typecheck
 
   lint:
     name: Lint
@@ -81,18 +48,8 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Restore node_modules from cache
-        uses: actions/cache@v4
-        with:
-          path: |
-            node_modules
-            frontend/node_modules
-            backend/node_modules
-            shared/node_modules
-          key: ${{ runner.os }}-node_modules-${{ hashFiles('**/yarn.lock') }}
-
       - name: Lint
-        run: yarn lint
+        run: pnpm run lint
 
   build_backend:
     name: Build Backend
@@ -101,18 +58,8 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Restore node_modules from cache
-        uses: actions/cache@v4
-        with:
-          path: |
-            node_modules
-            frontend/node_modules
-            backend/node_modules
-            shared/node_modules
-          key: ${{ runner.os }}-node_modules-${{ hashFiles('**/yarn.lock') }}
-
       - name: Build Backend
-        run: yarn workspace backend build
+        run: pnpm --filter backend build
 
   build_frontend:
     name: Build Frontend
@@ -121,22 +68,12 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Restore node_modules from cache
-        uses: actions/cache@v4
-        with:
-          path: |
-            node_modules
-            frontend/node_modules
-            backend/node_modules
-            shared/node_modules
-          key: ${{ runner.os }}-node_modules-${{ hashFiles('**/yarn.lock') }}
-
       - name: Build Frontend
         env:
           NEXT_PUBLIC_API_URL: https://staging.api.boklisten.no/
           NEXT_PUBLIC_BL_WEB_URL: https://staging.boklisten.no/
           NEXT_PUBLIC_BL_ADMIN_URL: https://staging.bladmin.boklisten.no/
-        run: yarn workspace frontend build
+        run: pnpm --filter frontend build
 
   test_backend:
     name: Test Backend
@@ -145,15 +82,5 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Restore node_modules from cache
-        uses: actions/cache@v4
-        with:
-          path: |
-            node_modules
-            frontend/node_modules
-            backend/node_modules
-            shared/node_modules
-          key: ${{ runner.os }}-node_modules-${{ hashFiles('**/yarn.lock') }}
-
       - name: Test Backend
-        run: yarn workspace backend test
+        run: pnpm --filter backend test

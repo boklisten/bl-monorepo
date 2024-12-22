@@ -1,6 +1,11 @@
 import AuthVerifier from "@frontend/components/AuthVerifier";
-import { Card, CircularProgress, Container, Typography } from "@mui/material";
-import { Box } from "@mui/system";
+import {
+  Card,
+  CircularProgress,
+  Container,
+  Typography,
+  Box,
+} from "@mui/material";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {

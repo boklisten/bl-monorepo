@@ -1,7 +1,6 @@
 import AuthAutoLogout from "@frontend/components/AuthLogoutComponent";
 import DynamicLink from "@frontend/components/DynamicLink";
-import { Alert, AlertTitle, Card, Container } from "@mui/material";
-import { Box } from "@mui/system";
+import { Alert, AlertTitle, Box, Card, Container } from "@mui/material";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {

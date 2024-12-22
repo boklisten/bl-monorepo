@@ -4,8 +4,7 @@ import {
   UserMatchWithDetails,
 } from "@frontend/utils/types";
 import { KeyboardDoubleArrowRight, SwapHoriz } from "@mui/icons-material";
-import { SxProps, Typography } from "@mui/material";
-import { Box } from "@mui/system";
+import { SxProps, Typography, Box } from "@mui/material";
 
 export function formatActionsString(handoffItems: number, pickupItems: number) {
   const hasHandoffItems = handoffItems > 0;

@@ -1,9 +1,7 @@
 import BlFetcher from "@frontend/api/blFetcher";
 import UserDetailSearchResult from "@frontend/components/search/UserDetailSearchResult";
 import BL_CONFIG from "@frontend/utils/bl-config";
-import { Autocomplete, Typography } from "@mui/material";
-import TextField from "@mui/material/TextField";
-import { Box } from "@mui/system";
+import { Autocomplete, Box, TextField, Typography } from "@mui/material";
 import { UserDetail } from "@shared/user/user-detail/user-detail";
 import { useState } from "react";
 

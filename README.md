@@ -18,23 +18,23 @@ The frontend and backend are completely decoupled, but are codependent on the sh
 
 ```bash
 # Install dependencies
-$ yarn install
+$ pnpm install
 
 # Frontend
 # Copy .env.example to .env and fill in the correct keys
 # Run the development server on http://localhost:3000
-$ yarn workspace frontend dev
+$ pnpm --filter frontend dev
 # For production builds, use
-$ yarn workspace frontend build
-$ yarn workspace frontend serve
+$ pnpm --filter frontend build
+$ pnpm --filter frontend serve
 
 # Backend
 # Copy .env.example to .env and fill in the correct keys
 # Run the development server on http://localhost:1337
-$ yarn workspace backend dev
+$ pnpm --filter backend dev
 # For production builds, use
-$ yarn workspace backend build
-$ yarn workspace backend serve
+$ pnpm --filter backend build
+$ pnpm --filter backend serve
 
 ```
 
@@ -42,16 +42,16 @@ $ yarn workspace backend serve
 
 ```bash
 # Prettier code style
-$ yarn prettier
+$ pnpm prettier
 
 # Linting with Eslint
-$ yarn lint
+$ pnpm lint
 
 # Typescript type checks
-$ yarn typecheck
+$ pnpm typecheck
 
 # Backend tests
-$ yarn workspace backend test
+$ pnpm --filter backend test
 ```
 
 ## Branches

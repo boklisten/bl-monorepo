@@ -1,6 +1,5 @@
 import PublicBlidSearch from "@frontend/components/search/PublicBlidSearch";
-import { Card, Container, Stack, Typography } from "@mui/material";
-import { Box } from "@mui/system";
+import { Card, Container, Stack, Typography, Box } from "@mui/material";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {

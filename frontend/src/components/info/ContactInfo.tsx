@@ -4,8 +4,7 @@ import { contactInfo } from "@frontend/utils/constants";
 import EmailIcon from "@mui/icons-material/Email";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
 import PhoneIphoneIcon from "@mui/icons-material/PhoneIphone";
-import { Typography } from "@mui/material";
-import { Box } from "@mui/system";
+import { Typography, Box } from "@mui/material";
 
 const ContactInfo = () => {
   return (

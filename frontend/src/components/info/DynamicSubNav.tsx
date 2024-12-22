@@ -1,7 +1,7 @@
 "use client";
+import { Box } from "@mui/material";
 import ToggleButton from "@mui/material/ToggleButton";
 import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
-import { Box } from "@mui/system";
 import NextLink from "next/link";
 import { usePathname } from "next/navigation";
 import { ReactElement } from "react";

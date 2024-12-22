@@ -11,8 +11,8 @@ import {
   TableHead,
   TableRow,
   Typography,
+  Box,
 } from "@mui/material";
-import { Box } from "@mui/system";
 import { Item } from "@shared/item/item";
 import useSWR from "swr";
 

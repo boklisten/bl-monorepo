@@ -5,9 +5,9 @@
   "main": "./dist/index.js",
   "exports": "./dist/index.js",
   "scripts": {
-    "dev": "tsx watch ./src/index.ts",
+    "dev": "tsx watch --env-file=.env ./src/index.ts",
     "build": "pkgroll --minify --tsconfig=tsconfig.build.json",
-    "serve": "node ./dist/index.js",
+    "serve": "node --env-file=.env ./dist/index.js",
     "test": "API_ENV=test mocha \"src/**/*.spec.ts\""
   },
   "dependencies": {
@@ -35,7 +35,6 @@
     "@types/validator": "^13.12.2",
     "canvas": "^3.0.0-rc3",
     "cors": "^2.8.5",
-    "dotenv": "^16.4.7",
     "express": "^4.21.2",
     "express-session": "^1.18.1",
     "jsbarcode": "^3.11.6",

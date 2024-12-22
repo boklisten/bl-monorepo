@@ -1,6 +1,3 @@
-// IMPORTANT TO KEEP THIS ON TOP
-import "dotenv/config";
-
 import { initAuthEndpoints } from "@backend/auth/initAuthEndpoints";
 import { CollectionEndpointCreator } from "@backend/collection-endpoint/collection-endpoint-creator";
 import { assertEnv, BlEnvironment } from "@backend/config/environment";

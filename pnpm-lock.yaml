@@ -54,6 +54,8 @@ importers:
       '@types/passport-local': ^1.0.38
       '@types/pdfkit': ^0.13.8
       '@types/qrcode': ^1.5.5
+      '@types/qs': ^6.9.17
+      '@types/request': ^2.48.12
       '@types/request-promise': ^4.1.51
       '@types/sinon': ^17.0.3
       '@types/sinon-chai': ^3.2.12
@@ -107,6 +109,8 @@ importers:
       '@types/passport-local': 1.0.38
       '@types/pdfkit': 0.13.8
       '@types/qrcode': 1.5.5
+      '@types/qs': 6.9.17
+      '@types/request': 2.48.12
       '@types/request-promise': 4.1.51
       '@types/sinon': 17.0.3
       '@types/sinon-chai': 3.2.12
@@ -138,7 +142,7 @@ importers:
       chai: 4.5.0
       chai-as-promised: 7.1.2_chai@4.5.0
       mocha: 10.8.2
-      pkgroll: 2.5.1_typescript@5.7.2
+      pkgroll: 2.5.1
       sinon: 18.0.1
       sinon-chai: 3.7.0_chai@4.5.0+sinon@18.0.1
       tsx: 4.19.2
@@ -6676,7 +6680,7 @@ packages:
       find-up: 4.1.0
     dev: false
 
-  /pkgroll/2.5.1_typescript@5.7.2:
+  /pkgroll/2.5.1:
     resolution: {integrity: sha512-rehzSpQ1T/gh+tlVSxlUeqUPR9W1ZtJXDG00cuussNeCPdS9w1Wv0MWxwL116HbugsTZTrd+lVem+ipinT2JUg==}
     engines: {node: '>=18'}
     hasBin: true
@@ -6696,7 +6700,6 @@ packages:
       esbuild: 0.23.1
       magic-string: 0.30.17
       rollup: 4.29.1
-      typescript: 5.7.2
     dev: true
 
   /png-js/1.0.0:

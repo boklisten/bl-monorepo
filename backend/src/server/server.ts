@@ -4,6 +4,7 @@ import { assertEnv, BlEnvironment } from "@backend/config/environment";
 import { logger } from "@backend/logger/logger";
 import cors from "cors";
 import express, {
+  Express,
   json,
   Request,
   RequestHandler,
@@ -15,7 +16,7 @@ import mongoose from "mongoose";
 import passport from "passport";
 
 export class Server {
-  public readonly app = express();
+  public readonly app: Express = express();
   private readonly router = Router();
 
   constructor() {

@@ -4,11 +4,12 @@ import { OrderItemRentValidator } from "@backend/collections/order/helpers/order
 import { PriceService } from "@backend/price/price.service";
 import { BlDocumentStorage } from "@backend/storage/blDocumentStorage";
 import { Order } from "@shared/order/order";
-import chai from "chai";
+import { use as chaiUse, should } from "chai";
 import chaiAsPromised from "chai-as-promised";
 import sinon from "sinon";
 
-chai.use(chaiAsPromised);
+chaiUse(chaiAsPromised);
+should();
 
 describe("OrderItemRentValidator", () => {
   const orderStorage = new BlDocumentStorage<Order>(BlCollectionName.Orders);

@@ -1,10 +1,11 @@
 import "mocha";
 import { APP_CONFIG } from "@backend/application-config";
 import { ApiPath } from "@backend/config/api-path";
-import chai, { expect } from "chai";
+import { expect, use as chaiUse, should } from "chai";
 import chaiAsPromised from "chai-as-promised";
 
-chai.use(chaiAsPromised);
+chaiUse(chaiAsPromised);
+should();
 
 describe("ApiPath", () => {
   describe("#retrieveRefererPath", () => {

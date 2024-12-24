@@ -6,11 +6,12 @@ import { BlError } from "@shared/bl-error/bl-error";
 import { Order } from "@shared/order/order";
 import { OrderItem } from "@shared/order/order-item/order-item";
 import { UserDetail } from "@shared/user/user-detail/user-detail";
-import chai, { expect } from "chai";
+import { expect, use as chaiUse, should } from "chai";
 import chaiAsPromised from "chai-as-promised";
 import sinon from "sinon";
 
-chai.use(chaiAsPromised);
+chaiUse(chaiAsPromised);
+should();
 
 describe("OrderToCustomerItemGenerator", () => {
   const userDetailStorage = new BlDocumentStorage<UserDetail>(

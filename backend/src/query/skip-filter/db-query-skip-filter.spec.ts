@@ -1,9 +1,10 @@
 import "mocha";
 import { DbQuerySkipFilter } from "@backend/query/skip-filter/db-query-skip-filter";
-import chai, { expect } from "chai";
+import { expect, use as chaiUse, should } from "chai";
 import chaiAsPromised from "chai-as-promised";
 
-chai.use(chaiAsPromised);
+chaiUse(chaiAsPromised);
+should();
 
 describe("DbQuerySkipFilter", () => {
   describe("getSkipFilter()", () => {

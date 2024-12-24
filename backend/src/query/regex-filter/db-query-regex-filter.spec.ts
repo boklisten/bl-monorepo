@@ -1,9 +1,10 @@
 import "mocha";
 import { DbQueryRegexFilter } from "@backend/query/regex-filter/db-query-regex-filter";
-import chai, { expect } from "chai";
+import { expect, use as chaiUse, should } from "chai";
 import chaiAsPromised from "chai-as-promised";
 
-chai.use(chaiAsPromised);
+chaiUse(chaiAsPromised);
+should();
 
 describe("DbQueryRegexFilter", () => {
   const dbQueryRegexFilter: DbQueryRegexFilter = new DbQueryRegexFilter();

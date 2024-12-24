@@ -1,10 +1,11 @@
 import "mocha";
 import { Blid } from "@backend/auth/blid/blid";
 import { BlError } from "@shared/bl-error/bl-error";
-import chai from "chai";
+import { use as chaiUse, should } from "chai";
 import chaiAsPromised from "chai-as-promised";
 
-chai.use(chaiAsPromised);
+chaiUse(chaiAsPromised);
+should();
 
 describe("Blid", () => {
   describe("createUserBlid()", () => {

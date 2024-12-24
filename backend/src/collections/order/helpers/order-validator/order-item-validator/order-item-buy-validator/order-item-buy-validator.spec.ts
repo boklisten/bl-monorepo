@@ -5,10 +5,11 @@ import { BlError } from "@shared/bl-error/bl-error";
 import { Branch } from "@shared/branch/branch";
 import { Item } from "@shared/item/item";
 import { Order } from "@shared/order/order";
-import chai, { expect } from "chai";
+import { expect, use as chaiUse, should } from "chai";
 import chaiAsPromised from "chai-as-promised";
 
-chai.use(chaiAsPromised);
+chaiUse(chaiAsPromised);
+should();
 
 describe("OrderItemBuyValidator", () => {
   const priceService = new PriceService();

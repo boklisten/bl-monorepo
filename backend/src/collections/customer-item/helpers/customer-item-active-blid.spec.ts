@@ -3,11 +3,12 @@ import { BlCollectionName } from "@backend/collections/bl-collection";
 import { CustomerItemActiveBlid } from "@backend/collections/customer-item/helpers/customer-item-active-blid";
 import { BlDocumentStorage } from "@backend/storage/blDocumentStorage";
 import { CustomerItem } from "@shared/customer-item/customer-item";
-import chai, { expect } from "chai";
+import { expect, use as chaiUse, should } from "chai";
 import chaiAsPromised from "chai-as-promised";
 import sinon from "sinon";
 
-chai.use(chaiAsPromised);
+chaiUse(chaiAsPromised);
+should();
 
 describe("CustomerItemActiveBlid", () => {
   const customerItemStorage = new BlDocumentStorage<CustomerItem>(

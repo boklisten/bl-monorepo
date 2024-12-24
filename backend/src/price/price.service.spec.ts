@@ -1,9 +1,10 @@
 import "mocha";
 import { PriceService } from "@backend/price/price.service";
-import chai, { expect } from "chai";
+import { expect, use as chaiUse, should } from "chai";
 import chaiAsPromised from "chai-as-promised";
 
-chai.use(chaiAsPromised);
+chaiUse(chaiAsPromised);
+should();
 
 describe("PriceService", () => {
   describe("round()", () => {

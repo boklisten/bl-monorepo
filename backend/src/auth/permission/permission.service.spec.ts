@@ -3,10 +3,11 @@ import { PermissionService } from "@backend/auth/permission/permission.service";
 import { BlEndpointRestriction } from "@backend/collections/bl-collection";
 import { BlDocument } from "@shared/bl-document/bl-document";
 import { UserPermission } from "@shared/permission/user-permission";
-import chai, { expect } from "chai";
+import { expect, use as chaiUse, should } from "chai";
 import chaiAsPromised from "chai-as-promised";
 
-chai.use(chaiAsPromised);
+chaiUse(chaiAsPromised);
+should();
 
 describe("PermissionSerivice", () => {
   const permissionService: PermissionService = new PermissionService();

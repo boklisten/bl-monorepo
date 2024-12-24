@@ -3,11 +3,12 @@ import { EmailValidation } from "@backend/collections/email-validation/email-val
 import { EmailValidationHelper } from "@backend/collections/email-validation/helpers/email-validation.helper";
 import { EmailValidationPostHook } from "@backend/collections/email-validation/hooks/email-validation-post.hook";
 import { BlError } from "@shared/bl-error/bl-error";
-import chai, { expect } from "chai";
+import { expect, use as chaiUse, should } from "chai";
 import chaiAsPromised from "chai-as-promised";
 import sinon from "sinon";
 
-chai.use(chaiAsPromised);
+chaiUse(chaiAsPromised);
+should();
 
 describe("EmailValidationPostHook", () => {
   const emailValidationHelper = new EmailValidationHelper();

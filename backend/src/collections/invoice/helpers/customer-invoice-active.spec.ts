@@ -4,11 +4,12 @@ import { CustomerInvoiceActive } from "@backend/collections/invoice/helpers/cust
 import { BlDocumentStorage } from "@backend/storage/blDocumentStorage";
 import { BlError } from "@shared/bl-error/bl-error";
 import { Invoice } from "@shared/invoice/invoice";
-import chai, { expect } from "chai";
+import { expect, use as chaiUse, should } from "chai";
 import chaiAsPromised from "chai-as-promised";
 import sinon from "sinon";
 
-chai.use(chaiAsPromised);
+chaiUse(chaiAsPromised);
+should();
 
 describe("CustomerInvoiceActive", () => {
   const invoiceStorage = new BlDocumentStorage<Invoice>(

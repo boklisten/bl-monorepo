@@ -5,13 +5,14 @@ import { SeCrypto } from "@backend/crypto/se.crypto";
 import { Messenger } from "@backend/messenger/messenger";
 import { BlError } from "@shared/bl-error/bl-error";
 import { PasswordResetRequest } from "@shared/password-reset/password-reset-request";
-import chai, { expect } from "chai";
+import { expect, use as chaiUse, should } from "chai";
 import chaiAsPromised from "chai-as-promised";
 import sinon from "sinon";
 
 import "mocha";
 
-chai.use(chaiAsPromised);
+chaiUse(chaiAsPromised);
+should();
 
 describe("PendingPasswordResetPostHook", () => {
   const userHandler = new UserHandler();

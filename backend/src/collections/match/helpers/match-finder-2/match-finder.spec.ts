@@ -25,12 +25,13 @@ import {
   difference,
   intersect,
 } from "@backend/collections/match/helpers/set-methods";
-import chai, { assert, expect } from "chai";
+import { assert, expect, use as chaiUse, should } from "chai";
 import chaiAsPromised from "chai-as-promised";
 import sinonChai from "sinon-chai";
 
-chai.use(chaiAsPromised);
-chai.use(sinonChai);
+chaiUse(chaiAsPromised);
+should();
+chaiUse(sinonChai);
 
 const andrine = createFakeMatchableUser("andrine", "book1", "book2", "book3");
 

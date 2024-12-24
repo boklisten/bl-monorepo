@@ -6,11 +6,12 @@ import { RefreshTokenCreator } from "@backend/auth/token/refresh/refresh-token.c
 import { RefreshTokenValidator } from "@backend/auth/token/refresh/refresh-token.validator";
 import { TokenConfig } from "@backend/auth/token/token.config";
 import { BlError } from "@shared/bl-error/bl-error";
-import chai from "chai";
+import { use as chaiUse, should } from "chai";
 import chaiAsPromised from "chai-as-promised";
 import { sign } from "jsonwebtoken";
 
-chai.use(chaiAsPromised);
+chaiUse(chaiAsPromised);
+should();
 
 describe("RefreshTokenValidator", () => {
   const refreshTokenConfig: RefreshToken = {

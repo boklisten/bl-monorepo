@@ -1,9 +1,10 @@
 import { dateService } from "@backend/blc/date.service";
-import chai, { expect } from "chai";
+import { expect, use as chaiUse, should } from "chai";
 import chaiAsPromised from "chai-as-promised";
 import moment from "moment-timezone";
 
-chai.use(chaiAsPromised);
+chaiUse(chaiAsPromised);
+should();
 
 describe("DateService", () => {
   describe("toLocalTime", () => {

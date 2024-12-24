@@ -3,10 +3,11 @@ import "mocha";
 import { SEDbQuery } from "@backend/query/se.db-query";
 import { SEDbQueryBuilder } from "@backend/query/se.db-query-builder";
 import { ValidParameter } from "@backend/query/valid-param/db-query-valid-params";
-import chai, { expect } from "chai";
+import { expect, use as chaiUse, should } from "chai";
 import chaiAsPromised from "chai-as-promised";
 
-chai.use(chaiAsPromised);
+chaiUse(chaiAsPromised);
+should();
 
 describe("DbQueryBuilder", () => {
   describe("getDbQuery()", () => {

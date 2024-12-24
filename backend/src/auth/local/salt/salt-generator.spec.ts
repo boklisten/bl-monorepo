@@ -1,9 +1,10 @@
 import "mocha";
 import { SaltGenerator } from "@backend/auth/local/salt/salt-generator";
-import chai from "chai";
+import { use as chaiUse, should } from "chai";
 import chaiAsPromised from "chai-as-promised";
 
-chai.use(chaiAsPromised);
+chaiUse(chaiAsPromised);
+should();
 
 describe("SaltGenerator", () => {
   const saltGenerator = new SaltGenerator();

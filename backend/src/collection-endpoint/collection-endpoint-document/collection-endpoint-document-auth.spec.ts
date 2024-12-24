@@ -7,10 +7,11 @@ import {
 import { BlApiRequest } from "@backend/request/bl-api-request";
 import { BlDocument } from "@shared/bl-document/bl-document";
 import { BlError } from "@shared/bl-error/bl-error";
-import chai, { expect } from "chai";
+import { expect, use as chaiUse, should } from "chai";
 import chaiAsPromised from "chai-as-promised";
 
-chai.use(chaiAsPromised);
+chaiUse(chaiAsPromised);
+should();
 
 describe("CollectionEndpointDocumentAuth", () => {
   const collectionEndpointDocumentAuth = new CollectionEndpointDocumentAuth();

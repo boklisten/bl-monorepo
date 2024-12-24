@@ -4,10 +4,11 @@ import {
   UserDetailPatch,
 } from "@backend/collections/user-detail/hooks/user-detail-update.hook";
 import { AccessToken } from "@shared/token/access-token";
-import chai, { assert } from "chai";
+import { assert, use as chaiUse, should } from "chai";
 import chaiAsPromised from "chai-as-promised";
 
-chai.use(chaiAsPromised);
+chaiUse(chaiAsPromised);
+should();
 
 const customerAccessToken = { permission: "customer" } as AccessToken;
 const adminAccessToken = { permission: "admin" } as AccessToken;

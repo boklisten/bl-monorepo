@@ -13,11 +13,12 @@ import { Delivery } from "@shared/delivery/delivery";
 import { Item } from "@shared/item/item";
 import { Order } from "@shared/order/order";
 import { AccessToken } from "@shared/token/access-token";
-import chai, { expect } from "chai";
+import { expect, use as chaiUse, should } from "chai";
 import chaiAsPromised from "chai-as-promised";
 import sinon from "sinon";
 
-chai.use(chaiAsPromised);
+chaiUse(chaiAsPromised);
+should();
 
 describe("DeliveryPostHook", () => {
   const deliveryStorage = new BlDocumentStorage<Delivery>(

@@ -2,11 +2,12 @@ import "mocha";
 import { LocalLoginPasswordValidator } from "@backend/auth/local/password/local-login-password.validator";
 import { SeCrypto } from "@backend/crypto/se.crypto";
 import { BlError } from "@shared/bl-error/bl-error";
-import chai from "chai";
+import { use as chaiUse, should } from "chai";
 import chaiAsPromised from "chai-as-promised";
 import sinon from "sinon";
 
-chai.use(chaiAsPromised);
+chaiUse(chaiAsPromised);
+should();
 
 describe("LocalLoginPasswordValidator", () => {
   const seCrypto = new SeCrypto();

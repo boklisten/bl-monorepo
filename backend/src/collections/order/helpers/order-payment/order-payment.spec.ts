@@ -1,8 +1,9 @@
 import "mocha";
-import chai from "chai";
+import { use as chaiUse, should } from "chai";
 import chaiAsPromised from "chai-as-promised";
 
-chai.use(chaiAsPromised);
+chaiUse(chaiAsPromised);
+should();
 
 describe("OrderPayment", () => {
   describe("#getPayment()", () => {});

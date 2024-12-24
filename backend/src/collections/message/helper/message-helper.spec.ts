@@ -4,13 +4,14 @@ import { MessageHelper } from "@backend/collections/message/helper/message-helpe
 import { BlDocumentStorage } from "@backend/storage/blDocumentStorage";
 import { BlError } from "@shared/bl-error/bl-error";
 import { Message } from "@shared/message/message";
-import chai, { expect } from "chai";
+import { expect, use as chaiUse, should } from "chai";
 import chaiAsPromised from "chai-as-promised";
 import sinon from "sinon";
 import sinonChai from "sinon-chai";
 
-chai.use(chaiAsPromised);
-chai.use(sinonChai);
+chaiUse(chaiAsPromised);
+should();
+chaiUse(sinonChai);
 
 describe("MessageHelper", () => {
   const messageStorage = new BlDocumentStorage<Message>(

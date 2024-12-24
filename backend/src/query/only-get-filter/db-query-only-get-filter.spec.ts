@@ -1,9 +1,10 @@
 import "mocha";
 import { DbQueryOnlyGetFilter } from "@backend/query/only-get-filter/db-query-only-get-filter";
-import chai, { expect } from "chai";
+import { expect, use as chaiUse, should } from "chai";
 import chaiAsPromised from "chai-as-promised";
 
-chai.use(chaiAsPromised);
+chaiUse(chaiAsPromised);
+should();
 
 describe("DbQueryOnlyGetFilter", () => {
   describe("getOnlyGetFilters()", () => {

@@ -4,10 +4,11 @@ import { CustomerItemValidator } from "@backend/collections/customer-item/valida
 import { BlDocumentStorage } from "@backend/storage/blDocumentStorage";
 import { BlError } from "@shared/bl-error/bl-error";
 import { CustomerItem } from "@shared/customer-item/customer-item";
-import chai, { expect } from "chai";
+import { expect, use as chaiUse, should } from "chai";
 import chaiAsPromised from "chai-as-promised";
 
-chai.use(chaiAsPromised);
+chaiUse(chaiAsPromised);
+should();
 
 describe("CustomerItemValidator", () => {
   const customerItemStorage = new BlDocumentStorage<CustomerItem>(

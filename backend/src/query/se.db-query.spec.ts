@@ -1,9 +1,10 @@
 import "mocha";
 import { SEDbQuery } from "@backend/query/se.db-query";
-import chai, { expect } from "chai";
+import { expect, use as chaiUse, should } from "chai";
 import chaiAsPromised from "chai-as-promised";
 
-chai.use(chaiAsPromised);
+chaiUse(chaiAsPromised);
+should();
 
 describe("SEDbQuery", () => {
   describe("getFilter()", () => {

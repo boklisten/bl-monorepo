@@ -13,11 +13,12 @@ import { Order } from "@shared/order/order";
 import { Payment } from "@shared/payment/payment";
 import { AccessToken } from "@shared/token/access-token";
 import { UserDetail } from "@shared/user/user-detail/user-detail";
-import chai, { expect } from "chai";
+import { expect, use as chaiUse, should } from "chai";
 import chaiAsPromised from "chai-as-promised";
 import sinon from "sinon";
 
-chai.use(chaiAsPromised);
+chaiUse(chaiAsPromised);
+should();
 
 describe("OrderPlacedHandler", () => {
   let testOrder: Order;

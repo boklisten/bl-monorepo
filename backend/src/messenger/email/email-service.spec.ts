@@ -13,7 +13,7 @@ import { CustomerItem } from "@shared/customer-item/customer-item";
 import { Item } from "@shared/item/item";
 import { Message } from "@shared/message/message";
 import { UserDetail } from "@shared/user/user-detail/user-detail";
-import chai, { expect } from "chai";
+import { expect, use as chaiUse, should } from "chai";
 import chaiAsPromised from "chai-as-promised";
 import sinon from "sinon";
 
@@ -34,7 +34,8 @@ class MockPostOffice extends PostOffice {
   }
 }
 
-chai.use(chaiAsPromised);
+chaiUse(chaiAsPromised);
+should();
 
 describe("EmailService", () => {
   const emailHandler = new EmailHandler({ sendgrid: { apiKey: "someKey" } });

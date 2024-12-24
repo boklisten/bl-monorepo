@@ -3,11 +3,12 @@ import { BlCollectionName } from "@backend/collections/bl-collection";
 import { SendgridEventOperation } from "@backend/collections/message/operations/sendgrid-event.operation";
 import { BlDocumentStorage } from "@backend/storage/blDocumentStorage";
 import { Message } from "@shared/message/message";
-import chai, { expect } from "chai";
+import { expect, use as chaiUse, should } from "chai";
 import chaiAsPromised from "chai-as-promised";
 import sinon from "sinon";
 
-chai.use(chaiAsPromised);
+chaiUse(chaiAsPromised);
+should();
 
 describe("SendgridEventOperation", () => {
   const messageStorage = new BlDocumentStorage<Message>(

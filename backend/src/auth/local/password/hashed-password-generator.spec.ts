@@ -3,10 +3,11 @@ import { HashedPasswordGenerator } from "@backend/auth/local/password/hashed-pas
 import { SaltGenerator } from "@backend/auth/local/salt/salt-generator";
 import { SeCrypto } from "@backend/crypto/se.crypto";
 import { BlError } from "@shared/bl-error/bl-error";
-import chai from "chai";
+import { use as chaiUse, should } from "chai";
 import chaiAsPromised from "chai-as-promised";
 
-chai.use(chaiAsPromised);
+chaiUse(chaiAsPromised);
+should();
 
 describe("HashedPasswordGenerator", () => {
   const saltGenerator = new SaltGenerator();

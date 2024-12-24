@@ -1,10 +1,11 @@
 import "mocha";
 import { MongooseModelCreator } from "@backend/storage/mongoDb/mongoose-schema-creator";
-import chai, { expect } from "chai";
+import { expect, use as chaiUse, should } from "chai";
 import chaiAsPromised from "chai-as-promised";
 import { ObjectId } from "mongodb";
 
-chai.use(chaiAsPromised);
+chaiUse(chaiAsPromised);
+should();
 
 describe("MongooseModelCreator", () => {
   describe("transformObject", () => {

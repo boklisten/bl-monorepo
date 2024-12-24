@@ -6,11 +6,12 @@ import { UniqueItemActiveOperation } from "@backend/collections/unique-item/oper
 import { SEResponseHandler } from "@backend/response/se.response.handler";
 import { BlDocumentStorage } from "@backend/storage/blDocumentStorage";
 import { UniqueItem } from "@shared/unique-item/unique-item";
-import chai, { expect } from "chai";
+import { expect, use as chaiUse, should } from "chai";
 import chaiAsPromised from "chai-as-promised";
 import sinon from "sinon";
 
-chai.use(chaiAsPromised);
+chaiUse(chaiAsPromised);
+should();
 
 describe("UniqueItemActiveOperation", () => {
   describe("run()", () => {

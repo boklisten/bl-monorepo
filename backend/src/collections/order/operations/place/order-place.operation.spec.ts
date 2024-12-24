@@ -12,13 +12,14 @@ import { Match } from "@shared/match/match";
 import { Order } from "@shared/order/order";
 import { SIGNATURE_NUM_MONTHS_VALID } from "@shared/signature/serialized-signature";
 import { UserDetail } from "@shared/user/user-detail/user-detail";
-import chai, { expect } from "chai";
+import { expect, use as chaiUse, should } from "chai";
 import chaiAsPromised from "chai-as-promised";
 import moment from "moment-timezone";
 import sinon from "sinon";
 
 import "mocha";
-chai.use(chaiAsPromised);
+chaiUse(chaiAsPromised);
+should();
 
 describe("OrderPlaceOperation", () => {
   const resHandler = new SEResponseHandler();

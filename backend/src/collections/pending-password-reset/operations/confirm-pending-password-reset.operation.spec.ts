@@ -7,13 +7,14 @@ import { SEResponseHandler } from "@backend/response/se.response.handler";
 import { BlDocumentStorage } from "@backend/storage/blDocumentStorage";
 import { BlError } from "@shared/bl-error/bl-error";
 import { PendingPasswordReset } from "@shared/password-reset/pending-password-reset";
-import chai, { expect } from "chai";
+import { expect, use as chaiUse, should } from "chai";
 import chaiAsPromised from "chai-as-promised";
 import sinon from "sinon";
 
 import "mocha";
 
-chai.use(chaiAsPromised);
+chaiUse(chaiAsPromised);
+should();
 
 describe("ConfirmPendingPasswordResetOperation", () => {
   const pendingPasswordResetStorage =

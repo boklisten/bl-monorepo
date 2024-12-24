@@ -1,10 +1,11 @@
 import "mocha";
 import { DbQueryObjectIdFilter } from "@backend/query/object-id-filter/db-query-object-id-filter";
-import chai, { expect } from "chai";
+import { expect, use as chaiUse, should } from "chai";
 import chaiAsPromised from "chai-as-promised";
 import mongoose from "mongoose";
 
-chai.use(chaiAsPromised);
+chaiUse(chaiAsPromised);
+should();
 
 describe("DbQueryObjectIdFilter", () => {
   const dbQueryObjectIdFilter: DbQueryObjectIdFilter =

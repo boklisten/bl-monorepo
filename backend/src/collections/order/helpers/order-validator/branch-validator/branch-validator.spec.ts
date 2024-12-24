@@ -2,10 +2,11 @@ import "mocha";
 import { BranchValidator } from "@backend/collections/order/helpers/order-validator/branch-validator/branch-validator";
 import { Branch } from "@shared/branch/branch";
 import { OrderItem } from "@shared/order/order-item/order-item";
-import chai from "chai";
+import { use as chaiUse, should } from "chai";
 import chaiAsPromised from "chai-as-promised";
 
-chai.use(chaiAsPromised);
+chaiUse(chaiAsPromised);
+should();
 
 describe("BranchValidator", () => {
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment

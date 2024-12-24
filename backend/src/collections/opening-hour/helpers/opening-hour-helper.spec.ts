@@ -5,14 +5,15 @@ import { BlDocumentStorage } from "@backend/storage/blDocumentStorage";
 import { BlError } from "@shared/bl-error/bl-error";
 import { Branch } from "@shared/branch/branch";
 import { OpeningHour } from "@shared/opening-hour/opening-hour";
-import chai from "chai";
+import { use as chaiUse, should } from "chai";
 import chaiAsPromised from "chai-as-promised";
 import moment from "moment-timezone";
 import sinon from "sinon";
 import sinonChai from "sinon-chai";
 
-chai.use(chaiAsPromised);
-chai.use(sinonChai);
+chaiUse(chaiAsPromised);
+should();
+chaiUse(sinonChai);
 
 const openingHourStorage = new BlDocumentStorage<OpeningHour>(
   BlCollectionName.OpeningHours,

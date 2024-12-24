@@ -7,10 +7,11 @@ import { RefreshTokenCreator } from "@backend/auth/token/refresh/refresh-token.c
 import { TokenConfig } from "@backend/auth/token/token.config";
 import { BlError } from "@shared/bl-error/bl-error";
 import { UserPermission } from "@shared/permission/user-permission";
-import chai from "chai";
+import { use as chaiUse, should } from "chai";
 import chaiAsPromised from "chai-as-promised";
 
-chai.use(chaiAsPromised);
+chaiUse(chaiAsPromised);
+should();
 
 describe("AccessTokenCreator", () => {
   const refreshTokenConfig: RefreshToken = {

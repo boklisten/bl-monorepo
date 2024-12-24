@@ -4,10 +4,11 @@ import { BlError } from "@shared/bl-error/bl-error";
 import { Branch } from "@shared/branch/branch";
 import { Item } from "@shared/item/item";
 import { OrderItem } from "@shared/order/order-item/order-item";
-import chai, { expect } from "chai";
+import { expect, use as chaiUse, should } from "chai";
 import chaiAsPromised from "chai-as-promised";
 
-chai.use(chaiAsPromised);
+chaiUse(chaiAsPromised);
+should();
 
 describe("OrderItemPartlyPaymentValidator", () => {
   describe("#validate", () => {

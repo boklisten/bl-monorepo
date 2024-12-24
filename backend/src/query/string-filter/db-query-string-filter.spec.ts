@@ -1,9 +1,10 @@
 import "mocha";
 import { DbQueryStringFilter } from "@backend/query/string-filter/db-query-string-filter";
-import chai, { expect } from "chai";
+import { expect, use as chaiUse, should } from "chai";
 import chaiAsPromised from "chai-as-promised";
 
-chai.use(chaiAsPromised);
+chaiUse(chaiAsPromised);
+should();
 
 describe("DbQueryStringFilter", () => {
   const dbQueryStringFilter: DbQueryStringFilter = new DbQueryStringFilter();

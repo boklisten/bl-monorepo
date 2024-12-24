@@ -7,11 +7,12 @@ import { localLoginSchema } from "@backend/collections/local-login/local-login.s
 import { SEDbQuery } from "@backend/query/se.db-query";
 import { BlDocumentStorage } from "@backend/storage/blDocumentStorage";
 import { BlError } from "@shared/bl-error/bl-error";
-import chai, { expect } from "chai";
+import { expect, use as chaiUse, should } from "chai";
 import chaiAsPromised from "chai-as-promised";
 import sinon from "sinon";
 
-chai.use(chaiAsPromised);
+chaiUse(chaiAsPromised);
+should();
 
 const dummyLocalLogin = {
   username: "albert@protonmail.com",

@@ -1,10 +1,11 @@
 import "mocha";
 import { JwtPayload, SEToken } from "@backend/auth/token/se.token";
 import { BlError } from "@shared/bl-error/bl-error";
-import chai from "chai";
+import { use as chaiUse, should } from "chai";
 import chaiAsPromised from "chai-as-promised";
 
-chai.use(chaiAsPromised);
+chaiUse(chaiAsPromised);
+should();
 
 describe("SeToken", () => {
   describe("createToken()", () => {

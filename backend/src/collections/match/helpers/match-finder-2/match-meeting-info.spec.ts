@@ -15,12 +15,13 @@ import {
 } from "@backend/collections/match/helpers/match-finder-2/match-types";
 import otto_treider_test_users_year_0 from "@backend/collections/match/helpers/match-finder-2/test-data/test_users_year_0.json";
 import otto_treider_test_users_year_1 from "@backend/collections/match/helpers/match-finder-2/test-data/test_users_year_1.json";
-import chai, { expect } from "chai";
+import { expect, use as chaiUse, should } from "chai";
 import chaiAsPromised from "chai-as-promised";
 import sinonChai from "sinon-chai";
 
-chai.use(chaiAsPromised);
-chai.use(sinonChai);
+chaiUse(chaiAsPromised);
+should();
+chaiUse(sinonChai);
 
 const audun = createFakeMatchableUser("audun", "Bulkeboka", "Sykling 2");
 const siri = createFakeMatchableUser("siri", "Mykhetens leksikon", "Sykling 2");

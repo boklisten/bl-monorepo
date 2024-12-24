@@ -11,12 +11,13 @@ import { Order } from "@shared/order/order";
 import { OrderItem } from "@shared/order/order-item/order-item";
 import { Payment } from "@shared/payment/payment";
 import { UserDetail } from "@shared/user/user-detail/user-detail";
-import chai, { expect } from "chai";
+import { expect, use as chaiUse, should } from "chai";
 import chaiAsPromised from "chai-as-promised";
 import moment from "moment-timezone";
 import sinon from "sinon";
 
-chai.use(chaiAsPromised);
+chaiUse(chaiAsPromised);
+should();
 
 describe("OrderEmailHandler", () => {
   let testCustomerDetail: UserDetail;

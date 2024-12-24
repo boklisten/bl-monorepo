@@ -1,10 +1,11 @@
 import "mocha";
 import { OrderHookBefore } from "@backend/collections/order/hooks/order-hook-before";
 import { BlError } from "@shared/bl-error/bl-error";
-import chai, { expect } from "chai";
+import { expect, use as chaiUse, should } from "chai";
 import chaiAsPromised from "chai-as-promised";
 
-chai.use(chaiAsPromised);
+chaiUse(chaiAsPromised);
+should();
 
 describe("OrderHookBefore", () => {
   const orderHookBefore: OrderHookBefore = new OrderHookBefore();

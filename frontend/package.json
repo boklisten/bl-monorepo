@@ -45,8 +45,7 @@
     "@types/sanitize-html": "^2.13.0",
     "@types/string-similarity": "^4.0.2",
     "@types/validator": "^13.12.2",
-    "cypress": "^13.17.0",
-    "typescript": "^5.7.2"
+    "cypress": "^13.17.0"
   },
   "browserslist": [
     "defaults",

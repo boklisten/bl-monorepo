@@ -3,7 +3,5 @@
   "version": "1.0.0",
   "license": "UNLICENSED",
   "scripts": {},
-  "devDependencies": {
-    "typescript": "^5.7.2"
-  }
+  "devDependencies": {}
 }

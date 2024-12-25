@@ -17,6 +17,5 @@ export interface BranchItem extends BlDocument {
   liveAtBranch?: boolean; // is this item live at branch
 
   active?: boolean;
-  sharedItems?: string[];
   categories?: string[];
 }

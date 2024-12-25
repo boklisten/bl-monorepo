@@ -54,7 +54,6 @@ export const branchItemSchema = new Schema<ToSchema<BranchItem>>({
     default: false,
   },
 
-  sharedItems: [Schema.Types.ObjectId],
   categories: {
     type: [String],
     default: [],

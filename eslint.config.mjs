@@ -21,6 +21,7 @@ export default tseslint.config(
   pluginCypress.configs.recommended,
   pluginCypress.configs.globals,
   jsxA11y.flatConfigs.recommended,
+  importPlugin.flatConfigs.typescript,
   {
     files: ["**/*.{js,jsx,mjs,cjs,ts,tsx}"],
     plugins: {

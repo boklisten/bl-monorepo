@@ -37,10 +37,6 @@ export class MongooseModelCreator<T> {
         type: [String],
         default: [],
       },
-      archived: {
-        type: Boolean,
-        default: false,
-      },
     });
 
     //remove fields that the client shall not see

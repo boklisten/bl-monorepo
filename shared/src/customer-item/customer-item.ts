@@ -3,8 +3,8 @@ import { CustomerItemType } from "@shared/customer-item/customer-item-type";
 import { Period } from "@shared/period/period";
 
 /**
- * A CustomerItem is a item that the customer is holding, either by renting
- * or by only payed part of full amout (partly payment).
+ * A CustomerItem is an item that the customer is holding, either by renting
+ * or by only paid part of full amount (partly payment).
  * It holds information about the rental period such as the deadline.
  * it can either be handed out by a Branch or another Customer.
  */
@@ -14,7 +14,6 @@ export interface CustomerItem extends BlDocument {
   type?: CustomerItemType; // type is used to determine how to handle the customerItem
   customer: string; // the id/or the customer
   deadline: Date; //the deadline to return (or buyout if type is "partly-payment") this item
-  status?: "rent" | "cancel" | "buy"; // status of the customerItem
   handout: boolean; // if this customerItem is handed out to customer or not
   handoutInfo?: {
     handoutBy: "branch" | "customer"; // if this was handed out by another customer or a branch

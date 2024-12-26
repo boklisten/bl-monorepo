@@ -8,15 +8,6 @@ export interface User {
     provider: string;
     providerId: string;
   };
-  logins: {
-    provider: string;
-    providerId?: string;
-    device?: {
-      type: string;
-      name: string;
-    };
-    time: Date;
-  }[];
   blid: string;
   username: string;
   valid: boolean;

@@ -15,6 +15,4 @@ export const uniqueItemSchema = new Schema<ToSchema<UniqueItem>>({
     type: String,
     required: true,
   },
-  location: String,
-  actions: [Schema.Types.Mixed],
 });

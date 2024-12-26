@@ -79,12 +79,10 @@ describe("DeliveryPostHook", () => {
     testItem = {
       id: "item1",
       title: "signatur 3",
-      type: "book",
       price: 100,
       taxRate: 0,
 
       buyback: false,
-      categories: [],
       info: {
         isbn: 0,
         subject: "",

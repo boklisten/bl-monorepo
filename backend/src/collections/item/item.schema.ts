@@ -7,10 +7,6 @@ export const itemSchema = new Schema<ToSchema<Item>>({
     type: String,
     required: true,
   },
-  type: {
-    type: String,
-    required: true,
-  },
   price: {
     type: Number,
     required: true,
@@ -60,9 +56,5 @@ export const itemSchema = new Schema<ToSchema<Item>>({
   buyback: {
     type: Boolean,
     default: false,
-  },
-  categories: {
-    type: [String],
-    default: [],
   },
 });

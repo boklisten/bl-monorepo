@@ -19,7 +19,6 @@ describe("ItemValidator", () => {
       id: "i1",
       buyback: false,
       title: "Signatur 2",
-      type: "book",
       info: {
         isbn: 0,
         subject: "",
@@ -32,7 +31,6 @@ describe("ItemValidator", () => {
       },
       taxRate: 0,
       price: 100,
-      categories: [],
       creationTime: new Date(),
       lastUpdated: new Date(),
       active: true,

@@ -96,12 +96,10 @@ describe("OrderItemRentValidator", () => {
     testItem = {
       id: "item1",
       title: "Signatur 3",
-      type: "book",
       price: 600,
       taxRate: 0,
 
       buyback: false,
-      categories: [],
       info: {
         isbn: 0,
         subject: "",

@@ -26,7 +26,6 @@ describe("BringDeliveryService", () => {
     testItem = {
       id: "item1",
       title: "signatur 3",
-      type: "book",
       info: {
         isbn: 0,
         subject: "",
@@ -38,7 +37,6 @@ describe("BringDeliveryService", () => {
         publisher: "",
       },
       buyback: false,
-      categories: [],
       price: 100,
       taxRate: 0,
     };

@@ -15,7 +15,6 @@ export const customerItemSchema = new Schema<ToSchema<CustomerItem>>({
     type: Schema.Types.ObjectId,
     required: true,
   },
-  sharedItem: Schema.Types.ObjectId, // TODO: delete?
   deadline: {
     type: Date,
     required: true,

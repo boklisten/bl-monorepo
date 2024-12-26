@@ -7,7 +7,6 @@ export interface OrderItem {
   item: string; //id of/or the item
   blid?: string; // BLID of item
   title: string; //the title of item
-  age?: "new" | "used"; // describes if the item is new or used
   amount: number; //the amount to pay
   unitPrice: number; //item.price * rentRate (or item.price * branchItem.partlyPaymentRate if type is "partly-payment")
   taxRate: number; //item.taxRate

@@ -86,7 +86,6 @@ export class OrderToCustomerItemGenerator {
       type: "partly-payment",
       item: orderItem.item,
       blid: orderItem.blid,
-      age: orderItem.age,
       customer: order.customer, // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore
       deadline: orderItem.info.to,
@@ -117,7 +116,6 @@ export class OrderToCustomerItemGenerator {
       type: "rent",
       item: orderItem.item,
       blid: orderItem.blid,
-      age: orderItem.age,
       customer: order.customer, // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore
       deadline: orderItem.info.to,
@@ -146,7 +144,6 @@ export class OrderToCustomerItemGenerator {
       type: "loan",
       item: orderItem.item,
       blid: orderItem.blid,
-      age: orderItem.age,
       customer: order.customer, // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore
       deadline: orderItem.info.to,

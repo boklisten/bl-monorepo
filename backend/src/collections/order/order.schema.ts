@@ -15,10 +15,6 @@ export const orderSchema = new Schema<ToSchema<Order>>({
           type: String,
           required: true,
         },
-        age: {
-          type: String,
-          required: false,
-        },
         item: {
           type: Schema.Types.ObjectId,
           required: true,

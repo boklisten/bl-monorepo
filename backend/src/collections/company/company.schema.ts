@@ -7,7 +7,6 @@ export const companySchema = new Schema<ToSchema<Company>>({
     type: String,
     required: true,
   },
-  viewableFor: [String],
   contactInfo: {
     phone: {
       type: String,

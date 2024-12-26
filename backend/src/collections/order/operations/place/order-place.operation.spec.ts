@@ -95,7 +95,6 @@ describe("OrderPlaceOperation", () => {
           type: "buy",
           item: "item1",
           title: "signatur 3",
-          age: "new",
           amount: 100,
           unitPrice: 100,
           blid: "blid1",

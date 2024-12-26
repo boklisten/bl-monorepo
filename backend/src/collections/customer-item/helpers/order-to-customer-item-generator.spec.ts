@@ -54,7 +54,6 @@ describe("OrderToCustomerItemGenerator", () => {
         type: "partly-payment",
         item: "item1",
         title: "signatur",
-        age: "new",
         blid: "blid1",
         amount: 100,
         unitPrice: 100,
@@ -89,7 +88,6 @@ describe("OrderToCustomerItemGenerator", () => {
           id: null,
           item: orderItem.item,
           type: "partly-payment",
-          age: orderItem.age,
           customer: order.customer,
           // eslint-disable-next-line @typescript-eslint/ban-ts-comment
           // @ts-ignore
@@ -132,7 +130,6 @@ describe("OrderToCustomerItemGenerator", () => {
         type: "partly-payment",
         item: "item1",
         title: "signatur",
-        age: "new",
         blid: "blid1",
         amount: 100,
         unitPrice: 100,
@@ -152,7 +149,6 @@ describe("OrderToCustomerItemGenerator", () => {
         type: "partly-payment",
         item: "item1",
         title: "signatur",
-        age: "new",
         blid: "blid2",
         amount: 110,
         unitPrice: 110,
@@ -187,7 +183,6 @@ describe("OrderToCustomerItemGenerator", () => {
           id: null,
           item: orderItem.item,
           type: "partly-payment",
-          age: orderItem.age,
           customer: order.customer,
           // eslint-disable-next-line @typescript-eslint/ban-ts-comment
           // @ts-ignore
@@ -220,7 +215,6 @@ describe("OrderToCustomerItemGenerator", () => {
           id: null,
           item: orderItem2.item,
           type: "partly-payment",
-          age: orderItem2.age,
           blid: orderItem2.blid,
           customer: order.customer,
           // eslint-disable-next-line @typescript-eslint/ban-ts-comment
@@ -263,7 +257,6 @@ describe("OrderToCustomerItemGenerator", () => {
         type: "extend",
         item: "item1",
         title: "signatur",
-        age: "new",
         amount: 100,
         unitPrice: 100,
         taxRate: 0,
@@ -282,7 +275,6 @@ describe("OrderToCustomerItemGenerator", () => {
         type: "buy",
         item: "item1",
         title: "signatur",
-        age: "new",
         amount: 110,
         unitPrice: 110,
         taxRate: 0,
@@ -323,7 +315,6 @@ describe("OrderToCustomerItemGenerator", () => {
         type: "rent",
         item: "item1",
         title: "signatur",
-        age: "new",
         blid: "blid1",
         amount: 0,
         unitPrice: 0,
@@ -356,7 +347,6 @@ describe("OrderToCustomerItemGenerator", () => {
           id: null,
           item: orderItem.item,
           type: "rent",
-          age: orderItem.age,
           customer: order.customer,
           // eslint-disable-next-line @typescript-eslint/ban-ts-comment
           // @ts-ignore
@@ -397,7 +387,6 @@ describe("OrderToCustomerItemGenerator", () => {
         type: "rent",
         item: "item1",
         title: "signatur",
-        age: "new",
         blid: "blid1",
         amount: 0,
         unitPrice: 0,
@@ -415,7 +404,6 @@ describe("OrderToCustomerItemGenerator", () => {
         type: "rent",
         item: "item1",
         title: "signatur 2",
-        age: "new",
         blid: "blid2",
         amount: 0,
         unitPrice: 0,
@@ -448,7 +436,6 @@ describe("OrderToCustomerItemGenerator", () => {
           id: null,
           item: orderItem.item,
           type: "rent",
-          age: orderItem.age,
           customer: order.customer,
           // eslint-disable-next-line @typescript-eslint/ban-ts-comment
           // @ts-ignore
@@ -479,7 +466,6 @@ describe("OrderToCustomerItemGenerator", () => {
           id: null,
           item: orderItem2.item,
           type: "rent",
-          age: orderItem2.age,
           customer: order.customer,
           // eslint-disable-next-line @typescript-eslint/ban-ts-comment
           // @ts-ignore
@@ -520,7 +506,6 @@ describe("OrderToCustomerItemGenerator", () => {
         type: "loan",
         item: "item1",
         title: "signatur",
-        age: "new",
         blid: "blid1",
         amount: 0,
         unitPrice: 0,
@@ -538,7 +523,6 @@ describe("OrderToCustomerItemGenerator", () => {
         type: "loan",
         item: "item1",
         title: "signatur 2",
-        age: "new",
         blid: "blid2",
         amount: 0,
         unitPrice: 0,
@@ -571,7 +555,6 @@ describe("OrderToCustomerItemGenerator", () => {
           id: null,
           item: orderItem.item,
           type: "loan",
-          age: orderItem.age,
           customer: order.customer,
           // eslint-disable-next-line @typescript-eslint/ban-ts-comment
           // @ts-ignore
@@ -602,7 +585,6 @@ describe("OrderToCustomerItemGenerator", () => {
           id: null,
           item: orderItem2.item,
           type: "loan",
-          age: orderItem2.age,
           customer: order.customer,
           // eslint-disable-next-line @typescript-eslint/ban-ts-comment
           // @ts-ignore
@@ -643,7 +625,6 @@ describe("OrderToCustomerItemGenerator", () => {
         type: "loan",
         item: "item1",
         title: "signatur",
-        age: "new",
         blid: "blid1",
         amount: 0,
         unitPrice: 0,
@@ -661,7 +642,6 @@ describe("OrderToCustomerItemGenerator", () => {
         type: "rent",
         item: "item1",
         title: "signatur 2",
-        age: "new",
         blid: "blid2",
         amount: 0,
         unitPrice: 0,
@@ -679,7 +659,6 @@ describe("OrderToCustomerItemGenerator", () => {
         type: "partly-payment",
         item: "item1",
         title: "signatur 3",
-        age: "new",
         blid: "blid3",
         amount: 0,
         unitPrice: 0,
@@ -697,7 +676,6 @@ describe("OrderToCustomerItemGenerator", () => {
         type: "buy",
         item: "item1",
         title: "signatur 4",
-        age: "new",
         blid: "blid4",
         amount: 0,
         unitPrice: 0,
@@ -730,7 +708,6 @@ describe("OrderToCustomerItemGenerator", () => {
           id: null,
           item: orderItem.item,
           type: "loan",
-          age: orderItem.age,
           customer: order.customer,
           // eslint-disable-next-line @typescript-eslint/ban-ts-comment
           // @ts-ignore
@@ -761,7 +738,6 @@ describe("OrderToCustomerItemGenerator", () => {
           id: null,
           item: orderItem2.item,
           type: "rent",
-          age: orderItem2.age,
           customer: order.customer,
           // eslint-disable-next-line @typescript-eslint/ban-ts-comment
           // @ts-ignore
@@ -792,7 +768,6 @@ describe("OrderToCustomerItemGenerator", () => {
           id: null,
           item: orderItem3.item,
           type: "partly-payment",
-          age: orderItem3.age,
           customer: order.customer,
           // eslint-disable-next-line @typescript-eslint/ban-ts-comment
           // @ts-ignore

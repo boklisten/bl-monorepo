@@ -10,27 +10,26 @@ export const customerItemSchema = new Schema<ToSchema<CustomerItem>>({
   type: {
     type: String,
   },
-  age: String,
   blid: String,
   customer: {
     type: Schema.Types.ObjectId,
     required: true,
   },
-  sharedItem: Schema.Types.ObjectId,
+  sharedItem: Schema.Types.ObjectId, // TODO: delete?
   deadline: {
     type: Date,
     required: true,
   },
-  digital: Boolean,
-  digitalInfo: Schema.Types.Mixed,
+  digital: Boolean, // TODO: delete?
+  digitalInfo: Schema.Types.Mixed, // TODO: delete?
   match: {
     type: Boolean,
     default: false,
-  },
+  }, // TODO: delete?
   matchInfo: {
     id: Schema.Types.ObjectId,
     time: Date,
-  },
+  }, // TODO: delete?
   handout: {
     type: Boolean,
     default: false,
@@ -119,5 +118,5 @@ export const customerItemSchema = new Schema<ToSchema<CustomerItem>>({
       email: String,
       phone: String,
     },
-  },
+  }, // TODO: this information should not be duped here, customer ref. instead
 });

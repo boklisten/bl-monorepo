@@ -12,7 +12,6 @@ export interface CustomerItem extends BlDocument {
   item: string; // what item is this customerItem for
   blid?: string; // the unique id for this customer item
   type?: CustomerItemType; // type is used to determine how to handle the customerItem
-  age?: "new" | "used"; // describes if the item is new or used
   customer: string; // the id/or the customer
   sharedItem?: string; // can point to a shared item, if so the item has a unique id and can be traced
   deadline: Date; //the deadline to return (or buyout if type is "partly-payment") this item

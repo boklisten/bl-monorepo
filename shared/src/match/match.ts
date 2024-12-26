@@ -1,5 +1,4 @@
 import { BlDocument } from "@shared/bl-document/bl-document";
-import { UserPermission } from "@shared/permission/user-permission";
 
 export enum MatchVariant {
   UserMatch = "UserMatch",
@@ -7,27 +6,12 @@ export enum MatchVariant {
 }
 
 export class MatchBase implements BlDocument {
+  id: string; // Required by BlDocument
   meetingInfo: {
     location: string;
     date: Date | null;
   };
   orders: string[];
-
-  // Required by BlDocument
-  id: string;
-  blid?: string;
-  lastUpdated?: Date;
-  creationTime?: Date;
-  active?: boolean;
-  user?: {
-    id: string;
-    permission?: UserPermission;
-  };
-  viewableFor?: string[];
-  viewableForPermission?: UserPermission;
-  editableFor?: string[];
-  archived?: boolean;
-  // End BlDocument fields ---
 
   constructor(handoffInfo: MatchBase["meetingInfo"]) {
     this.meetingInfo = handoffInfo;

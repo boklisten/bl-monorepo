@@ -19,14 +19,6 @@ export const customerItemSchema = new Schema<ToSchema<CustomerItem>>({
     type: Date,
     required: true,
   },
-  match: {
-    type: Boolean,
-    default: false,
-  }, // TODO: delete?
-  matchInfo: {
-    id: Schema.Types.ObjectId,
-    time: Date,
-  }, // TODO: delete?
   handout: {
     type: Boolean,
     default: false,

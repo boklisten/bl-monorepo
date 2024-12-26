@@ -15,11 +15,6 @@ export interface CustomerItem extends BlDocument {
   customer: string; // the id/or the customer
   deadline: Date; //the deadline to return (or buyout if type is "partly-payment") this item
   status?: "rent" | "cancel" | "buy"; // status of the customerItem
-  match?: boolean;
-  matchInfo?: {
-    id?: string;
-    time?: Date;
-  };
   handout: boolean; // if this customerItem is handed out to customer or not
   handoutInfo?: {
     handoutBy: "branch" | "customer"; // if this was handed out by another customer or a branch

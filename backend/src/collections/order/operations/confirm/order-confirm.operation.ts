@@ -7,6 +7,7 @@ import { BlApiRequest } from "@backend/request/bl-api-request";
 import { SEResponseHandler } from "@backend/response/se.response.handler";
 import { BlDocumentStorage } from "@backend/storage/blDocumentStorage";
 import { BlError } from "@shared/bl-error/bl-error";
+import { BlapiResponse } from "@shared/blapi-response/blapi-response";
 import { Order } from "@shared/order/order";
 import { AccessToken } from "@shared/token/access-token";
 import { NextFunction, Request, Response } from "express";

@@ -121,7 +121,6 @@ describe("OrderItemValidator", () => {
         buyout: {
           percentage: 0.5,
         },
-        acceptedMethods: ["card", "dibs"],
       },
     };
   });

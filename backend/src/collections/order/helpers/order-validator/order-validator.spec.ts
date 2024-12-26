@@ -236,7 +236,6 @@ describe("OrderValidator", () => {
         buyout: {
           percentage: 0.5,
         },
-        acceptedMethods: ["card"],
       },
     };
   });

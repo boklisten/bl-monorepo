@@ -97,10 +97,6 @@ export const branchSchema = new Schema<ToSchema<Branch>>({
         default: 1,
       },
     },
-    acceptedMethods: {
-      type: [String],
-      default: [],
-    },
     payLater: Boolean,
   },
   deliveryMethods: {

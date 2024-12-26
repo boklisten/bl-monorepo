@@ -1,4 +1,3 @@
-import { PaymentMethod } from "@shared/payment/payment-method/payment-method";
 import { Period } from "@shared/period/period";
 
 export interface BranchPaymentInfo {
@@ -47,5 +46,4 @@ export interface BranchPaymentInfo {
     // information about when customer sells items to branch
     percentage: number; // the percentage of the full price the branch buys the item in for
   };
-  acceptedMethods: PaymentMethod[];
 }

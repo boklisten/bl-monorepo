@@ -37,11 +37,4 @@ export const UserSchema = new Schema<ToSchema<User>>({
     type: Boolean,
   },
   movedToPrimary: Schema.Types.ObjectId,
-  active: {
-    type: Boolean,
-    default: true,
-  },
-  lastRequest: {
-    type: String,
-  },
 });

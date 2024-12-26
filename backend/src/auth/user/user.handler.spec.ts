@@ -30,7 +30,6 @@ const testUser = {
   blid: "",
   username: "bill@gmail.com",
   valid: false,
-  active: true,
 } as User;
 
 describe("UserHandler", () => {
@@ -329,17 +328,6 @@ describe("UserHandler", () => {
           .exists(testProvider, providerId)
           .should.be.rejectedWith(BlError);
       });
-    });
-  });
-
-  describe("#valid", () => {
-    it("should reject if user.active is false", () => {
-      testUser.active = false;
-
-      return expect(userHandler.valid(testUsername)).to.be.rejectedWith(
-        BlError,
-        /user.active is false/,
-      );
     });
   });
 });

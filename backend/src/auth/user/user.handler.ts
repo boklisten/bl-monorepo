@@ -289,11 +289,7 @@ export class UserHandler {
   public valid(username: string): Promise<void> {
     return new Promise((resolve, reject) => {
       this.getByUsername(username)
-        .then((user: User) => {
-          if (!user.active) {
-            return reject(new BlError("user.active is false").code(913));
-          }
-
+        .then(() => {
           resolve();
         })
         .catch((getUserError: BlError) => {

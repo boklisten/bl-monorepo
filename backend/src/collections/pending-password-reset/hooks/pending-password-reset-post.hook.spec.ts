@@ -55,7 +55,6 @@ describe("PendingPasswordResetPostHook", () => {
         id: "u#xyz",
         permission: "customer",
       },
-      active: true,
     } as User;
   });
 
@@ -102,16 +101,6 @@ describe("PendingPasswordResetPostHook", () => {
         BlError,
         /username "cityofatlantis@mail.com" not found/,
       );
-    });
-
-    describe("when user is found in storage", () => {
-      it("should reject if user.active is false", async () => {
-        testUser.active = false;
-
-        await expect(
-          pendingPasswordResetPostHook.before(testPasswordResetRequest),
-        ).to.be.rejectedWith(BlError, /user.active is false/);
-      });
     });
 
     beforeEach(() => {

@@ -81,8 +81,6 @@ describe("LocalLoginValidator", () => {
         blid: "",
         username: username,
         valid: true,
-        active: true,
-        lastRequest: "",
       } as User);
     });
 

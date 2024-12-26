@@ -36,10 +36,6 @@ export class PendingPasswordResetPostHook extends Hook {
           .add(getUserError);
       });
 
-    if (!user.active) {
-      throw new BlError("user.active is false").code(10_703);
-    }
-
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
     const id = this.seCrypto.random();

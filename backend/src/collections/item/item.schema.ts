@@ -11,10 +11,6 @@ export const itemSchema = new Schema<ToSchema<Item>>({
     type: String,
     required: true,
   },
-  digital: {
-    type: Boolean,
-    default: false,
-  },
   price: {
     type: Number,
     required: true,

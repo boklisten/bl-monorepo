@@ -15,10 +15,6 @@ export interface CustomerItem extends BlDocument {
   customer: string; // the id/or the customer
   deadline: Date; //the deadline to return (or buyout if type is "partly-payment") this item
   status?: "rent" | "cancel" | "buy"; // status of the customerItem
-  digital?: boolean; // if the customerItem is digital
-  digitalInfo?: {
-    id?: string;
-  };
   match?: boolean;
   matchInfo?: {
     id?: string;

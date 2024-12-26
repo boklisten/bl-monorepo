@@ -85,7 +85,6 @@ describe("OrderItemBuyValidator", () => {
 
       buyback: false,
       categories: [],
-      digital: false,
       info: {
         isbn: 0,
         subject: "",

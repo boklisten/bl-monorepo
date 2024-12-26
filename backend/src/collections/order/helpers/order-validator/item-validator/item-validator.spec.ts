@@ -18,7 +18,6 @@ describe("ItemValidator", () => {
     testItem = {
       id: "i1",
       buyback: false,
-      digital: false,
       title: "Signatur 2",
       type: "book",
       info: {

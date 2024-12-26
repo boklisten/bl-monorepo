@@ -39,7 +39,6 @@ describe("BringDeliveryService", () => {
       },
       buyback: false,
       categories: [],
-      digital: false,
       price: 100,
       taxRate: 0,
     };

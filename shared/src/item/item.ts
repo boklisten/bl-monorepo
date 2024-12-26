@@ -4,7 +4,6 @@ import { ItemType } from "@shared/item/item-type";
 export interface Item extends BlDocument {
   title: string;
   type: ItemType;
-  digital: boolean;
   price: number;
   taxRate: number;
   info: {

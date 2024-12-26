@@ -19,8 +19,6 @@ export const customerItemSchema = new Schema<ToSchema<CustomerItem>>({
     type: Date,
     required: true,
   },
-  digital: Boolean, // TODO: delete?
-  digitalInfo: Schema.Types.Mixed, // TODO: delete?
   match: {
     type: Boolean,
     default: false,

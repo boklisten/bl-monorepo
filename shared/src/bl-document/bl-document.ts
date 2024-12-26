@@ -1,4 +1,3 @@
-import { Comment } from "@shared/comment/comment";
 import { UserPermission } from "@shared/permission/user-permission";
 
 export interface BlDocument {
@@ -6,7 +5,6 @@ export interface BlDocument {
   blid?: string;
   lastUpdated?: Date;
   creationTime?: Date;
-  comments?: Comment[];
   active?: boolean;
   user?: {
     // the user that created the document

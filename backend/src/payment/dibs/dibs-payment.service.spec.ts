@@ -49,7 +49,6 @@ describe("DibsPaymentService", () => {
         },
       ],
       payments: [],
-      comments: [],
       delivery: "",
       active: false,
       user: {

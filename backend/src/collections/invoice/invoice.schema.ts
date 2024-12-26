@@ -91,4 +91,17 @@ export const invoiceSchema = new Schema<ToSchema<Invoice>>({
   ourReference: String,
   invoiceId: String,
   reference: String,
+  comments: {
+    type: [
+      {
+        id: String,
+        msg: String,
+        creationTime: {
+          type: Date,
+          default: Date.now(),
+        },
+        user: Schema.Types.ObjectId,
+      },
+    ],
+  },
 });

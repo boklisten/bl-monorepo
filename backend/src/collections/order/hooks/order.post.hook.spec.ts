@@ -102,7 +102,6 @@ describe("OrderPostHook", () => {
       byCustomer: true,
       payments: [],
       delivery: "",
-      comments: [],
       active: false,
       user: {
         id: "u1",

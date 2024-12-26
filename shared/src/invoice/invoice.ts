@@ -1,4 +1,5 @@
 import { BlDocument } from "@shared/bl-document/bl-document";
+import { Comment } from "@shared/comment/comment";
 import { CustomerItemType } from "@shared/customer-item/customer-item-type";
 
 export interface Invoice extends BlDocument {
@@ -62,4 +63,5 @@ export interface Invoice extends BlDocument {
   ourReference?: string;
   invoiceId?: string; // ex. 201810000
   reference?: string; // ex. 'Not delivered books in time'
+  comments?: Comment[];
 }

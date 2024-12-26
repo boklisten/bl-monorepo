@@ -17,19 +17,6 @@ export class MongooseModelCreator<T> {
   private standardizeSchema(schema: Schema): Schema {
     schema.add({
       blid: String,
-      comments: {
-        type: [
-          {
-            id: String,
-            msg: String,
-            creationTime: {
-              type: Date,
-              default: Date.now(),
-            },
-            user: Schema.Types.ObjectId,
-          },
-        ],
-      },
       active: {
         type: Boolean,
         default: true,

@@ -1,5 +1,4 @@
 import { BlDocument } from "@shared/bl-document/bl-document";
-import { Comment } from "@shared/comment/comment";
 import { UserPermission } from "@shared/permission/user-permission";
 
 export enum MatchVariant {
@@ -19,7 +18,6 @@ export class MatchBase implements BlDocument {
   blid?: string;
   lastUpdated?: Date;
   creationTime?: Date;
-  comments?: Comment[];
   active?: boolean;
   user?: {
     id: string;

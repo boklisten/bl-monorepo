@@ -75,7 +75,6 @@ describe("OrderHookBefore", () => {
           branch: "b1",
           byCustomer: true,
           payments: ["payment1"],
-          comments: [],
           active: false,
           user: {
             id: "u1",

@@ -36,7 +36,6 @@ describe("ItemValidator", () => {
       categories: [],
       creationTime: new Date(),
       lastUpdated: new Date(),
-      comments: [],
       active: true,
     };
 

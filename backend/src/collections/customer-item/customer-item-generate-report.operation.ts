@@ -146,7 +146,6 @@ export class CustomerItemGenerateReportOperation implements Operation {
           guardianPhone: { $first: "$customerInfo.guardian.phone" },
           guardianName: { $first: "$customerInfo.guardian.name" },
           handoutEmployee: { $first: "$employeeInfo.name" },
-          comments: 1,
           pivot: "1",
         },
       },

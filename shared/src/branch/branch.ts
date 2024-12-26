@@ -7,7 +7,6 @@ export interface Branch extends BlDocument {
   type?: string; // the type of branch, ex. School or Storage
   desc?: string; // the description of the branch
   root?: boolean; // is this a root branch
-  childBranches?: string[]; // does this branch have child branches
   openingHours?: string[]; // id of all the opening hours this branch has
   paymentInfo?: BranchPaymentInfo; // payment information for this branch
   viewableFor?: [UserPermission];

@@ -10,7 +10,6 @@ export const branchSchema = new Schema<ToSchema<Branch>>({
   type: String,
   desc: String,
   root: Boolean,
-  childBranches: [Schema.Types.ObjectId],
   viewableFor: [String],
   contactInfo: {
     phone: String,

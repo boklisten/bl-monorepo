@@ -21,4 +21,5 @@ export interface UserDetail extends BlDocument {
   orders?: string[];
   customerItems?: string[];
   signatures: string[];
+  blid: string;
 }

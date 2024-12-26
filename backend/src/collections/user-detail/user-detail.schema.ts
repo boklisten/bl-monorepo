@@ -55,4 +55,8 @@ export const userDetailSchema = new Schema<ToSchema<UserDetail>>({
   customerItems: [Schema.Types.ObjectId],
   orders: [Schema.Types.ObjectId],
   signatures: [Schema.Types.ObjectId],
+  blid: {
+    type: String,
+    required: true,
+  },
 });

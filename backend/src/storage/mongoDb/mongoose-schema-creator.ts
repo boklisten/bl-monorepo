@@ -16,7 +16,6 @@ export class MongooseModelCreator<T> {
 
   private standardizeSchema(schema: Schema): Schema {
     schema.add({
-      blid: String,
       active: {
         type: Boolean,
         default: true,

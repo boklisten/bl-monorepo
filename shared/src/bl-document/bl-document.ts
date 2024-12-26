@@ -2,7 +2,6 @@ import { UserPermission } from "@shared/permission/user-permission";
 
 export interface BlDocument {
   id: string;
-  blid?: string;
   lastUpdated?: Date;
   creationTime?: Date;
   active?: boolean;

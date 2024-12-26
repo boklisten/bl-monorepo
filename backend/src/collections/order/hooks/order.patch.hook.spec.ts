@@ -62,6 +62,7 @@ describe("OrderPatchHook", () => {
       branch: "branch1",
       orders: [],
       signatures: [],
+      blid: "",
     };
 
     testOrder = {

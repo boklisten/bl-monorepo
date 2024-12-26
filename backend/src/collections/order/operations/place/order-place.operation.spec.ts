@@ -129,6 +129,7 @@ describe("OrderPlaceOperation", () => {
       branch: "",
       signatures: ["validSignature"],
       id: "customer1",
+      blid: "",
     };
 
     const validSignature: Signature = {

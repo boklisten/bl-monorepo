@@ -72,6 +72,7 @@ describe("OrderPostHook", () => {
       branch: "branch1",
       orders: [],
       signatures: [],
+      blid: "",
     };
 
     testOrder = {

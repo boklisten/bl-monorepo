@@ -176,6 +176,7 @@ describe("OrderPlacedHandler", () => {
       emailConfirmed: true,
       branch: "branch1",
       signatures: [],
+      blid: "",
     };
   });
 

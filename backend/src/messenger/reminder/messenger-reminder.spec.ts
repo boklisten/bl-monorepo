@@ -113,6 +113,7 @@ describe("MessengerReminder", () => {
         country: "norway",
         dob: new Date(),
         signatures: [],
+        blid: "",
       };
 
       const textBlocks = [

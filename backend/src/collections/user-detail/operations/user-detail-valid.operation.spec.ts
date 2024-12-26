@@ -90,6 +90,7 @@ describe("UserDetailValidOperation", () => {
           branch: "branch1",
           emailConfirmed: true,
           signatures: [],
+          blid: "",
         };
       });
 
@@ -126,6 +127,7 @@ describe("UserDetailValidOperation", () => {
           branch: "branch1",
           emailConfirmed: true,
           signatures: [],
+          blid: "",
         };
       });
 

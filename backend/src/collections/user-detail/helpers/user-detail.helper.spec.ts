@@ -36,6 +36,7 @@ describe("UserDetailHelper", () => {
       dob: new Date(),
       branch: "branch1",
       signatures: [],
+      blid: "",
     };
 
     testAccessToken = {

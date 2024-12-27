@@ -233,7 +233,6 @@ describe("CustomerItemHandler", () => {
 
       expectedQuery.booleanFilters = [
         { fieldName: "returned", value: false },
-        { fieldName: "match", value: false },
         { fieldName: "buyout", value: false },
       ];
 

@@ -274,7 +274,6 @@ export class CustomerItemHandler {
         deadline: [">" + before, "<" + after],
         returned: "false",
         buyout: "false",
-        match: "false",
         type: type,
       };
 
@@ -291,7 +290,6 @@ export class CustomerItemHandler {
         customer: customerId.toString(),
         deadline: [">" + before, "<" + after],
         returned: "false",
-        match: "false",
         buyout: "false",
       };
 

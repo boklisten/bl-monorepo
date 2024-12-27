@@ -27,6 +27,7 @@ import { CustomerItem } from "@shared/customer-item/customer-item";
 import { Delivery } from "@shared/delivery/delivery";
 import { Item } from "@shared/item/item";
 import { Message } from "@shared/message/message";
+import { MessageMethod } from "@shared/message/message-method/message-method";
 import { Order } from "@shared/order/order";
 import { OrderItem } from "@shared/order/order-item/order-item";
 import { UserDetail } from "@shared/user/user-detail/user-detail";
@@ -183,13 +184,10 @@ export class EmailService implements MessengerService {
     voice: boolean;
   } {
     switch (message.messageMethod) {
-      case "all": {
-        return { email: true, sms: true, voice: false };
-      }
-      case "email": {
+      case MessageMethod.EMAIL: {
         return { email: true, sms: false, voice: false };
       }
-      case "sms": {
+      case MessageMethod.SMS: {
         return { email: false, sms: true, voice: false };
       }
       default: {

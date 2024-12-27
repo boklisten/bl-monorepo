@@ -4,7 +4,8 @@ import { MessageHelper } from "@backend/collections/message/helper/message-helpe
 import { BlDocumentStorage } from "@backend/storage/blDocumentStorage";
 import { BlError } from "@shared/bl-error/bl-error";
 import { Message } from "@shared/message/message";
-import { expect, use as chaiUse, should } from "chai";
+import { MessageMethod } from "@shared/message/message-method/message-method";
+import { expect, should, use as chaiUse } from "chai";
 import chaiAsPromised from "chai-as-promised";
 import sinon from "sinon";
 import sinonChai from "sinon-chai";
@@ -27,7 +28,7 @@ describe("MessageHelper", () => {
         id: "abc",
         messageType: "reminder",
         messageSubtype: "partly-payment",
-        messageMethod: "all",
+        messageMethod: MessageMethod.EMAIL,
         sequenceNumber: 0,
         customerId: "abc",
       };
@@ -51,7 +52,7 @@ describe("MessageHelper", () => {
         id: "abc",
         messageType: "reminder",
         messageSubtype: "partly-payment",
-        messageMethod: "all",
+        messageMethod: MessageMethod.EMAIL,
         sequenceNumber: 0,
         customerId: "abc",
       };
@@ -73,7 +74,7 @@ describe("MessageHelper", () => {
         id: "abc",
         messageType: "reminder",
         messageSubtype: "partly-payment",
-        messageMethod: "all",
+        messageMethod: MessageMethod.EMAIL,
         sequenceNumber: 0,
         htmlContent: "<h1>This is some new html content</h1>",
         customerId: "abc",
@@ -83,7 +84,7 @@ describe("MessageHelper", () => {
         id: "abc",
         messageType: "reminder",
         messageSubtype: "partly-payment",
-        messageMethod: "all",
+        messageMethod: MessageMethod.EMAIL,
         sequenceNumber: 0,
         htmlContent: "<h1>This is the html content already stored</h1>",
         customerId: "abc",
@@ -106,7 +107,7 @@ describe("MessageHelper", () => {
         id: "abc",
         messageType: "reminder",
         messageSubtype: "partly-payment",
-        messageMethod: "all",
+        messageMethod: MessageMethod.EMAIL,
         sequenceNumber: 0,
         customerId: "abc",
       };

@@ -4,16 +4,17 @@ import { EmailService } from "@backend/messenger/email/email-service";
 import { BlDocumentStorage } from "@backend/storage/blDocumentStorage";
 import { EmailHandler, EmailLog } from "@boklisten/bl-email";
 import {
+  MessageOptions,
   PostOffice,
   Recipient,
-  MessageOptions,
 } from "@boklisten/bl-post-office";
 import { BlError } from "@shared/bl-error/bl-error";
 import { CustomerItem } from "@shared/customer-item/customer-item";
 import { Item } from "@shared/item/item";
 import { Message } from "@shared/message/message";
+import { MessageMethod } from "@shared/message/message-method/message-method";
 import { UserDetail } from "@shared/user/user-detail/user-detail";
-import { expect, use as chaiUse, should } from "chai";
+import { expect, should, use as chaiUse } from "chai";
 import chaiAsPromised from "chai-as-promised";
 import sinon from "sinon";
 
@@ -58,7 +59,7 @@ describe("EmailService", () => {
       const message: Message = {
         id: "message1",
         customerId: "customer1",
-        messageMethod: "email",
+        messageMethod: MessageMethod.EMAIL,
         messageType: "generic",
         messageSubtype: "all",
         subject: "This is the subject",
@@ -85,7 +86,7 @@ describe("EmailService", () => {
       const message: Message = {
         id: "message1",
         customerId: "customer1",
-        messageMethod: "email",
+        messageMethod: MessageMethod.EMAIL,
         messageType: "generic",
         messageSubtype: "all",
         subject: "This is the subject",

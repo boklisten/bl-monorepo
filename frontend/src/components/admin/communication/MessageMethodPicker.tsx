@@ -16,7 +16,6 @@ export default function MessageMethodPicker({
         Meldingstype
       </Typography>
       <ToggleButtonGroup
-        sx={{ display: "flex", justifyContent: "right" }}
         color="primary"
         value={messageMethod}
         exclusive
@@ -25,8 +24,8 @@ export default function MessageMethodPicker({
           setMessageMethod(newMessageMethod);
         }}
       >
-        <ToggleButton value={"sms"}>SMS</ToggleButton>
-        <ToggleButton value={"email"}>E-post</ToggleButton>
+        <ToggleButton value={MessageMethod.SMS}>SMS</ToggleButton>
+        <ToggleButton value={MessageMethod.EMAIL}>E-post</ToggleButton>
       </ToggleButtonGroup>
     </Box>
   );

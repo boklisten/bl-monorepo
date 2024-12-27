@@ -6,9 +6,10 @@ import { MessengerReminder } from "@backend/messenger/reminder/messenger-reminde
 import { BlDocumentStorage } from "@backend/storage/blDocumentStorage";
 import { BlError } from "@shared/bl-error/bl-error";
 import { Message } from "@shared/message/message";
+import { MessageMethod } from "@shared/message/message-method/message-method";
 import { AccessToken } from "@shared/token/access-token";
 import { UserDetail } from "@shared/user/user-detail/user-detail";
-import { expect, use as chaiUse, should } from "chai";
+import { expect, should, use as chaiUse } from "chai";
 import chaiAsPromised from "chai-as-promised";
 import sinon from "sinon";
 import sinonChai from "sinon-chai";
@@ -58,7 +59,7 @@ describe("MessagePostHook", () => {
         customerId: "customer1",
         messageType: "reminder",
         messageSubtype: "none",
-        messageMethod: "all",
+        messageMethod: MessageMethod.EMAIL,
         info: {
           deadline: new Date(),
         },
@@ -78,7 +79,7 @@ describe("MessagePostHook", () => {
           customerId: "customer1",
           messageType: "reminder",
           messageSubtype: "none",
-          messageMethod: "email",
+          messageMethod: MessageMethod.EMAIL,
           info: {
             deadline: new Date(),
           },
@@ -125,7 +126,7 @@ describe("MessagePostHook", () => {
           customerId: "customer1",
           messageType: "generic",
           messageSubtype: "none",
-          messageMethod: "email",
+          messageMethod: MessageMethod.EMAIL,
         };
 
         userDetail = {

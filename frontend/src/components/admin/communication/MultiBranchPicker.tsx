@@ -51,7 +51,7 @@ export default function MultiBranchPicker({
       <Typography variant="h5" sx={{ mb: 1 }}>
         Skoler
       </Typography>
-      <FormControl sx={{ width: 318 }}>
+      <FormControl>
         <InputLabel id="multi-branch-select-label">Velg skoler</InputLabel>
         <Select
           labelId="multi-branch-select-label"

@@ -1,3 +1,4 @@
+"use client";
 import { createTheme, responsiveFontSizes } from "@mui/material";
 import { grey, orange, red } from "@mui/material/colors";
 import { Roboto } from "next/font/google";

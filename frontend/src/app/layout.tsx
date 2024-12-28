@@ -1,8 +1,10 @@
 import AuthLinker from "@frontend/components/AuthLinker";
-import CustomThemeProvider from "@frontend/components/CustomThemeProvider";
 import DynamicHeightProvider from "@frontend/components/DynamicHeightProvider";
 import CustomLocalizationProvider from "@frontend/components/LocalizationProvider";
+import theme from "@frontend/utils/theme";
+import { ThemeProvider } from "@mui/material";
 import CssBaseline from "@mui/material/CssBaseline";
+import { AppRouterCacheProvider } from "@mui/material-nextjs/v15-appRouter";
 import { Metadata } from "next";
 import { ReactNode, Suspense } from "react";
 
@@ -26,13 +28,15 @@ export default function RootLayout({ children }: { children: ReactNode }) {
         <Suspense>
           <DynamicHeightProvider>
             <CustomLocalizationProvider>
-              <CustomThemeProvider>
-                <AuthLinker>
-                  {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
-                  <CssBaseline />
-                  {children}
-                </AuthLinker>
-              </CustomThemeProvider>
+              <AppRouterCacheProvider>
+                <ThemeProvider theme={theme}>
+                  <AuthLinker>
+                    {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
+                    <CssBaseline />
+                    {children}
+                  </AuthLinker>
+                </ThemeProvider>
+              </AppRouterCacheProvider>
             </CustomLocalizationProvider>
           </DynamicHeightProvider>
         </Suspense>

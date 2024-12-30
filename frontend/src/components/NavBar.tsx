@@ -1,11 +1,11 @@
 import BranchSelect from "@frontend/components/BranchSelect";
 import DynamicLink from "@frontend/components/DynamicLink";
+import Logo from "@frontend/components/Logo";
 import DropDownMenu from "@frontend/components/SideMenuDrawer";
-import { Button, Typography } from "@mui/material";
+import { Button } from "@mui/material";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
-import Image from "next/image";
 
 interface TabLinkProps {
   title: string;
@@ -50,36 +50,7 @@ export default function NavBar() {
     <Box data-testid="nav-bar">
       <AppBar position="fixed">
         <Toolbar sx={{ paddingY: "10px" }}>
-          <DynamicLink href={"/"}>
-            <Box
-              sx={{
-                color: "secondary",
-                display: "flex",
-                alignItems: "center",
-                cursor: "pointer",
-              }}
-            >
-              <Image
-                src="/boklisten_logo_v2_icon_white_lg.png"
-                width={40}
-                height={40}
-                alt="logo"
-              />
-              <Typography
-                variant="h5"
-                component="div"
-                noWrap
-                sx={{
-                  display: { xs: "none", md: "flex" },
-                  flexGrow: 1,
-                  marginLeft: 1,
-                  color: "white",
-                }}
-              >
-                Boklisten.no
-              </Typography>
-            </Box>
-          </DynamicLink>
+          <Logo variant={"white"} />
 
           <Box sx={{ flexGrow: 1 }} />
 

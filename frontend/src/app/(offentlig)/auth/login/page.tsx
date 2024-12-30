@@ -11,13 +11,11 @@ export const metadata: Metadata = {
 
 const LoginPage = () => {
   return (
-    <>
-      <Card sx={{ paddingBottom: 4 }}>
-        <Suspense>
-          <SignIn />
-        </Suspense>
-      </Card>
-    </>
+    <Card sx={{ paddingBottom: 4 }}>
+      <Suspense>
+        <SignIn />
+      </Suspense>
+    </Card>
   );
 };
 

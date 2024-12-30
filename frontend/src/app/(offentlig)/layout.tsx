@@ -1,6 +1,6 @@
 import Footer from "@frontend/components/Footer";
 import NavBar from "@frontend/components/NavBar";
-import { Container, Box } from "@mui/material";
+import { Container, Box, Grid2 } from "@mui/material";
 import { ReactNode } from "react";
 
 export default function PublicPageLayout({
@@ -10,11 +10,10 @@ export default function PublicPageLayout({
 }) {
   return (
     <>
-      <Box
+      <Grid2
+        container
         sx={{
           minHeight: "100vh",
-          backgroundColor: "#f9f9f9",
-          display: "flex",
           flexDirection: "column",
         }}
       >
@@ -29,13 +28,7 @@ export default function PublicPageLayout({
         >
           <Box sx={{ width: "100%" }}>{children}</Box>
         </Container>
-      </Box>
-      <Box
-        sx={{
-          height: 2,
-          width: "100%",
-        }}
-      />
+      </Grid2>
       <Footer />
     </>
   );

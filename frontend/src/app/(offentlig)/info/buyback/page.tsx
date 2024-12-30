@@ -1,12 +1,11 @@
 import BlFetcher from "@frontend/api/blFetcher";
 import BuybackList from "@frontend/components/info/BuybackList";
-import DynamicNav from "@frontend/components/info/DynamicNav";
 import BL_CONFIG from "@frontend/utils/bl-config";
-import { infoPageTabs } from "@frontend/utils/constants";
 import { assertBlApiError } from "@frontend/utils/types";
-import { Card } from "@mui/material";
 import { Item } from "@shared/item/item";
 import { Metadata } from "next";
+
+export const revalidate = 60;
 
 export const metadata: Metadata = {
   title: "Innkjøpsliste",
@@ -24,14 +23,7 @@ const BuybackPage = async () => {
     assertBlApiError(error);
   }
 
-  return (
-    <>
-      <Card>
-        <DynamicNav tabs={infoPageTabs} twoRows />
-        <BuybackList defaultBuybackItems={buybackItems} />
-      </Card>
-    </>
-  );
+  return <BuybackList defaultBuybackItems={buybackItems} />;
 };
 
 export default BuybackPage;

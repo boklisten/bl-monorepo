@@ -29,8 +29,9 @@ const DynamicLink = ({ href, testID, ...props }: DynamicLinkProps) => {
       component={CustomNextLink}
       _href={href}
       data-testid={testID}
+      color={props.color ?? "info"}
       variant={props.variant ?? "body2"}
-      underline={props.underline ?? "none"}
+      underline={props.underline ?? "hover"}
     />
   );
 };

@@ -145,7 +145,7 @@ const EditableQNA = ({ QNAs }: { QNAs: QNA[] }) => {
       <Typography
         data-testid="qna-title"
         variant="h4"
-        sx={{ textAlign: "center", marginTop: 4, marginBottom: 2 }}
+        sx={{ textAlign: "center", marginBottom: 2 }}
       >
         Spørsmål og svar
       </Typography>

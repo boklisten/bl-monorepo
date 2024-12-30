@@ -30,10 +30,7 @@ const BuybackList = ({
     <Box
       sx={{ display: "flex", flexDirection: "column", alignItems: "center" }}
     >
-      <Typography
-        variant="h4"
-        sx={{ textAlign: "center", marginTop: 4, marginBottom: 2 }}
-      >
+      <Typography variant="h4" sx={{ textAlign: "center", marginBottom: 2 }}>
         Innkjøpsliste
       </Typography>
       <Typography sx={{ marginX: 2 }}>

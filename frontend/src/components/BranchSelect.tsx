@@ -12,6 +12,7 @@ import {
 } from "@mui/material";
 import { Branch } from "@shared/branch/branch";
 import { usePathname, useRouter } from "next/navigation";
+import { useEffect } from "react";
 import useSWR from "swr";
 
 const BranchSelect = ({ isNav }: { isNav?: boolean }) => {
@@ -28,11 +29,13 @@ const BranchSelect = ({ isNav }: { isNav?: boolean }) => {
   const handleChange = (event: SelectChangeEvent) => {
     const branchId = event.target.value;
     selectBranch(branchId);
-
-    if (pathName.includes("info/branch")) {
-      router.push(`/info/branch/${branchId}`);
-    }
   };
+
+  useEffect(() => {
+    if (selectedBranchId && pathName.includes("info/branch")) {
+      router.replace(`/info/branch/${selectedBranchId}`);
+    }
+  }, [pathName, router, selectedBranchId]);
 
   return (
     <Box sx={{ minWidth: 120 }}>

@@ -1,7 +1,5 @@
 import ContactInfo from "@frontend/components/info/ContactInfo";
-import DynamicNav from "@frontend/components/info/DynamicNav";
-import { infoPageTabs } from "@frontend/utils/constants";
-import { Card, Typography } from "@mui/material";
+import { Typography } from "@mui/material";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -13,16 +11,10 @@ export const metadata: Metadata = {
 const ContactPage = () => {
   return (
     <>
-      <Card sx={{ paddingBottom: 4 }}>
-        <DynamicNav tabs={infoPageTabs} twoRows />
-        <Typography
-          variant="h4"
-          sx={{ textAlign: "center", marginTop: 4, marginBottom: 2 }}
-        >
-          Kontakt oss
-        </Typography>
-        <ContactInfo />
-      </Card>
+      <Typography variant="h4" sx={{ textAlign: "center", marginBottom: 2 }}>
+        Kontakt oss
+      </Typography>
+      <ContactInfo />
     </>
   );
 };

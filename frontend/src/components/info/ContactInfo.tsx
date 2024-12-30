@@ -8,7 +8,13 @@ import { Typography, Box } from "@mui/material";
 
 const ContactInfo = () => {
   return (
-    <Box sx={{ display: "flex", justifyContent: "center", flexWrap: "wrap" }}>
+    <Box
+      sx={{
+        display: "flex",
+        justifyContent: "center",
+        flexWrap: "wrap",
+      }}
+    >
       <Box sx={{ display: "flex", alignItems: "center", padding: 1 }}>
         <PhoneIphoneIcon />
         <Box sx={{ display: "flex", flexDirection: "column", ml: 1 }}>

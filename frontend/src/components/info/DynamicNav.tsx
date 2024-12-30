@@ -3,9 +3,10 @@ import DynamicLink from "@frontend/components/DynamicLink";
 import {
   Divider,
   FormControl,
+  Grid2,
   InputLabel,
-  NativeSelect,
-  SelectChangeEvent,
+  MenuItem,
+  Select,
 } from "@mui/material";
 import Box from "@mui/material/Box";
 import Tab from "@mui/material/Tab";
@@ -18,7 +19,7 @@ export interface LinkTabProps {
   href: string;
 }
 
-function SelectTab({
+function MobileTabSelect({
   tabs,
   activeTabIndex,
 }: {
@@ -26,35 +27,24 @@ function SelectTab({
   activeTabIndex: number;
 }) {
   const router = useRouter();
-
-  const handleChange = (event: SelectChangeEvent) => {
-    router.push(event.target.value);
-  };
-
   return (
-    <Box sx={{ minWidth: 120, marginX: 10, marginY: 3 }}>
-      <FormControl fullWidth>
-        <InputLabel variant="standard" htmlFor="uncontrolled-native">
-          Velg side
-        </InputLabel>
-        <NativeSelect
-          data-testid="select-info-page"
-          value={tabs[activeTabIndex]?.href}
-          // eslint-disable-next-line @typescript-eslint/no-explicit-any
-          onChange={handleChange as any}
-          inputProps={{
-            name: "page",
-            id: "uncontrolled-native",
-          }}
-        >
-          {tabs.map((tab) => (
-            <option key={tab.href} value={tab.href}>
-              {tab.label}
-            </option>
-          ))}
-        </NativeSelect>
-      </FormControl>
-    </Box>
+    <FormControl fullWidth sx={{ width: 230 }}>
+      <InputLabel>Velg side</InputLabel>
+      <Select
+        label={"Velg side"}
+        data-testid="select-info-page"
+        value={tabs[activeTabIndex]?.href ?? ""}
+        onChange={(event) => {
+          router.push(event.target.value);
+        }}
+      >
+        {tabs.map((tab) => (
+          <MenuItem key={tab.href} value={tab.href}>
+            {tab.label}
+          </MenuItem>
+        ))}
+      </Select>
+    </FormControl>
   );
 }
 
@@ -79,12 +69,11 @@ const DynamicNav = ({
     tabs.map((tab) => tab.href),
   ).bestMatchIndex;
 
-  // A hack to be able to use two rows of tabs
-  const rowOneIndex = activeTabIndex < 4 ? activeTabIndex + 1 : 0;
-  const rowTwoIndex = activeTabIndex >= 4 ? activeTabIndex - 3 : 0;
+  const rowOneIndex = activeTabIndex < 4 ? activeTabIndex : false;
+  const rowTwoIndex = activeTabIndex >= 4 ? activeTabIndex - 4 : false;
 
   return (
-    <>
+    <Grid2 container sx={{ my: 3, justifyContent: "center" }}>
       <Box
         sx={{
           display: { xs: "none", sm: "none", lg: "flex" },
@@ -95,13 +84,11 @@ const DynamicNav = ({
         {twoRows && (
           <>
             <Tabs value={rowOneIndex} aria-label="dynamic tabs row 1">
-              <Tab label={"Hidden"} sx={{ display: "none" }} />
               {tabs.slice(0, 4).map((tab) => (
                 <LinkTab key={tab.href} label={tab.label} href={tab.href} />
               ))}
             </Tabs>
             <Tabs value={rowTwoIndex} aria-label="dynamic tabs row 2">
-              <Tab label={"Hidden"} sx={{ display: "none" }} />
               {tabs.slice(4).map((tab) => (
                 <LinkTab key={tab.href} label={tab.label} href={tab.href} />
               ))}
@@ -120,13 +107,11 @@ const DynamicNav = ({
       <Box
         sx={{
           display: { sm: "flex", lg: "none" },
-          flexDirection: "column",
-          alignItems: "center",
         }}
       >
-        <SelectTab tabs={tabs} activeTabIndex={activeTabIndex} />
+        <MobileTabSelect tabs={tabs} activeTabIndex={activeTabIndex} />
       </Box>
-    </>
+    </Grid2>
   );
 };
 

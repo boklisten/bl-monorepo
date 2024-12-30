@@ -1,4 +1,5 @@
-import LinkableBranchInfo from "@frontend/components/LinkableBranchInfo";
+import BranchSelect from "@frontend/components/BranchSelect";
+import { Box, Typography } from "@mui/material";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -8,7 +9,21 @@ export const metadata: Metadata = {
 };
 
 const BranchPage = async () => {
-  return <LinkableBranchInfo cachedBranch={null} cachedOpeningHours={[]} />;
+  return (
+    <Box
+      sx={{
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        marginBottom: 2,
+      }}
+    >
+      <Typography variant="h4" sx={{ textAlign: "center", marginBottom: 2 }}>
+        Velg din skole
+      </Typography>
+      <BranchSelect />
+    </Box>
+  );
 };
 
 export default BranchPage;

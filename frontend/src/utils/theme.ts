@@ -53,32 +53,6 @@ const theme = responsiveFontSizes(
       },
     },
     components: {
-      MuiNativeSelect: {
-        styleOverrides: {
-          select: {
-            // '&' increases specificity
-            "&": {
-              padding: 1,
-            },
-          },
-        },
-      },
-      MuiSelect: {
-        styleOverrides: {
-          nativeInput: {
-            "&": {
-              padding: 1,
-            },
-          },
-        },
-      },
-      MuiButton: {
-        styleOverrides: {
-          root: {
-            paddingX: 5,
-          },
-        },
-      },
       MuiAppBar: {
         styleOverrides: {
           root: {

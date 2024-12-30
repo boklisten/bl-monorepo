@@ -47,6 +47,9 @@ async function blFetch<T>(
         }
         return await blFetch(path, method, body, true);
       }
+      if (error.httpStatus === 404) {
+        return [] as T;
+      }
       throw new BlapiErrorResponse(
         error.httpStatus,
         error.code,

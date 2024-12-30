@@ -1,12 +1,5 @@
-import DynamicNav from "@frontend/components/info/DynamicNav";
-import DynamicSubNav from "@frontend/components/info/DynamicSubNav";
 import Editor from "@frontend/components/info/Editor";
-import {
-  infoPageTabs,
-  termsAndConditionsTabs,
-} from "@frontend/utils/constants";
 import { editorData } from "@frontend/utils/mockData";
-import { Card } from "@mui/material";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -16,15 +9,7 @@ export const metadata: Metadata = {
 };
 
 const ConditionsPage = () => {
-  return (
-    <>
-      <Card sx={{ paddingBottom: 4 }}>
-        <DynamicNav tabs={infoPageTabs} twoRows />
-        <DynamicSubNav tabs={termsAndConditionsTabs} />
-        <Editor rawEditorState={editorData.conditions} />
-      </Card>
-    </>
-  );
+  return <Editor rawEditorState={editorData.conditions} />;
 };
 
 export default ConditionsPage;

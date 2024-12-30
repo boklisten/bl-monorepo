@@ -22,7 +22,7 @@ export default function AdminLayout({ children }: { children: ReactNode }) {
         title: "bl-admin",
         logo: (
           <Image
-            src="/boklisten_logo_v2_icon_white_lg.png"
+            src="/boklisten_logo_white.png"
             width={40}
             height={40}
             alt="logo"

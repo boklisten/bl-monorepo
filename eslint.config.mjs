@@ -7,10 +7,9 @@ import importPlugin from "eslint-plugin-import";
 import jsxA11y from "eslint-plugin-jsx-a11y";
 import noRelativeImportPathsPlugin from "eslint-plugin-no-relative-import-paths";
 import reactPlugin from "eslint-plugin-react";
+import reactCompiler from "eslint-plugin-react-compiler";
 import hooksPlugin from "eslint-plugin-react-hooks";
 import tseslint from "typescript-eslint";
-
-// TODO: add eslint-plugin-react-compiler when released
 
 export default tseslint.config(
   eslint.configs.recommended,
@@ -29,6 +28,7 @@ export default tseslint.config(
       "react-hooks": hooksPlugin,
       "no-relative-import-paths": noRelativeImportPathsPlugin,
       import: importPlugin,
+      "react-compiler": reactCompiler,
     },
     settings: {
       react: {
@@ -40,6 +40,7 @@ export default tseslint.config(
       ...nextPlugin.configs["core-web-vitals"].rules,
       ...hooksPlugin.configs.recommended.rules,
       "no-relative-import-paths/no-relative-import-paths": "error",
+      "react-compiler/react-compiler": "error",
       /** @see https://medium.com/weekly-webtips/how-to-sort-imports-like-a-pro-in-typescript-4ee8afd7258a */
       "import/order": [
         "error",

@@ -7,6 +7,13 @@ settings:
 importers:
 
   .:
+    dependencies:
+      zod:
+        specifier: ^3.24.1
+        version: 3.24.1
+      zod-validation-error:
+        specifier: ^3.4.0
+        version: 3.4.0(zod@3.24.1)
     devDependencies:
       '@eslint/js':
         specifier: ^9.17.0

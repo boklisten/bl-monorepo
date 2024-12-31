@@ -10,23 +10,13 @@ import { BlError } from "@shared/bl-error/bl-error";
 import { BlapiResponse } from "@shared/blapi-response/blapi-response";
 import { Match, MatchVariant } from "@shared/match/match";
 import { UserDetail } from "@shared/user/user-detail/user-detail";
+import { z } from "zod";
+import { fromError } from "zod-validation-error";
 
-export interface MatchNotifySpec {
-  target: "senders" | "receivers" | "stand-only" | "all";
-  message: string;
-}
-
-export function verifyMatchNotifySpec(
-  matchLockSpec: unknown,
-): matchLockSpec is MatchNotifySpec {
-  const m = matchLockSpec as Record<string, unknown> | null | undefined;
-  return (
-    !!m &&
-    typeof m["target"] === "string" &&
-    typeof m["message"] === "string" &&
-    ["senders", "receivers", "stand-only", "all"].includes(m["target"])
-  );
-}
+const MatchNotifySpec = z.object({
+  target: z.enum(["senders", "receivers", "stand-only", "all"]),
+  message: z.string().nonempty(),
+});
 
 export class MatchNotifyOperation implements Operation {
   private readonly _matchStorage: BlDocumentStorage<Match>;
@@ -45,9 +35,9 @@ export class MatchNotifyOperation implements Operation {
   }
 
   async run(blApiRequest: BlApiRequest): Promise<BlapiResponse> {
-    const matchNotifySpec = blApiRequest.data;
-    if (!verifyMatchNotifySpec(matchNotifySpec)) {
-      throw new BlError(`Malformed MatchNotifySpec`).code(701);
+    const parsedRequest = MatchNotifySpec.safeParse(blApiRequest.data);
+    if (!parsedRequest.success) {
+      throw new BlError(fromError(parsedRequest.error).toString()).code(701);
     }
 
     const matches = await this._matchStorage.getAll();
@@ -72,7 +62,7 @@ export class MatchNotifyOperation implements Operation {
     );
 
     let targetCustomerIds: Set<string>;
-    switch (matchNotifySpec.target) {
+    switch (parsedRequest.data.target) {
       case "senders": {
         targetCustomerIds = senderCustomerIds;
         break;
@@ -102,7 +92,7 @@ export class MatchNotifyOperation implements Operation {
           (customer) =>
             sendSMS(
               customer.phone,
-              `${matchNotifySpec.message} Logg inn med: ${customer.email} Mvh Boklisten.no`,
+              `${parsedRequest.data.message} Logg inn med: ${customer.email} Mvh Boklisten.no`,
             ),
         ),
       ),

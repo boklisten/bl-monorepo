@@ -1,16 +1,14 @@
+"use client";
+import { OpeningHoursLayout } from "@frontend/app/(offentlig)/info/branch/[branchId]/@openingHours/_layout";
 import ContactInfo from "@frontend/components/info/ContactInfo";
-import { Alert, Skeleton } from "@mui/material";
-import Paper from "@mui/material/Paper";
-import Table from "@mui/material/Table";
-import TableBody from "@mui/material/TableBody";
+import { Alert } from "@mui/material";
 import TableCell from "@mui/material/TableCell";
-import TableContainer from "@mui/material/TableContainer";
-import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import { Branch } from "@shared/branch/branch";
 import { OpeningHour } from "@shared/opening-hour/opening-hour";
 import moment from "moment";
-import { ReactNode, use } from "react";
+import { use } from "react";
+
 import "moment/locale/nb";
 
 const compareOpeningHours = (a: OpeningHour, b: OpeningHour): number => {
@@ -43,43 +41,6 @@ const OpeningHourRow = ({ openingHour }: { openingHour: OpeningHour }) => {
   );
 };
 
-function BranchOpeningHoursBase({ children }: { children: ReactNode }) {
-  return (
-    <TableContainer component={Paper}>
-      <Table aria-label="tabell over åpningstider">
-        <TableHead>
-          <TableRow>
-            <TableCell>Dato</TableCell>
-            <TableCell>Fra</TableCell>
-            <TableCell>Til</TableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>{children}</TableBody>
-      </Table>
-    </TableContainer>
-  );
-}
-
-export function BranchOpeningHoursSkeleton() {
-  return (
-    <BranchOpeningHoursBase>
-      {[0, 1, 2, 3, 4, 5].map((i) => (
-        <TableRow key={`skeletor-${i}`}>
-          <TableCell>
-            <Skeleton width={130} />
-          </TableCell>
-          <TableCell>
-            <Skeleton width={38} />
-          </TableCell>
-          <TableCell>
-            <Skeleton width={38} />
-          </TableCell>
-        </TableRow>
-      ))}
-    </BranchOpeningHoursBase>
-  );
-}
-
 export default function BranchOpeningHours({
   branchPromise,
   openingHoursPromise,
@@ -106,10 +67,10 @@ export default function BranchOpeningHours({
   }
 
   return (
-    <BranchOpeningHoursBase>
+    <OpeningHoursLayout>
       {processedOpeningHours.map((openingHour) => (
         <OpeningHourRow key={openingHour.id} openingHour={openingHour} />
       ))}
-    </BranchOpeningHoursBase>
+    </OpeningHoursLayout>
   );
 }

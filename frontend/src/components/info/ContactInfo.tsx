@@ -1,4 +1,3 @@
-"use client";
 import DynamicLink from "@frontend/components/DynamicLink";
 import { contactInfo } from "@frontend/utils/constants";
 import EmailIcon from "@mui/icons-material/Email";

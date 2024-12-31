@@ -58,7 +58,7 @@ export const COMMUNICATION_SUB_PAGES: Navigation = [
   {
     title: "Påminnelser",
     icon: <Notifications />,
-    segment: "paaminnelser",
+    segment: "paminnelser",
     kind: "page",
   },
   {
@@ -123,7 +123,7 @@ const USER_LINKS: Navigation = [
   {
     title: "Gå til Boklisten.no",
     icon: <Public />,
-    segment: "/",
+    segment: "",
     kind: "page",
   },
 ];

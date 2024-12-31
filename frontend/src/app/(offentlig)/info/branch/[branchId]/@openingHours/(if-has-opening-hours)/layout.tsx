@@ -9,7 +9,11 @@ import TableCell from "@mui/material/TableCell";
 import TableRow from "@mui/material/TableRow";
 import { ReactNode } from "react";
 
-export function OpeningHoursLayout({ children }: { children: ReactNode }) {
+export default function OpeningHoursLayout({
+  children,
+}: {
+  children: ReactNode;
+}) {
   return (
     <TableContainer component={Paper}>
       <Table aria-label="tabell over åpningstider">

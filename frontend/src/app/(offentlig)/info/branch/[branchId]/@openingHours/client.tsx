@@ -1,12 +1,10 @@
 "use client";
-import { OpeningHoursLayout } from "@frontend/app/(offentlig)/info/branch/[branchId]/@openingHours/_layout";
-import ContactInfo from "@frontend/components/info/ContactInfo";
-import { Alert } from "@mui/material";
 import TableCell from "@mui/material/TableCell";
 import TableRow from "@mui/material/TableRow";
 import { Branch } from "@shared/branch/branch";
 import { OpeningHour } from "@shared/opening-hour/opening-hour";
 import moment from "moment";
+import { notFound } from "next/navigation";
 import { use } from "react";
 
 import "moment/locale/nb";
@@ -55,22 +53,10 @@ export default function BranchOpeningHours({
     .filter(({ id }) => branch.openingHours?.includes(id))
     .sort(compareOpeningHours);
   if (processedOpeningHours.length === 0) {
-    return (
-      <>
-        <Alert severity="info" data-testid="noHours" sx={{ my: 4 }}>
-          Sesongen er over – eller åpningstidene er ikke klare enda. Du kan
-          bestille bøker i Posten, eller kontakte oss for spørsmål.
-        </Alert>
-        <ContactInfo />
-      </>
-    );
+    notFound();
   }
 
-  return (
-    <OpeningHoursLayout>
-      {processedOpeningHours.map((openingHour) => (
-        <OpeningHourRow key={openingHour.id} openingHour={openingHour} />
-      ))}
-    </OpeningHoursLayout>
-  );
+  return processedOpeningHours.map((openingHour) => (
+    <OpeningHourRow key={openingHour.id} openingHour={openingHour} />
+  ));
 }

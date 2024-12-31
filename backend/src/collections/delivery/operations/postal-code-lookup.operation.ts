@@ -5,6 +5,8 @@ import { Operation } from "@backend/operation/operation";
 import { BlApiRequest } from "@backend/request/bl-api-request";
 import { BlError } from "@shared/bl-error/bl-error";
 import { BlapiResponse } from "@shared/blapi-response/blapi-response";
+import { z } from "zod";
+import { fromError } from "zod-validation-error";
 
 interface SimplifiedBringPostalCodeResponse {
   postal_codes?:
@@ -22,18 +24,9 @@ interface SimplifiedBringPostalCodeResponse {
   ];
 }
 
-export interface PostalCodeLookupSpec {
-  postalCode: string;
-}
-
-export function verifyPostalCodeLookupSpec(
-  postalCodeSpec: unknown,
-): postalCodeSpec is PostalCodeLookupSpec {
-  const m = postalCodeSpec as Record<string, unknown> | null | undefined;
-  return (
-    !!m && typeof m["postalCode"] === "string" && m["postalCode"].length === 4
-  );
-}
+const PostalCodeLookupSpec = z.object({
+  postalCode: z.string().length(4),
+});
 
 export class PostalCodeLookupOperation implements Operation {
   private httpHandler: HttpHandler;
@@ -43,9 +36,9 @@ export class PostalCodeLookupOperation implements Operation {
   }
 
   async run(blApiRequest: BlApiRequest): Promise<BlapiResponse> {
-    const postalCodeLookupSpec = blApiRequest.data;
-    if (!verifyPostalCodeLookupSpec(postalCodeLookupSpec)) {
-      throw new BlError(`Malformed PostalCodeSpec`).code(701);
+    const parsedRequest = PostalCodeLookupSpec.safeParse(blApiRequest.data);
+    if (!parsedRequest.success) {
+      throw new BlError(fromError(parsedRequest.error).toString()).code(701);
     }
     const bringAuthHeaders = {
       "X-MyBring-API-Key": assertEnv(BlEnvironment.BRING_API_KEY),
@@ -53,7 +46,7 @@ export class PostalCodeLookupOperation implements Operation {
     };
     try {
       const response = (await this.httpHandler.getWithQuery(
-        `https://api.bring.com/address/api/NO/postal-codes/${postalCodeLookupSpec.postalCode}`,
+        `https://api.bring.com/address/api/NO/postal-codes/${parsedRequest.data.postalCode}`,
         "",
         bringAuthHeaders,
       )) as SimplifiedBringPostalCodeResponse;

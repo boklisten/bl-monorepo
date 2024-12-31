@@ -22,7 +22,8 @@ import { Item } from "@shared/item/item";
 import { Order } from "@shared/order/order";
 import { OrderItem } from "@shared/order/order-item/order-item";
 import { UniqueItem } from "@shared/unique-item/unique-item";
-import { ObjectId } from "mongodb";
+import { z } from "zod";
+import { fromError } from "zod-validation-error";
 
 const blidNotActiveFeedback =
   "Denne bliden er ikke tilknyttet noen bok. Registrer den i bl-admin for å dele den ut.";
@@ -60,28 +61,32 @@ export class RapidHandoutOperation implements Operation {
   }
 
   async run(blApiRequest: BlApiRequest): Promise<BlapiResponse> {
-    const rapidHandoutSpec = blApiRequest.data;
-    if (!verifyRapidHandoutSpec(rapidHandoutSpec)) {
-      throw new BlError(`Malformed RapidHandoutSpec`).code(701);
+    const parsedRequest = z
+      .object({ blid: z.string(), customerId: z.string() })
+      .safeParse(blApiRequest.data);
+    if (!parsedRequest.success) {
+      throw new BlError(fromError(parsedRequest.error).toString()).code(701);
     }
-    const { blid, customerId } = rapidHandoutSpec;
 
-    if (!this.isValidBlid(blid)) {
+    if (!this.isValidBlid(parsedRequest.data.blid)) {
       throw new BlError("blid is not a valid blid").code(803);
     }
-    const userFeedback = await this.verifyBlidNotActive(blid, customerId);
+    const userFeedback = await this.verifyBlidNotActive(
+      parsedRequest.data.blid,
+      parsedRequest.data.customerId,
+    );
     if (userFeedback) return new BlapiResponse([{ feedback: userFeedback }]);
 
     const uniqueItemOrFeedback = await this.verifyUniqueItemPresent(
-      rapidHandoutSpec.blid,
+      parsedRequest.data.blid,
     );
     if (typeof uniqueItemOrFeedback === "string")
       return new BlapiResponse([{ feedback: uniqueItemOrFeedback }]);
 
     const placedRentOrder = await this.placeRentOrder(
-      blid,
+      parsedRequest.data.blid,
       uniqueItemOrFeedback.item,
-      customerId,
+      parsedRequest.data.customerId,
     );
     await this.createCustomerItem(placedRentOrder);
 
@@ -255,19 +260,4 @@ export class RapidHandoutOperation implements Operation {
     }
     return false;
   }
-}
-
-function verifyRapidHandoutSpec(
-  m: unknown,
-): m is { blid: string; customerId: string } {
-  return (
-    !!m &&
-    typeof m === "object" &&
-    "blid" in m &&
-    typeof m["blid"] == "string" &&
-    m["blid"].length > 0 &&
-    "customerId" in m &&
-    typeof m["customerId"] == "string" &&
-    ObjectId.isValid(m["customerId"])
-  );
 }

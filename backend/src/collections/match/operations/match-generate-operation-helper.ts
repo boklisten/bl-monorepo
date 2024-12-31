@@ -1,31 +1,31 @@
 import {
   CandidateMatchVariant,
   MatchableUser,
-  MatchLocation,
+  MatchLocationSchema,
   MatchWithMeetingInfo,
 } from "@backend/collections/match/helpers/match-finder-2/match-types";
-import { isBoolean, isNotNullish } from "@backend/helper/typescript-helpers";
 import { BlDocumentStorage } from "@backend/storage/blDocumentStorage";
 import { CustomerItem } from "@shared/customer-item/customer-item";
 import { Match, StandMatch, UserMatch } from "@shared/match/match";
 import { Order } from "@shared/order/order";
 import { ObjectId } from "mongodb";
+import { z } from "zod";
 
 /**
  * The information required to generate matches.
  */
-export interface MatcherSpec {
-  senderBranches: string[];
-  receiverBranches: string[];
-  standLocation: string;
-  userMatchLocations: MatchLocation[];
-  startTime: string;
-  deadlineBefore: string;
-  matchMeetingDurationInMS: number;
-  includeSenderItemsFromOtherBranches: boolean;
-  additionalReceiverItems: Record<string, string[]>;
-  deadlineOverrides: Record<string, string>;
-}
+export const MatcherSpec = z.object({
+  senderBranches: z.string().array(),
+  receiverBranches: z.string().array(),
+  standLocation: z.string(),
+  userMatchLocations: MatchLocationSchema.array(),
+  startTime: z.string().datetime(),
+  deadlineBefore: z.string().datetime(),
+  matchMeetingDurationInMS: z.number(),
+  includeSenderItemsFromOtherBranches: z.boolean(),
+  additionalReceiverItems: z.record(z.string(), z.string().array()),
+  deadlineOverrides: z.record(z.string(), z.string().datetime()),
+});
 
 export function candidateMatchToMatch(
   candidate: MatchWithMeetingInfo,
@@ -192,60 +192,4 @@ export async function getMatchableReceivers(
     id: receiver.id,
     items: new Set(receiver.items),
   }));
-}
-
-export function verifyMatcherSpec(
-  matcherSpec: unknown,
-): matcherSpec is MatcherSpec {
-  const m = matcherSpec as Record<string, unknown>;
-  return (
-    m &&
-    Array.isArray(m["senderBranches"]) &&
-    Array.isArray(m["receiverBranches"]) &&
-    m["senderBranches"].every(
-      (branchId) => typeof branchId === "string" && ObjectId.isValid(branchId),
-    ) &&
-    m["receiverBranches"].every(
-      (branchId) => typeof branchId === "string" && ObjectId.isValid(branchId),
-    ) &&
-    Array.isArray(m["userMatchLocations"]) &&
-    typeof m["standLocation"] === "string" &&
-    m["standLocation"].length > 0 &&
-    m["userMatchLocations"].every(
-      (location) =>
-        typeof location.name === "string" &&
-        location.name.length > 0 &&
-        (location.simultaneousMatchLimit === undefined ||
-          (Number.isInteger(location.simultaneousMatchLimit) &&
-            location.simultaneousMatchLimit > 0)),
-    ) &&
-    typeof m["startTime"] === "string" &&
-    !isNaN(new Date(m["startTime"]).getTime()) &&
-    typeof m["deadlineBefore"] === "string" &&
-    !isNaN(new Date(m["deadlineBefore"]).getTime()) &&
-    new Date(m["deadlineBefore"]).getTime() > Date.now() &&
-    typeof m["matchMeetingDurationInMS"] === "number" &&
-    !isNaN(m["matchMeetingDurationInMS"]) &&
-    isBoolean(m["includeSenderItemsFromOtherBranches"]) &&
-    typeof m["additionalReceiverItems"] === "object" &&
-    isNotNullish(m["additionalReceiverItems"]) &&
-    Object.entries(m["additionalReceiverItems"]).every(
-      ([branchId, itemIds]) =>
-        typeof branchId === "string" &&
-        ObjectId.isValid(branchId) &&
-        Array.isArray(itemIds) &&
-        itemIds.every(
-          (itemId) => typeof itemId === "string" && ObjectId.isValid(itemId),
-        ),
-    ) &&
-    typeof m["deadlineOverrides"] === "object" &&
-    isNotNullish(m["deadlineOverrides"]) &&
-    Object.entries(m["deadlineOverrides"]).every(
-      ([itemId, newDeadline]) =>
-        typeof itemId === "string" &&
-        ObjectId.isValid(itemId) &&
-        typeof newDeadline === "string" &&
-        !isNaN(new Date(newDeadline).getTime()),
-    )
-  );
 }

@@ -28,6 +28,8 @@ import { Item } from "@shared/item/item";
 import { Match, MatchVariant, UserMatch } from "@shared/match/match";
 import { Order } from "@shared/order/order";
 import { UniqueItem } from "@shared/unique-item/unique-item";
+import { z } from "zod";
+import { fromError } from "zod-validation-error";
 
 export class MatchTransferItemOperation implements Operation {
   private readonly wrongSenderFeedback = `Boken du skannet tilhørte en annen elev enn den som ga deg den. Du skal beholde den, men eleven som ga deg boken er fortsatt ansvarlig for at den opprinnelige boken blir levert.`;
@@ -118,17 +120,18 @@ export class MatchTransferItemOperation implements Operation {
     blid: string;
     receiverUserDetailId: string;
   } {
-    const transferItemSpec = blApiRequest.data;
-    if (!verifyTransferItemSpec(transferItemSpec)) {
-      throw new BlError("Invalid TransferItemSpec").code(701);
+    const parsedRequest = z
+      .object({ blid: z.string() })
+      .safeParse(blApiRequest.data);
+    if (!parsedRequest.success) {
+      throw new BlError(fromError(parsedRequest.error).toString()).code(701);
     }
-    const { blid } = transferItemSpec;
-    if (!this.isValidBlid(blid)) {
+    if (!this.isValidBlid(parsedRequest.data.blid)) {
       throw new BlError("blid is not a valid blid").code(803);
     }
 
     const receiverUserDetailId = blApiRequest.user?.details ?? "";
-    return { blid, receiverUserDetailId };
+    return { blid: parsedRequest.data.blid, receiverUserDetailId };
   }
 
   private async updateSenderMatches(
@@ -341,14 +344,4 @@ export class MatchTransferItemOperation implements Operation {
       new SystemUser(),
     );
   }
-}
-
-function verifyTransferItemSpec(m: unknown): m is { blid: string } {
-  return (
-    !!m &&
-    typeof m === "object" &&
-    "blid" in m &&
-    typeof m["blid"] == "string" &&
-    m["blid"].length > 0
-  );
 }

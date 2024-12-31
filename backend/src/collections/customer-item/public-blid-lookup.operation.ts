@@ -6,17 +6,12 @@ import { BlDocumentStorage } from "@backend/storage/blDocumentStorage";
 import { BlError } from "@shared/bl-error/bl-error";
 import { BlapiResponse } from "@shared/blapi-response/blapi-response";
 import { CustomerItem } from "@shared/customer-item/customer-item";
+import { z } from "zod";
+import { fromError } from "zod-validation-error";
 
-export interface PublicBlidLookupSpec {
-  blid: string;
-}
-
-export function verifyPublicBlidLookupSpec(
-  publicBlidLookupSpec: unknown,
-): publicBlidLookupSpec is PublicBlidLookupSpec {
-  const m = publicBlidLookupSpec as Record<string, unknown> | null | undefined;
-  return !!m && typeof m["blid"] === "string";
-}
+const PublicBlidLookupSpec = z.object({
+  blid: z.string(),
+});
 
 export class PublicBlidLookupOperation implements Operation {
   private readonly _customerItemStorage: BlDocumentStorage<CustomerItem>;
@@ -28,9 +23,9 @@ export class PublicBlidLookupOperation implements Operation {
   }
 
   async run(blApiRequest: BlApiRequest): Promise<BlapiResponse> {
-    const publicBlidLookupSpec = blApiRequest.data;
-    if (!verifyPublicBlidLookupSpec(publicBlidLookupSpec)) {
-      throw new BlError(`Malformed PublicBlidLookupSpec`).code(701);
+    const parsedRequest = PublicBlidLookupSpec.safeParse(blApiRequest.data);
+    if (!parsedRequest.success) {
+      throw new BlError(fromError(parsedRequest.error).toString()).code(701);
     }
 
     const customerItemInfo = await this._customerItemStorage.aggregate([
@@ -40,7 +35,7 @@ export class PublicBlidLookupOperation implements Operation {
           buyout: false,
           cancel: false,
           buyback: false,
-          blid: publicBlidLookupSpec.blid,
+          blid: parsedRequest.data.blid,
         },
       },
       {

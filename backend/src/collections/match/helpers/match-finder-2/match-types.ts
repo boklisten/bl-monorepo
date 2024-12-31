@@ -1,3 +1,5 @@
+import { z } from "zod";
+
 export interface MatchableUser {
   id: string;
   items: Set<string>;
@@ -31,10 +33,12 @@ interface MatchMeetingInfo {
   };
 }
 
-export interface MatchLocation {
-  name: string;
-  simultaneousMatchLimit?: number;
-}
+export const MatchLocationSchema = z.object({
+  name: z.string(),
+  simultaneousMatchLimit: z.number().optional(),
+});
+
+export type MatchLocation = z.infer<typeof MatchLocationSchema>;
 
 export type UserMatchWithMeetingInfo = CandidateUserMatch & MatchMeetingInfo;
 export type StandMatchWithMeetingInfo = CandidateStandMatch & MatchMeetingInfo;

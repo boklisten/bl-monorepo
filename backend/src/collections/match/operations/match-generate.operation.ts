@@ -7,7 +7,7 @@ import {
   candidateMatchToMatch,
   getMatchableReceivers,
   getMatchableSenders,
-  verifyMatcherSpec,
+  MatcherSpec,
 } from "@backend/collections/match/operations/match-generate-operation-helper";
 import { orderSchema } from "@backend/collections/order/order.schema";
 import { Operation } from "@backend/operation/operation";
@@ -18,6 +18,7 @@ import { BlapiResponse } from "@shared/blapi-response/blapi-response";
 import { CustomerItem } from "@shared/customer-item/customer-item";
 import { Match } from "@shared/match/match";
 import { Order } from "@shared/order/order";
+import { fromError } from "zod-validation-error";
 
 export class MatchGenerateOperation implements Operation {
   private readonly _customerItemStorage: BlDocumentStorage<CustomerItem>;
@@ -44,21 +45,21 @@ export class MatchGenerateOperation implements Operation {
   }
 
   async run(blApiRequest: BlApiRequest): Promise<BlapiResponse> {
-    const matcherSpec = blApiRequest.data;
-    if (!verifyMatcherSpec(matcherSpec)) {
-      throw new BlError(`Malformed MatcherSpec`).code(701);
+    const parsedRequest = MatcherSpec.safeParse(blApiRequest.data);
+    if (!parsedRequest.success) {
+      throw new BlError(fromError(parsedRequest.error).toString()).code(701);
     }
     const [senders, receivers] = await Promise.all([
       getMatchableSenders(
-        matcherSpec.senderBranches,
-        matcherSpec.deadlineBefore,
-        matcherSpec.includeSenderItemsFromOtherBranches,
+        parsedRequest.data.senderBranches,
+        parsedRequest.data.deadlineBefore,
+        parsedRequest.data.includeSenderItemsFromOtherBranches,
         this._customerItemStorage,
       ),
       getMatchableReceivers(
-        matcherSpec.receiverBranches,
+        parsedRequest.data.receiverBranches,
         this._orderStorage,
-        matcherSpec.additionalReceiverItems,
+        parsedRequest.data.additionalReceiverItems,
       ),
     ]);
     if (senders.length === 0 && receivers.length === 0) {
@@ -66,12 +67,12 @@ export class MatchGenerateOperation implements Operation {
     }
     const matches = assignMeetingInfoToMatches(
       new MatchFinder(senders, receivers).generateMatches(),
-      matcherSpec.standLocation,
-      matcherSpec.userMatchLocations,
-      new Date(matcherSpec.startTime),
-      matcherSpec.matchMeetingDurationInMS,
+      parsedRequest.data.standLocation,
+      parsedRequest.data.userMatchLocations,
+      new Date(parsedRequest.data.startTime),
+      parsedRequest.data.matchMeetingDurationInMS,
     ).map((candidate) =>
-      candidateMatchToMatch(candidate, matcherSpec.deadlineOverrides),
+      candidateMatchToMatch(candidate, parsedRequest.data.deadlineOverrides),
     );
     if (matches.length === 0) {
       throw new BlError("No matches generated");

@@ -1,5 +1,5 @@
 import BlFetcher from "@frontend/api/blFetcher";
-import Client from "@frontend/app/(offentlig)/info/branch/[branchId]/@openingHours/client";
+import BranchOpeningHours from "@frontend/components/info/BranchOpeningHoursInfo";
 import BL_CONFIG from "@frontend/utils/bl-config";
 import { Branch } from "@shared/branch/branch";
 import { OpeningHour } from "@shared/opening-hour/opening-hour";
@@ -16,7 +16,7 @@ export default async function OpeningHoursSlot({
   const openingHoursUrl = `${BL_CONFIG.collection.openingHour}?branch=${branchId}&from=>${now}`;
 
   return (
-    <Client
+    <BranchOpeningHours
       branchPromise={BlFetcher.get<[Branch]>(branchUrl)}
       openingHoursPromise={BlFetcher.get<OpeningHour[]>(openingHoursUrl)}
     />

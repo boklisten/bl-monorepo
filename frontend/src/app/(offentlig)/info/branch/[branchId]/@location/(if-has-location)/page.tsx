@@ -1,5 +1,5 @@
 import BlFetcher from "@frontend/api/blFetcher";
-import BranchLocationInfo from "@frontend/app/(offentlig)/info/branch/[branchId]/@location/client";
+import BranchLocationInfo from "@frontend/components/info/BranchLocationInfo";
 import BL_CONFIG from "@frontend/utils/bl-config";
 import { Branch } from "@shared/branch/branch";
 

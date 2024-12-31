@@ -35,6 +35,7 @@ export default function AdminNavigationCards({
                 <DynamicLink
                   href={`${rootPath ?? ""}/${navLink.segment ?? ""}`}
                   sx={{ color: "inherit" }}
+                  underline={"none"}
                 >
                   <CardActionArea>
                     <CardContent>

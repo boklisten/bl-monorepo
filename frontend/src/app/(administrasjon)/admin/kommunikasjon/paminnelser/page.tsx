@@ -9,7 +9,6 @@ import SMSTextPicker from "@frontend/components/admin/communication/SMSTextPicke
 import { Grid2 } from "@mui/material";
 import { CustomerItemType } from "@shared/customer-item/customer-item-type";
 import { MessageMethod } from "@shared/message/message-method/message-method";
-import { PageContainer } from "@toolpad/core";
 import { useState } from "react";
 
 export default function RemindersPage() {
@@ -30,60 +29,58 @@ export default function RemindersPage() {
     messageMethod !== null;
 
   return (
-    <PageContainer>
-      <Grid2 container spacing={2} direction="column" width={318}>
-        <MultiBranchPicker
-          onChange={(newBranchIDs) => {
-            setBranchIDs(newBranchIDs);
+    <Grid2 container spacing={2} direction="column" width={318}>
+      <MultiBranchPicker
+        onChange={(newBranchIDs) => {
+          setBranchIDs(newBranchIDs);
+        }}
+      />
+      <DeadlinePicker
+        onChange={(newDeadline) => {
+          setDeadline(newDeadline);
+        }}
+      />
+      <Grid2 container sx={{ justifyContent: "space-between" }}>
+        <CustomerItemTypePicker
+          onChange={(newCustomerItemType) => {
+            setCustomerItemType(newCustomerItemType);
           }}
         />
-        <DeadlinePicker
-          onChange={(newDeadline) => {
-            setDeadline(newDeadline);
+        <MessageMethodPicker
+          onChange={(newMessageMethod) => {
+            setMessageMethod(newMessageMethod);
+            if (newMessageMethod === MessageMethod.SMS) {
+              setEmailTemplateId(null);
+            } else {
+              setSmsText(null);
+            }
           }}
         />
-        <Grid2 container sx={{ justifyContent: "space-between" }}>
-          <CustomerItemTypePicker
-            onChange={(newCustomerItemType) => {
-              setCustomerItemType(newCustomerItemType);
-            }}
-          />
-          <MessageMethodPicker
-            onChange={(newMessageMethod) => {
-              setMessageMethod(newMessageMethod);
-              if (newMessageMethod === MessageMethod.SMS) {
-                setEmailTemplateId(null);
-              } else {
-                setSmsText(null);
-              }
-            }}
-          />
-        </Grid2>
-        {hasValidConfiguration &&
-          (messageMethod === MessageMethod.SMS ? (
-            <SMSTextPicker
-              onChange={(newSmsText) => {
-                setSmsText(newSmsText);
-              }}
-            />
-          ) : (
-            <EmailTemplatePicker
-              onChange={(newEmailTemplateId) => {
-                setEmailTemplateId(newEmailTemplateId);
-              }}
-            />
-          ))}
-        {hasValidConfiguration && (
-          <SendButton
-            deadline={deadline}
-            customerItemType={customerItemType}
-            branchIDs={branchIDs}
-            messageMethod={messageMethod}
-            emailTemplateId={emailTemplateId}
-            smsText={smsText}
-          />
-        )}
       </Grid2>
-    </PageContainer>
+      {hasValidConfiguration &&
+        (messageMethod === MessageMethod.SMS ? (
+          <SMSTextPicker
+            onChange={(newSmsText) => {
+              setSmsText(newSmsText);
+            }}
+          />
+        ) : (
+          <EmailTemplatePicker
+            onChange={(newEmailTemplateId) => {
+              setEmailTemplateId(newEmailTemplateId);
+            }}
+          />
+        ))}
+      {hasValidConfiguration && (
+        <SendButton
+          deadline={deadline}
+          customerItemType={customerItemType}
+          branchIDs={branchIDs}
+          messageMethod={messageMethod}
+          emailTemplateId={emailTemplateId}
+          smsText={smsText}
+        />
+      )}
+    </Grid2>
   );
 }

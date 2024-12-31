@@ -8,6 +8,8 @@ import { notFound } from "next/navigation";
 import { use } from "react";
 
 import "moment/locale/nb";
+import { Alert } from "@mui/material";
+import ContactInfo from "@frontend/components/info/ContactInfo";
 
 const compareOpeningHours = (a: OpeningHour, b: OpeningHour): number => {
   if (a.from < b.from) {
@@ -53,7 +55,15 @@ export default function BranchOpeningHours({
     .filter(({ id }) => branch.openingHours?.includes(id))
     .sort(compareOpeningHours);
   if (processedOpeningHours.length === 0) {
-    notFound();
+    return (
+      <>
+        <Alert severity="info" data-testid="noHours" sx={{ my: 4 }}>
+          Sesongen er over – eller åpningstidene er ikke klare enda. Du kan
+          bestille bøker i Posten, eller kontakte oss for spørsmål.
+        </Alert>
+        <ContactInfo />
+      </>
+    );
   }
 
   return processedOpeningHours.map((openingHour) => (

@@ -15,7 +15,7 @@ export default function OpeningHoursLayout({
   children: ReactNode;
 }) {
   return (
-    <TableContainer component={Paper}>
+    <TableContainer>
       <Table aria-label="tabell over åpningstider">
         <TableHead>
           <TableRow>

@@ -1,10 +1,4 @@
-import {
-  Paper,
-  Table,
-  TableBody,
-  TableContainer,
-  TableHead,
-} from "@mui/material";
+import { Table, TableBody, TableContainer, TableHead } from "@mui/material";
 import TableCell from "@mui/material/TableCell";
 import TableRow from "@mui/material/TableRow";
 import { ReactNode } from "react";

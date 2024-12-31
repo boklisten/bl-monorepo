@@ -1,15 +1,14 @@
 "use client";
+import ContactInfo from "@frontend/components/info/ContactInfo";
+import { Alert } from "@mui/material";
 import TableCell from "@mui/material/TableCell";
 import TableRow from "@mui/material/TableRow";
 import { Branch } from "@shared/branch/branch";
 import { OpeningHour } from "@shared/opening-hour/opening-hour";
 import moment from "moment";
-import { notFound } from "next/navigation";
 import { use } from "react";
 
 import "moment/locale/nb";
-import { Alert } from "@mui/material";
-import ContactInfo from "@frontend/components/info/ContactInfo";
 
 const compareOpeningHours = (a: OpeningHour, b: OpeningHour): number => {
   if (a.from < b.from) {

@@ -15,13 +15,13 @@ export class BranchItemCollection implements BlCollection {
     {
       method: "post",
       restriction: {
-        permissions: ["admin", "super"],
+        permissions: ["admin"],
       },
     },
     {
       method: "patch",
       restriction: {
-        permissions: ["admin", "super"],
+        permissions: ["admin"],
       },
     },
     {
@@ -31,7 +31,7 @@ export class BranchItemCollection implements BlCollection {
     {
       method: "delete",
       restriction: {
-        permissions: ["admin", "super"],
+        permissions: ["admin"],
       },
     },
   ];

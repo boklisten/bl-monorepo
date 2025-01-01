@@ -16,7 +16,7 @@ export class MessageCollection implements BlCollection {
       method: "post",
       hook: new MessagePostHook(),
       restriction: {
-        permissions: ["admin", "super"],
+        permissions: ["admin"],
       },
       operations: [
         {
@@ -38,19 +38,19 @@ export class MessageCollection implements BlCollection {
         },
       ],
       restriction: {
-        permissions: ["employee", "admin", "super"],
+        permissions: ["employee", "admin"],
       },
     },
     {
       method: "getId",
       restriction: {
-        permissions: ["admin", "super"],
+        permissions: ["admin"],
       },
     },
     {
       method: "delete",
       restriction: {
-        permissions: ["admin", "super"],
+        permissions: ["admin"],
       },
     },
   ];

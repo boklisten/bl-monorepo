@@ -20,30 +20,30 @@ export class MatchCollection implements BlCollection {
         {
           name: "generate",
           operation: new MatchGenerateOperation(),
-          restriction: { permissions: ["admin", "super"] },
+          restriction: { permissions: ["admin"] },
         },
         {
           name: "notify",
           operation: new MatchNotifyOperation(),
-          restriction: { permissions: ["admin", "super"] },
+          restriction: { permissions: ["admin"] },
         },
         {
           name: "transfer-item",
           operation: new MatchTransferItemOperation(),
           restriction: {
-            permissions: ["customer", "employee", "admin", "super"],
+            permissions: ["customer", "employee", "admin"],
           },
         },
         {
           name: "lock",
           operation: new MatchLockOperation(),
           restriction: {
-            permissions: ["employee", "manager", "admin", "super"],
+            permissions: ["employee", "manager", "admin"],
           },
         },
       ],
       restriction: {
-        permissions: ["super"],
+        permissions: ["admin"],
       },
     },
     {
@@ -53,12 +53,12 @@ export class MatchCollection implements BlCollection {
           name: "me",
           operation: new GetMyMatchesOperation(),
           restriction: {
-            permissions: ["customer", "employee", "admin", "super"],
+            permissions: ["customer", "employee", "admin"],
           },
         },
       ],
       restriction: {
-        permissions: ["employee", "manager", "admin", "super"],
+        permissions: ["employee", "manager", "admin"],
       },
       validQueryParams: [
         { fieldName: "_variant", type: "string" },
@@ -70,7 +70,7 @@ export class MatchCollection implements BlCollection {
     {
       method: "getId",
       restriction: {
-        permissions: ["employee", "admin", "super"],
+        permissions: ["employee", "admin"],
       },
     },
   ];

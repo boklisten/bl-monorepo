@@ -129,7 +129,7 @@ const USER_LINKS: Navigation = [
 ];
 
 export function getAdminPagesNavigationLinks(userPermission: UserPermission) {
-  return userPermission === "admin" || userPermission === "super"
+  return userPermission === "admin"
     ? [...EMPLOYEE_LINKS, ...ADMIN_LINKS, ...USER_LINKS]
     : [...EMPLOYEE_LINKS, ...USER_LINKS];
 }

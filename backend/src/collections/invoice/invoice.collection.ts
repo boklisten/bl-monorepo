@@ -12,25 +12,25 @@ export class InvoiceCollection implements BlCollection {
     {
       method: "getId",
       restriction: {
-        permissions: ["admin", "super"],
+        permissions: ["admin"],
       },
     },
     {
       method: "getAll",
       restriction: {
-        permissions: ["admin", "super"],
+        permissions: ["admin"],
       },
     },
     {
       method: "post",
       restriction: {
-        permissions: ["admin", "super"],
+        permissions: ["admin"],
       },
     },
     {
       method: "patch",
       restriction: {
-        permissions: ["admin", "super"],
+        permissions: ["admin"],
       },
     },
   ];

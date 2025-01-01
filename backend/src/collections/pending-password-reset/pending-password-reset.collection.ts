@@ -18,7 +18,7 @@ export class PendingPasswordResetCollection implements BlCollection {
     {
       method: "patch",
       restriction: {
-        permissions: ["super"],
+        permissions: ["admin"],
       },
       operations: [
         {

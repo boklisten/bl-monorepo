@@ -20,7 +20,7 @@ export class PaymentCollection implements BlCollection {
       method: "post",
       hook: new PaymentPostHook(),
       restriction: {
-        permissions: ["customer", "employee", "manager", "admin", "super"],
+        permissions: ["customer", "employee", "manager", "admin"],
         restricted: true,
       },
     },
@@ -28,7 +28,7 @@ export class PaymentCollection implements BlCollection {
       method: "getAll",
       hook: new PaymentGetAllHook(),
       restriction: {
-        permissions: ["customer", "employee", "manager", "admin", "super"],
+        permissions: ["customer", "employee", "manager", "admin"],
         restricted: true,
       },
       validQueryParams: [
@@ -42,7 +42,7 @@ export class PaymentCollection implements BlCollection {
     {
       method: "getId",
       restriction: {
-        permissions: ["customer", "employee", "manager", "admin", "super"],
+        permissions: ["customer", "employee", "manager", "admin"],
         restricted: true,
       },
     },
@@ -50,14 +50,14 @@ export class PaymentCollection implements BlCollection {
       method: "patch",
       hook: new PaymentPatchHook(),
       restriction: {
-        permissions: ["customer", "employee", "manager", "admin", "super"],
+        permissions: ["customer", "employee", "manager", "admin"],
         restricted: true,
       },
     },
     {
       method: "delete",
       restriction: {
-        permissions: ["admin", "super"],
+        permissions: ["admin"],
       },
     },
   ];

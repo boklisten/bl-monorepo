@@ -19,20 +19,20 @@ export class UniqueItemCollection implements BlCollection {
     {
       method: "post",
       restriction: {
-        permissions: ["employee", "manager", "admin", "super"],
+        permissions: ["employee", "manager", "admin"],
       },
       operations: [
         {
           name: "generate",
           operation: new GenerateUniqueIdsOperation(),
-          restriction: { permissions: ["admin", "super"] },
+          restriction: { permissions: ["admin"] },
         },
       ],
     },
     {
       method: "getId",
       restriction: {
-        permissions: ["employee", "manager", "admin", "super"],
+        permissions: ["employee", "manager", "admin"],
       },
       operations: [
         {
@@ -40,7 +40,7 @@ export class UniqueItemCollection implements BlCollection {
           operation: new UniqueItemActiveOperation(),
           /*
           restriction: {
-            permissions: [""employee", "manager", "admin", "super"]
+            permissions: [""employee", "manager", "admin"]
           }
           */
         },
@@ -49,7 +49,7 @@ export class UniqueItemCollection implements BlCollection {
     {
       method: "getAll",
       restriction: {
-        permissions: ["employee", "manager", "admin", "super"],
+        permissions: ["employee", "manager", "admin"],
       },
       validQueryParams: [
         { fieldName: "blid", type: "string" },

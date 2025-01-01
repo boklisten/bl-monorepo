@@ -15,14 +15,14 @@ export class EmailValidationCollection implements BlCollection {
       method: "post",
       hook: new EmailValidationPostHook(),
       restriction: {
-        permissions: ["customer", "employee", "manager", "admin", "super"],
+        permissions: ["customer", "employee", "manager", "admin"],
         restricted: true,
       },
     },
     {
       method: "patch",
       restriction: {
-        permissions: ["super"],
+        permissions: ["admin"],
       },
       operations: [
         {

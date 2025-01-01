@@ -10,15 +10,12 @@ import {
 
 export class SystemUser {
   id = "SYSTEM";
-  permission: UserPermission = "admin";
+  permission = UserPermissionEnum.enum.admin;
 }
 
 export class PermissionService {
   public isAdmin(userPermission: UserPermission) {
-    return (
-      userPermission === UserPermissionEnum.enum.admin ||
-      userPermission === UserPermissionEnum.enum.super
-    );
+    return userPermission === UserPermissionEnum.enum.admin;
   }
 
   public haveRestrictedDocumentPermission(
@@ -76,15 +73,11 @@ export class PermissionService {
       return true;
     }
 
-    if (
+    return (
       permission === admin &&
       (restrictedPermission === manager ||
         restrictedPermission === employee ||
         restrictedPermission === customer)
-    ) {
-      return true;
-    }
-
-    return permission === UserPermissionEnum.enum.super;
+    );
   }
 }

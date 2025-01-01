@@ -122,30 +122,6 @@ describe("UserCanDeleteUserDetail", () => {
       ).to.eventually.be.false;
     });
 
-    it("should be possible to delete a user with permission 'admin' if you have permission 'super'", () => {
-      const accessToken: AccessToken = {
-        iss: "",
-        aud: "",
-        iat: 0,
-        exp: 0,
-        sub: "",
-        username: "",
-        permission: "super",
-        details: "userDetail1",
-      };
-
-      userDetailGetIdStub.resolves({
-        id: "userDetail2",
-        email: "user@test.com",
-      } as UserDetail);
-
-      userGetByQueryStub.resolves([{ permission: "admin" } as User]);
-
-      return expect(
-        userCanDeleteUserDetail.canDelete("userDetail2", accessToken),
-      ).to.eventually.be.true;
-    });
-
     it("should be possible to delete a user with permission 'manager' if you have permission 'admin'", () => {
       const accessToken: AccessToken = {
         iss: "",

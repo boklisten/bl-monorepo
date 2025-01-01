@@ -22,7 +22,7 @@ export class UserDetailCollection implements BlCollection {
     {
       method: "getId",
       restriction: {
-        permissions: ["customer", "employee", "manager", "admin", "super"],
+        permissions: ["customer", "employee", "manager", "admin"],
         restricted: true,
       },
       operations: [
@@ -30,7 +30,7 @@ export class UserDetailCollection implements BlCollection {
           name: "valid",
           operation: new UserDetailValidOperation(),
           restriction: {
-            permissions: ["customer", "employee", "manager", "admin", "super"],
+            permissions: ["customer", "employee", "manager", "admin"],
             restricted: true,
           },
         },
@@ -38,7 +38,7 @@ export class UserDetailCollection implements BlCollection {
           name: "permission",
           operation: new UserDetailReadPermissionOperation(),
           restriction: {
-            permissions: ["admin", "super"],
+            permissions: ["admin"],
           },
         },
       ],
@@ -47,7 +47,7 @@ export class UserDetailCollection implements BlCollection {
       method: "patch",
       hook: new UserDetailUpdateHook(),
       restriction: {
-        permissions: ["customer", "employee", "manager", "admin", "super"],
+        permissions: ["customer", "employee", "manager", "admin"],
         restricted: true,
       },
       operations: [
@@ -55,14 +55,14 @@ export class UserDetailCollection implements BlCollection {
           name: "permission",
           operation: new UserDetailPermissionOperation(),
           restriction: {
-            permissions: ["admin", "super"],
+            permissions: ["admin"],
           },
         },
         {
           name: "email",
           operation: new UserDetailChangeEmailOperation(),
           restriction: {
-            permissions: ["manager", "admin", "super"],
+            permissions: ["manager", "admin"],
           },
         },
       ],
@@ -70,7 +70,7 @@ export class UserDetailCollection implements BlCollection {
     {
       method: "delete",
       restriction: {
-        permissions: ["admin", "super"],
+        permissions: ["admin"],
       },
       hook: new UserDetailDeleteHook(),
     },
@@ -111,7 +111,7 @@ export class UserDetailCollection implements BlCollection {
         },
       ],
       restriction: {
-        permissions: ["employee", "manager", "admin", "super"],
+        permissions: ["employee", "manager", "admin"],
       },
     },
   ];

@@ -21,14 +21,14 @@ export class CustomerItemCollection implements BlCollection {
     {
       method: "getId",
       restriction: {
-        permissions: ["customer", "employee", "manager", "admin", "super"],
+        permissions: ["customer", "employee", "manager", "admin"],
         restricted: true,
       },
     },
     {
       method: "patch",
       restriction: {
-        permissions: ["customer", "employee", "manager", "admin", "super"],
+        permissions: ["customer", "employee", "manager", "admin"],
         restricted: true,
       },
     },
@@ -40,25 +40,25 @@ export class CustomerItemCollection implements BlCollection {
           name: "generate-report",
           operation: new CustomerItemGenerateReportOperation(),
           restriction: {
-            permissions: ["admin", "super"],
+            permissions: ["admin"],
           },
         },
         {
           name: "public-blid-lookup",
           operation: new PublicBlidLookupOperation(),
           restriction: {
-            permissions: ["customer", "employee", "manager", "admin", "super"],
+            permissions: ["customer", "employee", "manager", "admin"],
           },
         },
       ],
       restriction: {
-        permissions: ["employee", "manager", "admin", "super"],
+        permissions: ["employee", "manager", "admin"],
       },
     },
     {
       method: "getAll",
       restriction: {
-        permissions: ["employee", "manager", "admin", "super"],
+        permissions: ["employee", "manager", "admin"],
       },
       nestedDocuments: [
         {

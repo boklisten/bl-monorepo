@@ -26,7 +26,6 @@ export default function PagePermissionGuard({
       return goToLoginPage();
     }
     switch (requiredPermission) {
-      case "super":
       case "admin": {
         if (!isAdmin()) goToPermissionDeniedPage();
         break;

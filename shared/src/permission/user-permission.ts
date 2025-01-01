@@ -5,7 +5,6 @@ export const UserPermissionEnum = z.enum([
   "employee",
   "manager",
   "admin",
-  "super",
 ]);
 
 export type UserPermission = z.infer<typeof UserPermissionEnum>;

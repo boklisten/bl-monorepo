@@ -25,7 +25,7 @@ export class OrderCollection implements BlCollection {
       method: "post",
       hook: new OrderPostHook(),
       restriction: {
-        permissions: ["customer", "employee", "manager", "admin", "super"],
+        permissions: ["customer", "employee", "manager", "admin"],
         restricted: true,
       },
       operations: [
@@ -33,7 +33,7 @@ export class OrderCollection implements BlCollection {
           name: "rapid-handout",
           operation: new RapidHandoutOperation(),
           restriction: {
-            permissions: ["employee", "manager", "admin", "super"],
+            permissions: ["employee", "manager", "admin"],
           },
         },
       ],
@@ -41,14 +41,14 @@ export class OrderCollection implements BlCollection {
     {
       method: "delete",
       restriction: {
-        permissions: ["admin", "super"],
+        permissions: ["admin"],
       },
     },
     {
       method: "patch",
       hook: new OrderPatchHook(),
       restriction: {
-        permissions: ["customer", "employee", "manager", "admin", "super"],
+        permissions: ["customer", "employee", "manager", "admin"],
         restricted: true,
       },
       operations: [
@@ -56,7 +56,7 @@ export class OrderCollection implements BlCollection {
           name: "place",
           operation: new OrderPlaceOperation(),
           restriction: {
-            permissions: ["employee", "manager", "admin", "super"],
+            permissions: ["employee", "manager", "admin"],
             restricted: true,
           },
         },
@@ -64,7 +64,7 @@ export class OrderCollection implements BlCollection {
           name: "confirm",
           operation: new OrderConfirmOperation(),
           restriction: {
-            permissions: ["customer", "employee", "manager", "admin", "super"],
+            permissions: ["customer", "employee", "manager", "admin"],
             restricted: true,
           },
         },
@@ -80,7 +80,7 @@ export class OrderCollection implements BlCollection {
         },
       ],
       restriction: {
-        permissions: ["customer", "employee", "manager", "admin", "super"],
+        permissions: ["customer", "employee", "manager", "admin"],
         restricted: true,
       },
       operations: [
@@ -88,7 +88,7 @@ export class OrderCollection implements BlCollection {
           name: "receipt",
           operation: new OrderReceiptPdfOperation(),
           restriction: {
-            permissions: ["customer", "employee", "manager", "admin", "super"],
+            permissions: ["customer", "employee", "manager", "admin"],
             restricted: true,
           },
         },
@@ -96,7 +96,7 @@ export class OrderCollection implements BlCollection {
           name: "agreement",
           operation: new OrderAgreementPdfOperation(),
           restriction: {
-            permissions: ["customer", "employee", "manager", "admin", "super"],
+            permissions: ["customer", "employee", "manager", "admin"],
             restricted: true,
           },
         },
@@ -105,7 +105,7 @@ export class OrderCollection implements BlCollection {
     {
       method: "getAll",
       restriction: {
-        permissions: ["employee", "manager", "admin", "super"],
+        permissions: ["employee", "manager", "admin"],
       },
       nestedDocuments: [
         {

@@ -12,7 +12,7 @@ export class CompanyCollection implements BlCollection {
     {
       method: "getAll",
       restriction: {
-        permissions: ["admin", "super"],
+        permissions: ["admin"],
       },
       validQueryParams: [
         {
@@ -24,25 +24,25 @@ export class CompanyCollection implements BlCollection {
     {
       method: "getId",
       restriction: {
-        permissions: ["admin", "super"],
+        permissions: ["admin"],
       },
     },
     {
       method: "post",
       restriction: {
-        permissions: ["admin", "super"],
+        permissions: ["admin"],
       },
     },
     {
       method: "patch",
       restriction: {
-        permissions: ["admin", "super"],
+        permissions: ["admin"],
       },
     },
     {
       method: "delete",
       restriction: {
-        permissions: ["admin", "super"],
+        permissions: ["admin"],
       },
     },
   ];

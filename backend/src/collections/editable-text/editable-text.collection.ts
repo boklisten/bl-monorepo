@@ -20,13 +20,13 @@ export class EditableTextCollection implements BlCollection {
       method: "put",
       hook: new EditableTextPutHook(),
       restriction: {
-        permissions: ["admin", "super"],
+        permissions: ["admin"],
       },
     },
     {
       method: "delete",
       restriction: {
-        permissions: ["admin", "super"],
+        permissions: ["admin"],
       },
     },
   ];

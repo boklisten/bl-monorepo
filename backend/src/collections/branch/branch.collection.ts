@@ -53,13 +53,13 @@ export class BranchCollection implements BlCollection {
       method: "post",
       hook: new BranchPostHook(),
       restriction: {
-        permissions: ["admin", "super"],
+        permissions: ["admin"],
       },
     },
     {
       method: "patch",
       restriction: {
-        permissions: ["admin", "super"],
+        permissions: ["admin"],
       },
     },
   ];

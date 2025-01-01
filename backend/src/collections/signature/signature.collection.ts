@@ -21,7 +21,7 @@ export class SignatureCollection implements BlCollection {
     {
       method: "post",
       restriction: {
-        permissions: ["customer", "employee", "manager", "admin", "super"],
+        permissions: ["customer", "employee", "manager", "admin"],
         restricted: false,
       },
       hook: new SignaturePostHook(),
@@ -39,7 +39,7 @@ export class SignatureCollection implements BlCollection {
     {
       method: "getId",
       restriction: {
-        permissions: ["customer", "employee", "manager", "admin", "super"],
+        permissions: ["customer", "employee", "manager", "admin"],
       },
       hook: new SignatureGetIdHook(),
     },

@@ -51,14 +51,14 @@ export class ItemCollection implements BlCollection {
       method: "post",
       hook: new ItemPostHook(),
       restriction: {
-        permissions: ["admin", "super"],
+        permissions: ["admin"],
       },
     },
     {
       method: "patch",
       hook: new ItemPatchHook(),
       restriction: {
-        permissions: ["admin", "super"],
+        permissions: ["admin"],
       },
     },
   ];

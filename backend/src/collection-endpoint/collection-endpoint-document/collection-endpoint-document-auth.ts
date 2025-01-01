@@ -54,10 +54,6 @@ export class CollectionEndpointDocumentAuth<T extends BlDocument> {
                 ).code(904),
               );
             }
-          } else {
-            //if (!this._permissionService.haveDocumentPermission(blApiRequest.user.permission, doc)) {
-            //return Promise.reject(new BlError('lacking document permission to view or edit the document').code(904));
-            //}
           }
         } else {
           let permissionValid = false;

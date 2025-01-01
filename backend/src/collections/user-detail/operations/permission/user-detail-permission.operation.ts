@@ -9,26 +9,42 @@ import { SEResponseHandler } from "@backend/response/se.response.handler";
 import { BlDocumentStorage } from "@backend/storage/blDocumentStorage";
 import { BlError } from "@shared/bl-error/bl-error";
 import { BlapiResponse } from "@shared/blapi-response/blapi-response";
+import { UserPermissionEnum } from "@shared/permission/user-permission";
 import { UserDetail } from "@shared/user/user-detail/user-detail";
 import { Request, Response } from "express";
+import { z } from "zod";
+import { fromError } from "zod-validation-error";
+
+const UserDetailPermissionSpec = z.object({
+  documentId: z.string(),
+  data: z.object({
+    permission: UserPermissionEnum,
+  }),
+  user: z.object({
+    id: z.string(),
+    permission: UserPermissionEnum,
+  }),
+});
 
 export class UserDetailPermissionOperation implements Operation {
-  private _permissionService: PermissionService;
+  private readonly _permissionService: PermissionService;
+  private readonly _userDetailStorage: BlDocumentStorage<UserDetail>;
+  private readonly _userStorage: BlDocumentStorage<User>;
+  private readonly _resHandler: SEResponseHandler;
 
   constructor(
-    private _userDetailStorage?: BlDocumentStorage<UserDetail>,
-    private _userStorage?: BlDocumentStorage<User>,
-    private _resHandler?: SEResponseHandler,
+    userDetailStorage?: BlDocumentStorage<UserDetail>,
+    userStorage?: BlDocumentStorage<User>,
+    resHandler?: SEResponseHandler,
   ) {
-    this._userDetailStorage = _userDetailStorage
-      ? _userDetailStorage
-      : new BlDocumentStorage(BlCollectionName.UserDetails, userDetailSchema);
+    this._userDetailStorage =
+      userDetailStorage ??
+      new BlDocumentStorage(BlCollectionName.UserDetails, userDetailSchema);
 
-    this._userStorage = _userStorage
-      ? _userStorage
-      : new BlDocumentStorage(BlCollectionName.Users, UserSchema);
+    this._userStorage =
+      userStorage ?? new BlDocumentStorage(BlCollectionName.Users, UserSchema);
 
-    this._resHandler = _resHandler ? _resHandler : new SEResponseHandler();
+    this._resHandler = resHandler ?? new SEResponseHandler();
 
     this._permissionService = new PermissionService();
   }
@@ -38,65 +54,49 @@ export class UserDetailPermissionOperation implements Operation {
     _request?: Request,
     res?: Response,
   ): Promise<boolean> {
-    if (!this._permissionService.hasPermissionField(blApiRequest.data)) {
-      throw new BlError("permission is not valid or not provided").code(701);
+    const {
+      data: parsedRequest,
+      success,
+      error,
+    } = UserDetailPermissionSpec.safeParse(blApiRequest);
+    if (!success) {
+      throw new BlError(fromError(error).toString()).code(701);
     }
+    const permissionChange = parsedRequest.data.permission;
 
-    const permissionChange = blApiRequest.data.permission;
-
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
-    if (blApiRequest.documentId == blApiRequest.user.id) {
+    if (parsedRequest.documentId == parsedRequest.user.id) {
       throw new BlError("user can not change own permission");
     }
 
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
     const userDetail = await this._userDetailStorage.get(
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
-      blApiRequest.documentId,
+      parsedRequest.documentId,
     );
 
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
     const users = await this._userStorage.aggregate([
       { $match: { blid: userDetail.blid } },
     ]);
-    const user = users[0];
+    const user = z
+      .object({ id: z.string(), permission: UserPermissionEnum })
+      .parse(users[0]);
 
     if (
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
-      !this._permissionService.isAdmin(blApiRequest.user.permission) ||
+      !this._permissionService.isAdmin(parsedRequest.user.permission) ||
       !this._permissionService.isPermissionOver(
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
-        blApiRequest.user.permission,
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
+        parsedRequest.user.permission,
         user.permission,
       ) ||
       !this._permissionService.isPermissionOver(
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
-        blApiRequest.user.permission,
+        parsedRequest.user.permission,
         permissionChange,
       )
     ) {
       throw new BlError("no access to change permission").code(904);
     }
 
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
     await this._userStorage.update(
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
       user.id,
       { permission: permissionChange },
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
-      blApiRequest.user,
+      parsedRequest.user,
     );
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore

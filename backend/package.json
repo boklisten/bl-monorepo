@@ -35,7 +35,7 @@
     "@types/sinon": "^17.0.3",
     "@types/sinon-chai": "^4.0.0",
     "@types/validator": "^13.12.2",
-    "canvas": "^3.0.0",
+    "canvas": "^3.0.1",
     "cors": "^2.8.5",
     "express": "^4.21.2",
     "express-session": "^1.18.1",

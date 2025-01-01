@@ -1,4 +1,4 @@
-import { UserPermissionSchema } from "@shared/permission/user-permission";
+import { UserPermissionEnum } from "@shared/permission/user-permission";
 import { z } from "zod";
 
 export const BlDocumentSchema = z.object({
@@ -9,7 +9,7 @@ export const BlDocumentSchema = z.object({
   user: z
     .object({
       id: z.string().describe("the id of the user"),
-      permission: UserPermissionSchema.optional().describe(
+      permission: UserPermissionEnum.optional().describe(
         "the permission of the user",
       ),
     })
@@ -22,7 +22,7 @@ export const BlDocumentSchema = z.object({
     .describe(
       "ids of other user that can edit this document if it is restricted",
     ),
-  viewableForPermission: UserPermissionSchema.optional().describe(
+  viewableForPermission: UserPermissionEnum.optional().describe(
     "the lowest permission user needs to view this document",
   ),
   editableFor: z

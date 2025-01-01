@@ -44,6 +44,7 @@ describe("UserDetailPermissionOperation", () => {
       userDetailPermissionOperation.run({
         user: { id: "userDetail2", permission: "admin", details: "" },
         data: { permission: "employee" },
+        documentId: "userDetailX",
       }),
     ).to.eventually.be.rejectedWith(BlError, /user-detail not found/);
   });
@@ -60,6 +61,7 @@ describe("UserDetailPermissionOperation", () => {
       userDetailPermissionOperation.run({
         user: { id: "userDetail2", permission: "admin", details: "" },
         data: { permission: "employee" },
+        documentId: "userDetailX",
       }),
     ).to.eventually.be.rejectedWith(BlError, /user not found/);
   });
@@ -73,7 +75,9 @@ describe("UserDetailPermissionOperation", () => {
         blid: "abcdef",
         email: "abcdef",
       } as UserDetail);
-      userAggregateStub.resolves([{ permission: "admin" } as User]);
+      userAggregateStub.resolves([
+        { id: "userDetail1", permission: "admin" } as User,
+      ]);
 
       return expect(
         userDetailPermissionOperation.run({
@@ -94,7 +98,9 @@ describe("UserDetailPermissionOperation", () => {
       blid: "abcdef",
       email: "abcdef",
     } as UserDetail);
-    userAggregateStub.resolves([{ permission: "employee" } as User]);
+    userAggregateStub.resolves([
+      { id: "userDetail1", permission: "employee" } as User,
+    ]);
 
     return expect(
       userDetailPermissionOperation.run({
@@ -111,7 +117,9 @@ describe("UserDetailPermissionOperation", () => {
       blid: "abcdef",
       email: "abcdef",
     } as UserDetail);
-    userAggregateStub.resolves([{ permission: "employee" } as User]);
+    userAggregateStub.resolves([
+      { id: "userDetail1", permission: "employee" } as User,
+    ]);
 
     return expect(
       userDetailPermissionOperation.run({
@@ -132,10 +140,7 @@ describe("UserDetailPermissionOperation", () => {
         documentId: "userDetail2",
         data: {},
       }),
-    ).to.eventually.be.rejectedWith(
-      BlError,
-      "permission is not valid or not provided",
-    );
+    ).to.eventually.be.rejectedWith(BlError);
   });
 
   it("should reject if userStorage.update rejects", () => {
@@ -144,7 +149,9 @@ describe("UserDetailPermissionOperation", () => {
       blid: "abcdef",
       email: "abcdef",
     } as UserDetail);
-    userAggregateStub.resolves([{ permission: "customer" } as User]);
+    userAggregateStub.resolves([
+      { id: "userDetail1", permission: "customer" } as User,
+    ]);
     userUpdateStub.rejects(new BlError("could not update permission"));
 
     return expect(
@@ -162,7 +169,9 @@ describe("UserDetailPermissionOperation", () => {
       blid: "abcdef",
       email: "abcdef",
     } as UserDetail);
-    userAggregateStub.resolves([{ permission: "customer" } as User]);
+    userAggregateStub.resolves([
+      { id: "userDetail1", permission: "customer" } as User,
+    ]);
     userUpdateStub.resolves({} as User);
     resHandlerStub.resolves(true);
 

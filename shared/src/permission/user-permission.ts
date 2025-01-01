@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-export const UserPermissionSchema = z.enum([
+export const UserPermissionEnum = z.enum([
   "customer",
   "employee",
   "manager",
@@ -8,4 +8,4 @@ export const UserPermissionSchema = z.enum([
   "super",
 ]);
 
-export type UserPermission = z.infer<typeof UserPermissionSchema>;
+export type UserPermission = z.infer<typeof UserPermissionEnum>;

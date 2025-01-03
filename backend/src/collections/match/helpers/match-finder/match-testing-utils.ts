@@ -5,7 +5,7 @@ import {
   CandidateStandMatch,
   CandidateUserMatch,
   MatchableUser,
-} from "@backend/collections/match/helpers/match-finder-2/match-types";
+} from "@backend/collections/match/helpers/match-finder/match-types";
 
 export function seededRandom(seed: number) {
   return function () {

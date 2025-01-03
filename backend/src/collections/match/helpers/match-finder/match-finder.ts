@@ -3,7 +3,7 @@ import {
   CandidateMatch,
   CandidateStandMatch,
   CandidateMatchVariant,
-} from "@backend/collections/match/helpers/match-finder-2/match-types";
+} from "@backend/collections/match/helpers/match-finder/match-types";
 import {
   calculateItemImbalances,
   calculateUnmatchableItems,
@@ -18,7 +18,7 @@ import {
   tryFindPartialMatch,
   tryFindTwoWayMatch,
   updateItemImbalances,
-} from "@backend/collections/match/helpers/match-finder-2/match-utils";
+} from "@backend/collections/match/helpers/match-finder/match-utils";
 import {
   difference,
   hasDifference,

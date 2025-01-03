@@ -3,7 +3,7 @@ import {
   MatchableUser,
   MatchLocationSchema,
   MatchWithMeetingInfo,
-} from "@backend/collections/match/helpers/match-finder-2/match-types";
+} from "@backend/collections/match/helpers/match-finder/match-types";
 import { BlDocumentStorage } from "@backend/storage/blDocumentStorage";
 import { CustomerItem } from "@shared/customer-item/customer-item";
 import { Match, StandMatch, UserMatch } from "@shared/match/match";

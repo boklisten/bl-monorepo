@@ -1,6 +1,6 @@
 import "mocha";
 
-import { MatchFinder } from "@backend/collections/match/helpers/match-finder-2/match-finder";
+import { MatchFinder } from "@backend/collections/match/helpers/match-finder/match-finder";
 import {
   calculateNumberOfMatchesPerType,
   createFakeMatchableUser,
@@ -11,16 +11,16 @@ import {
   seededRandom,
   shuffler,
   createMatchableUsersWithIdSuffix,
-} from "@backend/collections/match/helpers/match-finder-2/match-testing-utils";
+} from "@backend/collections/match/helpers/match-finder/match-testing-utils";
 import {
   CandidateMatchVariant,
   CandidateStandMatch,
   MatchableUser,
-} from "@backend/collections/match/helpers/match-finder-2/match-types";
-import otto_treider_test_users_year_0 from "@backend/collections/match/helpers/match-finder-2/test-data/test_users_year_0.json";
-import otto_treider_test_users_year_1 from "@backend/collections/match/helpers/match-finder-2/test-data/test_users_year_1.json";
-import otto_treider_test_users_year_2 from "@backend/collections/match/helpers/match-finder-2/test-data/test_users_year_2.json";
-import ullern_test_users from "@backend/collections/match/helpers/match-finder-2/test-data/ullern_test_users.json";
+} from "@backend/collections/match/helpers/match-finder/match-types";
+import otto_treider_test_users_year_0 from "@backend/collections/match/helpers/match-finder/test-data/test_users_year_0.json";
+import otto_treider_test_users_year_1 from "@backend/collections/match/helpers/match-finder/test-data/test_users_year_1.json";
+import otto_treider_test_users_year_2 from "@backend/collections/match/helpers/match-finder/test-data/test_users_year_2.json";
+import ullern_test_users from "@backend/collections/match/helpers/match-finder/test-data/ullern_test_users.json";
 import {
   difference,
   intersect,

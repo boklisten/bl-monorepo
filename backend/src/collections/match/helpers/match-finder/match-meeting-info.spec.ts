@@ -1,20 +1,20 @@
 import "mocha";
 
-import { MatchFinder } from "@backend/collections/match/helpers/match-finder-2/match-finder";
-import assignMeetingInfoToMatches from "@backend/collections/match/helpers/match-finder-2/match-meeting-info";
+import { MatchFinder } from "@backend/collections/match/helpers/match-finder/match-finder";
+import assignMeetingInfoToMatches from "@backend/collections/match/helpers/match-finder/match-meeting-info";
 import {
   createFakeMatchableUser,
   createUserGroup,
   seededRandom,
   shuffler,
-} from "@backend/collections/match/helpers/match-finder-2/match-testing-utils";
+} from "@backend/collections/match/helpers/match-finder/match-testing-utils";
 import {
   CandidateMatchVariant,
   MatchableUser,
   MatchWithMeetingInfo,
-} from "@backend/collections/match/helpers/match-finder-2/match-types";
-import otto_treider_test_users_year_0 from "@backend/collections/match/helpers/match-finder-2/test-data/test_users_year_0.json";
-import otto_treider_test_users_year_1 from "@backend/collections/match/helpers/match-finder-2/test-data/test_users_year_1.json";
+} from "@backend/collections/match/helpers/match-finder/match-types";
+import otto_treider_test_users_year_0 from "@backend/collections/match/helpers/match-finder/test-data/test_users_year_0.json";
+import otto_treider_test_users_year_1 from "@backend/collections/match/helpers/match-finder/test-data/test_users_year_1.json";
 import { expect, use as chaiUse, should } from "chai";
 import chaiAsPromised from "chai-as-promised";
 import sinonChai from "sinon-chai";

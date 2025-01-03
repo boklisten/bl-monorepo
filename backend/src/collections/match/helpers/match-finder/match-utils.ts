@@ -2,7 +2,7 @@ import {
   MatchableUser,
   CandidateMatch,
   CandidateMatchVariant,
-} from "@backend/collections/match/helpers/match-finder-2/match-types";
+} from "@backend/collections/match/helpers/match-finder/match-types";
 import {
   difference,
   hasDifference,

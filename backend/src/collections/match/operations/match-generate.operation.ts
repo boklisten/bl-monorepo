@@ -1,7 +1,7 @@
 import { BlCollectionName } from "@backend/collections/bl-collection";
 import { customerItemSchema } from "@backend/collections/customer-item/customer-item.schema";
-import { MatchFinder } from "@backend/collections/match/helpers/match-finder-2/match-finder";
-import assignMeetingInfoToMatches from "@backend/collections/match/helpers/match-finder-2/match-meeting-info";
+import { MatchFinder } from "@backend/collections/match/helpers/match-finder/match-finder";
+import assignMeetingInfoToMatches from "@backend/collections/match/helpers/match-finder/match-meeting-info";
 import { matchSchema } from "@backend/collections/match/match.schema";
 import {
   candidateMatchToMatch,

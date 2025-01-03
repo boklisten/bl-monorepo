@@ -1,6 +1,6 @@
 import { BlCollectionName } from "@backend/collections/bl-collection";
-import { matchSchema } from "@backend/collections/match/match.schema";
-import { getAllMatchesForUser } from "@backend/collections/match/operations/match-operation-utils";
+import { standMatchSchema } from "@backend/collections/stand-match/stand-match.schema";
+import { getAllMatchesForUser } from "@backend/collections/user-match/operations/match-operation-utils";
 import { Operation } from "@backend/operation/operation";
 import { BlApiRequest } from "@backend/request/bl-api-request";
 import { BlDocumentStorage } from "@backend/storage/blDocumentStorage";
@@ -15,12 +15,12 @@ const MatchLockSpec = z.object({
   userMatchesLocked: z.boolean(),
 });
 
-export class MatchLockOperation implements Operation {
+export class UserMatchLockOperation implements Operation {
   private readonly _matchStorage: BlDocumentStorage<Match>;
   constructor(matchStorage?: BlDocumentStorage<Match>) {
     this._matchStorage =
       matchStorage ??
-      new BlDocumentStorage(BlCollectionName.Matches, matchSchema);
+      new BlDocumentStorage(BlCollectionName.Matches, standMatchSchema);
   }
 
   async run(blApiRequest: BlApiRequest): Promise<BlapiResponse> {

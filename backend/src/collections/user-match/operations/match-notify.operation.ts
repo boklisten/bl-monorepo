@@ -1,7 +1,7 @@
 import { BlCollectionName } from "@backend/collections/bl-collection";
-import { difference } from "@backend/collections/match/helpers/set-methods";
-import { matchSchema } from "@backend/collections/match/match.schema";
+import { standMatchSchema } from "@backend/collections/stand-match/stand-match.schema";
 import { userDetailSchema } from "@backend/collections/user-detail/user-detail.schema";
+import { difference } from "@backend/collections/user-match/helpers/set-methods";
 import { sendSMS } from "@backend/messenger/sms/sms-service";
 import { Operation } from "@backend/operation/operation";
 import { BlApiRequest } from "@backend/request/bl-api-request";
@@ -28,7 +28,7 @@ export class MatchNotifyOperation implements Operation {
   ) {
     this._matchStorage =
       matchStorage ??
-      new BlDocumentStorage(BlCollectionName.Matches, matchSchema);
+      new BlDocumentStorage(BlCollectionName.Matches, standMatchSchema);
     this._userDetailStorage =
       userDetailStorage ??
       new BlDocumentStorage(BlCollectionName.UserDetails, userDetailSchema);

@@ -5,16 +5,16 @@ import { customerItemSchema } from "@backend/collections/customer-item/customer-
 import { CustomerItemActiveBlid } from "@backend/collections/customer-item/helpers/customer-item-active-blid";
 import { OrderToCustomerItemGenerator } from "@backend/collections/customer-item/helpers/order-to-customer-item-generator";
 import { itemSchema } from "@backend/collections/item/item.schema";
-import { matchSchema } from "@backend/collections/match/match.schema";
+import { OrderItemMovedFromOrderHandler } from "@backend/collections/order/helpers/order-item-moved-from-order-handler/order-item-moved-from-order-handler";
+import { OrderValidator } from "@backend/collections/order/helpers/order-validator/order-validator";
+import { orderSchema } from "@backend/collections/order/order.schema";
+import { standMatchSchema } from "@backend/collections/stand-match/stand-match.schema";
+import { uniqueItemSchema } from "@backend/collections/unique-item/unique-item.schema";
 import {
   createMatchDeliverOrder,
   createMatchReceiveOrder,
   getAllMatchesForUser,
-} from "@backend/collections/match/operations/match-operation-utils";
-import { OrderItemMovedFromOrderHandler } from "@backend/collections/order/helpers/order-item-moved-from-order-handler/order-item-moved-from-order-handler";
-import { OrderValidator } from "@backend/collections/order/helpers/order-validator/order-validator";
-import { orderSchema } from "@backend/collections/order/order.schema";
-import { uniqueItemSchema } from "@backend/collections/unique-item/unique-item.schema";
+} from "@backend/collections/user-match/operations/match-operation-utils";
 import { isNullish } from "@backend/helper/typescript-helpers";
 import { Operation } from "@backend/operation/operation";
 import { SEDbQuery } from "@backend/query/se.db-query";
@@ -31,7 +31,7 @@ import { UniqueItem } from "@shared/unique-item/unique-item";
 import { z } from "zod";
 import { fromError } from "zod-validation-error";
 
-export class MatchTransferItemOperation implements Operation {
+export class UserMatchTransferItemOperation implements Operation {
   private readonly wrongSenderFeedback = `Boken du skannet tilhørte en annen elev enn den som ga deg den. Du skal beholde den, men eleven som ga deg boken er fortsatt ansvarlig for at den opprinnelige boken blir levert.`;
 
   private readonly _matchStorage: BlDocumentStorage<Match>;
@@ -51,7 +51,7 @@ export class MatchTransferItemOperation implements Operation {
   ) {
     this._matchStorage =
       matchStorage ??
-      new BlDocumentStorage(BlCollectionName.Matches, matchSchema);
+      new BlDocumentStorage(BlCollectionName.Matches, standMatchSchema);
     this._orderStorage =
       orderStorage ??
       new BlDocumentStorage(BlCollectionName.Orders, orderSchema);

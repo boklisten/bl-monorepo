@@ -2,12 +2,12 @@ import {
   MatchableUser,
   CandidateMatch,
   CandidateMatchVariant,
-} from "@backend/collections/match/helpers/match-finder/match-types";
+} from "@backend/collections/user-match/helpers/match-finder/match-types";
 import {
   difference,
   hasDifference,
   intersect,
-} from "@backend/collections/match/helpers/set-methods";
+} from "@backend/collections/user-match/helpers/set-methods";
 
 /**
  * Create a sorted deep copy of the input users

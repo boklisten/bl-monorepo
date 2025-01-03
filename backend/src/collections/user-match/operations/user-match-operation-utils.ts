@@ -6,10 +6,10 @@ import { BlError } from "@shared/bl-error/bl-error";
 import { Branch } from "@shared/branch/branch";
 import { CustomerItem } from "@shared/customer-item/customer-item";
 import { Item } from "@shared/item/item";
-import { Match } from "@shared/match/match";
 import { Order } from "@shared/order/order";
 import { OrderItem } from "@shared/order/order-item/order-item";
 
+// TODO: rewrite all of these
 export async function createMatchReceiveOrder(
   customerItem: CustomerItem,
   userDetailId: string,
@@ -147,7 +147,7 @@ export async function createMatchDeliverOrder(
   };
 }
 
-export async function getAllMatchesForUser(
+export async function getAllUserMatchesForUser(
   userDetailId: string,
   matchStorage: BlDocumentStorage<Match>,
 ): Promise<Match[]> {

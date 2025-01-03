@@ -1,12 +1,10 @@
 import {
-  CandidateMatchVariant,
   MatchableUser,
   MatchLocationSchema,
   MatchWithMeetingInfo,
-} from "@backend/collections/match/helpers/match-finder/match-types";
+} from "@backend/collections/user-match/helpers/match-finder/match-types";
 import { BlDocumentStorage } from "@backend/storage/blDocumentStorage";
 import { CustomerItem } from "@shared/customer-item/customer-item";
-import { Match, StandMatch, UserMatch } from "@shared/match/match";
 import { Order } from "@shared/order/order";
 import { ObjectId } from "mongodb";
 import { z } from "zod";
@@ -14,20 +12,17 @@ import { z } from "zod";
 /**
  * The information required to generate matches.
  */
-export const MatcherSpec = z.object({
-  senderBranches: z.string().array(),
-  receiverBranches: z.string().array(),
+export const MatchGenerateSpec = z.object({
+  branches: z.string().array(),
   standLocation: z.string(),
   userMatchLocations: MatchLocationSchema.array(),
   startTime: z.string().datetime(),
   deadlineBefore: z.string().datetime(),
   matchMeetingDurationInMS: z.number(),
-  includeSenderItemsFromOtherBranches: z.boolean(),
-  additionalReceiverItems: z.record(z.string(), z.string().array()),
-  deadlineOverrides: z.record(z.string(), z.string().datetime()),
+  includeCustomerItemsFromOtherBranches: z.boolean(),
 });
 
-export function candidateMatchToMatch(
+export function candidateStandMatchToStandMatch(
   candidate: MatchWithMeetingInfo,
   deadlineOverrides: Record<string, string>,
 ): Match {
@@ -59,12 +54,14 @@ export function candidateMatchToMatch(
  * @param deadlineBefore Select customer items that have a deadlineBefore between now() and this deadlineBefore
  * @param includeSenderItemsFromOtherBranches whether the remainder of the items that a customer has in possession should be added to the match, even though they were not handed out at the specified branchIds
  * @param customerItemStorage
+ * @param orderStorage
  */
 export async function getMatchableSenders(
   branchIds: string[],
   deadlineBefore: string,
   includeSenderItemsFromOtherBranches: boolean,
   customerItemStorage: BlDocumentStorage<CustomerItem>,
+  orderStorage: BlDocumentStorage<Order>,
 ): Promise<MatchableUser[]> {
   const groupByCustomerStep = {
     $group: {
@@ -108,7 +105,6 @@ export async function getMatchableSenders(
       groupByCustomerStep,
     ])) as { id: string; items: string[] }[];
   }
-  console.log("aggSenders:", aggregatedSenders);
 
   return aggregatedSenders.map((sender) => ({
     id: sender.id,
@@ -126,7 +122,6 @@ export async function getMatchableSenders(
 export async function getMatchableReceivers(
   branchIds: string[],
   orderStorage: BlDocumentStorage<Order>,
-  additionalReceiverItems: Record<string, string[]>,
 ): Promise<MatchableUser[]> {
   const aggregatedReceivers = (await orderStorage.aggregate([
     {
@@ -177,16 +172,6 @@ export async function getMatchableReceivers(
       },
     },
   ])) as { id: string; items: string[]; branches: string[] }[];
-
-  for (const [branchId, receiverItems] of Object.entries(
-    additionalReceiverItems,
-  )) {
-    for (const receiver of aggregatedReceivers) {
-      if (receiver.branches.includes(branchId)) {
-        receiver.items = [...receiver.items, ...receiverItems];
-      }
-    }
-  }
 
   return aggregatedReceivers.map((receiver) => ({
     id: receiver.id,

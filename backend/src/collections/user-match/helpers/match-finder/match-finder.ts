@@ -3,7 +3,7 @@ import {
   CandidateMatch,
   CandidateStandMatch,
   CandidateMatchVariant,
-} from "@backend/collections/match/helpers/match-finder/match-types";
+} from "@backend/collections/user-match/helpers/match-finder/match-types";
 import {
   calculateItemImbalances,
   calculateUnmatchableItems,
@@ -18,29 +18,43 @@ import {
   tryFindPartialMatch,
   tryFindTwoWayMatch,
   updateItemImbalances,
-} from "@backend/collections/match/helpers/match-finder/match-utils";
+} from "@backend/collections/user-match/helpers/match-finder/match-utils";
 import {
   difference,
   hasDifference,
   intersect,
   union,
-} from "@backend/collections/match/helpers/set-methods";
+} from "@backend/collections/user-match/helpers/set-methods";
 import { BlError } from "@shared/bl-error/bl-error";
 
+/**
+ * UnmatchableItems - items that either no one has or no one wants
+ * TwoWayMatch - two users completely satisfy each others wants
+ * OneWayMatch - one user is fully satisfied
+ * PartialMatch - a match where we try to satisfy as many items as possible
+ * New Flow
+ * -- In between each step, remove unmatchable items
+ * 1) Calculate and StandMatch unmatchable items
+ * 2) Find TwoWayMatches within each group
+ * 3) Find OneWayMatches within each group
+ * 4) Figure out which groups should be matched
+ * - Find the group that has the least difference between supply and demand
+ * For each pair of groups:
+ * 5) Find TwoWayMatches between groups
+ * 6) Find OneWayMatches between groups
+ * 7) Find PartialMatches between groups
+ *
+ */
+
 export class MatchFinder {
-  public senders: MatchableUser[];
-  public receivers: MatchableUser[];
+  public users: MatchableUser[];
   public unmatchableItems = new Set<string>();
 
   private matches: CandidateMatch[] = [];
   private readonly MAX_USER_MATCH_COUNT = 2;
 
-  constructor(
-    private _senders: MatchableUser[],
-    private _receivers: MatchableUser[],
-  ) {
-    this.receivers = copyUsers(_receivers);
-    this.senders = copyUsers(_senders);
+  constructor(private _users: MatchableUser[]) {
+    this.users = copyUsers(_users);
   }
 
   /**

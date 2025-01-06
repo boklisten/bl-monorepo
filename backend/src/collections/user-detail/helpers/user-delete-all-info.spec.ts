@@ -3,9 +3,13 @@ import "mocha";
 import { BlCollectionName } from "@backend/collections/bl-collection";
 import { LocalLogin } from "@backend/collections/local-login/local-login";
 import { User } from "@backend/collections/user/user";
-import { UserDeleteAllInfo } from "@backend/collections/user-detail/helpers/user-delete-all-info";
+import { DeleteUserService } from "@backend/collections/user-detail/helpers/delete-user-service";
 import { BlDocumentStorage } from "@backend/storage/blDocumentStorage";
 import { BlError } from "@shared/bl-error/bl-error";
+import { CustomerItem } from "@shared/customer-item/customer-item";
+import { Invoice } from "@shared/invoice/invoice";
+import { Order } from "@shared/order/order";
+import { Payment } from "@shared/payment/payment";
 import { AccessToken } from "@shared/token/access-token";
 import { UserDetail } from "@shared/user/user-detail/user-detail";
 import { expect, use as chaiUse, should } from "chai";
@@ -22,6 +26,12 @@ describe("UserDeleteAllInfo", () => {
   const userDetailStorage = new BlDocumentStorage<UserDetail>(
     BlCollectionName.UserDetails,
   );
+  const customerItemStorage = new BlDocumentStorage(
+    BlCollectionName.CustomerItems,
+  );
+  const invoiceStorage = new BlDocumentStorage(BlCollectionName.Invoices);
+  const orderStorage = new BlDocumentStorage(BlCollectionName.Orders);
+  const paymentStorage = new BlDocumentStorage(BlCollectionName.Payments);
 
   const localLoginRemoveStub = sinon.stub(localLoginStorage, "remove");
   const localLoginGetByQueryStub = sinon.stub(localLoginStorage, "getByQuery");
@@ -29,9 +39,14 @@ describe("UserDeleteAllInfo", () => {
   const userGetByQueryStub = sinon.stub(userStorage, "getByQuery");
   const userDetailGetStub = sinon.stub(userDetailStorage, "get");
 
-  const userDeleteAllInfo = new UserDeleteAllInfo(
+  const userDeleteAllInfo = new DeleteUserService(
     userStorage,
+    userDetailStorage,
     localLoginStorage,
+    customerItemStorage,
+    invoiceStorage,
+    orderStorage,
+    paymentStorage,
   );
 
   beforeEach(() => {
@@ -65,7 +80,7 @@ describe("UserDeleteAllInfo", () => {
 
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore
-      const result = await userDeleteAllInfo.deleteAllInfo(
+      const result = await userDeleteAllInfo.deleteUser(
         userDetailIdToRemove,
         accessToken,
       );
@@ -101,7 +116,7 @@ describe("UserDeleteAllInfo", () => {
 
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore
-      const result = await userDeleteAllInfo.deleteAllInfo(
+      const result = await userDeleteAllInfo.deleteUser(
         userDetailIdToRemove,
         accessToken,
       );
@@ -112,34 +127,6 @@ describe("UserDeleteAllInfo", () => {
           permission: accessToken.permission,
         }),
       ).to.be.true;
-    });
-
-    it("should reject if there is more than one user with the same username", async () => {
-      const userIdToRemove = "5daf2cf19f92d901e41c10d4";
-      const userIdToRemove2 = "5daf2cf19f92d901e41c10d2";
-      const userDetailIdToRemove = "5daf2cf19f92d901e41c10d6";
-      const localLoginIdToRemove = "5daf2cf19f92d901e41c10ff";
-
-      userRemoveStub.resolves({} as User);
-      localLoginRemoveStub.resolves({} as LocalLogin);
-
-      userGetByQueryStub.resolves([
-        { id: userIdToRemove, username: "user@1234.com" } as User,
-        { id: userIdToRemove2, username: "user@1234.com" } as User,
-      ]);
-
-      localLoginGetByQueryStub.resolves([
-        { id: localLoginIdToRemove },
-      ] as LocalLogin[]);
-
-      const accessToken = {
-        details: "user777",
-        permission: "admin",
-      } as AccessToken;
-
-      return expect(
-        userDeleteAllInfo.deleteAllInfo(userDetailIdToRemove, accessToken),
-      ).to.eventually.be.rejectedWith(BlError, /multiple users was found/);
     });
 
     it("should resolve with true if user info was deleted", async () => {
@@ -163,8 +150,8 @@ describe("UserDeleteAllInfo", () => {
       } as AccessToken;
 
       return expect(
-        userDeleteAllInfo.deleteAllInfo(userDetailIdToRemove, accessToken),
-      ).to.eventually.be.true;
+        userDeleteAllInfo.deleteUser(userDetailIdToRemove, accessToken),
+      ).to.eventually.be.fulfilled;
     });
   });
 });

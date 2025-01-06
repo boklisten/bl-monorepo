@@ -4,8 +4,8 @@ import { BlCollectionName } from "@backend/collections/bl-collection";
 import { CustomerHaveActiveCustomerItems } from "@backend/collections/customer-item/helpers/customer-have-active-customer-items";
 import { CustomerInvoiceActive } from "@backend/collections/invoice/helpers/customer-invoice-active";
 import { OrderActive } from "@backend/collections/order/helpers/order-active/order-active";
+import { DeleteUserService } from "@backend/collections/user-detail/helpers/delete-user-service";
 import { UserCanDeleteUserDetail } from "@backend/collections/user-detail/helpers/user-can-delete-user-detail";
-import { UserDeleteAllInfo } from "@backend/collections/user-detail/helpers/user-delete-all-info";
 import { UserDetailDeleteHook } from "@backend/collections/user-detail/hooks/user-detail-delete.hook";
 import { BlDocumentStorage } from "@backend/storage/blDocumentStorage";
 import { BlError } from "@shared/bl-error/bl-error";
@@ -37,8 +37,8 @@ describe("UserDetailDeleteHook", () => {
   );
   const userCanDeleteUserDetail = new UserCanDeleteUserDetail();
   const canDeleteStub = sinon.stub(userCanDeleteUserDetail, "canDelete");
-  const userDeleteAllInfo = new UserDeleteAllInfo();
-  const deleteAllInfoStub = sinon.stub(userDeleteAllInfo, "deleteAllInfo");
+  const userDeleteAllInfo = new DeleteUserService();
+  const deleteAllInfoStub = sinon.stub(userDeleteAllInfo, "deleteUser");
 
   const userDetailDeleteHook = new UserDetailDeleteHook(
     orderActive,

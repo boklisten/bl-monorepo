@@ -7,26 +7,25 @@ import { Order } from "@shared/order/order";
 import { OrderItem } from "@shared/order/order-item/order-item";
 
 export class OrderActive {
-  private _queryBuilder: SEDbQueryBuilder;
+  private queryBuilder: SEDbQueryBuilder;
+  private orderStorage: BlDocumentStorage<Order>;
 
-  constructor(private _orderStorage?: BlDocumentStorage<Order>) {
-    this._orderStorage = this._orderStorage
-      ? this._orderStorage
-      : new BlDocumentStorage(BlCollectionName.Orders, orderSchema);
-    this._queryBuilder = new SEDbQueryBuilder();
+  constructor(_orderStorage?: BlDocumentStorage<Order>) {
+    this.orderStorage =
+      _orderStorage ??
+      new BlDocumentStorage(BlCollectionName.Orders, orderSchema);
+    this.queryBuilder = new SEDbQueryBuilder();
   }
 
   public async getActiveOrders(userId: string): Promise<Order[]> {
-    const databaseQuery = this._queryBuilder.getDbQuery({ customer: userId }, [
+    const databaseQuery = this.queryBuilder.getDbQuery({ customer: userId }, [
       { fieldName: "customer", type: "object-id" },
     ]);
 
     let orders: Order[];
 
     try {
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
-      orders = await this._orderStorage.getByQuery(databaseQuery);
+      orders = await this.orderStorage.getByQuery(databaseQuery);
     } catch (error) {
       if (error instanceof BlError && error.getCode() === 702) {
         return [];

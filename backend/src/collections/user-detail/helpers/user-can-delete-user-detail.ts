@@ -11,16 +11,17 @@ import { UserDetail } from "@shared/user/user-detail/user-detail";
 export class UserCanDeleteUserDetail {
   private queryBuilder: SEDbQueryBuilder;
   private permissionService: PermissionService;
+  private userDetailStorage: BlDocumentStorage<UserDetail>;
+  private userStorage: BlDocumentStorage<User>;
   constructor(
-    private userDetailStorage?: BlDocumentStorage<UserDetail>,
-    private userStorage?: BlDocumentStorage<User>,
+    _userDetailStorage?: BlDocumentStorage<UserDetail>,
+    _userStorage?: BlDocumentStorage<User>,
   ) {
-    this.userDetailStorage = this.userDetailStorage
-      ? this.userDetailStorage
-      : new BlDocumentStorage(BlCollectionName.UserDetails, userDetailSchema);
-    this.userStorage = this.userStorage
-      ? this.userStorage
-      : new BlDocumentStorage(BlCollectionName.Users, UserSchema);
+    this.userDetailStorage =
+      _userDetailStorage ??
+      new BlDocumentStorage(BlCollectionName.UserDetails, userDetailSchema);
+    this.userStorage =
+      _userStorage ?? new BlDocumentStorage(BlCollectionName.Users, UserSchema);
     this.queryBuilder = new SEDbQueryBuilder();
     this.permissionService = new PermissionService();
   }
@@ -29,8 +30,6 @@ export class UserCanDeleteUserDetail {
     userIdToDelete: string,
     accessToken: AccessToken,
   ): Promise<boolean> {
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
     const userDetailToDelete = await this.userDetailStorage.get(userIdToDelete);
 
     if (userDetailToDelete.id === accessToken.details) {
@@ -46,8 +45,6 @@ export class UserCanDeleteUserDetail {
       [{ fieldName: "username", type: "string" }],
     );
 
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
     const users = await this.userStorage.getByQuery(databaseQuery);
     const userToDelete = users[0];
 

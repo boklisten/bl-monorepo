@@ -37,15 +37,15 @@ describe("UserDetailDeleteHook", () => {
   );
   const userCanDeleteUserDetail = new UserCanDeleteUserDetail();
   const canDeleteStub = sinon.stub(userCanDeleteUserDetail, "canDelete");
-  const userDeleteAllInfo = new DeleteUserService();
-  const deleteAllInfoStub = sinon.stub(userDeleteAllInfo, "deleteUser");
+  const deleteUserService = new DeleteUserService();
+  const deleteUserServiceStub = sinon.stub(deleteUserService, "deleteUser");
 
   const userDetailDeleteHook = new UserDetailDeleteHook(
     orderActive,
     customerHaveActiveCustomerItems,
     customerInvoiceActive,
     userCanDeleteUserDetail,
-    userDeleteAllInfo,
+    deleteUserService,
   );
 
   beforeEach(() => {
@@ -53,7 +53,7 @@ describe("UserDetailDeleteHook", () => {
     haveActiveCustomerItemsStub.reset();
     haveActiveCustomerItemsStub.reset();
     canDeleteStub.reset();
-    deleteAllInfoStub.reset();
+    deleteUserServiceStub.reset();
   });
 
   describe("before()", () => {
@@ -127,7 +127,9 @@ describe("UserDetailDeleteHook", () => {
       haveActiveCustomerItemsStub.resolves(false);
       haveActiveInvoicesStub.resolves(false);
       canDeleteStub.resolves(true);
-      deleteAllInfoStub.rejects(new BlError("user info could not be deleted"));
+      deleteUserServiceStub.rejects(
+        new BlError("user info could not be deleted"),
+      );
 
       const accessToken = {
         iss: "",
@@ -148,7 +150,7 @@ describe("UserDetailDeleteHook", () => {
       haveActiveCustomerItemsStub.resolves(false);
       haveActiveInvoicesStub.resolves(false);
       canDeleteStub.resolves(true);
-      deleteAllInfoStub.resolves(true);
+      deleteUserServiceStub.resolves();
 
       const accessToken = {
         iss: "",

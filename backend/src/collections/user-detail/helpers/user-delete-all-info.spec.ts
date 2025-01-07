@@ -5,7 +5,6 @@ import { LocalLogin } from "@backend/collections/local-login/local-login";
 import { User } from "@backend/collections/user/user";
 import { DeleteUserService } from "@backend/collections/user-detail/helpers/delete-user-service";
 import { BlDocumentStorage } from "@backend/storage/blDocumentStorage";
-import { BlError } from "@shared/bl-error/bl-error";
 import { CustomerItem } from "@shared/customer-item/customer-item";
 import { Invoice } from "@shared/invoice/invoice";
 import { Order } from "@shared/order/order";
@@ -26,12 +25,16 @@ describe("UserDeleteAllInfo", () => {
   const userDetailStorage = new BlDocumentStorage<UserDetail>(
     BlCollectionName.UserDetails,
   );
-  const customerItemStorage = new BlDocumentStorage(
+  const customerItemStorage = new BlDocumentStorage<CustomerItem>(
     BlCollectionName.CustomerItems,
   );
-  const invoiceStorage = new BlDocumentStorage(BlCollectionName.Invoices);
-  const orderStorage = new BlDocumentStorage(BlCollectionName.Orders);
-  const paymentStorage = new BlDocumentStorage(BlCollectionName.Payments);
+  const invoiceStorage = new BlDocumentStorage<Invoice>(
+    BlCollectionName.Invoices,
+  );
+  const orderStorage = new BlDocumentStorage<Order>(BlCollectionName.Orders);
+  const paymentStorage = new BlDocumentStorage<Payment>(
+    BlCollectionName.Payments,
+  );
 
   const localLoginRemoveStub = sinon.stub(localLoginStorage, "remove");
   const localLoginGetByQueryStub = sinon.stub(localLoginStorage, "getByQuery");

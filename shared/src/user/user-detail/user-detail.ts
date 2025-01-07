@@ -22,4 +22,5 @@ export interface UserDetail extends BlDocument {
   customerItems?: string[];
   signatures: string[];
   blid: string;
+  temporaryGroupMembership?: string; // Temporary field for Ullern Matching January 2024
 }

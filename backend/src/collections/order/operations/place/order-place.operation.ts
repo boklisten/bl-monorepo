@@ -1,16 +1,11 @@
-import {
-  PermissionService,
-  SystemUser,
-} from "@backend/auth/permission/permission.service";
+import { PermissionService } from "@backend/auth/permission/permission.service";
 import { BlCollectionName } from "@backend/collections/bl-collection";
 import { customerItemSchema } from "@backend/collections/customer-item/customer-item.schema";
 import { OrderToCustomerItemGenerator } from "@backend/collections/customer-item/helpers/order-to-customer-item-generator";
-import { matchSchema } from "@backend/collections/match/match.schema";
 import { OrderPlacedHandler } from "@backend/collections/order/helpers/order-placed-handler/order-placed-handler";
 import { OrderValidator } from "@backend/collections/order/helpers/order-validator/order-validator";
 import { orderSchema } from "@backend/collections/order/order.schema";
 import { userDetailSchema } from "@backend/collections/user-detail/user-detail.schema";
-import { isNotNullish } from "@backend/helper/typescript-helpers";
 import { Operation } from "@backend/operation/operation";
 import { SEDbQueryBuilder } from "@backend/query/se.db-query-builder";
 import { BlApiRequest } from "@backend/request/bl-api-request";
@@ -19,14 +14,7 @@ import { BlDocumentStorage } from "@backend/storage/blDocumentStorage";
 import { BlError } from "@shared/bl-error/bl-error";
 import { BlapiResponse } from "@shared/blapi-response/blapi-response";
 import { CustomerItem } from "@shared/customer-item/customer-item";
-import {
-  Match,
-  MatchVariant,
-  StandMatch,
-  UserMatch,
-} from "@shared/match/match";
 import { Order } from "@shared/order/order";
-import { OrderItem } from "@shared/order/order-item/order-item";
 import { OrderItemType } from "@shared/order/order-item/order-item-type";
 import { UserPermission } from "@shared/permission/user-permission";
 import { UserDetail } from "@shared/user/user-detail/user-detail";
@@ -42,7 +30,7 @@ export class OrderPlaceOperation implements Operation {
   private readonly _orderPlacedHandler: OrderPlacedHandler;
   private readonly _orderValidator: OrderValidator;
   private readonly _userDetailStorage: BlDocumentStorage<UserDetail>;
-  private readonly _matchStorage: BlDocumentStorage<Match>;
+  // private readonly _matchStorage: BlDocumentStorage<Match>;
 
   constructor(
     resHandler?: SEResponseHandler,
@@ -52,7 +40,7 @@ export class OrderPlaceOperation implements Operation {
     orderPlacedHandler?: OrderPlacedHandler,
     orderValidator?: OrderValidator,
     userDetailStorage?: BlDocumentStorage<UserDetail>,
-    matchStorage?: BlDocumentStorage<Match>,
+    // matchStorage?: BlDocumentStorage<Match>,
   ) {
     this._resHandler = resHandler ?? new SEResponseHandler();
 
@@ -75,9 +63,12 @@ export class OrderPlaceOperation implements Operation {
       userDetailStorage ??
       new BlDocumentStorage(BlCollectionName.UserDetails, userDetailSchema);
 
+    // TODO: rewrite these!
+    /*
     this._matchStorage =
       matchStorage ??
-      new BlDocumentStorage(BlCollectionName.Matches, matchSchema);
+      new BlDocumentStorage(BlCollectionName.StandMatches, standMatchSchema);
+     */
 
     this._queryBuilder = new SEDbQueryBuilder();
     this._permissionService = new PermissionService();
@@ -201,13 +192,14 @@ export class OrderPlaceOperation implements Operation {
     }
   }
 
-  /**
+  /* TODO: fixme!
+  /!**
    * For each customerItem, check that the customer who owns it does not have a locked UserMatch with the same item
    * @param customerItems the customer items to be verified
    * @param userMatches the user matches to check against
    * @throws if someone tries to return/buyback a customerItem that's locked to a UserMatch
    * @private
-   */
+   *!/
   private verifyCustomerItemsNotInLockedUserMatch(
     customerItems: CustomerItem[],
     userMatches: UserMatch[],
@@ -230,14 +222,14 @@ export class OrderPlaceOperation implements Operation {
     }
   }
 
-  /**
+  /!**
    * For each item, check that the customer does not have a locked UserMatch with the same item
    * @param itemIds the IDs of the items to be verified
    * @param userMatches the user matches to check against
    * @param customerId the ID of the customer
    * @throws if someone tries to receive an item that's locked to a UserMatch
    * @private
-   */
+   *!/
   private verifyItemsNotInLockedUserMatch(
     itemIds: string[],
     userMatches: UserMatch[],
@@ -260,13 +252,13 @@ export class OrderPlaceOperation implements Operation {
     }
   }
 
-  /**
+  /!**
    * Go through the orderItems and update matches if any of the customerItems belong to a match
    * @param allMatches all the matches
    * @param returnOrderItems the orderItems for items that are handed in
    * @param handoutOrderItems the orderItems for items that are handed out
    * @private
-   */
+   *!/
   private async updateMatchesIfPresent(
     allMatches: Match[],
     returnOrderItems: OrderItem[],
@@ -451,6 +443,7 @@ export class OrderPlaceOperation implements Operation {
 
     return map;
   }
+*/
 
   public async run(
     blApiRequest: BlApiRequest,
@@ -493,6 +486,7 @@ export class OrderPlaceOperation implements Operation {
       ).code(801);
     }
 
+    /* TODO: fixme!!
     const returnOrderItems = order.orderItems.filter(
       (orderItem) =>
         orderItem.type === "return" || orderItem.type === "buyback",
@@ -513,6 +507,7 @@ export class OrderPlaceOperation implements Operation {
         order.customer,
       );
     }
+     */
 
     let customerItems =
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
@@ -542,6 +537,7 @@ export class OrderPlaceOperation implements Operation {
       );
     }
 
+    /* TODO: fixme!!
     if (!order.byCustomer) {
       await this.updateMatchesIfPresent(
         allMatches,
@@ -549,6 +545,7 @@ export class OrderPlaceOperation implements Operation {
         handoutOrderItems,
       );
     }
+     */
 
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
@@ -589,7 +586,7 @@ export class OrderPlaceOperation implements Operation {
     return true;
   }
 
-  /**
+  /*  /!** TODO: uncomment me!
    * Verify that the order does not try to hand out or in an item locked to one of the customer's UserMatches
    * @param returnOrderItems the orderItems that will be handed in
    * @param handoutOrderItems the orderItems that will be handed out
@@ -597,7 +594,7 @@ export class OrderPlaceOperation implements Operation {
    * @param customerId the customer the order belongs to
    * @throws if the order tries to hand out or in a (customer)Item locked to a UserMatch
    * @private
-   */
+   *!/
   private async verifyCompatibilityWithMatches(
     returnOrderItems: OrderItem[],
     handoutOrderItems: OrderItem[],
@@ -618,7 +615,7 @@ export class OrderPlaceOperation implements Operation {
       userMatches,
     );
     this.verifyItemsNotInLockedUserMatch(handoutItems, userMatches, customerId);
-  }
+  }*/
 
   private async addCustomerItems(
     customerItems: CustomerItem[],

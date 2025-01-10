@@ -1,40 +1,9 @@
-import {
-  CandidateMatch,
-  CandidateMatchVariant,
-  CandidateStandMatch,
-  CandidateUserMatch,
-  MatchLocation,
-  MatchWithMeetingInfo,
-  StandMatchWithMeetingInfo,
-  UserMatchWithMeetingInfo,
-} from "@backend/collections/match/helpers/match-finder/match-types";
-
-interface SenderWithMatches {
-  senderId: string;
-  matches: CandidateUserMatch[];
-}
-
-/**
- * Create a list of objects, where each object represents a sender, with the matches they are assigned as sender for
- * @param userMatches unassigned UserMatches
- */
-function groupMatchesBySender(
-  userMatches: CandidateUserMatch[],
-): SenderWithMatches[] {
-  return userMatches
-    .reduce((accumulator, match) => {
-      const foundSender = accumulator.find(
-        (sender) => sender.senderId === match.senderId,
-      );
-      if (foundSender) {
-        foundSender.matches.push(match);
-      } else {
-        accumulator.push({ senderId: match.senderId, matches: [match] });
-      }
-      return accumulator;
-    }, [] as SenderWithMatches[])
-    .sort((a, b) => (a.matches.length > b.matches.length ? -1 : 1));
-}
+import { MatchLocation } from "@backend/collections/user-match/helpers/match-finder/match-types";
+import { logger } from "@backend/logger/logger";
+import { BlError } from "@shared/bl-error/bl-error";
+import { CandidateStandMatch, StandMatch } from "@shared/match/stand-match";
+import { CandidateUserMatch, UserMatch } from "@shared/match/user-match";
+import moment from "moment";
 
 /**
  * @param location a location with a corresponding limit towards how many matches can be assigned to that location at a given time
@@ -195,29 +164,49 @@ function verifyUserMatches(
 /**
  *
  * @param matches matches generated from matchFinder
+ * @param usersGroupedByMembership a map of group memberships for each user
  * @param standLocation the location of the stand
  * @param userMatchLocations the allowed locations for user matches, optionally with a limit on how many simultaneous matches can fit there
  * @param startTime the first allowed meeting time
  * @param meetingDurationInMS the estimated duration of the meeting
  */
 function assignMeetingInfoToMatches(
-  matches: CandidateMatch[],
+  [userMatches, standMatches]: [CandidateUserMatch[], CandidateStandMatch[]],
+  usersGroupedByMembership: Map<string, string[]>,
   standLocation: string,
   userMatchLocations: MatchLocation[],
   startTime: Date,
   meetingDurationInMS: number,
-): MatchWithMeetingInfo[] {
-  const userMatches: CandidateUserMatch[] = matches
-    .filter((match) => match.variant === CandidateMatchVariant.UserMatch)
-    .map((match) => match as CandidateUserMatch);
-
+): [UserMatch[], StandMatch[]] {
+  // Goal:
+  /**
+   * Class pairs meet at the same time
+   * Stand is visited after matches, based on memberships
+   */
+  logger.debug("\nAssigning meeting info to matches");
+  let groupStartTime = startTime;
+  for (const [groupMembership, users] of usersGroupedByMembership.entries()) {
+    logger.debug(
+      `${groupMembership} will meet at ${moment(groupMembership).format("hh:mm")}`,
+    );
+    for (const user of users) {
+      const theirUserMatches = userMatches.filter(
+        (userMatch) =>
+          userMatch.customerA === user || userMatch.customerB === user,
+      );
+      const theirStandMatch = standMatches.find(
+        (standMatch) => standMatch.customer === user,
+      );
+    }
+    groupStartTime = new Date(groupStartTime.getTime() + meetingDurationInMS);
+  }
   const sendersWithMatches = groupMatchesBySender(userMatches);
 
   const userMeetingTimes: Record<string, Date[]> = userMatches.reduce(
     (accumulator, userMatch) => ({
       ...accumulator,
-      [userMatch.senderId]: [],
-      [userMatch.receiverId]: [],
+      [userMatch.customerA]: [],
+      [userMatch.customerB]: [],
     }),
     {},
   );
@@ -233,13 +222,19 @@ function assignMeetingInfoToMatches(
     const location = userMatchLocations[locationIndex];
     locationIndex = (locationIndex + 1) % userMatchLocations.length;
 
+    if (!location) {
+      throw new BlError("Location not found when assigning match meeting info");
+    }
+    const meetingTimes = locationMeetingTimes[location.name];
+    if (!meetingTimes) {
+      throw new BlError(
+        "Location meeting times not found when assigning match meeting info",
+      );
+    }
+
     const earliestLocationTime = findEarliestLocationTime(
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
       location,
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
-      locationMeetingTimes[location.name],
+      meetingTimes,
       startTime,
       meetingDurationInMS,
     );
@@ -282,10 +277,6 @@ function assignMeetingInfoToMatches(
     startTime,
     userMatchLocations,
   );
-
-  const standMatches: CandidateStandMatch[] = matches
-    .filter((match) => match.variant === CandidateMatchVariant.StandMatch)
-    .map((match) => match as CandidateStandMatch);
 
   const standMatchesWithMeetingInfo: StandMatchWithMeetingInfo[] =
     standMatches.map((match) => ({

@@ -209,8 +209,8 @@ export class UserMatchTransferItemOperation implements Operation {
 
     const receivedBlIds =
       receiverUserMatch.customerA === receiverUserDetailId
-        ? receiverUserMatch.expectedBToAItems
-        : receiverUserMatch.expectedAToBItems;
+        ? receiverUserMatch.receivedBlIdsCustomerA
+        : receiverUserMatch.receivedBlIdsCustomerB;
 
     if (receivedBlIds.includes(customerItem?.blid ?? "")) {
       throw new BlError("Receiver has already received this item").code(806);

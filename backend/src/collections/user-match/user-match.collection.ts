@@ -31,7 +31,7 @@ export class UserMatchCollection implements BlCollection {
           name: "transfer-item",
           operation: new UserMatchTransferItemOperation(),
           restriction: {
-            permissions: ["customer", "employee", "admin"],
+            permissions: ["customer", "employee", "manager", "admin"],
           },
         },
         {
@@ -53,7 +53,7 @@ export class UserMatchCollection implements BlCollection {
           name: "me",
           operation: new GetMyUserMatchesOperation(),
           restriction: {
-            permissions: ["customer", "employee", "admin"],
+            permissions: ["customer", "employee", "manager", "admin"],
           },
         },
       ],

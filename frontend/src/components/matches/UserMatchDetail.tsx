@@ -132,7 +132,7 @@ const UserMatchDetail = ({
         (item) => !otherFulfilledItems.includes(item),
       ) && (
         <Alert severity="warning" sx={{ my: 2 }}>
-          <AlertTitle>{`${isCustomerA ? userMatch.customerBDetails.name : userMatch.customerADetails.name} har fått bøker som tilhørte noen andre enn deg`}</AlertTitle>
+          <AlertTitle>{`Du har fått bøker som tilhørte noen andre enn deg`}</AlertTitle>
           <Typography paragraph>
             Hvis det var du som ga dem bøkene, betyr det at noen andre har bøker
             som opprinnelig tilhørte deg. Du er fortsatt ansvarlig for at de
@@ -217,6 +217,7 @@ const UserMatchDetail = ({
         </>
       )}
       <ScannerModal
+        allowManualRegistration
         onScan={(blid) =>
           BlFetcher.post(BL_CONFIG.collection.userMatches + "/transfer-item", {
             blid,

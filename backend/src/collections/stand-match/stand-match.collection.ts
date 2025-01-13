@@ -16,7 +16,7 @@ export class StandMatchCollection implements BlCollection {
           name: "me",
           operation: new GetMyStandMatchesOperation(),
           restriction: {
-            permissions: ["customer", "employee", "admin"],
+            permissions: ["customer", "employee", "manager", "admin"],
           },
         },
       ],

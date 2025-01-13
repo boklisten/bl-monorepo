@@ -216,7 +216,6 @@ export default function PublicBlidSearch() {
           </>
         )}
         <ScannerModal
-          allowManualRegistration={true} // TEMP
           onScan={async (blid) => {
             onBlidSearch(blid);
             return [{ feedback: "" }] as [{ feedback: string }];

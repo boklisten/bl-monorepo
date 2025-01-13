@@ -74,6 +74,8 @@ export const MatchesList: FC = () => {
   }
 
   const standMatch = standMatches[0];
+  const showMatchList =
+    unfulfilledUserMatches.length > 0 || standMatch !== undefined;
 
   return (
     <>
@@ -95,14 +97,13 @@ export const MatchesList: FC = () => {
         }
       />
 
-      {unfulfilledUserMatches.length > 0 && (
+      {showMatchList && (
         <MatchListItemGroups
           userMatches={unfulfilledUserMatches}
           standMatch={standMatch}
           userId={customer}
         />
       )}
-
       {fulfilledUserMatches.length > 0 && (
         <MatchListItemGroups
           userMatches={fulfilledUserMatches}

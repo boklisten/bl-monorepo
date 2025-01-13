@@ -1,7 +1,4 @@
-import {
-  calculateFulfilledUserMatchItems,
-  isUserMatchFulfilled,
-} from "@frontend/components/matches/matches-helper";
+import { calculateUserMatchStatus } from "@frontend/components/matches/matches-helper";
 import {
   formatActionsString,
   UserMatchTitle,
@@ -17,55 +14,64 @@ const UserMatchListItem: FC<{
   userMatch: UserMatchWithDetails;
   currentUserId: string;
 }> = ({ userMatch, currentUserId }) => {
-  const numberItems =
-    userMatch.expectedAToBItems.length + userMatch.expectedBToAItems.length;
-  // If isCustomerA === false, then we know that they are customerB
-  const isCustomerA = userMatch.customerA === currentUserId;
+  const userMatchStatus = calculateUserMatchStatus(userMatch, currentUserId);
+  const { currentUser, otherUser } = userMatchStatus;
 
-  const fulfilledItems = calculateFulfilledUserMatchItems(
-    userMatch,
-    isCustomerA,
-  );
-  const isBegun = fulfilledItems.length > 0;
-  const isFulfilled = isUserMatchFulfilled(userMatch, isCustomerA);
+  let statusText = "";
+  if (currentUser.items.length > 0 && otherUser.items.length === 0) {
+    statusText = "levert";
+  } else if (
+    currentUser.wantedItems.length > 0 &&
+    otherUser.wantedItems.length === 0
+  ) {
+    statusText = "mottatt";
+  } else {
+    statusText = "utvekslet";
+  }
+
+  const currentUserExpectedItemCount =
+    currentUser.items.length + currentUser.wantedItems.length;
+  const currentUserActualItemCount =
+    currentUser.deliveredItems.length + currentUser.receivedItems.length;
+  const isCurrentUserStarted = currentUserActualItemCount > 0;
+  const isCurrentUserFulfilled =
+    currentUserActualItemCount >= currentUserExpectedItemCount;
   return (
     <MatchListItemBox
-      finished={isFulfilled}
+      finished={isCurrentUserFulfilled}
       matchId={userMatch.id}
       matchType={"user"}
     >
       <Typography variant="h3">
-        <UserMatchTitle userMatch={userMatch} isCustomerA={isCustomerA} />
+        <UserMatchTitle userMatchStatus={userMatchStatus} />
       </Typography>
 
-      {isBegun && (
+      {isCurrentUserStarted && (
         <>
           <ProgressBar
-            percentComplete={(fulfilledItems.length * 100) / numberItems}
+            percentComplete={
+              (currentUserActualItemCount * 100) / currentUserExpectedItemCount
+            }
             subtitle={
               <Box>
-                {isCustomerA ? "Levert" : "Mottatt"} {fulfilledItems.length} av{" "}
-                {numberItems} bøker
+                {statusText} {currentUserActualItemCount} av{" "}
+                {currentUserExpectedItemCount} bøker
               </Box>
             }
           />
         </>
       )}
-      {!isBegun && !isFulfilled && (
+      {!isCurrentUserStarted && !isCurrentUserFulfilled && (
         <>
           <Box>
             {formatActionsString(
-              isCustomerA
-                ? userMatch.expectedAToBItems.length
-                : userMatch.expectedBToAItems.length,
-              isCustomerA
-                ? userMatch.expectedBToAItems.length
-                : userMatch.expectedAToBItems.length,
+              currentUser.items.length,
+              currentUser.wantedItems.length,
             )}
           </Box>
         </>
       )}
-      {!isFulfilled && (
+      {!isCurrentUserFulfilled && (
         <MeetingInfo
           meetingLocation={userMatch.meetingInfo.location}
           meetingTime={userMatch.meetingInfo.date}

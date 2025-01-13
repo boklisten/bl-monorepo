@@ -1,10 +1,8 @@
+import { UserMatchStatus } from "@frontend/components/matches/matches-helper";
 import theme from "@frontend/utils/theme";
 import { KeyboardDoubleArrowRight, SwapHoriz } from "@mui/icons-material";
 import { SxProps, Typography, Box } from "@mui/material";
-import {
-  StandMatchWithDetails,
-  UserMatchWithDetails,
-} from "@shared/match/match-dtos";
+import { StandMatchWithDetails } from "@shared/match/match-dtos";
 
 export function formatActionsString(handoffItems: number, pickupItems: number) {
   const hasHandoffItems = handoffItems > 0;
@@ -59,26 +57,14 @@ export const FormattedDatetime = ({ date }: { date: Date }) => {
 
 const me = <span style={{ color: "#757575", fontWeight: 400 }}>Meg</span>;
 
-interface UserMatchTitleProps {
-  userMatch: UserMatchWithDetails;
-  isCustomerA: boolean;
-}
-
 export const UserMatchTitle = ({
-  userMatch,
-  isCustomerA,
-}: UserMatchTitleProps) => {
+  userMatchStatus,
+}: {
+  userMatchStatus: UserMatchStatus;
+}) => {
+  const { currentUser, otherUser } = userMatchStatus;
   const arrowSize = "1.18em";
-  const deliveryItems = isCustomerA
-    ? userMatch.expectedAToBItems
-    : userMatch.expectedBToAItems;
-  const receiveItems = isCustomerA
-    ? userMatch.expectedBToAItems
-    : userMatch.expectedAToBItems;
-  const otherDetails = isCustomerA
-    ? userMatch.customerBDetails
-    : userMatch.customerADetails;
-  if (deliveryItems.length > 0 && receiveItems.length === 0) {
+  if (currentUser.items.length > 0 && otherUser.items.length === 0) {
     return (
       <>
         {me}{" "}
@@ -86,16 +72,19 @@ export const UserMatchTitle = ({
           sx={{ verticalAlign: "text-bottom", fontSize: arrowSize }}
         />{" "}
         <Box component="span" fontWeight="bold">
-          {otherDetails.name}
+          {otherUser.name}
         </Box>
       </>
     );
   }
-  if (receiveItems.length > 0 && deliveryItems.length === 0) {
+  if (
+    currentUser.wantedItems.length > 0 &&
+    otherUser.wantedItems.length === 0
+  ) {
     return (
       <>
         <Box component="span" fontWeight="bold">
-          {otherDetails.name}
+          {otherUser.name}
         </Box>{" "}
         <KeyboardDoubleArrowRight
           sx={{ verticalAlign: "text-bottom", fontSize: arrowSize }}
@@ -109,7 +98,7 @@ export const UserMatchTitle = ({
       {me}{" "}
       <SwapHoriz sx={{ verticalAlign: "text-bottom", fontSize: arrowSize }} />{" "}
       <Box component="span" fontWeight="bold">
-        {otherDetails.name}
+        {otherUser.name}
       </Box>
     </>
   );

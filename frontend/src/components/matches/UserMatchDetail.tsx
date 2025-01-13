@@ -1,7 +1,7 @@
 import BlFetcher from "@frontend/api/blFetcher";
 import CountdownToRedirect from "@frontend/components/CountdownToRedirect";
 import {
-  calculateFulfilledUserMatchItems,
+  calculateUserMatchStatus,
   calculateItemStatuses,
   ItemStatus,
   MatchHeader,
@@ -32,78 +32,46 @@ const UserMatchDetail = ({
   const [scanModalOpen, setScanModalOpen] = useState(false);
   const [redirectCountdownStarted, setRedirectCountdownStarted] =
     useState(false);
-  const isCustomerA = userMatch.customerA === currentUserId;
-  const customerAFulfilledItems = calculateFulfilledUserMatchItems(
-    userMatch,
-    isCustomerA,
-  );
-  const customerBFulfilledItems = calculateFulfilledUserMatchItems(
-    userMatch,
-    !isCustomerA,
-  );
+  const userMatchStatus = calculateUserMatchStatus(userMatch, currentUserId);
+  const { currentUser, otherUser } = userMatchStatus;
 
-  const customerFulfilledItems = isCustomerA
-    ? customerAFulfilledItems
-    : customerBFulfilledItems;
-  const otherFulfilledItems = isCustomerA
-    ? customerBFulfilledItems
-    : customerAFulfilledItems;
+  let statusText = "";
+  if (currentUser.items.length > 0 && otherUser.items.length === 0) {
+    statusText = "levert";
+  } else if (
+    currentUser.wantedItems.length > 0 &&
+    otherUser.wantedItems.length === 0
+  ) {
+    statusText = "mottatt";
+  } else {
+    statusText = "utvekslet";
+  }
 
-  const receiveItems = isCustomerA
-    ? userMatch.expectedBToAItems
-    : userMatch.expectedAToBItems;
-  const deliveryItems = isCustomerA
-    ? userMatch.expectedAToBItems
-    : userMatch.expectedBToAItems;
-
-  const isFulfilled =
-    customerFulfilledItems.length >=
-    userMatch.expectedAToBItems.length + userMatch.expectedBToAItems.length;
+  const currentUserExpectedItemCount =
+    currentUser.items.length + currentUser.wantedItems.length;
+  const currentUserActualItemCount =
+    currentUser.deliveredItems.length + currentUser.receivedItems.length;
+  const isCurrentUserFulfilled =
+    currentUserActualItemCount >= currentUserExpectedItemCount;
 
   let itemStatuses: ItemStatus[];
   try {
     itemStatuses = calculateItemStatuses(
       userMatch,
-      (userMatch) =>
-        [userMatch.expectedAToBItems, userMatch.expectedBToAItems].flat(),
-      customerAFulfilledItems,
+      () => [currentUser.items, currentUser.wantedItems].flat(),
+      [currentUser.receivedItems, currentUser.deliveredItems].flat(),
     );
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } catch (error: any) {
     return <Alert severity="error">En feil oppstod: {error?.message}</Alert>;
   }
 
-  let statusText = "";
-  if (
-    (isCustomerA &&
-      userMatch.expectedAToBItems.length > 0 &&
-      userMatch.expectedBToAItems.length === 0) ||
-    (!isCustomerA &&
-      userMatch.expectedBToAItems.length > 0 &&
-      userMatch.expectedAToBItems.length === 0)
-  ) {
-    statusText = "levert";
-  } else if (
-    (isCustomerA &&
-      userMatch.expectedBToAItems.length > 0 &&
-      userMatch.expectedAToBItems.length === 0) ||
-    (!isCustomerA &&
-      userMatch.expectedAToBItems.length > 0 &&
-      userMatch.expectedBToAItems.length === 0)
-  ) {
-    statusText = "mottatt";
-  } else {
-    statusText = "utvekslet";
-  }
-  const expectedItemsCount =
-    userMatch.expectedAToBItems.length + userMatch.expectedBToAItems.length;
-
   return (
     <>
       <Typography variant="h1">
-        <UserMatchTitle userMatch={userMatch} isCustomerA={isCustomerA} />
+        <UserMatchTitle userMatchStatus={userMatchStatus} />
       </Typography>
-      {isFulfilled && (
+      {isCurrentUserFulfilled && (
         <Box
           sx={{
             my: 2,
@@ -119,20 +87,20 @@ const UserMatchDetail = ({
       )}
       <ProgressBar
         percentComplete={
-          (customerFulfilledItems.length * 100) / expectedItemsCount
+          (currentUserActualItemCount * 100) / currentUserExpectedItemCount
         }
         subtitle={
           <>
-            {customerFulfilledItems.length} av {expectedItemsCount} bøker{" "}
+            {currentUserActualItemCount} av {currentUserExpectedItemCount} bøker{" "}
             {statusText}
           </>
         }
       />
-      {customerFulfilledItems.some(
-        (item) => !otherFulfilledItems.includes(item),
+      {otherUser.receivedItems.some(
+        (item) => !currentUser.deliveredItems.includes(item),
       ) && (
         <Alert severity="warning" sx={{ my: 2 }}>
-          <AlertTitle>{`Du har fått bøker som tilhørte noen andre enn deg`}</AlertTitle>
+          <AlertTitle>{`${otherUser.name} har fått bøker som tilhørte noen andre enn deg`}</AlertTitle>
           <Typography paragraph>
             Hvis det var du som ga dem bøkene, betyr det at noen andre har bøker
             som opprinnelig tilhørte deg. Du er fortsatt ansvarlig for at de
@@ -145,7 +113,7 @@ const UserMatchDetail = ({
           </Typography>
         </Alert>
       )}
-      {!isFulfilled && (
+      {!isCurrentUserFulfilled && (
         <>
           <Box sx={{ my: 2 }}>
             <Typography variant="h2">Hvordan fungerer det?</Typography>
@@ -167,7 +135,7 @@ const UserMatchDetail = ({
           />
         </>
       )}
-      {receiveItems.length > 0 && !isFulfilled && (
+      {currentUser.wantedItems.length > currentUser.receivedItems.length && (
         <>
           <MatchHeader>Når du skal motta bøker</MatchHeader>
           <Typography sx={{ mb: 1 }}>
@@ -192,27 +160,27 @@ const UserMatchDetail = ({
           </Box>
         </>
       )}
-      {receiveItems.length > 0 && (
+      {currentUser.wantedItems.length > 0 && (
         <>
-          {!isFulfilled && (
+          {!isCurrentUserFulfilled && (
             <MatchHeader>Du skal motta disse bøkene</MatchHeader>
           )}
           <MatchItemTable
-            itemFilter={receiveItems}
+            itemFilter={currentUser.wantedItems}
             itemStatuses={itemStatuses}
-            isSender={deliveryItems.length > 0}
+            isSender={false}
           />
         </>
       )}
-      {deliveryItems.length > 0 && (
+      {currentUser.items.length > 0 && (
         <>
-          {!isFulfilled && (
+          {!isCurrentUserFulfilled && (
             <MatchHeader>Du skal levere disse bøkene</MatchHeader>
           )}
           <MatchItemTable
-            itemFilter={deliveryItems}
+            itemFilter={currentUser.items}
             itemStatuses={itemStatuses}
-            isSender={deliveryItems.length > 0}
+            isSender={true}
           />
         </>
       )}
@@ -227,18 +195,18 @@ const UserMatchDetail = ({
         handleSuccessfulScan={handleItemTransferred}
         handleClose={() => {
           setScanModalOpen(false);
-          setRedirectCountdownStarted(isFulfilled);
+          setRedirectCountdownStarted(isCurrentUserFulfilled);
         }}
       >
         <MatchScannerContent
           handleClose={() => {
             setScanModalOpen(false);
-            setRedirectCountdownStarted(isFulfilled);
+            setRedirectCountdownStarted(isCurrentUserFulfilled);
           }}
           scannerOpen={scanModalOpen}
           itemStatuses={itemStatuses}
-          expectedItems={receiveItems}
-          fulfilledItems={customerAFulfilledItems}
+          expectedItems={currentUser.wantedItems}
+          fulfilledItems={currentUser.receivedItems}
         />
       </ScannerModal>
     </>

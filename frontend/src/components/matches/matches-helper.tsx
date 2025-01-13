@@ -34,32 +34,97 @@ export function calculateFulfilledStandMatchItems(
   return { fulfilledHandoffItems, fulfilledPickupItems };
 }
 
-export function calculateFulfilledUserMatchItems(
-  userMatch: UserMatchWithDetails,
-  isCustomerA: boolean,
-): string[] {
-  const deliveredBlIds = isCustomerA
-    ? userMatch.deliveredBlIdsCustomerA
-    : userMatch.deliveredBlIdsCustomerB;
-  const receivedBlIds = isCustomerA
-    ? userMatch.receivedBlIdsCustomerA
-    : userMatch.receivedBlIdsCustomerB;
+export interface UserMatchStatus {
+  currentUser: {
+    items: string[];
+    wantedItems: string[];
+    deliveredItems: string[];
+    receivedItems: string[];
+    name: string;
+  };
+  otherUser: {
+    items: string[];
+    wantedItems: string[];
+    deliveredItems: string[];
+    receivedItems: string[];
+    name: string;
+  };
+}
 
-  const fulfilledItems: string[] = [];
-  for (const deliveredBlId of deliveredBlIds) {
+export function calculateUserMatchStatus(
+  userMatch: UserMatchWithDetails,
+  currentUserId: string,
+): UserMatchStatus {
+  const customerA = {
+    deliveredItems: [] as string[],
+    receivedItems: [] as string[],
+  };
+  for (const deliveredBlId of userMatch.deliveredBlIdsCustomerA) {
     const deliveredItem = userMatch.blIdToItemMap[deliveredBlId];
     if (deliveredItem) {
-      fulfilledItems.push(deliveredItem);
+      customerA.deliveredItems.push(deliveredItem);
     }
   }
-  for (const receivedBlId of receivedBlIds) {
+  for (const receivedBlId of userMatch.receivedBlIdsCustomerA) {
     const receivedItem = userMatch.blIdToItemMap[receivedBlId];
     if (receivedItem) {
-      fulfilledItems.push(receivedItem);
+      customerA.receivedItems.push(receivedItem);
     }
   }
-  // It should not be possible to have duplicates here, but better to be certain than sorry
-  return Array.from(new Set(fulfilledItems));
+
+  const customerB = {
+    deliveredItems: [] as string[],
+    receivedItems: [] as string[],
+  };
+  for (const deliveredBlId of userMatch.deliveredBlIdsCustomerB) {
+    const deliveredItem = userMatch.blIdToItemMap[deliveredBlId];
+    if (deliveredItem) {
+      customerB.deliveredItems.push(deliveredItem);
+    }
+  }
+  for (const receivedBlId of userMatch.receivedBlIdsCustomerB) {
+    const receivedItem = userMatch.blIdToItemMap[receivedBlId];
+    if (receivedItem) {
+      customerB.receivedItems.push(receivedItem);
+    }
+  }
+  const currentUserIsCustomerA = userMatch.customerA === currentUserId;
+  return {
+    currentUser: {
+      items: currentUserIsCustomerA
+        ? userMatch.expectedAToBItems
+        : userMatch.expectedBToAItems,
+      wantedItems: currentUserIsCustomerA
+        ? userMatch.expectedBToAItems
+        : userMatch.expectedAToBItems,
+      deliveredItems: currentUserIsCustomerA
+        ? customerA.deliveredItems
+        : customerB.deliveredItems,
+      receivedItems: currentUserIsCustomerA
+        ? customerA.receivedItems
+        : customerB.receivedItems,
+      name: currentUserIsCustomerA
+        ? userMatch.customerADetails.name
+        : userMatch.customerBDetails.name,
+    },
+    otherUser: {
+      items: currentUserIsCustomerA
+        ? userMatch.expectedBToAItems
+        : userMatch.expectedAToBItems,
+      wantedItems: currentUserIsCustomerA
+        ? userMatch.expectedAToBItems
+        : userMatch.expectedBToAItems,
+      deliveredItems: currentUserIsCustomerA
+        ? customerB.deliveredItems
+        : customerA.deliveredItems,
+      receivedItems: currentUserIsCustomerA
+        ? customerB.receivedItems
+        : customerA.receivedItems,
+      name: currentUserIsCustomerA
+        ? userMatch.customerBDetails.name
+        : userMatch.customerADetails.name,
+    },
+  };
 }
 
 export function calculateItemStatuses<
@@ -82,22 +147,6 @@ export function calculateItemStatuses<
       title: item.title,
       fulfilled: fulfilledItems.includes(item.id),
     }));
-}
-
-/**
- * Checks if all expected items in a match are fulfilled.
- *
- * @param userMatch
- * @param isCustomerA
- */
-export function isUserMatchFulfilled(
-  userMatch: UserMatchWithDetails,
-  isCustomerA: boolean,
-): boolean {
-  return (
-    calculateFulfilledUserMatchItems(userMatch, isCustomerA).length >=
-    userMatch.expectedAToBItems.length + userMatch.expectedBToAItems.length
-  );
 }
 
 export function isStandMatchFulfilled(

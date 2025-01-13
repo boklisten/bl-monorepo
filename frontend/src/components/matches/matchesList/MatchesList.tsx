@@ -1,8 +1,8 @@
 import BlFetcher from "@frontend/api/blFetcher";
 import { getAccessTokenBody } from "@frontend/api/token";
 import {
+  calculateUserMatchStatus,
   isStandMatchFulfilled,
-  isUserMatchFulfilled,
 } from "@frontend/components/matches/matches-helper";
 import { MatchListItemGroups } from "@frontend/components/matches/matchesList/MatchListItemGroups";
 import ProgressBar from "@frontend/components/matches/matchesList/ProgressBar";
@@ -52,13 +52,22 @@ export const MatchesList: FC = () => {
     return 0;
   });
 
-  const unfulfilledUserMatches = sortedUserMatches.filter(
-    (userMatch) =>
-      !isUserMatchFulfilled(userMatch, userMatch.customerA === customer),
-  );
-  const fulfilledUserMatches = sortedUserMatches.filter((userMatch) =>
-    isUserMatchFulfilled(userMatch, userMatch.customerA === customer),
-  );
+  const unfulfilledUserMatches = sortedUserMatches.filter((userMatch) => {
+    const { currentUser } = calculateUserMatchStatus(userMatch, customer);
+    const currentUserExpectedItemCount =
+      currentUser.items.length + currentUser.wantedItems.length;
+    const currentUserActualItemCount =
+      currentUser.deliveredItems.length + currentUser.receivedItems.length;
+    return currentUserActualItemCount < currentUserExpectedItemCount;
+  });
+  const fulfilledUserMatches = sortedUserMatches.filter((userMatch) => {
+    const { currentUser } = calculateUserMatchStatus(userMatch, customer);
+    const currentUserExpectedItemCount =
+      currentUser.items.length + currentUser.wantedItems.length;
+    const currentUserActualItemCount =
+      currentUser.deliveredItems.length + currentUser.receivedItems.length;
+    return currentUserActualItemCount >= currentUserExpectedItemCount;
+  });
 
   if (userMatches.length === 0 && standMatches.length === 0) {
     return (

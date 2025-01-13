@@ -37,7 +37,24 @@ const StandMatchListItem: FC<{
       </Typography>
       {isBegun && (
         <>
-          {hasHandoffItems && (
+          {hasHandoffItems && hasPickupItems ? (
+            <>
+              <ProgressBar
+                percentComplete={
+                  (fulfilledHandoffItems.length * 100) / numberHandoffItems
+                }
+                subtitle={
+                  <Box>
+                    Utvekslet {fulfilledHandoffItems.length} av{" "}
+                    {numberHandoffItems} bøker
+                  </Box>
+                }
+              />
+            </>
+          ) : (
+            <></>
+          )}
+          {hasHandoffItems && !hasPickupItems ? (
             <>
               <ProgressBar
                 percentComplete={
@@ -51,8 +68,10 @@ const StandMatchListItem: FC<{
                 }
               />
             </>
+          ) : (
+            <></>
           )}
-          {hasPickupItems && (
+          {hasPickupItems && !hasHandoffItems ? (
             <>
               <ProgressBar
                 percentComplete={
@@ -66,6 +85,8 @@ const StandMatchListItem: FC<{
                 }
               />
             </>
+          ) : (
+            <></>
           )}
         </>
       )}

@@ -5,13 +5,17 @@ import { LocalLogin } from "@backend/collections/local-login/local-login";
 import { localLoginSchema } from "@backend/collections/local-login/local-login.schema";
 import { orderSchema } from "@backend/collections/order/order.schema";
 import { paymentSchema } from "@backend/collections/payment/payment.schema";
+import { standMatchSchema } from "@backend/collections/stand-match/stand-match.schema";
 import { User } from "@backend/collections/user/user";
 import { UserSchema } from "@backend/collections/user/user.schema";
 import { userDetailSchema } from "@backend/collections/user-detail/user-detail.schema";
+import { userMatchSchema } from "@backend/collections/user-match/user-match.schema";
 import { SEDbQueryBuilder } from "@backend/query/se.db-query-builder";
 import { BlDocumentStorage } from "@backend/storage/blDocumentStorage";
 import { CustomerItem } from "@shared/customer-item/customer-item";
 import { Invoice } from "@shared/invoice/invoice";
+import { StandMatch } from "@shared/match/stand-match";
+import { UserMatch } from "@shared/match/user-match";
 import { Order } from "@shared/order/order";
 import { Payment } from "@shared/payment/payment";
 import { AccessToken } from "@shared/token/access-token";
@@ -26,6 +30,8 @@ export class DeleteUserService {
   private invoiceStorage: BlDocumentStorage<Invoice>;
   private orderStorage: BlDocumentStorage<Order>;
   private paymentStorage: BlDocumentStorage<Payment>;
+  private userMatchStorage: BlDocumentStorage<UserMatch>;
+  private standMatchStorage: BlDocumentStorage<StandMatch>;
 
   constructor(
     _userStorage?: BlDocumentStorage<User>,
@@ -35,6 +41,8 @@ export class DeleteUserService {
     _invoiceStorage?: BlDocumentStorage<Invoice>,
     _orderStorage?: BlDocumentStorage<Order>,
     _paymentStorage?: BlDocumentStorage<Payment>,
+    _userMatchStorage?: BlDocumentStorage<UserMatch>,
+    _standMatchStorage?: BlDocumentStorage<StandMatch>,
   ) {
     this.userStorage =
       _userStorage ?? new BlDocumentStorage(BlCollectionName.Users, UserSchema);
@@ -56,6 +64,12 @@ export class DeleteUserService {
     this.paymentStorage =
       _paymentStorage ??
       new BlDocumentStorage(BlCollectionName.Payments, paymentSchema);
+    this.userMatchStorage =
+      _userMatchStorage ??
+      new BlDocumentStorage(BlCollectionName.UserMatches, userMatchSchema);
+    this.standMatchStorage =
+      _standMatchStorage ??
+      new BlDocumentStorage(BlCollectionName.StandMatches, standMatchSchema);
 
     this.queryBuilder = new SEDbQueryBuilder();
   }
@@ -97,7 +111,6 @@ export class DeleteUserService {
     }
   }
 
-  // TODO: also merge matches to new user
   async mergeIntoOtherUser(
     fromUser: string,
     toUser: string,
@@ -161,6 +174,22 @@ export class DeleteUserService {
           customer: fromUser,
         },
         { customer: toUser },
+      ),
+      this.standMatchStorage.updateMany(
+        { customer: fromUser },
+        { customer: toUser },
+      ),
+      this.userMatchStorage.updateMany(
+        {
+          customerA: fromUser,
+        },
+        { customerA: toUser },
+      ),
+      this.userMatchStorage.updateMany(
+        {
+          customerB: fromUser,
+        },
+        { customerB: toUser },
       ),
     ]);
   }

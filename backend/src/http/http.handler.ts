@@ -4,7 +4,7 @@ import { stringify } from "qs";
 import request from "request";
 import rp from "request-promise";
 
-// TODO: request and request-promise is deprecated, rewrite to use fetch
+// fixme: request and request-promise is deprecated, rewrite to use fetch
 export class HttpHandler {
   post(url: string, data: unknown, authorization?: string): Promise<unknown> {
     return new Promise((resolve, reject) => {

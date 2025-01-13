@@ -29,7 +29,7 @@ const EMPLOYEE_LINKS: Navigation = [
     kind: "page",
   },
   {
-    title: "Bulk-innsamling", // TODO: rename to "Hurtiginnsamling"
+    title: "Bulk-innsamling", // fixme: rename to "Hurtiginnsamling"
     icon: <QrCode />,
     segment: "admin/hurtiginnsamling",
     kind: "page",

@@ -13,9 +13,11 @@ import {
 } from "@mui/material";
 
 const MatchItemTable = ({
+  itemFilter = null,
   itemStatuses,
   isSender,
 }: {
+  itemFilter?: string[] | null;
   itemStatuses: ItemStatus[];
   isSender: boolean;
 }) => {
@@ -30,6 +32,7 @@ const MatchItemTable = ({
         </TableHead>
         <TableBody>
           {itemStatuses
+            .filter((is) => itemFilter === null || itemFilter.includes(is.id))
             .sort((a, b) => Number(a.fulfilled) - Number(b.fulfilled))
             .map((item) => (
               <TableRow key={item.id}>

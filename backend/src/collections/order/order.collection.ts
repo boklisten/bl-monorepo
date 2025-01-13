@@ -36,6 +36,17 @@ export class OrderCollection implements BlCollection {
             permissions: ["employee", "manager", "admin"],
           },
         },
+        /*
+* fixme: Re-enable this when component is rewritten and generalized
+*
+        {
+          name: "temp-bulk-create-orders",
+          operation: new BulkOrderOperation(),
+          restriction: {
+            permissions: ["admin"],
+          },
+        },
+*/
       ],
     },
     {

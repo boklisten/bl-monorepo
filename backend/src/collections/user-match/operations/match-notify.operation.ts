@@ -1,34 +1,40 @@
 import { BlCollectionName } from "@backend/collections/bl-collection";
-import { difference } from "@backend/collections/match/helpers/set-methods";
-import { matchSchema } from "@backend/collections/match/match.schema";
+import { standMatchSchema } from "@backend/collections/stand-match/stand-match.schema";
 import { userDetailSchema } from "@backend/collections/user-detail/user-detail.schema";
+import { userMatchSchema } from "@backend/collections/user-match/user-match.schema";
 import { sendSMS } from "@backend/messenger/sms/sms-service";
 import { Operation } from "@backend/operation/operation";
 import { BlApiRequest } from "@backend/request/bl-api-request";
 import { BlDocumentStorage } from "@backend/storage/blDocumentStorage";
 import { BlError } from "@shared/bl-error/bl-error";
 import { BlapiResponse } from "@shared/blapi-response/blapi-response";
-import { Match, MatchVariant } from "@shared/match/match";
+import { StandMatch } from "@shared/match/stand-match";
+import { UserMatch } from "@shared/match/user-match";
 import { UserDetail } from "@shared/user/user-detail/user-detail";
 import { z } from "zod";
 import { fromError } from "zod-validation-error";
 
 const MatchNotifySpec = z.object({
-  target: z.enum(["senders", "receivers", "stand-only", "all"]),
+  target: z.enum(["user-matches", "stand-only", "all"]),
   message: z.string().nonempty(),
 });
 
 export class MatchNotifyOperation implements Operation {
-  private readonly _matchStorage: BlDocumentStorage<Match>;
+  private readonly _userMatchStorage: BlDocumentStorage<UserMatch>;
+  private readonly _standMatchStorage: BlDocumentStorage<StandMatch>;
   private readonly _userDetailStorage: BlDocumentStorage<UserDetail>;
 
   constructor(
-    matchStorage?: BlDocumentStorage<Match>,
+    userMatchStorage?: BlDocumentStorage<UserMatch>,
+    standMatchStorage?: BlDocumentStorage<StandMatch>,
     userDetailStorage?: BlDocumentStorage<UserDetail>,
   ) {
-    this._matchStorage =
-      matchStorage ??
-      new BlDocumentStorage(BlCollectionName.Matches, matchSchema);
+    this._userMatchStorage =
+      userMatchStorage ??
+      new BlDocumentStorage(BlCollectionName.UserMatches, userMatchSchema);
+    this._standMatchStorage =
+      standMatchStorage ??
+      new BlDocumentStorage(BlCollectionName.StandMatches, standMatchSchema);
     this._userDetailStorage =
       userDetailStorage ??
       new BlDocumentStorage(BlCollectionName.UserDetails, userDetailSchema);
@@ -40,48 +46,36 @@ export class MatchNotifyOperation implements Operation {
       throw new BlError(fromError(parsedRequest.error).toString()).code(701);
     }
 
-    const matches = await this._matchStorage.getAll();
-    if (matches.length === 0) {
+    const userMatches = await this._userMatchStorage.getAll();
+    const standMatches = await this._standMatchStorage.getAll();
+    if (userMatches.length === 0 && standMatches.length === 0) {
       throw new BlError("Could not find any matches!");
     }
-    const userMatches = matches.filter(
-      (m) => m._variant === MatchVariant.UserMatch,
-    );
-    const senderCustomerIds = new Set(userMatches.map((m) => m.sender));
-    const receiverCustomerIds = new Set(userMatches.map((m) => m.receiver));
-    const standOnlyCustomerIds = difference(
-      difference(
-        new Set(
-          matches
-            .filter((m) => m._variant === MatchVariant.StandMatch)
-            .map((m) => m.customer),
-        ),
-        senderCustomerIds,
-      ),
-      receiverCustomerIds,
-    );
+    const userMatchCustomers = new Set<string>();
+    for (const userMatch of userMatches) {
+      userMatchCustomers.add(userMatch.customerA);
+      userMatchCustomers.add(userMatch.customerB);
+    }
+    const standMatchCustomers = new Set<string>();
+    for (const standMatch of standMatches) {
+      standMatchCustomers.add(standMatch.customer);
+    }
+    const standMatchOnlyCustomers =
+      standMatchCustomers.difference(userMatchCustomers);
 
     let targetCustomerIds: Set<string>;
     switch (parsedRequest.data.target) {
-      case "senders": {
-        targetCustomerIds = senderCustomerIds;
-        break;
-      }
-      case "receivers": {
-        targetCustomerIds = receiverCustomerIds;
+      case "user-matches": {
+        targetCustomerIds = userMatchCustomers;
         break;
       }
       case "stand-only": {
-        targetCustomerIds = standOnlyCustomerIds;
+        targetCustomerIds = standMatchOnlyCustomers;
         break;
       }
       case "all":
       default: {
-        targetCustomerIds = new Set([
-          ...senderCustomerIds,
-          ...receiverCustomerIds,
-          ...standOnlyCustomerIds,
-        ]);
+        targetCustomerIds = userMatchCustomers.union(standMatchCustomers);
         break;
       }
     }

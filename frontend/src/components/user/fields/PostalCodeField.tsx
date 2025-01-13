@@ -130,7 +130,7 @@ export const usePostalCity = (
   return {
     postalCity,
     updatePostalCity,
-    //  TODO: fixme for React compiler
+    //  fixme: for React compiler
     // eslint-disable-next-line react-compiler/react-compiler
     settlePostalCity: lookupPromise.current,
   };

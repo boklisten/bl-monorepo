@@ -1,28 +1,9 @@
 import { BlapiErrorResponse } from "@shared/blapi-response/blapi-error-response";
-import { MatchVariant } from "@shared/match/match";
-import { MatchWithDetails } from "@shared/match/match-dtos";
-
-export type ItemType = "book";
 
 export type AuthResponse = {
   documentName: string;
   data: string;
 }[];
-
-export type StandMatchWithDetails = Extract<
-  MatchWithDetails,
-  { _variant: MatchVariant.StandMatch }
->;
-
-export type UserMatchWithDetails = Extract<
-  MatchWithDetails,
-  { _variant: MatchVariant.UserMatch }
->;
-
-export interface GroupedMatches<T extends MatchWithDetails> {
-  matchesByKey: Map<string, T[]>;
-  keyToData: Map<string, { time: number | null; location: string }>;
-}
 
 export enum TextType {
   BLID,

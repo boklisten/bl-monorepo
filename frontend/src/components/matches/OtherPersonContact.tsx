@@ -1,19 +1,19 @@
 import DynamicLink from "@frontend/components/DynamicLink";
-import { UserMatchWithDetails } from "@frontend/utils/types";
 import PhoneIphoneIcon from "@mui/icons-material/PhoneIphone";
 import { Box, Typography } from "@mui/material";
+import { UserMatchWithDetails } from "@shared/match/match-dtos";
 
 const OtherPersonContact = ({
-  match,
+  userMatch,
   currentUserId,
 }: {
-  match: UserMatchWithDetails;
+  userMatch: UserMatchWithDetails;
   currentUserId: string;
 }) => {
   const otherPerson =
-    match.receiver === currentUserId
-      ? match.senderDetails
-      : match.receiverDetails;
+    userMatch.customerA === currentUserId
+      ? userMatch.customerBDetails
+      : userMatch.customerADetails;
 
   return (
     <Box
@@ -25,7 +25,7 @@ const OtherPersonContact = ({
         {otherPerson.name},{" "}
         <DynamicLink
           sx={{ fontSize: "inherit" }}
-          href={`tel:+47${otherPerson.phone}`}
+          href={`tel:${otherPerson.phone}`}
         >
           {formatPhoneNumber(otherPerson.phone)}
         </DynamicLink>

@@ -8,7 +8,8 @@ import { SEResponseHandler } from "@backend/response/se.response.handler";
 import { BlDocumentStorage } from "@backend/storage/blDocumentStorage";
 import { BlError } from "@shared/bl-error/bl-error";
 import { CustomerItem } from "@shared/customer-item/customer-item";
-import { Match } from "@shared/match/match";
+import { StandMatch } from "@shared/match/stand-match";
+import { UserMatch } from "@shared/match/user-match";
 import { Order } from "@shared/order/order";
 import { SIGNATURE_NUM_MONTHS_VALID } from "@shared/signature/serialized-signature";
 import { UserDetail } from "@shared/user/user-detail/user-detail";
@@ -18,6 +19,7 @@ import moment from "moment-timezone";
 import sinon from "sinon";
 
 import "mocha";
+
 chaiUse(chaiAsPromised);
 should();
 
@@ -28,7 +30,12 @@ describe("OrderPlaceOperation", () => {
   const customerItemStorage = new BlDocumentStorage<CustomerItem>(
     BlCollectionName.CustomerItems,
   );
-  const matchesStorage = new BlDocumentStorage<Match>(BlCollectionName.Matches);
+  const userMatchStorage = new BlDocumentStorage<UserMatch>(
+    BlCollectionName.UserMatches,
+  );
+  const standMatchStorage = new BlDocumentStorage<StandMatch>(
+    BlCollectionName.StandMatches,
+  );
   const userDetailStorage = new BlDocumentStorage<UserDetail>(
     BlCollectionName.UserDetails,
   );
@@ -55,7 +62,8 @@ describe("OrderPlaceOperation", () => {
     orderPlacedHandler,
     orderValidator,
     userDetailStorage,
-    matchesStorage,
+    userMatchStorage,
+    standMatchStorage,
   );
 
   const placeOrderStub = sinon.stub(orderPlacedHandler, "placeOrder");
@@ -68,7 +76,8 @@ describe("OrderPlaceOperation", () => {
     "generate",
   );
   const validateOrderStub = sinon.stub(orderValidator, "validate");
-  const getAllMatchesStub = sinon.stub(matchesStorage, "getAll");
+  const getAllUserMatchesStub = sinon.stub(userMatchStorage, "getAll");
+  const getAllStandMatchesStub = sinon.stub(standMatchStorage, "getAll");
   const getUserDetailStub = sinon.stub(userDetailStorage, "get");
   const getSignatureStub = sinon.stub(signatureStorage, "get");
 
@@ -81,7 +90,8 @@ describe("OrderPlaceOperation", () => {
       getManyCustomerItemsStub.reset();
       generateCustomerItemStub.reset();
       validateOrderStub.reset();
-      getAllMatchesStub.reset();
+      getAllUserMatchesStub.reset();
+      getAllStandMatchesStub.reset();
       getUserDetailStub.reset();
       getSignatureStub.reset();
     });
@@ -152,7 +162,8 @@ describe("OrderPlaceOperation", () => {
     it("should reject if orderPlacedHandler.placeOrder rejects", () => {
       getOrderStub.resolves(validOrder);
       placeOrderStub.rejects(new BlError("order could not be placed"));
-      getAllMatchesStub.resolves([]);
+      getAllUserMatchesStub.resolves([]);
+      getAllStandMatchesStub.resolves([]);
       getManyCustomerItemsStub.resolves([]);
       getUserDetailStub.resolves(userDetailWithSignatures);
       getSignatureStub.resolves(validSignature);
@@ -169,7 +180,8 @@ describe("OrderPlaceOperation", () => {
       getOrderStub.resolves(validOrder);
       placeOrderStub.resolves({} as Order);
       validateOrderStub.rejects(new BlError("order not valid!"));
-      getAllMatchesStub.resolves([]);
+      getAllUserMatchesStub.resolves([]);
+      getAllStandMatchesStub.resolves([]);
       getManyCustomerItemsStub.resolves([]);
       getSignatureStub.resolves(validSignature);
       getUserDetailStub.resolves(userDetailWithSignatures);
@@ -183,7 +195,8 @@ describe("OrderPlaceOperation", () => {
     });
 
     it("should resolve if order is valid", async () => {
-      getAllMatchesStub.resolves([]);
+      getAllUserMatchesStub.resolves([]);
+      getAllStandMatchesStub.resolves([]);
       getManyCustomerItemsStub.resolves([]);
       const order = {
         id: "validOrder1",

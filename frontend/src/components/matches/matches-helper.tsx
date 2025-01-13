@@ -1,10 +1,8 @@
+import { Typography } from "@mui/material";
 import {
   StandMatchWithDetails,
   UserMatchWithDetails,
-} from "@frontend/utils/types";
-import { Typography } from "@mui/material";
-import { Match, MatchVariant } from "@shared/match/match";
-import { MatchWithDetails } from "@shared/match/match-dtos";
+} from "@shared/match/match-dtos";
 import { ReactNode } from "react";
 
 export interface ItemStatus {
@@ -22,39 +20,51 @@ export const MatchHeader = ({ children }: { children: ReactNode }) => {
 };
 
 export function calculateFulfilledStandMatchItems(
-  match: StandMatchWithDetails,
+  standMatch: StandMatchWithDetails,
 ): {
   fulfilledHandoffItems: string[];
   fulfilledPickupItems: string[];
 } {
-  const fulfilledHandoffItems = match.expectedHandoffItems.filter((item) =>
-    match.deliveredItems.includes(item),
+  const fulfilledHandoffItems = standMatch.expectedHandoffItems.filter((item) =>
+    standMatch.deliveredItems.includes(item),
   );
-  const fulfilledPickupItems = match.expectedPickupItems.filter((item) =>
-    match.receivedItems.includes(item),
+  const fulfilledPickupItems = standMatch.expectedPickupItems.filter((item) =>
+    standMatch.receivedItems.includes(item),
   );
   return { fulfilledHandoffItems, fulfilledPickupItems };
 }
 
 export function calculateFulfilledUserMatchItems(
-  match: UserMatchWithDetails,
-  isSender: boolean,
+  userMatch: UserMatchWithDetails,
+  isCustomerA: boolean,
 ): string[] {
-  return match.expectedItems.filter((item) =>
-    // For a sender, an item must have been both delivered and received to be fulfilled, though
-    // it does not need to be the same blId; someone else can deliver your book, and you can
-    // deliver someone else's, and that's fine.
-    // For the receiver, we only care that the book is received.
-    (isSender
-      ? [match.deliveredBlIds, match.receivedBlIds]
-      : [match.receivedBlIds]
-    ).every((registeredBlIds) =>
-      registeredBlIds.some((blId) => match.blIdToItemMap[blId] === item),
-    ),
-  );
+  const deliveredBlIds = isCustomerA
+    ? userMatch.deliveredBlIdsCustomerA
+    : userMatch.deliveredBlIdsCustomerB;
+  const receivedBlIds = isCustomerA
+    ? userMatch.receivedBlIdsCustomerA
+    : userMatch.receivedBlIdsCustomerB;
+
+  const fulfilledItems: string[] = [];
+  for (const deliveredBlId of deliveredBlIds) {
+    const deliveredItem = userMatch.blIdToItemMap[deliveredBlId];
+    if (deliveredItem) {
+      fulfilledItems.push(deliveredItem);
+    }
+  }
+  for (const receivedBlId of receivedBlIds) {
+    const receivedItem = userMatch.blIdToItemMap[receivedBlId];
+    if (receivedItem) {
+      fulfilledItems.push(receivedItem);
+    }
+  }
+  // It should not be possible to have duplicates here, but better to be certain than sorry
+  return Array.from(new Set(fulfilledItems));
 }
 
-export function calculateItemStatuses<T extends MatchWithDetails>(
+export function calculateItemStatuses<
+  T extends UserMatchWithDetails | StandMatchWithDetails,
+>(
   match: T,
   expectedItemsSelector: (match: T) => string[],
   fulfilledItems: string[],
@@ -77,62 +87,39 @@ export function calculateItemStatuses<T extends MatchWithDetails>(
 /**
  * Checks if all expected items in a match are fulfilled.
  *
- * @param match
- * @param isSender Whether the user to check whether has fulfilled the match is the sender.
- * Ignored for StandMatch.
+ * @param userMatch
+ * @param isCustomerA
  */
-export function isMatchFulfilled(
-  match: MatchWithDetails,
-  isSender: boolean,
+export function isUserMatchFulfilled(
+  userMatch: UserMatchWithDetails,
+  isCustomerA: boolean,
 ): boolean {
-  if (match._variant === MatchVariant.StandMatch) {
-    const { fulfilledHandoffItems, fulfilledPickupItems } =
-      calculateFulfilledStandMatchItems(match);
-    return (
-      fulfilledHandoffItems.length >= match.expectedHandoffItems.length &&
-      fulfilledPickupItems.length >= match.expectedPickupItems.length
-    );
-  } else {
-    return (
-      calculateFulfilledUserMatchItems(match, isSender).length >=
-      match.expectedItems.length
-    );
-  }
+  return (
+    calculateFulfilledUserMatchItems(userMatch, isCustomerA).length >=
+    userMatch.expectedAToBItems.length + userMatch.expectedBToAItems.length
+  );
+}
+
+export function isStandMatchFulfilled(
+  standMatch: StandMatchWithDetails | undefined,
+) {
+  if (!standMatch) return false;
+
+  const { fulfilledHandoffItems, fulfilledPickupItems } =
+    calculateFulfilledStandMatchItems(standMatch);
+  return (
+    fulfilledHandoffItems.length >= standMatch.expectedHandoffItems.length &&
+    fulfilledPickupItems.length >= standMatch.expectedPickupItems.length
+  );
 }
 
 /**
- * Check if any expected items in a match are fulfilled.
+ * Check if any expected items in a stand match are fulfilled.
  *
- * @param match
- * @param isSender Whether the user to check whether has fulfilled the match is the sender.
- * Ignored for StandMatch.
+ * @param standMatch
  */
-export function isMatchBegun(
-  match: MatchWithDetails,
-  isSender: boolean,
-): boolean {
-  if (match._variant === MatchVariant.StandMatch) {
-    const { fulfilledHandoffItems, fulfilledPickupItems } =
-      calculateFulfilledStandMatchItems(match);
-    return fulfilledHandoffItems.length > 0 || fulfilledPickupItems.length > 0;
-  } else {
-    return calculateFulfilledUserMatchItems(match, isSender).length > 0;
-  }
-}
-
-/**
- * Check whether the user is the sender in the match.
- *
- * Returns whatever if match is a StandMatch.
- * @param match
- * @param currentUserId
- */
-export function isUserSenderInMatch(
-  match: Match,
-  currentUserId: string,
-): boolean {
-  if (match._variant === MatchVariant.UserMatch) {
-    return match.sender === currentUserId;
-  }
-  return false;
+export function isStandMatchBegun(standMatch: StandMatchWithDetails): boolean {
+  const { fulfilledHandoffItems, fulfilledPickupItems } =
+    calculateFulfilledStandMatchItems(standMatch);
+  return fulfilledHandoffItems.length > 0 || fulfilledPickupItems.length > 0;
 }

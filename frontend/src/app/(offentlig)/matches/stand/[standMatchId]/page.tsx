@@ -7,10 +7,10 @@ export const metadata: Metadata = {
 };
 
 const MatchDetailPage = async (props: {
-  params: Promise<{ matchId: string }>;
+  params: Promise<{ standMatchId: string }>;
 }) => {
   const params = await props.params;
-  return <MatchDetail matchId={params.matchId} />;
+  return <MatchDetail standMatchId={params.standMatchId} />;
 };
 
 export default MatchDetailPage;

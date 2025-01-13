@@ -2,7 +2,7 @@
 import { isEmployee, isLoggedIn } from "@frontend/api/auth";
 import DynamicLink from "@frontend/components/DynamicLink";
 import useIsHydrated from "@frontend/utils/useIsHydrated";
-import { AdminPanelSettings, Search } from "@mui/icons-material";
+import { AdminPanelSettings, Handshake, Search } from "@mui/icons-material";
 import AccessTimeIcon from "@mui/icons-material/AccessTime";
 import BookIcon from "@mui/icons-material/Book";
 import EmailIcon from "@mui/icons-material/Email";
@@ -31,7 +31,7 @@ interface DrawerLinkProps {
 }
 
 const DrawerLink = ({ title, href, icon, onClick }: DrawerLinkProps) => (
-  <DynamicLink href={href} style={{ color: "inherit" }}>
+  <DynamicLink href={href} underline={"none"} style={{ color: "inherit" }}>
     <ListItemButton onClick={onClick}>
       <ListItemIcon>{icon}</ListItemIcon>
       <ListItemText primary={title} />
@@ -94,6 +94,11 @@ export default function SideMenuDrawer() {
                   icon={<ReceiptIcon />}
                 />
                 <DrawerLink
+                  title={"Dine overleveringer"}
+                  href={"/matches"}
+                  icon={<Handshake />}
+                />
+                <DrawerLink
                   title={"Boksøk"}
                   href={"/sjekk"}
                   icon={<Search />}
@@ -104,7 +109,7 @@ export default function SideMenuDrawer() {
 
             <DrawerLink
               title={"Åpningstider"}
-              href={"/info/branch/select"}
+              href={"/info/branch"}
               icon={<AccessTimeIcon />}
             />
             <DrawerLink

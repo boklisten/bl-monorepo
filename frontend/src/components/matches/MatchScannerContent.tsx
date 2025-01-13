@@ -49,7 +49,11 @@ export default function MatchScannerContent({
           mt: 2,
         }}
       >
-        <MatchItemTable itemStatuses={itemStatuses} isSender={false} />
+        <MatchItemTable
+          itemFilter={expectedItems}
+          itemStatuses={itemStatuses}
+          isSender={false}
+        />
       </Box>
     </>
   );

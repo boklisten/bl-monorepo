@@ -29,7 +29,7 @@ export const EditableTextEditor = ({ editableText }: EditorProps) => {
   };
 
   const onEditorSave = async () => {
-    // TODO: implement persistent storage of editable text
+    // fixme: implement persistent storage of editable text
   };
 
   const onSave = () => {

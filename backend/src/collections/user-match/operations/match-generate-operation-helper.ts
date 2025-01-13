@@ -1,55 +1,78 @@
 import {
-  CandidateMatchVariant,
   MatchableUser,
   MatchLocationSchema,
-  MatchWithMeetingInfo,
-} from "@backend/collections/match/helpers/match-finder/match-types";
+} from "@backend/collections/user-match/helpers/match-finder/match-types";
 import { BlDocumentStorage } from "@backend/storage/blDocumentStorage";
 import { CustomerItem } from "@shared/customer-item/customer-item";
-import { Match, StandMatch, UserMatch } from "@shared/match/match";
 import { Order } from "@shared/order/order";
+import { UserDetail } from "@shared/user/user-detail/user-detail";
 import { ObjectId } from "mongodb";
 import { z } from "zod";
 
 /**
  * The information required to generate matches.
  */
-export const MatcherSpec = z.object({
-  senderBranches: z.string().array(),
-  receiverBranches: z.string().array(),
+export const MatchGenerateSpec = z.object({
+  branches: z.string().array(),
   standLocation: z.string(),
   userMatchLocations: MatchLocationSchema.array(),
   startTime: z.string().datetime(),
   deadlineBefore: z.string().datetime(),
   matchMeetingDurationInMS: z.number(),
-  includeSenderItemsFromOtherBranches: z.boolean(),
-  additionalReceiverItems: z.record(z.string(), z.string().array()),
-  deadlineOverrides: z.record(z.string(), z.string().datetime()),
+  includeCustomerItemsFromOtherBranches: z.boolean(),
 });
 
-export function candidateMatchToMatch(
-  candidate: MatchWithMeetingInfo,
-  deadlineOverrides: Record<string, string>,
-): Match {
-  switch (candidate.variant) {
-    case CandidateMatchVariant.StandMatch: {
-      return new StandMatch(
-        candidate.userId,
-        [...candidate.handoffItems],
-        [...candidate.pickupItems],
-        candidate.meetingInfo,
-      );
-    }
-    case CandidateMatchVariant.UserMatch: {
-      return new UserMatch(
-        candidate.senderId,
-        candidate.receiverId,
-        [...candidate.items],
-        candidate.meetingInfo,
-        deadlineOverrides,
-      );
+/**
+ * Get users that have open orders and/or have items in possession to be handed off
+ *
+ * @param branchIds The IDs of branches to search for users and items
+ * @param deadlineBefore Select customer items that have a deadlineBefore between now() and this deadlineBefore
+ * @param includeSenderItemsFromOtherBranches whether the remainder of the items that a customer has in possession should be added to the match, even though they were not handed out at the specified branchIds
+ * @param customerItemStorage
+ * @param orderStorage
+ * @param userDetailStorage
+ */
+export async function getMatchableUsers(
+  branchIds: string[],
+  deadlineBefore: string,
+  includeSenderItemsFromOtherBranches: boolean,
+  customerItemStorage: BlDocumentStorage<CustomerItem>,
+  orderStorage: BlDocumentStorage<Order>,
+  userDetailStorage: BlDocumentStorage<UserDetail>,
+): Promise<MatchableUser[]> {
+  const [senders, receivers] = await Promise.all([
+    getMatchableSender(
+      branchIds,
+      deadlineBefore,
+      includeSenderItemsFromOtherBranches,
+      customerItemStorage,
+    ),
+    getMatchableReceivers(branchIds, orderStorage),
+  ]);
+  const matchableUsers: MatchableUser[] = [];
+  for (const user of [...senders, ...receivers]) {
+    const existingUser = matchableUsers.find((u) => u.id === user.id);
+    if (existingUser) {
+      existingUser.items = new Set([...existingUser.items, ...user.items]);
+      existingUser.wantedItems = new Set([
+        ...existingUser.wantedItems,
+        ...user.wantedItems,
+      ]);
+    } else {
+      matchableUsers.push(user);
     }
   }
+  return await Promise.all(
+    matchableUsers.map(async (user) => {
+      const userDetails = await userDetailStorage.get(user.id);
+      if (userDetails.temporaryGroupMembership) {
+        user.groupMembership = userDetails.temporaryGroupMembership;
+      } else {
+        console.log("unknown: ", user);
+      }
+      return user;
+    }),
+  );
 }
 
 /**
@@ -60,7 +83,7 @@ export function candidateMatchToMatch(
  * @param includeSenderItemsFromOtherBranches whether the remainder of the items that a customer has in possession should be added to the match, even though they were not handed out at the specified branchIds
  * @param customerItemStorage
  */
-export async function getMatchableSenders(
+async function getMatchableSender(
   branchIds: string[],
   deadlineBefore: string,
   includeSenderItemsFromOtherBranches: boolean,
@@ -108,11 +131,12 @@ export async function getMatchableSenders(
       groupByCustomerStep,
     ])) as { id: string; items: string[] }[];
   }
-  console.log("aggSenders:", aggregatedSenders);
 
   return aggregatedSenders.map((sender) => ({
     id: sender.id,
     items: new Set(sender.items),
+    wantedItems: new Set(),
+    groupMembership: "unknown",
   }));
 }
 
@@ -121,12 +145,10 @@ export async function getMatchableSenders(
  *
  * @param branchIds The IDs of branches to search for users and items
  * @param orderStorage
- * @param additionalReceiverItems items that should get even without an order (known required courses)
  */
-export async function getMatchableReceivers(
+async function getMatchableReceivers(
   branchIds: string[],
   orderStorage: BlDocumentStorage<Order>,
-  additionalReceiverItems: Record<string, string[]>,
 ): Promise<MatchableUser[]> {
   const aggregatedReceivers = (await orderStorage.aggregate([
     {
@@ -172,24 +194,16 @@ export async function getMatchableReceivers(
       $group: {
         _id: "$customer",
         id: { $first: "$customer" },
-        items: { $addToSet: "$orderItems.item" },
+        wantedItems: { $addToSet: "$orderItems.item" },
         branches: { $addToSet: "$branch" },
       },
     },
-  ])) as { id: string; items: string[]; branches: string[] }[];
-
-  for (const [branchId, receiverItems] of Object.entries(
-    additionalReceiverItems,
-  )) {
-    for (const receiver of aggregatedReceivers) {
-      if (receiver.branches.includes(branchId)) {
-        receiver.items = [...receiver.items, ...receiverItems];
-      }
-    }
-  }
+  ])) as { id: string; wantedItems: string[]; branches: string[] }[];
 
   return aggregatedReceivers.map((receiver) => ({
     id: receiver.id,
-    items: new Set(receiver.items),
+    items: new Set(),
+    wantedItems: new Set(receiver.wantedItems),
+    groupMembership: "unknown",
   }));
 }

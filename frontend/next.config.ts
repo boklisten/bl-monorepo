@@ -5,7 +5,7 @@ const nextConfig: NextConfig = {
   eslint: {
     dirs: ["src"],
   },
-  // TODO: temporary redirects required while in tandem with bl-web / bl-admin
+  // fixme: temporary redirects required while in tandem with bl-web / bl-admin
   async redirects() {
     return [
       {

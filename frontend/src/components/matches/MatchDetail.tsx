@@ -8,27 +8,40 @@ import BL_CONFIG from "@frontend/utils/bl-config";
 import theme from "@frontend/utils/theme";
 import { ArrowBack } from "@mui/icons-material";
 import { Alert, Button, Card, Container, Skeleton } from "@mui/material";
-import { MatchVariant } from "@shared/match/match";
-import { MatchWithDetails } from "@shared/match/match-dtos";
+import {
+  StandMatchWithDetails,
+  UserMatchWithDetails,
+} from "@shared/match/match-dtos";
 import useSWR from "swr";
 
-const MatchDetail = ({ matchId }: { matchId: string }) => {
+const MatchDetail = ({
+  userMatchId,
+  standMatchId,
+}: {
+  userMatchId?: string;
+  standMatchId?: string;
+}) => {
   const { data: accessToken, error: tokenError } = useSWR("userId", () =>
     getAccessTokenBody(),
   );
   const userId = accessToken?.details;
 
   const {
-    data: matches,
-    error: matchesError,
-    mutate: updateMatches,
+    data: userMatches,
+    error: userMatchesError,
+    mutate: updateUserMatches,
   } = useSWR(
-    `${BL_CONFIG.collection.match}/me`,
-    BlFetcher.get<MatchWithDetails[]>,
+    `${BL_CONFIG.collection.userMatches}/me`,
+    BlFetcher.get<UserMatchWithDetails[]>,
+    { refreshInterval: 5000 },
+  );
+  const { data: standMatches, error: standMatchesError } = useSWR(
+    `${BL_CONFIG.collection.standMatches}/me`,
+    BlFetcher.get<StandMatchWithDetails[]>,
     { refreshInterval: 5000 },
   );
 
-  if (tokenError || matchesError) {
+  if (tokenError || userMatchesError || standMatchesError) {
     return (
       <Alert severity="error">
         En feil har oppstått. Ta kontakt med info@boklisten.no dersom problemet
@@ -37,16 +50,28 @@ const MatchDetail = ({ matchId }: { matchId: string }) => {
     );
   }
 
-  const match = matches?.find((match) => match.id === matchId);
-  if (matches && !match) {
+  const userMatch = userMatches?.find(
+    (userMatch) => userMatch.id === userMatchId,
+  );
+  if (userMatches && userMatchId && !userMatch) {
     return (
       <Alert severity="error">
-        Kunne ikke finne en overlevering med ID {matchId}.
+        Kunne ikke finne en elevoverlevering med ID {userMatchId}.
+      </Alert>
+    );
+  }
+  const standMatch = standMatches?.find(
+    (standMatch) => standMatch.id === standMatchId,
+  );
+  if (standMatches && standMatchId && !standMatch) {
+    return (
+      <Alert severity="error">
+        Kunne ikke finne en standoverlevering med ID {standMatchId}.
       </Alert>
     );
   }
 
-  if (!userId || !match) {
+  if (!userId || (userMatchId && !userMatch) || (standMatchId && !standMatch)) {
     return <Skeleton />;
   }
 
@@ -54,20 +79,18 @@ const MatchDetail = ({ matchId }: { matchId: string }) => {
     <Card sx={{ padding: theme.spacing(2, 0, 4, 0) }}>
       <Container>
         <DynamicLink
-          href={`/${BL_CONFIG.collection.match}`}
+          href={`/matches`}
           sx={{ marginBottom: 2, display: "inline-block" }}
         >
           <Button startIcon={<ArrowBack />}>Alle overleveringer</Button>
         </DynamicLink>
 
-        {match._variant === MatchVariant.StandMatch && (
-          <StandMatchDetail match={match} />
-        )}
-        {match._variant === MatchVariant.UserMatch && (
+        {standMatch && <StandMatchDetail standMatch={standMatch} />}
+        {userMatch && (
           <UserMatchDetail
-            match={match}
+            userMatch={userMatch}
             currentUserId={userId}
-            handleItemTransferred={() => updateMatches()}
+            handleItemTransferred={() => updateUserMatches()}
           />
         )}
       </Container>

@@ -338,7 +338,7 @@ export class UserMatchTransferItemOperation implements Operation {
   private async getUserMatchesForCustomer(
     customer: string,
   ): Promise<UserMatch[]> {
-    const userMatches = (await this._userMatchStorage.aggregate([
+    return (await this._userMatchStorage.aggregate([
       {
         $match: {
           $or: [
@@ -348,11 +348,6 @@ export class UserMatchTransferItemOperation implements Operation {
         },
       },
     ])) as UserMatch[];
-
-    if (userMatches.length === 0) {
-      throw new BlError("User does not have any user matches");
-    }
-    return userMatches;
   }
 
   private async getStandMatchForCustomer(
@@ -361,10 +356,7 @@ export class UserMatchTransferItemOperation implements Operation {
     const standMatches = (await this._standMatchStorage.aggregate([
       {
         $match: {
-          $or: [
-            { customerA: new ObjectId(customer) },
-            { customerB: new ObjectId(customer) },
-          ],
+          customer: new ObjectId(customer),
         },
       },
     ])) as StandMatch[];

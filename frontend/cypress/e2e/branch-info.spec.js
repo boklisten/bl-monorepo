@@ -1,6 +1,6 @@
 describe("Info pages", () => {
   beforeEach(() => {
-    cy.visit("/info/branch/select");
+    cy.visit("/info/branch");
   });
 
   describe("as a customer", () => {

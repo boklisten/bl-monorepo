@@ -8,26 +8,30 @@ import { StandMatchTitle } from "@frontend/components/matches/matchesList/helper
 import ProgressBar from "@frontend/components/matches/matchesList/ProgressBar";
 import MatchItemTable from "@frontend/components/matches/MatchItemTable";
 import MeetingInfo from "@frontend/components/matches/MeetingInfo";
-import { StandMatchWithDetails } from "@frontend/utils/types";
 import { Alert, Typography } from "@mui/material";
+import { StandMatchWithDetails } from "@shared/match/match-dtos";
 
-const StandMatchDetail = ({ match }: { match: StandMatchWithDetails }) => {
+const StandMatchDetail = ({
+  standMatch,
+}: {
+  standMatch: StandMatchWithDetails;
+}) => {
   const { fulfilledHandoffItems, fulfilledPickupItems } =
-    calculateFulfilledStandMatchItems(match);
+    calculateFulfilledStandMatchItems(standMatch);
   const isFulfilled =
-    fulfilledHandoffItems.length >= match.expectedHandoffItems.length &&
-    fulfilledPickupItems.length >= match.expectedPickupItems.length;
+    fulfilledHandoffItems.length >= standMatch.expectedHandoffItems.length &&
+    fulfilledPickupItems.length >= standMatch.expectedPickupItems.length;
 
   let handoffItemStatuses: ItemStatus[];
   let pickupItemStatuses: ItemStatus[];
   try {
     handoffItemStatuses = calculateItemStatuses(
-      match,
+      standMatch,
       (match) => match.expectedHandoffItems,
       fulfilledHandoffItems,
     );
     pickupItemStatuses = calculateItemStatuses(
-      match,
+      standMatch,
       (match) => match.expectedPickupItems,
       fulfilledPickupItems,
     );
@@ -36,13 +40,13 @@ const StandMatchDetail = ({ match }: { match: StandMatchWithDetails }) => {
     return <Alert severity="error">En feil oppstod: {error?.message}</Alert>;
   }
 
-  const hasHandoffItems = match.expectedHandoffItems.length > 0;
-  const hasPickupItems = match.expectedPickupItems.length > 0;
+  const hasHandoffItems = standMatch.expectedHandoffItems.length > 0;
+  const hasPickupItems = standMatch.expectedPickupItems.length > 0;
 
   return (
     <>
       <Typography variant="h1">
-        <StandMatchTitle match={match} />
+        <StandMatchTitle standMatch={standMatch} />
       </Typography>
 
       {isFulfilled && (
@@ -55,12 +59,12 @@ const StandMatchDetail = ({ match }: { match: StandMatchWithDetails }) => {
         <ProgressBar
           percentComplete={
             (fulfilledHandoffItems.length * 100) /
-            match.expectedHandoffItems.length
+            standMatch.expectedHandoffItems.length
           }
           subtitle={
             <>
               {fulfilledHandoffItems.length} av{" "}
-              {match.expectedHandoffItems.length} bøker levert
+              {standMatch.expectedHandoffItems.length} bøker levert
             </>
           }
         />
@@ -70,12 +74,12 @@ const StandMatchDetail = ({ match }: { match: StandMatchWithDetails }) => {
         <ProgressBar
           percentComplete={
             (fulfilledPickupItems.length * 100) /
-            match.expectedPickupItems.length
+            standMatch.expectedPickupItems.length
           }
           subtitle={
             <>
               {fulfilledPickupItems.length} av{" "}
-              {match.expectedPickupItems.length} bøker mottatt
+              {standMatch.expectedPickupItems.length} bøker mottatt
             </>
           }
         />
@@ -96,7 +100,10 @@ const StandMatchDetail = ({ match }: { match: StandMatchWithDetails }) => {
       )}
 
       <MatchHeader>Du skal på stand:</MatchHeader>
-      <MeetingInfo match={match} />
+      <MeetingInfo
+        meetingLocation={standMatch.meetingInfo.location}
+        meetingTime={standMatch.meetingInfo.date}
+      />
     </>
   );
 };

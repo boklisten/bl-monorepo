@@ -3,12 +3,14 @@ import { FormattedDatetime } from "@frontend/components/matches/matchesList/help
 import PlaceIcon from "@mui/icons-material/Place";
 import ScheduleIcon from "@mui/icons-material/Schedule";
 import { Box, Typography } from "@mui/material";
-import { MatchWithDetails } from "@shared/match/match-dtos";
 
-const MeetingInfo = ({ match }: { match: MatchWithDetails }) => {
-  const meetingTime = match.meetingInfo.date;
-  const meetingLocation = match.meetingInfo.location;
-
+const MeetingInfo = ({
+  meetingTime,
+  meetingLocation,
+}: {
+  meetingTime?: Date | undefined;
+  meetingLocation: string;
+}) => {
   return (
     <Box
       sx={{
@@ -25,9 +27,9 @@ const MeetingInfo = ({ match }: { match: MatchWithDetails }) => {
           <FormattedDatetime date={new Date(meetingTime)} />
         )) || (
           <Typography>
-            Du kan møte opp når som helst i{" "}
-            <DynamicLink variant="body1" href="/info/branch/select">
-              skolens åpningstider
+            Du kan møte opp når standen vår er åpen.{" "}
+            <DynamicLink variant="body1" href="/info/branch">
+              Se åpningstider her
             </DynamicLink>
           </Typography>
         )}

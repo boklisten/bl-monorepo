@@ -5,7 +5,7 @@ import { COMMUNICATION_SUB_PAGES } from "@frontend/utils/adminNavigation";
 
 export default function CommunicationRootPage() {
   /**
-   * TODO: estimat på antall mottakere
+   * fixme: next up, estimat på antall mottakere
    *
    * Flow:
    *     > Kunder med overleveringer

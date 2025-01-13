@@ -10,29 +10,38 @@ import { green, grey } from "@mui/material/colors";
 import { FC, PropsWithChildren } from "react";
 
 const MatchListItemBox: FC<
-  PropsWithChildren<{ finished: boolean; matchId: string }>
-> = ({ finished, matchId, children }) => {
+  PropsWithChildren<{
+    finished: boolean;
+    matchId: string;
+    matchType: "stand" | "user";
+  }>
+> = ({ finished, matchId, matchType, children }) => {
   return (
     <Card
       variant={finished ? "outlined" : "elevation"}
       elevation={finished ? 0 : 8}
       sx={{ backgroundColor: finished ? green["50"] : grey["100"] }}
     >
-      <CardActionArea component={DynamicLink} href={`/matches/${matchId}`}>
-        <CardContent>{children}</CardContent>
-        <CardActions>
-          <Button
-            component={DynamicLink}
-            href={`/matches/${matchId}`}
-            size="small"
-            variant={finished ? "text" : "contained"}
-            sx={{ width: "100%" }}
-            color="success"
-          >
-            Åpne
-          </Button>
-        </CardActions>
-      </CardActionArea>
+      <DynamicLink
+        href={`/matches/${matchType}/${matchId}`}
+        color={"textPrimary"}
+        underline={"none"}
+      >
+        <CardActionArea>
+          <CardContent>{children}</CardContent>
+          <CardActions>
+            <Button
+              component={"span"}
+              size="small"
+              variant={finished ? "text" : "contained"}
+              sx={{ width: "100%" }}
+              color="success"
+            >
+              Åpne
+            </Button>
+          </CardActions>
+        </CardActionArea>
+      </DynamicLink>
     </Card>
   );
 };

@@ -1,7 +1,7 @@
 import {
   calculateFulfilledStandMatchItems,
-  isMatchBegun,
-  isMatchFulfilled,
+  isStandMatchBegun,
+  isStandMatchFulfilled,
 } from "@frontend/components/matches/matches-helper";
 import {
   formatActionsString,
@@ -10,26 +10,30 @@ import {
 import MatchListItemBox from "@frontend/components/matches/matchesList/MatchListItemBox";
 import ProgressBar from "@frontend/components/matches/matchesList/ProgressBar";
 import MeetingInfo from "@frontend/components/matches/MeetingInfo";
-import { StandMatchWithDetails } from "@frontend/utils/types";
 import { Box, Typography } from "@mui/material";
+import { StandMatchWithDetails } from "@shared/match/match-dtos";
 import { FC } from "react";
 
 const StandMatchListItem: FC<{
-  match: StandMatchWithDetails;
+  standMatch: StandMatchWithDetails;
   currentUserId: string;
-}> = ({ match }) => {
-  const numberHandoffItems = match.expectedHandoffItems.length;
-  const numberPickupItems = match.expectedPickupItems.length;
+}> = ({ standMatch }) => {
+  const numberHandoffItems = standMatch.expectedHandoffItems.length;
+  const numberPickupItems = standMatch.expectedPickupItems.length;
   const hasHandoffItems = numberHandoffItems > 0;
   const hasPickupItems = numberPickupItems > 0;
   const { fulfilledPickupItems, fulfilledHandoffItems } =
-    calculateFulfilledStandMatchItems(match);
-  const isBegun = isMatchBegun(match, false);
-  const isFulfilled = isMatchFulfilled(match, false);
+    calculateFulfilledStandMatchItems(standMatch);
+  const isBegun = isStandMatchBegun(standMatch);
+  const isFulfilled = isStandMatchFulfilled(standMatch);
   return (
-    <MatchListItemBox finished={isFulfilled} matchId={match.id}>
+    <MatchListItemBox
+      finished={isFulfilled}
+      matchId={standMatch.id}
+      matchType={"stand"}
+    >
       <Typography variant="h3">
-        <StandMatchTitle match={match} />
+        <StandMatchTitle standMatch={standMatch} />
       </Typography>
       {isBegun && (
         <>
@@ -72,7 +76,12 @@ const StandMatchListItem: FC<{
           </Box>
         </>
       )}
-      {!isFulfilled && <MeetingInfo match={match} />}
+      {!isFulfilled && (
+        <MeetingInfo
+          meetingTime={standMatch.meetingInfo.date}
+          meetingLocation={standMatch.meetingInfo.location}
+        />
+      )}
     </MatchListItemBox>
   );
 };

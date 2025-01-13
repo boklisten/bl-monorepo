@@ -1,12 +1,10 @@
 import { OrderActive } from "@backend/collections/order/helpers/order-active/order-active";
 import { isNullish } from "@backend/helper/typescript-helpers";
-import { SEDbQuery } from "@backend/query/se.db-query";
 import { BlDocumentStorage } from "@backend/storage/blDocumentStorage";
 import { BlError } from "@shared/bl-error/bl-error";
 import { Branch } from "@shared/branch/branch";
 import { CustomerItem } from "@shared/customer-item/customer-item";
 import { Item } from "@shared/item/item";
-import { Match } from "@shared/match/match";
 import { Order } from "@shared/order/order";
 import { OrderItem } from "@shared/order/order-item/order-item";
 
@@ -15,7 +13,6 @@ export async function createMatchReceiveOrder(
   userDetailId: string,
   itemStorage: BlDocumentStorage<Item>,
   branchStorage: BlDocumentStorage<Branch>,
-  deadlineOverrides?: Record<string, string>,
 ): Promise<Order> {
   const item = await itemStorage.get(customerItem.item);
 
@@ -52,20 +49,15 @@ export async function createMatchReceiveOrder(
 
   const movedFromOrder = originalReceiverOrderInfo.order.id;
 
-  const relevantDeadlineOverride = deadlineOverrides?.[item.id];
-  const deadlineOverride = relevantDeadlineOverride
-    ? new Date(relevantDeadlineOverride)
-    : undefined;
   const originalOrderDeadline =
     originalReceiverOrderInfo.relevantOrderItem.info?.to;
   const branchRentDeadline = branch.paymentInfo?.rentPeriods?.[0]?.date;
 
-  let deadline =
-    deadlineOverride ?? originalOrderDeadline ?? branchRentDeadline;
+  let deadline = originalOrderDeadline ?? branchRentDeadline;
 
   if (!deadline) {
     throw new BlError(
-      "Cannot set deadline: no rent period for branch, no original order deadline and no override",
+      "Cannot set deadline: no rent period for branch and no original order deadline",
     ).code(200);
   }
   // This is necessary because it's not actually a date in the database, and thus the type is wrong.
@@ -145,26 +137,4 @@ export async function createMatchDeliverOrder(
       },
     ],
   };
-}
-
-export async function getAllMatchesForUser(
-  userDetailId: string,
-  matchStorage: BlDocumentStorage<Match>,
-): Promise<Match[]> {
-  const query = new SEDbQuery();
-  query.objectIdFilters = [
-    // By putting each value in an array, the filters are OR'd instead of AND'd
-    { fieldName: "customer", value: [userDetailId] },
-    { fieldName: "sender", value: [userDetailId] },
-    { fieldName: "receiver", value: [userDetailId] },
-  ];
-
-  try {
-    return (await matchStorage.getByQuery(query)) as Match[];
-  } catch (error) {
-    if (error instanceof BlError && error.getCode() === 702) {
-      return [];
-    }
-    throw error;
-  }
 }

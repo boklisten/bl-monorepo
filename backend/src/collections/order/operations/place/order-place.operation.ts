@@ -5,11 +5,12 @@ import {
 import { BlCollectionName } from "@backend/collections/bl-collection";
 import { customerItemSchema } from "@backend/collections/customer-item/customer-item.schema";
 import { OrderToCustomerItemGenerator } from "@backend/collections/customer-item/helpers/order-to-customer-item-generator";
-import { matchSchema } from "@backend/collections/match/match.schema";
 import { OrderPlacedHandler } from "@backend/collections/order/helpers/order-placed-handler/order-placed-handler";
 import { OrderValidator } from "@backend/collections/order/helpers/order-validator/order-validator";
 import { orderSchema } from "@backend/collections/order/order.schema";
+import { standMatchSchema } from "@backend/collections/stand-match/stand-match.schema";
 import { userDetailSchema } from "@backend/collections/user-detail/user-detail.schema";
+import { userMatchSchema } from "@backend/collections/user-match/user-match.schema";
 import { isNotNullish } from "@backend/helper/typescript-helpers";
 import { Operation } from "@backend/operation/operation";
 import { SEDbQueryBuilder } from "@backend/query/se.db-query-builder";
@@ -19,18 +20,14 @@ import { BlDocumentStorage } from "@backend/storage/blDocumentStorage";
 import { BlError } from "@shared/bl-error/bl-error";
 import { BlapiResponse } from "@shared/blapi-response/blapi-response";
 import { CustomerItem } from "@shared/customer-item/customer-item";
-import {
-  Match,
-  MatchVariant,
-  StandMatch,
-  UserMatch,
-} from "@shared/match/match";
+import { StandMatch } from "@shared/match/stand-match";
+import { UserMatch } from "@shared/match/user-match";
 import { Order } from "@shared/order/order";
 import { OrderItem } from "@shared/order/order-item/order-item";
 import { OrderItemType } from "@shared/order/order-item/order-item-type";
 import { UserPermission } from "@shared/permission/user-permission";
 import { UserDetail } from "@shared/user/user-detail/user-detail";
-import { NextFunction, Request, Response } from "express";
+import { Request, Response } from "express";
 
 export class OrderPlaceOperation implements Operation {
   private _queryBuilder: SEDbQueryBuilder;
@@ -42,7 +39,8 @@ export class OrderPlaceOperation implements Operation {
   private readonly _orderPlacedHandler: OrderPlacedHandler;
   private readonly _orderValidator: OrderValidator;
   private readonly _userDetailStorage: BlDocumentStorage<UserDetail>;
-  private readonly _matchStorage: BlDocumentStorage<Match>;
+  private readonly _userMatchStorage: BlDocumentStorage<UserMatch>;
+  private readonly _standMatchStorage: BlDocumentStorage<StandMatch>;
 
   constructor(
     resHandler?: SEResponseHandler,
@@ -52,7 +50,8 @@ export class OrderPlaceOperation implements Operation {
     orderPlacedHandler?: OrderPlacedHandler,
     orderValidator?: OrderValidator,
     userDetailStorage?: BlDocumentStorage<UserDetail>,
-    matchStorage?: BlDocumentStorage<Match>,
+    userMatchStorage?: BlDocumentStorage<UserMatch>,
+    standMatchStorage?: BlDocumentStorage<StandMatch>,
   ) {
     this._resHandler = resHandler ?? new SEResponseHandler();
 
@@ -75,9 +74,13 @@ export class OrderPlaceOperation implements Operation {
       userDetailStorage ??
       new BlDocumentStorage(BlCollectionName.UserDetails, userDetailSchema);
 
-    this._matchStorage =
-      matchStorage ??
-      new BlDocumentStorage(BlCollectionName.Matches, matchSchema);
+    this._userMatchStorage =
+      userMatchStorage ??
+      new BlDocumentStorage(BlCollectionName.UserMatches, userMatchSchema);
+
+    this._standMatchStorage =
+      standMatchStorage ??
+      new BlDocumentStorage(BlCollectionName.StandMatches, standMatchSchema);
 
     this._queryBuilder = new SEDbQueryBuilder();
     this._permissionService = new PermissionService();
@@ -124,8 +127,6 @@ export class OrderPlaceOperation implements Operation {
     );
 
     try {
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
       const existingOrders = await this._orderStorage.getByQuery(databaseQuery);
       const alreadyOrderedItems =
         this.filterOrdersByAlreadyOrdered(existingOrders);
@@ -176,8 +177,6 @@ export class OrderPlaceOperation implements Operation {
     try {
       // Use an aggregation because the query builder does not support checking against a list of blids,
       // and we would otherwise have to send a query for every single order item.
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
       const unreturnedItems = await this._customerItemStorage.aggregate([
         {
           $match: {
@@ -213,14 +212,15 @@ export class OrderPlaceOperation implements Operation {
     userMatches: UserMatch[],
   ) {
     for (const customerItem of customerItems) {
-      const customerId = customerItem.customer;
+      const { customer, item } = customerItem;
       if (
         userMatches.some(
           (userMatch) =>
             userMatch.itemsLockedToMatch &&
-            (userMatch.sender === customerId ||
-              userMatch.receiver === customerId) &&
-            userMatch.expectedItems.includes(customerItem.item),
+            (userMatch.customerA === customer ||
+              userMatch.customerB === customer) &&
+            (userMatch.expectedAToBItems.includes(item) ||
+              userMatch.expectedBToAItems.includes(item)),
         )
       ) {
         throw new BlError(
@@ -232,25 +232,26 @@ export class OrderPlaceOperation implements Operation {
 
   /**
    * For each item, check that the customer does not have a locked UserMatch with the same item
-   * @param itemIds the IDs of the items to be verified
+   * @param items the IDs of the items to be verified
    * @param userMatches the user matches to check against
-   * @param customerId the ID of the customer
+   * @param customer the ID of the customer
    * @throws if someone tries to receive an item that's locked to a UserMatch
    * @private
    */
   private verifyItemsNotInLockedUserMatch(
-    itemIds: string[],
+    items: string[],
     userMatches: UserMatch[],
-    customerId: string,
+    customer: string,
   ) {
-    for (const itemId of itemIds) {
+    for (const item of items) {
       if (
         userMatches.some(
           (userMatch) =>
             userMatch.itemsLockedToMatch &&
-            (userMatch.sender === customerId ||
-              userMatch.receiver === customerId) &&
-            userMatch.expectedItems.includes(itemId),
+            (userMatch.customerA === customer ||
+              userMatch.customerB === customer) &&
+            (userMatch.expectedAToBItems.includes(item) ||
+              userMatch.expectedBToAItems.includes(item)),
         )
       ) {
         throw new BlError(
@@ -262,13 +263,15 @@ export class OrderPlaceOperation implements Operation {
 
   /**
    * Go through the orderItems and update matches if any of the customerItems belong to a match
-   * @param allMatches all the matches
+   * @param userMatches all the user matches
+   * @param standMatches all the stand matches
    * @param returnOrderItems the orderItems for items that are handed in
    * @param handoutOrderItems the orderItems for items that are handed out
    * @private
    */
   private async updateMatchesIfPresent(
-    allMatches: Match[],
+    userMatches: UserMatch[],
+    standMatches: StandMatch[],
     returnOrderItems: OrderItem[],
     handoutOrderItems: OrderItem[],
   ) {
@@ -286,14 +289,6 @@ export class OrderPlaceOperation implements Operation {
       handoutOrderItems
         .map((orderItem) => orderItem.customerItem)
         .filter(isNotNullish),
-    );
-
-    const standMatches = allMatches.filter(
-      (match) => match._variant === MatchVariant.StandMatch,
-    );
-
-    const userMatches = allMatches.filter(
-      (match) => match._variant === MatchVariant.UserMatch,
     );
 
     await this.updateStandMatchHandoffs(returnCustomerItems, standMatches);
@@ -323,10 +318,10 @@ export class OrderPlaceOperation implements Operation {
       standMatchId,
       deliveredItems,
     ] of matchToDeliveredItemsMap.entries()) {
-      await this._matchStorage.update(
+      await this._standMatchStorage.update(
         standMatchId,
         {
-          deliveredItems: [...deliveredItems],
+          deliveredItems: Array.from(deliveredItems),
         },
         new SystemUser(),
       );
@@ -354,10 +349,10 @@ export class OrderPlaceOperation implements Operation {
       standMatchId,
       receivedItems,
     ] of matchToReceivedItemsMap.entries()) {
-      await this._matchStorage.update(
+      await this._standMatchStorage.update(
         standMatchId,
         {
-          receivedItems: [...receivedItems],
+          receivedItems: Array.from(receivedItems),
         },
         new SystemUser(),
       );
@@ -369,26 +364,44 @@ export class OrderPlaceOperation implements Operation {
     handoutCustomerItems: CustomerItem[],
     userMatches: UserMatch[],
   ) {
-    const matchToReceivedBlIdsMap = this.groupValuesByMatch(
-      handoutCustomerItems,
-      (handoutCustomerItem) =>
-        userMatches.find(
-          (match) =>
-            match.receiver === handoutCustomerItem.customer &&
-            match.expectedItems.includes(handoutCustomerItem.item) &&
-            handoutCustomerItem.blid &&
-            !match.receivedBlIds.includes(handoutCustomerItem.blid),
-        ),
-      (handoutCustomerItem, userMatch) => [
-        ...userMatch.receivedBlIds,
-        handoutCustomerItem?.blid ?? "",
-      ],
-    );
+    for (const customerItem of handoutCustomerItems) {
+      const receiverUserMatch = userMatches.find(
+        (userMatch) =>
+          (userMatch.customerA === customerItem.customer &&
+            userMatch.expectedBToAItems.includes(customerItem.item) &&
+            !userMatch.receivedBlIdsCustomerA.includes(
+              customerItem.blid ?? "",
+            )) ||
+          (userMatch.customerB === customerItem.customer &&
+            userMatch.expectedAToBItems.includes(customerItem.item) &&
+            !userMatch.receivedBlIdsCustomerB.includes(
+              customerItem.blid ?? "",
+            )),
+      );
+      if (!receiverUserMatch) {
+        continue;
+      }
 
-    for (const [matchId, receivedBlIds] of matchToReceivedBlIdsMap.entries()) {
-      await this._matchStorage.update(
-        matchId,
-        { receivedBlIds: [...receivedBlIds] },
+      let update: Partial<UserMatch> = {};
+      if (receiverUserMatch.customerA === customerItem.customer) {
+        update = {
+          receivedBlIdsCustomerA: [
+            ...receiverUserMatch.receivedBlIdsCustomerA,
+            customerItem.blid ?? "",
+          ],
+        };
+      }
+      if (receiverUserMatch.customerB === customerItem.customer) {
+        update = {
+          receivedBlIdsCustomerB: [
+            ...receiverUserMatch.receivedBlIdsCustomerB,
+            customerItem.blid ?? "",
+          ],
+        };
+      }
+      await this._userMatchStorage.update(
+        receiverUserMatch.id,
+        update,
         new SystemUser(),
       );
     }
@@ -399,29 +412,44 @@ export class OrderPlaceOperation implements Operation {
     returnCustomerItems: CustomerItem[],
     userMatches: UserMatch[],
   ) {
-    const matchToDeliveredBlIdsMap = this.groupValuesByMatch(
-      returnCustomerItems,
-      (returnCustomerItem) =>
-        userMatches.find(
-          (match) =>
-            match.sender === returnCustomerItem.customer &&
-            match.expectedItems.includes(returnCustomerItem.item) &&
-            returnCustomerItem.blid &&
-            !match.deliveredBlIds.includes(returnCustomerItem.blid),
-        ),
-      (returnCustomerItem, userMatch) => [
-        ...userMatch.deliveredBlIds,
-        returnCustomerItem?.blid ?? "",
-      ],
-    );
+    for (const customerItem of returnCustomerItems) {
+      const senderUserMatch = userMatches.find(
+        (userMatch) =>
+          (userMatch.customerA === customerItem.customer &&
+            userMatch.expectedAToBItems.includes(customerItem.item) &&
+            !userMatch.deliveredBlIdsCustomerA.includes(
+              customerItem.blid ?? "",
+            )) ||
+          (userMatch.customerB === customerItem.customer &&
+            userMatch.expectedBToAItems.includes(customerItem.item) &&
+            !userMatch.deliveredBlIdsCustomerB.includes(
+              customerItem.blid ?? "",
+            )),
+      );
+      if (!senderUserMatch) {
+        continue;
+      }
 
-    for (const [
-      matchId,
-      deliveredBlIds,
-    ] of matchToDeliveredBlIdsMap.entries()) {
-      await this._matchStorage.update(
-        matchId,
-        { deliveredBlIds: [...deliveredBlIds] },
+      let update: Partial<UserMatch> = {};
+      if (senderUserMatch.customerA === customerItem.customer) {
+        update = {
+          deliveredBlIdsCustomerA: [
+            ...senderUserMatch.deliveredBlIdsCustomerA,
+            customerItem.blid ?? "",
+          ],
+        };
+      }
+      if (senderUserMatch.customerB === customerItem.customer) {
+        update = {
+          deliveredBlIdsCustomerB: [
+            ...senderUserMatch.deliveredBlIdsCustomerB,
+            customerItem.blid ?? "",
+          ],
+        };
+      }
+      await this._userMatchStorage.update(
+        senderUserMatch.id,
+        update,
         new SystemUser(),
       );
     }
@@ -429,7 +457,7 @@ export class OrderPlaceOperation implements Operation {
 
   // Using some collection of values, group those values by match.
   // Can be used to e.g. combine all required updates to a match.
-  private groupValuesByMatch<V, M extends Match>(
+  private groupValuesByMatch<V, M extends UserMatch | StandMatch>(
     values: V[],
     findMatch: (value: V) => M | undefined,
     valuesExtractor: (value: V, match: M) => string[],
@@ -454,14 +482,8 @@ export class OrderPlaceOperation implements Operation {
 
   public async run(
     blApiRequest: BlApiRequest,
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
     request?: Request,
     res?: Response,
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    next?: NextFunction,
   ): Promise<boolean> {
     let order: Order;
 
@@ -501,64 +523,55 @@ export class OrderPlaceOperation implements Operation {
       (orderItem) => orderItem.handout && orderItem.type === "rent",
     );
 
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
-    const allMatches = await this._matchStorage.getAll();
+    const userMatches = await this._userMatchStorage.getAll();
 
     if (!order.byCustomer) {
-      await this.verifyCompatibilityWithMatches(
+      await this.verifyCompatibilityWithUserMatches(
         returnOrderItems,
         handoutOrderItems,
-        allMatches,
+        userMatches,
         order.customer,
       );
     }
 
     let customerItems =
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
       await this._orderToCustomerItemGenerator.generate(order);
 
     if (customerItems && customerItems.length > 0) {
       customerItems = await this.addCustomerItems(
         customerItems,
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
+        // @ts-expect-error // fixme: bad types
         blApiRequest.user,
       );
       order = this.addCustomerItemIdToOrderItems(order, customerItems);
 
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
       await this._orderStorage.update(
         order.id,
         {
           orderItems: order.orderItems,
           pendingSignature,
         },
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
+        // @ts-expect-error // fixme: bad types
         blApiRequest.user,
       );
     }
 
+    const standMatches = await this._standMatchStorage.getAll();
     if (!order.byCustomer) {
       await this.updateMatchesIfPresent(
-        allMatches,
+        userMatches,
+        standMatches,
         returnOrderItems,
         handoutOrderItems,
       );
     }
 
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
     await this._orderPlacedHandler.placeOrder(order, {
+      // @ts-expect-error // fixme: bad types
       sub: blApiRequest.user,
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
+      // @ts-expect-error // fixme: bad types
       permission: blApiRequest.user.permission,
-      /* eslint-disable-next-line @typescript-eslint/no-explicit-any */
-    } as any);
+    });
 
     const isAdmin =
       blApiRequest.user?.permission !== undefined &&
@@ -567,8 +580,6 @@ export class OrderPlaceOperation implements Operation {
         "admin",
       );
 
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
     await this._orderValidator.validate(order, isAdmin);
 
     if (customerItems && customerItems.length > 0) {
@@ -577,14 +588,14 @@ export class OrderPlaceOperation implements Operation {
         await this.addCustomerItemsToCustomer(
           customerItems,
           order.customer,
-          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-          // @ts-ignore
+          // @ts-expect-error // fixme: bad types
           blApiRequest.user,
         );
+        // fixme: probably not a good idea to ignore this error...
         // eslint-disable-next-line no-empty
       } catch {}
-    } // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
+    }
+    // @ts-expect-error fixme: bad types
     this._resHandler.sendResponse(res, new BlapiResponse([order]));
     return true;
   }
@@ -593,20 +604,17 @@ export class OrderPlaceOperation implements Operation {
    * Verify that the order does not try to hand out or in an item locked to one of the customer's UserMatches
    * @param returnOrderItems the orderItems that will be handed in
    * @param handoutOrderItems the orderItems that will be handed out
-   * @param allMatches all the matches
+   * @param userMatches the user matches to check against
    * @param customerId the customer the order belongs to
    * @throws if the order tries to hand out or in a (customer)Item locked to a UserMatch
    * @private
    */
-  private async verifyCompatibilityWithMatches(
+  private async verifyCompatibilityWithUserMatches(
     returnOrderItems: OrderItem[],
     handoutOrderItems: OrderItem[],
-    allMatches: Match[],
+    userMatches: UserMatch[],
     customerId: string,
   ) {
-    const userMatches: UserMatch[] = allMatches.filter(
-      (match) => match._variant === MatchVariant.UserMatch,
-    );
     const returnCustomerItems = await this._customerItemStorage.getMany(
       returnOrderItems
         .map((orderItem) => orderItem.customerItem)
@@ -626,8 +634,6 @@ export class OrderPlaceOperation implements Operation {
   ): Promise<CustomerItem[]> {
     const addedCustomerItems = [];
     for (const customerItem of customerItems) {
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
       const ci = await this._customerItemStorage.add(customerItem, user);
       addedCustomerItems.push(ci);
     }
@@ -644,8 +650,6 @@ export class OrderPlaceOperation implements Operation {
       return ci.id.toString();
     });
 
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
     const userDetail = await this._userDetailStorage.get(customerId);
 
     let userDetailCustomerItemsIds = userDetail.customerItems ?? [];
@@ -653,8 +657,6 @@ export class OrderPlaceOperation implements Operation {
     userDetailCustomerItemsIds =
       userDetailCustomerItemsIds.concat(customerItemIds);
 
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
     await this._userDetailStorage.update(
       customerId,
       { customerItems: userDetailCustomerItemsIds },

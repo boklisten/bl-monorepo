@@ -155,7 +155,7 @@ export class OrderEmailHandler {
         userFullName: customerDetail.name,
       };
 
-      /** TODO: delete after 1. oktober 2024 */
+      /** fixme: delete after 1. oktober 2024 */
       const receiptEmailSetting: EmailSetting = {
         toEmail: customerDetail.guardian.email,
         fromEmail: EMAIL_SETTINGS.types.receipt.fromEmail,

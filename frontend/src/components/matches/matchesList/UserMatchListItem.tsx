@@ -1,8 +1,6 @@
 import {
   calculateFulfilledUserMatchItems,
-  isMatchBegun,
-  isMatchFulfilled,
-  isUserSenderInMatch,
+  isUserMatchFulfilled,
 } from "@frontend/components/matches/matches-helper";
 import {
   formatActionsString,
@@ -11,23 +9,33 @@ import {
 import MatchListItemBox from "@frontend/components/matches/matchesList/MatchListItemBox";
 import ProgressBar from "@frontend/components/matches/matchesList/ProgressBar";
 import MeetingInfo from "@frontend/components/matches/MeetingInfo";
-import { UserMatchWithDetails } from "@frontend/utils/types";
 import { Box, Typography } from "@mui/material";
+import { UserMatchWithDetails } from "@shared/match/match-dtos";
 import { FC } from "react";
 
 const UserMatchListItem: FC<{
-  match: UserMatchWithDetails;
+  userMatch: UserMatchWithDetails;
   currentUserId: string;
-}> = ({ match, currentUserId }) => {
-  const numberItems = match.expectedItems.length;
-  const isSender = isUserSenderInMatch(match, currentUserId);
-  const isBegun = isMatchBegun(match, isSender);
-  const isFulfilled = isMatchFulfilled(match, isSender);
-  const fulfilledItems = calculateFulfilledUserMatchItems(match, isSender);
+}> = ({ userMatch, currentUserId }) => {
+  const numberItems =
+    userMatch.expectedAToBItems.length + userMatch.expectedBToAItems.length;
+  // If isCustomerA === false, then we know that they are customerB
+  const isCustomerA = userMatch.customerA === currentUserId;
+
+  const fulfilledItems = calculateFulfilledUserMatchItems(
+    userMatch,
+    isCustomerA,
+  );
+  const isBegun = fulfilledItems.length > 0;
+  const isFulfilled = isUserMatchFulfilled(userMatch, isCustomerA);
   return (
-    <MatchListItemBox finished={isFulfilled} matchId={match.id}>
+    <MatchListItemBox
+      finished={isFulfilled}
+      matchId={userMatch.id}
+      matchType={"user"}
+    >
       <Typography variant="h3">
-        <UserMatchTitle match={match} isSender={isSender} />
+        <UserMatchTitle userMatch={userMatch} isCustomerA={isCustomerA} />
       </Typography>
 
       {isBegun && (
@@ -36,7 +44,7 @@ const UserMatchListItem: FC<{
             percentComplete={(fulfilledItems.length * 100) / numberItems}
             subtitle={
               <Box>
-                {isSender ? "Levert" : "Mottatt"} {fulfilledItems.length} av{" "}
+                {isCustomerA ? "Levert" : "Mottatt"} {fulfilledItems.length} av{" "}
                 {numberItems} bøker
               </Box>
             }
@@ -47,13 +55,22 @@ const UserMatchListItem: FC<{
         <>
           <Box>
             {formatActionsString(
-              isSender ? numberItems : 0,
-              isSender ? 0 : numberItems,
+              isCustomerA
+                ? userMatch.expectedAToBItems.length
+                : userMatch.expectedBToAItems.length,
+              isCustomerA
+                ? userMatch.expectedBToAItems.length
+                : userMatch.expectedAToBItems.length,
             )}
           </Box>
         </>
       )}
-      {!isFulfilled && <MeetingInfo match={match} />}
+      {!isFulfilled && (
+        <MeetingInfo
+          meetingLocation={userMatch.meetingInfo.location}
+          meetingTime={userMatch.meetingInfo.date}
+        />
+      )}
     </MatchListItemBox>
   );
 };

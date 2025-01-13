@@ -107,5 +107,5 @@ export const customerItemSchema = new Schema<ToSchema<CustomerItem>>({
       email: String,
       phone: String,
     },
-  }, // TODO: this information should not be duped here, customer ref. instead, consider history of user details to retain user details history
+  }, // fixme: this information should not be duped here, customer ref. instead, consider history of user details to retain user details history
 });

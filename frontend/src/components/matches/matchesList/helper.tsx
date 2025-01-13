@@ -1,10 +1,10 @@
 import theme from "@frontend/utils/theme";
+import { KeyboardDoubleArrowRight, SwapHoriz } from "@mui/icons-material";
+import { SxProps, Typography, Box } from "@mui/material";
 import {
   StandMatchWithDetails,
   UserMatchWithDetails,
-} from "@frontend/utils/types";
-import { KeyboardDoubleArrowRight, SwapHoriz } from "@mui/icons-material";
-import { SxProps, Typography, Box } from "@mui/material";
+} from "@shared/match/match-dtos";
 
 export function formatActionsString(handoffItems: number, pickupItems: number) {
   const hasHandoffItems = handoffItems > 0;
@@ -60,46 +60,68 @@ export const FormattedDatetime = ({ date }: { date: Date }) => {
 const me = <span style={{ color: "#757575", fontWeight: 400 }}>Meg</span>;
 
 interface UserMatchTitleProps {
-  match: UserMatchWithDetails;
-  isSender: boolean;
+  userMatch: UserMatchWithDetails;
+  isCustomerA: boolean;
 }
 
-export const UserMatchTitle = ({ match, isSender }: UserMatchTitleProps) => {
+export const UserMatchTitle = ({
+  userMatch,
+  isCustomerA,
+}: UserMatchTitleProps) => {
   const arrowSize = "1.18em";
+  const deliveryItems = isCustomerA
+    ? userMatch.expectedAToBItems
+    : userMatch.expectedBToAItems;
+  const receiveItems = isCustomerA
+    ? userMatch.expectedBToAItems
+    : userMatch.expectedAToBItems;
+  const otherDetails = isCustomerA
+    ? userMatch.customerBDetails
+    : userMatch.customerADetails;
+  if (deliveryItems.length > 0 && receiveItems.length === 0) {
+    return (
+      <>
+        {me}{" "}
+        <KeyboardDoubleArrowRight
+          sx={{ verticalAlign: "text-bottom", fontSize: arrowSize }}
+        />{" "}
+        <Box component="span" fontWeight="bold">
+          {otherDetails.name}
+        </Box>
+      </>
+    );
+  }
+  if (receiveItems.length > 0 && deliveryItems.length === 0) {
+    return (
+      <>
+        <Box component="span" fontWeight="bold">
+          {otherDetails.name}
+        </Box>{" "}
+        <KeyboardDoubleArrowRight
+          sx={{ verticalAlign: "text-bottom", fontSize: arrowSize }}
+        />{" "}
+        {me}
+      </>
+    );
+  }
   return (
     <>
-      {isSender ? (
-        <>
-          {me}{" "}
-          <KeyboardDoubleArrowRight
-            sx={{ verticalAlign: "text-bottom", fontSize: arrowSize }}
-          />{" "}
-          <Box component="span" fontWeight="bold">
-            {match.receiverDetails.name}
-          </Box>
-        </>
-      ) : (
-        <>
-          <Box component="span" fontWeight="bold">
-            {match.senderDetails.name}
-          </Box>{" "}
-          <KeyboardDoubleArrowRight
-            sx={{ verticalAlign: "text-bottom", fontSize: arrowSize }}
-          />{" "}
-          {me}
-        </>
-      )}
+      {me}{" "}
+      <SwapHoriz sx={{ verticalAlign: "text-bottom", fontSize: arrowSize }} />{" "}
+      <Box component="span" fontWeight="bold">
+        {otherDetails.name}
+      </Box>
     </>
   );
 };
 
 interface StandMatchTitleProps {
-  match: StandMatchWithDetails;
+  standMatch: StandMatchWithDetails;
 }
 
-export const StandMatchTitle = ({ match }: StandMatchTitleProps) => {
-  const hasHandoffItems = match.expectedHandoffItems.length > 0;
-  const hasPickupItems = match.expectedPickupItems.length > 0;
+export const StandMatchTitle = ({ standMatch }: StandMatchTitleProps) => {
+  const hasHandoffItems = standMatch.expectedHandoffItems.length > 0;
+  const hasPickupItems = standMatch.expectedPickupItems.length > 0;
 
   const stand = (
     <Box component="span" fontWeight="bold">

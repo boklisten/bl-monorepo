@@ -40,7 +40,7 @@ async function blFetch<T>(
         try {
           await fetchNewTokens();
         } catch (tokenError) {
-          // TODO: login required error boundary
+          // fixme: login required error boundary
           if (!(tokenError instanceof BlError)) {
             assertBlApiError(tokenError);
           }

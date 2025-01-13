@@ -254,7 +254,7 @@ export class OrderPlacedHandler {
           );
           if (!originalOrder.pendingSignature) continue;
         }
-        // TODO: remove this return and uncomment throw to enforce signature
+        // fixme: remove this return and uncomment throw to enforce signature
         //       requirement on handout
         return true;
         // throw new BlError(

@@ -1,14 +1,17 @@
 import BlFetcher from "@frontend/api/blFetcher";
 import { getAccessTokenBody } from "@frontend/api/token";
 import {
-  isMatchFulfilled,
-  isUserSenderInMatch,
+  isStandMatchFulfilled,
+  isUserMatchFulfilled,
 } from "@frontend/components/matches/matches-helper";
 import { MatchListItemGroups } from "@frontend/components/matches/matchesList/MatchListItemGroups";
 import ProgressBar from "@frontend/components/matches/matchesList/ProgressBar";
 import BL_CONFIG from "@frontend/utils/bl-config";
 import { Alert, Skeleton } from "@mui/material";
-import { MatchWithDetails } from "@shared/match/match-dtos";
+import {
+  StandMatchWithDetails,
+  UserMatchWithDetails,
+} from "@shared/match/match-dtos";
 import { FC } from "react";
 import useSWR from "swr";
 
@@ -16,21 +19,27 @@ export const MatchesList: FC = () => {
   const { data: accessToken, error: tokenError } = useSWR("userId", () =>
     getAccessTokenBody(),
   );
-  const userId = accessToken?.details;
-  const { data: matches, error: matchesError } = useSWR(
-    `${BL_CONFIG.collection.match}/me`,
-    BlFetcher.get<MatchWithDetails[]>,
+  const customer = accessToken?.details;
+
+  const { data: userMatches, error: userMatchesError } = useSWR(
+    `${BL_CONFIG.collection.userMatches}/me`,
+    BlFetcher.get<UserMatchWithDetails[]>,
+    { refreshInterval: 5000 },
+  );
+  const { data: standMatches, error: standMatchesError } = useSWR(
+    `${BL_CONFIG.collection.standMatches}/me`,
+    BlFetcher.get<StandMatchWithDetails[]>,
     { refreshInterval: 5000 },
   );
 
-  if (!userId || tokenError || matchesError) {
+  if (!customer || tokenError || userMatchesError || standMatchesError) {
     return <Alert severity="error">En feil har oppstått.</Alert>;
   }
 
-  if (matches === undefined) {
+  if (userMatches === undefined || standMatches === undefined) {
     return <Skeleton />;
   }
-  const sortedMatches = matches.sort((a, b) => {
+  const sortedUserMatches = userMatches.sort((a, b) => {
     if (!a.meetingInfo.date) {
       return b.meetingInfo.date ? 1 : 0;
     } else if (!b.meetingInfo.date) {
@@ -43,14 +52,15 @@ export const MatchesList: FC = () => {
     return 0;
   });
 
-  const unfulfilledMatches = sortedMatches.filter(
-    (match) => !isMatchFulfilled(match, isUserSenderInMatch(match, userId)),
+  const unfulfilledUserMatches = sortedUserMatches.filter(
+    (userMatch) =>
+      !isUserMatchFulfilled(userMatch, userMatch.customerA === customer),
   );
-  const fulfilledMatches = sortedMatches.filter((match) =>
-    isMatchFulfilled(match, isUserSenderInMatch(match, userId)),
+  const fulfilledUserMatches = sortedUserMatches.filter((userMatch) =>
+    isUserMatchFulfilled(userMatch, userMatch.customerA === customer),
   );
 
-  if (matches.length === 0) {
+  if (userMatches.length === 0 && standMatches.length === 0) {
     return (
       <Alert severity="info">
         Du har ingen overleveringer :)
@@ -63,29 +73,40 @@ export const MatchesList: FC = () => {
     );
   }
 
-  const numberFulfilledMatches = matches.filter((element) =>
-    isMatchFulfilled(element, isUserSenderInMatch(element, userId)),
-  ).length;
+  const standMatch = standMatches[0];
 
   return (
     <>
       <ProgressBar
-        percentComplete={(numberFulfilledMatches * 100) / matches.length}
+        percentComplete={
+          (100 *
+            (fulfilledUserMatches.length +
+              (isStandMatchFulfilled(standMatch) ? 1 : 0))) /
+          (userMatches.length + (standMatch !== undefined ? 1 : 0))
+        }
         subtitle={
           <span>
-            Fullført {numberFulfilledMatches} av {matches.length} overleveringer
+            Fullført{" "}
+            {fulfilledUserMatches.length +
+              (isStandMatchFulfilled(standMatch) ? 1 : 0)}{" "}
+            av {userMatches.length + (standMatch !== undefined ? 1 : 0)}{" "}
+            overleveringer
           </span>
         }
       />
 
-      {unfulfilledMatches.length > 0 && (
-        <MatchListItemGroups matches={unfulfilledMatches} userId={userId} />
+      {unfulfilledUserMatches.length > 0 && (
+        <MatchListItemGroups
+          userMatches={unfulfilledUserMatches}
+          standMatch={standMatch}
+          userId={customer}
+        />
       )}
 
-      {fulfilledMatches.length > 0 && (
+      {fulfilledUserMatches.length > 0 && (
         <MatchListItemGroups
-          matches={fulfilledMatches}
-          userId={userId}
+          userMatches={fulfilledUserMatches}
+          userId={customer}
           heading="Fullførte overleveringer"
         />
       )}

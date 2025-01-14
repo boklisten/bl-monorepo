@@ -4,7 +4,6 @@ import { BlApiRequest } from "@backend/request/bl-api-request";
 import { BlDocumentStorage } from "@backend/storage/blDocumentStorage";
 import { BlError } from "@shared/bl-error/bl-error";
 import { BlapiResponse } from "@shared/blapi-response/blapi-response";
-import { CustomerItem } from "@shared/customer-item/customer-item";
 import { z } from "zod";
 import { fromError } from "zod-validation-error";
 
@@ -13,12 +12,7 @@ const PublicBlidLookupSpec = z.object({
 });
 
 export class PublicBlidLookupOperation implements Operation {
-  private readonly _customerItemStorage: BlDocumentStorage<CustomerItem>;
-
-  constructor(customerItemStorage?: BlDocumentStorage<CustomerItem>) {
-    this._customerItemStorage =
-      customerItemStorage ?? new BlDocumentStorage(CustomerItemModel);
-  }
+  private customerItemStorage = new BlDocumentStorage(CustomerItemModel);
 
   async run(blApiRequest: BlApiRequest): Promise<BlapiResponse> {
     const parsedRequest = PublicBlidLookupSpec.safeParse(blApiRequest.data);
@@ -26,7 +20,7 @@ export class PublicBlidLookupOperation implements Operation {
       throw new BlError(fromError(parsedRequest.error).toString()).code(701);
     }
 
-    const customerItemInfo = await this._customerItemStorage.aggregate([
+    const customerItemInfo = await this.customerItemStorage.aggregate([
       {
         $match: {
           returned: false,

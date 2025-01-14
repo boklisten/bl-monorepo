@@ -4,7 +4,6 @@ import { BlApiRequest } from "@backend/request/bl-api-request";
 import { BlDocumentStorage } from "@backend/storage/blDocumentStorage";
 import { BlError } from "@shared/bl-error/bl-error";
 import { BlapiResponse } from "@shared/blapi-response/blapi-response";
-import { CustomerItem } from "@shared/customer-item/customer-item";
 import { ObjectId } from "mongodb";
 import { z } from "zod";
 import { fromError } from "zod-validation-error";
@@ -18,12 +17,7 @@ const CustomerItemGenerateReportSpec = z.object({
 });
 
 export class CustomerItemGenerateReportOperation implements Operation {
-  private readonly _customerItemStorage: BlDocumentStorage<CustomerItem>;
-
-  constructor(customerItemStorage?: BlDocumentStorage<CustomerItem>) {
-    this._customerItemStorage =
-      customerItemStorage ?? new BlDocumentStorage(CustomerItemModel);
-  }
+  private customerItemStorage = new BlDocumentStorage(CustomerItemModel);
 
   async run(blApiRequest: BlApiRequest): Promise<BlapiResponse> {
     const parsedRequest = CustomerItemGenerateReportSpec.safeParse(
@@ -52,7 +46,7 @@ export class CustomerItemGenerateReportOperation implements Operation {
         ? { creationTime: creationTimeLimiter }
         : {};
 
-    const reportData = await this._customerItemStorage.aggregate([
+    const reportData = await this.customerItemStorage.aggregate([
       {
         $match: {
           returned: parsedRequest.data.returned,

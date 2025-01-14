@@ -1,7 +1,6 @@
 import { BlCollection } from "@backend/collections/bl-collection";
 import { BranchModel } from "@backend/collections/branch/branch.model";
 import { BranchGetHook } from "@backend/collections/branch/hook/branch-get.hook";
-import { BranchPostHook } from "@backend/collections/branch/hook/branch-post.hook";
 
 export const BranchCollection: BlCollection = {
   model: BranchModel,
@@ -46,7 +45,6 @@ export const BranchCollection: BlCollection = {
     },
     {
       method: "post",
-      hook: new BranchPostHook(),
       restriction: {
         permissions: ["admin"],
       },

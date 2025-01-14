@@ -3,7 +3,7 @@ import { LocalLoginHandler } from "@backend/auth/local/local-login.handler";
 import { BlCollectionName } from "@backend/collections/bl-collection";
 import { EmailValidationHelper } from "@backend/collections/email-validation/helpers/email-validation.helper";
 import { User } from "@backend/collections/user/user";
-import { UserSchema } from "@backend/collections/user/user.schema";
+import { userSchema } from "@backend/collections/user/userSchema";
 import { userDetailSchema } from "@backend/collections/user-detail/user-detail.schema";
 import { SEDbQuery } from "@backend/query/se.db-query";
 import { BlDocumentStorage } from "@backend/storage/blDocumentStorage";
@@ -32,7 +32,7 @@ export class UserHandler {
       : new EmailValidationHelper();
     this.userStorage = userStorage
       ? userStorage
-      : new BlDocumentStorage(BlCollectionName.Users, UserSchema);
+      : new BlDocumentStorage(BlCollectionName.Users, userSchema);
     this._localLoginHandler = localLoginHandler
       ? localLoginHandler
       : new LocalLoginHandler();

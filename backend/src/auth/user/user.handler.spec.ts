@@ -6,7 +6,7 @@ import { BlCollectionName } from "@backend/collections/bl-collection";
 import { EmailValidationHelper } from "@backend/collections/email-validation/helpers/email-validation.helper";
 import { LocalLogin } from "@backend/collections/local-login/local-login";
 import { User } from "@backend/collections/user/user";
-import { UserSchema } from "@backend/collections/user/user.schema";
+import { userSchema } from "@backend/collections/user/userSchema";
 import { userDetailSchema } from "@backend/collections/user-detail/user-detail.schema";
 import { SEDbQuery } from "@backend/query/se.db-query";
 import { BlDocumentStorage } from "@backend/storage/blDocumentStorage";
@@ -35,7 +35,7 @@ const testUser = {
 describe("UserHandler", () => {
   const userStorage = new BlDocumentStorage<User>(
     BlCollectionName.Users,
-    UserSchema,
+    userSchema,
   );
   const emailValidationHelper: EmailValidationHelper =
     new EmailValidationHelper();

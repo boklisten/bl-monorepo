@@ -4,7 +4,7 @@ import { BlCollectionName } from "@backend/collections/bl-collection";
 import { LocalLogin } from "@backend/collections/local-login/local-login";
 import { localLoginSchema } from "@backend/collections/local-login/local-login.schema";
 import { User } from "@backend/collections/user/user";
-import { UserSchema } from "@backend/collections/user/user.schema";
+import { userSchema } from "@backend/collections/user/userSchema";
 import { userDetailSchema } from "@backend/collections/user-detail/user-detail.schema";
 import { isNotNullish, isNullish } from "@backend/helper/typescript-helpers";
 import { Operation } from "@backend/operation/operation";
@@ -32,7 +32,7 @@ export class UserDetailChangeEmailOperation implements Operation {
       : new BlDocumentStorage(BlCollectionName.UserDetails, userDetailSchema);
     this._userStorage = _userStorage
       ? _userStorage
-      : new BlDocumentStorage(BlCollectionName.Users, UserSchema);
+      : new BlDocumentStorage(BlCollectionName.Users, userSchema);
     this._localLoginStorage = _localLoginStorage
       ? _localLoginStorage
       : new BlDocumentStorage(BlCollectionName.LocalLogins, localLoginSchema);

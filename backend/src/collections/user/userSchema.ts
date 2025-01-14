@@ -2,7 +2,7 @@ import { User } from "@backend/collections/user/user";
 import { ToSchema } from "@backend/helper/typescript-helpers";
 import { Schema } from "mongoose";
 
-export const UserSchema = new Schema<ToSchema<User>>({
+export const userSchema = new Schema<ToSchema<User>>({
   userDetail: Schema.Types.ObjectId,
   permission: {
     type: String,

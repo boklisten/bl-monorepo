@@ -7,7 +7,7 @@ import { orderSchema } from "@backend/collections/order/order.schema";
 import { paymentSchema } from "@backend/collections/payment/payment.schema";
 import { standMatchSchema } from "@backend/collections/stand-match/stand-match.schema";
 import { User } from "@backend/collections/user/user";
-import { UserSchema } from "@backend/collections/user/user.schema";
+import { userSchema } from "@backend/collections/user/userSchema";
 import { userDetailSchema } from "@backend/collections/user-detail/user-detail.schema";
 import { userMatchSchema } from "@backend/collections/user-match/user-match.schema";
 import { SEDbQueryBuilder } from "@backend/query/se.db-query-builder";
@@ -44,7 +44,7 @@ export class DeleteUserService {
     _standMatchStorage?: BlDocumentStorage<StandMatch>,
   ) {
     this.userStorage =
-      _userStorage ?? new BlDocumentStorage(BlCollectionName.Users, UserSchema);
+      _userStorage ?? new BlDocumentStorage(BlCollectionName.Users, userSchema);
     this.userDetailStorage =
       _userDetailStorage ??
       new BlDocumentStorage(BlCollectionName.UserDetails, userDetailSchema);

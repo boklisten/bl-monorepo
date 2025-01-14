@@ -1,7 +1,7 @@
 import { PermissionService } from "@backend/auth/permission/permission.service";
 import { BlCollectionName } from "@backend/collections/bl-collection";
 import { User } from "@backend/collections/user/user";
-import { UserSchema } from "@backend/collections/user/user.schema";
+import { userSchema } from "@backend/collections/user/userSchema";
 import { userDetailSchema } from "@backend/collections/user-detail/user-detail.schema";
 import { Operation } from "@backend/operation/operation";
 import { BlApiRequest } from "@backend/request/bl-api-request";
@@ -23,7 +23,7 @@ export class UserDetailReadPermissionOperation implements Operation {
 
     this._userStorage = _userStorage
       ? _userStorage
-      : new BlDocumentStorage(BlCollectionName.Users, UserSchema);
+      : new BlDocumentStorage(BlCollectionName.Users, userSchema);
 
     this._resHandler = _resHandler ? _resHandler : new SEResponseHandler();
 

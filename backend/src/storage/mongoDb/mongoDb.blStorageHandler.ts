@@ -27,11 +27,10 @@ export class MongoDbBlStorageHandler<T extends BlDocument>
   private permissionService: PermissionService;
 
   constructor(collectionName: BlCollectionName, schema: Schema<T>) {
-    const mongooseModelCreator = new MongooseModelCreator<T>(
+    this.mongooseModel = new MongooseModelCreator<T>(
       collectionName,
       schema,
-    );
-    this.mongooseModel = mongooseModelCreator.create();
+    ).create();
     this.permissionService = new PermissionService();
   }
 

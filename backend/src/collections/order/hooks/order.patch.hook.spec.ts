@@ -104,7 +104,7 @@ describe("OrderPatchHook", () => {
 
   const userDetailStorageUpdateStub = sinon
     .stub(userDetailStorage, "update")
-    .callsFake((id: string, data: any, user: any) => {
+    .callsFake((id: string, data: any) => {
       if (!userDetailUpdated) {
         return Promise.reject(new BlError("could not update"));
       }
@@ -125,7 +125,7 @@ describe("OrderPatchHook", () => {
 
   const orderStorageUpdateStub = sinon
     .stub(orderStorage, "update")
-    .callsFake((id: string, data: any, user: any) => {
+    .callsFake((id: string, data: any) => {
       if (!orderUpdated) {
         return Promise.reject("could not update");
       }

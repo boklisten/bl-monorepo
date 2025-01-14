@@ -50,11 +50,7 @@ export class UserDetailDeleteHook extends Hook {
     await this.checkIfUserCanDelete(id, accessToken);
 
     if (data?.mergeInto) {
-      await this.deleteUserService.mergeIntoOtherUser(
-        id,
-        data.mergeInto,
-        accessToken,
-      );
+      await this.deleteUserService.mergeIntoOtherUser(id, data.mergeInto);
     } else {
       await this.checkActiveOrders(id);
       await this.checkActiveCustomerItems(id);

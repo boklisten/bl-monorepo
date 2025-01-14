@@ -23,7 +23,6 @@ describe("PaymentPostHook", () => {
   );
   const paymentDibsHandler = new PaymentDibsHandler();
   const paymentPostHook = new PaymentPostHook(
-    paymentStorage,
     orderStorage,
     paymentValidator,
     paymentDibsHandler,
@@ -74,18 +73,16 @@ describe("PaymentPostHook", () => {
 
     return Promise.resolve(testPayment);
   });
-  sinon.stub(paymentStorage, "update").callsFake((id, data, accessToken) => {
+  sinon.stub(paymentStorage, "update").callsFake(() => {
     return Promise.resolve(testPayment);
   });
 
-  sinon
-    .stub(paymentDibsHandler, "handleDibsPayment")
-    .callsFake((payment, accessToken) => {
-      if (!handleDibsPaymentValid) {
-        return Promise.reject(new BlError("could not create dibs payment"));
-      }
-      return Promise.resolve(testPayment);
-    });
+  sinon.stub(paymentDibsHandler, "handleDibsPayment").callsFake((payment) => {
+    if (!handleDibsPaymentValid) {
+      return Promise.reject(new BlError("could not create dibs payment"));
+    }
+    return Promise.resolve(testPayment);
+  });
 
   sinon.stub(orderStorage, "get").callsFake((id: string) => {
     if (id !== testOrder.id) {
@@ -120,13 +117,6 @@ describe("PaymentPostHook", () => {
         BlError,
         /payments is empty or undefined/,
       );
-    });
-
-    it("should reject if accessToken is undefined", () => {
-      return expect(
-        // @ts-expect-error fixme: auto ignored
-        paymentPostHook.after([testPayment], undefined),
-      ).to.be.rejectedWith(BlError, /accessToken is undefined/);
     });
 
     it("should reject if paymentValidator.validate rejects", () => {

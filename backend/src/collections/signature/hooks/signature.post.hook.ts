@@ -65,11 +65,9 @@ export class SignaturePostHook extends Hook {
       ).code(200);
     }
     const userDetail = await this.userDetailStorage.get(accessToken.details);
-    await this.userDetailStorage.update(
-      userDetail.id,
-      { signatures: [...userDetail.signatures, writtenSignature.id] },
-      { id: accessToken.details, permission: accessToken.permission },
-    );
+    await this.userDetailStorage.update(userDetail.id, {
+      signatures: [...userDetail.signatures, writtenSignature.id],
+    });
 
     await signOrders(this.orderStorage, userDetail);
 

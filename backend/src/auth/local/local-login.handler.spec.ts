@@ -73,15 +73,13 @@ describe("LocalLoginHandler", () => {
       });
     });
 
-  sinon
-    .stub(localLoginStorage, "update")
-    .callsFake((id: string, data: any, user: any) => {
-      if (updateSuccess) {
-        return Promise.resolve(testLocalLogin);
-      }
+  sinon.stub(localLoginStorage, "update").callsFake((id: string, data: any) => {
+    if (updateSuccess) {
+      return Promise.resolve(testLocalLogin);
+    }
 
-      return Promise.reject(new BlError("could not update"));
-    });
+    return Promise.reject(new BlError("could not update"));
+  });
 
   describe("#create", () => {
     describe("should reject with TypeError when", () => {

@@ -9,7 +9,6 @@ import { BlDocumentStorage } from "@backend/storage/blDocumentStorage";
 import { Delivery } from "@shared/delivery/delivery";
 import { Order } from "@shared/order/order";
 import { Payment } from "@shared/payment/payment";
-import { AccessToken } from "@shared/token/access-token";
 import { UserDetail } from "@shared/user/user-detail/user-detail";
 
 export class PaymentDibsHandler {
@@ -43,10 +42,7 @@ export class PaymentDibsHandler {
       : new BlDocumentStorage(BlCollectionName.UserDetails, userDetailSchema);
   }
 
-  public async handleDibsPayment(
-    payment: Payment,
-    accessToken: AccessToken,
-  ): Promise<Payment> {
+  public async handleDibsPayment(payment: Payment): Promise<Payment> {
     const order = await this.orderStorage.get(payment.order);
     const userDetail = await this.userDetailStorage.get(payment.customer);
     const dibsEasyOrder: DibsEasyOrder = await this.getDibsEasyOrder(
@@ -54,11 +50,9 @@ export class PaymentDibsHandler {
       order,
     );
     const paymentId = await this.dibsPaymentService.getPaymentId(dibsEasyOrder);
-    return await this.paymentStorage.update(
-      payment.id,
-      { info: { paymentId: paymentId } },
-      { id: accessToken.sub, permission: accessToken.permission },
-    );
+    return await this.paymentStorage.update(payment.id, {
+      info: { paymentId: paymentId },
+    });
   }
 
   private getDibsEasyOrder(

@@ -111,11 +111,7 @@ export class DeleteUserService {
     }
   }
 
-  async mergeIntoOtherUser(
-    fromUser: string,
-    toUser: string,
-    accessToken: AccessToken,
-  ): Promise<void> {
+  async mergeIntoOtherUser(fromUser: string, toUser: string): Promise<void> {
     const [fromUserDetails, toUserDetails] = await Promise.all([
       this.userDetailStorage.get(fromUser),
       this.userDetailStorage.get(toUser),
@@ -134,18 +130,11 @@ export class DeleteUserService {
     ];
 
     await Promise.all([
-      this.userDetailStorage.update(
-        toUser,
-        {
-          orders: newOrderRefs,
-          customerItems: newCustomerItemRefs,
-          signatures: newSignatureRefs,
-        },
-        {
-          id: accessToken.details,
-          permission: accessToken.permission,
-        },
-      ),
+      this.userDetailStorage.update(toUser, {
+        orders: newOrderRefs,
+        customerItems: newCustomerItemRefs,
+        signatures: newSignatureRefs,
+      }),
       this.customerItemStorage.updateMany(
         { customer: fromUser },
         { customer: toUser },

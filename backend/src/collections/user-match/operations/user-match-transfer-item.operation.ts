@@ -1,4 +1,3 @@
-import { SystemUser } from "@backend/auth/permission/permission.service";
 import { BlCollectionName } from "@backend/collections/bl-collection";
 import { branchSchema } from "@backend/collections/branch/branch.schema";
 import { customerItemSchema } from "@backend/collections/customer-item/customer-item.schema";
@@ -166,11 +165,7 @@ export class UserMatchTransferItemOperation implements Operation {
           ],
         };
       }
-      await this._userMatchStorage.update(
-        senderUserMatch.id,
-        update,
-        new SystemUser(),
-      );
+      await this._userMatchStorage.update(senderUserMatch.id, update);
       return;
     }
 
@@ -178,13 +173,9 @@ export class UserMatchTransferItemOperation implements Operation {
       return;
     }
 
-    await this._standMatchStorage.update(
-      senderStandMatch.id,
-      {
-        deliveredItems: [...senderStandMatch.deliveredItems, customerItem.item],
-      },
-      new SystemUser(),
-    );
+    await this._standMatchStorage.update(senderStandMatch.id, {
+      deliveredItems: [...senderStandMatch.deliveredItems, customerItem.item],
+    });
   }
 
   private async findReceiverUserMatch(
@@ -269,10 +260,7 @@ export class UserMatchTransferItemOperation implements Operation {
       this._branchStorage,
     );
 
-    const placedReceiverOrder = await this._orderStorage.add(
-      receiverOrder,
-      new SystemUser(),
-    );
+    const placedReceiverOrder = await this._orderStorage.add(receiverOrder);
 
     await new OrderValidator().validate(placedReceiverOrder, false);
 
@@ -295,19 +283,14 @@ export class UserMatchTransferItemOperation implements Operation {
 
     const addedCustomerItem = await this._customerItemStorage.add(
       generatedReceiverCustomerItem,
-      new SystemUser(),
     );
 
-    await this._orderStorage.update(
-      placedReceiverOrder.id,
-      {
-        orderItems: placedReceiverOrder.orderItems.map((orderItem) => ({
-          ...orderItem,
-          customerItem: addedCustomerItem.id,
-        })),
-      },
-      new SystemUser(),
-    );
+    await this._orderStorage.update(placedReceiverOrder.id, {
+      orderItems: placedReceiverOrder.orderItems.map((orderItem) => ({
+        ...orderItem,
+        customerItem: addedCustomerItem.id,
+      })),
+    });
   }
 
   private async returnSenderCustomerItem(
@@ -320,19 +303,12 @@ export class UserMatchTransferItemOperation implements Operation {
       this._branchStorage,
     );
 
-    const placedSenderOrder = await this._orderStorage.add(
-      senderOrder,
-      new SystemUser(),
-    );
+    const placedSenderOrder = await this._orderStorage.add(senderOrder);
     await new OrderValidator().validate(placedSenderOrder, false);
 
-    await this._customerItemStorage.update(
-      customerItem.id,
-      {
-        returned: true,
-      },
-      new SystemUser(),
-    );
+    await this._customerItemStorage.update(customerItem.id, {
+      returned: true,
+    });
   }
 
   private async getUserMatchesForCustomer(
@@ -399,10 +375,6 @@ export class UserMatchTransferItemOperation implements Operation {
         ],
       };
     }
-    await this._userMatchStorage.update(
-      receiverUserMatch.id,
-      update,
-      new SystemUser(),
-    );
+    await this._userMatchStorage.update(receiverUserMatch.id, update);
   }
 }

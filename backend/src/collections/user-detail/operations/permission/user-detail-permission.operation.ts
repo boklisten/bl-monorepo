@@ -93,11 +93,7 @@ export class UserDetailPermissionOperation implements Operation {
       throw new BlError("no access to change permission").code(904);
     }
 
-    await this._userStorage.update(
-      user.id,
-      { permission: permissionChange },
-      parsedRequest.user,
-    );
+    await this._userStorage.update(user.id, { permission: permissionChange });
 
     // @ts-expect-error fixme: auto ignored
     this._resHandler.sendResponse(res, new BlapiResponse([{ success: true }]));

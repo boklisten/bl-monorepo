@@ -49,7 +49,7 @@ describe("UserDetailHelper", () => {
 
   const userDetailStorageUpdateStub = sinon
     .stub(userDetailStorage, "update")
-    .callsFake((id: string, data: any, user: any) => {
+    .callsFake((id: string, data: any) => {
       if (!userDetailStorageUpdateSuccess) {
         return Promise.reject(new BlError("could not update"));
       }
@@ -101,7 +101,6 @@ describe("UserDetailHelper", () => {
 
           // @ts-expect-error fixme: auto ignored
           testDibsEasyPayment as DibsEasyPayment,
-          testAccessToken,
         )
         .then((updatedUserDetail: UserDetail) => {
           const name =
@@ -146,10 +145,8 @@ describe("UserDetailHelper", () => {
       userDetailHelper
         .updateUserDetailBasedOnDibsEasyPayment(
           "userDetail1",
-
           // @ts-expect-error fixme: auto ignored
           testDibsEasyPayment,
-          testAccessToken,
         )
         .then((updatedUserDetail: UserDetail) => {
           expect(updatedUserDetail.name).to.eq("Jenny Jensen"); // this value was already stored

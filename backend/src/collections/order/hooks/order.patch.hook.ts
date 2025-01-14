@@ -91,14 +91,7 @@ export class OrderPatchHook extends Hook {
           .catch((validationError: BlError) => {
             if (order?.placed) {
               this.orderStorage
-                .update(
-                  order.id,
-                  { placed: false },
-                  {
-                    id: accessToken.sub,
-                    permission: accessToken.permission,
-                  },
-                )
+                .update(order.id, { placed: false })
                 .then(() => {
                   return reject(
                     new BlError(

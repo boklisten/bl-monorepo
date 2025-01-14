@@ -1,7 +1,4 @@
-import {
-  PermissionService,
-  SystemUser,
-} from "@backend/auth/permission/permission.service";
+import { PermissionService } from "@backend/auth/permission/permission.service";
 import { BlCollectionName } from "@backend/collections/bl-collection";
 import { customerItemSchema } from "@backend/collections/customer-item/customer-item.schema";
 import { OrderToCustomerItemGenerator } from "@backend/collections/customer-item/helpers/order-to-customer-item-generator";
@@ -318,13 +315,9 @@ export class OrderPlaceOperation implements Operation {
       standMatchId,
       deliveredItems,
     ] of matchToDeliveredItemsMap.entries()) {
-      await this._standMatchStorage.update(
-        standMatchId,
-        {
-          deliveredItems: Array.from(deliveredItems),
-        },
-        new SystemUser(),
-      );
+      await this._standMatchStorage.update(standMatchId, {
+        deliveredItems: Array.from(deliveredItems),
+      });
     }
   }
 
@@ -349,13 +342,9 @@ export class OrderPlaceOperation implements Operation {
       standMatchId,
       receivedItems,
     ] of matchToReceivedItemsMap.entries()) {
-      await this._standMatchStorage.update(
-        standMatchId,
-        {
-          receivedItems: Array.from(receivedItems),
-        },
-        new SystemUser(),
-      );
+      await this._standMatchStorage.update(standMatchId, {
+        receivedItems: Array.from(receivedItems),
+      });
     }
   }
 
@@ -399,11 +388,7 @@ export class OrderPlaceOperation implements Operation {
           ],
         };
       }
-      await this._userMatchStorage.update(
-        receiverUserMatch.id,
-        update,
-        new SystemUser(),
-      );
+      await this._userMatchStorage.update(receiverUserMatch.id, update);
     }
   }
 
@@ -447,11 +432,7 @@ export class OrderPlaceOperation implements Operation {
           ],
         };
       }
-      await this._userMatchStorage.update(
-        senderUserMatch.id,
-        update,
-        new SystemUser(),
-      );
+      await this._userMatchStorage.update(senderUserMatch.id, update);
     }
   }
 
@@ -643,7 +624,6 @@ export class OrderPlaceOperation implements Operation {
   private async addCustomerItemsToCustomer(
     customerItems: CustomerItem[],
     customerId: string,
-    user: { id: string; permission: UserPermission },
   ): Promise<boolean> {
     const customerItemIds: string[] = customerItems.map((ci) => {
       return ci.id.toString();
@@ -656,11 +636,9 @@ export class OrderPlaceOperation implements Operation {
     userDetailCustomerItemsIds =
       userDetailCustomerItemsIds.concat(customerItemIds);
 
-    await this._userDetailStorage.update(
-      customerId,
-      { customerItems: userDetailCustomerItemsIds },
-      user,
-    );
+    await this._userDetailStorage.update(customerId, {
+      customerItems: userDetailCustomerItemsIds,
+    });
 
     return true;
   }

@@ -90,11 +90,7 @@ export class TwilioSmsEventOperation implements Operation {
 
     newSmsEvents.push(smsEvent);
 
-    await this._messageStorage.update(
-      message.id,
-      { smsEvents: newSmsEvents },
-      { id: "SYSTEM", permission: "admin" },
-    );
+    await this._messageStorage.update(message.id, { smsEvents: newSmsEvents });
 
     logger.silly(
       `updated message "${message.id}" with sms event: "${smsEvent["status"]}"`,

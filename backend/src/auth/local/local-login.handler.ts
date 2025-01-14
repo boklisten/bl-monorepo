@@ -1,7 +1,6 @@
 import { LocalLoginCreator } from "@backend/auth/local/local-login-creator/local-login-creator";
 import { HashedPasswordGenerator } from "@backend/auth/local/password/hashed-password-generator";
 import { SaltGenerator } from "@backend/auth/local/salt/salt-generator";
-import { SystemUser } from "@backend/auth/permission/permission.service";
 import { BlCollectionName } from "@backend/collections/bl-collection";
 import { LocalLogin } from "@backend/collections/local-login/local-login";
 import { localLoginSchema } from "@backend/collections/local-login/local-login.schema";
@@ -110,7 +109,7 @@ export class LocalLoginHandler {
         username,
         randomPassword,
       );
-      await this.localLoginStorage.add(defaultLocalLogin, new SystemUser());
+      await this.localLoginStorage.add(defaultLocalLogin);
 
       return true;
     } catch (error) {
@@ -141,14 +140,10 @@ export class LocalLoginHandler {
                 localLogin.salt = hashedPasswordAndSalt.salt;
 
                 this.localLoginStorage
-                  .update(
-                    localLogin.id,
-                    {
-                      hashedPassword: hashedPasswordAndSalt.hashedPassword,
-                      salt: hashedPasswordAndSalt.salt,
-                    },
-                    new SystemUser(),
-                  )
+                  .update(localLogin.id, {
+                    hashedPassword: hashedPasswordAndSalt.hashedPassword,
+                    salt: hashedPasswordAndSalt.salt,
+                  })
                   .then(() => {
                     resolve(true);
                   })

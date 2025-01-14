@@ -113,11 +113,9 @@ export class CustomerItemPostHook extends Hook {
             break;
           }
         }
-        return this._orderStorage.update(
-          order.id,
-          { orderItems: order.orderItems },
-          { id: accessToken.sub, permission: accessToken.permission },
-        );
+        return this._orderStorage.update(order.id, {
+          orderItems: order.orderItems,
+        });
       })
       .then(() => {
         return this._userDetailStorage.get(customerItem.customer);
@@ -143,7 +141,6 @@ export class CustomerItemPostHook extends Hook {
           userDetail.id,
           // @ts-expect-error fixme: auto ignored
           { customerItems: newCustomerItems },
-          { id: accessToken.sub, permission: accessToken.permission },
         );
       })
       .then(() => {

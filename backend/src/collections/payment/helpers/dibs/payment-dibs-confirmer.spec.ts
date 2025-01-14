@@ -60,7 +60,7 @@ describe("PaymentDibsConfirmer", () => {
       updatePaymentStub.rejects(new BlError("could not update payment"));
 
       return expect(
-        paymentDibsConfirmer.confirm(order, payment, accessToken),
+        paymentDibsConfirmer.confirm(order, payment),
       ).to.eventually.be.rejectedWith(
         BlError,
         /payment could not be updated with dibs information/,
@@ -86,7 +86,7 @@ describe("PaymentDibsConfirmer", () => {
       } as Order;
 
       return expect(
-        paymentDibsConfirmer.confirm(order, payment, accessToken),
+        paymentDibsConfirmer.confirm(order, payment),
       ).to.eventually.be.rejectedWith(
         BlError,
         /dibsEasyPaymentDetails.summary.reservedAmount "10000" is not equal to payment.amount "11000"/,
@@ -113,8 +113,8 @@ describe("PaymentDibsConfirmer", () => {
         payments: [payment.id],
       } as Order;
 
-      return expect(paymentDibsConfirmer.confirm(order, payment, accessToken))
-        .to.eventually.be.true;
+      return expect(paymentDibsConfirmer.confirm(order, payment)).to.eventually
+        .be.true;
     });
   });
 

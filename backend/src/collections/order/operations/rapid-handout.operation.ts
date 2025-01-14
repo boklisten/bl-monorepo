@@ -1,4 +1,3 @@
-import { SystemUser } from "@backend/auth/permission/permission.service";
 import { BlCollectionName } from "@backend/collections/bl-collection";
 import { branchSchema } from "@backend/collections/branch/branch.schema";
 import { customerItemSchema } from "@backend/collections/customer-item/customer-item.schema";
@@ -103,19 +102,14 @@ export class RapidHandoutOperation implements Operation {
 
     const addedCustomerItem = await this._customerItemStorage.add(
       generatedReceiverCustomerItem,
-      new SystemUser(),
     );
 
-    await this._orderStorage.update(
-      placedReceiverOrder.id,
-      {
-        orderItems: placedReceiverOrder.orderItems.map((orderItem) => ({
-          ...orderItem,
-          customerItem: addedCustomerItem.id,
-        })),
-      },
-      new SystemUser(),
-    );
+    await this._orderStorage.update(placedReceiverOrder.id, {
+      orderItems: placedReceiverOrder.orderItems.map((orderItem) => ({
+        ...orderItem,
+        customerItem: addedCustomerItem.id,
+      })),
+    });
   }
 
   private async placeRentOrder(
@@ -201,10 +195,7 @@ export class RapidHandoutOperation implements Operation {
         },
       ],
     };
-    const placedHandoutOrder = await this._orderStorage.add(
-      handoutOrder,
-      new SystemUser(),
-    );
+    const placedHandoutOrder = await this._orderStorage.add(handoutOrder);
 
     await new OrderValidator().validate(placedHandoutOrder, false);
 

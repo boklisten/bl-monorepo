@@ -1,4 +1,3 @@
-import { SystemUser } from "@backend/auth/permission/permission.service";
 import { BlCollectionName } from "@backend/collections/bl-collection";
 import { orderSchema } from "@backend/collections/order/order.schema";
 import {
@@ -64,22 +63,17 @@ export class GuardianSignatureOperation implements Operation {
       serializedGuardianSignature.base64EncodedImage,
     );
 
-    const writtenSignature = await this._signatureStorage.add(
-      {
-        // @ts-expect-error id will be auto-generated
-        id: null,
-        image: signatureImage,
-        signedByGuardian: true,
-        signingName: serializedGuardianSignature.signingName,
-      },
-      new SystemUser(),
-    );
+    const writtenSignature = await this._signatureStorage.add({
+      // @ts-expect-error id will be auto-generated
+      id: null,
+      image: signatureImage,
+      signedByGuardian: true,
+      signingName: serializedGuardianSignature.signingName,
+    });
 
-    await this._userDetailStorage.update(
-      userDetail.id,
-      { signatures: [...userDetail.signatures, writtenSignature.id] },
-      new SystemUser(),
-    );
+    await this._userDetailStorage.update(userDetail.id, {
+      signatures: [...userDetail.signatures, writtenSignature.id],
+    });
 
     await signOrders(this._orderStorage, userDetail);
 

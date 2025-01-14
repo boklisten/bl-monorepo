@@ -11,7 +11,6 @@ import { Delivery } from "@shared/delivery/delivery";
 import { DeliveryInfoBring } from "@shared/delivery/delivery-info/delivery-info-bring";
 import { Item } from "@shared/item/item";
 import { Order } from "@shared/order/order";
-import { AccessToken } from "@shared/token/access-token";
 
 export class DeliveryHandler {
   private orderStorage: BlDocumentStorage<Order>;
@@ -45,26 +44,13 @@ export class DeliveryHandler {
   public updateOrderBasedOnMethod(
     delivery: Delivery,
     order: Order,
-    accessToken?: AccessToken,
   ): Promise<Delivery> {
     switch (delivery.method) {
       case "branch": {
-        return this.updateOrderWithDeliveryMethodBranch(
-          delivery,
-          order,
-
-          // @ts-expect-error fixme: auto ignored
-          accessToken,
-        );
+        return this.updateOrderWithDeliveryMethodBranch(delivery, order);
       }
       case "bring": {
-        return this.updateOrderWithDeliveryMethodBring(
-          delivery,
-          order,
-
-          // @ts-expect-error fixme: auto ignored
-          accessToken,
-        );
+        return this.updateOrderWithDeliveryMethodBring(delivery, order);
       }
     }
   }
@@ -72,9 +58,8 @@ export class DeliveryHandler {
   private updateOrderWithDeliveryMethodBranch(
     delivery: Delivery,
     order: Order,
-    accessToken: AccessToken,
   ): Promise<Delivery> {
-    return this.updateOrder(order, delivery, accessToken)
+    return this.updateOrder(order, delivery)
       .then(() => {
         return delivery;
       })
@@ -86,18 +71,12 @@ export class DeliveryHandler {
   private updateOrderWithDeliveryMethodBring(
     delivery: Delivery,
     order: Order,
-    accessToken: AccessToken,
   ): Promise<Delivery> {
     return new Promise((resolve, reject) => {
       this.fetchItems(order).then((items: Item[]) => {
-        this.getBringDeliveryInfoAndUpdateDelivery(
-          order,
-          delivery,
-          items,
-          accessToken,
-        )
+        this.getBringDeliveryInfoAndUpdateDelivery(order, delivery, items)
           .then((updatedDelivery: Delivery) => {
-            this.updateOrder(order, updatedDelivery, accessToken)
+            this.updateOrder(order, updatedDelivery)
               .then(() => {
                 resolve(updatedDelivery);
               })
@@ -116,18 +95,11 @@ export class DeliveryHandler {
     });
   }
 
-  private updateOrder(
-    order: Order,
-    delivery: Delivery,
-    accessToken: AccessToken,
-  ): Promise<boolean> {
+  private updateOrder(order: Order, delivery: Delivery): Promise<boolean> {
     const orderUpdateData = { delivery: delivery.id };
 
     return this.orderStorage
-      .update(order.id, orderUpdateData, {
-        id: accessToken.sub,
-        permission: accessToken.permission,
-      })
+      .update(order.id, orderUpdateData)
       .then(() => {
         return true;
       })
@@ -157,7 +129,6 @@ export class DeliveryHandler {
     order: Order,
     delivery: Delivery,
     items: Item[],
-    accessToken: AccessToken,
   ): Promise<Delivery> {
     return new Promise((resolve, reject) => {
       // @ts-expect-error fixme: auto ignored
@@ -190,11 +161,10 @@ export class DeliveryHandler {
 
               // @ts-expect-error fixme: auto ignored
               this.deliveryStorage
-                .update(
-                  delivery.id,
-                  { amount: deliveryInfoBring.amount, info: deliveryInfoBring },
-                  { id: accessToken.sub, permission: accessToken.permission },
-                )
+                .update(delivery.id, {
+                  amount: deliveryInfoBring.amount,
+                  info: deliveryInfoBring,
+                })
                 .then((updatedDelivery: Delivery) => {
                   resolve(updatedDelivery);
                 })

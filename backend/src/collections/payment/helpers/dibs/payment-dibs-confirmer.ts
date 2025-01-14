@@ -7,7 +7,6 @@ import { BlDocumentStorage } from "@backend/storage/blDocumentStorage";
 import { BlError } from "@shared/bl-error/bl-error";
 import { Order } from "@shared/order/order";
 import { Payment } from "@shared/payment/payment";
-import { AccessToken } from "@shared/token/access-token";
 
 export class PaymentDibsConfirmer {
   constructor(
@@ -22,11 +21,7 @@ export class PaymentDibsConfirmer {
       : new BlDocumentStorage(BlCollectionName.Payments, paymentSchema);
   }
 
-  public async confirm(
-    order: Order,
-    payment: Payment,
-    accessToken: AccessToken,
-  ): Promise<boolean> {
+  public async confirm(order: Order, payment: Payment): Promise<boolean> {
     let dibsEasyPaymentDetails;
     if (payment.amount >= 0) {
       this.validatePaymentInfo(payment);
@@ -55,7 +50,6 @@ export class PaymentDibsConfirmer {
 
         // @ts-expect-error fixme: auto ignored
         { info: dibsEasyPaymentDetails },
-        { id: accessToken.details, permission: accessToken.permission },
       );
     } catch (error) {
       throw new BlError(

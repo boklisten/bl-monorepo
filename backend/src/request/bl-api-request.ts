@@ -1,6 +1,6 @@
 import { UserPermission } from "@shared/permission/user-permission";
 
-export class BlApiRequest {
+export interface BlApiRequest {
   documentId?: string | undefined;
   query?: unknown;
   data?: unknown;

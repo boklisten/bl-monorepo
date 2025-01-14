@@ -1,4 +1,3 @@
-import { SystemUser } from "@backend/auth/permission/permission.service";
 import { BlCollectionName } from "@backend/collections/bl-collection";
 import { EmailValidation } from "@backend/collections/email-validation/email-validation";
 import { emailValidationSchema } from "@backend/collections/email-validation/email-validation.schema";
@@ -42,7 +41,7 @@ export class EmailValidationHelper {
 
           // @ts-expect-error fixme: auto ignored
           this._emailValidationStorage
-            .add(emailValidation, new SystemUser())
+            .add(emailValidation)
             .then((addedEmailValidation: EmailValidation) => {
               this._messenger
                 .emailConfirmation(userDetail, addedEmailValidation.id)

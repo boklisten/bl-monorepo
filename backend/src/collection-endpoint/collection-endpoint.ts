@@ -14,7 +14,7 @@ import { BlError } from "@shared/bl-error/bl-error";
 import { Router } from "express";
 
 export class CollectionEndpoint<T extends BlDocument> {
-  private _documentStorage: BlDocumentStorage<T>;
+  private readonly _documentStorage: BlDocumentStorage<T>;
 
   constructor(
     private _router: Router,

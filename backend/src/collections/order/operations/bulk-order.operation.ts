@@ -1,4 +1,3 @@
-import { SystemUser } from "@backend/auth/permission/permission.service";
 import { BlCollectionName } from "@backend/collections/bl-collection";
 import { customerItemSchema } from "@backend/collections/customer-item/customer-item.schema";
 import { itemSchema } from "@backend/collections/item/item.schema";
@@ -133,10 +132,7 @@ export class BulkOrderOperation implements Operation {
             },
           ],
         };
-        const placedHandoutOrder = await this._orderStorage.add(
-          rentOrder,
-          new SystemUser(),
-        );
+        const placedHandoutOrder = await this._orderStorage.add(rentOrder);
 
         await new OrderValidator().validate(placedHandoutOrder, false);
       }),

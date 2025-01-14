@@ -4,7 +4,6 @@ import { isNullish } from "@backend/helper/typescript-helpers";
 import { DibsEasyPayment } from "@backend/payment/dibs/dibs-easy-payment/dibs-easy-payment";
 import { BlDocumentStorage } from "@backend/storage/blDocumentStorage";
 import { BlError } from "@shared/bl-error/bl-error";
-import { AccessToken } from "@shared/token/access-token";
 import { UserDetail } from "@shared/user/user-detail/user-detail";
 
 export class UserDetailHelper {
@@ -19,7 +18,6 @@ export class UserDetailHelper {
   public updateUserDetailBasedOnDibsEasyPayment(
     userDetailId: string,
     dibsEasyPayment: DibsEasyPayment,
-    accessToken: AccessToken,
   ): Promise<UserDetail> {
     return new Promise((resolve, reject) => {
       this._userDetailStorage
@@ -31,10 +29,7 @@ export class UserDetailHelper {
           );
 
           this._userDetailStorage
-            .update(userDetailId, updateObject, {
-              id: accessToken.sub,
-              permission: accessToken.permission,
-            })
+            .update(userDetailId, updateObject)
             .then((updatedUserDetail: UserDetail) => {
               resolve(updatedUserDetail);
             })

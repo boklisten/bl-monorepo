@@ -6,7 +6,6 @@ import { BlDocumentStorage } from "@backend/storage/blDocumentStorage";
 import { BlError } from "@shared/bl-error/bl-error";
 import { Delivery } from "@shared/delivery/delivery";
 import { Order } from "@shared/order/order";
-import { AccessToken } from "@shared/token/access-token";
 import { expect, use as chaiUse, should } from "chai";
 import chaiAsPromised from "chai-as-promised";
 import sinon from "sinon";
@@ -16,7 +15,6 @@ should();
 
 let testOrder: Order;
 let testDelivery: Delivery;
-let testAccessToken: AccessToken;
 const orderStorage = new BlDocumentStorage<Order>(BlCollectionName.Orders);
 let canUpdateOrder = true;
 
@@ -32,17 +30,6 @@ describe("DeliveryHandler", () => {
       customer: "customer1",
       byCustomer: true,
       pendingSignature: false,
-    };
-
-    testAccessToken = {
-      iss: "boklisten.co",
-      aud: "boklisten.co",
-      iat: 123,
-      exp: 123,
-      sub: "user1",
-      username: "billy@bob.com",
-      permission: "customer",
-      details: "userDetails1",
     };
 
     testDelivery = {
@@ -72,11 +59,7 @@ describe("DeliveryHandler", () => {
       canUpdateOrder = false;
 
       return expect(
-        deliveryHandler.updateOrderBasedOnMethod(
-          testDelivery,
-          testOrder,
-          testAccessToken,
-        ),
+        deliveryHandler.updateOrderBasedOnMethod(testDelivery, testOrder),
       ).to.be.rejectedWith(BlError, /could not update/);
     });
   });

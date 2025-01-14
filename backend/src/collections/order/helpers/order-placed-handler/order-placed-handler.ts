@@ -68,18 +68,15 @@ export class OrderPlacedHandler {
 
       const paymentIds = payments.map((payment) => payment.id);
 
-      const placedOrder = await this.orderStorage.update(
-        order.id,
-        { placed: true, payments: paymentIds, pendingSignature },
-        {
-          id: accessToken.sub,
-          permission: accessToken.permission,
-        },
-      );
+      const placedOrder = await this.orderStorage.update(order.id, {
+        placed: true,
+        payments: paymentIds,
+        pendingSignature,
+      });
 
       await this.updateCustomerItemsIfPresent(placedOrder, accessToken);
       await this._orderItemMovedFromOrderHandler.updateOrderItems(placedOrder);
-      await this.updateUserDetailWithPlacedOrder(placedOrder, accessToken);
+      await this.updateUserDetailWithPlacedOrder(placedOrder);
       // Don't await to improve performance
       this.sendOrderConfirmationMail(placedOrder).catch((error) =>
         logger.warn(`could not send order confirmation mail: ${error}`),
@@ -171,10 +168,7 @@ export class OrderPlacedHandler {
     return order;
   }
 
-  private updateUserDetailWithPlacedOrder(
-    order: Order,
-    accessToken: AccessToken,
-  ): Promise<boolean> {
+  private updateUserDetailWithPlacedOrder(order: Order): Promise<boolean> {
     if (!order?.customer) {
       return Promise.resolve(true);
     }
@@ -190,11 +184,7 @@ export class OrderPlacedHandler {
             orders.push(order.id);
 
             this.userDetailStorage
-              .update(
-                order.customer,
-                { orders },
-                { id: accessToken.sub, permission: accessToken.permission },
-              )
+              .update(order.customer, { orders })
               .then(() => {
                 resolve(true);
               })

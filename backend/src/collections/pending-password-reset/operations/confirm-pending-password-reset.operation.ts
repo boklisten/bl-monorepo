@@ -1,5 +1,4 @@
 import { LocalLoginHandler } from "@backend/auth/local/local-login.handler";
-import { SystemUser } from "@backend/auth/permission/permission.service";
 import { BlCollectionName } from "@backend/collections/bl-collection";
 import { pendingPasswordResetSchema } from "@backend/collections/pending-password-reset/pending-password-reset.schema";
 import { SeCrypto } from "@backend/crypto/se.crypto";
@@ -178,7 +177,7 @@ async function deactivatePendingPasswordReset(
   pendingPasswordResetStorage: BlDocumentStorage<PendingPasswordReset>,
 ): Promise<void> {
   await pendingPasswordResetStorage
-    .update(pendingPasswordReset.id, { active: false }, new SystemUser())
+    .update(pendingPasswordReset.id, { active: false })
     .catch((updateActiveError) => {
       throw new BlError(
         `Unable to set PendingPasswordReset ${pendingPasswordReset.id} to not active`,

@@ -56,8 +56,6 @@ export interface BlStorageHandler<T extends BlDocument> {
     user: { id: string; permission: UserPermission },
   ): Promise<T>;
 
-  removeMany(ids: string[]): Promise<T[]>;
-
   aggregate(aggregation: PipelineStage[]): Promise<unknown[]>;
 
   exists(id: string): Promise<boolean>;

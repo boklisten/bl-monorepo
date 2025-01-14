@@ -64,13 +64,11 @@ describe("PaymentPatchHook", () => {
       : Promise.reject(new BlError("not found"));
   });
 
-  sinon
-    .stub(paymentDibsHandler, "handleDibsPayment")
-    .callsFake((payment, accessToken) => {
-      return dibsPaymentCreated
-        ? Promise.resolve(testPayment)
-        : Promise.reject(new BlError("could not create dibs payment"));
-    });
+  sinon.stub(paymentDibsHandler, "handleDibsPayment").callsFake((payment) => {
+    return dibsPaymentCreated
+      ? Promise.resolve(testPayment)
+      : Promise.reject(new BlError("could not create dibs payment"));
+  });
 
   sinon.stub(paymentValidator, "validate").callsFake((valid) => {
     return paymentValidated

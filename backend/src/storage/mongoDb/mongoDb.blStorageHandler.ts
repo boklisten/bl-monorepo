@@ -35,11 +35,7 @@ export class MongoDbBlStorageHandler<T extends BlDocument>
     this.permissionService = new PermissionService();
   }
 
-  public async get(
-    id: string,
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    userPermission?: UserPermission,
-  ): Promise<T> {
+  public async get(id: string): Promise<T> {
     const document_ = (await this.mongooseModel
       .findById<T>(id)
       .lean({ transform: MongooseModelCreator.transformObject })
@@ -187,12 +183,7 @@ export class MongoDbBlStorageHandler<T extends BlDocument>
     return insertedDocs.map((document_) => document_.toObject());
   }
 
-  public async update(
-    id: string,
-    data: Partial<T>,
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    user: { id: string; permission: UserPermission },
-  ): Promise<T> {
+  public async update(id: string, data: Partial<T>): Promise<T> {
     const newData = { ...data, lastUpdated: new Date() };
     // Don't update the user of a document after creation
     delete newData["user"];
@@ -242,11 +233,7 @@ export class MongoDbBlStorageHandler<T extends BlDocument>
       });
   }
 
-  public async remove(
-    id: string,
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    user: { id: string; permission: UserPermission },
-  ): Promise<T> {
+  public async remove(id: string): Promise<T> {
     const document_ = (await this.mongooseModel
       .findByIdAndDelete<T>(id)
       .lean({ transform: MongooseModelCreator.transformObject })
@@ -263,10 +250,6 @@ export class MongoDbBlStorageHandler<T extends BlDocument>
     }
     return document_;
   }
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  public removeMany(ids: string[]): Promise<T[]> {
-    throw new BlError("not implemented");
-  }
 
   public async exists(id: string): Promise<boolean> {
     try {
@@ -282,14 +265,12 @@ export class MongoDbBlStorageHandler<T extends BlDocument>
    * @param {BlDocument[]} docs the documents to search through
    * @param allowedNestedDocuments
    * @param {ExpandFilter} expandFilters the nested documents to fetch
-   * @param {UserPermission} userPermission
    */
 
   private async retrieveNestedDocuments(
     docs: T[],
     allowedNestedDocuments: NestedDocument[],
     expandFilters: ExpandFilter[],
-    userPermission?: UserPermission,
   ): Promise<T[]> {
     if (!expandFilters || expandFilters.length <= 0) {
       return docs;
@@ -304,11 +285,7 @@ export class MongoDbBlStorageHandler<T extends BlDocument>
     try {
       return await Promise.all(
         docs.map((document_) =>
-          this.getNestedDocuments(
-            document_,
-            expandedNestedDocuments,
-            userPermission,
-          ),
+          this.getNestedDocuments(document_, expandedNestedDocuments),
         ),
       );
     } catch (error) {
@@ -325,7 +302,6 @@ export class MongoDbBlStorageHandler<T extends BlDocument>
   private async getNestedDocuments(
     document_: T,
     nestedDocuments: NestedDocument[],
-    userPermission?: UserPermission,
   ): Promise<T> {
     const nestedDocumentsPromArray = nestedDocuments.flatMap((nestedDocument) =>
       // @ts-expect-error fixme: auto ignored
@@ -335,7 +311,6 @@ export class MongoDbBlStorageHandler<T extends BlDocument>
               // @ts-expect-error fixme: auto ignored
               document_[nestedDocument.field],
               nestedDocument,
-              userPermission,
             ),
           ]
         : [],
@@ -358,13 +333,12 @@ export class MongoDbBlStorageHandler<T extends BlDocument>
   private getNestedDocument(
     id: string,
     nestedDocument: NestedDocument,
-    userPermission?: UserPermission,
   ): Promise<T> {
     const documentStorage = new MongoDbBlStorageHandler<T>(
       nestedDocument.collection,
       nestedDocument.mongooseSchema,
     );
-    return documentStorage.get(id, userPermission);
+    return documentStorage.get(id);
   }
 
   private handleError(blError: BlError, error: unknown): BlError {

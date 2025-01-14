@@ -1,4 +1,3 @@
-import { SystemUser } from "@backend/auth/permission/permission.service";
 import { Signature } from "@backend/collections/signature/signature.schema";
 import { logger } from "@backend/logger/logger";
 import { BlDocumentStorage } from "@backend/storage/blDocumentStorage";
@@ -115,7 +114,7 @@ export async function signOrders(
       .filter((order) => order.pendingSignature)
       .map(async (order) => {
         return await orderStorage
-          .update(order.id, { pendingSignature: false }, new SystemUser())
+          .update(order.id, { pendingSignature: false })
           .catch((error) =>
             logger.error(
               `While processing new signature, unable to update order ${order.id}: ${error}`,

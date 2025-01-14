@@ -67,11 +67,7 @@ export class PaymentHandler {
       }
 
       await this.confirmPayment(order, payment, accessToken);
-      await this.paymentStorage.update(
-        payment.id,
-        { confirmed: true },
-        { id: accessToken.sub, permission: accessToken.permission },
-      );
+      await this.paymentStorage.update(payment.id, { confirmed: true });
     }
     return payments;
   }

@@ -85,11 +85,9 @@ export class SendgridEventOperation implements Operation {
 
     newSendgridEvents.push(sendgridEvent);
 
-    await this._messageStorage.update(
-      message.id,
-      { events: newSendgridEvents },
-      { id: "SYSTEM", permission: "admin" },
-    );
+    await this._messageStorage.update(message.id, {
+      events: newSendgridEvents,
+    });
 
     logger.silly(
       `updated message "${message.id}" with sendgrid event: "${sendgridEvent["event"]}"`,

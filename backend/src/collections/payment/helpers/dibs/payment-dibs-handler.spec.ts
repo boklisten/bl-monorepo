@@ -184,7 +184,7 @@ describe("PaymentDibsHandler", () => {
       testPayment.order = "notFoundOrder";
 
       return expect(
-        paymentDibsHandler.handleDibsPayment(testPayment, testAccessToken),
+        paymentDibsHandler.handleDibsPayment(testPayment),
       ).to.be.rejectedWith(BlError, /order not found/);
     });
 
@@ -192,7 +192,7 @@ describe("PaymentDibsHandler", () => {
       getDibsEasyOrderConfirm = false;
 
       return expect(
-        paymentDibsHandler.handleDibsPayment(testPayment, testAccessToken),
+        paymentDibsHandler.handleDibsPayment(testPayment),
       ).to.be.rejectedWith(BlError, /could not create dibs easy order/);
     });
 
@@ -200,7 +200,7 @@ describe("PaymentDibsHandler", () => {
       getPaymentIdConfirm = false;
 
       return expect(
-        paymentDibsHandler.handleDibsPayment(testPayment, testAccessToken),
+        paymentDibsHandler.handleDibsPayment(testPayment),
       ).to.be.rejectedWith(BlError);
     });
 
@@ -208,7 +208,7 @@ describe("PaymentDibsHandler", () => {
       testPaymentId = "testDibsPaymentId1";
 
       paymentDibsHandler
-        .handleDibsPayment(testPayment, testAccessToken)
+        .handleDibsPayment(testPayment)
         .then((payment: Payment) => {
           // @ts-expect-error fixme: auto ignored
           expect(payment.info["paymentId"]).to.eql(testPaymentId);

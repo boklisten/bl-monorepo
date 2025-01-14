@@ -129,7 +129,7 @@ describe("DeliveryPostHook", () => {
 
   sinon
     .stub(deliveryHandler, "updateOrderBasedOnMethod")
-    .callsFake((delivery, order, accessToken) => {
+    .callsFake((delivery, order) => {
       return Promise.reject(new BlError("order could not be updated"));
     });
 

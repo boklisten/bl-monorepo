@@ -1,4 +1,3 @@
-import { SystemUser } from "@backend/auth/permission/permission.service";
 import { BlCollectionName } from "@backend/collections/bl-collection";
 import { EmailValidation } from "@backend/collections/email-validation/email-validation";
 import { emailValidationSchema } from "@backend/collections/email-validation/email-validation.schema";
@@ -51,11 +50,7 @@ export class EmailValidationConfirmOperation implements Operation {
         .get(blApiRequest.documentId)
         .then((emailValidation: EmailValidation) => {
           this._userDetailStorage
-            .update(
-              emailValidation.userDetail,
-              { emailConfirmed: true },
-              new SystemUser(),
-            )
+            .update(emailValidation.userDetail, { emailConfirmed: true })
             .then(() => {
               this._resHandler.sendResponse(
                 // @ts-expect-error fixme: auto ignored

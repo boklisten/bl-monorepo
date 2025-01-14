@@ -1,4 +1,3 @@
-import { SystemUser } from "@backend/auth/permission/permission.service";
 import { BlCollectionName } from "@backend/collections/bl-collection";
 import { branchSchema } from "@backend/collections/branch/branch.schema";
 import { customerItemSchema } from "@backend/collections/customer-item/customer-item.schema";
@@ -84,7 +83,6 @@ export class CustomerItemHandler {
         periodExtends: periodExtends,
         orders: customerItemOrders,
       },
-      new SystemUser(),
     );
   }
 
@@ -108,18 +106,14 @@ export class CustomerItemHandler {
 
     customerItemOrders.push(orderId);
 
-    return await this._customerItemStorage.update(
-      customerItemId,
-      {
-        buyout: true,
-        orders: customerItemOrders,
-        buyoutInfo: {
-          order: orderId,
-          time: new Date(),
-        },
+    return await this._customerItemStorage.update(customerItemId, {
+      buyout: true,
+      orders: customerItemOrders,
+      buyoutInfo: {
+        order: orderId,
+        time: new Date(),
       },
-      new SystemUser(),
-    );
+    });
   }
 
   /**
@@ -145,20 +139,16 @@ export class CustomerItemHandler {
 
     customerItemOrders.push(orderId);
 
-    return await this._customerItemStorage.update(
-      customerItemId,
-      {
-        returned: true,
-        orders: customerItemOrders,
-        returnInfo: {
-          returnedTo: "branch",
-          returnedToId: branchId,
-          returnEmployee: employeeId,
-          time: new Date(),
-        },
+    return await this._customerItemStorage.update(customerItemId, {
+      returned: true,
+      orders: customerItemOrders,
+      returnInfo: {
+        returnedTo: "branch",
+        returnedToId: branchId,
+        returnEmployee: employeeId,
+        time: new Date(),
       },
-      new SystemUser(),
-    );
+    });
   }
 
   /**
@@ -182,19 +172,15 @@ export class CustomerItemHandler {
 
     customerItemOrders.push(orderId);
 
-    return await this._customerItemStorage.update(
-      customerItemId,
-      {
-        returned: true,
-        orders: customerItemOrders,
-        cancel: true,
-        cancelInfo: {
-          time: new Date(),
-          order: orderId,
-        },
+    return await this._customerItemStorage.update(customerItemId, {
+      returned: true,
+      orders: customerItemOrders,
+      cancel: true,
+      cancelInfo: {
+        time: new Date(),
+        order: orderId,
       },
-      new SystemUser(),
-    );
+    });
   }
 
   /**
@@ -217,18 +203,14 @@ export class CustomerItemHandler {
 
     customerItemOrders.push(orderId);
 
-    return await this._customerItemStorage.update(
-      customerItemId,
-      {
-        returned: true,
-        orders: customerItemOrders,
-        buyback: true,
-        buybackInfo: {
-          order: orderId,
-        },
+    return await this._customerItemStorage.update(customerItemId, {
+      returned: true,
+      orders: customerItemOrders,
+      buyback: true,
+      buybackInfo: {
+        order: orderId,
       },
-      new SystemUser(),
-    );
+    });
   }
 
   /**

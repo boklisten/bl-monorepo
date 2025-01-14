@@ -7,7 +7,6 @@ import { BlDocumentStorage } from "@backend/storage/blDocumentStorage";
 import { BlError } from "@shared/bl-error/bl-error";
 import { Order } from "@shared/order/order";
 import { Payment } from "@shared/payment/payment";
-import { AccessToken } from "@shared/token/access-token";
 
 export class PaymentPostHook extends Hook {
   private orderStorage: BlDocumentStorage<Order>;
@@ -15,7 +14,6 @@ export class PaymentPostHook extends Hook {
   private paymentDibsHandler: PaymentDibsHandler;
 
   constructor(
-    paymentStorage?: BlDocumentStorage<Payment>,
     orderStorage?: BlDocumentStorage<Order>,
     paymentValidator?: PaymentValidator,
     paymentDibsHandler?: PaymentDibsHandler,
@@ -34,17 +32,10 @@ export class PaymentPostHook extends Hook {
     });
   }
 
-  public override after(
-    payments: Payment[],
-    accessToken: AccessToken,
-  ): Promise<Payment[]> {
+  public override after(payments: Payment[]): Promise<Payment[]> {
     return new Promise((resolve, reject) => {
       if (!payments || payments.length != 1) {
         return reject(new BlError("payments is empty or undefined"));
-      }
-
-      if (!accessToken) {
-        return reject(new BlError("accessToken is undefined"));
       }
 
       const payment = payments[0];
@@ -55,9 +46,9 @@ export class PaymentPostHook extends Hook {
         .validate(payment)
         .then(() => {
           // @ts-expect-error fixme: auto ignored
-          this.handlePaymentBasedOnMethod(payment, accessToken)
+          this.handlePaymentBasedOnMethod(payment)
             .then((updatedPayment: Payment) => {
-              this.updateOrderWithPayment(updatedPayment, accessToken)
+              this.updateOrderWithPayment(updatedPayment)
                 .then(() => {
                   resolve([updatedPayment]);
                 })
@@ -79,17 +70,14 @@ export class PaymentPostHook extends Hook {
     });
   }
 
-  private handlePaymentBasedOnMethod(
-    payment: Payment,
-    accessToken: AccessToken,
-  ): Promise<Payment> {
+  private handlePaymentBasedOnMethod(payment: Payment): Promise<Payment> {
     return new Promise((resolve, reject) => {
       switch (payment.method) {
         case "dibs": {
           return payment.amount < 0
             ? resolve(payment)
             : this.paymentDibsHandler
-                .handleDibsPayment(payment, accessToken)
+                .handleDibsPayment(payment)
                 .then((updatedPayment: Payment) => {
                   return resolve(updatedPayment);
                 })
@@ -104,10 +92,7 @@ export class PaymentPostHook extends Hook {
     });
   }
 
-  private updateOrderWithPayment(
-    payment: Payment,
-    accessToken: AccessToken,
-  ): Promise<Payment> {
+  private updateOrderWithPayment(payment: Payment): Promise<Payment> {
     return new Promise((resolve, reject) => {
       this.orderStorage
         .get(payment.order)
@@ -124,11 +109,7 @@ export class PaymentPostHook extends Hook {
             paymentIds.push(payment.id);
           }
           return this.orderStorage
-            .update(
-              order.id,
-              { payments: paymentIds },
-              { id: accessToken.sub, permission: accessToken.permission },
-            )
+            .update(order.id, { payments: paymentIds })
             .then(() => {
               resolve(payment);
             })

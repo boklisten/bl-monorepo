@@ -1,4 +1,3 @@
-import { SystemUser } from "@backend/auth/permission/permission.service";
 import { BlCollectionName } from "@backend/collections/bl-collection";
 import { orderSchema } from "@backend/collections/order/order.schema";
 import { isNullish } from "@backend/helper/typescript-helpers";
@@ -64,11 +63,9 @@ export class OrderItemMovedFromOrderHandler {
       }
     }
 
-    await this._orderStorage.update(
-      orderItemToUpdate.originalOrderId,
-      { orderItems: originalOrder.orderItems },
-      new SystemUser(),
-    );
+    await this._orderStorage.update(orderItemToUpdate.originalOrderId, {
+      orderItems: originalOrder.orderItems,
+    });
     return true;
   }
 }

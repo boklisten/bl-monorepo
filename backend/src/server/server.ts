@@ -3,14 +3,7 @@ import { CollectionEndpointCreator } from "@backend/collection-endpoint/collecti
 import { assertEnv, BlEnvironment } from "@backend/config/environment";
 import { logger } from "@backend/logger/logger";
 import cors from "cors";
-import express, {
-  Express,
-  json,
-  Request,
-  RequestHandler,
-  Response,
-  Router,
-} from "express";
+import express, { Express, json, Request, Response, Router } from "express";
 import session from "express-session";
 import mongoose from "mongoose";
 import passport from "passport";
@@ -92,9 +85,9 @@ export class Server {
         saveUninitialized: false,
         secret: assertEnv(BlEnvironment.SESSION_SECRET),
         cookie: { secure: assertEnv(BlEnvironment.API_ENV) === "production" },
-      }) as unknown as RequestHandler,
+      }),
     );
-    this.app.use(passport.initialize() as unknown as RequestHandler);
+    this.app.use(passport.initialize());
     this.app.use(passport.session());
 
     const debugLogPath = (

@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 
+import { SystemUser } from "@backend/auth/permission/permission.service";
 import { BlCollectionName } from "@backend/collections/bl-collection";
 import { SEDbQuery } from "@backend/query/se.db-query";
 import { BlStorageHandler } from "@backend/storage/blStorageHandler";
@@ -36,10 +37,10 @@ export class BlDocumentStorage<T extends BlDocument>
     }
   }
 
-  get(id: string, userPermission?: UserPermission): Promise<T> {
+  get(id: string): Promise<T> {
     return new Promise((resolve, reject) => {
       this.mongoDbHandler
-        .get(id, userPermission)
+        .get(id)
         .then((document_: T) => {
           resolve(document_);
         })
@@ -102,7 +103,7 @@ export class BlDocumentStorage<T extends BlDocument>
 
   add(
     document_: T,
-    user: { id: string; permission: UserPermission },
+    user: { id: string; permission: UserPermission } = new SystemUser(),
   ): Promise<T> {
     return new Promise((resolve, reject) => {
       this.mongoDbHandler
@@ -120,14 +121,10 @@ export class BlDocumentStorage<T extends BlDocument>
     return this.mongoDbHandler.addMany(docs);
   }
 
-  update(
-    id: string,
-    data: Partial<T>,
-    user: { id: string; permission: UserPermission },
-  ): Promise<T> {
+  update(id: string, data: Partial<T>): Promise<T> {
     return new Promise((resolve, reject) => {
       this.mongoDbHandler
-        .update(id, data, user)
+        .update(id, data)
         .then((updatedDocument: T) => {
           resolve(updatedDocument);
         })
@@ -154,7 +151,7 @@ export class BlDocumentStorage<T extends BlDocument>
   ): Promise<T> {
     return new Promise((resolve, reject) => {
       this.mongoDbHandler
-        .remove(id, user)
+        .remove(id)
         .then((deletedDocument: T) => {
           resolve(deletedDocument);
         })

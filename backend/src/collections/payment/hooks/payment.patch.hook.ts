@@ -64,7 +64,7 @@ export class PaymentPatchHook extends Hook {
         return this.handlePaymentLater(payment, accessToken);
       }
       case "dibs": {
-        return this.paymentDibsHandler.handleDibsPayment(payment, accessToken);
+        return this.paymentDibsHandler.handleDibsPayment(payment);
       }
       default: {
         return Promise.reject(

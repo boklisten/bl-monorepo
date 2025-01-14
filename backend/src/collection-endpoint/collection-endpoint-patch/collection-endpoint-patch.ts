@@ -10,15 +10,8 @@ export class CollectionEndpointPatch<T extends BlDocument>
   override onRequest(blApiRequest: BlApiRequest): Promise<T[]> {
     return (
       this._documentStorage
-
         // @ts-expect-error fixme: auto ignored
-        .update(blApiRequest.documentId, blApiRequest.data, {
-          // @ts-expect-error fixme: auto ignored
-          id: blApiRequest.user.id,
-
-          // @ts-expect-error fixme: auto ignored
-          permission: blApiRequest.user.permission,
-        })
+        .update(documentId, blApiRequest.data)
         .then((document_: T) => {
           return [document_];
         })

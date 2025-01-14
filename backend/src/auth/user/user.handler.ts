@@ -1,6 +1,5 @@
 import { Blid } from "@backend/auth/blid/blid";
 import { LocalLoginHandler } from "@backend/auth/local/local-login.handler";
-import { SystemUser } from "@backend/auth/permission/permission.service";
 import { BlCollectionName } from "@backend/collections/bl-collection";
 import { EmailValidationHelper } from "@backend/collections/email-validation/helpers/email-validation.helper";
 import { User } from "@backend/collections/user/user";
@@ -100,14 +99,13 @@ export class UserHandler {
       return (
         this.userStorage
           // @ts-expect-error fixme: auto ignored
-          .update(selectedUser, { primary: true }, new SystemUser())
+          .update(selectedUser, { primary: true })
           .then(() => {
             const promiseArray = users.map((user) =>
               this.userStorage.update(
                 user.id,
                 // @ts-expect-error fixme: auto ignored
                 { movedToPrimary: selectedUser.id },
-                new SystemUser(),
               ),
             );
 

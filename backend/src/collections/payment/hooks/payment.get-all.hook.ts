@@ -4,13 +4,6 @@ import { BlError } from "@shared/bl-error/bl-error";
 import { AccessToken } from "@shared/token/access-token";
 
 export class PaymentGetAllHook extends Hook {
-  private _permissionService: PermissionService;
-
-  constructor() {
-    super();
-    this._permissionService = new PermissionService();
-  }
-
   public override async before(
     body: unknown,
     accessToken?: AccessToken,
@@ -19,7 +12,7 @@ export class PaymentGetAllHook extends Hook {
     query?: any,
   ): Promise<boolean> {
     if (
-      !this._permissionService.isPermissionOver(
+      !PermissionService.isPermissionOver(
         // @ts-expect-error fixme: auto ignored
         accessToken.permission,
         "customer",

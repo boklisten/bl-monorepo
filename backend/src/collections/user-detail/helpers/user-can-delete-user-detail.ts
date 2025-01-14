@@ -10,7 +10,6 @@ import { UserDetail } from "@shared/user/user-detail/user-detail";
 
 export class UserCanDeleteUserDetail {
   private queryBuilder: SEDbQueryBuilder;
-  private permissionService: PermissionService;
   private userDetailStorage: BlDocumentStorage<UserDetail>;
   private userStorage: BlDocumentStorage<User>;
   constructor(
@@ -23,7 +22,6 @@ export class UserCanDeleteUserDetail {
     this.userStorage =
       _userStorage ?? new BlDocumentStorage(BlCollectionName.Users, userSchema);
     this.queryBuilder = new SEDbQueryBuilder();
-    this.permissionService = new PermissionService();
   }
 
   public async canDelete(
@@ -36,7 +34,7 @@ export class UserCanDeleteUserDetail {
       return true;
     }
 
-    if (!this.permissionService.isAdmin(accessToken.permission)) {
+    if (!PermissionService.isAdmin(accessToken.permission)) {
       return false;
     }
 
@@ -49,7 +47,7 @@ export class UserCanDeleteUserDetail {
     const userToDelete = users[0];
 
     return !(
-      !this.permissionService.isPermissionEqualOrOver(
+      !PermissionService.isPermissionEqualOrOver(
         accessToken.permission,
 
         // @ts-expect-error fixme: auto ignored

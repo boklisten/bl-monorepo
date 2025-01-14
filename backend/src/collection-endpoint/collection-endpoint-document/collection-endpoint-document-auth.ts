@@ -8,12 +8,6 @@ import { BlApiRequest } from "@backend/request/bl-api-request";
 import { BlDocument } from "@shared/bl-document/bl-document";
 import { BlError } from "@shared/bl-error/bl-error";
 export class CollectionEndpointDocumentAuth<T extends BlDocument> {
-  private _permissionService: PermissionService;
-
-  constructor() {
-    this._permissionService = new PermissionService();
-  }
-
   public validate(
     restriction: BlEndpointRestriction,
     docs: T[],
@@ -36,7 +30,7 @@ export class CollectionEndpointDocumentAuth<T extends BlDocument> {
         ) {
           if (restriction.restricted) {
             if (
-              !this._permissionService.haveRestrictedDocumentPermission(
+              !PermissionService.haveRestrictedDocumentPermission(
                 // @ts-expect-error fixme: auto ignored
                 blApiRequest.user.id,
                 // @ts-expect-error fixme: auto ignored
@@ -56,7 +50,7 @@ export class CollectionEndpointDocumentAuth<T extends BlDocument> {
           let permissionValid = false;
 
           if (
-            this._permissionService.haveRestrictedDocumentPermission(
+            PermissionService.haveRestrictedDocumentPermission(
               // @ts-expect-error fixme: auto ignored
               blApiRequest.user.id,
               // @ts-expect-error fixme: auto ignored

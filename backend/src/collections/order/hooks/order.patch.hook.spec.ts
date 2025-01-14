@@ -24,7 +24,6 @@ describe("OrderPatchHook", () => {
   const orderValidator = new OrderValidator();
   const orderPlacedHandler = new OrderPlacedHandler();
   const orderPatchHook = new OrderPatchHook(
-    userDetailStorage,
     orderStorage,
     orderValidator,
     orderPlacedHandler,

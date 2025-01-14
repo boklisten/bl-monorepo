@@ -4,13 +4,6 @@ import { Branch } from "@shared/branch/branch";
 import { AccessToken } from "@shared/token/access-token";
 
 export class BranchGetHook extends Hook {
-  private permissionService: PermissionService;
-
-  constructor() {
-    super();
-    this.permissionService = new PermissionService();
-  }
-
   public override after(
     branches: Branch[],
     accessToken: AccessToken,
@@ -27,7 +20,7 @@ export class BranchGetHook extends Hook {
     ) {
       if (accessToken) {
         if (
-          this.permissionService.isPermissionEqualOrOver(
+          PermissionService.isPermissionEqualOrOver(
             accessToken.permission,
             "admin",
           )
@@ -37,7 +30,7 @@ export class BranchGetHook extends Hook {
 
         // have a user
         if (
-          this.permissionService.isPermissionEqualOrOver(
+          PermissionService.isPermissionEqualOrOver(
             accessToken.permission,
             "employee",
           )

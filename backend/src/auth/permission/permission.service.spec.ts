@@ -8,8 +8,6 @@ chaiUse(chaiAsPromised);
 should();
 
 describe("PermissionSerivice", () => {
-  const permissionService: PermissionService = new PermissionService();
-
   describe("#haveRestrictedDocumentPermission()", () => {
     it("should return true if document.user.id is the same as userId even if UserPermission is not correct", () => {
       const userId = "aabc";
@@ -19,7 +17,7 @@ describe("PermissionSerivice", () => {
       };
 
       expect(
-        permissionService.haveRestrictedDocumentPermission(
+        PermissionService.haveRestrictedDocumentPermission(
           userId,
           "customer",
           doc,
@@ -35,7 +33,7 @@ describe("PermissionSerivice", () => {
       };
 
       expect(
-        permissionService.haveRestrictedDocumentPermission(
+        PermissionService.haveRestrictedDocumentPermission(
           userId,
           "employee",
           doc,
@@ -50,7 +48,7 @@ describe("PermissionSerivice", () => {
         user: { id: "123", permission: "admin" },
       };
       expect(
-        permissionService.haveRestrictedDocumentPermission(
+        PermissionService.haveRestrictedDocumentPermission(
           userId,
           "employee",
           doc,
@@ -66,7 +64,7 @@ describe("PermissionSerivice", () => {
       };
 
       expect(
-        permissionService.haveRestrictedDocumentPermission(
+        PermissionService.haveRestrictedDocumentPermission(
           userId,
           "admin",
           doc,

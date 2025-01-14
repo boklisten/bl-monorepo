@@ -27,7 +27,6 @@ const UserDetailPermissionSpec = z.object({
 });
 
 export class UserDetailPermissionOperation implements Operation {
-  private readonly _permissionService: PermissionService;
   private readonly _userDetailStorage: BlDocumentStorage<UserDetail>;
   private readonly _userStorage: BlDocumentStorage<User>;
   private readonly _resHandler: SEResponseHandler;
@@ -45,8 +44,6 @@ export class UserDetailPermissionOperation implements Operation {
       userStorage ?? new BlDocumentStorage(BlCollectionName.Users, userSchema);
 
     this._resHandler = resHandler ?? new SEResponseHandler();
-
-    this._permissionService = new PermissionService();
   }
 
   async run(
@@ -80,12 +77,12 @@ export class UserDetailPermissionOperation implements Operation {
       .parse(users[0]);
 
     if (
-      !this._permissionService.isAdmin(parsedRequest.user.permission) ||
-      !this._permissionService.isPermissionOver(
+      !PermissionService.isAdmin(parsedRequest.user.permission) ||
+      !PermissionService.isPermissionOver(
         parsedRequest.user.permission,
         user.permission,
       ) ||
-      !this._permissionService.isPermissionOver(
+      !PermissionService.isPermissionOver(
         parsedRequest.user.permission,
         permissionChange,
       )

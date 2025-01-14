@@ -18,8 +18,6 @@ import { Request, Response } from "express";
 import isEmail from "validator/lib/isEmail";
 
 export class UserDetailChangeEmailOperation implements Operation {
-  private _permissionService: PermissionService;
-
   constructor(
     private _userDetailStorage?: BlDocumentStorage<UserDetail>,
     private _userStorage?: BlDocumentStorage<User>,
@@ -38,7 +36,6 @@ export class UserDetailChangeEmailOperation implements Operation {
       : new BlDocumentStorage(BlCollectionName.LocalLogins, localLoginSchema);
     this._userHandler = _userHandler ? _userHandler : new UserHandler();
     this._resHandler = _resHandler ? _resHandler : new SEResponseHandler();
-    this._permissionService = new PermissionService();
   }
 
   async run(
@@ -120,7 +117,7 @@ export class UserDetailChangeEmailOperation implements Operation {
     permissionToEmailChangeUser,
   ): boolean {
     if (
-      !this._permissionService.isPermissionOver(
+      !PermissionService.isPermissionOver(
         userPermission,
         permissionToEmailChangeUser,
       )

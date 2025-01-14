@@ -28,7 +28,6 @@ import { Request, Response } from "express";
 
 export class OrderPlaceOperation implements Operation {
   private _queryBuilder: SEDbQueryBuilder;
-  private _permissionService: PermissionService;
   private readonly _resHandler: SEResponseHandler;
   private readonly _orderToCustomerItemGenerator: OrderToCustomerItemGenerator;
   private readonly _orderStorage: BlDocumentStorage<Order>;
@@ -80,7 +79,6 @@ export class OrderPlaceOperation implements Operation {
       new BlDocumentStorage(BlCollectionName.StandMatches, standMatchSchema);
 
     this._queryBuilder = new SEDbQueryBuilder();
-    this._permissionService = new PermissionService();
   }
 
   private filterOrdersByAlreadyOrdered(orders: Order[]) {
@@ -555,7 +553,7 @@ export class OrderPlaceOperation implements Operation {
 
     const isAdmin =
       blApiRequest.user?.permission !== undefined &&
-      this._permissionService.isPermissionEqualOrOver(
+      PermissionService.isPermissionEqualOrOver(
         blApiRequest.user?.permission,
         "admin",
       );

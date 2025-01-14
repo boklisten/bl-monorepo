@@ -24,14 +24,12 @@ export class MongoDbBlStorageHandler<T extends BlDocument>
   implements BlStorageHandler<T>
 {
   private readonly mongooseModel: Model<T>;
-  private permissionService: PermissionService;
 
   constructor(collectionName: BlCollectionName, schema: Schema<T>) {
     this.mongooseModel = new MongooseModelCreator<T>(
       collectionName,
       schema,
     ).create();
-    this.permissionService = new PermissionService();
   }
 
   public async get(id: string): Promise<T> {
@@ -99,7 +97,7 @@ export class MongoDbBlStorageHandler<T extends BlDocument>
       const idArray = ids.map((id) => new Types.ObjectId(id));
       // if user have admin privileges, he can also get documents that are inactive
       const filter =
-        userPermission && this.permissionService.isAdmin(userPermission)
+        userPermission && PermissionService.isAdmin(userPermission)
           ? { _id: { $in: idArray } }
           : { _id: { $in: idArray }, active: true };
 
@@ -135,7 +133,7 @@ export class MongoDbBlStorageHandler<T extends BlDocument>
 
   public async getAll(userPermission?: UserPermission): Promise<T[]> {
     const filter =
-      userPermission && this.permissionService.isAdmin(userPermission)
+      userPermission && PermissionService.isAdmin(userPermission)
         ? {}
         : { active: true };
     const document_ = (await this.mongooseModel

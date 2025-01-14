@@ -13,15 +13,11 @@ export class OrderPatchHook extends Hook {
   private orderValidator: OrderValidator;
   private orderStorage: BlDocumentStorage<Order>;
   private orderPlacedHandler: OrderPlacedHandler;
-  private permissionService: PermissionService;
 
   constructor(
-    // @ts-expect-error fixme: auto ignored
-    userDetailStorage?: BlDocumentStorage<UserDetail>,
     orderStorage?: BlDocumentStorage<Order>,
     orderValidator?: OrderValidator,
     orderPlacedHandler?: OrderPlacedHandler,
-    permissionService?: PermissionService,
   ) {
     super();
     this.orderStorage =
@@ -29,7 +25,6 @@ export class OrderPatchHook extends Hook {
       new BlDocumentStorage(BlCollectionName.Orders, orderSchema);
     this.orderValidator = orderValidator ?? new OrderValidator();
     this.orderPlacedHandler = orderPlacedHandler ?? new OrderPlacedHandler();
-    this.permissionService = permissionService ?? new PermissionService();
   }
 
   override before(
@@ -60,7 +55,7 @@ export class OrderPatchHook extends Hook {
     if (!accessToken) {
       return Promise.reject(new BlError("accessToken not defined"));
     }
-    const isAdmin = this.permissionService.isPermissionEqualOrOver(
+    const isAdmin = PermissionService.isPermissionEqualOrOver(
       accessToken.permission,
       "admin",
     );

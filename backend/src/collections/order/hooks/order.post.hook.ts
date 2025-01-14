@@ -16,14 +16,12 @@ export class OrderPostHook extends Hook {
   private orderHookBefore: OrderHookBefore;
   private userDetailStorage: BlDocumentStorage<UserDetail>;
   private userDetailHelper: UserDetailHelper;
-  private permissionService: PermissionService;
 
   constructor(
     orderValidator?: OrderValidator,
     orderHookBefore?: OrderHookBefore,
     userDetailStorage?: BlDocumentStorage<UserDetail>,
     userDetailHelper?: UserDetailHelper,
-    permissionService?: PermissionService,
   ) {
     super();
     this.orderValidator = orderValidator ?? new OrderValidator();
@@ -32,7 +30,6 @@ export class OrderPostHook extends Hook {
       userDetailStorage ??
       new BlDocumentStorage(BlCollectionName.UserDetails, userDetailSchema);
     this.userDetailHelper = userDetailHelper ?? new UserDetailHelper();
-    this.permissionService = permissionService ?? new PermissionService();
   }
 
   public override async before(
@@ -78,7 +75,7 @@ export class OrderPostHook extends Hook {
     }
 
     const order = orders[0];
-    const isAdmin = this.permissionService.isPermissionEqualOrOver(
+    const isAdmin = PermissionService.isPermissionEqualOrOver(
       accessToken.permission,
       "admin",
     );

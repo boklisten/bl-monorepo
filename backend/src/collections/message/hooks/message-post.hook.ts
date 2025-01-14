@@ -12,7 +12,6 @@ import { UserDetail } from "@shared/user/user-detail/user-detail";
 
 export class MessagePostHook extends Hook {
   private readonly messengerReminder: MessengerReminder;
-  private readonly permissionService: PermissionService;
   private readonly messenger: Messenger;
   private readonly userDetailStorage: BlDocumentStorage<UserDetail>;
 
@@ -23,7 +22,6 @@ export class MessagePostHook extends Hook {
   ) {
     super();
     this.messengerReminder = messengerReminder ?? new MessengerReminder();
-    this.permissionService = new PermissionService();
     this.messenger = messenger ?? new Messenger();
     this.userDetailStorage =
       userDetailStorage ??
@@ -44,7 +42,7 @@ export class MessagePostHook extends Hook {
 
     if (
       message.messageType === "reminder" &&
-      !this.permissionService.isPermissionEqualOrOver(
+      !PermissionService.isPermissionEqualOrOver(
         accessToken.permission,
         "admin",
       )

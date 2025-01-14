@@ -1,4 +1,3 @@
-import { PermissionService } from "@backend/auth/permission/permission.service";
 import { BlCollectionName } from "@backend/collections/bl-collection";
 import { User } from "@backend/collections/user/user";
 import { userSchema } from "@backend/collections/user/userSchema";
@@ -26,8 +25,6 @@ export class UserDetailReadPermissionOperation implements Operation {
       : new BlDocumentStorage(BlCollectionName.Users, userSchema);
 
     this._resHandler = _resHandler ? _resHandler : new SEResponseHandler();
-
-    new PermissionService();
   }
 
   async run(
@@ -51,7 +48,6 @@ export class UserDetailReadPermissionOperation implements Operation {
     this._resHandler.sendResponse(
       // @ts-expect-error fixme: auto ignored
       res,
-
       // @ts-expect-error fixme: auto ignored
       new BlapiResponse([{ permission: user.permission }]),
     );

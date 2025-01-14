@@ -1,4 +1,3 @@
-import { PermissionService } from "@backend/auth/permission/permission.service";
 import { CollectionEndpointDelete } from "@backend/collection-endpoint/collection-endpoint-delete/collection-endpoint-delete";
 import { CollectionEndpointGetAll } from "@backend/collection-endpoint/collection-endpoint-get-all/collection-endpoint-get-all";
 import { CollectionEndpointGetId } from "@backend/collection-endpoint/collection-endpoint-get-id/collection-endpoint-get-id";
@@ -24,7 +23,6 @@ export class CollectionEndpoint<T extends BlDocument> {
       _collection.collectionName,
       _collection.mongooseSchema,
     );
-    new PermissionService();
     new ApiPath();
   }
 

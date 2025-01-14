@@ -10,14 +10,13 @@ export class CollectionEndpointPatch<T extends BlDocument>
   override onRequest(blApiRequest: BlApiRequest): Promise<T[]> {
     return (
       this._documentStorage
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
+
+        // @ts-expect-error fixme: auto ignored
         .update(blApiRequest.documentId, blApiRequest.data, {
-          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-          // @ts-ignore
+          // @ts-expect-error fixme: auto ignored
           id: blApiRequest.user.id,
-          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-          // @ts-ignore
+
+          // @ts-expect-error fixme: auto ignored
           permission: blApiRequest.user.permission,
         })
         .then((document_: T) => {

@@ -31,8 +31,8 @@ describe("PaymentPostHook", () => {
 
   let testOrder: Order;
   let testPayment: Payment;
-  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-  // @ts-ignore
+
+  // @ts-expect-error fixme: auto ignored
   let testAccessToken;
   let paymentValidated: boolean;
   let handleDibsPaymentValid: boolean;
@@ -73,17 +73,13 @@ describe("PaymentPostHook", () => {
     }
 
     return Promise.resolve(testPayment);
-  }); // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-  // @ts-ignore
-  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-  // @ts-ignore
+  });
   sinon.stub(paymentStorage, "update").callsFake((id, data, accessToken) => {
     return Promise.resolve(testPayment);
   });
 
   sinon
-    .stub(paymentDibsHandler, "handleDibsPayment") // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
+    .stub(paymentDibsHandler, "handleDibsPayment")
     .callsFake((payment, accessToken) => {
       if (!handleDibsPaymentValid) {
         return Promise.reject(new BlError("could not create dibs payment"));
@@ -99,11 +95,8 @@ describe("PaymentPostHook", () => {
     return Promise.resolve(testOrder);
   });
 
-  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-  // @ts-ignore
   const orderStorageUpdateStub = sinon
-    .stub(orderStorage, "update") // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
+    .stub(orderStorage, "update")
     .callsFake((id: string, data: any) => {
       return Promise.resolve(testOrder);
     });
@@ -121,8 +114,7 @@ describe("PaymentPostHook", () => {
   describe("#after()", () => {
     it("should reject if ids is empty or undefined", () => {
       return expect(
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
+        // @ts-expect-error fixme: auto ignored
         paymentPostHook.after([], testAccessToken),
       ).to.eventually.be.rejectedWith(
         BlError,
@@ -132,8 +124,7 @@ describe("PaymentPostHook", () => {
 
     it("should reject if accessToken is undefined", () => {
       return expect(
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
+        // @ts-expect-error fixme: auto ignored
         paymentPostHook.after([testPayment], undefined),
       ).to.be.rejectedWith(BlError, /accessToken is undefined/);
     });
@@ -142,8 +133,7 @@ describe("PaymentPostHook", () => {
       paymentValidated = false;
 
       return expect(
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
+        // @ts-expect-error fixme: auto ignored
         paymentPostHook.after([testPayment], testAccessToken),
       ).to.be.rejectedWith(BlError, /payment could not be validated/);
     });
@@ -157,8 +147,7 @@ describe("PaymentPostHook", () => {
         handleDibsPaymentValid = false;
 
         return expect(
-          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-          // @ts-ignore
+          // @ts-expect-error fixme: auto ignored
           paymentPostHook.after([testPayment], testAccessToken),
         ).to.be.rejectedWith(BlError, /could not create dibs payment/);
       });

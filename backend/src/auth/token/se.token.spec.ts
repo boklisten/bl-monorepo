@@ -34,8 +34,6 @@ describe("SeToken", () => {
     });
 
     it("should decode so the username is the same as when signed", () => {
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
       return new Promise((resolve, reject) => {
         seToken.createToken("albert", "admin", "1").then(
           (token: string) => {
@@ -43,15 +41,11 @@ describe("SeToken", () => {
               (decodedToken: JwtPayload) => {
                 resolve(decodedToken.username);
               },
-              // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-              // @ts-ignore
               (error) => {
                 //no need
               },
             );
           },
-          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-          // @ts-ignore
           (error) => {
             //no need for error handling in a test for resolve
           },
@@ -60,8 +54,6 @@ describe("SeToken", () => {
     });
 
     it("should reject if the token lacks permission", () => {
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
       return new Promise((resolve, reject) => {
         seToken.createToken("albert", "customer", "1").then(
           (token: string) => {
@@ -70,16 +62,12 @@ describe("SeToken", () => {
                 permissions: ["admin"],
               })
               .then(
-                // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-                // @ts-ignore
                 (decodedToken: JwtPayload) => {},
                 (error: any) => {
                   reject(new Error(error));
                 },
               );
           },
-          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-          // @ts-ignore
           (error: any) => {},
         );
       }).should.be.rejectedWith(Error);

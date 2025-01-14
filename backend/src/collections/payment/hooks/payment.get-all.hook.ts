@@ -13,21 +13,15 @@ export class PaymentGetAllHook extends Hook {
   }
 
   public override async before(
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    body: any,
+    body: unknown,
     accessToken?: AccessToken,
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
     id?: string,
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     query?: any,
   ): Promise<boolean> {
     if (
       !this._permissionService.isPermissionOver(
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
+        // @ts-expect-error fixme: auto ignored
         accessToken.permission,
         "customer",
       )

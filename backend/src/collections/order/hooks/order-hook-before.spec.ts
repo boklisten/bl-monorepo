@@ -13,11 +13,10 @@ describe("OrderHookBefore", () => {
   describe("#validate()", () => {
     context("request is not valid", () => {
       it("should reject if body is an array", (done) => {
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
+        // @ts-expect-error fixme: auto ignored
         const testRequest = [];
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
+
+        // @ts-expect-error fixme: auto ignored
         orderHookBefore.validate(testRequest).catch((blError: BlError) => {
           expect(blError.getMsg()).to.contain(
             "request is an array but should be a object",

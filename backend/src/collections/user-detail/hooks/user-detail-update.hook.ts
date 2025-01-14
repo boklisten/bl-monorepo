@@ -9,8 +9,8 @@ export class UserDetailUpdateHook extends Hook {
     const separators = withCoalescedSpaces.match(/[ -]/g);
     const caseCorrectedWordParts = withCoalescedSpaces
       .split(/[ -]/g)
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
+
+      // @ts-expect-error fixme: auto ignored
       .map((word) => word[0].toUpperCase() + word.slice(1).toLowerCase());
     return caseCorrectedWordParts
       .map((part, index) => part + (separators?.[index] ?? ""))
@@ -92,8 +92,8 @@ const validateUserDetailUpdateType = (
   const _typeofTypeHelper = typeof ("" as unknown);
   const isTypeOrUndefined = (
     key: keyof UserDetailPatch,
-    typeName: typeof _typeofTypeHelper, // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
+    typeName: typeof _typeofTypeHelper,
+    // @ts-expect-error fixme: auto ignored
   ) => candidate[key] === undefined || typeof candidate[key] === typeName;
 
   try {

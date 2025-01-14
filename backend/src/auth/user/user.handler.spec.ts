@@ -88,8 +88,7 @@ describe("UserHandler", () => {
     .stub(userStorage, "getByQuery")
     .callsFake((query: SEDbQuery) => {
       return new Promise((resolve, reject) => {
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
+        // @ts-expect-error fixme: auto ignored
         if (query.stringFilters[0].value !== testUser.username) {
           return reject(new BlError("not found").code(702));
         }
@@ -111,8 +110,8 @@ describe("UserHandler", () => {
         const provider = null;
         return (
           userHandler
-            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-            // @ts-ignore
+
+            // @ts-expect-error fixme: auto ignored
             .get(provider, testProviderId)
             .should.rejectedWith(BlError)
         );
@@ -122,8 +121,8 @@ describe("UserHandler", () => {
         const providerId = null;
         return (
           userHandler
-            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-            // @ts-ignore
+
+            // @ts-expect-error fixme: auto ignored
             .get(testProvider, providerId)
             .should.rejectedWith(BlError)
         );
@@ -144,8 +143,8 @@ describe("UserHandler", () => {
         const username = undefined;
         return (
           userHandler
-            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-            // @ts-ignore
+
+            // @ts-expect-error fixme: auto ignored
             .getByUsername(username)
             .should.be.rejectedWith(BlError)
         );
@@ -175,8 +174,8 @@ describe("UserHandler", () => {
     context("when multiple users is found with same username", () => {
       it("should select the first one with primary if primary is set", () => {
         const username = "jimmy@dore.com";
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
+
+        // @ts-expect-error fixme: auto ignored
         const testUsers = [
           { username: username, movedToPrimary: "someObjectId" },
           { username: username, primary: true },
@@ -200,8 +199,8 @@ describe("UserHandler", () => {
         const username = undefined;
         return (
           userHandler
-            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-            // @ts-ignore
+
+            // @ts-expect-error fixme: auto ignored
             .create(username, testProvider, testProviderId)
             .should.be.rejectedWith(BlError)
         );
@@ -281,8 +280,7 @@ describe("UserHandler", () => {
         .catch((blError: BlError) => {
           expect(blError.errorStack.length).to.be.gte(1);
 
-          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-          // @ts-ignore
+          // @ts-expect-error fixme: auto ignored
           expect(blError.errorStack[0].getMsg()).to.be.eq(
             "could not send out email validation link",
           );
@@ -315,8 +313,8 @@ describe("UserHandler", () => {
         const provider = undefined;
         return (
           userHandler
-            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-            // @ts-ignore
+
+            // @ts-expect-error fixme: auto ignored
             .exists(provider, testProviderId)
             .should.be.rejectedWith(BlError)
         );

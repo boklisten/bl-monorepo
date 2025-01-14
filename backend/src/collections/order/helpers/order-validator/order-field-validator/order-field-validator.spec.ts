@@ -60,8 +60,7 @@ describe("OrderFieldValidator", () => {
       "when required fields of a orderItem is empty or not defined",
       () => {
         it("should reject if orderItem.item is not defined", () => {
-          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-          // @ts-ignore
+          // @ts-expect-error fixme: auto ignored
           testOrder.orderItems[0].item = null;
 
           return expect(
@@ -73,8 +72,7 @@ describe("OrderFieldValidator", () => {
         });
 
         it("should reject if orderItem.title is not defined", () => {
-          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-          // @ts-ignore
+          // @ts-expect-error fixme: auto ignored
           testOrder.orderItems[0].title = undefined;
 
           return expect(
@@ -86,8 +84,7 @@ describe("OrderFieldValidator", () => {
         });
 
         it("should reject if orderItem.amount is not defined", () => {
-          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-          // @ts-ignore
+          // @ts-expect-error fixme: auto ignored
           testOrder.orderItems[0].amount = undefined;
 
           return expect(
@@ -99,8 +96,7 @@ describe("OrderFieldValidator", () => {
         });
 
         it("should reject if orderItem.unitPrice is not defined", () => {
-          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-          // @ts-ignore
+          // @ts-expect-error fixme: auto ignored
           testOrder.orderItems[0].unitPrice = null;
 
           return expect(
@@ -112,8 +108,7 @@ describe("OrderFieldValidator", () => {
         });
 
         it("should reject if orderItem.taxAmount is not defined", () => {
-          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-          // @ts-ignore
+          // @ts-expect-error fixme: auto ignored
           testOrder.orderItems[0].taxAmount = null;
 
           return expect(
@@ -125,8 +120,7 @@ describe("OrderFieldValidator", () => {
         });
 
         it("should reject if orderItem.taxRate is not defined", () => {
-          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-          // @ts-ignore
+          // @ts-expect-error fixme: auto ignored
           testOrder.orderItems[0].taxRate = undefined;
 
           return expect(
@@ -138,8 +132,7 @@ describe("OrderFieldValidator", () => {
         });
 
         it("should reject if orderItem.type is not defined", () => {
-          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-          // @ts-ignore
+          // @ts-expect-error fixme: auto ignored
           testOrder.orderItems[0].type = null;
 
           return expect(

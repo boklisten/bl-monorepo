@@ -90,8 +90,8 @@ export class GoogleAuth {
       this.apiPath.createPath("auth/google/callback"),
       (request, res) => {
         passport.authenticate(
-          APP_CONFIG.login.google.name, // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-          // @ts-ignore
+          APP_CONFIG.login.google.name,
+          // @ts-expect-error fixme: auto ignored
           (error, tokens, blError: BlError) => {
             const resHandler = new SEResponseHandler();
 
@@ -107,8 +107,8 @@ export class GoogleAuth {
                 res,
                 tokens.accessToken,
                 tokens.refreshToken,
-                // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-                // @ts-ignore
+
+                // @ts-expect-error fixme: auto ignored
                 this.apiPath.retrieveRefererPath(request.headers),
               );
             }

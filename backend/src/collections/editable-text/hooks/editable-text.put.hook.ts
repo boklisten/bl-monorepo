@@ -21,11 +21,9 @@ export function validateEditableText(
 ): candidate is EditableText {
   return (
     candidate != null &&
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
+    // @ts-expect-error fixme: auto ignored
     candidate["text"] != null &&
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
+    // @ts-expect-error fixme: auto ignored
     typeof candidate["text"] === "string"
   );
 }

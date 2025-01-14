@@ -33,17 +33,14 @@ export class PaymentDibsConfirmer {
 
       try {
         dibsEasyPaymentDetails =
-          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-          // @ts-ignore
+          // @ts-expect-error fixme: auto ignored
           await this._dibsPaymentService.fetchDibsPaymentData(
-            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-            // @ts-ignore
+            // @ts-expect-error fixme: auto ignored
             payment.info["paymentId"],
           );
       } catch (getDibsPaymentError) {
         throw new BlError("could not get dibs payment from dibs api").add(
-          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-          // @ts-ignore
+          // @ts-expect-error fixme: auto ignored
           getDibsPaymentError,
         );
       }
@@ -52,12 +49,11 @@ export class PaymentDibsConfirmer {
     }
 
     try {
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
+      // @ts-expect-error fixme: auto ignored
       await this._paymentStorage.update(
         payment.id,
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
+
+        // @ts-expect-error fixme: auto ignored
         { info: dibsEasyPaymentDetails },
         { id: accessToken.details, permission: accessToken.permission },
       );
@@ -105,8 +101,7 @@ export class PaymentDibsConfirmer {
   private validatePaymentInfo(payment: Payment): boolean {
     if (
       isNullish(payment.info) ||
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
+      // @ts-expect-error fixme: auto ignored
       isNullish(payment.info["paymentId"])
     ) {
       throw new BlError(

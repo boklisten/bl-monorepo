@@ -81,8 +81,6 @@ describe("UserDeleteAllInfo", () => {
         permission: "admin",
       } as AccessToken;
 
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
       const result = await userDeleteAllInfo.deleteUser(
         userDetailIdToRemove,
         accessToken,
@@ -117,8 +115,6 @@ describe("UserDeleteAllInfo", () => {
         permission: "admin",
       } as AccessToken;
 
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
       const result = await userDeleteAllInfo.deleteUser(
         userDetailIdToRemove,
         accessToken,

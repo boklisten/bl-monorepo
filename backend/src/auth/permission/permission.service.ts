@@ -26,11 +26,9 @@ export class PermissionService {
     documentPermission?: BlDocumentPermission,
   ): boolean {
     if (
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
+      // @ts-expect-error fixme: auto ignored
       document.user.id === userId ||
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
+      // @ts-expect-error fixme: auto ignored
       this.isPermissionOver(userPermission, document.user.permission)
     ) {
       return true;

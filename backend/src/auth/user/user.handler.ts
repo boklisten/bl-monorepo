@@ -62,8 +62,7 @@ export class UserHandler {
                 );
               });
           } else {
-            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-            // @ts-ignore
+            // @ts-expect-error fixme: auto ignored
             resolve(docs[0]);
           }
         },
@@ -84,8 +83,7 @@ export class UserHandler {
     // this issue came from multiple logins as it was created a new user for Facbook, Google and local
     // even with the same email
 
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
+    // @ts-expect-error fixme: auto ignored
     let selectedUser = null;
 
     for (const user of users) {
@@ -101,15 +99,15 @@ export class UserHandler {
 
       return (
         this.userStorage
-          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-          // @ts-ignore
+
+          // @ts-expect-error fixme: auto ignored
           .update(selectedUser, { primary: true }, new SystemUser())
           .then(() => {
             const promiseArray = users.map((user) =>
               this.userStorage.update(
                 user.id,
-                // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-                // @ts-ignore
+
+                // @ts-expect-error fixme: auto ignored
                 { movedToPrimary: selectedUser.id },
                 new SystemUser(),
               ),
@@ -117,8 +115,7 @@ export class UserHandler {
 
             return Promise.all(promiseArray)
               .then(() => {
-                // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-                // @ts-ignore
+                // @ts-expect-error fixme: auto ignored
                 return selectedUser;
               })
               .catch(() => {
@@ -156,8 +153,7 @@ export class UserHandler {
       this.userStorage
         .getByQuery(databaseQuery)
         .then((users: User[]) => {
-          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-          // @ts-ignore
+          // @ts-expect-error fixme: auto ignored
           resolve(users[0]);
         })
         .catch((error: BlError) => {
@@ -187,8 +183,7 @@ export class UserHandler {
     try {
       userExists = await this.getByUsername(username);
     } catch {
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
+      // @ts-expect-error fixme: auto ignored
       userExists = null;
     }
 

@@ -3,6 +3,8 @@ import { BlCollectionName } from "@backend/collections/bl-collection";
 import { OrderItemRentValidator } from "@backend/collections/order/helpers/order-validator/order-item-validator/order-item-rent-validator/order-item-rent-validator";
 import { PriceService } from "@backend/price/price.service";
 import { BlDocumentStorage } from "@backend/storage/blDocumentStorage";
+import { Branch } from "@shared/branch/branch";
+import { Item } from "@shared/item/item";
 import { Order } from "@shared/order/order";
 import { use as chaiUse, should } from "chai";
 import chaiAsPromised from "chai-as-promised";
@@ -13,25 +15,11 @@ should();
 
 describe("OrderItemRentValidator", () => {
   const orderStorage = new BlDocumentStorage<Order>(BlCollectionName.Orders);
-  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-  // @ts-ignore
   const orderItemRentValidator = new OrderItemRentValidator(orderStorage);
-  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-  // @ts-ignore
   const priceService = new PriceService({ roundDown: true });
-
-  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-  // @ts-ignore
   let testOrder: Order;
-  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-  // @ts-ignore
   let testItem: Item;
-  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-  // @ts-ignore
   let testBranch: Branch;
-
-  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-  // @ts-ignore
   const orderStorageGetStub = sinon
     .stub(orderStorage, "get")
     .callsFake(() => Promise.resolve({} as Order));

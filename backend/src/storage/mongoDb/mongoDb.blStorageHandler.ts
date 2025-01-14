@@ -37,8 +37,6 @@ export class MongoDbBlStorageHandler<T extends BlDocument>
 
   public async get(
     id: string,
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     userPermission?: UserPermission,
   ): Promise<T> {
@@ -192,8 +190,6 @@ export class MongoDbBlStorageHandler<T extends BlDocument>
   public async update(
     id: string,
     data: Partial<T>,
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     user: { id: string; permission: UserPermission },
   ): Promise<T> {
@@ -248,8 +244,6 @@ export class MongoDbBlStorageHandler<T extends BlDocument>
 
   public async remove(
     id: string,
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     user: { id: string; permission: UserPermission },
   ): Promise<T> {
@@ -269,9 +263,6 @@ export class MongoDbBlStorageHandler<T extends BlDocument>
     }
     return document_;
   }
-
-  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-  // @ts-ignore
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   public removeMany(ids: string[]): Promise<T[]> {
     throw new BlError("not implemented");
@@ -324,8 +315,8 @@ export class MongoDbBlStorageHandler<T extends BlDocument>
       throw (
         new BlError("could not retrieve nested documents")
           .code(702)
-          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-          // @ts-ignore
+
+          // @ts-expect-error fixme: auto ignored
           .add(error)
       );
     }
@@ -337,13 +328,11 @@ export class MongoDbBlStorageHandler<T extends BlDocument>
     userPermission?: UserPermission,
   ): Promise<T> {
     const nestedDocumentsPromArray = nestedDocuments.flatMap((nestedDocument) =>
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
+      // @ts-expect-error fixme: auto ignored
       document_ && document_[nestedDocument.field]
         ? [
             this.getNestedDocument(
-              // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-              // @ts-ignore
+              // @ts-expect-error fixme: auto ignored
               document_[nestedDocument.field],
               nestedDocument,
               userPermission,
@@ -356,8 +345,7 @@ export class MongoDbBlStorageHandler<T extends BlDocument>
       const nestedDocs = await Promise.all(nestedDocumentsPromArray);
 
       for (const [index, nestedDocument] of nestedDocuments.entries()) {
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
+        // @ts-expect-error fixme: auto ignored
         document_[nestedDocument.field] = nestedDocs[index];
       }
 

@@ -98,8 +98,8 @@ export class UserDetailPermissionOperation implements Operation {
       { permission: permissionChange },
       parsedRequest.user,
     );
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
+
+    // @ts-expect-error fixme: auto ignored
     this._resHandler.sendResponse(res, new BlapiResponse([{ success: true }]));
 
     return true;

@@ -46,56 +46,52 @@ export class UserDetailChangeEmailOperation implements Operation {
     _request?: Request,
     res?: Response,
   ): Promise<boolean> {
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
+    // @ts-expect-error fixme: auto ignored
     const emailChange = blApiRequest.data["email"];
 
     this.validateEmail(emailChange);
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
+
+    // @ts-expect-error fixme: auto ignored
     const userDetail = await this._userDetailStorage.get(
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
+      // @ts-expect-error fixme: auto ignored
       blApiRequest.documentId,
     );
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
+
     const user = await this.getUser(userDetail.email, userDetail.blid);
     const localLogin = await this.getLocalLogin(userDetail.email);
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
+
+    // @ts-expect-error fixme: auto ignored
     this.validatePermission(blApiRequest.user.permission, user.permission);
     await this.checkIfAlreadyAdded(emailChange);
 
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
+    // @ts-expect-error fixme: auto ignored
     await this._userDetailStorage.update(
       userDetail.id,
       { email: emailChange },
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
+
+      // @ts-expect-error fixme: auto ignored
       blApiRequest.user,
     );
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
+
+    // @ts-expect-error fixme: auto ignored
     await this._userStorage.update(
       user.id,
       { username: emailChange },
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
+
+      // @ts-expect-error fixme: auto ignored
       blApiRequest.user,
     );
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
+
+    // @ts-expect-error fixme: auto ignored
     await this._localLoginStorage.update(
       localLogin.id,
       { username: emailChange },
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
+
+      // @ts-expect-error fixme: auto ignored
       blApiRequest.user,
     );
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
+
+    // @ts-expect-error fixme: auto ignored
     this._resHandler.sendResponse(res, new BlapiResponse([{ success: true }]));
     return true;
   }
@@ -104,8 +100,7 @@ export class UserDetailChangeEmailOperation implements Operation {
     let alreadyAddedUser;
 
     try {
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
+      // @ts-expect-error fixme: auto ignored
       alreadyAddedUser = await this._userHandler.getByUsername(email);
       // eslint-disable-next-line no-empty
     } catch {}
@@ -118,11 +113,10 @@ export class UserDetailChangeEmailOperation implements Operation {
   }
 
   private validatePermission(
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
+    // @ts-expect-error fixme: auto ignored
     userPermission,
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
+
+    // @ts-expect-error fixme: auto ignored
     permissionToEmailChangeUser,
   ): boolean {
     if (
@@ -137,24 +131,22 @@ export class UserDetailChangeEmailOperation implements Operation {
   }
 
   private async getUser(email: string, blid: string): Promise<User> {
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
+    // @ts-expect-error fixme: auto ignored
     const users = await this._userStorage.aggregate([
       { $match: { username: email, blid: blid } },
     ]);
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
+
+    // @ts-expect-error fixme: auto ignored
     return users[0];
   }
 
   private async getLocalLogin(username: string): Promise<LocalLogin> {
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
+    // @ts-expect-error fixme: auto ignored
     const localLogins = await this._localLoginStorage.aggregate([
       { $match: { username: username } },
     ]);
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
+
+    // @ts-expect-error fixme: auto ignored
     return localLogins[0];
   }
 

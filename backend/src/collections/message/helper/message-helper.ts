@@ -16,8 +16,8 @@ export class MessageHelper {
         messageType: message.messageType,
         messageSubtype: message.messageSubtype,
         messageMethod: message.messageMethod,
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
+
+        // @ts-expect-error fixme: auto ignored
         sequenceNumber: message.sequenceNumber.toString(),
         customerId: message.customerId,
       },

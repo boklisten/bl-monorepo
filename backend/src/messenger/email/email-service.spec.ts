@@ -20,16 +20,14 @@ import sinon from "sinon";
 
 class MockPostOffice extends PostOffice {
   constructor() {
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
+    // @ts-expect-error fixme: auto ignored
     super(undefined, undefined);
     this.setConfig({
       reminder: { mediums: { email: false } },
       generic: { mediums: { email: false } },
       receipt: { mediums: { email: false } },
     });
-  } // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-  // @ts-ignore
+  }
   public override async send(recipients: Recipient[], options: MessageOptions) {
     return true;
   }
@@ -261,8 +259,8 @@ describe("EmailService", () => {
       emailService
         .remind(message, customerDetail, customerItems)
         .then(() => {
-          const emailOrderItems = // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-            // @ts-ignore
+          const emailOrderItems =
+            // @ts-expect-error fixme: auto ignored
             postOfficeSendStub.lastCall.args[0][0].itemList.items;
 
           expect(emailOrderItems).to.eql([

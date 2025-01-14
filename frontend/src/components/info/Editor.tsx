@@ -8,8 +8,6 @@ import { useEffect, useState } from "react";
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 
 const Editor = dynamic(
-  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-  // @ts-ignore
   () => import("react-draft-wysiwyg").then((module) => module.Editor),
   { ssr: false },
 );
@@ -71,8 +69,6 @@ const CustomEditor = ({ rawEditorState }: { rawEditorState: string }) => {
         </Button>
       )}
       <Editor
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
         editorState={editorState}
         toolbarHidden={!isAdmin() || readOnly}
         onEditorStateChange={onEditorStateChange}

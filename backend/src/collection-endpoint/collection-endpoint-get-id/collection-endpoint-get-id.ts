@@ -8,11 +8,9 @@ export class CollectionEndpointGetId<T extends BlDocument>
   implements CollectionEndpointOnRequest<T>
 {
   public override onRequest(blApiRequest: BlApiRequest): Promise<T[]> {
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
     return new Promise((resolve, reject) => {
-      this._documentStorage // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
+      this._documentStorage
+        // @ts-expect-error fixme: auto ignored
         .get(blApiRequest.documentId, blApiRequest.user.permission)
         .then((document_: T) => {
           resolve([document_]);

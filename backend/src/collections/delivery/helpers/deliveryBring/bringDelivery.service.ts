@@ -67,8 +67,8 @@ export class BringDeliveryService {
         "",
         bringAuthHeaders,
       );
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
+
+      // @ts-expect-error fixme: auto ignored
       shipmentAddress.postalCity = postalInfo["postalCode"]["city"];
     } catch {
       return Promise.reject(new BlError("fromPostalCode is not valid"));
@@ -154,8 +154,8 @@ export class BringDeliveryService {
     facilityAddress: FacilityAddress,
     shipmentAddress: ShipmentAddress,
     items: Item[],
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
+
+    // @ts-expect-error fixme: auto ignored
     product,
   ): BringDelivery {
     const totalWeightInGrams = this.calculateTotalWeight(items);
@@ -226,8 +226,8 @@ export class BringDeliveryService {
 
   private getBringProduct(
     deliveryInfoBring: DeliveryInfoBring,
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
+
+    // @ts-expect-error fixme: auto ignored
     product,
   ): DeliveryInfoBring {
     const priceInfo = product["price"]["listPrice"];

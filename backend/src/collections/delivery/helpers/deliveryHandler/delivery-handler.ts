@@ -52,8 +52,8 @@ export class DeliveryHandler {
         return this.updateOrderWithDeliveryMethodBranch(
           delivery,
           order,
-          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-          // @ts-ignore
+
+          // @ts-expect-error fixme: auto ignored
           accessToken,
         );
       }
@@ -61,8 +61,8 @@ export class DeliveryHandler {
         return this.updateOrderWithDeliveryMethodBring(
           delivery,
           order,
-          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-          // @ts-ignore
+
+          // @ts-expect-error fixme: auto ignored
           accessToken,
         );
       }
@@ -160,8 +160,7 @@ export class DeliveryHandler {
     accessToken: AccessToken,
   ): Promise<Delivery> {
     return new Promise((resolve, reject) => {
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
+      // @ts-expect-error fixme: auto ignored
       this.branchStorage
         .get(order.branch)
         .then((branch: Branch) => {
@@ -171,29 +170,25 @@ export class DeliveryHandler {
 
           this.bringDeliveryService
             .getDeliveryInfoBring(
-              // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-              // @ts-ignore
+              // @ts-expect-error fixme: auto ignored
               delivery.info["facilityAddress"],
-              // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-              // @ts-ignore
+
+              // @ts-expect-error fixme: auto ignored
               delivery.info["shipmentAddress"],
               items,
-              // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-              // @ts-ignore
+
+              // @ts-expect-error fixme: auto ignored
               freeDelivery,
             )
             .then((deliveryInfoBring: DeliveryInfoBring) => {
-              // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-              // @ts-ignore
+              // @ts-expect-error fixme: auto ignored
               if (delivery.info["trackingNumber"]) {
                 deliveryInfoBring["trackingNumber"] =
-                  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-                  // @ts-ignore
+                  // @ts-expect-error fixme: auto ignored
                   delivery.info["trackingNumber"];
               }
 
-              // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-              // @ts-ignore
+              // @ts-expect-error fixme: auto ignored
               this.deliveryStorage
                 .update(
                   delivery.id,

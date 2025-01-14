@@ -35,29 +35,24 @@ export class UserDetailReadPermissionOperation implements Operation {
     _request?: Request,
     res?: Response,
   ): Promise<boolean> {
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
+    // @ts-expect-error fixme: auto ignored
     const userDetail = await this._userDetailStorage.get(
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
+      // @ts-expect-error fixme: auto ignored
       blApiRequest.documentId,
     );
 
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
+    // @ts-expect-error fixme: auto ignored
     const users = await this._userStorage.aggregate([
       { $match: { blid: userDetail.blid } },
     ]);
     const user = users[0];
 
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
+    // @ts-expect-error fixme: auto ignored
     this._resHandler.sendResponse(
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
+      // @ts-expect-error fixme: auto ignored
       res,
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
+
+      // @ts-expect-error fixme: auto ignored
       new BlapiResponse([{ permission: user.permission }]),
     );
     return true;

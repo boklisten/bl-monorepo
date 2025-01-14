@@ -29,8 +29,7 @@ export class OrderPlacedHandler {
   private _messenger: Messenger;
 
   constructor(
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
+    // @ts-expect-error fixme: auto ignored
     customerItemStorage?: BlDocumentStorage<CustomerItem>,
     orderStorage?: BlDocumentStorage<Order>,
     paymentHandler?: PaymentHandler,
@@ -90,8 +89,7 @@ export class OrderPlacedHandler {
 
       return placedOrder;
     } catch (error) {
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
+      // @ts-expect-error fixme: auto ignored
       throw new BlError("could not update order: " + error).add(error);
     }
   }

@@ -25,8 +25,7 @@ export class TokenEndpoint {
     this.router.post(this.apiPath.createPath("token"), (request, res) => {
       if (request.body && request.body["refreshToken"]) {
         this.refreshTokenValidator.validate(request.body["refreshToken"]).then(
-          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-          // @ts-ignore
+          // @ts-expect-error fixme: auto ignored
           (refreshToken: RefreshToken) => {
             this.tokenHandler.createTokens(refreshToken.username).then(
               (jwTokens: { accessToken: string; refreshToken: string }) => {

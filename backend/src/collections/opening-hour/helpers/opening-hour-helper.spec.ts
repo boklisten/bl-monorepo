@@ -23,8 +23,7 @@ const openingHourStorageGetMany = sinon.stub(openingHourStorage, "getMany");
 
 describe("getNextAvailableOpeningHour()", () => {
   it("should reject if no opening hour is found in Branch", () => {
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
+    // @ts-expect-error fixme: auto ignored
     const branch = {
       openingHours: [],
     } as Branch;

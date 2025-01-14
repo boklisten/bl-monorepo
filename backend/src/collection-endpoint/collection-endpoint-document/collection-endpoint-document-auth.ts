@@ -37,11 +37,10 @@ export class CollectionEndpointDocumentAuth<T extends BlDocument> {
           if (restriction.restricted) {
             if (
               !this._permissionService.haveRestrictedDocumentPermission(
-                // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-                // @ts-ignore
+                // @ts-expect-error fixme: auto ignored
                 blApiRequest.user.id,
-                // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-                // @ts-ignore
+
+                // @ts-expect-error fixme: auto ignored
                 blApiRequest.user.permission,
                 document_,
                 restriction,
@@ -60,11 +59,10 @@ export class CollectionEndpointDocumentAuth<T extends BlDocument> {
 
           if (
             this._permissionService.haveRestrictedDocumentPermission(
-              // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-              // @ts-ignore
+              // @ts-expect-error fixme: auto ignored
               blApiRequest.user.id,
-              // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-              // @ts-ignore
+
+              // @ts-expect-error fixme: auto ignored
               blApiRequest.user.permission,
               document_,
               restriction,

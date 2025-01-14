@@ -75,8 +75,6 @@ export class OrderConfirmOperation implements Operation {
     );
 
     try {
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
       const existingOrders = await this._orderStorage.getByQuery(databaseQuery);
       const alreadyOrderedItems =
         this.filterOrdersByAlreadyOrdered(existingOrders);
@@ -84,8 +82,8 @@ export class OrderConfirmOperation implements Operation {
       for (const orderItem of order.orderItems) {
         for (const alreadyOrderedItem of alreadyOrderedItems) {
           if (
-            orderItem.item === alreadyOrderedItem.item && // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-            // @ts-ignore
+            orderItem.item === alreadyOrderedItem.item &&
+            // @ts-expect-error fixme: auto ignored
             orderItem.info.to === alreadyOrderedItem.info.to
           ) {
             return true;
@@ -101,29 +99,23 @@ export class OrderConfirmOperation implements Operation {
 
   public async run(
     blApiRequest: BlApiRequest,
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
     request?: Request,
     res?: Response,
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     next?: NextFunction,
   ): Promise<boolean> {
     const accessToken = {
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
+      // @ts-expect-error fixme: auto ignored
       details: blApiRequest.user.id,
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
+
+      // @ts-expect-error fixme: auto ignored
       permission: blApiRequest.user.permission,
     } as AccessToken;
 
     let order;
 
     try {
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
+      // @ts-expect-error fixme: auto ignored
       order = await this._orderStorage.get(blApiRequest.documentId);
     } catch {
       throw new BlError(`order "${blApiRequest.documentId}" not found`);
@@ -147,8 +139,8 @@ export class OrderConfirmOperation implements Operation {
       );
     } catch (error) {
       throw new BlError("order could not be placed:" + error);
-    } // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
+    }
+    // @ts-expect-error fixme: auto ignored
     this._resHandler.sendResponse(res, new BlapiResponse([placedOrder]));
 
     return true;

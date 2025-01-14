@@ -33,8 +33,7 @@ export class UserDetailValidOperation implements Operation {
   ): Promise<boolean> {
     try {
       const userDetail = await this._userDetailStorage.get(
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
+        // @ts-expect-error fixme: auto ignored
         blApiRequest.documentId,
       );
 
@@ -43,15 +42,13 @@ export class UserDetailValidOperation implements Operation {
 
       if (invalidUserDetailFields.length <= 0) {
         this._resHandler.sendResponse(
-          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-          // @ts-ignore
+          // @ts-expect-error fixme: auto ignored
           res,
           new BlapiResponse([{ valid: true }]),
         );
       } else {
         this._resHandler.sendResponse(
-          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-          // @ts-ignore
+          // @ts-expect-error fixme: auto ignored
           res,
           new BlapiResponse([
             { valid: false, invalidFields: invalidUserDetailFields },
@@ -69,8 +66,7 @@ export class UserDetailValidOperation implements Operation {
         responseError.add(error);
       }
 
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
+      // @ts-expect-error fixme: auto ignored
       this._resHandler.sendErrorResponse(res, responseError);
 
       throw responseError;

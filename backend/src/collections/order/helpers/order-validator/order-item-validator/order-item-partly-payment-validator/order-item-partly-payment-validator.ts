@@ -6,8 +6,8 @@ import { OrderItem } from "@shared/order/order-item/order-item";
 export class OrderItemPartlyPaymentValidator {
   public validate(
     orderItem: OrderItem,
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
+
+    // @ts-expect-error fixme: auto ignored
     Item: Item,
     branch: Branch,
   ): Promise<boolean> {
@@ -23,13 +23,11 @@ export class OrderItemPartlyPaymentValidator {
       return Promise.reject(error);
     }
 
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
+    // @ts-expect-error fixme: auto ignored
     if (!this.isPeriodSupported(orderItem.info.periodType, branch)) {
       return Promise.reject(
         new BlError(
-          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-          // @ts-ignore
+          // @ts-expect-error fixme: auto ignored
           `partly-payment period "${orderItem.info.periodType}" not supported on branch`,
         ),
       );
@@ -65,8 +63,7 @@ export class OrderItemPartlyPaymentValidator {
 
     if (
       orderItem.info &&
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
+      // @ts-expect-error fixme: auto ignored
       isNullish(orderItem.info["amountLeftToPay"])
     ) {
       throw new BlError("orderItem.info.amountLeftToPay not specified");

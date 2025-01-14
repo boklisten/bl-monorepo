@@ -24,8 +24,7 @@ export class AccessTokenValidator {
                 .code(910),
             );
 
-          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-          // @ts-expect-error
+          // @ts-expect-error fixme: auto ignored
           resolve(payload);
         });
       } catch {

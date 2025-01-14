@@ -93,8 +93,8 @@ export class FacebookAuth {
       this.apiPath.createPath("auth/facebook/callback"),
       (request, res) => {
         passport.authenticate(
-          APP_CONFIG.login.facebook.name, // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-          // @ts-ignore
+          APP_CONFIG.login.facebook.name,
+          // @ts-expect-error fixme: auto ignored
           (error, tokens, blError: BlError) => {
             if (!tokens && (error || blError)) {
               return res.redirect(

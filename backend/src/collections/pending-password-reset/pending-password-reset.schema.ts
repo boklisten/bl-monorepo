@@ -5,8 +5,7 @@ import { Schema } from "mongoose";
 export const pendingPasswordResetSchema = new Schema<
   ToSchema<PendingPasswordReset>
 >({
-  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-  // @ts-ignore
+  // @ts-expect-error fixme: auto ignored
   _id: {
     type: Schema.Types.String,
     required: true,

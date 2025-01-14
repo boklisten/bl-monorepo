@@ -105,8 +105,7 @@ describe("OrderEmailHandler", () => {
             } as OrderItem,
           ];
 
-          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-          // @ts-ignore
+          // @ts-expect-error fixme: auto ignored
           testOrder.amount = testOrder.orderItems[0].amount;
           testOrder.branch = "branchThatIsResponsible";
         });
@@ -177,8 +176,7 @@ describe("OrderEmailHandler", () => {
             } as OrderItem,
           ];
 
-          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-          // @ts-ignore
+          // @ts-expect-error fixme: auto ignored
           testOrder.amount = testOrder.orderItems[0].amount;
         });
 
@@ -260,11 +258,11 @@ describe("OrderEmailHandler", () => {
           } as OrderItem,
         ];
 
-        testOrder.amount = // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-          // @ts-ignore
+        testOrder.amount =
+          // @ts-expect-error fixme: auto ignored
           testOrder.orderItems[0].amount + testOrder.orderItems[1].amount;
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
+
+        // @ts-expect-error fixme: auto ignored
         testOrder.delivery = null;
         testPayment.amount = testOrder.amount;
 
@@ -296,11 +294,10 @@ describe("OrderEmailHandler", () => {
           } as OrderItem,
         ];
 
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
+        // @ts-expect-error fixme: auto ignored
         testOrder.amount = testOrder.orderItems[0].amount;
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
+
+        // @ts-expect-error fixme: auto ignored
         testOrder.delivery = null;
         testPayment.amount = testOrder.amount;
 
@@ -311,28 +308,22 @@ describe("OrderEmailHandler", () => {
               sendOrderReceiptStub.lastCall.args;
             const emailOrder = sendOrderReceiptArguments[1];
 
-            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-            // @ts-ignore
+            // @ts-expect-error fixme: auto ignored
             expect(emailOrder.items[0].title).to.be.eq(
-              // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-              // @ts-ignore
+              // @ts-expect-error fixme: auto ignored
               testOrder.orderItems[0].title,
             );
-            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-            // @ts-ignore
+
+            // @ts-expect-error fixme: auto ignored
             expect(emailOrder.items[0].price).to.be.eq(
-              // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-              // @ts-ignore
+              // @ts-expect-error fixme: auto ignored
               testOrder.orderItems[0].amount.toString(),
             );
-            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-            // @ts-ignore
+
+            // @ts-expect-error fixme: auto ignored
             expect(emailOrder.items[0].deadline).to.be.eq(
               dateService.format(
-                // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-                // @ts-ignore
-                // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-                // @ts-ignore
+                // @ts-expect-error fixme: auto ignored
                 testOrder.orderItems[0].info.to,
                 "Europe/Oslo",
                 standardDayFormat,
@@ -356,8 +347,8 @@ describe("OrderEmailHandler", () => {
               to: new Date(2019, 1, 1),
             },
           } as OrderItem,
-          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-          // @ts-ignore
+
+          // @ts-expect-error fixme: auto ignored
           {
             title: "Jesus Christ in da house",
             amount: null,
@@ -368,11 +359,11 @@ describe("OrderEmailHandler", () => {
           } as OrderItem,
         ];
 
-        testOrder.amount = // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-          // @ts-ignore
+        testOrder.amount =
+          // @ts-expect-error fixme: auto ignored
           testOrder.orderItems[0].amount + testOrder.orderItems[1].amount;
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
+
+        // @ts-expect-error fixme: auto ignored
         testOrder.delivery = null;
         testPayment.amount = testOrder.amount;
 
@@ -383,48 +374,38 @@ describe("OrderEmailHandler", () => {
               sendOrderReceiptStub.lastCall.args;
             const emailOrder = sendOrderReceiptArguments[1];
 
-            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-            // @ts-ignore
+            // @ts-expect-error fixme: auto ignored
             expect(emailOrder.items[0].title).to.be.eq(
-              // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-              // @ts-ignore
+              // @ts-expect-error fixme: auto ignored
               testOrder.orderItems[0].title,
             );
-            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-            // @ts-ignore
+
+            // @ts-expect-error fixme: auto ignored
             expect(emailOrder.items[0].price).to.be.null;
-            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-            // @ts-ignore
+
+            // @ts-expect-error fixme: auto ignored
             expect(emailOrder.items[0].deadline).to.be.eq(
               dateService.format(
-                // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-                // @ts-ignore
-                // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-                // @ts-ignore
+                // @ts-expect-error fixme: auto ignored
                 testOrder.orderItems[1].info.to,
                 "Europe/Oslo",
                 standardDayFormat,
               ),
             );
 
-            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-            // @ts-ignore
+            // @ts-expect-error fixme: auto ignored
             expect(emailOrder.items[1].title).to.be.eq(
-              // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-              // @ts-ignore
+              // @ts-expect-error fixme: auto ignored
               testOrder.orderItems[1].title,
             );
-            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-            // @ts-ignore
+
+            // @ts-expect-error fixme: auto ignored
             expect(emailOrder.items[1].price).to.be.null;
-            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-            // @ts-ignore
+
+            // @ts-expect-error fixme: auto ignored
             expect(emailOrder.items[1].deadline).to.be.eq(
               dateService.format(
-                // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-                // @ts-ignore
-                // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-                // @ts-ignore
+                // @ts-expect-error fixme: auto ignored
                 testOrder.orderItems[1].info.to,
                 "Europe/Oslo",
                 standardDayFormat,
@@ -450,11 +431,10 @@ describe("OrderEmailHandler", () => {
           } as OrderItem,
         ];
 
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
+        // @ts-expect-error fixme: auto ignored
         testOrder.amount = testOrder.orderItems[0].amount;
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
+
+        // @ts-expect-error fixme: auto ignored
         testOrder.delivery = null;
         testPayment.amount = testOrder.amount;
 
@@ -465,21 +445,19 @@ describe("OrderEmailHandler", () => {
               sendOrderReceiptStub.lastCall.args;
             const emailOrder = sendOrderReceiptArguments[1];
 
-            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-            // @ts-ignore
+            // @ts-expect-error fixme: auto ignored
             expect(emailOrder.items[0].title).to.be.eq(
-              // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-              // @ts-ignore
+              // @ts-expect-error fixme: auto ignored
               testOrder.orderItems[0].title,
             );
-            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-            // @ts-ignore
+
+            // @ts-expect-error fixme: auto ignored
             expect(emailOrder.items[0].status).to.be.eq("returnert");
-            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-            // @ts-ignore
+
+            // @ts-expect-error fixme: auto ignored
             expect(emailOrder.items[0].price).to.be.null;
-            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-            // @ts-ignore
+
+            // @ts-expect-error fixme: auto ignored
             expect(emailOrder.items[0].deadline).to.be.null;
 
             done();
@@ -493,8 +471,8 @@ describe("OrderEmailHandler", () => {
         const expectedAmount = "540";
 
         testOrder.amount = parseInt(expectedAmount);
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
+
+        // @ts-expect-error fixme: auto ignored
         testOrder.delivery = undefined;
 
         orderEmailHandler
@@ -518,8 +496,8 @@ describe("OrderEmailHandler", () => {
       it('should have a delivery object when order.delivery is present and have method "bring"', (done) => {
         testOrder.delivery = "delivery1";
         testDelivery.method = "bring";
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
+
+        // @ts-expect-error fixme: auto ignored
         testDelivery.info["trackingNumber"] = "trackingABC";
         const expectedAmount = testOrder.amount + testDelivery.amount;
 
@@ -532,20 +510,17 @@ describe("OrderEmailHandler", () => {
 
             //delivery address should be on the form:
             // Billy Bob, Trondheimsveien 10 D, 0560 OSLO
-            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-            // @ts-ignore
+
+            // @ts-expect-error fixme: auto ignored
             let expectedAddress = testDelivery.info["shipmentAddress"].name;
             expectedAddress +=
-              // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-              // @ts-ignore
+              // @ts-expect-error fixme: auto ignored
               ", " + testDelivery.info["shipmentAddress"].address;
             expectedAddress +=
-              // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-              // @ts-ignore
+              // @ts-expect-error fixme: auto ignored
               ", " + testDelivery.info["shipmentAddress"].postalCode;
             expectedAddress +=
-              // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-              // @ts-ignore
+              // @ts-expect-error fixme: auto ignored
               " " + testDelivery.info["shipmentAddress"].postalCity;
 
             expect(emailOrder.delivery).to.be.eql({
@@ -553,12 +528,11 @@ describe("OrderEmailHandler", () => {
               amount: testDelivery.amount,
               currency: "NOK",
               address: expectedAddress,
-              // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-              // @ts-ignore
+
+              // @ts-expect-error fixme: auto ignored
               trackingNumber: testDelivery.info["trackingNumber"],
               estimatedDeliveryDate: dateService.toPrintFormat(
-                // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-                // @ts-ignore
+                // @ts-expect-error fixme: auto ignored
                 testDelivery.info["estimatedDelivery"],
                 "Europe/Oslo",
               ),
@@ -609,45 +583,39 @@ describe("OrderEmailHandler", () => {
             expect(emailOrder.showPayment).to.be.true;
             expect(emailOrder.payment.total).to.be.eq(expectedTotal);
             expect(emailOrder.payment.currency).to.be.eq(
-              // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-              // @ts-ignore
+              // @ts-expect-error fixme: auto ignored
               testPayment.info["orderDetails"].currency,
-            ); // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-            // @ts-ignore
+            );
+            // @ts-expect-error fixme: auto ignored
             expect(emailOrder.payment.payments[0].method).to.be.eq(
-              // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-              // @ts-ignore
+              // @ts-expect-error fixme: auto ignored
               testPayment.info["paymentDetails"]["paymentMethod"],
-            ); // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-            // @ts-ignore
+            );
+            // @ts-expect-error fixme: auto ignored
             expect(emailOrder.payment.payments[0].amount).to.be.eq(
-              // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-              // @ts-ignore
+              // @ts-expect-error fixme: auto ignored
               (testPayment.info["orderDetails"]["amount"] / 100).toString(),
-            ); // the amount is in ears when it comes from dibs// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-            // @ts-ignore
+            ); // the amount is in ears when it comes from dibs
+            // @ts-expect-error fixme: auto ignored
             expect(emailOrder.payment.payments[0].cardInfo).to.be.eq(
               "***" + "0079",
-            ); // should only send the last 4 digits// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-            // @ts-ignore
+            ); // should only send the last 4 digits
+            // @ts-expect-error fixme: auto ignored
             expect(emailOrder.payment.payments[0].taxAmount).to.be.eq(
-              // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-              // @ts-ignore
+              // @ts-expect-error fixme: auto ignored
               testPayment.taxAmount.toString(),
-            ); // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-            // @ts-ignore
+            );
+            // @ts-expect-error fixme: auto ignored
             expect(emailOrder.payment.payments[0].paymentId).to.be.eq(
-              // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-              // @ts-ignore
+              // @ts-expect-error fixme: auto ignored
               testPayment.info["paymentId"],
-            ); // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-            // @ts-ignore
-            expect(emailOrder.payment.payments[0].status).to.be.eq("bekreftet"); // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-            // @ts-ignore
+            );
+            // @ts-expect-error fixme: auto ignored
+            expect(emailOrder.payment.payments[0].status).to.be.eq("bekreftet");
+            // @ts-expect-error fixme: auto ignored
             expect(emailOrder.payment.payments[0].creationTime).to.be.eq(
               dateService.format(
-                // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-                // @ts-ignore
+                // @ts-expect-error fixme: auto ignored
                 testPayment.creationTime,
                 "Europe/Oslo",
                 standardTimeFormat,
@@ -685,17 +653,16 @@ describe("OrderEmailHandler", () => {
             confirmed: true,
             creationTime: new Date(1900, 1, 2),
           },
-        ]; // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
-        testOrder.amount = payments[0].amount + payments[1].amount; // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
+        ];
+        // @ts-expect-error fixme: auto ignored
+        testOrder.amount = payments[0].amount + payments[1].amount;
+        // @ts-expect-error fixme: auto ignored
         testOrder.payments = [payments[0].id, payments[1].id];
 
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
+        // @ts-expect-error fixme: auto ignored
         paymentStorageStub.withArgs(payments[0].id).resolves(payments[0]);
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
+
+        // @ts-expect-error fixme: auto ignored
         paymentStorageStub.withArgs(payments[1].id).resolves(payments[1]);
 
         orderEmailHandler
@@ -708,78 +675,66 @@ describe("OrderEmailHandler", () => {
             expect(emailOrder.payment.total).to.be.eq(testOrder.amount);
             expect(emailOrder.payment.currency).to.be.eq("NOK");
             expect(emailOrder.payment.taxAmount).to.be.eq(
-              // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-              // @ts-ignore// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-              // @ts-ignore
+              // @ts-expect-error fixme: auto ignored
               payments[0].taxAmount + payments[1].taxAmount,
-            ); // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-            // @ts-ignore
+            );
+            // @ts-expect-error fixme: auto ignored
             expect(emailOrder.payment.payments[0].method).to.be.eq(
-              // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-              // @ts-ignore
+              // @ts-expect-error fixme: auto ignored
               payments[0].method,
-            ); // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-            // @ts-ignore
+            );
+            // @ts-expect-error fixme: auto ignored
             expect(emailOrder.payment.payments[0].amount).to.be.eq(
-              // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-              // @ts-ignore
+              // @ts-expect-error fixme: auto ignored
               payments[0].amount.toString(),
-            ); // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-            // @ts-ignore
+            );
+            // @ts-expect-error fixme: auto ignored
             expect(emailOrder.payment.payments[0].taxAmount).to.be.eq(
-              // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-              // @ts-ignore
+              // @ts-expect-error fixme: auto ignored
               payments[0].taxAmount.toString(),
-            ); // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-            // @ts-ignore
+            );
+            // @ts-expect-error fixme: auto ignored
             expect(emailOrder.payment.payments[0].paymentId).to.be.eq(
-              // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-              // @ts-ignore
+              // @ts-expect-error fixme: auto ignored
               payments[0].id,
-            ); // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-            // @ts-ignore
-            expect(emailOrder.payment.payments[0].status).to.be.eq("bekreftet"); // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-            // @ts-ignore
+            );
+            // @ts-expect-error fixme: auto ignored
+            expect(emailOrder.payment.payments[0].status).to.be.eq("bekreftet");
+            // @ts-expect-error fixme: auto ignored
             expect(emailOrder.payment.payments[0].creationTime).to.be.eq(
               dateService.format(
-                // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-                // @ts-ignore
+                // @ts-expect-error fixme: auto ignored
                 payments[0].creationTime,
                 "Europe/Oslo",
                 "DD.MM.YYYY HH.mm.ss",
               ),
-            ); // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-            // @ts-ignore
+            );
+            // @ts-expect-error fixme: auto ignored
             expect(emailOrder.payment.payments[1].method).to.be.eq(
-              // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-              // @ts-ignore
+              // @ts-expect-error fixme: auto ignored
               payments[1].method,
-            ); // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-            // @ts-ignore
+            );
+            // @ts-expect-error fixme: auto ignored
             expect(emailOrder.payment.payments[1].amount).to.be.eq(
-              // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-              // @ts-ignore
+              // @ts-expect-error fixme: auto ignored
               payments[1].amount.toString(),
-            ); // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-            // @ts-ignore
+            );
+            // @ts-expect-error fixme: auto ignored
             expect(emailOrder.payment.payments[1].taxAmount).to.be.eq(
-              // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-              // @ts-ignore
+              // @ts-expect-error fixme: auto ignored
               payments[1].taxAmount.toString(),
-            ); // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-            // @ts-ignore
+            );
+            // @ts-expect-error fixme: auto ignored
             expect(emailOrder.payment.payments[1].paymentId).to.be.eq(
-              // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-              // @ts-ignore
+              // @ts-expect-error fixme: auto ignored
               payments[1].id,
-            ); // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-            // @ts-ignore
-            expect(emailOrder.payment.payments[1].status).to.be.eq("bekreftet"); // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-            // @ts-ignore
+            );
+            // @ts-expect-error fixme: auto ignored
+            expect(emailOrder.payment.payments[1].status).to.be.eq("bekreftet");
+            // @ts-expect-error fixme: auto ignored
             expect(emailOrder.payment.payments[1].creationTime).to.be.eq(
               dateService.format(
-                // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-                // @ts-ignore
+                // @ts-expect-error fixme: auto ignored
                 payments[1].creationTime,
                 "Europe/Oslo",
                 "DD.MM.YYYY HH.mm.ss",

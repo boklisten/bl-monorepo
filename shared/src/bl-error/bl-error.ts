@@ -28,7 +28,7 @@ export class BlError extends Error {
   }
 
   data(data: unknown): BlError {
-    // @ts-expect-error fixme bad typing
+    // @ts-expect-error fixme: auto ignored  bad typing
     this.data = data;
     return this;
   }

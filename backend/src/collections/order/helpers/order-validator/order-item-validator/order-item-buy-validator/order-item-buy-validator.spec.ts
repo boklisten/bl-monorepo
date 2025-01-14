@@ -98,8 +98,7 @@ describe("OrderItemBuyValidator", () => {
 
   describe("validate()", () => {
     beforeEach(() => {
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
+      // @ts-expect-error fixme: auto ignored
       testOrder.orderItems[0].type = "buy";
     });
 
@@ -107,8 +106,8 @@ describe("OrderItemBuyValidator", () => {
       return expect(
         orderItemPriceValidator.validate(
           testBranch,
-          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-          // @ts-ignore
+
+          // @ts-expect-error fixme: auto ignored
           testOrder.orderItems[0],
           testItem,
         ),
@@ -117,22 +116,20 @@ describe("OrderItemBuyValidator", () => {
 
     context("when discount is not set", () => {
       beforeEach(() => {
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
+        // @ts-expect-error fixme: auto ignored
         testOrder.orderItems[0].discount = null;
       });
 
       it("should reject if the orderItem.taxRate is not the same as item.taxRate", () => {
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
+        // @ts-expect-error fixme: auto ignored
         testOrder.orderItems[0].taxRate = 0.75;
         testItem.taxRate = 0.33;
 
         return expect(
           orderItemPriceValidator.validate(
             testBranch,
-            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-            // @ts-ignore
+
+            // @ts-expect-error fixme: auto ignored
             testOrder.orderItems[0],
             testItem,
           ),
@@ -143,14 +140,13 @@ describe("OrderItemBuyValidator", () => {
       });
 
       it("should reject if the orderItem.taxAmount is not equal to (item.price * item.taxRate)", () => {
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
+        // @ts-expect-error fixme: auto ignored
         testOrder.orderItems[0].amount = 300;
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
+
+        // @ts-expect-error fixme: auto ignored
         testOrder.orderItems[0].taxAmount = 100;
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
+
+        // @ts-expect-error fixme: auto ignored
         testOrder.orderItems[0].taxRate = 0.5;
         testItem.price = 300;
         testItem.taxRate = 0.5;
@@ -158,8 +154,8 @@ describe("OrderItemBuyValidator", () => {
         return expect(
           orderItemPriceValidator.validate(
             testBranch,
-            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-            // @ts-ignore
+
+            // @ts-expect-error fixme: auto ignored
             testOrder.orderItems[0],
             testItem,
           ),
@@ -170,14 +166,13 @@ describe("OrderItemBuyValidator", () => {
       });
 
       it("should reject when item.price is 200 and orderItem.amount is 100", () => {
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
+        // @ts-expect-error fixme: auto ignored
         testOrder.orderItems[0].amount = 100;
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
+
+        // @ts-expect-error fixme: auto ignored
         testOrder.orderItems[0].taxAmount = 0;
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
+
+        // @ts-expect-error fixme: auto ignored
         testOrder.orderItems[0].taxRate = 0;
         testItem.price = 200;
         testItem.taxRate = 0;
@@ -185,8 +180,8 @@ describe("OrderItemBuyValidator", () => {
         return expect(
           orderItemPriceValidator.validate(
             testBranch,
-            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-            // @ts-ignore
+
+            // @ts-expect-error fixme: auto ignored
             testOrder.orderItems[0],
             testItem,
           ),
@@ -197,14 +192,13 @@ describe("OrderItemBuyValidator", () => {
       });
 
       it("should reject if item.price is 134 and orderItem.amount is 400", () => {
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
+        // @ts-expect-error fixme: auto ignored
         testOrder.orderItems[0].amount = 400;
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
+
+        // @ts-expect-error fixme: auto ignored
         testOrder.orderItems[0].taxAmount = 0;
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
+
+        // @ts-expect-error fixme: auto ignored
         testOrder.orderItems[0].taxRate = 0;
         testItem.price = 134;
         testItem.taxRate = 0;
@@ -212,8 +206,8 @@ describe("OrderItemBuyValidator", () => {
         return expect(
           orderItemPriceValidator.validate(
             testBranch,
-            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-            // @ts-ignore
+
+            // @ts-expect-error fixme: auto ignored
             testOrder.orderItems[0],
             testItem,
           ),
@@ -224,14 +218,13 @@ describe("OrderItemBuyValidator", () => {
       });
 
       it("should resolve if a valid order is sent", () => {
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
+        // @ts-expect-error fixme: auto ignored
         testOrder.orderItems[0].type = "buy";
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
+
+        // @ts-expect-error fixme: auto ignored
         testOrder.orderItems[0].amount = 400;
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
+
+        // @ts-expect-error fixme: auto ignored
         testOrder.orderItems[0].item = "theItem";
         testOrder.amount = 400;
         testItem.price = 400;
@@ -240,8 +233,8 @@ describe("OrderItemBuyValidator", () => {
         return expect(
           orderItemPriceValidator.validate(
             testBranch,
-            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-            // @ts-ignore
+
+            // @ts-expect-error fixme: auto ignored
             testOrder.orderItems[0],
             testItem,
           ),
@@ -251,32 +244,30 @@ describe("OrderItemBuyValidator", () => {
 
     context("when discount is set", () => {
       beforeEach(() => {
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
+        // @ts-expect-error fixme: auto ignored
         testOrder.orderItems[0].discount = {
           amount: 100,
         };
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
+
+        // @ts-expect-error fixme: auto ignored
         testOrder.orderItems[0].taxAmount = 0;
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
+
+        // @ts-expect-error fixme: auto ignored
         testOrder.orderItems[0].taxRate = 0;
         testItem.taxRate = 0;
       });
 
       it("should reject if orderItem.taxAmount is not equal to ((item.price - discount.amount) * item.taxRate)", () => {
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
+        // @ts-expect-error fixme: auto ignored
         testOrder.orderItems[0].amount = 400;
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
+
+        // @ts-expect-error fixme: auto ignored
         testOrder.orderItems[0].taxRate = 0.5;
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
+
+        // @ts-expect-error fixme: auto ignored
         testOrder.orderItems[0].taxAmount = 100;
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
+
+        // @ts-expect-error fixme: auto ignored
         testOrder.orderItems[0].discount = {
           amount: 100,
         };
@@ -286,8 +277,8 @@ describe("OrderItemBuyValidator", () => {
         return expect(
           orderItemPriceValidator.validate(
             testBranch,
-            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-            // @ts-ignore
+
+            // @ts-expect-error fixme: auto ignored
             testOrder.orderItems[0],
             testItem,
           ),
@@ -298,12 +289,11 @@ describe("OrderItemBuyValidator", () => {
       });
 
       it("should reject if (item.price - discount.amount) is 400 but orderItem.amount is 100", () => {
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
+        // @ts-expect-error fixme: auto ignored
         testOrder.orderItems[0].amount = 100;
         testItem.price = 500;
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
+
+        // @ts-expect-error fixme: auto ignored
         testOrder.orderItems[0].discount = {
           amount: 100,
         };
@@ -311,8 +301,8 @@ describe("OrderItemBuyValidator", () => {
         return expect(
           orderItemPriceValidator.validate(
             testBranch,
-            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-            // @ts-ignore
+
+            // @ts-expect-error fixme: auto ignored
             testOrder.orderItems[0],
             testItem,
           ),
@@ -323,12 +313,11 @@ describe("OrderItemBuyValidator", () => {
       });
 
       it("should reject if (item.price - discount.amount) is 200 but orderItem.amount is 560", () => {
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
+        // @ts-expect-error fixme: auto ignored
         testOrder.orderItems[0].amount = 560;
         testItem.price = 500;
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
+
+        // @ts-expect-error fixme: auto ignored
         testOrder.orderItems[0].discount = {
           amount: 300,
         };
@@ -336,8 +325,8 @@ describe("OrderItemBuyValidator", () => {
         return expect(
           orderItemPriceValidator.validate(
             testBranch,
-            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-            // @ts-ignore
+
+            // @ts-expect-error fixme: auto ignored
             testOrder.orderItems[0],
             testItem,
           ),
@@ -348,14 +337,13 @@ describe("OrderItemBuyValidator", () => {
       });
 
       it("should resolve if a valid order is placed", () => {
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
+        // @ts-expect-error fixme: auto ignored
         testOrder.orderItems[0].amount = 300;
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
+
+        // @ts-expect-error fixme: auto ignored
         testOrder.orderItems[0].item = "theItem1";
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
+
+        // @ts-expect-error fixme: auto ignored
         testOrder.orderItems[0].discount = {
           amount: 300,
         };
@@ -366,8 +354,8 @@ describe("OrderItemBuyValidator", () => {
         return expect(
           orderItemPriceValidator.validate(
             testBranch,
-            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-            // @ts-ignore
+
+            // @ts-expect-error fixme: auto ignored
             testOrder.orderItems[0],
             testItem,
           ),

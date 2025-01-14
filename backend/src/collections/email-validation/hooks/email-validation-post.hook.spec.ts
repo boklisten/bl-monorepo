@@ -45,8 +45,7 @@ describe("EmailValidationPostHook", () => {
       emailValidationPostHook
         .after([testEmailValidation])
         .catch((blErr: BlError) => {
-          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-          // @ts-ignore
+          // @ts-expect-error fixme: auto ignored
           expect(blErr.errorStack[0].getMsg()).to.be.eql(
             "could not send email validation link",
           );

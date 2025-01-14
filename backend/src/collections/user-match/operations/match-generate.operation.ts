@@ -110,7 +110,7 @@ export class MatchGenerateOperation implements Operation {
         meetingInfo: {
           location: "Krøllalfaen",
           date: membershipToTime[
-            // @ts-expect-error fixme: temporary for this round of matching (jan 2025)
+            // @ts-expect-error fixme: auto ignored : temporary for this round of matching (jan 2025)
             matchableUsers.find((u) => u.id === candidateUserMatch.customerA)
               ?.groupMembership
           ],

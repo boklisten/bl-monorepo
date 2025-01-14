@@ -55,8 +55,6 @@ describe("AccessTokenCreator", () => {
           testRefreshToken = refreshToken;
           done();
         },
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
         (error: BlError) => {
           testRefreshToken = "this is not valid..";
           done();
@@ -69,8 +67,7 @@ describe("AccessTokenCreator", () => {
         const username = undefined;
         return accessTokenCreator
           .create(
-            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-            // @ts-ignore
+            // @ts-expect-error fixme: auto ignored
             username,
             testUserid,
             testPermission,
@@ -98,8 +95,7 @@ describe("AccessTokenCreator", () => {
         return accessTokenCreator
           .create(
             testUsername,
-            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-            // @ts-ignore
+            // @ts-expect-error fixme: auto ignored
             userid,
             testPermission,
             testUserDetailId,

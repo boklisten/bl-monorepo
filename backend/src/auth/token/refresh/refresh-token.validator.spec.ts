@@ -50,8 +50,7 @@ describe("RefreshTokenValidator", () => {
     it("should reject with BlError when refreshToken is not valid", (done) => {
       const refreshToken = "this is not a valid token";
       refreshTokenValidator.validate(refreshToken).then(
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
+        // @ts-expect-error fixme: auto ignored
         (valid: boolean) => {
           valid.should.not.be.fulfilled;
           done();
@@ -89,8 +88,7 @@ describe("RefreshTokenValidator", () => {
         refreshTokenCreator.create(username, userid).then(
           (refreshToken: string) => {
             refreshTokenValidator.validate(refreshToken).then(
-              // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-              // @ts-ignore
+              // @ts-expect-error fixme: auto ignored
               (refreshToken: RefreshToken) => {
                 refreshToken.aud.should.be.eq(tokenConfig.refreshToken.aud);
                 refreshToken.iss.should.be.eq(tokenConfig.refreshToken.iss);

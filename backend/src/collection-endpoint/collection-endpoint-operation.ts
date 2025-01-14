@@ -81,27 +81,17 @@ export class CollectionEndpointOperation {
     let blApiRequest: BlApiRequest;
 
     this._collectionEndpointAuth
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
+      // @ts-expect-error fixme: auto ignored
       .authenticate(this._operation.restriction, request, res, next)
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
+      // @ts-expect-error fixme: auto ignored
       .then((accessToken?: AccessToken) => {
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
         blApiRequest = {
           documentId: request.params["id"],
           query: request.query,
           data: request.body,
           user: {
-            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-            // @ts-ignore
             id: accessToken.sub,
-            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-            // @ts-ignore
             details: accessToken.details,
-            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-            // @ts-ignore
             permission: accessToken.permission,
           },
         };

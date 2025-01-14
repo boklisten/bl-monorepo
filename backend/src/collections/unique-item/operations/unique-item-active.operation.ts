@@ -27,19 +27,14 @@ export class UniqueItemActiveOperation implements Operation {
 
   async run(
     blApiRequest: BlApiRequest,
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
     request?: Request,
     res?: Response,
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     next?: NextFunction,
   ): Promise<boolean> {
     let uniqueItem: UniqueItem;
     try {
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
+      // @ts-expect-error fixme: auto ignored
       uniqueItem = await this.uniqueItemStorage.get(blApiRequest.documentId);
     } catch {
       throw new BlError("not found").code(702);
@@ -48,27 +43,23 @@ export class UniqueItemActiveOperation implements Operation {
     let activeCustomerItemIds;
     try {
       activeCustomerItemIds =
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
+        // @ts-expect-error fixme: auto ignored
         await this.customerItemActiveBlid.getActiveCustomerItemIds(
           uniqueItem.blid,
         );
     } catch {
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
+      // @ts-expect-error fixme: auto ignored
       this.sendResponse(res, []);
       return true;
     }
 
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
+    // @ts-expect-error fixme: auto ignored
     this.sendResponse(res, activeCustomerItemIds);
     return true;
   }
 
   private sendResponse(res: Response, ids: string[]) {
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
+    // @ts-expect-error fixme: auto ignored
     this.resHandler.sendResponse(res, new BlapiResponse(ids));
   }
 }

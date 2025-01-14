@@ -67,15 +67,13 @@ export class UserDetailHelper {
     const userDetailUpdateObject = {};
 
     if (
-      (isNullish(userDetail.name) || userDetail.name.length <= 0) && // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
+      (isNullish(userDetail.name) || userDetail.name.length <= 0) &&
+      // @ts-expect-error fixme: auto ignored
       dibsUserDetail.firstName &&
       dibsUserDetail?.lastName
     ) {
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
-      userDetailUpdateObject["name"] = // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
+      // @ts-expect-error fixme: auto ignored
+      userDetailUpdateObject["name"] =
         dibsUserDetail.firstName + " " + dibsUserDetail.lastName;
     }
 
@@ -83,45 +81,39 @@ export class UserDetailHelper {
       (isNullish(userDetail.phone) || userDetail.phone.length <= 0) &&
       dibsUserDetail?.phoneNumber.number
     ) {
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
+      // @ts-expect-error fixme: auto ignored
       userDetailUpdateObject["phone"] = dibsUserDetail.phoneNumber.number;
     }
 
     if (
-      (isNullish(userDetail.address) || userDetail.address.length <= 0) && // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
+      (isNullish(userDetail.address) || userDetail.address.length <= 0) &&
+      // @ts-expect-error fixme: auto ignored
       dibsShippingAddress.addressLine1
     ) {
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
+      // @ts-expect-error fixme: auto ignored
       userDetailUpdateObject["address"] =
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
+        // @ts-expect-error fixme: auto ignored
         dibsShippingAddress.addressLine1 +
         " " +
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
+        // @ts-expect-error fixme: auto ignored
         dibsShippingAddress.addressLine2;
     }
 
     if (
-      (isNullish(userDetail.postCity) || userDetail.postCity.length <= 0) && // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
+      (isNullish(userDetail.postCity) || userDetail.postCity.length <= 0) &&
+      // @ts-expect-error fixme: auto ignored
       dibsShippingAddress.city
     ) {
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
+      // @ts-expect-error fixme: auto ignored
       userDetailUpdateObject["postCity"] = dibsShippingAddress.city;
     }
 
     if (
-      (isNullish(userDetail.postCode) || userDetail.postCode.length <= 0) && // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
+      (isNullish(userDetail.postCode) || userDetail.postCode.length <= 0) &&
+      // @ts-expect-error fixme: auto ignored
       dibsShippingAddress.postalCode
     ) {
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
+      // @ts-expect-error fixme: auto ignored
       userDetailUpdateObject["postCode"] = dibsShippingAddress.postalCode;
     }
 
@@ -131,8 +123,7 @@ export class UserDetailHelper {
   public isValid(userDetail: UserDetail): boolean {
     const invalidUserDetailFields = this.getInvalidUserDetailFields(userDetail);
 
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
+    // @ts-expect-error fixme: auto ignored
     return invalidUserDetailFields.length <= 0 && userDetail.active;
   }
 

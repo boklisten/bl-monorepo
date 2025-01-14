@@ -41,8 +41,8 @@ describe("LocalLoginCreator", () => {
         const password = "thisisavalidpassword";
         return (
           localLoginCreator
-            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-            // @ts-ignore
+
+            // @ts-expect-error fixme: auto ignored
             .create(username, password)
             .should.be.rejectedWith(BlError)
         );
@@ -53,8 +53,8 @@ describe("LocalLoginCreator", () => {
         const password = null;
         return (
           localLoginCreator
-            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-            // @ts-ignore
+
+            // @ts-expect-error fixme: auto ignored
             .create(username, password)
             .should.be.rejectedWith(BlError)
         );
@@ -95,8 +95,6 @@ describe("LocalLoginCreator", () => {
               .property("hashedPassword")
               .and.have.length.gte(64);
           },
-          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-          // @ts-ignore
           (error: any) => {},
         );
       });

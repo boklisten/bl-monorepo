@@ -28,8 +28,8 @@ export class CollectionEndpointGetAll<T extends BlDocument>
       } catch (error) {
         throw (
           new BlError("could not create query from request query string")
-            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-            // @ts-ignore
+
+            // @ts-expect-error fixme: auto ignored
             .add(error)
             .store("query", blApiRequest.query)
             .code(701)

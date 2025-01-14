@@ -15,8 +15,7 @@ export class HttpHandler {
       };
 
       if (authorization) {
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
+        // @ts-expect-error fixme: auto ignored
         options["headers"]["Authorization"] = authorization;
       }
 
@@ -83,8 +82,7 @@ export class HttpHandler {
       };
 
       if (authorization) {
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
+        // @ts-expect-error fixme: auto ignored
         options["headers"]["Authorization"] = authorization;
       }
 

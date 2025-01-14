@@ -75,8 +75,6 @@ describe("EmailValidationConfirmOperation", () => {
 
   const userDetailStorageUpdateStub = sinon
     .stub(userDetailStorage, "update")
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
     .callsFake((id: string, data: any) => {
       if (id !== testUserDetail.id) {
         return Promise.reject(new BlError("not found"));

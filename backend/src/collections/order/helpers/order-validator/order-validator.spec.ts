@@ -40,17 +40,16 @@ describe("OrderValidator", () => {
     orderUserDetailValidator,
   );
 
-  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-  // @ts-ignore
+  // @ts-expect-error fixme: auto ignored
   let orderItemShouldResolve;
-  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-  // @ts-ignore
+
+  // @ts-expect-error fixme: auto ignored
   let orderPlacedShouldResolve;
-  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-  // @ts-ignore
+
+  // @ts-expect-error fixme: auto ignored
   let branchValidatorShouldResolve;
-  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-  // @ts-ignore
+
+  // @ts-expect-error fixme: auto ignored
   let orderUserDetailValidatorShouldResolve;
 
   sinon.stub(branchStorage, "get").callsFake((id: string) => {
@@ -61,44 +60,32 @@ describe("OrderValidator", () => {
     return Promise.resolve(testBranch);
   });
 
-  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-  // @ts-ignore
   sinon.stub(orderItemValidator, "validate").callsFake((order) => {
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
+    // @ts-expect-error fixme: auto ignored
     if (!orderItemShouldResolve) {
       return Promise.reject(new BlError("orderItems not valid"));
     }
     return Promise.resolve(true);
   });
 
-  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-  // @ts-ignore
   sinon.stub(orderPlacedValidator, "validate").callsFake((order: Order) => {
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
+    // @ts-expect-error fixme: auto ignored
     if (!orderPlacedShouldResolve) {
       return Promise.reject(new BlError("validation of order.placed failed"));
     }
     return Promise.resolve(true);
   });
 
-  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-  // @ts-ignore
   sinon.stub(branchValidator, "validate").callsFake((order: Order) => {
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
+    // @ts-expect-error fixme: auto ignored
     if (!branchValidatorShouldResolve) {
       return Promise.reject(new BlError("validation of branch failed"));
     }
     return Promise.resolve(true);
   });
 
-  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-  // @ts-ignore
   sinon.stub(orderUserDetailValidator, "validate").callsFake((order: Order) => {
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
+    // @ts-expect-error fixme: auto ignored
     if (!orderUserDetailValidatorShouldResolve) {
       return Promise.reject(new BlError("validation of UserDetail failed"));
     }
@@ -108,8 +95,7 @@ describe("OrderValidator", () => {
 
   describe("#validate()", () => {
     it("should reject if amount is null or undefined", () => {
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
+      // @ts-expect-error fixme: auto ignored
       testOrder.amount = undefined;
       return expect(
         orderValidator.validate(testOrder, false),

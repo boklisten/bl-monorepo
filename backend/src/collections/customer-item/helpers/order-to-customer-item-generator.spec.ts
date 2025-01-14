@@ -89,8 +89,8 @@ describe("OrderToCustomerItemGenerator", () => {
           item: orderItem.item,
           type: "partly-payment",
           customer: order.customer,
-          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-          // @ts-ignore
+
+          // @ts-expect-error fixme: auto ignored
           deadline: orderItem.info.to,
           handout: true,
           handoutInfo: {
@@ -99,8 +99,8 @@ describe("OrderToCustomerItemGenerator", () => {
             handoutEmployee: order.employee,
             time: today,
           },
-          returned: false, // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-          // @ts-ignore
+          returned: false,
+          // @ts-expect-error fixme: auto ignored
           amountLeftToPay: orderItem["info"]["amountLeftToPay"],
           totalAmount: orderItem.amount,
           blid: orderItem.blid,
@@ -184,8 +184,8 @@ describe("OrderToCustomerItemGenerator", () => {
           item: orderItem.item,
           type: "partly-payment",
           customer: order.customer,
-          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-          // @ts-ignore
+
+          // @ts-expect-error fixme: auto ignored
           deadline: orderItem.info.to,
           handout: true,
           handoutInfo: {
@@ -195,8 +195,8 @@ describe("OrderToCustomerItemGenerator", () => {
             time: today,
           },
           returned: false,
-          blid: orderItem.blid, // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-          // @ts-ignore
+          blid: orderItem.blid,
+          // @ts-expect-error fixme: auto ignored
           amountLeftToPay: orderItem["info"]["amountLeftToPay"],
           totalAmount: orderItem.amount,
           viewableFor: [userDetail.blid],
@@ -217,8 +217,8 @@ describe("OrderToCustomerItemGenerator", () => {
           type: "partly-payment",
           blid: orderItem2.blid,
           customer: order.customer,
-          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-          // @ts-ignore
+
+          // @ts-expect-error fixme: auto ignored
           deadline: orderItem2.info.to,
           viewableFor: [userDetail.blid],
           handout: true,
@@ -228,8 +228,8 @@ describe("OrderToCustomerItemGenerator", () => {
             handoutEmployee: order.employee,
             time: today,
           },
-          returned: false, // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-          // @ts-ignore
+          returned: false,
+          // @ts-expect-error fixme: auto ignored
           amountLeftToPay: orderItem2["info"]["amountLeftToPay"],
           totalAmount: orderItem2.amount,
           orders: [order.id],
@@ -348,8 +348,8 @@ describe("OrderToCustomerItemGenerator", () => {
           item: orderItem.item,
           type: "rent",
           customer: order.customer,
-          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-          // @ts-ignore
+
+          // @ts-expect-error fixme: auto ignored
           deadline: orderItem.info.to,
           handout: true,
           viewableFor: [userDetail.blid],
@@ -437,8 +437,8 @@ describe("OrderToCustomerItemGenerator", () => {
           item: orderItem.item,
           type: "rent",
           customer: order.customer,
-          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-          // @ts-ignore
+
+          // @ts-expect-error fixme: auto ignored
           deadline: orderItem.info.to,
           viewableFor: [userDetail.blid],
           blid: orderItem.blid,
@@ -467,8 +467,8 @@ describe("OrderToCustomerItemGenerator", () => {
           item: orderItem2.item,
           type: "rent",
           customer: order.customer,
-          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-          // @ts-ignore
+
+          // @ts-expect-error fixme: auto ignored
           deadline: orderItem2.info.to,
           viewableFor: [userDetail.blid],
           blid: orderItem2.blid,
@@ -556,8 +556,8 @@ describe("OrderToCustomerItemGenerator", () => {
           item: orderItem.item,
           type: "loan",
           customer: order.customer,
-          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-          // @ts-ignore
+
+          // @ts-expect-error fixme: auto ignored
           deadline: orderItem.info.to,
           viewableFor: [userDetail.blid],
           blid: orderItem.blid,
@@ -586,8 +586,8 @@ describe("OrderToCustomerItemGenerator", () => {
           item: orderItem2.item,
           type: "loan",
           customer: order.customer,
-          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-          // @ts-ignore
+
+          // @ts-expect-error fixme: auto ignored
           deadline: orderItem2.info.to,
           viewableFor: [userDetail.blid],
           blid: orderItem2.blid,
@@ -709,8 +709,8 @@ describe("OrderToCustomerItemGenerator", () => {
           item: orderItem.item,
           type: "loan",
           customer: order.customer,
-          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-          // @ts-ignore
+
+          // @ts-expect-error fixme: auto ignored
           deadline: orderItem.info.to,
           viewableFor: [userDetail.blid],
           blid: orderItem.blid,
@@ -739,8 +739,8 @@ describe("OrderToCustomerItemGenerator", () => {
           item: orderItem2.item,
           type: "rent",
           customer: order.customer,
-          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-          // @ts-ignore
+
+          // @ts-expect-error fixme: auto ignored
           deadline: orderItem2.info.to,
           viewableFor: [userDetail.blid],
           blid: orderItem2.blid,
@@ -769,8 +769,8 @@ describe("OrderToCustomerItemGenerator", () => {
           item: orderItem3.item,
           type: "partly-payment",
           customer: order.customer,
-          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-          // @ts-ignore
+
+          // @ts-expect-error fixme: auto ignored
           deadline: orderItem3.info.to,
           viewableFor: [userDetail.blid],
           blid: orderItem3.blid,
@@ -781,8 +781,8 @@ describe("OrderToCustomerItemGenerator", () => {
             handoutEmployee: order.employee,
             time: today,
           },
-          returned: false, // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-          // @ts-ignore
+          returned: false,
+          // @ts-expect-error fixme: auto ignored
           amountLeftToPay: orderItem3["info"]["amountLeftToPay"],
           totalAmount: orderItem3.amount,
           orders: [order.id],

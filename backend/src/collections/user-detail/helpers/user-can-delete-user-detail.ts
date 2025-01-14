@@ -51,11 +51,11 @@ export class UserCanDeleteUserDetail {
     return !(
       !this.permissionService.isPermissionEqualOrOver(
         accessToken.permission,
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
+
+        // @ts-expect-error fixme: auto ignored
         userToDelete.permission,
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
+
+        // @ts-expect-error fixme: auto ignored
       ) || accessToken.permission === userToDelete.permission
     );
   }

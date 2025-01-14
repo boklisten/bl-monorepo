@@ -16,8 +16,7 @@ export class CollectionEndpointPost<T extends BlDocument>
 
     try {
       return [
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
+        // @ts-expect-error fixme: auto ignored
         await this._documentStorage.add(blApiRequest.data, {
           id: blApiRequest.user.id,
           permission: blApiRequest.user.permission,

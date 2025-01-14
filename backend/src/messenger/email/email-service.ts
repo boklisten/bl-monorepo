@@ -75,12 +75,9 @@ export class EmailService implements MessengerService {
   }
 
   public async sendMany(
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     messages: Message[],
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
+
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     customerDetails: UserDetail[],
   ): Promise<void> {
@@ -201,8 +198,6 @@ export class EmailService implements MessengerService {
   }
 
   public async remindMany(
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     customerDetailsWithCustomerItems: CustomerDetailWithCustomerItem[],
   ): Promise<void> {
@@ -230,8 +225,7 @@ export class EmailService implements MessengerService {
       settings: {
         text: {
           deadline: message.info
-            ? // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-              // @ts-ignore
+            ? // @ts-expect-error fixme: auto ignored
               this.formatDeadline(message.info["deadline"])
             : "",
         },
@@ -258,14 +252,13 @@ export class EmailService implements MessengerService {
     } else {
       return {
         summary: {
-          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-          // @ts-ignore
+          // @ts-expect-error fixme: auto ignored
           total: null,
-          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-          // @ts-ignore
+
+          // @ts-expect-error fixme: auto ignored
           totalTax: null,
-          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-          // @ts-ignore
+
+          // @ts-expect-error fixme: auto ignored
           taxPercentage: null,
         },
         items: await this.customerItemsToEmailItems(message, customerItems),
@@ -295,16 +288,16 @@ export class EmailService implements MessengerService {
     if (message.messageSubtype === "partly-payment") {
       return {
         id: item.info.isbn.toString(),
-        title: item.title, // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
+        title: item.title,
+        // @ts-expect-error fixme: auto ignored
         deadline: this.formatDeadline(message.info["deadline"]),
         leftToPay: customerItem.amountLeftToPay + " NOK",
       };
     } else {
       return {
         id: item.info.isbn.toString(),
-        title: item.title, // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
+        title: item.title,
+        // @ts-expect-error fixme: auto ignored
         deadline: this.formatDeadline(message.info["deadline"]),
       };
     }
@@ -317,8 +310,7 @@ export class EmailService implements MessengerService {
   }
   private getCustomerItemLeftToPayTotal(customerItems: CustomerItem[]): number {
     return customerItems.reduce(
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
+      // @ts-expect-error fixme: auto ignored
       (total, next) => total + next.amountLeftToPay,
       0,
     );
@@ -357,20 +349,18 @@ export class EmailService implements MessengerService {
 
     let deliveryAddress = "";
 
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
+    // @ts-expect-error fixme: auto ignored
     if (delivery.info["shipmentAddress"]) {
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
+      // @ts-expect-error fixme: auto ignored
       deliveryAddress = delivery.info["shipmentAddress"].name;
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
+
+      // @ts-expect-error fixme: auto ignored
       deliveryAddress += ", " + delivery.info["shipmentAddress"].address;
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
+
+      // @ts-expect-error fixme: auto ignored
       deliveryAddress += ", " + delivery.info["shipmentAddress"].postalCode;
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
+
+      // @ts-expect-error fixme: auto ignored
       deliveryAddress += " " + delivery.info["shipmentAddress"].postalCity;
     }
 
@@ -379,25 +369,25 @@ export class EmailService implements MessengerService {
       showDeadline: false,
       showPrice: false,
       showStatus: true,
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
+
+      // @ts-expect-error fixme: auto ignored
       currency: null,
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
+
+      // @ts-expect-error fixme: auto ignored
       itemAmount: null,
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
+
+      // @ts-expect-error fixme: auto ignored
       payment: null,
       showPayment: false,
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
+
+      // @ts-expect-error fixme: auto ignored
       totalAmount: null,
       items: this.orderItemsToDeliveryInformationItems(order.orderItems),
       showDelivery: true,
       delivery: {
         method: "bring",
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
+
+        // @ts-expect-error fixme: auto ignored
         trackingNumber: delivery.info["trackingNumber"],
         estimatedDeliveryDate: null,
         address: deliveryAddress,

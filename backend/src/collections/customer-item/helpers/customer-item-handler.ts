@@ -64,11 +64,10 @@ export class CustomerItemHandler {
     const customerItemOrders = customerItem.orders ?? [];
 
     periodExtends.push({
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
+      // @ts-expect-error fixme: auto ignored
       from: orderItem.info["from"],
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
+
+      // @ts-expect-error fixme: auto ignored
       to: orderItem.info["to"],
       periodType: orderItem.info["periodType"],
       time: new Date(),
@@ -78,8 +77,8 @@ export class CustomerItemHandler {
 
     return await this._customerItemStorage.update(
       customerItemId,
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
+
+      // @ts-expect-error fixme: auto ignored
       {
         deadline: orderItem.info["to"],
         periodExtends: periodExtends,
@@ -309,14 +308,12 @@ export class CustomerItemHandler {
     branch: Branch,
     period: Period,
   ): { type: Period; date: Date; maxNumberOfPeriods: number; price: number } {
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
+    // @ts-expect-error fixme: auto ignored
     if (!branch.paymentInfo.extendPeriods) {
       throw new BlError("no extend periods present on branch");
     }
 
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
+    // @ts-expect-error fixme: auto ignored
     for (const extendPeriod of branch.paymentInfo.extendPeriods) {
       if (extendPeriod.type === period) {
         return extendPeriod;

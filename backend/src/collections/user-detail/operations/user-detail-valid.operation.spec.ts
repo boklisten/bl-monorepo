@@ -37,13 +37,12 @@ describe("UserDetailValidOperation", () => {
     });
 
     const resHandlerSendResponseStub = sinon
-      .stub(responseHandler, "sendResponse") // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
+      .stub(responseHandler, "sendResponse")
       .callsFake((res: any, blApiResponse: BlapiResponse) => {});
 
     const resHandlerSendErrorResponseStub = sinon
-      .stub(responseHandler, "sendErrorResponse") // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
+      .stub(responseHandler, "sendErrorResponse")
+      // @ts-expect-error fixme: auto ignored
       .callsFake((res: any, blError: BlError) => {});
 
     it("should reject if userDetail is not found", (done) => {
@@ -56,8 +55,8 @@ describe("UserDetailValidOperation", () => {
       };
 
       userDetailValidOperation
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
+
+        // @ts-expect-error fixme: auto ignored
         .run(blApiRequest, null, null)
         .catch((blError: BlError) => {
           expect(resHandlerSendErrorResponseStub).to.have.been.called;
@@ -66,8 +65,7 @@ describe("UserDetailValidOperation", () => {
             "userDetail could not be validated",
           );
 
-          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-          // @ts-ignore
+          // @ts-expect-error fixme: auto ignored
           expect(blError.errorStack[0].getMsg()).to.be.eql(
             `userDetail "notFoundUserDetail" not found`,
           );
@@ -99,8 +97,7 @@ describe("UserDetailValidOperation", () => {
           documentId: "userDetail1",
         };
 
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
+        // @ts-expect-error fixme: auto ignored
         userDetailValidOperation.run(blApiRequest, null, null).then(() => {
           expect(resHandlerSendResponseStub).to.have.been.calledWith(
             null,
@@ -137,8 +134,7 @@ describe("UserDetailValidOperation", () => {
           documentId: "userDetail1",
         };
 
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
+        // @ts-expect-error fixme: auto ignored
         userDetailValidOperation.run(blApiRequest, null, null).then(() => {
           expect(resHandlerSendResponseStub).to.have.been.calledWith(
             null,
@@ -150,15 +146,14 @@ describe("UserDetailValidOperation", () => {
 
       it("should resolve with valid false if address and postCode is not defined", (done) => {
         testUserDetail.address = "";
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
+
+        // @ts-expect-error fixme: auto ignored
         testUserDetail.postCode = null;
         const blApiRequest: BlApiRequest = {
           documentId: "userDetail1",
         };
 
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
+        // @ts-expect-error fixme: auto ignored
         userDetailValidOperation.run(blApiRequest, null, null).then(() => {
           expect(resHandlerSendResponseStub).to.have.been.calledWith(
             null,
@@ -172,15 +167,14 @@ describe("UserDetailValidOperation", () => {
 
       it("should resolve with valid false if postCity and phone is not defined", (done) => {
         testUserDetail.postCity = "";
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
+
+        // @ts-expect-error fixme: auto ignored
         testUserDetail.phone = undefined;
         const blApiRequest: BlApiRequest = {
           documentId: "userDetail1",
         };
 
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
+        // @ts-expect-error fixme: auto ignored
         userDetailValidOperation.run(blApiRequest, null, null).then(() => {
           expect(resHandlerSendResponseStub).to.have.been.calledWith(
             null,
@@ -208,15 +202,13 @@ describe("UserDetailValidOperation", () => {
       */
 
       it("should resolve with valid false if dob is not defined", (done) => {
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
+        // @ts-expect-error fixme: auto ignored
         testUserDetail.dob = undefined;
         const blApiRequest: BlApiRequest = {
           documentId: "userDetail1",
         };
 
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
+        // @ts-expect-error fixme: auto ignored
         userDetailValidOperation.run(blApiRequest, null, null).then(() => {
           expect(resHandlerSendResponseStub).to.have.been.calledWith(
             null,

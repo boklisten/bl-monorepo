@@ -16,8 +16,7 @@ export class OrderPatchHook extends Hook {
   private permissionService: PermissionService;
 
   constructor(
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
+    // @ts-expect-error fixme: auto ignored
     userDetailStorage?: BlDocumentStorage<UserDetail>,
     orderStorage?: BlDocumentStorage<Order>,
     orderValidator?: OrderValidator,
@@ -82,12 +81,11 @@ export class OrderPatchHook extends Hook {
           });
       } else {
         this.orderValidator
-          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-          // @ts-ignore
+
+          // @ts-expect-error fixme: auto ignored
           .validate(order, isAdmin)
           .then(() => {
-            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-            // @ts-ignore
+            // @ts-expect-error fixme: auto ignored
             resolve([order]);
           })
           .catch((validationError: BlError) => {

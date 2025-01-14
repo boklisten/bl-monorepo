@@ -15,8 +15,6 @@ export class PaymentPostHook extends Hook {
   private paymentDibsHandler: PaymentDibsHandler;
 
   constructor(
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
     paymentStorage?: BlDocumentStorage<Payment>,
     orderStorage?: BlDocumentStorage<Order>,
     paymentValidator?: PaymentValidator,
@@ -52,12 +50,11 @@ export class PaymentPostHook extends Hook {
       const payment = payments[0];
 
       this.paymentValidator
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
+
+        // @ts-expect-error fixme: auto ignored
         .validate(payment)
         .then(() => {
-          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-          // @ts-ignore
+          // @ts-expect-error fixme: auto ignored
           this.handlePaymentBasedOnMethod(payment, accessToken)
             .then((updatedPayment: Payment) => {
               this.updateOrderWithPayment(updatedPayment, accessToken)

@@ -1,15 +1,14 @@
 export class BringDelivery {
-  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-  // @ts-ignore
+  // @ts-expect-error fixme: auto ignored
   frompostalcode: string; //from postal code
-  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-  // @ts-ignore
+
+  // @ts-expect-error fixme: auto ignored
   topostalcode: string; //to postal code
-  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-  // @ts-ignore
+
+  // @ts-expect-error fixme: auto ignored
   fromcountry: string;
-  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-  // @ts-ignore
+
+  // @ts-expect-error fixme: auto ignored
   tocountry: string;
   weight?: number; //the weight of the packet
   width?: number; //the width of the packet

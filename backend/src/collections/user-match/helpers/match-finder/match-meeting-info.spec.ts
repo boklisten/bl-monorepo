@@ -38,31 +38,31 @@ const elRi = createFakeMatchableUser("elRi", "Spirituell Spire");
  * Prints data about how many matches each location has at each timeslot
  * @param matches matches that have been assigned a location and a timeslot
  *!/
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-ignore
+
+// @ts-expect-error fixme: auto ignored 
 function printLocationMetrics(matches: MatchWithMeetingInfo[]) {
-  const aggregatedLocationInfo = matches // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
+  const aggregatedLocationInfo = matches 
+    // @ts-expect-error fixme: auto ignored 
     .sort((a, b) => (a.meetingInfo.date > b.meetingInfo.date ? 1 : -1))
     .reduce((acc, match) => {
       const { location, date } = match.meetingInfo;
       return {
         ...acc,
         [location]: {
-          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-          // @ts-ignore
+          
+          // @ts-expect-error fixme: auto ignored 
           ...acc[location],
 
           count:
-            // @ts-ignore
+            // @ts-expect-error fixme: auto ignored 
             acc[location]?.count === undefined ? 1 : acc[location].count + 1,
           [String(date)]:
-            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-            // @ts-ignore
+            
+            // @ts-expect-error fixme: auto ignored 
             acc[location]?.[String(date)] === undefined
               ? 1
-              : // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-                // @ts-ignore
+              : 
+                // @ts-expect-error fixme: auto ignored 
                 acc[location][String(date)] + 1,
         },
       };
@@ -158,16 +158,16 @@ describe("Simple Matches", () => {
       .map((match) => match.meetingInfo.date);
 
     const distinctMeetingTimes = Array.from(
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
+      
+      // @ts-expect-error fixme: auto ignored 
       new Set(meetingTimes.map((d) => d.getTime())),
     ).map((t) => new Date(t));
 
     for (const distinctMeetingTime of distinctMeetingTimes) {
       const simultaneousMatches = meetingTimes.filter(
         (meetingTime) =>
-          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-          // @ts-ignore
+          
+          // @ts-expect-error fixme: auto ignored 
           meetingTime.getTime() === distinctMeetingTime.getTime(),
       ).length;
 

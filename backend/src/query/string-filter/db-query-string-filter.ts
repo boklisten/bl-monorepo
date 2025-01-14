@@ -21,8 +21,8 @@ export class DbQueryStringFilter {
         if (validStringParams.includes(parameter)) {
           stringFilters.push({
             fieldName: parameter,
-            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-            // @ts-expect-error
+
+            // @ts-expect-error fixme: auto ignored
             value: Array.isArray(query[parameter])
               ? query[parameter]
               : this.getStringParamValue(query[parameter]),
@@ -40,8 +40,7 @@ export class DbQueryStringFilter {
 
       throw new Error(
         "could not parse the string parameters in query, reason: " +
-          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-          // @ts-ignore
+          // @ts-expect-error fixme: auto ignored
           error.message,
       );
     }
@@ -57,8 +56,7 @@ export class DbQueryStringFilter {
   }
 
   private validateStringParam(parameter: string): boolean {
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
+    // @ts-expect-error fixme: auto ignored
     return parameter && typeof parameter === "string" && parameter.length > 0;
   }
 }

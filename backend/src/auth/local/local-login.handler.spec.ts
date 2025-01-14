@@ -57,8 +57,7 @@ describe("LocalLoginHandler", () => {
 
   sinon.stub(localLoginStorage, "getByQuery").callsFake((query: SEDbQuery) => {
     return new Promise((resolve, reject) => {
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
+      // @ts-expect-error fixme: auto ignored
       if (query.stringFilters[0].value === testUsername) {
         resolve([dummyLocalLogin]);
       }
@@ -67,21 +66,15 @@ describe("LocalLoginHandler", () => {
   });
 
   sinon
-    .stub(localLoginStorage, "add") // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
+    .stub(localLoginStorage, "add")
     .callsFake((localLogin: any, user: any) => {
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
       return new Promise((resolve, reject) => {
         resolve(testLocalLogin);
       });
     });
 
   sinon
-    .stub(localLoginStorage, "update") // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
+    .stub(localLoginStorage, "update")
     .callsFake((id: string, data: any, user: any) => {
       if (updateSuccess) {
         return Promise.resolve(testLocalLogin);
@@ -175,8 +168,7 @@ describe("LocalLoginHandler", () => {
       });
 
       it("username is null", () => {
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
+        // @ts-expect-error fixme: auto ignored
         testUsername = null;
         return localLoginHandler
           .get(testUsername)

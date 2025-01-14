@@ -12,14 +12,11 @@ should();
 
 describe("BringDeliveryService", () => {
   const httpHandler = new HttpHandler();
-  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-  // @ts-ignore
   const bringDeliveryService = new BringDeliveryService(httpHandler);
 
   let testBringResponse: any;
 
-  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-  // @ts-ignore
+  // @ts-expect-error fixme: auto ignored
   let testItem: Item;
 
   beforeEach(() => {
@@ -79,10 +76,8 @@ describe("BringDeliveryService", () => {
   });
 
   sinon
-    .stub(httpHandler, "getWithQuery") // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
+    .stub(httpHandler, "getWithQuery")
+    // @ts-expect-error fixme: auto ignored
     .callsFake((url: string, queryString: string, headers: object) => {
       return new Promise((resolve, reject) => {
         if (url === APP_CONFIG.url.bring.shipmentInfo) {

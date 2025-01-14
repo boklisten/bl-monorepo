@@ -152,8 +152,7 @@ export class Server {
     });
 
     passport.deserializeUser((user, done) => {
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-expect-error
+      // @ts-expect-error fixme: auto ignored
       done(null, user);
     });
   }

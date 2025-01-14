@@ -11,8 +11,6 @@ export class PaymentPatchHook extends Hook {
   private paymentValidator: PaymentValidator;
 
   constructor(
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
     paymentStorage?: BlDocumentStorage<Payment>,
     paymentDibsHandler?: PaymentDibsHandler,
     paymentValidator?: PaymentValidator,
@@ -23,16 +21,10 @@ export class PaymentPatchHook extends Hook {
   }
 
   override before(
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
-    // eslint-disable-next-line
-    body: any,
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    body: unknown,
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     accessToken: AccessToken,
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     id: string,
   ): Promise<boolean> {
@@ -47,8 +39,7 @@ export class PaymentPatchHook extends Hook {
       return Promise.reject(new BlError("payments are empty or undefined"));
     }
 
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
+    // @ts-expect-error fixme: auto ignored
     let payment: Payment = payments[0];
 
     return this.updatePaymentBasedOnMethod(payment, accessToken)
@@ -85,8 +76,6 @@ export class PaymentPatchHook extends Hook {
 
   private handlePaymentLater(
     payment: Payment,
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     accessToken: AccessToken,
   ): Promise<Payment> {

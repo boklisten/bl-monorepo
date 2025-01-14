@@ -30,7 +30,7 @@ describe("CustomerItemPostHook", () => {
     BlCollectionName.UserDetails,
   );
   const orderStorage = new BlDocumentStorage<Order>(BlCollectionName.Orders);
-  const customerItemValidator = new CustomerItemValidator(customerItemStorage);
+  const customerItemValidator = new CustomerItemValidator();
   const customerItemPostHook = new CustomerItemPostHook(
     customerItemValidator,
     userDetailStorage,
@@ -44,8 +44,7 @@ describe("CustomerItemPostHook", () => {
       details: "userDetail1",
     } as AccessToken;
 
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
+    // @ts-expect-error fixme: auto ignored
     testUserDetail = {
       id: "userDetail1",
       name: "Alexander Hamilton",
@@ -116,16 +115,13 @@ describe("CustomerItemPostHook", () => {
   });
 
   const orderUpdateStub = sinon
-    .stub(orderStorage, "update") // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
+    .stub(orderStorage, "update")
     .callsFake((id: string, data: any) => {
       return Promise.resolve(testOrder);
     });
 
   sinon
     .stub(customerItemValidator, "validate")
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
     .callsFake((customerItem: CustomerItem) => {
       if (!validateCustomerItem) {
         return Promise.reject("could not validate");
@@ -149,8 +145,7 @@ describe("CustomerItemPostHook", () => {
   });
 
   const userDetailStub = sinon
-    .stub(userDetailStorage, "update") // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
+    .stub(userDetailStorage, "update")
     .callsFake((id: string, data: any) => {
       return Promise.resolve(testUserDetail);
     });
@@ -158,8 +153,7 @@ describe("CustomerItemPostHook", () => {
   describe("before()", () => {
     it("should reject if customerItem parameter is undefined", () => {
       return expect(
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
+        // @ts-expect-error fixme: auto ignored
         customerItemPostHook.before(undefined, testAccessToken),
       ).to.be.rejectedWith(BlError, /customerItem is undefined/);
     });
@@ -179,11 +173,10 @@ describe("CustomerItemPostHook", () => {
     });
 
     it("should reject if userDetail is not valid", () => {
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
+      // @ts-expect-error fixme: auto ignored
       testUserDetail.name = null;
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
+
+      // @ts-expect-error fixme: auto ignored
       testUserDetail.dob = null;
 
       return expect(
@@ -209,8 +202,6 @@ describe("CustomerItemPostHook", () => {
 
     it("should update userDetail with the ids array if it was empty", (done) => {
       testUserDetail.customerItems = [];
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
       const ids = ["customerItem1"];
 
       customerItemPostHook
@@ -227,8 +218,6 @@ describe("CustomerItemPostHook", () => {
 
     it("should add the new id to the old userDetail.customerItem array", (done) => {
       testUserDetail.customerItems = ["customerItem2"];
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
       const ids = ["customerItem1"];
 
       customerItemPostHook

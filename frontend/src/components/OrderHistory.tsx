@@ -72,8 +72,8 @@ const OrderHistory = ({ orders }: { orders: Order[] }) => {
     for (let index = 0; index < byteNumbers.length; index++) {
       byteNumbers[index] = byteCharacters.codePointAt(index);
     }
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
+
+    // @ts-expect-error fixme: auto ignored
     const blob = new Blob([new Uint8Array(byteNumbers)], {
       type: "application/pdf",
     });
@@ -217,8 +217,6 @@ const OrderHistory = ({ orders }: { orders: Order[] }) => {
                         }}
                       >
                         {order.orderItems.map((orderItem) => {
-                          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-                          // @ts-ignore
                           return (
                             <Card
                               key={orderItem.blid}

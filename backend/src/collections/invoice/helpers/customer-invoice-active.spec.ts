@@ -35,11 +35,11 @@ describe("CustomerInvoiceActive", () => {
         toDebtCollection: false,
         toCreditNote: false,
         customerItemPayments: [],
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
+
+        // @ts-expect-error fixme: auto ignored
         customerInfo: null,
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
+
+        // @ts-expect-error fixme: auto ignored
         payment: null,
       };
 
@@ -50,11 +50,11 @@ describe("CustomerInvoiceActive", () => {
         toDebtCollection: false,
         toCreditNote: true,
         customerItemPayments: [],
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
+
+        // @ts-expect-error fixme: auto ignored
         customerInfo: null,
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
+
+        // @ts-expect-error fixme: auto ignored
         payment: null,
       };
 
@@ -72,11 +72,11 @@ describe("CustomerInvoiceActive", () => {
         toDebtCollection: false,
         toCreditNote: false,
         customerItemPayments: [],
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
+
+        // @ts-expect-error fixme: auto ignored
         customerInfo: null,
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
+
+        // @ts-expect-error fixme: auto ignored
         payment: null,
       };
 
@@ -87,11 +87,11 @@ describe("CustomerInvoiceActive", () => {
         toDebtCollection: false,
         toCreditNote: false,
         customerItemPayments: [],
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
+
+        // @ts-expect-error fixme: auto ignored
         customerInfo: null,
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
+
+        // @ts-expect-error fixme: auto ignored
         payment: null,
       };
 

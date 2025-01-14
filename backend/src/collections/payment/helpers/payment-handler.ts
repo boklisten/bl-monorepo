@@ -16,11 +16,9 @@ export class PaymentHandler {
 
   constructor(
     paymentStorage?: BlDocumentStorage<Payment>,
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
+
     dibsPaymentService?: DibsPaymentService,
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
+
     userDetailHelper?: UserDetailHelper,
     private _paymentDibsConfirmer?: PaymentDibsConfirmer,
     private _deliveryStorage?: BlDocumentStorage<Delivery>,
@@ -104,8 +102,6 @@ export class PaymentHandler {
     }
   }
 
-  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-  // @ts-ignore
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   private confirmMethodCard(order: Order, payment: Payment): Promise<boolean> {
     if (order.byCustomer) {
@@ -114,8 +110,6 @@ export class PaymentHandler {
     return Promise.resolve(true);
   }
 
-  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-  // @ts-ignore
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   private confirmMethodVipps(order: Order, payment: Payment): Promise<boolean> {
     if (order.byCustomer) {
@@ -124,8 +118,6 @@ export class PaymentHandler {
     return Promise.resolve(true);
   }
 
-  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-  // @ts-ignore
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   private confirmMethodCash(order: Order, payment: Payment): Promise<boolean> {
     if (order.byCustomer) {
@@ -148,8 +140,7 @@ export class PaymentHandler {
   }
 
   private async validateOrderAmount(
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
+    // @ts-expect-error fixme: auto ignored
     order,
     payments: Payment[],
   ): Promise<boolean> {
@@ -160,8 +151,7 @@ export class PaymentHandler {
     let orderTotal = order.amount;
 
     if (order.delivery) {
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
+      // @ts-expect-error fixme: auto ignored
       const delivery = await this._deliveryStorage.get(order.delivery);
       orderTotal += delivery.amount;
     }
@@ -180,8 +170,7 @@ export class PaymentHandler {
     payment: Payment,
     accessToken: AccessToken,
   ): Promise<boolean> {
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
+    // @ts-expect-error fixme: auto ignored
     return this._paymentDibsConfirmer.confirm(order, payment, accessToken);
   }
 }

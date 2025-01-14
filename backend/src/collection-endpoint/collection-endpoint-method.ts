@@ -103,22 +103,21 @@ export abstract class CollectionEndpointMethod<T extends BlDocument> {
     let blApiRequest: BlApiRequest;
 
     this._collectionEndpointAuth
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
+
+      // @ts-expect-error fixme: auto ignored
       .authenticate(this._endpoint.restriction, request, res, next)
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
+
+      // @ts-expect-error fixme: auto ignored
       .then((accessToken?: AccessToken) => {
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
+        // @ts-expect-error fixme: auto ignored
         userAccessToken = accessToken;
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
+
+        // @ts-expect-error fixme: auto ignored
         return this._endpoint.hook.before(
           request.body,
           accessToken,
-          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-          // @ts-ignore
+
+          // @ts-expect-error fixme: auto ignored
           request.params.id,
           request.query,
         );
@@ -147,19 +146,18 @@ export abstract class CollectionEndpointMethod<T extends BlDocument> {
       .then((blApiRequest: BlApiRequest) => this.onRequest(blApiRequest))
       .then((docs: T[]) =>
         this._collectionEndpointDocumentAuth.validate(
-          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-          // @ts-ignore
+          // @ts-expect-error fixme: auto ignored
           this._endpoint.restriction,
           docs,
           blApiRequest,
           this.documentPermission,
         ),
       )
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
+
+      // @ts-expect-error fixme: auto ignored
       .then((docs: T[]) => this._endpoint.hook.after(docs, userAccessToken))
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
+
+      // @ts-expect-error fixme: auto ignored
       .then((docs: T[]) =>
         this._responseHandler.sendResponse(res, new BlapiResponse(docs)),
       )

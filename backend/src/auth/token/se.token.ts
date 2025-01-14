@@ -95,8 +95,7 @@ export class SEToken {
           );
         }
 
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-expect-error
+        // @ts-expect-error fixme: auto ignored
         this.validatePayload(decoded, validLoginOptions).then(
           (jwtPayload: JwtPayload) => {
             resolve(jwtPayload);

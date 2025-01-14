@@ -63,8 +63,7 @@ export class DbQueryObjectIdFilter {
 
       throw new Error(
         "could not parse the object-id parameters in query, reason: " +
-          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-          // @ts-ignore
+          // @ts-expect-error fixme: auto ignored
           error.message,
       );
     }

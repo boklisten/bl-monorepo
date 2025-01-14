@@ -41,8 +41,6 @@ describe("HashedPasswordGenerator", () => {
               .property("salt")
               .and.be.a("string");
           },
-          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-          // @ts-ignore
           (error: any) => {},
         );
       });

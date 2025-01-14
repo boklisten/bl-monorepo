@@ -47,8 +47,7 @@ describe("OrderUserDetailValidator", () => {
       testOrder.customer = "notFound";
 
       orderUserDetailValidator.validate(testOrder).catch((err: BlError) => {
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
+        // @ts-expect-error fixme: auto ignored
         expect(err.errorStack[0].getMsg()).to.be.eq("could not get userDetail");
         done();
       });

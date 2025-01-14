@@ -71,20 +71,19 @@ export class DeliveryPatchHook extends Hook {
 
     return new Promise((resolve, reject) => {
       this.orderStorage
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
+
+        // @ts-expect-error fixme: auto ignored
         .get(delivery.order)
         .then((order: Order) => {
-          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-          // @ts-ignore
+          // @ts-expect-error fixme: auto ignored
           this.deliveryValidator
-            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-            // @ts-ignore
+
+            // @ts-expect-error fixme: auto ignored
             .validate(delivery, order)
             .then(() => {
               this.deliveryHandler
-                // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-                // @ts-ignore
+
+                // @ts-expect-error fixme: auto ignored
                 .updateOrderBasedOnMethod(delivery, order, accessToken)
                 .then((updatedDelivery: Delivery) => {
                   return resolve([updatedDelivery]);
@@ -106,8 +105,6 @@ export class DeliveryPatchHook extends Hook {
   private tryToValidatePatch(
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     body: any,
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
     accessToken: AccessToken,
     id: string,
   ): Promise<boolean> {
@@ -133,8 +130,7 @@ export class DeliveryPatchHook extends Hook {
           this.orderStorage
             .get(delivery.order)
             .then((order: Order) => {
-              // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-              // @ts-ignore
+              // @ts-expect-error fixme: auto ignored
               this.deliveryValidator
                 .validate(delivery, order)
                 .then(() => {

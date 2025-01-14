@@ -60,29 +60,24 @@ export class OrderItemExtendValidator {
     branch: Branch,
     orderItem: OrderItem,
   ): Promise<boolean> {
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
+    // @ts-expect-error fixme: auto ignored
     return (
       this.customerItemStorage
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
+
+        // @ts-expect-error fixme: auto ignored
         .get(orderItem.info.customerItem)
         .then((customerItem: CustomerItem) => {
           let totalOfSelectedPeriod = 0;
           if (customerItem.periodExtends) {
             for (const periodExtend of customerItem.periodExtends) {
-              // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-              // @ts-ignore
+              // @ts-expect-error fixme: auto ignored
               if (periodExtend.periodType === orderItem.info.periodType) {
                 totalOfSelectedPeriod += 1;
               }
             }
 
-            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-            // @ts-ignore
+            // @ts-expect-error fixme: auto ignored
             for (const extendPeriod of branch.paymentInfo.extendPeriods) {
-              // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-              // @ts-ignore
               if (
                 extendPeriod.type === orderItem.info?.periodType &&
                 totalOfSelectedPeriod > extendPeriod.maxNumberOfPeriods
@@ -104,25 +99,21 @@ export class OrderItemExtendValidator {
   }
 
   private checkPeriodType(orderItem: OrderItem, branch: Branch) {
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
+    // @ts-expect-error fixme: auto ignored
     if (!branch.paymentInfo.extendPeriods) {
       throw new BlError("the branch has no extendPeriods defined");
     }
 
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
+    // @ts-expect-error fixme: auto ignored
     for (const extendPeriod of branch.paymentInfo.extendPeriods) {
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
+      // @ts-expect-error fixme: auto ignored
       if (extendPeriod.type === orderItem.info.periodType) {
         return true;
       }
     }
 
     throw new BlError(
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
+      // @ts-expect-error fixme: auto ignored
       `orderItem.info.periodType is "${orderItem.info.periodType}" but it is not allowed by branch`,
     );
   }

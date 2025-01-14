@@ -14,8 +14,8 @@ export class EmailValidationPostHook extends Hook {
 
   public override after(
     emailValidations: EmailValidation[],
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
+
+    // @ts-expect-error fixme: auto ignored
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     accessToken?: AccessToken,
   ): Promise<EmailValidation[]> {
@@ -23,12 +23,11 @@ export class EmailValidationPostHook extends Hook {
       const emailValidation = emailValidations[0];
 
       this._emailValidationHelper
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
+
+        // @ts-expect-error fixme: auto ignored
         .sendEmailValidationLink(emailValidation)
         .then(() => {
-          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-          // @ts-ignore
+          // @ts-expect-error fixme: auto ignored
           resolve([emailValidation]);
         })
         .catch((sendValidationLinkError: BlError) => {

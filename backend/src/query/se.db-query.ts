@@ -44,20 +44,17 @@ export class SEDbQuery {
     const orArray = [];
 
     for (const booleanFilter of this.booleanFilters) {
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
+      // @ts-expect-error fixme: auto ignored
       filterObject[booleanFilter.fieldName] = booleanFilter.value;
     }
 
     for (const dateFilter of this.dateFilters) {
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
+      // @ts-expect-error fixme: auto ignored
       filterObject[dateFilter.fieldName] = dateFilter.op;
     }
 
     for (const numberFilter of this.numberFilters) {
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
+      // @ts-expect-error fixme: auto ignored
       filterObject[numberFilter.fieldName] = numberFilter.op;
     }
 
@@ -66,14 +63,13 @@ export class SEDbQuery {
         const array = stringFilter.value;
         for (const stringValue of array) {
           const multipleValuesFilterObject = {};
-          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-          // @ts-ignore
+
+          // @ts-expect-error fixme: auto ignored
           multipleValuesFilterObject[stringFilter.fieldName] = stringValue;
           orArray.push(multipleValuesFilterObject);
         }
       } else {
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
+        // @ts-expect-error fixme: auto ignored
         filterObject[stringFilter.fieldName] = stringFilter.value;
       }
     }
@@ -85,8 +81,8 @@ export class SEDbQuery {
           if (!ObjectId.isValid(stringValue))
             throw new BlError(`Invalid ObjectID: ${stringValue}`).code(701);
           const multipleValuesFilterObject = {};
-          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-          // @ts-ignore
+
+          // @ts-expect-error fixme: auto ignored
           multipleValuesFilterObject[objectIdFilter.fieldName] = stringValue;
           orArray.push(multipleValuesFilterObject);
         }
@@ -95,23 +91,22 @@ export class SEDbQuery {
           throw new BlError(`Invalid ObjectID: ${objectIdFilter.value}`).code(
             701,
           );
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
+
+        // @ts-expect-error fixme: auto ignored
         filterObject[objectIdFilter.fieldName] = objectIdFilter.value;
       }
     }
 
     for (const regexFilter of this.regexFilters) {
       const regexFilterObject = {};
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
+
+      // @ts-expect-error fixme: auto ignored
       regexFilterObject[regexFilter.fieldName] = regexFilter.op;
       orArray.push(regexFilterObject);
     }
 
     if (orArray.length > 0) {
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
+      // @ts-expect-error fixme: auto ignored
       filterObject["$or"] = orArray;
     }
 
@@ -122,8 +117,7 @@ export class SEDbQuery {
     const ogFilterObject = {};
 
     for (const ogFilter of this.onlyGetFilters) {
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
+      // @ts-expect-error fixme: auto ignored
       ogFilterObject[ogFilter.fieldName] = ogFilter.value;
     }
     return ogFilterObject;
@@ -145,8 +139,7 @@ export class SEDbQuery {
     const sortFilterObject = {};
 
     for (const sortFilter of this.sortFilters) {
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
+      // @ts-expect-error fixme: auto ignored
       sortFilterObject[sortFilter.fieldName] = sortFilter.direction;
     }
 

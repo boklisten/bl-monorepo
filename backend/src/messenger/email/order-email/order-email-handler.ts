@@ -30,8 +30,7 @@ import moment from "moment-timezone";
 
 export class OrderEmailHandler {
   private defaultCurrency = "NOK";
-  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-  // @ts-ignore
+
   private standardDayFormat = "DD.MM.YY";
   private standardTimeFormat = "DD.MM.YYYY HH.mm.ss";
   private localeSetting = "nb";
@@ -202,12 +201,12 @@ export class OrderEmailHandler {
       totalAmount: order.amount.toString(), // should include the totalAmount including the delivery amount
       items: this.orderItemsToEmailItems(order.orderItems),
       showDelivery: false,
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
+
+      // @ts-expect-error fixme: auto ignored
       delivery: null,
       showPayment: false,
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
+
+      // @ts-expect-error fixme: auto ignored
       payment: null,
     };
 
@@ -251,8 +250,7 @@ export class OrderEmailHandler {
     }
 
     const paymentPromises: Promise<Payment>[] = order.payments.map((payment) =>
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
+      // @ts-expect-error fixme: auto ignored
       this._paymentStorage.get(payment),
     );
 
@@ -272,16 +270,13 @@ export class OrderEmailHandler {
 
         if (
           emailPayment.payments[0] &&
-          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-          // @ts-ignore
+          // @ts-expect-error fixme: auto ignored
           emailPayment.payments[0]["info"] &&
-          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-          // @ts-ignore
+          // @ts-expect-error fixme: auto ignored
           emailPayment.payments[0]["info"]["orderDetails"]
         ) {
           emailPayment.currency =
-            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-            // @ts-ignore
+            // @ts-expect-error fixme: auto ignored
             emailPayment.payments[0]["info"]["orderDetails"].currency;
         }
 
@@ -300,8 +295,7 @@ export class OrderEmailHandler {
       return Promise.resolve({ delivery: null, showDelivery: false });
     }
 
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
+    // @ts-expect-error fixme: auto ignored
     return this._deliveryStorage
       .get(deliveryId)
       .then((delivery: Delivery) => {
@@ -326,12 +320,10 @@ export class OrderEmailHandler {
       method: "",
       amount: "",
       cardInfo: null,
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
+
+      // @ts-expect-error fixme: auto ignored
       taxAmount: isNaN(payment.taxAmount)
-        ? // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-          // @ts-ignore
-          null
+        ? null
         : payment.taxAmount?.toString(),
       paymentId: "",
       status: this.translatePaymentConfirmed(),
@@ -355,8 +347,7 @@ export class OrderEmailHandler {
           }
 
           if (paymentInfo.paymentDetails.cardDetails?.maskedPan) {
-            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-            // @ts-ignore
+            // @ts-expect-error fixme: auto ignored
             paymentObject.cardInfo = `***${this.stripTo4LastDigits(
               paymentInfo.paymentDetails.cardDetails.maskedPan,
             )}`;
@@ -395,22 +386,20 @@ export class OrderEmailHandler {
       method: delivery.method,
       currency: this.defaultCurrency,
       amount: delivery.amount,
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
+
+      // @ts-expect-error fixme: auto ignored
       address: delivery.info["shipmentAddress"]
-        ? // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-          // @ts-ignore
+        ? // @ts-expect-error fixme: auto ignored
           `${delivery.info["shipmentAddress"].name}, ${delivery.info["shipmentAddress"].address}, ${delivery.info["shipmentAddress"].postalCode} ${delivery.info["shipmentAddress"].postalCity}`
         : null,
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
+
+      // @ts-expect-error fixme: auto ignored
       trackingNumber: delivery.info["trackingNumber"],
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
+
+      // @ts-expect-error fixme: auto ignored
       estimatedDeliveryDate: delivery.info["estimatedDelivery"]
         ? dateService.toPrintFormat(
-            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-            // @ts-ignore
+            // @ts-expect-error fixme: auto ignored
             delivery.info["estimatedDelivery"],
             "Europe/Oslo",
           )
@@ -421,15 +410,13 @@ export class OrderEmailHandler {
   private orderItemsToEmailItems(
     orderItems: OrderItem[],
   ): { title: string; status: string; deadline?: string; price?: string }[] {
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
+    // @ts-expect-error fixme: auto ignored
     return orderItems.map((orderItem) => ({
       title: orderItem.title,
       status: this.translateOrderItemType(orderItem.type, orderItem.handout),
       deadline:
         orderItem.type === "rent" || orderItem.type === "extend"
-          ? // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-            // @ts-ignore
+          ? // @ts-expect-error fixme: auto ignored
             dateService.toPrintFormat(orderItem.info.to, "Europe/Oslo")
           : null,
       price:
@@ -464,8 +451,8 @@ export class OrderEmailHandler {
         buyback: "tilbakekjøp",
         buyout: "utkjøp",
       };
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
+
+      // @ts-expect-error fixme: auto ignored
       return `${translations[orderItemType] ?? orderItemType}${
         handout && orderItemType !== "return" ? " - utlevert" : ""
       }`;
@@ -479,8 +466,7 @@ export class OrderEmailHandler {
     customerDetail: UserDetail,
     branchId: string,
   ): Promise<boolean> {
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
+    // @ts-expect-error fixme: auto ignored
     const onlyHandout = order.orderItems[0].handout;
     const rentFound = order.orderItems.some(
       (orderItem) => orderItem.type === "rent",
@@ -508,13 +494,11 @@ export class OrderEmailHandler {
   }
 
   private isBranchResponsible(branchId: string): Promise<boolean> {
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
+    // @ts-expect-error fixme: auto ignored
     return this._branchStorage
       .get(branchId)
       .then((branch: Branch) => {
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
+        // @ts-expect-error fixme: auto ignored
         return branch.paymentInfo.responsible;
       })
       .catch((getBranchError: BlError) => {

@@ -7,11 +7,8 @@ export class CollectionEndpointPut<T extends BlDocument>
   extends CollectionEndpointMethod<T>
   implements CollectionEndpointOnRequest<T>
 {
-  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-  // @ts-ignore
   override async onRequest(blApiRequest: BlApiRequest): Promise<T[]> {
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
+    // @ts-expect-error fixme: auto ignored
     await this._documentStorage.put(blApiRequest.documentId, blApiRequest.data);
     return [];
   }

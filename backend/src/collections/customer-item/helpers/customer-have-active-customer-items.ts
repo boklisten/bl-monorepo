@@ -25,8 +25,7 @@ export class CustomerHaveActiveCustomerItems {
     let customerItems: CustomerItem[];
 
     try {
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
+      // @ts-expect-error fixme: auto ignored
       customerItems = await this._customerItemStorage.getByQuery(databaseQuery);
     } catch (error) {
       if (error instanceof BlError && error.getCode() == 702) {

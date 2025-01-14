@@ -27,8 +27,8 @@ export class SEDbQueryBuilder {
   private dbQueryStringFilter: DbQueryStringFilter;
   private dbQueryObjectIdFilter: DbQueryObjectIdFilter;
   private dbQueryExpandFilter: DbQueryExpandFilter;
-  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-  // @ts-ignore
+
+  // @ts-expect-error fixme: auto ignored
   private dbQueryValidParams: DbQueryValidParams;
 
   constructor() {
@@ -113,8 +113,8 @@ export class SEDbQueryBuilder {
         throw new RangeError(
           "RangeError when building query, reason: " + error.message,
         );
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
+
+      // @ts-expect-error fixme: auto ignored
       throw new Error("Error when building query, reason: " + error.message);
     }
 

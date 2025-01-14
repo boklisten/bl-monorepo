@@ -59,8 +59,6 @@ describe("DeliveryHandler", () => {
       },
     };
   });
-  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-  // @ts-ignore
   sinon.stub(orderStorage, "update").callsFake((id: string, data: any) => {
     if (!canUpdateOrder) {
       return Promise.reject(new BlError("could not update"));

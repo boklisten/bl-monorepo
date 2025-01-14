@@ -39,8 +39,6 @@ describe("DeliveryValidator", () => {
 
   sinon
     .stub(deliveryBranchHandler, "validate")
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
     .callsFake((delivery: Delivery) => {
       if (!deliveryBranchValidation) {
         return Promise.reject(
@@ -51,8 +49,7 @@ describe("DeliveryValidator", () => {
     });
 
   sinon
-    .stub(deliveryBringHandler, "validate") // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
+    .stub(deliveryBringHandler, "validate")
     .callsFake((delivery: Delivery, order: Order) => {
       if (!deliveryBringValidation) {
         return Promise.reject(
@@ -85,8 +82,7 @@ describe("DeliveryValidator", () => {
     });
 
     it("should reject with error when method is not defined", () => {
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
+      // @ts-expect-error fixme: auto ignored
       testDelivery.method = null;
 
       return expect(

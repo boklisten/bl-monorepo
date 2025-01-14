@@ -26,8 +26,8 @@ export class PendingPasswordResetPostHook extends Hook {
     const normalizedEmail = passwordResetRequest.email
       .toLowerCase()
       .replace(" ", "");
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
+
+    // @ts-expect-error fixme: auto ignored
     const user = await this.userHandler
       .getByUsername(normalizedEmail)
       .catch((getUserError: BlError) => {
@@ -36,24 +36,23 @@ export class PendingPasswordResetPostHook extends Hook {
           .add(getUserError);
       });
 
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
+    // @ts-expect-error fixme: auto ignored
     const id = this.seCrypto.random();
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
+
+    // @ts-expect-error fixme: auto ignored
     const token = this.seCrypto.random();
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
+
+    // @ts-expect-error fixme: auto ignored
     const salt = this.seCrypto.random();
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
+
+    // @ts-expect-error fixme: auto ignored
     const tokenHash = await this.seCrypto.hash(token, salt);
 
     // We should really wait to send the email until the password reset has been successfully written to the
     // database, but it would be poor security to save the unhashed token in the database, and we have no other way
     // of passing information from before to after, so this is the lesser evil.
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
+
+    // @ts-expect-error fixme: auto ignored
     await this.messenger
       .passwordReset(user.id, normalizedEmail, id, token)
       .catch(() => {
@@ -79,16 +78,14 @@ export class PendingPasswordResetPostHook extends Hook {
 function validatePasswordResetRequest(
   candidate: unknown,
 ): asserts candidate is PasswordResetRequest {
-  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-  // @ts-ignore
+  // @ts-expect-error fixme: auto ignored
   if (!candidate || !candidate["email"]) {
     throw new BlError(
       "passwordResetRequest.email is null, empty or undefined",
     ).code(701);
   }
 
-  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-  // @ts-ignore
+  // @ts-expect-error fixme: auto ignored
   if (typeof candidate["email"] !== "string") {
     throw new BlError("passwordResetRequest.email is not a string").code(701);
   }

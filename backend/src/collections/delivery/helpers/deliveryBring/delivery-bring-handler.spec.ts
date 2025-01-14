@@ -42,8 +42,7 @@ describe("DeliveryBringHandler", () => {
 
   describe("validate()", () => {
     it("should reject with error if delivery.info is not defined", () => {
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
+      // @ts-expect-error fixme: auto ignored
       testDelivery.info = undefined;
 
       return expect(
@@ -52,8 +51,7 @@ describe("DeliveryBringHandler", () => {
     });
 
     it("should reject if delivery.info.from is empty or undefined", () => {
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
+      // @ts-expect-error fixme: auto ignored
       testDelivery.info = {
         amount: 100,
         estimatedDelivery: new Date(),
@@ -68,8 +66,7 @@ describe("DeliveryBringHandler", () => {
     });
 
     it("should reject if delivery.info.from is empty or undefined", () => {
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
+      // @ts-expect-error fixme: auto ignored
       testDelivery.info = {
         amount: 100,
         estimatedDelivery: new Date(),

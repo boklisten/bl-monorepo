@@ -25,8 +25,7 @@ export class CustomerInvoiceActive {
     );
     let invoices: Invoice[];
     try {
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
+      // @ts-expect-error fixme: auto ignored
       invoices = await this.invoiceStorage.getByQuery(databaseQuery);
     } catch (error) {
       if (error instanceof BlError && error.getCode() == 702) {
@@ -34,8 +33,7 @@ export class CustomerInvoiceActive {
       }
     }
 
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
+    // @ts-expect-error fixme: auto ignored
     return invoices.some((invoice) => this.invoiceActive.isActive(invoice));
   }
 }

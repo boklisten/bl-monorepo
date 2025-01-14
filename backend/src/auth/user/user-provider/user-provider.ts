@@ -29,16 +29,16 @@ export class UserProvider {
     tokens: { accessToken: string; refreshToken: string };
   }> {
     const user = await this.getUser(username, provider, providerId);
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
+
+    // @ts-expect-error fixme: auto ignored
     await this._userHandler.valid(username);
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
+
+    // @ts-expect-error fixme: auto ignored
     await this._localLoginHandler.createDefaultLocalLoginIfNoneIsFound(
       username,
     );
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
+
+    // @ts-expect-error fixme: auto ignored
     const tokens = await this._tokenHandler.createTokens(username);
 
     return { user: user, tokens: tokens };
@@ -51,12 +51,10 @@ export class UserProvider {
   ): Promise<User> {
     let user;
     try {
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
+      // @ts-expect-error fixme: auto ignored
       user = await this._userHandler.get(provider, providerId);
     } catch {
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
+      // @ts-expect-error fixme: auto ignored
       user = await this._userHandler.create(username, provider, providerId);
     }
 

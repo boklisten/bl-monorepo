@@ -32,8 +32,6 @@ describe("CustomerItemHandler", () => {
     customerItemStorage,
     "getByQuery",
   );
-  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-  // @ts-ignore
   const updateCustomerItemStub = sinon.stub(customerItemStorage, "update");
   const getBranchStub = sinon.stub(branchStorage, "get");
 
@@ -140,9 +138,6 @@ describe("CustomerItemHandler", () => {
       const orderItem = {
         type: "rent",
       } as OrderItem;
-
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
       const customerItem = {} as CustomerItem;
 
       return expect(
@@ -156,9 +151,6 @@ describe("CustomerItemHandler", () => {
       const orderItem = {
         type: "rent",
       } as OrderItem;
-
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
       const customerItem = {} as CustomerItem;
 
       return expect(
@@ -178,9 +170,6 @@ describe("CustomerItemHandler", () => {
       const orderItem = {
         type: "rent",
       } as OrderItem;
-
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
       const customerItem = {} as CustomerItem;
 
       return expect(
@@ -240,8 +229,6 @@ describe("CustomerItemHandler", () => {
 
       customerItemHandler
         .getNotReturned("5c33b6137eab87644f7e75e2", deadline)
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
         .then((result) => {
           const queryArg = getByQueryCustomerItemStub.getCall(0).args[0];
 

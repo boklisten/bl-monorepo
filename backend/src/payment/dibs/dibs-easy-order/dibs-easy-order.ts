@@ -7,8 +7,8 @@ export class DibsEasyOrder {
     amount: number; //the total grossAmount of all items
     currency: "NOK" | "SEK";
   };
-  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-  // @ts-ignore
+
+  // @ts-expect-error fixme: auto ignored
   checkout: {
     url: string; //where the checkout is located, and where to redirect after 3-D secure are done
     termsUrl: string;

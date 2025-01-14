@@ -17,8 +17,6 @@ export class DibsPaymentService {
   private _httpHandler: HttpHandler;
 
   constructor(
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
     deliveryStorage?: BlDocumentStorage<Delivery>,
     httpHandler?: HttpHandler,
   ) {
@@ -36,12 +34,11 @@ export class DibsPaymentService {
         )
         .then((responseData) => {
           if (
-            responseData && // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-            // @ts-ignore
+            responseData &&
+            // @ts-expect-error fixme: auto ignored
             responseData["paymentId"]
           ) {
-            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-            // @ts-ignore
+            // @ts-expect-error fixme: auto ignored
             return resolve(responseData["paymentId"]);
           }
           return reject(
@@ -64,15 +61,14 @@ export class DibsPaymentService {
         assertEnv(BlEnvironment.DIBS_SECRET_KEY),
       )
       .then((response) => {
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
+        // @ts-expect-error fixme: auto ignored
         if (!response["payment"]) {
           throw new BlError(
             "dibs response did not include payment information",
           ).store("paymentId", paymentId);
         }
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-expect-error
+
+        // @ts-expect-error fixme: auto ignored
         return response["payment"];
       })
       .catch((getDibsPaymentDetailError: BlError) => {

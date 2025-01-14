@@ -82,8 +82,8 @@ export class OrderPostHook extends Hook {
       accessToken.permission,
       "admin",
     );
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
+
+    // @ts-expect-error fixme: auto ignored
     return this.validateOrder(order, isAdmin).then(() => {
       return [order];
     });

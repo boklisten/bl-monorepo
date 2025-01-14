@@ -40,8 +40,7 @@ export class EmailValidationHelper {
             userDetail: userDetail.id,
           } as EmailValidation;
 
-          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-          // @ts-ignore
+          // @ts-expect-error fixme: auto ignored
           this._emailValidationStorage
             .add(emailValidation, new SystemUser())
             .then((addedEmailValidation: EmailValidation) => {
@@ -81,8 +80,8 @@ export class EmailValidationHelper {
             ).add(getUserDetailError),
           );
         })
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
+
+        // @ts-expect-error fixme: auto ignored
         .then((userDetail: UserDetail) =>
           this._messenger
             .emailConfirmation(userDetail, emailValidation.id)

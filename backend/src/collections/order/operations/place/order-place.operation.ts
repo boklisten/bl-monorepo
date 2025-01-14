@@ -134,8 +134,8 @@ export class OrderPlaceOperation implements Operation {
       for (const orderItem of order.orderItems) {
         for (const alreadyOrderedItem of alreadyOrderedItems) {
           if (
-            orderItem.item === alreadyOrderedItem.item && // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-            // @ts-ignore
+            orderItem.item === alreadyOrderedItem.item &&
+            // @ts-expect-error fixme: auto ignored
             orderItem.info.to === alreadyOrderedItem.info.to
           ) {
             return true;
@@ -488,8 +488,7 @@ export class OrderPlaceOperation implements Operation {
     let order: Order;
 
     try {
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
+      // @ts-expect-error fixme: auto ignored
       order = await this._orderStorage.get(blApiRequest.documentId);
     } catch {
       throw new ReferenceError(`order "${blApiRequest.documentId}" not found`);
@@ -595,7 +594,7 @@ export class OrderPlaceOperation implements Operation {
         // eslint-disable-next-line no-empty
       } catch {}
     }
-    // @ts-expect-error fixme: bad types
+    // @ts-expect-error fixme: auto ignored : bad types
     this._resHandler.sendResponse(res, new BlapiResponse([order]));
     return true;
   }

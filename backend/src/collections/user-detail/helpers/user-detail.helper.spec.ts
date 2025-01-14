@@ -47,11 +47,8 @@ describe("UserDetailHelper", () => {
     userDetailStorageUpdateSuccess = true;
   });
 
-  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-  // @ts-ignore
   const userDetailStorageUpdateStub = sinon
-    .stub(userDetailStorage, "update") // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
+    .stub(userDetailStorage, "update")
     .callsFake((id: string, data: any, user: any) => {
       if (!userDetailStorageUpdateSuccess) {
         return Promise.reject(new BlError("could not update"));
@@ -70,8 +67,7 @@ describe("UserDetailHelper", () => {
   });
 
   describe("#updateUserDetailBasedOnDibsEasyPayment", () => {
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
+    // @ts-expect-error fixme: auto ignored
     let testDibsEasyPayment;
 
     beforeEach(() => {
@@ -102,45 +98,38 @@ describe("UserDetailHelper", () => {
       userDetailHelper
         .updateUserDetailBasedOnDibsEasyPayment(
           "userDetail1",
-          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-          // @ts-ignore
+
+          // @ts-expect-error fixme: auto ignored
           testDibsEasyPayment as DibsEasyPayment,
           testAccessToken,
         )
         .then((updatedUserDetail: UserDetail) => {
           const name =
-            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-            // @ts-ignore
+            // @ts-expect-error fixme: auto ignored
             testDibsEasyPayment.consumer.privatePerson.firstName +
             " " +
-            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-            // @ts-ignore
+            // @ts-expect-error fixme: auto ignored
             testDibsEasyPayment.consumer.privatePerson.lastName;
 
           expect(updatedUserDetail.name).to.eq(name);
           expect(updatedUserDetail.phone).to.eq(
-            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-            // @ts-ignore
+            // @ts-expect-error fixme: auto ignored
             testDibsEasyPayment.consumer.privatePerson.phoneNumber.number,
           );
           expect(updatedUserDetail.postCode).to.eq(
-            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-            // @ts-ignore
+            // @ts-expect-error fixme: auto ignored
             testDibsEasyPayment.consumer.shippingAddress.postalCode,
           );
           expect(updatedUserDetail.postCity).to.eql(
-            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-            // @ts-ignore
+            // @ts-expect-error fixme: auto ignored
             testDibsEasyPayment.consumer.shippingAddress.city,
           );
 
           const expectedAddress =
-            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-            // @ts-ignore
+            // @ts-expect-error fixme: auto ignored
             testDibsEasyPayment.consumer.shippingAddress.addressLine1 +
             " " +
-            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-            // @ts-ignore
+            // @ts-expect-error fixme: auto ignored
             testDibsEasyPayment.consumer.shippingAddress.addressLine2;
           expect(updatedUserDetail.address).to.eql(expectedAddress);
 
@@ -151,23 +140,21 @@ describe("UserDetailHelper", () => {
     it("should only update the fields in userDetail that are not already populated", (done) => {
       testUserDetail.name = "Jenny Jensen";
 
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
+      // @ts-expect-error fixme: auto ignored
       testDibsEasyPayment.consumer.privatePerson["firstName"] = "Johnny";
 
       userDetailHelper
         .updateUserDetailBasedOnDibsEasyPayment(
           "userDetail1",
-          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-          // @ts-ignore
+
+          // @ts-expect-error fixme: auto ignored
           testDibsEasyPayment,
           testAccessToken,
         )
         .then((updatedUserDetail: UserDetail) => {
           expect(updatedUserDetail.name).to.eq("Jenny Jensen"); // this value was already stored
           expect(updatedUserDetail.postCity).to.eq(
-            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-            // @ts-ignore
+            // @ts-expect-error fixme: auto ignored
             testDibsEasyPayment.consumer.shippingAddress.city,
           ); // this value was empty, should set it from dibsPayment
           done();

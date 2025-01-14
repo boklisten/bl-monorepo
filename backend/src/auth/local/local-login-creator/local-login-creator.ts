@@ -11,11 +11,7 @@ export class LocalLoginCreator {
   private _providerIdGenerator: ProviderIdGenerator;
 
   constructor(
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
     private hashedPasswordGenerator?: HashedPasswordGenerator,
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
     private providerIdGenerator?: ProviderIdGenerator,
   ) {
     this._hashedPasswordGenerator = hashedPasswordGenerator

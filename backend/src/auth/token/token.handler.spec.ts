@@ -45,8 +45,8 @@ describe("TokenHandler", () => {
         const username = undefined;
         return (
           tokenHandler
-            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-            // @ts-ignore
+
+            // @ts-expect-error fixme: auto ignored
             .createTokens(username)
             .should.be.rejectedWith(BlError)
         );

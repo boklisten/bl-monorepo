@@ -52,8 +52,8 @@ export class DbQueryDateFilter {
         throw new SyntaxError();
       }
     }
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
+
+    // @ts-expect-error fixme: auto ignored
     return undefined;
   }
 
@@ -89,8 +89,8 @@ export class DbQueryDateFilter {
 
     if (operation) {
       const op = {};
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
+
+      // @ts-expect-error fixme: auto ignored
       op[operation] = isoDate;
 
       return {
@@ -111,8 +111,8 @@ export class DbQueryDateFilter {
     for (const value of values) {
       const op = this.getOperation(value);
       const theDateString = value.slice(1);
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
+
+      // @ts-expect-error fixme: auto ignored
       operations[op] = moment(theDateString, this.dateFormat, true).toDate();
     }
 
@@ -128,8 +128,8 @@ export class DbQueryDateFilter {
         return operationIdentifier.op;
       }
     }
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
+
+    // @ts-expect-error fixme: auto ignored
     return null;
   }
 }

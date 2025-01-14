@@ -67,8 +67,6 @@ describe("ConfirmPendingPasswordResetOperation", () => {
 
   sinon
     .stub(pendingPasswordResetStorage, "update")
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
     .callsFake(async (id, data: unknown) => {
       return Object.assign(testPendingPasswordReset, data);
     });
@@ -94,7 +92,7 @@ describe("ConfirmPendingPasswordResetOperation", () => {
     });
 
     it("should reject if token does not match", async () => {
-      // @ts-ignore
+      // @ts-expect-error fixme: auto ignored
       testBlApiRequest.data["resetToken"] = "notAValidToken";
 
       await expect(
@@ -106,7 +104,7 @@ describe("ConfirmPendingPasswordResetOperation", () => {
     });
 
     it("should reject if blApiRequest.data.newPassword is null, empty or undefined", async () => {
-      // @ts-ignore
+      // @ts-expect-error fixme: auto ignored
       testBlApiRequest.data["newPassword"] = null;
 
       await expect(
@@ -118,7 +116,7 @@ describe("ConfirmPendingPasswordResetOperation", () => {
     });
 
     it("should reject if blApiRequest.data.newPassword is under length of 6", async () => {
-      // @ts-ignore
+      // @ts-expect-error fixme: auto ignored
       testBlApiRequest.data["newPassword"] = "abcde";
 
       await expect(

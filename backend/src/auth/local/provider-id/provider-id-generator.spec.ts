@@ -25,8 +25,8 @@ describe("ProviderIdGenerator", () => {
         const username = undefined;
         return (
           providerIdGenerator
-            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-            // @ts-ignore
+
+            // @ts-expect-error fixme: auto ignored
             .generate(username)
             .should.be.rejectedWith(BlError)
         );

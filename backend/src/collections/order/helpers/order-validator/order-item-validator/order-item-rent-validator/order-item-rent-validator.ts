@@ -11,8 +11,7 @@ import { OrderItem } from "@shared/order/order-item/order-item";
 export class OrderItemRentValidator {
   private orderItemRentPeriodValidator: OrderItemRentPeriodValidator;
 
-  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-  // @ts-ignore
+  // @ts-expect-error fixme: auto ignored
   constructor(private _orderStorage?: BlDocumentStorage<Order>) {
     this._orderStorage = _orderStorage
       ? _orderStorage
@@ -29,8 +28,8 @@ export class OrderItemRentValidator {
       await this.validateOrderItemInfoFields(orderItem);
       await this.orderItemRentPeriodValidator.validate(
         orderItem,
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
+
+        // @ts-expect-error fixme: auto ignored
         branch.paymentInfo,
         item.price,
       );

@@ -165,8 +165,8 @@ describe("OrderPlacedValidator", () => {
 
       it("should reject with error if total amount in order.orderItems is not equal to order.amount", () => {
         testOrder.payments = [];
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
+
+        // @ts-expect-error fixme: auto ignored
         testOrder.delivery = null;
         testOrder.amount = 999;
 

@@ -77,11 +77,11 @@ const QuestionWithAnswer = ({
                   if (edit) {
                     updateQuestion({
                       id: id,
-                      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-                      //@ts-ignore
+
+                      // @ts-expect-error fixme: auto ignored
                       question: questionInput.current.value,
-                      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-                      //@ts-ignore
+
+                      // @ts-expect-error fixme: auto ignored
                       answer: answerInput.current.value,
                     });
                   }

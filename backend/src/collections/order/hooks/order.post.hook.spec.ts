@@ -39,8 +39,7 @@ describe("OrderPostHook", () => {
   );
 
   let testOrder: Order;
-  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-  // @ts-ignore
+
   let testUserDetails: UserDetail;
   let testAccessToken: AccessToken;
   let orderValidated: boolean;

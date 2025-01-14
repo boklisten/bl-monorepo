@@ -54,14 +54,12 @@ export class OrderItemRentPeriodValidator {
       return true;
     }
 
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
+    // @ts-expect-error fixme: auto ignored
     const period = orderItem.info.periodType;
 
     if (isNotNullish(orderItem.movedFromOrder)) {
       const branchPaymentPeriod = this.getRentPeriodFromBranchPaymentInfo(
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
+        // @ts-expect-error fixme: auto ignored
         period,
         branchPaymentInfo,
       );
@@ -73,8 +71,7 @@ export class OrderItemRentPeriodValidator {
     }
 
     const branchPaymentPeriod = this.getRentPeriodFromBranchPaymentInfo(
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
+      // @ts-expect-error fixme: auto ignored
       period,
       branchPaymentInfo,
     );
@@ -121,8 +118,7 @@ export class OrderItemRentPeriodValidator {
       return true;
     }
 
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
+    // @ts-expect-error fixme: auto ignored
     return this._orderStorage
       .get(orderItem.movedFromOrder)
       .then((order: Order) => {
@@ -143,8 +139,7 @@ export class OrderItemRentPeriodValidator {
           );
 
           if (
-            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-            // @ts-ignore
+            // @ts-expect-error fixme: auto ignored
             movedFromOrderItem.info.periodType === orderItem.info.periodType
           ) {
             if (movedFromOrderItem.amount > 0 && orderItem.amount !== 0) {

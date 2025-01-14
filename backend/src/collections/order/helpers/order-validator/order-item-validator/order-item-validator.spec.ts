@@ -28,7 +28,6 @@ describe("OrderItemValidator", () => {
   const orderItemExtendValidator = new OrderItemExtendValidator();
 
   const orderItemValidator = new OrderItemValidator(
-    branchStorage,
     itemStorage,
     orderItemFieldValidator,
     orderItemRentValidator,
@@ -58,8 +57,6 @@ describe("OrderItemValidator", () => {
     return Promise.resolve(testBranch);
   });
 
-  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-  // @ts-ignore
   sinon.stub(itemStorage, "get").callsFake((id: string) => {
     return Promise.resolve({} as Item);
   });
@@ -135,8 +132,8 @@ describe("OrderItemValidator", () => {
 
         it("should reject with error when order.amount is 500 and total of orderItems is 250", () => {
           testOrder.amount = 500;
-          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-          // @ts-ignore
+
+          // @ts-expect-error fixme: auto ignored
           testOrder.orderItems[0].amount = 250;
 
           return expect(
@@ -149,8 +146,8 @@ describe("OrderItemValidator", () => {
 
         it("should reject with error when order.amount is 100 and total of orderItems is 780", () => {
           testOrder.amount = 100;
-          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-          // @ts-ignore
+
+          // @ts-expect-error fixme: auto ignored
           testOrder.orderItems[0].amount = 780;
 
           return expect(

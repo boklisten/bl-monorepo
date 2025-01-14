@@ -80,26 +80,25 @@ export class OrderToCustomerItemGenerator {
     orderItem: OrderItem,
   ): CustomerItem {
     return {
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
+      // @ts-expect-error fixme: auto ignored
       id: null,
       type: "partly-payment",
       item: orderItem.item,
       blid: orderItem.blid,
-      customer: order.customer, // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
+      customer: order.customer,
+      // @ts-expect-error fixme: auto ignored
       deadline: orderItem.info.to,
       handout: true,
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
+
+      // @ts-expect-error fixme: auto ignored
       handoutInfo: this.createHandoutInfo(order),
-      returned: false, // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
+      returned: false,
+      // @ts-expect-error fixme: auto ignored
       amountLeftToPay: orderItem["info"]["amountLeftToPay"],
       totalAmount: orderItem.amount,
       orders: [order.id],
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
+
+      // @ts-expect-error fixme: auto ignored
       customerInfo: this.createCustomerInfo(customerDetail),
     };
   }
@@ -110,24 +109,23 @@ export class OrderToCustomerItemGenerator {
     orderItem: OrderItem,
   ): CustomerItem {
     return {
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
+      // @ts-expect-error fixme: auto ignored
       id: null,
       type: "rent",
       item: orderItem.item,
       blid: orderItem.blid,
-      customer: order.customer, // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
+      customer: order.customer,
+      // @ts-expect-error fixme: auto ignored
       deadline: orderItem.info.to,
       handout: true,
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
+
+      // @ts-expect-error fixme: auto ignored
       handoutInfo: this.createHandoutInfo(order),
       returned: false,
       totalAmount: orderItem.amount,
       orders: [order.id],
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
+
+      // @ts-expect-error fixme: auto ignored
       customerInfo: this.createCustomerInfo(customerDetail),
     };
   }
@@ -138,24 +136,23 @@ export class OrderToCustomerItemGenerator {
     orderItem: OrderItem,
   ): CustomerItem {
     return {
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
+      // @ts-expect-error fixme: auto ignored
       id: null,
       type: "loan",
       item: orderItem.item,
       blid: orderItem.blid,
-      customer: order.customer, // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
+      customer: order.customer,
+      // @ts-expect-error fixme: auto ignored
       deadline: orderItem.info.to,
       handout: true,
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
+
+      // @ts-expect-error fixme: auto ignored
       handoutInfo: this.createHandoutInfo(order),
       returned: false,
       totalAmount: orderItem.amount,
       orders: [order.id],
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
+
+      // @ts-expect-error fixme: auto ignored
       customerInfo: this.createCustomerInfo(customerDetail),
     };
   }

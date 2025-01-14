@@ -2,6 +2,7 @@ import { BlCollectionName } from "@backend/collections/bl-collection";
 import { standMatchSchema } from "@backend/collections/stand-match/stand-match.schema";
 import { userDetailSchema } from "@backend/collections/user-detail/user-detail.schema";
 import { userMatchSchema } from "@backend/collections/user-match/user-match.schema";
+import { sendMail } from "@backend/messenger/email/email-service";
 import { sendSMS } from "@backend/messenger/sms/sms-service";
 import { Operation } from "@backend/operation/operation";
 import { BlApiRequest } from "@backend/request/bl-api-request";
@@ -83,11 +84,25 @@ export class MatchNotifyOperation implements Operation {
     return new BlapiResponse(
       await Promise.allSettled(
         (await this._userDetailStorage.getMany([...targetCustomerIds])).map(
-          (customer) =>
-            sendSMS(
+          async (customer) => {
+            await sendSMS(
               customer.phone,
-              `${parsedRequest.data.message} Logg inn med: ${customer.email} Mvh Boklisten.no`,
-            ),
+              `Hei, ${customer.name.split(" ")[0]}. ${parsedRequest.data.message} Mvh Boklisten`,
+            );
+            await sendMail(
+              {
+                userId: customer.id,
+                fromEmail: "info@boklisten.no",
+                toEmail: customer.email,
+                subject: "Du skal snart overlevere bøker",
+              },
+              "d-b6d2e8bcf3bc4e6e9aef3f8eb49f1c64",
+              {
+                name: customer.name.split(" ")[0] ?? customer.name,
+                username: customer.email,
+              },
+            );
+          },
         ),
       ),
     );

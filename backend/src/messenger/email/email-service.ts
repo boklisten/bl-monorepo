@@ -482,7 +482,7 @@ export class EmailService implements MessengerService {
 export async function sendMail(
   emailSetting: EmailSetting,
   templateId: string,
-  dynamicTemplateData: Record<string, string>,
+  dynamicTemplateData: Record<string, string> = {},
 ) {
   try {
     await sgMail.send({

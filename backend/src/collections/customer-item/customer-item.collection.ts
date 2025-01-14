@@ -1,8 +1,6 @@
 import {
   BlCollection,
   BlCollectionName,
-  BlDocumentPermission,
-  BlEndpoint,
 } from "@backend/collections/bl-collection";
 import { CustomerItemGenerateReportOperation } from "@backend/collections/customer-item/customer-item-generate-report.operation";
 import { customerItemSchema } from "@backend/collections/customer-item/customer-item.schema";
@@ -11,13 +9,13 @@ import { PublicBlidLookupOperation } from "@backend/collections/customer-item/pu
 import { itemSchema } from "@backend/collections/item/item.schema";
 import { userDetailSchema } from "@backend/collections/user-detail/user-detail.schema";
 
-export class CustomerItemCollection implements BlCollection {
-  collectionName = BlCollectionName.CustomerItems;
-  mongooseSchema = customerItemSchema;
-  documentPermission: BlDocumentPermission = {
+export const CustomerItemCollection: BlCollection = {
+  collectionName: BlCollectionName.CustomerItems,
+  mongooseSchema: customerItemSchema,
+  documentPermission: {
     viewableForPermission: "employee",
-  };
-  endpoints: BlEndpoint[] = [
+  },
+  endpoints: [
     {
       method: "getId",
       restriction: {
@@ -135,5 +133,5 @@ export class CustomerItemCollection implements BlCollection {
         },
       ],
     },
-  ];
-}
+  ],
+};

@@ -1,14 +1,13 @@
 import {
   BlCollection,
   BlCollectionName,
-  BlEndpoint,
 } from "@backend/collections/bl-collection";
 import { itemSchema } from "@backend/collections/item/item.schema";
 
-export class ItemCollection implements BlCollection {
-  collectionName = BlCollectionName.Items;
-  mongooseSchema = itemSchema;
-  endpoints: BlEndpoint[] = [
+export const ItemCollection: BlCollection = {
+  collectionName: BlCollectionName.Items,
+  mongooseSchema: itemSchema,
+  endpoints: [
     {
       method: "getId",
     },
@@ -57,5 +56,5 @@ export class ItemCollection implements BlCollection {
         permissions: ["admin"],
       },
     },
-  ];
-}
+  ],
+};

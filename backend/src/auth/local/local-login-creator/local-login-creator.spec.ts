@@ -41,7 +41,6 @@ describe("LocalLoginCreator", () => {
         const password = "thisisavalidpassword";
         return (
           localLoginCreator
-
             // @ts-expect-error fixme: auto ignored
             .create(username, password)
             .should.be.rejectedWith(BlError)

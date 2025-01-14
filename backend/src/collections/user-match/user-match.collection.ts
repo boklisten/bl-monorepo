@@ -1,7 +1,6 @@
 import {
   BlCollection,
   BlCollectionName,
-  BlEndpoint,
 } from "@backend/collections/bl-collection";
 import { MatchGenerateOperation } from "@backend/collections/user-match/operations/match-generate.operation";
 import { MatchNotifyOperation } from "@backend/collections/user-match/operations/match-notify.operation";
@@ -10,10 +9,10 @@ import { UserMatchLockOperation } from "@backend/collections/user-match/operatio
 import { UserMatchTransferItemOperation } from "@backend/collections/user-match/operations/user-match-transfer-item.operation";
 import { userMatchSchema } from "@backend/collections/user-match/user-match.schema";
 
-export class UserMatchCollection implements BlCollection {
-  public collectionName = BlCollectionName.UserMatches;
-  public mongooseSchema = userMatchSchema;
-  public endpoints: BlEndpoint[] = [
+export const UserMatchCollection: BlCollection = {
+  collectionName: BlCollectionName.UserMatches,
+  mongooseSchema: userMatchSchema,
+  endpoints: [
     {
       method: "post",
       operations: [
@@ -61,5 +60,5 @@ export class UserMatchCollection implements BlCollection {
         permissions: ["employee", "manager", "admin"],
       },
     },
-  ];
-}
+  ],
+};

@@ -1,8 +1,6 @@
 import {
   BlCollection,
   BlCollectionName,
-  BlDocumentPermission,
-  BlEndpoint,
 } from "@backend/collections/bl-collection";
 import { SignatureGetIdHook } from "@backend/collections/signature/hooks/signature.get-id.hook";
 import { SignaturePostHook } from "@backend/collections/signature/hooks/signature.post.hook";
@@ -10,14 +8,13 @@ import { CheckGuardianSignatureOperation } from "@backend/collections/signature/
 import { GuardianSignatureOperation } from "@backend/collections/signature/operations/guardian-signature.operation";
 import { signatureSchema } from "@backend/collections/signature/signature.schema";
 
-export class SignatureCollection implements BlCollection {
-  public collectionName = BlCollectionName.Signatures;
-  public mongooseSchema = signatureSchema;
-  documentPermission: BlDocumentPermission = {
+export const SignatureCollection: BlCollection = {
+  collectionName: BlCollectionName.Signatures,
+  mongooseSchema: signatureSchema,
+  documentPermission: {
     viewableForPermission: "employee",
-  };
-
-  public endpoints: BlEndpoint[] = [
+  },
+  endpoints: [
     {
       method: "post",
       restriction: {
@@ -43,5 +40,5 @@ export class SignatureCollection implements BlCollection {
       },
       hook: new SignatureGetIdHook(),
     },
-  ];
-}
+  ],
+};

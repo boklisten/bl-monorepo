@@ -1,14 +1,13 @@
 import {
   BlCollection,
   BlCollectionName,
-  BlEndpoint,
 } from "@backend/collections/bl-collection";
 import { companySchema } from "@backend/collections/company/company.schema";
 
-export class CompanyCollection implements BlCollection {
-  collectionName = BlCollectionName.Companies;
-  mongooseSchema = companySchema;
-  endpoints: BlEndpoint[] = [
+export const CompanyCollection: BlCollection = {
+  collectionName: BlCollectionName.Companies,
+  mongooseSchema: companySchema,
+  endpoints: [
     {
       method: "getAll",
       restriction: {
@@ -45,5 +44,5 @@ export class CompanyCollection implements BlCollection {
         permissions: ["admin"],
       },
     },
-  ];
-}
+  ],
+};

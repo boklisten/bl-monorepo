@@ -1,8 +1,6 @@
 import {
   BlCollection,
   BlCollectionName,
-  BlDocumentPermission,
-  BlEndpoint,
 } from "@backend/collections/bl-collection";
 import { UserDetailDeleteHook } from "@backend/collections/user-detail/hooks/user-detail-delete.hook";
 import { UserDetailUpdateHook } from "@backend/collections/user-detail/hooks/user-detail-update.hook";
@@ -12,13 +10,13 @@ import { UserDetailReadPermissionOperation } from "@backend/collections/user-det
 import { UserDetailValidOperation } from "@backend/collections/user-detail/operations/user-detail-valid.operation";
 import { userDetailSchema } from "@backend/collections/user-detail/user-detail.schema";
 
-export class UserDetailCollection implements BlCollection {
-  collectionName = BlCollectionName.UserDetails;
-  mongooseSchema = userDetailSchema;
-  documentPermission: BlDocumentPermission = {
+export const UserDetailCollection: BlCollection = {
+  collectionName: BlCollectionName.UserDetails,
+  mongooseSchema: userDetailSchema,
+  documentPermission: {
     viewableForPermission: "employee",
-  };
-  endpoints: BlEndpoint[] = [
+  },
+  endpoints: [
     {
       method: "getId",
       restriction: {
@@ -114,5 +112,5 @@ export class UserDetailCollection implements BlCollection {
         permissions: ["employee", "manager", "admin"],
       },
     },
-  ];
-}
+  ],
+};

@@ -1,21 +1,18 @@
 import {
   BlCollection,
   BlCollectionName,
-  BlDocumentPermission,
-  BlEndpoint,
 } from "@backend/collections/bl-collection";
 import { GenerateUniqueIdsOperation } from "@backend/collections/unique-item/operations/generate-unique-ids-operation";
 import { UniqueItemActiveOperation } from "@backend/collections/unique-item/operations/unique-item-active.operation";
 import { uniqueItemSchema } from "@backend/collections/unique-item/unique-item.schema";
 
-export class UniqueItemCollection implements BlCollection {
-  public collectionName = BlCollectionName.UniqueItems;
-  public mongooseSchema = uniqueItemSchema;
-  documentPermission: BlDocumentPermission = {
+export const UniqueItemCollection: BlCollection = {
+  collectionName: BlCollectionName.UniqueItems,
+  mongooseSchema: uniqueItemSchema,
+  documentPermission: {
     viewableForPermission: "employee",
-  };
-
-  public endpoints: BlEndpoint[] = [
+  },
+  endpoints: [
     {
       method: "post",
       restriction: {
@@ -56,5 +53,5 @@ export class UniqueItemCollection implements BlCollection {
         { fieldName: "item", type: "object-id" },
       ],
     },
-  ];
-}
+  ],
+};

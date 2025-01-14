@@ -1,15 +1,14 @@
 import {
   BlCollection,
   BlCollectionName,
-  BlEndpoint,
 } from "@backend/collections/bl-collection";
 import { editableTextSchema } from "@backend/collections/editable-text/editable-text.schema";
 import { EditableTextPutHook } from "@backend/collections/editable-text/hooks/editable-text.put.hook";
 
-export class EditableTextCollection implements BlCollection {
-  public collectionName = BlCollectionName.EditableTexts;
-  public mongooseSchema = editableTextSchema;
-  public endpoints: BlEndpoint[] = [
+export const EditableTextCollection: BlCollection = {
+  collectionName: BlCollectionName.EditableTexts,
+  mongooseSchema: editableTextSchema,
+  endpoints: [
     {
       method: "getId",
     },
@@ -29,5 +28,5 @@ export class EditableTextCollection implements BlCollection {
         permissions: ["admin"],
       },
     },
-  ];
-}
+  ],
+};

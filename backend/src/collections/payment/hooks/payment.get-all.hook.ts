@@ -1,7 +1,6 @@
 import { PermissionService } from "@backend/auth/permission/permission.service";
 import { Hook } from "@backend/hook/hook";
 import { BlError } from "@shared/bl-error/bl-error";
-import { Payment } from "@shared/payment/payment";
 import { AccessToken } from "@shared/token/access-token";
 
 export class PaymentGetAllHook extends Hook {
@@ -36,10 +35,5 @@ export class PaymentGetAllHook extends Hook {
     }
 
     return true;
-  }
-
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  public override async after(payments: Payment[]): Promise<any> {
-    return payments;
   }
 }

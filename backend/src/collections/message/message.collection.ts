@@ -1,17 +1,16 @@
 import {
   BlCollection,
   BlCollectionName,
-  BlEndpoint,
 } from "@backend/collections/bl-collection";
 import { MessagePostHook } from "@backend/collections/message/hooks/message-post.hook";
 import { messageSchema } from "@backend/collections/message/message.schema";
 import { SendgridEventOperation } from "@backend/collections/message/operations/sendgrid-event.operation";
 import { TwilioSmsEventOperation } from "@backend/collections/message/operations/twillio-sms-event.operation";
 
-export class MessageCollection implements BlCollection {
-  public collectionName = BlCollectionName.Messages;
-  public mongooseSchema = messageSchema;
-  public endpoints: BlEndpoint[] = [
+export const MessageCollection: BlCollection = {
+  collectionName: BlCollectionName.Messages,
+  mongooseSchema: messageSchema,
+  endpoints: [
     {
       method: "post",
       hook: new MessagePostHook(),
@@ -53,5 +52,5 @@ export class MessageCollection implements BlCollection {
         permissions: ["admin"],
       },
     },
-  ];
-}
+  ],
+};

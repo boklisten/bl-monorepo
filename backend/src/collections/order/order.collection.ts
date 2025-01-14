@@ -1,8 +1,6 @@
 import {
   BlCollection,
   BlCollectionName,
-  BlDocumentPermission,
-  BlEndpoint,
 } from "@backend/collections/bl-collection";
 import { OrderPatchHook } from "@backend/collections/order/hooks/order.patch.hook";
 import { OrderPostHook } from "@backend/collections/order/hooks/order.post.hook";
@@ -14,13 +12,13 @@ import { RapidHandoutOperation } from "@backend/collections/order/operations/rap
 import { orderSchema } from "@backend/collections/order/order.schema";
 import { userDetailSchema } from "@backend/collections/user-detail/user-detail.schema";
 
-export class OrderCollection implements BlCollection {
-  collectionName = BlCollectionName.Orders;
-  mongooseSchema = orderSchema;
-  documentPermission: BlDocumentPermission = {
+export const OrderCollection: BlCollection = {
+  collectionName: BlCollectionName.Orders,
+  mongooseSchema: orderSchema,
+  documentPermission: {
     viewableForPermission: "employee",
-  };
-  endpoints: BlEndpoint[] = [
+  },
+  endpoints: [
     {
       method: "post",
       hook: new OrderPostHook(),
@@ -168,5 +166,5 @@ export class OrderCollection implements BlCollection {
         },
       ],
     },
-  ];
-}
+  ],
+};

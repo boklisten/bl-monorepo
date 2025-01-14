@@ -1,16 +1,15 @@
 import {
   BlCollection,
   BlCollectionName,
-  BlEndpoint,
 } from "@backend/collections/bl-collection";
 import { branchSchema } from "@backend/collections/branch/branch.schema";
 import { BranchGetHook } from "@backend/collections/branch/hook/branch-get.hook";
 import { BranchPostHook } from "@backend/collections/branch/hook/branch-post.hook";
 
-export class BranchCollection implements BlCollection {
-  collectionName = BlCollectionName.Branches;
-  mongooseSchema = branchSchema;
-  endpoints: BlEndpoint[] = [
+export const BranchCollection: BlCollection = {
+  collectionName: BlCollectionName.Branches,
+  mongooseSchema: branchSchema,
+  endpoints: [
     {
       method: "getId",
       hook: new BranchGetHook(),
@@ -62,5 +61,5 @@ export class BranchCollection implements BlCollection {
         permissions: ["admin"],
       },
     },
-  ];
-}
+  ],
+};

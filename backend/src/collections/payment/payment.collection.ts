@@ -1,21 +1,19 @@
 import {
   BlCollection,
   BlCollectionName,
-  BlDocumentPermission,
-  BlEndpoint,
 } from "@backend/collections/bl-collection";
 import { PaymentGetAllHook } from "@backend/collections/payment/hooks/payment.get-all.hook";
 import { PaymentPatchHook } from "@backend/collections/payment/hooks/payment.patch.hook";
 import { PaymentPostHook } from "@backend/collections/payment/hooks/payment.post.hook";
 import { paymentSchema } from "@backend/collections/payment/payment.schema";
 
-export class PaymentCollection implements BlCollection {
-  public collectionName = BlCollectionName.Payments;
-  public mongooseSchema = paymentSchema;
-  documentPermission: BlDocumentPermission = {
+export const PaymentCollection: BlCollection = {
+  collectionName: BlCollectionName.Payments,
+  mongooseSchema: paymentSchema,
+  documentPermission: {
     viewableForPermission: "employee",
-  };
-  public endpoints: BlEndpoint[] = [
+  },
+  endpoints: [
     {
       method: "post",
       hook: new PaymentPostHook(),
@@ -60,5 +58,5 @@ export class PaymentCollection implements BlCollection {
         permissions: ["admin"],
       },
     },
-  ];
-}
+  ],
+};

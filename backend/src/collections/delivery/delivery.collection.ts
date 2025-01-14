@@ -1,17 +1,16 @@
 import {
   BlCollection,
   BlCollectionName,
-  BlEndpoint,
 } from "@backend/collections/bl-collection";
 import { deliverySchema } from "@backend/collections/delivery/delivery.schema";
 import { DeliveryPatchHook } from "@backend/collections/delivery/hooks/delivery.patch.hook";
 import { DeliveryPostHook } from "@backend/collections/delivery/hooks/delivery.post.hook";
 import { PostalCodeLookupOperation } from "@backend/collections/delivery/operations/postal-code-lookup.operation";
 
-export class DeliveryCollection implements BlCollection {
-  public collectionName = BlCollectionName.Deliveries;
-  public mongooseSchema = deliverySchema;
-  public endpoints: BlEndpoint[] = [
+export const DeliveryCollection: BlCollection = {
+  collectionName: BlCollectionName.Deliveries,
+  mongooseSchema: deliverySchema,
+  endpoints: [
     {
       method: "post",
       hook: new DeliveryPostHook(),
@@ -59,5 +58,5 @@ export class DeliveryCollection implements BlCollection {
         permissions: ["admin"],
       },
     },
-  ];
-}
+  ],
+};

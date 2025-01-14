@@ -1,14 +1,13 @@
 import {
   BlCollection,
   BlCollectionName,
-  BlEndpoint,
 } from "@backend/collections/bl-collection";
 import { openingHourSchema } from "@backend/collections/opening-hour/opening-hour.schema";
 
-export class OpeningHourCollection implements BlCollection {
-  collectionName = BlCollectionName.OpeningHours;
-  mongooseSchema = openingHourSchema;
-  endpoints: BlEndpoint[] = [
+export const OpeningHourCollection: BlCollection = {
+  collectionName: BlCollectionName.OpeningHours,
+  mongooseSchema: openingHourSchema,
+  endpoints: [
     {
       method: "getId",
     },
@@ -41,5 +40,5 @@ export class OpeningHourCollection implements BlCollection {
         permissions: ["admin"],
       },
     },
-  ];
-}
+  ],
+};

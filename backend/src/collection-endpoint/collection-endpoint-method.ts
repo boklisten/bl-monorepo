@@ -103,20 +103,16 @@ export abstract class CollectionEndpointMethod<T extends BlDocument> {
     let blApiRequest: BlApiRequest;
 
     this._collectionEndpointAuth
-
       // @ts-expect-error fixme: auto ignored
       .authenticate(this._endpoint.restriction, request, res, next)
-
       // @ts-expect-error fixme: auto ignored
       .then((accessToken?: AccessToken) => {
         // @ts-expect-error fixme: auto ignored
         userAccessToken = accessToken;
-
         // @ts-expect-error fixme: auto ignored
         return this._endpoint.hook.before(
           request.body,
           accessToken,
-
           // @ts-expect-error fixme: auto ignored
           request.params.id,
           request.query,
@@ -153,10 +149,8 @@ export abstract class CollectionEndpointMethod<T extends BlDocument> {
           this.documentPermission,
         ),
       )
-
       // @ts-expect-error fixme: auto ignored
       .then((docs: T[]) => this._endpoint.hook.after(docs, userAccessToken))
-
       // @ts-expect-error fixme: auto ignored
       .then((docs: T[]) =>
         this._responseHandler.sendResponse(res, new BlapiResponse(docs)),

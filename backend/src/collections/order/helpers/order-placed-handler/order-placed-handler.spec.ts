@@ -41,7 +41,6 @@ describe("OrderPlacedHandler", () => {
   const orderItemMovedFromOrderHandler = new OrderItemMovedFromOrderHandler();
   const customerItemHandler = new CustomerItemHandler();
   const orderPlacedHandler = new OrderPlacedHandler(
-    customerItemStorage,
     orderStorage,
     paymentHandler,
     userDetailStorage,

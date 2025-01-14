@@ -4,21 +4,21 @@ import { AccessToken } from "@shared/token/access-token";
 export class Hook {
   public before(
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    _body?: unknown,
+    body?: unknown,
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    _accessToken?: AccessToken,
+    accessToken?: AccessToken,
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    _id?: string,
+    id?: string,
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    _query?: unknown,
+    query?: unknown,
   ): Promise<boolean | unknown> {
     return Promise.resolve(true);
   }
 
-  public after(
+  after(
     docs: BlDocument[],
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    _accessToken?: AccessToken,
+    accessToken?: AccessToken,
   ): Promise<BlDocument[]> {
     return Promise.resolve(docs ? docs : []);
   }

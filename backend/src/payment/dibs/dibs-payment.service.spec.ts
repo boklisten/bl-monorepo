@@ -17,11 +17,7 @@ should();
 
 describe("DibsPaymentService", () => {
   const httpHandler = new HttpHandler();
-  const deliveryStorage = new BlDocumentStorage<Delivery>(
-    BlCollectionName.Deliveries,
-  );
   const dibsPaymentService: DibsPaymentService = new DibsPaymentService(
-    deliveryStorage,
     httpHandler,
   );
   let testOrder: Order;

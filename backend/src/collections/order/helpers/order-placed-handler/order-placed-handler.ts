@@ -29,8 +29,6 @@ export class OrderPlacedHandler {
   private _messenger: Messenger;
 
   constructor(
-    // @ts-expect-error fixme: auto ignored
-    customerItemStorage?: BlDocumentStorage<CustomerItem>,
     orderStorage?: BlDocumentStorage<Order>,
     paymentHandler?: PaymentHandler,
     userDetailStorage?: BlDocumentStorage<UserDetail>,

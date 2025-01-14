@@ -99,14 +99,12 @@ export class UserHandler {
 
       return (
         this.userStorage
-
           // @ts-expect-error fixme: auto ignored
           .update(selectedUser, { primary: true }, new SystemUser())
           .then(() => {
             const promiseArray = users.map((user) =>
               this.userStorage.update(
                 user.id,
-
                 // @ts-expect-error fixme: auto ignored
                 { movedToPrimary: selectedUser.id },
                 new SystemUser(),

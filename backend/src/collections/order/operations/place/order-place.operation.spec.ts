@@ -43,7 +43,6 @@ describe("OrderPlaceOperation", () => {
     BlCollectionName.Signatures,
   );
   const orderPlacedHandler = new OrderPlacedHandler(
-    undefined,
     orderStorage,
     undefined,
     userDetailStorage,

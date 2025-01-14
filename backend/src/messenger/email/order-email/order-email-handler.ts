@@ -201,11 +201,9 @@ export class OrderEmailHandler {
       totalAmount: order.amount.toString(), // should include the totalAmount including the delivery amount
       items: this.orderItemsToEmailItems(order.orderItems),
       showDelivery: false,
-
       // @ts-expect-error fixme: auto ignored
       delivery: null,
       showPayment: false,
-
       // @ts-expect-error fixme: auto ignored
       payment: null,
     };

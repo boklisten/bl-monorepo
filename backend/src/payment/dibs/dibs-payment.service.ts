@@ -5,7 +5,6 @@ import { HttpHandler } from "@backend/http/http.handler";
 import { DibsEasyItem } from "@backend/payment/dibs/dibs-easy-item/dibs-easy-item";
 import { DibsEasyOrder } from "@backend/payment/dibs/dibs-easy-order/dibs-easy-order";
 import { DibsEasyPayment } from "@backend/payment/dibs/dibs-easy-payment/dibs-easy-payment";
-import { BlDocumentStorage } from "@backend/storage/blDocumentStorage";
 import { BlError } from "@shared/bl-error/bl-error";
 import { Delivery } from "@shared/delivery/delivery";
 import { Order } from "@shared/order/order";
@@ -16,10 +15,7 @@ export class DibsPaymentService {
   private _userDetailHelper: UserDetailHelper;
   private _httpHandler: HttpHandler;
 
-  constructor(
-    deliveryStorage?: BlDocumentStorage<Delivery>,
-    httpHandler?: HttpHandler,
-  ) {
+  constructor(httpHandler?: HttpHandler) {
     this._httpHandler = httpHandler ?? new HttpHandler();
     this._userDetailHelper = new UserDetailHelper();
   }
@@ -170,19 +166,17 @@ export class DibsPaymentService {
   }
 
   private orderItemToEasyItem(orderItem: OrderItem): DibsEasyItem {
-    const dibsEasyItem = new DibsEasyItem();
-
-    dibsEasyItem.reference = orderItem.item;
-    dibsEasyItem.name = orderItem.title;
-    dibsEasyItem.quantity = 1;
-    dibsEasyItem.unit = "book";
-    dibsEasyItem.unitPrice = this.toEars(orderItem.unitPrice);
-    dibsEasyItem.taxRate = this.toEars(orderItem.taxRate * 100);
-    dibsEasyItem.taxAmount = this.toEars(orderItem.taxAmount);
-    dibsEasyItem.netTotalAmount = this.toEars(orderItem.unitPrice);
-    dibsEasyItem.grossTotalAmount = this.toEars(orderItem.amount);
-
-    return dibsEasyItem;
+    return {
+      reference: orderItem.item,
+      name: orderItem.title,
+      quantity: 1,
+      unit: "book",
+      unitPrice: this.toEars(orderItem.unitPrice),
+      taxRate: this.toEars(orderItem.taxRate * 100),
+      taxAmount: this.toEars(orderItem.taxAmount),
+      netTotalAmount: this.toEars(orderItem.unitPrice),
+      grossTotalAmount: this.toEars(orderItem.amount),
+    };
   }
 
   private toEars(price: number): number {

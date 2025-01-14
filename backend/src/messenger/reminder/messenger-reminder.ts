@@ -28,16 +28,6 @@ export class MessengerReminder {
   }
 
   /**
-   *  Tries to remind all customers to return items that have the specified deadline
-   *  @param deadline the deadline the reminder is for
-   */
-
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  public remindAll(deadline: Date) {
-    throw new BlError("Not implemented!").code(200);
-  }
-
-  /**
    *  Reminds a customer to return a item with the specified deadline
    */
   public async remindCustomer(message: Message): Promise<void> {

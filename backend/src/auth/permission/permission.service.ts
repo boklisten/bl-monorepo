@@ -1,17 +1,9 @@
-import {
-  BlDocumentPermission,
-  BlEndpointRestriction,
-} from "@backend/collections/bl-collection";
+import { BlDocumentPermission } from "@backend/collections/bl-collection";
 import { BlDocument } from "@shared/bl-document/bl-document";
 import {
   UserPermission,
   UserPermissionEnum,
 } from "@shared/permission/user-permission";
-
-export class SystemUser {
-  id = "SYSTEM";
-  permission = UserPermissionEnum.enum.admin;
-}
 
 export class PermissionService {
   public isAdmin(userPermission: UserPermission) {
@@ -22,14 +14,11 @@ export class PermissionService {
     userId: string,
     userPermission: UserPermission,
     document: BlDocument,
-    endpointRestriction: BlEndpointRestriction,
     documentPermission?: BlDocumentPermission,
   ): boolean {
     if (
-      // @ts-expect-error fixme: auto ignored
-      document.user.id === userId ||
-      // @ts-expect-error fixme: auto ignored
-      this.isPermissionOver(userPermission, document.user.permission)
+      document.user?.id === userId ||
+      this.isPermissionOver(userPermission, document.user?.permission)
     ) {
       return true;
     }

@@ -10,7 +10,7 @@ import { BlError } from "@shared/bl-error/bl-error";
 import { BlapiResponse } from "@shared/blapi-response/blapi-response";
 import { Order } from "@shared/order/order";
 import { AccessToken } from "@shared/token/access-token";
-import { NextFunction, Request, Response } from "express";
+import { Request, Response } from "express";
 
 export class OrderConfirmOperation implements Operation {
   private _queryBuilder: SEDbQueryBuilder;
@@ -101,8 +101,6 @@ export class OrderConfirmOperation implements Operation {
     blApiRequest: BlApiRequest,
     request?: Request,
     res?: Response,
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    next?: NextFunction,
   ): Promise<boolean> {
     const accessToken = {
       // @ts-expect-error fixme: auto ignored

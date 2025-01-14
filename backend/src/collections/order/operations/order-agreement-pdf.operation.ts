@@ -8,7 +8,7 @@ import { SEResponseHandler } from "@backend/response/se.response.handler";
 import { BlDocumentStorage } from "@backend/storage/blDocumentStorage";
 import { Order } from "@shared/order/order";
 import { UserDetail } from "@shared/user/user-detail/user-detail";
-import { NextFunction, Request, Response } from "express";
+import { Request, Response } from "express";
 
 export class OrderAgreementPdfOperation implements Operation {
   private _messenger: Messenger;
@@ -35,8 +35,6 @@ export class OrderAgreementPdfOperation implements Operation {
     blApiRequest: BlApiRequest,
     request?: Request,
     res?: Response,
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    next?: NextFunction,
   ): Promise<boolean> {
     // @ts-expect-error fixme: auto ignored
     const order = await this._orderStorage.get(blApiRequest.documentId);

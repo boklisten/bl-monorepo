@@ -9,7 +9,6 @@ import { CustomerItem } from "@shared/customer-item/customer-item";
 import { Invoice } from "@shared/invoice/invoice";
 import { Order } from "@shared/order/order";
 import { Payment } from "@shared/payment/payment";
-import { AccessToken } from "@shared/token/access-token";
 import { UserDetail } from "@shared/user/user-detail/user-detail";
 import { expect, use as chaiUse, should } from "chai";
 import chaiAsPromised from "chai-as-promised";
@@ -76,22 +75,10 @@ describe("UserDeleteAllInfo", () => {
         { id: localLoginIdToRemove },
       ] as LocalLogin[]);
 
-      const accessToken = {
-        details: "user777",
-        permission: "admin",
-      } as AccessToken;
+      await userDeleteAllInfo.deleteUser(userDetailIdToRemove);
 
-      const result = await userDeleteAllInfo.deleteUser(
-        userDetailIdToRemove,
-        accessToken,
-      );
-
-      return expect(
-        userRemoveStub.getCall(0).calledWithMatch(userIdToRemove, {
-          id: accessToken.details,
-          permission: accessToken.permission,
-        }),
-      ).to.be.true;
+      return expect(userRemoveStub.getCall(0).calledWithMatch(userIdToRemove))
+        .to.be.true;
     });
 
     it("should call localLoginStorage.remove with correct data", async () => {
@@ -110,21 +97,10 @@ describe("UserDeleteAllInfo", () => {
         { id: localLoginIdToRemove },
       ] as LocalLogin[]);
 
-      const accessToken = {
-        details: "user777",
-        permission: "admin",
-      } as AccessToken;
-
-      const result = await userDeleteAllInfo.deleteUser(
-        userDetailIdToRemove,
-        accessToken,
-      );
+      await userDeleteAllInfo.deleteUser(userDetailIdToRemove);
 
       return expect(
-        localLoginRemoveStub.getCall(0).calledWithMatch(localLoginIdToRemove, {
-          id: accessToken.details,
-          permission: accessToken.permission,
-        }),
+        localLoginRemoveStub.getCall(0).calledWithMatch(localLoginIdToRemove),
       ).to.be.true;
     });
 
@@ -143,14 +119,8 @@ describe("UserDeleteAllInfo", () => {
         { id: localLoginIdToRemove },
       ] as LocalLogin[]);
 
-      const accessToken = {
-        details: "user777",
-        permission: "admin",
-      } as AccessToken;
-
-      return expect(
-        userDeleteAllInfo.deleteUser(userDetailIdToRemove, accessToken),
-      ).to.eventually.be.fulfilled;
+      return expect(userDeleteAllInfo.deleteUser(userDetailIdToRemove)).to
+        .eventually.be.fulfilled;
     });
   });
 });

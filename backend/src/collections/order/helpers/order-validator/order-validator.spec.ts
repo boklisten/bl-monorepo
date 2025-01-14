@@ -1,7 +1,6 @@
 import "mocha";
 
 import { BlCollectionName } from "@backend/collections/bl-collection";
-import { BranchValidator } from "@backend/collections/order/helpers/order-validator/branch-validator/branch-validator";
 import { OrderFieldValidator } from "@backend/collections/order/helpers/order-validator/order-field-validator/order-field-validator";
 import { OrderItemValidator } from "@backend/collections/order/helpers/order-validator/order-item-validator/order-item-validator";
 import { OrderPlacedValidator } from "@backend/collections/order/helpers/order-validator/order-placed-validator/order-placed-validator";
@@ -27,14 +26,12 @@ describe("OrderValidator", () => {
   );
   const orderUserDetailValidator = new OrderUserDetailValidator();
 
-  const branchValidator = new BranchValidator();
   const orderItemValidator = new OrderItemValidator();
   const orderPlacedValidator = new OrderPlacedValidator();
   const orderFieldValidator = new OrderFieldValidator();
   const orderValidator: OrderValidator = new OrderValidator(
     orderItemValidator,
     orderPlacedValidator,
-    branchValidator,
     branchStorage,
     orderFieldValidator,
     orderUserDetailValidator,
@@ -45,9 +42,6 @@ describe("OrderValidator", () => {
 
   // @ts-expect-error fixme: auto ignored
   let orderPlacedShouldResolve;
-
-  // @ts-expect-error fixme: auto ignored
-  let branchValidatorShouldResolve;
 
   // @ts-expect-error fixme: auto ignored
   let orderUserDetailValidatorShouldResolve;
@@ -72,14 +66,6 @@ describe("OrderValidator", () => {
     // @ts-expect-error fixme: auto ignored
     if (!orderPlacedShouldResolve) {
       return Promise.reject(new BlError("validation of order.placed failed"));
-    }
-    return Promise.resolve(true);
-  });
-
-  sinon.stub(branchValidator, "validate").callsFake((order: Order) => {
-    // @ts-expect-error fixme: auto ignored
-    if (!branchValidatorShouldResolve) {
-      return Promise.reject(new BlError("validation of branch failed"));
     }
     return Promise.resolve(true);
   });
@@ -143,15 +129,6 @@ describe("OrderValidator", () => {
       });
     });
 
-    context("when branchValidator rejects", () => {
-      it("should reject with error", () => {
-        branchValidatorShouldResolve = false;
-        return expect(
-          orderValidator.validate(testOrder, false),
-        ).to.eventually.be.rejectedWith(BlError, /validation of branch failed/);
-      });
-    });
-
     context("when orderUserDetailValidator rejects", () => {
       it("should reject with error", () => {
         orderUserDetailValidatorShouldResolve = false;
@@ -166,7 +143,6 @@ describe("OrderValidator", () => {
   beforeEach(() => {
     orderItemShouldResolve = true;
     orderPlacedShouldResolve = true;
-    branchValidatorShouldResolve = true;
     orderUserDetailValidatorShouldResolve = true;
 
     testOrder = {

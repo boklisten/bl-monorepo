@@ -40,15 +40,15 @@ export class LocalLoginCreator {
         (hashedPasswordAndSalt: { hashedPassword: string; salt: string }) => {
           this._providerIdGenerator.generate(username).then(
             (providerId: string) => {
-              const newLocalLogin = new LocalLogin();
-              newLocalLogin.username = username;
-              newLocalLogin.hashedPassword =
-                hashedPasswordAndSalt.hashedPassword;
-              newLocalLogin.salt = hashedPasswordAndSalt.salt;
-              newLocalLogin.provider = "local";
-              newLocalLogin.providerId = providerId;
-
-              resolve(newLocalLogin);
+              resolve({
+                // @ts-expect-error fixme bad types
+                id: undefined,
+                username: username,
+                hashedPassword: hashedPasswordAndSalt.hashedPassword,
+                salt: hashedPasswordAndSalt.salt,
+                provider: "local",
+                providerId: providerId,
+              });
             },
             (providerIdGeneratorError: BlError) => {
               reject(

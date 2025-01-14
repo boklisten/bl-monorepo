@@ -56,7 +56,7 @@ export class UserDetailDeleteHook extends Hook {
       await this.checkActiveCustomerItems(id);
       await this.checkActiveInvoices(id);
     }
-    await this.deleteUserService.deleteUser(id, accessToken);
+    await this.deleteUserService.deleteUser(id);
 
     return true;
   }

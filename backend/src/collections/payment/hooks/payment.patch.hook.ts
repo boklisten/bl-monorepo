@@ -1,17 +1,14 @@
 import { PaymentDibsHandler } from "@backend/collections/payment/helpers/dibs/payment-dibs-handler";
 import { PaymentValidator } from "@backend/collections/payment/helpers/payment.validator";
 import { Hook } from "@backend/hook/hook";
-import { BlDocumentStorage } from "@backend/storage/blDocumentStorage";
 import { BlError } from "@shared/bl-error/bl-error";
 import { Payment } from "@shared/payment/payment";
-import { AccessToken } from "@shared/token/access-token";
 
 export class PaymentPatchHook extends Hook {
   private paymentDibsHandler: PaymentDibsHandler;
   private paymentValidator: PaymentValidator;
 
   constructor(
-    paymentStorage?: BlDocumentStorage<Payment>,
     paymentDibsHandler?: PaymentDibsHandler,
     paymentValidator?: PaymentValidator,
   ) {
@@ -20,21 +17,7 @@ export class PaymentPatchHook extends Hook {
     this.paymentValidator = paymentValidator ?? new PaymentValidator();
   }
 
-  override before(
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    body: unknown,
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    accessToken: AccessToken,
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    id: string,
-  ): Promise<boolean> {
-    return Promise.resolve(true);
-  }
-
-  override after(
-    payments: Payment[],
-    accessToken: AccessToken,
-  ): Promise<Payment[]> {
+  override after(payments: Payment[]): Promise<Payment[]> {
     if (!payments || payments.length !== 1) {
       return Promise.reject(new BlError("payments are empty or undefined"));
     }
@@ -42,7 +25,7 @@ export class PaymentPatchHook extends Hook {
     // @ts-expect-error fixme: auto ignored
     let payment: Payment = payments[0];
 
-    return this.updatePaymentBasedOnMethod(payment, accessToken)
+    return this.updatePaymentBasedOnMethod(payment)
       .then((updatedPayment: Payment) => {
         payment = updatedPayment;
         return this.paymentValidator.validate(updatedPayment);
@@ -55,13 +38,10 @@ export class PaymentPatchHook extends Hook {
       });
   }
 
-  private updatePaymentBasedOnMethod(
-    payment: Payment,
-    accessToken: AccessToken,
-  ): Promise<Payment> {
+  private updatePaymentBasedOnMethod(payment: Payment): Promise<Payment> {
     switch (payment.method) {
       case "later": {
-        return this.handlePaymentLater(payment, accessToken);
+        return Promise.resolve(payment);
       }
       case "dibs": {
         return this.paymentDibsHandler.handleDibsPayment(payment);
@@ -72,13 +52,5 @@ export class PaymentPatchHook extends Hook {
         );
       }
     }
-  }
-
-  private handlePaymentLater(
-    payment: Payment,
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    accessToken: AccessToken,
-  ): Promise<Payment> {
-    return Promise.resolve(payment);
   }
 }

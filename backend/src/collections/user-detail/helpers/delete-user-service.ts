@@ -18,7 +18,6 @@ import { StandMatch } from "@shared/match/stand-match";
 import { UserMatch } from "@shared/match/user-match";
 import { Order } from "@shared/order/order";
 import { Payment } from "@shared/payment/payment";
-import { AccessToken } from "@shared/token/access-token";
 import { UserDetail } from "@shared/user/user-detail/user-detail";
 
 export class DeleteUserService {
@@ -74,28 +73,19 @@ export class DeleteUserService {
     this.queryBuilder = new SEDbQueryBuilder();
   }
 
-  public async deleteUser(
-    userDetailId: string,
-    accessToken: AccessToken,
-  ): Promise<void> {
+  public async deleteUser(userDetailId: string): Promise<void> {
     const databaseQuery = this.queryBuilder.getDbQuery(
       { userDetail: userDetailId },
       [{ fieldName: "userDetail", type: "object-id" }],
     );
     const users = await this.userStorage.getByQuery(databaseQuery);
     for (const user of users) {
-      await this.userStorage.remove(user.id, {
-        id: accessToken.details,
-        permission: accessToken.permission,
-      });
-      await this.removeLocalLogin(user.username, accessToken);
+      await this.userStorage.remove(user.id);
+      await this.removeLocalLogin(user.username);
     }
   }
 
-  private async removeLocalLogin(
-    username: string,
-    accessToken: AccessToken,
-  ): Promise<void> {
+  private async removeLocalLogin(username: string): Promise<void> {
     const localLoginDatabaseQuery = this.queryBuilder.getDbQuery(
       { username: username },
       [{ fieldName: "username", type: "string" }],
@@ -104,10 +94,7 @@ export class DeleteUserService {
       localLoginDatabaseQuery,
     );
     for (const localLogin of localLogins) {
-      await this.localLoginStorage.remove(localLogin.id, {
-        id: accessToken.details,
-        permission: accessToken.permission,
-      });
+      await this.localLoginStorage.remove(localLogin.id);
     }
   }
 

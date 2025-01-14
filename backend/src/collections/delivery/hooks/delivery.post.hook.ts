@@ -1,5 +1,4 @@
 import { BlCollectionName } from "@backend/collections/bl-collection";
-import { BringDeliveryService } from "@backend/collections/delivery/helpers/deliveryBring/bringDelivery.service";
 import { DeliveryHandler } from "@backend/collections/delivery/helpers/deliveryHandler/delivery-handler";
 import { DeliveryValidator } from "@backend/collections/delivery/helpers/deliveryValidator/delivery-validator";
 import { orderSchema } from "@backend/collections/order/order.schema";
@@ -7,7 +6,6 @@ import { Hook } from "@backend/hook/hook";
 import { BlDocumentStorage } from "@backend/storage/blDocumentStorage";
 import { BlError } from "@shared/bl-error/bl-error";
 import { Delivery } from "@shared/delivery/delivery";
-import { Item } from "@shared/item/item";
 import { Order } from "@shared/order/order";
 import { AccessToken } from "@shared/token/access-token";
 
@@ -19,12 +17,7 @@ export class DeliveryPostHook extends Hook {
   constructor(
     deliveryValidator?: DeliveryValidator,
     deliveryHandler?: DeliveryHandler,
-    deliveryStorage?: BlDocumentStorage<Delivery>,
     orderStorage?: BlDocumentStorage<Order>,
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    itemStorage?: BlDocumentStorage<Item>,
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    bringDeliveryService?: BringDeliveryService,
   ) {
     super();
     this.deliveryValidator = deliveryValidator ?? new DeliveryValidator();
@@ -54,9 +47,8 @@ export class DeliveryPostHook extends Hook {
         .get(delivery.order)
         .then((order: Order) => {
           this.deliveryValidator
-
             // @ts-expect-error fixme: auto ignored
-            .validate(delivery, order)
+            .validate(delivery)
             .then(() => {
               this.deliveryHandler
 

@@ -22,7 +22,6 @@ describe("DeliveryValidator", () => {
   const deliveryBringHandler = new DeliveryBringHandler();
   const orderStorage = new BlDocumentStorage<Order>(BlCollectionName.Orders);
   const deliveryValidator = new DeliveryValidator(
-    orderStorage,
     deliveryBranchHandler,
     deliveryBringHandler,
   );
@@ -50,7 +49,7 @@ describe("DeliveryValidator", () => {
 
   sinon
     .stub(deliveryBringHandler, "validate")
-    .callsFake((delivery: Delivery, order: Order) => {
+    .callsFake((delivery: Delivery) => {
       if (!deliveryBringValidation) {
         return Promise.reject(
           new BlError('validation of delivery.method "bring" failed'),
@@ -86,7 +85,7 @@ describe("DeliveryValidator", () => {
       testDelivery.method = null;
 
       return expect(
-        deliveryValidator.validate(testDelivery, testOrder),
+        deliveryValidator.validate(testDelivery),
       ).to.be.rejectedWith(BlError, /delivery.method not defined/);
     });
 
@@ -95,7 +94,7 @@ describe("DeliveryValidator", () => {
       testDelivery.method = "branch";
 
       return expect(
-        deliveryValidator.validate(testDelivery, testOrder),
+        deliveryValidator.validate(testDelivery),
       ).to.be.rejectedWith(
         BlError,
         /validation of delivery.method "branch" failed/,
@@ -107,7 +106,7 @@ describe("DeliveryValidator", () => {
       testDelivery.method = "bring";
 
       return expect(
-        deliveryValidator.validate(testDelivery, testOrder),
+        deliveryValidator.validate(testDelivery),
       ).to.be.rejectedWith(
         BlError,
         /validation of delivery.method "bring" failed/,

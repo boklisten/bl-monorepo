@@ -61,10 +61,7 @@ export class OrderPlacedHandler {
     try {
       const pendingSignature = await this.isSignaturePending(order);
 
-      const payments = await this.paymentHandler.confirmPayments(
-        order,
-        accessToken,
-      );
+      const payments = await this.paymentHandler.confirmPayments(order);
 
       const paymentIds = payments.map((payment) => payment.id);
 

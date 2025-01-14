@@ -1,5 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
-
 import { BlCollectionName } from "@backend/collections/bl-collection";
 import { deliverySchema } from "@backend/collections/delivery/delivery.schema";
 import { orderSchema } from "@backend/collections/order/order.schema";
@@ -10,12 +8,11 @@ import { Order } from "@shared/order/order";
 import { Payment } from "@shared/payment/payment";
 
 export class PaymentValidator {
-  private orderStorage?: BlDocumentStorage<Order>;
-  private deliveryStorage?: BlDocumentStorage<Delivery>;
+  private orderStorage: BlDocumentStorage<Order>;
+  private deliveryStorage: BlDocumentStorage<Delivery>;
 
   constructor(
     orderStorage?: BlDocumentStorage<Order>,
-    paymentStorage?: BlDocumentStorage<Payment>,
     deliveryStorage?: BlDocumentStorage<Delivery>,
   ) {
     this.orderStorage = orderStorage
@@ -36,7 +33,6 @@ export class PaymentValidator {
 
     let order: Order;
 
-    // @ts-expect-error fixme: auto ignored
     return this.orderStorage
       .get(payment.order)
       .then((orderInStorage: Order) => {
@@ -44,9 +40,9 @@ export class PaymentValidator {
         return this.validateIfOrderHasDelivery(payment, order);
       })
       .then(() => {
-        return this.validatePaymentBasedOnMethod(payment, order);
+        return this.validatePaymentBasedOnMethod(payment);
       })
-      .catch((validatePaymentError: BlError) => {
+      .catch((validatePaymentError: unknown) => {
         if (validatePaymentError instanceof BlError) {
           throw validatePaymentError;
         }
@@ -65,7 +61,6 @@ export class PaymentValidator {
       return Promise.resolve(true);
     }
 
-    // @ts-expect-error fixme: auto ignored
     return this.deliveryStorage
       .get(order.delivery)
       .then((delivery: Delivery) => {
@@ -80,54 +75,8 @@ export class PaymentValidator {
       });
   }
 
-  private validatePaymentBasedOnMethod(
-    payment: Payment,
-    order: Order,
-  ): Promise<boolean> {
-    switch (payment.method) {
-      case "dibs": {
-        return this.validatePaymentDibs(payment, order);
-      }
-      case "card": {
-        return this.validatePaymentCard(payment, order);
-      }
-      case "cash": {
-        return this.validatePaymentCash(payment, order);
-      }
-      case "vipps": {
-        return this.validatePaymentVipps(payment, order);
-      }
-      default: {
-        throw new BlError(`payment.method "${payment.method}" not supported`);
-      }
-    }
-  }
-
-  private validatePaymentDibs(
-    payment: Payment,
-    order: Order,
-  ): Promise<boolean> {
-    return Promise.resolve(true);
-  }
-
-  private validatePaymentCard(
-    payment: Payment,
-    order: Order,
-  ): Promise<boolean> {
-    return Promise.resolve(true);
-  }
-
-  private validatePaymentVipps(
-    payment: Payment,
-    order: Order,
-  ): Promise<boolean> {
-    return Promise.resolve(true);
-  }
-
-  private validatePaymentCash(
-    payment: Payment,
-    order: Order,
-  ): Promise<boolean> {
-    return Promise.resolve(true);
+  private validatePaymentBasedOnMethod(payment: Payment): boolean {
+    if (["dibs", "card", "cash", "vipps"].includes(payment.method)) return true;
+    throw new BlError(`payment.method "${payment.method}" not supported`);
   }
 }

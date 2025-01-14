@@ -15,17 +15,10 @@ should();
 
 describe("PaymentValidator", () => {
   const orderStorage = new BlDocumentStorage<Order>(BlCollectionName.Orders);
-  const paymentStorage = new BlDocumentStorage<Payment>(
-    BlCollectionName.Payments,
-  );
   const deliveryStorage = new BlDocumentStorage<Delivery>(
     BlCollectionName.Deliveries,
   );
-  const paymentValidator = new PaymentValidator(
-    orderStorage,
-    paymentStorage,
-    deliveryStorage,
-  );
+  const paymentValidator = new PaymentValidator(orderStorage, deliveryStorage);
 
   let testPayment: Payment;
   let testOrder: Order;

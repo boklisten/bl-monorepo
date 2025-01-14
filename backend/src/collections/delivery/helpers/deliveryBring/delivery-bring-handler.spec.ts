@@ -2,7 +2,6 @@ import "mocha";
 import { DeliveryBringHandler } from "@backend/collections/delivery/helpers/deliveryBring/delivery-bring-handler";
 import { BlError } from "@shared/bl-error/bl-error";
 import { Delivery } from "@shared/delivery/delivery";
-import { Order } from "@shared/order/order";
 import { expect, use as chaiUse, should } from "chai";
 import chaiAsPromised from "chai-as-promised";
 
@@ -11,20 +10,9 @@ should();
 
 describe("DeliveryBringHandler", () => {
   let testDelivery: Delivery;
-  let testOrder: Order;
   const deliveryBringHandler = new DeliveryBringHandler();
 
   beforeEach(() => {
-    testOrder = {
-      id: "order1",
-      amount: 300,
-      orderItems: [],
-      customer: "customer1",
-      branch: "branch1",
-      byCustomer: true,
-      pendingSignature: false,
-    };
-
     testDelivery = {
       id: "delivery1",
       method: "bring",
@@ -46,7 +34,7 @@ describe("DeliveryBringHandler", () => {
       testDelivery.info = undefined;
 
       return expect(
-        deliveryBringHandler.validate(testDelivery, testOrder),
+        deliveryBringHandler.validate(testDelivery),
       ).to.be.rejectedWith(BlError, /delivery.info not defined/);
     });
 
@@ -61,7 +49,7 @@ describe("DeliveryBringHandler", () => {
       };
 
       return expect(
-        deliveryBringHandler.validate(testDelivery, testOrder),
+        deliveryBringHandler.validate(testDelivery),
       ).to.be.rejectedWith(BlError, /delivery.info.from not defined/);
     });
 
@@ -76,7 +64,7 @@ describe("DeliveryBringHandler", () => {
       };
 
       return expect(
-        deliveryBringHandler.validate(testDelivery, testOrder),
+        deliveryBringHandler.validate(testDelivery),
       ).to.be.rejectedWith(BlError, /delivery.info.to not defined/);
     });
   });

@@ -8,7 +8,6 @@ import { BlError } from "@shared/bl-error/bl-error";
 import { BlapiResponse } from "@shared/blapi-response/blapi-response";
 import { Message } from "@shared/message/message";
 import { SendgridEvent } from "@shared/message/message-sendgrid-event/message-sendgrid-event";
-import { Request, Response, NextFunction } from "express";
 
 export class SendgridEventOperation implements Operation {
   private _messageStorage: BlDocumentStorage<Message>;
@@ -22,15 +21,7 @@ export class SendgridEventOperation implements Operation {
         );
   }
 
-  public async run(
-    blApiRequest: BlApiRequest,
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    request?: Request,
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    res?: Response,
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    next?: NextFunction,
-  ): Promise<BlapiResponse> {
+  public async run(blApiRequest: BlApiRequest): Promise<BlapiResponse> {
     if (!blApiRequest.data || Object.keys(blApiRequest.data).length === 0) {
       throw new BlError("blApiRequest.data is empty").code(701);
     }

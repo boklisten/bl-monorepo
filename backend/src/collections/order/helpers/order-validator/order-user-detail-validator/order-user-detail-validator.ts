@@ -18,7 +18,6 @@ export class OrderUserDetailValidator {
     return (
       this._userDetailStorage
         .get(order.customer)
-
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
         .then((userDetail: UserDetail) => {
           /*

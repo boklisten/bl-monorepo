@@ -7,7 +7,6 @@ import { PaymentPatchHook } from "@backend/collections/payment/hooks/payment.pat
 import { BlDocumentStorage } from "@backend/storage/blDocumentStorage";
 import { BlError } from "@shared/bl-error/bl-error";
 import { Payment } from "@shared/payment/payment";
-import { AccessToken } from "@shared/token/access-token";
 import { expect, use as chaiUse, should } from "chai";
 import chaiAsPromised from "chai-as-promised";
 import sinon from "sinon";
@@ -22,29 +21,16 @@ describe("PaymentPatchHook", () => {
   );
   const paymentValidator = new PaymentValidator();
   const paymentPatchHook = new PaymentPatchHook(
-    paymentStorage,
     paymentDibsHandler,
     paymentValidator,
   );
 
   let testPayment: Payment;
 
-  let testAccessToken: AccessToken;
   let dibsPaymentCreated: boolean;
   let paymentValidated: boolean;
 
   beforeEach(() => {
-    testAccessToken = {
-      iss: "",
-      aud: "",
-      iat: 1,
-      exp: 1,
-      sub: "user1",
-      username: "",
-      permission: "customer",
-      details: "",
-    };
-
     testPayment = {
       id: "payment1",
       method: "dibs",
@@ -80,23 +66,24 @@ describe("PaymentPatchHook", () => {
     it("should reject if paymentValidator.validate rejects", () => {
       paymentValidated = false;
 
-      return expect(
-        paymentPatchHook.after([testPayment], testAccessToken),
-      ).to.be.rejectedWith(BlError, /could not validate payment/);
+      return expect(paymentPatchHook.after([testPayment])).to.be.rejectedWith(
+        BlError,
+        /could not validate payment/,
+      );
     });
 
     it("should resolve when given a valid payment", () => {
-      return expect(paymentPatchHook.after([testPayment], testAccessToken)).to
-        .be.fulfilled;
+      return expect(paymentPatchHook.after([testPayment])).to.be.fulfilled;
     });
 
     context('when payment.method is "dibs"', () => {
       it("should reject if paymentDibsHandler.handleDibsPayment rejects", () => {
         dibsPaymentCreated = false;
 
-        return expect(
-          paymentPatchHook.after([testPayment], testAccessToken),
-        ).to.be.rejectedWith(BlError, /could not create dibs payment/);
+        return expect(paymentPatchHook.after([testPayment])).to.be.rejectedWith(
+          BlError,
+          /could not create dibs payment/,
+        );
       });
     });
 
@@ -104,9 +91,7 @@ describe("PaymentPatchHook", () => {
       it("should reject with error", () => {
         testPayment.method = "something" as any;
 
-        return expect(
-          paymentPatchHook.after([testPayment], testAccessToken),
-        ).to.be.rejectedWith(
+        return expect(paymentPatchHook.after([testPayment])).to.be.rejectedWith(
           BlError,
           /payment.method "something" not supported/,
         );

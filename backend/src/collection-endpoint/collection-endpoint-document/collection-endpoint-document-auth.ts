@@ -39,11 +39,9 @@ export class CollectionEndpointDocumentAuth<T extends BlDocument> {
               !this._permissionService.haveRestrictedDocumentPermission(
                 // @ts-expect-error fixme: auto ignored
                 blApiRequest.user.id,
-
                 // @ts-expect-error fixme: auto ignored
                 blApiRequest.user.permission,
                 document_,
-                restriction,
                 documentPermission,
               )
             ) {
@@ -61,11 +59,9 @@ export class CollectionEndpointDocumentAuth<T extends BlDocument> {
             this._permissionService.haveRestrictedDocumentPermission(
               // @ts-expect-error fixme: auto ignored
               blApiRequest.user.id,
-
               // @ts-expect-error fixme: auto ignored
               blApiRequest.user.permission,
               document_,
-              restriction,
               documentPermission,
             )
           ) {

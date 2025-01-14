@@ -3,8 +3,6 @@ import {
   BlCollectionName,
   BlEndpoint,
 } from "@backend/collections/bl-collection";
-import { ItemPatchHook } from "@backend/collections/item/hook/item-patch.hook";
-import { ItemPostHook } from "@backend/collections/item/hook/item-post.hook";
 import { itemSchema } from "@backend/collections/item/item.schema";
 
 export class ItemCollection implements BlCollection {
@@ -49,14 +47,12 @@ export class ItemCollection implements BlCollection {
     },
     {
       method: "post",
-      hook: new ItemPostHook(),
       restriction: {
         permissions: ["admin"],
       },
     },
     {
       method: "patch",
-      hook: new ItemPatchHook(),
       restriction: {
         permissions: ["admin"],
       },

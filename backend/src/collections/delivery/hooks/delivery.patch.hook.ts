@@ -11,7 +11,7 @@ import { Order } from "@shared/order/order";
 import { AccessToken } from "@shared/token/access-token";
 
 export class DeliveryPatchHook extends Hook {
-  private deliveryValidator?: DeliveryValidator;
+  private deliveryValidator: DeliveryValidator;
   private deliveryStorage: BlDocumentStorage<Delivery>;
   private orderStorage: BlDocumentStorage<Order>;
   private deliveryHandler: DeliveryHandler;
@@ -71,15 +71,12 @@ export class DeliveryPatchHook extends Hook {
 
     return new Promise((resolve, reject) => {
       this.orderStorage
-
         // @ts-expect-error fixme: auto ignored
         .get(delivery.order)
         .then((order: Order) => {
-          // @ts-expect-error fixme: auto ignored
           this.deliveryValidator
-
             // @ts-expect-error fixme: auto ignored
-            .validate(delivery, order)
+            .validate(delivery)
             .then(() => {
               this.deliveryHandler
 
@@ -126,27 +123,16 @@ export class DeliveryPatchHook extends Hook {
           if (body["method"]) {
             delivery.method = body["method"];
           }
-
-          this.orderStorage
-            .get(delivery.order)
-            .then((order: Order) => {
-              // @ts-expect-error fixme: auto ignored
-              this.deliveryValidator
-                .validate(delivery, order)
-                .then(() => {
-                  return resolve(true);
-                })
-                .catch((blError: BlError) => {
-                  return reject(
-                    new BlError("patched delivery could not be validated")
-                      .add(blError)
-                      .store("delivery", delivery),
-                  );
-                });
+          this.deliveryValidator
+            .validate(delivery)
+            .then(() => {
+              return resolve(true);
             })
             .catch((blError: BlError) => {
               return reject(
-                new BlError(`order "${delivery.order}" not found`).add(blError),
+                new BlError("patched delivery could not be validated")
+                  .add(blError)
+                  .store("delivery", delivery),
               );
             });
         })

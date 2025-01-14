@@ -35,13 +35,7 @@ export class CustomerItemPostHook extends Hook {
     this._userDetailHelper = userDetailHelper ?? new UserDetailHelper();
   }
 
-  public override before(
-    customerItem: CustomerItem,
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    accessToken: AccessToken,
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    id?: string,
-  ): Promise<boolean> {
+  public override before(customerItem: CustomerItem): Promise<boolean> {
     if (!customerItem) {
       return Promise.reject(new BlError("customerItem is undefined"));
     }

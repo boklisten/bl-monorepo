@@ -1,6 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
-
-import { SystemUser } from "@backend/auth/permission/permission.service";
 import { BlCollectionName } from "@backend/collections/bl-collection";
 import { SEDbQuery } from "@backend/query/se.db-query";
 import { BlStorageHandler } from "@backend/storage/blStorageHandler";
@@ -8,7 +5,10 @@ import { MongoDbBlStorageHandler } from "@backend/storage/mongoDb/mongoDb.blStor
 import { NestedDocument } from "@backend/storage/nested-document";
 import { BlDocument } from "@shared/bl-document/bl-document";
 import { BlError } from "@shared/bl-error/bl-error";
-import { UserPermission } from "@shared/permission/user-permission";
+import {
+  UserPermission,
+  UserPermissionEnum,
+} from "@shared/permission/user-permission";
 import {
   FilterQuery,
   PipelineStage,
@@ -24,11 +24,7 @@ export class BlDocumentStorage<T extends BlDocument>
   // @ts-expect-error fixme: auto ignored
   private mongoDbHandler: MongoDbBlStorageHandler<T>;
 
-  constructor(
-    private collectionName: BlCollectionName,
-
-    private mongooseSchema?: Schema,
-  ) {
+  constructor(collectionName: BlCollectionName, mongooseSchema?: Schema) {
     if (mongooseSchema) {
       this.mongoDbHandler = new MongoDbBlStorageHandler<T>(
         collectionName,
@@ -66,12 +62,7 @@ export class BlDocumentStorage<T extends BlDocument>
     });
   }
 
-  getMany(
-    ids: string[],
-    userPermission?: UserPermission,
-
-    nestedDocuments?: NestedDocument[],
-  ): Promise<T[]> {
+  getMany(ids: string[], userPermission?: UserPermission): Promise<T[]> {
     return new Promise((resolve, reject) => {
       this.mongoDbHandler
         .getMany(ids, userPermission)
@@ -84,11 +75,7 @@ export class BlDocumentStorage<T extends BlDocument>
     });
   }
 
-  getAll(
-    userPermission?: UserPermission,
-
-    nestedDocuments?: NestedDocument[],
-  ): Promise<T[]> {
+  getAll(userPermission?: UserPermission): Promise<T[]> {
     return new Promise((resolve, reject) => {
       this.mongoDbHandler
         .getAll(userPermission)
@@ -103,7 +90,10 @@ export class BlDocumentStorage<T extends BlDocument>
 
   add(
     document_: T,
-    user: { id: string; permission: UserPermission } = new SystemUser(),
+    user: { id: string; permission: UserPermission } = {
+      id: "SYSTEM",
+      permission: UserPermissionEnum.enum.admin,
+    },
   ): Promise<T> {
     return new Promise((resolve, reject) => {
       this.mongoDbHandler
@@ -145,10 +135,7 @@ export class BlDocumentStorage<T extends BlDocument>
     await this.mongoDbHandler.put(id, data);
   }
 
-  remove(
-    id: string,
-    user: { id: string; permission: UserPermission },
-  ): Promise<T> {
+  remove(id: string): Promise<T> {
     return new Promise((resolve, reject) => {
       this.mongoDbHandler
         .remove(id)
@@ -163,12 +150,6 @@ export class BlDocumentStorage<T extends BlDocument>
 
   aggregate(aggregation: PipelineStage[]): Promise<unknown[]> {
     return this.mongoDbHandler.aggregate(aggregation);
-  }
-
-  removeMany(ids: string[]): Promise<T[]> {
-    return new Promise((resolve, reject) => {
-      reject(new BlError("not implemented"));
-    });
   }
 
   exists(id: string): Promise<boolean> {

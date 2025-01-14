@@ -14,10 +14,6 @@ export class EmailValidationPostHook extends Hook {
 
   public override after(
     emailValidations: EmailValidation[],
-
-    // @ts-expect-error fixme: auto ignored
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    accessToken?: AccessToken,
   ): Promise<EmailValidation[]> {
     return new Promise((resolve, reject) => {
       const emailValidation = emailValidations[0];

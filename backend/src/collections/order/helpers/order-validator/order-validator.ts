@@ -1,6 +1,5 @@
 import { BlCollectionName } from "@backend/collections/bl-collection";
 import { branchSchema } from "@backend/collections/branch/branch.schema";
-import { BranchValidator } from "@backend/collections/order/helpers/order-validator/branch-validator/branch-validator";
 import { OrderFieldValidator } from "@backend/collections/order/helpers/order-validator/order-field-validator/order-field-validator";
 import { OrderItemValidator } from "@backend/collections/order/helpers/order-validator/order-item-validator/order-item-validator";
 import { OrderPlacedValidator } from "@backend/collections/order/helpers/order-validator/order-placed-validator/order-placed-validator";
@@ -13,7 +12,6 @@ import { Order } from "@shared/order/order";
 export class OrderValidator {
   private orderPlacedValidator: OrderPlacedValidator;
   private orderItemValidator: OrderItemValidator;
-  private branchValidator: BranchValidator;
   private branchStorage: BlDocumentStorage<Branch>;
   private orderFieldValidator: OrderFieldValidator;
   private orderUserDetailValidator: OrderUserDetailValidator;
@@ -21,7 +19,6 @@ export class OrderValidator {
   constructor(
     orderItemValidator?: OrderItemValidator,
     orderPlacedValidator?: OrderPlacedValidator,
-    branchValidator?: BranchValidator,
     branchStorage?: BlDocumentStorage<Branch>,
     orderFieldValidator?: OrderFieldValidator,
     orderUserDetailValidator?: OrderUserDetailValidator,
@@ -32,9 +29,6 @@ export class OrderValidator {
     this.orderPlacedValidator = orderPlacedValidator
       ? orderPlacedValidator
       : new OrderPlacedValidator();
-    this.branchValidator = branchValidator
-      ? branchValidator
-      : new BranchValidator();
     this.branchStorage = branchStorage
       ? branchStorage
       : new BlDocumentStorage<Branch>(BlCollectionName.Branches, branchSchema);
@@ -56,7 +50,6 @@ export class OrderValidator {
       const branch = await this.branchStorage.get(order.branch);
 
       await this.orderItemValidator.validate(branch, order, isAdmin);
-      await this.branchValidator.validate(order);
       await this.orderPlacedValidator.validate(order);
     } catch (error) {
       if (error instanceof BlError) {

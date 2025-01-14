@@ -3,14 +3,12 @@ import "mocha";
 import { BlCollectionName } from "@backend/collections/bl-collection";
 import { PaymentDibsConfirmer } from "@backend/collections/payment/helpers/dibs/payment-dibs-confirmer";
 import { PaymentHandler } from "@backend/collections/payment/helpers/payment-handler";
-import { UserDetailHelper } from "@backend/collections/user-detail/helpers/user-detail.helper";
 import { DibsPaymentService } from "@backend/payment/dibs/dibs-payment.service";
 import { BlDocumentStorage } from "@backend/storage/blDocumentStorage";
 import { BlError } from "@shared/bl-error/bl-error";
 import { Delivery } from "@shared/delivery/delivery";
 import { Order } from "@shared/order/order";
 import { Payment } from "@shared/payment/payment";
-import { AccessToken } from "@shared/token/access-token";
 import { expect, use as chaiUse, should } from "chai";
 import chaiAsPromised from "chai-as-promised";
 import sinon from "sinon";
@@ -19,28 +17,18 @@ chaiUse(chaiAsPromised);
 should();
 
 describe("PaymentHandler", () => {
-  let testPayments: Payment[];
-
-  let testPayment1: Payment;
-
-  let testPayment2: Payment;
   let testOrder: Order;
-  let testAccessToken: AccessToken;
 
-  let userDetailHelperDibsPaymentUpdateSuccess: boolean;
   const paymentStorage = new BlDocumentStorage<Payment>(
     BlCollectionName.Payments,
   );
   const dibsPaymentService = new DibsPaymentService();
-  const userDetailHelper = new UserDetailHelper();
   const paymentDibsConfirmer = new PaymentDibsConfirmer(dibsPaymentService);
   const deliveryStorage = new BlDocumentStorage<Delivery>(
     BlCollectionName.Deliveries,
   );
   const paymentHandler = new PaymentHandler(
     paymentStorage,
-    dibsPaymentService,
-    userDetailHelper,
     paymentDibsConfirmer,
     deliveryStorage,
   );
@@ -57,41 +45,6 @@ describe("PaymentHandler", () => {
       delivery: "delivery1",
       pendingSignature: false,
     } as Order;
-
-    testPayment1 = {
-      id: "payment1",
-      method: "dibs",
-      order: "order1",
-      amount: 200,
-      customer: "customer1",
-      branch: "branch1",
-      info: {
-        paymentId: "dibsEasyPayment1",
-      },
-    } as Payment;
-
-    testPayment2 = {
-      id: "payment2",
-      method: "later",
-      order: "order1",
-      amount: 200,
-      customer: "customer1",
-      branch: "branch1",
-      info: {},
-    } as Payment;
-
-    testAccessToken = {
-      iss: "boklisten.co",
-      aud: "boklisten.co",
-      iat: 1,
-      exp: 1,
-      sub: "user1",
-      username: "user@name.com",
-      permission: "customer",
-      details: "userDetails1",
-    } as AccessToken;
-
-    userDetailHelperDibsPaymentUpdateSuccess = true;
   });
 
   const paymentDibsConfirmStub = sinon.stub(paymentDibsConfirmer, "confirm");
@@ -111,7 +64,7 @@ describe("PaymentHandler", () => {
       paymentStorageGetManyStub.rejects(new BlError("not found").code(702));
 
       return expect(
-        paymentHandler.confirmPayments(testOrder, testAccessToken),
+        paymentHandler.confirmPayments(testOrder),
       ).to.be.rejectedWith(BlError, /one or more payments was not found/);
     });
 
@@ -126,7 +79,7 @@ describe("PaymentHandler", () => {
           paymentStorageGetManyStub.resolves(payments);
 
           return expect(
-            paymentHandler.confirmPayments(order, testAccessToken),
+            paymentHandler.confirmPayments(order),
           ).to.eventually.be.eq(payments);
         });
 
@@ -137,7 +90,7 @@ describe("PaymentHandler", () => {
           paymentStorageGetManyStub.resolves(payments);
 
           return expect(
-            paymentHandler.confirmPayments(order, testAccessToken),
+            paymentHandler.confirmPayments(order),
           ).to.eventually.be.rejectedWith(
             BlError,
             /payment amounts does not equal order.amount/,
@@ -159,7 +112,7 @@ describe("PaymentHandler", () => {
           paymentStorageGetManyStub.resolves(payments);
 
           return expect(
-            paymentHandler.confirmPayments(order, testAccessToken),
+            paymentHandler.confirmPayments(order),
           ).to.eventually.be.rejectedWith(
             BlError,
             `payment method "${method}" is not permitted for customer`,
@@ -183,7 +136,7 @@ describe("PaymentHandler", () => {
         paymentDibsConfirmStub.rejects(new BlError("dibs payment not valid"));
 
         return expect(
-          paymentHandler.confirmPayments(testOrder, testAccessToken),
+          paymentHandler.confirmPayments(testOrder),
         ).to.be.rejectedWith(BlError, /dibs payment not valid/);
       });
 
@@ -197,7 +150,7 @@ describe("PaymentHandler", () => {
         paymentDibsConfirmStub.resolves(true);
 
         return expect(
-          paymentHandler.confirmPayments(testOrder, testAccessToken),
+          paymentHandler.confirmPayments(testOrder),
         ).to.eventually.be.eq(payments);
       });
     });
@@ -217,9 +170,9 @@ describe("PaymentHandler", () => {
 
       paymentStorageGetManyStub.resolves(payments);
 
-      return expect(
-        paymentHandler.confirmPayments(order, testAccessToken),
-      ).to.eventually.be.eq(payments);
+      return expect(paymentHandler.confirmPayments(order)).to.eventually.be.eq(
+        payments,
+      );
     });
 
     it("should reject if amount is not equal to order", () => {
@@ -235,7 +188,7 @@ describe("PaymentHandler", () => {
       paymentStorageGetManyStub.resolves(payments);
 
       return expect(
-        paymentHandler.confirmPayments(order, testAccessToken),
+        paymentHandler.confirmPayments(order),
       ).to.eventually.be.rejectedWith(
         BlError,
         /payment amounts does not equal order.amount/,
@@ -256,7 +209,7 @@ describe("PaymentHandler", () => {
       paymentStorageGetManyStub.resolves(payments);
 
       return expect(
-        paymentHandler.confirmPayments(order, testAccessToken),
+        paymentHandler.confirmPayments(order),
       ).to.eventually.be.rejectedWith(
         BlError,
         /multiple payments found but "payment2" have method dibs/,
@@ -276,7 +229,7 @@ describe("PaymentHandler", () => {
       paymentStorageGetManyStub.resolves(payments);
 
       return expect(
-        paymentHandler.confirmPayments(order, testAccessToken),
+        paymentHandler.confirmPayments(order),
       ).to.eventually.be.rejectedWith(
         BlError,
         /multiple payments found but "payment1" have method dibs/,

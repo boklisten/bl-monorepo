@@ -2,42 +2,34 @@ import { BlCollectionName } from "@backend/collections/bl-collection";
 import { deliverySchema } from "@backend/collections/delivery/delivery.schema";
 import { PaymentDibsConfirmer } from "@backend/collections/payment/helpers/dibs/payment-dibs-confirmer";
 import { paymentSchema } from "@backend/collections/payment/payment.schema";
-import { UserDetailHelper } from "@backend/collections/user-detail/helpers/user-detail.helper";
-import { DibsPaymentService } from "@backend/payment/dibs/dibs-payment.service";
 import { BlDocumentStorage } from "@backend/storage/blDocumentStorage";
 import { BlError } from "@shared/bl-error/bl-error";
 import { Delivery } from "@shared/delivery/delivery";
 import { Order } from "@shared/order/order";
 import { Payment } from "@shared/payment/payment";
-import { AccessToken } from "@shared/token/access-token";
 
 export class PaymentHandler {
   private paymentStorage: BlDocumentStorage<Payment>;
+  private paymentDibsConfirmer: PaymentDibsConfirmer;
+  private deliveryStorage: BlDocumentStorage<Delivery>;
 
   constructor(
     paymentStorage?: BlDocumentStorage<Payment>,
-
-    dibsPaymentService?: DibsPaymentService,
-
-    userDetailHelper?: UserDetailHelper,
-    private _paymentDibsConfirmer?: PaymentDibsConfirmer,
-    private _deliveryStorage?: BlDocumentStorage<Delivery>,
+    paymentDibsConfirmer?: PaymentDibsConfirmer,
+    deliveryStorage?: BlDocumentStorage<Delivery>,
   ) {
     this.paymentStorage = paymentStorage
       ? paymentStorage
       : new BlDocumentStorage(BlCollectionName.Payments, paymentSchema);
-    this._paymentDibsConfirmer = _paymentDibsConfirmer
-      ? _paymentDibsConfirmer
+    this.paymentDibsConfirmer = paymentDibsConfirmer
+      ? paymentDibsConfirmer
       : new PaymentDibsConfirmer();
-    this._deliveryStorage = _deliveryStorage
-      ? _deliveryStorage
+    this.deliveryStorage = deliveryStorage
+      ? deliveryStorage
       : new BlDocumentStorage(BlCollectionName.Deliveries, deliverySchema);
   }
 
-  public async confirmPayments(
-    order: Order,
-    accessToken: AccessToken,
-  ): Promise<Payment[]> {
+  public async confirmPayments(order: Order): Promise<Payment[]> {
     if (!order.payments || order.payments.length <= 0) {
       return [];
     }
@@ -50,13 +42,12 @@ export class PaymentHandler {
       throw new BlError("one or more payments was not found");
     }
 
-    return await this.confirmAllPayments(order, payments, accessToken);
+    return await this.confirmAllPayments(order, payments);
   }
 
   private async confirmAllPayments(
     order: Order,
     payments: Payment[],
-    accessToken: AccessToken,
   ): Promise<Payment[]> {
     await this.validateOrderAmount(order, payments);
     this.validatePaymentMethods(payments);
@@ -66,60 +57,29 @@ export class PaymentHandler {
         continue;
       }
 
-      await this.confirmPayment(order, payment, accessToken);
+      await this.confirmPayment(order, payment);
       await this.paymentStorage.update(payment.id, { confirmed: true });
     }
     return payments;
   }
 
-  private confirmPayment(
-    order: Order,
-    payment: Payment,
-    accessToken: AccessToken,
-  ): Promise<boolean> {
-    switch (payment.method) {
-      case "dibs": {
-        return this.confirmMethodDibs(order, payment, accessToken);
-      }
-      case "card": {
-        return this.confirmMethodCard(order, payment);
-      }
-      case "cash": {
-        return this.confirmMethodCash(order, payment);
-      }
-      case "vipps": {
-        return this.confirmMethodVipps(order, payment);
-      }
-      default: {
-        return Promise.reject(
-          new BlError(`payment method "${payment.method}" not supported`),
+  private confirmPayment(order: Order, payment: Payment): Promise<boolean> {
+    if (payment.method === "dibs") {
+      return this.confirmMethodDibs(order, payment);
+    }
+
+    if (["card", "cash", "vipps"].includes(payment.method)) {
+      if (order.byCustomer) {
+        throw new BlError(
+          `payment method "${payment.method}" is not permitted for customer`,
         );
       }
+      return Promise.resolve(true);
     }
-  }
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  private confirmMethodCard(order: Order, payment: Payment): Promise<boolean> {
-    if (order.byCustomer) {
-      throw new BlError('payment method "card" is not permitted for customer');
-    }
-    return Promise.resolve(true);
-  }
-
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  private confirmMethodVipps(order: Order, payment: Payment): Promise<boolean> {
-    if (order.byCustomer) {
-      throw new BlError('payment method "vipps" is not permitted for customer');
-    }
-    return Promise.resolve(true);
-  }
-
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  private confirmMethodCash(order: Order, payment: Payment): Promise<boolean> {
-    if (order.byCustomer) {
-      throw new BlError('payment method "cash" is not permitted for customer');
-    }
-    return Promise.resolve(true);
+    return Promise.reject(
+      new BlError(`payment method "${payment.method}" not supported`),
+    );
   }
 
   private validatePaymentMethods(payments: Payment[]) {
@@ -136,8 +96,7 @@ export class PaymentHandler {
   }
 
   private async validateOrderAmount(
-    // @ts-expect-error fixme: auto ignored
-    order,
+    order: Order,
     payments: Payment[],
   ): Promise<boolean> {
     const total = payments.reduce(
@@ -147,8 +106,7 @@ export class PaymentHandler {
     let orderTotal = order.amount;
 
     if (order.delivery) {
-      // @ts-expect-error fixme: auto ignored
-      const delivery = await this._deliveryStorage.get(order.delivery);
+      const delivery = await this.deliveryStorage.get(order.delivery);
       orderTotal += delivery.amount;
     }
 
@@ -164,9 +122,7 @@ export class PaymentHandler {
   private async confirmMethodDibs(
     order: Order,
     payment: Payment,
-    accessToken: AccessToken,
   ): Promise<boolean> {
-    // @ts-expect-error fixme: auto ignored
-    return this._paymentDibsConfirmer.confirm(order, payment, accessToken);
+    return this.paymentDibsConfirmer.confirm(order, payment);
   }
 }

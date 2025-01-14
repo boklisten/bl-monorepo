@@ -5,10 +5,7 @@ import { assertEnv, BlEnvironment } from "@backend/config/environment";
 import { logger } from "@backend/logger/logger";
 import { EMAIL_SETTINGS } from "@backend/messenger/email/email-settings";
 import { OrderEmailHandler } from "@backend/messenger/email/order-email/order-email-handler";
-import {
-  CustomerDetailWithCustomerItem,
-  MessengerService,
-} from "@backend/messenger/messenger-service";
+import { MessengerService } from "@backend/messenger/messenger-service";
 import { BlDocumentStorage } from "@backend/storage/blDocumentStorage";
 import { EmailHandler } from "@boklisten/bl-email";
 import { EmailOrder } from "@boklisten/bl-email/dist/ts/template/email-order";
@@ -72,16 +69,6 @@ export class EmailService implements MessengerService {
     }
 
     throw `message type "${message.messageType}" not supported`;
-  }
-
-  public async sendMany(
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    messages: Message[],
-
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    customerDetails: UserDetail[],
-  ): Promise<void> {
-    throw new BlError("Not implemented!").code(200);
   }
 
   public async sendGeneric(
@@ -195,13 +182,6 @@ export class EmailService implements MessengerService {
         };
       }
     }
-  }
-
-  public async remindMany(
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    customerDetailsWithCustomerItems: CustomerDetailWithCustomerItem[],
-  ): Promise<void> {
-    throw new BlError("Not implemented!").code(200);
   }
 
   public async orderPlaced(

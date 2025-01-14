@@ -10,15 +10,11 @@ export interface CustomerDetailWithCustomerItem {
 
 export interface MessengerService {
   send(messages: Message, customerDetail: UserDetail): void;
-  sendMany(messages: Message[], customerDetails: UserDetail[]): void;
 
   remind(
     message: Message,
     customerDetail: UserDetail,
     customerItems: CustomerItem[],
-  ): void;
-  remindMany(
-    customerDetailsWithCustomerItems: CustomerDetailWithCustomerItem[],
   ): void;
 
   orderPlaced(customerDetail: UserDetail, order: Order): void;

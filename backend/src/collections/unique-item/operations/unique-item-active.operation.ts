@@ -8,7 +8,7 @@ import { BlDocumentStorage } from "@backend/storage/blDocumentStorage";
 import { BlError } from "@shared/bl-error/bl-error";
 import { BlapiResponse } from "@shared/blapi-response/blapi-response";
 import { UniqueItem } from "@shared/unique-item/unique-item";
-import { NextFunction, Request, Response } from "express";
+import { Request, Response } from "express";
 
 export class UniqueItemActiveOperation implements Operation {
   constructor(
@@ -29,8 +29,6 @@ export class UniqueItemActiveOperation implements Operation {
     blApiRequest: BlApiRequest,
     request?: Request,
     res?: Response,
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    next?: NextFunction,
   ): Promise<boolean> {
     let uniqueItem: UniqueItem;
     try {

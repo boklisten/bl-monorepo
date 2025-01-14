@@ -14,7 +14,6 @@ export class DbQueryExpandFilter {
   public getExpandFilters(
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     query: any,
-    validExpandParams: string[],
   ): ExpandFilter[] {
     if (
       !query ||
@@ -23,18 +22,14 @@ export class DbQueryExpandFilter {
       throw new TypeError("query can not be undefined or empty");
     }
 
-    if (!query.expand || !validExpandParams || validExpandParams.length <= 0) {
+    if (!query.expand) {
       return [];
     }
 
-    return this.generateExpandFilter(query.expand, validExpandParams);
+    return this.generateExpandFilter(query.expand);
   }
 
-  private generateExpandFilter(
-    expand: string | string[],
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    validExpandParams: string[],
-  ): ExpandFilter[] {
+  private generateExpandFilter(expand: string | string[]): ExpandFilter[] {
     let expandFilterArray = [];
 
     expandFilterArray = Array.isArray(expand) ? expand : [expand];

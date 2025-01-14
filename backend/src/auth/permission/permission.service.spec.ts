@@ -1,8 +1,6 @@
 import "mocha";
 import { PermissionService } from "@backend/auth/permission/permission.service";
-import { BlEndpointRestriction } from "@backend/collections/bl-collection";
 import { BlDocument } from "@shared/bl-document/bl-document";
-import { UserPermission } from "@shared/permission/user-permission";
 import { expect, use as chaiUse, should } from "chai";
 import chaiAsPromised from "chai-as-promised";
 
@@ -19,14 +17,12 @@ describe("PermissionSerivice", () => {
         id: "doc1",
         user: { id: userId, permission: "admin" },
       };
-      const endpointRestriction = {} as BlEndpointRestriction;
 
       expect(
         permissionService.haveRestrictedDocumentPermission(
           userId,
           "customer",
           doc,
-          endpointRestriction,
         ),
       ).to.be.true;
     });
@@ -37,14 +33,12 @@ describe("PermissionSerivice", () => {
         id: "doc1",
         user: { id: "123", permission: "admin" },
       };
-      const endpointRestriction = {} as BlEndpointRestriction;
 
       expect(
         permissionService.haveRestrictedDocumentPermission(
           userId,
           "employee",
           doc,
-          endpointRestriction,
         ),
       ).to.be.false;
     });
@@ -55,13 +49,11 @@ describe("PermissionSerivice", () => {
         id: "doc1",
         user: { id: "123", permission: "admin" },
       };
-      const endpointRestriction = {} as BlEndpointRestriction;
       expect(
         permissionService.haveRestrictedDocumentPermission(
           userId,
           "employee",
           doc,
-          endpointRestriction,
         ),
       ).to.be.false;
     });
@@ -72,14 +64,12 @@ describe("PermissionSerivice", () => {
         id: "123",
         user: { id: "123", permission: "employee" },
       };
-      const endpointRestriction = {} as BlEndpointRestriction;
 
       expect(
         permissionService.haveRestrictedDocumentPermission(
           userId,
           "admin",
           doc,
-          endpointRestriction,
         ),
       ).to.be.true;
     });

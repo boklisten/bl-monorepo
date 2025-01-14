@@ -97,14 +97,12 @@ describe("DeliveryPatchHook", () => {
     return Promise.resolve(testOrder);
   });
 
-  sinon
-    .stub(deliveryValidator, "validate")
-    .callsFake((delivery: Delivery, order: Order) => {
-      if (!deliveryValidated) {
-        return Promise.reject(new BlError("could not validate delivery"));
-      }
-      return Promise.resolve(true);
-    });
+  sinon.stub(deliveryValidator, "validate").callsFake((delivery: Delivery) => {
+    if (!deliveryValidated) {
+      return Promise.reject(new BlError("could not validate delivery"));
+    }
+    return Promise.resolve(true);
+  });
 
   describe("before()", () => {
     it("should resolve if all parameters are valid", () => {
@@ -139,16 +137,6 @@ describe("DeliveryPatchHook", () => {
           "deliveryNotFound",
         ),
       ).to.be.rejectedWith(BlError, /delivery "deliveryNotFound" not found/);
-    });
-
-    it("should reject if order is not found", () => {
-      return expect(
-        deliveryPatchHook.before(
-          { order: "notFoundOrder" },
-          testAccessToken,
-          "delivery1",
-        ),
-      ).to.be.rejectedWith(BlError, /order "notFoundOrder" not found/);
     });
 
     it("should reject if deliveryValidator fails", () => {

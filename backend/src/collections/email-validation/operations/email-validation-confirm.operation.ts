@@ -10,7 +10,7 @@ import { BlDocumentStorage } from "@backend/storage/blDocumentStorage";
 import { BlError } from "@shared/bl-error/bl-error";
 import { BlapiResponse } from "@shared/blapi-response/blapi-response";
 import { UserDetail } from "@shared/user/user-detail/user-detail";
-import { NextFunction, Request, Response } from "express";
+import { Request, Response } from "express";
 
 export class EmailValidationConfirmOperation implements Operation {
   private _emailValidationStorage: BlDocumentStorage<EmailValidation>;
@@ -38,8 +38,6 @@ export class EmailValidationConfirmOperation implements Operation {
     blApiRequest: BlApiRequest,
     request?: Request,
     res?: Response,
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    next?: NextFunction,
   ): Promise<boolean> {
     return new Promise((resolve, reject) => {
       if (isNullish(blApiRequest.documentId)) {

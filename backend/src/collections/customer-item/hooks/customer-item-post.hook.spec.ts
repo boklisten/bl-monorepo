@@ -162,14 +162,13 @@ describe("CustomerItemPostHook", () => {
       validateCustomerItem = false;
 
       return expect(
-        customerItemPostHook.before(testCustomerItem, testAccessToken),
+        customerItemPostHook.before(testCustomerItem),
       ).to.be.rejectedWith(BlError, "could not validate customerItem");
     });
 
     it("should resolve with true if customerItemValidator.validate resolves", () => {
-      return expect(
-        customerItemPostHook.before(testCustomerItem, testAccessToken),
-      ).to.be.fulfilled;
+      return expect(customerItemPostHook.before(testCustomerItem)).to.be
+        .fulfilled;
     });
 
     it("should reject if userDetail is not valid", () => {
@@ -180,7 +179,7 @@ describe("CustomerItemPostHook", () => {
       testUserDetail.dob = null;
 
       return expect(
-        customerItemPostHook.before(testCustomerItem, testAccessToken),
+        customerItemPostHook.before(testCustomerItem),
       ).to.be.rejectedWith(BlError, /userDetail "userDetail1" not valid/);
     });
   });

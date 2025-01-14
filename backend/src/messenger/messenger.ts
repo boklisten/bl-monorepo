@@ -1,10 +1,7 @@
 import { BlCollectionName } from "@backend/collections/bl-collection";
 import { deliverySchema } from "@backend/collections/delivery/delivery.schema";
 import { EmailService } from "@backend/messenger/email/email-service";
-import {
-  MessengerService,
-  CustomerDetailWithCustomerItem,
-} from "@backend/messenger/messenger-service";
+import { MessengerService } from "@backend/messenger/messenger-service";
 import { PdfService } from "@backend/messenger/pdf/pdf-service";
 import { BlDocumentStorage } from "@backend/storage/blDocumentStorage";
 import { EmailAttachment } from "@boklisten/bl-email";
@@ -41,18 +38,6 @@ export class Messenger implements MessengerService {
   }
 
   /**
-   * send out message(s) to the customer
-   * @param {Message[]} messages
-   * @param {UserDetail[]} customerDetails
-   */
-  public async sendMany(
-    messages: Message[],
-    customerDetails: UserDetail[],
-  ): Promise<void> {
-    await this._emailService.sendMany(messages, customerDetails);
-  }
-
-  /**
    * reminds the customer of the due date of his items
    * @param message the message to send
    * @param customerDetail the customer to send reminder to
@@ -64,16 +49,6 @@ export class Messenger implements MessengerService {
     customerItems: CustomerItem[],
   ): Promise<void> {
     await this._emailService.remind(message, customerDetail, customerItems);
-  }
-
-  /**
-   * sends out reminders to more than one customer
-   * @param customerDetailsWithCustomerItems customerDetails with customerItems to remind about
-   */
-  public async remindMany(
-    customerDetailsWithCustomerItems: CustomerDetailWithCustomerItem[],
-  ): Promise<void> {
-    await this._emailService.remindMany(customerDetailsWithCustomerItems);
   }
 
   /**

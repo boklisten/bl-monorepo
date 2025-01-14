@@ -38,9 +38,7 @@ describe("DeliveryPostHook", () => {
   const deliveryPostHook = new DeliveryPostHook(
     deliveryValidator,
     deliveryHandler,
-    deliveryStorage,
     orderStorage,
-    itemStorage,
   );
 
   let testDelivery: Delivery;
@@ -118,14 +116,12 @@ describe("DeliveryPostHook", () => {
     };
   });
 
-  sinon
-    .stub(deliveryValidator, "validate")
-    .callsFake((delivery: Delivery, order: Order) => {
-      if (!deliveryValidated) {
-        return Promise.reject(new BlError("delivery could not be validated"));
-      }
-      return Promise.resolve(true);
-    });
+  sinon.stub(deliveryValidator, "validate").callsFake((delivery: Delivery) => {
+    if (!deliveryValidated) {
+      return Promise.reject(new BlError("delivery could not be validated"));
+    }
+    return Promise.resolve(true);
+  });
 
   sinon
     .stub(deliveryHandler, "updateOrderBasedOnMethod")

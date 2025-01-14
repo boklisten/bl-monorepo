@@ -201,7 +201,7 @@ export class LocalLoginHandler {
         );
 
       this.localLoginStorage
-        .add(localLogin, { id: "SYSTEM", permission: "admin" })
+        .add(localLogin)
         .then((localLogin: LocalLogin) => {
           return resolve(localLogin);
         })

@@ -265,18 +265,14 @@ const OrderHistory = ({ orders }: { orders: Order[] }) => {
                                       </TableRow>
                                     )}
 
-                                  {/**
-                                   eslint-disable-next-line @typescript-eslint/ban-ts-comment
-                                   @ts-expect-error orderItemInfo type is outdated*/}
+                                  {/**@ts-expect-error orderItemInfo type is outdated*/}
                                   {orderItem.info?.amountLeftToPay && (
                                     <TableRow>
                                       <TableCell align="center">
                                         <b>Betal senere</b>
                                       </TableCell>
                                       <TableCell align="center">
-                                        {/**
-                                         eslint-disable-next-line @typescript-eslint/ban-ts-comment
-                                         @ts-expect-error orderItemInfo type is outdated*/}
+                                        {/**@ts-expect-error orderItemInfo type is outdated*/}
                                         {orderItem.info.amountLeftToPay} kr
                                       </TableCell>
                                     </TableRow>

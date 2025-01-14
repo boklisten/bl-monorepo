@@ -1,17 +1,14 @@
 import { DeliveryBranchHandler } from "@backend/collections/delivery/helpers/deliveryBranch/delivery-branch-handler";
 import { DeliveryBringHandler } from "@backend/collections/delivery/helpers/deliveryBring/delivery-bring-handler";
 import { isNullish } from "@backend/helper/typescript-helpers";
-import { BlDocumentStorage } from "@backend/storage/blDocumentStorage";
 import { BlError } from "@shared/bl-error/bl-error";
 import { Delivery } from "@shared/delivery/delivery";
-import { Order } from "@shared/order/order";
 
 export class DeliveryValidator {
   private deliveryBranchHandler: DeliveryBranchHandler;
   private deliveryBringHandler: DeliveryBringHandler;
 
   constructor(
-    orderStorage?: BlDocumentStorage<Order>,
     deliveryBranchHandler?: DeliveryBranchHandler,
     deliveryBringHandler?: DeliveryBringHandler,
   ) {
@@ -23,24 +20,21 @@ export class DeliveryValidator {
       : new DeliveryBringHandler();
   }
 
-  public validate(delivery: Delivery, order: Order): Promise<boolean> {
+  public validate(delivery: Delivery): Promise<boolean> {
     if (isNullish(delivery.method)) {
       return Promise.reject(new BlError("delivery.method not defined"));
     }
 
-    return this.validateBasedOnMethod(delivery, order);
+    return this.validateBasedOnMethod(delivery);
   }
 
-  private validateBasedOnMethod(
-    delivery: Delivery,
-    order: Order,
-  ): Promise<boolean> {
+  private validateBasedOnMethod(delivery: Delivery): Promise<boolean> {
     switch (delivery.method) {
       case "branch": {
         return this.deliveryBranchHandler.validate(delivery);
       }
       case "bring": {
-        return this.deliveryBringHandler.validate(delivery, order);
+        return this.deliveryBringHandler.validate(delivery);
       }
       default: {
         return Promise.reject(

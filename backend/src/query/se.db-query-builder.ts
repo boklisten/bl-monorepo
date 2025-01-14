@@ -28,9 +28,6 @@ export class SEDbQueryBuilder {
   private dbQueryObjectIdFilter: DbQueryObjectIdFilter;
   private dbQueryExpandFilter: DbQueryExpandFilter;
 
-  // @ts-expect-error fixme: auto ignored
-  private dbQueryValidParams: DbQueryValidParams;
-
   constructor() {
     this.dbQueryBooleanFilter = new DbQueryBooleanFilter();
     this.dbQueryDateFilter = new DbQueryDateFilter();
@@ -47,7 +44,7 @@ export class SEDbQueryBuilder {
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   public getDbQuery(query: any, validQueryParams: ValidParameter[]): SEDbQuery {
-    this.dbQueryValidParams = new DbQueryValidParams(validQueryParams);
+    const dbQueryValidParams = new DbQueryValidParams(validQueryParams);
 
     const databaseQuery: SEDbQuery = new SEDbQuery();
 
@@ -62,44 +59,42 @@ export class SEDbQueryBuilder {
       databaseQuery.booleanFilters =
         this.dbQueryBooleanFilter.getBooleanFilters(
           query,
-          this.dbQueryValidParams.getValidBooleanParams(),
+          dbQueryValidParams.getValidBooleanParams(),
         );
       databaseQuery.dateFilters = this.dbQueryDateFilter.getDateFilters(
         query,
-        this.dbQueryValidParams.getValidDateParams(),
+        dbQueryValidParams.getValidDateParams(),
       );
       databaseQuery.limitFilter = this.dbQueryLimitFilter.getLimitFilter(query);
       databaseQuery.numberFilters = this.dbQueryNumberFilter.getNumberFilters(
         query,
-        this.dbQueryValidParams.getValidNumberParams(),
+        dbQueryValidParams.getValidNumberParams(),
       );
       databaseQuery.onlyGetFilters =
         this.dbQueryOnlyGetFilter.getOnlyGetFilters(
           query,
-          this.dbQueryValidParams.getAllValidParams(),
+          dbQueryValidParams.getAllValidParams(),
         );
       databaseQuery.regexFilters = this.dbQueryRegexFilter.getRegexFilters(
         query,
-        this.dbQueryValidParams.getValidStringParams(),
+        dbQueryValidParams.getValidStringParams(),
       );
       databaseQuery.skipFilter = this.dbQuerySkipFilter.getSkipFilter(query);
       databaseQuery.sortFilters = this.dbQuerySortFilter.getSortFilters(
         query,
-        this.dbQueryValidParams.getAllValidParams(),
+        dbQueryValidParams.getAllValidParams(),
       );
       databaseQuery.stringFilters = this.dbQueryStringFilter.getStringFilters(
         query,
-        this.dbQueryValidParams.getValidStringParams(),
+        dbQueryValidParams.getValidStringParams(),
       );
       databaseQuery.objectIdFilters =
         this.dbQueryObjectIdFilter.getObjectIdFilters(
           query,
-          this.dbQueryValidParams.getValidObjectIdParams(),
+          dbQueryValidParams.getValidObjectIdParams(),
         );
-      databaseQuery.expandFilters = this.dbQueryExpandFilter.getExpandFilters(
-        query,
-        this.dbQueryValidParams.getValidExpandParams(),
-      );
+      databaseQuery.expandFilters =
+        this.dbQueryExpandFilter.getExpandFilters(query);
     } catch (error) {
       if (error instanceof TypeError)
         throw new TypeError(

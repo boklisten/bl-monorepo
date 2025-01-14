@@ -4,7 +4,11 @@ import { CollectionEndpointGetId } from "@backend/collection-endpoint/collection
 import { CollectionEndpointPatch } from "@backend/collection-endpoint/collection-endpoint-patch/collection-endpoint-patch";
 import { CollectionEndpointPost } from "@backend/collection-endpoint/collection-endpoint-post/collection-endpoint-post";
 import { CollectionEndpointPut } from "@backend/collection-endpoint/collection-endpoint-put/collection-endpoint-put";
-import { BlCollection, BlEndpoint } from "@backend/collections/bl-collection";
+import {
+  BlCollection,
+  BlEndpoint,
+  BlModel,
+} from "@backend/collections/bl-collection";
 import { ApiPath } from "@backend/config/api-path";
 import { logger } from "@backend/logger/logger";
 import { BlDocumentStorage } from "@backend/storage/blDocumentStorage";
@@ -19,9 +23,8 @@ export class CollectionEndpoint<T extends BlDocument> {
     private _router: Router,
     private _collection: BlCollection,
   ) {
-    this._documentStorage = new BlDocumentStorage<T>(
-      _collection.collectionName,
-      _collection.mongooseSchema,
+    this._documentStorage = new BlDocumentStorage(
+      _collection.model as BlModel<T>,
     );
     new ApiPath();
   }
@@ -65,7 +68,7 @@ export class CollectionEndpoint<T extends BlDocument> {
   public printEndpoints() {
     for (const endpoint of this._collection.endpoints) {
       let method: string = endpoint.method;
-      let uri = this._collection.collectionName.toString();
+      let uri = this._collection.model.name.toString();
 
       if (method === "getAll" || method === "getId") {
         method = "get";
@@ -100,7 +103,7 @@ export class CollectionEndpoint<T extends BlDocument> {
     const collectionEndpointGetAll = new CollectionEndpointGetAll<T>(
       this._router,
       endpoint,
-      this._collection.collectionName,
+      this._collection.model.name,
       this._documentStorage,
       this._collection.documentPermission,
     );
@@ -111,7 +114,7 @@ export class CollectionEndpoint<T extends BlDocument> {
     const collectionEndpointGetId = new CollectionEndpointGetId<T>(
       this._router,
       endpoint,
-      this._collection.collectionName,
+      this._collection.model.name,
       this._documentStorage,
       this._collection.documentPermission,
     );
@@ -122,7 +125,7 @@ export class CollectionEndpoint<T extends BlDocument> {
     const collectionEndpointPost = new CollectionEndpointPost<T>(
       this._router,
       endpoint,
-      this._collection.collectionName,
+      this._collection.model.name,
       this._documentStorage,
       this._collection.documentPermission,
     );
@@ -133,7 +136,7 @@ export class CollectionEndpoint<T extends BlDocument> {
     const collectionEndpointDelete = new CollectionEndpointDelete<T>(
       this._router,
       endpoint,
-      this._collection.collectionName,
+      this._collection.model.name,
       this._documentStorage,
       this._collection.documentPermission,
     );
@@ -144,7 +147,7 @@ export class CollectionEndpoint<T extends BlDocument> {
     const collectionEndpointPatch = new CollectionEndpointPatch<T>(
       this._router,
       endpoint,
-      this._collection.collectionName,
+      this._collection.model.name,
       this._documentStorage,
       this._collection.documentPermission,
     );
@@ -155,7 +158,7 @@ export class CollectionEndpoint<T extends BlDocument> {
     const collectionEndpointPut = new CollectionEndpointPut<T>(
       this._router,
       endpoint,
-      this._collection.collectionName,
+      this._collection.model.name,
       this._documentStorage,
       this._collection.documentPermission,
     );

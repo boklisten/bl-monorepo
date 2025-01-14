@@ -1,14 +1,10 @@
-import {
-  BlCollection,
-  BlCollectionName,
-} from "@backend/collections/bl-collection";
+import { BlCollection } from "@backend/collections/bl-collection";
 import { PendingPasswordResetPostHook } from "@backend/collections/pending-password-reset/hooks/pending-password-reset-post.hook";
 import { ConfirmPendingPasswordResetOperation } from "@backend/collections/pending-password-reset/operations/confirm-pending-password-reset.operation";
-import { pendingPasswordResetSchema } from "@backend/collections/pending-password-reset/pending-password-reset.schema";
+import { PendingPasswordResetModel } from "@backend/collections/pending-password-reset/pending-password-reset.model";
 
 export const PendingPasswordResetCollection: BlCollection = {
-  collectionName: BlCollectionName.PendingPasswordResets,
-  mongooseSchema: pendingPasswordResetSchema,
+  model: PendingPasswordResetModel,
   endpoints: [
     {
       method: "post",

@@ -1,12 +1,8 @@
-import {
-  BlCollection,
-  BlCollectionName,
-} from "@backend/collections/bl-collection";
-import { invoiceSchema } from "@backend/collections/invoice/invoice.schema";
+import { BlCollection } from "@backend/collections/bl-collection";
+import { InvoiceModel } from "@backend/collections/invoice/invoice.model";
 
 export const InvoiceCollection: BlCollection = {
-  collectionName: BlCollectionName.Invoices,
-  mongooseSchema: invoiceSchema,
+  model: InvoiceModel,
   endpoints: [
     {
       method: "getId",

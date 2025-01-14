@@ -1,9 +1,10 @@
 import "mocha";
 
-import { BlCollectionName } from "@backend/collections/bl-collection";
+import { OrderModel } from "@backend/collections/order/order.model";
 import { PaymentDibsHandler } from "@backend/collections/payment/helpers/dibs/payment-dibs-handler";
 import { PaymentValidator } from "@backend/collections/payment/helpers/payment.validator";
 import { PaymentPostHook } from "@backend/collections/payment/hooks/payment.post.hook";
+import { PaymentModel } from "@backend/collections/payment/payment.model";
 import { BlDocumentStorage } from "@backend/storage/blDocumentStorage";
 import { BlError } from "@shared/bl-error/bl-error";
 import { Order } from "@shared/order/order";
@@ -17,10 +18,8 @@ should();
 
 describe("PaymentPostHook", () => {
   const paymentValidator = new PaymentValidator();
-  const orderStorage = new BlDocumentStorage<Order>(BlCollectionName.Orders);
-  const paymentStorage = new BlDocumentStorage<Payment>(
-    BlCollectionName.Payments,
-  );
+  const orderStorage = new BlDocumentStorage(OrderModel);
+  const paymentStorage = new BlDocumentStorage(PaymentModel);
   const paymentDibsHandler = new PaymentDibsHandler();
   const paymentPostHook = new PaymentPostHook(
     orderStorage,

@@ -1,12 +1,8 @@
-import {
-  BlCollection,
-  BlCollectionName,
-} from "@backend/collections/bl-collection";
-import { companySchema } from "@backend/collections/company/company.schema";
+import { BlCollection } from "@backend/collections/bl-collection";
+import { CompanyModel } from "@backend/collections/company/company.model";
 
 export const CompanyCollection: BlCollection = {
-  collectionName: BlCollectionName.Companies,
-  mongooseSchema: companySchema,
+  model: CompanyModel,
   endpoints: [
     {
       method: "getAll",

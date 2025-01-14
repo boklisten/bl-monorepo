@@ -1,8 +1,9 @@
 import "mocha";
 
-import { BlCollectionName } from "@backend/collections/bl-collection";
 import { User } from "@backend/collections/user/user";
+import { UserModel } from "@backend/collections/user/user.model";
 import { UserDetailPermissionOperation } from "@backend/collections/user-detail/operations/permission/user-detail-permission.operation";
+import { UserDetailModel } from "@backend/collections/user-detail/user-detail.model";
 import { SEResponseHandler } from "@backend/response/se.response.handler";
 import { BlDocumentStorage } from "@backend/storage/blDocumentStorage";
 import { BlError } from "@shared/bl-error/bl-error";
@@ -14,10 +15,8 @@ chaiUse(chaiAsPromised);
 should();
 
 describe("UserDetailPermissionOperation", () => {
-  const userDetailStorage = new BlDocumentStorage<UserDetail>(
-    BlCollectionName.UserDetails,
-  );
-  const userStorage = new BlDocumentStorage<User>(BlCollectionName.Users);
+  const userDetailStorage = new BlDocumentStorage(UserDetailModel);
+  const userStorage = new BlDocumentStorage(UserModel);
   const resHandler = new SEResponseHandler();
   const userDetailPermissionOperation = new UserDetailPermissionOperation(
     userDetailStorage,

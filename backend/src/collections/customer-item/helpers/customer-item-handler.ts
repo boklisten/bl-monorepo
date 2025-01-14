@@ -1,6 +1,5 @@
-import { BlCollectionName } from "@backend/collections/bl-collection";
-import { branchSchema } from "@backend/collections/branch/branch.schema";
-import { customerItemSchema } from "@backend/collections/customer-item/customer-item.schema";
+import { BranchModel } from "@backend/collections/branch/branch.model";
+import { CustomerItemModel } from "@backend/collections/customer-item/customer-item.model";
 import { SEDbQueryBuilder } from "@backend/query/se.db-query-builder";
 import { BlDocumentStorage } from "@backend/storage/blDocumentStorage";
 import { BlError } from "@shared/bl-error/bl-error";
@@ -18,15 +17,9 @@ export class CustomerItemHandler {
     customerItemStorage?: BlDocumentStorage<CustomerItem>,
     branchStorage?: BlDocumentStorage<Branch>,
   ) {
-    this._customerItemStorage = customerItemStorage
-      ? customerItemStorage
-      : new BlDocumentStorage(
-          BlCollectionName.CustomerItems,
-          customerItemSchema,
-        );
-    this._branchStorage = branchStorage
-      ? branchStorage
-      : new BlDocumentStorage(BlCollectionName.Branches, branchSchema);
+    this._customerItemStorage =
+      customerItemStorage ?? new BlDocumentStorage(CustomerItemModel);
+    this._branchStorage = branchStorage ?? new BlDocumentStorage(BranchModel);
   }
 
   /**

@@ -1,5 +1,4 @@
-import { BlCollectionName } from "@backend/collections/bl-collection";
-import { customerItemSchema } from "@backend/collections/customer-item/customer-item.schema";
+import { CustomerItemModel } from "@backend/collections/customer-item/customer-item.model";
 import { Operation } from "@backend/operation/operation";
 import { BlApiRequest } from "@backend/request/bl-api-request";
 import { BlDocumentStorage } from "@backend/storage/blDocumentStorage";
@@ -23,8 +22,7 @@ export class CustomerItemGenerateReportOperation implements Operation {
 
   constructor(customerItemStorage?: BlDocumentStorage<CustomerItem>) {
     this._customerItemStorage =
-      customerItemStorage ??
-      new BlDocumentStorage(BlCollectionName.CustomerItems, customerItemSchema);
+      customerItemStorage ?? new BlDocumentStorage(CustomerItemModel);
   }
 
   async run(blApiRequest: BlApiRequest): Promise<BlapiResponse> {

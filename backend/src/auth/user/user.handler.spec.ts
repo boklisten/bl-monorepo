@@ -2,12 +2,11 @@ import "mocha";
 
 import { LocalLoginHandler } from "@backend/auth/local/local-login.handler";
 import { UserHandler } from "@backend/auth/user/user.handler";
-import { BlCollectionName } from "@backend/collections/bl-collection";
 import { EmailValidationHelper } from "@backend/collections/email-validation/helpers/email-validation.helper";
 import { LocalLogin } from "@backend/collections/local-login/local-login";
 import { User } from "@backend/collections/user/user";
-import { userSchema } from "@backend/collections/user/userSchema";
-import { userDetailSchema } from "@backend/collections/user-detail/user-detail.schema";
+import { UserModel } from "@backend/collections/user/user.model";
+import { UserDetailModel } from "@backend/collections/user-detail/user-detail.model";
 import { SEDbQuery } from "@backend/query/se.db-query";
 import { BlDocumentStorage } from "@backend/storage/blDocumentStorage";
 import { BlError } from "@shared/bl-error/bl-error";
@@ -33,16 +32,10 @@ const testUser = {
 } as User;
 
 describe("UserHandler", () => {
-  const userStorage = new BlDocumentStorage<User>(
-    BlCollectionName.Users,
-    userSchema,
-  );
+  const userStorage = new BlDocumentStorage(UserModel);
   const emailValidationHelper: EmailValidationHelper =
     new EmailValidationHelper();
-  const userDetailStorage = new BlDocumentStorage<UserDetail>(
-    BlCollectionName.UserDetails,
-    userDetailSchema,
-  );
+  const userDetailStorage = new BlDocumentStorage(UserDetailModel);
   const localLoginHandler: LocalLoginHandler = new LocalLoginHandler();
   const userHandler = new UserHandler(
     userDetailStorage,

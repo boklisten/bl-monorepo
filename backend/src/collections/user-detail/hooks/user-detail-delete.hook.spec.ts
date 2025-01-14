@@ -1,12 +1,12 @@
 import "mocha";
 
-import { BlCollectionName } from "@backend/collections/bl-collection";
 import { CustomerHaveActiveCustomerItems } from "@backend/collections/customer-item/helpers/customer-have-active-customer-items";
 import { CustomerInvoiceActive } from "@backend/collections/invoice/helpers/customer-invoice-active";
 import { OrderActive } from "@backend/collections/order/helpers/order-active/order-active";
 import { DeleteUserService } from "@backend/collections/user-detail/helpers/delete-user-service";
 import { UserCanDeleteUserDetail } from "@backend/collections/user-detail/helpers/user-can-delete-user-detail";
 import { UserDetailDeleteHook } from "@backend/collections/user-detail/hooks/user-detail-delete.hook";
+import { UserDetailModel } from "@backend/collections/user-detail/user-detail.model";
 import { BlDocumentStorage } from "@backend/storage/blDocumentStorage";
 import { BlError } from "@shared/bl-error/bl-error";
 import { AccessToken } from "@shared/token/access-token";
@@ -19,7 +19,7 @@ chaiUse(chaiAsPromised);
 should();
 
 describe("UserDetailDeleteHook", () => {
-  new BlDocumentStorage<UserDetail>(BlCollectionName.UserDetails);
+  new BlDocumentStorage(UserDetailModel);
   const customerHaveActiveCustomerItems = new CustomerHaveActiveCustomerItems();
   const haveActiveCustomerItemsStub = sinon.stub(
     customerHaveActiveCustomerItems,

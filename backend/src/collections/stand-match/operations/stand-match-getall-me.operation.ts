@@ -1,8 +1,7 @@
-import { BlCollectionName } from "@backend/collections/bl-collection";
-import { itemSchema } from "@backend/collections/item/item.schema";
-import { standMatchSchema } from "@backend/collections/stand-match/stand-match.schema";
-import { uniqueItemSchema } from "@backend/collections/unique-item/unique-item.schema";
-import { userDetailSchema } from "@backend/collections/user-detail/user-detail.schema";
+import { ItemModel } from "@backend/collections/item/item.model";
+import { StandMatchModel } from "@backend/collections/stand-match/stand-match.model";
+import { UniqueItemModel } from "@backend/collections/unique-item/unique-item.model";
+import { UserDetailModel } from "@backend/collections/user-detail/user-detail.model";
 import { mapItemIdsToItemDetails } from "@backend/collections/user-match/operations/user-match-getall-me-operation-helper";
 import { Operation } from "@backend/operation/operation";
 import { BlApiRequest } from "@backend/request/bl-api-request";
@@ -28,16 +27,12 @@ export class GetMyStandMatchesOperation implements Operation {
     itemStorage?: BlDocumentStorage<Item>,
   ) {
     this._userDetailStorage =
-      userDetailStorage ??
-      new BlDocumentStorage(BlCollectionName.UserDetails, userDetailSchema);
+      userDetailStorage ?? new BlDocumentStorage(UserDetailModel);
     this._standMatchStorage =
-      standMatchStorage ??
-      new BlDocumentStorage(BlCollectionName.StandMatches, standMatchSchema);
+      standMatchStorage ?? new BlDocumentStorage(StandMatchModel);
     this._uniqueItemStorage =
-      uniqueItemStorage ??
-      new BlDocumentStorage(BlCollectionName.UniqueItems, uniqueItemSchema);
-    this._itemStorage =
-      itemStorage ?? new BlDocumentStorage(BlCollectionName.Items, itemSchema);
+      uniqueItemStorage ?? new BlDocumentStorage(UniqueItemModel);
+    this._itemStorage = itemStorage ?? new BlDocumentStorage(ItemModel);
   }
 
   private async addDetailsToStandMatch(

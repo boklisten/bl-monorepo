@@ -1,4 +1,4 @@
-import { Signature } from "@backend/collections/signature/signature.schema";
+import { Signature } from "@backend/collections/signature/signature.model";
 import { logger } from "@backend/logger/logger";
 import { BlDocumentStorage } from "@backend/storage/blDocumentStorage";
 import { Transformer } from "@napi-rs/image";

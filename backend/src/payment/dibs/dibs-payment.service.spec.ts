@@ -1,6 +1,5 @@
 import "mocha";
 
-import { BlCollectionName } from "@backend/collections/bl-collection";
 import { HttpHandler } from "@backend/http/http.handler";
 import { DibsEasyOrder } from "@backend/payment/dibs/dibs-easy-order/dibs-easy-order";
 import { DibsPaymentService } from "@backend/payment/dibs/dibs-payment.service";

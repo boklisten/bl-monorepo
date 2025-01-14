@@ -1,12 +1,8 @@
-import {
-  BlCollection,
-  BlCollectionName,
-} from "@backend/collections/bl-collection";
-import { openingHourSchema } from "@backend/collections/opening-hour/opening-hour.schema";
+import { BlCollection } from "@backend/collections/bl-collection";
+import { OpeningHourModel } from "@backend/collections/opening-hour/opening-hour.model";
 
 export const OpeningHourCollection: BlCollection = {
-  collectionName: BlCollectionName.OpeningHours,
-  mongooseSchema: openingHourSchema,
+  model: OpeningHourModel,
   endpoints: [
     {
       method: "getId",

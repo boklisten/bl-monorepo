@@ -1,5 +1,4 @@
-import { BlCollectionName } from "@backend/collections/bl-collection";
-import { deliverySchema } from "@backend/collections/delivery/delivery.schema";
+import { DeliveryModel } from "@backend/collections/delivery/delivery.model";
 import { EmailService } from "@backend/messenger/email/email-service";
 import { MessengerService } from "@backend/messenger/messenger-service";
 import { PdfService } from "@backend/messenger/pdf/pdf-service";
@@ -18,10 +17,7 @@ export class Messenger implements MessengerService {
 
   constructor() {
     this._emailService = new EmailService();
-    this._deliveryStorage = new BlDocumentStorage<Delivery>(
-      BlCollectionName.Deliveries,
-      deliverySchema,
-    );
+    this._deliveryStorage = new BlDocumentStorage(DeliveryModel);
     this._pdfService = new PdfService();
   }
 

@@ -1,15 +1,14 @@
-import { BlCollectionName } from "@backend/collections/bl-collection";
-import { customerItemSchema } from "@backend/collections/customer-item/customer-item.schema";
-import { invoiceSchema } from "@backend/collections/invoice/invoice.schema";
+import { CustomerItemModel } from "@backend/collections/customer-item/customer-item.model";
+import { InvoiceModel } from "@backend/collections/invoice/invoice.model";
 import { LocalLogin } from "@backend/collections/local-login/local-login";
-import { localLoginSchema } from "@backend/collections/local-login/local-login.schema";
-import { orderSchema } from "@backend/collections/order/order.schema";
-import { paymentSchema } from "@backend/collections/payment/payment.schema";
-import { standMatchSchema } from "@backend/collections/stand-match/stand-match.schema";
+import { LocalLoginModel } from "@backend/collections/local-login/local-login.model";
+import { OrderModel } from "@backend/collections/order/order.model";
+import { PaymentModel } from "@backend/collections/payment/payment.model";
+import { StandMatchModel } from "@backend/collections/stand-match/stand-match.model";
 import { User } from "@backend/collections/user/user";
-import { userSchema } from "@backend/collections/user/userSchema";
-import { userDetailSchema } from "@backend/collections/user-detail/user-detail.schema";
-import { userMatchSchema } from "@backend/collections/user-match/user-match.schema";
+import { UserModel } from "@backend/collections/user/user.model";
+import { UserDetailModel } from "@backend/collections/user-detail/user-detail.model";
+import { UserMatchModel } from "@backend/collections/user-match/user-match.model";
 import { SEDbQueryBuilder } from "@backend/query/se.db-query-builder";
 import { BlDocumentStorage } from "@backend/storage/blDocumentStorage";
 import { CustomerItem } from "@shared/customer-item/customer-item";
@@ -43,32 +42,22 @@ export class DeleteUserService {
     _userMatchStorage?: BlDocumentStorage<UserMatch>,
     _standMatchStorage?: BlDocumentStorage<StandMatch>,
   ) {
-    this.userStorage =
-      _userStorage ?? new BlDocumentStorage(BlCollectionName.Users, userSchema);
+    this.userStorage = _userStorage ?? new BlDocumentStorage(UserModel);
     this.userDetailStorage =
-      _userDetailStorage ??
-      new BlDocumentStorage(BlCollectionName.UserDetails, userDetailSchema);
+      _userDetailStorage ?? new BlDocumentStorage(UserDetailModel);
     this.localLoginStorage =
-      _localLoginStorage ??
-      new BlDocumentStorage(BlCollectionName.LocalLogins, localLoginSchema);
+      _localLoginStorage ?? new BlDocumentStorage(LocalLoginModel);
     this.customerItemStorage =
-      _customerItemStorage ??
-      new BlDocumentStorage(BlCollectionName.CustomerItems, customerItemSchema);
+      _customerItemStorage ?? new BlDocumentStorage(CustomerItemModel);
     this.invoiceStorage =
-      _invoiceStorage ??
-      new BlDocumentStorage(BlCollectionName.Invoices, invoiceSchema);
-    this.orderStorage =
-      _orderStorage ??
-      new BlDocumentStorage(BlCollectionName.Orders, orderSchema);
+      _invoiceStorage ?? new BlDocumentStorage(InvoiceModel);
+    this.orderStorage = _orderStorage ?? new BlDocumentStorage(OrderModel);
     this.paymentStorage =
-      _paymentStorage ??
-      new BlDocumentStorage(BlCollectionName.Payments, paymentSchema);
+      _paymentStorage ?? new BlDocumentStorage(PaymentModel);
     this.userMatchStorage =
-      _userMatchStorage ??
-      new BlDocumentStorage(BlCollectionName.UserMatches, userMatchSchema);
+      _userMatchStorage ?? new BlDocumentStorage(UserMatchModel);
     this.standMatchStorage =
-      _standMatchStorage ??
-      new BlDocumentStorage(BlCollectionName.StandMatches, standMatchSchema);
+      _standMatchStorage ?? new BlDocumentStorage(StandMatchModel);
 
     this.queryBuilder = new SEDbQueryBuilder();
   }

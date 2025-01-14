@@ -1,6 +1,5 @@
-import { BlCollectionName } from "@backend/collections/bl-collection";
-import { deliverySchema } from "@backend/collections/delivery/delivery.schema";
-import { paymentSchema } from "@backend/collections/payment/payment.schema";
+import { DeliveryModel } from "@backend/collections/delivery/delivery.model";
+import { PaymentModel } from "@backend/collections/payment/payment.model";
 import { isNullish } from "@backend/helper/typescript-helpers";
 import { BlDocumentStorage } from "@backend/storage/blDocumentStorage";
 import { BlError } from "@shared/bl-error/bl-error";
@@ -18,10 +17,10 @@ export class OrderPlacedValidator {
   ) {
     this.deliveryStorage = deliveryStorage
       ? deliveryStorage
-      : new BlDocumentStorage(BlCollectionName.Deliveries, deliverySchema);
+      : new BlDocumentStorage(DeliveryModel);
     this.paymentStorage = paymentStorage
       ? paymentStorage
-      : new BlDocumentStorage(BlCollectionName.Payments, paymentSchema);
+      : new BlDocumentStorage(PaymentModel);
   }
 
   public validate(order: Order): Promise<boolean> {

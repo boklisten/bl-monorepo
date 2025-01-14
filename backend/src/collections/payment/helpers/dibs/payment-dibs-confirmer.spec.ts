@@ -1,7 +1,7 @@
 import "mocha";
 
-import { BlCollectionName } from "@backend/collections/bl-collection";
 import { PaymentDibsConfirmer } from "@backend/collections/payment/helpers/dibs/payment-dibs-confirmer";
+import { PaymentModel } from "@backend/collections/payment/payment.model";
 import { DibsEasyPayment } from "@backend/payment/dibs/dibs-easy-payment/dibs-easy-payment";
 import { DibsPaymentService } from "@backend/payment/dibs/dibs-payment.service";
 import { BlDocumentStorage } from "@backend/storage/blDocumentStorage";
@@ -21,9 +21,7 @@ describe("PaymentDibsConfirmer", () => {
     dibsPaymentService,
     "fetchDibsPaymentData",
   );
-  const paymentStorage = new BlDocumentStorage<Payment>(
-    BlCollectionName.Payments,
-  );
+  const paymentStorage = new BlDocumentStorage(PaymentModel);
   const paymentDibsConfirmer = new PaymentDibsConfirmer(
     dibsPaymentService,
     paymentStorage,

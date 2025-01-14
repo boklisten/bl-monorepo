@@ -1,6 +1,7 @@
 import "mocha";
-import { BlCollectionName } from "@backend/collections/bl-collection";
+
 import { OrderUserDetailValidator } from "@backend/collections/order/helpers/order-validator/order-user-detail-validator/order-user-detail-validator";
+import { UserDetailModel } from "@backend/collections/user-detail/user-detail.model";
 import { BlDocumentStorage } from "@backend/storage/blDocumentStorage";
 import { BlError } from "@shared/bl-error/bl-error";
 import { Order } from "@shared/order/order";
@@ -13,9 +14,7 @@ chaiUse(chaiAsPromised);
 should();
 
 describe("OrderUserDetailValidator", () => {
-  const userDetailStorage = new BlDocumentStorage<UserDetail>(
-    BlCollectionName.UserDetails,
-  );
+  const userDetailStorage = new BlDocumentStorage(UserDetailModel);
   const orderUserDetailValidator = new OrderUserDetailValidator(
     userDetailStorage,
   );

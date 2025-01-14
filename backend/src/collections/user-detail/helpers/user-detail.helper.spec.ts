@@ -1,6 +1,7 @@
 import "mocha";
-import { BlCollectionName } from "@backend/collections/bl-collection";
+
 import { UserDetailHelper } from "@backend/collections/user-detail/helpers/user-detail.helper";
+import { UserDetailModel } from "@backend/collections/user-detail/user-detail.model";
 import { DibsEasyPayment } from "@backend/payment/dibs/dibs-easy-payment/dibs-easy-payment";
 import { BlDocumentStorage } from "@backend/storage/blDocumentStorage";
 import { BlError } from "@shared/bl-error/bl-error";
@@ -14,9 +15,7 @@ chaiUse(chaiAsPromised);
 should();
 
 describe("UserDetailHelper", () => {
-  const userDetailStorage = new BlDocumentStorage<UserDetail>(
-    BlCollectionName.UserDetails,
-  );
+  const userDetailStorage = new BlDocumentStorage(UserDetailModel);
   const userDetailHelper = new UserDetailHelper(userDetailStorage);
 
   let testUserDetail: UserDetail;

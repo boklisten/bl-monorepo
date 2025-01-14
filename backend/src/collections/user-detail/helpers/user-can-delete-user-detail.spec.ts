@@ -1,7 +1,9 @@
 import "mocha";
-import { BlCollectionName } from "@backend/collections/bl-collection";
+
 import { User } from "@backend/collections/user/user";
+import { UserModel } from "@backend/collections/user/user.model";
 import { UserCanDeleteUserDetail } from "@backend/collections/user-detail/helpers/user-can-delete-user-detail";
+import { UserDetailModel } from "@backend/collections/user-detail/user-detail.model";
 import { BlDocumentStorage } from "@backend/storage/blDocumentStorage";
 import { AccessToken } from "@shared/token/access-token";
 import { UserDetail } from "@shared/user/user-detail/user-detail";
@@ -13,12 +15,10 @@ chaiUse(chaiAsPromised);
 should();
 
 describe("UserCanDeleteUserDetail", () => {
-  const userDetailStorage = new BlDocumentStorage<UserDetail>(
-    BlCollectionName.UserDetails,
-  );
+  const userDetailStorage = new BlDocumentStorage(UserDetailModel);
   const userDetailGetIdStub = sinon.stub(userDetailStorage, "get");
 
-  const userStorage = new BlDocumentStorage<User>(BlCollectionName.Users);
+  const userStorage = new BlDocumentStorage(UserModel);
   const userGetByQueryStub = sinon.stub(userStorage, "getByQuery");
 
   const userCanDeleteUserDetail = new UserCanDeleteUserDetail(

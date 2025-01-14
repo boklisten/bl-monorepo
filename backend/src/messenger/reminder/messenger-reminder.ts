@@ -1,6 +1,5 @@
-import { BlCollectionName } from "@backend/collections/bl-collection";
 import { CustomerItemHandler } from "@backend/collections/customer-item/helpers/customer-item-handler";
-import { userDetailSchema } from "@backend/collections/user-detail/user-detail.schema";
+import { UserDetailModel } from "@backend/collections/user-detail/user-detail.model";
 import { EmailService } from "@backend/messenger/email/email-service";
 import { BlDocumentStorage } from "@backend/storage/blDocumentStorage";
 import { BlError } from "@shared/bl-error/bl-error";
@@ -19,11 +18,7 @@ export class MessengerReminder {
   ) {
     this.customerItemHandler = customerItemHandler ?? new CustomerItemHandler();
     this.userDetailStorage =
-      userDetailStorage ??
-      new BlDocumentStorage<UserDetail>(
-        BlCollectionName.UserDetails,
-        userDetailSchema,
-      );
+      userDetailStorage ?? new BlDocumentStorage(UserDetailModel);
     this.emailService = emailService ?? new EmailService();
   }
 

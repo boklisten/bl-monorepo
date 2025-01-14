@@ -1,6 +1,7 @@
 import "mocha";
 
-import { BlCollectionName } from "@backend/collections/bl-collection";
+import { BranchModel } from "@backend/collections/branch/branch.model";
+import { ItemModel } from "@backend/collections/item/item.model";
 import { OrderFieldValidator } from "@backend/collections/order/helpers/order-validator/order-field-validator/order-field-validator";
 import { OrderItemBuyValidator } from "@backend/collections/order/helpers/order-validator/order-item-validator/order-item-buy-validator/order-item-buy-validator";
 import { OrderItemExtendValidator } from "@backend/collections/order/helpers/order-validator/order-item-validator/order-item-extend-validator/order-item-extend-validator";
@@ -18,10 +19,8 @@ chaiUse(chaiAsPromised);
 should();
 
 describe("OrderItemValidator", () => {
-  const branchStorage = new BlDocumentStorage<Branch>(
-    BlCollectionName.Branches,
-  );
-  const itemStorage = new BlDocumentStorage<Item>(BlCollectionName.Items);
+  const branchStorage = new BlDocumentStorage(BranchModel);
+  const itemStorage = new BlDocumentStorage(ItemModel);
   const orderItemFieldValidator = new OrderFieldValidator();
   const orderItemRentValidator = new OrderItemRentValidator();
   const orderItemBuyValidator = new OrderItemBuyValidator();

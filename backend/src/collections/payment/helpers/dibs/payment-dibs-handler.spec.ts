@@ -1,7 +1,10 @@
 import "mocha";
 
-import { BlCollectionName } from "@backend/collections/bl-collection";
+import { DeliveryModel } from "@backend/collections/delivery/delivery.model";
+import { OrderModel } from "@backend/collections/order/order.model";
 import { PaymentDibsHandler } from "@backend/collections/payment/helpers/dibs/payment-dibs-handler";
+import { PaymentModel } from "@backend/collections/payment/payment.model";
+import { UserDetailModel } from "@backend/collections/user-detail/user-detail.model";
 import { DibsEasyOrder } from "@backend/payment/dibs/dibs-easy-order/dibs-easy-order";
 import { DibsPaymentService } from "@backend/payment/dibs/dibs-payment.service";
 import { BlDocumentStorage } from "@backend/storage/blDocumentStorage";
@@ -19,17 +22,11 @@ chaiUse(chaiAsPromised);
 should();
 
 describe("PaymentDibsHandler", () => {
-  const orderStorage = new BlDocumentStorage<Order>(BlCollectionName.Orders);
-  const paymentStorage = new BlDocumentStorage<Payment>(
-    BlCollectionName.Payments,
-  );
+  const orderStorage = new BlDocumentStorage(OrderModel);
+  const paymentStorage = new BlDocumentStorage(PaymentModel);
   const dibsPaymentService = new DibsPaymentService();
-  const deliveryStorage = new BlDocumentStorage<Delivery>(
-    BlCollectionName.Deliveries,
-  );
-  const userDetailStorage = new BlDocumentStorage<UserDetail>(
-    BlCollectionName.UserDetails,
-  );
+  const deliveryStorage = new BlDocumentStorage(DeliveryModel);
+  const userDetailStorage = new BlDocumentStorage(UserDetailModel);
 
   const paymentDibsHandler = new PaymentDibsHandler(
     paymentStorage,

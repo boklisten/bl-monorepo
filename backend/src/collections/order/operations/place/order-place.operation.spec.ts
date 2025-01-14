@@ -1,15 +1,17 @@
-import { BlCollectionName } from "@backend/collections/bl-collection";
+import { CustomerItemModel } from "@backend/collections/customer-item/customer-item.model";
 import { OrderToCustomerItemGenerator } from "@backend/collections/customer-item/helpers/order-to-customer-item-generator";
 import { OrderPlacedHandler } from "@backend/collections/order/helpers/order-placed-handler/order-placed-handler";
 import { OrderValidator } from "@backend/collections/order/helpers/order-validator/order-validator";
 import { OrderPlaceOperation } from "@backend/collections/order/operations/place/order-place.operation";
-import { Signature } from "@backend/collections/signature/signature.schema";
+import { OrderModel } from "@backend/collections/order/order.model";
+import { SignatureModel } from "@backend/collections/signature/signature.model";
+import { Signature } from "@backend/collections/signature/signature.model";
+import { StandMatchModel } from "@backend/collections/stand-match/stand-match.model";
+import { UserDetailModel } from "@backend/collections/user-detail/user-detail.model";
+import { UserMatchModel } from "@backend/collections/user-match/user-match.model";
 import { SEResponseHandler } from "@backend/response/se.response.handler";
 import { BlDocumentStorage } from "@backend/storage/blDocumentStorage";
 import { BlError } from "@shared/bl-error/bl-error";
-import { CustomerItem } from "@shared/customer-item/customer-item";
-import { StandMatch } from "@shared/match/stand-match";
-import { UserMatch } from "@shared/match/user-match";
 import { Order } from "@shared/order/order";
 import { SIGNATURE_NUM_MONTHS_VALID } from "@shared/signature/serialized-signature";
 import { UserDetail } from "@shared/user/user-detail/user-detail";
@@ -25,23 +27,13 @@ should();
 
 describe("OrderPlaceOperation", () => {
   const resHandler = new SEResponseHandler();
-  const orderStorage = new BlDocumentStorage<Order>(BlCollectionName.Orders);
+  const orderStorage = new BlDocumentStorage(OrderModel);
   const orderToCustomerItemGenerator = new OrderToCustomerItemGenerator();
-  const customerItemStorage = new BlDocumentStorage<CustomerItem>(
-    BlCollectionName.CustomerItems,
-  );
-  const userMatchStorage = new BlDocumentStorage<UserMatch>(
-    BlCollectionName.UserMatches,
-  );
-  const standMatchStorage = new BlDocumentStorage<StandMatch>(
-    BlCollectionName.StandMatches,
-  );
-  const userDetailStorage = new BlDocumentStorage<UserDetail>(
-    BlCollectionName.UserDetails,
-  );
-  const signatureStorage = new BlDocumentStorage<Signature>(
-    BlCollectionName.Signatures,
-  );
+  const customerItemStorage = new BlDocumentStorage(CustomerItemModel);
+  const userMatchStorage = new BlDocumentStorage(UserMatchModel);
+  const standMatchStorage = new BlDocumentStorage(StandMatchModel);
+  const userDetailStorage = new BlDocumentStorage(UserDetailModel);
+  const signatureStorage = new BlDocumentStorage(SignatureModel);
   const orderPlacedHandler = new OrderPlacedHandler(
     orderStorage,
     undefined,
@@ -69,6 +61,10 @@ describe("OrderPlaceOperation", () => {
   const sendResponseStub = sinon.stub(resHandler, "sendResponse");
   const getOrderStub = sinon.stub(orderStorage, "get");
   const getCustomerItemStub = sinon.stub(customerItemStorage, "get");
+  const aggregateCustomerItemsStub = sinon.stub(
+    customerItemStorage,
+    "aggregate",
+  );
   const getManyCustomerItemsStub = sinon.stub(customerItemStorage, "getMany");
   const generateCustomerItemStub = sinon.stub(
     orderToCustomerItemGenerator,
@@ -87,6 +83,7 @@ describe("OrderPlaceOperation", () => {
       getOrderStub.reset();
       getCustomerItemStub.reset();
       getManyCustomerItemsStub.reset();
+      aggregateCustomerItemsStub.reset();
       generateCustomerItemStub.reset();
       validateOrderStub.reset();
       getAllUserMatchesStub.reset();
@@ -164,6 +161,7 @@ describe("OrderPlaceOperation", () => {
       getAllUserMatchesStub.resolves([]);
       getAllStandMatchesStub.resolves([]);
       getManyCustomerItemsStub.resolves([]);
+      aggregateCustomerItemsStub.resolves([]);
       getUserDetailStub.resolves(userDetailWithSignatures);
       getSignatureStub.resolves(validSignature);
 
@@ -182,6 +180,7 @@ describe("OrderPlaceOperation", () => {
       getAllUserMatchesStub.resolves([]);
       getAllStandMatchesStub.resolves([]);
       getManyCustomerItemsStub.resolves([]);
+      aggregateCustomerItemsStub.resolves([]);
       getSignatureStub.resolves(validSignature);
       getUserDetailStub.resolves(userDetailWithSignatures);
 

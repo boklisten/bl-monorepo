@@ -1,6 +1,7 @@
 import "mocha";
-import { BlCollectionName } from "@backend/collections/bl-collection";
+
 import { OrderItemMovedFromOrderHandler } from "@backend/collections/order/helpers/order-item-moved-from-order-handler/order-item-moved-from-order-handler";
+import { OrderModel } from "@backend/collections/order/order.model";
 import { BlDocumentStorage } from "@backend/storage/blDocumentStorage";
 import { BlError } from "@shared/bl-error/bl-error";
 import { Order } from "@shared/order/order";
@@ -12,7 +13,7 @@ chaiUse(chaiAsPromised);
 should();
 
 describe("OrderItemMovedFromOrderHandler", () => {
-  const orderStorage = new BlDocumentStorage<Order>(BlCollectionName.Orders);
+  const orderStorage = new BlDocumentStorage(OrderModel);
   const oiMovedFromOrderHandler = new OrderItemMovedFromOrderHandler(
     orderStorage,
   );

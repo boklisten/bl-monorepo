@@ -1,13 +1,12 @@
 import { PermissionService } from "@backend/auth/permission/permission.service";
-import { BlCollectionName } from "@backend/collections/bl-collection";
-import { customerItemSchema } from "@backend/collections/customer-item/customer-item.schema";
+import { CustomerItemModel } from "@backend/collections/customer-item/customer-item.model";
 import { OrderToCustomerItemGenerator } from "@backend/collections/customer-item/helpers/order-to-customer-item-generator";
 import { OrderPlacedHandler } from "@backend/collections/order/helpers/order-placed-handler/order-placed-handler";
 import { OrderValidator } from "@backend/collections/order/helpers/order-validator/order-validator";
-import { orderSchema } from "@backend/collections/order/order.schema";
-import { standMatchSchema } from "@backend/collections/stand-match/stand-match.schema";
-import { userDetailSchema } from "@backend/collections/user-detail/user-detail.schema";
-import { userMatchSchema } from "@backend/collections/user-match/user-match.schema";
+import { OrderModel } from "@backend/collections/order/order.model";
+import { StandMatchModel } from "@backend/collections/stand-match/stand-match.model";
+import { UserDetailModel } from "@backend/collections/user-detail/user-detail.model";
+import { UserMatchModel } from "@backend/collections/user-match/user-match.model";
 import { isNotNullish } from "@backend/helper/typescript-helpers";
 import { Operation } from "@backend/operation/operation";
 import { SEDbQueryBuilder } from "@backend/query/se.db-query-builder";
@@ -54,29 +53,23 @@ export class OrderPlaceOperation implements Operation {
     this._orderToCustomerItemGenerator =
       orderToCustomerItemGenerator ?? new OrderToCustomerItemGenerator();
 
-    this._orderStorage =
-      orderStorage ??
-      new BlDocumentStorage(BlCollectionName.Orders, orderSchema);
+    this._orderStorage = orderStorage ?? new BlDocumentStorage(OrderModel);
 
     this._customerItemStorage =
-      customerItemStorage ??
-      new BlDocumentStorage(BlCollectionName.CustomerItems, customerItemSchema);
+      customerItemStorage ?? new BlDocumentStorage(CustomerItemModel);
 
     this._orderPlacedHandler = orderPlacedHandler ?? new OrderPlacedHandler();
 
     this._orderValidator = orderValidator ?? new OrderValidator();
 
     this._userDetailStorage =
-      userDetailStorage ??
-      new BlDocumentStorage(BlCollectionName.UserDetails, userDetailSchema);
+      userDetailStorage ?? new BlDocumentStorage(UserDetailModel);
 
     this._userMatchStorage =
-      userMatchStorage ??
-      new BlDocumentStorage(BlCollectionName.UserMatches, userMatchSchema);
+      userMatchStorage ?? new BlDocumentStorage(UserMatchModel);
 
     this._standMatchStorage =
-      standMatchStorage ??
-      new BlDocumentStorage(BlCollectionName.StandMatches, standMatchSchema);
+      standMatchStorage ?? new BlDocumentStorage(StandMatchModel);
 
     this._queryBuilder = new SEDbQueryBuilder();
   }

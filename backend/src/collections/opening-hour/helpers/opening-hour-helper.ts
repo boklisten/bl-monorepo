@@ -1,5 +1,4 @@
-import { BlCollectionName } from "@backend/collections/bl-collection";
-import { openingHourSchema } from "@backend/collections/opening-hour/opening-hour.schema";
+import { OpeningHourModel } from "@backend/collections/opening-hour/opening-hour.model";
 import { BlDocumentStorage } from "@backend/storage/blDocumentStorage";
 import { BlError } from "@shared/bl-error/bl-error";
 import { Branch } from "@shared/branch/branch";
@@ -10,10 +9,7 @@ export class OpeningHourHelper {
   constructor(private openingHourStorage?: BlDocumentStorage<OpeningHour>) {
     this.openingHourStorage = this.openingHourStorage
       ? this.openingHourStorage
-      : new BlDocumentStorage<OpeningHour>(
-          BlCollectionName.OpeningHours,
-          openingHourSchema,
-        );
+      : new BlDocumentStorage(OpeningHourModel);
   }
 
   public async getNextAvailableOpeningHour(

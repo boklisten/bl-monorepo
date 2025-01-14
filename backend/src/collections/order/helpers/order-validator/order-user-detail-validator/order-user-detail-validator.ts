@@ -1,5 +1,4 @@
-import { BlCollectionName } from "@backend/collections/bl-collection";
-import { userDetailSchema } from "@backend/collections/user-detail/user-detail.schema";
+import { UserDetailModel } from "@backend/collections/user-detail/user-detail.model";
 import { BlDocumentStorage } from "@backend/storage/blDocumentStorage";
 import { BlError } from "@shared/bl-error/bl-error";
 import { Order } from "@shared/order/order";
@@ -11,7 +10,7 @@ export class OrderUserDetailValidator {
   constructor(userDetailStorage?: BlDocumentStorage<UserDetail>) {
     this._userDetailStorage = userDetailStorage
       ? userDetailStorage
-      : new BlDocumentStorage(BlCollectionName.UserDetails, userDetailSchema);
+      : new BlDocumentStorage(UserDetailModel);
   }
 
   public validate(order: Order): Promise<boolean> {

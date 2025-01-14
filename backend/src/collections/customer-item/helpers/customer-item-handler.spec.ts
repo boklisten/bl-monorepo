@@ -1,5 +1,7 @@
 import "mocha";
-import { BlCollectionName } from "@backend/collections/bl-collection";
+
+import { BranchModel } from "@backend/collections/branch/branch.model";
+import { CustomerItemModel } from "@backend/collections/customer-item/customer-item.model";
 import { CustomerItemHandler } from "@backend/collections/customer-item/helpers/customer-item-handler";
 import { SEDbQuery } from "@backend/query/se.db-query";
 import { BlDocumentStorage } from "@backend/storage/blDocumentStorage";
@@ -16,12 +18,8 @@ chaiUse(chaiAsPromised);
 should();
 
 describe("CustomerItemHandler", () => {
-  const customerItemStorage = new BlDocumentStorage<CustomerItem>(
-    BlCollectionName.CustomerItems,
-  );
-  const branchStorage = new BlDocumentStorage<Branch>(
-    BlCollectionName.Branches,
-  );
+  const customerItemStorage = new BlDocumentStorage(CustomerItemModel);
+  const branchStorage = new BlDocumentStorage(BranchModel);
   const customerItemHandler = new CustomerItemHandler(
     customerItemStorage,
     branchStorage,

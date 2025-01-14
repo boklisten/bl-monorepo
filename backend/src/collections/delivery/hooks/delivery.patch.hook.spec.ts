@@ -1,9 +1,9 @@
 import "mocha";
 
-import { BlCollectionName } from "@backend/collections/bl-collection";
+import { DeliveryModel } from "@backend/collections/delivery/delivery.model";
 import { DeliveryValidator } from "@backend/collections/delivery/helpers/deliveryValidator/delivery-validator";
 import { DeliveryPatchHook } from "@backend/collections/delivery/hooks/delivery.patch.hook";
-import { orderSchema } from "@backend/collections/order/order.schema";
+import { OrderModel } from "@backend/collections/order/order.model";
 import { BlDocumentStorage } from "@backend/storage/blDocumentStorage";
 import { BlError } from "@shared/bl-error/bl-error";
 import { Delivery } from "@shared/delivery/delivery";
@@ -17,14 +17,9 @@ chaiUse(chaiAsPromised);
 should();
 
 describe("DeliveryPatchHook", () => {
-  const deliveryStorage = new BlDocumentStorage<Delivery>(
-    BlCollectionName.Deliveries,
-  );
+  const deliveryStorage = new BlDocumentStorage(DeliveryModel);
   const deliveryValidator = new DeliveryValidator();
-  const orderStorage = new BlDocumentStorage<Order>(
-    BlCollectionName.Orders,
-    orderSchema,
-  );
+  const orderStorage = new BlDocumentStorage(OrderModel);
   const deliveryPatchHook = new DeliveryPatchHook(
     deliveryValidator,
     deliveryStorage,

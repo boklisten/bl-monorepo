@@ -1,4 +1,4 @@
-import { BlCollectionName } from "@backend/collections/bl-collection";
+import { BlModel } from "@backend/collections/bl-collection";
 import { SEDbQuery } from "@backend/query/se.db-query";
 import { BlStorageHandler } from "@backend/storage/blStorageHandler";
 import { MongoDbBlStorageHandler } from "@backend/storage/mongoDb/mongoDb.blStorageHandler";
@@ -12,7 +12,6 @@ import {
 import {
   FilterQuery,
   PipelineStage,
-  Schema,
   UpdateQuery,
   UpdateWithAggregationPipeline,
   UpdateWriteOpResult,
@@ -21,16 +20,10 @@ import {
 export class BlDocumentStorage<T extends BlDocument>
   implements BlStorageHandler<T>
 {
-  // @ts-expect-error fixme: auto ignored
   private mongoDbHandler: MongoDbBlStorageHandler<T>;
 
-  constructor(collectionName: BlCollectionName, mongooseSchema?: Schema) {
-    if (mongooseSchema) {
-      this.mongoDbHandler = new MongoDbBlStorageHandler<T>(
-        collectionName,
-        mongooseSchema,
-      );
-    }
+  constructor(model: BlModel<T>) {
+    this.mongoDbHandler = new MongoDbBlStorageHandler<T>(model);
   }
 
   get(id: string): Promise<T> {

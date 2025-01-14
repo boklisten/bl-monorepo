@@ -1,5 +1,5 @@
 import { serializeSignature } from "@backend/collections/signature/helpers/signature.helper";
-import { Signature } from "@backend/collections/signature/signature.schema";
+import { Signature } from "@backend/collections/signature/signature.model";
 import { Hook } from "@backend/hook/hook";
 import { SerializedSignature } from "@shared/signature/serialized-signature";
 

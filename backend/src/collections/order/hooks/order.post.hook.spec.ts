@@ -1,12 +1,11 @@
 import "mocha";
 
-import { BlCollectionName } from "@backend/collections/bl-collection";
 import { OrderValidator } from "@backend/collections/order/helpers/order-validator/order-validator";
 import { OrderHookBefore } from "@backend/collections/order/hooks/order-hook-before";
 import { OrderPostHook } from "@backend/collections/order/hooks/order.post.hook";
-import { orderSchema } from "@backend/collections/order/order.schema";
+import { OrderModel } from "@backend/collections/order/order.model";
 import { UserDetailHelper } from "@backend/collections/user-detail/helpers/user-detail.helper";
-import { userDetailSchema } from "@backend/collections/user-detail/user-detail.schema";
+import { UserDetailModel } from "@backend/collections/user-detail/user-detail.model";
 import { BlDocumentStorage } from "@backend/storage/blDocumentStorage";
 import { BlError } from "@shared/bl-error/bl-error";
 import { Order } from "@shared/order/order";
@@ -21,14 +20,8 @@ should();
 
 describe("OrderPostHook", () => {
   const orderValidator: OrderValidator = new OrderValidator();
-  const orderStorage = new BlDocumentStorage<Order>(
-    BlCollectionName.Orders,
-    orderSchema,
-  );
-  const userDetailStorage = new BlDocumentStorage<UserDetail>(
-    BlCollectionName.UserDetails,
-    userDetailSchema,
-  );
+  const orderStorage = new BlDocumentStorage(OrderModel);
+  const userDetailStorage = new BlDocumentStorage(UserDetailModel);
   const userDetailHelper = new UserDetailHelper(userDetailStorage);
   const orderHookBefore: OrderHookBefore = new OrderHookBefore();
   const orderPostHook: OrderPostHook = new OrderPostHook(

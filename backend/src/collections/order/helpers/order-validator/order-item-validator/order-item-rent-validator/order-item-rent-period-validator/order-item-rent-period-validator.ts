@@ -1,6 +1,5 @@
 import { APP_CONFIG } from "@backend/application-config";
-import { BlCollectionName } from "@backend/collections/bl-collection";
-import { orderSchema } from "@backend/collections/order/order.schema";
+import { OrderModel } from "@backend/collections/order/order.model";
 import { isNotNullish } from "@backend/helper/typescript-helpers";
 import { PriceService } from "@backend/price/price.service";
 import { BlDocumentStorage } from "@backend/storage/blDocumentStorage";
@@ -23,7 +22,7 @@ export class OrderItemRentPeriodValidator {
   constructor(private _orderStorage?: BlDocumentStorage<Order>) {
     this._orderStorage = _orderStorage
       ? _orderStorage
-      : new BlDocumentStorage(BlCollectionName.Orders, orderSchema);
+      : new BlDocumentStorage(OrderModel);
     this._priceService = new PriceService(
       APP_CONFIG.payment.paymentServiceConfig,
     );

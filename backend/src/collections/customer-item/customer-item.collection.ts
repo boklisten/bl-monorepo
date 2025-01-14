@@ -1,17 +1,13 @@
-import {
-  BlCollection,
-  BlCollectionName,
-} from "@backend/collections/bl-collection";
+import { BlCollection } from "@backend/collections/bl-collection";
 import { CustomerItemGenerateReportOperation } from "@backend/collections/customer-item/customer-item-generate-report.operation";
-import { customerItemSchema } from "@backend/collections/customer-item/customer-item.schema";
+import { CustomerItemModel } from "@backend/collections/customer-item/customer-item.model";
 import { CustomerItemPostHook } from "@backend/collections/customer-item/hooks/customer-item-post.hook";
 import { PublicBlidLookupOperation } from "@backend/collections/customer-item/public-blid-lookup.operation";
-import { itemSchema } from "@backend/collections/item/item.schema";
-import { userDetailSchema } from "@backend/collections/user-detail/user-detail.schema";
+import { ItemModel } from "@backend/collections/item/item.model";
+import { UserDetailModel } from "@backend/collections/user-detail/user-detail.model";
 
 export const CustomerItemCollection: BlCollection = {
-  collectionName: BlCollectionName.CustomerItems,
-  mongooseSchema: customerItemSchema,
+  model: CustomerItemModel,
   documentPermission: {
     viewableForPermission: "employee",
   },
@@ -61,13 +57,11 @@ export const CustomerItemCollection: BlCollection = {
       nestedDocuments: [
         {
           field: "customer",
-          collection: BlCollectionName.UserDetails,
-          mongooseSchema: userDetailSchema,
+          model: UserDetailModel,
         },
         {
           field: "item",
-          collection: BlCollectionName.Items,
-          mongooseSchema: itemSchema,
+          model: ItemModel,
         },
       ],
       validQueryParams: [

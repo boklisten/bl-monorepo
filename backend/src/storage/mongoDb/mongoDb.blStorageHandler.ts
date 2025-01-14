@@ -1,5 +1,5 @@
 import { PermissionService } from "@backend/auth/permission/permission.service";
-import { BlCollectionName } from "@backend/collections/bl-collection";
+import { BlModel } from "@backend/collections/bl-collection";
 import { logger } from "@backend/logger/logger";
 import { ExpandFilter } from "@backend/query/expand-filter/db-query-expand-filter";
 import { SEDbQuery } from "@backend/query/se.db-query";
@@ -13,7 +13,6 @@ import {
   FilterQuery,
   Model,
   PipelineStage,
-  Schema,
   Types,
   UpdateQuery,
   UpdateWithAggregationPipeline,
@@ -25,11 +24,8 @@ export class MongoDbBlStorageHandler<T extends BlDocument>
 {
   private readonly mongooseModel: Model<T>;
 
-  constructor(collectionName: BlCollectionName, schema: Schema<T>) {
-    this.mongooseModel = new MongooseModelCreator<T>(
-      collectionName,
-      schema,
-    ).create();
+  constructor(model: BlModel<T>) {
+    this.mongooseModel = new MongooseModelCreator<T>(model).create();
   }
 
   public async get(id: string): Promise<T> {
@@ -332,8 +328,7 @@ export class MongoDbBlStorageHandler<T extends BlDocument>
     nestedDocument: NestedDocument,
   ): Promise<T> {
     const documentStorage = new MongoDbBlStorageHandler<T>(
-      nestedDocument.collection,
-      nestedDocument.mongooseSchema,
+      nestedDocument.model as BlModel<T>,
     );
     return documentStorage.get(id);
   }

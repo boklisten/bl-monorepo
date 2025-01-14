@@ -1,7 +1,6 @@
-import { BlCollectionName } from "@backend/collections/bl-collection";
-import { deliverySchema } from "@backend/collections/delivery/delivery.schema";
+import { DeliveryModel } from "@backend/collections/delivery/delivery.model";
 import { PaymentDibsConfirmer } from "@backend/collections/payment/helpers/dibs/payment-dibs-confirmer";
-import { paymentSchema } from "@backend/collections/payment/payment.schema";
+import { PaymentModel } from "@backend/collections/payment/payment.model";
 import { BlDocumentStorage } from "@backend/storage/blDocumentStorage";
 import { BlError } from "@shared/bl-error/bl-error";
 import { Delivery } from "@shared/delivery/delivery";
@@ -18,15 +17,11 @@ export class PaymentHandler {
     paymentDibsConfirmer?: PaymentDibsConfirmer,
     deliveryStorage?: BlDocumentStorage<Delivery>,
   ) {
-    this.paymentStorage = paymentStorage
-      ? paymentStorage
-      : new BlDocumentStorage(BlCollectionName.Payments, paymentSchema);
-    this.paymentDibsConfirmer = paymentDibsConfirmer
-      ? paymentDibsConfirmer
-      : new PaymentDibsConfirmer();
-    this.deliveryStorage = deliveryStorage
-      ? deliveryStorage
-      : new BlDocumentStorage(BlCollectionName.Deliveries, deliverySchema);
+    this.paymentStorage = paymentStorage ?? new BlDocumentStorage(PaymentModel);
+    this.paymentDibsConfirmer =
+      paymentDibsConfirmer ?? new PaymentDibsConfirmer();
+    this.deliveryStorage =
+      deliveryStorage ?? new BlDocumentStorage(DeliveryModel);
   }
 
   public async confirmPayments(order: Order): Promise<Payment[]> {

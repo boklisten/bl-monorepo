@@ -5,7 +5,7 @@ import { NestedDocument } from "@backend/storage/nested-document";
 import { UserPermission } from "@shared/permission/user-permission";
 import { Schema } from "mongoose";
 
-export enum BlCollectionName {
+export enum BlModelName {
   BranchItems = "branchitems",
   Branches = "branches",
   Companies = "companies",
@@ -28,10 +28,18 @@ export enum BlCollectionName {
   UserDetails = "userdetails",
   Users = "users",
 }
-
+export interface BlModel<T = unknown> {
+  name: BlModelName;
+  schema: Schema;
+  /**
+   * This is just a dummy property for referencing T
+   * so ESLint won't complain about "no-unused-vars."
+   * It doesn't do anything at runtime.
+   */
+  _typeBrand?: T;
+}
 export interface BlCollection {
-  collectionName: BlCollectionName; //the name determines the path to the collection like /api/vi/collectionName
-  mongooseSchema: Schema; //the mongooseSchema for this collection
+  model: BlModel;
   documentPermission?: BlDocumentPermission;
   endpoints: BlEndpoint[]; //a list of the valid endpoints for this collection;
 }

@@ -1,9 +1,8 @@
 import { PermissionService } from "@backend/auth/permission/permission.service";
-import { BlCollectionName } from "@backend/collections/bl-collection";
 import { OrderValidator } from "@backend/collections/order/helpers/order-validator/order-validator";
 import { OrderHookBefore } from "@backend/collections/order/hooks/order-hook-before";
 import { UserDetailHelper } from "@backend/collections/user-detail/helpers/user-detail.helper";
-import { userDetailSchema } from "@backend/collections/user-detail/user-detail.schema";
+import { UserDetailModel } from "@backend/collections/user-detail/user-detail.model";
 import { Hook } from "@backend/hook/hook";
 import { BlDocumentStorage } from "@backend/storage/blDocumentStorage";
 import { BlError } from "@shared/bl-error/bl-error";
@@ -27,8 +26,7 @@ export class OrderPostHook extends Hook {
     this.orderValidator = orderValidator ?? new OrderValidator();
     this.orderHookBefore = orderHookBefore ?? new OrderHookBefore();
     this.userDetailStorage =
-      userDetailStorage ??
-      new BlDocumentStorage(BlCollectionName.UserDetails, userDetailSchema);
+      userDetailStorage ?? new BlDocumentStorage(UserDetailModel);
     this.userDetailHelper = userDetailHelper ?? new UserDetailHelper();
   }
 

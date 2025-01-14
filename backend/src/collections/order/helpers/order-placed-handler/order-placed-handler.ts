@@ -1,14 +1,11 @@
-import { BlCollectionName } from "@backend/collections/bl-collection";
 import { CustomerItemHandler } from "@backend/collections/customer-item/helpers/customer-item-handler";
 import { OrderItemMovedFromOrderHandler } from "@backend/collections/order/helpers/order-item-moved-from-order-handler/order-item-moved-from-order-handler";
-import { orderSchema } from "@backend/collections/order/order.schema";
+import { OrderModel } from "@backend/collections/order/order.model";
 import { PaymentHandler } from "@backend/collections/payment/helpers/payment-handler";
 import { userHasValidSignature } from "@backend/collections/signature/helpers/signature.helper";
-import {
-  Signature,
-  signatureSchema,
-} from "@backend/collections/signature/signature.schema";
-import { userDetailSchema } from "@backend/collections/user-detail/user-detail.schema";
+import { SignatureModel } from "@backend/collections/signature/signature.model";
+import { Signature } from "@backend/collections/signature/signature.model";
+import { UserDetailModel } from "@backend/collections/user-detail/user-detail.model";
 import { logger } from "@backend/logger/logger";
 import { Messenger } from "@backend/messenger/messenger";
 import { BlDocumentStorage } from "@backend/storage/blDocumentStorage";
@@ -37,21 +34,17 @@ export class OrderPlacedHandler {
     orderItemMovedFromOrderHandler?: OrderItemMovedFromOrderHandler,
     signatureStorage?: BlDocumentStorage<Signature>,
   ) {
-    this.orderStorage =
-      orderStorage ??
-      new BlDocumentStorage(BlCollectionName.Orders, orderSchema);
+    this.orderStorage = orderStorage ?? new BlDocumentStorage(OrderModel);
     this.paymentHandler = paymentHandler ?? new PaymentHandler();
     this.userDetailStorage =
-      userDetailStorage ??
-      new BlDocumentStorage(BlCollectionName.UserDetails, userDetailSchema);
+      userDetailStorage ?? new BlDocumentStorage(UserDetailModel);
     this._messenger = messenger ?? new Messenger();
     this._customerItemHandler =
       customerItemHandler ?? new CustomerItemHandler();
     this._orderItemMovedFromOrderHandler =
       orderItemMovedFromOrderHandler ?? new OrderItemMovedFromOrderHandler();
     this._signatureStorage =
-      signatureStorage ??
-      new BlDocumentStorage(BlCollectionName.Signatures, signatureSchema);
+      signatureStorage ?? new BlDocumentStorage(SignatureModel);
   }
 
   public async placeOrder(

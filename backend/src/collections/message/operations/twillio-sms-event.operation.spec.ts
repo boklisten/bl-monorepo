@@ -1,5 +1,6 @@
 import "mocha";
-import { BlCollectionName } from "@backend/collections/bl-collection";
+
+import { MessageModel } from "@backend/collections/message/message.model";
 import { TwilioSmsEventOperation } from "@backend/collections/message/operations/twillio-sms-event.operation";
 import { BlDocumentStorage } from "@backend/storage/blDocumentStorage";
 import { Message } from "@shared/message/message";
@@ -11,9 +12,7 @@ chaiUse(chaiAsPromised);
 should();
 
 describe("TwilioSmsEventOperation", () => {
-  const messageStorage = new BlDocumentStorage<Message>(
-    BlCollectionName.Messages,
-  );
+  const messageStorage = new BlDocumentStorage(MessageModel);
 
   const twilioSmsEventOperation = new TwilioSmsEventOperation(messageStorage);
 

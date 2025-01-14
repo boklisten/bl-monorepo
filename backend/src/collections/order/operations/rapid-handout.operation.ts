@@ -1,14 +1,13 @@
-import { BlCollectionName } from "@backend/collections/bl-collection";
-import { branchSchema } from "@backend/collections/branch/branch.schema";
-import { customerItemSchema } from "@backend/collections/customer-item/customer-item.schema";
+import { BranchModel } from "@backend/collections/branch/branch.model";
+import { CustomerItemModel } from "@backend/collections/customer-item/customer-item.model";
 import { CustomerItemActiveBlid } from "@backend/collections/customer-item/helpers/customer-item-active-blid";
 import { OrderToCustomerItemGenerator } from "@backend/collections/customer-item/helpers/order-to-customer-item-generator";
-import { itemSchema } from "@backend/collections/item/item.schema";
+import { ItemModel } from "@backend/collections/item/item.model";
 import { OrderActive } from "@backend/collections/order/helpers/order-active/order-active";
 import { OrderItemMovedFromOrderHandler } from "@backend/collections/order/helpers/order-item-moved-from-order-handler/order-item-moved-from-order-handler";
 import { OrderValidator } from "@backend/collections/order/helpers/order-validator/order-validator";
-import { orderSchema } from "@backend/collections/order/order.schema";
-import { uniqueItemSchema } from "@backend/collections/unique-item/unique-item.schema";
+import { OrderModel } from "@backend/collections/order/order.model";
+import { UniqueItemModel } from "@backend/collections/unique-item/unique-item.model";
 import { Operation } from "@backend/operation/operation";
 import { SEDbQuery } from "@backend/query/se.db-query";
 import { BlApiRequest } from "@backend/request/bl-api-request";
@@ -43,20 +42,13 @@ export class RapidHandoutOperation implements Operation {
     branchStorage?: BlDocumentStorage<Branch>,
     itemStorage?: BlDocumentStorage<Item>,
   ) {
-    this._orderStorage =
-      orderStorage ??
-      new BlDocumentStorage(BlCollectionName.Orders, orderSchema);
+    this._orderStorage = orderStorage ?? new BlDocumentStorage(OrderModel);
     this._customerItemStorage =
-      customerItemStorage ??
-      new BlDocumentStorage(BlCollectionName.CustomerItems, customerItemSchema);
+      customerItemStorage ?? new BlDocumentStorage(CustomerItemModel);
     this._uniqueItemStorage =
-      uniqueItemStorage ??
-      new BlDocumentStorage(BlCollectionName.UniqueItems, uniqueItemSchema);
-    this._branchStorage =
-      branchStorage ??
-      new BlDocumentStorage(BlCollectionName.Branches, branchSchema);
-    this._itemStorage =
-      itemStorage ?? new BlDocumentStorage(BlCollectionName.Items, itemSchema);
+      uniqueItemStorage ?? new BlDocumentStorage(UniqueItemModel);
+    this._branchStorage = branchStorage ?? new BlDocumentStorage(BranchModel);
+    this._itemStorage = itemStorage ?? new BlDocumentStorage(ItemModel);
   }
 
   async run(blApiRequest: BlApiRequest): Promise<BlapiResponse> {

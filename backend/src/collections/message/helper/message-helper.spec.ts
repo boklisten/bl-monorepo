@@ -1,6 +1,7 @@
 import "mocha";
-import { BlCollectionName } from "@backend/collections/bl-collection";
+
 import { MessageHelper } from "@backend/collections/message/helper/message-helper";
+import { MessageModel } from "@backend/collections/message/message.model";
 import { BlDocumentStorage } from "@backend/storage/blDocumentStorage";
 import { BlError } from "@shared/bl-error/bl-error";
 import { Message } from "@shared/message/message";
@@ -15,9 +16,7 @@ should();
 chaiUse(sinonChai);
 
 describe("MessageHelper", () => {
-  const messageStorage = new BlDocumentStorage<Message>(
-    BlCollectionName.Messages,
-  );
+  const messageStorage = new BlDocumentStorage(MessageModel);
   const messageHelper = new MessageHelper(messageStorage);
 
   const messageStorageGetByQueryStub = sinon.stub(messageStorage, "getByQuery");

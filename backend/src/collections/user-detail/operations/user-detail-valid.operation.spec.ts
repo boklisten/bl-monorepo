@@ -1,7 +1,7 @@
 import "mocha";
 
-import { BlCollectionName } from "@backend/collections/bl-collection";
 import { UserDetailValidOperation } from "@backend/collections/user-detail/operations/user-detail-valid.operation";
+import { UserDetailModel } from "@backend/collections/user-detail/user-detail.model";
 import { BlApiRequest } from "@backend/request/bl-api-request";
 import { SEResponseHandler } from "@backend/response/se.response.handler";
 import { BlDocumentStorage } from "@backend/storage/blDocumentStorage";
@@ -16,9 +16,7 @@ chaiUse(chaiAsPromised);
 should();
 
 describe("UserDetailValidOperation", () => {
-  const userDetailStorage = new BlDocumentStorage<UserDetail>(
-    BlCollectionName.UserDetails,
-  );
+  const userDetailStorage = new BlDocumentStorage(UserDetailModel);
   const responseHandler = new SEResponseHandler();
   const userDetailValidOperation = new UserDetailValidOperation(
     userDetailStorage,

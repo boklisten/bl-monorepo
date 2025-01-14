@@ -1,13 +1,9 @@
-import {
-  BlCollection,
-  BlCollectionName,
-} from "@backend/collections/bl-collection";
-import { editableTextSchema } from "@backend/collections/editable-text/editable-text.schema";
+import { BlCollection } from "@backend/collections/bl-collection";
+import { EditableTextModel } from "@backend/collections/editable-text/editable-text.model";
 import { EditableTextPutHook } from "@backend/collections/editable-text/hooks/editable-text.put.hook";
 
 export const EditableTextCollection: BlCollection = {
-  collectionName: BlCollectionName.EditableTexts,
-  mongooseSchema: editableTextSchema,
+  model: EditableTextModel,
   endpoints: [
     {
       method: "getId",

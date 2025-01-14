@@ -77,10 +77,6 @@ export class CollectionEndpointCreator {
         this._router,
         EditableTextCollection,
       ),
-      new CollectionEndpoint<EditableText>(
-        this._router,
-        EditableTextCollection,
-      ),
       new CollectionEndpoint<SerializedSignature>(
         this._router,
         SignatureCollection,

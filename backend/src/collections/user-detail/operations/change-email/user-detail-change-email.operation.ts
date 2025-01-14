@@ -1,11 +1,10 @@
 import { PermissionService } from "@backend/auth/permission/permission.service";
 import { UserHandler } from "@backend/auth/user/user.handler";
-import { BlCollectionName } from "@backend/collections/bl-collection";
 import { LocalLogin } from "@backend/collections/local-login/local-login";
-import { localLoginSchema } from "@backend/collections/local-login/local-login.schema";
+import { LocalLoginModel } from "@backend/collections/local-login/local-login.model";
 import { User } from "@backend/collections/user/user";
-import { userSchema } from "@backend/collections/user/userSchema";
-import { userDetailSchema } from "@backend/collections/user-detail/user-detail.schema";
+import { UserModel } from "@backend/collections/user/user.model";
+import { UserDetailModel } from "@backend/collections/user-detail/user-detail.model";
 import { isNotNullish, isNullish } from "@backend/helper/typescript-helpers";
 import { Operation } from "@backend/operation/operation";
 import { BlApiRequest } from "@backend/request/bl-api-request";
@@ -18,24 +17,26 @@ import { Request, Response } from "express";
 import isEmail from "validator/lib/isEmail";
 
 export class UserDetailChangeEmailOperation implements Operation {
+  private _userDetailStorage: BlDocumentStorage<UserDetail>;
+  private _userStorage: BlDocumentStorage<User>;
+  private _localLoginStorage: BlDocumentStorage<LocalLogin>;
+  private _userHandler: UserHandler;
+  private _resHandler: SEResponseHandler;
+
   constructor(
-    private _userDetailStorage?: BlDocumentStorage<UserDetail>,
-    private _userStorage?: BlDocumentStorage<User>,
-    private _localLoginStorage?: BlDocumentStorage<LocalLogin>,
-    private _userHandler?: UserHandler,
-    private _resHandler?: SEResponseHandler,
+    userDetailStorage?: BlDocumentStorage<UserDetail>,
+    userStorage?: BlDocumentStorage<User>,
+    localLoginStorage?: BlDocumentStorage<LocalLogin>,
+    userHandler?: UserHandler,
+    resHandler?: SEResponseHandler,
   ) {
-    this._userDetailStorage = _userDetailStorage
-      ? _userDetailStorage
-      : new BlDocumentStorage(BlCollectionName.UserDetails, userDetailSchema);
-    this._userStorage = _userStorage
-      ? _userStorage
-      : new BlDocumentStorage(BlCollectionName.Users, userSchema);
-    this._localLoginStorage = _localLoginStorage
-      ? _localLoginStorage
-      : new BlDocumentStorage(BlCollectionName.LocalLogins, localLoginSchema);
-    this._userHandler = _userHandler ? _userHandler : new UserHandler();
-    this._resHandler = _resHandler ? _resHandler : new SEResponseHandler();
+    this._userDetailStorage =
+      userDetailStorage ?? new BlDocumentStorage(UserDetailModel);
+    this._userStorage = userStorage ?? new BlDocumentStorage(UserModel);
+    this._localLoginStorage =
+      localLoginStorage ?? new BlDocumentStorage(LocalLoginModel);
+    this._userHandler = userHandler ?? new UserHandler();
+    this._resHandler = resHandler ?? new SEResponseHandler();
   }
 
   async run(
@@ -48,7 +49,6 @@ export class UserDetailChangeEmailOperation implements Operation {
 
     this.validateEmail(emailChange);
 
-    // @ts-expect-error fixme: auto ignored
     const userDetail = await this._userDetailStorage.get(
       // @ts-expect-error fixme: auto ignored
       blApiRequest.documentId,
@@ -61,7 +61,6 @@ export class UserDetailChangeEmailOperation implements Operation {
     this.validatePermission(blApiRequest.user.permission, user.permission);
     await this.checkIfAlreadyAdded(emailChange);
 
-    // @ts-expect-error fixme: auto ignored
     await this._userDetailStorage.update(
       userDetail.id,
       { email: emailChange },
@@ -70,7 +69,6 @@ export class UserDetailChangeEmailOperation implements Operation {
       blApiRequest.user,
     );
 
-    // @ts-expect-error fixme: auto ignored
     await this._userStorage.update(
       user.id,
       { username: emailChange },
@@ -79,7 +77,6 @@ export class UserDetailChangeEmailOperation implements Operation {
       blApiRequest.user,
     );
 
-    // @ts-expect-error fixme: auto ignored
     await this._localLoginStorage.update(
       localLogin.id,
       { username: emailChange },
@@ -97,7 +94,6 @@ export class UserDetailChangeEmailOperation implements Operation {
     let alreadyAddedUser;
 
     try {
-      // @ts-expect-error fixme: auto ignored
       alreadyAddedUser = await this._userHandler.getByUsername(email);
       // eslint-disable-next-line no-empty
     } catch {}
@@ -128,7 +124,6 @@ export class UserDetailChangeEmailOperation implements Operation {
   }
 
   private async getUser(email: string, blid: string): Promise<User> {
-    // @ts-expect-error fixme: auto ignored
     const users = await this._userStorage.aggregate([
       { $match: { username: email, blid: blid } },
     ]);
@@ -138,7 +133,6 @@ export class UserDetailChangeEmailOperation implements Operation {
   }
 
   private async getLocalLogin(username: string): Promise<LocalLogin> {
-    // @ts-expect-error fixme: auto ignored
     const localLogins = await this._localLoginStorage.aggregate([
       { $match: { username: username } },
     ]);

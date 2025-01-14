@@ -1,8 +1,7 @@
 import { PermissionService } from "@backend/auth/permission/permission.service";
-import { BlCollectionName } from "@backend/collections/bl-collection";
 import { User } from "@backend/collections/user/user";
-import { userSchema } from "@backend/collections/user/userSchema";
-import { userDetailSchema } from "@backend/collections/user-detail/user-detail.schema";
+import { UserModel } from "@backend/collections/user/user.model";
+import { UserDetailModel } from "@backend/collections/user-detail/user-detail.model";
 import { Operation } from "@backend/operation/operation";
 import { BlApiRequest } from "@backend/request/bl-api-request";
 import { SEResponseHandler } from "@backend/response/se.response.handler";
@@ -37,11 +36,9 @@ export class UserDetailPermissionOperation implements Operation {
     resHandler?: SEResponseHandler,
   ) {
     this._userDetailStorage =
-      userDetailStorage ??
-      new BlDocumentStorage(BlCollectionName.UserDetails, userDetailSchema);
+      userDetailStorage ?? new BlDocumentStorage(UserDetailModel);
 
-    this._userStorage =
-      userStorage ?? new BlDocumentStorage(BlCollectionName.Users, userSchema);
+    this._userStorage = userStorage ?? new BlDocumentStorage(UserModel);
 
     this._resHandler = resHandler ?? new SEResponseHandler();
   }

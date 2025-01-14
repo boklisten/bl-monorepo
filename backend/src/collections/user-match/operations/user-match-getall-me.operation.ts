@@ -1,9 +1,8 @@
-import { BlCollectionName } from "@backend/collections/bl-collection";
-import { itemSchema } from "@backend/collections/item/item.schema";
-import { uniqueItemSchema } from "@backend/collections/unique-item/unique-item.schema";
-import { userDetailSchema } from "@backend/collections/user-detail/user-detail.schema";
+import { ItemModel } from "@backend/collections/item/item.model";
+import { UniqueItemModel } from "@backend/collections/unique-item/unique-item.model";
+import { UserDetailModel } from "@backend/collections/user-detail/user-detail.model";
 import { addDetailsToUserMatches } from "@backend/collections/user-match/operations/user-match-getall-me-operation-helper";
-import { userMatchSchema } from "@backend/collections/user-match/user-match.schema";
+import { UserMatchModel } from "@backend/collections/user-match/user-match.model";
 import { Operation } from "@backend/operation/operation";
 import { BlApiRequest } from "@backend/request/bl-api-request";
 import { BlDocumentStorage } from "@backend/storage/blDocumentStorage";
@@ -27,16 +26,12 @@ export class GetMyUserMatchesOperation implements Operation {
     itemStorage?: BlDocumentStorage<Item>,
   ) {
     this._userDetailStorage =
-      userDetailStorage ??
-      new BlDocumentStorage(BlCollectionName.UserDetails, userDetailSchema);
+      userDetailStorage ?? new BlDocumentStorage(UserDetailModel);
     this._userMatchStorage =
-      userMatchStorage ??
-      new BlDocumentStorage(BlCollectionName.UserMatches, userMatchSchema);
+      userMatchStorage ?? new BlDocumentStorage(UserMatchModel);
     this._uniqueItemStorage =
-      uniqueItemStorage ??
-      new BlDocumentStorage(BlCollectionName.UniqueItems, uniqueItemSchema);
-    this._itemStorage =
-      itemStorage ?? new BlDocumentStorage(BlCollectionName.Items, itemSchema);
+      uniqueItemStorage ?? new BlDocumentStorage(UniqueItemModel);
+    this._itemStorage = itemStorage ?? new BlDocumentStorage(ItemModel);
   }
 
   async run(blApiRequest: BlApiRequest): Promise<BlapiResponse> {

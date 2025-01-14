@@ -1,16 +1,13 @@
-import { BlCollectionName } from "@backend/collections/bl-collection";
+import { BlModel } from "@backend/collections/bl-collection";
 import mongoose, { Model, Schema } from "mongoose";
 
 export class MongooseModelCreator<T> {
-  constructor(
-    private collectionName: BlCollectionName,
-    private schema: Schema,
-  ) {}
+  constructor(private model: BlModel<T>) {}
 
   create(): Model<T> {
     return mongoose.model<T>(
-      this.collectionName,
-      this.standardizeSchema(this.schema),
+      this.model.name,
+      this.standardizeSchema(this.model.schema),
     );
   }
 

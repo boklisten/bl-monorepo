@@ -1,14 +1,11 @@
-import { BlCollectionName } from "@backend/collections/bl-collection";
 import {
   getValidUserSignature,
   isGuardianSignatureRequired,
   isUnderage,
 } from "@backend/collections/signature/helpers/signature.helper";
-import {
-  Signature,
-  signatureSchema,
-} from "@backend/collections/signature/signature.schema";
-import { userDetailSchema } from "@backend/collections/user-detail/user-detail.schema";
+import { SignatureModel } from "@backend/collections/signature/signature.model";
+import { Signature } from "@backend/collections/signature/signature.model";
+import { UserDetailModel } from "@backend/collections/user-detail/user-detail.model";
 import { Operation } from "@backend/operation/operation";
 import { BlApiRequest } from "@backend/request/bl-api-request";
 import { BlDocumentStorage } from "@backend/storage/blDocumentStorage";
@@ -27,11 +24,9 @@ export class CheckGuardianSignatureOperation implements Operation {
     userDetailStorage?: BlDocumentStorage<UserDetail>,
   ) {
     this._signatureStorage =
-      signatureStorage ??
-      new BlDocumentStorage(BlCollectionName.Signatures, signatureSchema);
+      signatureStorage ?? new BlDocumentStorage(SignatureModel);
     this._userDetailStorage =
-      userDetailStorage ??
-      new BlDocumentStorage(BlCollectionName.UserDetails, userDetailSchema);
+      userDetailStorage ?? new BlDocumentStorage(UserDetailModel);
   }
 
   async run(blApiRequest: BlApiRequest): Promise<BlapiResponse> {

@@ -1,8 +1,9 @@
 import "mocha";
 
-import { BlCollectionName } from "@backend/collections/bl-collection";
+import { DeliveryModel } from "@backend/collections/delivery/delivery.model";
 import { PaymentDibsConfirmer } from "@backend/collections/payment/helpers/dibs/payment-dibs-confirmer";
 import { PaymentHandler } from "@backend/collections/payment/helpers/payment-handler";
+import { PaymentModel } from "@backend/collections/payment/payment.model";
 import { DibsPaymentService } from "@backend/payment/dibs/dibs-payment.service";
 import { BlDocumentStorage } from "@backend/storage/blDocumentStorage";
 import { BlError } from "@shared/bl-error/bl-error";
@@ -19,14 +20,10 @@ should();
 describe("PaymentHandler", () => {
   let testOrder: Order;
 
-  const paymentStorage = new BlDocumentStorage<Payment>(
-    BlCollectionName.Payments,
-  );
+  const paymentStorage = new BlDocumentStorage(PaymentModel);
   const dibsPaymentService = new DibsPaymentService();
   const paymentDibsConfirmer = new PaymentDibsConfirmer(dibsPaymentService);
-  const deliveryStorage = new BlDocumentStorage<Delivery>(
-    BlCollectionName.Deliveries,
-  );
+  const deliveryStorage = new BlDocumentStorage(DeliveryModel);
   const paymentHandler = new PaymentHandler(
     paymentStorage,
     paymentDibsConfirmer,

@@ -1,5 +1,4 @@
-import { BlCollectionName } from "@backend/collections/bl-collection";
-import { userDetailSchema } from "@backend/collections/user-detail/user-detail.schema";
+import { UserDetailModel } from "@backend/collections/user-detail/user-detail.model";
 import { isNullish } from "@backend/helper/typescript-helpers";
 import { DibsEasyPayment } from "@backend/payment/dibs/dibs-easy-payment/dibs-easy-payment";
 import { BlDocumentStorage } from "@backend/storage/blDocumentStorage";
@@ -12,7 +11,7 @@ export class UserDetailHelper {
   constructor(userDetailStorage?: BlDocumentStorage<UserDetail>) {
     this._userDetailStorage = userDetailStorage
       ? userDetailStorage
-      : new BlDocumentStorage(BlCollectionName.UserDetails, userDetailSchema);
+      : new BlDocumentStorage(UserDetailModel);
   }
 
   public updateUserDetailBasedOnDibsEasyPayment(

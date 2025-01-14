@@ -1,5 +1,4 @@
-import { BlCollectionName } from "@backend/collections/bl-collection";
-import { customerItemSchema } from "@backend/collections/customer-item/customer-item.schema";
+import { CustomerItemModel } from "@backend/collections/customer-item/customer-item.model";
 import { CustomerItemActive } from "@backend/collections/customer-item/helpers/customer-item-active";
 import { SEDbQueryBuilder } from "@backend/query/se.db-query-builder";
 import { BlDocumentStorage } from "@backend/storage/blDocumentStorage";
@@ -12,8 +11,7 @@ export class CustomerHaveActiveCustomerItems {
 
   constructor(private _customerItemStorage?: BlDocumentStorage<CustomerItem>) {
     this._customerItemStorage =
-      this._customerItemStorage ??
-      new BlDocumentStorage(BlCollectionName.CustomerItems, customerItemSchema);
+      this._customerItemStorage ?? new BlDocumentStorage(CustomerItemModel);
     this.queryBuilder = new SEDbQueryBuilder();
     this.customerItemActive = new CustomerItemActive();
   }

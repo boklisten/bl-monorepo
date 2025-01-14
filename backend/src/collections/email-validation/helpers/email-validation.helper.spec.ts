@@ -1,8 +1,9 @@
 import "mocha";
 
-import { BlCollectionName } from "@backend/collections/bl-collection";
 import { EmailValidation } from "@backend/collections/email-validation/email-validation";
+import { EmailValidationModel } from "@backend/collections/email-validation/email-validation.model";
 import { EmailValidationHelper } from "@backend/collections/email-validation/helpers/email-validation.helper";
+import { UserDetailModel } from "@backend/collections/user-detail/user-detail.model";
 import { Messenger } from "@backend/messenger/messenger";
 import { BlDocumentStorage } from "@backend/storage/blDocumentStorage";
 import { BlError } from "@shared/bl-error/bl-error";
@@ -16,12 +17,8 @@ should();
 
 describe("EmailValidationHelper", () => {
   const messenger = new Messenger();
-  const userDetailStorage = new BlDocumentStorage<UserDetail>(
-    BlCollectionName.UserDetails,
-  );
-  const emailValidationStorage = new BlDocumentStorage<EmailValidation>(
-    BlCollectionName.EmailValidations,
-  );
+  const userDetailStorage = new BlDocumentStorage(UserDetailModel);
+  const emailValidationStorage = new BlDocumentStorage(EmailValidationModel);
   const emailValidationHelper = new EmailValidationHelper(
     messenger,
     userDetailStorage,

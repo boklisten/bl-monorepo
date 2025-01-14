@@ -1,5 +1,4 @@
-import { BlCollectionName } from "@backend/collections/bl-collection";
-import { messageSchema } from "@backend/collections/message/message.schema";
+import { MessageModel } from "@backend/collections/message/message.model";
 import { logger } from "@backend/logger/logger";
 import { Operation } from "@backend/operation/operation";
 import { BlApiRequest } from "@backend/request/bl-api-request";
@@ -14,10 +13,7 @@ export class TwilioSmsEventOperation implements Operation {
   constructor(messageStorage?: BlDocumentStorage<Message>) {
     this._messageStorage = messageStorage
       ? messageStorage
-      : new BlDocumentStorage<Message>(
-          BlCollectionName.Messages,
-          messageSchema,
-        );
+      : new BlDocumentStorage(MessageModel);
   }
 
   public async run(blApiRequest: BlApiRequest): Promise<BlapiResponse> {

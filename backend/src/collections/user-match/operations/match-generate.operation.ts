@@ -1,14 +1,13 @@
-import { BlCollectionName } from "@backend/collections/bl-collection";
-import { customerItemSchema } from "@backend/collections/customer-item/customer-item.schema";
-import { orderSchema } from "@backend/collections/order/order.schema";
-import { standMatchSchema } from "@backend/collections/stand-match/stand-match.schema";
-import { userDetailSchema } from "@backend/collections/user-detail/user-detail.schema";
+import { CustomerItemModel } from "@backend/collections/customer-item/customer-item.model";
+import { OrderModel } from "@backend/collections/order/order.model";
+import { StandMatchModel } from "@backend/collections/stand-match/stand-match.model";
+import { UserDetailModel } from "@backend/collections/user-detail/user-detail.model";
 import { MatchFinder } from "@backend/collections/user-match/helpers/match-finder/match-finder";
 import {
   getMatchableUsers,
   MatchGenerateSpec,
 } from "@backend/collections/user-match/operations/match-generate-operation-helper";
-import { userMatchSchema } from "@backend/collections/user-match/user-match.schema";
+import { UserMatchModel } from "@backend/collections/user-match/user-match.model";
 import { Operation } from "@backend/operation/operation";
 import { BlApiRequest } from "@backend/request/bl-api-request";
 import { BlDocumentStorage } from "@backend/storage/blDocumentStorage";
@@ -36,20 +35,14 @@ export class MatchGenerateOperation implements Operation {
     userDetailStorage?: BlDocumentStorage<UserDetail>,
   ) {
     this._customerItemStorage =
-      customerItemStorage ??
-      new BlDocumentStorage(BlCollectionName.CustomerItems, customerItemSchema);
+      customerItemStorage ?? new BlDocumentStorage(CustomerItemModel);
     this._userMatchStorage =
-      userMatchStorage ??
-      new BlDocumentStorage(BlCollectionName.UserMatches, userMatchSchema);
+      userMatchStorage ?? new BlDocumentStorage(UserMatchModel);
     this._standMatchStorage =
-      standMatchStorage ??
-      new BlDocumentStorage(BlCollectionName.StandMatches, standMatchSchema);
-    this._orderStorage =
-      orderStorage ??
-      new BlDocumentStorage(BlCollectionName.Orders, orderSchema);
+      standMatchStorage ?? new BlDocumentStorage(StandMatchModel);
+    this._orderStorage = orderStorage ?? new BlDocumentStorage(OrderModel);
     this._userDetailStorage =
-      userDetailStorage ??
-      new BlDocumentStorage(BlCollectionName.UserDetails, userDetailSchema);
+      userDetailStorage ?? new BlDocumentStorage(UserDetailModel);
   }
 
   async run(blApiRequest: BlApiRequest): Promise<BlapiResponse> {

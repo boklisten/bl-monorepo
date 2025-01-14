@@ -1,6 +1,5 @@
 import { PermissionService } from "@backend/auth/permission/permission.service";
-import { BlCollectionName } from "@backend/collections/bl-collection";
-import { userDetailSchema } from "@backend/collections/user-detail/user-detail.schema";
+import { UserDetailModel } from "@backend/collections/user-detail/user-detail.model";
 import { Hook } from "@backend/hook/hook";
 import { Messenger } from "@backend/messenger/messenger";
 import { MessengerReminder } from "@backend/messenger/reminder/messenger-reminder";
@@ -24,8 +23,7 @@ export class MessagePostHook extends Hook {
     this.messengerReminder = messengerReminder ?? new MessengerReminder();
     this.messenger = messenger ?? new Messenger();
     this.userDetailStorage =
-      userDetailStorage ??
-      new BlDocumentStorage(BlCollectionName.UserDetails, userDetailSchema);
+      userDetailStorage ?? new BlDocumentStorage(UserDetailModel);
   }
 
   override async before(

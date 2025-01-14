@@ -1,19 +1,18 @@
-import { BlCollectionName } from "@backend/collections/bl-collection";
-import { branchSchema } from "@backend/collections/branch/branch.schema";
-import { customerItemSchema } from "@backend/collections/customer-item/customer-item.schema";
+import { BranchModel } from "@backend/collections/branch/branch.model";
+import { CustomerItemModel } from "@backend/collections/customer-item/customer-item.model";
 import { CustomerItemActiveBlid } from "@backend/collections/customer-item/helpers/customer-item-active-blid";
 import { OrderToCustomerItemGenerator } from "@backend/collections/customer-item/helpers/order-to-customer-item-generator";
-import { itemSchema } from "@backend/collections/item/item.schema";
+import { ItemModel } from "@backend/collections/item/item.model";
 import { OrderItemMovedFromOrderHandler } from "@backend/collections/order/helpers/order-item-moved-from-order-handler/order-item-moved-from-order-handler";
 import { OrderValidator } from "@backend/collections/order/helpers/order-validator/order-validator";
-import { orderSchema } from "@backend/collections/order/order.schema";
-import { standMatchSchema } from "@backend/collections/stand-match/stand-match.schema";
-import { uniqueItemSchema } from "@backend/collections/unique-item/unique-item.schema";
+import { OrderModel } from "@backend/collections/order/order.model";
+import { StandMatchModel } from "@backend/collections/stand-match/stand-match.model";
+import { UniqueItemModel } from "@backend/collections/unique-item/unique-item.model";
 import {
   createMatchDeliverOrder,
   createMatchReceiveOrder,
 } from "@backend/collections/user-match/operations/user-match-operation-utils";
-import { userMatchSchema } from "@backend/collections/user-match/user-match.schema";
+import { UserMatchModel } from "@backend/collections/user-match/user-match.model";
 import { isNullish } from "@backend/helper/typescript-helpers";
 import { Operation } from "@backend/operation/operation";
 import { SEDbQuery } from "@backend/query/se.db-query";
@@ -53,25 +52,16 @@ export class UserMatchTransferItemOperation implements Operation {
     itemStorage?: BlDocumentStorage<Item>,
   ) {
     this._userMatchStorage =
-      userMatchStorage ??
-      new BlDocumentStorage(BlCollectionName.UserMatches, userMatchSchema);
+      userMatchStorage ?? new BlDocumentStorage(UserMatchModel);
     this._standMatchStorage =
-      standMatchStorage ??
-      new BlDocumentStorage(BlCollectionName.StandMatches, standMatchSchema);
-    this._orderStorage =
-      orderStorage ??
-      new BlDocumentStorage(BlCollectionName.Orders, orderSchema);
+      standMatchStorage ?? new BlDocumentStorage(StandMatchModel);
+    this._orderStorage = orderStorage ?? new BlDocumentStorage(OrderModel);
     this._customerItemStorage =
-      customerItemStorage ??
-      new BlDocumentStorage(BlCollectionName.CustomerItems, customerItemSchema);
+      customerItemStorage ?? new BlDocumentStorage(CustomerItemModel);
     this._uniqueItemStorage =
-      uniqueItemStorage ??
-      new BlDocumentStorage(BlCollectionName.UniqueItems, uniqueItemSchema);
-    this._branchStorage =
-      branchStorage ??
-      new BlDocumentStorage(BlCollectionName.Branches, branchSchema);
-    this._itemStorage =
-      itemStorage ?? new BlDocumentStorage(BlCollectionName.Items, itemSchema);
+      uniqueItemStorage ?? new BlDocumentStorage(UniqueItemModel);
+    this._branchStorage = branchStorage ?? new BlDocumentStorage(BranchModel);
+    this._itemStorage = itemStorage ?? new BlDocumentStorage(ItemModel);
   }
 
   async run(blApiRequest: BlApiRequest): Promise<BlapiResponse> {

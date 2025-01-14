@@ -1,6 +1,5 @@
-import { BlCollectionName } from "@backend/collections/bl-collection";
 import { InvoiceActive } from "@backend/collections/invoice/helpers/invoice-active";
-import { invoiceSchema } from "@backend/collections/invoice/invoice.schema";
+import { InvoiceModel } from "@backend/collections/invoice/invoice.model";
 import { SEDbQueryBuilder } from "@backend/query/se.db-query-builder";
 import { BlDocumentStorage } from "@backend/storage/blDocumentStorage";
 import { BlError } from "@shared/bl-error/bl-error";
@@ -9,11 +8,10 @@ import { Invoice } from "@shared/invoice/invoice";
 export class CustomerInvoiceActive {
   private queryBuilder: SEDbQueryBuilder;
   private invoiceActive: InvoiceActive;
+  private invoiceStorage: BlDocumentStorage<Invoice>;
 
-  constructor(private invoiceStorage?: BlDocumentStorage<Invoice>) {
-    this.invoiceStorage =
-      this.invoiceStorage ??
-      new BlDocumentStorage(BlCollectionName.Invoices, invoiceSchema);
+  constructor(invoiceStorage?: BlDocumentStorage<Invoice>) {
+    this.invoiceStorage = invoiceStorage ?? new BlDocumentStorage(InvoiceModel);
     this.queryBuilder = new SEDbQueryBuilder();
     this.invoiceActive = new InvoiceActive();
   }
@@ -25,7 +23,6 @@ export class CustomerInvoiceActive {
     );
     let invoices: Invoice[];
     try {
-      // @ts-expect-error fixme: auto ignored
       invoices = await this.invoiceStorage.getByQuery(databaseQuery);
     } catch (error) {
       if (error instanceof BlError && error.getCode() == 702) {

@@ -1,8 +1,8 @@
 import "mocha";
 
-import { BlCollectionName } from "@backend/collections/bl-collection";
 import { OrderPlacedHandler } from "@backend/collections/order/helpers/order-placed-handler/order-placed-handler";
 import { OrderConfirmOperation } from "@backend/collections/order/operations/confirm/order-confirm.operation";
+import { OrderModel } from "@backend/collections/order/order.model";
 import { SEResponseHandler } from "@backend/response/se.response.handler";
 import { BlDocumentStorage } from "@backend/storage/blDocumentStorage";
 import { BlError } from "@shared/bl-error/bl-error";
@@ -15,7 +15,7 @@ should();
 
 describe("OrderConfirmOperation", () => {
   const resHandler = new SEResponseHandler();
-  const orderStorage = new BlDocumentStorage<Order>(BlCollectionName.Orders);
+  const orderStorage = new BlDocumentStorage(OrderModel);
   const orderPlacedHandler = new OrderPlacedHandler();
 
   const orderGetStub = sinon.stub(orderStorage, "get");

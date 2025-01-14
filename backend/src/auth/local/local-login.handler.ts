@@ -1,9 +1,8 @@
 import { LocalLoginCreator } from "@backend/auth/local/local-login-creator/local-login-creator";
 import { HashedPasswordGenerator } from "@backend/auth/local/password/hashed-password-generator";
 import { SaltGenerator } from "@backend/auth/local/salt/salt-generator";
-import { BlCollectionName } from "@backend/collections/bl-collection";
 import { LocalLogin } from "@backend/collections/local-login/local-login";
-import { localLoginSchema } from "@backend/collections/local-login/local-login.schema";
+import { LocalLoginModel } from "@backend/collections/local-login/local-login.model";
 import { SeCrypto } from "@backend/crypto/se.crypto";
 import { isNullish } from "@backend/helper/typescript-helpers";
 import { SEDbQuery } from "@backend/query/se.db-query";
@@ -24,15 +23,12 @@ export class LocalLoginHandler {
     localLoginCreator?: LocalLoginCreator,
   ) {
     this._seCrypto = new SeCrypto();
-    this.localLoginStorage = localLoginStorage
-      ? localLoginStorage
-      : new BlDocumentStorage(BlCollectionName.LocalLogins, localLoginSchema);
-    this._hashedPasswordGenerator = hashedPasswordGenerator
-      ? hashedPasswordGenerator
-      : new HashedPasswordGenerator(new SaltGenerator(), this._seCrypto);
-    this._localLoginCreator = localLoginCreator
-      ? localLoginCreator
-      : new LocalLoginCreator();
+    this.localLoginStorage =
+      localLoginStorage ?? new BlDocumentStorage(LocalLoginModel);
+    this._hashedPasswordGenerator =
+      hashedPasswordGenerator ??
+      new HashedPasswordGenerator(new SaltGenerator(), this._seCrypto);
+    this._localLoginCreator = localLoginCreator ?? new LocalLoginCreator();
   }
 
   public get(username: string): Promise<LocalLogin> {

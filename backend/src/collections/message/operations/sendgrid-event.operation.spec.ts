@@ -1,5 +1,6 @@
 import "mocha";
-import { BlCollectionName } from "@backend/collections/bl-collection";
+
+import { MessageModel } from "@backend/collections/message/message.model";
 import { SendgridEventOperation } from "@backend/collections/message/operations/sendgrid-event.operation";
 import { BlDocumentStorage } from "@backend/storage/blDocumentStorage";
 import { Message } from "@shared/message/message";
@@ -11,9 +12,7 @@ chaiUse(chaiAsPromised);
 should();
 
 describe("SendgridEventOperation", () => {
-  const messageStorage = new BlDocumentStorage<Message>(
-    BlCollectionName.Messages,
-  );
+  const messageStorage = new BlDocumentStorage(MessageModel);
 
   const sendgridEventOperation = new SendgridEventOperation(messageStorage);
 

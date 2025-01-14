@@ -1,15 +1,11 @@
-import {
-  BlCollection,
-  BlCollectionName,
-} from "@backend/collections/bl-collection";
+import { BlCollection } from "@backend/collections/bl-collection";
 import { MessagePostHook } from "@backend/collections/message/hooks/message-post.hook";
-import { messageSchema } from "@backend/collections/message/message.schema";
+import { MessageModel } from "@backend/collections/message/message.model";
 import { SendgridEventOperation } from "@backend/collections/message/operations/sendgrid-event.operation";
 import { TwilioSmsEventOperation } from "@backend/collections/message/operations/twillio-sms-event.operation";
 
 export const MessageCollection: BlCollection = {
-  collectionName: BlCollectionName.Messages,
-  mongooseSchema: messageSchema,
+  model: MessageModel,
   endpoints: [
     {
       method: "post",

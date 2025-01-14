@@ -1,6 +1,7 @@
 import "mocha";
-import { BlCollectionName } from "@backend/collections/bl-collection";
+
 import { MessagePostHook } from "@backend/collections/message/hooks/message-post.hook";
+import { UserDetailModel } from "@backend/collections/user-detail/user-detail.model";
 import { Messenger } from "@backend/messenger/messenger";
 import { MessengerReminder } from "@backend/messenger/reminder/messenger-reminder";
 import { BlDocumentStorage } from "@backend/storage/blDocumentStorage";
@@ -20,9 +21,7 @@ chaiUse(sinonChai);
 
 describe("MessagePostHook", () => {
   const messengerReminder = new MessengerReminder();
-  const userDetailStorage = new BlDocumentStorage<UserDetail>(
-    BlCollectionName.UserDetails,
-  );
+  const userDetailStorage = new BlDocumentStorage(UserDetailModel);
   const messenger = new Messenger();
   const messagePostHook = new MessagePostHook(
     messengerReminder,

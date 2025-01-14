@@ -1,5 +1,4 @@
-import { BlCollectionName } from "@backend/collections/bl-collection";
-import { userMatchSchema } from "@backend/collections/user-match/user-match.schema";
+import { UserMatchModel } from "@backend/collections/user-match/user-match.model";
 import { Operation } from "@backend/operation/operation";
 import { BlApiRequest } from "@backend/request/bl-api-request";
 import { BlDocumentStorage } from "@backend/storage/blDocumentStorage";
@@ -19,8 +18,7 @@ export class UserMatchLockOperation implements Operation {
   private readonly _userMatchStorage: BlDocumentStorage<UserMatch>;
   constructor(userMatchStorage?: BlDocumentStorage<UserMatch>) {
     this._userMatchStorage =
-      userMatchStorage ??
-      new BlDocumentStorage(BlCollectionName.UserMatches, userMatchSchema);
+      userMatchStorage ?? new BlDocumentStorage(UserMatchModel);
   }
 
   async run(blApiRequest: BlApiRequest): Promise<BlapiResponse> {

@@ -1,6 +1,5 @@
-import { BlCollectionName } from "@backend/collections/bl-collection";
-import { deliverySchema } from "@backend/collections/delivery/delivery.schema";
-import { orderSchema } from "@backend/collections/order/order.schema";
+import { DeliveryModel } from "@backend/collections/delivery/delivery.model";
+import { OrderModel } from "@backend/collections/order/order.model";
 import { BlDocumentStorage } from "@backend/storage/blDocumentStorage";
 import { BlError } from "@shared/bl-error/bl-error";
 import { Delivery } from "@shared/delivery/delivery";
@@ -15,15 +14,9 @@ export class PaymentValidator {
     orderStorage?: BlDocumentStorage<Order>,
     deliveryStorage?: BlDocumentStorage<Delivery>,
   ) {
-    this.orderStorage = orderStorage
-      ? orderStorage
-      : new BlDocumentStorage(BlCollectionName.Orders, orderSchema);
-    this.deliveryStorage = deliveryStorage
-      ? deliveryStorage
-      : new BlDocumentStorage<Delivery>(
-          BlCollectionName.Deliveries,
-          deliverySchema,
-        );
+    this.orderStorage = orderStorage ?? new BlDocumentStorage(OrderModel);
+    this.deliveryStorage =
+      deliveryStorage ?? new BlDocumentStorage(DeliveryModel);
   }
 
   public validate(payment: Payment): Promise<boolean> {

@@ -1,5 +1,4 @@
-import { BlCollectionName } from "@backend/collections/bl-collection";
-import { orderSchema } from "@backend/collections/order/order.schema";
+import { OrderModel } from "@backend/collections/order/order.model";
 import { PriceService } from "@backend/price/price.service";
 import { BlDocumentStorage } from "@backend/storage/blDocumentStorage";
 import { BlError } from "@shared/bl-error/bl-error";
@@ -16,9 +15,7 @@ export class OrderItemBuyValidator {
     orderStorage?: BlDocumentStorage<Order>,
   ) {
     this.priceService = priceService ?? new PriceService({ roundDown: true });
-    this.orderStorage =
-      orderStorage ??
-      new BlDocumentStorage<Order>(BlCollectionName.Orders, orderSchema);
+    this.orderStorage = orderStorage ?? new BlDocumentStorage(OrderModel);
   }
 
   public async validate(

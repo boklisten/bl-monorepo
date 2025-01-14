@@ -1,5 +1,4 @@
-import { BlCollectionName } from "@backend/collections/bl-collection";
-import { orderSchema } from "@backend/collections/order/order.schema";
+import { OrderModel } from "@backend/collections/order/order.model";
 import { isNullish } from "@backend/helper/typescript-helpers";
 import { BlDocumentStorage } from "@backend/storage/blDocumentStorage";
 import { BlError } from "@shared/bl-error/bl-error";
@@ -15,9 +14,7 @@ export class OrderItemMovedFromOrderHandler {
   private readonly _orderStorage: BlDocumentStorage<Order>;
 
   constructor(orderStorage?: BlDocumentStorage<Order>) {
-    this._orderStorage =
-      orderStorage ??
-      new BlDocumentStorage(BlCollectionName.Orders, orderSchema);
+    this._orderStorage = orderStorage ?? new BlDocumentStorage(OrderModel);
   }
 
   public async updateOrderItems(order: Order): Promise<boolean> {

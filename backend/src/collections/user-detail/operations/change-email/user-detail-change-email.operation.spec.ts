@@ -1,10 +1,12 @@
 import "mocha";
 
 import { UserHandler } from "@backend/auth/user/user.handler";
-import { BlCollectionName } from "@backend/collections/bl-collection";
 import { LocalLogin } from "@backend/collections/local-login/local-login";
+import { LocalLoginModel } from "@backend/collections/local-login/local-login.model";
 import { User } from "@backend/collections/user/user";
+import { UserModel } from "@backend/collections/user/user.model";
 import { UserDetailChangeEmailOperation } from "@backend/collections/user-detail/operations/change-email/user-detail-change-email.operation";
+import { UserDetailModel } from "@backend/collections/user-detail/user-detail.model";
 import { SEResponseHandler } from "@backend/response/se.response.handler";
 import { BlDocumentStorage } from "@backend/storage/blDocumentStorage";
 import { BlError } from "@shared/bl-error/bl-error";
@@ -16,13 +18,9 @@ chaiUse(chaiAsPromised);
 should();
 
 describe("UserDetailChangeEmailOperation", () => {
-  const userDetailStorage = new BlDocumentStorage<UserDetail>(
-    BlCollectionName.UserDetails,
-  );
-  const userStorage = new BlDocumentStorage<User>(BlCollectionName.Users);
-  const localLoginStorage = new BlDocumentStorage<LocalLogin>(
-    BlCollectionName.LocalLogins,
-  );
+  const userDetailStorage = new BlDocumentStorage(UserDetailModel);
+  const userStorage = new BlDocumentStorage(UserModel);
+  const localLoginStorage = new BlDocumentStorage(LocalLoginModel);
   const userHandler = new UserHandler();
   const resHandler = new SEResponseHandler();
 

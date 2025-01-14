@@ -1,15 +1,11 @@
-import {
-  BlCollection,
-  BlCollectionName,
-} from "@backend/collections/bl-collection";
-import { deliverySchema } from "@backend/collections/delivery/delivery.schema";
+import { BlCollection } from "@backend/collections/bl-collection";
+import { DeliveryModel } from "@backend/collections/delivery/delivery.model";
 import { DeliveryPatchHook } from "@backend/collections/delivery/hooks/delivery.patch.hook";
 import { DeliveryPostHook } from "@backend/collections/delivery/hooks/delivery.post.hook";
 import { PostalCodeLookupOperation } from "@backend/collections/delivery/operations/postal-code-lookup.operation";
 
 export const DeliveryCollection: BlCollection = {
-  collectionName: BlCollectionName.Deliveries,
-  mongooseSchema: deliverySchema,
+  model: DeliveryModel,
   endpoints: [
     {
       method: "post",

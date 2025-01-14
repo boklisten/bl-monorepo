@@ -1,8 +1,7 @@
-import { BlCollectionName } from "@backend/collections/bl-collection";
-import { deliverySchema } from "@backend/collections/delivery/delivery.schema";
-import { orderSchema } from "@backend/collections/order/order.schema";
-import { paymentSchema } from "@backend/collections/payment/payment.schema";
-import { userDetailSchema } from "@backend/collections/user-detail/user-detail.schema";
+import { DeliveryModel } from "@backend/collections/delivery/delivery.model";
+import { OrderModel } from "@backend/collections/order/order.model";
+import { PaymentModel } from "@backend/collections/payment/payment.model";
+import { UserDetailModel } from "@backend/collections/user-detail/user-detail.model";
 import { DibsEasyOrder } from "@backend/payment/dibs/dibs-easy-order/dibs-easy-order";
 import { DibsPaymentService } from "@backend/payment/dibs/dibs-payment.service";
 import { BlDocumentStorage } from "@backend/storage/blDocumentStorage";
@@ -27,19 +26,19 @@ export class PaymentDibsHandler {
   ) {
     this.paymentStorage = paymentStorage
       ? paymentStorage
-      : new BlDocumentStorage(BlCollectionName.Payments, paymentSchema);
+      : new BlDocumentStorage(PaymentModel);
     this.orderStorage = orderStorage
       ? orderStorage
-      : new BlDocumentStorage(BlCollectionName.Orders, orderSchema);
+      : new BlDocumentStorage(OrderModel);
     this.dibsPaymentService = dibsPaymentService
       ? dibsPaymentService
       : new DibsPaymentService();
     this.deliveryStorage = deliveryStorage
       ? deliveryStorage
-      : new BlDocumentStorage(BlCollectionName.Deliveries, deliverySchema);
+      : new BlDocumentStorage(DeliveryModel);
     this.userDetailStorage = userDetailStorage
       ? userDetailStorage
-      : new BlDocumentStorage(BlCollectionName.UserDetails, userDetailSchema);
+      : new BlDocumentStorage(UserDetailModel);
   }
 
   public async handleDibsPayment(payment: Payment): Promise<Payment> {

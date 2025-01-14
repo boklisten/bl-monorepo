@@ -1,6 +1,5 @@
-import { BlCollectionName } from "@backend/collections/bl-collection";
 import { UserDetailHelper } from "@backend/collections/user-detail/helpers/user-detail.helper";
-import { userDetailSchema } from "@backend/collections/user-detail/user-detail.schema";
+import { UserDetailModel } from "@backend/collections/user-detail/user-detail.model";
 import { Operation } from "@backend/operation/operation";
 import { BlApiRequest } from "@backend/request/bl-api-request";
 import { SEResponseHandler } from "@backend/response/se.response.handler";
@@ -21,7 +20,7 @@ export class UserDetailValidOperation implements Operation {
   ) {
     this._userDetailStorage = userDetailStorage
       ? userDetailStorage
-      : new BlDocumentStorage(BlCollectionName.UserDetails, userDetailSchema);
+      : new BlDocumentStorage(UserDetailModel);
     this._resHandler = resHandler ? resHandler : new SEResponseHandler();
     this._userDetailHelper = new UserDetailHelper();
   }

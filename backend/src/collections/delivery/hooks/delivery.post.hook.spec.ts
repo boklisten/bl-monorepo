@@ -1,12 +1,11 @@
 import "mocha";
 
-import { BlCollectionName } from "@backend/collections/bl-collection";
-import { deliverySchema } from "@backend/collections/delivery/delivery.schema";
+import { DeliveryModel } from "@backend/collections/delivery/delivery.model";
 import { DeliveryHandler } from "@backend/collections/delivery/helpers/deliveryHandler/delivery-handler";
 import { DeliveryValidator } from "@backend/collections/delivery/helpers/deliveryValidator/delivery-validator";
 import { DeliveryPostHook } from "@backend/collections/delivery/hooks/delivery.post.hook";
-import { itemSchema } from "@backend/collections/item/item.schema";
-import { orderSchema } from "@backend/collections/order/order.schema";
+import { ItemModel } from "@backend/collections/item/item.model";
+import { OrderModel } from "@backend/collections/order/order.model";
 import { BlDocumentStorage } from "@backend/storage/blDocumentStorage";
 import { BlError } from "@shared/bl-error/bl-error";
 import { Delivery } from "@shared/delivery/delivery";
@@ -21,18 +20,9 @@ chaiUse(chaiAsPromised);
 should();
 
 describe("DeliveryPostHook", () => {
-  const deliveryStorage = new BlDocumentStorage<Delivery>(
-    BlCollectionName.Deliveries,
-    deliverySchema,
-  );
-  const orderStorage = new BlDocumentStorage<Order>(
-    BlCollectionName.Orders,
-    orderSchema,
-  );
-  const itemStorage = new BlDocumentStorage<Item>(
-    BlCollectionName.Items,
-    itemSchema,
-  );
+  const deliveryStorage = new BlDocumentStorage(DeliveryModel);
+  const orderStorage = new BlDocumentStorage(OrderModel);
+  const itemStorage = new BlDocumentStorage(ItemModel);
   const deliveryValidator = new DeliveryValidator();
   const deliveryHandler = new DeliveryHandler();
   const deliveryPostHook = new DeliveryPostHook(

@@ -1,5 +1,4 @@
-import { BlCollectionName } from "@backend/collections/bl-collection";
-import { itemSchema } from "@backend/collections/item/item.schema";
+import { ItemModel } from "@backend/collections/item/item.model";
 import { OrderFieldValidator } from "@backend/collections/order/helpers/order-validator/order-field-validator/order-field-validator";
 import { OrderItemBuyValidator } from "@backend/collections/order/helpers/order-validator/order-item-validator/order-item-buy-validator/order-item-buy-validator";
 import { OrderItemExtendValidator } from "@backend/collections/order/helpers/order-validator/order-item-validator/order-item-extend-validator/order-item-extend-validator";
@@ -31,8 +30,7 @@ export class OrderItemValidator {
     orderItemExtendValidator?: OrderItemExtendValidator,
     orderItemPartlyPaymentValidator?: OrderItemPartlyPaymentValidator,
   ) {
-    this.itemStorage =
-      itemStorage ?? new BlDocumentStorage(BlCollectionName.Items, itemSchema);
+    this.itemStorage = itemStorage ?? new BlDocumentStorage(ItemModel);
 
     this.orderItemFieldValidator =
       orderItemFieldValidator ?? new OrderFieldValidator();

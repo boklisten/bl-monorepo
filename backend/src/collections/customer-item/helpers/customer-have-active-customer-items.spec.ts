@@ -1,5 +1,6 @@
 import "mocha";
-import { BlCollectionName } from "@backend/collections/bl-collection";
+
+import { CustomerItemModel } from "@backend/collections/customer-item/customer-item.model";
 import { CustomerHaveActiveCustomerItems } from "@backend/collections/customer-item/helpers/customer-have-active-customer-items";
 import { BlDocumentStorage } from "@backend/storage/blDocumentStorage";
 import { BlError } from "@shared/bl-error/bl-error";
@@ -12,9 +13,7 @@ chaiUse(chaiAsPromised);
 should();
 
 describe("CustomerHaveActiveCustomerItems", () => {
-  const customerItemStorage = new BlDocumentStorage<CustomerItem>(
-    BlCollectionName.CustomerItems,
-  );
+  const customerItemStorage = new BlDocumentStorage(CustomerItemModel);
 
   const customerItemByQueryStub = sinon.stub(customerItemStorage, "getByQuery");
 

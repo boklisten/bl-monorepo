@@ -1,5 +1,4 @@
-import { BlCollectionName } from "@backend/collections/bl-collection";
-import { paymentSchema } from "@backend/collections/payment/payment.schema";
+import { PaymentModel } from "@backend/collections/payment/payment.model";
 import { isNullish } from "@backend/helper/typescript-helpers";
 import { DibsEasyPayment } from "@backend/payment/dibs/dibs-easy-payment/dibs-easy-payment";
 import { DibsPaymentService } from "@backend/payment/dibs/dibs-payment.service";
@@ -18,7 +17,7 @@ export class PaymentDibsConfirmer {
       : new DibsPaymentService();
     this._paymentStorage = _paymentStorage
       ? _paymentStorage
-      : new BlDocumentStorage(BlCollectionName.Payments, paymentSchema);
+      : new BlDocumentStorage(PaymentModel);
   }
 
   public async confirm(order: Order, payment: Payment): Promise<boolean> {

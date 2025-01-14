@@ -1,15 +1,11 @@
-import {
-  BlCollection,
-  BlCollectionName,
-} from "@backend/collections/bl-collection";
+import { BlCollection } from "@backend/collections/bl-collection";
 import { PaymentGetAllHook } from "@backend/collections/payment/hooks/payment.get-all.hook";
 import { PaymentPatchHook } from "@backend/collections/payment/hooks/payment.patch.hook";
 import { PaymentPostHook } from "@backend/collections/payment/hooks/payment.post.hook";
-import { paymentSchema } from "@backend/collections/payment/payment.schema";
+import { PaymentModel } from "@backend/collections/payment/payment.model";
 
 export const PaymentCollection: BlCollection = {
-  collectionName: BlCollectionName.Payments,
-  mongooseSchema: paymentSchema,
+  model: PaymentModel,
   documentPermission: {
     viewableForPermission: "employee",
   },

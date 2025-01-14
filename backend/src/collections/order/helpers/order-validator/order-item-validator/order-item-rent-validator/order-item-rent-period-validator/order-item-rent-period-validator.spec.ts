@@ -1,6 +1,7 @@
 import "mocha";
-import { BlCollectionName } from "@backend/collections/bl-collection";
+
 import { OrderItemRentPeriodValidator } from "@backend/collections/order/helpers/order-validator/order-item-validator/order-item-rent-validator/order-item-rent-period-validator/order-item-rent-period-validator";
+import { OrderModel } from "@backend/collections/order/order.model";
 import { BlDocumentStorage } from "@backend/storage/blDocumentStorage";
 import { BlError } from "@shared/bl-error/bl-error";
 import { Order } from "@shared/order/order";
@@ -12,7 +13,7 @@ chaiUse(chaiAsPromised);
 should();
 
 describe("OrderItemRentPeriodValidator", () => {
-  const orderStorage = new BlDocumentStorage<Order>(BlCollectionName.Orders);
+  const orderStorage = new BlDocumentStorage(OrderModel);
   const orderItemRentPeriodValidator = new OrderItemRentPeriodValidator(
     orderStorage,
   );

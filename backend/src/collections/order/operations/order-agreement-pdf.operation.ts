@@ -1,11 +1,11 @@
-import { BlCollectionName } from "@backend/collections/bl-collection";
-import { orderSchema } from "@backend/collections/order/order.schema";
-import { userDetailSchema } from "@backend/collections/user-detail/user-detail.schema";
+import { OrderModel } from "@backend/collections/order/order.model";
+import { UserDetailModel } from "@backend/collections/user-detail/user-detail.model";
 import { Messenger } from "@backend/messenger/messenger";
 import { Operation } from "@backend/operation/operation";
 import { BlApiRequest } from "@backend/request/bl-api-request";
 import { SEResponseHandler } from "@backend/response/se.response.handler";
 import { BlDocumentStorage } from "@backend/storage/blDocumentStorage";
+import { BlapiResponse } from "@shared/blapi-response/blapi-response";
 import { Order } from "@shared/order/order";
 import { UserDetail } from "@shared/user/user-detail/user-detail";
 import { Request, Response } from "express";
@@ -24,10 +24,10 @@ export class OrderAgreementPdfOperation implements Operation {
     this._messenger = new Messenger();
     this._userDetailStorage = userDetailStorage
       ? userDetailStorage
-      : new BlDocumentStorage(BlCollectionName.UserDetails, userDetailSchema);
+      : new BlDocumentStorage(UserDetailModel);
     this._orderStorage = orderStorage
       ? orderStorage
-      : new BlDocumentStorage(BlCollectionName.Orders, orderSchema);
+      : new BlDocumentStorage(OrderModel);
     this._resHandler = resHandler ? resHandler : new SEResponseHandler();
   }
 

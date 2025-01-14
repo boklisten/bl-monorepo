@@ -1,5 +1,6 @@
 import "mocha";
-import { BlCollectionName } from "@backend/collections/bl-collection";
+
+import { ItemModel } from "@backend/collections/item/item.model";
 import { EmailService } from "@backend/messenger/email/email-service";
 import { BlDocumentStorage } from "@backend/storage/blDocumentStorage";
 import { EmailHandler, EmailLog } from "@boklisten/bl-email";
@@ -38,7 +39,7 @@ should();
 
 describe("EmailService", () => {
   const emailHandler = new EmailHandler({ sendgrid: { apiKey: "someKey" } });
-  const itemStorage = new BlDocumentStorage<Item>(BlCollectionName.Items);
+  const itemStorage = new BlDocumentStorage(ItemModel);
   const mockPostOffice = new MockPostOffice();
   const emailService = new EmailService(
     emailHandler,

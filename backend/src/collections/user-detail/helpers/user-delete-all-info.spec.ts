@@ -1,9 +1,15 @@
 import "mocha";
 
-import { BlCollectionName } from "@backend/collections/bl-collection";
+import { CustomerItemModel } from "@backend/collections/customer-item/customer-item.model";
+import { InvoiceModel } from "@backend/collections/invoice/invoice.model";
 import { LocalLogin } from "@backend/collections/local-login/local-login";
+import { LocalLoginModel } from "@backend/collections/local-login/local-login.model";
+import { OrderModel } from "@backend/collections/order/order.model";
+import { PaymentModel } from "@backend/collections/payment/payment.model";
 import { User } from "@backend/collections/user/user";
+import { UserModel } from "@backend/collections/user/user.model";
 import { DeleteUserService } from "@backend/collections/user-detail/helpers/delete-user-service";
+import { UserDetailModel } from "@backend/collections/user-detail/user-detail.model";
 import { BlDocumentStorage } from "@backend/storage/blDocumentStorage";
 import { CustomerItem } from "@shared/customer-item/customer-item";
 import { Invoice } from "@shared/invoice/invoice";
@@ -17,23 +23,13 @@ chaiUse(chaiAsPromised);
 should();
 
 describe("UserDeleteAllInfo", () => {
-  const localLoginStorage = new BlDocumentStorage<LocalLogin>(
-    BlCollectionName.LocalLogins,
-  );
-  const userStorage = new BlDocumentStorage<User>(BlCollectionName.Users);
-  const userDetailStorage = new BlDocumentStorage<UserDetail>(
-    BlCollectionName.UserDetails,
-  );
-  const customerItemStorage = new BlDocumentStorage<CustomerItem>(
-    BlCollectionName.CustomerItems,
-  );
-  const invoiceStorage = new BlDocumentStorage<Invoice>(
-    BlCollectionName.Invoices,
-  );
-  const orderStorage = new BlDocumentStorage<Order>(BlCollectionName.Orders);
-  const paymentStorage = new BlDocumentStorage<Payment>(
-    BlCollectionName.Payments,
-  );
+  const localLoginStorage = new BlDocumentStorage(LocalLoginModel);
+  const userStorage = new BlDocumentStorage(UserModel);
+  const userDetailStorage = new BlDocumentStorage(UserDetailModel);
+  const customerItemStorage = new BlDocumentStorage(CustomerItemModel);
+  const invoiceStorage = new BlDocumentStorage(InvoiceModel);
+  const orderStorage = new BlDocumentStorage(OrderModel);
+  const paymentStorage = new BlDocumentStorage(PaymentModel);
 
   const localLoginRemoveStub = sinon.stub(localLoginStorage, "remove");
   const localLoginGetByQueryStub = sinon.stub(localLoginStorage, "getByQuery");

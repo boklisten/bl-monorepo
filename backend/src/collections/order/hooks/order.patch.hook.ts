@@ -1,8 +1,7 @@
 import { PermissionService } from "@backend/auth/permission/permission.service";
-import { BlCollectionName } from "@backend/collections/bl-collection";
 import { OrderPlacedHandler } from "@backend/collections/order/helpers/order-placed-handler/order-placed-handler";
 import { OrderValidator } from "@backend/collections/order/helpers/order-validator/order-validator";
-import { orderSchema } from "@backend/collections/order/order.schema";
+import { OrderModel } from "@backend/collections/order/order.model";
 import { Hook } from "@backend/hook/hook";
 import { BlDocumentStorage } from "@backend/storage/blDocumentStorage";
 import { BlError } from "@shared/bl-error/bl-error";
@@ -20,9 +19,7 @@ export class OrderPatchHook extends Hook {
     orderPlacedHandler?: OrderPlacedHandler,
   ) {
     super();
-    this.orderStorage =
-      orderStorage ??
-      new BlDocumentStorage(BlCollectionName.Orders, orderSchema);
+    this.orderStorage = orderStorage ?? new BlDocumentStorage(OrderModel);
     this.orderValidator = orderValidator ?? new OrderValidator();
     this.orderPlacedHandler = orderPlacedHandler ?? new OrderPlacedHandler();
   }

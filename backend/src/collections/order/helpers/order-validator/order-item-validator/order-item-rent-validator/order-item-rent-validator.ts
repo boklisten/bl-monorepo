@@ -1,6 +1,5 @@
-import { BlCollectionName } from "@backend/collections/bl-collection";
 import { OrderItemRentPeriodValidator } from "@backend/collections/order/helpers/order-validator/order-item-validator/order-item-rent-validator/order-item-rent-period-validator/order-item-rent-period-validator";
-import { orderSchema } from "@backend/collections/order/order.schema";
+import { OrderModel } from "@backend/collections/order/order.model";
 import { isNullish } from "@backend/helper/typescript-helpers";
 import { BlDocumentStorage } from "@backend/storage/blDocumentStorage";
 import { BlError } from "@shared/bl-error/bl-error";
@@ -15,7 +14,7 @@ export class OrderItemRentValidator {
   constructor(private _orderStorage?: BlDocumentStorage<Order>) {
     this._orderStorage = _orderStorage
       ? _orderStorage
-      : new BlDocumentStorage(BlCollectionName.Orders, orderSchema);
+      : new BlDocumentStorage(OrderModel);
     this.orderItemRentPeriodValidator = new OrderItemRentPeriodValidator();
   }
 

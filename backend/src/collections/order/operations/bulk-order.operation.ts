@@ -1,8 +1,7 @@
-import { BlCollectionName } from "@backend/collections/bl-collection";
-import { customerItemSchema } from "@backend/collections/customer-item/customer-item.schema";
-import { itemSchema } from "@backend/collections/item/item.schema";
+import { CustomerItemModel } from "@backend/collections/customer-item/customer-item.model";
+import { ItemModel } from "@backend/collections/item/item.model";
 import { OrderValidator } from "@backend/collections/order/helpers/order-validator/order-validator";
-import { orderSchema } from "@backend/collections/order/order.schema";
+import { OrderModel } from "@backend/collections/order/order.model";
 import { Operation } from "@backend/operation/operation";
 import { BlDocumentStorage } from "@backend/storage/blDocumentStorage";
 import { BlError } from "@shared/bl-error/bl-error";
@@ -23,14 +22,10 @@ export class BulkOrderOperation implements Operation {
     itemStorage?: BlDocumentStorage<Item>,
     customerItemStorage?: BlDocumentStorage<CustomerItem>,
   ) {
-    this._orderStorage =
-      orderStorage ??
-      new BlDocumentStorage(BlCollectionName.Orders, orderSchema);
-    this._itemStorage =
-      itemStorage ?? new BlDocumentStorage(BlCollectionName.Items, itemSchema);
+    this._orderStorage = orderStorage ?? new BlDocumentStorage(OrderModel);
+    this._itemStorage = itemStorage ?? new BlDocumentStorage(ItemModel);
     this._customerItemStorage =
-      customerItemStorage ??
-      new BlDocumentStorage(BlCollectionName.CustomerItems, customerItemSchema);
+      customerItemStorage ?? new BlDocumentStorage(CustomerItemModel);
   }
 
   async run(): Promise<BlapiResponse> {

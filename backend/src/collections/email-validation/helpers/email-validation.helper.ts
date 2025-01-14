@@ -1,7 +1,6 @@
-import { BlCollectionName } from "@backend/collections/bl-collection";
 import { EmailValidation } from "@backend/collections/email-validation/email-validation";
-import { emailValidationSchema } from "@backend/collections/email-validation/email-validation.schema";
-import { userDetailSchema } from "@backend/collections/user-detail/user-detail.schema";
+import { EmailValidationModel } from "@backend/collections/email-validation/email-validation.model";
+import { UserDetailModel } from "@backend/collections/user-detail/user-detail.model";
 import { Messenger } from "@backend/messenger/messenger";
 import { BlDocumentStorage } from "@backend/storage/blDocumentStorage";
 import { BlError } from "@shared/bl-error/bl-error";
@@ -19,14 +18,9 @@ export class EmailValidationHelper {
   ) {
     this._messenger = messenger ?? new Messenger();
     this._userDetailStorage =
-      userDetailStorage ??
-      new BlDocumentStorage(BlCollectionName.UserDetails, userDetailSchema);
+      userDetailStorage ?? new BlDocumentStorage(UserDetailModel);
     this._emailValidationStorage =
-      emailValidationStorage ??
-      new BlDocumentStorage(
-        BlCollectionName.EmailValidations,
-        emailValidationSchema,
-      );
+      emailValidationStorage ?? new BlDocumentStorage(EmailValidationModel);
   }
 
   public createAndSendEmailValidationLink(userDetailId: string): Promise<void> {

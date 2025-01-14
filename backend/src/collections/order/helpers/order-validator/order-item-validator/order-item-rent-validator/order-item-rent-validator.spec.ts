@@ -1,6 +1,7 @@
 import "mocha";
-import { BlCollectionName } from "@backend/collections/bl-collection";
+
 import { OrderItemRentValidator } from "@backend/collections/order/helpers/order-validator/order-item-validator/order-item-rent-validator/order-item-rent-validator";
+import { OrderModel } from "@backend/collections/order/order.model";
 import { PriceService } from "@backend/price/price.service";
 import { BlDocumentStorage } from "@backend/storage/blDocumentStorage";
 import { Branch } from "@shared/branch/branch";
@@ -14,7 +15,7 @@ chaiUse(chaiAsPromised);
 should();
 
 describe("OrderItemRentValidator", () => {
-  const orderStorage = new BlDocumentStorage<Order>(BlCollectionName.Orders);
+  const orderStorage = new BlDocumentStorage(OrderModel);
   const orderItemRentValidator = new OrderItemRentValidator(orderStorage);
   const priceService = new PriceService({ roundDown: true });
   let testOrder: Order;

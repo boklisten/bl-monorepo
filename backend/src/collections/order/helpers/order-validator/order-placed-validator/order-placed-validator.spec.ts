@@ -1,6 +1,8 @@
 import "mocha";
-import { BlCollectionName } from "@backend/collections/bl-collection";
+
+import { DeliveryModel } from "@backend/collections/delivery/delivery.model";
 import { OrderPlacedValidator } from "@backend/collections/order/helpers/order-validator/order-placed-validator/order-placed-validator";
+import { PaymentModel } from "@backend/collections/payment/payment.model";
 import { BlDocumentStorage } from "@backend/storage/blDocumentStorage";
 import { BlError } from "@shared/bl-error/bl-error";
 import { Delivery } from "@shared/delivery/delivery";
@@ -16,13 +18,9 @@ should();
 describe("OrderPlacedValidator", () => {
   describe("#validate()", () => {
     let testOrder: Order;
-    const paymentStorage = new BlDocumentStorage<Payment>(
-      BlCollectionName.Payments,
-    );
+    const paymentStorage = new BlDocumentStorage(PaymentModel);
 
-    const deliveryStorage = new BlDocumentStorage<Delivery>(
-      BlCollectionName.Deliveries,
-    );
+    const deliveryStorage = new BlDocumentStorage(DeliveryModel);
     const orderPlacedValidator = new OrderPlacedValidator(
       deliveryStorage,
       paymentStorage,

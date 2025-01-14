@@ -1,6 +1,5 @@
-import { BlCollectionName } from "@backend/collections/bl-collection";
 import { CustomerItemActiveBlid } from "@backend/collections/customer-item/helpers/customer-item-active-blid";
-import { uniqueItemSchema } from "@backend/collections/unique-item/unique-item.schema";
+import { UniqueItemModel } from "@backend/collections/unique-item/unique-item.model";
 import { Operation } from "@backend/operation/operation";
 import { BlApiRequest } from "@backend/request/bl-api-request";
 import { SEResponseHandler } from "@backend/response/se.response.handler";
@@ -21,7 +20,7 @@ export class UniqueItemActiveOperation implements Operation {
       : new CustomerItemActiveBlid();
     this.uniqueItemStorage = uniqueItemStorage
       ? uniqueItemStorage
-      : new BlDocumentStorage(BlCollectionName.UniqueItems, uniqueItemSchema);
+      : new BlDocumentStorage(UniqueItemModel);
     this.resHandler = resHandler ? resHandler : new SEResponseHandler();
   }
 

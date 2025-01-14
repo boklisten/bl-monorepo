@@ -1,6 +1,6 @@
 import "mocha";
 
-import { BlCollectionName } from "@backend/collections/bl-collection";
+import { BranchModel } from "@backend/collections/branch/branch.model";
 import { OrderFieldValidator } from "@backend/collections/order/helpers/order-validator/order-field-validator/order-field-validator";
 import { OrderItemValidator } from "@backend/collections/order/helpers/order-validator/order-item-validator/order-item-validator";
 import { OrderPlacedValidator } from "@backend/collections/order/helpers/order-validator/order-placed-validator/order-placed-validator";
@@ -21,9 +21,7 @@ describe("OrderValidator", () => {
   let testOrder: Order;
   let testBranch: Branch;
 
-  const branchStorage = new BlDocumentStorage<Branch>(
-    BlCollectionName.Branches,
-  );
+  const branchStorage = new BlDocumentStorage(BranchModel);
   const orderUserDetailValidator = new OrderUserDetailValidator();
 
   const orderItemValidator = new OrderItemValidator();

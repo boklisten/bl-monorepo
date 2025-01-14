@@ -1,8 +1,7 @@
-import { BlCollectionName } from "@backend/collections/bl-collection";
-import { deliverySchema } from "@backend/collections/delivery/delivery.schema";
+import { DeliveryModel } from "@backend/collections/delivery/delivery.model";
 import { DeliveryHandler } from "@backend/collections/delivery/helpers/deliveryHandler/delivery-handler";
 import { DeliveryValidator } from "@backend/collections/delivery/helpers/deliveryValidator/delivery-validator";
-import { orderSchema } from "@backend/collections/order/order.schema";
+import { OrderModel } from "@backend/collections/order/order.model";
 import { Hook } from "@backend/hook/hook";
 import { BlDocumentStorage } from "@backend/storage/blDocumentStorage";
 import { BlError } from "@shared/bl-error/bl-error";
@@ -25,14 +24,8 @@ export class DeliveryPatchHook extends Hook {
     super();
     this.deliveryValidator = deliveryValidator ?? new DeliveryValidator();
     this.deliveryStorage =
-      deliveryStorage ??
-      new BlDocumentStorage<Delivery>(
-        BlCollectionName.Deliveries,
-        deliverySchema,
-      );
-    this.orderStorage =
-      orderStorage ??
-      new BlDocumentStorage<Order>(BlCollectionName.Orders, orderSchema);
+      deliveryStorage ?? new BlDocumentStorage(DeliveryModel);
+    this.orderStorage = orderStorage ?? new BlDocumentStorage(OrderModel);
     this.deliveryHandler = deliveryHandler ?? new DeliveryHandler();
   }
 

@@ -1,6 +1,7 @@
 import "mocha";
-import { BlCollectionName } from "@backend/collections/bl-collection";
+
 import { OpeningHourHelper } from "@backend/collections/opening-hour/helpers/opening-hour-helper";
+import { OpeningHourModel } from "@backend/collections/opening-hour/opening-hour.model";
 import { BlDocumentStorage } from "@backend/storage/blDocumentStorage";
 import { BlError } from "@shared/bl-error/bl-error";
 import { Branch } from "@shared/branch/branch";
@@ -15,9 +16,7 @@ chaiUse(chaiAsPromised);
 should();
 chaiUse(sinonChai);
 
-const openingHourStorage = new BlDocumentStorage<OpeningHour>(
-  BlCollectionName.OpeningHours,
-);
+const openingHourStorage = new BlDocumentStorage(OpeningHourModel);
 const openingHourHelper = new OpeningHourHelper(openingHourStorage);
 const openingHourStorageGetMany = sinon.stub(openingHourStorage, "getMany");
 

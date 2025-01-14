@@ -1,9 +1,9 @@
 import "mocha";
 
-import { BlCollectionName } from "@backend/collections/bl-collection";
 import { DeliveryBranchHandler } from "@backend/collections/delivery/helpers/deliveryBranch/delivery-branch-handler";
 import { DeliveryBringHandler } from "@backend/collections/delivery/helpers/deliveryBring/delivery-bring-handler";
 import { DeliveryValidator } from "@backend/collections/delivery/helpers/deliveryValidator/delivery-validator";
+import { OrderModel } from "@backend/collections/order/order.model";
 import { BlDocumentStorage } from "@backend/storage/blDocumentStorage";
 import { BlError } from "@shared/bl-error/bl-error";
 import { Delivery } from "@shared/delivery/delivery";
@@ -20,7 +20,7 @@ describe("DeliveryValidator", () => {
   let testOrder: Order;
   const deliveryBranchHandler = new DeliveryBranchHandler();
   const deliveryBringHandler = new DeliveryBringHandler();
-  const orderStorage = new BlDocumentStorage<Order>(BlCollectionName.Orders);
+  const orderStorage = new BlDocumentStorage(OrderModel);
   const deliveryValidator = new DeliveryValidator(
     deliveryBranchHandler,
     deliveryBringHandler,

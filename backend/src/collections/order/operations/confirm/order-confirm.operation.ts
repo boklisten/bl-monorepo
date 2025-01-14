@@ -1,6 +1,5 @@
-import { BlCollectionName } from "@backend/collections/bl-collection";
 import { OrderPlacedHandler } from "@backend/collections/order/helpers/order-placed-handler/order-placed-handler";
-import { orderSchema } from "@backend/collections/order/order.schema";
+import { OrderModel } from "@backend/collections/order/order.model";
 import { Operation } from "@backend/operation/operation";
 import { SEDbQueryBuilder } from "@backend/query/se.db-query-builder";
 import { BlApiRequest } from "@backend/request/bl-api-request";
@@ -25,9 +24,7 @@ export class OrderConfirmOperation implements Operation {
   ) {
     this._resHandler = resHandler ?? new SEResponseHandler();
 
-    this._orderStorage =
-      orderStorage ??
-      new BlDocumentStorage(BlCollectionName.Orders, orderSchema);
+    this._orderStorage = orderStorage ?? new BlDocumentStorage(OrderModel);
 
     this._orderPlacedHandler = orderPlacedHandler ?? new OrderPlacedHandler();
 

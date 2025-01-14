@@ -1,8 +1,7 @@
-import { BlCollectionName } from "@backend/collections/bl-collection";
 import { CustomerItemValidator } from "@backend/collections/customer-item/validators/customer-item-validator";
-import { orderSchema } from "@backend/collections/order/order.schema";
+import { OrderModel } from "@backend/collections/order/order.model";
 import { UserDetailHelper } from "@backend/collections/user-detail/helpers/user-detail.helper";
-import { userDetailSchema } from "@backend/collections/user-detail/user-detail.schema";
+import { UserDetailModel } from "@backend/collections/user-detail/user-detail.model";
 import { Hook } from "@backend/hook/hook";
 import { BlDocumentStorage } from "@backend/storage/blDocumentStorage";
 import { BlError } from "@shared/bl-error/bl-error";
@@ -27,11 +26,8 @@ export class CustomerItemPostHook extends Hook {
     this._customerItemValidator =
       customerItemValidator ?? new CustomerItemValidator();
     this._userDetailStorage =
-      userDetailStorage ??
-      new BlDocumentStorage(BlCollectionName.UserDetails, userDetailSchema);
-    this._orderStorage =
-      orderStorage ??
-      new BlDocumentStorage(BlCollectionName.Orders, orderSchema);
+      userDetailStorage ?? new BlDocumentStorage(UserDetailModel);
+    this._orderStorage = orderStorage ?? new BlDocumentStorage(OrderModel);
     this._userDetailHelper = userDetailHelper ?? new UserDetailHelper();
   }
 

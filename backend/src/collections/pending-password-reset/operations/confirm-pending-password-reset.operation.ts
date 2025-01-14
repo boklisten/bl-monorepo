@@ -1,6 +1,5 @@
 import { LocalLoginHandler } from "@backend/auth/local/local-login.handler";
-import { BlCollectionName } from "@backend/collections/bl-collection";
-import { pendingPasswordResetSchema } from "@backend/collections/pending-password-reset/pending-password-reset.schema";
+import { PendingPasswordResetModel } from "@backend/collections/pending-password-reset/pending-password-reset.model";
 import { SeCrypto } from "@backend/crypto/se.crypto";
 import { Operation } from "@backend/operation/operation";
 import { BlApiRequest } from "@backend/request/bl-api-request";
@@ -19,8 +18,7 @@ export class ConfirmPendingPasswordResetOperation implements Operation {
     private readonly seCrypto?: SeCrypto,
   ) {
     this.pendingPasswordResetStorage ??= new BlDocumentStorage(
-      BlCollectionName.PendingPasswordResets,
-      pendingPasswordResetSchema,
+      PendingPasswordResetModel,
     );
     this.localLoginHandler ??= new LocalLoginHandler();
     this.responseHandler ??= new SEResponseHandler();

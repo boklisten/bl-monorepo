@@ -1,9 +1,8 @@
 import "mocha";
 
 import { LocalLoginHandler } from "@backend/auth/local/local-login.handler";
-import { BlCollectionName } from "@backend/collections/bl-collection";
 import { LocalLogin } from "@backend/collections/local-login/local-login";
-import { localLoginSchema } from "@backend/collections/local-login/local-login.schema";
+import { LocalLoginModel } from "@backend/collections/local-login/local-login.model";
 import { SEDbQuery } from "@backend/query/se.db-query";
 import { BlDocumentStorage } from "@backend/storage/blDocumentStorage";
 import { BlError } from "@shared/bl-error/bl-error";
@@ -24,10 +23,7 @@ const dummyLocalLogin = {
 };
 
 describe("LocalLoginHandler", () => {
-  const localLoginStorage = new BlDocumentStorage<LocalLogin>(
-    BlCollectionName.LocalLogins,
-    localLoginSchema,
-  );
+  const localLoginStorage = new BlDocumentStorage(LocalLoginModel);
   const baseLocalLogin = {
     id: "1",
     username: "a",

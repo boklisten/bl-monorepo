@@ -1,17 +1,13 @@
-import {
-  BlCollection,
-  BlCollectionName,
-} from "@backend/collections/bl-collection";
+import { BlCollection } from "@backend/collections/bl-collection";
 import { MatchGenerateOperation } from "@backend/collections/user-match/operations/match-generate.operation";
 import { MatchNotifyOperation } from "@backend/collections/user-match/operations/match-notify.operation";
 import { GetMyUserMatchesOperation } from "@backend/collections/user-match/operations/user-match-getall-me.operation";
 import { UserMatchLockOperation } from "@backend/collections/user-match/operations/user-match-lock.operation";
 import { UserMatchTransferItemOperation } from "@backend/collections/user-match/operations/user-match-transfer-item.operation";
-import { userMatchSchema } from "@backend/collections/user-match/user-match.schema";
+import { UserMatchModel } from "@backend/collections/user-match/user-match.model";
 
 export const UserMatchCollection: BlCollection = {
-  collectionName: BlCollectionName.UserMatches,
-  mongooseSchema: userMatchSchema,
+  model: UserMatchModel,
   endpoints: [
     {
       method: "post",

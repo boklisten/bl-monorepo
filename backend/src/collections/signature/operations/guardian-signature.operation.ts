@@ -1,16 +1,13 @@
-import { BlCollectionName } from "@backend/collections/bl-collection";
-import { orderSchema } from "@backend/collections/order/order.schema";
+import { OrderModel } from "@backend/collections/order/order.model";
 import {
   deserializeBase64EncodedImage,
   isGuardianSignatureRequired,
   serializeSignature,
   signOrders,
 } from "@backend/collections/signature/helpers/signature.helper";
-import {
-  Signature,
-  signatureSchema,
-} from "@backend/collections/signature/signature.schema";
-import { userDetailSchema } from "@backend/collections/user-detail/user-detail.schema";
+import { SignatureModel } from "@backend/collections/signature/signature.model";
+import { Signature } from "@backend/collections/signature/signature.model";
+import { UserDetailModel } from "@backend/collections/user-detail/user-detail.model";
 import { Operation } from "@backend/operation/operation";
 import { BlApiRequest } from "@backend/request/bl-api-request";
 import { BlDocumentStorage } from "@backend/storage/blDocumentStorage";
@@ -32,14 +29,10 @@ export class GuardianSignatureOperation implements Operation {
     userDetailStorage?: BlDocumentStorage<UserDetail>,
   ) {
     this._signatureStorage =
-      signatureStorage ??
-      new BlDocumentStorage(BlCollectionName.Signatures, signatureSchema);
-    this._orderStorage =
-      orderStorage ??
-      new BlDocumentStorage(BlCollectionName.Orders, orderSchema);
+      signatureStorage ?? new BlDocumentStorage(SignatureModel);
+    this._orderStorage = orderStorage ?? new BlDocumentStorage(OrderModel);
     this._userDetailStorage =
-      userDetailStorage ??
-      new BlDocumentStorage(BlCollectionName.UserDetails, userDetailSchema);
+      userDetailStorage ?? new BlDocumentStorage(UserDetailModel);
   }
 
   async run(blApiRequest: BlApiRequest): Promise<BlapiResponse> {

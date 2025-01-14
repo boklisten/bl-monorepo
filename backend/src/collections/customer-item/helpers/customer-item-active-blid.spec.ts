@@ -1,5 +1,6 @@
 import "mocha";
-import { BlCollectionName } from "@backend/collections/bl-collection";
+
+import { CustomerItemModel } from "@backend/collections/customer-item/customer-item.model";
 import { CustomerItemActiveBlid } from "@backend/collections/customer-item/helpers/customer-item-active-blid";
 import { BlDocumentStorage } from "@backend/storage/blDocumentStorage";
 import { CustomerItem } from "@shared/customer-item/customer-item";
@@ -11,9 +12,7 @@ chaiUse(chaiAsPromised);
 should();
 
 describe("CustomerItemActiveBlid", () => {
-  const customerItemStorage = new BlDocumentStorage<CustomerItem>(
-    BlCollectionName.CustomerItems,
-  );
+  const customerItemStorage = new BlDocumentStorage(CustomerItemModel);
 
   const getByQueryCustomerItemStub = sinon.stub(
     customerItemStorage,

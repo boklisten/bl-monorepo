@@ -1,7 +1,4 @@
-import {
-  BlCollection,
-  BlCollectionName,
-} from "@backend/collections/bl-collection";
+import { BlCollection } from "@backend/collections/bl-collection";
 import { OrderPatchHook } from "@backend/collections/order/hooks/order.patch.hook";
 import { OrderPostHook } from "@backend/collections/order/hooks/order.post.hook";
 import { OrderConfirmOperation } from "@backend/collections/order/operations/confirm/order-confirm.operation";
@@ -9,12 +6,11 @@ import { OrderAgreementPdfOperation } from "@backend/collections/order/operation
 import { OrderReceiptPdfOperation } from "@backend/collections/order/operations/order-receipt-pdf.operation";
 import { OrderPlaceOperation } from "@backend/collections/order/operations/place/order-place.operation";
 import { RapidHandoutOperation } from "@backend/collections/order/operations/rapid-handout.operation";
-import { orderSchema } from "@backend/collections/order/order.schema";
-import { userDetailSchema } from "@backend/collections/user-detail/user-detail.schema";
+import { OrderModel } from "@backend/collections/order/order.model";
+import { UserDetailModel } from "@backend/collections/user-detail/user-detail.model";
 
 export const OrderCollection: BlCollection = {
-  collectionName: BlCollectionName.Orders,
-  mongooseSchema: orderSchema,
+  model: OrderModel,
   documentPermission: {
     viewableForPermission: "employee",
   },
@@ -84,8 +80,7 @@ export const OrderCollection: BlCollection = {
       nestedDocuments: [
         {
           field: "customer",
-          mongooseSchema: userDetailSchema,
-          collection: BlCollectionName.UserDetails,
+          model: UserDetailModel,
         },
       ],
       restriction: {
@@ -119,8 +114,7 @@ export const OrderCollection: BlCollection = {
       nestedDocuments: [
         {
           field: "customer",
-          collection: BlCollectionName.UserDetails,
-          mongooseSchema: userDetailSchema,
+          model: UserDetailModel,
         },
       ],
       validQueryParams: [

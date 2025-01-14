@@ -1,5 +1,6 @@
 import "mocha";
-import { BlCollectionName } from "@backend/collections/bl-collection";
+
+import { CustomerItemModel } from "@backend/collections/customer-item/customer-item.model";
 import { OrderItemExtendValidator } from "@backend/collections/order/helpers/order-validator/order-item-validator/order-item-extend-validator/order-item-extend-validator";
 import { BlDocumentStorage } from "@backend/storage/blDocumentStorage";
 import { BlError } from "@shared/bl-error/bl-error";
@@ -14,9 +15,7 @@ chaiUse(chaiAsPromised);
 should();
 
 describe("OrderItemExtendValidator", () => {
-  const customerItemStorage = new BlDocumentStorage<CustomerItem>(
-    BlCollectionName.CustomerItems,
-  );
+  const customerItemStorage = new BlDocumentStorage(CustomerItemModel);
   const orderItemExtendValidator = new OrderItemExtendValidator(
     customerItemStorage,
   );

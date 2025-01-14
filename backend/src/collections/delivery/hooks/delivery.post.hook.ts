@@ -1,7 +1,6 @@
-import { BlCollectionName } from "@backend/collections/bl-collection";
 import { DeliveryHandler } from "@backend/collections/delivery/helpers/deliveryHandler/delivery-handler";
 import { DeliveryValidator } from "@backend/collections/delivery/helpers/deliveryValidator/delivery-validator";
-import { orderSchema } from "@backend/collections/order/order.schema";
+import { OrderModel } from "@backend/collections/order/order.model";
 import { Hook } from "@backend/hook/hook";
 import { BlDocumentStorage } from "@backend/storage/blDocumentStorage";
 import { BlError } from "@shared/bl-error/bl-error";
@@ -22,9 +21,7 @@ export class DeliveryPostHook extends Hook {
     super();
     this.deliveryValidator = deliveryValidator ?? new DeliveryValidator();
     this.deliveryHandler = deliveryHandler ?? new DeliveryHandler();
-    this.orderStorage =
-      orderStorage ??
-      new BlDocumentStorage(BlCollectionName.Orders, orderSchema);
+    this.orderStorage = orderStorage ?? new BlDocumentStorage(OrderModel);
   }
 
   public override after(

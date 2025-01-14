@@ -1,12 +1,8 @@
-import {
-  BlCollection,
-  BlCollectionName,
-} from "@backend/collections/bl-collection";
-import { branchItemSchema } from "@backend/collections/branch-item/branch-item.schema";
+import { BlCollection } from "@backend/collections/bl-collection";
+import { BranchItemModel } from "@backend/collections/branch-item/branch-item.model";
 
 export const BranchItemCollection: BlCollection = {
-  collectionName: BlCollectionName.BranchItems,
-  mongooseSchema: branchItemSchema,
+  model: BranchItemModel,
   endpoints: [
     {
       method: "getId",

@@ -1,9 +1,8 @@
-import { BlCollectionName } from "@backend/collections/bl-collection";
-import { branchSchema } from "@backend/collections/branch/branch.schema";
-import { deliverySchema } from "@backend/collections/delivery/delivery.schema";
+import { BranchModel } from "@backend/collections/branch/branch.model";
+import { DeliveryModel } from "@backend/collections/delivery/delivery.model";
 import { BringDeliveryService } from "@backend/collections/delivery/helpers/deliveryBring/bringDelivery.service";
-import { itemSchema } from "@backend/collections/item/item.schema";
-import { orderSchema } from "@backend/collections/order/order.schema";
+import { ItemModel } from "@backend/collections/item/item.model";
+import { OrderModel } from "@backend/collections/order/order.model";
 import { BlDocumentStorage } from "@backend/storage/blDocumentStorage";
 import { BlError } from "@shared/bl-error/bl-error";
 import { Branch } from "@shared/branch/branch";
@@ -26,19 +25,13 @@ export class DeliveryHandler {
     deliveryStorage?: BlDocumentStorage<Delivery>,
     bringDeliveryService?: BringDeliveryService,
   ) {
-    this.orderStorage =
-      orderStorage ??
-      new BlDocumentStorage(BlCollectionName.Orders, orderSchema);
-    this.itemStorage =
-      itemStorage ?? new BlDocumentStorage(BlCollectionName.Items, itemSchema);
+    this.orderStorage = orderStorage ?? new BlDocumentStorage(OrderModel);
+    this.itemStorage = itemStorage ?? new BlDocumentStorage(ItemModel);
     this.bringDeliveryService =
       bringDeliveryService ?? new BringDeliveryService();
     this.deliveryStorage =
-      deliveryStorage ??
-      new BlDocumentStorage(BlCollectionName.Deliveries, deliverySchema);
-    this.branchStorage =
-      branchStorage ??
-      new BlDocumentStorage(BlCollectionName.Branches, branchSchema);
+      deliveryStorage ?? new BlDocumentStorage(DeliveryModel);
+    this.branchStorage = branchStorage ?? new BlDocumentStorage(BranchModel);
   }
 
   public updateOrderBasedOnMethod(

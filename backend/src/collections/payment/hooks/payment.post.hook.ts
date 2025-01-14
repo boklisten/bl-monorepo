@@ -1,5 +1,4 @@
-import { BlCollectionName } from "@backend/collections/bl-collection";
-import { orderSchema } from "@backend/collections/order/order.schema";
+import { OrderModel } from "@backend/collections/order/order.model";
 import { PaymentDibsHandler } from "@backend/collections/payment/helpers/dibs/payment-dibs-handler";
 import { PaymentValidator } from "@backend/collections/payment/helpers/payment.validator";
 import { Hook } from "@backend/hook/hook";
@@ -20,9 +19,7 @@ export class PaymentPostHook extends Hook {
   ) {
     super();
     this.paymentValidator = paymentValidator ?? new PaymentValidator();
-    this.orderStorage =
-      orderStorage ??
-      new BlDocumentStorage(BlCollectionName.Orders, orderSchema);
+    this.orderStorage = orderStorage ?? new BlDocumentStorage(OrderModel);
     this.paymentDibsHandler = paymentDibsHandler ?? new PaymentDibsHandler();
   }
 

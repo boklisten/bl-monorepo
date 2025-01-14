@@ -1,13 +1,12 @@
-import { BlCollectionName } from "@backend/collections/bl-collection";
-import { orderSchema } from "@backend/collections/order/order.schema";
+import { OrderModel } from "@backend/collections/order/order.model";
 import {
   deserializeSignature,
   isUnderage,
   serializeSignature,
   signOrders,
 } from "@backend/collections/signature/helpers/signature.helper";
-import { Signature } from "@backend/collections/signature/signature.schema";
-import { userDetailSchema } from "@backend/collections/user-detail/user-detail.schema";
+import { Signature } from "@backend/collections/signature/signature.model";
+import { UserDetailModel } from "@backend/collections/user-detail/user-detail.model";
 import { Hook } from "@backend/hook/hook";
 import { BlDocumentStorage } from "@backend/storage/blDocumentStorage";
 import { BlError } from "@shared/bl-error/bl-error";
@@ -26,14 +25,8 @@ export class SignaturePostHook extends Hook {
   ) {
     super();
     this.userDetailStorage =
-      userDetailStorage ??
-      new BlDocumentStorage<UserDetail>(
-        BlCollectionName.UserDetails,
-        userDetailSchema,
-      );
-    this.orderStorage =
-      orderStorage ??
-      new BlDocumentStorage<Order>(BlCollectionName.Orders, orderSchema);
+      userDetailStorage ?? new BlDocumentStorage(UserDetailModel);
+    this.orderStorage = orderStorage ?? new BlDocumentStorage(OrderModel);
   }
 
   override async before(

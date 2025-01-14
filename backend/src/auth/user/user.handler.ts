@@ -1,10 +1,9 @@
 import { Blid } from "@backend/auth/blid/blid";
 import { LocalLoginHandler } from "@backend/auth/local/local-login.handler";
-import { BlCollectionName } from "@backend/collections/bl-collection";
 import { EmailValidationHelper } from "@backend/collections/email-validation/helpers/email-validation.helper";
 import { User } from "@backend/collections/user/user";
-import { userSchema } from "@backend/collections/user/userSchema";
-import { userDetailSchema } from "@backend/collections/user-detail/user-detail.schema";
+import { UserModel } from "@backend/collections/user/user.model";
+import { UserDetailModel } from "@backend/collections/user-detail/user-detail.model";
 import { SEDbQuery } from "@backend/query/se.db-query";
 import { BlDocumentStorage } from "@backend/storage/blDocumentStorage";
 import { BlError } from "@shared/bl-error/bl-error";
@@ -26,13 +25,13 @@ export class UserHandler {
     this.blid = new Blid();
     this.userDetailStorage = userDetailStorage
       ? userDetailStorage
-      : new BlDocumentStorage(BlCollectionName.UserDetails, userDetailSchema);
+      : new BlDocumentStorage(UserDetailModel);
     this._emailValidationHelper = emailValidationHelper
       ? emailValidationHelper
       : new EmailValidationHelper();
     this.userStorage = userStorage
       ? userStorage
-      : new BlDocumentStorage(BlCollectionName.Users, userSchema);
+      : new BlDocumentStorage(UserModel);
     this._localLoginHandler = localLoginHandler
       ? localLoginHandler
       : new LocalLoginHandler();

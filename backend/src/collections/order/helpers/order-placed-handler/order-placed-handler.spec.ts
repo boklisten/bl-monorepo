@@ -1,10 +1,12 @@
 import "mocha";
 
-import { BlCollectionName } from "@backend/collections/bl-collection";
+import { CustomerItemModel } from "@backend/collections/customer-item/customer-item.model";
 import { CustomerItemHandler } from "@backend/collections/customer-item/helpers/customer-item-handler";
 import { OrderItemMovedFromOrderHandler } from "@backend/collections/order/helpers/order-item-moved-from-order-handler/order-item-moved-from-order-handler";
 import { OrderPlacedHandler } from "@backend/collections/order/helpers/order-placed-handler/order-placed-handler";
+import { OrderModel } from "@backend/collections/order/order.model";
 import { PaymentHandler } from "@backend/collections/payment/helpers/payment-handler";
+import { UserDetailModel } from "@backend/collections/user-detail/user-detail.model";
 import { Messenger } from "@backend/messenger/messenger";
 import { BlDocumentStorage } from "@backend/storage/blDocumentStorage";
 import { BlError } from "@shared/bl-error/bl-error";
@@ -29,14 +31,10 @@ describe("OrderPlacedHandler", () => {
   let testUserDetail: UserDetail;
   let userDeatilUpdate: boolean;
 
-  const customerItemStorage = new BlDocumentStorage<CustomerItem>(
-    BlCollectionName.CustomerItems,
-  );
-  const orderStorage = new BlDocumentStorage<Order>(BlCollectionName.Orders);
+  const customerItemStorage = new BlDocumentStorage(CustomerItemModel);
+  const orderStorage = new BlDocumentStorage(OrderModel);
   const paymentHandler = new PaymentHandler();
-  const userDetailStorage = new BlDocumentStorage<UserDetail>(
-    BlCollectionName.UserDetails,
-  );
+  const userDetailStorage = new BlDocumentStorage(UserDetailModel);
   const messenger = new Messenger();
   const orderItemMovedFromOrderHandler = new OrderItemMovedFromOrderHandler();
   const customerItemHandler = new CustomerItemHandler();

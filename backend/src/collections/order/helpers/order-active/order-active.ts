@@ -1,5 +1,4 @@
-import { BlCollectionName } from "@backend/collections/bl-collection";
-import { orderSchema } from "@backend/collections/order/order.schema";
+import { OrderModel } from "@backend/collections/order/order.model";
 import { SEDbQueryBuilder } from "@backend/query/se.db-query-builder";
 import { BlDocumentStorage } from "@backend/storage/blDocumentStorage";
 import { BlError } from "@shared/bl-error/bl-error";
@@ -11,9 +10,7 @@ export class OrderActive {
   private orderStorage: BlDocumentStorage<Order>;
 
   constructor(_orderStorage?: BlDocumentStorage<Order>) {
-    this.orderStorage =
-      _orderStorage ??
-      new BlDocumentStorage(BlCollectionName.Orders, orderSchema);
+    this.orderStorage = _orderStorage ?? new BlDocumentStorage(OrderModel);
     this.queryBuilder = new SEDbQueryBuilder();
   }
 

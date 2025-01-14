@@ -1,13 +1,10 @@
 import { dateService } from "@backend/blc/date.service";
-import { BlCollectionName } from "@backend/collections/bl-collection";
-import { branchSchema } from "@backend/collections/branch/branch.schema";
-import { deliverySchema } from "@backend/collections/delivery/delivery.schema";
-import { paymentSchema } from "@backend/collections/payment/payment.schema";
+import { BranchModel } from "@backend/collections/branch/branch.model";
+import { DeliveryModel } from "@backend/collections/delivery/delivery.model";
+import { PaymentModel } from "@backend/collections/payment/payment.model";
 import { userHasValidSignature } from "@backend/collections/signature/helpers/signature.helper";
-import {
-  Signature,
-  signatureSchema,
-} from "@backend/collections/signature/signature.schema";
+import { SignatureModel } from "@backend/collections/signature/signature.model";
+import { Signature } from "@backend/collections/signature/signature.model";
 import { assertEnv, BlEnvironment } from "@backend/config/environment";
 import { sendMail } from "@backend/messenger/email/email-service";
 import { EMAIL_SETTINGS } from "@backend/messenger/email/email-settings";
@@ -47,16 +44,15 @@ export class OrderEmailHandler {
   ) {
     this._deliveryStorage = _deliveryStorage
       ? _deliveryStorage
-      : new BlDocumentStorage(BlCollectionName.Deliveries, deliverySchema);
+      : new BlDocumentStorage(DeliveryModel);
     this._paymentStorage = _paymentStorage
       ? _paymentStorage
-      : new BlDocumentStorage(BlCollectionName.Payments, paymentSchema);
+      : new BlDocumentStorage(PaymentModel);
     this._branchStorage = _branchStorage
       ? _branchStorage
-      : new BlDocumentStorage(BlCollectionName.Branches, branchSchema);
+      : new BlDocumentStorage(BranchModel);
     this._signatureStorage =
-      signatureStorage ??
-      new BlDocumentStorage(BlCollectionName.Signatures, signatureSchema);
+      signatureStorage ?? new BlDocumentStorage(SignatureModel);
   }
 
   public async sendOrderReceipt(

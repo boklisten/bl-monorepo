@@ -1,14 +1,10 @@
-import {
-  BlCollection,
-  BlCollectionName,
-} from "@backend/collections/bl-collection";
+import { BlCollection } from "@backend/collections/bl-collection";
 import { GenerateUniqueIdsOperation } from "@backend/collections/unique-item/operations/generate-unique-ids-operation";
 import { UniqueItemActiveOperation } from "@backend/collections/unique-item/operations/unique-item-active.operation";
-import { uniqueItemSchema } from "@backend/collections/unique-item/unique-item.schema";
+import { UniqueItemModel } from "@backend/collections/unique-item/unique-item.model";
 
 export const UniqueItemCollection: BlCollection = {
-  collectionName: BlCollectionName.UniqueItems,
-  mongooseSchema: uniqueItemSchema,
+  model: UniqueItemModel,
   documentPermission: {
     viewableForPermission: "employee",
   },

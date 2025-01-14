@@ -1,7 +1,6 @@
-import { BlCollectionName } from "@backend/collections/bl-collection";
-import { standMatchSchema } from "@backend/collections/stand-match/stand-match.schema";
-import { userDetailSchema } from "@backend/collections/user-detail/user-detail.schema";
-import { userMatchSchema } from "@backend/collections/user-match/user-match.schema";
+import { StandMatchModel } from "@backend/collections/stand-match/stand-match.model";
+import { UserDetailModel } from "@backend/collections/user-detail/user-detail.model";
+import { UserMatchModel } from "@backend/collections/user-match/user-match.model";
 import { sendMail } from "@backend/messenger/email/email-service";
 import { sendSMS } from "@backend/messenger/sms/sms-service";
 import { Operation } from "@backend/operation/operation";
@@ -31,14 +30,11 @@ export class MatchNotifyOperation implements Operation {
     userDetailStorage?: BlDocumentStorage<UserDetail>,
   ) {
     this._userMatchStorage =
-      userMatchStorage ??
-      new BlDocumentStorage(BlCollectionName.UserMatches, userMatchSchema);
+      userMatchStorage ?? new BlDocumentStorage(UserMatchModel);
     this._standMatchStorage =
-      standMatchStorage ??
-      new BlDocumentStorage(BlCollectionName.StandMatches, standMatchSchema);
+      standMatchStorage ?? new BlDocumentStorage(StandMatchModel);
     this._userDetailStorage =
-      userDetailStorage ??
-      new BlDocumentStorage(BlCollectionName.UserDetails, userDetailSchema);
+      userDetailStorage ?? new BlDocumentStorage(UserDetailModel);
   }
 
   async run(blApiRequest: BlApiRequest): Promise<BlapiResponse> {

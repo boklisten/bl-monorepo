@@ -1,6 +1,6 @@
 import { LocalLoginHandler } from "@backend/auth/local/local-login.handler";
-import { BlCollectionName } from "@backend/collections/bl-collection";
 import { ConfirmPendingPasswordResetOperation } from "@backend/collections/pending-password-reset/operations/confirm-pending-password-reset.operation";
+import { PendingPasswordResetModel } from "@backend/collections/pending-password-reset/pending-password-reset.model";
 import { SeCrypto } from "@backend/crypto/se.crypto";
 import { BlApiRequest } from "@backend/request/bl-api-request";
 import { SEResponseHandler } from "@backend/response/se.response.handler";
@@ -17,10 +17,9 @@ chaiUse(chaiAsPromised);
 should();
 
 describe("ConfirmPendingPasswordResetOperation", () => {
-  const pendingPasswordResetStorage =
-    new BlDocumentStorage<PendingPasswordReset>(
-      BlCollectionName.PendingPasswordResets,
-    );
+  const pendingPasswordResetStorage = new BlDocumentStorage(
+    PendingPasswordResetModel,
+  );
   const localLoginHandler = new LocalLoginHandler();
   const resHandler = new SEResponseHandler();
   const confirmPendingPasswordResetOperation =

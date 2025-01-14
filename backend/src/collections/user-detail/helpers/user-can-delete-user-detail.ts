@@ -1,8 +1,7 @@
 import { PermissionService } from "@backend/auth/permission/permission.service";
-import { BlCollectionName } from "@backend/collections/bl-collection";
 import { User } from "@backend/collections/user/user";
-import { userSchema } from "@backend/collections/user/userSchema";
-import { userDetailSchema } from "@backend/collections/user-detail/user-detail.schema";
+import { UserModel } from "@backend/collections/user/user.model";
+import { UserDetailModel } from "@backend/collections/user-detail/user-detail.model";
 import { SEDbQueryBuilder } from "@backend/query/se.db-query-builder";
 import { BlDocumentStorage } from "@backend/storage/blDocumentStorage";
 import { AccessToken } from "@shared/token/access-token";
@@ -17,10 +16,8 @@ export class UserCanDeleteUserDetail {
     _userStorage?: BlDocumentStorage<User>,
   ) {
     this.userDetailStorage =
-      _userDetailStorage ??
-      new BlDocumentStorage(BlCollectionName.UserDetails, userDetailSchema);
-    this.userStorage =
-      _userStorage ?? new BlDocumentStorage(BlCollectionName.Users, userSchema);
+      _userDetailStorage ?? new BlDocumentStorage(UserDetailModel);
+    this.userStorage = _userStorage ?? new BlDocumentStorage(UserModel);
     this.queryBuilder = new SEDbQueryBuilder();
   }
 

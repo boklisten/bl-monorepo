@@ -1,18 +1,14 @@
-import {
-  BlCollection,
-  BlCollectionName,
-} from "@backend/collections/bl-collection";
+import { BlCollection } from "@backend/collections/bl-collection";
 import { UserDetailDeleteHook } from "@backend/collections/user-detail/hooks/user-detail-delete.hook";
 import { UserDetailUpdateHook } from "@backend/collections/user-detail/hooks/user-detail-update.hook";
 import { UserDetailChangeEmailOperation } from "@backend/collections/user-detail/operations/change-email/user-detail-change-email.operation";
 import { UserDetailPermissionOperation } from "@backend/collections/user-detail/operations/permission/user-detail-permission.operation";
 import { UserDetailReadPermissionOperation } from "@backend/collections/user-detail/operations/read-permission/user-detail-read-permission.operation";
 import { UserDetailValidOperation } from "@backend/collections/user-detail/operations/user-detail-valid.operation";
-import { userDetailSchema } from "@backend/collections/user-detail/user-detail.schema";
+import { UserDetailModel } from "@backend/collections/user-detail/user-detail.model";
 
 export const UserDetailCollection: BlCollection = {
-  collectionName: BlCollectionName.UserDetails,
-  mongooseSchema: userDetailSchema,
+  model: UserDetailModel,
   documentPermission: {
     viewableForPermission: "employee",
   },

@@ -1,7 +1,9 @@
 import "mocha";
-import { BlCollectionName } from "@backend/collections/bl-collection";
+
 import { EmailValidation } from "@backend/collections/email-validation/email-validation";
+import { EmailValidationModel } from "@backend/collections/email-validation/email-validation.model";
 import { EmailValidationConfirmOperation } from "@backend/collections/email-validation/operations/email-validation-confirm.operation";
+import { UserDetailModel } from "@backend/collections/user-detail/user-detail.model";
 import { SEResponseHandler } from "@backend/response/se.response.handler";
 import { BlDocumentStorage } from "@backend/storage/blDocumentStorage";
 import { BlError } from "@shared/bl-error/bl-error";
@@ -16,12 +18,8 @@ chaiUse(chaiAsPromised);
 should();
 
 describe("EmailValidationConfirmOperation", () => {
-  const emailValidationStorage = new BlDocumentStorage<EmailValidation>(
-    BlCollectionName.EmailValidations,
-  );
-  const userDetailStorage = new BlDocumentStorage<UserDetail>(
-    BlCollectionName.UserDetails,
-  );
+  const emailValidationStorage = new BlDocumentStorage(EmailValidationModel);
+  const userDetailStorage = new BlDocumentStorage(UserDetailModel);
   const resHandler = new SEResponseHandler();
   const emailValidationConfirmOperation = new EmailValidationConfirmOperation(
     emailValidationStorage,

@@ -11,7 +11,7 @@ export class CollectionEndpointPatch<T extends BlDocument>
     return (
       this._documentStorage
         // @ts-expect-error fixme: auto ignored
-        .update(documentId, blApiRequest.data)
+        .update(blApiRequest.documentId, blApiRequest.data)
         .then((document_: T) => {
           return [document_];
         })

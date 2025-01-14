@@ -1,8 +1,8 @@
 import "mocha";
 
-import { BlCollectionName } from "@backend/collections/bl-collection";
 import { CustomerItemActiveBlid } from "@backend/collections/customer-item/helpers/customer-item-active-blid";
 import { UniqueItemActiveOperation } from "@backend/collections/unique-item/operations/unique-item-active.operation";
+import { UniqueItemModel } from "@backend/collections/unique-item/unique-item.model";
 import { SEResponseHandler } from "@backend/response/se.response.handler";
 import { BlDocumentStorage } from "@backend/storage/blDocumentStorage";
 import { UniqueItem } from "@shared/unique-item/unique-item";
@@ -16,9 +16,7 @@ should();
 describe("UniqueItemActiveOperation", () => {
   describe("run()", () => {
     const customerItemActiveBlid = new CustomerItemActiveBlid();
-    const uniqueItemStorage = new BlDocumentStorage<UniqueItem>(
-      BlCollectionName.UniqueItems,
-    );
+    const uniqueItemStorage = new BlDocumentStorage(UniqueItemModel);
 
     const getActiveCustomerItemsStub = sinon.stub(
       customerItemActiveBlid,

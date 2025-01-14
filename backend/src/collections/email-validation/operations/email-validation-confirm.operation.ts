@@ -1,7 +1,6 @@
-import { BlCollectionName } from "@backend/collections/bl-collection";
 import { EmailValidation } from "@backend/collections/email-validation/email-validation";
-import { emailValidationSchema } from "@backend/collections/email-validation/email-validation.schema";
-import { userDetailSchema } from "@backend/collections/user-detail/user-detail.schema";
+import { EmailValidationModel } from "@backend/collections/email-validation/email-validation.model";
+import { UserDetailModel } from "@backend/collections/user-detail/user-detail.model";
 import { isNullish } from "@backend/helper/typescript-helpers";
 import { Operation } from "@backend/operation/operation";
 import { BlApiRequest } from "@backend/request/bl-api-request";
@@ -22,16 +21,11 @@ export class EmailValidationConfirmOperation implements Operation {
     resHandler?: SEResponseHandler,
     userDetailStorage?: BlDocumentStorage<UserDetail>,
   ) {
-    this._emailValidationStorage = emailValidationStorage
-      ? emailValidationStorage
-      : new BlDocumentStorage(
-          BlCollectionName.EmailValidations,
-          emailValidationSchema,
-        );
-    this._resHandler = resHandler ? resHandler : new SEResponseHandler();
-    this._userDetailStorage = userDetailStorage
-      ? userDetailStorage
-      : new BlDocumentStorage(BlCollectionName.UserDetails, userDetailSchema);
+    this._emailValidationStorage =
+      emailValidationStorage ?? new BlDocumentStorage(EmailValidationModel);
+    this._resHandler = resHandler ?? new SEResponseHandler();
+    this._userDetailStorage =
+      userDetailStorage ?? new BlDocumentStorage(UserDetailModel);
   }
 
   run(

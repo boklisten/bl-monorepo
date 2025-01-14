@@ -1,5 +1,4 @@
-import { BlCollectionName } from "@backend/collections/bl-collection";
-import { branchSchema } from "@backend/collections/branch/branch.schema";
+import { BranchModel } from "@backend/collections/branch/branch.model";
 import { OrderFieldValidator } from "@backend/collections/order/helpers/order-validator/order-field-validator/order-field-validator";
 import { OrderItemValidator } from "@backend/collections/order/helpers/order-validator/order-item-validator/order-item-validator";
 import { OrderPlacedValidator } from "@backend/collections/order/helpers/order-validator/order-placed-validator/order-placed-validator";
@@ -23,21 +22,13 @@ export class OrderValidator {
     orderFieldValidator?: OrderFieldValidator,
     orderUserDetailValidator?: OrderUserDetailValidator,
   ) {
-    this.orderItemValidator = orderItemValidator
-      ? orderItemValidator
-      : new OrderItemValidator();
-    this.orderPlacedValidator = orderPlacedValidator
-      ? orderPlacedValidator
-      : new OrderPlacedValidator();
-    this.branchStorage = branchStorage
-      ? branchStorage
-      : new BlDocumentStorage<Branch>(BlCollectionName.Branches, branchSchema);
-    this.orderFieldValidator = orderFieldValidator
-      ? orderFieldValidator
-      : new OrderFieldValidator();
-    this.orderUserDetailValidator = orderUserDetailValidator
-      ? orderUserDetailValidator
-      : new OrderUserDetailValidator();
+    this.orderItemValidator = orderItemValidator ?? new OrderItemValidator();
+    this.orderPlacedValidator =
+      orderPlacedValidator ?? new OrderPlacedValidator();
+    this.branchStorage = branchStorage ?? new BlDocumentStorage(BranchModel);
+    this.orderFieldValidator = orderFieldValidator ?? new OrderFieldValidator();
+    this.orderUserDetailValidator =
+      orderUserDetailValidator ?? new OrderUserDetailValidator();
   }
 
   public async validate(order: Order, isAdmin: boolean): Promise<boolean> {

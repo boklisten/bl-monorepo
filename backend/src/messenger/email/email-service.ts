@@ -1,6 +1,5 @@
 import { dateService } from "@backend/blc/date.service";
-import { BlCollectionName } from "@backend/collections/bl-collection";
-import { itemSchema } from "@backend/collections/item/item.schema";
+import { ItemModel } from "@backend/collections/item/item.model";
 import { assertEnv, BlEnvironment } from "@backend/config/environment";
 import { logger } from "@backend/logger/logger";
 import { EMAIL_SETTINGS } from "@backend/messenger/email/email-settings";
@@ -52,7 +51,7 @@ export class EmailService implements MessengerService {
 
     this._itemStorage = itemStorage
       ? itemStorage
-      : new BlDocumentStorage<Item>(BlCollectionName.Items, itemSchema);
+      : new BlDocumentStorage(ItemModel);
     this._orderEmailHandler = new OrderEmailHandler(this._emailHandler);
     this._postOffice = inputPostOffice ? inputPostOffice : postOffice;
     this._postOffice.overrideLogger(logger);

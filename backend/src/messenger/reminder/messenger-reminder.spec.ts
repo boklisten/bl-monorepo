@@ -1,7 +1,8 @@
 import "mocha";
 
-import { BlCollectionName } from "@backend/collections/bl-collection";
+import { CustomerItemModel } from "@backend/collections/customer-item/customer-item.model";
 import { CustomerItemHandler } from "@backend/collections/customer-item/helpers/customer-item-handler";
+import { UserDetailModel } from "@backend/collections/user-detail/user-detail.model";
 import { EmailService } from "@backend/messenger/email/email-service";
 import { MessengerReminder } from "@backend/messenger/reminder/messenger-reminder";
 import { BlDocumentStorage } from "@backend/storage/blDocumentStorage";
@@ -16,9 +17,7 @@ chaiUse(chaiAsPromised);
 should();
 
 describe("MessengerReminder", () => {
-  const customerItemStorage = new BlDocumentStorage<CustomerItem>(
-    BlCollectionName.CustomerItems,
-  );
+  const customerItemStorage = new BlDocumentStorage(CustomerItemModel);
   const customerItemHandler = new CustomerItemHandler();
   const customerItemStorageGetAllStub = sinon.stub(
     customerItemStorage,
@@ -31,9 +30,7 @@ describe("MessengerReminder", () => {
   const emailService = new EmailService();
   const emailServiceRemindStub = sinon.stub(emailService, "remind");
   const getNotReturnedStub = sinon.stub(customerItemHandler, "getNotReturned");
-  const userDetailStorage = new BlDocumentStorage<UserDetail>(
-    BlCollectionName.UserDetails,
-  );
+  const userDetailStorage = new BlDocumentStorage(UserDetailModel);
   const userDetailStorageGetStub = sinon.stub(userDetailStorage, "get");
 
   const messengerReminder = new MessengerReminder(

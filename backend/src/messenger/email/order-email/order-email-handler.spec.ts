@@ -1,6 +1,8 @@
 import "mocha";
 import { dateService } from "@backend/blc/date.service";
-import { BlCollectionName } from "@backend/collections/bl-collection";
+import { BranchModel } from "@backend/collections/branch/branch.model";
+import { DeliveryModel } from "@backend/collections/delivery/delivery.model";
+import { PaymentModel } from "@backend/collections/payment/payment.model";
 import { OrderEmailHandler } from "@backend/messenger/email/order-email/order-email-handler";
 import { BlDocumentStorage } from "@backend/storage/blDocumentStorage";
 import { EmailHandler, EmailLog } from "@boklisten/bl-email";
@@ -27,15 +29,9 @@ describe("OrderEmailHandler", () => {
   let emailSendSuccessful: boolean;
   const standardTimeFormat = "DD.MM.YYYY HH.mm.ss";
   const standardDayFormat = "DD.MM.YY";
-  const branchStorage = new BlDocumentStorage<Branch>(
-    BlCollectionName.Branches,
-  );
-  const deliveryStorage = new BlDocumentStorage<Delivery>(
-    BlCollectionName.Deliveries,
-  );
-  const paymentStorage = new BlDocumentStorage<Payment>(
-    BlCollectionName.Payments,
-  );
+  const branchStorage = new BlDocumentStorage(BranchModel);
+  const deliveryStorage = new BlDocumentStorage(DeliveryModel);
+  const paymentStorage = new BlDocumentStorage(PaymentModel);
   const emailHandler = new EmailHandler({ sendgrid: { apiKey: "someKey" } });
   const orderEmailHandler = new OrderEmailHandler(
     emailHandler,

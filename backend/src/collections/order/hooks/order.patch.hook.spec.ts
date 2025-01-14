@@ -1,9 +1,10 @@
 import "mocha";
 
-import { BlCollectionName } from "@backend/collections/bl-collection";
 import { OrderPlacedHandler } from "@backend/collections/order/helpers/order-placed-handler/order-placed-handler";
 import { OrderValidator } from "@backend/collections/order/helpers/order-validator/order-validator";
 import { OrderPatchHook } from "@backend/collections/order/hooks/order.patch.hook";
+import { OrderModel } from "@backend/collections/order/order.model";
+import { UserDetailModel } from "@backend/collections/user-detail/user-detail.model";
 import { BlDocumentStorage } from "@backend/storage/blDocumentStorage";
 import { BlError } from "@shared/bl-error/bl-error";
 import { Order } from "@shared/order/order";
@@ -17,10 +18,8 @@ chaiUse(chaiAsPromised);
 should();
 
 describe("OrderPatchHook", () => {
-  const userDetailStorage = new BlDocumentStorage<UserDetail>(
-    BlCollectionName.UserDetails,
-  );
-  const orderStorage = new BlDocumentStorage<Order>(BlCollectionName.Orders);
+  const userDetailStorage = new BlDocumentStorage(UserDetailModel);
+  const orderStorage = new BlDocumentStorage(OrderModel);
   const orderValidator = new OrderValidator();
   const orderPlacedHandler = new OrderPlacedHandler();
   const orderPatchHook = new OrderPatchHook(

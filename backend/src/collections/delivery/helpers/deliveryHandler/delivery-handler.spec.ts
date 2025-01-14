@@ -1,7 +1,7 @@
 import "mocha";
 
-import { BlCollectionName } from "@backend/collections/bl-collection";
 import { DeliveryHandler } from "@backend/collections/delivery/helpers/deliveryHandler/delivery-handler";
+import { OrderModel } from "@backend/collections/order/order.model";
 import { BlDocumentStorage } from "@backend/storage/blDocumentStorage";
 import { BlError } from "@shared/bl-error/bl-error";
 import { Delivery } from "@shared/delivery/delivery";
@@ -15,7 +15,7 @@ should();
 
 let testOrder: Order;
 let testDelivery: Delivery;
-const orderStorage = new BlDocumentStorage<Order>(BlCollectionName.Orders);
+const orderStorage = new BlDocumentStorage(OrderModel);
 let canUpdateOrder = true;
 
 const deliveryHandler = new DeliveryHandler(orderStorage);

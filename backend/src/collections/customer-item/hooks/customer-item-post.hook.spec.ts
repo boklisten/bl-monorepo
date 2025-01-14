@@ -1,7 +1,10 @@
 import "mocha";
-import { BlCollectionName } from "@backend/collections/bl-collection";
+
+import { CustomerItemModel } from "@backend/collections/customer-item/customer-item.model";
 import { CustomerItemPostHook } from "@backend/collections/customer-item/hooks/customer-item-post.hook";
 import { CustomerItemValidator } from "@backend/collections/customer-item/validators/customer-item-validator";
+import { OrderModel } from "@backend/collections/order/order.model";
+import { UserDetailModel } from "@backend/collections/user-detail/user-detail.model";
 import { BlDocumentStorage } from "@backend/storage/blDocumentStorage";
 import { BlError } from "@shared/bl-error/bl-error";
 import { CustomerItem } from "@shared/customer-item/customer-item";
@@ -23,13 +26,9 @@ describe("CustomerItemPostHook", () => {
   let testAccessToken: AccessToken;
   let validateCustomerItem: boolean;
   let testUserDetail: UserDetail;
-  const customerItemStorage = new BlDocumentStorage<CustomerItem>(
-    BlCollectionName.CustomerItems,
-  );
-  const userDetailStorage = new BlDocumentStorage<UserDetail>(
-    BlCollectionName.UserDetails,
-  );
-  const orderStorage = new BlDocumentStorage<Order>(BlCollectionName.Orders);
+  const customerItemStorage = new BlDocumentStorage(CustomerItemModel);
+  const userDetailStorage = new BlDocumentStorage(UserDetailModel);
+  const orderStorage = new BlDocumentStorage(OrderModel);
   const customerItemValidator = new CustomerItemValidator();
   const customerItemPostHook = new CustomerItemPostHook(
     customerItemValidator,

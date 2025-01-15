@@ -45,8 +45,8 @@ export class UserDetailPermissionOperation implements Operation {
 
   async run(
     blApiRequest: BlApiRequest,
-    request?: Request,
-    res?: Response,
+    request: Request,
+    res: Response,
   ): Promise<boolean> {
     const {
       data: parsedRequest,
@@ -89,7 +89,6 @@ export class UserDetailPermissionOperation implements Operation {
 
     await this.userStorage.update(user.id, { permission: permissionChange });
 
-    // @ts-expect-error fixme: auto ignored
     this.resHandler.sendResponse(res, new BlapiResponse([{ success: true }]));
 
     return true;

@@ -451,13 +451,12 @@ export class OrderPlaceOperation implements Operation {
 
   public async run(
     blApiRequest: BlApiRequest,
-    request?: Request,
-    res?: Response,
+    request: Request,
+    res: Response,
   ): Promise<boolean> {
     let order: Order;
 
     try {
-      // @ts-expect-error fixme: auto ignored
       order = await this.orderStorage.get(blApiRequest.documentId);
     } catch {
       throw new ReferenceError(`order "${blApiRequest.documentId}" not found`);
@@ -562,7 +561,6 @@ export class OrderPlaceOperation implements Operation {
         // eslint-disable-next-line no-empty
       } catch {}
     }
-    // @ts-expect-error fixme: auto ignored : bad types
     this.resHandler.sendResponse(res, new BlapiResponse([order]));
     return true;
   }

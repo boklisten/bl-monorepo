@@ -23,14 +23,9 @@ export class UserDetailValidOperation implements Operation {
     this.resHandler = resHandler ?? new SEResponseHandler();
   }
 
-  async run(
-    blApiRequest: BlApiRequest,
-    request?: Request,
-    res?: Response,
-  ): Promise<boolean> {
+  async run(blApiRequest: BlApiRequest, request: Request, res: Response) {
     try {
       const userDetail = await this.userDetailStorage.get(
-        // @ts-expect-error fixme: auto ignored
         blApiRequest.documentId,
       );
 
@@ -38,14 +33,9 @@ export class UserDetailValidOperation implements Operation {
         this.userDetailHelper.getInvalidUserDetailFields(userDetail);
 
       if (invalidUserDetailFields.length <= 0) {
-        this.resHandler.sendResponse(
-          // @ts-expect-error fixme: auto ignored
-          res,
-          new BlapiResponse([{ valid: true }]),
-        );
+        this.resHandler.sendResponse(res, new BlapiResponse([{ valid: true }]));
       } else {
         this.resHandler.sendResponse(
-          // @ts-expect-error fixme: auto ignored
           res,
           new BlapiResponse([
             { valid: false, invalidFields: invalidUserDetailFields },
@@ -63,7 +53,6 @@ export class UserDetailValidOperation implements Operation {
         responseError.add(error);
       }
 
-      // @ts-expect-error fixme: auto ignored
       this.resHandler.sendErrorResponse(res, responseError);
 
       throw responseError;

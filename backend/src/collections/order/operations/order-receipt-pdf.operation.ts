@@ -16,10 +16,9 @@ export class OrderReceiptPdfOperation implements Operation {
 
   async run(
     blApiRequest: BlApiRequest,
-    request?: Request,
-    res?: Response,
+    request: Request,
+    res: Response,
   ): Promise<boolean> {
-    // @ts-expect-error fixme: auto ignored
     const order = await this.orderStorage.get(blApiRequest.documentId);
     const customerDetail = await this.userDetailStorage.get(order.customer);
 
@@ -28,7 +27,6 @@ export class OrderReceiptPdfOperation implements Operation {
       order,
     );
 
-    // @ts-expect-error fixme: auto ignored
     this.resHandler.sendResponse(res, new BlapiResponse([orderReceiptPdf]));
 
     return true;

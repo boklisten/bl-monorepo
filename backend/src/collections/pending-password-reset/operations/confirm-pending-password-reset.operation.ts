@@ -31,7 +31,6 @@ export class ConfirmPendingPasswordResetOperation implements Operation {
     validatePasswordResetConfirmationRequest(passwordResetConfirmationRequest);
 
     const pendingPasswordReset = await this.pendingPasswordResetStorage
-      // @ts-expect-error fixme: auto ignored
       .get(pendingPasswordResetId)
       .catch((getPasswordResetError) => {
         throw new BlError(

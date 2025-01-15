@@ -9,7 +9,7 @@ import { BlDocument } from "@shared/bl-document/bl-document";
 import { BlError } from "@shared/bl-error/bl-error";
 export class CollectionEndpointDocumentAuth<T extends BlDocument> {
   public validate(
-    restriction: BlEndpointRestriction,
+    restriction: BlEndpointRestriction | undefined,
     docs: T[],
     blApiRequest: BlApiRequest,
     documentPermission?: BlDocumentPermission,

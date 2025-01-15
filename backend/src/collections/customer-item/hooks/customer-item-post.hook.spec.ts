@@ -106,7 +106,7 @@ describe("CustomerItemPostHook", () => {
     validateCustomerItem = true;
   });
 
-  sinon.stub(orderStorage, "get").callsFake((id: string) => {
+  sinon.stub(orderStorage, "get").callsFake((id) => {
     if (id !== testOrder.id) {
       return Promise.reject(new BlError("order not found"));
     }
@@ -128,7 +128,7 @@ describe("CustomerItemPostHook", () => {
       return Promise.resolve(true);
     });
 
-  sinon.stub(userDetailStorage, "get").callsFake((id: string) => {
+  sinon.stub(userDetailStorage, "get").callsFake((id) => {
     if (id !== testUserDetail.id) {
       return Promise.reject(new BlError("userDetail not found"));
     }
@@ -136,7 +136,7 @@ describe("CustomerItemPostHook", () => {
     return Promise.resolve(testUserDetail);
   });
 
-  sinon.stub(customerItemStorage, "get").callsFake((id: string) => {
+  sinon.stub(customerItemStorage, "get").callsFake((id) => {
     if (id !== testCustomerItem.id) {
       return Promise.reject(new BlError("customerItem not found"));
     }

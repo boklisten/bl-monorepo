@@ -40,7 +40,7 @@ describe("EmailValidationHelper", () => {
     };
   });
 
-  sinon.stub(userDetailStorage, "get").callsFake((id: string) => {
+  sinon.stub(userDetailStorage, "get").callsFake((id) => {
     if (id !== testUserDetail.id) {
       return Promise.reject(new BlError("not found"));
     }

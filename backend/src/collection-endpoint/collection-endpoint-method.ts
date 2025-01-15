@@ -36,10 +36,6 @@ export abstract class CollectionEndpointMethod<T extends BlDocument> {
     this.responseHandler = new SEResponseHandler();
     this.collectionEndpointDocumentAuth =
       new CollectionEndpointDocumentAuth<T>();
-
-    if (!endpoint.hook) {
-      this.endpoint.hook = new Hook();
-    }
   }
 
   public create() {
@@ -99,26 +95,25 @@ export abstract class CollectionEndpointMethod<T extends BlDocument> {
   }
 
   private handleRequest(request: Request, res: Response, next: NextFunction) {
-    let userAccessToken: AccessToken;
+    let userAccessToken: AccessToken | undefined;
     let blApiRequest: BlApiRequest;
 
+    const hook = this.endpoint.hook ?? new Hook();
+
     this.collectionEndpointAuth
-      // @ts-expect-error fixme: auto ignored
       .authenticate(this.endpoint.restriction, request, res, next)
-      // @ts-expect-error fixme: auto ignored
-      .then((accessToken?: AccessToken) => {
-        // @ts-expect-error fixme: auto ignored
-        userAccessToken = accessToken;
-        // @ts-expect-error fixme: auto ignored
-        return this.endpoint.hook.before(
+      .then((authResult) => {
+        if (!isBoolean(authResult)) {
+          userAccessToken = authResult;
+        }
+        return hook.before(
           request.body,
-          accessToken,
-          // @ts-expect-error fixme: auto ignored
-          request.params.id,
+          userAccessToken,
+          request.params["id"],
           request.query,
         );
       })
-      .then((hookData?: unknown) => {
+      .then((hookData) => {
         // this is the endpoint specific request handler
         let data = request.body;
 
@@ -130,34 +125,31 @@ export abstract class CollectionEndpointMethod<T extends BlDocument> {
           documentId: request.params["id"],
           query: request.query,
           data: data,
-          user: {
+        };
+        if (userAccessToken !== undefined) {
+          blApiRequest.user = {
             id: userAccessToken.sub,
             details: userAccessToken.details,
             permission: userAccessToken.permission,
-          },
-        };
+          };
+        }
 
         return this.validateDocumentPermission(blApiRequest);
       })
-      .then((blApiRequest: BlApiRequest) => this.onRequest(blApiRequest))
-      .then((docs: T[]) =>
+      .then((blApiRequest) => this.onRequest(blApiRequest))
+      .then((docs) =>
         this.collectionEndpointDocumentAuth.validate(
-          // @ts-expect-error fixme: auto ignored
           this.endpoint.restriction,
           docs,
           blApiRequest,
           this.documentPermission,
         ),
       )
-      // @ts-expect-error fixme: auto ignored
-      .then((docs: T[]) => this.endpoint.hook.after(docs, userAccessToken))
-      // @ts-expect-error fixme: auto ignored
-      .then((docs: T[]) =>
+      .then((docs) => hook.after(docs, userAccessToken))
+      .then((docs) =>
         this.responseHandler.sendResponse(res, new BlapiResponse(docs)),
       )
-      .catch((blError: unknown) =>
-        this.responseHandler.sendErrorResponse(res, blError),
-      );
+      .catch((error) => this.responseHandler.sendErrorResponse(res, error));
   }
 
   private routerGetAll() {

@@ -55,7 +55,7 @@ describe("EmailValidationConfirmOperation", () => {
     .stub(resHandler, "sendResponse")
     .callsFake(() => {});
 
-  sinon.stub(emailValidationStorage, "get").callsFake((id: string) => {
+  sinon.stub(emailValidationStorage, "get").callsFake((id) => {
     if (id !== testEmailValidation.id) {
       return Promise.reject(new BlError("not found"));
     }
@@ -63,7 +63,7 @@ describe("EmailValidationConfirmOperation", () => {
     return Promise.resolve(testEmailValidation);
   });
 
-  sinon.stub(userDetailStorage, "get").callsFake((id: string) => {
+  sinon.stub(userDetailStorage, "get").callsFake((id) => {
     if (id !== testUserDetail.id) {
       return Promise.reject(new BlError("not found"));
     }
@@ -90,6 +90,7 @@ describe("EmailValidationConfirmOperation", () => {
       const blApiRequest = {};
 
       emailValidationConfirmOperation
+        // @ts-expect-error fixme missing params
         .run(blApiRequest)
         .catch((blError: BlError) => {
           expect(blError.getMsg()).to.be.eql(`no documentId provided`);
@@ -104,6 +105,7 @@ describe("EmailValidationConfirmOperation", () => {
       };
 
       emailValidationConfirmOperation
+        // @ts-expect-error fixme missing params
         .run(blApiRequest)
         .catch((blErr: BlError) => {
           expect(resHandlerSendErrorStub.called);
@@ -120,6 +122,7 @@ describe("EmailValidationConfirmOperation", () => {
       testEmailValidation.userDetail = "notFoundUserDetail";
 
       expect(
+        // @ts-expect-error fixme missing params
         emailValidationConfirmOperation.run(blApiRequest),
       ).to.be.rejectedWith(BlError, /could not update userDetail/);
     });

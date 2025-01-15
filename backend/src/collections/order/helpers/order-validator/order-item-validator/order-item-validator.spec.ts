@@ -49,14 +49,14 @@ describe("OrderItemValidator", () => {
     return Promise.resolve(true);
   });
 
-  sinon.stub(branchStorage, "get").callsFake((id: string) => {
+  sinon.stub(branchStorage, "get").callsFake((id) => {
     if (id !== "branch1") {
       return Promise.reject(new BlError("not found").code(702));
     }
     return Promise.resolve(testBranch);
   });
 
-  sinon.stub(itemStorage, "get").callsFake((id: string) => {
+  sinon.stub(itemStorage, "get").callsFake((id) => {
     return Promise.resolve({} as Item);
   });
 

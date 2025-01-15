@@ -45,6 +45,7 @@ describe("UniqueItemActiveOperation", () => {
       getActiveCustomerItemsStub.resolves([]);
 
       return expect(
+        // @ts-expect-error fixme missing params
         uniqueItemActiveOperation.run({ documentId: "uniqueItem1" }),
       ).to.eventually.be.true;
     });

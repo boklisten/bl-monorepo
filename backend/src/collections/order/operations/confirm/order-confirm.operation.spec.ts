@@ -39,6 +39,7 @@ describe("OrderConfirmOperation", () => {
       orderGetStub.rejects(new BlError("not found").code(702));
 
       return expect(
+        // @ts-expect-error fixme missing params
         orderConfirmOperation.run({
           documentId: "order1",
           user: { id: "user1", permission: "customer", details: "" },

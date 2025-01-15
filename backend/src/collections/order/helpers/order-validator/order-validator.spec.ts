@@ -44,7 +44,7 @@ describe("OrderValidator", () => {
   // @ts-expect-error fixme: auto ignored
   let orderUserDetailValidatorShouldResolve;
 
-  sinon.stub(branchStorage, "get").callsFake((id: string) => {
+  sinon.stub(branchStorage, "get").callsFake((id) => {
     if (id !== testBranch.id) {
       return Promise.reject(new BlError("not found").code(702));
     }

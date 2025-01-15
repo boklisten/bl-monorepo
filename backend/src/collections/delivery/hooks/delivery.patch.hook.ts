@@ -29,8 +29,7 @@ export class DeliveryPatchHook extends Hook {
   }
 
   override before(
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    body: any,
+    body: unknown,
     accessToken?: AccessToken,
     id?: string,
   ): Promise<boolean> {
@@ -46,7 +45,7 @@ export class DeliveryPatchHook extends Hook {
       return Promise.reject(new BlError("accessToken is undefined"));
     }
 
-    return this.tryToValidatePatch(body, accessToken, id)
+    return this.tryToValidatePatch(body, id)
       .then(() => {
         return true;
       })
@@ -55,10 +54,7 @@ export class DeliveryPatchHook extends Hook {
       });
   }
 
-  override after(
-    deliveries: Delivery[],
-    accessToken: AccessToken,
-  ): Promise<Delivery[]> {
+  override after(deliveries: Delivery[]): Promise<Delivery[]> {
     const delivery = deliveries[0];
 
     return new Promise((resolve, reject) => {
@@ -71,9 +67,8 @@ export class DeliveryPatchHook extends Hook {
             .validate(delivery)
             .then(() => {
               this.deliveryHandler
-
                 // @ts-expect-error fixme: auto ignored
-                .updateOrderBasedOnMethod(delivery, order, accessToken)
+                .updateOrderBasedOnMethod(delivery, order)
                 .then((updatedDelivery: Delivery) => {
                   return resolve([updatedDelivery]);
                 })
@@ -94,7 +89,6 @@ export class DeliveryPatchHook extends Hook {
   private tryToValidatePatch(
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     body: any,
-    accessToken: AccessToken,
     id: string,
   ): Promise<boolean> {
     return new Promise((resolve, reject) => {

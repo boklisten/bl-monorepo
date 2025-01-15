@@ -9,7 +9,7 @@ export class CollectionEndpointAuth {
   private authStrategy = "jwt";
 
   public authenticate(
-    restriction: BlEndpointRestriction,
+    restriction: BlEndpointRestriction | undefined,
     request: Request,
     res: Response,
     next: NextFunction,
@@ -37,7 +37,7 @@ export class CollectionEndpointAuth {
   }
 
   private validateAuth(
-    restriction: BlEndpointRestriction,
+    restriction: BlEndpointRestriction | undefined,
     accessToken: AccessToken,
   ): boolean {
     if (!accessToken) {

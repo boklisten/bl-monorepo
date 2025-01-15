@@ -92,13 +92,12 @@ export class OrderConfirmOperation implements Operation {
 
   public async run(
     blApiRequest: BlApiRequest,
-    request?: Request,
-    res?: Response,
+    request: Request,
+    res: Response,
   ): Promise<boolean> {
     const accessToken = {
       // @ts-expect-error fixme: auto ignored
       details: blApiRequest.user.id,
-
       // @ts-expect-error fixme: auto ignored
       permission: blApiRequest.user.permission,
     } as AccessToken;
@@ -106,7 +105,6 @@ export class OrderConfirmOperation implements Operation {
     let order;
 
     try {
-      // @ts-expect-error fixme: auto ignored
       order = await this.orderStorage.get(blApiRequest.documentId);
     } catch {
       throw new BlError(`order "${blApiRequest.documentId}" not found`);
@@ -131,7 +129,6 @@ export class OrderConfirmOperation implements Operation {
     } catch (error) {
       throw new BlError("order could not be placed:" + error);
     }
-    // @ts-expect-error fixme: auto ignored
     this.resHandler.sendResponse(res, new BlapiResponse([placedOrder]));
 
     return true;

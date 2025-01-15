@@ -54,6 +54,7 @@ describe("UserDetailChangeEmailOperation", () => {
 
   it("should reject if blApiRequest.data is empty", () => {
     return expect(
+      // @ts-expect-error fixme missing params
       userDetailChangeEmailOperation.run({
         documentId: "userDetail1",
         data: { email: "" },
@@ -66,6 +67,7 @@ describe("UserDetailChangeEmailOperation", () => {
     userDetailGetStub.rejects(new BlError("user detail not found"));
 
     return expect(
+      // @ts-expect-error fixme missing params
       userDetailChangeEmailOperation.run({
         documentId: "userDetail1",
         data: { email: "change@email.com" },
@@ -83,6 +85,7 @@ describe("UserDetailChangeEmailOperation", () => {
     userAggregateStub.rejects(new BlError("no user found"));
 
     return expect(
+      // @ts-expect-error fixme missing params
       userDetailChangeEmailOperation.run({
         documentId: "userDetail1",
         data: { email: "change@email.com" },
@@ -108,6 +111,7 @@ describe("UserDetailChangeEmailOperation", () => {
         ]);
 
         return expect(
+          // @ts-expect-error fixme missing params
           userDetailChangeEmailOperation.run({
             user: { id: "userDetail2", permission: permission, details: "" },
             documentId: "userDetail1",
@@ -135,6 +139,7 @@ describe("UserDetailChangeEmailOperation", () => {
     localLoginAggregateStub.rejects(new BlError("local login not found"));
 
     return expect(
+      // @ts-expect-error fixme missing params
       userDetailChangeEmailOperation.run({
         documentId: "userDetail1",
         data: { email: "change@email.com" },
@@ -163,6 +168,7 @@ describe("UserDetailChangeEmailOperation", () => {
     } as User);
 
     return expect(
+      // @ts-expect-error fixme missing params
       userDetailChangeEmailOperation.run({
         documentId: "userDetail1",
         data: { email: "alreadyAdded@email.com" },
@@ -193,6 +199,7 @@ describe("UserDetailChangeEmailOperation", () => {
     userDetailUpdateStub.rejects(new BlError("could not update user detail"));
 
     return expect(
+      // @ts-expect-error fixme missing params
       userDetailChangeEmailOperation.run({
         documentId: "userDetail1",
         data: { email: "change@email.com" },
@@ -221,6 +228,7 @@ describe("UserDetailChangeEmailOperation", () => {
     userUpdateStub.rejects(new BlError("could not update user"));
 
     return expect(
+      // @ts-expect-error fixme missing params
       userDetailChangeEmailOperation.run({
         documentId: "userDetail1",
         data: { email: "change@email.com" },
@@ -250,6 +258,7 @@ describe("UserDetailChangeEmailOperation", () => {
     localLoginUpdateStub.rejects(new BlError("could not update local login"));
 
     return expect(
+      // @ts-expect-error fixme missing params
       userDetailChangeEmailOperation.run({
         documentId: "userDetail1",
         data: { email: "change@email.com" },
@@ -280,6 +289,7 @@ describe("UserDetailChangeEmailOperation", () => {
     resHandlerSendResponseStub.resolves(true);
 
     return expect(
+      // @ts-expect-error fixme missing params
       userDetailChangeEmailOperation.run({
         documentId: "userDetail1",
         data: { email: "change@email.com" },

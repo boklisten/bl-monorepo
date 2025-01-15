@@ -28,7 +28,7 @@ describe("OrderItemExtendValidator", () => {
   let testCustomerItem: CustomerItem;
 
   describe("validate()", () => {
-    sinon.stub(customerItemStorage, "get").callsFake((id: string) => {
+    sinon.stub(customerItemStorage, "get").callsFake((id) => {
       if (id !== testCustomerItem.id) {
         return Promise.reject(new BlError("not found").code(702));
       }

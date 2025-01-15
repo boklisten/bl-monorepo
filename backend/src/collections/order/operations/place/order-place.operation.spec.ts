@@ -151,6 +151,7 @@ describe("OrderPlaceOperation", () => {
       getOrderStub.rejects(new BlError('order "randomOrder" not found'));
 
       return expect(
+        // @ts-expect-error fixme missing params
         orderPlaceOperation.run({ documentId: "randomOrder" }),
       ).to.eventually.be.rejectedWith(/order "randomOrder" not found/);
     });
@@ -166,6 +167,7 @@ describe("OrderPlaceOperation", () => {
       getSignatureStub.resolves(validSignature);
 
       return expect(
+        // @ts-expect-error fixme missing params
         orderPlaceOperation.run({
           documentId: validOrder.id,
           user: { id: "user1", permission: "admin", details: "" },
@@ -185,6 +187,7 @@ describe("OrderPlaceOperation", () => {
       getUserDetailStub.resolves(userDetailWithSignatures);
 
       return expect(
+        // @ts-expect-error fixme missing params
         orderPlaceOperation.run({
           documentId: validOrder.id,
           user: { id: "user1", permission: "admin", details: "" },
@@ -215,6 +218,7 @@ describe("OrderPlaceOperation", () => {
       getSignatureStub.resolves(validSignature);
       getUserDetailStub.resolves(userDetailWithSignatures);
 
+      // @ts-expect-error fixme missing params
       const result = await orderPlaceOperation.run({
         documentId: validOrder.id,
         user: { id: "user1", permission: "admin", details: "" },

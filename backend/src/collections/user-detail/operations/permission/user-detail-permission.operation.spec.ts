@@ -40,6 +40,7 @@ describe("UserDetailPermissionOperation", () => {
     userDetailGetStub.rejects(new BlError("user-detail not found"));
 
     return expect(
+      // @ts-expect-error fixme missing params
       userDetailPermissionOperation.run({
         user: { id: "userDetail2", permission: "admin", details: "" },
         data: { permission: "employee" },
@@ -57,6 +58,7 @@ describe("UserDetailPermissionOperation", () => {
     userAggregateStub.rejects(new BlError("user not found"));
 
     return expect(
+      // @ts-expect-error fixme missing params
       userDetailPermissionOperation.run({
         user: { id: "userDetail2", permission: "admin", details: "" },
         data: { permission: "employee" },
@@ -79,6 +81,7 @@ describe("UserDetailPermissionOperation", () => {
       ]);
 
       return expect(
+        // @ts-expect-error fixme missing params
         userDetailPermissionOperation.run({
           user: { id: "userDetail2", permission: permission, details: "" },
           documentId: "userDetail1",
@@ -102,6 +105,7 @@ describe("UserDetailPermissionOperation", () => {
     ]);
 
     return expect(
+      // @ts-expect-error fixme missing params
       userDetailPermissionOperation.run({
         user: { id: "userDetail2", permission: "manager", details: "" },
         documentId: "userDetail1",
@@ -121,6 +125,7 @@ describe("UserDetailPermissionOperation", () => {
     ]);
 
     return expect(
+      // @ts-expect-error fixme missing params
       userDetailPermissionOperation.run({
         user: { id: "userDetail1", permission: "manager", details: "" },
         documentId: "userDetail1",
@@ -134,6 +139,7 @@ describe("UserDetailPermissionOperation", () => {
 
   it("should reject if blApiRequest.data.permission is not a valid permission", () => {
     return expect(
+      // @ts-expect-error fixme missing params
       userDetailPermissionOperation.run({
         user: { id: "userDetail1", permission: "admin", details: "" },
         documentId: "userDetail2",
@@ -154,6 +160,7 @@ describe("UserDetailPermissionOperation", () => {
     userUpdateStub.rejects(new BlError("could not update permission"));
 
     return expect(
+      // @ts-expect-error fixme missing params
       userDetailPermissionOperation.run({
         user: { id: "userDetail1", permission: "admin", details: "" },
         documentId: "userDetail2",
@@ -175,6 +182,7 @@ describe("UserDetailPermissionOperation", () => {
     resHandlerStub.resolves(true);
 
     return expect(
+      // @ts-expect-error fixme missing params
       userDetailPermissionOperation.run({
         user: { id: "userDetail1", permission: "admin", details: "" },
         documentId: "userDetail2",

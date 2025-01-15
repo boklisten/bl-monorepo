@@ -30,8 +30,8 @@ export class EmailValidationConfirmOperation implements Operation {
 
   run(
     blApiRequest: BlApiRequest,
-    request?: Request,
-    res?: Response,
+    request: Request,
+    res: Response,
   ): Promise<boolean> {
     return new Promise((resolve, reject) => {
       if (isNullish(blApiRequest.documentId)) {
@@ -45,7 +45,6 @@ export class EmailValidationConfirmOperation implements Operation {
             .update(emailValidation.userDetail, { emailConfirmed: true })
             .then(() => {
               this.resHandler.sendResponse(
-                // @ts-expect-error fixme: auto ignored
                 res,
                 new BlapiResponse([{ confirmed: true }]),
               );
@@ -56,13 +55,11 @@ export class EmailValidationConfirmOperation implements Operation {
                 `could not update userDetail "${emailValidation.id}" with emailConfirmed true`,
               ).add(updateUserDetailError);
 
-              // @ts-expect-error fixme: auto ignored
               this.resHandler.sendErrorResponse(res, error);
               reject(error);
             });
         })
         .catch((getEmailValidationError: BlError) => {
-          // @ts-expect-error fixme: auto ignored
           this.resHandler.sendErrorResponse(res, getEmailValidationError);
           reject(
             new BlError(

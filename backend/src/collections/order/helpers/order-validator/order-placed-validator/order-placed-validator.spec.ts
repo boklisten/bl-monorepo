@@ -105,7 +105,7 @@ describe("OrderPlacedValidator", () => {
         });
       });
 
-      sinon.stub(deliveryStorage, "get").callsFake((id: string) => {
+      sinon.stub(deliveryStorage, "get").callsFake((id) => {
         return new Promise((resolve, reject) => {
           if (id !== "delivery1") {
             return reject(new BlError("not found").code(702));

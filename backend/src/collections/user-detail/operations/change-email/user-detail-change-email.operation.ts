@@ -41,8 +41,8 @@ export class UserDetailChangeEmailOperation implements Operation {
 
   async run(
     blApiRequest: BlApiRequest,
-    request?: Request,
-    res?: Response,
+    request: Request,
+    res: Response,
   ): Promise<boolean> {
     // @ts-expect-error fixme: auto ignored
     const emailChange = blApiRequest.data["email"];
@@ -50,7 +50,6 @@ export class UserDetailChangeEmailOperation implements Operation {
     this.validateEmail(emailChange);
 
     const userDetail = await this.userDetailStorage.get(
-      // @ts-expect-error fixme: auto ignored
       blApiRequest.documentId,
     );
 
@@ -85,7 +84,6 @@ export class UserDetailChangeEmailOperation implements Operation {
       blApiRequest.user,
     );
 
-    // @ts-expect-error fixme: auto ignored
     this.resHandler.sendResponse(res, new BlapiResponse([{ success: true }]));
     return true;
   }

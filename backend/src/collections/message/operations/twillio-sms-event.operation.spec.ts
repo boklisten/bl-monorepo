@@ -38,7 +38,6 @@ describe("TwilioSmsEventOperation", () => {
           price_unit: "USD",
           body: "some message",
         },
-        query: null,
       };
 
       return expect(twilioSmsEventOperation.run(blApiRequest)).to.be.rejected;

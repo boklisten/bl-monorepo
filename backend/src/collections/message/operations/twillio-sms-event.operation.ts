@@ -22,14 +22,12 @@ export class TwilioSmsEventOperation implements Operation {
     if (
       !blApiRequest.query ||
       Object.keys(blApiRequest.query).length === 0 ||
-      // @ts-expect-error fixme: auto ignored
       !blApiRequest.query["bl_message_id"]
     ) {
       throw new BlError("blApiRequest.query.bl_message_id is empty").code(701);
     }
 
-    // @ts-expect-error fixme: auto ignored
-    const blMessageId = blApiRequest.query["bl_message_id"];
+    const blMessageId = blApiRequest.query["bl_message_id"]?.toString();
 
     if (Array.isArray(blApiRequest.data)) {
       for (const twilioEvent of blApiRequest.data) {
@@ -42,8 +40,10 @@ export class TwilioSmsEventOperation implements Operation {
     return { documentName: "success", data: [] };
   }
 
-  // @ts-expect-error fixme: auto ignored
-  private async parseAndAddTwilioEvent(twilioEvent, blMessageId: string) {
+  private async parseAndAddTwilioEvent(
+    twilioEvent: unknown,
+    blMessageId: string,
+  ) {
     if (!blMessageId) {
       logger.debug(`sendgrid event did not have a bl_message_id`);
       return true; // default is that the message dont have a blMessageId
@@ -63,8 +63,7 @@ export class TwilioSmsEventOperation implements Operation {
 
   private async updateMessageWithTwilioSmsEvent(
     message: Message,
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    smsEvent: any,
+    smsEvent: unknown,
   ): Promise<boolean> {
     const newSmsEvents =
       message.smsEvents && message.smsEvents.length > 0
@@ -76,6 +75,7 @@ export class TwilioSmsEventOperation implements Operation {
     await this.messageStorage.update(message.id, { smsEvents: newSmsEvents });
 
     logger.silly(
+      // @ts-expect-error fixme bad types
       `updated message "${message.id}" with sms event: "${smsEvent["status"]}"`,
     );
 

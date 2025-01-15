@@ -51,7 +51,7 @@ describe("ConfirmPendingPasswordResetOperation", () => {
     localLoginUpdateSuccess = true;
   });
 
-  sinon.stub(pendingPasswordResetStorage, "get").callsFake((id: string) => {
+  sinon.stub(pendingPasswordResetStorage, "get").callsFake((id) => {
     if (id !== testPendingPasswordReset.id) {
       return Promise.reject(new BlError("not found"));
     }

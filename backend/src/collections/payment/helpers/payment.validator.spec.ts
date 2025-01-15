@@ -60,14 +60,14 @@ describe("PaymentValidator", () => {
     };
   });
 
-  sinon.stub(orderStorage, "get").callsFake((id: string) => {
+  sinon.stub(orderStorage, "get").callsFake((id) => {
     if (id !== testOrder.id) {
       return Promise.reject(new BlError("order not found").code(702));
     }
     return Promise.resolve(testOrder);
   });
 
-  sinon.stub(deliveryStorage, "get").callsFake((id: string) => {
+  sinon.stub(deliveryStorage, "get").callsFake((id) => {
     return id === testDelivery.id
       ? Promise.resolve(testDelivery)
       : Promise.reject(new BlError("delivery not found"));

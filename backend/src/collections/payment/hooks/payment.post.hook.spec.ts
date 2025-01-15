@@ -65,7 +65,7 @@ describe("PaymentPostHook", () => {
     handleDibsPaymentValid = true;
   });
 
-  sinon.stub(paymentStorage, "get").callsFake((id: string) => {
+  sinon.stub(paymentStorage, "get").callsFake((id) => {
     if (id !== testPayment.id) {
       return Promise.reject(new BlError("not found").code(702));
     }
@@ -83,7 +83,7 @@ describe("PaymentPostHook", () => {
     return Promise.resolve(testPayment);
   });
 
-  sinon.stub(orderStorage, "get").callsFake((id: string) => {
+  sinon.stub(orderStorage, "get").callsFake((id) => {
     if (id !== testOrder.id) {
       return Promise.reject(new BlError("not found").code(702));
     }

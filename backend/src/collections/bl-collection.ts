@@ -5,7 +5,7 @@ import { NestedDocument } from "@backend/storage/nested-document";
 import { UserPermission } from "@shared/permission/user-permission";
 import { Schema } from "mongoose";
 
-// @info This needs a type parameter to dynamically type BlDocumentStorage
+// @info This needs a type parameter to dynamically type BlStorage
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 export interface BlModel<T = unknown> {
   name: string;

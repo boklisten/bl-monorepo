@@ -42,7 +42,7 @@ describe("PaymentPatchHook", () => {
     dibsPaymentCreated = true;
   });
 
-  sinon.stub(paymentStorage, "get").callsFake((id: string) => {
+  sinon.stub(paymentStorage, "get").callsFake((id) => {
     return id === testPayment.id
       ? Promise.resolve(testPayment)
       : Promise.reject(new BlError("not found"));

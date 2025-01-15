@@ -3,10 +3,9 @@ import {
   BlEndpointMethod,
   BlEndpointOperation,
 } from "@backend/collections/bl-collection";
+import { isBoolean } from "@backend/helper/typescript-helpers";
 import { BlApiRequest } from "@backend/request/bl-api-request";
 import { SEResponseHandler } from "@backend/response/se.response.handler";
-import { BlError } from "@shared/bl-error/bl-error";
-import { BlapiResponse } from "@shared/blapi-response/blapi-response";
 import { NextFunction, Request, Response, Router } from "express";
 
 export class CollectionEndpointOperation {
@@ -18,9 +17,7 @@ export class CollectionEndpointOperation {
     private collectionUri: string,
     private method: BlEndpointMethod,
     protected operation: BlEndpointOperation,
-  ) {
-    this.createUri(this.collectionUri, this.operation.name, method);
-  }
+  ) {}
 
   public create() {
     const uri = this.createUri(
@@ -76,39 +73,36 @@ export class CollectionEndpointOperation {
   }
 
   private handleRequest(request: Request, res: Response, next: NextFunction) {
-    let blApiRequest: BlApiRequest;
+    let blApiRequest: BlApiRequest | undefined;
 
     this.collectionEndpointAuth
-      // @ts-expect-error fixme: auto ignored
       .authenticate(this.operation.restriction, request, res, next)
-      // @ts-expect-error fixme: auto ignored
-      .then((accessToken?: AccessToken) => {
+      .then((accessToken) => {
         blApiRequest = {
           documentId: request.params["id"],
           query: request.query,
           data: request.body,
-          user: {
+        };
+        if (!isBoolean(accessToken)) {
+          blApiRequest.user = {
             id: accessToken.sub,
             details: accessToken.details,
             permission: accessToken.permission,
-          },
-        };
-
+          };
+        }
         this.operation.operation
           .run(blApiRequest, request, res, next)
-          .then((blapiResponse: BlapiResponse | boolean) => {
-            if (typeof blapiResponse === "boolean") {
+          .then((result) => {
+            if (isBoolean(result)) {
               return;
             }
 
-            this.responseHandler.sendResponse(res, blapiResponse);
+            this.responseHandler.sendResponse(res, result);
           })
           .catch((error) => {
             this.responseHandler.sendErrorResponse(res, error);
           });
       })
-      .catch((blError: BlError) =>
-        this.responseHandler.sendErrorResponse(res, blError),
-      );
+      .catch((error) => this.responseHandler.sendErrorResponse(res, error));
   }
 }

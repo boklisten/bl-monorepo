@@ -159,7 +159,7 @@ describe("PaymentDibsHandler", () => {
       return Promise.resolve(testPayment);
     });
 
-    sinon.stub(orderStorage, "get").callsFake((id: string) => {
+    sinon.stub(orderStorage, "get").callsFake((id) => {
       return id === testOrder.id
         ? Promise.resolve(testOrder)
         : Promise.reject(new BlError("order not found"));

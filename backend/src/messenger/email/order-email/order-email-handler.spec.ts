@@ -40,7 +40,7 @@ describe("OrderEmailHandler", () => {
     branchStorage,
   );
 
-  sinon.stub(deliveryStorage, "get").callsFake(async (id: string) => {
+  sinon.stub(deliveryStorage, "get").callsFake(async (id) => {
     if (id !== testDelivery.id) {
       throw new BlError("delivery not found");
     }
@@ -54,7 +54,7 @@ describe("OrderEmailHandler", () => {
 
   const paymentStorageStub = sinon
     .stub(paymentStorage, "get")
-    .callsFake(async (id: string) => {
+    .callsFake(async (id) => {
       if (id !== testPayment.id) {
         throw new BlError("payment not found");
       }

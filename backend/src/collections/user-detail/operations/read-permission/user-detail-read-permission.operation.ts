@@ -29,11 +29,10 @@ export class UserDetailReadPermissionOperation implements Operation {
 
   async run(
     blApiRequest: BlApiRequest,
-    request?: Request,
-    res?: Response,
+    request: Request,
+    res: Response,
   ): Promise<boolean> {
     const userDetail = await this.userDetailStorage.get(
-      // @ts-expect-error fixme: auto ignored
       blApiRequest.documentId,
     );
 
@@ -43,7 +42,6 @@ export class UserDetailReadPermissionOperation implements Operation {
     const user = users[0];
 
     this.resHandler.sendResponse(
-      // @ts-expect-error fixme: auto ignored
       res,
       // @ts-expect-error fixme: auto ignored
       new BlapiResponse([{ permission: user.permission }]),

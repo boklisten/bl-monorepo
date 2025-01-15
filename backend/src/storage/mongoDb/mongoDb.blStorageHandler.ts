@@ -28,7 +28,8 @@ export class MongoDbBlStorageHandler<T extends BlDocument>
     this.mongooseModel = new MongooseModelCreator<T>(model).create();
   }
 
-  public async get(id: string): Promise<T> {
+  // fixme: disallow undefined here, and handle missing values higher up
+  public async get(id: string | undefined): Promise<T> {
     const document_ = (await this.mongooseModel
       .findById<T>(id)
       .lean({ transform: MongooseModelCreator.transformObject })

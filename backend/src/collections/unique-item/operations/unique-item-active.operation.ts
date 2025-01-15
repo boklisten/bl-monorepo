@@ -28,12 +28,11 @@ export class UniqueItemActiveOperation implements Operation {
 
   async run(
     blApiRequest: BlApiRequest,
-    request?: Request,
-    res?: Response,
+    request: Request,
+    res: Response,
   ): Promise<boolean> {
     let uniqueItem: UniqueItem;
     try {
-      // @ts-expect-error fixme: auto ignored
       uniqueItem = await this.uniqueItemStorage.get(blApiRequest.documentId);
     } catch {
       throw new BlError("not found").code(702);
@@ -46,12 +45,10 @@ export class UniqueItemActiveOperation implements Operation {
           uniqueItem.blid,
         );
     } catch {
-      // @ts-expect-error fixme: auto ignored
       this.sendResponse(res, []);
       return true;
     }
 
-    // @ts-expect-error fixme: auto ignored
     this.sendResponse(res, activeCustomerItemIds);
     return true;
   }

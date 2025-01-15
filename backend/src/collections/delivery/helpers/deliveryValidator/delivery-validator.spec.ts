@@ -29,7 +29,7 @@ describe("DeliveryValidator", () => {
   let deliveryBranchValidation = true;
   let deliveryBringValidation = true;
 
-  sinon.stub(orderStorage, "get").callsFake((id: string) => {
+  sinon.stub(orderStorage, "get").callsFake((id) => {
     if (id !== testOrder.id) {
       return Promise.reject(new BlError("not found").code(702));
     }

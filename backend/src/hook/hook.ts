@@ -1,5 +1,6 @@
 import { BlDocument } from "@shared/bl-document/bl-document";
 import { AccessToken } from "@shared/token/access-token";
+import { ParsedQs } from "qs";
 
 export class Hook {
   public before(
@@ -10,7 +11,7 @@ export class Hook {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     id?: string,
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    query?: unknown,
+    query?: ParsedQs,
   ): Promise<boolean | unknown> {
     return Promise.resolve(true);
   }

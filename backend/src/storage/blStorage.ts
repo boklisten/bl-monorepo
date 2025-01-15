@@ -24,7 +24,7 @@ export class BlStorage<T extends BlDocument> implements BlStorageHandler<T> {
     this.mongoDbHandler = new MongoDbBlStorageHandler<T>(model);
   }
 
-  get(id: string): Promise<T> {
+  get(id: string | undefined): Promise<T> {
     return new Promise((resolve, reject) => {
       this.mongoDbHandler
         .get(id)

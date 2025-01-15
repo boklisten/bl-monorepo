@@ -78,14 +78,14 @@ describe("DeliveryPatchHook", () => {
     };
   });
 
-  sinon.stub(deliveryStorage, "get").callsFake((id: string) => {
+  sinon.stub(deliveryStorage, "get").callsFake((id) => {
     if (id !== testDelivery.id) {
       return Promise.reject(new BlError("not found").code(702));
     }
     return Promise.resolve(testDelivery);
   });
 
-  sinon.stub(orderStorage, "get").callsFake((id: string) => {
+  sinon.stub(orderStorage, "get").callsFake((id) => {
     if (id !== testOrder.id) {
       return Promise.reject(new BlError("not found").code(702));
     }

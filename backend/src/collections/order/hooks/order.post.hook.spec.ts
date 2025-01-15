@@ -112,7 +112,7 @@ describe("OrderPostHook", () => {
     throw new BlError("not a valid order");
   });
 
-  sinon.stub(orderStorage, "get").callsFake((orderId: string) => {
+  sinon.stub(orderStorage, "get").callsFake((orderId) => {
     if (orderId !== "order1" && orderId !== "orderValid") {
       return Promise.reject(new BlError("not found").code(702));
     }

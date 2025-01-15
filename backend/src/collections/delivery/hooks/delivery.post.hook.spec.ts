@@ -119,7 +119,7 @@ describe("DeliveryPostHook", () => {
       return Promise.reject(new BlError("order could not be updated"));
     });
 
-  sinon.stub(deliveryStorage, "get").callsFake((id: string) => {
+  sinon.stub(deliveryStorage, "get").callsFake((id) => {
     return new Promise((resolve, reject) => {
       if (id === "delivery1") {
         return resolve(testDelivery);
@@ -128,7 +128,7 @@ describe("DeliveryPostHook", () => {
     });
   });
 
-  sinon.stub(orderStorage, "get").callsFake((id: string) => {
+  sinon.stub(orderStorage, "get").callsFake((id) => {
     return new Promise((resolve, reject) => {
       if (id === "order1") {
         return resolve(testOrder);

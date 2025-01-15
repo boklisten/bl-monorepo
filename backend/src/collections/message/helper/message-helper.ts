@@ -4,11 +4,9 @@ import { BlError } from "@shared/bl-error/bl-error";
 import { Message } from "@shared/message/message";
 
 export class MessageHelper {
-  private queryBuilder: SEDbQueryBuilder;
+  private queryBuilder = new SEDbQueryBuilder();
 
-  constructor(private messageStorage: BlStorage<Message>) {
-    this.queryBuilder = new SEDbQueryBuilder();
-  }
+  constructor(private messageStorage: BlStorage<Message>) {}
 
   public async isAdded(message: Message) {
     const databaseQuery = this.queryBuilder.getDbQuery(

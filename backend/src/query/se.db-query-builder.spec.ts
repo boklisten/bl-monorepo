@@ -11,7 +11,7 @@ should();
 
 describe("DbQueryBuilder", () => {
   describe("getDbQuery()", () => {
-    const dbQueryBuilder: SEDbQueryBuilder = new SEDbQueryBuilder();
+    const dbQueryBuilder = new SEDbQueryBuilder();
 
     it("should throw return empty SeDbQuery object if no query is given", () => {
       expect(

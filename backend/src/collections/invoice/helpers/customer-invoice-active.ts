@@ -6,14 +6,12 @@ import { BlError } from "@shared/bl-error/bl-error";
 import { Invoice } from "@shared/invoice/invoice";
 
 export class CustomerInvoiceActive {
-  private queryBuilder: SEDbQueryBuilder;
-  private invoiceActive: InvoiceActive;
+  private queryBuilder = new SEDbQueryBuilder();
+  private invoiceActive = new InvoiceActive();
   private invoiceStorage: BlStorage<Invoice>;
 
   constructor(invoiceStorage?: BlStorage<Invoice>) {
     this.invoiceStorage = invoiceStorage ?? new BlStorage(InvoiceModel);
-    this.queryBuilder = new SEDbQueryBuilder();
-    this.invoiceActive = new InvoiceActive();
   }
 
   public async haveActiveInvoices(userId: string): Promise<boolean> {

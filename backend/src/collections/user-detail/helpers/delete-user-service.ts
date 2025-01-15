@@ -20,7 +20,7 @@ import { Payment } from "@shared/payment/payment";
 import { UserDetail } from "@shared/user/user-detail/user-detail";
 
 export class DeleteUserService {
-  private queryBuilder: SEDbQueryBuilder;
+  private queryBuilder = new SEDbQueryBuilder();
   private userStorage: BlStorage<User>;
   private userDetailStorage: BlStorage<UserDetail>;
   private localLoginStorage: BlStorage<LocalLogin>;
@@ -55,8 +55,6 @@ export class DeleteUserService {
     this.userMatchStorage = userMatchStorage ?? new BlStorage(UserMatchModel);
     this.standMatchStorage =
       standMatchStorage ?? new BlStorage(StandMatchModel);
-
-    this.queryBuilder = new SEDbQueryBuilder();
   }
 
   public async deleteUser(userDetailId: string): Promise<void> {

@@ -5,39 +5,17 @@ import { NestedDocument } from "@backend/storage/nested-document";
 import { UserPermission } from "@shared/permission/user-permission";
 import { Schema } from "mongoose";
 
-export enum BlModelName {
-  BranchItems = "branchitems",
-  Branches = "branches",
-  Companies = "companies",
-  CustomerItems = "customeritems",
-  Deliveries = "deliveries",
-  EditableTexts = "editabletexts",
-  EmailValidations = "email_validations",
-  Invoices = "invoices",
-  Items = "items",
-  LocalLogins = "locallogins",
-  UserMatches = "user_matches",
-  StandMatches = "stand_matches",
-  Messages = "messages",
-  OpeningHours = "openinghours",
-  Orders = "orders",
-  PendingPasswordResets = "pendingpasswordresets",
-  Payments = "payments",
-  Signatures = "signatures",
-  UniqueItems = "uniqueitems",
-  UserDetails = "userdetails",
-  Users = "users",
-}
 export interface BlModel<T = unknown> {
-  name: BlModelName;
+  name: string;
   schema: Schema;
   /**
    * This is just a dummy property for referencing T
    * so ESLint won't complain about "no-unused-vars."
    * It doesn't do anything at runtime.
    */
-  _typeBrand?: T;
+  _variant?: T;
 }
+
 export interface BlCollection {
   model: BlModel;
   documentPermission?: BlDocumentPermission;

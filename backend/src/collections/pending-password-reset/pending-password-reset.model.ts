@@ -1,10 +1,10 @@
-import { BlModelName, BlModel } from "@backend/collections/bl-collection";
+import { BlModel } from "@backend/collections/bl-collection";
 import { ToSchema } from "@backend/helper/typescript-helpers";
 import { PendingPasswordReset } from "@shared/password-reset/pending-password-reset";
 import { Schema } from "mongoose";
 
 export const PendingPasswordResetModel: BlModel<PendingPasswordReset> = {
-  name: BlModelName.PendingPasswordResets,
+  name: "pendingpasswordresets",
   schema: new Schema<ToSchema<PendingPasswordReset>>({
     // @ts-expect-error fixme: auto ignored
     _id: {

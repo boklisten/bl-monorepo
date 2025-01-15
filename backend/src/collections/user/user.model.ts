@@ -1,10 +1,10 @@
-import { BlModelName, BlModel } from "@backend/collections/bl-collection";
+import { BlModel } from "@backend/collections/bl-collection";
 import { User } from "@backend/collections/user/user";
 import { ToSchema } from "@backend/helper/typescript-helpers";
 import { Schema } from "mongoose";
 
 export const UserModel: BlModel<User> = {
-  name: BlModelName.Users,
+  name: "users",
   schema: new Schema<ToSchema<User>>({
     userDetail: Schema.Types.ObjectId,
     permission: {

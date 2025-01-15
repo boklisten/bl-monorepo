@@ -1,10 +1,10 @@
-import { BlModelName, BlModel } from "@backend/collections/bl-collection";
+import { BlModel } from "@backend/collections/bl-collection";
 import { ToSchema } from "@backend/helper/typescript-helpers";
 import { OpeningHour } from "@shared/opening-hour/opening-hour";
 import { Schema } from "mongoose";
 
 export const OpeningHourModel: BlModel<OpeningHour> = {
-  name: BlModelName.OpeningHours,
+  name: "openinghours",
   schema: new Schema<ToSchema<OpeningHour>>({
     from: {
       type: Date,

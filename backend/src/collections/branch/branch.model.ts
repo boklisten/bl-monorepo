@@ -1,10 +1,10 @@
-import { BlModelName, BlModel } from "@backend/collections/bl-collection";
+import { BlModel } from "@backend/collections/bl-collection";
 import { ToSchema } from "@backend/helper/typescript-helpers";
 import { Branch } from "@shared/branch/branch";
 import { Schema } from "mongoose";
 
 export const BranchModel: BlModel<Branch> = {
-  name: BlModelName.Branches,
+  name: "branches",
   schema: new Schema<ToSchema<Branch>>({
     name: {
       type: String,

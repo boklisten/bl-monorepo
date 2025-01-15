@@ -1,10 +1,10 @@
-import { BlModelName, BlModel } from "@backend/collections/bl-collection";
+import { BlModel } from "@backend/collections/bl-collection";
 import { ToSchema } from "@backend/helper/typescript-helpers";
 import { Message } from "@shared/message/message";
 import { Schema } from "mongoose";
 
 export const MessageModel: BlModel<Message> = {
-  name: BlModelName.Messages,
+  name: "messages",
   schema: new Schema<ToSchema<Message>>({
     messageType: {
       type: String,

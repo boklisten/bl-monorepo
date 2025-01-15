@@ -1,10 +1,10 @@
-import { BlModelName, BlModel } from "@backend/collections/bl-collection";
+import { BlModel } from "@backend/collections/bl-collection";
 import { ToSchema } from "@backend/helper/typescript-helpers";
 import { Delivery } from "@shared/delivery/delivery";
 import { Schema } from "mongoose";
 
 export const DeliveryModel: BlModel<Delivery> = {
-  name: BlModelName.Deliveries,
+  name: "deliveries",
   schema: new Schema<ToSchema<Delivery>>({
     method: {
       type: String,

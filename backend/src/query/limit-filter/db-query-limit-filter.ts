@@ -1,5 +1,3 @@
-import { ParsedQs } from "qs";
-
 export interface LimitFilter {
   limit: number;
 }

@@ -13,7 +13,7 @@ describe("DbQueryBooleanFilter", () => {
 
     it("should throw TypeError if query is empty or null", () => {
       expect(() => {
-        dbQueryBooleanFilter.getBooleanFilters(null, ["hello"]);
+        dbQueryBooleanFilter.getBooleanFilters({}, ["hello"]);
       }).to.throw(TypeError);
     });
 

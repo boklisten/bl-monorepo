@@ -30,7 +30,7 @@ describe("DbQuerySkipFilter", () => {
 
     it("should throw TypeError if number is below 0", () => {
       expect(() => {
-        dbQuerySkipFilter.getSkipFilter({ skip: -1 });
+        dbQuerySkipFilter.getSkipFilter({ skip: "-1" });
       }).to.throw(TypeError);
     });
 

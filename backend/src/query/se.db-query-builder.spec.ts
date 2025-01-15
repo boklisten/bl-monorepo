@@ -50,7 +50,7 @@ describe("DbQueryBuilder", () => {
 
       expect(
         dbQueryBuilder.getDbQuery(
-          { age: [">12", "<60"], price: "120", limit: 3, og: "name" },
+          { age: [">12", "<60"], price: "120", limit: "3", og: "name" },
           validParams,
         ),
       ).to.eql(result);

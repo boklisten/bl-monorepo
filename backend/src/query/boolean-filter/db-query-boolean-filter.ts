@@ -1,3 +1,5 @@
+import { ParsedQs } from "qs";
+
 export interface BooleanFilter {
   fieldName: string;
   value: boolean;
@@ -5,8 +7,7 @@ export interface BooleanFilter {
 
 export class DbQueryBooleanFilter {
   public getBooleanFilters(
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    query: any,
+    query: ParsedQs,
     validBooleanParams: string[],
   ): BooleanFilter[] {
     if (
@@ -19,8 +20,7 @@ export class DbQueryBooleanFilter {
   }
 
   private generateBooleanFilters(
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    query: any,
+    query: ParsedQs,
     validBooleanParams: string[],
   ): BooleanFilter[] {
     const booleanFilters: BooleanFilter[] = [];

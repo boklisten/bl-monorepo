@@ -14,6 +14,7 @@ import {
   DbQueryValidParams,
   ValidParameter,
 } from "@backend/query/valid-param/db-query-valid-params";
+import { ParsedQs } from "qs";
 
 export class SEDbQueryBuilder {
   private dbQueryBooleanFilter: DbQueryBooleanFilter;
@@ -42,8 +43,10 @@ export class SEDbQueryBuilder {
     this.dbQueryExpandFilter = new DbQueryExpandFilter();
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  public getDbQuery(query: any, validQueryParams: ValidParameter[]): SEDbQuery {
+  public getDbQuery(
+    query: ParsedQs,
+    validQueryParams: ValidParameter[],
+  ): SEDbQuery {
     const dbQueryValidParams = new DbQueryValidParams(validQueryParams);
 
     const databaseQuery: SEDbQuery = new SEDbQuery();

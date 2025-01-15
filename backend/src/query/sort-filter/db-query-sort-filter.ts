@@ -1,10 +1,14 @@
+import { ParsedQs } from "qs";
+
 export interface SortFilter {
   fieldName: string;
   direction: 1 | -1;
 }
 export class DbQuerySortFilter {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  public getSortFilters(query: any, validSortParams: string[]): SortFilter[] {
+  public getSortFilters(
+    query: ParsedQs,
+    validSortParams: string[],
+  ): SortFilter[] {
     if (
       !query ||
       (Object.keys(query).length === 0 && query.constructor === Object)
@@ -12,9 +16,9 @@ export class DbQuerySortFilter {
       throw new TypeError("query can not be undefined or empty");
     }
 
-    if (!query.sort) return [];
+    if (!query["sort"]) return [];
 
-    return this.generateSortFilters(query.sort, validSortParams);
+    return this.generateSortFilters(query["sort"], validSortParams);
   }
 
   private generateSortFilters(

@@ -1,10 +1,11 @@
+import { ParsedQs } from "qs";
+
 export interface SkipFilter {
   skip: number;
 }
 
 export class DbQuerySkipFilter {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  public getSkipFilter(query: any): SkipFilter {
+  public getSkipFilter(query: ParsedQs): SkipFilter {
     if (
       !query ||
       (Object.keys(query).length === 0 && query.constructor === Object)
@@ -12,9 +13,9 @@ export class DbQuerySkipFilter {
       throw new TypeError("query can not be undefined or empty");
     }
 
-    if (!query.skip) return { skip: 0 };
+    if (!query["skip"]) return { skip: 0 };
 
-    return { skip: this.getSkipNumber(query.skip) };
+    return { skip: this.getSkipNumber(query["skip"]) };
   }
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any

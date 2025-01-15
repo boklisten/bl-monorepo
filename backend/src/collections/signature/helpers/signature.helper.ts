@@ -1,6 +1,6 @@
 import { Signature } from "@backend/collections/signature/signature.model";
 import { logger } from "@backend/logger/logger";
-import { BlDocumentStorage } from "@backend/storage/blDocumentStorage";
+import { BlStorage } from "@backend/storage/blStorage";
 import { Transformer } from "@napi-rs/image";
 import { BlError } from "@shared/bl-error/bl-error";
 import { Order } from "@shared/order/order";
@@ -44,7 +44,7 @@ export async function deserializeSignature(
 
 export async function getValidUserSignature(
   userDetail: UserDetail,
-  signatureStorage: BlDocumentStorage<Signature>,
+  signatureStorage: BlStorage<Signature>,
 ): Promise<Signature | null> {
   const newestSignatureId = userDetail.signatures.at(-1);
   if (newestSignatureId == undefined) return null;
@@ -59,7 +59,7 @@ export async function getValidUserSignature(
 
 export async function userHasValidSignature(
   userDetail: UserDetail,
-  signatureStorage: BlDocumentStorage<Signature>,
+  signatureStorage: BlStorage<Signature>,
 ): Promise<boolean> {
   return (await getValidUserSignature(userDetail, signatureStorage)) != null;
 }
@@ -102,7 +102,7 @@ function isValidBase64(input: string): boolean {
 }
 
 export async function signOrders(
-  orderStorage: BlDocumentStorage<Order>,
+  orderStorage: BlStorage<Order>,
   userDetail: UserDetail,
 ) {
   if (!(userDetail.orders && userDetail.orders.length > 0)) {
@@ -126,7 +126,7 @@ export async function signOrders(
 
 export async function isGuardianSignatureRequired(
   userDetail: UserDetail,
-  signatureStorage: BlDocumentStorage<Signature>,
+  signatureStorage: BlStorage<Signature>,
 ) {
   if (!isUnderage(userDetail)) {
     return false;

@@ -10,7 +10,7 @@ import { isBoolean, isNotNullish } from "@backend/helper/typescript-helpers";
 import { Hook } from "@backend/hook/hook";
 import { BlApiRequest } from "@backend/request/bl-api-request";
 import { SEResponseHandler } from "@backend/response/se.response.handler";
-import { BlDocumentStorage } from "@backend/storage/blDocumentStorage";
+import { BlStorage } from "@backend/storage/blStorage";
 import { BlDocument } from "@shared/bl-document/bl-document";
 import { BlError } from "@shared/bl-error/bl-error";
 import { BlapiResponse } from "@shared/blapi-response/blapi-response";
@@ -18,32 +18,32 @@ import { AccessToken } from "@shared/token/access-token";
 import { NextFunction, Request, Response, Router } from "express";
 
 export abstract class CollectionEndpointMethod<T extends BlDocument> {
-  protected _collectionUri: string;
-  protected _collectionEndpointAuth: CollectionEndpointAuth;
-  protected _responseHandler: SEResponseHandler;
-  protected _collectionEndpointDocumentAuth: CollectionEndpointDocumentAuth<T>;
+  protected collectionUri: string;
+  protected collectionEndpointAuth: CollectionEndpointAuth;
+  protected responseHandler: SEResponseHandler;
+  protected collectionEndpointDocumentAuth: CollectionEndpointDocumentAuth<T>;
 
   constructor(
-    protected _router: Router,
-    protected _endpoint: BlEndpoint,
-    protected _collectionName: string,
-    protected _documentStorage: BlDocumentStorage<T>,
+    protected router: Router,
+    protected endpoint: BlEndpoint,
+    protected collectionName: string,
+    protected documentStorage: BlStorage<T>,
     protected documentPermission?: BlDocumentPermission,
   ) {
     const apiPath = new ApiPath();
-    this._collectionUri = apiPath.createPath(this._collectionName);
-    this._collectionEndpointAuth = new CollectionEndpointAuth();
-    this._responseHandler = new SEResponseHandler();
-    this._collectionEndpointDocumentAuth =
+    this.collectionUri = apiPath.createPath(this.collectionName);
+    this.collectionEndpointAuth = new CollectionEndpointAuth();
+    this.responseHandler = new SEResponseHandler();
+    this.collectionEndpointDocumentAuth =
       new CollectionEndpointDocumentAuth<T>();
 
-    if (!_endpoint.hook) {
-      this._endpoint.hook = new Hook();
+    if (!endpoint.hook) {
+      this.endpoint.hook = new Hook();
     }
   }
 
   public create() {
-    switch (this._endpoint.method) {
+    switch (this.endpoint.method) {
       case "getAll": {
         this.routerGetAll();
         break;
@@ -70,12 +70,12 @@ export abstract class CollectionEndpointMethod<T extends BlDocument> {
       }
       default: {
         throw new BlError(
-          `the endpoint "${this._endpoint.method}" is not supported`,
+          `the endpoint "${this.endpoint.method}" is not supported`,
         );
       }
     }
 
-    this.createOperations(this._endpoint);
+    this.createOperations(this.endpoint);
   }
 
   abstract onRequest(blApiRequest: BlApiRequest): Promise<T[]>;
@@ -88,8 +88,8 @@ export abstract class CollectionEndpointMethod<T extends BlDocument> {
     if (endpoint.operations) {
       for (const operation of endpoint.operations) {
         const collectionEndpointOperation = new CollectionEndpointOperation(
-          this._router,
-          this._collectionUri,
+          this.router,
+          this.collectionUri,
           endpoint.method,
           operation,
         );
@@ -102,15 +102,15 @@ export abstract class CollectionEndpointMethod<T extends BlDocument> {
     let userAccessToken: AccessToken;
     let blApiRequest: BlApiRequest;
 
-    this._collectionEndpointAuth
+    this.collectionEndpointAuth
       // @ts-expect-error fixme: auto ignored
-      .authenticate(this._endpoint.restriction, request, res, next)
+      .authenticate(this.endpoint.restriction, request, res, next)
       // @ts-expect-error fixme: auto ignored
       .then((accessToken?: AccessToken) => {
         // @ts-expect-error fixme: auto ignored
         userAccessToken = accessToken;
         // @ts-expect-error fixme: auto ignored
-        return this._endpoint.hook.before(
+        return this.endpoint.hook.before(
           request.body,
           accessToken,
           // @ts-expect-error fixme: auto ignored
@@ -141,58 +141,52 @@ export abstract class CollectionEndpointMethod<T extends BlDocument> {
       })
       .then((blApiRequest: BlApiRequest) => this.onRequest(blApiRequest))
       .then((docs: T[]) =>
-        this._collectionEndpointDocumentAuth.validate(
+        this.collectionEndpointDocumentAuth.validate(
           // @ts-expect-error fixme: auto ignored
-          this._endpoint.restriction,
+          this.endpoint.restriction,
           docs,
           blApiRequest,
           this.documentPermission,
         ),
       )
       // @ts-expect-error fixme: auto ignored
-      .then((docs: T[]) => this._endpoint.hook.after(docs, userAccessToken))
+      .then((docs: T[]) => this.endpoint.hook.after(docs, userAccessToken))
       // @ts-expect-error fixme: auto ignored
       .then((docs: T[]) =>
-        this._responseHandler.sendResponse(res, new BlapiResponse(docs)),
+        this.responseHandler.sendResponse(res, new BlapiResponse(docs)),
       )
       .catch((blError: unknown) =>
-        this._responseHandler.sendErrorResponse(res, blError),
+        this.responseHandler.sendErrorResponse(res, blError),
       );
   }
 
   private routerGetAll() {
-    this._router.get(this._collectionUri, this.handleRequest.bind(this));
+    this.router.get(this.collectionUri, this.handleRequest.bind(this));
   }
 
   private routerGetId() {
-    this._router.get(
-      this._collectionUri + "/:id",
-      this.handleRequest.bind(this),
-    );
+    this.router.get(this.collectionUri + "/:id", this.handleRequest.bind(this));
   }
 
   private routerPost() {
-    this._router.post(this._collectionUri, this.handleRequest.bind(this));
+    this.router.post(this.collectionUri, this.handleRequest.bind(this));
   }
 
   private routerDelete() {
-    this._router.delete(
-      this._collectionUri + "/:id",
+    this.router.delete(
+      this.collectionUri + "/:id",
       this.handleRequest.bind(this),
     );
   }
 
   private routerPatch() {
-    this._router.patch(
-      this._collectionUri + "/:id",
+    this.router.patch(
+      this.collectionUri + "/:id",
       this.handleRequest.bind(this),
     );
   }
 
   private routerPut() {
-    this._router.put(
-      this._collectionUri + "/:id",
-      this.handleRequest.bind(this),
-    );
+    this.router.put(this.collectionUri + "/:id", this.handleRequest.bind(this));
   }
 }

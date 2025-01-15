@@ -10,40 +10,19 @@ import {
 import { UserMatchModel } from "@backend/collections/user-match/user-match.model";
 import { Operation } from "@backend/operation/operation";
 import { BlApiRequest } from "@backend/request/bl-api-request";
-import { BlDocumentStorage } from "@backend/storage/blDocumentStorage";
+import { BlStorage } from "@backend/storage/blStorage";
 import { BlError } from "@shared/bl-error/bl-error";
 import { BlapiResponse } from "@shared/blapi-response/blapi-response";
-import { CustomerItem } from "@shared/customer-item/customer-item";
 import { StandMatch } from "@shared/match/stand-match";
 import { UserMatch } from "@shared/match/user-match";
-import { Order } from "@shared/order/order";
-import { UserDetail } from "@shared/user/user-detail/user-detail";
 import { fromError } from "zod-validation-error";
 
 export class MatchGenerateOperation implements Operation {
-  private readonly _customerItemStorage: BlDocumentStorage<CustomerItem>;
-  private readonly _userMatchStorage: BlDocumentStorage<UserMatch>;
-  private readonly _standMatchStorage: BlDocumentStorage<StandMatch>;
-  private readonly _orderStorage: BlDocumentStorage<Order>;
-  private readonly _userDetailStorage: BlDocumentStorage<UserDetail>;
-
-  constructor(
-    customerItemStorage?: BlDocumentStorage<CustomerItem>,
-    userMatchStorage?: BlDocumentStorage<UserMatch>,
-    standMatchStorage?: BlDocumentStorage<StandMatch>,
-    orderStorage?: BlDocumentStorage<Order>,
-    userDetailStorage?: BlDocumentStorage<UserDetail>,
-  ) {
-    this._customerItemStorage =
-      customerItemStorage ?? new BlDocumentStorage(CustomerItemModel);
-    this._userMatchStorage =
-      userMatchStorage ?? new BlDocumentStorage(UserMatchModel);
-    this._standMatchStorage =
-      standMatchStorage ?? new BlDocumentStorage(StandMatchModel);
-    this._orderStorage = orderStorage ?? new BlDocumentStorage(OrderModel);
-    this._userDetailStorage =
-      userDetailStorage ?? new BlDocumentStorage(UserDetailModel);
-  }
+  private customerItemStorage = new BlStorage(CustomerItemModel);
+  private userMatchStorage = new BlStorage(UserMatchModel);
+  private standMatchStorage = new BlStorage(StandMatchModel);
+  private orderStorage = new BlStorage(OrderModel);
+  private userDetailStorage = new BlStorage(UserDetailModel);
 
   async run(blApiRequest: BlApiRequest): Promise<BlapiResponse> {
     const parsedRequest = MatchGenerateSpec.safeParse(blApiRequest.data);
@@ -54,9 +33,9 @@ export class MatchGenerateOperation implements Operation {
       parsedRequest.data.branches,
       parsedRequest.data.deadlineBefore,
       parsedRequest.data.includeCustomerItemsFromOtherBranches,
-      this._customerItemStorage,
-      this._orderStorage,
-      this._userDetailStorage,
+      this.customerItemStorage,
+      this.orderStorage,
+      this.userDetailStorage,
     );
     if (matchableUsers.length === 0) {
       throw new BlError("No matchable users found");
@@ -133,9 +112,9 @@ export class MatchGenerateOperation implements Operation {
       throw new BlError("No matches generated");
     }
 
-    const addedUserMatches = await this._userMatchStorage.addMany(userMatches);
+    const addedUserMatches = await this.userMatchStorage.addMany(userMatches);
     const addedStandMatches =
-      await this._standMatchStorage.addMany(standMatches);
+      await this.standMatchStorage.addMany(standMatches);
     return new BlapiResponse([
       {
         status: `Created ${addedUserMatches.length} user matches and ${addedStandMatches.length} stand matches`,

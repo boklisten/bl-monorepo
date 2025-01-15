@@ -6,7 +6,7 @@ import { OrderItemPartlyPaymentValidator } from "@backend/collections/order/help
 import { OrderItemRentValidator } from "@backend/collections/order/helpers/order-validator/order-item-validator/order-item-rent-validator/order-item-rent-validator";
 import { isNotNullish } from "@backend/helper/typescript-helpers";
 import { PriceService } from "@backend/price/price.service";
-import { BlDocumentStorage } from "@backend/storage/blDocumentStorage";
+import { BlStorage } from "@backend/storage/blStorage";
 import { BlError } from "@shared/bl-error/bl-error";
 import { Branch } from "@shared/branch/branch";
 import { Item } from "@shared/item/item";
@@ -19,18 +19,18 @@ export class OrderItemValidator {
   private orderItemBuyValidator: OrderItemBuyValidator;
   private orderItemRentValidator: OrderItemRentValidator;
   private orderItemPartlyPaymentValidator: OrderItemPartlyPaymentValidator;
-  private itemStorage: BlDocumentStorage<Item>;
+  private itemStorage: BlStorage<Item>;
   private priceService: PriceService;
 
   constructor(
-    itemStorage?: BlDocumentStorage<Item>,
+    itemStorage?: BlStorage<Item>,
     orderItemFieldValidator?: OrderFieldValidator,
     orderItemRentValidator?: OrderItemRentValidator,
     orderItemBuyValidator?: OrderItemBuyValidator,
     orderItemExtendValidator?: OrderItemExtendValidator,
     orderItemPartlyPaymentValidator?: OrderItemPartlyPaymentValidator,
   ) {
-    this.itemStorage = itemStorage ?? new BlDocumentStorage(ItemModel);
+    this.itemStorage = itemStorage ?? new BlStorage(ItemModel);
 
     this.orderItemFieldValidator =
       orderItemFieldValidator ?? new OrderFieldValidator();

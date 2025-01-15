@@ -5,7 +5,7 @@ import { EmailValidationModel } from "@backend/collections/email-validation/emai
 import { EmailValidationConfirmOperation } from "@backend/collections/email-validation/operations/email-validation-confirm.operation";
 import { UserDetailModel } from "@backend/collections/user-detail/user-detail.model";
 import { SEResponseHandler } from "@backend/response/se.response.handler";
-import { BlDocumentStorage } from "@backend/storage/blDocumentStorage";
+import { BlStorage } from "@backend/storage/blStorage";
 import { BlError } from "@shared/bl-error/bl-error";
 import { BlapiResponse } from "@shared/blapi-response/blapi-response";
 import { UserDetail } from "@shared/user/user-detail/user-detail";
@@ -18,8 +18,8 @@ chaiUse(chaiAsPromised);
 should();
 
 describe("EmailValidationConfirmOperation", () => {
-  const emailValidationStorage = new BlDocumentStorage(EmailValidationModel);
-  const userDetailStorage = new BlDocumentStorage(UserDetailModel);
+  const emailValidationStorage = new BlStorage(EmailValidationModel);
+  const userDetailStorage = new BlStorage(UserDetailModel);
   const resHandler = new SEResponseHandler();
   const emailValidationConfirmOperation = new EmailValidationConfirmOperation(
     emailValidationStorage,

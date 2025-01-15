@@ -2,42 +2,40 @@ import { EmailValidation } from "@backend/collections/email-validation/email-val
 import { EmailValidationModel } from "@backend/collections/email-validation/email-validation.model";
 import { UserDetailModel } from "@backend/collections/user-detail/user-detail.model";
 import { Messenger } from "@backend/messenger/messenger";
-import { BlDocumentStorage } from "@backend/storage/blDocumentStorage";
+import { BlStorage } from "@backend/storage/blStorage";
 import { BlError } from "@shared/bl-error/bl-error";
 import { UserDetail } from "@shared/user/user-detail/user-detail";
 
 export class EmailValidationHelper {
-  private readonly _messenger: Messenger;
-  private readonly _userDetailStorage: BlDocumentStorage<UserDetail>;
-  private readonly _emailValidationStorage?: BlDocumentStorage<EmailValidation>;
+  private messenger: Messenger;
+  private userDetailStorage: BlStorage<UserDetail>;
+  private emailValidationStorage: BlStorage<EmailValidation>;
 
   constructor(
     messenger?: Messenger,
-    userDetailStorage?: BlDocumentStorage<UserDetail>,
-    emailValidationStorage?: BlDocumentStorage<EmailValidation>,
+    userDetailStorage?: BlStorage<UserDetail>,
+    emailValidationStorage?: BlStorage<EmailValidation>,
   ) {
-    this._messenger = messenger ?? new Messenger();
-    this._userDetailStorage =
-      userDetailStorage ?? new BlDocumentStorage(UserDetailModel);
-    this._emailValidationStorage =
-      emailValidationStorage ?? new BlDocumentStorage(EmailValidationModel);
+    this.messenger = messenger ?? new Messenger();
+    this.userDetailStorage =
+      userDetailStorage ?? new BlStorage(UserDetailModel);
+    this.emailValidationStorage =
+      emailValidationStorage ?? new BlStorage(EmailValidationModel);
   }
 
   public createAndSendEmailValidationLink(userDetailId: string): Promise<void> {
     return new Promise((resolve, reject) => {
-      this._userDetailStorage
+      this.userDetailStorage
         .get(userDetailId)
         .then((userDetail: UserDetail) => {
           const emailValidation = {
             email: userDetail.email,
             userDetail: userDetail.id,
           } as EmailValidation;
-
-          // @ts-expect-error fixme: auto ignored
-          this._emailValidationStorage
+          this.emailValidationStorage
             .add(emailValidation)
             .then((addedEmailValidation: EmailValidation) => {
-              this._messenger
+              this.messenger
                 .emailConfirmation(userDetail, addedEmailValidation.id)
                 .then(resolve)
                 .catch(reject);
@@ -64,7 +62,7 @@ export class EmailValidationHelper {
     emailValidation: EmailValidation,
   ): Promise<void> {
     return new Promise((resolve, reject) => {
-      this._userDetailStorage
+      this.userDetailStorage
         .get(emailValidation.userDetail)
         .catch((getUserDetailError: BlError) => {
           reject(
@@ -76,7 +74,7 @@ export class EmailValidationHelper {
 
         // @ts-expect-error fixme: auto ignored
         .then((userDetail: UserDetail) =>
-          this._messenger
+          this.messenger
             .emailConfirmation(userDetail, emailValidation.id)
             .then(resolve)
             .catch(reject),

@@ -5,7 +5,7 @@ import { UserModel } from "@backend/collections/user/user.model";
 import { UserDetailPermissionOperation } from "@backend/collections/user-detail/operations/permission/user-detail-permission.operation";
 import { UserDetailModel } from "@backend/collections/user-detail/user-detail.model";
 import { SEResponseHandler } from "@backend/response/se.response.handler";
-import { BlDocumentStorage } from "@backend/storage/blDocumentStorage";
+import { BlStorage } from "@backend/storage/blStorage";
 import { BlError } from "@shared/bl-error/bl-error";
 import { UserDetail } from "@shared/user/user-detail/user-detail";
 import { expect, use as chaiUse, should } from "chai";
@@ -15,8 +15,8 @@ chaiUse(chaiAsPromised);
 should();
 
 describe("UserDetailPermissionOperation", () => {
-  const userDetailStorage = new BlDocumentStorage(UserDetailModel);
-  const userStorage = new BlDocumentStorage(UserModel);
+  const userDetailStorage = new BlStorage(UserDetailModel);
+  const userStorage = new BlStorage(UserModel);
   const resHandler = new SEResponseHandler();
   const userDetailPermissionOperation = new UserDetailPermissionOperation(
     userDetailStorage,

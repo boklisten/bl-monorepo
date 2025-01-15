@@ -2,7 +2,7 @@ import "mocha";
 
 import { OrderUserDetailValidator } from "@backend/collections/order/helpers/order-validator/order-user-detail-validator/order-user-detail-validator";
 import { UserDetailModel } from "@backend/collections/user-detail/user-detail.model";
-import { BlDocumentStorage } from "@backend/storage/blDocumentStorage";
+import { BlStorage } from "@backend/storage/blStorage";
 import { BlError } from "@shared/bl-error/bl-error";
 import { Order } from "@shared/order/order";
 import { UserDetail } from "@shared/user/user-detail/user-detail";
@@ -14,7 +14,7 @@ chaiUse(chaiAsPromised);
 should();
 
 describe("OrderUserDetailValidator", () => {
-  const userDetailStorage = new BlDocumentStorage(UserDetailModel);
+  const userDetailStorage = new BlStorage(UserDetailModel);
   const orderUserDetailValidator = new OrderUserDetailValidator(
     userDetailStorage,
   );

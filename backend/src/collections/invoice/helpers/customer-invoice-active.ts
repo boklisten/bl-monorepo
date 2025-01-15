@@ -1,17 +1,17 @@
 import { InvoiceActive } from "@backend/collections/invoice/helpers/invoice-active";
 import { InvoiceModel } from "@backend/collections/invoice/invoice.model";
 import { SEDbQueryBuilder } from "@backend/query/se.db-query-builder";
-import { BlDocumentStorage } from "@backend/storage/blDocumentStorage";
+import { BlStorage } from "@backend/storage/blStorage";
 import { BlError } from "@shared/bl-error/bl-error";
 import { Invoice } from "@shared/invoice/invoice";
 
 export class CustomerInvoiceActive {
   private queryBuilder: SEDbQueryBuilder;
   private invoiceActive: InvoiceActive;
-  private invoiceStorage: BlDocumentStorage<Invoice>;
+  private invoiceStorage: BlStorage<Invoice>;
 
-  constructor(invoiceStorage?: BlDocumentStorage<Invoice>) {
-    this.invoiceStorage = invoiceStorage ?? new BlDocumentStorage(InvoiceModel);
+  constructor(invoiceStorage?: BlStorage<Invoice>) {
+    this.invoiceStorage = invoiceStorage ?? new BlStorage(InvoiceModel);
     this.queryBuilder = new SEDbQueryBuilder();
     this.invoiceActive = new InvoiceActive();
   }

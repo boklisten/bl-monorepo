@@ -10,50 +10,48 @@ import { BlapiResponse } from "@shared/blapi-response/blapi-response";
 import { NextFunction, Request, Response, Router } from "express";
 
 export class CollectionEndpointOperation {
-  private _collectionEndpointAuth: CollectionEndpointAuth;
-  private _responseHandler: SEResponseHandler;
+  private collectionEndpointAuth = new CollectionEndpointAuth();
+  private responseHandler = new SEResponseHandler();
 
   constructor(
-    protected _router: Router,
+    protected router: Router,
     private collectionUri: string,
-    private _method: BlEndpointMethod,
-    protected _operation: BlEndpointOperation,
+    private method: BlEndpointMethod,
+    protected operation: BlEndpointOperation,
   ) {
-    this.createUri(this.collectionUri, this._operation.name, _method);
-    this._collectionEndpointAuth = new CollectionEndpointAuth();
-    this._responseHandler = new SEResponseHandler();
+    this.createUri(this.collectionUri, this.operation.name, method);
   }
 
   public create() {
     const uri = this.createUri(
       this.collectionUri,
-      this._operation.name,
-      this._method,
+      this.operation.name,
+      this.method,
     );
-    switch (this._method) {
+    switch (this.method) {
       case "getId": {
-        this._router.get(uri, this.handleRequest.bind(this));
+        this.router.get(uri, this.handleRequest.bind(this));
         break;
       }
       case "getAll": {
-        this._router.get(uri, this.handleRequest.bind(this));
+        this.router.get(uri, this.handleRequest.bind(this));
         break;
       }
       case "patch": {
-        this._router.patch(uri, this.handleRequest.bind(this));
+        this.router.patch(uri, this.handleRequest.bind(this));
         break;
       }
       case "post": {
-        this._router.post(uri, this.handleRequest.bind(this));
+        this.router.post(uri, this.handleRequest.bind(this));
         break;
       }
       case "put": {
-        this._router.put(uri, this.handleRequest.bind(this));
+        this.router.put(uri, this.handleRequest.bind(this));
         break;
       }
       default: {
         throw new Error(
-          `endpoint operation method "${this._method}" is currently not supported`,
+          `endpoint operation method "${this.method}" is currently not supported`,
         );
       }
     }
@@ -80,9 +78,9 @@ export class CollectionEndpointOperation {
   private handleRequest(request: Request, res: Response, next: NextFunction) {
     let blApiRequest: BlApiRequest;
 
-    this._collectionEndpointAuth
+    this.collectionEndpointAuth
       // @ts-expect-error fixme: auto ignored
-      .authenticate(this._operation.restriction, request, res, next)
+      .authenticate(this.operation.restriction, request, res, next)
       // @ts-expect-error fixme: auto ignored
       .then((accessToken?: AccessToken) => {
         blApiRequest = {
@@ -96,21 +94,21 @@ export class CollectionEndpointOperation {
           },
         };
 
-        this._operation.operation
+        this.operation.operation
           .run(blApiRequest, request, res, next)
           .then((blapiResponse: BlapiResponse | boolean) => {
             if (typeof blapiResponse === "boolean") {
               return;
             }
 
-            this._responseHandler.sendResponse(res, blapiResponse);
+            this.responseHandler.sendResponse(res, blapiResponse);
           })
           .catch((error) => {
-            this._responseHandler.sendErrorResponse(res, error);
+            this.responseHandler.sendErrorResponse(res, error);
           });
       })
       .catch((blError: BlError) =>
-        this._responseHandler.sendErrorResponse(res, blError),
+        this.responseHandler.sendErrorResponse(res, blError),
       );
   }
 }

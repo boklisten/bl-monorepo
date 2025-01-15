@@ -1,6 +1,6 @@
 import { OrderModel } from "@backend/collections/order/order.model";
 import { PriceService } from "@backend/price/price.service";
-import { BlDocumentStorage } from "@backend/storage/blDocumentStorage";
+import { BlStorage } from "@backend/storage/blStorage";
 import { BlError } from "@shared/bl-error/bl-error";
 import { Item } from "@shared/item/item";
 import { Order } from "@shared/order/order";
@@ -8,14 +8,11 @@ import { OrderItem } from "@shared/order/order-item/order-item";
 
 export class OrderItemBuyValidator {
   private priceService: PriceService;
-  private orderStorage: BlDocumentStorage<Order>;
+  private orderStorage: BlStorage<Order>;
 
-  constructor(
-    priceService?: PriceService,
-    orderStorage?: BlDocumentStorage<Order>,
-  ) {
+  constructor(priceService?: PriceService, orderStorage?: BlStorage<Order>) {
     this.priceService = priceService ?? new PriceService({ roundDown: true });
-    this.orderStorage = orderStorage ?? new BlDocumentStorage(OrderModel);
+    this.orderStorage = orderStorage ?? new BlStorage(OrderModel);
   }
 
   public async validate(

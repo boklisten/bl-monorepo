@@ -6,7 +6,7 @@ import { DeliveryValidator } from "@backend/collections/delivery/helpers/deliver
 import { DeliveryPostHook } from "@backend/collections/delivery/hooks/delivery.post.hook";
 import { ItemModel } from "@backend/collections/item/item.model";
 import { OrderModel } from "@backend/collections/order/order.model";
-import { BlDocumentStorage } from "@backend/storage/blDocumentStorage";
+import { BlStorage } from "@backend/storage/blStorage";
 import { BlError } from "@shared/bl-error/bl-error";
 import { Delivery } from "@shared/delivery/delivery";
 import { Item } from "@shared/item/item";
@@ -20,9 +20,9 @@ chaiUse(chaiAsPromised);
 should();
 
 describe("DeliveryPostHook", () => {
-  const deliveryStorage = new BlDocumentStorage(DeliveryModel);
-  const orderStorage = new BlDocumentStorage(OrderModel);
-  const itemStorage = new BlDocumentStorage(ItemModel);
+  const deliveryStorage = new BlStorage(DeliveryModel);
+  const orderStorage = new BlStorage(OrderModel);
+  const itemStorage = new BlStorage(ItemModel);
   const deliveryValidator = new DeliveryValidator();
   const deliveryHandler = new DeliveryHandler();
   const deliveryPostHook = new DeliveryPostHook(

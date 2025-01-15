@@ -2,7 +2,7 @@ import "mocha";
 
 import { CustomerItemModel } from "@backend/collections/customer-item/customer-item.model";
 import { OrderItemExtendValidator } from "@backend/collections/order/helpers/order-validator/order-item-validator/order-item-extend-validator/order-item-extend-validator";
-import { BlDocumentStorage } from "@backend/storage/blDocumentStorage";
+import { BlStorage } from "@backend/storage/blStorage";
 import { BlError } from "@shared/bl-error/bl-error";
 import { Branch } from "@shared/branch/branch";
 import { CustomerItem } from "@shared/customer-item/customer-item";
@@ -15,7 +15,7 @@ chaiUse(chaiAsPromised);
 should();
 
 describe("OrderItemExtendValidator", () => {
-  const customerItemStorage = new BlDocumentStorage(CustomerItemModel);
+  const customerItemStorage = new BlStorage(CustomerItemModel);
   const orderItemExtendValidator = new OrderItemExtendValidator(
     customerItemStorage,
   );

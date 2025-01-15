@@ -5,15 +5,11 @@ import { NestedDocument } from "@backend/storage/nested-document";
 import { UserPermission } from "@shared/permission/user-permission";
 import { Schema } from "mongoose";
 
+// @info This needs a type parameter to dynamically type BlDocumentStorage
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 export interface BlModel<T = unknown> {
   name: string;
   schema: Schema;
-  /**
-   * This is just a dummy property for referencing T
-   * so ESLint won't complain about "no-unused-vars."
-   * It doesn't do anything at runtime.
-   */
-  _variant?: T;
 }
 
 export interface BlCollection {

@@ -4,7 +4,7 @@ import { Operation } from "@backend/operation/operation";
 import { SEDbQueryBuilder } from "@backend/query/se.db-query-builder";
 import { BlApiRequest } from "@backend/request/bl-api-request";
 import { SEResponseHandler } from "@backend/response/se.response.handler";
-import { BlDocumentStorage } from "@backend/storage/blDocumentStorage";
+import { BlStorage } from "@backend/storage/blStorage";
 import { BlError } from "@shared/bl-error/bl-error";
 import { BlapiResponse } from "@shared/blapi-response/blapi-response";
 import { Order } from "@shared/order/order";
@@ -12,23 +12,19 @@ import { AccessToken } from "@shared/token/access-token";
 import { Request, Response } from "express";
 
 export class OrderConfirmOperation implements Operation {
-  private _queryBuilder: SEDbQueryBuilder;
-  private readonly _resHandler: SEResponseHandler;
-  private readonly _orderStorage: BlDocumentStorage<Order>;
-  private readonly _orderPlacedHandler: OrderPlacedHandler;
+  private queryBuilder = new SEDbQueryBuilder();
+  private resHandler: SEResponseHandler;
+  private orderStorage: BlStorage<Order>;
+  private orderPlacedHandler: OrderPlacedHandler;
 
   constructor(
     resHandler?: SEResponseHandler,
-    orderStorage?: BlDocumentStorage<Order>,
+    orderStorage?: BlStorage<Order>,
     orderPlacedHandler?: OrderPlacedHandler,
   ) {
-    this._resHandler = resHandler ?? new SEResponseHandler();
-
-    this._orderStorage = orderStorage ?? new BlDocumentStorage(OrderModel);
-
-    this._orderPlacedHandler = orderPlacedHandler ?? new OrderPlacedHandler();
-
-    this._queryBuilder = new SEDbQueryBuilder();
+    this.resHandler = resHandler ?? new SEResponseHandler();
+    this.orderStorage = orderStorage ?? new BlStorage(OrderModel);
+    this.orderPlacedHandler = orderPlacedHandler ?? new OrderPlacedHandler();
   }
 
   private filterOrdersByAlreadyOrdered(orders: Order[]) {
@@ -63,7 +59,7 @@ export class OrderConfirmOperation implements Operation {
   }
 
   private async hasOpenOrderWithOrderItems(order: Order) {
-    const databaseQuery = this._queryBuilder.getDbQuery(
+    const databaseQuery = this.queryBuilder.getDbQuery(
       { customer: order.customer, placed: "true" },
       [
         { fieldName: "customer", type: "object-id" },
@@ -72,7 +68,7 @@ export class OrderConfirmOperation implements Operation {
     );
 
     try {
-      const existingOrders = await this._orderStorage.getByQuery(databaseQuery);
+      const existingOrders = await this.orderStorage.getByQuery(databaseQuery);
       const alreadyOrderedItems =
         this.filterOrdersByAlreadyOrdered(existingOrders);
 
@@ -111,7 +107,7 @@ export class OrderConfirmOperation implements Operation {
 
     try {
       // @ts-expect-error fixme: auto ignored
-      order = await this._orderStorage.get(blApiRequest.documentId);
+      order = await this.orderStorage.get(blApiRequest.documentId);
     } catch {
       throw new BlError(`order "${blApiRequest.documentId}" not found`);
     }
@@ -128,7 +124,7 @@ export class OrderConfirmOperation implements Operation {
     let placedOrder;
 
     try {
-      placedOrder = await this._orderPlacedHandler.placeOrder(
+      placedOrder = await this.orderPlacedHandler.placeOrder(
         order,
         accessToken,
       );
@@ -136,7 +132,7 @@ export class OrderConfirmOperation implements Operation {
       throw new BlError("order could not be placed:" + error);
     }
     // @ts-expect-error fixme: auto ignored
-    this._resHandler.sendResponse(res, new BlapiResponse([placedOrder]));
+    this.resHandler.sendResponse(res, new BlapiResponse([placedOrder]));
 
     return true;
   }

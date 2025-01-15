@@ -6,7 +6,7 @@ import { OrderItemValidator } from "@backend/collections/order/helpers/order-val
 import { OrderPlacedValidator } from "@backend/collections/order/helpers/order-validator/order-placed-validator/order-placed-validator";
 import { OrderUserDetailValidator } from "@backend/collections/order/helpers/order-validator/order-user-detail-validator/order-user-detail-validator";
 import { OrderValidator } from "@backend/collections/order/helpers/order-validator/order-validator";
-import { BlDocumentStorage } from "@backend/storage/blDocumentStorage";
+import { BlStorage } from "@backend/storage/blStorage";
 import { BlError } from "@shared/bl-error/bl-error";
 import { Branch } from "@shared/branch/branch";
 import { Order } from "@shared/order/order";
@@ -21,7 +21,7 @@ describe("OrderValidator", () => {
   let testOrder: Order;
   let testBranch: Branch;
 
-  const branchStorage = new BlDocumentStorage(BranchModel);
+  const branchStorage = new BlStorage(BranchModel);
   const orderUserDetailValidator = new OrderUserDetailValidator();
 
   const orderItemValidator = new OrderItemValidator();

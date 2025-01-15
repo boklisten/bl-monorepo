@@ -2,7 +2,7 @@ import { APP_CONFIG } from "@backend/application-config";
 import { OrderModel } from "@backend/collections/order/order.model";
 import { isNotNullish } from "@backend/helper/typescript-helpers";
 import { PriceService } from "@backend/price/price.service";
-import { BlDocumentStorage } from "@backend/storage/blDocumentStorage";
+import { BlStorage } from "@backend/storage/blStorage";
 import { BlError } from "@shared/bl-error/bl-error";
 import { BranchPaymentInfo } from "@shared/branch/branch-payment-info";
 import { Order } from "@shared/order/order";
@@ -17,15 +17,13 @@ interface BranchPaymentPeriod {
 }
 
 export class OrderItemRentPeriodValidator {
-  private _priceService: PriceService;
+  private orderStorage: BlStorage<Order>;
+  private priceService = new PriceService(
+    APP_CONFIG.payment.paymentServiceConfig,
+  );
 
-  constructor(private _orderStorage?: BlDocumentStorage<Order>) {
-    this._orderStorage = _orderStorage
-      ? _orderStorage
-      : new BlDocumentStorage(OrderModel);
-    this._priceService = new PriceService(
-      APP_CONFIG.payment.paymentServiceConfig,
-    );
+  constructor(orderStorage?: BlStorage<Order>) {
+    this.orderStorage = orderStorage ?? new BlStorage(OrderModel);
   }
 
   public async validate(
@@ -84,8 +82,8 @@ export class OrderItemRentPeriodValidator {
     branchPaymentPeriod: BranchPaymentPeriod,
     itemPrice: number,
   ) {
-    const expectedAmount = this._priceService.sanitize(
-      this._priceService.round(itemPrice * branchPaymentPeriod.percentage),
+    const expectedAmount = this.priceService.sanitize(
+      this.priceService.round(itemPrice * branchPaymentPeriod.percentage),
     );
 
     if (expectedAmount !== orderItem.amount) {
@@ -117,8 +115,7 @@ export class OrderItemRentPeriodValidator {
       return true;
     }
 
-    // @ts-expect-error fixme: auto ignored
-    return this._orderStorage
+    return this.orderStorage
       .get(orderItem.movedFromOrder)
       .then((order: Order) => {
         if (
@@ -149,8 +146,8 @@ export class OrderItemRentPeriodValidator {
           } else {
             // the periodType is changed after the original placed order
             const expectedOrderItemAmount =
-              this._priceService.round(
-                this._priceService.sanitize(
+              this.priceService.round(
+                this.priceService.sanitize(
                   itemPrice * branchRentPeriod.percentage,
                 ),
               ) - movedFromOrderItem.amount;

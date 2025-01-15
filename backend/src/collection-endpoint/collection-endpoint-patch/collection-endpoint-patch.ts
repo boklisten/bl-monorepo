@@ -9,7 +9,7 @@ export class CollectionEndpointPatch<T extends BlDocument>
 {
   override onRequest(blApiRequest: BlApiRequest): Promise<T[]> {
     return (
-      this._documentStorage
+      this.documentStorage
         // @ts-expect-error fixme: auto ignored
         .update(blApiRequest.documentId, blApiRequest.data)
         .then((document_: T) => {
@@ -24,7 +24,7 @@ export class CollectionEndpointPatch<T extends BlDocument>
   override async validateDocumentPermission(
     blApiRequest: BlApiRequest,
   ): Promise<BlApiRequest> {
-    const document_ = await this._documentStorage.get(
+    const document_ = await this.documentStorage.get(
       blApiRequest.documentId ?? "",
     );
     if (

@@ -2,26 +2,26 @@ import { DeliveryHandler } from "@backend/collections/delivery/helpers/deliveryH
 import { DeliveryValidator } from "@backend/collections/delivery/helpers/deliveryValidator/delivery-validator";
 import { OrderModel } from "@backend/collections/order/order.model";
 import { Hook } from "@backend/hook/hook";
-import { BlDocumentStorage } from "@backend/storage/blDocumentStorage";
+import { BlStorage } from "@backend/storage/blStorage";
 import { BlError } from "@shared/bl-error/bl-error";
 import { Delivery } from "@shared/delivery/delivery";
 import { Order } from "@shared/order/order";
 import { AccessToken } from "@shared/token/access-token";
 
 export class DeliveryPostHook extends Hook {
-  private orderStorage: BlDocumentStorage<Order>;
+  private orderStorage: BlStorage<Order>;
   private deliveryValidator: DeliveryValidator;
   private deliveryHandler: DeliveryHandler;
 
   constructor(
     deliveryValidator?: DeliveryValidator,
     deliveryHandler?: DeliveryHandler,
-    orderStorage?: BlDocumentStorage<Order>,
+    orderStorage?: BlStorage<Order>,
   ) {
     super();
     this.deliveryValidator = deliveryValidator ?? new DeliveryValidator();
     this.deliveryHandler = deliveryHandler ?? new DeliveryHandler();
-    this.orderStorage = orderStorage ?? new BlDocumentStorage(OrderModel);
+    this.orderStorage = orderStorage ?? new BlStorage(OrderModel);
   }
 
   public override after(

@@ -2,7 +2,7 @@ import "mocha";
 
 import { OrderItemMovedFromOrderHandler } from "@backend/collections/order/helpers/order-item-moved-from-order-handler/order-item-moved-from-order-handler";
 import { OrderModel } from "@backend/collections/order/order.model";
-import { BlDocumentStorage } from "@backend/storage/blDocumentStorage";
+import { BlStorage } from "@backend/storage/blStorage";
 import { BlError } from "@shared/bl-error/bl-error";
 import { Order } from "@shared/order/order";
 import { expect, use as chaiUse, should } from "chai";
@@ -13,7 +13,7 @@ chaiUse(chaiAsPromised);
 should();
 
 describe("OrderItemMovedFromOrderHandler", () => {
-  const orderStorage = new BlDocumentStorage(OrderModel);
+  const orderStorage = new BlStorage(OrderModel);
   const oiMovedFromOrderHandler = new OrderItemMovedFromOrderHandler(
     orderStorage,
   );

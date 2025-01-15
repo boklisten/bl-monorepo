@@ -2,24 +2,24 @@ import { OrderModel } from "@backend/collections/order/order.model";
 import { PaymentDibsHandler } from "@backend/collections/payment/helpers/dibs/payment-dibs-handler";
 import { PaymentValidator } from "@backend/collections/payment/helpers/payment.validator";
 import { Hook } from "@backend/hook/hook";
-import { BlDocumentStorage } from "@backend/storage/blDocumentStorage";
+import { BlStorage } from "@backend/storage/blStorage";
 import { BlError } from "@shared/bl-error/bl-error";
 import { Order } from "@shared/order/order";
 import { Payment } from "@shared/payment/payment";
 
 export class PaymentPostHook extends Hook {
-  private orderStorage: BlDocumentStorage<Order>;
+  private orderStorage: BlStorage<Order>;
   private paymentValidator: PaymentValidator;
   private paymentDibsHandler: PaymentDibsHandler;
 
   constructor(
-    orderStorage?: BlDocumentStorage<Order>,
+    orderStorage?: BlStorage<Order>,
     paymentValidator?: PaymentValidator,
     paymentDibsHandler?: PaymentDibsHandler,
   ) {
     super();
     this.paymentValidator = paymentValidator ?? new PaymentValidator();
-    this.orderStorage = orderStorage ?? new BlDocumentStorage(OrderModel);
+    this.orderStorage = orderStorage ?? new BlStorage(OrderModel);
     this.paymentDibsHandler = paymentDibsHandler ?? new PaymentDibsHandler();
   }
 

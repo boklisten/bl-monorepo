@@ -10,7 +10,7 @@ import { UserModel } from "@backend/collections/user/user.model";
 import { UserDetailModel } from "@backend/collections/user-detail/user-detail.model";
 import { UserMatchModel } from "@backend/collections/user-match/user-match.model";
 import { SEDbQueryBuilder } from "@backend/query/se.db-query-builder";
-import { BlDocumentStorage } from "@backend/storage/blDocumentStorage";
+import { BlStorage } from "@backend/storage/blStorage";
 import { CustomerItem } from "@shared/customer-item/customer-item";
 import { Invoice } from "@shared/invoice/invoice";
 import { StandMatch } from "@shared/match/stand-match";
@@ -21,43 +21,40 @@ import { UserDetail } from "@shared/user/user-detail/user-detail";
 
 export class DeleteUserService {
   private queryBuilder: SEDbQueryBuilder;
-  private userStorage: BlDocumentStorage<User>;
-  private userDetailStorage: BlDocumentStorage<UserDetail>;
-  private localLoginStorage: BlDocumentStorage<LocalLogin>;
-  private customerItemStorage: BlDocumentStorage<CustomerItem>;
-  private invoiceStorage: BlDocumentStorage<Invoice>;
-  private orderStorage: BlDocumentStorage<Order>;
-  private paymentStorage: BlDocumentStorage<Payment>;
-  private userMatchStorage: BlDocumentStorage<UserMatch>;
-  private standMatchStorage: BlDocumentStorage<StandMatch>;
+  private userStorage: BlStorage<User>;
+  private userDetailStorage: BlStorage<UserDetail>;
+  private localLoginStorage: BlStorage<LocalLogin>;
+  private customerItemStorage: BlStorage<CustomerItem>;
+  private invoiceStorage: BlStorage<Invoice>;
+  private orderStorage: BlStorage<Order>;
+  private paymentStorage: BlStorage<Payment>;
+  private userMatchStorage: BlStorage<UserMatch>;
+  private standMatchStorage: BlStorage<StandMatch>;
 
   constructor(
-    _userStorage?: BlDocumentStorage<User>,
-    _userDetailStorage?: BlDocumentStorage<UserDetail>,
-    _localLoginStorage?: BlDocumentStorage<LocalLogin>,
-    _customerItemStorage?: BlDocumentStorage<CustomerItem>,
-    _invoiceStorage?: BlDocumentStorage<Invoice>,
-    _orderStorage?: BlDocumentStorage<Order>,
-    _paymentStorage?: BlDocumentStorage<Payment>,
-    _userMatchStorage?: BlDocumentStorage<UserMatch>,
-    _standMatchStorage?: BlDocumentStorage<StandMatch>,
+    userStorage?: BlStorage<User>,
+    userDetailStorage?: BlStorage<UserDetail>,
+    localLoginStorage?: BlStorage<LocalLogin>,
+    customerItemStorage?: BlStorage<CustomerItem>,
+    invoiceStorage?: BlStorage<Invoice>,
+    orderStorage?: BlStorage<Order>,
+    paymentStorage?: BlStorage<Payment>,
+    userMatchStorage?: BlStorage<UserMatch>,
+    standMatchStorage?: BlStorage<StandMatch>,
   ) {
-    this.userStorage = _userStorage ?? new BlDocumentStorage(UserModel);
+    this.userStorage = userStorage ?? new BlStorage(UserModel);
     this.userDetailStorage =
-      _userDetailStorage ?? new BlDocumentStorage(UserDetailModel);
+      userDetailStorage ?? new BlStorage(UserDetailModel);
     this.localLoginStorage =
-      _localLoginStorage ?? new BlDocumentStorage(LocalLoginModel);
+      localLoginStorage ?? new BlStorage(LocalLoginModel);
     this.customerItemStorage =
-      _customerItemStorage ?? new BlDocumentStorage(CustomerItemModel);
-    this.invoiceStorage =
-      _invoiceStorage ?? new BlDocumentStorage(InvoiceModel);
-    this.orderStorage = _orderStorage ?? new BlDocumentStorage(OrderModel);
-    this.paymentStorage =
-      _paymentStorage ?? new BlDocumentStorage(PaymentModel);
-    this.userMatchStorage =
-      _userMatchStorage ?? new BlDocumentStorage(UserMatchModel);
+      customerItemStorage ?? new BlStorage(CustomerItemModel);
+    this.invoiceStorage = invoiceStorage ?? new BlStorage(InvoiceModel);
+    this.orderStorage = orderStorage ?? new BlStorage(OrderModel);
+    this.paymentStorage = paymentStorage ?? new BlStorage(PaymentModel);
+    this.userMatchStorage = userMatchStorage ?? new BlStorage(UserMatchModel);
     this.standMatchStorage =
-      _standMatchStorage ?? new BlDocumentStorage(StandMatchModel);
+      standMatchStorage ?? new BlStorage(StandMatchModel);
 
     this.queryBuilder = new SEDbQueryBuilder();
   }

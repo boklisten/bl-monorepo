@@ -4,37 +4,25 @@ import {
   isUnderage,
 } from "@backend/collections/signature/helpers/signature.helper";
 import { SignatureModel } from "@backend/collections/signature/signature.model";
-import { Signature } from "@backend/collections/signature/signature.model";
 import { UserDetailModel } from "@backend/collections/user-detail/user-detail.model";
 import { Operation } from "@backend/operation/operation";
 import { BlApiRequest } from "@backend/request/bl-api-request";
-import { BlDocumentStorage } from "@backend/storage/blDocumentStorage";
+import { BlStorage } from "@backend/storage/blStorage";
 import { BlError } from "@shared/bl-error/bl-error";
 import { BlapiResponse } from "@shared/blapi-response/blapi-response";
 import { CheckGuardianSignatureSpec } from "@shared/signature/serialized-signature";
-import { UserDetail } from "@shared/user/user-detail/user-detail";
 import { ObjectId } from "mongodb";
 
 export class CheckGuardianSignatureOperation implements Operation {
-  private readonly _userDetailStorage: BlDocumentStorage<UserDetail>;
-  private readonly _signatureStorage: BlDocumentStorage<Signature>;
-
-  constructor(
-    signatureStorage?: BlDocumentStorage<Signature>,
-    userDetailStorage?: BlDocumentStorage<UserDetail>,
-  ) {
-    this._signatureStorage =
-      signatureStorage ?? new BlDocumentStorage(SignatureModel);
-    this._userDetailStorage =
-      userDetailStorage ?? new BlDocumentStorage(UserDetailModel);
-  }
+  private userDetailStorage = new BlStorage(UserDetailModel);
+  private signatureStorage = new BlStorage(SignatureModel);
 
   async run(blApiRequest: BlApiRequest): Promise<BlapiResponse> {
     const serializedGuardianSignature = blApiRequest.data;
     if (!validateSerializedGuardianSignature(serializedGuardianSignature))
       throw new BlError("Bad serialized guardian signature").code(701);
 
-    const userDetail = await this._userDetailStorage.get(
+    const userDetail = await this.userDetailStorage.get(
       serializedGuardianSignature.customerId,
     );
 
@@ -48,11 +36,11 @@ export class CheckGuardianSignatureOperation implements Operation {
     }
 
     if (
-      !(await isGuardianSignatureRequired(userDetail, this._signatureStorage))
+      !(await isGuardianSignatureRequired(userDetail, this.signatureStorage))
     ) {
       const signature = await getValidUserSignature(
         userDetail,
-        this._signatureStorage,
+        this.signatureStorage,
       );
       return new BlapiResponse([
         {

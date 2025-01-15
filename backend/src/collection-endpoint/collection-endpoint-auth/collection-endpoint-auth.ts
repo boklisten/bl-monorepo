@@ -6,7 +6,7 @@ import { NextFunction, Request, Response } from "express";
 import passport from "passport";
 
 export class CollectionEndpointAuth {
-  private _authStrategy = "jwt";
+  private authStrategy = "jwt";
 
   public authenticate(
     restriction: BlEndpointRestriction,
@@ -18,7 +18,7 @@ export class CollectionEndpointAuth {
       if (restriction || isNotNullish(request.headers["authorization"])) {
         // it is a restriction on this endpoint and authentication is required, also try if there are sent with a auth header
         passport.authenticate(
-          this._authStrategy,
+          this.authStrategy,
           (_error: unknown, tokens: { accessToken: AccessToken }) => {
             try {
               this.validateAuth(restriction, tokens.accessToken);

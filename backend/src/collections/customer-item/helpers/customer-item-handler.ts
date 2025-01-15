@@ -1,7 +1,7 @@
 import { BranchModel } from "@backend/collections/branch/branch.model";
 import { CustomerItemModel } from "@backend/collections/customer-item/customer-item.model";
 import { SEDbQueryBuilder } from "@backend/query/se.db-query-builder";
-import { BlDocumentStorage } from "@backend/storage/blDocumentStorage";
+import { BlStorage } from "@backend/storage/blStorage";
 import { BlError } from "@shared/bl-error/bl-error";
 import { Branch } from "@shared/branch/branch";
 import { CustomerItem } from "@shared/customer-item/customer-item";
@@ -10,16 +10,16 @@ import { Period } from "@shared/period/period";
 import moment from "moment-timezone";
 
 export class CustomerItemHandler {
-  private _customerItemStorage: BlDocumentStorage<CustomerItem>;
-  private _branchStorage: BlDocumentStorage<Branch>;
+  private customerItemStorage: BlStorage<CustomerItem>;
+  private branchStorage: BlStorage<Branch>;
 
   constructor(
-    customerItemStorage?: BlDocumentStorage<CustomerItem>,
-    branchStorage?: BlDocumentStorage<Branch>,
+    customerItemStorage?: BlStorage<CustomerItem>,
+    branchStorage?: BlStorage<Branch>,
   ) {
-    this._customerItemStorage =
-      customerItemStorage ?? new BlDocumentStorage(CustomerItemModel);
-    this._branchStorage = branchStorage ?? new BlDocumentStorage(BranchModel);
+    this.customerItemStorage =
+      customerItemStorage ?? new BlStorage(CustomerItemModel);
+    this.branchStorage = branchStorage ?? new BlStorage(BranchModel);
   }
 
   /**
@@ -33,7 +33,7 @@ export class CustomerItemHandler {
     branchId: string,
     orderId: string,
   ): Promise<CustomerItem> {
-    const customerItem = await this._customerItemStorage.get(customerItemId);
+    const customerItem = await this.customerItemStorage.get(customerItemId);
 
     if (customerItem.returned) {
       throw new BlError("can not extend when returned is true");
@@ -47,7 +47,7 @@ export class CustomerItemHandler {
       throw new BlError('orderItem info is not present when type is "extend"');
     }
 
-    const branch = await this._branchStorage.get(branchId);
+    const branch = await this.branchStorage.get(branchId);
 
     this.getExtendPeriod(branch, orderItem.info["periodType"]);
 
@@ -67,7 +67,7 @@ export class CustomerItemHandler {
 
     customerItemOrders.push(orderId);
 
-    return await this._customerItemStorage.update(
+    return await this.customerItemStorage.update(
       customerItemId,
 
       // @ts-expect-error fixme: auto ignored
@@ -94,12 +94,12 @@ export class CustomerItemHandler {
       throw `orderItem.type is not "buyout"`;
     }
 
-    const customerItem = await this._customerItemStorage.get(customerItemId);
+    const customerItem = await this.customerItemStorage.get(customerItemId);
     const customerItemOrders = customerItem.orders ?? [];
 
     customerItemOrders.push(orderId);
 
-    return await this._customerItemStorage.update(customerItemId, {
+    return await this.customerItemStorage.update(customerItemId, {
       buyout: true,
       orders: customerItemOrders,
       buyoutInfo: {
@@ -126,13 +126,13 @@ export class CustomerItemHandler {
       throw `orderItem.type is not "return"`;
     }
 
-    const customerItem = await this._customerItemStorage.get(customerItemId);
+    const customerItem = await this.customerItemStorage.get(customerItemId);
 
     const customerItemOrders = customerItem.orders ?? [];
 
     customerItemOrders.push(orderId);
 
-    return await this._customerItemStorage.update(customerItemId, {
+    return await this.customerItemStorage.update(customerItemId, {
       returned: true,
       orders: customerItemOrders,
       returnInfo: {
@@ -159,13 +159,13 @@ export class CustomerItemHandler {
       throw `orderItem.type is not "cancel"`;
     }
 
-    const customerItem = await this._customerItemStorage.get(customerItemId);
+    const customerItem = await this.customerItemStorage.get(customerItemId);
 
     const customerItemOrders = customerItem.orders ?? [];
 
     customerItemOrders.push(orderId);
 
-    return await this._customerItemStorage.update(customerItemId, {
+    return await this.customerItemStorage.update(customerItemId, {
       returned: true,
       orders: customerItemOrders,
       cancel: true,
@@ -191,12 +191,12 @@ export class CustomerItemHandler {
       throw `orderItem.type is not "buyback"`;
     }
 
-    const customerItem = await this._customerItemStorage.get(customerItemId);
+    const customerItem = await this.customerItemStorage.get(customerItemId);
     const customerItemOrders = customerItem.orders ?? [];
 
     customerItemOrders.push(orderId);
 
-    return await this._customerItemStorage.update(customerItemId, {
+    return await this.customerItemStorage.update(customerItemId, {
       returned: true,
       orders: customerItemOrders,
       buyback: true,
@@ -276,7 +276,7 @@ export class CustomerItemHandler {
       ]);
     }
 
-    return await this._customerItemStorage.getByQuery(databaseQuery);
+    return await this.customerItemStorage.getByQuery(databaseQuery);
   }
 
   private getExtendPeriod(

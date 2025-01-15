@@ -7,7 +7,7 @@ import { DeleteUserService } from "@backend/collections/user-detail/helpers/dele
 import { UserCanDeleteUserDetail } from "@backend/collections/user-detail/helpers/user-can-delete-user-detail";
 import { UserDetailDeleteHook } from "@backend/collections/user-detail/hooks/user-detail-delete.hook";
 import { UserDetailModel } from "@backend/collections/user-detail/user-detail.model";
-import { BlDocumentStorage } from "@backend/storage/blDocumentStorage";
+import { BlStorage } from "@backend/storage/blStorage";
 import { BlError } from "@shared/bl-error/bl-error";
 import { AccessToken } from "@shared/token/access-token";
 import { UserDetail } from "@shared/user/user-detail/user-detail";
@@ -19,7 +19,7 @@ chaiUse(chaiAsPromised);
 should();
 
 describe("UserDetailDeleteHook", () => {
-  new BlDocumentStorage(UserDetailModel);
+  new BlStorage(UserDetailModel);
   const customerHaveActiveCustomerItems = new CustomerHaveActiveCustomerItems();
   const haveActiveCustomerItemsStub = sinon.stub(
     customerHaveActiveCustomerItems,

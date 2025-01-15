@@ -5,7 +5,7 @@ import { OrderValidator } from "@backend/collections/order/helpers/order-validat
 import { OrderPatchHook } from "@backend/collections/order/hooks/order.patch.hook";
 import { OrderModel } from "@backend/collections/order/order.model";
 import { UserDetailModel } from "@backend/collections/user-detail/user-detail.model";
-import { BlDocumentStorage } from "@backend/storage/blDocumentStorage";
+import { BlStorage } from "@backend/storage/blStorage";
 import { BlError } from "@shared/bl-error/bl-error";
 import { Order } from "@shared/order/order";
 import { AccessToken } from "@shared/token/access-token";
@@ -18,8 +18,8 @@ chaiUse(chaiAsPromised);
 should();
 
 describe("OrderPatchHook", () => {
-  const userDetailStorage = new BlDocumentStorage(UserDetailModel);
-  const orderStorage = new BlDocumentStorage(OrderModel);
+  const userDetailStorage = new BlStorage(UserDetailModel);
+  const orderStorage = new BlStorage(OrderModel);
   const orderValidator = new OrderValidator();
   const orderPlacedHandler = new OrderPlacedHandler();
   const orderPatchHook = new OrderPatchHook(

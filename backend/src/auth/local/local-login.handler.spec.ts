@@ -4,7 +4,7 @@ import { LocalLoginHandler } from "@backend/auth/local/local-login.handler";
 import { LocalLogin } from "@backend/collections/local-login/local-login";
 import { LocalLoginModel } from "@backend/collections/local-login/local-login.model";
 import { SEDbQuery } from "@backend/query/se.db-query";
-import { BlDocumentStorage } from "@backend/storage/blDocumentStorage";
+import { BlStorage } from "@backend/storage/blStorage";
 import { BlError } from "@shared/bl-error/bl-error";
 import { expect, use as chaiUse, should } from "chai";
 import chaiAsPromised from "chai-as-promised";
@@ -23,7 +23,7 @@ const dummyLocalLogin = {
 };
 
 describe("LocalLoginHandler", () => {
-  const localLoginStorage = new BlDocumentStorage(LocalLoginModel);
+  const localLoginStorage = new BlStorage(LocalLoginModel);
   const baseLocalLogin = {
     id: "1",
     username: "a",

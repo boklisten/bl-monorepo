@@ -2,7 +2,7 @@ import {
   MatchableUser,
   MatchLocationSchema,
 } from "@backend/collections/user-match/helpers/match-finder/match-types";
-import { BlDocumentStorage } from "@backend/storage/blDocumentStorage";
+import { BlStorage } from "@backend/storage/blStorage";
 import { CustomerItem } from "@shared/customer-item/customer-item";
 import { Order } from "@shared/order/order";
 import { UserDetail } from "@shared/user/user-detail/user-detail";
@@ -36,9 +36,9 @@ export async function getMatchableUsers(
   branchIds: string[],
   deadlineBefore: string,
   includeSenderItemsFromOtherBranches: boolean,
-  customerItemStorage: BlDocumentStorage<CustomerItem>,
-  orderStorage: BlDocumentStorage<Order>,
-  userDetailStorage: BlDocumentStorage<UserDetail>,
+  customerItemStorage: BlStorage<CustomerItem>,
+  orderStorage: BlStorage<Order>,
+  userDetailStorage: BlStorage<UserDetail>,
 ): Promise<MatchableUser[]> {
   const [senders, receivers] = await Promise.all([
     getMatchableSender(
@@ -87,7 +87,7 @@ async function getMatchableSender(
   branchIds: string[],
   deadlineBefore: string,
   includeSenderItemsFromOtherBranches: boolean,
-  customerItemStorage: BlDocumentStorage<CustomerItem>,
+  customerItemStorage: BlStorage<CustomerItem>,
 ): Promise<MatchableUser[]> {
   const groupByCustomerStep = {
     $group: {
@@ -148,7 +148,7 @@ async function getMatchableSender(
  */
 async function getMatchableReceivers(
   branchIds: string[],
-  orderStorage: BlDocumentStorage<Order>,
+  orderStorage: BlStorage<Order>,
 ): Promise<MatchableUser[]> {
   const aggregatedReceivers = (await orderStorage.aggregate([
     {

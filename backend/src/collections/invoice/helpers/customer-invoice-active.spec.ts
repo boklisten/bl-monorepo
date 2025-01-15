@@ -2,7 +2,7 @@ import "mocha";
 
 import { CustomerInvoiceActive } from "@backend/collections/invoice/helpers/customer-invoice-active";
 import { InvoiceModel } from "@backend/collections/invoice/invoice.model";
-import { BlDocumentStorage } from "@backend/storage/blDocumentStorage";
+import { BlStorage } from "@backend/storage/blStorage";
 import { BlError } from "@shared/bl-error/bl-error";
 import { Invoice } from "@shared/invoice/invoice";
 import { expect, use as chaiUse, should } from "chai";
@@ -13,7 +13,7 @@ chaiUse(chaiAsPromised);
 should();
 
 describe("CustomerInvoiceActive", () => {
-  const invoiceStorage = new BlDocumentStorage(InvoiceModel);
+  const invoiceStorage = new BlStorage(InvoiceModel);
   const getInvoicesByQueryStub = sinon.stub(invoiceStorage, "getByQuery");
   const customerInvoiceActive = new CustomerInvoiceActive(invoiceStorage);
   const testUserId = "5f2aa6e8d39045001c444842";

@@ -1,19 +1,17 @@
 import { CustomerItemModel } from "@backend/collections/customer-item/customer-item.model";
 import { CustomerItemActive } from "@backend/collections/customer-item/helpers/customer-item-active";
 import { SEDbQueryBuilder } from "@backend/query/se.db-query-builder";
-import { BlDocumentStorage } from "@backend/storage/blDocumentStorage";
+import { BlStorage } from "@backend/storage/blStorage";
 import { CustomerItem } from "@shared/customer-item/customer-item";
 
 export class CustomerItemActiveBlid {
-  private readonly _customerItemStorage: BlDocumentStorage<CustomerItem>;
-  private customerItemActive: CustomerItemActive;
-  private dbQueryBuilder: SEDbQueryBuilder;
+  private customerItemStorage: BlStorage<CustomerItem>;
+  private customerItemActive = new CustomerItemActive();
+  private dbQueryBuilder = new SEDbQueryBuilder();
 
-  constructor(customerItemStorage?: BlDocumentStorage<CustomerItem>) {
-    this._customerItemStorage =
-      customerItemStorage ?? new BlDocumentStorage(CustomerItemModel);
-    this.customerItemActive = new CustomerItemActive();
-    this.dbQueryBuilder = new SEDbQueryBuilder();
+  constructor(customerItemStorage?: BlStorage<CustomerItem>) {
+    this.customerItemStorage =
+      customerItemStorage ?? new BlStorage(CustomerItemModel);
   }
 
   /**
@@ -30,7 +28,7 @@ export class CustomerItemActiveBlid {
     ]);
 
     const customerItems =
-      await this._customerItemStorage.getByQuery(databaseQuery);
+      await this.customerItemStorage.getByQuery(databaseQuery);
 
     const activeCustomerItems = customerItems.filter((customerItem) =>
       this.customerItemActive.isActive(customerItem),

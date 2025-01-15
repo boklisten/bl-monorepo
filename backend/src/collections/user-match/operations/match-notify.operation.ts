@@ -5,12 +5,9 @@ import { sendMail } from "@backend/messenger/email/email-service";
 import { sendSMS } from "@backend/messenger/sms/sms-service";
 import { Operation } from "@backend/operation/operation";
 import { BlApiRequest } from "@backend/request/bl-api-request";
-import { BlDocumentStorage } from "@backend/storage/blDocumentStorage";
+import { BlStorage } from "@backend/storage/blStorage";
 import { BlError } from "@shared/bl-error/bl-error";
 import { BlapiResponse } from "@shared/blapi-response/blapi-response";
-import { StandMatch } from "@shared/match/stand-match";
-import { UserMatch } from "@shared/match/user-match";
-import { UserDetail } from "@shared/user/user-detail/user-detail";
 import { z } from "zod";
 import { fromError } from "zod-validation-error";
 
@@ -20,22 +17,9 @@ const MatchNotifySpec = z.object({
 });
 
 export class MatchNotifyOperation implements Operation {
-  private readonly _userMatchStorage: BlDocumentStorage<UserMatch>;
-  private readonly _standMatchStorage: BlDocumentStorage<StandMatch>;
-  private readonly _userDetailStorage: BlDocumentStorage<UserDetail>;
-
-  constructor(
-    userMatchStorage?: BlDocumentStorage<UserMatch>,
-    standMatchStorage?: BlDocumentStorage<StandMatch>,
-    userDetailStorage?: BlDocumentStorage<UserDetail>,
-  ) {
-    this._userMatchStorage =
-      userMatchStorage ?? new BlDocumentStorage(UserMatchModel);
-    this._standMatchStorage =
-      standMatchStorage ?? new BlDocumentStorage(StandMatchModel);
-    this._userDetailStorage =
-      userDetailStorage ?? new BlDocumentStorage(UserDetailModel);
-  }
+  private userMatchStorage = new BlStorage(UserMatchModel);
+  private standMatchStorage = new BlStorage(StandMatchModel);
+  private userDetailStorage = new BlStorage(UserDetailModel);
 
   async run(blApiRequest: BlApiRequest): Promise<BlapiResponse> {
     const parsedRequest = MatchNotifySpec.safeParse(blApiRequest.data);
@@ -43,8 +27,8 @@ export class MatchNotifyOperation implements Operation {
       throw new BlError(fromError(parsedRequest.error).toString()).code(701);
     }
 
-    const userMatches = await this._userMatchStorage.getAll();
-    const standMatches = await this._standMatchStorage.getAll();
+    const userMatches = await this.userMatchStorage.getAll();
+    const standMatches = await this.standMatchStorage.getAll();
     if (userMatches.length === 0 && standMatches.length === 0) {
       throw new BlError("Could not find any matches!");
     }
@@ -79,7 +63,7 @@ export class MatchNotifyOperation implements Operation {
 
     return new BlapiResponse(
       await Promise.allSettled(
-        (await this._userDetailStorage.getMany([...targetCustomerIds])).map(
+        (await this.userDetailStorage.getMany([...targetCustomerIds])).map(
           async (customer) => {
             await sendSMS(
               customer.phone,

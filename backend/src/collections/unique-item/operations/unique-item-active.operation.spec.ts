@@ -4,7 +4,7 @@ import { CustomerItemActiveBlid } from "@backend/collections/customer-item/helpe
 import { UniqueItemActiveOperation } from "@backend/collections/unique-item/operations/unique-item-active.operation";
 import { UniqueItemModel } from "@backend/collections/unique-item/unique-item.model";
 import { SEResponseHandler } from "@backend/response/se.response.handler";
-import { BlDocumentStorage } from "@backend/storage/blDocumentStorage";
+import { BlStorage } from "@backend/storage/blStorage";
 import { UniqueItem } from "@shared/unique-item/unique-item";
 import { expect, use as chaiUse, should } from "chai";
 import chaiAsPromised from "chai-as-promised";
@@ -16,7 +16,7 @@ should();
 describe("UniqueItemActiveOperation", () => {
   describe("run()", () => {
     const customerItemActiveBlid = new CustomerItemActiveBlid();
-    const uniqueItemStorage = new BlDocumentStorage(UniqueItemModel);
+    const uniqueItemStorage = new BlStorage(UniqueItemModel);
 
     const getActiveCustomerItemsStub = sinon.stub(
       customerItemActiveBlid,

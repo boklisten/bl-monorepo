@@ -1,5 +1,5 @@
 import { SEDbQuery } from "@backend/query/se.db-query";
-import { BlDocumentStorage } from "@backend/storage/blDocumentStorage";
+import { BlStorage } from "@backend/storage/blStorage";
 import { BlError } from "@shared/bl-error/bl-error";
 import { Item } from "@shared/item/item";
 import {
@@ -90,9 +90,9 @@ function addDetailsToMatch(
 
 export async function addDetailsToUserMatches(
   userMatches: UserMatch[],
-  userDetailStorage: BlDocumentStorage<UserDetail>,
-  itemStorage: BlDocumentStorage<Item>,
-  uniqueItemStorage: BlDocumentStorage<UniqueItem>,
+  userDetailStorage: BlStorage<UserDetail>,
+  itemStorage: BlStorage<Item>,
+  uniqueItemStorage: BlStorage<UniqueItem>,
 ): Promise<UserMatchWithDetails[]> {
   const customers = Array.from(
     new Set(

@@ -8,7 +8,7 @@ import {
 import { Signature } from "@backend/collections/signature/signature.model";
 import { UserDetailModel } from "@backend/collections/user-detail/user-detail.model";
 import { Hook } from "@backend/hook/hook";
-import { BlDocumentStorage } from "@backend/storage/blDocumentStorage";
+import { BlStorage } from "@backend/storage/blStorage";
 import { BlError } from "@shared/bl-error/bl-error";
 import { Order } from "@shared/order/order";
 import { SerializedSignature } from "@shared/signature/serialized-signature";
@@ -16,17 +16,17 @@ import { AccessToken } from "@shared/token/access-token";
 import { UserDetail } from "@shared/user/user-detail/user-detail";
 
 export class SignaturePostHook extends Hook {
-  private userDetailStorage: BlDocumentStorage<UserDetail>;
-  private orderStorage: BlDocumentStorage<Order>;
+  private userDetailStorage: BlStorage<UserDetail>;
+  private orderStorage: BlStorage<Order>;
 
   constructor(
-    userDetailStorage?: BlDocumentStorage<UserDetail>,
-    orderStorage?: BlDocumentStorage<Order>,
+    userDetailStorage?: BlStorage<UserDetail>,
+    orderStorage?: BlStorage<Order>,
   ) {
     super();
     this.userDetailStorage =
-      userDetailStorage ?? new BlDocumentStorage(UserDetailModel);
-    this.orderStorage = orderStorage ?? new BlDocumentStorage(OrderModel);
+      userDetailStorage ?? new BlStorage(UserDetailModel);
+    this.orderStorage = orderStorage ?? new BlStorage(OrderModel);
   }
 
   override async before(

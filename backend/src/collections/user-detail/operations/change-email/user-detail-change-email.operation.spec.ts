@@ -8,7 +8,7 @@ import { UserModel } from "@backend/collections/user/user.model";
 import { UserDetailChangeEmailOperation } from "@backend/collections/user-detail/operations/change-email/user-detail-change-email.operation";
 import { UserDetailModel } from "@backend/collections/user-detail/user-detail.model";
 import { SEResponseHandler } from "@backend/response/se.response.handler";
-import { BlDocumentStorage } from "@backend/storage/blDocumentStorage";
+import { BlStorage } from "@backend/storage/blStorage";
 import { BlError } from "@shared/bl-error/bl-error";
 import { UserDetail } from "@shared/user/user-detail/user-detail";
 import { expect, use as chaiUse, should } from "chai";
@@ -18,9 +18,9 @@ chaiUse(chaiAsPromised);
 should();
 
 describe("UserDetailChangeEmailOperation", () => {
-  const userDetailStorage = new BlDocumentStorage(UserDetailModel);
-  const userStorage = new BlDocumentStorage(UserModel);
-  const localLoginStorage = new BlDocumentStorage(LocalLoginModel);
+  const userDetailStorage = new BlStorage(UserDetailModel);
+  const userStorage = new BlStorage(UserModel);
+  const localLoginStorage = new BlStorage(LocalLoginModel);
   const userHandler = new UserHandler();
   const resHandler = new SEResponseHandler();
 

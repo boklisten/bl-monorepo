@@ -8,7 +8,7 @@ import { User } from "@backend/collections/user/user";
 import { UserModel } from "@backend/collections/user/user.model";
 import { UserDetailModel } from "@backend/collections/user-detail/user-detail.model";
 import { SEDbQuery } from "@backend/query/se.db-query";
-import { BlDocumentStorage } from "@backend/storage/blDocumentStorage";
+import { BlStorage } from "@backend/storage/blStorage";
 import { BlError } from "@shared/bl-error/bl-error";
 import { UserDetail } from "@shared/user/user-detail/user-detail";
 import { expect, use as chaiUse, should } from "chai";
@@ -32,10 +32,10 @@ const testUser = {
 } as User;
 
 describe("UserHandler", () => {
-  const userStorage = new BlDocumentStorage(UserModel);
+  const userStorage = new BlStorage(UserModel);
   const emailValidationHelper: EmailValidationHelper =
     new EmailValidationHelper();
-  const userDetailStorage = new BlDocumentStorage(UserDetailModel);
+  const userDetailStorage = new BlStorage(UserDetailModel);
   const localLoginHandler: LocalLoginHandler = new LocalLoginHandler();
   const userHandler = new UserHandler(
     userDetailStorage,

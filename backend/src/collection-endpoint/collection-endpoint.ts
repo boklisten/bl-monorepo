@@ -11,26 +11,24 @@ import {
 } from "@backend/collections/bl-collection";
 import { ApiPath } from "@backend/config/api-path";
 import { logger } from "@backend/logger/logger";
-import { BlDocumentStorage } from "@backend/storage/blDocumentStorage";
+import { BlStorage } from "@backend/storage/blStorage";
 import { BlDocument } from "@shared/bl-document/bl-document";
 import { BlError } from "@shared/bl-error/bl-error";
 import { Router } from "express";
 
 export class CollectionEndpoint<T extends BlDocument> {
-  private readonly _documentStorage: BlDocumentStorage<T>;
+  private readonly documentStorage: BlStorage<T>;
 
   constructor(
-    private _router: Router,
-    private _collection: BlCollection,
+    private router: Router,
+    private collection: BlCollection,
   ) {
-    this._documentStorage = new BlDocumentStorage(
-      _collection.model as BlModel<T>,
-    );
+    this.documentStorage = new BlStorage(collection.model as BlModel<T>);
     new ApiPath();
   }
 
   public create() {
-    for (const endpoint of this._collection.endpoints) {
+    for (const endpoint of this.collection.endpoints) {
       switch (endpoint.method) {
         case "getAll": {
           this.createGetAll(endpoint);
@@ -66,9 +64,9 @@ export class CollectionEndpoint<T extends BlDocument> {
   }
 
   public printEndpoints() {
-    for (const endpoint of this._collection.endpoints) {
+    for (const endpoint of this.collection.endpoints) {
       let method: string = endpoint.method;
-      let uri = this._collection.model.name.toString();
+      let uri = this.collection.model.name.toString();
 
       if (method === "getAll" || method === "getId") {
         method = "get";
@@ -101,66 +99,66 @@ export class CollectionEndpoint<T extends BlDocument> {
 
   private createGetAll(endpoint: BlEndpoint) {
     const collectionEndpointGetAll = new CollectionEndpointGetAll<T>(
-      this._router,
+      this.router,
       endpoint,
-      this._collection.model.name,
-      this._documentStorage,
-      this._collection.documentPermission,
+      this.collection.model.name,
+      this.documentStorage,
+      this.collection.documentPermission,
     );
     collectionEndpointGetAll.create();
   }
 
   private createGetId(endpoint: BlEndpoint) {
     const collectionEndpointGetId = new CollectionEndpointGetId<T>(
-      this._router,
+      this.router,
       endpoint,
-      this._collection.model.name,
-      this._documentStorage,
-      this._collection.documentPermission,
+      this.collection.model.name,
+      this.documentStorage,
+      this.collection.documentPermission,
     );
     collectionEndpointGetId.create();
   }
 
   private createPost(endpoint: BlEndpoint) {
     const collectionEndpointPost = new CollectionEndpointPost<T>(
-      this._router,
+      this.router,
       endpoint,
-      this._collection.model.name,
-      this._documentStorage,
-      this._collection.documentPermission,
+      this.collection.model.name,
+      this.documentStorage,
+      this.collection.documentPermission,
     );
     collectionEndpointPost.create();
   }
 
   private createDelete(endpoint: BlEndpoint) {
     const collectionEndpointDelete = new CollectionEndpointDelete<T>(
-      this._router,
+      this.router,
       endpoint,
-      this._collection.model.name,
-      this._documentStorage,
-      this._collection.documentPermission,
+      this.collection.model.name,
+      this.documentStorage,
+      this.collection.documentPermission,
     );
     collectionEndpointDelete.create();
   }
 
   private createPatch(endpoint: BlEndpoint) {
     const collectionEndpointPatch = new CollectionEndpointPatch<T>(
-      this._router,
+      this.router,
       endpoint,
-      this._collection.model.name,
-      this._documentStorage,
-      this._collection.documentPermission,
+      this.collection.model.name,
+      this.documentStorage,
+      this.collection.documentPermission,
     );
     collectionEndpointPatch.create();
   }
 
   private createPut(endpoint: BlEndpoint) {
     const collectionEndpointPut = new CollectionEndpointPut<T>(
-      this._router,
+      this.router,
       endpoint,
-      this._collection.model.name,
-      this._documentStorage,
-      this._collection.documentPermission,
+      this.collection.model.name,
+      this.documentStorage,
+      this.collection.documentPermission,
     );
     collectionEndpointPut.create();
   }

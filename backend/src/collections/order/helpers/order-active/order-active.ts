@@ -1,17 +1,16 @@
 import { OrderModel } from "@backend/collections/order/order.model";
 import { SEDbQueryBuilder } from "@backend/query/se.db-query-builder";
-import { BlDocumentStorage } from "@backend/storage/blDocumentStorage";
+import { BlStorage } from "@backend/storage/blStorage";
 import { BlError } from "@shared/bl-error/bl-error";
 import { Order } from "@shared/order/order";
 import { OrderItem } from "@shared/order/order-item/order-item";
 
 export class OrderActive {
-  private queryBuilder: SEDbQueryBuilder;
-  private orderStorage: BlDocumentStorage<Order>;
+  private queryBuilder = new SEDbQueryBuilder();
+  private orderStorage: BlStorage<Order>;
 
-  constructor(_orderStorage?: BlDocumentStorage<Order>) {
-    this.orderStorage = _orderStorage ?? new BlDocumentStorage(OrderModel);
-    this.queryBuilder = new SEDbQueryBuilder();
+  constructor(orderStorage?: BlStorage<Order>) {
+    this.orderStorage = orderStorage ?? new BlStorage(OrderModel);
   }
 
   public async getActiveOrders(userId: string): Promise<Order[]> {

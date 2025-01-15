@@ -3,7 +3,7 @@ import "mocha";
 import { DeliveryModel } from "@backend/collections/delivery/delivery.model";
 import { OrderPlacedValidator } from "@backend/collections/order/helpers/order-validator/order-placed-validator/order-placed-validator";
 import { PaymentModel } from "@backend/collections/payment/payment.model";
-import { BlDocumentStorage } from "@backend/storage/blDocumentStorage";
+import { BlStorage } from "@backend/storage/blStorage";
 import { BlError } from "@shared/bl-error/bl-error";
 import { Delivery } from "@shared/delivery/delivery";
 import { Order } from "@shared/order/order";
@@ -18,9 +18,9 @@ should();
 describe("OrderPlacedValidator", () => {
   describe("#validate()", () => {
     let testOrder: Order;
-    const paymentStorage = new BlDocumentStorage(PaymentModel);
+    const paymentStorage = new BlStorage(PaymentModel);
 
-    const deliveryStorage = new BlDocumentStorage(DeliveryModel);
+    const deliveryStorage = new BlStorage(DeliveryModel);
     const orderPlacedValidator = new OrderPlacedValidator(
       deliveryStorage,
       paymentStorage,

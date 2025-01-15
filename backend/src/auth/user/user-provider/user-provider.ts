@@ -4,19 +4,19 @@ import { UserHandler } from "@backend/auth/user/user.handler";
 import { User } from "@backend/collections/user/user";
 
 export class UserProvider {
-  private _userHandler: UserHandler;
-  private _localLoginHandler: LocalLoginHandler;
-  private _tokenHandler: TokenHandler;
+  private userHandler: UserHandler;
+  private localLoginHandler: LocalLoginHandler;
+  private tokenHandler: TokenHandler;
   constructor(
-    _userHandler?: UserHandler,
-    _localLoginHandler?: LocalLoginHandler,
-    _tokenHandler?: TokenHandler,
+    userHandler?: UserHandler,
+    localLoginHandler?: LocalLoginHandler,
+    tokenHandler?: TokenHandler,
   ) {
-    this._userHandler = _userHandler ?? new UserHandler();
+    this.userHandler = userHandler ?? new UserHandler();
 
-    this._localLoginHandler = _localLoginHandler ?? new LocalLoginHandler();
+    this.localLoginHandler = localLoginHandler ?? new LocalLoginHandler();
 
-    this._tokenHandler = _tokenHandler ?? new TokenHandler(this._userHandler);
+    this.tokenHandler = tokenHandler ?? new TokenHandler(this.userHandler);
   }
 
   public async loginOrCreate(
@@ -29,13 +29,11 @@ export class UserProvider {
   }> {
     const user = await this.getUser(username, provider, providerId);
 
-    await this._userHandler.valid(username);
+    await this.userHandler.valid(username);
 
-    await this._localLoginHandler.createDefaultLocalLoginIfNoneIsFound(
-      username,
-    );
+    await this.localLoginHandler.createDefaultLocalLoginIfNoneIsFound(username);
 
-    const tokens = await this._tokenHandler.createTokens(username);
+    const tokens = await this.tokenHandler.createTokens(username);
 
     return { user: user, tokens: tokens };
   }
@@ -47,9 +45,9 @@ export class UserProvider {
   ): Promise<User> {
     let user;
     try {
-      user = await this._userHandler.get(provider, providerId);
+      user = await this.userHandler.get(provider, providerId);
     } catch {
-      user = await this._userHandler.create(username, provider, providerId);
+      user = await this.userHandler.create(username, provider, providerId);
     }
 
     return user;

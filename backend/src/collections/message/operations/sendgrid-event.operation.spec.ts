@@ -2,7 +2,7 @@ import "mocha";
 
 import { MessageModel } from "@backend/collections/message/message.model";
 import { SendgridEventOperation } from "@backend/collections/message/operations/sendgrid-event.operation";
-import { BlDocumentStorage } from "@backend/storage/blDocumentStorage";
+import { BlStorage } from "@backend/storage/blStorage";
 import { Message } from "@shared/message/message";
 import { expect, use as chaiUse, should } from "chai";
 import chaiAsPromised from "chai-as-promised";
@@ -12,7 +12,7 @@ chaiUse(chaiAsPromised);
 should();
 
 describe("SendgridEventOperation", () => {
-  const messageStorage = new BlDocumentStorage(MessageModel);
+  const messageStorage = new BlStorage(MessageModel);
 
   const sendgridEventOperation = new SendgridEventOperation(messageStorage);
 

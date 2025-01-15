@@ -41,44 +41,38 @@ import { UserDetail } from "@shared/user/user-detail/user-detail";
 import { Router } from "express";
 
 export class CollectionEndpointCreator {
-  constructor(private _router: Router) {
+  constructor(private router: Router) {
     new SEResponseHandler();
   }
 
   create() {
     const collectionEndpoints = [
-      new CollectionEndpoint<Branch>(this._router, BranchCollection),
-      new CollectionEndpoint<BranchItem>(this._router, BranchItemCollection),
-      new CollectionEndpoint<CustomerItem>(
-        this._router,
-        CustomerItemCollection,
-      ),
-      new CollectionEndpoint<Delivery>(this._router, DeliveryCollection),
-      new CollectionEndpoint<Item>(this._router, ItemCollection),
-      new CollectionEndpoint<OpeningHour>(this._router, OpeningHourCollection),
-      new CollectionEndpoint<Order>(this._router, OrderCollection),
-      new CollectionEndpoint<Payment>(this._router, PaymentCollection),
-      new CollectionEndpoint<UserDetail>(this._router, UserDetailCollection),
+      new CollectionEndpoint<Branch>(this.router, BranchCollection),
+      new CollectionEndpoint<BranchItem>(this.router, BranchItemCollection),
+      new CollectionEndpoint<CustomerItem>(this.router, CustomerItemCollection),
+      new CollectionEndpoint<Delivery>(this.router, DeliveryCollection),
+      new CollectionEndpoint<Item>(this.router, ItemCollection),
+      new CollectionEndpoint<OpeningHour>(this.router, OpeningHourCollection),
+      new CollectionEndpoint<Order>(this.router, OrderCollection),
+      new CollectionEndpoint<Payment>(this.router, PaymentCollection),
+      new CollectionEndpoint<UserDetail>(this.router, UserDetailCollection),
       new CollectionEndpoint<PendingPasswordReset>(
-        this._router,
+        this.router,
         PendingPasswordResetCollection,
       ),
       new CollectionEndpoint<EmailValidation>(
-        this._router,
+        this.router,
         EmailValidationCollection,
       ),
-      new CollectionEndpoint<Message>(this._router, MessageCollection),
-      new CollectionEndpoint<StandMatch>(this._router, StandMatchCollection),
-      new CollectionEndpoint<UserMatch>(this._router, UserMatchCollection),
-      new CollectionEndpoint<Invoice>(this._router, InvoiceCollection),
-      new CollectionEndpoint<Company>(this._router, CompanyCollection),
-      new CollectionEndpoint<UniqueItem>(this._router, UniqueItemCollection),
-      new CollectionEndpoint<EditableText>(
-        this._router,
-        EditableTextCollection,
-      ),
+      new CollectionEndpoint<Message>(this.router, MessageCollection),
+      new CollectionEndpoint<StandMatch>(this.router, StandMatchCollection),
+      new CollectionEndpoint<UserMatch>(this.router, UserMatchCollection),
+      new CollectionEndpoint<Invoice>(this.router, InvoiceCollection),
+      new CollectionEndpoint<Company>(this.router, CompanyCollection),
+      new CollectionEndpoint<UniqueItem>(this.router, UniqueItemCollection),
+      new CollectionEndpoint<EditableText>(this.router, EditableTextCollection),
       new CollectionEndpoint<SerializedSignature>(
-        this._router,
+        this.router,
         SignatureCollection,
       ),
     ];

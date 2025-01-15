@@ -2,7 +2,7 @@ import "mocha";
 
 import { CustomerItemModel } from "@backend/collections/customer-item/customer-item.model";
 import { CustomerHaveActiveCustomerItems } from "@backend/collections/customer-item/helpers/customer-have-active-customer-items";
-import { BlDocumentStorage } from "@backend/storage/blDocumentStorage";
+import { BlStorage } from "@backend/storage/blStorage";
 import { BlError } from "@shared/bl-error/bl-error";
 import { CustomerItem } from "@shared/customer-item/customer-item";
 import { expect, use as chaiUse, should } from "chai";
@@ -13,7 +13,7 @@ chaiUse(chaiAsPromised);
 should();
 
 describe("CustomerHaveActiveCustomerItems", () => {
-  const customerItemStorage = new BlDocumentStorage(CustomerItemModel);
+  const customerItemStorage = new BlStorage(CustomerItemModel);
 
   const customerItemByQueryStub = sinon.stub(customerItemStorage, "getByQuery");
 

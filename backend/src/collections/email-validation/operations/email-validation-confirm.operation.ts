@@ -5,27 +5,27 @@ import { isNullish } from "@backend/helper/typescript-helpers";
 import { Operation } from "@backend/operation/operation";
 import { BlApiRequest } from "@backend/request/bl-api-request";
 import { SEResponseHandler } from "@backend/response/se.response.handler";
-import { BlDocumentStorage } from "@backend/storage/blDocumentStorage";
+import { BlStorage } from "@backend/storage/blStorage";
 import { BlError } from "@shared/bl-error/bl-error";
 import { BlapiResponse } from "@shared/blapi-response/blapi-response";
 import { UserDetail } from "@shared/user/user-detail/user-detail";
 import { Request, Response } from "express";
 
 export class EmailValidationConfirmOperation implements Operation {
-  private _emailValidationStorage: BlDocumentStorage<EmailValidation>;
-  private _resHandler: SEResponseHandler;
-  private _userDetailStorage: BlDocumentStorage<UserDetail>;
+  private emailValidationStorage: BlStorage<EmailValidation>;
+  private resHandler: SEResponseHandler;
+  private userDetailStorage: BlStorage<UserDetail>;
 
   constructor(
-    emailValidationStorage?: BlDocumentStorage<EmailValidation>,
+    emailValidationStorage?: BlStorage<EmailValidation>,
     resHandler?: SEResponseHandler,
-    userDetailStorage?: BlDocumentStorage<UserDetail>,
+    userDetailStorage?: BlStorage<UserDetail>,
   ) {
-    this._emailValidationStorage =
-      emailValidationStorage ?? new BlDocumentStorage(EmailValidationModel);
-    this._resHandler = resHandler ?? new SEResponseHandler();
-    this._userDetailStorage =
-      userDetailStorage ?? new BlDocumentStorage(UserDetailModel);
+    this.emailValidationStorage =
+      emailValidationStorage ?? new BlStorage(EmailValidationModel);
+    this.resHandler = resHandler ?? new SEResponseHandler();
+    this.userDetailStorage =
+      userDetailStorage ?? new BlStorage(UserDetailModel);
   }
 
   run(
@@ -38,13 +38,13 @@ export class EmailValidationConfirmOperation implements Operation {
         return reject(new BlError("no documentId provided"));
       }
 
-      this._emailValidationStorage
+      this.emailValidationStorage
         .get(blApiRequest.documentId)
         .then((emailValidation: EmailValidation) => {
-          this._userDetailStorage
+          this.userDetailStorage
             .update(emailValidation.userDetail, { emailConfirmed: true })
             .then(() => {
-              this._resHandler.sendResponse(
+              this.resHandler.sendResponse(
                 // @ts-expect-error fixme: auto ignored
                 res,
                 new BlapiResponse([{ confirmed: true }]),
@@ -57,13 +57,13 @@ export class EmailValidationConfirmOperation implements Operation {
               ).add(updateUserDetailError);
 
               // @ts-expect-error fixme: auto ignored
-              this._resHandler.sendErrorResponse(res, error);
+              this.resHandler.sendErrorResponse(res, error);
               reject(error);
             });
         })
         .catch((getEmailValidationError: BlError) => {
           // @ts-expect-error fixme: auto ignored
-          this._resHandler.sendErrorResponse(res, getEmailValidationError);
+          this.resHandler.sendErrorResponse(res, getEmailValidationError);
           reject(
             new BlError(
               `emailValidation "${blApiRequest.documentId}" not found`,

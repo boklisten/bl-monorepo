@@ -6,7 +6,7 @@ export class EditableTextPutHook extends Hook {
   // Our PUT implementation resets creationTime, but it shouldn't matter for this use case
   override async before(
     body: unknown,
-    _accessToken: never,
+    accessToken: never,
     id: string,
   ): Promise<EditableText> {
     if (!validateEditableText(body)) {

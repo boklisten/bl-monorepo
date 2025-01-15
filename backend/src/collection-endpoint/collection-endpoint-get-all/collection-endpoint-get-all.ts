@@ -13,7 +13,7 @@ export class CollectionEndpointGetAll<T extends BlDocument>
     if (
       blApiRequest.query &&
       Object.getOwnPropertyNames(blApiRequest.query).length > 0 &&
-      this._endpoint.validQueryParams
+      this.endpoint.validQueryParams
     ) {
       // if the request includes a query
 
@@ -23,7 +23,7 @@ export class CollectionEndpointGetAll<T extends BlDocument>
       try {
         databaseQuery = databaseQueryBuilder.getDbQuery(
           blApiRequest.query,
-          this._endpoint.validQueryParams,
+          this.endpoint.validQueryParams,
         );
       } catch (error) {
         throw (
@@ -36,9 +36,9 @@ export class CollectionEndpointGetAll<T extends BlDocument>
         );
       }
 
-      return await this._documentStorage.getByQuery(
+      return await this.documentStorage.getByQuery(
         databaseQuery,
-        this._endpoint.nestedDocuments,
+        this.endpoint.nestedDocuments,
       );
     } else {
       // if no query, give back all objects in collection
@@ -47,7 +47,7 @@ export class CollectionEndpointGetAll<T extends BlDocument>
         permission = blApiRequest.user.permission;
       }
 
-      return this._documentStorage
+      return this.documentStorage
         .getAll(permission)
         .then((docs: T[]) => {
           return docs;

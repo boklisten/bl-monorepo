@@ -17,16 +17,13 @@ import { isNullish } from "@backend/helper/typescript-helpers";
 import { Operation } from "@backend/operation/operation";
 import { SEDbQuery } from "@backend/query/se.db-query";
 import { BlApiRequest } from "@backend/request/bl-api-request";
-import { BlDocumentStorage } from "@backend/storage/blDocumentStorage";
+import { BlStorage } from "@backend/storage/blStorage";
 import { BlError } from "@shared/bl-error/bl-error";
 import { BlapiResponse } from "@shared/blapi-response/blapi-response";
-import { Branch } from "@shared/branch/branch";
 import { CustomerItem } from "@shared/customer-item/customer-item";
-import { Item } from "@shared/item/item";
 import { StandMatch } from "@shared/match/stand-match";
 import { UserMatch } from "@shared/match/user-match";
 import { Order } from "@shared/order/order";
-import { UniqueItem } from "@shared/unique-item/unique-item";
 import { ObjectId } from "mongodb";
 import { z } from "zod";
 import { fromError } from "zod-validation-error";
@@ -34,35 +31,13 @@ import { fromError } from "zod-validation-error";
 export class UserMatchTransferItemOperation implements Operation {
   private readonly wrongSenderFeedback = `Boken du skannet tilhørte en annen elev enn den som ga deg den. Du skal beholde den, men eleven som ga deg boken er fortsatt ansvarlig for at den opprinnelige boken blir levert.`;
 
-  private readonly _userMatchStorage: BlDocumentStorage<UserMatch>;
-  private readonly _standMatchStorage: BlDocumentStorage<StandMatch>;
-  private readonly _orderStorage: BlDocumentStorage<Order>;
-  private readonly _customerItemStorage: BlDocumentStorage<CustomerItem>;
-  private readonly _uniqueItemStorage: BlDocumentStorage<UniqueItem>;
-  private readonly _branchStorage: BlDocumentStorage<Branch>;
-  private readonly _itemStorage: BlDocumentStorage<Item>;
-
-  constructor(
-    userMatchStorage?: BlDocumentStorage<UserMatch>,
-    standMatchStorage?: BlDocumentStorage<StandMatch>,
-    orderStorage?: BlDocumentStorage<Order>,
-    customerItemStorage?: BlDocumentStorage<CustomerItem>,
-    uniqueItemStorage?: BlDocumentStorage<UniqueItem>,
-    branchStorage?: BlDocumentStorage<Branch>,
-    itemStorage?: BlDocumentStorage<Item>,
-  ) {
-    this._userMatchStorage =
-      userMatchStorage ?? new BlDocumentStorage(UserMatchModel);
-    this._standMatchStorage =
-      standMatchStorage ?? new BlDocumentStorage(StandMatchModel);
-    this._orderStorage = orderStorage ?? new BlDocumentStorage(OrderModel);
-    this._customerItemStorage =
-      customerItemStorage ?? new BlDocumentStorage(CustomerItemModel);
-    this._uniqueItemStorage =
-      uniqueItemStorage ?? new BlDocumentStorage(UniqueItemModel);
-    this._branchStorage = branchStorage ?? new BlDocumentStorage(BranchModel);
-    this._itemStorage = itemStorage ?? new BlDocumentStorage(ItemModel);
-  }
+  private userMatchStorage = new BlStorage(UserMatchModel);
+  private standMatchStorage = new BlStorage(StandMatchModel);
+  private orderStorage = new BlStorage(OrderModel);
+  private customerItemStorage = new BlStorage(CustomerItemModel);
+  private uniqueItemStorage = new BlStorage(UniqueItemModel);
+  private branchStorage = new BlStorage(BranchModel);
+  private itemStorage = new BlStorage(ItemModel);
 
   async run(blApiRequest: BlApiRequest): Promise<BlapiResponse> {
     let userFeedback;
@@ -155,7 +130,7 @@ export class UserMatchTransferItemOperation implements Operation {
           ],
         };
       }
-      await this._userMatchStorage.update(senderUserMatch.id, update);
+      await this.userMatchStorage.update(senderUserMatch.id, update);
       return;
     }
 
@@ -163,7 +138,7 @@ export class UserMatchTransferItemOperation implements Operation {
       return;
     }
 
-    await this._standMatchStorage.update(senderStandMatch.id, {
+    await this.standMatchStorage.update(senderStandMatch.id, {
       deliveredItems: [...senderStandMatch.deliveredItems, customerItem.item],
     });
   }
@@ -201,7 +176,7 @@ export class UserMatchTransferItemOperation implements Operation {
       receivedBlIds.map(async (blId) => {
         const uniqueItemQuery = new SEDbQuery();
         uniqueItemQuery.stringFilters = [{ fieldName: "blid", value: blId }];
-        return (await this._uniqueItemStorage.getByQuery(uniqueItemQuery))[0]
+        return (await this.uniqueItemStorage.getByQuery(uniqueItemQuery))[0]
           ?.item;
       }),
     );
@@ -246,16 +221,16 @@ export class UserMatchTransferItemOperation implements Operation {
     const receiverOrder = await createMatchReceiveOrder(
       customerItem,
       receiverUserDetailId,
-      this._itemStorage,
-      this._branchStorage,
+      this.itemStorage,
+      this.branchStorage,
     );
 
-    const placedReceiverOrder = await this._orderStorage.add(receiverOrder);
+    const placedReceiverOrder = await this.orderStorage.add(receiverOrder);
 
     await new OrderValidator().validate(placedReceiverOrder, false);
 
     const orderMovedToHandler = new OrderItemMovedFromOrderHandler(
-      this._orderStorage,
+      this.orderStorage,
     );
     await orderMovedToHandler.updateOrderItems(placedReceiverOrder);
     return placedReceiverOrder;
@@ -271,11 +246,11 @@ export class UserMatchTransferItemOperation implements Operation {
       throw new BlError("Failed to create new customer items");
     }
 
-    const addedCustomerItem = await this._customerItemStorage.add(
+    const addedCustomerItem = await this.customerItemStorage.add(
       generatedReceiverCustomerItem,
     );
 
-    await this._orderStorage.update(placedReceiverOrder.id, {
+    await this.orderStorage.update(placedReceiverOrder.id, {
       orderItems: placedReceiverOrder.orderItems.map((orderItem) => ({
         ...orderItem,
         customerItem: addedCustomerItem.id,
@@ -289,14 +264,14 @@ export class UserMatchTransferItemOperation implements Operation {
     const senderOrder = await createMatchDeliverOrder(
       customerItem,
       customerItem.customer,
-      this._itemStorage,
-      this._branchStorage,
+      this.itemStorage,
+      this.branchStorage,
     );
 
-    const placedSenderOrder = await this._orderStorage.add(senderOrder);
+    const placedSenderOrder = await this.orderStorage.add(senderOrder);
     await new OrderValidator().validate(placedSenderOrder, false);
 
-    await this._customerItemStorage.update(customerItem.id, {
+    await this.customerItemStorage.update(customerItem.id, {
       returned: true,
     });
   }
@@ -304,7 +279,7 @@ export class UserMatchTransferItemOperation implements Operation {
   private async getUserMatchesForCustomer(
     customer: string,
   ): Promise<UserMatch[]> {
-    return (await this._userMatchStorage.aggregate([
+    return (await this.userMatchStorage.aggregate([
       {
         $match: {
           $or: [
@@ -319,7 +294,7 @@ export class UserMatchTransferItemOperation implements Operation {
   private async getStandMatchForCustomer(
     customer: string,
   ): Promise<StandMatch | undefined> {
-    const standMatches = (await this._standMatchStorage.aggregate([
+    const standMatches = (await this.standMatchStorage.aggregate([
       {
         $match: {
           customer: new ObjectId(customer),
@@ -365,6 +340,6 @@ export class UserMatchTransferItemOperation implements Operation {
         ],
       };
     }
-    await this._userMatchStorage.update(receiverUserMatch.id, update);
+    await this.userMatchStorage.update(receiverUserMatch.id, update);
   }
 }

@@ -3,7 +3,7 @@ import { ItemModel } from "@backend/collections/item/item.model";
 import { OrderValidator } from "@backend/collections/order/helpers/order-validator/order-validator";
 import { OrderModel } from "@backend/collections/order/order.model";
 import { Operation } from "@backend/operation/operation";
-import { BlDocumentStorage } from "@backend/storage/blDocumentStorage";
+import { BlStorage } from "@backend/storage/blStorage";
 import { BlError } from "@shared/bl-error/bl-error";
 import { BlapiResponse } from "@shared/blapi-response/blapi-response";
 import { CustomerItem } from "@shared/customer-item/customer-item";
@@ -13,26 +13,26 @@ import { ObjectId } from "mongodb";
 
 // fixme: rewrite and generalize this for use in the future
 export class BulkOrderOperation implements Operation {
-  private readonly _orderStorage: BlDocumentStorage<Order>;
-  private readonly _itemStorage: BlDocumentStorage<Item>;
-  private readonly _customerItemStorage: BlDocumentStorage<CustomerItem>;
+  private readonly orderStorage: BlStorage<Order>;
+  private readonly itemStorage: BlStorage<Item>;
+  private readonly customerItemStorage: BlStorage<CustomerItem>;
 
   constructor(
-    orderStorage?: BlDocumentStorage<Order>,
-    itemStorage?: BlDocumentStorage<Item>,
-    customerItemStorage?: BlDocumentStorage<CustomerItem>,
+    orderStorage?: BlStorage<Order>,
+    itemStorage?: BlStorage<Item>,
+    customerItemStorage?: BlStorage<CustomerItem>,
   ) {
-    this._orderStorage = orderStorage ?? new BlDocumentStorage(OrderModel);
-    this._itemStorage = itemStorage ?? new BlDocumentStorage(ItemModel);
-    this._customerItemStorage =
-      customerItemStorage ?? new BlDocumentStorage(CustomerItemModel);
+    this.orderStorage = orderStorage ?? new BlStorage(OrderModel);
+    this.itemStorage = itemStorage ?? new BlStorage(ItemModel);
+    this.customerItemStorage =
+      customerItemStorage ?? new BlStorage(CustomerItemModel);
   }
 
   async run(): Promise<BlapiResponse> {
-    const samf = await this._itemStorage.get("5ee37e644127df001c112ae0");
-    const geo = await this._itemStorage.get("5ee37e644127df001c112af9");
+    const samf = await this.itemStorage.get("5ee37e644127df001c112ae0");
+    const geo = await this.itemStorage.get("5ee37e644127df001c112af9");
 
-    const result = (await this._customerItemStorage.aggregate([
+    const result = (await this.customerItemStorage.aggregate([
       {
         $match: {
           returned: false,
@@ -127,7 +127,7 @@ export class BulkOrderOperation implements Operation {
             },
           ],
         };
-        const placedHandoutOrder = await this._orderStorage.add(rentOrder);
+        const placedHandoutOrder = await this.orderStorage.add(rentOrder);
 
         await new OrderValidator().validate(placedHandoutOrder, false);
       }),

@@ -9,7 +9,7 @@ export class CollectionEndpointGetId<T extends BlDocument>
 {
   public override onRequest(blApiRequest: BlApiRequest): Promise<T[]> {
     return new Promise((resolve, reject) => {
-      this._documentStorage
+      this.documentStorage
         // @ts-expect-error fixme: auto ignored
         .get(blApiRequest.documentId, blApiRequest.user.permission)
         .then((document_: T) => {

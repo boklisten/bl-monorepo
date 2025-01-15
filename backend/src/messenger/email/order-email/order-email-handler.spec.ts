@@ -4,7 +4,7 @@ import { BranchModel } from "@backend/collections/branch/branch.model";
 import { DeliveryModel } from "@backend/collections/delivery/delivery.model";
 import { PaymentModel } from "@backend/collections/payment/payment.model";
 import { OrderEmailHandler } from "@backend/messenger/email/order-email/order-email-handler";
-import { BlDocumentStorage } from "@backend/storage/blDocumentStorage";
+import { BlStorage } from "@backend/storage/blStorage";
 import { EmailHandler, EmailLog } from "@boklisten/bl-email";
 import { BlError } from "@shared/bl-error/bl-error";
 import { Branch } from "@shared/branch/branch";
@@ -29,9 +29,9 @@ describe("OrderEmailHandler", () => {
   let emailSendSuccessful: boolean;
   const standardTimeFormat = "DD.MM.YYYY HH.mm.ss";
   const standardDayFormat = "DD.MM.YY";
-  const branchStorage = new BlDocumentStorage(BranchModel);
-  const deliveryStorage = new BlDocumentStorage(DeliveryModel);
-  const paymentStorage = new BlDocumentStorage(PaymentModel);
+  const branchStorage = new BlStorage(BranchModel);
+  const deliveryStorage = new BlStorage(DeliveryModel);
+  const paymentStorage = new BlStorage(PaymentModel);
   const emailHandler = new EmailHandler({ sendgrid: { apiKey: "someKey" } });
   const orderEmailHandler = new OrderEmailHandler(
     emailHandler,

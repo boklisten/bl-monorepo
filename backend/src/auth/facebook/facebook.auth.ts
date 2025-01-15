@@ -9,16 +9,14 @@ import passport from "passport";
 import { Profile, Strategy, StrategyOptions } from "passport-facebook";
 
 export class FacebookAuth {
-  private apiPath: ApiPath;
-  private _userProvider: UserProvider;
+  private apiPath = new ApiPath();
+  private userProvider = new UserProvider();
   private readonly facebookPassportStrategySettings: StrategyOptions;
 
   constructor(
     private router: Router,
     private resHandler: SEResponseHandler,
   ) {
-    this.apiPath = new ApiPath();
-
     this.facebookPassportStrategySettings = {
       clientID: assertEnv(BlEnvironment.FACEBOOK_CLIENT_ID),
       clientSecret: assertEnv(BlEnvironment.FACEBOOK_SECRET),
@@ -32,7 +30,6 @@ export class FacebookAuth {
     this.createAuthGet(router);
     this.createCallbackGet(router);
     this.createPassportStrategy();
-    this._userProvider = new UserProvider();
   }
 
   private createPassportStrategy() {
@@ -47,7 +44,7 @@ export class FacebookAuth {
 
           try {
             const username = this.extractUsername(profile);
-            userAndTokens = await this._userProvider.loginOrCreate(
+            userAndTokens = await this.userProvider.loginOrCreate(
               username,
               provider,
               providerId,

@@ -3,7 +3,7 @@ import { OrderFieldValidator } from "@backend/collections/order/helpers/order-va
 import { OrderItemValidator } from "@backend/collections/order/helpers/order-validator/order-item-validator/order-item-validator";
 import { OrderPlacedValidator } from "@backend/collections/order/helpers/order-validator/order-placed-validator/order-placed-validator";
 import { OrderUserDetailValidator } from "@backend/collections/order/helpers/order-validator/order-user-detail-validator/order-user-detail-validator";
-import { BlDocumentStorage } from "@backend/storage/blDocumentStorage";
+import { BlStorage } from "@backend/storage/blStorage";
 import { BlError } from "@shared/bl-error/bl-error";
 import { Branch } from "@shared/branch/branch";
 import { Order } from "@shared/order/order";
@@ -11,21 +11,21 @@ import { Order } from "@shared/order/order";
 export class OrderValidator {
   private orderPlacedValidator: OrderPlacedValidator;
   private orderItemValidator: OrderItemValidator;
-  private branchStorage: BlDocumentStorage<Branch>;
+  private branchStorage: BlStorage<Branch>;
   private orderFieldValidator: OrderFieldValidator;
   private orderUserDetailValidator: OrderUserDetailValidator;
 
   constructor(
     orderItemValidator?: OrderItemValidator,
     orderPlacedValidator?: OrderPlacedValidator,
-    branchStorage?: BlDocumentStorage<Branch>,
+    branchStorage?: BlStorage<Branch>,
     orderFieldValidator?: OrderFieldValidator,
     orderUserDetailValidator?: OrderUserDetailValidator,
   ) {
     this.orderItemValidator = orderItemValidator ?? new OrderItemValidator();
     this.orderPlacedValidator =
       orderPlacedValidator ?? new OrderPlacedValidator();
-    this.branchStorage = branchStorage ?? new BlDocumentStorage(BranchModel);
+    this.branchStorage = branchStorage ?? new BlStorage(BranchModel);
     this.orderFieldValidator = orderFieldValidator ?? new OrderFieldValidator();
     this.orderUserDetailValidator =
       orderUserDetailValidator ?? new OrderUserDetailValidator();

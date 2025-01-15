@@ -1,16 +1,16 @@
 import { CustomerItemModel } from "@backend/collections/customer-item/customer-item.model";
-import { BlDocumentStorage } from "@backend/storage/blDocumentStorage";
+import { BlStorage } from "@backend/storage/blStorage";
 import { BlError } from "@shared/bl-error/bl-error";
 import { Branch } from "@shared/branch/branch";
 import { CustomerItem } from "@shared/customer-item/customer-item";
 import { OrderItem } from "@shared/order/order-item/order-item";
 
 export class OrderItemExtendValidator {
-  private customerItemStorage: BlDocumentStorage<CustomerItem>;
+  private customerItemStorage: BlStorage<CustomerItem>;
 
-  constructor(customerItemStorage?: BlDocumentStorage<CustomerItem>) {
+  constructor(customerItemStorage?: BlStorage<CustomerItem>) {
     this.customerItemStorage =
-      customerItemStorage ?? new BlDocumentStorage(CustomerItemModel);
+      customerItemStorage ?? new BlStorage(CustomerItemModel);
   }
 
   public async validate(

@@ -4,7 +4,7 @@ import { UserDetailValidOperation } from "@backend/collections/user-detail/opera
 import { UserDetailModel } from "@backend/collections/user-detail/user-detail.model";
 import { BlApiRequest } from "@backend/request/bl-api-request";
 import { SEResponseHandler } from "@backend/response/se.response.handler";
-import { BlDocumentStorage } from "@backend/storage/blDocumentStorage";
+import { BlStorage } from "@backend/storage/blStorage";
 import { BlError } from "@shared/bl-error/bl-error";
 import { BlapiResponse } from "@shared/blapi-response/blapi-response";
 import { UserDetail } from "@shared/user/user-detail/user-detail";
@@ -16,7 +16,7 @@ chaiUse(chaiAsPromised);
 should();
 
 describe("UserDetailValidOperation", () => {
-  const userDetailStorage = new BlDocumentStorage(UserDetailModel);
+  const userDetailStorage = new BlStorage(UserDetailModel);
   const responseHandler = new SEResponseHandler();
   const userDetailValidOperation = new UserDetailValidOperation(
     userDetailStorage,

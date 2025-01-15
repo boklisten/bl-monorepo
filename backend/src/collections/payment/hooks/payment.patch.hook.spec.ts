@@ -4,7 +4,7 @@ import { PaymentDibsHandler } from "@backend/collections/payment/helpers/dibs/pa
 import { PaymentValidator } from "@backend/collections/payment/helpers/payment.validator";
 import { PaymentPatchHook } from "@backend/collections/payment/hooks/payment.patch.hook";
 import { PaymentModel } from "@backend/collections/payment/payment.model";
-import { BlDocumentStorage } from "@backend/storage/blDocumentStorage";
+import { BlStorage } from "@backend/storage/blStorage";
 import { BlError } from "@shared/bl-error/bl-error";
 import { Payment } from "@shared/payment/payment";
 import { expect, use as chaiUse, should } from "chai";
@@ -16,7 +16,7 @@ should();
 
 describe("PaymentPatchHook", () => {
   const paymentDibsHandler = new PaymentDibsHandler();
-  const paymentStorage = new BlDocumentStorage(PaymentModel);
+  const paymentStorage = new BlStorage(PaymentModel);
   const paymentValidator = new PaymentValidator();
   const paymentPatchHook = new PaymentPatchHook(
     paymentDibsHandler,

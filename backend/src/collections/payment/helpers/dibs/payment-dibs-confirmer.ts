@@ -2,22 +2,21 @@ import { PaymentModel } from "@backend/collections/payment/payment.model";
 import { isNullish } from "@backend/helper/typescript-helpers";
 import { DibsEasyPayment } from "@backend/payment/dibs/dibs-easy-payment/dibs-easy-payment";
 import { DibsPaymentService } from "@backend/payment/dibs/dibs-payment.service";
-import { BlDocumentStorage } from "@backend/storage/blDocumentStorage";
+import { BlStorage } from "@backend/storage/blStorage";
 import { BlError } from "@shared/bl-error/bl-error";
 import { Order } from "@shared/order/order";
 import { Payment } from "@shared/payment/payment";
 
 export class PaymentDibsConfirmer {
+  private dibsPaymentService: DibsPaymentService;
+  private paymentStorage: BlStorage<Payment>;
+
   constructor(
-    private _dibsPaymentService?: DibsPaymentService,
-    private _paymentStorage?: BlDocumentStorage<Payment>,
+    dibsPaymentService?: DibsPaymentService,
+    paymentStorage?: BlStorage<Payment>,
   ) {
-    this._dibsPaymentService = _dibsPaymentService
-      ? _dibsPaymentService
-      : new DibsPaymentService();
-    this._paymentStorage = _paymentStorage
-      ? _paymentStorage
-      : new BlDocumentStorage(PaymentModel);
+    this.dibsPaymentService = dibsPaymentService ?? new DibsPaymentService();
+    this.paymentStorage = paymentStorage ?? new BlStorage(PaymentModel);
   }
 
   public async confirm(order: Order, payment: Payment): Promise<boolean> {
@@ -27,8 +26,7 @@ export class PaymentDibsConfirmer {
 
       try {
         dibsEasyPaymentDetails =
-          // @ts-expect-error fixme: auto ignored
-          await this._dibsPaymentService.fetchDibsPaymentData(
+          await this.dibsPaymentService.fetchDibsPaymentData(
             // @ts-expect-error fixme: auto ignored
             payment.info["paymentId"],
           );
@@ -43,8 +41,7 @@ export class PaymentDibsConfirmer {
     }
 
     try {
-      // @ts-expect-error fixme: auto ignored
-      await this._paymentStorage.update(
+      await this.paymentStorage.update(
         payment.id,
 
         // @ts-expect-error fixme: auto ignored

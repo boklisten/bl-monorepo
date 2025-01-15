@@ -9,17 +9,15 @@ import { UserDetail } from "@shared/user/user-detail/user-detail";
 import moment from "moment";
 
 export class PdfService {
-  private _pdfHandler: PdfHandler;
-  private _standardDayFormat;
-  private _orderEmailHandler: OrderEmailHandler;
-  private _utcOffset: number;
+  private pdfHandler: PdfHandler;
+  private orderEmailHandler: OrderEmailHandler;
+  private standardDayFormat = "DD.MM.YYYY";
+  private utcOffset = 120;
 
   constructor() {
     const emailHandler = new EmailHandler({ locale: "nb" });
-    this._pdfHandler = new PdfHandler(emailHandler);
-    this._standardDayFormat = "DD.MM.YYYY";
-    this._orderEmailHandler = new OrderEmailHandler(emailHandler);
-    this._utcOffset = 120;
+    this.pdfHandler = new PdfHandler(emailHandler);
+    this.orderEmailHandler = new OrderEmailHandler(emailHandler);
   }
 
   async getOrderReceiptPdf(
@@ -32,8 +30,8 @@ export class PdfService {
       id: customerDetail.id,
       dob: isNotNullish(customerDetail.dob)
         ? moment(customerDetail.dob)
-            .utcOffset(this._utcOffset)
-            .format(this._standardDayFormat)
+            .utcOffset(this.utcOffset)
+            .format(this.standardDayFormat)
         : "",
       name: customerDetail.name,
       email: customerDetail.email,
@@ -41,9 +39,9 @@ export class PdfService {
     };
 
     const emailOrder: EmailOrder =
-      await this._orderEmailHandler.orderToEmailOrder(order);
+      await this.orderEmailHandler.orderToEmailOrder(order);
 
-    return await this._pdfHandler.getOrderReceipt(
+    return await this.pdfHandler.getOrderReceipt(
       emailSetting,
       emailOrder,
       emailUser,
@@ -60,8 +58,8 @@ export class PdfService {
       id: customerDetail.id,
       dob: isNotNullish(customerDetail.dob)
         ? moment(customerDetail.dob)
-            .utcOffset(this._utcOffset)
-            .format(this._standardDayFormat)
+            .utcOffset(this.utcOffset)
+            .format(this.standardDayFormat)
         : "",
       name: customerDetail.name,
       email: customerDetail.email,
@@ -69,8 +67,8 @@ export class PdfService {
     };
 
     const emailOrder: EmailOrder =
-      await this._orderEmailHandler.orderToEmailOrder(order);
-    return await this._pdfHandler.getRentAgreement(
+      await this.orderEmailHandler.orderToEmailOrder(order);
+    return await this.pdfHandler.getRentAgreement(
       emailSetting,
       emailOrder,
       emailUser,

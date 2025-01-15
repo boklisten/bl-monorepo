@@ -12,7 +12,7 @@ import { Operation } from "@backend/operation/operation";
 import { SEDbQueryBuilder } from "@backend/query/se.db-query-builder";
 import { BlApiRequest } from "@backend/request/bl-api-request";
 import { SEResponseHandler } from "@backend/response/se.response.handler";
-import { BlDocumentStorage } from "@backend/storage/blDocumentStorage";
+import { BlStorage } from "@backend/storage/blStorage";
 import { BlError } from "@shared/bl-error/bl-error";
 import { BlapiResponse } from "@shared/blapi-response/blapi-response";
 import { CustomerItem } from "@shared/customer-item/customer-item";
@@ -26,52 +26,49 @@ import { UserDetail } from "@shared/user/user-detail/user-detail";
 import { Request, Response } from "express";
 
 export class OrderPlaceOperation implements Operation {
-  private _queryBuilder: SEDbQueryBuilder;
-  private readonly _resHandler: SEResponseHandler;
-  private readonly _orderToCustomerItemGenerator: OrderToCustomerItemGenerator;
-  private readonly _orderStorage: BlDocumentStorage<Order>;
-  private readonly _customerItemStorage: BlDocumentStorage<CustomerItem>;
-  private readonly _orderPlacedHandler: OrderPlacedHandler;
-  private readonly _orderValidator: OrderValidator;
-  private readonly _userDetailStorage: BlDocumentStorage<UserDetail>;
-  private readonly _userMatchStorage: BlDocumentStorage<UserMatch>;
-  private readonly _standMatchStorage: BlDocumentStorage<StandMatch>;
+  private queryBuilder = new SEDbQueryBuilder();
+  private resHandler: SEResponseHandler;
+  private orderToCustomerItemGenerator: OrderToCustomerItemGenerator;
+  private orderStorage: BlStorage<Order>;
+  private customerItemStorage: BlStorage<CustomerItem>;
+  private orderPlacedHandler: OrderPlacedHandler;
+  private orderValidator: OrderValidator;
+  private userDetailStorage: BlStorage<UserDetail>;
+  private userMatchStorage: BlStorage<UserMatch>;
+  private standMatchStorage: BlStorage<StandMatch>;
 
   constructor(
     resHandler?: SEResponseHandler,
     orderToCustomerItemGenerator?: OrderToCustomerItemGenerator,
-    orderStorage?: BlDocumentStorage<Order>,
-    customerItemStorage?: BlDocumentStorage<CustomerItem>,
+    orderStorage?: BlStorage<Order>,
+    customerItemStorage?: BlStorage<CustomerItem>,
     orderPlacedHandler?: OrderPlacedHandler,
     orderValidator?: OrderValidator,
-    userDetailStorage?: BlDocumentStorage<UserDetail>,
-    userMatchStorage?: BlDocumentStorage<UserMatch>,
-    standMatchStorage?: BlDocumentStorage<StandMatch>,
+    userDetailStorage?: BlStorage<UserDetail>,
+    userMatchStorage?: BlStorage<UserMatch>,
+    standMatchStorage?: BlStorage<StandMatch>,
   ) {
-    this._resHandler = resHandler ?? new SEResponseHandler();
+    this.resHandler = resHandler ?? new SEResponseHandler();
 
-    this._orderToCustomerItemGenerator =
+    this.orderToCustomerItemGenerator =
       orderToCustomerItemGenerator ?? new OrderToCustomerItemGenerator();
 
-    this._orderStorage = orderStorage ?? new BlDocumentStorage(OrderModel);
+    this.orderStorage = orderStorage ?? new BlStorage(OrderModel);
 
-    this._customerItemStorage =
-      customerItemStorage ?? new BlDocumentStorage(CustomerItemModel);
+    this.customerItemStorage =
+      customerItemStorage ?? new BlStorage(CustomerItemModel);
 
-    this._orderPlacedHandler = orderPlacedHandler ?? new OrderPlacedHandler();
+    this.orderPlacedHandler = orderPlacedHandler ?? new OrderPlacedHandler();
 
-    this._orderValidator = orderValidator ?? new OrderValidator();
+    this.orderValidator = orderValidator ?? new OrderValidator();
 
-    this._userDetailStorage =
-      userDetailStorage ?? new BlDocumentStorage(UserDetailModel);
+    this.userDetailStorage =
+      userDetailStorage ?? new BlStorage(UserDetailModel);
 
-    this._userMatchStorage =
-      userMatchStorage ?? new BlDocumentStorage(UserMatchModel);
+    this.userMatchStorage = userMatchStorage ?? new BlStorage(UserMatchModel);
 
-    this._standMatchStorage =
-      standMatchStorage ?? new BlDocumentStorage(StandMatchModel);
-
-    this._queryBuilder = new SEDbQueryBuilder();
+    this.standMatchStorage =
+      standMatchStorage ?? new BlStorage(StandMatchModel);
   }
 
   private filterOrdersByAlreadyOrdered(orders: Order[]) {
@@ -106,7 +103,7 @@ export class OrderPlaceOperation implements Operation {
   }
 
   private async hasOpenOrderWithOrderItems(order: Order) {
-    const databaseQuery = this._queryBuilder.getDbQuery(
+    const databaseQuery = this.queryBuilder.getDbQuery(
       { customer: order.customer, placed: "true" },
       [
         { fieldName: "customer", type: "object-id" },
@@ -115,7 +112,7 @@ export class OrderPlaceOperation implements Operation {
     );
 
     try {
-      const existingOrders = await this._orderStorage.getByQuery(databaseQuery);
+      const existingOrders = await this.orderStorage.getByQuery(databaseQuery);
       const alreadyOrderedItems =
         this.filterOrdersByAlreadyOrdered(existingOrders);
 
@@ -165,7 +162,7 @@ export class OrderPlaceOperation implements Operation {
     try {
       // Use an aggregation because the query builder does not support checking against a list of blids,
       // and we would otherwise have to send a query for every single order item.
-      const unreturnedItems = await this._customerItemStorage.aggregate([
+      const unreturnedItems = await this.customerItemStorage.aggregate([
         {
           $match: {
             blid: {
@@ -267,13 +264,13 @@ export class OrderPlaceOperation implements Operation {
       return;
     }
 
-    const returnCustomerItems = await this._customerItemStorage.getMany(
+    const returnCustomerItems = await this.customerItemStorage.getMany(
       returnOrderItems
         .map((orderItem) => orderItem.customerItem)
         .filter(isNotNullish),
     );
 
-    const handoutCustomerItems = await this._customerItemStorage.getMany(
+    const handoutCustomerItems = await this.customerItemStorage.getMany(
       handoutOrderItems
         .map((orderItem) => orderItem.customerItem)
         .filter(isNotNullish),
@@ -306,7 +303,7 @@ export class OrderPlaceOperation implements Operation {
       standMatchId,
       deliveredItems,
     ] of matchToDeliveredItemsMap.entries()) {
-      await this._standMatchStorage.update(standMatchId, {
+      await this.standMatchStorage.update(standMatchId, {
         deliveredItems: Array.from(deliveredItems),
       });
     }
@@ -333,7 +330,7 @@ export class OrderPlaceOperation implements Operation {
       standMatchId,
       receivedItems,
     ] of matchToReceivedItemsMap.entries()) {
-      await this._standMatchStorage.update(standMatchId, {
+      await this.standMatchStorage.update(standMatchId, {
         receivedItems: Array.from(receivedItems),
       });
     }
@@ -379,7 +376,7 @@ export class OrderPlaceOperation implements Operation {
           ],
         };
       }
-      await this._userMatchStorage.update(receiverUserMatch.id, update);
+      await this.userMatchStorage.update(receiverUserMatch.id, update);
     }
   }
 
@@ -423,7 +420,7 @@ export class OrderPlaceOperation implements Operation {
           ],
         };
       }
-      await this._userMatchStorage.update(senderUserMatch.id, update);
+      await this.userMatchStorage.update(senderUserMatch.id, update);
     }
   }
 
@@ -461,13 +458,13 @@ export class OrderPlaceOperation implements Operation {
 
     try {
       // @ts-expect-error fixme: auto ignored
-      order = await this._orderStorage.get(blApiRequest.documentId);
+      order = await this.orderStorage.get(blApiRequest.documentId);
     } catch {
       throw new ReferenceError(`order "${blApiRequest.documentId}" not found`);
     }
 
     const pendingSignature =
-      await this._orderPlacedHandler.isSignaturePending(order);
+      await this.orderPlacedHandler.isSignaturePending(order);
 
     if (order.byCustomer) {
       const orderContainsActiveCustomerItems =
@@ -494,7 +491,7 @@ export class OrderPlaceOperation implements Operation {
       (orderItem) => orderItem.handout && orderItem.type === "rent",
     );
 
-    const userMatches = await this._userMatchStorage.getAll();
+    const userMatches = await this.userMatchStorage.getAll();
 
     if (!order.byCustomer) {
       await this.verifyCompatibilityWithUserMatches(
@@ -505,8 +502,7 @@ export class OrderPlaceOperation implements Operation {
       );
     }
 
-    let customerItems =
-      await this._orderToCustomerItemGenerator.generate(order);
+    let customerItems = await this.orderToCustomerItemGenerator.generate(order);
 
     if (customerItems && customerItems.length > 0) {
       customerItems = await this.addCustomerItems(
@@ -516,7 +512,7 @@ export class OrderPlaceOperation implements Operation {
       );
       order = this.addCustomerItemIdToOrderItems(order, customerItems);
 
-      await this._orderStorage.update(
+      await this.orderStorage.update(
         order.id,
         {
           orderItems: order.orderItems,
@@ -527,7 +523,7 @@ export class OrderPlaceOperation implements Operation {
       );
     }
 
-    const standMatches = await this._standMatchStorage.getAll();
+    const standMatches = await this.standMatchStorage.getAll();
     if (!order.byCustomer) {
       await this.updateMatchesIfPresent(
         userMatches,
@@ -537,7 +533,7 @@ export class OrderPlaceOperation implements Operation {
       );
     }
 
-    await this._orderPlacedHandler.placeOrder(order, {
+    await this.orderPlacedHandler.placeOrder(order, {
       // @ts-expect-error // fixme: bad types
       sub: blApiRequest.user,
       // @ts-expect-error // fixme: bad types
@@ -551,7 +547,7 @@ export class OrderPlaceOperation implements Operation {
         "admin",
       );
 
-    await this._orderValidator.validate(order, isAdmin);
+    await this.orderValidator.validate(order, isAdmin);
 
     if (customerItems && customerItems.length > 0) {
       try {
@@ -567,7 +563,7 @@ export class OrderPlaceOperation implements Operation {
       } catch {}
     }
     // @ts-expect-error fixme: auto ignored : bad types
-    this._resHandler.sendResponse(res, new BlapiResponse([order]));
+    this.resHandler.sendResponse(res, new BlapiResponse([order]));
     return true;
   }
 
@@ -586,7 +582,7 @@ export class OrderPlaceOperation implements Operation {
     userMatches: UserMatch[],
     customerId: string,
   ) {
-    const returnCustomerItems = await this._customerItemStorage.getMany(
+    const returnCustomerItems = await this.customerItemStorage.getMany(
       returnOrderItems
         .map((orderItem) => orderItem.customerItem)
         .filter(isNotNullish),
@@ -605,7 +601,7 @@ export class OrderPlaceOperation implements Operation {
   ): Promise<CustomerItem[]> {
     const addedCustomerItems = [];
     for (const customerItem of customerItems) {
-      const ci = await this._customerItemStorage.add(customerItem, user);
+      const ci = await this.customerItemStorage.add(customerItem, user);
       addedCustomerItems.push(ci);
     }
 
@@ -620,14 +616,14 @@ export class OrderPlaceOperation implements Operation {
       return ci.id.toString();
     });
 
-    const userDetail = await this._userDetailStorage.get(customerId);
+    const userDetail = await this.userDetailStorage.get(customerId);
 
     let userDetailCustomerItemsIds = userDetail.customerItems ?? [];
 
     userDetailCustomerItemsIds =
       userDetailCustomerItemsIds.concat(customerItemIds);
 
-    await this._userDetailStorage.update(customerId, {
+    await this.userDetailStorage.update(customerId, {
       customerItems: userDetailCustomerItemsIds,
     });
 

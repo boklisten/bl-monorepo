@@ -8,7 +8,7 @@ import { Signature } from "@backend/collections/signature/signature.model";
 import { UserDetailModel } from "@backend/collections/user-detail/user-detail.model";
 import { logger } from "@backend/logger/logger";
 import { Messenger } from "@backend/messenger/messenger";
-import { BlDocumentStorage } from "@backend/storage/blDocumentStorage";
+import { BlStorage } from "@backend/storage/blStorage";
 import { BlError } from "@shared/bl-error/bl-error";
 import { Order } from "@shared/order/order";
 import { OrderItem } from "@shared/order/order-item/order-item";
@@ -17,34 +17,32 @@ import { AccessToken } from "@shared/token/access-token";
 import { UserDetail } from "@shared/user/user-detail/user-detail";
 
 export class OrderPlacedHandler {
-  private readonly orderStorage: BlDocumentStorage<Order>;
-  private readonly paymentHandler: PaymentHandler;
-  private readonly userDetailStorage: BlDocumentStorage<UserDetail>;
-  private readonly _signatureStorage: BlDocumentStorage<Signature>;
-  private _customerItemHandler: CustomerItemHandler;
-  private _orderItemMovedFromOrderHandler: OrderItemMovedFromOrderHandler;
-  private _messenger: Messenger;
+  private orderStorage: BlStorage<Order>;
+  private paymentHandler: PaymentHandler;
+  private userDetailStorage: BlStorage<UserDetail>;
+  private signatureStorage: BlStorage<Signature>;
+  private customerItemHandler: CustomerItemHandler;
+  private orderItemMovedFromOrderHandler: OrderItemMovedFromOrderHandler;
+  private messenger: Messenger;
 
   constructor(
-    orderStorage?: BlDocumentStorage<Order>,
+    orderStorage?: BlStorage<Order>,
     paymentHandler?: PaymentHandler,
-    userDetailStorage?: BlDocumentStorage<UserDetail>,
+    userDetailStorage?: BlStorage<UserDetail>,
     messenger?: Messenger,
     customerItemHandler?: CustomerItemHandler,
     orderItemMovedFromOrderHandler?: OrderItemMovedFromOrderHandler,
-    signatureStorage?: BlDocumentStorage<Signature>,
+    signatureStorage?: BlStorage<Signature>,
   ) {
-    this.orderStorage = orderStorage ?? new BlDocumentStorage(OrderModel);
+    this.orderStorage = orderStorage ?? new BlStorage(OrderModel);
     this.paymentHandler = paymentHandler ?? new PaymentHandler();
     this.userDetailStorage =
-      userDetailStorage ?? new BlDocumentStorage(UserDetailModel);
-    this._messenger = messenger ?? new Messenger();
-    this._customerItemHandler =
-      customerItemHandler ?? new CustomerItemHandler();
-    this._orderItemMovedFromOrderHandler =
+      userDetailStorage ?? new BlStorage(UserDetailModel);
+    this.messenger = messenger ?? new Messenger();
+    this.customerItemHandler = customerItemHandler ?? new CustomerItemHandler();
+    this.orderItemMovedFromOrderHandler =
       orderItemMovedFromOrderHandler ?? new OrderItemMovedFromOrderHandler();
-    this._signatureStorage =
-      signatureStorage ?? new BlDocumentStorage(SignatureModel);
+    this.signatureStorage = signatureStorage ?? new BlStorage(SignatureModel);
   }
 
   public async placeOrder(
@@ -65,7 +63,7 @@ export class OrderPlacedHandler {
       });
 
       await this.updateCustomerItemsIfPresent(placedOrder, accessToken);
-      await this._orderItemMovedFromOrderHandler.updateOrderItems(placedOrder);
+      await this.orderItemMovedFromOrderHandler.updateOrderItems(placedOrder);
       await this.updateUserDetailWithPlacedOrder(placedOrder);
       // Don't await to improve performance
       this.sendOrderConfirmationMail(placedOrder).catch((error) =>
@@ -102,7 +100,7 @@ export class OrderPlacedHandler {
         if (customerItemId !== null) {
           switch (orderItem.type) {
             case "extend": {
-              await this._customerItemHandler.extend(
+              await this.customerItemHandler.extend(
                 customerItemId,
                 orderItem,
                 order.branch,
@@ -112,7 +110,7 @@ export class OrderPlacedHandler {
               break;
             }
             case "buyout": {
-              await this._customerItemHandler.buyout(
+              await this.customerItemHandler.buyout(
                 customerItemId,
                 order.id,
                 orderItem,
@@ -121,7 +119,7 @@ export class OrderPlacedHandler {
               break;
             }
             case "buyback": {
-              await this._customerItemHandler.buyback(
+              await this.customerItemHandler.buyback(
                 customerItemId,
                 order.id,
                 orderItem,
@@ -130,7 +128,7 @@ export class OrderPlacedHandler {
               break;
             }
             case "cancel": {
-              await this._customerItemHandler.cancel(
+              await this.customerItemHandler.cancel(
                 customerItemId,
                 order.id,
                 orderItem,
@@ -139,7 +137,7 @@ export class OrderPlacedHandler {
               break;
             }
             case "return": {
-              await this._customerItemHandler.return(
+              await this.customerItemHandler.return(
                 customerItemId,
                 order.id,
                 orderItem,
@@ -201,8 +199,8 @@ export class OrderPlacedHandler {
     }
     const customerDetail = await this.userDetailStorage.get(order.customer);
     await (order.handoutByDelivery
-      ? this._messenger.sendDeliveryInformation(customerDetail, order)
-      : this._messenger.orderPlaced(customerDetail, order));
+      ? this.messenger.sendDeliveryInformation(customerDetail, order)
+      : this.messenger.orderPlaced(customerDetail, order));
   }
 
   /**
@@ -216,7 +214,7 @@ export class OrderPlacedHandler {
 
     const hasValidSignature = await userHasValidSignature(
       userDetail,
-      this._signatureStorage,
+      this.signatureStorage,
     );
     if (hasValidSignature) {
       return false;

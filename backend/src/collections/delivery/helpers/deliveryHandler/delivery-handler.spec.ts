@@ -2,7 +2,7 @@ import "mocha";
 
 import { DeliveryHandler } from "@backend/collections/delivery/helpers/deliveryHandler/delivery-handler";
 import { OrderModel } from "@backend/collections/order/order.model";
-import { BlDocumentStorage } from "@backend/storage/blDocumentStorage";
+import { BlStorage } from "@backend/storage/blStorage";
 import { BlError } from "@shared/bl-error/bl-error";
 import { Delivery } from "@shared/delivery/delivery";
 import { Order } from "@shared/order/order";
@@ -15,7 +15,7 @@ should();
 
 let testOrder: Order;
 let testDelivery: Delivery;
-const orderStorage = new BlDocumentStorage(OrderModel);
+const orderStorage = new BlStorage(OrderModel);
 let canUpdateOrder = true;
 
 const deliveryHandler = new DeliveryHandler(orderStorage);

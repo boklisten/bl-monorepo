@@ -8,7 +8,7 @@ import { OrderModel } from "@backend/collections/order/order.model";
 import { PaymentHandler } from "@backend/collections/payment/helpers/payment-handler";
 import { UserDetailModel } from "@backend/collections/user-detail/user-detail.model";
 import { Messenger } from "@backend/messenger/messenger";
-import { BlDocumentStorage } from "@backend/storage/blDocumentStorage";
+import { BlStorage } from "@backend/storage/blStorage";
 import { BlError } from "@shared/bl-error/bl-error";
 import { CustomerItem } from "@shared/customer-item/customer-item";
 import { Order } from "@shared/order/order";
@@ -31,10 +31,10 @@ describe("OrderPlacedHandler", () => {
   let testUserDetail: UserDetail;
   let userDeatilUpdate: boolean;
 
-  const customerItemStorage = new BlDocumentStorage(CustomerItemModel);
-  const orderStorage = new BlDocumentStorage(OrderModel);
+  const customerItemStorage = new BlStorage(CustomerItemModel);
+  const orderStorage = new BlStorage(OrderModel);
   const paymentHandler = new PaymentHandler();
-  const userDetailStorage = new BlDocumentStorage(UserDetailModel);
+  const userDetailStorage = new BlStorage(UserDetailModel);
   const messenger = new Messenger();
   const orderItemMovedFromOrderHandler = new OrderItemMovedFromOrderHandler();
   const customerItemHandler = new CustomerItemHandler();

@@ -11,12 +11,9 @@ import { UniqueItemModel } from "@backend/collections/unique-item/unique-item.mo
 import { Operation } from "@backend/operation/operation";
 import { SEDbQuery } from "@backend/query/se.db-query";
 import { BlApiRequest } from "@backend/request/bl-api-request";
-import { BlDocumentStorage } from "@backend/storage/blDocumentStorage";
+import { BlStorage } from "@backend/storage/blStorage";
 import { BlError } from "@shared/bl-error/bl-error";
 import { BlapiResponse } from "@shared/blapi-response/blapi-response";
-import { Branch } from "@shared/branch/branch";
-import { CustomerItem } from "@shared/customer-item/customer-item";
-import { Item } from "@shared/item/item";
 import { Order } from "@shared/order/order";
 import { OrderItem } from "@shared/order/order-item/order-item";
 import { UniqueItem } from "@shared/unique-item/unique-item";
@@ -27,29 +24,11 @@ const blidNotActiveFeedback =
   "Denne bliden er ikke tilknyttet noen bok. Registrer den i bl-admin for å dele den ut.";
 
 export class RapidHandoutOperation implements Operation {
-  private readonly wrongSenderFeedback = `Boken du skannet tilhørte en annen elev enn den som ga deg den. Du skal beholde den, men eleven som ga deg boken er fortsatt ansvarlig for at den opprinnelige boken blir levert.`;
-
-  private readonly _orderStorage: BlDocumentStorage<Order>;
-  private readonly _customerItemStorage: BlDocumentStorage<CustomerItem>;
-  private readonly _uniqueItemStorage: BlDocumentStorage<UniqueItem>;
-  private readonly _branchStorage: BlDocumentStorage<Branch>;
-  private readonly _itemStorage: BlDocumentStorage<Item>;
-
-  constructor(
-    orderStorage?: BlDocumentStorage<Order>,
-    customerItemStorage?: BlDocumentStorage<CustomerItem>,
-    uniqueItemStorage?: BlDocumentStorage<UniqueItem>,
-    branchStorage?: BlDocumentStorage<Branch>,
-    itemStorage?: BlDocumentStorage<Item>,
-  ) {
-    this._orderStorage = orderStorage ?? new BlDocumentStorage(OrderModel);
-    this._customerItemStorage =
-      customerItemStorage ?? new BlDocumentStorage(CustomerItemModel);
-    this._uniqueItemStorage =
-      uniqueItemStorage ?? new BlDocumentStorage(UniqueItemModel);
-    this._branchStorage = branchStorage ?? new BlDocumentStorage(BranchModel);
-    this._itemStorage = itemStorage ?? new BlDocumentStorage(ItemModel);
-  }
+  private orderStorage = new BlStorage(OrderModel);
+  private customerItemStorage = new BlStorage(CustomerItemModel);
+  private uniqueItemStorage = new BlStorage(UniqueItemModel);
+  private branchStorage = new BlStorage(BranchModel);
+  private itemStorage = new BlStorage(ItemModel);
 
   async run(blApiRequest: BlApiRequest): Promise<BlapiResponse> {
     const parsedRequest = z
@@ -92,11 +71,11 @@ export class RapidHandoutOperation implements Operation {
       throw new BlError("Failed to create new customer items");
     }
 
-    const addedCustomerItem = await this._customerItemStorage.add(
+    const addedCustomerItem = await this.customerItemStorage.add(
       generatedReceiverCustomerItem,
     );
 
-    await this._orderStorage.update(placedReceiverOrder.id, {
+    await this.orderStorage.update(placedReceiverOrder.id, {
       orderItems: placedReceiverOrder.orderItems.map((orderItem) => ({
         ...orderItem,
         customerItem: addedCustomerItem.id,
@@ -109,7 +88,7 @@ export class RapidHandoutOperation implements Operation {
     itemId: string,
     customerId: string,
   ): Promise<Order> {
-    const item = await this._itemStorage.get(itemId);
+    const item = await this.itemStorage.get(itemId);
     if (!item) {
       throw new BlError("Failed to get item");
     }
@@ -138,7 +117,7 @@ export class RapidHandoutOperation implements Operation {
     if (!customerOrder) {
       throw new BlError("No customer order for rapid handout item").code(805);
     }
-    const branch = await this._branchStorage.get(customerOrder.order.branch);
+    const branch = await this.branchStorage.get(customerOrder.order.branch);
 
     const movedFromOrder = customerOrder.order.id;
 
@@ -187,12 +166,12 @@ export class RapidHandoutOperation implements Operation {
         },
       ],
     };
-    const placedHandoutOrder = await this._orderStorage.add(handoutOrder);
+    const placedHandoutOrder = await this.orderStorage.add(handoutOrder);
 
     await new OrderValidator().validate(placedHandoutOrder, false);
 
     const orderMovedToHandler = new OrderItemMovedFromOrderHandler(
-      this._orderStorage,
+      this.orderStorage,
     );
     await orderMovedToHandler.updateOrderItems(placedHandoutOrder);
 
@@ -225,7 +204,7 @@ export class RapidHandoutOperation implements Operation {
     uniqueItemQuery.stringFilters = [{ fieldName: "blid", value: blid }];
     try {
       const uniqueItems =
-        await this._uniqueItemStorage.getByQuery(uniqueItemQuery);
+        await this.uniqueItemStorage.getByQuery(uniqueItemQuery);
       if (uniqueItems.length === 0) return blidNotActiveFeedback;
       return uniqueItems[0] ?? "";
     } catch {

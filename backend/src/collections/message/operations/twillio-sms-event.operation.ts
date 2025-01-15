@@ -2,18 +2,16 @@ import { MessageModel } from "@backend/collections/message/message.model";
 import { logger } from "@backend/logger/logger";
 import { Operation } from "@backend/operation/operation";
 import { BlApiRequest } from "@backend/request/bl-api-request";
-import { BlDocumentStorage } from "@backend/storage/blDocumentStorage";
+import { BlStorage } from "@backend/storage/blStorage";
 import { BlError } from "@shared/bl-error/bl-error";
 import { BlapiResponse } from "@shared/blapi-response/blapi-response";
 import { Message } from "@shared/message/message";
 
 export class TwilioSmsEventOperation implements Operation {
-  private _messageStorage: BlDocumentStorage<Message>;
+  private messageStorage: BlStorage<Message>;
 
-  constructor(messageStorage?: BlDocumentStorage<Message>) {
-    this._messageStorage = messageStorage
-      ? messageStorage
-      : new BlDocumentStorage(MessageModel);
+  constructor(messageStorage?: BlStorage<Message>) {
+    this.messageStorage = messageStorage ?? new BlStorage(MessageModel);
   }
 
   public async run(blApiRequest: BlApiRequest): Promise<BlapiResponse> {
@@ -52,7 +50,7 @@ export class TwilioSmsEventOperation implements Operation {
     }
 
     try {
-      const message = await this._messageStorage.get(blMessageId);
+      const message = await this.messageStorage.get(blMessageId);
       await this.updateMessageWithTwilioSmsEvent(message, twilioEvent);
     } catch (error) {
       logger.warn(`could not update sendgrid event ${error}`);
@@ -75,7 +73,7 @@ export class TwilioSmsEventOperation implements Operation {
 
     newSmsEvents.push(smsEvent);
 
-    await this._messageStorage.update(message.id, { smsEvents: newSmsEvents });
+    await this.messageStorage.update(message.id, { smsEvents: newSmsEvents });
 
     logger.silly(
       `updated message "${message.id}" with sms event: "${smsEvent["status"]}"`,

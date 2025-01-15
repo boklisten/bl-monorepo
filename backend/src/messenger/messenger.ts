@@ -2,24 +2,17 @@ import { DeliveryModel } from "@backend/collections/delivery/delivery.model";
 import { EmailService } from "@backend/messenger/email/email-service";
 import { MessengerService } from "@backend/messenger/messenger-service";
 import { PdfService } from "@backend/messenger/pdf/pdf-service";
-import { BlDocumentStorage } from "@backend/storage/blDocumentStorage";
+import { BlStorage } from "@backend/storage/blStorage";
 import { EmailAttachment } from "@boklisten/bl-email";
 import { CustomerItem } from "@shared/customer-item/customer-item";
-import { Delivery } from "@shared/delivery/delivery";
 import { Message } from "@shared/message/message";
 import { Order } from "@shared/order/order";
 import { UserDetail } from "@shared/user/user-detail/user-detail";
 
 export class Messenger implements MessengerService {
-  private readonly _emailService: EmailService;
-  private readonly _pdfService: PdfService;
-  private readonly _deliveryStorage: BlDocumentStorage<Delivery>;
-
-  constructor() {
-    this._emailService = new EmailService();
-    this._deliveryStorage = new BlDocumentStorage(DeliveryModel);
-    this._pdfService = new PdfService();
-  }
+  private emailService = new EmailService();
+  private pdfService = new PdfService();
+  private deliveryStorage = new BlStorage(DeliveryModel);
 
   /**
    * send out message(s) to the customer
@@ -30,7 +23,7 @@ export class Messenger implements MessengerService {
     message: Message,
     customerDetail: UserDetail,
   ): Promise<void> {
-    await this._emailService.send(message, customerDetail);
+    await this.emailService.send(message, customerDetail);
   }
 
   /**
@@ -44,7 +37,7 @@ export class Messenger implements MessengerService {
     customerDetail: UserDetail,
     customerItems: CustomerItem[],
   ): Promise<void> {
-    await this._emailService.remind(message, customerDetail, customerItems);
+    await this.emailService.remind(message, customerDetail, customerItems);
   }
 
   /**
@@ -56,7 +49,7 @@ export class Messenger implements MessengerService {
     customerDetail: UserDetail,
     order: Order,
   ): Promise<void> {
-    await this._emailService.orderPlaced(customerDetail, order);
+    await this.emailService.orderPlaced(customerDetail, order);
   }
 
   /**
@@ -68,7 +61,7 @@ export class Messenger implements MessengerService {
     customerDetail: UserDetail,
     order: Order,
   ): Promise<EmailAttachment> {
-    return await this._pdfService.getOrderReceiptPdf(customerDetail, order);
+    return await this.pdfService.getOrderReceiptPdf(customerDetail, order);
   }
 
   /**
@@ -80,7 +73,7 @@ export class Messenger implements MessengerService {
     customerDetail: UserDetail,
     order: Order,
   ): Promise<EmailAttachment> {
-    return await this._pdfService.getOrderAgreementPdf(customerDetail, order);
+    return await this.pdfService.getOrderAgreementPdf(customerDetail, order);
   }
 
   public async sendDeliveryInformation(
@@ -88,8 +81,8 @@ export class Messenger implements MessengerService {
     order: Order,
   ): Promise<void> {
     const deliveryId = typeof order.delivery === "string" ? order.delivery : "";
-    const delivery = await this._deliveryStorage.get(deliveryId);
-    await this._emailService.deliveryInformation(
+    const delivery = await this.deliveryStorage.get(deliveryId);
+    await this.emailService.deliveryInformation(
       customerDetail,
       order,
       delivery,
@@ -105,10 +98,7 @@ export class Messenger implements MessengerService {
     customerDetail: UserDetail,
     confirmationCode: string,
   ): Promise<void> {
-    await this._emailService.emailConfirmation(
-      customerDetail,
-      confirmationCode,
-    );
+    await this.emailService.emailConfirmation(customerDetail, confirmationCode);
   }
 
   /**
@@ -124,7 +114,7 @@ export class Messenger implements MessengerService {
     pendingPasswordResetId: string,
     resetToken: string,
   ): Promise<void> {
-    await this._emailService.passwordReset(
+    await this.emailService.passwordReset(
       userId,
       userEmail,
       pendingPasswordResetId,

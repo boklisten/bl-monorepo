@@ -1,26 +1,26 @@
 import { DeliveryModel } from "@backend/collections/delivery/delivery.model";
 import { PaymentModel } from "@backend/collections/payment/payment.model";
 import { isNullish } from "@backend/helper/typescript-helpers";
-import { BlDocumentStorage } from "@backend/storage/blDocumentStorage";
+import { BlStorage } from "@backend/storage/blStorage";
 import { BlError } from "@shared/bl-error/bl-error";
 import { Delivery } from "@shared/delivery/delivery";
 import { Order } from "@shared/order/order";
 import { Payment } from "@shared/payment/payment";
 
 export class OrderPlacedValidator {
-  private deliveryStorage: BlDocumentStorage<Delivery>;
-  private paymentStorage: BlDocumentStorage<Payment>;
+  private deliveryStorage: BlStorage<Delivery>;
+  private paymentStorage: BlStorage<Payment>;
 
   constructor(
-    deliveryStorage?: BlDocumentStorage<Delivery>,
-    paymentStorage?: BlDocumentStorage<Payment>,
+    deliveryStorage?: BlStorage<Delivery>,
+    paymentStorage?: BlStorage<Payment>,
   ) {
     this.deliveryStorage = deliveryStorage
       ? deliveryStorage
-      : new BlDocumentStorage(DeliveryModel);
+      : new BlStorage(DeliveryModel);
     this.paymentStorage = paymentStorage
       ? paymentStorage
-      : new BlDocumentStorage(PaymentModel);
+      : new BlStorage(PaymentModel);
   }
 
   public validate(order: Order): Promise<boolean> {

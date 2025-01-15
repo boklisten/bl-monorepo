@@ -6,7 +6,7 @@ import { OrderPostHook } from "@backend/collections/order/hooks/order.post.hook"
 import { OrderModel } from "@backend/collections/order/order.model";
 import { UserDetailHelper } from "@backend/collections/user-detail/helpers/user-detail.helper";
 import { UserDetailModel } from "@backend/collections/user-detail/user-detail.model";
-import { BlDocumentStorage } from "@backend/storage/blDocumentStorage";
+import { BlStorage } from "@backend/storage/blStorage";
 import { BlError } from "@shared/bl-error/bl-error";
 import { Order } from "@shared/order/order";
 import { AccessToken } from "@shared/token/access-token";
@@ -20,8 +20,8 @@ should();
 
 describe("OrderPostHook", () => {
   const orderValidator: OrderValidator = new OrderValidator();
-  const orderStorage = new BlDocumentStorage(OrderModel);
-  const userDetailStorage = new BlDocumentStorage(UserDetailModel);
+  const orderStorage = new BlStorage(OrderModel);
+  const userDetailStorage = new BlStorage(UserDetailModel);
   const userDetailHelper = new UserDetailHelper(userDetailStorage);
   const orderHookBefore: OrderHookBefore = new OrderHookBefore();
   const orderPostHook: OrderPostHook = new OrderPostHook(

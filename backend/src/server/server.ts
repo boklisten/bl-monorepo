@@ -92,7 +92,7 @@ export class Server {
 
     const debugLogPath = (
       request: Request,
-      _res: Response,
+      res: Response,
       next: () => void,
     ) => {
       if (request.method !== "OPTIONS") {

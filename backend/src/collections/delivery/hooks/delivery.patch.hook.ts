@@ -3,7 +3,7 @@ import { DeliveryHandler } from "@backend/collections/delivery/helpers/deliveryH
 import { DeliveryValidator } from "@backend/collections/delivery/helpers/deliveryValidator/delivery-validator";
 import { OrderModel } from "@backend/collections/order/order.model";
 import { Hook } from "@backend/hook/hook";
-import { BlDocumentStorage } from "@backend/storage/blDocumentStorage";
+import { BlStorage } from "@backend/storage/blStorage";
 import { BlError } from "@shared/bl-error/bl-error";
 import { Delivery } from "@shared/delivery/delivery";
 import { Order } from "@shared/order/order";
@@ -11,21 +11,20 @@ import { AccessToken } from "@shared/token/access-token";
 
 export class DeliveryPatchHook extends Hook {
   private deliveryValidator: DeliveryValidator;
-  private deliveryStorage: BlDocumentStorage<Delivery>;
-  private orderStorage: BlDocumentStorage<Order>;
+  private deliveryStorage: BlStorage<Delivery>;
+  private orderStorage: BlStorage<Order>;
   private deliveryHandler: DeliveryHandler;
 
   constructor(
     deliveryValidator?: DeliveryValidator,
-    deliveryStorage?: BlDocumentStorage<Delivery>,
-    orderStorage?: BlDocumentStorage<Order>,
+    deliveryStorage?: BlStorage<Delivery>,
+    orderStorage?: BlStorage<Order>,
     deliveryHandler?: DeliveryHandler,
   ) {
     super();
     this.deliveryValidator = deliveryValidator ?? new DeliveryValidator();
-    this.deliveryStorage =
-      deliveryStorage ?? new BlDocumentStorage(DeliveryModel);
-    this.orderStorage = orderStorage ?? new BlDocumentStorage(OrderModel);
+    this.deliveryStorage = deliveryStorage ?? new BlStorage(DeliveryModel);
+    this.orderStorage = orderStorage ?? new BlStorage(OrderModel);
     this.deliveryHandler = deliveryHandler ?? new DeliveryHandler();
   }
 

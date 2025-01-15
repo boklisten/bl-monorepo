@@ -5,7 +5,7 @@ import { CustomerItemPostHook } from "@backend/collections/customer-item/hooks/c
 import { CustomerItemValidator } from "@backend/collections/customer-item/validators/customer-item-validator";
 import { OrderModel } from "@backend/collections/order/order.model";
 import { UserDetailModel } from "@backend/collections/user-detail/user-detail.model";
-import { BlDocumentStorage } from "@backend/storage/blDocumentStorage";
+import { BlStorage } from "@backend/storage/blStorage";
 import { BlError } from "@shared/bl-error/bl-error";
 import { CustomerItem } from "@shared/customer-item/customer-item";
 import { Order } from "@shared/order/order";
@@ -26,9 +26,9 @@ describe("CustomerItemPostHook", () => {
   let testAccessToken: AccessToken;
   let validateCustomerItem: boolean;
   let testUserDetail: UserDetail;
-  const customerItemStorage = new BlDocumentStorage(CustomerItemModel);
-  const userDetailStorage = new BlDocumentStorage(UserDetailModel);
-  const orderStorage = new BlDocumentStorage(OrderModel);
+  const customerItemStorage = new BlStorage(CustomerItemModel);
+  const userDetailStorage = new BlStorage(UserDetailModel);
+  const orderStorage = new BlStorage(OrderModel);
   const customerItemValidator = new CustomerItemValidator();
   const customerItemPostHook = new CustomerItemPostHook(
     customerItemValidator,

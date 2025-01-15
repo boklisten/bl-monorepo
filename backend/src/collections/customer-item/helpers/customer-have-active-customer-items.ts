@@ -1,19 +1,18 @@
 import { CustomerItemModel } from "@backend/collections/customer-item/customer-item.model";
 import { CustomerItemActive } from "@backend/collections/customer-item/helpers/customer-item-active";
 import { SEDbQueryBuilder } from "@backend/query/se.db-query-builder";
-import { BlDocumentStorage } from "@backend/storage/blDocumentStorage";
+import { BlStorage } from "@backend/storage/blStorage";
 import { BlError } from "@shared/bl-error/bl-error";
 import { CustomerItem } from "@shared/customer-item/customer-item";
 
 export class CustomerHaveActiveCustomerItems {
-  private queryBuilder: SEDbQueryBuilder;
-  private customerItemActive: CustomerItemActive;
+  private queryBuilder = new SEDbQueryBuilder();
+  private customerItemActive = new CustomerItemActive();
+  private customerItemStorage: BlStorage<CustomerItem>;
 
-  constructor(private _customerItemStorage?: BlDocumentStorage<CustomerItem>) {
-    this._customerItemStorage =
-      this._customerItemStorage ?? new BlDocumentStorage(CustomerItemModel);
-    this.queryBuilder = new SEDbQueryBuilder();
-    this.customerItemActive = new CustomerItemActive();
+  constructor(customerItemStorage?: BlStorage<CustomerItem>) {
+    this.customerItemStorage =
+      customerItemStorage ?? new BlStorage(CustomerItemModel);
   }
 
   public async haveActiveCustomerItems(userId: string): Promise<boolean> {
@@ -23,8 +22,7 @@ export class CustomerHaveActiveCustomerItems {
     let customerItems: CustomerItem[];
 
     try {
-      // @ts-expect-error fixme: auto ignored
-      customerItems = await this._customerItemStorage.getByQuery(databaseQuery);
+      customerItems = await this.customerItemStorage.getByQuery(databaseQuery);
     } catch (error) {
       if (error instanceof BlError && error.getCode() == 702) {
         return false;

@@ -2,18 +2,17 @@ import { MessageModel } from "@backend/collections/message/message.model";
 import { logger } from "@backend/logger/logger";
 import { Operation } from "@backend/operation/operation";
 import { BlApiRequest } from "@backend/request/bl-api-request";
-import { BlDocumentStorage } from "@backend/storage/blDocumentStorage";
+import { BlStorage } from "@backend/storage/blStorage";
 import { BlError } from "@shared/bl-error/bl-error";
 import { BlapiResponse } from "@shared/blapi-response/blapi-response";
 import { Message } from "@shared/message/message";
 import { SendgridEvent } from "@shared/message/message-sendgrid-event/message-sendgrid-event";
 
 export class SendgridEventOperation implements Operation {
-  private _messageStorage: BlDocumentStorage<Message>;
+  private messageStorage: BlStorage<Message>;
 
-  constructor(messageStorage?: BlDocumentStorage<Message>) {
-    this._messageStorage =
-      messageStorage ?? new BlDocumentStorage(MessageModel);
+  constructor(messageStorage?: BlStorage<Message>) {
+    this.messageStorage = messageStorage ?? new BlStorage(MessageModel);
   }
 
   public async run(blApiRequest: BlApiRequest): Promise<BlapiResponse> {
@@ -51,7 +50,7 @@ export class SendgridEventOperation implements Operation {
     }
 
     try {
-      const message = await this._messageStorage.get(blMessageId);
+      const message = await this.messageStorage.get(blMessageId);
       await this.updateMessageWithSendgridEvent(message, sendgridEvent);
     } catch (error) {
       logger.warn(`could not update sendgrid event ${error}`);
@@ -71,7 +70,7 @@ export class SendgridEventOperation implements Operation {
 
     newSendgridEvents.push(sendgridEvent);
 
-    await this._messageStorage.update(message.id, {
+    await this.messageStorage.update(message.id, {
       events: newSendgridEvents,
     });
 

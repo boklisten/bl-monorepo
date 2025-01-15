@@ -7,7 +7,7 @@ import { PaymentModel } from "@backend/collections/payment/payment.model";
 import { UserDetailModel } from "@backend/collections/user-detail/user-detail.model";
 import { DibsEasyOrder } from "@backend/payment/dibs/dibs-easy-order/dibs-easy-order";
 import { DibsPaymentService } from "@backend/payment/dibs/dibs-payment.service";
-import { BlDocumentStorage } from "@backend/storage/blDocumentStorage";
+import { BlStorage } from "@backend/storage/blStorage";
 import { BlError } from "@shared/bl-error/bl-error";
 import { Delivery } from "@shared/delivery/delivery";
 import { Order } from "@shared/order/order";
@@ -22,11 +22,11 @@ chaiUse(chaiAsPromised);
 should();
 
 describe("PaymentDibsHandler", () => {
-  const orderStorage = new BlDocumentStorage(OrderModel);
-  const paymentStorage = new BlDocumentStorage(PaymentModel);
+  const orderStorage = new BlStorage(OrderModel);
+  const paymentStorage = new BlStorage(PaymentModel);
   const dibsPaymentService = new DibsPaymentService();
-  const deliveryStorage = new BlDocumentStorage(DeliveryModel);
-  const userDetailStorage = new BlDocumentStorage(UserDetailModel);
+  const deliveryStorage = new BlStorage(DeliveryModel);
+  const userDetailStorage = new BlStorage(UserDetailModel);
 
   const paymentDibsHandler = new PaymentDibsHandler(
     paymentStorage,

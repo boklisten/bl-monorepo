@@ -9,14 +9,14 @@ export class CollectionEndpointPut<T extends BlDocument>
 {
   override async onRequest(blApiRequest: BlApiRequest): Promise<T[]> {
     // @ts-expect-error fixme: auto ignored
-    await this._documentStorage.put(blApiRequest.documentId, blApiRequest.data);
+    await this.documentStorage.put(blApiRequest.documentId, blApiRequest.data);
     return [];
   }
 
   override async validateDocumentPermission(
     blApiRequest: BlApiRequest,
   ): Promise<BlApiRequest> {
-    const document_ = await this._documentStorage.get(
+    const document_ = await this.documentStorage.get(
       blApiRequest.documentId ?? "",
     );
     if (

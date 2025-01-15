@@ -3,7 +3,7 @@ import { OrderModel } from "@backend/collections/order/order.model";
 import { UserDetailHelper } from "@backend/collections/user-detail/helpers/user-detail.helper";
 import { UserDetailModel } from "@backend/collections/user-detail/user-detail.model";
 import { Hook } from "@backend/hook/hook";
-import { BlDocumentStorage } from "@backend/storage/blDocumentStorage";
+import { BlStorage } from "@backend/storage/blStorage";
 import { BlError } from "@shared/bl-error/bl-error";
 import { CustomerItem } from "@shared/customer-item/customer-item";
 import { Order } from "@shared/order/order";
@@ -11,24 +11,24 @@ import { AccessToken } from "@shared/token/access-token";
 import { UserDetail } from "@shared/user/user-detail/user-detail";
 
 export class CustomerItemPostHook extends Hook {
-  private _customerItemValidator: CustomerItemValidator;
-  private _userDetailStorage: BlDocumentStorage<UserDetail>;
-  private _orderStorage: BlDocumentStorage<Order>;
-  private _userDetailHelper: UserDetailHelper;
+  private customerItemValidator: CustomerItemValidator;
+  private userDetailStorage: BlStorage<UserDetail>;
+  private orderStorage: BlStorage<Order>;
+  private userDetailHelper: UserDetailHelper;
 
   constructor(
     customerItemValidator?: CustomerItemValidator,
-    userDetailStorage?: BlDocumentStorage<UserDetail>,
-    orderStorage?: BlDocumentStorage<Order>,
+    userDetailStorage?: BlStorage<UserDetail>,
+    orderStorage?: BlStorage<Order>,
     userDetailHelper?: UserDetailHelper,
   ) {
     super();
-    this._customerItemValidator =
+    this.customerItemValidator =
       customerItemValidator ?? new CustomerItemValidator();
-    this._userDetailStorage =
-      userDetailStorage ?? new BlDocumentStorage(UserDetailModel);
-    this._orderStorage = orderStorage ?? new BlDocumentStorage(OrderModel);
-    this._userDetailHelper = userDetailHelper ?? new UserDetailHelper();
+    this.userDetailStorage =
+      userDetailStorage ?? new BlStorage(UserDetailModel);
+    this.orderStorage = orderStorage ?? new BlStorage(OrderModel);
+    this.userDetailHelper = userDetailHelper ?? new UserDetailHelper();
   }
 
   public override before(customerItem: CustomerItem): Promise<boolean> {
@@ -36,14 +36,14 @@ export class CustomerItemPostHook extends Hook {
       return Promise.reject(new BlError("customerItem is undefined"));
     }
 
-    return this._userDetailStorage
+    return this.userDetailStorage
       .get(customerItem.customer)
       .then((userDetail: UserDetail) => {
-        if (!this._userDetailHelper.isValid(userDetail)) {
+        if (!this.userDetailHelper.isValid(userDetail)) {
           throw new BlError(`userDetail "${customerItem.customer}" not valid`);
         }
 
-        return this._customerItemValidator
+        return this.customerItemValidator
           .validate(customerItem)
           .then(() => {
             return true;
@@ -90,7 +90,7 @@ export class CustomerItemPostHook extends Hook {
       );
     }
 
-    return this._orderStorage
+    return this.orderStorage
       .get(customerItem.orders[0] ?? "")
       .then((order: Order) => {
         //update the corresponding orderItem with customerItem
@@ -103,12 +103,12 @@ export class CustomerItemPostHook extends Hook {
             break;
           }
         }
-        return this._orderStorage.update(order.id, {
+        return this.orderStorage.update(order.id, {
           orderItems: order.orderItems,
         });
       })
       .then(() => {
-        return this._userDetailStorage.get(customerItem.customer);
+        return this.userDetailStorage.get(customerItem.customer);
       })
       .then((userDetail: UserDetail) => {
         // @ts-expect-error fixme: auto ignored
@@ -127,7 +127,7 @@ export class CustomerItemPostHook extends Hook {
           newCustomerItems.push(customerItem.id);
         }
 
-        return this._userDetailStorage.update(
+        return this.userDetailStorage.update(
           userDetail.id,
           // @ts-expect-error fixme: auto ignored
           { customerItems: newCustomerItems },

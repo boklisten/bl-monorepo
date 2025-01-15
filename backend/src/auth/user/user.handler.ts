@@ -5,36 +5,30 @@ import { User } from "@backend/collections/user/user";
 import { UserModel } from "@backend/collections/user/user.model";
 import { UserDetailModel } from "@backend/collections/user-detail/user-detail.model";
 import { SEDbQuery } from "@backend/query/se.db-query";
-import { BlDocumentStorage } from "@backend/storage/blDocumentStorage";
+import { BlStorage } from "@backend/storage/blStorage";
 import { BlError } from "@shared/bl-error/bl-error";
 import { UserDetail } from "@shared/user/user-detail/user-detail";
 
 export class UserHandler {
   private blid: Blid;
-  private userDetailStorage: BlDocumentStorage<UserDetail>;
-  private userStorage: BlDocumentStorage<User>;
-  private _emailValidationHelper: EmailValidationHelper;
-  private _localLoginHandler: LocalLoginHandler;
+  private userDetailStorage: BlStorage<UserDetail>;
+  private userStorage: BlStorage<User>;
+  private emailValidationHelper: EmailValidationHelper;
+  private localLoginHandler: LocalLoginHandler;
 
   constructor(
-    userDetailStorage?: BlDocumentStorage<UserDetail>,
-    userStorage?: BlDocumentStorage<User>,
+    userDetailStorage?: BlStorage<UserDetail>,
+    userStorage?: BlStorage<User>,
     emailValidationHelper?: EmailValidationHelper,
     localLoginHandler?: LocalLoginHandler,
   ) {
     this.blid = new Blid();
-    this.userDetailStorage = userDetailStorage
-      ? userDetailStorage
-      : new BlDocumentStorage(UserDetailModel);
-    this._emailValidationHelper = emailValidationHelper
-      ? emailValidationHelper
-      : new EmailValidationHelper();
-    this.userStorage = userStorage
-      ? userStorage
-      : new BlDocumentStorage(UserModel);
-    this._localLoginHandler = localLoginHandler
-      ? localLoginHandler
-      : new LocalLoginHandler();
+    this.userDetailStorage =
+      userDetailStorage ?? new BlStorage(UserDetailModel);
+    this.emailValidationHelper =
+      emailValidationHelper ?? new EmailValidationHelper();
+    this.userStorage = userStorage ?? new BlStorage(UserModel);
+    this.localLoginHandler = localLoginHandler ?? new LocalLoginHandler();
   }
 
   public getByUsername(username: string): Promise<User> {
@@ -190,10 +184,10 @@ export class UserHandler {
       } else if (this.isThirdPartyProvider(provider)) {
         // if user already exists and the creation is with google or facebook
         try {
-          await this._localLoginHandler.get(username);
+          await this.localLoginHandler.get(username);
         } catch {
           // if localLogin is not found, should create a default one
-          await this._localLoginHandler.createDefaultLocalLogin(username);
+          await this.localLoginHandler.createDefaultLocalLogin(username);
         }
 
         return userExists;
@@ -218,7 +212,7 @@ export class UserHandler {
         // this so that when the user tries to login with username or password he can
         // ask for a new password via email
 
-        await this._localLoginHandler.createDefaultLocalLogin(username);
+        await this.localLoginHandler.createDefaultLocalLogin(username);
       }
 
       const addedUserDetail: UserDetail = await this.userDetailStorage.add(
@@ -267,7 +261,7 @@ export class UserHandler {
   }
 
   private async sendEmailValidationLink(userDetail: UserDetail): Promise<void> {
-    await this._emailValidationHelper
+    await this.emailValidationHelper
       .createAndSendEmailValidationLink(userDetail.id)
       .catch((sendEmailValidationLinkError: BlError) => {
         throw new BlError("could not send out email validation link").add(

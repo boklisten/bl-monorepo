@@ -3,25 +3,27 @@ import { UniqueItemModel } from "@backend/collections/unique-item/unique-item.mo
 import { Operation } from "@backend/operation/operation";
 import { BlApiRequest } from "@backend/request/bl-api-request";
 import { SEResponseHandler } from "@backend/response/se.response.handler";
-import { BlDocumentStorage } from "@backend/storage/blDocumentStorage";
+import { BlStorage } from "@backend/storage/blStorage";
 import { BlError } from "@shared/bl-error/bl-error";
 import { BlapiResponse } from "@shared/blapi-response/blapi-response";
 import { UniqueItem } from "@shared/unique-item/unique-item";
 import { Request, Response } from "express";
 
 export class UniqueItemActiveOperation implements Operation {
+  private customerItemActiveBlid: CustomerItemActiveBlid;
+  private uniqueItemStorage: BlStorage<UniqueItem>;
+  private resHandler: SEResponseHandler;
+
   constructor(
-    private customerItemActiveBlid?: CustomerItemActiveBlid,
-    private uniqueItemStorage?: BlDocumentStorage<UniqueItem>,
-    private resHandler?: SEResponseHandler,
+    customerItemActiveBlid?: CustomerItemActiveBlid,
+    uniqueItemStorage?: BlStorage<UniqueItem>,
+    resHandler?: SEResponseHandler,
   ) {
-    this.customerItemActiveBlid = customerItemActiveBlid
-      ? customerItemActiveBlid
-      : new CustomerItemActiveBlid();
-    this.uniqueItemStorage = uniqueItemStorage
-      ? uniqueItemStorage
-      : new BlDocumentStorage(UniqueItemModel);
-    this.resHandler = resHandler ? resHandler : new SEResponseHandler();
+    this.customerItemActiveBlid =
+      customerItemActiveBlid ?? new CustomerItemActiveBlid();
+    this.uniqueItemStorage =
+      uniqueItemStorage ?? new BlStorage(UniqueItemModel);
+    this.resHandler = resHandler ?? new SEResponseHandler();
   }
 
   async run(
@@ -40,7 +42,6 @@ export class UniqueItemActiveOperation implements Operation {
     let activeCustomerItemIds;
     try {
       activeCustomerItemIds =
-        // @ts-expect-error fixme: auto ignored
         await this.customerItemActiveBlid.getActiveCustomerItemIds(
           uniqueItem.blid,
         );
@@ -56,7 +57,6 @@ export class UniqueItemActiveOperation implements Operation {
   }
 
   private sendResponse(res: Response, ids: string[]) {
-    // @ts-expect-error fixme: auto ignored
     this.resHandler.sendResponse(res, new BlapiResponse(ids));
   }
 }

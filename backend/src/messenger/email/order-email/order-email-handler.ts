@@ -10,7 +10,7 @@ import { sendMail } from "@backend/messenger/email/email-service";
 import { EMAIL_SETTINGS } from "@backend/messenger/email/email-settings";
 import { sendSMS } from "@backend/messenger/sms/sms-service";
 import { DibsEasyPayment } from "@backend/payment/dibs/dibs-easy-payment/dibs-easy-payment";
-import { BlDocumentStorage } from "@backend/storage/blDocumentStorage";
+import { BlStorage } from "@backend/storage/blStorage";
 import { EmailHandler, EmailLog } from "@boklisten/bl-email";
 import { EmailOrder } from "@boklisten/bl-email/dist/ts/template/email-order";
 import { EmailSetting } from "@boklisten/bl-email/dist/ts/template/email-setting";
@@ -33,26 +33,23 @@ export class OrderEmailHandler {
   private localeSetting = "nb";
   private noPaymentNoticeText =
     "Dette er kun en reservasjon, du har ikke betalt enda. Du betaler først når du kommer til oss på stand.";
-  private readonly _signatureStorage: BlDocumentStorage<Signature>;
+
+  private deliveryStorage: BlStorage<Delivery>;
+  private paymentStorage: BlStorage<Payment>;
+  private branchStorage: BlStorage<Branch>;
+  private signatureStorage: BlStorage<Signature>;
 
   constructor(
-    private _emailHandler: EmailHandler,
-    private _deliveryStorage?: BlDocumentStorage<Delivery>,
-    private _paymentStorage?: BlDocumentStorage<Payment>,
-    private _branchStorage?: BlDocumentStorage<Branch>,
-    signatureStorage?: BlDocumentStorage<Signature>,
+    private emailHandler: EmailHandler,
+    deliveryStorage?: BlStorage<Delivery>,
+    paymentStorage?: BlStorage<Payment>,
+    branchStorage?: BlStorage<Branch>,
+    signatureStorage?: BlStorage<Signature>,
   ) {
-    this._deliveryStorage = _deliveryStorage
-      ? _deliveryStorage
-      : new BlDocumentStorage(DeliveryModel);
-    this._paymentStorage = _paymentStorage
-      ? _paymentStorage
-      : new BlDocumentStorage(PaymentModel);
-    this._branchStorage = _branchStorage
-      ? _branchStorage
-      : new BlDocumentStorage(BranchModel);
-    this._signatureStorage =
-      signatureStorage ?? new BlDocumentStorage(SignatureModel);
+    this.deliveryStorage = deliveryStorage ?? new BlStorage(DeliveryModel);
+    this.paymentStorage = paymentStorage ?? new BlStorage(PaymentModel);
+    this.branchStorage = branchStorage ?? new BlStorage(BranchModel);
+    this.signatureStorage = signatureStorage ?? new BlStorage(SignatureModel);
   }
 
   public async sendOrderReceipt(
@@ -88,7 +85,7 @@ export class OrderEmailHandler {
     };
 
     if (withAgreement) {
-      const branch = await this._branchStorage?.get(branchId);
+      const branch = await this.branchStorage?.get(branchId);
       this.requestGuardianSignature(
         customerDetail,
         branch?.name ?? "",
@@ -101,7 +98,7 @@ export class OrderEmailHandler {
       this.addNoPaymentProvidedNotice(emailSetting);
     }
 
-    return await this._emailHandler
+    return await this.emailHandler
       .sendOrderReceipt(emailSetting, emailOrder, emailUser, withAgreement)
       .catch((error) => {
         throw new BlError("Unable to send order receipt email")
@@ -158,7 +155,7 @@ export class OrderEmailHandler {
         userId: customerDetail.id,
         userFullName: customerDetail.guardian.name,
       };
-      this._emailHandler.sendOrderReceipt(
+      this.emailHandler.sendOrderReceipt(
         receiptEmailSetting,
         emailOrder,
         emailUser,
@@ -166,7 +163,7 @@ export class OrderEmailHandler {
       );
       /** --- */
 
-      if (await userHasValidSignature(customerDetail, this._signatureStorage)) {
+      if (await userHasValidSignature(customerDetail, this.signatureStorage)) {
         return;
       }
       sendMail(
@@ -244,8 +241,7 @@ export class OrderEmailHandler {
     }
 
     const paymentPromises: Promise<Payment>[] = order.payments.map((payment) =>
-      // @ts-expect-error fixme: auto ignored
-      this._paymentStorage.get(payment),
+      this.paymentStorage.get(payment),
     );
 
     return Promise.all(paymentPromises)
@@ -289,8 +285,7 @@ export class OrderEmailHandler {
       return Promise.resolve({ delivery: null, showDelivery: false });
     }
 
-    // @ts-expect-error fixme: auto ignored
-    return this._deliveryStorage
+    return this.deliveryStorage
       .get(deliveryId)
       .then((delivery: Delivery) => {
         return delivery.method === "bring"
@@ -488,8 +483,7 @@ export class OrderEmailHandler {
   }
 
   private isBranchResponsible(branchId: string): Promise<boolean> {
-    // @ts-expect-error fixme: auto ignored
-    return this._branchStorage
+    return this.branchStorage
       .get(branchId)
       .then((branch: Branch) => {
         // @ts-expect-error fixme: auto ignored

@@ -7,15 +7,19 @@ import { PasswordResetRequest } from "@shared/password-reset/password-reset-requ
 import { PendingPasswordReset } from "@shared/password-reset/pending-password-reset";
 
 export class PendingPasswordResetPostHook extends Hook {
+  private userHandler: UserHandler;
+  private seCrypto: SeCrypto;
+  private messenger: Messenger;
+
   constructor(
-    private readonly userHandler?: UserHandler,
-    private readonly seCrypto?: SeCrypto,
-    private readonly messenger?: Messenger,
+    userHandler?: UserHandler,
+    seCrypto?: SeCrypto,
+    messenger?: Messenger,
   ) {
     super();
-    this.userHandler ??= new UserHandler();
-    this.seCrypto ??= new SeCrypto();
-    this.messenger ??= new Messenger();
+    this.userHandler = userHandler ?? new UserHandler();
+    this.seCrypto = seCrypto ?? new SeCrypto();
+    this.messenger = messenger ?? new Messenger();
   }
 
   override async before(
@@ -27,7 +31,6 @@ export class PendingPasswordResetPostHook extends Hook {
       .toLowerCase()
       .replace(" ", "");
 
-    // @ts-expect-error fixme: auto ignored
     const user = await this.userHandler
       .getByUsername(normalizedEmail)
       .catch((getUserError: BlError) => {
@@ -36,23 +39,18 @@ export class PendingPasswordResetPostHook extends Hook {
           .add(getUserError);
       });
 
-    // @ts-expect-error fixme: auto ignored
     const id = this.seCrypto.random();
 
-    // @ts-expect-error fixme: auto ignored
     const token = this.seCrypto.random();
 
-    // @ts-expect-error fixme: auto ignored
     const salt = this.seCrypto.random();
 
-    // @ts-expect-error fixme: auto ignored
     const tokenHash = await this.seCrypto.hash(token, salt);
 
     // We should really wait to send the email until the password reset has been successfully written to the
     // database, but it would be poor security to save the unhashed token in the database, and we have no other way
     // of passing information from before to after, so this is the lesser evil.
 
-    // @ts-expect-error fixme: auto ignored
     await this.messenger
       .passwordReset(user.id, normalizedEmail, id, token)
       .catch(() => {

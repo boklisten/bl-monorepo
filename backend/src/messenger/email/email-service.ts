@@ -5,7 +5,7 @@ import { logger } from "@backend/logger/logger";
 import { EMAIL_SETTINGS } from "@backend/messenger/email/email-settings";
 import { OrderEmailHandler } from "@backend/messenger/email/order-email/order-email-handler";
 import { MessengerService } from "@backend/messenger/messenger-service";
-import { BlDocumentStorage } from "@backend/storage/blDocumentStorage";
+import { BlStorage } from "@backend/storage/blStorage";
 import { EmailHandler } from "@boklisten/bl-email";
 import { EmailOrder } from "@boklisten/bl-email/dist/ts/template/email-order";
 import { EmailSetting } from "@boklisten/bl-email/dist/ts/template/email-setting";
@@ -29,33 +29,31 @@ import { OrderItem } from "@shared/order/order-item/order-item";
 import { UserDetail } from "@shared/user/user-detail/user-detail";
 
 export class EmailService implements MessengerService {
-  private _emailHandler: EmailHandler;
-  private _orderEmailHandler: OrderEmailHandler;
-  private _itemStorage: BlDocumentStorage<Item>;
-  private _postOffice: PostOffice;
+  private emailHandler: EmailHandler;
+  private orderEmailHandler: OrderEmailHandler;
+  private itemStorage: BlStorage<Item>;
+  private postOffice: PostOffice;
 
   constructor(
     emailHandler?: EmailHandler,
-    itemStorage?: BlDocumentStorage<Item>,
+    itemStorage?: BlStorage<Item>,
     inputPostOffice?: PostOffice,
   ) {
     sgMail.setApiKey(assertEnv(BlEnvironment.SENDGRID_API_KEY));
-    this._emailHandler = emailHandler
-      ? emailHandler
-      : new EmailHandler({
-          sendgrid: {
-            apiKey: assertEnv(BlEnvironment.SENDGRID_API_KEY),
-          },
-          locale: "nb",
-        });
+    this.emailHandler =
+      emailHandler ??
+      new EmailHandler({
+        sendgrid: {
+          apiKey: assertEnv(BlEnvironment.SENDGRID_API_KEY),
+        },
+        locale: "nb",
+      });
 
-    this._itemStorage = itemStorage
-      ? itemStorage
-      : new BlDocumentStorage(ItemModel);
-    this._orderEmailHandler = new OrderEmailHandler(this._emailHandler);
-    this._postOffice = inputPostOffice ? inputPostOffice : postOffice;
-    this._postOffice.overrideLogger(logger);
-    this._postOffice.setConfig({
+    this.itemStorage = itemStorage ?? new BlStorage(ItemModel);
+    this.orderEmailHandler = new OrderEmailHandler(this.emailHandler);
+    this.postOffice = inputPostOffice ?? postOffice;
+    this.postOffice.overrideLogger(logger);
+    this.postOffice.setConfig({
       reminder: { mediums: { email: true, sms: true } },
       generic: { mediums: { email: true } },
       receipt: { mediums: { email: false, sms: false } },
@@ -91,7 +89,7 @@ export class EmailService implements MessengerService {
     };
 
     try {
-      await this._postOffice.send([recipient], messageOptions);
+      await this.postOffice.send([recipient], messageOptions);
     } catch (error) {
       logger.error(`could not send generic mail: ${error}`);
     }
@@ -126,7 +124,7 @@ export class EmailService implements MessengerService {
     };
 
     try {
-      await this._postOffice.send([recipient], messageOptions);
+      await this.postOffice.send([recipient], messageOptions);
 
       if (
         customerDetail.dob &&
@@ -158,7 +156,7 @@ export class EmailService implements MessengerService {
     recipient.email = customerDetail.guardian.email;
     recipient.phone = "+47" + customerDetail.guardian.phone;
 
-    return this._postOffice.send([recipient], messageOptions);
+    return this.postOffice.send([recipient], messageOptions);
   }
 
   private getMessageOptionMediums(message: Message): {
@@ -187,7 +185,7 @@ export class EmailService implements MessengerService {
     customerDetail: UserDetail,
     order: Order,
   ): Promise<void> {
-    await this._orderEmailHandler.sendOrderReceipt(customerDetail, order);
+    await this.orderEmailHandler.sendOrderReceipt(customerDetail, order);
   }
 
   private async customerDetailToRecipient(
@@ -252,7 +250,7 @@ export class EmailService implements MessengerService {
     const items = [];
 
     for (const customerItem of customerItems) {
-      const item = await this._itemStorage.get(customerItem.item);
+      const item = await this.itemStorage.get(customerItem.item);
       items.push(this.customerItemToEmailItem(message, customerItem, item));
     }
 
@@ -375,7 +373,7 @@ export class EmailService implements MessengerService {
       },
     };
 
-    await this._emailHandler
+    await this.emailHandler
       .sendDelivery(emailSetting, emailOrder, emailUser)
       .catch((error) => {
         throw new BlError("Unable to send delivery email").code(200).add(error);

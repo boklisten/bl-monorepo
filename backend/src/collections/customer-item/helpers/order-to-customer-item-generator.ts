@@ -1,16 +1,16 @@
 import { UserDetailModel } from "@backend/collections/user-detail/user-detail.model";
-import { BlDocumentStorage } from "@backend/storage/blDocumentStorage";
+import { BlStorage } from "@backend/storage/blStorage";
 import { CustomerItem } from "@shared/customer-item/customer-item";
 import { Order } from "@shared/order/order";
 import { OrderItem } from "@shared/order/order-item/order-item";
 import { UserDetail } from "@shared/user/user-detail/user-detail";
 
 export class OrderToCustomerItemGenerator {
-  private _userDetailStorage: BlDocumentStorage<UserDetail>;
+  private userDetailStorage: BlStorage<UserDetail>;
 
-  constructor(userDetailStorage?: BlDocumentStorage<UserDetail>) {
-    this._userDetailStorage =
-      userDetailStorage ?? new BlDocumentStorage(UserDetailModel);
+  constructor(userDetailStorage?: BlStorage<UserDetail>) {
+    this.userDetailStorage =
+      userDetailStorage ?? new BlStorage(UserDetailModel);
   }
 
   public async generate(order: Order): Promise<CustomerItem[]> {
@@ -20,7 +20,7 @@ export class OrderToCustomerItemGenerator {
       return [];
     }
 
-    const customerDetail = await this._userDetailStorage.get(order.customer);
+    const customerDetail = await this.userDetailStorage.get(order.customer);
 
     for (const orderItem of order.orderItems) {
       if (this.shouldCreateCustomerItem(orderItem)) {

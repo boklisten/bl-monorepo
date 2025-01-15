@@ -21,21 +21,21 @@ export class UserDetailDeleteHook extends Hook {
   private deleteUserService: DeleteUserService;
 
   constructor(
-    _orderActive?: OrderActive,
-    _customerHaveActiveCustomerItems?: CustomerHaveActiveCustomerItems,
-    _customerInvoiceActive?: CustomerInvoiceActive,
-    _userCanDeleteUserDetail?: UserCanDeleteUserDetail,
-    _deleteUserService?: DeleteUserService,
+    orderActive?: OrderActive,
+    customerHaveActiveCustomerItems?: CustomerHaveActiveCustomerItems,
+    customerInvoiceActive?: CustomerInvoiceActive,
+    userCanDeleteUserDetail?: UserCanDeleteUserDetail,
+    deleteUserService?: DeleteUserService,
   ) {
     super();
-    this.orderActive = _orderActive ?? new OrderActive();
+    this.orderActive = orderActive ?? new OrderActive();
     this.customerHaveActiveCustomerItems =
-      _customerHaveActiveCustomerItems ?? new CustomerHaveActiveCustomerItems();
+      customerHaveActiveCustomerItems ?? new CustomerHaveActiveCustomerItems();
     this.customerInvoiceActive =
-      _customerInvoiceActive ?? new CustomerInvoiceActive();
+      customerInvoiceActive ?? new CustomerInvoiceActive();
     this.userCanDeleteUserDetail =
-      _userCanDeleteUserDetail ?? new UserCanDeleteUserDetail();
-    this.deleteUserService = _deleteUserService ?? new DeleteUserService();
+      userCanDeleteUserDetail ?? new UserCanDeleteUserDetail();
+    this.deleteUserService = deleteUserService ?? new DeleteUserService();
   }
 
   public override async before(

@@ -1,12 +1,12 @@
 import { SEDbQueryBuilder } from "@backend/query/se.db-query-builder";
-import { BlDocumentStorage } from "@backend/storage/blDocumentStorage";
+import { BlStorage } from "@backend/storage/blStorage";
 import { BlError } from "@shared/bl-error/bl-error";
 import { Message } from "@shared/message/message";
 
 export class MessageHelper {
   private queryBuilder: SEDbQueryBuilder;
 
-  constructor(private messageStorage: BlDocumentStorage<Message>) {
+  constructor(private messageStorage: BlStorage<Message>) {
     this.queryBuilder = new SEDbQueryBuilder();
   }
 

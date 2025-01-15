@@ -17,9 +17,7 @@ import {
   UpdateWriteOpResult,
 } from "mongoose";
 
-export class BlDocumentStorage<T extends BlDocument>
-  implements BlStorageHandler<T>
-{
+export class BlStorage<T extends BlDocument> implements BlStorageHandler<T> {
   private mongoDbHandler: MongoDbBlStorageHandler<T>;
 
   constructor(model: BlModel<T>) {

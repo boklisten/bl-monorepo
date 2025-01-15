@@ -1,7 +1,7 @@
 import { CustomerItemModel } from "@backend/collections/customer-item/customer-item.model";
 import { Operation } from "@backend/operation/operation";
 import { BlApiRequest } from "@backend/request/bl-api-request";
-import { BlDocumentStorage } from "@backend/storage/blDocumentStorage";
+import { BlStorage } from "@backend/storage/blStorage";
 import { BlError } from "@shared/bl-error/bl-error";
 import { BlapiResponse } from "@shared/blapi-response/blapi-response";
 import { ObjectId } from "mongodb";
@@ -17,7 +17,7 @@ const CustomerItemGenerateReportSpec = z.object({
 });
 
 export class CustomerItemGenerateReportOperation implements Operation {
-  private customerItemStorage = new BlDocumentStorage(CustomerItemModel);
+  private customerItemStorage = new BlStorage(CustomerItemModel);
 
   async run(blApiRequest: BlApiRequest): Promise<BlapiResponse> {
     const parsedRequest = CustomerItemGenerateReportSpec.safeParse(

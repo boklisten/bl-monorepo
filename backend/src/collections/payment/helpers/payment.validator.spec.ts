@@ -3,7 +3,7 @@ import "mocha";
 import { DeliveryModel } from "@backend/collections/delivery/delivery.model";
 import { OrderModel } from "@backend/collections/order/order.model";
 import { PaymentValidator } from "@backend/collections/payment/helpers/payment.validator";
-import { BlDocumentStorage } from "@backend/storage/blDocumentStorage";
+import { BlStorage } from "@backend/storage/blStorage";
 import { BlError } from "@shared/bl-error/bl-error";
 import { Delivery } from "@shared/delivery/delivery";
 import { Order } from "@shared/order/order";
@@ -16,8 +16,8 @@ chaiUse(chaiAsPromised);
 should();
 
 describe("PaymentValidator", () => {
-  const orderStorage = new BlDocumentStorage(OrderModel);
-  const deliveryStorage = new BlDocumentStorage(DeliveryModel);
+  const orderStorage = new BlStorage(OrderModel);
+  const deliveryStorage = new BlStorage(DeliveryModel);
   const paymentValidator = new PaymentValidator(orderStorage, deliveryStorage);
 
   let testPayment: Payment;

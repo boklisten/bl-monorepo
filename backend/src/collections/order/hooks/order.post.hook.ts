@@ -4,7 +4,7 @@ import { OrderHookBefore } from "@backend/collections/order/hooks/order-hook-bef
 import { UserDetailHelper } from "@backend/collections/user-detail/helpers/user-detail.helper";
 import { UserDetailModel } from "@backend/collections/user-detail/user-detail.model";
 import { Hook } from "@backend/hook/hook";
-import { BlDocumentStorage } from "@backend/storage/blDocumentStorage";
+import { BlStorage } from "@backend/storage/blStorage";
 import { BlError } from "@shared/bl-error/bl-error";
 import { Order } from "@shared/order/order";
 import { AccessToken } from "@shared/token/access-token";
@@ -13,20 +13,20 @@ import { UserDetail } from "@shared/user/user-detail/user-detail";
 export class OrderPostHook extends Hook {
   private orderValidator: OrderValidator;
   private orderHookBefore: OrderHookBefore;
-  private userDetailStorage: BlDocumentStorage<UserDetail>;
+  private userDetailStorage: BlStorage<UserDetail>;
   private userDetailHelper: UserDetailHelper;
 
   constructor(
     orderValidator?: OrderValidator,
     orderHookBefore?: OrderHookBefore,
-    userDetailStorage?: BlDocumentStorage<UserDetail>,
+    userDetailStorage?: BlStorage<UserDetail>,
     userDetailHelper?: UserDetailHelper,
   ) {
     super();
     this.orderValidator = orderValidator ?? new OrderValidator();
     this.orderHookBefore = orderHookBefore ?? new OrderHookBefore();
     this.userDetailStorage =
-      userDetailStorage ?? new BlDocumentStorage(UserDetailModel);
+      userDetailStorage ?? new BlStorage(UserDetailModel);
     this.userDetailHelper = userDetailHelper ?? new UserDetailHelper();
   }
 

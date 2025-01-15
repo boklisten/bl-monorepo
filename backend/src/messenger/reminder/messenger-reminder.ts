@@ -1,24 +1,24 @@
 import { CustomerItemHandler } from "@backend/collections/customer-item/helpers/customer-item-handler";
 import { UserDetailModel } from "@backend/collections/user-detail/user-detail.model";
 import { EmailService } from "@backend/messenger/email/email-service";
-import { BlDocumentStorage } from "@backend/storage/blDocumentStorage";
+import { BlStorage } from "@backend/storage/blStorage";
 import { BlError } from "@shared/bl-error/bl-error";
 import { Message } from "@shared/message/message";
 import { UserDetail } from "@shared/user/user-detail/user-detail";
 
 export class MessengerReminder {
   private readonly customerItemHandler: CustomerItemHandler;
-  private readonly userDetailStorage: BlDocumentStorage<UserDetail>;
+  private readonly userDetailStorage: BlStorage<UserDetail>;
   private readonly emailService: EmailService;
 
   constructor(
     customerItemHandler?: CustomerItemHandler,
-    userDetailStorage?: BlDocumentStorage<UserDetail>,
+    userDetailStorage?: BlStorage<UserDetail>,
     emailService?: EmailService,
   ) {
     this.customerItemHandler = customerItemHandler ?? new CustomerItemHandler();
     this.userDetailStorage =
-      userDetailStorage ?? new BlDocumentStorage(UserDetailModel);
+      userDetailStorage ?? new BlStorage(UserDetailModel);
     this.emailService = emailService ?? new EmailService();
   }
 

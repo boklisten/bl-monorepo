@@ -1,7 +1,7 @@
 import { UserMatchModel } from "@backend/collections/user-match/user-match.model";
 import { Operation } from "@backend/operation/operation";
 import { BlApiRequest } from "@backend/request/bl-api-request";
-import { BlDocumentStorage } from "@backend/storage/blDocumentStorage";
+import { BlStorage } from "@backend/storage/blStorage";
 import { BlError } from "@shared/bl-error/bl-error";
 import { BlapiResponse } from "@shared/blapi-response/blapi-response";
 import { UserMatch } from "@shared/match/user-match";
@@ -15,11 +15,7 @@ const MatchLockSpec = z.object({
 });
 
 export class UserMatchLockOperation implements Operation {
-  private readonly _userMatchStorage: BlDocumentStorage<UserMatch>;
-  constructor(userMatchStorage?: BlDocumentStorage<UserMatch>) {
-    this._userMatchStorage =
-      userMatchStorage ?? new BlDocumentStorage(UserMatchModel);
-  }
+  private userMatchStorage = new BlStorage(UserMatchModel);
 
   async run(blApiRequest: BlApiRequest): Promise<BlapiResponse> {
     const parsedRequest = MatchLockSpec.safeParse(blApiRequest.data);
@@ -27,7 +23,7 @@ export class UserMatchLockOperation implements Operation {
       throw new BlError(fromError(parsedRequest.error).toString()).code(701);
     }
 
-    const userMatches = (await this._userMatchStorage.aggregate([
+    const userMatches = (await this.userMatchStorage.aggregate([
       {
         $match: {
           $or: [
@@ -42,7 +38,7 @@ export class UserMatchLockOperation implements Operation {
       throw new BlError("User does not have any user matches");
     }
 
-    const res = await this._userMatchStorage.updateMany(
+    const res = await this.userMatchStorage.updateMany(
       {
         _id: { $in: userMatches.map((match) => match.id) },
       },

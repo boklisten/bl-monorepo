@@ -5,7 +5,7 @@ import { PaymentDibsConfirmer } from "@backend/collections/payment/helpers/dibs/
 import { PaymentHandler } from "@backend/collections/payment/helpers/payment-handler";
 import { PaymentModel } from "@backend/collections/payment/payment.model";
 import { DibsPaymentService } from "@backend/payment/dibs/dibs-payment.service";
-import { BlDocumentStorage } from "@backend/storage/blDocumentStorage";
+import { BlStorage } from "@backend/storage/blStorage";
 import { BlError } from "@shared/bl-error/bl-error";
 import { Delivery } from "@shared/delivery/delivery";
 import { Order } from "@shared/order/order";
@@ -20,10 +20,10 @@ should();
 describe("PaymentHandler", () => {
   let testOrder: Order;
 
-  const paymentStorage = new BlDocumentStorage(PaymentModel);
+  const paymentStorage = new BlStorage(PaymentModel);
   const dibsPaymentService = new DibsPaymentService();
   const paymentDibsConfirmer = new PaymentDibsConfirmer(dibsPaymentService);
-  const deliveryStorage = new BlDocumentStorage(DeliveryModel);
+  const deliveryStorage = new BlStorage(DeliveryModel);
   const paymentHandler = new PaymentHandler(
     paymentStorage,
     paymentDibsConfirmer,

@@ -3,7 +3,7 @@ import { UserDetailModel } from "@backend/collections/user-detail/user-detail.mo
 import { Hook } from "@backend/hook/hook";
 import { Messenger } from "@backend/messenger/messenger";
 import { MessengerReminder } from "@backend/messenger/reminder/messenger-reminder";
-import { BlDocumentStorage } from "@backend/storage/blDocumentStorage";
+import { BlStorage } from "@backend/storage/blStorage";
 import { BlError } from "@shared/bl-error/bl-error";
 import { Message } from "@shared/message/message";
 import { AccessToken } from "@shared/token/access-token";
@@ -12,18 +12,18 @@ import { UserDetail } from "@shared/user/user-detail/user-detail";
 export class MessagePostHook extends Hook {
   private readonly messengerReminder: MessengerReminder;
   private readonly messenger: Messenger;
-  private readonly userDetailStorage: BlDocumentStorage<UserDetail>;
+  private readonly userDetailStorage: BlStorage<UserDetail>;
 
   constructor(
     messengerReminder?: MessengerReminder,
     messenger?: Messenger,
-    userDetailStorage?: BlDocumentStorage<UserDetail>,
+    userDetailStorage?: BlStorage<UserDetail>,
   ) {
     super();
     this.messengerReminder = messengerReminder ?? new MessengerReminder();
     this.messenger = messenger ?? new Messenger();
     this.userDetailStorage =
-      userDetailStorage ?? new BlDocumentStorage(UserDetailModel);
+      userDetailStorage ?? new BlStorage(UserDetailModel);
   }
 
   override async before(

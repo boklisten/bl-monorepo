@@ -7,7 +7,7 @@ import { OrderItemBuyValidator } from "@backend/collections/order/helpers/order-
 import { OrderItemExtendValidator } from "@backend/collections/order/helpers/order-validator/order-item-validator/order-item-extend-validator/order-item-extend-validator";
 import { OrderItemRentValidator } from "@backend/collections/order/helpers/order-validator/order-item-validator/order-item-rent-validator/order-item-rent-validator";
 import { OrderItemValidator } from "@backend/collections/order/helpers/order-validator/order-item-validator/order-item-validator";
-import { BlDocumentStorage } from "@backend/storage/blDocumentStorage";
+import { BlStorage } from "@backend/storage/blStorage";
 import { BlError } from "@shared/bl-error/bl-error";
 import { Branch } from "@shared/branch/branch";
 import { Item } from "@shared/item/item";
@@ -19,8 +19,8 @@ chaiUse(chaiAsPromised);
 should();
 
 describe("OrderItemValidator", () => {
-  const branchStorage = new BlDocumentStorage(BranchModel);
-  const itemStorage = new BlDocumentStorage(ItemModel);
+  const branchStorage = new BlStorage(BranchModel);
+  const itemStorage = new BlStorage(ItemModel);
   const orderItemFieldValidator = new OrderFieldValidator();
   const orderItemRentValidator = new OrderItemRentValidator();
   const orderItemBuyValidator = new OrderItemBuyValidator();

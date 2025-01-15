@@ -1,17 +1,16 @@
 import { UserDetailModel } from "@backend/collections/user-detail/user-detail.model";
 import { isNullish } from "@backend/helper/typescript-helpers";
 import { DibsEasyPayment } from "@backend/payment/dibs/dibs-easy-payment/dibs-easy-payment";
-import { BlDocumentStorage } from "@backend/storage/blDocumentStorage";
+import { BlStorage } from "@backend/storage/blStorage";
 import { BlError } from "@shared/bl-error/bl-error";
 import { UserDetail } from "@shared/user/user-detail/user-detail";
 
 export class UserDetailHelper {
-  private _userDetailStorage: BlDocumentStorage<UserDetail>;
+  private userDetailStorage: BlStorage<UserDetail>;
 
-  constructor(userDetailStorage?: BlDocumentStorage<UserDetail>) {
-    this._userDetailStorage = userDetailStorage
-      ? userDetailStorage
-      : new BlDocumentStorage(UserDetailModel);
+  constructor(userDetailStorage?: BlStorage<UserDetail>) {
+    this.userDetailStorage =
+      userDetailStorage ?? new BlStorage(UserDetailModel);
   }
 
   public updateUserDetailBasedOnDibsEasyPayment(
@@ -19,7 +18,7 @@ export class UserDetailHelper {
     dibsEasyPayment: DibsEasyPayment,
   ): Promise<UserDetail> {
     return new Promise((resolve, reject) => {
-      this._userDetailStorage
+      this.userDetailStorage
         .get(userDetailId)
         .then((userDetail: UserDetail) => {
           const updateObject = this.getUserDetailUpdateObject(
@@ -27,7 +26,7 @@ export class UserDetailHelper {
             userDetail,
           );
 
-          this._userDetailStorage
+          this.userDetailStorage
             .update(userDetailId, updateObject)
             .then((updatedUserDetail: UserDetail) => {
               resolve(updatedUserDetail);

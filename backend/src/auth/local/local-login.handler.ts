@@ -6,29 +6,29 @@ import { LocalLoginModel } from "@backend/collections/local-login/local-login.mo
 import { SeCrypto } from "@backend/crypto/se.crypto";
 import { isNullish } from "@backend/helper/typescript-helpers";
 import { SEDbQuery } from "@backend/query/se.db-query";
-import { BlDocumentStorage } from "@backend/storage/blDocumentStorage";
+import { BlStorage } from "@backend/storage/blStorage";
 import { BlError } from "@shared/bl-error/bl-error";
 import { BlapiErrorResponse } from "@shared/blapi-response/blapi-error-response";
 import isEmail from "validator/lib/isEmail";
 
 export class LocalLoginHandler {
-  private localLoginStorage: BlDocumentStorage<LocalLogin>;
-  private _hashedPasswordGenerator: HashedPasswordGenerator;
-  private _localLoginCreator: LocalLoginCreator;
-  private _seCrypto: SeCrypto;
+  private localLoginStorage: BlStorage<LocalLogin>;
+  private hashedPasswordGenerator: HashedPasswordGenerator;
+  private localLoginCreator: LocalLoginCreator;
+  private seCrypto: SeCrypto;
 
   constructor(
-    localLoginStorage?: BlDocumentStorage<LocalLogin>,
+    localLoginStorage?: BlStorage<LocalLogin>,
     hashedPasswordGenerator?: HashedPasswordGenerator,
     localLoginCreator?: LocalLoginCreator,
   ) {
-    this._seCrypto = new SeCrypto();
+    this.seCrypto = new SeCrypto();
     this.localLoginStorage =
-      localLoginStorage ?? new BlDocumentStorage(LocalLoginModel);
-    this._hashedPasswordGenerator =
+      localLoginStorage ?? new BlStorage(LocalLoginModel);
+    this.hashedPasswordGenerator =
       hashedPasswordGenerator ??
-      new HashedPasswordGenerator(new SaltGenerator(), this._seCrypto);
-    this._localLoginCreator = localLoginCreator ?? new LocalLoginCreator();
+      new HashedPasswordGenerator(new SaltGenerator(), this.seCrypto);
+    this.localLoginCreator = localLoginCreator ?? new LocalLoginCreator();
   }
 
   public get(username: string): Promise<LocalLogin> {
@@ -99,9 +99,9 @@ export class LocalLoginHandler {
     }
 
     try {
-      const randomPassword = this._seCrypto.random();
+      const randomPassword = this.seCrypto.random();
 
-      const defaultLocalLogin = await this._localLoginCreator.create(
+      const defaultLocalLogin = await this.localLoginCreator.create(
         username,
         randomPassword,
       );
@@ -124,7 +124,7 @@ export class LocalLoginHandler {
 
       this.get(username)
         .then((localLogin: LocalLogin) => {
-          this._hashedPasswordGenerator
+          this.hashedPasswordGenerator
             .generate(password)
             .then(
               (hashedPasswordAndSalt: {

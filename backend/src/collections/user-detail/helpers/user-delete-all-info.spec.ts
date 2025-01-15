@@ -10,7 +10,7 @@ import { User } from "@backend/collections/user/user";
 import { UserModel } from "@backend/collections/user/user.model";
 import { DeleteUserService } from "@backend/collections/user-detail/helpers/delete-user-service";
 import { UserDetailModel } from "@backend/collections/user-detail/user-detail.model";
-import { BlDocumentStorage } from "@backend/storage/blDocumentStorage";
+import { BlStorage } from "@backend/storage/blStorage";
 import { CustomerItem } from "@shared/customer-item/customer-item";
 import { Invoice } from "@shared/invoice/invoice";
 import { Order } from "@shared/order/order";
@@ -23,13 +23,13 @@ chaiUse(chaiAsPromised);
 should();
 
 describe("UserDeleteAllInfo", () => {
-  const localLoginStorage = new BlDocumentStorage(LocalLoginModel);
-  const userStorage = new BlDocumentStorage(UserModel);
-  const userDetailStorage = new BlDocumentStorage(UserDetailModel);
-  const customerItemStorage = new BlDocumentStorage(CustomerItemModel);
-  const invoiceStorage = new BlDocumentStorage(InvoiceModel);
-  const orderStorage = new BlDocumentStorage(OrderModel);
-  const paymentStorage = new BlDocumentStorage(PaymentModel);
+  const localLoginStorage = new BlStorage(LocalLoginModel);
+  const userStorage = new BlStorage(UserModel);
+  const userDetailStorage = new BlStorage(UserDetailModel);
+  const customerItemStorage = new BlStorage(CustomerItemModel);
+  const invoiceStorage = new BlStorage(InvoiceModel);
+  const orderStorage = new BlStorage(OrderModel);
+  const paymentStorage = new BlStorage(PaymentModel);
 
   const localLoginRemoveStub = sinon.stub(localLoginStorage, "remove");
   const localLoginGetByQueryStub = sinon.stub(localLoginStorage, "getByQuery");

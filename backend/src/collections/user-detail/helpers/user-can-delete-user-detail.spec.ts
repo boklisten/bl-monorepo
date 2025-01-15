@@ -4,7 +4,7 @@ import { User } from "@backend/collections/user/user";
 import { UserModel } from "@backend/collections/user/user.model";
 import { UserCanDeleteUserDetail } from "@backend/collections/user-detail/helpers/user-can-delete-user-detail";
 import { UserDetailModel } from "@backend/collections/user-detail/user-detail.model";
-import { BlDocumentStorage } from "@backend/storage/blDocumentStorage";
+import { BlStorage } from "@backend/storage/blStorage";
 import { AccessToken } from "@shared/token/access-token";
 import { UserDetail } from "@shared/user/user-detail/user-detail";
 import { expect, use as chaiUse, should } from "chai";
@@ -15,10 +15,10 @@ chaiUse(chaiAsPromised);
 should();
 
 describe("UserCanDeleteUserDetail", () => {
-  const userDetailStorage = new BlDocumentStorage(UserDetailModel);
+  const userDetailStorage = new BlStorage(UserDetailModel);
   const userDetailGetIdStub = sinon.stub(userDetailStorage, "get");
 
-  const userStorage = new BlDocumentStorage(UserModel);
+  const userStorage = new BlStorage(UserModel);
   const userGetByQueryStub = sinon.stub(userStorage, "getByQuery");
 
   const userCanDeleteUserDetail = new UserCanDeleteUserDetail(

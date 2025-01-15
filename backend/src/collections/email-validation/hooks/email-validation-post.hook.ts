@@ -4,11 +4,11 @@ import { Hook } from "@backend/hook/hook";
 import { BlError } from "@shared/bl-error/bl-error";
 
 export class EmailValidationPostHook extends Hook {
-  private _emailValidationHelper: EmailValidationHelper;
+  private emailValidationHelper: EmailValidationHelper;
 
   constructor(emailValidationHelper?: EmailValidationHelper) {
     super();
-    this._emailValidationHelper =
+    this.emailValidationHelper =
       emailValidationHelper ?? new EmailValidationHelper();
   }
 
@@ -18,7 +18,7 @@ export class EmailValidationPostHook extends Hook {
     return new Promise((resolve, reject) => {
       const emailValidation = emailValidations[0];
 
-      this._emailValidationHelper
+      this.emailValidationHelper
 
         // @ts-expect-error fixme: auto ignored
         .sendEmailValidationLink(emailValidation)

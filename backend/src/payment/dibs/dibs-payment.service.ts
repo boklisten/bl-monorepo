@@ -12,17 +12,16 @@ import { OrderItem } from "@shared/order/order-item/order-item";
 import { UserDetail } from "@shared/user/user-detail/user-detail";
 
 export class DibsPaymentService {
-  private _userDetailHelper: UserDetailHelper;
-  private _httpHandler: HttpHandler;
+  private userDetailHelper = new UserDetailHelper();
+  private httpHandler: HttpHandler;
 
   constructor(httpHandler?: HttpHandler) {
-    this._httpHandler = httpHandler ?? new HttpHandler();
-    this._userDetailHelper = new UserDetailHelper();
+    this.httpHandler = httpHandler ?? new HttpHandler();
   }
 
   public getPaymentId(dibsEasyOrder: DibsEasyOrder): Promise<string> {
     return new Promise((resolve, reject) => {
-      this._httpHandler
+      this.httpHandler
         .post(
           assertEnv(BlEnvironment.DIBS_URI) + APP_CONFIG.path.dibs.payment,
           dibsEasyOrder,
@@ -48,7 +47,7 @@ export class DibsPaymentService {
   }
 
   public fetchDibsPaymentData(paymentId: string): Promise<DibsEasyPayment> {
-    return this._httpHandler
+    return this.httpHandler
       .get(
         assertEnv(BlEnvironment.DIBS_URI) +
           APP_CONFIG.path.dibs.payment +
@@ -96,7 +95,7 @@ export class DibsPaymentService {
     dibsEasyOrder.order.amount = this.getTotalGrossAmount(items);
     dibsEasyOrder.order.currency = "NOK";
 
-    const userDetailValid = this._userDetailHelper.isValid(userDetail);
+    const userDetailValid = this.userDetailHelper.isValid(userDetail);
 
     const clientUri = assertEnv(BlEnvironment.CLIENT_URI);
     dibsEasyOrder.checkout = {
@@ -128,8 +127,8 @@ export class DibsPaymentService {
         number: userDetail.phone,
       },
       privatePerson: {
-        firstName: this._userDetailHelper.getFirstName(userDetail.name),
-        lastName: this._userDetailHelper.getLastName(userDetail.name),
+        firstName: this.userDetailHelper.getFirstName(userDetail.name),
+        lastName: this.userDetailHelper.getLastName(userDetail.name),
       },
     };
   }

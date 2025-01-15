@@ -3,22 +3,21 @@ import { User } from "@backend/collections/user/user";
 import { UserModel } from "@backend/collections/user/user.model";
 import { UserDetailModel } from "@backend/collections/user-detail/user-detail.model";
 import { SEDbQueryBuilder } from "@backend/query/se.db-query-builder";
-import { BlDocumentStorage } from "@backend/storage/blDocumentStorage";
+import { BlStorage } from "@backend/storage/blStorage";
 import { AccessToken } from "@shared/token/access-token";
 import { UserDetail } from "@shared/user/user-detail/user-detail";
 
 export class UserCanDeleteUserDetail {
-  private queryBuilder: SEDbQueryBuilder;
-  private userDetailStorage: BlDocumentStorage<UserDetail>;
-  private userStorage: BlDocumentStorage<User>;
+  private queryBuilder = new SEDbQueryBuilder();
+  private userDetailStorage: BlStorage<UserDetail>;
+  private userStorage: BlStorage<User>;
   constructor(
-    _userDetailStorage?: BlDocumentStorage<UserDetail>,
-    _userStorage?: BlDocumentStorage<User>,
+    userDetailStorage?: BlStorage<UserDetail>,
+    userStorage?: BlStorage<User>,
   ) {
     this.userDetailStorage =
-      _userDetailStorage ?? new BlDocumentStorage(UserDetailModel);
-    this.userStorage = _userStorage ?? new BlDocumentStorage(UserModel);
-    this.queryBuilder = new SEDbQueryBuilder();
+      userDetailStorage ?? new BlStorage(UserDetailModel);
+    this.userStorage = userStorage ?? new BlStorage(UserModel);
   }
 
   public async canDelete(

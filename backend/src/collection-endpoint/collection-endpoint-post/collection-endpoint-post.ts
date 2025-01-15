@@ -17,7 +17,7 @@ export class CollectionEndpointPost<T extends BlDocument>
     try {
       return [
         // @ts-expect-error fixme: auto ignored
-        await this._documentStorage.add(blApiRequest.data, {
+        await this.documentStorage.add(blApiRequest.data, {
           id: blApiRequest.user.id,
           permission: blApiRequest.user.permission,
         }),

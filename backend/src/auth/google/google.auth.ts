@@ -9,17 +9,15 @@ import passport from "passport";
 import { Profile, Strategy as GoogleStrategy } from "passport-google-oauth20";
 
 export class GoogleAuth {
-  private apiPath: ApiPath;
-  private _userProvider: UserProvider;
+  private apiPath = new ApiPath();
+  private userProvider = new UserProvider();
 
   constructor(
     private router: Router,
     private resHandler: SEResponseHandler,
   ) {
-    this.apiPath = new ApiPath();
     this.createAuthGet(router);
     this.createCallbackGet(router);
-    this._userProvider = new UserProvider();
 
     this.createPassportStrategy();
   }
@@ -47,7 +45,7 @@ export class GoogleAuth {
           let userAndTokens;
 
           try {
-            userAndTokens = await this._userProvider.loginOrCreate(
+            userAndTokens = await this.userProvider.loginOrCreate(
               username,
               provider,
               providerId,

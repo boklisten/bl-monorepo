@@ -1,21 +1,20 @@
 import { UserDetailModel } from "@backend/collections/user-detail/user-detail.model";
-import { BlDocumentStorage } from "@backend/storage/blDocumentStorage";
+import { BlStorage } from "@backend/storage/blStorage";
 import { BlError } from "@shared/bl-error/bl-error";
 import { Order } from "@shared/order/order";
 import { UserDetail } from "@shared/user/user-detail/user-detail";
 
 export class OrderUserDetailValidator {
-  private _userDetailStorage: BlDocumentStorage<UserDetail>;
+  private userDetailStorage: BlStorage<UserDetail>;
 
-  constructor(userDetailStorage?: BlDocumentStorage<UserDetail>) {
-    this._userDetailStorage = userDetailStorage
-      ? userDetailStorage
-      : new BlDocumentStorage(UserDetailModel);
+  constructor(userDetailStorage?: BlStorage<UserDetail>) {
+    this.userDetailStorage =
+      userDetailStorage ?? new BlStorage(UserDetailModel);
   }
 
   public validate(order: Order): Promise<boolean> {
     return (
-      this._userDetailStorage
+      this.userDetailStorage
         .get(order.customer)
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
         .then((userDetail: UserDetail) => {

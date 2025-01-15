@@ -1,6 +1,6 @@
 import { OrderActive } from "@backend/collections/order/helpers/order-active/order-active";
 import { isNullish } from "@backend/helper/typescript-helpers";
-import { BlDocumentStorage } from "@backend/storage/blDocumentStorage";
+import { BlStorage } from "@backend/storage/blStorage";
 import { BlError } from "@shared/bl-error/bl-error";
 import { Branch } from "@shared/branch/branch";
 import { CustomerItem } from "@shared/customer-item/customer-item";
@@ -11,8 +11,8 @@ import { OrderItem } from "@shared/order/order-item/order-item";
 export async function createMatchReceiveOrder(
   customerItem: CustomerItem,
   userDetailId: string,
-  itemStorage: BlDocumentStorage<Item>,
-  branchStorage: BlDocumentStorage<Branch>,
+  itemStorage: BlStorage<Item>,
+  branchStorage: BlStorage<Branch>,
 ): Promise<Order> {
   const item = await itemStorage.get(customerItem.item);
 
@@ -99,8 +99,8 @@ export async function createMatchReceiveOrder(
 export async function createMatchDeliverOrder(
   customerItem: CustomerItem,
   userDetailId: string,
-  itemStorage: BlDocumentStorage<Item>,
-  branchStorage: BlDocumentStorage<Branch>,
+  itemStorage: BlStorage<Item>,
+  branchStorage: BlStorage<Branch>,
 ): Promise<Order> {
   const item = await itemStorage.get(customerItem.item);
 

@@ -4,7 +4,7 @@ import { DeliveryModel } from "@backend/collections/delivery/delivery.model";
 import { DeliveryValidator } from "@backend/collections/delivery/helpers/deliveryValidator/delivery-validator";
 import { DeliveryPatchHook } from "@backend/collections/delivery/hooks/delivery.patch.hook";
 import { OrderModel } from "@backend/collections/order/order.model";
-import { BlDocumentStorage } from "@backend/storage/blDocumentStorage";
+import { BlStorage } from "@backend/storage/blStorage";
 import { BlError } from "@shared/bl-error/bl-error";
 import { Delivery } from "@shared/delivery/delivery";
 import { Order } from "@shared/order/order";
@@ -17,9 +17,9 @@ chaiUse(chaiAsPromised);
 should();
 
 describe("DeliveryPatchHook", () => {
-  const deliveryStorage = new BlDocumentStorage(DeliveryModel);
+  const deliveryStorage = new BlStorage(DeliveryModel);
   const deliveryValidator = new DeliveryValidator();
-  const orderStorage = new BlDocumentStorage(OrderModel);
+  const orderStorage = new BlStorage(OrderModel);
   const deliveryPatchHook = new DeliveryPatchHook(
     deliveryValidator,
     deliveryStorage,

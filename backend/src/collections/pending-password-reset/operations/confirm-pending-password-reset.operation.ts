@@ -3,26 +3,26 @@ import { PendingPasswordResetModel } from "@backend/collections/pending-password
 import { SeCrypto } from "@backend/crypto/se.crypto";
 import { Operation } from "@backend/operation/operation";
 import { BlApiRequest } from "@backend/request/bl-api-request";
-import { SEResponseHandler } from "@backend/response/se.response.handler";
-import { BlDocumentStorage } from "@backend/storage/blDocumentStorage";
+import { BlStorage } from "@backend/storage/blStorage";
 import { BlError } from "@shared/bl-error/bl-error";
 import { BlapiResponse } from "@shared/blapi-response/blapi-response";
 import { PasswordResetConfirmationRequest } from "@shared/password-reset/password-reset-confirmation-request";
 import { PendingPasswordReset } from "@shared/password-reset/pending-password-reset";
 
 export class ConfirmPendingPasswordResetOperation implements Operation {
+  private readonly pendingPasswordResetStorage: BlStorage<PendingPasswordReset>;
+  private readonly localLoginHandler: LocalLoginHandler;
+  private readonly seCrypto: SeCrypto;
+
   constructor(
-    private readonly pendingPasswordResetStorage?: BlDocumentStorage<PendingPasswordReset>,
-    private readonly localLoginHandler?: LocalLoginHandler,
-    private readonly responseHandler?: SEResponseHandler,
-    private readonly seCrypto?: SeCrypto,
+    pendingPasswordResetStorage?: BlStorage<PendingPasswordReset>,
+    localLoginHandler?: LocalLoginHandler,
+    seCrypto?: SeCrypto,
   ) {
-    this.pendingPasswordResetStorage ??= new BlDocumentStorage(
-      PendingPasswordResetModel,
-    );
-    this.localLoginHandler ??= new LocalLoginHandler();
-    this.responseHandler ??= new SEResponseHandler();
-    this.seCrypto ??= new SeCrypto();
+    this.pendingPasswordResetStorage =
+      pendingPasswordResetStorage ?? new BlStorage(PendingPasswordResetModel);
+    this.localLoginHandler = localLoginHandler ?? new LocalLoginHandler();
+    this.seCrypto = seCrypto ?? new SeCrypto();
   }
 
   async run(blApiRequest: BlApiRequest): Promise<BlapiResponse> {
@@ -30,9 +30,7 @@ export class ConfirmPendingPasswordResetOperation implements Operation {
     const passwordResetConfirmationRequest: unknown = blApiRequest.data;
     validatePasswordResetConfirmationRequest(passwordResetConfirmationRequest);
 
-    // @ts-expect-error fixme: auto ignored
     const pendingPasswordReset = await this.pendingPasswordResetStorage
-
       // @ts-expect-error fixme: auto ignored
       .get(pendingPasswordResetId)
       .catch((getPasswordResetError) => {
@@ -48,23 +46,17 @@ export class ConfirmPendingPasswordResetOperation implements Operation {
     await verifyResetToken(
       passwordResetConfirmationRequest.resetToken,
       pendingPasswordReset,
-
-      // @ts-expect-error fixme: auto ignored
       this.seCrypto,
     );
 
     await updatePassword(
       pendingPasswordReset,
       passwordResetConfirmationRequest.newPassword,
-
-      // @ts-expect-error fixme: auto ignored
       this.localLoginHandler,
     );
 
     await deactivatePendingPasswordReset(
       pendingPasswordReset,
-
-      // @ts-expect-error fixme: auto ignored
       this.pendingPasswordResetStorage,
     );
 
@@ -172,7 +164,7 @@ async function updatePassword(
 
 async function deactivatePendingPasswordReset(
   pendingPasswordReset: PendingPasswordReset,
-  pendingPasswordResetStorage: BlDocumentStorage<PendingPasswordReset>,
+  pendingPasswordResetStorage: BlStorage<PendingPasswordReset>,
 ): Promise<void> {
   await pendingPasswordResetStorage
     .update(pendingPasswordReset.id, { active: false })

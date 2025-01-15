@@ -3,23 +3,23 @@ import { OrderPlacedHandler } from "@backend/collections/order/helpers/order-pla
 import { OrderValidator } from "@backend/collections/order/helpers/order-validator/order-validator";
 import { OrderModel } from "@backend/collections/order/order.model";
 import { Hook } from "@backend/hook/hook";
-import { BlDocumentStorage } from "@backend/storage/blDocumentStorage";
+import { BlStorage } from "@backend/storage/blStorage";
 import { BlError } from "@shared/bl-error/bl-error";
 import { Order } from "@shared/order/order";
 import { AccessToken } from "@shared/token/access-token";
 
 export class OrderPatchHook extends Hook {
   private orderValidator: OrderValidator;
-  private orderStorage: BlDocumentStorage<Order>;
+  private orderStorage: BlStorage<Order>;
   private orderPlacedHandler: OrderPlacedHandler;
 
   constructor(
-    orderStorage?: BlDocumentStorage<Order>,
+    orderStorage?: BlStorage<Order>,
     orderValidator?: OrderValidator,
     orderPlacedHandler?: OrderPlacedHandler,
   ) {
     super();
-    this.orderStorage = orderStorage ?? new BlDocumentStorage(OrderModel);
+    this.orderStorage = orderStorage ?? new BlStorage(OrderModel);
     this.orderValidator = orderValidator ?? new OrderValidator();
     this.orderPlacedHandler = orderPlacedHandler ?? new OrderPlacedHandler();
   }

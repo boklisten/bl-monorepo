@@ -10,7 +10,7 @@ import { StandMatchModel } from "@backend/collections/stand-match/stand-match.mo
 import { UserDetailModel } from "@backend/collections/user-detail/user-detail.model";
 import { UserMatchModel } from "@backend/collections/user-match/user-match.model";
 import { SEResponseHandler } from "@backend/response/se.response.handler";
-import { BlDocumentStorage } from "@backend/storage/blDocumentStorage";
+import { BlStorage } from "@backend/storage/blStorage";
 import { BlError } from "@shared/bl-error/bl-error";
 import { Order } from "@shared/order/order";
 import { SIGNATURE_NUM_MONTHS_VALID } from "@shared/signature/serialized-signature";
@@ -27,13 +27,13 @@ should();
 
 describe("OrderPlaceOperation", () => {
   const resHandler = new SEResponseHandler();
-  const orderStorage = new BlDocumentStorage(OrderModel);
+  const orderStorage = new BlStorage(OrderModel);
   const orderToCustomerItemGenerator = new OrderToCustomerItemGenerator();
-  const customerItemStorage = new BlDocumentStorage(CustomerItemModel);
-  const userMatchStorage = new BlDocumentStorage(UserMatchModel);
-  const standMatchStorage = new BlDocumentStorage(StandMatchModel);
-  const userDetailStorage = new BlDocumentStorage(UserDetailModel);
-  const signatureStorage = new BlDocumentStorage(SignatureModel);
+  const customerItemStorage = new BlStorage(CustomerItemModel);
+  const userMatchStorage = new BlStorage(UserMatchModel);
+  const standMatchStorage = new BlStorage(StandMatchModel);
+  const userDetailStorage = new BlStorage(UserDetailModel);
+  const signatureStorage = new BlStorage(SignatureModel);
   const orderPlacedHandler = new OrderPlacedHandler(
     orderStorage,
     undefined,

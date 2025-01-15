@@ -4,47 +4,45 @@ import { UserDetailModel } from "@backend/collections/user-detail/user-detail.mo
 import { Operation } from "@backend/operation/operation";
 import { BlApiRequest } from "@backend/request/bl-api-request";
 import { SEResponseHandler } from "@backend/response/se.response.handler";
-import { BlDocumentStorage } from "@backend/storage/blDocumentStorage";
+import { BlStorage } from "@backend/storage/blStorage";
 import { BlapiResponse } from "@shared/blapi-response/blapi-response";
 import { UserDetail } from "@shared/user/user-detail/user-detail";
 import { Request, Response } from "express";
 
 export class UserDetailReadPermissionOperation implements Operation {
+  private userDetailStorage: BlStorage<UserDetail>;
+  private userStorage: BlStorage<User>;
+  private resHandler: SEResponseHandler;
+
   constructor(
-    private _userDetailStorage?: BlDocumentStorage<UserDetail>,
-    private _userStorage?: BlDocumentStorage<User>,
-    private _resHandler?: SEResponseHandler,
+    userDetailStorage?: BlStorage<UserDetail>,
+    userStorage?: BlStorage<User>,
+    resHandler?: SEResponseHandler,
   ) {
-    this._userDetailStorage = _userDetailStorage
-      ? _userDetailStorage
-      : new BlDocumentStorage(UserDetailModel);
+    this.userDetailStorage =
+      userDetailStorage ?? new BlStorage(UserDetailModel);
 
-    this._userStorage = _userStorage
-      ? _userStorage
-      : new BlDocumentStorage(UserModel);
+    this.userStorage = userStorage ?? new BlStorage(UserModel);
 
-    this._resHandler = _resHandler ? _resHandler : new SEResponseHandler();
+    this.resHandler = resHandler ?? new SEResponseHandler();
   }
 
   async run(
     blApiRequest: BlApiRequest,
-    _request?: Request,
+    request?: Request,
     res?: Response,
   ): Promise<boolean> {
-    // @ts-expect-error fixme: auto ignored
-    const userDetail = await this._userDetailStorage.get(
+    const userDetail = await this.userDetailStorage.get(
       // @ts-expect-error fixme: auto ignored
       blApiRequest.documentId,
     );
 
-    // @ts-expect-error fixme: auto ignored
-    const users = await this._userStorage.aggregate([
+    const users = await this.userStorage.aggregate([
       { $match: { blid: userDetail.blid } },
     ]);
     const user = users[0];
 
-    // @ts-expect-error fixme: auto ignored
-    this._resHandler.sendResponse(
+    this.resHandler.sendResponse(
       // @ts-expect-error fixme: auto ignored
       res,
       // @ts-expect-error fixme: auto ignored

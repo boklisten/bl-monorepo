@@ -1,27 +1,26 @@
 import { DeliveryModel } from "@backend/collections/delivery/delivery.model";
 import { PaymentDibsConfirmer } from "@backend/collections/payment/helpers/dibs/payment-dibs-confirmer";
 import { PaymentModel } from "@backend/collections/payment/payment.model";
-import { BlDocumentStorage } from "@backend/storage/blDocumentStorage";
+import { BlStorage } from "@backend/storage/blStorage";
 import { BlError } from "@shared/bl-error/bl-error";
 import { Delivery } from "@shared/delivery/delivery";
 import { Order } from "@shared/order/order";
 import { Payment } from "@shared/payment/payment";
 
 export class PaymentHandler {
-  private paymentStorage: BlDocumentStorage<Payment>;
+  private paymentStorage: BlStorage<Payment>;
   private paymentDibsConfirmer: PaymentDibsConfirmer;
-  private deliveryStorage: BlDocumentStorage<Delivery>;
+  private deliveryStorage: BlStorage<Delivery>;
 
   constructor(
-    paymentStorage?: BlDocumentStorage<Payment>,
+    paymentStorage?: BlStorage<Payment>,
     paymentDibsConfirmer?: PaymentDibsConfirmer,
-    deliveryStorage?: BlDocumentStorage<Delivery>,
+    deliveryStorage?: BlStorage<Delivery>,
   ) {
-    this.paymentStorage = paymentStorage ?? new BlDocumentStorage(PaymentModel);
+    this.paymentStorage = paymentStorage ?? new BlStorage(PaymentModel);
     this.paymentDibsConfirmer =
       paymentDibsConfirmer ?? new PaymentDibsConfirmer();
-    this.deliveryStorage =
-      deliveryStorage ?? new BlDocumentStorage(DeliveryModel);
+    this.deliveryStorage = deliveryStorage ?? new BlStorage(DeliveryModel);
   }
 
   public async confirmPayments(order: Order): Promise<Payment[]> {

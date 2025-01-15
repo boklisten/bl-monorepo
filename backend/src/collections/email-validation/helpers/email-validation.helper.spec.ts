@@ -5,7 +5,7 @@ import { EmailValidationModel } from "@backend/collections/email-validation/emai
 import { EmailValidationHelper } from "@backend/collections/email-validation/helpers/email-validation.helper";
 import { UserDetailModel } from "@backend/collections/user-detail/user-detail.model";
 import { Messenger } from "@backend/messenger/messenger";
-import { BlDocumentStorage } from "@backend/storage/blDocumentStorage";
+import { BlStorage } from "@backend/storage/blStorage";
 import { BlError } from "@shared/bl-error/bl-error";
 import { UserDetail } from "@shared/user/user-detail/user-detail";
 import { expect, use as chaiUse, should } from "chai";
@@ -17,8 +17,8 @@ should();
 
 describe("EmailValidationHelper", () => {
   const messenger = new Messenger();
-  const userDetailStorage = new BlDocumentStorage(UserDetailModel);
-  const emailValidationStorage = new BlDocumentStorage(EmailValidationModel);
+  const userDetailStorage = new BlStorage(UserDetailModel);
+  const emailValidationStorage = new BlStorage(EmailValidationModel);
   const emailValidationHelper = new EmailValidationHelper(
     messenger,
     userDetailStorage,

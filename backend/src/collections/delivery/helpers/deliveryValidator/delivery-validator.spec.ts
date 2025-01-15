@@ -4,7 +4,7 @@ import { DeliveryBranchHandler } from "@backend/collections/delivery/helpers/del
 import { DeliveryBringHandler } from "@backend/collections/delivery/helpers/deliveryBring/delivery-bring-handler";
 import { DeliveryValidator } from "@backend/collections/delivery/helpers/deliveryValidator/delivery-validator";
 import { OrderModel } from "@backend/collections/order/order.model";
-import { BlDocumentStorage } from "@backend/storage/blDocumentStorage";
+import { BlStorage } from "@backend/storage/blStorage";
 import { BlError } from "@shared/bl-error/bl-error";
 import { Delivery } from "@shared/delivery/delivery";
 import { Order } from "@shared/order/order";
@@ -20,7 +20,7 @@ describe("DeliveryValidator", () => {
   let testOrder: Order;
   const deliveryBranchHandler = new DeliveryBranchHandler();
   const deliveryBringHandler = new DeliveryBringHandler();
-  const orderStorage = new BlDocumentStorage(OrderModel);
+  const orderStorage = new BlStorage(OrderModel);
   const deliveryValidator = new DeliveryValidator(
     deliveryBranchHandler,
     deliveryBringHandler,

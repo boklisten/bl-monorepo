@@ -5,7 +5,7 @@ import { CustomerItemHandler } from "@backend/collections/customer-item/helpers/
 import { UserDetailModel } from "@backend/collections/user-detail/user-detail.model";
 import { EmailService } from "@backend/messenger/email/email-service";
 import { MessengerReminder } from "@backend/messenger/reminder/messenger-reminder";
-import { BlDocumentStorage } from "@backend/storage/blDocumentStorage";
+import { BlStorage } from "@backend/storage/blStorage";
 import { CustomerItem } from "@shared/customer-item/customer-item";
 import { Message } from "@shared/message/message";
 import { UserDetail } from "@shared/user/user-detail/user-detail";
@@ -17,7 +17,7 @@ chaiUse(chaiAsPromised);
 should();
 
 describe("MessengerReminder", () => {
-  const customerItemStorage = new BlDocumentStorage(CustomerItemModel);
+  const customerItemStorage = new BlStorage(CustomerItemModel);
   const customerItemHandler = new CustomerItemHandler();
   const customerItemStorageGetAllStub = sinon.stub(
     customerItemStorage,
@@ -30,7 +30,7 @@ describe("MessengerReminder", () => {
   const emailService = new EmailService();
   const emailServiceRemindStub = sinon.stub(emailService, "remind");
   const getNotReturnedStub = sinon.stub(customerItemHandler, "getNotReturned");
-  const userDetailStorage = new BlDocumentStorage(UserDetailModel);
+  const userDetailStorage = new BlStorage(UserDetailModel);
   const userDetailStorageGetStub = sinon.stub(userDetailStorage, "get");
 
   const messengerReminder = new MessengerReminder(

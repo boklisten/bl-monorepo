@@ -2,7 +2,7 @@ import "mocha";
 
 import { OpeningHourHelper } from "@backend/collections/opening-hour/helpers/opening-hour-helper";
 import { OpeningHourModel } from "@backend/collections/opening-hour/opening-hour.model";
-import { BlDocumentStorage } from "@backend/storage/blDocumentStorage";
+import { BlStorage } from "@backend/storage/blStorage";
 import { BlError } from "@shared/bl-error/bl-error";
 import { Branch } from "@shared/branch/branch";
 import { OpeningHour } from "@shared/opening-hour/opening-hour";
@@ -16,7 +16,7 @@ chaiUse(chaiAsPromised);
 should();
 chaiUse(sinonChai);
 
-const openingHourStorage = new BlDocumentStorage(OpeningHourModel);
+const openingHourStorage = new BlStorage(OpeningHourModel);
 const openingHourHelper = new OpeningHourHelper(openingHourStorage);
 const openingHourStorageGetMany = sinon.stub(openingHourStorage, "getMany");
 

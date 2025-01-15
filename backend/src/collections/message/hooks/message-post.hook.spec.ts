@@ -4,7 +4,7 @@ import { MessagePostHook } from "@backend/collections/message/hooks/message-post
 import { UserDetailModel } from "@backend/collections/user-detail/user-detail.model";
 import { Messenger } from "@backend/messenger/messenger";
 import { MessengerReminder } from "@backend/messenger/reminder/messenger-reminder";
-import { BlDocumentStorage } from "@backend/storage/blDocumentStorage";
+import { BlStorage } from "@backend/storage/blStorage";
 import { BlError } from "@shared/bl-error/bl-error";
 import { Message } from "@shared/message/message";
 import { MessageMethod } from "@shared/message/message-method/message-method";
@@ -21,7 +21,7 @@ chaiUse(sinonChai);
 
 describe("MessagePostHook", () => {
   const messengerReminder = new MessengerReminder();
-  const userDetailStorage = new BlDocumentStorage(UserDetailModel);
+  const userDetailStorage = new BlStorage(UserDetailModel);
   const messenger = new Messenger();
   const messagePostHook = new MessagePostHook(
     messengerReminder,

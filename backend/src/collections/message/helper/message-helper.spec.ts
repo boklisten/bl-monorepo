@@ -2,7 +2,7 @@ import "mocha";
 
 import { MessageHelper } from "@backend/collections/message/helper/message-helper";
 import { MessageModel } from "@backend/collections/message/message.model";
-import { BlDocumentStorage } from "@backend/storage/blDocumentStorage";
+import { BlStorage } from "@backend/storage/blStorage";
 import { BlError } from "@shared/bl-error/bl-error";
 import { Message } from "@shared/message/message";
 import { MessageMethod } from "@shared/message/message-method/message-method";
@@ -16,7 +16,7 @@ should();
 chaiUse(sinonChai);
 
 describe("MessageHelper", () => {
-  const messageStorage = new BlDocumentStorage(MessageModel);
+  const messageStorage = new BlStorage(MessageModel);
   const messageHelper = new MessageHelper(messageStorage);
 
   const messageStorageGetByQueryStub = sinon.stub(messageStorage, "getByQuery");

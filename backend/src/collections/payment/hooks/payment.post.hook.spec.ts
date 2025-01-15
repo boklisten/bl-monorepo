@@ -5,7 +5,7 @@ import { PaymentDibsHandler } from "@backend/collections/payment/helpers/dibs/pa
 import { PaymentValidator } from "@backend/collections/payment/helpers/payment.validator";
 import { PaymentPostHook } from "@backend/collections/payment/hooks/payment.post.hook";
 import { PaymentModel } from "@backend/collections/payment/payment.model";
-import { BlDocumentStorage } from "@backend/storage/blDocumentStorage";
+import { BlStorage } from "@backend/storage/blStorage";
 import { BlError } from "@shared/bl-error/bl-error";
 import { Order } from "@shared/order/order";
 import { Payment } from "@shared/payment/payment";
@@ -18,8 +18,8 @@ should();
 
 describe("PaymentPostHook", () => {
   const paymentValidator = new PaymentValidator();
-  const orderStorage = new BlDocumentStorage(OrderModel);
-  const paymentStorage = new BlDocumentStorage(PaymentModel);
+  const orderStorage = new BlStorage(OrderModel);
+  const paymentStorage = new BlStorage(PaymentModel);
   const paymentDibsHandler = new PaymentDibsHandler();
   const paymentPostHook = new PaymentPostHook(
     orderStorage,

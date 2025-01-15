@@ -4,7 +4,7 @@ import { BranchModel } from "@backend/collections/branch/branch.model";
 import { CustomerItemModel } from "@backend/collections/customer-item/customer-item.model";
 import { CustomerItemHandler } from "@backend/collections/customer-item/helpers/customer-item-handler";
 import { SEDbQuery } from "@backend/query/se.db-query";
-import { BlDocumentStorage } from "@backend/storage/blDocumentStorage";
+import { BlStorage } from "@backend/storage/blStorage";
 import { BlError } from "@shared/bl-error/bl-error";
 import { Branch } from "@shared/branch/branch";
 import { CustomerItem } from "@shared/customer-item/customer-item";
@@ -18,8 +18,8 @@ chaiUse(chaiAsPromised);
 should();
 
 describe("CustomerItemHandler", () => {
-  const customerItemStorage = new BlDocumentStorage(CustomerItemModel);
-  const branchStorage = new BlDocumentStorage(BranchModel);
+  const customerItemStorage = new BlStorage(CustomerItemModel);
+  const branchStorage = new BlStorage(BranchModel);
   const customerItemHandler = new CustomerItemHandler(
     customerItemStorage,
     branchStorage,

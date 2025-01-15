@@ -4,41 +4,39 @@ import { PaymentModel } from "@backend/collections/payment/payment.model";
 import { UserDetailModel } from "@backend/collections/user-detail/user-detail.model";
 import { DibsEasyOrder } from "@backend/payment/dibs/dibs-easy-order/dibs-easy-order";
 import { DibsPaymentService } from "@backend/payment/dibs/dibs-payment.service";
-import { BlDocumentStorage } from "@backend/storage/blDocumentStorage";
+import { BlStorage } from "@backend/storage/blStorage";
 import { Delivery } from "@shared/delivery/delivery";
 import { Order } from "@shared/order/order";
 import { Payment } from "@shared/payment/payment";
 import { UserDetail } from "@shared/user/user-detail/user-detail";
 
 export class PaymentDibsHandler {
-  private paymentStorage: BlDocumentStorage<Payment>;
-  private orderStorage: BlDocumentStorage<Order>;
+  private paymentStorage: BlStorage<Payment>;
+  private orderStorage: BlStorage<Order>;
   private dibsPaymentService: DibsPaymentService;
-  private deliveryStorage: BlDocumentStorage<Delivery>;
-  private userDetailStorage: BlDocumentStorage<UserDetail>;
+  private deliveryStorage: BlStorage<Delivery>;
+  private userDetailStorage: BlStorage<UserDetail>;
 
   constructor(
-    paymentStorage?: BlDocumentStorage<Payment>,
-    orderStorage?: BlDocumentStorage<Order>,
+    paymentStorage?: BlStorage<Payment>,
+    orderStorage?: BlStorage<Order>,
     dibsPaymentService?: DibsPaymentService,
-    deliveryStorage?: BlDocumentStorage<Delivery>,
-    userDetailStorage?: BlDocumentStorage<UserDetail>,
+    deliveryStorage?: BlStorage<Delivery>,
+    userDetailStorage?: BlStorage<UserDetail>,
   ) {
     this.paymentStorage = paymentStorage
       ? paymentStorage
-      : new BlDocumentStorage(PaymentModel);
-    this.orderStorage = orderStorage
-      ? orderStorage
-      : new BlDocumentStorage(OrderModel);
+      : new BlStorage(PaymentModel);
+    this.orderStorage = orderStorage ? orderStorage : new BlStorage(OrderModel);
     this.dibsPaymentService = dibsPaymentService
       ? dibsPaymentService
       : new DibsPaymentService();
     this.deliveryStorage = deliveryStorage
       ? deliveryStorage
-      : new BlDocumentStorage(DeliveryModel);
+      : new BlStorage(DeliveryModel);
     this.userDetailStorage = userDetailStorage
       ? userDetailStorage
-      : new BlDocumentStorage(UserDetailModel);
+      : new BlStorage(UserDetailModel);
   }
 
   public async handleDibsPayment(payment: Payment): Promise<Payment> {

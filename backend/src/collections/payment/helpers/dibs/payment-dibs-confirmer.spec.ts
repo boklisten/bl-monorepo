@@ -4,7 +4,7 @@ import { PaymentDibsConfirmer } from "@backend/collections/payment/helpers/dibs/
 import { PaymentModel } from "@backend/collections/payment/payment.model";
 import { DibsEasyPayment } from "@backend/payment/dibs/dibs-easy-payment/dibs-easy-payment";
 import { DibsPaymentService } from "@backend/payment/dibs/dibs-payment.service";
-import { BlDocumentStorage } from "@backend/storage/blDocumentStorage";
+import { BlStorage } from "@backend/storage/blStorage";
 import { BlError } from "@shared/bl-error/bl-error";
 import { Order } from "@shared/order/order";
 import { Payment } from "@shared/payment/payment";
@@ -21,7 +21,7 @@ describe("PaymentDibsConfirmer", () => {
     dibsPaymentService,
     "fetchDibsPaymentData",
   );
-  const paymentStorage = new BlDocumentStorage(PaymentModel);
+  const paymentStorage = new BlStorage(PaymentModel);
   const paymentDibsConfirmer = new PaymentDibsConfirmer(
     dibsPaymentService,
     paymentStorage,

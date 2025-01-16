@@ -1,4 +1,5 @@
-import Sentry from "@sentry/node";
+// @ts-check
+import * as Sentry from "@sentry/node";
 import { nodeProfilingIntegration } from "@sentry/profiling-node";
 
 Sentry.init({

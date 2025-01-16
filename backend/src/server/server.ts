@@ -5,7 +5,7 @@ import { initAuthEndpoints } from "@backend/auth/initAuthEndpoints";
 import { CollectionEndpointCreator } from "@backend/collection-endpoint/collection-endpoint-creator";
 import { assertEnv, BlEnvironment } from "@backend/config/environment";
 import { logger } from "@backend/logger/logger";
-import Sentry from "@sentry/node";
+import * as Sentry from "@sentry/node";
 import cors from "cors";
 import express, { Express, json, Request, Response, Router } from "express";
 import session from "express-session";

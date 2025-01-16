@@ -39,3 +39,6 @@ Session.vim
 # Cypress assets
 cypress/videos/
 cypress/screenshots/
+
+# Sentry
+.sentryclirc

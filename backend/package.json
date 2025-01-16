@@ -6,15 +6,20 @@
   "exports": "./dist/index.js",
   "scripts": {
     "dev": "tsx watch --env-file=.env ./src/index.ts",
-    "build": "pkgroll --minify --tsconfig=tsconfig.build.json",
+    "build": "pkgroll --minify --sourcemap --tsconfig=tsconfig.build.json",
+    "build:prod": "pnpm build && pnpm run sentry:sourcemaps",
     "serve": "node --env-file=.env ./dist/index.js",
-    "test": "API_ENV=test mocha \"src/**/*.spec.ts\""
+    "test": "API_ENV=test mocha \"src/**/*.spec.ts\"",
+    "sentry:sourcemaps": "sentry-cli sourcemaps inject --org boklisten --project backend ./dist && sentry-cli sourcemaps upload --org boklisten --project backend ./dist"
   },
   "dependencies": {
     "@boklisten/bl-email": "^1.8.2",
     "@boklisten/bl-post-office": "^0.5.56",
     "@napi-rs/image": "^1.9.2",
     "@sendgrid/mail": "^8.1.4",
+    "@sentry/cli": "^2.40.0",
+    "@sentry/node": "^8.50.0",
+    "@sentry/profiling-node": "^8.50.0",
     "@types/chai": "^5.0.1",
     "@types/chai-as-promised": "^8.0.1",
     "@types/cors": "^2.8.17",

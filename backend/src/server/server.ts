@@ -1,7 +1,11 @@
+// IMPORTANT: Make sure to import `instrument.mjs` at the top of your file.
+import "@backend/sentry/instrument.mjs";
+
 import { initAuthEndpoints } from "@backend/auth/initAuthEndpoints";
 import { CollectionEndpointCreator } from "@backend/collection-endpoint/collection-endpoint-creator";
 import { assertEnv, BlEnvironment } from "@backend/config/environment";
 import { logger } from "@backend/logger/logger";
+import Sentry from "@sentry/node";
 import cors from "cors";
 import express, { Express, json, Request, Response, Router } from "express";
 import session from "express-session";
@@ -20,6 +24,7 @@ export class Server {
     logger.silly(String.raw`|_.__/|_|\__,_| .__/|_|`);
     logger.silly("               |_|");
 
+    Sentry.setupExpressErrorHandler(this.app);
     this.initialServerConfig();
     this.initialPassportConfig();
     initAuthEndpoints(this.router);

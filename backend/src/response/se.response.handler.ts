@@ -49,6 +49,11 @@ export class SEResponseHandler {
     logger.verbose(`<- ${blapiErrorRes.httpStatus} ${blapiErrorRes.msg}`);
 
     res.end();
+
+    // Send unknown errors to Sentry
+    if (blapiErrorRes.httpStatus === 500) {
+      throw blError;
+    }
   }
 
   private setHeaders(res: Response) {

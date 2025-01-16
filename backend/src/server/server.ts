@@ -1,9 +1,10 @@
+import "backend/src/server/instrument.mjs";
+
 import { initAuthEndpoints } from "@backend/auth/initAuthEndpoints";
 import { CollectionEndpointCreator } from "@backend/collection-endpoint/collection-endpoint-creator";
 import { assertEnv, BlEnvironment } from "@backend/config/environment";
 import { logger } from "@backend/logger/logger";
 import * as Sentry from "@sentry/node";
-import { nodeProfilingIntegration } from "@sentry/profiling-node";
 import cors from "cors";
 import express, { Express, json, Request, Response, Router } from "express";
 import session from "express-session";
@@ -26,18 +27,7 @@ export class Server {
     this.initialPassportConfig();
     initAuthEndpoints(this.router);
     this.generateEndpoints();
-    this.setupSentry();
     this.connectToDbAndStartServer();
-  }
-
-  private setupSentry() {
-    Sentry.init({
-      dsn: "https://7a394e7cab47142de06327e453c54837@o569888.ingest.us.sentry.io/4508653655293952",
-      integrations: [nodeProfilingIntegration()],
-      tracesSampleRate: 1.0,
-    });
-    Sentry.profiler.startProfiler();
-    Sentry.setupExpressErrorHandler(this.app);
   }
 
   private async connectToDbAndStartServer() {
@@ -164,6 +154,11 @@ export class Server {
   }
 
   private serverStart() {
+    Sentry.profiler.startProfiler();
+    Sentry.setupExpressErrorHandler(this.app);
     this.app.set("port", assertEnv(BlEnvironment.PORT));
+    this.app.listen(this.app.get("port"), () => {
+      logger.info("ready to take requests!");
+    });
   }
 }

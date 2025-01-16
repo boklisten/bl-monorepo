@@ -8,19 +8,16 @@ export class CollectionEndpointPost<T extends BlDocument>
   implements CollectionEndpointOnRequest<T>
 {
   override async onRequest(blApiRequest: BlApiRequest): Promise<T[]> {
-    if (blApiRequest.data == null || blApiRequest.user == null) {
-      throw new BlError("data and user is required for post operations").code(
-        701,
-      );
+    if (blApiRequest.data == null) {
+      throw new BlError("data is required for post operations").code(701);
     }
 
     try {
       return [
-        // @ts-expect-error fixme: auto ignored
-        await this.documentStorage.add(blApiRequest.data, {
-          id: blApiRequest.user.id,
-          permission: blApiRequest.user.permission,
-        }),
+        await this.documentStorage.add(
+          blApiRequest.data as T,
+          blApiRequest.user,
+        ),
       ];
     } catch (blError) {
       throw new BlError("could not add document").add(blError as BlError);

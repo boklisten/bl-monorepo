@@ -42,3 +42,4 @@ cypress/screenshots/
 
 # Sentry
 .sentryclirc
+.env.sentry-build-plugin

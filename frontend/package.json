@@ -19,6 +19,7 @@
     "@mui/material": "^6.3.1",
     "@mui/material-nextjs": "^6.3.1",
     "@mui/x-date-pickers": "^7.23.6",
+    "@sentry/nextjs": "^8",
     "@toolpad/core": "^0.12.0",
     "@yudiel/react-qr-scanner": "^2.1.0",
     "draft-js": "^0.11.7",

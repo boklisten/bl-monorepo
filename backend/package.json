@@ -6,7 +6,7 @@
   "exports": "./dist/index.js",
   "scripts": {
     "dev": "tsx watch --env-file=.env ./src/index.ts",
-    "build": "pkgroll --minify --sourcemap --tsconfig=tsconfig.build.json",
+    "build": "pkgroll --sourcemap --tsconfig=tsconfig.build.json",
     "build:prod": "pnpm build && pnpm run sentry:sourcemaps",
     "serve": "node --env-file=.env ./dist/index.js",
     "test": "API_ENV=test mocha \"src/**/*.spec.ts\"",

@@ -57,7 +57,10 @@ export class DeleteUserService {
       standMatchStorage ?? new BlStorage(StandMatchModel);
   }
 
-  public async deleteUser(userDetailId: string): Promise<void> {
+  public async deleteUser(
+    userDetailId: string,
+    keepLocalLogin: boolean,
+  ): Promise<void> {
     const databaseQuery = this.queryBuilder.getDbQuery(
       { userDetail: userDetailId },
       [{ fieldName: "userDetail", type: "object-id" }],
@@ -65,7 +68,9 @@ export class DeleteUserService {
     const users = await this.userStorage.getByQuery(databaseQuery);
     for (const user of users) {
       await this.userStorage.remove(user.id);
-      await this.removeLocalLogin(user.username);
+      if (!keepLocalLogin) {
+        await this.removeLocalLogin(user.username);
+      }
     }
   }
 

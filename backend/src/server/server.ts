@@ -165,9 +165,5 @@ export class Server {
 
   private serverStart() {
     this.app.set("port", assertEnv(BlEnvironment.PORT));
-
-    this.app.listen(this.app.get("port"), () => {
-      logger.info("ready to take requests!");
-    });
   }
 }

@@ -1,16 +1,14 @@
 import "mocha";
 
-import { DeliveryModel } from "@backend/collections/delivery/delivery.model";
 import { OrderPlacedValidator } from "@backend/collections/order/helpers/order-validator/order-placed-validator/order-placed-validator";
-import { PaymentModel } from "@backend/collections/payment/payment.model";
-import { BlStorage } from "@backend/storage/blStorage";
+import { BlStorage } from "@backend/storage/bl-storage";
 import { BlError } from "@shared/bl-error/bl-error";
 import { Delivery } from "@shared/delivery/delivery";
 import { Order } from "@shared/order/order";
 import { Payment } from "@shared/payment/payment";
 import { expect, use as chaiUse, should } from "chai";
 import chaiAsPromised from "chai-as-promised";
-import sinon from "sinon";
+import sinon, { createSandbox } from "sinon";
 
 chaiUse(chaiAsPromised);
 should();
@@ -18,13 +16,8 @@ should();
 describe("OrderPlacedValidator", () => {
   describe("#validate()", () => {
     let testOrder: Order;
-    const paymentStorage = new BlStorage(PaymentModel);
 
-    const deliveryStorage = new BlStorage(DeliveryModel);
-    const orderPlacedValidator = new OrderPlacedValidator(
-      deliveryStorage,
-      paymentStorage,
-    );
+    const orderPlacedValidator = new OrderPlacedValidator();
 
     beforeEach(() => {
       testOrder = {
@@ -70,6 +63,7 @@ describe("OrderPlacedValidator", () => {
     context("when order.placed is set to true", () => {
       let testPayment: Payment;
       let testDelivery: Delivery;
+      let sandbox: sinon.SinonSandbox;
 
       beforeEach(() => {
         testOrder.placed = true;
@@ -94,25 +88,31 @@ describe("OrderPlacedValidator", () => {
           order: "order1",
           amount: 0,
         };
-      });
 
-      sinon.stub(paymentStorage, "getMany").callsFake((ids: string[]) => {
-        return new Promise((resolve, reject) => {
-          if (ids[0] !== "payment1") {
-            return reject(new BlError("not found").code(702));
-          }
-          resolve([testPayment]);
+        sandbox = createSandbox();
+        sandbox
+          .stub(BlStorage.Payments, "getMany")
+          .callsFake((ids: string[]) => {
+            return new Promise((resolve, reject) => {
+              if (ids[0] !== "payment1") {
+                return reject(new BlError("not found").code(702));
+              }
+              resolve([testPayment]);
+            });
+          });
+
+        sandbox.stub(BlStorage.Deliveries, "get").callsFake((id) => {
+          return new Promise((resolve, reject) => {
+            if (id !== "delivery1") {
+              return reject(new BlError("not found").code(702));
+            }
+
+            resolve(testDelivery);
+          });
         });
       });
-
-      sinon.stub(deliveryStorage, "get").callsFake((id) => {
-        return new Promise((resolve, reject) => {
-          if (id !== "delivery1") {
-            return reject(new BlError("not found").code(702));
-          }
-
-          resolve(testDelivery);
-        });
+      afterEach(() => {
+        sandbox.restore();
       });
 
       it("should resolve with true if there are no payments attached", () => {

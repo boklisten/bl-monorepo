@@ -1,25 +1,30 @@
 import "mocha";
 
 import { OrderItemRentPeriodValidator } from "@backend/collections/order/helpers/order-validator/order-item-validator/order-item-rent-validator/order-item-rent-period-validator/order-item-rent-period-validator";
-import { OrderModel } from "@backend/collections/order/order.model";
-import { BlStorage } from "@backend/storage/blStorage";
+import { BlStorage } from "@backend/storage/bl-storage";
 import { BlError } from "@shared/bl-error/bl-error";
-import { Order } from "@shared/order/order";
 import { expect, use as chaiUse, should } from "chai";
 import chaiAsPromised from "chai-as-promised";
-import sinon from "sinon";
+import sinon, { createSandbox } from "sinon";
 
 chaiUse(chaiAsPromised);
 should();
 
 describe("OrderItemRentPeriodValidator", () => {
-  const orderStorage = new BlStorage(OrderModel);
-  const orderItemRentPeriodValidator = new OrderItemRentPeriodValidator(
-    orderStorage,
-  );
+  const orderItemRentPeriodValidator = new OrderItemRentPeriodValidator();
+  let orderStorageGetStub: sinon.SinonStub;
+  let sandbox: sinon.SinonSandbox;
 
-  const orderStorageGetStub = sinon.stub(orderStorage, "get").callsFake(() => {
-    return new Promise((resolve, reject) => {});
+  beforeEach(() => {
+    sandbox = createSandbox();
+    orderStorageGetStub = sandbox
+      .stub(BlStorage.Orders, "get")
+      .callsFake(() => {
+        return new Promise((resolve, reject) => {});
+      });
+  });
+  afterEach(() => {
+    sandbox.restore();
   });
 
   describe("#validate", () => {

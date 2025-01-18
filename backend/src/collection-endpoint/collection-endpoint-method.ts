@@ -1,41 +1,34 @@
 import { CollectionEndpointAuth } from "@backend/collection-endpoint/collection-endpoint-auth/collection-endpoint-auth";
 import { CollectionEndpointDocumentAuth } from "@backend/collection-endpoint/collection-endpoint-document/collection-endpoint-document-auth";
 import { CollectionEndpointOperation } from "@backend/collection-endpoint/collection-endpoint-operation";
-import {
-  BlDocumentPermission,
-  BlEndpoint,
-} from "@backend/collections/bl-collection";
+import { BlCollection, BlEndpoint } from "@backend/collections/bl-collection";
 import { ApiPath } from "@backend/config/api-path";
 import { isBoolean, isNotNullish } from "@backend/helper/typescript-helpers";
 import { Hook } from "@backend/hook/hook";
 import { BlApiRequest } from "@backend/request/bl-api-request";
 import { SEResponseHandler } from "@backend/response/se.response.handler";
-import { BlStorage } from "@backend/storage/blStorage";
-import { BlDocument } from "@shared/bl-document/bl-document";
+import { BlStorageData } from "@backend/storage/bl-storage";
 import { BlError } from "@shared/bl-error/bl-error";
 import { BlapiResponse } from "@shared/blapi-response/blapi-response";
 import { AccessToken } from "@shared/token/access-token";
 import { NextFunction, Request, Response, Router } from "express";
 
-export abstract class CollectionEndpointMethod<T extends BlDocument> {
+export abstract class CollectionEndpointMethod {
   protected collectionUri: string;
   protected collectionEndpointAuth: CollectionEndpointAuth;
   protected responseHandler: SEResponseHandler;
-  protected collectionEndpointDocumentAuth: CollectionEndpointDocumentAuth<T>;
+  protected collectionEndpointDocumentAuth: CollectionEndpointDocumentAuth;
 
   constructor(
     protected router: Router,
     protected endpoint: BlEndpoint,
-    protected collectionName: string,
-    protected documentStorage: BlStorage<T>,
-    protected documentPermission?: BlDocumentPermission,
+    protected collection: BlCollection,
   ) {
     const apiPath = new ApiPath();
-    this.collectionUri = apiPath.createPath(this.collectionName);
+    this.collectionUri = apiPath.createPath(this.collection.storage.path);
     this.collectionEndpointAuth = new CollectionEndpointAuth();
     this.responseHandler = new SEResponseHandler();
-    this.collectionEndpointDocumentAuth =
-      new CollectionEndpointDocumentAuth<T>();
+    this.collectionEndpointDocumentAuth = new CollectionEndpointDocumentAuth();
   }
 
   public create() {
@@ -74,7 +67,7 @@ export abstract class CollectionEndpointMethod<T extends BlDocument> {
     this.createOperations(this.endpoint);
   }
 
-  abstract onRequest(blApiRequest: BlApiRequest): Promise<T[]>;
+  abstract onRequest(blApiRequest: BlApiRequest): Promise<BlStorageData>;
 
   abstract validateDocumentPermission(
     blApiRequest: BlApiRequest,
@@ -142,7 +135,7 @@ export abstract class CollectionEndpointMethod<T extends BlDocument> {
           this.endpoint.restriction,
           docs,
           blApiRequest,
-          this.documentPermission,
+          this.collection.documentPermission,
         ),
       )
       .then((docs) => hook.after(docs, userAccessToken))

@@ -1,38 +1,18 @@
-import { CustomerItemModel } from "@backend/collections/customer-item/customer-item.model";
-import { ItemModel } from "@backend/collections/item/item.model";
 import { OrderValidator } from "@backend/collections/order/helpers/order-validator/order-validator";
-import { OrderModel } from "@backend/collections/order/order.model";
 import { Operation } from "@backend/operation/operation";
-import { BlStorage } from "@backend/storage/blStorage";
+import { BlStorage } from "@backend/storage/bl-storage";
 import { BlError } from "@shared/bl-error/bl-error";
 import { BlapiResponse } from "@shared/blapi-response/blapi-response";
-import { CustomerItem } from "@shared/customer-item/customer-item";
-import { Item } from "@shared/item/item";
 import { Order } from "@shared/order/order";
 import { ObjectId } from "mongodb";
 
 // fixme: rewrite and generalize this for use in the future
 export class BulkOrderOperation implements Operation {
-  private readonly orderStorage: BlStorage<Order>;
-  private readonly itemStorage: BlStorage<Item>;
-  private readonly customerItemStorage: BlStorage<CustomerItem>;
-
-  constructor(
-    orderStorage?: BlStorage<Order>,
-    itemStorage?: BlStorage<Item>,
-    customerItemStorage?: BlStorage<CustomerItem>,
-  ) {
-    this.orderStorage = orderStorage ?? new BlStorage(OrderModel);
-    this.itemStorage = itemStorage ?? new BlStorage(ItemModel);
-    this.customerItemStorage =
-      customerItemStorage ?? new BlStorage(CustomerItemModel);
-  }
-
   async run(): Promise<BlapiResponse> {
-    const samf = await this.itemStorage.get("5ee37e644127df001c112ae0");
-    const geo = await this.itemStorage.get("5ee37e644127df001c112af9");
+    const samf = await BlStorage.Items.get("5ee37e644127df001c112ae0");
+    const geo = await BlStorage.Items.get("5ee37e644127df001c112af9");
 
-    const result = (await this.customerItemStorage.aggregate([
+    const result = (await BlStorage.CustomerItems.aggregate([
       {
         $match: {
           returned: false,
@@ -127,7 +107,7 @@ export class BulkOrderOperation implements Operation {
             },
           ],
         };
-        const placedHandoutOrder = await this.orderStorage.add(rentOrder);
+        const placedHandoutOrder = await BlStorage.Orders.add(rentOrder);
 
         await new OrderValidator().validate(placedHandoutOrder, false);
       }),

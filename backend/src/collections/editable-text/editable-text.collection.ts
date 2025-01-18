@@ -1,9 +1,9 @@
 import { BlCollection } from "@backend/collections/bl-collection";
-import { EditableTextModel } from "@backend/collections/editable-text/editable-text.model";
 import { EditableTextPutHook } from "@backend/collections/editable-text/hooks/editable-text.put.hook";
+import { BlStorage } from "@backend/storage/bl-storage";
 
 export const EditableTextCollection: BlCollection = {
-  model: EditableTextModel,
+  storage: BlStorage.EditableTexts,
   endpoints: [
     {
       method: "getId",

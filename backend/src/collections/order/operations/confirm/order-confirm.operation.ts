@@ -1,10 +1,9 @@
 import { OrderPlacedHandler } from "@backend/collections/order/helpers/order-placed-handler/order-placed-handler";
-import { OrderModel } from "@backend/collections/order/order.model";
 import { Operation } from "@backend/operation/operation";
 import { SEDbQueryBuilder } from "@backend/query/se.db-query-builder";
 import { BlApiRequest } from "@backend/request/bl-api-request";
 import { SEResponseHandler } from "@backend/response/se.response.handler";
-import { BlStorage } from "@backend/storage/blStorage";
+import { BlStorage } from "@backend/storage/bl-storage";
 import { BlError } from "@shared/bl-error/bl-error";
 import { BlapiResponse } from "@shared/blapi-response/blapi-response";
 import { Order } from "@shared/order/order";
@@ -14,16 +13,13 @@ import { Request, Response } from "express";
 export class OrderConfirmOperation implements Operation {
   private queryBuilder = new SEDbQueryBuilder();
   private resHandler: SEResponseHandler;
-  private orderStorage: BlStorage<Order>;
   private orderPlacedHandler: OrderPlacedHandler;
 
   constructor(
     resHandler?: SEResponseHandler,
-    orderStorage?: BlStorage<Order>,
     orderPlacedHandler?: OrderPlacedHandler,
   ) {
     this.resHandler = resHandler ?? new SEResponseHandler();
-    this.orderStorage = orderStorage ?? new BlStorage(OrderModel);
     this.orderPlacedHandler = orderPlacedHandler ?? new OrderPlacedHandler();
   }
 
@@ -68,7 +64,7 @@ export class OrderConfirmOperation implements Operation {
     );
 
     try {
-      const existingOrders = await this.orderStorage.getByQuery(databaseQuery);
+      const existingOrders = await BlStorage.Orders.getByQuery(databaseQuery);
       const alreadyOrderedItems =
         this.filterOrdersByAlreadyOrdered(existingOrders);
 
@@ -105,7 +101,7 @@ export class OrderConfirmOperation implements Operation {
     let order;
 
     try {
-      order = await this.orderStorage.get(blApiRequest.documentId);
+      order = await BlStorage.Orders.get(blApiRequest.documentId);
     } catch {
       throw new BlError(`order "${blApiRequest.documentId}" not found`);
     }

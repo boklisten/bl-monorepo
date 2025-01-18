@@ -1,7 +1,6 @@
-import { CustomerItemModel } from "@backend/collections/customer-item/customer-item.model";
 import { Operation } from "@backend/operation/operation";
 import { BlApiRequest } from "@backend/request/bl-api-request";
-import { BlStorage } from "@backend/storage/blStorage";
+import { BlStorage } from "@backend/storage/bl-storage";
 import { BlError } from "@shared/bl-error/bl-error";
 import { BlapiResponse } from "@shared/blapi-response/blapi-response";
 import { z } from "zod";
@@ -12,15 +11,13 @@ const PublicBlidLookupSpec = z.object({
 });
 
 export class PublicBlidLookupOperation implements Operation {
-  private customerItemStorage = new BlStorage(CustomerItemModel);
-
   async run(blApiRequest: BlApiRequest): Promise<BlapiResponse> {
     const parsedRequest = PublicBlidLookupSpec.safeParse(blApiRequest.data);
     if (!parsedRequest.success) {
       throw new BlError(fromError(parsedRequest.error).toString()).code(701);
     }
 
-    const customerItemInfo = await this.customerItemStorage.aggregate([
+    const customerItemInfo = await BlStorage.CustomerItems.aggregate([
       {
         $match: {
           returned: false,

@@ -1,22 +1,29 @@
 import "mocha";
 
 import { CustomerInvoiceActive } from "@backend/collections/invoice/helpers/customer-invoice-active";
-import { InvoiceModel } from "@backend/collections/invoice/invoice.model";
-import { BlStorage } from "@backend/storage/blStorage";
+import { BlStorage } from "@backend/storage/bl-storage";
 import { BlError } from "@shared/bl-error/bl-error";
 import { Invoice } from "@shared/invoice/invoice";
 import { expect, use as chaiUse, should } from "chai";
 import chaiAsPromised from "chai-as-promised";
-import sinon from "sinon";
+import sinon, { createSandbox } from "sinon";
 
 chaiUse(chaiAsPromised);
 should();
 
 describe("CustomerInvoiceActive", () => {
-  const invoiceStorage = new BlStorage(InvoiceModel);
-  const getInvoicesByQueryStub = sinon.stub(invoiceStorage, "getByQuery");
-  const customerInvoiceActive = new CustomerInvoiceActive(invoiceStorage);
+  const customerInvoiceActive = new CustomerInvoiceActive();
   const testUserId = "5f2aa6e8d39045001c444842";
+  let sandbox: sinon.SinonSandbox;
+  let getInvoicesByQueryStub: sinon.SinonStub;
+
+  beforeEach(() => {
+    sandbox = createSandbox();
+    getInvoicesByQueryStub = sandbox.stub(BlStorage.Invoices, "getByQuery");
+  });
+  afterEach(() => {
+    sandbox.restore();
+  });
 
   describe("haveActiveInvoices()", () => {
     it("should return false if no invoices was found for customer", () => {

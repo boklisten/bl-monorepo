@@ -1,7 +1,6 @@
-import { BlModel } from "@backend/collections/bl-collection";
-import { ItemModel } from "@backend/collections/item/item.model";
-import { UserDetailModel } from "@backend/collections/user-detail/user-detail.model";
-import { ToSchema } from "@backend/helper/typescript-helpers";
+import { BlModel } from "@backend/storage/bl-storage";
+import { ItemModel } from "@backend/storage/models/item.model";
+import { UserDetailModel } from "@backend/storage/models/user-detail.model";
 import { StandMatch } from "@shared/match/stand-match";
 import { Schema } from "mongoose";
 
@@ -9,7 +8,7 @@ const { ObjectId } = Schema.Types;
 
 export const StandMatchModel: BlModel<StandMatch> = {
   name: "stand_matches",
-  schema: new Schema<ToSchema<StandMatch>>({
+  schema: new Schema({
     customer: {
       type: ObjectId,
       required: true,

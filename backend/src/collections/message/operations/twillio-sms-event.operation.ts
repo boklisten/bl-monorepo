@@ -1,19 +1,12 @@
-import { MessageModel } from "@backend/collections/message/message.model";
 import { logger } from "@backend/logger/logger";
 import { Operation } from "@backend/operation/operation";
 import { BlApiRequest } from "@backend/request/bl-api-request";
-import { BlStorage } from "@backend/storage/blStorage";
+import { BlStorage } from "@backend/storage/bl-storage";
 import { BlError } from "@shared/bl-error/bl-error";
 import { BlapiResponse } from "@shared/blapi-response/blapi-response";
 import { Message } from "@shared/message/message";
 
 export class TwilioSmsEventOperation implements Operation {
-  private messageStorage: BlStorage<Message>;
-
-  constructor(messageStorage?: BlStorage<Message>) {
-    this.messageStorage = messageStorage ?? new BlStorage(MessageModel);
-  }
-
   public async run(blApiRequest: BlApiRequest): Promise<BlapiResponse> {
     if (!blApiRequest.data || Object.keys(blApiRequest.data).length === 0) {
       throw new BlError("blApiRequest.data is empty").code(701);
@@ -50,7 +43,7 @@ export class TwilioSmsEventOperation implements Operation {
     }
 
     try {
-      const message = await this.messageStorage.get(blMessageId);
+      const message = await BlStorage.Messages.get(blMessageId);
       await this.updateMessageWithTwilioSmsEvent(message, twilioEvent);
     } catch (error) {
       logger.warn(`could not update sendgrid event ${error}`);
@@ -72,7 +65,7 @@ export class TwilioSmsEventOperation implements Operation {
 
     newSmsEvents.push(smsEvent);
 
-    await this.messageStorage.update(message.id, { smsEvents: newSmsEvents });
+    await BlStorage.Messages.update(message.id, { smsEvents: newSmsEvents });
 
     logger.silly(
       // @ts-expect-error fixme bad types

@@ -1,28 +1,23 @@
 import "mocha";
 
-import { OrderModel } from "@backend/collections/order/order.model";
 import { PaymentDibsHandler } from "@backend/collections/payment/helpers/dibs/payment-dibs-handler";
 import { PaymentValidator } from "@backend/collections/payment/helpers/payment.validator";
 import { PaymentPostHook } from "@backend/collections/payment/hooks/payment.post.hook";
-import { PaymentModel } from "@backend/collections/payment/payment.model";
-import { BlStorage } from "@backend/storage/blStorage";
+import { BlStorage } from "@backend/storage/bl-storage";
 import { BlError } from "@shared/bl-error/bl-error";
 import { Order } from "@shared/order/order";
 import { Payment } from "@shared/payment/payment";
 import { expect, use as chaiUse, should } from "chai";
 import chaiAsPromised from "chai-as-promised";
-import sinon from "sinon";
+import sinon, { createSandbox } from "sinon";
 
 chaiUse(chaiAsPromised);
 should();
 
 describe("PaymentPostHook", () => {
   const paymentValidator = new PaymentValidator();
-  const orderStorage = new BlStorage(OrderModel);
-  const paymentStorage = new BlStorage(PaymentModel);
   const paymentDibsHandler = new PaymentDibsHandler();
   const paymentPostHook = new PaymentPostHook(
-    orderStorage,
     paymentValidator,
     paymentDibsHandler,
   );
@@ -34,6 +29,7 @@ describe("PaymentPostHook", () => {
   let testAccessToken;
   let paymentValidated: boolean;
   let handleDibsPaymentValid: boolean;
+  let sandbox: sinon.SinonSandbox;
 
   beforeEach(() => {
     testOrder = {
@@ -63,49 +59,53 @@ describe("PaymentPostHook", () => {
 
     paymentValidated = true;
     handleDibsPaymentValid = true;
-  });
+    sandbox = createSandbox();
 
-  sinon.stub(paymentStorage, "get").callsFake((id) => {
-    if (id !== testPayment.id) {
-      return Promise.reject(new BlError("not found").code(702));
-    }
+    sandbox.stub(BlStorage.Payments, "get").callsFake((id) => {
+      if (id !== testPayment.id) {
+        return Promise.reject(new BlError("not found").code(702));
+      }
 
-    return Promise.resolve(testPayment);
-  });
-  sinon.stub(paymentStorage, "update").callsFake(() => {
-    return Promise.resolve(testPayment);
-  });
+      return Promise.resolve(testPayment);
+    });
+    sandbox.stub(BlStorage.Payments, "update").callsFake(() => {
+      return Promise.resolve(testPayment);
+    });
 
-  sinon.stub(paymentDibsHandler, "handleDibsPayment").callsFake((payment) => {
-    if (!handleDibsPaymentValid) {
-      return Promise.reject(new BlError("could not create dibs payment"));
-    }
-    return Promise.resolve(testPayment);
-  });
+    sandbox
+      .stub(paymentDibsHandler, "handleDibsPayment")
+      .callsFake((payment) => {
+        if (!handleDibsPaymentValid) {
+          return Promise.reject(new BlError("could not create dibs payment"));
+        }
+        return Promise.resolve(testPayment);
+      });
 
-  sinon.stub(orderStorage, "get").callsFake((id) => {
-    if (id !== testOrder.id) {
-      return Promise.reject(new BlError("not found").code(702));
-    }
+    sandbox.stub(BlStorage.Orders, "get").callsFake((id) => {
+      if (id !== testOrder.id) {
+        return Promise.reject(new BlError("not found").code(702));
+      }
 
-    return Promise.resolve(testOrder);
-  });
-
-  const orderStorageUpdateStub = sinon
-    .stub(orderStorage, "update")
-    .callsFake((id: string, data: any) => {
       return Promise.resolve(testOrder);
     });
 
-  sinon.stub(paymentValidator, "validate").callsFake(() => {
-    if (!paymentValidated) {
-      return Promise.reject(new BlError("could not validate payment"));
-    }
+    sandbox
+      .stub(BlStorage.Orders, "update")
+      .callsFake((id: string, data: any) => {
+        return Promise.resolve(testOrder);
+      });
 
-    return Promise.resolve(true);
+    sandbox.stub(paymentValidator, "validate").callsFake(() => {
+      if (!paymentValidated) {
+        return Promise.reject(new BlError("could not validate payment"));
+      }
+
+      return Promise.resolve(true);
+    });
   });
-
-  describe("#before()", () => {});
+  afterEach(() => {
+    sandbox.restore();
+  });
 
   describe("#after()", () => {
     it("should reject if ids is empty or undefined", () => {

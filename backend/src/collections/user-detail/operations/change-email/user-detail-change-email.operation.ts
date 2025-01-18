@@ -1,40 +1,22 @@
 import { PermissionService } from "@backend/auth/permission/permission.service";
 import { UserHandler } from "@backend/auth/user/user.handler";
 import { LocalLogin } from "@backend/collections/local-login/local-login";
-import { LocalLoginModel } from "@backend/collections/local-login/local-login.model";
 import { User } from "@backend/collections/user/user";
-import { UserModel } from "@backend/collections/user/user.model";
-import { UserDetailModel } from "@backend/collections/user-detail/user-detail.model";
 import { isNotNullish, isNullish } from "@backend/helper/typescript-helpers";
 import { Operation } from "@backend/operation/operation";
 import { BlApiRequest } from "@backend/request/bl-api-request";
 import { SEResponseHandler } from "@backend/response/se.response.handler";
-import { BlStorage } from "@backend/storage/blStorage";
+import { BlStorage } from "@backend/storage/bl-storage";
 import { BlError } from "@shared/bl-error/bl-error";
 import { BlapiResponse } from "@shared/blapi-response/blapi-response";
-import { UserDetail } from "@shared/user/user-detail/user-detail";
 import { Request, Response } from "express";
 import isEmail from "validator/lib/isEmail";
 
 export class UserDetailChangeEmailOperation implements Operation {
-  private userDetailStorage: BlStorage<UserDetail>;
-  private userStorage: BlStorage<User>;
-  private localLoginStorage: BlStorage<LocalLogin>;
   private userHandler: UserHandler;
   private resHandler: SEResponseHandler;
 
-  constructor(
-    userDetailStorage?: BlStorage<UserDetail>,
-    userStorage?: BlStorage<User>,
-    localLoginStorage?: BlStorage<LocalLogin>,
-    userHandler?: UserHandler,
-    resHandler?: SEResponseHandler,
-  ) {
-    this.userDetailStorage =
-      userDetailStorage ?? new BlStorage(UserDetailModel);
-    this.userStorage = userStorage ?? new BlStorage(UserModel);
-    this.localLoginStorage =
-      localLoginStorage ?? new BlStorage(LocalLoginModel);
+  constructor(userHandler?: UserHandler, resHandler?: SEResponseHandler) {
     this.userHandler = userHandler ?? new UserHandler();
     this.resHandler = resHandler ?? new SEResponseHandler();
   }
@@ -49,9 +31,7 @@ export class UserDetailChangeEmailOperation implements Operation {
 
     this.validateEmail(emailChange);
 
-    const userDetail = await this.userDetailStorage.get(
-      blApiRequest.documentId,
-    );
+    const userDetail = await BlStorage.UserDetails.get(blApiRequest.documentId);
 
     const user = await this.getUser(userDetail.email, userDetail.blid);
     const localLogin = await this.getLocalLogin(userDetail.email);
@@ -60,7 +40,7 @@ export class UserDetailChangeEmailOperation implements Operation {
     this.validatePermission(blApiRequest.user.permission, user.permission);
     await this.checkIfAlreadyAdded(emailChange);
 
-    await this.userDetailStorage.update(
+    await BlStorage.UserDetails.update(
       userDetail.id,
       { email: emailChange },
 
@@ -68,7 +48,7 @@ export class UserDetailChangeEmailOperation implements Operation {
       blApiRequest.user,
     );
 
-    await this.userStorage.update(
+    await BlStorage.Users.update(
       user.id,
       { username: emailChange },
 
@@ -76,7 +56,7 @@ export class UserDetailChangeEmailOperation implements Operation {
       blApiRequest.user,
     );
 
-    await this.localLoginStorage.update(
+    await BlStorage.LocalLogins.update(
       localLogin.id,
       { username: emailChange },
 
@@ -122,7 +102,7 @@ export class UserDetailChangeEmailOperation implements Operation {
   }
 
   private async getUser(email: string, blid: string): Promise<User> {
-    const users = await this.userStorage.aggregate([
+    const users = await BlStorage.Users.aggregate([
       { $match: { username: email, blid: blid } },
     ]);
 
@@ -131,7 +111,7 @@ export class UserDetailChangeEmailOperation implements Operation {
   }
 
   private async getLocalLogin(username: string): Promise<LocalLogin> {
-    const localLogins = await this.localLoginStorage.aggregate([
+    const localLogins = await BlStorage.LocalLogins.aggregate([
       { $match: { username: username } },
     ]);
 

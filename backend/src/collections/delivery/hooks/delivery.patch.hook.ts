@@ -1,9 +1,7 @@
-import { DeliveryModel } from "@backend/collections/delivery/delivery.model";
 import { DeliveryHandler } from "@backend/collections/delivery/helpers/deliveryHandler/delivery-handler";
 import { DeliveryValidator } from "@backend/collections/delivery/helpers/deliveryValidator/delivery-validator";
-import { OrderModel } from "@backend/collections/order/order.model";
 import { Hook } from "@backend/hook/hook";
-import { BlStorage } from "@backend/storage/blStorage";
+import { BlStorage } from "@backend/storage/bl-storage";
 import { BlError } from "@shared/bl-error/bl-error";
 import { Delivery } from "@shared/delivery/delivery";
 import { Order } from "@shared/order/order";
@@ -11,20 +9,16 @@ import { AccessToken } from "@shared/token/access-token";
 
 export class DeliveryPatchHook extends Hook {
   private deliveryValidator: DeliveryValidator;
-  private deliveryStorage: BlStorage<Delivery>;
-  private orderStorage: BlStorage<Order>;
+
   private deliveryHandler: DeliveryHandler;
 
   constructor(
     deliveryValidator?: DeliveryValidator,
-    deliveryStorage?: BlStorage<Delivery>,
-    orderStorage?: BlStorage<Order>,
     deliveryHandler?: DeliveryHandler,
   ) {
     super();
     this.deliveryValidator = deliveryValidator ?? new DeliveryValidator();
-    this.deliveryStorage = deliveryStorage ?? new BlStorage(DeliveryModel);
-    this.orderStorage = orderStorage ?? new BlStorage(OrderModel);
+
     this.deliveryHandler = deliveryHandler ?? new DeliveryHandler();
   }
 
@@ -58,7 +52,7 @@ export class DeliveryPatchHook extends Hook {
     const delivery = deliveries[0];
 
     return new Promise((resolve, reject) => {
-      this.orderStorage
+      BlStorage.Orders
         // @ts-expect-error fixme: auto ignored
         .get(delivery.order)
         .then((order: Order) => {
@@ -92,8 +86,7 @@ export class DeliveryPatchHook extends Hook {
     id: string,
   ): Promise<boolean> {
     return new Promise((resolve, reject) => {
-      this.deliveryStorage
-        .get(id)
+      BlStorage.Deliveries.get(id)
         .then((delivery: Delivery) => {
           if (body["info"]) {
             delivery.info = body["info"];

@@ -1,9 +1,7 @@
 import { CustomerItemValidator } from "@backend/collections/customer-item/validators/customer-item-validator";
-import { OrderModel } from "@backend/collections/order/order.model";
 import { UserDetailHelper } from "@backend/collections/user-detail/helpers/user-detail.helper";
-import { UserDetailModel } from "@backend/collections/user-detail/user-detail.model";
 import { Hook } from "@backend/hook/hook";
-import { BlStorage } from "@backend/storage/blStorage";
+import { BlStorage } from "@backend/storage/bl-storage";
 import { BlError } from "@shared/bl-error/bl-error";
 import { CustomerItem } from "@shared/customer-item/customer-item";
 import { Order } from "@shared/order/order";
@@ -12,22 +10,17 @@ import { UserDetail } from "@shared/user/user-detail/user-detail";
 
 export class CustomerItemPostHook extends Hook {
   private customerItemValidator: CustomerItemValidator;
-  private userDetailStorage: BlStorage<UserDetail>;
-  private orderStorage: BlStorage<Order>;
+
   private userDetailHelper: UserDetailHelper;
 
   constructor(
     customerItemValidator?: CustomerItemValidator,
-    userDetailStorage?: BlStorage<UserDetail>,
-    orderStorage?: BlStorage<Order>,
     userDetailHelper?: UserDetailHelper,
   ) {
     super();
     this.customerItemValidator =
       customerItemValidator ?? new CustomerItemValidator();
-    this.userDetailStorage =
-      userDetailStorage ?? new BlStorage(UserDetailModel);
-    this.orderStorage = orderStorage ?? new BlStorage(OrderModel);
+
     this.userDetailHelper = userDetailHelper ?? new UserDetailHelper();
   }
 
@@ -36,8 +29,7 @@ export class CustomerItemPostHook extends Hook {
       return Promise.reject(new BlError("customerItem is undefined"));
     }
 
-    return this.userDetailStorage
-      .get(customerItem.customer)
+    return BlStorage.UserDetails.get(customerItem.customer)
       .then((userDetail: UserDetail) => {
         if (!this.userDetailHelper.isValid(userDetail)) {
           throw new BlError(`userDetail "${customerItem.customer}" not valid`);
@@ -90,8 +82,7 @@ export class CustomerItemPostHook extends Hook {
       );
     }
 
-    return this.orderStorage
-      .get(customerItem.orders[0] ?? "")
+    return BlStorage.Orders.get(customerItem.orders[0] ?? "")
       .then((order: Order) => {
         //update the corresponding orderItem with customerItem
         for (const orderItem of order.orderItems) {
@@ -103,12 +94,12 @@ export class CustomerItemPostHook extends Hook {
             break;
           }
         }
-        return this.orderStorage.update(order.id, {
+        return BlStorage.Orders.update(order.id, {
           orderItems: order.orderItems,
         });
       })
       .then(() => {
-        return this.userDetailStorage.get(customerItem.customer);
+        return BlStorage.UserDetails.get(customerItem.customer);
       })
       .then((userDetail: UserDetail) => {
         // @ts-expect-error fixme: auto ignored
@@ -127,7 +118,7 @@ export class CustomerItemPostHook extends Hook {
           newCustomerItems.push(customerItem.id);
         }
 
-        return this.userDetailStorage.update(
+        return BlStorage.UserDetails.update(
           userDetail.id,
           // @ts-expect-error fixme: auto ignored
           { customerItems: newCustomerItems },

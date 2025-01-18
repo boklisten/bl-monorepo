@@ -3,30 +3,22 @@ import "mocha";
 import { OrderPlacedHandler } from "@backend/collections/order/helpers/order-placed-handler/order-placed-handler";
 import { OrderValidator } from "@backend/collections/order/helpers/order-validator/order-validator";
 import { OrderPatchHook } from "@backend/collections/order/hooks/order.patch.hook";
-import { OrderModel } from "@backend/collections/order/order.model";
-import { UserDetailModel } from "@backend/collections/user-detail/user-detail.model";
-import { BlStorage } from "@backend/storage/blStorage";
+import { BlStorage } from "@backend/storage/bl-storage";
 import { BlError } from "@shared/bl-error/bl-error";
 import { Order } from "@shared/order/order";
 import { AccessToken } from "@shared/token/access-token";
 import { UserDetail } from "@shared/user/user-detail/user-detail";
 import { expect, use as chaiUse, should } from "chai";
 import chaiAsPromised from "chai-as-promised";
-import sinon from "sinon";
+import sinon, { createSandbox } from "sinon";
 
 chaiUse(chaiAsPromised);
 should();
 
 describe("OrderPatchHook", () => {
-  const userDetailStorage = new BlStorage(UserDetailModel);
-  const orderStorage = new BlStorage(OrderModel);
   const orderValidator = new OrderValidator();
   const orderPlacedHandler = new OrderPlacedHandler();
-  const orderPatchHook = new OrderPatchHook(
-    orderStorage,
-    orderValidator,
-    orderPlacedHandler,
-  );
+  const orderPatchHook = new OrderPatchHook(orderValidator, orderPlacedHandler);
 
   let testAccessToken: AccessToken;
   let testRequestBody: any;
@@ -36,6 +28,7 @@ describe("OrderPatchHook", () => {
   let userDetailUpdated = true;
   let testUserDetail: UserDetail;
   let orderPlacedConfirmed: boolean;
+  let sandbox: sinon.SinonSandbox;
 
   beforeEach(() => {
     testRequestBody = {
@@ -84,61 +77,65 @@ describe("OrderPatchHook", () => {
       permission: "customer",
       details: "userDetail1",
     };
-  });
 
-  sinon.stub(orderStorage, "get").callsFake((id) => {
-    if (id !== testOrder.id) {
-      return Promise.reject(new BlError("not found").code(702));
-    }
-    return Promise.resolve(testOrder);
-  });
-
-  sinon.stub(orderPlacedHandler, "placeOrder").callsFake((order: Order) => {
-    if (!orderPlacedConfirmed) {
-      return Promise.reject(new BlError("could not place order"));
-    }
-    return Promise.resolve({} as Order);
-  });
-
-  const userDetailStorageUpdateStub = sinon
-    .stub(userDetailStorage, "update")
-    .callsFake((id: string, data: any) => {
-      if (!userDetailUpdated) {
-        return Promise.reject(new BlError("could not update"));
-      }
-
-      if (data["orders"]) {
-        testUserDetail.orders = data["orders"];
-      }
-
-      return Promise.resolve({} as UserDetail);
-    });
-
-  sinon.stub(userDetailStorage, "get").callsFake((id) => {
-    if (id !== testUserDetail.id) {
-      return Promise.reject(new BlError("not found").code(702));
-    }
-    return Promise.resolve(testUserDetail);
-  });
-
-  const orderStorageUpdateStub = sinon
-    .stub(orderStorage, "update")
-    .callsFake((id: string, data: any) => {
-      if (!orderUpdated) {
-        return Promise.reject("could not update");
+    sandbox = createSandbox();
+    sandbox.stub(BlStorage.Orders, "get").callsFake((id) => {
+      if (id !== testOrder.id) {
+        return Promise.reject(new BlError("not found").code(702));
       }
       return Promise.resolve(testOrder);
     });
 
-  const orderValidationValidateStub = sinon
-    .stub(orderValidator, "validate")
-
-    .callsFake((order: Order) => {
-      if (!orderValidated) {
-        return Promise.reject(new BlError("could not validate"));
+    sandbox.stub(orderPlacedHandler, "placeOrder").callsFake((order: Order) => {
+      if (!orderPlacedConfirmed) {
+        return Promise.reject(new BlError("could not place order"));
       }
-      return Promise.resolve(true);
+      return Promise.resolve({} as Order);
     });
+
+    sandbox
+      .stub(BlStorage.UserDetails, "update")
+      .callsFake((id: string, data: any) => {
+        if (!userDetailUpdated) {
+          return Promise.reject(new BlError("could not update"));
+        }
+
+        if (data["orders"]) {
+          testUserDetail.orders = data["orders"];
+        }
+
+        return Promise.resolve({} as UserDetail);
+      });
+
+    sandbox.stub(BlStorage.UserDetails, "get").callsFake((id) => {
+      if (id !== testUserDetail.id) {
+        return Promise.reject(new BlError("not found").code(702));
+      }
+      return Promise.resolve(testUserDetail);
+    });
+
+    sandbox
+      .stub(BlStorage.Orders, "update")
+      .callsFake((id: string, data: any) => {
+        if (!orderUpdated) {
+          return Promise.reject("could not update");
+        }
+        return Promise.resolve(testOrder);
+      });
+
+    sandbox
+      .stub(orderValidator, "validate")
+
+      .callsFake((order: Order) => {
+        if (!orderValidated) {
+          return Promise.reject(new BlError("could not validate"));
+        }
+        return Promise.resolve(true);
+      });
+  });
+  afterEach(() => {
+    sandbox.restore();
+  });
 
   describe("before()", () => {
     it("should reject if body is empty or undefined", () => {

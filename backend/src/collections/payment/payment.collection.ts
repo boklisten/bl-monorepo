@@ -2,10 +2,10 @@ import { BlCollection } from "@backend/collections/bl-collection";
 import { PaymentGetAllHook } from "@backend/collections/payment/hooks/payment.get-all.hook";
 import { PaymentPatchHook } from "@backend/collections/payment/hooks/payment.patch.hook";
 import { PaymentPostHook } from "@backend/collections/payment/hooks/payment.post.hook";
-import { PaymentModel } from "@backend/collections/payment/payment.model";
+import { BlStorage } from "@backend/storage/bl-storage";
 
 export const PaymentCollection: BlCollection = {
-  model: PaymentModel,
+  storage: BlStorage.Payments,
   documentPermission: {
     viewableForPermission: "employee",
   },

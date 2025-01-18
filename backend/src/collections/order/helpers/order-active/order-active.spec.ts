@@ -1,25 +1,28 @@
 import "mocha";
 
 import { OrderActive } from "@backend/collections/order/helpers/order-active/order-active";
-import { OrderModel } from "@backend/collections/order/order.model";
-import { BlStorage } from "@backend/storage/blStorage";
+import { BlStorage } from "@backend/storage/bl-storage";
 import { BlError } from "@shared/bl-error/bl-error";
 import { Order } from "@shared/order/order";
 import { expect, use as chaiUse, should } from "chai";
 import chaiAsPromised from "chai-as-promised";
-import sinon from "sinon";
+import sinon, { createSandbox } from "sinon";
 
 chaiUse(chaiAsPromised);
 should();
 
 describe("OrderActive", () => {
-  const orderStorage = new BlStorage(OrderModel);
-  const getOrderByQueryStub = sinon.stub(orderStorage, "getByQuery");
-  const orderActive = new OrderActive(orderStorage);
+  const orderActive = new OrderActive();
   const testUserId = "5d765db5fc8c47001c408d8d";
+  let getOrderByQueryStub: sinon.SinonStub;
+  let sandbox: sinon.SinonSandbox;
 
   beforeEach(() => {
-    getOrderByQueryStub.reset();
+    sandbox = createSandbox();
+    getOrderByQueryStub = sandbox.stub(BlStorage.Orders, "getByQuery");
+  });
+  afterEach(() => {
+    sandbox.restore();
   });
 
   describe("haveActiveOrders()", () => {

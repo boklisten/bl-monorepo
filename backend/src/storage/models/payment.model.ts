@@ -1,11 +1,10 @@
-import { BlModel } from "@backend/collections/bl-collection";
-import { ToSchema } from "@backend/helper/typescript-helpers";
+import { BlModel } from "@backend/storage/bl-storage";
 import { Payment } from "@shared/payment/payment";
 import { Schema } from "mongoose";
 
 export const PaymentModel: BlModel<Payment> = {
   name: "payments",
-  schema: new Schema<ToSchema<Payment>>({
+  schema: new Schema({
     method: {
       type: String,
       required: true,

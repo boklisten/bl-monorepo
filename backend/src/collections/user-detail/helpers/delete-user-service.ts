@@ -1,76 +1,18 @@
-import { CustomerItemModel } from "@backend/collections/customer-item/customer-item.model";
-import { InvoiceModel } from "@backend/collections/invoice/invoice.model";
-import { LocalLogin } from "@backend/collections/local-login/local-login";
-import { LocalLoginModel } from "@backend/collections/local-login/local-login.model";
-import { OrderModel } from "@backend/collections/order/order.model";
-import { PaymentModel } from "@backend/collections/payment/payment.model";
-import { StandMatchModel } from "@backend/collections/stand-match/stand-match.model";
-import { User } from "@backend/collections/user/user";
-import { UserModel } from "@backend/collections/user/user.model";
-import { UserDetailModel } from "@backend/collections/user-detail/user-detail.model";
-import { UserMatchModel } from "@backend/collections/user-match/user-match.model";
 import { SEDbQueryBuilder } from "@backend/query/se.db-query-builder";
-import { BlStorage } from "@backend/storage/blStorage";
-import { CustomerItem } from "@shared/customer-item/customer-item";
-import { Invoice } from "@shared/invoice/invoice";
-import { StandMatch } from "@shared/match/stand-match";
-import { UserMatch } from "@shared/match/user-match";
-import { Order } from "@shared/order/order";
-import { Payment } from "@shared/payment/payment";
-import { UserDetail } from "@shared/user/user-detail/user-detail";
+import { BlStorage } from "@backend/storage/bl-storage";
 
 export class DeleteUserService {
   private queryBuilder = new SEDbQueryBuilder();
-  private userStorage: BlStorage<User>;
-  private userDetailStorage: BlStorage<UserDetail>;
-  private localLoginStorage: BlStorage<LocalLogin>;
-  private customerItemStorage: BlStorage<CustomerItem>;
-  private invoiceStorage: BlStorage<Invoice>;
-  private orderStorage: BlStorage<Order>;
-  private paymentStorage: BlStorage<Payment>;
-  private userMatchStorage: BlStorage<UserMatch>;
-  private standMatchStorage: BlStorage<StandMatch>;
 
-  constructor(
-    userStorage?: BlStorage<User>,
-    userDetailStorage?: BlStorage<UserDetail>,
-    localLoginStorage?: BlStorage<LocalLogin>,
-    customerItemStorage?: BlStorage<CustomerItem>,
-    invoiceStorage?: BlStorage<Invoice>,
-    orderStorage?: BlStorage<Order>,
-    paymentStorage?: BlStorage<Payment>,
-    userMatchStorage?: BlStorage<UserMatch>,
-    standMatchStorage?: BlStorage<StandMatch>,
-  ) {
-    this.userStorage = userStorage ?? new BlStorage(UserModel);
-    this.userDetailStorage =
-      userDetailStorage ?? new BlStorage(UserDetailModel);
-    this.localLoginStorage =
-      localLoginStorage ?? new BlStorage(LocalLoginModel);
-    this.customerItemStorage =
-      customerItemStorage ?? new BlStorage(CustomerItemModel);
-    this.invoiceStorage = invoiceStorage ?? new BlStorage(InvoiceModel);
-    this.orderStorage = orderStorage ?? new BlStorage(OrderModel);
-    this.paymentStorage = paymentStorage ?? new BlStorage(PaymentModel);
-    this.userMatchStorage = userMatchStorage ?? new BlStorage(UserMatchModel);
-    this.standMatchStorage =
-      standMatchStorage ?? new BlStorage(StandMatchModel);
-  }
-
-  public async deleteUser(
-    userDetailId: string,
-    keepLocalLogin: boolean,
-  ): Promise<void> {
+  public async deleteUser(userDetailId: string): Promise<void> {
     const databaseQuery = this.queryBuilder.getDbQuery(
       { userDetail: userDetailId },
       [{ fieldName: "userDetail", type: "object-id" }],
     );
-    const users = await this.userStorage.getByQuery(databaseQuery);
+    const users = await BlStorage.Users.getByQuery(databaseQuery);
     for (const user of users) {
-      await this.userStorage.remove(user.id);
-      if (!keepLocalLogin) {
-        await this.removeLocalLogin(user.username);
-      }
+      await BlStorage.Users.remove(user.id);
+      await this.removeLocalLogin(user.username);
     }
   }
 
@@ -79,18 +21,18 @@ export class DeleteUserService {
       { username: username },
       [{ fieldName: "username", type: "string" }],
     );
-    const localLogins = await this.localLoginStorage.getByQuery(
+    const localLogins = await BlStorage.LocalLogins.getByQuery(
       localLoginDatabaseQuery,
     );
     for (const localLogin of localLogins) {
-      await this.localLoginStorage.remove(localLogin.id);
+      await BlStorage.LocalLogins.remove(localLogin.id);
     }
   }
 
   async mergeIntoOtherUser(fromUser: string, toUser: string): Promise<void> {
     const [fromUserDetails, toUserDetails] = await Promise.all([
-      this.userDetailStorage.get(fromUser),
-      this.userDetailStorage.get(toUser),
+      BlStorage.UserDetails.get(fromUser),
+      BlStorage.UserDetails.get(toUser),
     ]);
     const newOrderRefs = [
       ...(fromUserDetails.orders ?? []),
@@ -106,16 +48,16 @@ export class DeleteUserService {
     ];
 
     await Promise.all([
-      this.userDetailStorage.update(toUser, {
+      BlStorage.UserDetails.update(toUser, {
         orders: newOrderRefs,
         customerItems: newCustomerItemRefs,
         signatures: newSignatureRefs,
       }),
-      this.customerItemStorage.updateMany(
+      BlStorage.CustomerItems.updateMany(
         { customer: fromUser },
         { customer: toUser },
       ),
-      this.invoiceStorage.updateMany(
+      BlStorage.Invoices.updateMany(
         {
           customerInfo: {
             userDetail: fromUser,
@@ -127,30 +69,30 @@ export class DeleteUserService {
           },
         },
       ),
-      this.orderStorage.updateMany(
+      BlStorage.Orders.updateMany(
         {
           placed: true,
           customer: fromUser,
         },
         { customer: toUser },
       ),
-      this.paymentStorage.updateMany(
+      BlStorage.Payments.updateMany(
         {
           customer: fromUser,
         },
         { customer: toUser },
       ),
-      this.standMatchStorage.updateMany(
+      BlStorage.StandMatches.updateMany(
         { customer: fromUser },
         { customer: toUser },
       ),
-      this.userMatchStorage.updateMany(
+      BlStorage.UserMatches.updateMany(
         {
           customerA: fromUser,
         },
         { customerA: toUser },
       ),
-      this.userMatchStorage.updateMany(
+      BlStorage.UserMatches.updateMany(
         {
           customerB: fromUser,
         },

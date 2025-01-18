@@ -1,25 +1,36 @@
 import "mocha";
 
-import { MessageModel } from "@backend/collections/message/message.model";
 import { SendgridEventOperation } from "@backend/collections/message/operations/sendgrid-event.operation";
-import { BlStorage } from "@backend/storage/blStorage";
+import { BlStorage } from "@backend/storage/bl-storage";
 import { Message } from "@shared/message/message";
 import { expect, use as chaiUse, should } from "chai";
 import chaiAsPromised from "chai-as-promised";
-import sinon from "sinon";
+import sinon, { createSandbox } from "sinon";
 
 chaiUse(chaiAsPromised);
 should();
 
 describe("SendgridEventOperation", () => {
-  const messageStorage = new BlStorage(MessageModel);
+  const sendgridEventOperation = new SendgridEventOperation();
+  let messageStorageGetIdStub: sinon.SinonStub;
+  let messageStorageUpdateStub: sinon.SinonStub;
+  let sandbox: sinon.SinonSandbox;
 
-  const sendgridEventOperation = new SendgridEventOperation(messageStorage);
+  beforeEach(() => {
+    sandbox = createSandbox();
+    const messagesStub = {
+      get: sinon.stub(),
+      update: sinon.stub(),
+    };
+    sandbox.stub(BlStorage, "Messages").value(messagesStub);
 
-  const messageStorageGetIdStub = sinon.stub(messageStorage, "get");
-  const messageStorageUpdateStub = sinon.stub(messageStorage, "update");
-
-  messageStorageUpdateStub.resolves({} as Message);
+    messageStorageGetIdStub = messagesStub.get;
+    messageStorageUpdateStub = messagesStub.update;
+    messageStorageUpdateStub.resolves({} as Message);
+  });
+  afterEach(() => {
+    sandbox.restore();
+  });
 
   describe("#run", () => {
     it("should be rejected if blApiRequest.data is empty or undefined", () => {

@@ -2,54 +2,50 @@ import "mocha";
 
 import { UserHandler } from "@backend/auth/user/user.handler";
 import { LocalLogin } from "@backend/collections/local-login/local-login";
-import { LocalLoginModel } from "@backend/collections/local-login/local-login.model";
 import { User } from "@backend/collections/user/user";
-import { UserModel } from "@backend/collections/user/user.model";
 import { UserDetailChangeEmailOperation } from "@backend/collections/user-detail/operations/change-email/user-detail-change-email.operation";
-import { UserDetailModel } from "@backend/collections/user-detail/user-detail.model";
 import { SEResponseHandler } from "@backend/response/se.response.handler";
-import { BlStorage } from "@backend/storage/blStorage";
+import { BlStorage } from "@backend/storage/bl-storage";
 import { BlError } from "@shared/bl-error/bl-error";
 import { UserDetail } from "@shared/user/user-detail/user-detail";
 import { expect, use as chaiUse, should } from "chai";
 import chaiAsPromised from "chai-as-promised";
-import sinon from "sinon";
+import sinon, { createSandbox } from "sinon";
 chaiUse(chaiAsPromised);
 should();
 
 describe("UserDetailChangeEmailOperation", () => {
-  const userDetailStorage = new BlStorage(UserDetailModel);
-  const userStorage = new BlStorage(UserModel);
-  const localLoginStorage = new BlStorage(LocalLoginModel);
   const userHandler = new UserHandler();
   const resHandler = new SEResponseHandler();
 
   const userDetailChangeEmailOperation = new UserDetailChangeEmailOperation(
-    userDetailStorage,
-    userStorage,
-    localLoginStorage,
     userHandler,
     resHandler,
   );
 
-  const userDetailGetStub = sinon.stub(userDetailStorage, "get");
-  const userDetailUpdateStub = sinon.stub(userDetailStorage, "update");
-  const userAggregateStub = sinon.stub(userStorage, "aggregate");
-  const userUpdateStub = sinon.stub(userStorage, "update");
-  const userHandlerGetByUsernameStub = sinon.stub(userHandler, "getByUsername");
-  const localLoginAggregateStub = sinon.stub(localLoginStorage, "aggregate");
-  const localLoginUpdateStub = sinon.stub(localLoginStorage, "update");
-  const resHandlerSendResponseStub = sinon.stub(resHandler, "sendResponse");
+  let userDetailGetStub: sinon.SinonStub;
+  let userDetailUpdateStub: sinon.SinonStub;
+  let userAggregateStub: sinon.SinonStub;
+  let userUpdateStub: sinon.SinonStub;
+  let userHandlerGetByUsernameStub: sinon.SinonStub;
+  let localLoginAggregateStub: sinon.SinonStub;
+  let localLoginUpdateStub: sinon.SinonStub;
+  let resHandlerSendResponseStub: sinon.SinonStub;
+  let sandbox: sinon.SinonSandbox;
 
   beforeEach(() => {
-    userDetailGetStub.reset();
-    userDetailUpdateStub.reset();
-    userAggregateStub.reset();
-    userUpdateStub.reset();
-    userHandlerGetByUsernameStub.reset();
-    localLoginAggregateStub.reset();
-    localLoginUpdateStub.reset();
-    resHandlerSendResponseStub.reset();
+    sandbox = createSandbox();
+    userDetailGetStub = sandbox.stub(BlStorage.UserDetails, "get");
+    userDetailUpdateStub = sandbox.stub(BlStorage.UserDetails, "update");
+    userAggregateStub = sandbox.stub(BlStorage.Users, "aggregate");
+    userUpdateStub = sandbox.stub(BlStorage.Users, "update");
+    userHandlerGetByUsernameStub = sandbox.stub(userHandler, "getByUsername");
+    localLoginAggregateStub = sandbox.stub(BlStorage.LocalLogins, "aggregate");
+    localLoginUpdateStub = sandbox.stub(BlStorage.LocalLogins, "update");
+    resHandlerSendResponseStub = sandbox.stub(resHandler, "sendResponse");
+  });
+  afterEach(() => {
+    sandbox.restore();
   });
 
   it("should reject if blApiRequest.data is empty", () => {

@@ -5,7 +5,6 @@ import { CompanyCollection } from "@backend/collections/company/company.collecti
 import { CustomerItemCollection } from "@backend/collections/customer-item/customer-item.collection";
 import { DeliveryCollection } from "@backend/collections/delivery/delivery.collection";
 import { EditableTextCollection } from "@backend/collections/editable-text/editable-text.collection";
-import { EmailValidation } from "@backend/collections/email-validation/email-validation";
 import { EmailValidationCollection } from "@backend/collections/email-validation/email-validation.collection";
 import { InvoiceCollection } from "@backend/collections/invoice/invoice.collection";
 import { ItemCollection } from "@backend/collections/item/item.collection";
@@ -20,24 +19,6 @@ import { UniqueItemCollection } from "@backend/collections/unique-item/unique-it
 import { UserDetailCollection } from "@backend/collections/user-detail/user-detail.collection";
 import { UserMatchCollection } from "@backend/collections/user-match/user-match.collection";
 import { SEResponseHandler } from "@backend/response/se.response.handler";
-import { Branch } from "@shared/branch/branch";
-import { BranchItem } from "@shared/branch-item/branch-item";
-import { Company } from "@shared/company/company";
-import { CustomerItem } from "@shared/customer-item/customer-item";
-import { Delivery } from "@shared/delivery/delivery";
-import { EditableText } from "@shared/editable-text/editable-text";
-import { Invoice } from "@shared/invoice/invoice";
-import { Item } from "@shared/item/item";
-import { StandMatch } from "@shared/match/stand-match";
-import { UserMatch } from "@shared/match/user-match";
-import { Message } from "@shared/message/message";
-import { OpeningHour } from "@shared/opening-hour/opening-hour";
-import { Order } from "@shared/order/order";
-import { PendingPasswordReset } from "@shared/password-reset/pending-password-reset";
-import { Payment } from "@shared/payment/payment";
-import { SerializedSignature } from "@shared/signature/serialized-signature";
-import { UniqueItem } from "@shared/unique-item/unique-item";
-import { UserDetail } from "@shared/user/user-detail/user-detail";
 import { Router } from "express";
 
 export class CollectionEndpointCreator {
@@ -47,34 +28,25 @@ export class CollectionEndpointCreator {
 
   create() {
     const collectionEndpoints = [
-      new CollectionEndpoint<Branch>(this.router, BranchCollection),
-      new CollectionEndpoint<BranchItem>(this.router, BranchItemCollection),
-      new CollectionEndpoint<CustomerItem>(this.router, CustomerItemCollection),
-      new CollectionEndpoint<Delivery>(this.router, DeliveryCollection),
-      new CollectionEndpoint<Item>(this.router, ItemCollection),
-      new CollectionEndpoint<OpeningHour>(this.router, OpeningHourCollection),
-      new CollectionEndpoint<Order>(this.router, OrderCollection),
-      new CollectionEndpoint<Payment>(this.router, PaymentCollection),
-      new CollectionEndpoint<UserDetail>(this.router, UserDetailCollection),
-      new CollectionEndpoint<PendingPasswordReset>(
-        this.router,
-        PendingPasswordResetCollection,
-      ),
-      new CollectionEndpoint<EmailValidation>(
-        this.router,
-        EmailValidationCollection,
-      ),
-      new CollectionEndpoint<Message>(this.router, MessageCollection),
-      new CollectionEndpoint<StandMatch>(this.router, StandMatchCollection),
-      new CollectionEndpoint<UserMatch>(this.router, UserMatchCollection),
-      new CollectionEndpoint<Invoice>(this.router, InvoiceCollection),
-      new CollectionEndpoint<Company>(this.router, CompanyCollection),
-      new CollectionEndpoint<UniqueItem>(this.router, UniqueItemCollection),
-      new CollectionEndpoint<EditableText>(this.router, EditableTextCollection),
-      new CollectionEndpoint<SerializedSignature>(
-        this.router,
-        SignatureCollection,
-      ),
+      new CollectionEndpoint(this.router, BranchCollection),
+      new CollectionEndpoint(this.router, BranchItemCollection),
+      new CollectionEndpoint(this.router, CustomerItemCollection),
+      new CollectionEndpoint(this.router, DeliveryCollection),
+      new CollectionEndpoint(this.router, ItemCollection),
+      new CollectionEndpoint(this.router, OpeningHourCollection),
+      new CollectionEndpoint(this.router, OrderCollection),
+      new CollectionEndpoint(this.router, PaymentCollection),
+      new CollectionEndpoint(this.router, UserDetailCollection),
+      new CollectionEndpoint(this.router, PendingPasswordResetCollection),
+      new CollectionEndpoint(this.router, EmailValidationCollection),
+      new CollectionEndpoint(this.router, MessageCollection),
+      new CollectionEndpoint(this.router, StandMatchCollection),
+      new CollectionEndpoint(this.router, UserMatchCollection),
+      new CollectionEndpoint(this.router, InvoiceCollection),
+      new CollectionEndpoint(this.router, CompanyCollection),
+      new CollectionEndpoint(this.router, UniqueItemCollection),
+      new CollectionEndpoint(this.router, EditableTextCollection),
+      new CollectionEndpoint(this.router, SignatureCollection),
     ];
 
     for (const collectionEndpoint of collectionEndpoints) {

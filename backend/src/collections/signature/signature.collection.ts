@@ -3,10 +3,10 @@ import { SignatureGetIdHook } from "@backend/collections/signature/hooks/signatu
 import { SignaturePostHook } from "@backend/collections/signature/hooks/signature.post.hook";
 import { CheckGuardianSignatureOperation } from "@backend/collections/signature/operations/check-guardian-signature.operation";
 import { GuardianSignatureOperation } from "@backend/collections/signature/operations/guardian-signature.operation";
-import { SignatureModel } from "@backend/collections/signature/signature.model";
+import { BlStorage } from "@backend/storage/bl-storage";
 
 export const SignatureCollection: BlCollection = {
-  model: SignatureModel,
+  storage: BlStorage.Signatures,
   documentPermission: {
     viewableForPermission: "employee",
   },

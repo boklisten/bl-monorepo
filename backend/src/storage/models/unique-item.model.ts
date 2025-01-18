@@ -1,11 +1,10 @@
-import { BlModel } from "@backend/collections/bl-collection";
-import { ToSchema } from "@backend/helper/typescript-helpers";
+import { BlModel } from "@backend/storage/bl-storage";
 import { UniqueItem } from "@shared/unique-item/unique-item";
 import { Schema } from "mongoose";
 
 export const UniqueItemModel: BlModel<UniqueItem> = {
   name: "uniqueitems",
-  schema: new Schema<ToSchema<UniqueItem>>({
+  schema: new Schema({
     blid: {
       type: String,
       required: true,

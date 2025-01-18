@@ -1,18 +1,17 @@
 import "mocha";
 
-import { BranchModel } from "@backend/collections/branch/branch.model";
 import { OrderFieldValidator } from "@backend/collections/order/helpers/order-validator/order-field-validator/order-field-validator";
 import { OrderItemValidator } from "@backend/collections/order/helpers/order-validator/order-item-validator/order-item-validator";
 import { OrderPlacedValidator } from "@backend/collections/order/helpers/order-validator/order-placed-validator/order-placed-validator";
 import { OrderUserDetailValidator } from "@backend/collections/order/helpers/order-validator/order-user-detail-validator/order-user-detail-validator";
 import { OrderValidator } from "@backend/collections/order/helpers/order-validator/order-validator";
-import { BlStorage } from "@backend/storage/blStorage";
+import { BlStorage } from "@backend/storage/bl-storage";
 import { BlError } from "@shared/bl-error/bl-error";
 import { Branch } from "@shared/branch/branch";
 import { Order } from "@shared/order/order";
 import { expect, use as chaiUse, should } from "chai";
 import chaiAsPromised from "chai-as-promised";
-import sinon from "sinon";
+import sinon, { createSandbox } from "sinon";
 
 chaiUse(chaiAsPromised);
 should();
@@ -21,7 +20,6 @@ describe("OrderValidator", () => {
   let testOrder: Order;
   let testBranch: Branch;
 
-  const branchStorage = new BlStorage(BranchModel);
   const orderUserDetailValidator = new OrderUserDetailValidator();
 
   const orderItemValidator = new OrderItemValidator();
@@ -30,7 +28,6 @@ describe("OrderValidator", () => {
   const orderValidator: OrderValidator = new OrderValidator(
     orderItemValidator,
     orderPlacedValidator,
-    branchStorage,
     orderFieldValidator,
     orderUserDetailValidator,
   );
@@ -43,38 +40,46 @@ describe("OrderValidator", () => {
 
   // @ts-expect-error fixme: auto ignored
   let orderUserDetailValidatorShouldResolve;
+  let sandbox: sinon.SinonSandbox;
+  beforeEach(() => {
+    sandbox = createSandbox();
+    sandbox.stub(BlStorage.Branches, "get").callsFake((id) => {
+      if (id !== testBranch.id) {
+        return Promise.reject(new BlError("not found").code(702));
+      }
 
-  sinon.stub(branchStorage, "get").callsFake((id) => {
-    if (id !== testBranch.id) {
-      return Promise.reject(new BlError("not found").code(702));
-    }
+      return Promise.resolve(testBranch);
+    });
 
-    return Promise.resolve(testBranch);
+    sandbox.stub(orderItemValidator, "validate").callsFake((order) => {
+      // @ts-expect-error fixme: auto ignored
+      if (!orderItemShouldResolve) {
+        return Promise.reject(new BlError("orderItems not valid"));
+      }
+      return Promise.resolve(true);
+    });
+
+    sandbox.stub(orderPlacedValidator, "validate").callsFake((order: Order) => {
+      // @ts-expect-error fixme: auto ignored
+      if (!orderPlacedShouldResolve) {
+        return Promise.reject(new BlError("validation of order.placed failed"));
+      }
+      return Promise.resolve(true);
+    });
+
+    sandbox
+      .stub(orderUserDetailValidator, "validate")
+      .callsFake((order: Order) => {
+        // @ts-expect-error fixme: auto ignored
+        if (!orderUserDetailValidatorShouldResolve) {
+          return Promise.reject(new BlError("validation of UserDetail failed"));
+        }
+
+        return Promise.resolve(true);
+      });
   });
-
-  sinon.stub(orderItemValidator, "validate").callsFake((order) => {
-    // @ts-expect-error fixme: auto ignored
-    if (!orderItemShouldResolve) {
-      return Promise.reject(new BlError("orderItems not valid"));
-    }
-    return Promise.resolve(true);
-  });
-
-  sinon.stub(orderPlacedValidator, "validate").callsFake((order: Order) => {
-    // @ts-expect-error fixme: auto ignored
-    if (!orderPlacedShouldResolve) {
-      return Promise.reject(new BlError("validation of order.placed failed"));
-    }
-    return Promise.resolve(true);
-  });
-
-  sinon.stub(orderUserDetailValidator, "validate").callsFake((order: Order) => {
-    // @ts-expect-error fixme: auto ignored
-    if (!orderUserDetailValidatorShouldResolve) {
-      return Promise.reject(new BlError("validation of UserDetail failed"));
-    }
-
-    return Promise.resolve(true);
+  afterEach(() => {
+    sandbox.restore();
   });
 
   describe("#validate()", () => {

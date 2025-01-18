@@ -1,14 +1,13 @@
 import { LocalLoginHandler } from "@backend/auth/local/local-login.handler";
 import { ConfirmPendingPasswordResetOperation } from "@backend/collections/pending-password-reset/operations/confirm-pending-password-reset.operation";
-import { PendingPasswordResetModel } from "@backend/collections/pending-password-reset/pending-password-reset.model";
 import { SeCrypto } from "@backend/crypto/se.crypto";
 import { BlApiRequest } from "@backend/request/bl-api-request";
-import { BlStorage } from "@backend/storage/blStorage";
+import { BlStorage } from "@backend/storage/bl-storage";
 import { BlError } from "@shared/bl-error/bl-error";
 import { PendingPasswordReset } from "@shared/password-reset/pending-password-reset";
 import { expect, use as chaiUse, should } from "chai";
 import chaiAsPromised from "chai-as-promised";
-import sinon from "sinon";
+import sinon, { createSandbox } from "sinon";
 
 import "mocha";
 
@@ -16,19 +15,16 @@ chaiUse(chaiAsPromised);
 should();
 
 describe("ConfirmPendingPasswordResetOperation", () => {
-  const pendingPasswordResetStorage = new BlStorage(PendingPasswordResetModel);
   const localLoginHandler = new LocalLoginHandler();
   const confirmPendingPasswordResetOperation =
-    new ConfirmPendingPasswordResetOperation(
-      pendingPasswordResetStorage,
-      localLoginHandler,
-    );
+    new ConfirmPendingPasswordResetOperation(localLoginHandler);
   let testBlApiRequest: BlApiRequest;
   let testPendingPasswordReset: PendingPasswordReset;
   let localLoginUpdateSuccess: boolean;
   const testToken = "hablebable";
   const testSalt = "salt";
   let tokenHash: string;
+  let sandbox: sinon.SinonSandbox;
 
   beforeEach(async () => {
     tokenHash = await new SeCrypto().hash(testToken, testSalt);
@@ -49,28 +45,32 @@ describe("ConfirmPendingPasswordResetOperation", () => {
     };
 
     localLoginUpdateSuccess = true;
-  });
 
-  sinon.stub(pendingPasswordResetStorage, "get").callsFake((id) => {
-    if (id !== testPendingPasswordReset.id) {
-      return Promise.reject(new BlError("not found"));
-    }
+    sandbox = createSandbox();
+    sandbox.stub(BlStorage.PendingPasswordResets, "get").callsFake((id) => {
+      if (id !== testPendingPasswordReset.id) {
+        return Promise.reject(new BlError("not found"));
+      }
 
-    return Promise.resolve(testPendingPasswordReset);
-  });
-
-  sinon
-    .stub(pendingPasswordResetStorage, "update")
-    .callsFake(async (id, data: unknown) => {
-      return Object.assign(testPendingPasswordReset, data);
+      return Promise.resolve(testPendingPasswordReset);
     });
 
-  sinon.stub(localLoginHandler, "setPassword").callsFake(() => {
-    if (localLoginUpdateSuccess) {
-      return Promise.resolve(true);
-    }
+    sandbox
+      .stub(BlStorage.PendingPasswordResets, "update")
+      .callsFake(async (id, data: unknown) => {
+        return Object.assign(testPendingPasswordReset, data);
+      });
 
-    return Promise.reject(new BlError("could not set password"));
+    sandbox.stub(localLoginHandler, "setPassword").callsFake(() => {
+      if (localLoginUpdateSuccess) {
+        return Promise.resolve(true);
+      }
+
+      return Promise.reject(new BlError("could not set password"));
+    });
+  });
+  afterEach(() => {
+    sandbox.restore();
   });
 
   describe("#run", () => {

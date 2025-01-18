@@ -1,8 +1,7 @@
-import { DeliveryModel } from "@backend/collections/delivery/delivery.model";
 import { EmailService } from "@backend/messenger/email/email-service";
 import { MessengerService } from "@backend/messenger/messenger-service";
 import { PdfService } from "@backend/messenger/pdf/pdf-service";
-import { BlStorage } from "@backend/storage/blStorage";
+import { BlStorage } from "@backend/storage/bl-storage";
 import { EmailAttachment } from "@boklisten/bl-email";
 import { CustomerItem } from "@shared/customer-item/customer-item";
 import { Message } from "@shared/message/message";
@@ -12,7 +11,6 @@ import { UserDetail } from "@shared/user/user-detail/user-detail";
 export class Messenger implements MessengerService {
   private emailService = new EmailService();
   private pdfService = new PdfService();
-  private deliveryStorage = new BlStorage(DeliveryModel);
 
   /**
    * send out message(s) to the customer
@@ -81,7 +79,7 @@ export class Messenger implements MessengerService {
     order: Order,
   ): Promise<void> {
     const deliveryId = typeof order.delivery === "string" ? order.delivery : "";
-    const delivery = await this.deliveryStorage.get(deliveryId);
+    const delivery = await BlStorage.Deliveries.get(deliveryId);
     await this.emailService.deliveryInformation(
       customerDetail,
       order,

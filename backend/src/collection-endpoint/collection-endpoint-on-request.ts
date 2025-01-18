@@ -1,8 +1,7 @@
 import { CollectionEndpointMethod } from "@backend/collection-endpoint/collection-endpoint-method";
 import { BlApiRequest } from "@backend/request/bl-api-request";
-import { BlDocument } from "@shared/bl-document/bl-document";
+import { BlStorageData } from "@backend/storage/bl-storage";
 
-export interface CollectionEndpointOnRequest<T extends BlDocument>
-  extends CollectionEndpointMethod<T> {
-  onRequest(blApiRequest: BlApiRequest): Promise<T[]>;
+export interface CollectionEndpointOnRequest extends CollectionEndpointMethod {
+  onRequest(blApiRequest: BlApiRequest): Promise<BlStorageData>;
 }

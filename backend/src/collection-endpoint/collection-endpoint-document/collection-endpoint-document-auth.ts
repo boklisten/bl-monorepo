@@ -5,15 +5,16 @@ import {
 } from "@backend/collections/bl-collection";
 import { isNullish } from "@backend/helper/typescript-helpers";
 import { BlApiRequest } from "@backend/request/bl-api-request";
-import { BlDocument } from "@shared/bl-document/bl-document";
+import { BlStorageData } from "@backend/storage/bl-storage";
 import { BlError } from "@shared/bl-error/bl-error";
-export class CollectionEndpointDocumentAuth<T extends BlDocument> {
+
+export class CollectionEndpointDocumentAuth {
   public validate(
     restriction: BlEndpointRestriction | undefined,
-    docs: T[],
+    docs: BlStorageData,
     blApiRequest: BlApiRequest,
     documentPermission?: BlDocumentPermission,
-  ): Promise<T[]> {
+  ) {
     if (restriction) {
       if (isNullish(docs)) {
         return Promise.reject(new BlError("docs is undefined"));

@@ -1,11 +1,10 @@
-import { BlModel } from "@backend/collections/bl-collection";
-import { ToSchema } from "@backend/helper/typescript-helpers";
+import { BlModel } from "@backend/storage/bl-storage";
 import { Company } from "@shared/company/company";
 import { Schema } from "mongoose";
 
 export const CompanyModel: BlModel<Company> = {
   name: "companies",
-  schema: new Schema<ToSchema<Company>>({
+  schema: new Schema({
     name: {
       type: String,
       required: true,

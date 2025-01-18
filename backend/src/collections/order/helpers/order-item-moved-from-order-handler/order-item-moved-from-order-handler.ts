@@ -1,6 +1,5 @@
-import { OrderModel } from "@backend/collections/order/order.model";
 import { isNullish } from "@backend/helper/typescript-helpers";
-import { BlStorage } from "@backend/storage/blStorage";
+import { BlStorage } from "@backend/storage/bl-storage";
 import { BlError } from "@shared/bl-error/bl-error";
 import { Order } from "@shared/order/order";
 
@@ -11,12 +10,6 @@ interface OrderItemToUpdate {
 }
 
 export class OrderItemMovedFromOrderHandler {
-  private orderStorage: BlStorage<Order>;
-
-  constructor(orderStorage?: BlStorage<Order>) {
-    this.orderStorage = orderStorage ?? new BlStorage(OrderModel);
-  }
-
   public async updateOrderItems(order: Order): Promise<boolean> {
     const orderItemsToUpdate: OrderItemToUpdate[] = order.orderItems
       .filter((orderItem) => orderItem.movedFromOrder)
@@ -46,7 +39,7 @@ export class OrderItemMovedFromOrderHandler {
   private async updateOrderItem(
     orderItemToUpdate: OrderItemToUpdate,
   ): Promise<boolean> {
-    const originalOrder = await this.orderStorage.get(
+    const originalOrder = await BlStorage.Orders.get(
       orderItemToUpdate.originalOrderId,
     );
 
@@ -60,7 +53,7 @@ export class OrderItemMovedFromOrderHandler {
       }
     }
 
-    await this.orderStorage.update(orderItemToUpdate.originalOrderId, {
+    await BlStorage.Orders.update(orderItemToUpdate.originalOrderId, {
       orderItems: originalOrder.orderItems,
     });
     return true;

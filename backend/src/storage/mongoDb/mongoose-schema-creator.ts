@@ -1,4 +1,4 @@
-import { BlModel } from "@backend/collections/bl-collection";
+import { BlModel } from "@backend/storage/bl-storage";
 import mongoose, { Model, Schema } from "mongoose";
 
 export class MongooseModelCreator<T> {

@@ -1,18 +1,16 @@
 import "mocha";
 
-import { DeliveryModel } from "@backend/collections/delivery/delivery.model";
 import { PaymentDibsConfirmer } from "@backend/collections/payment/helpers/dibs/payment-dibs-confirmer";
 import { PaymentHandler } from "@backend/collections/payment/helpers/payment-handler";
-import { PaymentModel } from "@backend/collections/payment/payment.model";
 import { DibsPaymentService } from "@backend/payment/dibs/dibs-payment.service";
-import { BlStorage } from "@backend/storage/blStorage";
+import { BlStorage } from "@backend/storage/bl-storage";
 import { BlError } from "@shared/bl-error/bl-error";
 import { Delivery } from "@shared/delivery/delivery";
 import { Order } from "@shared/order/order";
 import { Payment } from "@shared/payment/payment";
 import { expect, use as chaiUse, should } from "chai";
 import chaiAsPromised from "chai-as-promised";
-import sinon from "sinon";
+import sinon, { createSandbox } from "sinon";
 
 chaiUse(chaiAsPromised);
 should();
@@ -20,15 +18,9 @@ should();
 describe("PaymentHandler", () => {
   let testOrder: Order;
 
-  const paymentStorage = new BlStorage(PaymentModel);
   const dibsPaymentService = new DibsPaymentService();
   const paymentDibsConfirmer = new PaymentDibsConfirmer(dibsPaymentService);
-  const deliveryStorage = new BlStorage(DeliveryModel);
-  const paymentHandler = new PaymentHandler(
-    paymentStorage,
-    paymentDibsConfirmer,
-    deliveryStorage,
-  );
+  const paymentHandler = new PaymentHandler(paymentDibsConfirmer);
 
   beforeEach(() => {
     testOrder = {
@@ -44,16 +36,21 @@ describe("PaymentHandler", () => {
     } as Order;
   });
 
-  const paymentDibsConfirmStub = sinon.stub(paymentDibsConfirmer, "confirm");
-  const paymentStorageGetManyStub = sinon.stub(paymentStorage, "getMany");
-  const paymentStorageUpdateStub = sinon.stub(paymentStorage, "update");
-  const deliveryGetStub = sinon.stub(deliveryStorage, "get");
+  let paymentDibsConfirmStub: sinon.SinonStub;
+  let paymentStorageGetManyStub: sinon.SinonStub;
+  let paymentStorageUpdateStub: sinon.SinonStub;
+  let deliveryGetStub: sinon.SinonStub;
+  let sandbox: sinon.SinonSandbox;
 
   beforeEach(() => {
-    paymentDibsConfirmStub.reset();
-    paymentStorageGetManyStub.reset();
-    paymentStorageUpdateStub.reset();
-    deliveryGetStub.reset();
+    sandbox = createSandbox();
+    paymentDibsConfirmStub = sandbox.stub(paymentDibsConfirmer, "confirm");
+    paymentStorageGetManyStub = sandbox.stub(BlStorage.Payments, "getMany");
+    paymentStorageUpdateStub = sandbox.stub(BlStorage.Payments, "update");
+    deliveryGetStub = sandbox.stub(BlStorage.Deliveries, "get");
+  });
+  afterEach(() => {
+    sandbox.restore();
   });
 
   describe("confirmPayments()", () => {

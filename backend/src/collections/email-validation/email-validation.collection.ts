@@ -1,10 +1,10 @@
 import { BlCollection } from "@backend/collections/bl-collection";
-import { EmailValidationModel } from "@backend/collections/email-validation/email-validation.model";
 import { EmailValidationPostHook } from "@backend/collections/email-validation/hooks/email-validation-post.hook";
 import { EmailValidationConfirmOperation } from "@backend/collections/email-validation/operations/email-validation-confirm.operation";
+import { BlStorage } from "@backend/storage/bl-storage";
 
 export const EmailValidationCollection: BlCollection = {
-  model: EmailValidationModel,
+  storage: BlStorage.EmailValidations,
   endpoints: [
     {
       method: "post",

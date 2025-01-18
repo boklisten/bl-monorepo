@@ -1,9 +1,8 @@
-import { Signature } from "@backend/collections/signature/signature.model";
 import { logger } from "@backend/logger/logger";
-import { BlStorage } from "@backend/storage/blStorage";
+import { BlStorage } from "@backend/storage/bl-storage";
+import { Signature } from "@backend/storage/models/signature.model";
 import { Transformer } from "@napi-rs/image";
 import { BlError } from "@shared/bl-error/bl-error";
-import { Order } from "@shared/order/order";
 import {
   SerializedSignature,
   SIGNATURE_NUM_MONTHS_VALID,
@@ -44,12 +43,11 @@ export async function deserializeSignature(
 
 export async function getValidUserSignature(
   userDetail: UserDetail,
-  signatureStorage: BlStorage<Signature>,
 ): Promise<Signature | null> {
   const newestSignatureId = userDetail.signatures.at(-1);
   if (newestSignatureId == undefined) return null;
 
-  const signature = await signatureStorage.get(newestSignatureId);
+  const signature = await BlStorage.Signatures.get(newestSignatureId);
   if (!signatureIsValidForUser(userDetail, signature)) {
     return null;
   }
@@ -59,9 +57,8 @@ export async function getValidUserSignature(
 
 export async function userHasValidSignature(
   userDetail: UserDetail,
-  signatureStorage: BlStorage<Signature>,
 ): Promise<boolean> {
-  return (await getValidUserSignature(userDetail, signatureStorage)) != null;
+  return (await getValidUserSignature(userDetail)) != null;
 }
 
 export function signatureIsValidForUser(
@@ -101,41 +98,32 @@ function isValidBase64(input: string): boolean {
   return Buffer.from(input, "base64").toString("base64") === input;
 }
 
-export async function signOrders(
-  orderStorage: BlStorage<Order>,
-  userDetail: UserDetail,
-) {
+export async function signOrders(userDetail: UserDetail) {
   if (!(userDetail.orders && userDetail.orders.length > 0)) {
     return;
   }
-  const orders = await orderStorage.getMany(userDetail.orders);
+  const orders = await BlStorage.Orders.getMany(userDetail.orders);
   await Promise.all(
     orders
       .filter((order) => order.pendingSignature)
       .map(async (order) => {
-        return await orderStorage
-          .update(order.id, { pendingSignature: false })
-          .catch((error) =>
-            logger.error(
-              `While processing new signature, unable to update order ${order.id}: ${error}`,
-            ),
-          );
+        return await BlStorage.Orders.update(order.id, {
+          pendingSignature: false,
+        }).catch((error) =>
+          logger.error(
+            `While processing new signature, unable to update order ${order.id}: ${error}`,
+          ),
+        );
       }),
   );
 }
 
-export async function isGuardianSignatureRequired(
-  userDetail: UserDetail,
-  signatureStorage: BlStorage<Signature>,
-) {
+export async function isGuardianSignatureRequired(userDetail: UserDetail) {
   if (!isUnderage(userDetail)) {
     return false;
   }
 
-  const latestValidSignature = await getValidUserSignature(
-    userDetail,
-    signatureStorage,
-  );
+  const latestValidSignature = await getValidUserSignature(userDetail);
   return (
     latestValidSignature === null || !latestValidSignature.signedByGuardian
   );

@@ -1,11 +1,8 @@
 import "mocha";
 
-import { CustomerItemModel } from "@backend/collections/customer-item/customer-item.model";
 import { CustomerItemPostHook } from "@backend/collections/customer-item/hooks/customer-item-post.hook";
 import { CustomerItemValidator } from "@backend/collections/customer-item/validators/customer-item-validator";
-import { OrderModel } from "@backend/collections/order/order.model";
-import { UserDetailModel } from "@backend/collections/user-detail/user-detail.model";
-import { BlStorage } from "@backend/storage/blStorage";
+import { BlStorage } from "@backend/storage/bl-storage";
 import { BlError } from "@shared/bl-error/bl-error";
 import { CustomerItem } from "@shared/customer-item/customer-item";
 import { Order } from "@shared/order/order";
@@ -13,7 +10,7 @@ import { AccessToken } from "@shared/token/access-token";
 import { UserDetail } from "@shared/user/user-detail/user-detail";
 import { expect, use as chaiUse, should } from "chai";
 import chaiAsPromised from "chai-as-promised";
-import sinon from "sinon";
+import sinon, { createSandbox } from "sinon";
 import sinonChai from "sinon-chai";
 
 chaiUse(chaiAsPromised);
@@ -21,22 +18,19 @@ should();
 chaiUse(sinonChai);
 
 describe("CustomerItemPostHook", () => {
+  let sandbox: sinon.SinonSandbox;
   let testCustomerItem: CustomerItem;
   let testOrder: Order;
   let testAccessToken: AccessToken;
   let validateCustomerItem: boolean;
   let testUserDetail: UserDetail;
-  const customerItemStorage = new BlStorage(CustomerItemModel);
-  const userDetailStorage = new BlStorage(UserDetailModel);
-  const orderStorage = new BlStorage(OrderModel);
   const customerItemValidator = new CustomerItemValidator();
-  const customerItemPostHook = new CustomerItemPostHook(
-    customerItemValidator,
-    userDetailStorage,
-    orderStorage,
-  );
+  const customerItemPostHook = new CustomerItemPostHook(customerItemValidator);
+  let orderUpdateStub: sinon.SinonStub;
+  let userDetailStub: sinon.SinonStub;
 
   beforeEach(() => {
+    sandbox = createSandbox();
     testAccessToken = {
       sub: "user1",
       permission: "customer",
@@ -104,50 +98,54 @@ describe("CustomerItemPostHook", () => {
     };
 
     validateCustomerItem = true;
-  });
 
-  sinon.stub(orderStorage, "get").callsFake((id) => {
-    if (id !== testOrder.id) {
-      return Promise.reject(new BlError("order not found"));
-    }
-    return Promise.resolve(testOrder);
-  });
-
-  const orderUpdateStub = sinon
-    .stub(orderStorage, "update")
-    .callsFake((id: string, data: any) => {
+    sandbox.stub(BlStorage.Orders, "get").callsFake((id) => {
+      if (id !== testOrder.id) {
+        return Promise.reject(new BlError("order not found"));
+      }
       return Promise.resolve(testOrder);
     });
 
-  sinon
-    .stub(customerItemValidator, "validate")
-    .callsFake((customerItem: CustomerItem) => {
-      if (!validateCustomerItem) {
-        return Promise.reject("could not validate");
+    orderUpdateStub = sandbox
+      .stub(BlStorage.Orders, "update")
+      .callsFake((id: string, data: any) => {
+        return Promise.resolve(testOrder);
+      });
+
+    sandbox
+      .stub(customerItemValidator, "validate")
+      .callsFake((customerItem: CustomerItem) => {
+        if (!validateCustomerItem) {
+          return Promise.reject("could not validate");
+        }
+        return Promise.resolve(true);
+      });
+
+    sandbox.stub(BlStorage.CustomerItems, "get").callsFake((id) => {
+      if (id !== testCustomerItem.id) {
+        return Promise.reject(new BlError("customerItem not found"));
       }
-      return Promise.resolve(true);
+      return Promise.resolve(testCustomerItem);
     });
 
-  sinon.stub(userDetailStorage, "get").callsFake((id) => {
-    if (id !== testUserDetail.id) {
-      return Promise.reject(new BlError("userDetail not found"));
-    }
+    sandbox.stub(BlStorage.UserDetails, "get").callsFake((id) => {
+      if (id !== testUserDetail.id) {
+        return Promise.reject(new BlError("userDetail not found"));
+      }
 
-    return Promise.resolve(testUserDetail);
-  });
-
-  sinon.stub(customerItemStorage, "get").callsFake((id) => {
-    if (id !== testCustomerItem.id) {
-      return Promise.reject(new BlError("customerItem not found"));
-    }
-    return Promise.resolve(testCustomerItem);
-  });
-
-  const userDetailStub = sinon
-    .stub(userDetailStorage, "update")
-    .callsFake((id: string, data: any) => {
       return Promise.resolve(testUserDetail);
     });
+
+    userDetailStub = sandbox
+      .stub(BlStorage.UserDetails, "update")
+      .callsFake((id: string, data: any) => {
+        return Promise.resolve(testUserDetail);
+      });
+  });
+
+  afterEach(() => {
+    sandbox.restore();
+  });
 
   describe("before()", () => {
     it("should reject if customerItem parameter is undefined", () => {

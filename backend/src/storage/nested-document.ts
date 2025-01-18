@@ -1,6 +1,6 @@
-import { BlModel } from "@backend/collections/bl-collection";
+import { BlStorageHandler } from "@backend/storage/bl-storage";
 
 export interface NestedDocument {
   field: string;
-  model: BlModel;
+  storage: BlStorageHandler;
 }

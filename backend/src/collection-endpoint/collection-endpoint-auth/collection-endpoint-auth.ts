@@ -39,7 +39,7 @@ export class CollectionEndpointAuth {
   private validateAuth(
     restriction: BlEndpointRestriction | undefined,
     accessToken: AccessToken,
-  ): boolean {
+  ) {
     if (!accessToken) {
       throw new BlError("accessToken invalid").code(910);
     }

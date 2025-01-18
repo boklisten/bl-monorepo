@@ -1,38 +1,26 @@
 import { CollectionEndpointMethod } from "@backend/collection-endpoint/collection-endpoint-method";
 import { CollectionEndpointOnRequest } from "@backend/collection-endpoint/collection-endpoint-on-request";
 import { BlApiRequest } from "@backend/request/bl-api-request";
-import { BlDocument } from "@shared/bl-document/bl-document";
 import { BlError } from "@shared/bl-error/bl-error";
 
-export class CollectionEndpointDelete<T extends BlDocument>
-  extends CollectionEndpointMethod<T>
-  implements CollectionEndpointOnRequest<T>
+export class CollectionEndpointDelete
+  extends CollectionEndpointMethod
+  implements CollectionEndpointOnRequest
 {
-  override onRequest(blApiRequest: BlApiRequest): Promise<T[]> {
-    return (
-      this.documentStorage
-
+  override async onRequest(blApiRequest: BlApiRequest) {
+    const doc = await this.collection.storage
+      // @ts-expect-error fixme: auto ignored
+      .remove(blApiRequest.documentId, {
         // @ts-expect-error fixme: auto ignored
-        .remove(blApiRequest.documentId, {
-          // @ts-expect-error fixme: auto ignored
-          id: blApiRequest.user.id,
-
-          // @ts-expect-error fixme: auto ignored
-          permission: blApiRequest.user.permission,
-        })
-        .then((document_: T) => {
-          return [document_];
-        })
-        .catch((blError) => {
-          throw blError;
-        })
-    );
+        id: blApiRequest.user.id,
+        // @ts-expect-error fixme: auto ignored
+        permission: blApiRequest.user.permission,
+      });
+    return [doc];
   }
 
-  override async validateDocumentPermission(
-    blApiRequest: BlApiRequest,
-  ): Promise<BlApiRequest> {
-    const document_ = await this.documentStorage.get(
+  override async validateDocumentPermission(blApiRequest: BlApiRequest) {
+    const document_ = await this.collection.storage.get(
       blApiRequest.documentId ?? "",
     );
     if (

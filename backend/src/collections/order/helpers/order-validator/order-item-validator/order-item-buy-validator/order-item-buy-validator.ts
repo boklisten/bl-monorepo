@@ -1,6 +1,5 @@
-import { OrderModel } from "@backend/collections/order/order.model";
 import { PriceService } from "@backend/price/price.service";
-import { BlStorage } from "@backend/storage/blStorage";
+import { BlStorage } from "@backend/storage/bl-storage";
 import { BlError } from "@shared/bl-error/bl-error";
 import { Item } from "@shared/item/item";
 import { Order } from "@shared/order/order";
@@ -8,11 +7,9 @@ import { OrderItem } from "@shared/order/order-item/order-item";
 
 export class OrderItemBuyValidator {
   private priceService: PriceService;
-  private orderStorage: BlStorage<Order>;
 
-  constructor(priceService?: PriceService, orderStorage?: BlStorage<Order>) {
+  constructor(priceService?: PriceService) {
     this.priceService = priceService ?? new PriceService({ roundDown: true });
-    this.orderStorage = orderStorage ?? new BlStorage(OrderModel);
   }
 
   public async validate(
@@ -67,8 +64,7 @@ export class OrderItemBuyValidator {
       return true;
     }
 
-    await this.orderStorage
-      .get(orderItem.movedFromOrder)
+    await BlStorage.Orders.get(orderItem.movedFromOrder)
       .then((order: Order) => {
         if (
           (!order.payments || order.payments.length <= 0) &&

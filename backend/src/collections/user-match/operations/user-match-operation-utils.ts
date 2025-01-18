@@ -1,20 +1,16 @@
 import { OrderActive } from "@backend/collections/order/helpers/order-active/order-active";
 import { isNullish } from "@backend/helper/typescript-helpers";
-import { BlStorage } from "@backend/storage/blStorage";
+import { BlStorage } from "@backend/storage/bl-storage";
 import { BlError } from "@shared/bl-error/bl-error";
-import { Branch } from "@shared/branch/branch";
 import { CustomerItem } from "@shared/customer-item/customer-item";
-import { Item } from "@shared/item/item";
 import { Order } from "@shared/order/order";
 import { OrderItem } from "@shared/order/order-item/order-item";
 
 export async function createMatchReceiveOrder(
   customerItem: CustomerItem,
   userDetailId: string,
-  itemStorage: BlStorage<Item>,
-  branchStorage: BlStorage<Branch>,
 ): Promise<Order> {
-  const item = await itemStorage.get(customerItem.item);
+  const item = await BlStorage.Items.get(customerItem.item);
 
   if (!item) {
     throw new BlError("Failed to get item");
@@ -43,7 +39,7 @@ export async function createMatchReceiveOrder(
   if (!originalReceiverOrderInfo) {
     throw new BlError("No receiver order for match transfer item").code(200);
   }
-  const branch = await branchStorage.get(
+  const branch = await BlStorage.Branches.get(
     originalReceiverOrderInfo.order.branch,
   );
 
@@ -99,10 +95,8 @@ export async function createMatchReceiveOrder(
 export async function createMatchDeliverOrder(
   customerItem: CustomerItem,
   userDetailId: string,
-  itemStorage: BlStorage<Item>,
-  branchStorage: BlStorage<Branch>,
 ): Promise<Order> {
-  const item = await itemStorage.get(customerItem.item);
+  const item = await BlStorage.Items.get(customerItem.item);
 
   if (!item) {
     throw new BlError("Failed to get item");
@@ -111,7 +105,9 @@ export async function createMatchDeliverOrder(
   if (isNullish(customerItem.handoutInfo)) {
     throw new BlError("No handout-info for customerItem").code(200);
   }
-  const branch = await branchStorage.get(customerItem.handoutInfo.handoutById);
+  const branch = await BlStorage.Branches.get(
+    customerItem.handoutInfo.handoutById,
+  );
 
   return {
     // @ts-expect-error id will be auto-generated

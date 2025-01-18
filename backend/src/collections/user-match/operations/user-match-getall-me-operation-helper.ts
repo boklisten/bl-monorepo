@@ -1,5 +1,5 @@
 import { SEDbQuery } from "@backend/query/se.db-query";
-import { BlStorage } from "@backend/storage/blStorage";
+import { BlStorage } from "@backend/storage/bl-storage";
 import { BlError } from "@shared/bl-error/bl-error";
 import { Item } from "@shared/item/item";
 import {
@@ -8,7 +8,6 @@ import {
   UserMatchWithDetails,
 } from "@shared/match/match-dtos";
 import { UserMatch } from "@shared/match/user-match";
-import { UniqueItem } from "@shared/unique-item/unique-item";
 import { UserDetail } from "@shared/user/user-detail/user-detail";
 
 function selectMatchRelevantUserDetails(
@@ -90,9 +89,6 @@ function addDetailsToMatch(
 
 export async function addDetailsToUserMatches(
   userMatches: UserMatch[],
-  userDetailStorage: BlStorage<UserDetail>,
-  itemStorage: BlStorage<Item>,
-  uniqueItemStorage: BlStorage<UniqueItem>,
 ): Promise<UserMatchWithDetails[]> {
   const customers = Array.from(
     new Set(
@@ -105,9 +101,10 @@ export async function addDetailsToUserMatches(
   const userDetailsMap = new Map(
     await Promise.all(
       customers.map((id) =>
-        userDetailStorage
-          .get(id)
-          .then((detail): [string, UserDetail] => [id, detail]),
+        BlStorage.UserDetails.get(id).then((detail): [string, UserDetail] => [
+          id,
+          detail,
+        ]),
       ),
     ),
   );
@@ -138,12 +135,9 @@ export async function addDetailsToUserMatches(
       blIds.map((blId) => {
         const uniqueItemQuery = new SEDbQuery();
         uniqueItemQuery.stringFilters = [{ fieldName: "blid", value: blId }];
-        return uniqueItemStorage
-          .getByQuery(uniqueItemQuery)
-          .then((uniqueItems): [string, string] => [
-            blId,
-            uniqueItems[0]?.item ?? "",
-          ]);
+        return BlStorage.UniqueItems.getByQuery(uniqueItemQuery).then(
+          (uniqueItems): [string, string] => [blId, uniqueItems[0]?.item ?? ""],
+        );
       }),
     ),
   );
@@ -151,7 +145,7 @@ export async function addDetailsToUserMatches(
     new Set([...items, ...blIdsToItemIdMap.values()]),
   );
   const itemsMap = new Map(
-    (await itemStorage.getMany(allItems)).map((item) => [item.id, item]),
+    (await BlStorage.Items.getMany(allItems)).map((item) => [item.id, item]),
   );
 
   return userMatches.map((userMatch) =>

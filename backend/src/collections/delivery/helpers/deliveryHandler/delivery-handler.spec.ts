@@ -1,24 +1,23 @@
 import "mocha";
 
 import { DeliveryHandler } from "@backend/collections/delivery/helpers/deliveryHandler/delivery-handler";
-import { OrderModel } from "@backend/collections/order/order.model";
-import { BlStorage } from "@backend/storage/blStorage";
+import { BlStorage } from "@backend/storage/bl-storage";
 import { BlError } from "@shared/bl-error/bl-error";
 import { Delivery } from "@shared/delivery/delivery";
 import { Order } from "@shared/order/order";
 import { expect, use as chaiUse, should } from "chai";
 import chaiAsPromised from "chai-as-promised";
-import sinon from "sinon";
+import sinon, { createSandbox } from "sinon";
 
 chaiUse(chaiAsPromised);
 should();
 
 let testOrder: Order;
 let testDelivery: Delivery;
-const orderStorage = new BlStorage(OrderModel);
 let canUpdateOrder = true;
 
-const deliveryHandler = new DeliveryHandler(orderStorage);
+const deliveryHandler = new DeliveryHandler();
+let sandbox: sinon.SinonSandbox;
 
 describe("DeliveryHandler", () => {
   beforeEach(() => {
@@ -45,12 +44,18 @@ describe("DeliveryHandler", () => {
         to: "0560",
       },
     };
+    sandbox = createSandbox();
+    sandbox
+      .stub(BlStorage.Orders, "update")
+      .callsFake((id: string, data: any) => {
+        if (!canUpdateOrder) {
+          return Promise.reject(new BlError("could not update"));
+        }
+        return Promise.resolve(testOrder);
+      });
   });
-  sinon.stub(orderStorage, "update").callsFake((id: string, data: any) => {
-    if (!canUpdateOrder) {
-      return Promise.reject(new BlError("could not update"));
-    }
-    return Promise.resolve(testOrder);
+  afterEach(() => {
+    sandbox.restore();
   });
 
   describe("updateOrderBasedOnMethod()", () => {

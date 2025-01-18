@@ -1,11 +1,10 @@
-import { BlModel } from "@backend/collections/bl-collection";
-import { ToSchema } from "@backend/helper/typescript-helpers";
+import { BlModel } from "@backend/storage/bl-storage";
 import { Invoice } from "@shared/invoice/invoice";
 import { Schema } from "mongoose";
 
 export const InvoiceModel: BlModel<Invoice> = {
   name: "invoices",
-  schema: new Schema<ToSchema<Invoice>>({
+  schema: new Schema({
     duedate: {
       type: Date,
       required: true,

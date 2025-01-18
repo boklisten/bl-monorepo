@@ -3,14 +3,13 @@ import "mocha";
 import { DeliveryBranchHandler } from "@backend/collections/delivery/helpers/deliveryBranch/delivery-branch-handler";
 import { DeliveryBringHandler } from "@backend/collections/delivery/helpers/deliveryBring/delivery-bring-handler";
 import { DeliveryValidator } from "@backend/collections/delivery/helpers/deliveryValidator/delivery-validator";
-import { OrderModel } from "@backend/collections/order/order.model";
-import { BlStorage } from "@backend/storage/blStorage";
+import { BlStorage } from "@backend/storage/bl-storage";
 import { BlError } from "@shared/bl-error/bl-error";
 import { Delivery } from "@shared/delivery/delivery";
 import { Order } from "@shared/order/order";
 import { expect, use as chaiUse, should } from "chai";
 import chaiAsPromised from "chai-as-promised";
-import sinon from "sinon";
+import sinon, { createSandbox } from "sinon";
 
 chaiUse(chaiAsPromised);
 should();
@@ -20,7 +19,6 @@ describe("DeliveryValidator", () => {
   let testOrder: Order;
   const deliveryBranchHandler = new DeliveryBranchHandler();
   const deliveryBringHandler = new DeliveryBringHandler();
-  const orderStorage = new BlStorage(OrderModel);
   const deliveryValidator = new DeliveryValidator(
     deliveryBranchHandler,
     deliveryBringHandler,
@@ -28,35 +26,41 @@ describe("DeliveryValidator", () => {
 
   let deliveryBranchValidation = true;
   let deliveryBringValidation = true;
+  let sandbox: sinon.SinonSandbox;
+  beforeEach(() => {
+    sandbox = createSandbox();
+    sandbox.stub(BlStorage.Orders, "get").callsFake((id) => {
+      if (id !== testOrder.id) {
+        return Promise.reject(new BlError("not found").code(702));
+      }
+      return Promise.resolve(testOrder);
+    });
 
-  sinon.stub(orderStorage, "get").callsFake((id) => {
-    if (id !== testOrder.id) {
-      return Promise.reject(new BlError("not found").code(702));
-    }
-    return Promise.resolve(testOrder);
+    sandbox
+      .stub(deliveryBranchHandler, "validate")
+      .callsFake((delivery: Delivery) => {
+        if (!deliveryBranchValidation) {
+          return Promise.reject(
+            new BlError('validation of delivery.method "branch" failed'),
+          );
+        }
+        return Promise.resolve(true);
+      });
+
+    sandbox
+      .stub(deliveryBringHandler, "validate")
+      .callsFake((delivery: Delivery) => {
+        if (!deliveryBringValidation) {
+          return Promise.reject(
+            new BlError('validation of delivery.method "bring" failed'),
+          );
+        }
+        return Promise.resolve(true);
+      });
   });
-
-  sinon
-    .stub(deliveryBranchHandler, "validate")
-    .callsFake((delivery: Delivery) => {
-      if (!deliveryBranchValidation) {
-        return Promise.reject(
-          new BlError('validation of delivery.method "branch" failed'),
-        );
-      }
-      return Promise.resolve(true);
-    });
-
-  sinon
-    .stub(deliveryBringHandler, "validate")
-    .callsFake((delivery: Delivery) => {
-      if (!deliveryBringValidation) {
-        return Promise.reject(
-          new BlError('validation of delivery.method "bring" failed'),
-        );
-      }
-      return Promise.resolve(true);
-    });
+  afterEach(() => {
+    sandbox.restore();
+  });
 
   describe("validate()", () => {
     beforeEach(() => {

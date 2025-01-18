@@ -1,13 +1,11 @@
 import { BlCollection } from "@backend/collections/bl-collection";
 import { CustomerItemGenerateReportOperation } from "@backend/collections/customer-item/customer-item-generate-report.operation";
-import { CustomerItemModel } from "@backend/collections/customer-item/customer-item.model";
 import { CustomerItemPostHook } from "@backend/collections/customer-item/hooks/customer-item-post.hook";
 import { PublicBlidLookupOperation } from "@backend/collections/customer-item/public-blid-lookup.operation";
-import { ItemModel } from "@backend/collections/item/item.model";
-import { UserDetailModel } from "@backend/collections/user-detail/user-detail.model";
+import { BlStorage } from "@backend/storage/bl-storage";
 
 export const CustomerItemCollection: BlCollection = {
-  model: CustomerItemModel,
+  storage: BlStorage.CustomerItems,
   documentPermission: {
     viewableForPermission: "employee",
   },
@@ -57,11 +55,11 @@ export const CustomerItemCollection: BlCollection = {
       nestedDocuments: [
         {
           field: "customer",
-          model: UserDetailModel,
+          storage: BlStorage.UserDetails,
         },
         {
           field: "item",
-          model: ItemModel,
+          storage: BlStorage.Items,
         },
       ],
       validQueryParams: [

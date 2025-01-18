@@ -1,26 +1,18 @@
 import { LocalLoginHandler } from "@backend/auth/local/local-login.handler";
-import { PendingPasswordResetModel } from "@backend/collections/pending-password-reset/pending-password-reset.model";
 import { SeCrypto } from "@backend/crypto/se.crypto";
 import { Operation } from "@backend/operation/operation";
 import { BlApiRequest } from "@backend/request/bl-api-request";
-import { BlStorage } from "@backend/storage/blStorage";
+import { BlStorage } from "@backend/storage/bl-storage";
 import { BlError } from "@shared/bl-error/bl-error";
 import { BlapiResponse } from "@shared/blapi-response/blapi-response";
 import { PasswordResetConfirmationRequest } from "@shared/password-reset/password-reset-confirmation-request";
 import { PendingPasswordReset } from "@shared/password-reset/pending-password-reset";
 
 export class ConfirmPendingPasswordResetOperation implements Operation {
-  private readonly pendingPasswordResetStorage: BlStorage<PendingPasswordReset>;
   private readonly localLoginHandler: LocalLoginHandler;
   private readonly seCrypto: SeCrypto;
 
-  constructor(
-    pendingPasswordResetStorage?: BlStorage<PendingPasswordReset>,
-    localLoginHandler?: LocalLoginHandler,
-    seCrypto?: SeCrypto,
-  ) {
-    this.pendingPasswordResetStorage =
-      pendingPasswordResetStorage ?? new BlStorage(PendingPasswordResetModel);
+  constructor(localLoginHandler?: LocalLoginHandler, seCrypto?: SeCrypto) {
     this.localLoginHandler = localLoginHandler ?? new LocalLoginHandler();
     this.seCrypto = seCrypto ?? new SeCrypto();
   }
@@ -30,15 +22,15 @@ export class ConfirmPendingPasswordResetOperation implements Operation {
     const passwordResetConfirmationRequest: unknown = blApiRequest.data;
     validatePasswordResetConfirmationRequest(passwordResetConfirmationRequest);
 
-    const pendingPasswordReset = await this.pendingPasswordResetStorage
-      .get(pendingPasswordResetId)
-      .catch((getPasswordResetError) => {
-        throw new BlError(
-          `PendingPasswordReset "${pendingPasswordResetId}" not found or expired`,
-        )
-          .code(702)
-          .add(getPasswordResetError);
-      });
+    const pendingPasswordReset = await BlStorage.PendingPasswordResets.get(
+      pendingPasswordResetId,
+    ).catch((getPasswordResetError) => {
+      throw new BlError(
+        `PendingPasswordReset "${pendingPasswordResetId}" not found or expired`,
+      )
+        .code(702)
+        .add(getPasswordResetError);
+    });
 
     validatePendingPasswordResetNotExpired(pendingPasswordReset);
     validatePendingPasswordResetUnused(pendingPasswordReset);
@@ -54,10 +46,7 @@ export class ConfirmPendingPasswordResetOperation implements Operation {
       this.localLoginHandler,
     );
 
-    await deactivatePendingPasswordReset(
-      pendingPasswordReset,
-      this.pendingPasswordResetStorage,
-    );
+    await deactivatePendingPasswordReset(pendingPasswordReset);
 
     return new BlapiResponse([]);
   }
@@ -163,13 +152,12 @@ async function updatePassword(
 
 async function deactivatePendingPasswordReset(
   pendingPasswordReset: PendingPasswordReset,
-  pendingPasswordResetStorage: BlStorage<PendingPasswordReset>,
 ): Promise<void> {
-  await pendingPasswordResetStorage
-    .update(pendingPasswordReset.id, { active: false })
-    .catch((updateActiveError) => {
-      throw new BlError(
-        `Unable to set PendingPasswordReset ${pendingPasswordReset.id} to not active`,
-      ).add(updateActiveError);
-    });
+  await BlStorage.PendingPasswordResets.update(pendingPasswordReset.id, {
+    active: false,
+  }).catch((updateActiveError) => {
+    throw new BlError(
+      `Unable to set PendingPasswordReset ${pendingPasswordReset.id} to not active`,
+    ).add(updateActiveError);
+  });
 }

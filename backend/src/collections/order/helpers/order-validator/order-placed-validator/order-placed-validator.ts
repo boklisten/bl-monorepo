@@ -1,28 +1,11 @@
-import { DeliveryModel } from "@backend/collections/delivery/delivery.model";
-import { PaymentModel } from "@backend/collections/payment/payment.model";
 import { isNullish } from "@backend/helper/typescript-helpers";
-import { BlStorage } from "@backend/storage/blStorage";
+import { BlStorage } from "@backend/storage/bl-storage";
 import { BlError } from "@shared/bl-error/bl-error";
 import { Delivery } from "@shared/delivery/delivery";
 import { Order } from "@shared/order/order";
 import { Payment } from "@shared/payment/payment";
 
 export class OrderPlacedValidator {
-  private deliveryStorage: BlStorage<Delivery>;
-  private paymentStorage: BlStorage<Payment>;
-
-  constructor(
-    deliveryStorage?: BlStorage<Delivery>,
-    paymentStorage?: BlStorage<Payment>,
-  ) {
-    this.deliveryStorage = deliveryStorage
-      ? deliveryStorage
-      : new BlStorage(DeliveryModel);
-    this.paymentStorage = paymentStorage
-      ? paymentStorage
-      : new BlStorage(PaymentModel);
-  }
-
   public validate(order: Order): Promise<boolean> {
     return new Promise((resolve, reject) => {
       if (!order.placed) {
@@ -46,8 +29,7 @@ export class OrderPlacedValidator {
         return this.validatePayments(order);
       } else {
         // when delivery is attached
-        this.deliveryStorage
-          .get(order.delivery)
+        BlStorage.Deliveries.get(order.delivery)
           .then((delivery: Delivery) => {
             this.validatePayments(order, delivery)
               .then(() => {
@@ -85,8 +67,7 @@ export class OrderPlacedValidator {
     return new Promise((resolve, reject) => {
       const totalOrderAmount = order.amount + (delivery ? delivery.amount : 0);
 
-      this.paymentStorage
-        .getMany(order.payments as string[])
+      BlStorage.Payments.getMany(order.payments as string[])
         .then((payments: Payment[]) => {
           let paymentTotal = 0;
 

@@ -2,13 +2,12 @@ import "mocha";
 
 import { LocalLoginHandler } from "@backend/auth/local/local-login.handler";
 import { LocalLogin } from "@backend/collections/local-login/local-login";
-import { LocalLoginModel } from "@backend/collections/local-login/local-login.model";
 import { SEDbQuery } from "@backend/query/se.db-query";
-import { BlStorage } from "@backend/storage/blStorage";
+import { BlStorage } from "@backend/storage/bl-storage";
 import { BlError } from "@shared/bl-error/bl-error";
 import { expect, use as chaiUse, should } from "chai";
 import chaiAsPromised from "chai-as-promised";
-import sinon from "sinon";
+import sinon, { createSandbox } from "sinon";
 
 chaiUse(chaiAsPromised);
 should();
@@ -23,7 +22,6 @@ const dummyLocalLogin = {
 };
 
 describe("LocalLoginHandler", () => {
-  const localLoginStorage = new BlStorage(LocalLoginModel);
   const baseLocalLogin = {
     id: "1",
     username: "a",
@@ -36,8 +34,9 @@ describe("LocalLoginHandler", () => {
   let testUsername = "";
   let updateSuccess: boolean;
 
-  const localLoginHandler = new LocalLoginHandler(localLoginStorage);
+  const localLoginHandler = new LocalLoginHandler();
 
+  let sandbox: sinon.SinonSandbox;
   beforeEach(() => {
     testUsername = "albert@protonmail.com";
     testLocalLogin = {
@@ -49,32 +48,39 @@ describe("LocalLoginHandler", () => {
       salt: "l",
     };
     updateSuccess = true;
-  });
-
-  sinon.stub(localLoginStorage, "getByQuery").callsFake((query: SEDbQuery) => {
-    return new Promise((resolve, reject) => {
-      // @ts-expect-error fixme: auto ignored
-      if (query.stringFilters[0].value === testUsername) {
-        resolve([dummyLocalLogin]);
-      }
-      reject(new BlError("not found").code(702));
-    });
-  });
-
-  sinon
-    .stub(localLoginStorage, "add")
-    .callsFake((localLogin: any, user: any) => {
-      return new Promise((resolve, reject) => {
-        resolve(testLocalLogin);
+    sandbox = createSandbox();
+    sandbox
+      .stub(BlStorage.LocalLogins, "getByQuery")
+      .callsFake((query: SEDbQuery) => {
+        return new Promise((resolve, reject) => {
+          // @ts-expect-error fixme: auto ignored
+          if (query.stringFilters[0].value === testUsername) {
+            resolve([dummyLocalLogin]);
+          }
+          reject(new BlError("not found").code(702));
+        });
       });
-    });
 
-  sinon.stub(localLoginStorage, "update").callsFake((id: string, data: any) => {
-    if (updateSuccess) {
-      return Promise.resolve(testLocalLogin);
-    }
+    sandbox
+      .stub(BlStorage.LocalLogins, "add")
+      .callsFake((localLogin: any, user: any) => {
+        return new Promise((resolve, reject) => {
+          resolve(testLocalLogin);
+        });
+      });
 
-    return Promise.reject(new BlError("could not update"));
+    sandbox
+      .stub(BlStorage.LocalLogins, "update")
+      .callsFake((id: string, data: any) => {
+        if (updateSuccess) {
+          return Promise.resolve(testLocalLogin);
+        }
+
+        return Promise.reject(new BlError("could not update"));
+      });
+  });
+  afterEach(() => {
+    sandbox.restore();
   });
 
   describe("#create", () => {

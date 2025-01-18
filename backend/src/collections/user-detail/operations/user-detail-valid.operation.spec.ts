@@ -1,47 +1,53 @@
 import "mocha";
 
 import { UserDetailValidOperation } from "@backend/collections/user-detail/operations/user-detail-valid.operation";
-import { UserDetailModel } from "@backend/collections/user-detail/user-detail.model";
 import { BlApiRequest } from "@backend/request/bl-api-request";
 import { SEResponseHandler } from "@backend/response/se.response.handler";
-import { BlStorage } from "@backend/storage/blStorage";
+import { BlStorage } from "@backend/storage/bl-storage";
 import { BlError } from "@shared/bl-error/bl-error";
 import { BlapiResponse } from "@shared/blapi-response/blapi-response";
 import { UserDetail } from "@shared/user/user-detail/user-detail";
 import { expect, use as chaiUse, should } from "chai";
 import chaiAsPromised from "chai-as-promised";
-import sinon from "sinon";
+import sinon, { createSandbox } from "sinon";
 
 chaiUse(chaiAsPromised);
 should();
 
 describe("UserDetailValidOperation", () => {
-  const userDetailStorage = new BlStorage(UserDetailModel);
   const responseHandler = new SEResponseHandler();
   const userDetailValidOperation = new UserDetailValidOperation(
-    userDetailStorage,
     responseHandler,
   );
 
   let testUserDetail: UserDetail;
+  let resHandlerSendResponseStub: sinon.SinonStub;
+  let resHandlerSendErrorResponseStub: sinon.SinonStub;
+  let sandbox: sinon.SinonSandbox;
 
   describe("#run", () => {
-    sinon.stub(userDetailStorage, "get").callsFake((id) => {
-      if (id !== testUserDetail.id) {
-        return Promise.reject(new BlError(`userDetail "${id}" not found`));
-      }
+    beforeEach(() => {
+      sandbox = createSandbox();
+      sandbox.stub(BlStorage.UserDetails, "get").callsFake((id) => {
+        if (id !== testUserDetail.id) {
+          return Promise.reject(new BlError(`userDetail "${id}" not found`));
+        }
 
-      return Promise.resolve(testUserDetail);
+        return Promise.resolve(testUserDetail);
+      });
+
+      resHandlerSendResponseStub = sandbox
+        .stub(responseHandler, "sendResponse")
+        .callsFake((res: any, blApiResponse: BlapiResponse) => {});
+
+      resHandlerSendErrorResponseStub = sandbox
+        .stub(responseHandler, "sendErrorResponse")
+        // @ts-expect-error fixme: auto ignored
+        .callsFake((res: any, blError: BlError) => {});
     });
-
-    const resHandlerSendResponseStub = sinon
-      .stub(responseHandler, "sendResponse")
-      .callsFake((res: any, blApiResponse: BlapiResponse) => {});
-
-    const resHandlerSendErrorResponseStub = sinon
-      .stub(responseHandler, "sendErrorResponse")
-      // @ts-expect-error fixme: auto ignored
-      .callsFake((res: any, blError: BlError) => {});
+    afterEach(() => {
+      sandbox.restore();
+    });
 
     it("should reject if userDetail is not found", (done) => {
       testUserDetail = {

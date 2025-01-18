@@ -1,31 +1,27 @@
 import "mocha";
 
 import { EmailValidation } from "@backend/collections/email-validation/email-validation";
-import { EmailValidationModel } from "@backend/collections/email-validation/email-validation.model";
 import { EmailValidationConfirmOperation } from "@backend/collections/email-validation/operations/email-validation-confirm.operation";
-import { UserDetailModel } from "@backend/collections/user-detail/user-detail.model";
 import { SEResponseHandler } from "@backend/response/se.response.handler";
-import { BlStorage } from "@backend/storage/blStorage";
+import { BlStorage } from "@backend/storage/bl-storage";
 import { BlError } from "@shared/bl-error/bl-error";
 import { BlapiResponse } from "@shared/blapi-response/blapi-response";
 import { UserDetail } from "@shared/user/user-detail/user-detail";
 import { expect, use as chaiUse, should } from "chai";
 import chaiAsPromised from "chai-as-promised";
 import { Request, Response } from "express";
-import sinon from "sinon";
+import sinon, { createSandbox } from "sinon";
 
 chaiUse(chaiAsPromised);
 should();
 
 describe("EmailValidationConfirmOperation", () => {
-  const emailValidationStorage = new BlStorage(EmailValidationModel);
-  const userDetailStorage = new BlStorage(UserDetailModel);
   const resHandler = new SEResponseHandler();
   const emailValidationConfirmOperation = new EmailValidationConfirmOperation(
-    emailValidationStorage,
     resHandler,
-    userDetailStorage,
   );
+  let sandbox: sinon.SinonSandbox;
+  let userDetailStorageUpdateStub: sinon.SinonStub;
 
   const testUserDetail: UserDetail = {
     id: "userDetail1",
@@ -45,6 +41,40 @@ describe("EmailValidationConfirmOperation", () => {
     };
 
     testUserDetailUpdateSucess = true;
+
+    sandbox = createSandbox();
+    sandbox.stub(BlStorage.EmailValidations, "get").callsFake((id) => {
+      if (id !== testEmailValidation.id) {
+        return Promise.reject(new BlError("not found"));
+      }
+
+      return Promise.resolve(testEmailValidation);
+    });
+
+    sandbox.stub(BlStorage.UserDetails, "get").callsFake((id) => {
+      if (id !== testUserDetail.id) {
+        return Promise.reject(new BlError("not found"));
+      }
+
+      return Promise.resolve(testUserDetail);
+    });
+
+    userDetailStorageUpdateStub = sandbox
+      .stub(BlStorage.UserDetails, "update")
+      .callsFake((id: string, data: any) => {
+        if (id !== testUserDetail.id) {
+          return Promise.reject(new BlError("not found"));
+        }
+
+        if (!testUserDetailUpdateSucess) {
+          return Promise.reject(new BlError("could not update"));
+        }
+
+        return Promise.resolve(testUserDetail);
+      });
+  });
+  afterEach(() => {
+    sandbox.restore();
   });
 
   const resHandlerSendErrorStub = sinon
@@ -54,36 +84,6 @@ describe("EmailValidationConfirmOperation", () => {
   const resHandlerSendResponseStub = sinon
     .stub(resHandler, "sendResponse")
     .callsFake(() => {});
-
-  sinon.stub(emailValidationStorage, "get").callsFake((id) => {
-    if (id !== testEmailValidation.id) {
-      return Promise.reject(new BlError("not found"));
-    }
-
-    return Promise.resolve(testEmailValidation);
-  });
-
-  sinon.stub(userDetailStorage, "get").callsFake((id) => {
-    if (id !== testUserDetail.id) {
-      return Promise.reject(new BlError("not found"));
-    }
-
-    return Promise.resolve(testUserDetail);
-  });
-
-  const userDetailStorageUpdateStub = sinon
-    .stub(userDetailStorage, "update")
-    .callsFake((id: string, data: any) => {
-      if (id !== testUserDetail.id) {
-        return Promise.reject(new BlError("not found"));
-      }
-
-      if (!testUserDetailUpdateSucess) {
-        return Promise.reject(new BlError("could not update"));
-      }
-
-      return Promise.resolve(testUserDetail);
-    });
 
   describe("#run", () => {
     it("should reject if no documentId is provided", (done) => {

@@ -1,8 +1,7 @@
 import { APP_CONFIG } from "@backend/application-config";
-import { OrderModel } from "@backend/collections/order/order.model";
 import { isNotNullish } from "@backend/helper/typescript-helpers";
 import { PriceService } from "@backend/price/price.service";
-import { BlStorage } from "@backend/storage/blStorage";
+import { BlStorage } from "@backend/storage/bl-storage";
 import { BlError } from "@shared/bl-error/bl-error";
 import { BranchPaymentInfo } from "@shared/branch/branch-payment-info";
 import { Order } from "@shared/order/order";
@@ -17,14 +16,9 @@ interface BranchPaymentPeriod {
 }
 
 export class OrderItemRentPeriodValidator {
-  private orderStorage: BlStorage<Order>;
   private priceService = new PriceService(
     APP_CONFIG.payment.paymentServiceConfig,
   );
-
-  constructor(orderStorage?: BlStorage<Order>) {
-    this.orderStorage = orderStorage ?? new BlStorage(OrderModel);
-  }
 
   public async validate(
     orderItem: OrderItem,
@@ -115,8 +109,7 @@ export class OrderItemRentPeriodValidator {
       return true;
     }
 
-    return this.orderStorage
-      .get(orderItem.movedFromOrder)
+    return BlStorage.Orders.get(orderItem.movedFromOrder)
       .then((order: Order) => {
         if (
           (!order.payments || order.payments.length <= 0) &&

@@ -3,31 +3,26 @@ import "mocha";
 import { OrderValidator } from "@backend/collections/order/helpers/order-validator/order-validator";
 import { OrderHookBefore } from "@backend/collections/order/hooks/order-hook-before";
 import { OrderPostHook } from "@backend/collections/order/hooks/order.post.hook";
-import { OrderModel } from "@backend/collections/order/order.model";
 import { UserDetailHelper } from "@backend/collections/user-detail/helpers/user-detail.helper";
-import { UserDetailModel } from "@backend/collections/user-detail/user-detail.model";
-import { BlStorage } from "@backend/storage/blStorage";
+import { BlStorage } from "@backend/storage/bl-storage";
 import { BlError } from "@shared/bl-error/bl-error";
 import { Order } from "@shared/order/order";
 import { AccessToken } from "@shared/token/access-token";
 import { UserDetail } from "@shared/user/user-detail/user-detail";
 import { expect, use as chaiUse, should } from "chai";
 import chaiAsPromised from "chai-as-promised";
-import sinon from "sinon";
+import sinon, { createSandbox } from "sinon";
 
 chaiUse(chaiAsPromised);
 should();
 
 describe("OrderPostHook", () => {
   const orderValidator: OrderValidator = new OrderValidator();
-  const orderStorage = new BlStorage(OrderModel);
-  const userDetailStorage = new BlStorage(UserDetailModel);
-  const userDetailHelper = new UserDetailHelper(userDetailStorage);
+  const userDetailHelper = new UserDetailHelper();
   const orderHookBefore: OrderHookBefore = new OrderHookBefore();
   const orderPostHook: OrderPostHook = new OrderPostHook(
     orderValidator,
     orderHookBefore,
-    userDetailStorage,
     userDetailHelper,
   );
 
@@ -36,6 +31,7 @@ describe("OrderPostHook", () => {
   let testUserDetails: UserDetail;
   let testAccessToken: AccessToken;
   let orderValidated: boolean;
+  let sandbox: sinon.SinonSandbox;
 
   beforeEach(() => {
     testAccessToken = {
@@ -103,20 +99,24 @@ describe("OrderPostHook", () => {
       creationTime: new Date(),
       pendingSignature: false,
     };
-  });
 
-  sinon.stub(orderValidator, "validate").callsFake(async () => {
-    if (orderValidated) {
-      return true;
-    }
-    throw new BlError("not a valid order");
-  });
+    sandbox = createSandbox();
+    sandbox.stub(orderValidator, "validate").callsFake(async () => {
+      if (orderValidated) {
+        return true;
+      }
+      throw new BlError("not a valid order");
+    });
 
-  sinon.stub(orderStorage, "get").callsFake((orderId) => {
-    if (orderId !== "order1" && orderId !== "orderValid") {
-      return Promise.reject(new BlError("not found").code(702));
-    }
-    return Promise.resolve(testOrder);
+    sandbox.stub(BlStorage.Orders, "get").callsFake((orderId) => {
+      if (orderId !== "order1" && orderId !== "orderValid") {
+        return Promise.reject(new BlError("not found").code(702));
+      }
+      return Promise.resolve(testOrder);
+    });
+  });
+  afterEach(() => {
+    sandbox.restore();
   });
 
   describe("#before()", () => {

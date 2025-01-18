@@ -1,23 +1,16 @@
-import { BranchModel } from "@backend/collections/branch/branch.model";
-import { CustomerItemModel } from "@backend/collections/customer-item/customer-item.model";
 import { CustomerItemActiveBlid } from "@backend/collections/customer-item/helpers/customer-item-active-blid";
 import { OrderToCustomerItemGenerator } from "@backend/collections/customer-item/helpers/order-to-customer-item-generator";
-import { ItemModel } from "@backend/collections/item/item.model";
 import { OrderItemMovedFromOrderHandler } from "@backend/collections/order/helpers/order-item-moved-from-order-handler/order-item-moved-from-order-handler";
 import { OrderValidator } from "@backend/collections/order/helpers/order-validator/order-validator";
-import { OrderModel } from "@backend/collections/order/order.model";
-import { StandMatchModel } from "@backend/collections/stand-match/stand-match.model";
-import { UniqueItemModel } from "@backend/collections/unique-item/unique-item.model";
 import {
   createMatchDeliverOrder,
   createMatchReceiveOrder,
 } from "@backend/collections/user-match/operations/user-match-operation-utils";
-import { UserMatchModel } from "@backend/collections/user-match/user-match.model";
 import { isNullish } from "@backend/helper/typescript-helpers";
 import { Operation } from "@backend/operation/operation";
 import { SEDbQuery } from "@backend/query/se.db-query";
 import { BlApiRequest } from "@backend/request/bl-api-request";
-import { BlStorage } from "@backend/storage/blStorage";
+import { BlStorage } from "@backend/storage/bl-storage";
 import { BlError } from "@shared/bl-error/bl-error";
 import { BlapiResponse } from "@shared/blapi-response/blapi-response";
 import { CustomerItem } from "@shared/customer-item/customer-item";
@@ -30,14 +23,6 @@ import { fromError } from "zod-validation-error";
 
 export class UserMatchTransferItemOperation implements Operation {
   private readonly wrongSenderFeedback = `Boken du skannet tilhørte en annen elev enn den som ga deg den. Du skal beholde den, men eleven som ga deg boken er fortsatt ansvarlig for at den opprinnelige boken blir levert.`;
-
-  private userMatchStorage = new BlStorage(UserMatchModel);
-  private standMatchStorage = new BlStorage(StandMatchModel);
-  private orderStorage = new BlStorage(OrderModel);
-  private customerItemStorage = new BlStorage(CustomerItemModel);
-  private uniqueItemStorage = new BlStorage(UniqueItemModel);
-  private branchStorage = new BlStorage(BranchModel);
-  private itemStorage = new BlStorage(ItemModel);
 
   async run(blApiRequest: BlApiRequest): Promise<BlapiResponse> {
     let userFeedback;
@@ -130,7 +115,7 @@ export class UserMatchTransferItemOperation implements Operation {
           ],
         };
       }
-      await this.userMatchStorage.update(senderUserMatch.id, update);
+      await BlStorage.UserMatches.update(senderUserMatch.id, update);
       return;
     }
 
@@ -138,7 +123,7 @@ export class UserMatchTransferItemOperation implements Operation {
       return;
     }
 
-    await this.standMatchStorage.update(senderStandMatch.id, {
+    await BlStorage.StandMatches.update(senderStandMatch.id, {
       deliveredItems: [...senderStandMatch.deliveredItems, customerItem.item],
     });
   }
@@ -176,7 +161,7 @@ export class UserMatchTransferItemOperation implements Operation {
       receivedBlIds.map(async (blId) => {
         const uniqueItemQuery = new SEDbQuery();
         uniqueItemQuery.stringFilters = [{ fieldName: "blid", value: blId }];
-        return (await this.uniqueItemStorage.getByQuery(uniqueItemQuery))[0]
+        return (await BlStorage.UniqueItems.getByQuery(uniqueItemQuery))[0]
           ?.item;
       }),
     );
@@ -221,17 +206,13 @@ export class UserMatchTransferItemOperation implements Operation {
     const receiverOrder = await createMatchReceiveOrder(
       customerItem,
       receiverUserDetailId,
-      this.itemStorage,
-      this.branchStorage,
     );
 
-    const placedReceiverOrder = await this.orderStorage.add(receiverOrder);
+    const placedReceiverOrder = await BlStorage.Orders.add(receiverOrder);
 
     await new OrderValidator().validate(placedReceiverOrder, false);
 
-    const orderMovedToHandler = new OrderItemMovedFromOrderHandler(
-      this.orderStorage,
-    );
+    const orderMovedToHandler = new OrderItemMovedFromOrderHandler();
     await orderMovedToHandler.updateOrderItems(placedReceiverOrder);
     return placedReceiverOrder;
   }
@@ -246,11 +227,11 @@ export class UserMatchTransferItemOperation implements Operation {
       throw new BlError("Failed to create new customer items");
     }
 
-    const addedCustomerItem = await this.customerItemStorage.add(
+    const addedCustomerItem = await BlStorage.CustomerItems.add(
       generatedReceiverCustomerItem,
     );
 
-    await this.orderStorage.update(placedReceiverOrder.id, {
+    await BlStorage.Orders.update(placedReceiverOrder.id, {
       orderItems: placedReceiverOrder.orderItems.map((orderItem) => ({
         ...orderItem,
         customerItem: addedCustomerItem.id,
@@ -264,14 +245,12 @@ export class UserMatchTransferItemOperation implements Operation {
     const senderOrder = await createMatchDeliverOrder(
       customerItem,
       customerItem.customer,
-      this.itemStorage,
-      this.branchStorage,
     );
 
-    const placedSenderOrder = await this.orderStorage.add(senderOrder);
+    const placedSenderOrder = await BlStorage.Orders.add(senderOrder);
     await new OrderValidator().validate(placedSenderOrder, false);
 
-    await this.customerItemStorage.update(customerItem.id, {
+    await BlStorage.CustomerItems.update(customerItem.id, {
       returned: true,
     });
   }
@@ -279,7 +258,7 @@ export class UserMatchTransferItemOperation implements Operation {
   private async getUserMatchesForCustomer(
     customer: string,
   ): Promise<UserMatch[]> {
-    return (await this.userMatchStorage.aggregate([
+    return (await BlStorage.UserMatches.aggregate([
       {
         $match: {
           $or: [
@@ -294,7 +273,7 @@ export class UserMatchTransferItemOperation implements Operation {
   private async getStandMatchForCustomer(
     customer: string,
   ): Promise<StandMatch | undefined> {
-    const standMatches = (await this.standMatchStorage.aggregate([
+    const standMatches = (await BlStorage.StandMatches.aggregate([
       {
         $match: {
           customer: new ObjectId(customer),
@@ -340,6 +319,6 @@ export class UserMatchTransferItemOperation implements Operation {
         ],
       };
     }
-    await this.userMatchStorage.update(receiverUserMatch.id, update);
+    await BlStorage.UserMatches.update(receiverUserMatch.id, update);
   }
 }

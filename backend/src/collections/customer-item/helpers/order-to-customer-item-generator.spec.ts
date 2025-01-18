@@ -1,21 +1,19 @@
 import "mocha";
 
 import { OrderToCustomerItemGenerator } from "@backend/collections/customer-item/helpers/order-to-customer-item-generator";
-import { UserDetailModel } from "@backend/collections/user-detail/user-detail.model";
-import { BlStorage } from "@backend/storage/blStorage";
+import { BlStorage } from "@backend/storage/bl-storage";
 import { BlError } from "@shared/bl-error/bl-error";
 import { Order } from "@shared/order/order";
 import { OrderItem } from "@shared/order/order-item/order-item";
 import { UserDetail } from "@shared/user/user-detail/user-detail";
 import { expect, use as chaiUse, should } from "chai";
 import chaiAsPromised from "chai-as-promised";
-import sinon from "sinon";
+import sinon, { createSandbox } from "sinon";
 
 chaiUse(chaiAsPromised);
 should();
 
 describe("OrderToCustomerItemGenerator", () => {
-  const userDetailStorage = new BlStorage(UserDetailModel);
   const userDetail = {
     id: "customer1",
     name: "Hans Hansen",
@@ -33,16 +31,22 @@ describe("OrderToCustomerItemGenerator", () => {
       phone: "123456789",
     },
   } as UserDetail;
+  let sandbox: sinon.SinonSandbox;
 
-  sinon.stub(userDetailStorage, "get").callsFake((id) => {
-    if (id === userDetail.id) {
-      return new Promise((resolve) => resolve(userDetail));
-    } else {
-      throw new BlError("not found").code(702);
-    }
+  beforeEach(() => {
+    sandbox = createSandbox();
+    sandbox.stub(BlStorage.UserDetails, "get").callsFake((id) => {
+      if (id === userDetail.id) {
+        return new Promise((resolve) => resolve(userDetail));
+      } else {
+        throw new BlError("not found").code(702);
+      }
+    });
   });
-
-  const generator = new OrderToCustomerItemGenerator(userDetailStorage);
+  afterEach(() => {
+    sandbox.restore();
+  });
+  const generator = new OrderToCustomerItemGenerator();
 
   describe("generate()", () => {
     it('should return customer-item type "partly-payment', () => {

@@ -1,11 +1,10 @@
-import { BlModel } from "@backend/collections/bl-collection";
 import { LocalLogin } from "@backend/collections/local-login/local-login";
-import { ToSchema } from "@backend/helper/typescript-helpers";
+import { BlModel } from "@backend/storage/bl-storage";
 import { Schema } from "mongoose";
 
 export const LocalLoginModel: BlModel<LocalLogin> = {
   name: "locallogins",
-  schema: new Schema<ToSchema<LocalLogin>>({
+  schema: new Schema({
     username: {
       type: String,
       required: true,

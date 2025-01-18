@@ -1,39 +1,38 @@
 import "mocha";
 
 import { User } from "@backend/collections/user/user";
-import { UserModel } from "@backend/collections/user/user.model";
 import { UserDetailPermissionOperation } from "@backend/collections/user-detail/operations/permission/user-detail-permission.operation";
-import { UserDetailModel } from "@backend/collections/user-detail/user-detail.model";
 import { SEResponseHandler } from "@backend/response/se.response.handler";
-import { BlStorage } from "@backend/storage/blStorage";
+import { BlStorage } from "@backend/storage/bl-storage";
 import { BlError } from "@shared/bl-error/bl-error";
 import { UserDetail } from "@shared/user/user-detail/user-detail";
 import { expect, use as chaiUse, should } from "chai";
 import chaiAsPromised from "chai-as-promised";
-import sinon from "sinon";
+import sinon, { createSandbox } from "sinon";
 chaiUse(chaiAsPromised);
 should();
 
 describe("UserDetailPermissionOperation", () => {
-  const userDetailStorage = new BlStorage(UserDetailModel);
-  const userStorage = new BlStorage(UserModel);
   const resHandler = new SEResponseHandler();
   const userDetailPermissionOperation = new UserDetailPermissionOperation(
-    userDetailStorage,
-    userStorage,
     resHandler,
   );
 
-  const userAggregateStub = sinon.stub(userStorage, "aggregate");
-  const userDetailGetStub = sinon.stub(userDetailStorage, "get");
-  const userUpdateStub = sinon.stub(userStorage, "update");
-  const resHandlerStub = sinon.stub(resHandler, "sendResponse");
+  let userAggregateStub: sinon.SinonStub;
+  let userDetailGetStub: sinon.SinonStub;
+  let userUpdateStub: sinon.SinonStub;
+  let resHandlerStub: sinon.SinonStub;
+  let sandbox: sinon.SinonSandbox;
 
   beforeEach(() => {
-    userAggregateStub.reset();
-    userDetailGetStub.reset();
-    userUpdateStub.reset();
-    resHandlerStub.reset();
+    sandbox = createSandbox();
+    userAggregateStub = sandbox.stub(BlStorage.Users, "aggregate");
+    userDetailGetStub = sandbox.stub(BlStorage.UserDetails, "get");
+    userUpdateStub = sandbox.stub(BlStorage.Users, "update");
+    resHandlerStub = sandbox.stub(resHandler, "sendResponse");
+  });
+  afterEach(() => {
+    sandbox.restore();
   });
 
   it("should reject if userDetail is not found", () => {

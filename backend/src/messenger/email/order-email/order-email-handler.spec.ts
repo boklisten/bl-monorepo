@@ -1,10 +1,7 @@
 import "mocha";
 import { dateService } from "@backend/blc/date.service";
-import { BranchModel } from "@backend/collections/branch/branch.model";
-import { DeliveryModel } from "@backend/collections/delivery/delivery.model";
-import { PaymentModel } from "@backend/collections/payment/payment.model";
 import { OrderEmailHandler } from "@backend/messenger/email/order-email/order-email-handler";
-import { BlStorage } from "@backend/storage/blStorage";
+import { BlStorage } from "@backend/storage/bl-storage";
 import { EmailHandler, EmailLog } from "@boklisten/bl-email";
 import { BlError } from "@shared/bl-error/bl-error";
 import { Branch } from "@shared/branch/branch";
@@ -15,8 +12,9 @@ import { Payment } from "@shared/payment/payment";
 import { UserDetail } from "@shared/user/user-detail/user-detail";
 import { expect, use as chaiUse, should } from "chai";
 import chaiAsPromised from "chai-as-promised";
+import { afterEach } from "mocha";
 import moment from "moment-timezone";
-import sinon from "sinon";
+import sinon, { createSandbox } from "sinon";
 
 chaiUse(chaiAsPromised);
 should();
@@ -29,48 +27,50 @@ describe("OrderEmailHandler", () => {
   let emailSendSuccessful: boolean;
   const standardTimeFormat = "DD.MM.YYYY HH.mm.ss";
   const standardDayFormat = "DD.MM.YY";
-  const branchStorage = new BlStorage(BranchModel);
-  const deliveryStorage = new BlStorage(DeliveryModel);
-  const paymentStorage = new BlStorage(PaymentModel);
   const emailHandler = new EmailHandler({ sendgrid: { apiKey: "someKey" } });
-  const orderEmailHandler = new OrderEmailHandler(
-    emailHandler,
-    deliveryStorage,
-    paymentStorage,
-    branchStorage,
-  );
+  const orderEmailHandler = new OrderEmailHandler(emailHandler);
 
-  sinon.stub(deliveryStorage, "get").callsFake(async (id) => {
-    if (id !== testDelivery.id) {
-      throw new BlError("delivery not found");
-    }
+  let branchStorageGetStub: sinon.SinonStub;
+  let paymentStorageStub: sinon.SinonStub;
+  let sendOrderReceiptStub: sinon.SinonStub;
+  let sandbox: sinon.SinonSandbox;
+  beforeEach(() => {
+    sandbox = createSandbox();
+    sandbox.stub(BlStorage.Deliveries, "get").callsFake(async (id) => {
+      if (id !== testDelivery.id) {
+        throw new BlError("delivery not found");
+      }
 
-    return testDelivery;
+      return testDelivery;
+    });
+
+    branchStorageGetStub = sandbox
+      .stub(BlStorage.Branches, "get")
+      .resolves({ paymentInfo: { responsible: false } } as Branch);
+
+    paymentStorageStub = sandbox
+      .stub(BlStorage.Payments, "get")
+      .callsFake(async (id) => {
+        if (id !== testPayment.id) {
+          throw new BlError("payment not found");
+        }
+
+        return testPayment;
+      });
+
+    sendOrderReceiptStub = sandbox
+      .stub(emailHandler, "sendOrderReceipt")
+      .callsFake(async () => {
+        if (!emailSendSuccessful) {
+          throw new Error("could not send email");
+        }
+
+        return {} as EmailLog;
+      });
   });
-
-  const branchStorageGetStub = sinon
-    .stub(branchStorage, "get")
-    .resolves({ paymentInfo: { responsible: false } } as Branch);
-
-  const paymentStorageStub = sinon
-    .stub(paymentStorage, "get")
-    .callsFake(async (id) => {
-      if (id !== testPayment.id) {
-        throw new BlError("payment not found");
-      }
-
-      return testPayment;
-    });
-
-  const sendOrderReceiptStub = sinon
-    .stub(emailHandler, "sendOrderReceipt")
-    .callsFake(async () => {
-      if (!emailSendSuccessful) {
-        throw new Error("could not send email");
-      }
-
-      return {} as EmailLog;
-    });
+  afterEach(() => {
+    sandbox.restore();
+  });
 
   describe("sendOrderReceipt()", () => {
     it("should reject if emailHandler.sendOrderReceipt rejects", () => {
@@ -304,19 +304,16 @@ describe("OrderEmailHandler", () => {
               sendOrderReceiptStub.lastCall.args;
             const emailOrder = sendOrderReceiptArguments[1];
 
-            // @ts-expect-error fixme: auto ignored
             expect(emailOrder.items[0].title).to.be.eq(
               // @ts-expect-error fixme: auto ignored
               testOrder.orderItems[0].title,
             );
 
-            // @ts-expect-error fixme: auto ignored
             expect(emailOrder.items[0].price).to.be.eq(
               // @ts-expect-error fixme: auto ignored
               testOrder.orderItems[0].amount.toString(),
             );
 
-            // @ts-expect-error fixme: auto ignored
             expect(emailOrder.items[0].deadline).to.be.eq(
               dateService.format(
                 // @ts-expect-error fixme: auto ignored
@@ -370,16 +367,13 @@ describe("OrderEmailHandler", () => {
               sendOrderReceiptStub.lastCall.args;
             const emailOrder = sendOrderReceiptArguments[1];
 
-            // @ts-expect-error fixme: auto ignored
             expect(emailOrder.items[0].title).to.be.eq(
               // @ts-expect-error fixme: auto ignored
               testOrder.orderItems[0].title,
             );
 
-            // @ts-expect-error fixme: auto ignored
             expect(emailOrder.items[0].price).to.be.null;
 
-            // @ts-expect-error fixme: auto ignored
             expect(emailOrder.items[0].deadline).to.be.eq(
               dateService.format(
                 // @ts-expect-error fixme: auto ignored
@@ -389,16 +383,13 @@ describe("OrderEmailHandler", () => {
               ),
             );
 
-            // @ts-expect-error fixme: auto ignored
             expect(emailOrder.items[1].title).to.be.eq(
               // @ts-expect-error fixme: auto ignored
               testOrder.orderItems[1].title,
             );
 
-            // @ts-expect-error fixme: auto ignored
             expect(emailOrder.items[1].price).to.be.null;
 
-            // @ts-expect-error fixme: auto ignored
             expect(emailOrder.items[1].deadline).to.be.eq(
               dateService.format(
                 // @ts-expect-error fixme: auto ignored
@@ -441,19 +432,15 @@ describe("OrderEmailHandler", () => {
               sendOrderReceiptStub.lastCall.args;
             const emailOrder = sendOrderReceiptArguments[1];
 
-            // @ts-expect-error fixme: auto ignored
             expect(emailOrder.items[0].title).to.be.eq(
               // @ts-expect-error fixme: auto ignored
               testOrder.orderItems[0].title,
             );
 
-            // @ts-expect-error fixme: auto ignored
             expect(emailOrder.items[0].status).to.be.eq("returnert");
 
-            // @ts-expect-error fixme: auto ignored
             expect(emailOrder.items[0].price).to.be.null;
 
-            // @ts-expect-error fixme: auto ignored
             expect(emailOrder.items[0].deadline).to.be.null;
 
             done();
@@ -582,33 +569,26 @@ describe("OrderEmailHandler", () => {
               // @ts-expect-error fixme: auto ignored
               testPayment.info["orderDetails"].currency,
             );
-            // @ts-expect-error fixme: auto ignored
             expect(emailOrder.payment.payments[0].method).to.be.eq(
               // @ts-expect-error fixme: auto ignored
               testPayment.info["paymentDetails"]["paymentMethod"],
             );
-            // @ts-expect-error fixme: auto ignored
             expect(emailOrder.payment.payments[0].amount).to.be.eq(
               // @ts-expect-error fixme: auto ignored
               (testPayment.info["orderDetails"]["amount"] / 100).toString(),
             ); // the amount is in ears when it comes from dibs
-            // @ts-expect-error fixme: auto ignored
             expect(emailOrder.payment.payments[0].cardInfo).to.be.eq(
               "***" + "0079",
             ); // should only send the last 4 digits
-            // @ts-expect-error fixme: auto ignored
             expect(emailOrder.payment.payments[0].taxAmount).to.be.eq(
               // @ts-expect-error fixme: auto ignored
               testPayment.taxAmount.toString(),
             );
-            // @ts-expect-error fixme: auto ignored
             expect(emailOrder.payment.payments[0].paymentId).to.be.eq(
               // @ts-expect-error fixme: auto ignored
               testPayment.info["paymentId"],
             );
-            // @ts-expect-error fixme: auto ignored
             expect(emailOrder.payment.payments[0].status).to.be.eq("bekreftet");
-            // @ts-expect-error fixme: auto ignored
             expect(emailOrder.payment.payments[0].creationTime).to.be.eq(
               dateService.format(
                 // @ts-expect-error fixme: auto ignored
@@ -674,29 +654,23 @@ describe("OrderEmailHandler", () => {
               // @ts-expect-error fixme: auto ignored
               payments[0].taxAmount + payments[1].taxAmount,
             );
-            // @ts-expect-error fixme: auto ignored
             expect(emailOrder.payment.payments[0].method).to.be.eq(
               // @ts-expect-error fixme: auto ignored
               payments[0].method,
             );
-            // @ts-expect-error fixme: auto ignored
             expect(emailOrder.payment.payments[0].amount).to.be.eq(
               // @ts-expect-error fixme: auto ignored
               payments[0].amount.toString(),
             );
-            // @ts-expect-error fixme: auto ignored
             expect(emailOrder.payment.payments[0].taxAmount).to.be.eq(
               // @ts-expect-error fixme: auto ignored
               payments[0].taxAmount.toString(),
             );
-            // @ts-expect-error fixme: auto ignored
             expect(emailOrder.payment.payments[0].paymentId).to.be.eq(
               // @ts-expect-error fixme: auto ignored
               payments[0].id,
             );
-            // @ts-expect-error fixme: auto ignored
             expect(emailOrder.payment.payments[0].status).to.be.eq("bekreftet");
-            // @ts-expect-error fixme: auto ignored
             expect(emailOrder.payment.payments[0].creationTime).to.be.eq(
               dateService.format(
                 // @ts-expect-error fixme: auto ignored
@@ -705,29 +679,23 @@ describe("OrderEmailHandler", () => {
                 "DD.MM.YYYY HH.mm.ss",
               ),
             );
-            // @ts-expect-error fixme: auto ignored
             expect(emailOrder.payment.payments[1].method).to.be.eq(
               // @ts-expect-error fixme: auto ignored
               payments[1].method,
             );
-            // @ts-expect-error fixme: auto ignored
             expect(emailOrder.payment.payments[1].amount).to.be.eq(
               // @ts-expect-error fixme: auto ignored
               payments[1].amount.toString(),
             );
-            // @ts-expect-error fixme: auto ignored
             expect(emailOrder.payment.payments[1].taxAmount).to.be.eq(
               // @ts-expect-error fixme: auto ignored
               payments[1].taxAmount.toString(),
             );
-            // @ts-expect-error fixme: auto ignored
             expect(emailOrder.payment.payments[1].paymentId).to.be.eq(
               // @ts-expect-error fixme: auto ignored
               payments[1].id,
             );
-            // @ts-expect-error fixme: auto ignored
             expect(emailOrder.payment.payments[1].status).to.be.eq("bekreftet");
-            // @ts-expect-error fixme: auto ignored
             expect(emailOrder.payment.payments[1].creationTime).to.be.eq(
               dateService.format(
                 // @ts-expect-error fixme: auto ignored

@@ -1,11 +1,10 @@
 import { dateService } from "@backend/blc/date.service";
-import { ItemModel } from "@backend/collections/item/item.model";
 import { assertEnv, BlEnvironment } from "@backend/config/environment";
 import { logger } from "@backend/logger/logger";
 import { EMAIL_SETTINGS } from "@backend/messenger/email/email-settings";
 import { OrderEmailHandler } from "@backend/messenger/email/order-email/order-email-handler";
 import { MessengerService } from "@backend/messenger/messenger-service";
-import { BlStorage } from "@backend/storage/blStorage";
+import { BlStorage } from "@backend/storage/bl-storage";
 import { EmailHandler } from "@boklisten/bl-email";
 import { EmailOrder } from "@boklisten/bl-email/dist/ts/template/email-order";
 import { EmailSetting } from "@boklisten/bl-email/dist/ts/template/email-setting";
@@ -31,14 +30,9 @@ import { UserDetail } from "@shared/user/user-detail/user-detail";
 export class EmailService implements MessengerService {
   private emailHandler: EmailHandler;
   private orderEmailHandler: OrderEmailHandler;
-  private itemStorage: BlStorage<Item>;
   private postOffice: PostOffice;
 
-  constructor(
-    emailHandler?: EmailHandler,
-    itemStorage?: BlStorage<Item>,
-    inputPostOffice?: PostOffice,
-  ) {
+  constructor(emailHandler?: EmailHandler, inputPostOffice?: PostOffice) {
     sgMail.setApiKey(assertEnv(BlEnvironment.SENDGRID_API_KEY));
     this.emailHandler =
       emailHandler ??
@@ -49,7 +43,6 @@ export class EmailService implements MessengerService {
         locale: "nb",
       });
 
-    this.itemStorage = itemStorage ?? new BlStorage(ItemModel);
     this.orderEmailHandler = new OrderEmailHandler(this.emailHandler);
     this.postOffice = inputPostOffice ?? postOffice;
     this.postOffice.overrideLogger(logger);
@@ -250,7 +243,7 @@ export class EmailService implements MessengerService {
     const items = [];
 
     for (const customerItem of customerItems) {
-      const item = await this.itemStorage.get(customerItem.item);
+      const item = await BlStorage.Items.get(customerItem.item);
       items.push(this.customerItemToEmailItem(message, customerItem, item));
     }
 

@@ -1,19 +1,12 @@
 import { Hook } from "@backend/hook/hook";
 import { Operation } from "@backend/operation/operation";
 import { ValidParameter } from "@backend/query/valid-param/db-query-valid-params";
+import { BlStorageHandler } from "@backend/storage/bl-storage";
 import { NestedDocument } from "@backend/storage/nested-document";
 import { UserPermission } from "@shared/permission/user-permission";
-import { Schema } from "mongoose";
-
-// @info This needs a type parameter to dynamically type BlStorage
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-export interface BlModel<T = unknown> {
-  name: string;
-  schema: Schema;
-}
 
 export interface BlCollection {
-  model: BlModel;
+  storage: BlStorageHandler;
   documentPermission?: BlDocumentPermission;
   endpoints: BlEndpoint[]; //a list of the valid endpoints for this collection;
 }

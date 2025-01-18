@@ -1,25 +1,21 @@
 import { PermissionService } from "@backend/auth/permission/permission.service";
 import { OrderPlacedHandler } from "@backend/collections/order/helpers/order-placed-handler/order-placed-handler";
 import { OrderValidator } from "@backend/collections/order/helpers/order-validator/order-validator";
-import { OrderModel } from "@backend/collections/order/order.model";
 import { Hook } from "@backend/hook/hook";
-import { BlStorage } from "@backend/storage/blStorage";
+import { BlStorage } from "@backend/storage/bl-storage";
 import { BlError } from "@shared/bl-error/bl-error";
 import { Order } from "@shared/order/order";
 import { AccessToken } from "@shared/token/access-token";
 
 export class OrderPatchHook extends Hook {
   private orderValidator: OrderValidator;
-  private orderStorage: BlStorage<Order>;
   private orderPlacedHandler: OrderPlacedHandler;
 
   constructor(
-    orderStorage?: BlStorage<Order>,
     orderValidator?: OrderValidator,
     orderPlacedHandler?: OrderPlacedHandler,
   ) {
     super();
-    this.orderStorage = orderStorage ?? new BlStorage(OrderModel);
     this.orderValidator = orderValidator ?? new OrderValidator();
     this.orderPlacedHandler = orderPlacedHandler ?? new OrderPlacedHandler();
   }
@@ -82,8 +78,7 @@ export class OrderPatchHook extends Hook {
           })
           .catch((validationError: BlError) => {
             if (order?.placed) {
-              this.orderStorage
-                .update(order.id, { placed: false })
+              BlStorage.Orders.update(order.id, { placed: false })
                 .then(() => {
                   return reject(
                     new BlError(

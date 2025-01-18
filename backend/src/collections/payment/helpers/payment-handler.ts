@@ -1,26 +1,15 @@
-import { DeliveryModel } from "@backend/collections/delivery/delivery.model";
 import { PaymentDibsConfirmer } from "@backend/collections/payment/helpers/dibs/payment-dibs-confirmer";
-import { PaymentModel } from "@backend/collections/payment/payment.model";
-import { BlStorage } from "@backend/storage/blStorage";
+import { BlStorage } from "@backend/storage/bl-storage";
 import { BlError } from "@shared/bl-error/bl-error";
-import { Delivery } from "@shared/delivery/delivery";
 import { Order } from "@shared/order/order";
 import { Payment } from "@shared/payment/payment";
 
 export class PaymentHandler {
-  private paymentStorage: BlStorage<Payment>;
   private paymentDibsConfirmer: PaymentDibsConfirmer;
-  private deliveryStorage: BlStorage<Delivery>;
 
-  constructor(
-    paymentStorage?: BlStorage<Payment>,
-    paymentDibsConfirmer?: PaymentDibsConfirmer,
-    deliveryStorage?: BlStorage<Delivery>,
-  ) {
-    this.paymentStorage = paymentStorage ?? new BlStorage(PaymentModel);
+  constructor(paymentDibsConfirmer?: PaymentDibsConfirmer) {
     this.paymentDibsConfirmer =
       paymentDibsConfirmer ?? new PaymentDibsConfirmer();
-    this.deliveryStorage = deliveryStorage ?? new BlStorage(DeliveryModel);
   }
 
   public async confirmPayments(order: Order): Promise<Payment[]> {
@@ -31,7 +20,7 @@ export class PaymentHandler {
     let payments: Payment[];
 
     try {
-      payments = await this.paymentStorage.getMany(order.payments);
+      payments = await BlStorage.Payments.getMany(order.payments);
     } catch {
       throw new BlError("one or more payments was not found");
     }
@@ -52,7 +41,7 @@ export class PaymentHandler {
       }
 
       await this.confirmPayment(order, payment);
-      await this.paymentStorage.update(payment.id, { confirmed: true });
+      await BlStorage.Payments.update(payment.id, { confirmed: true });
     }
     return payments;
   }
@@ -100,7 +89,7 @@ export class PaymentHandler {
     let orderTotal = order.amount;
 
     if (order.delivery) {
-      const delivery = await this.deliveryStorage.get(order.delivery);
+      const delivery = await BlStorage.Deliveries.get(order.delivery);
       orderTotal += delivery.amount;
     }
 

@@ -1,9 +1,5 @@
-import { BranchModel } from "@backend/collections/branch/branch.model";
-import { DeliveryModel } from "@backend/collections/delivery/delivery.model";
 import { BringDeliveryService } from "@backend/collections/delivery/helpers/deliveryBring/bringDelivery.service";
-import { ItemModel } from "@backend/collections/item/item.model";
-import { OrderModel } from "@backend/collections/order/order.model";
-import { BlStorage } from "@backend/storage/blStorage";
+import { BlStorage } from "@backend/storage/bl-storage";
 import { BlError } from "@shared/bl-error/bl-error";
 import { Branch } from "@shared/branch/branch";
 import { Delivery } from "@shared/delivery/delivery";
@@ -12,25 +8,11 @@ import { Item } from "@shared/item/item";
 import { Order } from "@shared/order/order";
 
 export class DeliveryHandler {
-  private orderStorage: BlStorage<Order>;
-  private itemStorage: BlStorage<Item>;
   private bringDeliveryService: BringDeliveryService;
-  private deliveryStorage: BlStorage<Delivery>;
-  private branchStorage: BlStorage<Branch>;
 
-  constructor(
-    orderStorage?: BlStorage<Order>,
-    branchStorage?: BlStorage<Branch>,
-    itemStorage?: BlStorage<Item>,
-    deliveryStorage?: BlStorage<Delivery>,
-    bringDeliveryService?: BringDeliveryService,
-  ) {
-    this.orderStorage = orderStorage ?? new BlStorage(OrderModel);
-    this.itemStorage = itemStorage ?? new BlStorage(ItemModel);
+  constructor(bringDeliveryService?: BringDeliveryService) {
     this.bringDeliveryService =
       bringDeliveryService ?? new BringDeliveryService();
-    this.deliveryStorage = deliveryStorage ?? new BlStorage(DeliveryModel);
-    this.branchStorage = branchStorage ?? new BlStorage(BranchModel);
   }
 
   public updateOrderBasedOnMethod(
@@ -90,8 +72,7 @@ export class DeliveryHandler {
   private updateOrder(order: Order, delivery: Delivery): Promise<boolean> {
     const orderUpdateData = { delivery: delivery.id };
 
-    return this.orderStorage
-      .update(order.id, orderUpdateData)
+    return BlStorage.Orders.update(order.id, orderUpdateData)
       .then(() => {
         return true;
       })
@@ -106,8 +87,7 @@ export class DeliveryHandler {
         (orderItem) => orderItem.item,
       );
 
-      this.itemStorage
-        .getMany(itemIds)
+      BlStorage.Items.getMany(itemIds)
         .then((items: Item[]) => {
           resolve(items);
         })
@@ -123,8 +103,7 @@ export class DeliveryHandler {
     items: Item[],
   ): Promise<Delivery> {
     return new Promise((resolve, reject) => {
-      this.branchStorage
-        .get(order.branch)
+      BlStorage.Branches.get(order.branch)
         .then((branch: Branch) => {
           const freeDelivery =
             (branch.paymentInfo && branch.paymentInfo.responsibleForDelivery) ||
@@ -150,11 +129,10 @@ export class DeliveryHandler {
                   delivery.info["trackingNumber"];
               }
 
-              this.deliveryStorage
-                .update(delivery.id, {
-                  amount: deliveryInfoBring.amount,
-                  info: deliveryInfoBring,
-                })
+              BlStorage.Deliveries.update(delivery.id, {
+                amount: deliveryInfoBring.amount,
+                info: deliveryInfoBring,
+              })
                 .then((updatedDelivery: Delivery) => {
                   resolve(updatedDelivery);
                 })

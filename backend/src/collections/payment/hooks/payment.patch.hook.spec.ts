@@ -3,20 +3,18 @@ import "mocha";
 import { PaymentDibsHandler } from "@backend/collections/payment/helpers/dibs/payment-dibs-handler";
 import { PaymentValidator } from "@backend/collections/payment/helpers/payment.validator";
 import { PaymentPatchHook } from "@backend/collections/payment/hooks/payment.patch.hook";
-import { PaymentModel } from "@backend/collections/payment/payment.model";
-import { BlStorage } from "@backend/storage/blStorage";
+import { BlStorage } from "@backend/storage/bl-storage";
 import { BlError } from "@shared/bl-error/bl-error";
 import { Payment } from "@shared/payment/payment";
 import { expect, use as chaiUse, should } from "chai";
 import chaiAsPromised from "chai-as-promised";
-import sinon from "sinon";
+import sinon, { createSandbox } from "sinon";
 
 chaiUse(chaiAsPromised);
 should();
 
 describe("PaymentPatchHook", () => {
   const paymentDibsHandler = new PaymentDibsHandler();
-  const paymentStorage = new BlStorage(PaymentModel);
   const paymentValidator = new PaymentValidator();
   const paymentPatchHook = new PaymentPatchHook(
     paymentDibsHandler,
@@ -27,6 +25,7 @@ describe("PaymentPatchHook", () => {
 
   let dibsPaymentCreated: boolean;
   let paymentValidated: boolean;
+  let sandbox: sinon.SinonSandbox;
 
   beforeEach(() => {
     testPayment = {
@@ -40,24 +39,30 @@ describe("PaymentPatchHook", () => {
 
     paymentValidated = true;
     dibsPaymentCreated = true;
-  });
 
-  sinon.stub(paymentStorage, "get").callsFake((id) => {
-    return id === testPayment.id
-      ? Promise.resolve(testPayment)
-      : Promise.reject(new BlError("not found"));
-  });
+    sandbox = createSandbox();
+    sandbox.stub(BlStorage.Payments, "get").callsFake((id) => {
+      return id === testPayment.id
+        ? Promise.resolve(testPayment)
+        : Promise.reject(new BlError("not found"));
+    });
 
-  sinon.stub(paymentDibsHandler, "handleDibsPayment").callsFake((payment) => {
-    return dibsPaymentCreated
-      ? Promise.resolve(testPayment)
-      : Promise.reject(new BlError("could not create dibs payment"));
-  });
+    sandbox
+      .stub(paymentDibsHandler, "handleDibsPayment")
+      .callsFake((payment) => {
+        return dibsPaymentCreated
+          ? Promise.resolve(testPayment)
+          : Promise.reject(new BlError("could not create dibs payment"));
+      });
 
-  sinon.stub(paymentValidator, "validate").callsFake((valid) => {
-    return paymentValidated
-      ? Promise.resolve(true)
-      : Promise.reject(new BlError("could not validate payment"));
+    sandbox.stub(paymentValidator, "validate").callsFake((valid) => {
+      return paymentValidated
+        ? Promise.resolve(true)
+        : Promise.reject(new BlError("could not validate payment"));
+    });
+  });
+  afterEach(() => {
+    sandbox.restore();
   });
 
   describe("after()", () => {

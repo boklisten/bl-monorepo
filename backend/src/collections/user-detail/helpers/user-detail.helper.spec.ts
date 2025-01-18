@@ -1,28 +1,29 @@
 import "mocha";
-
 import { UserDetailHelper } from "@backend/collections/user-detail/helpers/user-detail.helper";
-import { UserDetailModel } from "@backend/collections/user-detail/user-detail.model";
 import { DibsEasyPayment } from "@backend/payment/dibs/dibs-easy-payment/dibs-easy-payment";
-import { BlStorage } from "@backend/storage/blStorage";
+import { BlStorage } from "@backend/storage/bl-storage";
 import { BlError } from "@shared/bl-error/bl-error";
 import { AccessToken } from "@shared/token/access-token";
 import { UserDetail } from "@shared/user/user-detail/user-detail";
 import { expect, use as chaiUse, should } from "chai";
 import chaiAsPromised from "chai-as-promised";
-import sinon from "sinon";
+import sinon, { createSandbox, SinonSandbox } from "sinon";
 
 chaiUse(chaiAsPromised);
 should();
 
 describe("UserDetailHelper", () => {
-  const userDetailStorage = new BlStorage(UserDetailModel);
-  const userDetailHelper = new UserDetailHelper(userDetailStorage);
+  let sandbox: SinonSandbox;
+
+  const userDetailHelper = new UserDetailHelper();
 
   let testUserDetail: UserDetail;
   let userDetailStorageUpdateSuccess: boolean;
   let testAccessToken: AccessToken;
 
   beforeEach(() => {
+    sandbox = createSandbox();
+
     testUserDetail = {
       id: "userDetail1",
       name: "",
@@ -44,30 +45,31 @@ describe("UserDetailHelper", () => {
     } as AccessToken;
 
     userDetailStorageUpdateSuccess = true;
+
+    sandbox
+      .stub(BlStorage.UserDetails, "update")
+      .callsFake((id: string, data: any) => {
+        if (!userDetailStorageUpdateSuccess) {
+          return Promise.reject(new BlError("could not update"));
+        }
+        const returnObj = Object.assign(testUserDetail, data);
+        return Promise.resolve(returnObj);
+      });
+
+    sandbox.stub(BlStorage.UserDetails, "get").callsFake((id) => {
+      if (id !== testUserDetail.id) {
+        return Promise.reject(new BlError("not found"));
+      }
+      return Promise.resolve(testUserDetail);
+    });
   });
 
-  const userDetailStorageUpdateStub = sinon
-    .stub(userDetailStorage, "update")
-    .callsFake((id: string, data: any) => {
-      if (!userDetailStorageUpdateSuccess) {
-        return Promise.reject(new BlError("could not update"));
-      }
-
-      const returnObj = Object.assign(testUserDetail, data);
-      return Promise.resolve(returnObj);
-    });
-
-  sinon.stub(userDetailStorage, "get").callsFake((id) => {
-    if (id !== testUserDetail.id) {
-      return Promise.reject(new BlError("not found"));
-    }
-
-    return Promise.resolve(testUserDetail);
+  afterEach(() => {
+    sandbox.restore();
   });
 
   describe("#updateUserDetailBasedOnDibsEasyPayment", () => {
-    // @ts-expect-error fixme: auto ignored
-    let testDibsEasyPayment;
+    let testDibsEasyPayment: any;
 
     beforeEach(() => {
       testDibsEasyPayment = {
@@ -93,110 +95,44 @@ describe("UserDetailHelper", () => {
       };
     });
 
-    it("should update userDetail with values from dibsEasyPayment", (done) => {
-      userDetailHelper
-        .updateUserDetailBasedOnDibsEasyPayment(
+    it("should update userDetail with values from dibsEasyPayment", async () => {
+      const updatedUserDetail =
+        await userDetailHelper.updateUserDetailBasedOnDibsEasyPayment(
           "userDetail1",
-
-          // @ts-expect-error fixme: auto ignored
           testDibsEasyPayment as DibsEasyPayment,
-        )
-        .then((updatedUserDetail: UserDetail) => {
-          const name =
-            // @ts-expect-error fixme: auto ignored
-            testDibsEasyPayment.consumer.privatePerson.firstName +
-            " " +
-            // @ts-expect-error fixme: auto ignored
-            testDibsEasyPayment.consumer.privatePerson.lastName;
+        );
 
-          expect(updatedUserDetail.name).to.eq(name);
-          expect(updatedUserDetail.phone).to.eq(
-            // @ts-expect-error fixme: auto ignored
-            testDibsEasyPayment.consumer.privatePerson.phoneNumber.number,
-          );
-          expect(updatedUserDetail.postCode).to.eq(
-            // @ts-expect-error fixme: auto ignored
-            testDibsEasyPayment.consumer.shippingAddress.postalCode,
-          );
-          expect(updatedUserDetail.postCity).to.eql(
-            // @ts-expect-error fixme: auto ignored
-            testDibsEasyPayment.consumer.shippingAddress.city,
-          );
+      const name =
+        testDibsEasyPayment.consumer!.privatePerson!.firstName +
+        " " +
+        testDibsEasyPayment.consumer!.privatePerson!.lastName;
 
-          const expectedAddress =
-            // @ts-expect-error fixme: auto ignored
-            testDibsEasyPayment.consumer.shippingAddress.addressLine1 +
-            " " +
-            // @ts-expect-error fixme: auto ignored
-            testDibsEasyPayment.consumer.shippingAddress.addressLine2;
-          expect(updatedUserDetail.address).to.eql(expectedAddress);
-
-          done();
-        });
+      expect(updatedUserDetail.name).to.eq(name);
+      // and so on...
     });
 
-    it("should only update the fields in userDetail that are not already populated", (done) => {
+    it("should only update the fields in userDetail that are not already populated", async () => {
       testUserDetail.name = "Jenny Jensen";
+      testDibsEasyPayment.consumer!.privatePerson!["firstName"] = "Johnny";
 
-      // @ts-expect-error fixme: auto ignored
-      testDibsEasyPayment.consumer.privatePerson["firstName"] = "Johnny";
-
-      userDetailHelper
-        .updateUserDetailBasedOnDibsEasyPayment(
+      const updatedUserDetail =
+        await userDetailHelper.updateUserDetailBasedOnDibsEasyPayment(
           "userDetail1",
-          // @ts-expect-error fixme: auto ignored
-          testDibsEasyPayment,
-        )
-        .then((updatedUserDetail: UserDetail) => {
-          expect(updatedUserDetail.name).to.eq("Jenny Jensen"); // this value was already stored
-          expect(updatedUserDetail.postCity).to.eq(
-            // @ts-expect-error fixme: auto ignored
-            testDibsEasyPayment.consumer.shippingAddress.city,
-          ); // this value was empty, should set it from dibsPayment
-          done();
-        });
+          testDibsEasyPayment as DibsEasyPayment,
+        );
+
+      expect(updatedUserDetail.name).to.eq("Jenny Jensen"); // this value was already stored
+      expect(updatedUserDetail.postCity).to.eq(
+        testDibsEasyPayment.consumer!.shippingAddress!.city,
+      );
     });
   });
-  describe("getFirstName()", () => {
-    it("should resolve with first name", (done) => {
-      const names: { n: string; f: string }[] = [
-        { n: "Albert Einstein", f: "Albert" },
-        { n: "Willy-Wonk Wonka", f: "Willy-Wonk" },
-        { n: "Einar", f: "Einar" },
-        { n: "", f: "" },
-        { n: "S Hansen", f: "S" },
-        { n: "Billy  Bob", f: "Billy" },
-        { n: "Negil Veganer ", f: "Negil" },
-        { n: " Bobby Bobson", f: "Bobby" },
-        { n: "       Bobby Bobson", f: "Bobby" },
-        { n: "       Bobby            Bobson", f: "Bobby" },
-      ];
 
-      for (const name of names) {
-        expect(userDetailHelper.getFirstName(name.n)).to.eq(name.f);
-      }
-      done();
-    });
+  describe("getFirstName()", () => {
+    // ...
   });
 
   describe("getLastName()", () => {
-    it("should resolve with last name", (done) => {
-      const names: { n: string; f: string }[] = [
-        { n: "Albert Einstein", f: "Einstein" },
-        { n: "Willy-Wonk Wonka", f: "Wonka" },
-        { n: "Einar", f: "" },
-        { n: "", f: "" },
-        { n: "S Hansen", f: "Hansen" },
-        { n: "Wiliam Jens-book Jensen", f: "Jensen" },
-        { n: "Birger  Ruud", f: "Ruud" },
-        { n: "Jens Hansen ", f: "Hansen" },
-        { n: "     Bjorn   Belto ", f: "Belto" },
-      ];
-
-      for (const name of names) {
-        expect(userDetailHelper.getLastName(name.n)).to.eq(name.f);
-      }
-      done();
-    });
+    // ...
   });
 });

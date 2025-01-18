@@ -1,14 +1,10 @@
 import { CustomerItemHandler } from "@backend/collections/customer-item/helpers/customer-item-handler";
 import { OrderItemMovedFromOrderHandler } from "@backend/collections/order/helpers/order-item-moved-from-order-handler/order-item-moved-from-order-handler";
-import { OrderModel } from "@backend/collections/order/order.model";
 import { PaymentHandler } from "@backend/collections/payment/helpers/payment-handler";
 import { userHasValidSignature } from "@backend/collections/signature/helpers/signature.helper";
-import { SignatureModel } from "@backend/collections/signature/signature.model";
-import { Signature } from "@backend/collections/signature/signature.model";
-import { UserDetailModel } from "@backend/collections/user-detail/user-detail.model";
 import { logger } from "@backend/logger/logger";
 import { Messenger } from "@backend/messenger/messenger";
-import { BlStorage } from "@backend/storage/blStorage";
+import { BlStorage } from "@backend/storage/bl-storage";
 import { BlError } from "@shared/bl-error/bl-error";
 import { Order } from "@shared/order/order";
 import { OrderItem } from "@shared/order/order-item/order-item";
@@ -17,32 +13,24 @@ import { AccessToken } from "@shared/token/access-token";
 import { UserDetail } from "@shared/user/user-detail/user-detail";
 
 export class OrderPlacedHandler {
-  private orderStorage: BlStorage<Order>;
   private paymentHandler: PaymentHandler;
-  private userDetailStorage: BlStorage<UserDetail>;
-  private signatureStorage: BlStorage<Signature>;
+
   private customerItemHandler: CustomerItemHandler;
   private orderItemMovedFromOrderHandler: OrderItemMovedFromOrderHandler;
   private messenger: Messenger;
 
   constructor(
-    orderStorage?: BlStorage<Order>,
     paymentHandler?: PaymentHandler,
-    userDetailStorage?: BlStorage<UserDetail>,
     messenger?: Messenger,
     customerItemHandler?: CustomerItemHandler,
     orderItemMovedFromOrderHandler?: OrderItemMovedFromOrderHandler,
-    signatureStorage?: BlStorage<Signature>,
   ) {
-    this.orderStorage = orderStorage ?? new BlStorage(OrderModel);
     this.paymentHandler = paymentHandler ?? new PaymentHandler();
-    this.userDetailStorage =
-      userDetailStorage ?? new BlStorage(UserDetailModel);
+
     this.messenger = messenger ?? new Messenger();
     this.customerItemHandler = customerItemHandler ?? new CustomerItemHandler();
     this.orderItemMovedFromOrderHandler =
       orderItemMovedFromOrderHandler ?? new OrderItemMovedFromOrderHandler();
-    this.signatureStorage = signatureStorage ?? new BlStorage(SignatureModel);
   }
 
   public async placeOrder(
@@ -56,7 +44,7 @@ export class OrderPlacedHandler {
 
       const paymentIds = payments.map((payment) => payment.id);
 
-      const placedOrder = await this.orderStorage.update(order.id, {
+      const placedOrder = await BlStorage.Orders.update(order.id, {
         placed: true,
         payments: paymentIds,
         pendingSignature,
@@ -161,8 +149,7 @@ export class OrderPlacedHandler {
       return Promise.resolve(true);
     }
     return new Promise((resolve, reject) => {
-      this.userDetailStorage
-        .get(order.customer)
+      BlStorage.UserDetails.get(order.customer)
         .then((userDetail: UserDetail) => {
           const orders = userDetail.orders ?? [];
 
@@ -171,8 +158,7 @@ export class OrderPlacedHandler {
           } else {
             orders.push(order.id);
 
-            this.userDetailStorage
-              .update(order.customer, { orders })
+            BlStorage.UserDetails.update(order.customer, { orders })
               .then(() => {
                 resolve(true);
               })
@@ -197,7 +183,7 @@ export class OrderPlacedHandler {
     if (order.notification && !order.notification.email) {
       return;
     }
-    const customerDetail = await this.userDetailStorage.get(order.customer);
+    const customerDetail = await BlStorage.UserDetails.get(order.customer);
     await (order.handoutByDelivery
       ? this.messenger.sendDeliveryInformation(customerDetail, order)
       : this.messenger.orderPlaced(customerDetail, order));
@@ -210,12 +196,9 @@ export class OrderPlacedHandler {
    * have a signature currently and the original order for the item is pending signature.
    */
   public async isSignaturePending(order: Order): Promise<boolean> {
-    const userDetail = await this.userDetailStorage.get(order.customer);
+    const userDetail = await BlStorage.UserDetails.get(order.customer);
 
-    const hasValidSignature = await userHasValidSignature(
-      userDetail,
-      this.signatureStorage,
-    );
+    const hasValidSignature = await userHasValidSignature(userDetail);
     if (hasValidSignature) {
       return false;
     }
@@ -223,7 +206,7 @@ export class OrderPlacedHandler {
     for (const orderItem of this.orderItemsWhichRequireSignature(order)) {
       if (orderItem.handout) {
         if (orderItem.movedFromOrder) {
-          const originalOrder = await this.orderStorage.get(
+          const originalOrder = await BlStorage.Orders.get(
             orderItem.movedFromOrder,
           );
           if (!originalOrder.pendingSignature) continue;

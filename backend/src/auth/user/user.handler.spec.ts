@@ -5,15 +5,13 @@ import { UserHandler } from "@backend/auth/user/user.handler";
 import { EmailValidationHelper } from "@backend/collections/email-validation/helpers/email-validation.helper";
 import { LocalLogin } from "@backend/collections/local-login/local-login";
 import { User } from "@backend/collections/user/user";
-import { UserModel } from "@backend/collections/user/user.model";
-import { UserDetailModel } from "@backend/collections/user-detail/user-detail.model";
 import { SEDbQuery } from "@backend/query/se.db-query";
-import { BlStorage } from "@backend/storage/blStorage";
+import { BlStorage } from "@backend/storage/bl-storage";
 import { BlError } from "@shared/bl-error/bl-error";
 import { UserDetail } from "@shared/user/user-detail/user-detail";
 import { expect, use as chaiUse, should } from "chai";
 import chaiAsPromised from "chai-as-promised";
-import sinon from "sinon";
+import sinon, { createSandbox } from "sinon";
 
 chaiUse(chaiAsPromised);
 should();
@@ -32,27 +30,52 @@ const testUser = {
 } as User;
 
 describe("UserHandler", () => {
-  const userStorage = new BlStorage(UserModel);
   const emailValidationHelper: EmailValidationHelper =
     new EmailValidationHelper();
-  const userDetailStorage = new BlStorage(UserDetailModel);
   const localLoginHandler: LocalLoginHandler = new LocalLoginHandler();
-  const userHandler = new UserHandler(
-    userDetailStorage,
-    userStorage,
-    emailValidationHelper,
-    localLoginHandler,
-  );
+  const userHandler = new UserHandler(emailValidationHelper, localLoginHandler);
   let testProvider = "";
   let testProviderId = "";
   let testUsername = "";
   let emailValidationLinkSuccess = true;
+  let sandbox: sinon.SinonSandbox;
+  let userStorageGetByQueryStub: sinon.SinonStub;
 
   beforeEach(() => {
     testProvider = testUser.login.provider;
     testProviderId = testUser.login.providerId;
     testUsername = testUser.username;
     emailValidationLinkSuccess = true;
+    sandbox = createSandbox();
+
+    sandbox.stub(BlStorage.UserDetails, "add").callsFake(() => {
+      return new Promise((resolve) => {
+        resolve({
+          id: testUser.userDetail,
+          user: { id: testUser.blid },
+        } as any);
+      });
+    });
+
+    sandbox.stub(BlStorage.Users, "add").resolves(testUser);
+
+    sandbox.stub(localLoginHandler, "get").resolves({} as LocalLogin);
+
+    userStorageGetByQueryStub = sandbox
+      .stub(BlStorage.Users, "getByQuery")
+      .callsFake((query: SEDbQuery) => {
+        return new Promise((resolve, reject) => {
+          // @ts-expect-error fixme: auto ignored
+          if (query.stringFilters[0].value !== testUser.username) {
+            return reject(new BlError("not found").code(702));
+          }
+
+          resolve([{ username: testUser.username } as User]);
+        });
+      });
+  });
+  afterEach(() => {
+    sandbox.restore();
   });
 
   const emailValidationHelperSendLinkStub = sinon
@@ -65,29 +88,6 @@ describe("UserHandler", () => {
       }
 
       return Promise.resolve();
-    });
-
-  sinon.stub(userDetailStorage, "add").callsFake(() => {
-    return new Promise((resolve) => {
-      resolve({ id: testUser.userDetail, user: { id: testUser.blid } } as any);
-    });
-  });
-
-  sinon.stub(userStorage, "add").resolves(testUser);
-
-  sinon.stub(localLoginHandler, "get").resolves({} as LocalLogin);
-
-  const userStorageGetByQueryStub = sinon
-    .stub(userStorage, "getByQuery")
-    .callsFake((query: SEDbQuery) => {
-      return new Promise((resolve, reject) => {
-        // @ts-expect-error fixme: auto ignored
-        if (query.stringFilters[0].value !== testUser.username) {
-          return reject(new BlError("not found").code(702));
-        }
-
-        resolve([{ username: testUser.username } as User]);
-      });
     });
 
   describe("get()", () => {

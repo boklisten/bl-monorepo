@@ -1,29 +1,20 @@
 import { PermissionService } from "@backend/auth/permission/permission.service";
-import { UserDetailModel } from "@backend/collections/user-detail/user-detail.model";
 import { Hook } from "@backend/hook/hook";
 import { Messenger } from "@backend/messenger/messenger";
 import { MessengerReminder } from "@backend/messenger/reminder/messenger-reminder";
-import { BlStorage } from "@backend/storage/blStorage";
+import { BlStorage } from "@backend/storage/bl-storage";
 import { BlError } from "@shared/bl-error/bl-error";
 import { Message } from "@shared/message/message";
 import { AccessToken } from "@shared/token/access-token";
-import { UserDetail } from "@shared/user/user-detail/user-detail";
 
 export class MessagePostHook extends Hook {
   private readonly messengerReminder: MessengerReminder;
   private readonly messenger: Messenger;
-  private readonly userDetailStorage: BlStorage<UserDetail>;
 
-  constructor(
-    messengerReminder?: MessengerReminder,
-    messenger?: Messenger,
-    userDetailStorage?: BlStorage<UserDetail>,
-  ) {
+  constructor(messengerReminder?: MessengerReminder, messenger?: Messenger) {
     super();
     this.messengerReminder = messengerReminder ?? new MessengerReminder();
     this.messenger = messenger ?? new Messenger();
-    this.userDetailStorage =
-      userDetailStorage ?? new BlStorage(UserDetailModel);
   }
 
   override async before(
@@ -76,13 +67,13 @@ export class MessagePostHook extends Hook {
   }
 
   private async onGeneric(message: Message): Promise<Message> {
-    const userDetail = await this.userDetailStorage
-      .get(message.customerId)
-      .catch(() => {
-        throw new BlError(
-          `Could not find customerId ${message.customerId}`,
-        ).code(702);
-      });
+    const userDetail = await BlStorage.UserDetails.get(
+      message.customerId,
+    ).catch(() => {
+      throw new BlError(`Could not find customerId ${message.customerId}`).code(
+        702,
+      );
+    });
     // Do not await to improve performance
     this.messenger.send(message, userDetail).catch((error) => {
       throw new BlError(`Could not send generic message`).code(200).add(error);
@@ -91,13 +82,13 @@ export class MessagePostHook extends Hook {
   }
 
   private async onMatch(message: Message): Promise<Message> {
-    const userDetail = await this.userDetailStorage
-      .get(message.customerId)
-      .catch(() => {
-        throw new BlError(
-          `Could not find customerId ${message.customerId}`,
-        ).code(702);
-      });
+    const userDetail = await BlStorage.UserDetails.get(
+      message.customerId,
+    ).catch(() => {
+      throw new BlError(`Could not find customerId ${message.customerId}`).code(
+        702,
+      );
+    });
 
     // Do not await to improve performance
     this.messenger.send(message, userDetail).catch((error) => {

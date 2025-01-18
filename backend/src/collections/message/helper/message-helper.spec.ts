@@ -1,8 +1,7 @@
 import "mocha";
 
 import { MessageHelper } from "@backend/collections/message/helper/message-helper";
-import { MessageModel } from "@backend/collections/message/message.model";
-import { BlStorage } from "@backend/storage/blStorage";
+import { BlStorage } from "@backend/storage/bl-storage";
 import { BlError } from "@shared/bl-error/bl-error";
 import { Message } from "@shared/message/message";
 import { MessageMethod } from "@shared/message/message-method/message-method";
@@ -16,10 +15,12 @@ should();
 chaiUse(sinonChai);
 
 describe("MessageHelper", () => {
-  const messageStorage = new BlStorage(MessageModel);
-  const messageHelper = new MessageHelper(messageStorage);
+  const messageHelper = new MessageHelper();
 
-  const messageStorageGetByQueryStub = sinon.stub(messageStorage, "getByQuery");
+  const messageStorageGetByQueryStub = sinon.stub(
+    BlStorage.Messages,
+    "getByQuery",
+  );
 
   describe("#isAdded", () => {
     it("should throw error if messageStorage.get fails", async () => {

@@ -1,8 +1,8 @@
 import { BlCollection } from "@backend/collections/bl-collection";
-import { OpeningHourModel } from "@backend/collections/opening-hour/opening-hour.model";
+import { BlStorage } from "@backend/storage/bl-storage";
 
 export const OpeningHourCollection: BlCollection = {
-  model: OpeningHourModel,
+  storage: BlStorage.OpeningHours,
   endpoints: [
     {
       method: "getId",

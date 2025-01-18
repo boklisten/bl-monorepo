@@ -1,25 +1,21 @@
-import { OrderModel } from "@backend/collections/order/order.model";
 import { PaymentDibsHandler } from "@backend/collections/payment/helpers/dibs/payment-dibs-handler";
 import { PaymentValidator } from "@backend/collections/payment/helpers/payment.validator";
 import { Hook } from "@backend/hook/hook";
-import { BlStorage } from "@backend/storage/blStorage";
+import { BlStorage } from "@backend/storage/bl-storage";
 import { BlError } from "@shared/bl-error/bl-error";
 import { Order } from "@shared/order/order";
 import { Payment } from "@shared/payment/payment";
 
 export class PaymentPostHook extends Hook {
-  private orderStorage: BlStorage<Order>;
   private paymentValidator: PaymentValidator;
   private paymentDibsHandler: PaymentDibsHandler;
 
   constructor(
-    orderStorage?: BlStorage<Order>,
     paymentValidator?: PaymentValidator,
     paymentDibsHandler?: PaymentDibsHandler,
   ) {
     super();
     this.paymentValidator = paymentValidator ?? new PaymentValidator();
-    this.orderStorage = orderStorage ?? new BlStorage(OrderModel);
     this.paymentDibsHandler = paymentDibsHandler ?? new PaymentDibsHandler();
   }
 
@@ -91,8 +87,7 @@ export class PaymentPostHook extends Hook {
 
   private updateOrderWithPayment(payment: Payment): Promise<Payment> {
     return new Promise((resolve, reject) => {
-      this.orderStorage
-        .get(payment.order)
+      BlStorage.Orders.get(payment.order)
         .then((order: Order) => {
           const paymentIds = order.payments ?? [];
 
@@ -105,8 +100,7 @@ export class PaymentPostHook extends Hook {
           } else {
             paymentIds.push(payment.id);
           }
-          return this.orderStorage
-            .update(order.id, { payments: paymentIds })
+          return BlStorage.Orders.update(order.id, { payments: paymentIds })
             .then(() => {
               resolve(payment);
             })

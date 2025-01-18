@@ -1,27 +1,39 @@
 import "mocha";
 
 import { OrderItemMovedFromOrderHandler } from "@backend/collections/order/helpers/order-item-moved-from-order-handler/order-item-moved-from-order-handler";
-import { OrderModel } from "@backend/collections/order/order.model";
-import { BlStorage } from "@backend/storage/blStorage";
+import { BlStorage } from "@backend/storage/bl-storage";
 import { BlError } from "@shared/bl-error/bl-error";
 import { Order } from "@shared/order/order";
 import { expect, use as chaiUse, should } from "chai";
 import chaiAsPromised from "chai-as-promised";
-import sinon from "sinon";
+import sinon, { createSandbox } from "sinon";
 
 chaiUse(chaiAsPromised);
 should();
 
 describe("OrderItemMovedFromOrderHandler", () => {
-  const orderStorage = new BlStorage(OrderModel);
-  const oiMovedFromOrderHandler = new OrderItemMovedFromOrderHandler(
-    orderStorage,
-  );
-  const getOrderStub = sinon.stub(orderStorage, "get");
-  const updateOrderStub = sinon.stub(orderStorage, "update");
+  const oiMovedFromOrderHandler = new OrderItemMovedFromOrderHandler();
+  let getOrderStub: sinon.SinonStub;
+  let updateOrderStub: sinon.SinonStub;
 
   describe("#updateOrderItems", () => {
-    context('when "movedFromOrder" is present on order items', () => {
+    let sandbox: sinon.SinonSandbox;
+    beforeEach(() => {
+      sandbox = createSandbox();
+      const orderStub = {
+        get: sandbox.stub(),
+        update: sandbox.stub(),
+      };
+
+      sandbox.stub(BlStorage, "Orders").value(orderStub);
+      getOrderStub = orderStub.get;
+      updateOrderStub = orderStub.update;
+    });
+    afterEach(() => {
+      sandbox.restore();
+    });
+
+    it('when "movedFromOrder" is present on order items', () => {
       const testMovedFromOrderId = "testMovedFromOrderId";
 
       const testMovedFromOrder = {

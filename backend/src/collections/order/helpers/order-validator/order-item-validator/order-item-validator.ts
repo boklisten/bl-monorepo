@@ -1,4 +1,3 @@
-import { ItemModel } from "@backend/collections/item/item.model";
 import { OrderFieldValidator } from "@backend/collections/order/helpers/order-validator/order-field-validator/order-field-validator";
 import { OrderItemBuyValidator } from "@backend/collections/order/helpers/order-validator/order-item-validator/order-item-buy-validator/order-item-buy-validator";
 import { OrderItemExtendValidator } from "@backend/collections/order/helpers/order-validator/order-item-validator/order-item-extend-validator/order-item-extend-validator";
@@ -6,7 +5,7 @@ import { OrderItemPartlyPaymentValidator } from "@backend/collections/order/help
 import { OrderItemRentValidator } from "@backend/collections/order/helpers/order-validator/order-item-validator/order-item-rent-validator/order-item-rent-validator";
 import { isNotNullish } from "@backend/helper/typescript-helpers";
 import { PriceService } from "@backend/price/price.service";
-import { BlStorage } from "@backend/storage/blStorage";
+import { BlStorage } from "@backend/storage/bl-storage";
 import { BlError } from "@shared/bl-error/bl-error";
 import { Branch } from "@shared/branch/branch";
 import { Item } from "@shared/item/item";
@@ -19,19 +18,15 @@ export class OrderItemValidator {
   private orderItemBuyValidator: OrderItemBuyValidator;
   private orderItemRentValidator: OrderItemRentValidator;
   private orderItemPartlyPaymentValidator: OrderItemPartlyPaymentValidator;
-  private itemStorage: BlStorage<Item>;
   private priceService: PriceService;
 
   constructor(
-    itemStorage?: BlStorage<Item>,
     orderItemFieldValidator?: OrderFieldValidator,
     orderItemRentValidator?: OrderItemRentValidator,
     orderItemBuyValidator?: OrderItemBuyValidator,
     orderItemExtendValidator?: OrderItemExtendValidator,
     orderItemPartlyPaymentValidator?: OrderItemPartlyPaymentValidator,
   ) {
-    this.itemStorage = itemStorage ?? new BlStorage(ItemModel);
-
     this.orderItemFieldValidator =
       orderItemFieldValidator ?? new OrderFieldValidator();
     this.orderItemRentValidator =
@@ -59,7 +54,7 @@ export class OrderItemValidator {
       this.validateAmount(order);
 
       for (const orderItem of order.orderItems) {
-        const item = await this.itemStorage.get(orderItem.item);
+        const item = await BlStorage.Items.get(orderItem.item);
         await this.validateOrderItemBasedOnType(branch, item, orderItem);
         this.validateOrderItemAmounts(orderItem);
       }

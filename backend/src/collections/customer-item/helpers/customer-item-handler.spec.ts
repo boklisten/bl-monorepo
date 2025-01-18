@@ -1,10 +1,8 @@
 import "mocha";
 
-import { BranchModel } from "@backend/collections/branch/branch.model";
-import { CustomerItemModel } from "@backend/collections/customer-item/customer-item.model";
 import { CustomerItemHandler } from "@backend/collections/customer-item/helpers/customer-item-handler";
 import { SEDbQuery } from "@backend/query/se.db-query";
-import { BlStorage } from "@backend/storage/blStorage";
+import { BlStorage } from "@backend/storage/bl-storage";
 import { BlError } from "@shared/bl-error/bl-error";
 import { Branch } from "@shared/branch/branch";
 import { CustomerItem } from "@shared/customer-item/customer-item";
@@ -12,29 +10,38 @@ import { OrderItem } from "@shared/order/order-item/order-item";
 import { expect, use as chaiUse, should } from "chai";
 import chaiAsPromised from "chai-as-promised";
 import mongoose from "mongoose";
-import sinon from "sinon";
+import sinon, { createSandbox } from "sinon";
 
 chaiUse(chaiAsPromised);
 should();
 
 describe("CustomerItemHandler", () => {
-  const customerItemStorage = new BlStorage(CustomerItemModel);
-  const branchStorage = new BlStorage(BranchModel);
-  const customerItemHandler = new CustomerItemHandler(
-    customerItemStorage,
-    branchStorage,
-  );
+  const customerItemHandler = new CustomerItemHandler();
 
-  const getCustomerItemStub = sinon.stub(customerItemStorage, "get");
-  const getByQueryCustomerItemStub = sinon.stub(
-    customerItemStorage,
-    "getByQuery",
-  );
-  const updateCustomerItemStub = sinon.stub(customerItemStorage, "update");
-  const getBranchStub = sinon.stub(branchStorage, "get");
+  let sandbox: sinon.SinonSandbox;
+  let getCustomerItemStub: sinon.SinonStub;
+  let getByQueryCustomerItemStub: sinon.SinonStub;
+  let getBranchStub: sinon.SinonStub;
 
   beforeEach(() => {
-    getByQueryCustomerItemStub.reset();
+    sandbox = createSandbox();
+    const customerItemsStub = {
+      get: sandbox.stub(),
+      getByQuery: sandbox.stub(),
+    };
+    const branchesStub = {
+      get: sandbox.stub(),
+    };
+
+    sandbox.stub(BlStorage, "CustomerItems").value(customerItemsStub);
+    sandbox.stub(BlStorage, "Branches").value(branchesStub);
+
+    getCustomerItemStub = customerItemsStub.get;
+    getByQueryCustomerItemStub = customerItemsStub.getByQuery;
+    getBranchStub = branchesStub.get;
+  });
+  afterEach(() => {
+    sandbox.restore();
   });
 
   describe("#extend()", () => {
@@ -276,7 +283,7 @@ describe("CustomerItemHandler", () => {
         });
     });
 
-    it("should reject if customerItemStorage rejects", () => {
+    it("should reject if BlStorage.CustomerItems rejects", () => {
       getByQueryCustomerItemStub.rejects(new BlError("someting wrong"));
 
       expect(

@@ -1,43 +1,40 @@
 import "mocha";
 
 import { PaymentDibsConfirmer } from "@backend/collections/payment/helpers/dibs/payment-dibs-confirmer";
-import { PaymentModel } from "@backend/collections/payment/payment.model";
 import { DibsEasyPayment } from "@backend/payment/dibs/dibs-easy-payment/dibs-easy-payment";
 import { DibsPaymentService } from "@backend/payment/dibs/dibs-payment.service";
-import { BlStorage } from "@backend/storage/blStorage";
+import { BlStorage } from "@backend/storage/bl-storage";
 import { BlError } from "@shared/bl-error/bl-error";
 import { Order } from "@shared/order/order";
 import { Payment } from "@shared/payment/payment";
 import { AccessToken } from "@shared/token/access-token";
 import { expect, use as chaiUse, should } from "chai";
 import chaiAsPromised from "chai-as-promised";
-import sinon from "sinon";
+import sinon, { createSandbox } from "sinon";
 chaiUse(chaiAsPromised);
 should();
 
 describe("PaymentDibsConfirmer", () => {
   const dibsPaymentService = new DibsPaymentService();
+  const paymentDibsConfirmer = new PaymentDibsConfirmer(dibsPaymentService);
   const dibsPaymentFetchStub = sinon.stub(
     dibsPaymentService,
     "fetchDibsPaymentData",
   );
-  const paymentStorage = new BlStorage(PaymentModel);
-  const paymentDibsConfirmer = new PaymentDibsConfirmer(
-    dibsPaymentService,
-    paymentStorage,
-  );
-
-  const updatePaymentStub = sinon.stub(paymentStorage, "update");
-
-  const accessToken = {} as AccessToken;
+  let updatePaymentStub: sinon.SinonStub;
+  let sandbox: sinon.SinonSandbox;
 
   beforeEach(() => {
+    sandbox = createSandbox();
     dibsPaymentFetchStub.reset();
-    updatePaymentStub.reset();
+    updatePaymentStub = sandbox.stub(BlStorage.Payments, "update");
+  });
+  afterEach(() => {
+    sandbox.restore();
   });
 
   describe("confirm()", () => {
-    it("should reject if paymentStorage.update rejects", () => {
+    it("should reject if BlStorage.Payments.update rejects", () => {
       dibsPaymentFetchStub.resolves({
         orderDetails: { amount: 12000, reference: "order1" },
         summary: { reservedAmount: 12000 },

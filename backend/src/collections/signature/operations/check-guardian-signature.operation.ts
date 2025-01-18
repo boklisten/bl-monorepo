@@ -3,26 +3,21 @@ import {
   isGuardianSignatureRequired,
   isUnderage,
 } from "@backend/collections/signature/helpers/signature.helper";
-import { SignatureModel } from "@backend/collections/signature/signature.model";
-import { UserDetailModel } from "@backend/collections/user-detail/user-detail.model";
 import { Operation } from "@backend/operation/operation";
 import { BlApiRequest } from "@backend/request/bl-api-request";
-import { BlStorage } from "@backend/storage/blStorage";
+import { BlStorage } from "@backend/storage/bl-storage";
 import { BlError } from "@shared/bl-error/bl-error";
 import { BlapiResponse } from "@shared/blapi-response/blapi-response";
 import { CheckGuardianSignatureSpec } from "@shared/signature/serialized-signature";
 import { ObjectId } from "mongodb";
 
 export class CheckGuardianSignatureOperation implements Operation {
-  private userDetailStorage = new BlStorage(UserDetailModel);
-  private signatureStorage = new BlStorage(SignatureModel);
-
   async run(blApiRequest: BlApiRequest): Promise<BlapiResponse> {
     const serializedGuardianSignature = blApiRequest.data;
     if (!validateSerializedGuardianSignature(serializedGuardianSignature))
       throw new BlError("Bad serialized guardian signature").code(701);
 
-    const userDetail = await this.userDetailStorage.get(
+    const userDetail = await BlStorage.UserDetails.get(
       serializedGuardianSignature.customerId,
     );
 
@@ -35,13 +30,8 @@ export class CheckGuardianSignatureOperation implements Operation {
       ]);
     }
 
-    if (
-      !(await isGuardianSignatureRequired(userDetail, this.signatureStorage))
-    ) {
-      const signature = await getValidUserSignature(
-        userDetail,
-        this.signatureStorage,
-      );
+    if (!(await isGuardianSignatureRequired(userDetail))) {
+      const signature = await getValidUserSignature(userDetail);
       return new BlapiResponse([
         {
           message: `${signature?.signingName} har allerede signert på vegne av ${userDetail.name}`,

@@ -1,16 +1,11 @@
-import { CustomerItemModel } from "@backend/collections/customer-item/customer-item.model";
-import { OrderModel } from "@backend/collections/order/order.model";
-import { StandMatchModel } from "@backend/collections/stand-match/stand-match.model";
-import { UserDetailModel } from "@backend/collections/user-detail/user-detail.model";
 import { MatchFinder } from "@backend/collections/user-match/helpers/match-finder/match-finder";
 import {
   getMatchableUsers,
   MatchGenerateSpec,
 } from "@backend/collections/user-match/operations/match-generate-operation-helper";
-import { UserMatchModel } from "@backend/collections/user-match/user-match.model";
 import { Operation } from "@backend/operation/operation";
 import { BlApiRequest } from "@backend/request/bl-api-request";
-import { BlStorage } from "@backend/storage/blStorage";
+import { BlStorage } from "@backend/storage/bl-storage";
 import { BlError } from "@shared/bl-error/bl-error";
 import { BlapiResponse } from "@shared/blapi-response/blapi-response";
 import { StandMatch } from "@shared/match/stand-match";
@@ -18,12 +13,6 @@ import { UserMatch } from "@shared/match/user-match";
 import { fromError } from "zod-validation-error";
 
 export class MatchGenerateOperation implements Operation {
-  private customerItemStorage = new BlStorage(CustomerItemModel);
-  private userMatchStorage = new BlStorage(UserMatchModel);
-  private standMatchStorage = new BlStorage(StandMatchModel);
-  private orderStorage = new BlStorage(OrderModel);
-  private userDetailStorage = new BlStorage(UserDetailModel);
-
   async run(blApiRequest: BlApiRequest): Promise<BlapiResponse> {
     const parsedRequest = MatchGenerateSpec.safeParse(blApiRequest.data);
     if (!parsedRequest.success) {
@@ -33,9 +22,6 @@ export class MatchGenerateOperation implements Operation {
       parsedRequest.data.branches,
       parsedRequest.data.deadlineBefore,
       parsedRequest.data.includeCustomerItemsFromOtherBranches,
-      this.customerItemStorage,
-      this.orderStorage,
-      this.userDetailStorage,
     );
     if (matchableUsers.length === 0) {
       throw new BlError("No matchable users found");
@@ -112,9 +98,9 @@ export class MatchGenerateOperation implements Operation {
       throw new BlError("No matches generated");
     }
 
-    const addedUserMatches = await this.userMatchStorage.addMany(userMatches);
+    const addedUserMatches = await BlStorage.UserMatches.addMany(userMatches);
     const addedStandMatches =
-      await this.standMatchStorage.addMany(standMatches);
+      await BlStorage.StandMatches.addMany(standMatches);
     return new BlapiResponse([
       {
         status: `Created ${addedUserMatches.length} user matches and ${addedStandMatches.length} stand matches`,

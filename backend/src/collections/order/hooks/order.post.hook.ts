@@ -2,31 +2,28 @@ import { PermissionService } from "@backend/auth/permission/permission.service";
 import { OrderValidator } from "@backend/collections/order/helpers/order-validator/order-validator";
 import { OrderHookBefore } from "@backend/collections/order/hooks/order-hook-before";
 import { UserDetailHelper } from "@backend/collections/user-detail/helpers/user-detail.helper";
-import { UserDetailModel } from "@backend/collections/user-detail/user-detail.model";
 import { Hook } from "@backend/hook/hook";
-import { BlStorage } from "@backend/storage/blStorage";
+import { BlStorage } from "@backend/storage/bl-storage";
 import { BlError } from "@shared/bl-error/bl-error";
 import { Order } from "@shared/order/order";
 import { AccessToken } from "@shared/token/access-token";
-import { UserDetail } from "@shared/user/user-detail/user-detail";
 
 export class OrderPostHook extends Hook {
   private orderValidator: OrderValidator;
   private orderHookBefore: OrderHookBefore;
-  private userDetailStorage: BlStorage<UserDetail>;
+
   private userDetailHelper: UserDetailHelper;
 
   constructor(
     orderValidator?: OrderValidator,
     orderHookBefore?: OrderHookBefore,
-    userDetailStorage?: BlStorage<UserDetail>,
+
     userDetailHelper?: UserDetailHelper,
   ) {
     super();
     this.orderValidator = orderValidator ?? new OrderValidator();
     this.orderHookBefore = orderHookBefore ?? new OrderHookBefore();
-    this.userDetailStorage =
-      userDetailStorage ?? new BlStorage(UserDetailModel);
+
     this.userDetailHelper = userDetailHelper ?? new UserDetailHelper();
   }
 
@@ -35,9 +32,9 @@ export class OrderPostHook extends Hook {
     accessToken: AccessToken,
   ): Promise<boolean> {
     const [validUserDetails, validRequestBody] = await Promise.all([
-      this.userDetailStorage
-        .get(accessToken.details)
-        .then((userDetail) => this.userDetailHelper.isValid(userDetail)),
+      BlStorage.UserDetails.get(accessToken.details).then((userDetail) =>
+        this.userDetailHelper.isValid(userDetail),
+      ),
       this.orderHookBefore.validate(requestBody),
     ]);
     if (!validUserDetails) {

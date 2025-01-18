@@ -4,10 +4,10 @@ import { MatchNotifyOperation } from "@backend/collections/user-match/operations
 import { GetMyUserMatchesOperation } from "@backend/collections/user-match/operations/user-match-getall-me.operation";
 import { UserMatchLockOperation } from "@backend/collections/user-match/operations/user-match-lock.operation";
 import { UserMatchTransferItemOperation } from "@backend/collections/user-match/operations/user-match-transfer-item.operation";
-import { UserMatchModel } from "@backend/collections/user-match/user-match.model";
+import { BlStorage } from "@backend/storage/bl-storage";
 
 export const UserMatchCollection: BlCollection = {
-  model: UserMatchModel,
+  storage: BlStorage.UserMatches,
   endpoints: [
     {
       method: "post",

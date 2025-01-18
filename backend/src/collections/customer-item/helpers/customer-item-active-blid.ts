@@ -1,18 +1,11 @@
-import { CustomerItemModel } from "@backend/collections/customer-item/customer-item.model";
 import { CustomerItemActive } from "@backend/collections/customer-item/helpers/customer-item-active";
 import { SEDbQueryBuilder } from "@backend/query/se.db-query-builder";
-import { BlStorage } from "@backend/storage/blStorage";
+import { BlStorage } from "@backend/storage/bl-storage";
 import { CustomerItem } from "@shared/customer-item/customer-item";
 
 export class CustomerItemActiveBlid {
-  private customerItemStorage: BlStorage<CustomerItem>;
   private customerItemActive = new CustomerItemActive();
   private dbQueryBuilder = new SEDbQueryBuilder();
-
-  constructor(customerItemStorage?: BlStorage<CustomerItem>) {
-    this.customerItemStorage =
-      customerItemStorage ?? new BlStorage(CustomerItemModel);
-  }
 
   /**
    * Checks if a blid is used by an active customerItem
@@ -28,7 +21,7 @@ export class CustomerItemActiveBlid {
     ]);
 
     const customerItems =
-      await this.customerItemStorage.getByQuery(databaseQuery);
+      await BlStorage.CustomerItems.getByQuery(databaseQuery);
 
     const activeCustomerItems = customerItems.filter((customerItem) =>
       this.customerItemActive.isActive(customerItem),

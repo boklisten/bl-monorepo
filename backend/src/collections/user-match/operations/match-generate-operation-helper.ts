@@ -2,10 +2,7 @@ import {
   MatchableUser,
   MatchLocationSchema,
 } from "@backend/collections/user-match/helpers/match-finder/match-types";
-import { BlStorage } from "@backend/storage/blStorage";
-import { CustomerItem } from "@shared/customer-item/customer-item";
-import { Order } from "@shared/order/order";
-import { UserDetail } from "@shared/user/user-detail/user-detail";
+import { BlStorage } from "@backend/storage/bl-storage";
 import { ObjectId } from "mongodb";
 import { z } from "zod";
 
@@ -28,26 +25,19 @@ export const MatchGenerateSpec = z.object({
  * @param branchIds The IDs of branches to search for users and items
  * @param deadlineBefore Select customer items that have a deadlineBefore between now() and this deadlineBefore
  * @param includeSenderItemsFromOtherBranches whether the remainder of the items that a customer has in possession should be added to the match, even though they were not handed out at the specified branchIds
- * @param customerItemStorage
- * @param orderStorage
- * @param userDetailStorage
  */
 export async function getMatchableUsers(
   branchIds: string[],
   deadlineBefore: string,
   includeSenderItemsFromOtherBranches: boolean,
-  customerItemStorage: BlStorage<CustomerItem>,
-  orderStorage: BlStorage<Order>,
-  userDetailStorage: BlStorage<UserDetail>,
 ): Promise<MatchableUser[]> {
   const [senders, receivers] = await Promise.all([
     getMatchableSender(
       branchIds,
       deadlineBefore,
       includeSenderItemsFromOtherBranches,
-      customerItemStorage,
     ),
-    getMatchableReceivers(branchIds, orderStorage),
+    getMatchableReceivers(branchIds),
   ]);
   const matchableUsers: MatchableUser[] = [];
   for (const user of [...senders, ...receivers]) {
@@ -64,7 +54,7 @@ export async function getMatchableUsers(
   }
   return await Promise.all(
     matchableUsers.map(async (user) => {
-      const userDetails = await userDetailStorage.get(user.id);
+      const userDetails = await BlStorage.UserDetails.get(user.id);
       if (userDetails.temporaryGroupMembership) {
         user.groupMembership = userDetails.temporaryGroupMembership;
       } else {
@@ -81,13 +71,11 @@ export async function getMatchableUsers(
  * @param branchIds The IDs of branches to search for users and items
  * @param deadlineBefore Select customer items that have a deadlineBefore between now() and this deadlineBefore
  * @param includeSenderItemsFromOtherBranches whether the remainder of the items that a customer has in possession should be added to the match, even though they were not handed out at the specified branchIds
- * @param customerItemStorage
  */
 async function getMatchableSender(
   branchIds: string[],
   deadlineBefore: string,
   includeSenderItemsFromOtherBranches: boolean,
-  customerItemStorage: BlStorage<CustomerItem>,
 ): Promise<MatchableUser[]> {
   const groupByCustomerStep = {
     $group: {
@@ -97,7 +85,7 @@ async function getMatchableSender(
     },
   };
 
-  let aggregatedSenders = (await customerItemStorage.aggregate([
+  let aggregatedSenders = (await BlStorage.CustomerItems.aggregate([
     {
       $match: {
         returned: false,
@@ -115,7 +103,7 @@ async function getMatchableSender(
   ])) as { id: string; items: string[] }[];
 
   if (includeSenderItemsFromOtherBranches) {
-    aggregatedSenders = (await customerItemStorage.aggregate([
+    aggregatedSenders = (await BlStorage.CustomerItems.aggregate([
       {
         $match: {
           customer: {
@@ -144,13 +132,11 @@ async function getMatchableSender(
  * Get the branches' items which need to be provided to users, grouped by user.
  *
  * @param branchIds The IDs of branches to search for users and items
- * @param orderStorage
  */
 async function getMatchableReceivers(
   branchIds: string[],
-  orderStorage: BlStorage<Order>,
 ): Promise<MatchableUser[]> {
-  const aggregatedReceivers = (await orderStorage.aggregate([
+  const aggregatedReceivers = (await BlStorage.Orders.aggregate([
     {
       $match: {
         placed: true,

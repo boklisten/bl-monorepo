@@ -1,14 +1,11 @@
 import "mocha";
 
-import { CustomerItemModel } from "@backend/collections/customer-item/customer-item.model";
 import { CustomerItemHandler } from "@backend/collections/customer-item/helpers/customer-item-handler";
 import { OrderItemMovedFromOrderHandler } from "@backend/collections/order/helpers/order-item-moved-from-order-handler/order-item-moved-from-order-handler";
 import { OrderPlacedHandler } from "@backend/collections/order/helpers/order-placed-handler/order-placed-handler";
-import { OrderModel } from "@backend/collections/order/order.model";
 import { PaymentHandler } from "@backend/collections/payment/helpers/payment-handler";
-import { UserDetailModel } from "@backend/collections/user-detail/user-detail.model";
 import { Messenger } from "@backend/messenger/messenger";
-import { BlStorage } from "@backend/storage/blStorage";
+import { BlStorage } from "@backend/storage/bl-storage";
 import { BlError } from "@shared/bl-error/bl-error";
 import { CustomerItem } from "@shared/customer-item/customer-item";
 import { Order } from "@shared/order/order";
@@ -17,7 +14,7 @@ import { AccessToken } from "@shared/token/access-token";
 import { UserDetail } from "@shared/user/user-detail/user-detail";
 import { expect, use as chaiUse, should } from "chai";
 import chaiAsPromised from "chai-as-promised";
-import sinon from "sinon";
+import sinon, { createSandbox } from "sinon";
 
 chaiUse(chaiAsPromised);
 should();
@@ -31,76 +28,84 @@ describe("OrderPlacedHandler", () => {
   let testUserDetail: UserDetail;
   let userDeatilUpdate: boolean;
 
-  const customerItemStorage = new BlStorage(CustomerItemModel);
-  const orderStorage = new BlStorage(OrderModel);
   const paymentHandler = new PaymentHandler();
-  const userDetailStorage = new BlStorage(UserDetailModel);
   const messenger = new Messenger();
   const orderItemMovedFromOrderHandler = new OrderItemMovedFromOrderHandler();
   const customerItemHandler = new CustomerItemHandler();
   const orderPlacedHandler = new OrderPlacedHandler(
-    orderStorage,
     paymentHandler,
-    userDetailStorage,
     messenger,
     customerItemHandler,
     orderItemMovedFromOrderHandler,
   );
 
-  sinon.stub(orderItemMovedFromOrderHandler, "updateOrderItems").resolves(true);
+  let sandbox: sinon.SinonSandbox;
+  beforeEach(() => {
+    sandbox = createSandbox();
 
-  sinon
-    .stub(customerItemStorage, "add")
-    .callsFake((customerItem: CustomerItem) => {
-      if (customerItem.item === "item1") {
-        customerItem.id = "customerItem1";
-        return Promise.resolve(customerItem);
-      } else if (customerItem.item === "item2") {
-        customerItem.id = "customerItem2";
-        return Promise.resolve(customerItem);
-      } else {
-        return Promise.reject("could not add doc");
+    sandbox
+      .stub(orderItemMovedFromOrderHandler, "updateOrderItems")
+      .resolves(true);
+
+    const customerItemsStub = {
+      add: sandbox.stub().callsFake((customerItem: any) => {
+        if (customerItem.item === "item1") {
+          customerItem.id = "customerItem1";
+          return Promise.resolve(customerItem);
+        } else if (customerItem.item === "item2") {
+          customerItem.id = "customerItem2";
+          return Promise.resolve(customerItem);
+        } else {
+          return Promise.reject("could not add doc");
+        }
+      }),
+    };
+    sandbox.stub(BlStorage, "CustomerItems").value(customerItemsStub);
+
+    const userDetailsStub = {
+      get: sandbox.stub().callsFake((id: string) => {
+        if (id !== testUserDetail.id) {
+          return Promise.reject(new BlError("user detail not found"));
+        }
+        return Promise.resolve(testUserDetail);
+      }),
+      update: sandbox.stub().callsFake((id: string, data: any) => {
+        if (userDeatilUpdate) {
+          if (data["orders"]) {
+            testUserDetail.orders = data["orders"];
+            return Promise.resolve(testUserDetail);
+          }
+        }
+        return Promise.reject(new BlError("could not update user detail"));
+      }),
+    };
+    sandbox.stub(BlStorage, "UserDetails").value(userDetailsStub);
+
+    sandbox.stub(paymentHandler, "confirmPayments").callsFake(() => {
+      if (!paymentsConfirmed) {
+        return Promise.reject(new BlError("could not confirm payments"));
       }
+
+      return Promise.resolve([testPayment]);
     });
 
-  sinon.stub(userDetailStorage, "get").callsFake((id) => {
-    if (id !== testUserDetail.id) {
-      return Promise.reject(new BlError("user detail not found"));
-    }
+    // 5) Stub BlStorage.Orders as a single object
+    const ordersStub = {
+      update: sandbox.stub().callsFake(() => {
+        if (!orderUpdate) {
+          return Promise.reject(new BlError("could not update order"));
+        }
+        return Promise.resolve(testOrder);
+      }),
+      get: sandbox.stub().callsFake(() => {
+        // If you need custom logic, do it here. Otherwise:
+        return Promise.resolve(testOrder); // or whatever you need
+      }),
+    };
+    sandbox.stub(BlStorage, "Orders").value(ordersStub);
 
-    return Promise.resolve(testUserDetail);
-  });
+    sandbox.stub(messenger, "orderPlaced").resolves();
 
-  sinon.stub(userDetailStorage, "update").callsFake((id: string, data: any) => {
-    if (userDeatilUpdate) {
-      if (data["orders"]) {
-        testUserDetail.orders = data["orders"];
-        return Promise.resolve(testUserDetail);
-      }
-    }
-    return Promise.reject(new BlError("could not update user detail"));
-  });
-
-  sinon.stub(paymentHandler, "confirmPayments").callsFake(() => {
-    if (!paymentsConfirmed) {
-      return Promise.reject(new BlError("could not confirm payments"));
-    }
-
-    return Promise.resolve([testPayment]);
-  });
-
-  sinon.stub(orderStorage, "update").callsFake(() => {
-    if (!orderUpdate) {
-      return Promise.reject(new BlError("could not update order"));
-    }
-    return Promise.resolve(testOrder);
-  });
-
-  sinon.stub(orderStorage, "get");
-
-  sinon.stub(messenger, "orderPlaced").resolves();
-
-  beforeEach(() => {
     paymentsConfirmed = true;
     orderUpdate = true;
     userDeatilUpdate = true;
@@ -173,6 +178,9 @@ describe("OrderPlacedHandler", () => {
       signatures: [],
       blid: "",
     };
+  });
+  afterEach(() => {
+    sandbox.restore();
   });
 
   describe("#placeOrder()", () => {

@@ -1,8 +1,8 @@
 import { CustomerItemActive } from "@backend/collections/customer-item/helpers/customer-item-active";
+import { CustomerItem } from "@shared/customer-item/customer-item";
+import { expect } from "chai";
 
 import "mocha";
-import { CustomerItem } from "@shared/customer-item/customer-item";
-import { expect, should } from "chai";
 
 describe("CustomerItemActive", () => {
   describe("isActive()", () => {

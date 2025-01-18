@@ -2,29 +2,25 @@ import { LocalLoginCreator } from "@backend/auth/local/local-login-creator/local
 import { HashedPasswordGenerator } from "@backend/auth/local/password/hashed-password-generator";
 import { SaltGenerator } from "@backend/auth/local/salt/salt-generator";
 import { LocalLogin } from "@backend/collections/local-login/local-login";
-import { LocalLoginModel } from "@backend/collections/local-login/local-login.model";
 import { SeCrypto } from "@backend/crypto/se.crypto";
 import { isNullish } from "@backend/helper/typescript-helpers";
 import { SEDbQuery } from "@backend/query/se.db-query";
-import { BlStorage } from "@backend/storage/blStorage";
+import { BlStorage } from "@backend/storage/bl-storage";
 import { BlError } from "@shared/bl-error/bl-error";
 import { BlapiErrorResponse } from "@shared/blapi-response/blapi-error-response";
 import isEmail from "validator/lib/isEmail";
 
 export class LocalLoginHandler {
-  private localLoginStorage: BlStorage<LocalLogin>;
   private hashedPasswordGenerator: HashedPasswordGenerator;
   private localLoginCreator: LocalLoginCreator;
   private seCrypto: SeCrypto;
 
   constructor(
-    localLoginStorage?: BlStorage<LocalLogin>,
     hashedPasswordGenerator?: HashedPasswordGenerator,
     localLoginCreator?: LocalLoginCreator,
   ) {
     this.seCrypto = new SeCrypto();
-    this.localLoginStorage =
-      localLoginStorage ?? new BlStorage(LocalLoginModel);
+
     this.hashedPasswordGenerator =
       hashedPasswordGenerator ??
       new HashedPasswordGenerator(new SaltGenerator(), this.seCrypto);
@@ -43,8 +39,7 @@ export class LocalLoginHandler {
         { fieldName: "username", value: username },
       ];
 
-      this.localLoginStorage
-        .getByQuery(databaseQuery)
+      BlStorage.LocalLogins.getByQuery(databaseQuery)
         .then((localLogins: LocalLogin[]) => {
           if (localLogins.length !== 1) {
             return reject(
@@ -105,7 +100,7 @@ export class LocalLoginHandler {
         username,
         randomPassword,
       );
-      await this.localLoginStorage.add(defaultLocalLogin);
+      await BlStorage.LocalLogins.add(defaultLocalLogin);
 
       return true;
     } catch (error) {
@@ -135,11 +130,10 @@ export class LocalLoginHandler {
                   hashedPasswordAndSalt.hashedPassword;
                 localLogin.salt = hashedPasswordAndSalt.salt;
 
-                this.localLoginStorage
-                  .update(localLogin.id, {
-                    hashedPassword: hashedPasswordAndSalt.hashedPassword,
-                    salt: hashedPasswordAndSalt.salt,
-                  })
+                BlStorage.LocalLogins.update(localLogin.id, {
+                  hashedPassword: hashedPasswordAndSalt.hashedPassword,
+                  salt: hashedPasswordAndSalt.salt,
+                })
                   .then(() => {
                     resolve(true);
                   })
@@ -196,8 +190,7 @@ export class LocalLoginHandler {
           ),
         );
 
-      this.localLoginStorage
-        .add(localLogin)
+      BlStorage.LocalLogins.add(localLogin)
         .then((localLogin: LocalLogin) => {
           return resolve(localLogin);
         })

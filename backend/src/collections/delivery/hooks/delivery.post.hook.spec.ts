@@ -1,12 +1,9 @@
 import "mocha";
 
-import { DeliveryModel } from "@backend/collections/delivery/delivery.model";
 import { DeliveryHandler } from "@backend/collections/delivery/helpers/deliveryHandler/delivery-handler";
 import { DeliveryValidator } from "@backend/collections/delivery/helpers/deliveryValidator/delivery-validator";
 import { DeliveryPostHook } from "@backend/collections/delivery/hooks/delivery.post.hook";
-import { ItemModel } from "@backend/collections/item/item.model";
-import { OrderModel } from "@backend/collections/order/order.model";
-import { BlStorage } from "@backend/storage/blStorage";
+import { BlStorage } from "@backend/storage/bl-storage";
 import { BlError } from "@shared/bl-error/bl-error";
 import { Delivery } from "@shared/delivery/delivery";
 import { Item } from "@shared/item/item";
@@ -14,21 +11,17 @@ import { Order } from "@shared/order/order";
 import { AccessToken } from "@shared/token/access-token";
 import { expect, use as chaiUse, should } from "chai";
 import chaiAsPromised from "chai-as-promised";
-import sinon from "sinon";
+import sinon, { createSandbox } from "sinon";
 
 chaiUse(chaiAsPromised);
 should();
 
 describe("DeliveryPostHook", () => {
-  const deliveryStorage = new BlStorage(DeliveryModel);
-  const orderStorage = new BlStorage(OrderModel);
-  const itemStorage = new BlStorage(ItemModel);
   const deliveryValidator = new DeliveryValidator();
   const deliveryHandler = new DeliveryHandler();
   const deliveryPostHook = new DeliveryPostHook(
     deliveryValidator,
     deliveryHandler,
-    orderStorage,
   );
 
   let testDelivery: Delivery;
@@ -38,6 +31,7 @@ describe("DeliveryPostHook", () => {
   let orderUpdated = true;
 
   let deliveryValidated = true;
+  let sandbox: sinon.SinonSandbox;
 
   beforeEach(() => {
     orderUpdated = true;
@@ -104,46 +98,52 @@ describe("DeliveryPostHook", () => {
       payments: [],
       delivery: "",
     };
-  });
 
-  sinon.stub(deliveryValidator, "validate").callsFake((delivery: Delivery) => {
-    if (!deliveryValidated) {
-      return Promise.reject(new BlError("delivery could not be validated"));
-    }
-    return Promise.resolve(true);
-  });
+    sandbox = createSandbox();
+    sandbox
+      .stub(deliveryValidator, "validate")
+      .callsFake((delivery: Delivery) => {
+        if (!deliveryValidated) {
+          return Promise.reject(new BlError("delivery could not be validated"));
+        }
+        return Promise.resolve(true);
+      });
 
-  sinon
-    .stub(deliveryHandler, "updateOrderBasedOnMethod")
-    .callsFake((delivery, order) => {
-      return Promise.reject(new BlError("order could not be updated"));
+    sandbox
+      .stub(deliveryHandler, "updateOrderBasedOnMethod")
+      .callsFake((delivery, order) => {
+        return Promise.reject(new BlError("order could not be updated"));
+      });
+
+    sandbox.stub(BlStorage.Deliveries, "get").callsFake((id) => {
+      return new Promise((resolve, reject) => {
+        if (id === "delivery1") {
+          return resolve(testDelivery);
+        }
+        return reject(new BlError("not found").code(702));
+      });
     });
 
-  sinon.stub(deliveryStorage, "get").callsFake((id) => {
-    return new Promise((resolve, reject) => {
-      if (id === "delivery1") {
-        return resolve(testDelivery);
-      }
-      return reject(new BlError("not found").code(702));
+    sandbox.stub(BlStorage.Orders, "get").callsFake((id) => {
+      return new Promise((resolve, reject) => {
+        if (id === "order1") {
+          return resolve(testOrder);
+        }
+        return reject(new BlError("not found").code(702));
+      });
+    });
+
+    sandbox.stub(BlStorage.Items, "getMany").callsFake((ids: string[]) => {
+      return new Promise((resolve, reject) => {
+        if (ids[0] === "item1") {
+          return resolve([testItem]);
+        }
+        return reject(new BlError("not found").code(702));
+      });
     });
   });
-
-  sinon.stub(orderStorage, "get").callsFake((id) => {
-    return new Promise((resolve, reject) => {
-      if (id === "order1") {
-        return resolve(testOrder);
-      }
-      return reject(new BlError("not found").code(702));
-    });
-  });
-
-  sinon.stub(itemStorage, "getMany").callsFake((ids: string[]) => {
-    return new Promise((resolve, reject) => {
-      if (ids[0] === "item1") {
-        return resolve([testItem]);
-      }
-      return reject(new BlError("not found").code(702));
-    });
+  afterEach(() => {
+    sandbox.restore();
   });
 
   describe("#after()", () => {

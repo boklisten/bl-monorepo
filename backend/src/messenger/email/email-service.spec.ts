@@ -1,8 +1,7 @@
 import "mocha";
 
-import { ItemModel } from "@backend/collections/item/item.model";
 import { EmailService } from "@backend/messenger/email/email-service";
-import { BlStorage } from "@backend/storage/blStorage";
+import { BlStorage } from "@backend/storage/bl-storage";
 import { EmailHandler, EmailLog } from "@boklisten/bl-email";
 import {
   MessageOptions,
@@ -17,7 +16,7 @@ import { MessageMethod } from "@shared/message/message-method/message-method";
 import { UserDetail } from "@shared/user/user-detail/user-detail";
 import { expect, should, use as chaiUse } from "chai";
 import chaiAsPromised from "chai-as-promised";
-import sinon from "sinon";
+import sinon, { createSandbox } from "sinon";
 
 class MockPostOffice extends PostOffice {
   constructor() {
@@ -39,17 +38,22 @@ should();
 
 describe("EmailService", () => {
   const emailHandler = new EmailHandler({ sendgrid: { apiKey: "someKey" } });
-  const itemStorage = new BlStorage(ItemModel);
   const mockPostOffice = new MockPostOffice();
-  const emailService = new EmailService(
-    emailHandler,
-    itemStorage,
-    mockPostOffice,
-  );
+  const emailService = new EmailService(emailHandler, mockPostOffice);
 
-  const itemStorageGetStub = sinon.stub(itemStorage, "get");
-  const emailHandlerRemindStub = sinon.stub(emailHandler, "sendReminder");
-  const postOfficeSendStub = sinon.stub(mockPostOffice, "send");
+  let sandbox: sinon.SinonSandbox;
+  let itemStorageGetStub: sinon.SinonStub;
+  let emailHandlerRemindStub: sinon.SinonStub;
+  let postOfficeSendStub: sinon.SinonStub;
+  beforeEach(() => {
+    sandbox = createSandbox();
+    itemStorageGetStub = sandbox.stub(BlStorage.Items, "get");
+    emailHandlerRemindStub = sandbox.stub(emailHandler, "sendReminder");
+    postOfficeSendStub = sandbox.stub(mockPostOffice, "send");
+  });
+  afterEach(() => {
+    sandbox.restore();
+  });
 
   describe("#send", () => {
     it("should call postOffice.send when message.type is generic", (done) => {
@@ -261,7 +265,6 @@ describe("EmailService", () => {
         .remind(message, customerDetail, customerItems)
         .then(() => {
           const emailOrderItems =
-            // @ts-expect-error fixme: auto ignored
             postOfficeSendStub.lastCall.args[0][0].itemList.items;
 
           expect(emailOrderItems).to.eql([

@@ -1,32 +1,27 @@
 import { CollectionEndpointMethod } from "@backend/collection-endpoint/collection-endpoint-method";
 import { CollectionEndpointOnRequest } from "@backend/collection-endpoint/collection-endpoint-on-request";
 import { BlApiRequest } from "@backend/request/bl-api-request";
-import { BlDocument } from "@shared/bl-document/bl-document";
 import { BlError } from "@shared/bl-error/bl-error";
-export class CollectionEndpointPost<T extends BlDocument>
-  extends CollectionEndpointMethod<T>
-  implements CollectionEndpointOnRequest<T>
+export class CollectionEndpointPost
+  extends CollectionEndpointMethod
+  implements CollectionEndpointOnRequest
 {
-  override async onRequest(blApiRequest: BlApiRequest): Promise<T[]> {
+  override async onRequest(blApiRequest: BlApiRequest) {
     if (blApiRequest.data == null) {
       throw new BlError("data is required for post operations").code(701);
     }
 
     try {
       return [
-        await this.documentStorage.add(
-          blApiRequest.data as T,
-          blApiRequest.user,
-        ),
+        // @ts-expect-error fixme bad typing
+        await this.collection.storage.add(blApiRequest.data, blApiRequest.user),
       ];
     } catch (blError) {
       throw new BlError("could not add document").add(blError as BlError);
     }
   }
 
-  override async validateDocumentPermission(
-    blApiRequest: BlApiRequest,
-  ): Promise<BlApiRequest> {
+  override async validateDocumentPermission(blApiRequest: BlApiRequest) {
     return blApiRequest;
   }
 }

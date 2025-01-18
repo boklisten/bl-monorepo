@@ -1,24 +1,20 @@
 import "mocha";
 
-import { CustomerItemModel } from "@backend/collections/customer-item/customer-item.model";
 import { OrderItemExtendValidator } from "@backend/collections/order/helpers/order-validator/order-item-validator/order-item-extend-validator/order-item-extend-validator";
-import { BlStorage } from "@backend/storage/blStorage";
+import { BlStorage } from "@backend/storage/bl-storage";
 import { BlError } from "@shared/bl-error/bl-error";
 import { Branch } from "@shared/branch/branch";
 import { CustomerItem } from "@shared/customer-item/customer-item";
 import { Order } from "@shared/order/order";
 import { expect, use as chaiUse, should } from "chai";
 import chaiAsPromised from "chai-as-promised";
-import sinon from "sinon";
+import sinon, { createSandbox } from "sinon";
 
 chaiUse(chaiAsPromised);
 should();
 
 describe("OrderItemExtendValidator", () => {
-  const customerItemStorage = new BlStorage(CustomerItemModel);
-  const orderItemExtendValidator = new OrderItemExtendValidator(
-    customerItemStorage,
-  );
+  const orderItemExtendValidator = new OrderItemExtendValidator();
 
   let testOrder: Order;
 
@@ -26,15 +22,22 @@ describe("OrderItemExtendValidator", () => {
   let testItem: Item;
   let testBranch: Branch;
   let testCustomerItem: CustomerItem;
+  let sandbox: sinon.SinonSandbox;
 
-  describe("validate()", () => {
-    sinon.stub(customerItemStorage, "get").callsFake((id) => {
+  beforeEach(() => {
+    sandbox = createSandbox();
+    sandbox.stub(BlStorage.CustomerItems, "get").callsFake((id) => {
       if (id !== testCustomerItem.id) {
         return Promise.reject(new BlError("not found").code(702));
       }
       return Promise.resolve(testCustomerItem);
     });
+  });
+  afterEach(() => {
+    sandbox.restore();
+  });
 
+  describe("validate()", () => {
     it('should reject if orderItem.type is not "extend"', () => {
       // @ts-expect-error fixme: auto ignored
       testOrder.orderItems[0].type = "rent";

@@ -1,18 +1,10 @@
-import { OpeningHourModel } from "@backend/collections/opening-hour/opening-hour.model";
-import { BlStorage } from "@backend/storage/blStorage";
+import { BlStorage } from "@backend/storage/bl-storage";
 import { BlError } from "@shared/bl-error/bl-error";
 import { Branch } from "@shared/branch/branch";
 import { OpeningHour } from "@shared/opening-hour/opening-hour";
 import moment from "moment-timezone";
 
 export class OpeningHourHelper {
-  private openingHourStorage: BlStorage<OpeningHour>;
-
-  constructor(openingHourStorage?: BlStorage<OpeningHour>) {
-    this.openingHourStorage =
-      openingHourStorage ?? new BlStorage(OpeningHourModel);
-  }
-
   public async getNextAvailableOpeningHour(
     branch: Branch,
     after?: Date,
@@ -20,7 +12,7 @@ export class OpeningHourHelper {
     if (!branch.openingHours || branch.openingHours.length <= 0) {
       throw new BlError("no opening hours found at branch");
     }
-    const openingHours = await this.openingHourStorage.getMany(
+    const openingHours = await BlStorage.OpeningHours.getMany(
       branch.openingHours,
     );
 

@@ -1,18 +1,13 @@
-import { ItemModel } from "@backend/collections/item/item.model";
-import { StandMatchModel } from "@backend/collections/stand-match/stand-match.model";
 import { mapItemIdsToItemDetails } from "@backend/collections/user-match/operations/user-match-getall-me-operation-helper";
 import { Operation } from "@backend/operation/operation";
 import { BlApiRequest } from "@backend/request/bl-api-request";
-import { BlStorage } from "@backend/storage/blStorage";
+import { BlStorage } from "@backend/storage/bl-storage";
 import { BlapiResponse } from "@shared/blapi-response/blapi-response";
 import { StandMatchWithDetails } from "@shared/match/match-dtos";
 import { StandMatch } from "@shared/match/stand-match";
 import { ObjectId } from "mongodb";
 
 export class GetMyStandMatchesOperation implements Operation {
-  private standMatchStorage = new BlStorage(StandMatchModel);
-  private itemStorage = new BlStorage(ItemModel);
-
   private async addDetailsToStandMatch(
     standMatch: StandMatch,
   ): Promise<StandMatchWithDetails> {
@@ -28,7 +23,7 @@ export class GetMyStandMatchesOperation implements Operation {
     );
 
     const itemsMap = new Map(
-      (await this.itemStorage.getMany(items)).map((item) => [item.id, item]),
+      (await BlStorage.Items.getMany(items)).map((item) => [item.id, item]),
     );
     return {
       ...standMatch,
@@ -38,7 +33,7 @@ export class GetMyStandMatchesOperation implements Operation {
 
   async run(blApiRequest: BlApiRequest): Promise<BlapiResponse> {
     const customer = blApiRequest.user?.details ?? "";
-    const standMatches = (await this.standMatchStorage.aggregate([
+    const standMatches = (await BlStorage.StandMatches.aggregate([
       {
         $match: {
           customer: new ObjectId(customer),

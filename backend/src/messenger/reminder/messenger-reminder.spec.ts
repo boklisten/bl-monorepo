@@ -1,49 +1,53 @@
 import "mocha";
 
-import { CustomerItemModel } from "@backend/collections/customer-item/customer-item.model";
 import { CustomerItemHandler } from "@backend/collections/customer-item/helpers/customer-item-handler";
-import { UserDetailModel } from "@backend/collections/user-detail/user-detail.model";
 import { EmailService } from "@backend/messenger/email/email-service";
 import { MessengerReminder } from "@backend/messenger/reminder/messenger-reminder";
-import { BlStorage } from "@backend/storage/blStorage";
+import { BlStorage } from "@backend/storage/bl-storage";
 import { CustomerItem } from "@shared/customer-item/customer-item";
 import { Message } from "@shared/message/message";
 import { UserDetail } from "@shared/user/user-detail/user-detail";
 import { expect, use as chaiUse, should } from "chai";
 import chaiAsPromised from "chai-as-promised";
-import sinon from "sinon";
+import sinon, { createSandbox } from "sinon";
 
 chaiUse(chaiAsPromised);
 should();
 
 describe("MessengerReminder", () => {
-  const customerItemStorage = new BlStorage(CustomerItemModel);
-  const customerItemHandler = new CustomerItemHandler();
-  const customerItemStorageGetAllStub = sinon.stub(
-    customerItemStorage,
-    "getAll",
-  );
-  const customerItemStorageGetByQueryStub = sinon.stub(
-    customerItemStorage,
-    "getByQuery",
-  );
-  const emailService = new EmailService();
-  const emailServiceRemindStub = sinon.stub(emailService, "remind");
-  const getNotReturnedStub = sinon.stub(customerItemHandler, "getNotReturned");
-  const userDetailStorage = new BlStorage(UserDetailModel);
-  const userDetailStorageGetStub = sinon.stub(userDetailStorage, "get");
+  let customerItemHandler: CustomerItemHandler;
+  let emailService: EmailService;
 
-  const messengerReminder = new MessengerReminder(
-    customerItemHandler,
-    userDetailStorage,
-    emailService,
-  );
+  let messengerReminder: MessengerReminder;
+  let sandbox: sinon.SinonSandbox;
+  let emailServiceRemindStub: sinon.SinonStub;
+  let getNotReturnedStub: sinon.SinonStub;
+  let userDetailStorageGetStub: sinon.SinonStub;
 
+  beforeEach(() => {
+    sandbox = createSandbox();
+    customerItemHandler = new CustomerItemHandler();
+    emailService = new EmailService();
+    messengerReminder = new MessengerReminder(
+      customerItemHandler,
+      emailService,
+    );
+    const customerItemsStub = {
+      getAll: sandbox.stub(),
+      getByQuery: sandbox.stub(),
+    };
+    sandbox.stub(BlStorage, "CustomerItems").value(customerItemsStub);
+
+    const userDetailsStub = {
+      get: sandbox.stub(),
+    };
+    sandbox.stub(BlStorage, "UserDetails").value(userDetailsStub);
+    getNotReturnedStub = sandbox.stub(customerItemHandler, "getNotReturned");
+    emailServiceRemindStub = sandbox.stub(emailService, "remind");
+    userDetailStorageGetStub = userDetailsStub.get;
+  });
   afterEach(() => {
-    customerItemStorageGetAllStub.reset();
-    customerItemStorageGetByQueryStub.reset();
-    emailServiceRemindStub.reset();
-    getNotReturnedStub.reset();
+    sandbox.restore();
   });
 
   describe("#remindCustomer", () => {

@@ -5,8 +5,10 @@ import {
   BlEndpointRestriction,
 } from "@backend/collections/bl-collection";
 import { BlApiRequest } from "@backend/request/bl-api-request";
+import { BlStorageData } from "@backend/storage/bl-storage";
 import { BlDocument } from "@shared/bl-document/bl-document";
 import { BlError } from "@shared/bl-error/bl-error";
+import { Branch } from "@shared/branch/branch";
 import { expect, use as chaiUse, should } from "chai";
 import chaiAsPromised from "chai-as-promised";
 
@@ -16,7 +18,7 @@ should();
 describe("CollectionEndpointDocumentAuth", () => {
   const collectionEndpointDocumentAuth = new CollectionEndpointDocumentAuth();
   let testBlApiRequest: BlApiRequest;
-  let testDocs: BlDocument[];
+  let testDocs: BlStorageData;
   let testRestriction: BlEndpointRestriction;
 
   beforeEach(() => {
@@ -38,7 +40,7 @@ describe("CollectionEndpointDocumentAuth", () => {
           id: "user1",
           permission: "customer",
         },
-      },
+      } as Branch,
     ];
   });
 

@@ -1,18 +1,10 @@
-import { CustomerItemModel } from "@backend/collections/customer-item/customer-item.model";
-import { BlStorage } from "@backend/storage/blStorage";
+import { BlStorage } from "@backend/storage/bl-storage";
 import { BlError } from "@shared/bl-error/bl-error";
 import { Branch } from "@shared/branch/branch";
 import { CustomerItem } from "@shared/customer-item/customer-item";
 import { OrderItem } from "@shared/order/order-item/order-item";
 
 export class OrderItemExtendValidator {
-  private customerItemStorage: BlStorage<CustomerItem>;
-
-  constructor(customerItemStorage?: BlStorage<CustomerItem>) {
-    this.customerItemStorage =
-      customerItemStorage ?? new BlStorage(CustomerItemModel);
-  }
-
   public async validate(
     branch: Branch,
     orderItem: OrderItem,
@@ -57,8 +49,7 @@ export class OrderItemExtendValidator {
   ): Promise<boolean> {
     // @ts-expect-error fixme: auto ignored
     return (
-      this.customerItemStorage
-
+      BlStorage.CustomerItems
         // @ts-expect-error fixme: auto ignored
         .get(orderItem.info.customerItem)
         .then((customerItem: CustomerItem) => {

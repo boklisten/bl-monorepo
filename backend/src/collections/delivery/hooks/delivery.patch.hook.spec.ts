@@ -1,36 +1,29 @@
 import "mocha";
 
-import { DeliveryModel } from "@backend/collections/delivery/delivery.model";
 import { DeliveryValidator } from "@backend/collections/delivery/helpers/deliveryValidator/delivery-validator";
 import { DeliveryPatchHook } from "@backend/collections/delivery/hooks/delivery.patch.hook";
-import { OrderModel } from "@backend/collections/order/order.model";
-import { BlStorage } from "@backend/storage/blStorage";
+import { BlStorage } from "@backend/storage/bl-storage";
 import { BlError } from "@shared/bl-error/bl-error";
 import { Delivery } from "@shared/delivery/delivery";
 import { Order } from "@shared/order/order";
 import { AccessToken } from "@shared/token/access-token";
 import { expect, use as chaiUse, should } from "chai";
 import chaiAsPromised from "chai-as-promised";
-import sinon from "sinon";
+import sinon, { createSandbox } from "sinon";
 
 chaiUse(chaiAsPromised);
 should();
 
 describe("DeliveryPatchHook", () => {
-  const deliveryStorage = new BlStorage(DeliveryModel);
   const deliveryValidator = new DeliveryValidator();
-  const orderStorage = new BlStorage(OrderModel);
-  const deliveryPatchHook = new DeliveryPatchHook(
-    deliveryValidator,
-    deliveryStorage,
-    orderStorage,
-  );
+  const deliveryPatchHook = new DeliveryPatchHook(deliveryValidator);
 
   let testRequest: any;
   let testDelivery: Delivery;
   let testAccessToken: AccessToken;
   let testOrder: Order;
   let deliveryValidated = true;
+  let sandbox: sinon.SinonSandbox;
 
   beforeEach(() => {
     testOrder = {
@@ -76,27 +69,33 @@ describe("DeliveryPatchHook", () => {
       order: "order1",
       amount: 0,
     };
-  });
 
-  sinon.stub(deliveryStorage, "get").callsFake((id) => {
-    if (id !== testDelivery.id) {
-      return Promise.reject(new BlError("not found").code(702));
-    }
-    return Promise.resolve(testDelivery);
-  });
+    sandbox = createSandbox();
+    sandbox.stub(BlStorage.Deliveries, "get").callsFake((id) => {
+      if (id !== testDelivery.id) {
+        return Promise.reject(new BlError("not found").code(702));
+      }
+      return Promise.resolve(testDelivery);
+    });
 
-  sinon.stub(orderStorage, "get").callsFake((id) => {
-    if (id !== testOrder.id) {
-      return Promise.reject(new BlError("not found").code(702));
-    }
-    return Promise.resolve(testOrder);
-  });
+    sandbox.stub(BlStorage.Orders, "get").callsFake((id) => {
+      if (id !== testOrder.id) {
+        return Promise.reject(new BlError("not found").code(702));
+      }
+      return Promise.resolve(testOrder);
+    });
 
-  sinon.stub(deliveryValidator, "validate").callsFake((delivery: Delivery) => {
-    if (!deliveryValidated) {
-      return Promise.reject(new BlError("could not validate delivery"));
-    }
-    return Promise.resolve(true);
+    sandbox
+      .stub(deliveryValidator, "validate")
+      .callsFake((delivery: Delivery) => {
+        if (!deliveryValidated) {
+          return Promise.reject(new BlError("could not validate delivery"));
+        }
+        return Promise.resolve(true);
+      });
+  });
+  afterEach(() => {
+    sandbox.restore();
   });
 
   describe("before()", () => {

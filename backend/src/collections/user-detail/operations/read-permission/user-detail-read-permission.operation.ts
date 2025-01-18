@@ -1,29 +1,14 @@
-import { User } from "@backend/collections/user/user";
-import { UserModel } from "@backend/collections/user/user.model";
-import { UserDetailModel } from "@backend/collections/user-detail/user-detail.model";
 import { Operation } from "@backend/operation/operation";
 import { BlApiRequest } from "@backend/request/bl-api-request";
 import { SEResponseHandler } from "@backend/response/se.response.handler";
-import { BlStorage } from "@backend/storage/blStorage";
+import { BlStorage } from "@backend/storage/bl-storage";
 import { BlapiResponse } from "@shared/blapi-response/blapi-response";
-import { UserDetail } from "@shared/user/user-detail/user-detail";
 import { Request, Response } from "express";
 
 export class UserDetailReadPermissionOperation implements Operation {
-  private userDetailStorage: BlStorage<UserDetail>;
-  private userStorage: BlStorage<User>;
   private resHandler: SEResponseHandler;
 
-  constructor(
-    userDetailStorage?: BlStorage<UserDetail>,
-    userStorage?: BlStorage<User>,
-    resHandler?: SEResponseHandler,
-  ) {
-    this.userDetailStorage =
-      userDetailStorage ?? new BlStorage(UserDetailModel);
-
-    this.userStorage = userStorage ?? new BlStorage(UserModel);
-
+  constructor(resHandler?: SEResponseHandler) {
     this.resHandler = resHandler ?? new SEResponseHandler();
   }
 
@@ -32,11 +17,9 @@ export class UserDetailReadPermissionOperation implements Operation {
     request: Request,
     res: Response,
   ): Promise<boolean> {
-    const userDetail = await this.userDetailStorage.get(
-      blApiRequest.documentId,
-    );
+    const userDetail = await BlStorage.UserDetails.get(blApiRequest.documentId);
 
-    const users = await this.userStorage.aggregate([
+    const users = await BlStorage.Users.aggregate([
       { $match: { blid: userDetail.blid } },
     ]);
     const user = users[0];

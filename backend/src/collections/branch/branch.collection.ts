@@ -1,9 +1,9 @@
 import { BlCollection } from "@backend/collections/bl-collection";
-import { BranchModel } from "@backend/collections/branch/branch.model";
 import { BranchGetHook } from "@backend/collections/branch/hook/branch-get.hook";
+import { BlStorage } from "@backend/storage/bl-storage";
 
 export const BranchCollection: BlCollection = {
-  model: BranchModel,
+  storage: BlStorage.Branches,
   endpoints: [
     {
       method: "getId",

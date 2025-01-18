@@ -1,9 +1,9 @@
 import { BlCollection } from "@backend/collections/bl-collection";
 import { GetMyStandMatchesOperation } from "@backend/collections/stand-match/operations/stand-match-getall-me.operation";
-import { StandMatchModel } from "@backend/collections/stand-match/stand-match.model";
+import { BlStorage } from "@backend/storage/bl-storage";
 
 export const StandMatchCollection: BlCollection = {
-  model: StandMatchModel,
+  storage: BlStorage.StandMatches,
   endpoints: [
     {
       method: "getAll",

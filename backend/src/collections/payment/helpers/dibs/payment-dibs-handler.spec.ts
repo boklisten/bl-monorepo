@@ -1,13 +1,9 @@
 import "mocha";
 
-import { DeliveryModel } from "@backend/collections/delivery/delivery.model";
-import { OrderModel } from "@backend/collections/order/order.model";
 import { PaymentDibsHandler } from "@backend/collections/payment/helpers/dibs/payment-dibs-handler";
-import { PaymentModel } from "@backend/collections/payment/payment.model";
-import { UserDetailModel } from "@backend/collections/user-detail/user-detail.model";
 import { DibsEasyOrder } from "@backend/payment/dibs/dibs-easy-order/dibs-easy-order";
 import { DibsPaymentService } from "@backend/payment/dibs/dibs-payment.service";
-import { BlStorage } from "@backend/storage/blStorage";
+import { BlStorage } from "@backend/storage/bl-storage";
 import { BlError } from "@shared/bl-error/bl-error";
 import { Delivery } from "@shared/delivery/delivery";
 import { Order } from "@shared/order/order";
@@ -16,25 +12,15 @@ import { AccessToken } from "@shared/token/access-token";
 import { UserDetail } from "@shared/user/user-detail/user-detail";
 import { expect, use as chaiUse, should } from "chai";
 import chaiAsPromised from "chai-as-promised";
-import sinon from "sinon";
+import sinon, { createSandbox } from "sinon";
 
 chaiUse(chaiAsPromised);
 should();
 
 describe("PaymentDibsHandler", () => {
-  const orderStorage = new BlStorage(OrderModel);
-  const paymentStorage = new BlStorage(PaymentModel);
   const dibsPaymentService = new DibsPaymentService();
-  const deliveryStorage = new BlStorage(DeliveryModel);
-  const userDetailStorage = new BlStorage(UserDetailModel);
 
-  const paymentDibsHandler = new PaymentDibsHandler(
-    paymentStorage,
-    orderStorage,
-    dibsPaymentService,
-    deliveryStorage,
-    userDetailStorage,
-  );
+  const paymentDibsHandler = new PaymentDibsHandler(dibsPaymentService);
 
   describe("handleDibsPayment()", () => {
     let testOrder: Order;
@@ -49,6 +35,7 @@ describe("PaymentDibsHandler", () => {
 
     let testDelivery: Delivery;
 
+    let sandbox: sinon.SinonSandbox;
     beforeEach(() => {
       testOrder = {
         id: "order1",
@@ -125,56 +112,63 @@ describe("PaymentDibsHandler", () => {
       getPaymentIdConfirm = true;
       getDibsEasyOrderConfirm = true;
       testPaymentId = "dibsPaymentId1";
-    });
 
-    sinon.stub(dibsPaymentService, "orderToDibsEasyOrder").callsFake(() => {
-      if (getDibsEasyOrderConfirm) return testDibsEasyOrder;
-      throw new BlError("could not create dibs easy order");
-    });
-
-    sinon.stub(userDetailStorage, "get").callsFake(() => {
-      return Promise.resolve({
-        id: "customer1",
-        name: "Billy Bob",
-        email: "billy@boklisten.co",
-      } as UserDetail);
-    });
-
-    sinon
-      .stub(dibsPaymentService, "getPaymentId")
-
-      .callsFake((dibsEasyOrder: DibsEasyOrder) => {
-        return getPaymentIdConfirm
-          ? Promise.resolve(testPaymentId)
-          : Promise.reject(new BlError("could not create paymentId"));
+      sandbox = createSandbox();
+      sandbox.stub(dibsPaymentService, "orderToDibsEasyOrder").callsFake(() => {
+        if (getDibsEasyOrderConfirm) return testDibsEasyOrder;
+        throw new BlError("could not create dibs easy order");
       });
 
-    sinon.stub(paymentStorage, "update").callsFake((id: string, data: any) => {
-      if (!paymentUpdated) {
-        return Promise.reject(new BlError("could not update payment"));
-      }
-      if (data["info"]) {
-        testPayment.info = data["info"];
-      }
-      return Promise.resolve(testPayment);
+      sandbox.stub(BlStorage.UserDetails, "get").callsFake(() => {
+        return Promise.resolve({
+          id: "customer1",
+          name: "Billy Bob",
+          email: "billy@boklisten.co",
+        } as UserDetail);
+      });
+
+      sandbox
+        .stub(dibsPaymentService, "getPaymentId")
+        .callsFake((dibsEasyOrder: DibsEasyOrder) => {
+          return getPaymentIdConfirm
+            ? Promise.resolve(testPaymentId)
+            : Promise.reject(new BlError("could not create paymentId"));
+        });
+
+      sandbox
+        .stub(BlStorage.Payments, "update")
+        .callsFake((id: string, data: any) => {
+          if (!paymentUpdated) {
+            return Promise.reject(new BlError("could not update payment"));
+          }
+          if (data["info"]) {
+            testPayment.info = data["info"];
+          }
+          return Promise.resolve(testPayment);
+        });
+
+      sandbox.stub(BlStorage.Orders, "get").callsFake((id) => {
+        return id === testOrder.id
+          ? Promise.resolve(testOrder)
+          : Promise.reject(new BlError("order not found"));
+      });
+
+      sandbox
+        .stub(BlStorage.Orders, "update")
+        .callsFake((id: string, data: any) => {
+          if (!orderUpdated) {
+            return Promise.reject(new BlError("could not update"));
+          }
+
+          if (data["payments"]) {
+            testOrder["payments"] = data["payments"];
+          }
+
+          return Promise.resolve(testOrder);
+        });
     });
-
-    sinon.stub(orderStorage, "get").callsFake((id) => {
-      return id === testOrder.id
-        ? Promise.resolve(testOrder)
-        : Promise.reject(new BlError("order not found"));
-    });
-
-    sinon.stub(orderStorage, "update").callsFake((id: string, data: any) => {
-      if (!orderUpdated) {
-        return Promise.reject(new BlError("could not update"));
-      }
-
-      if (data["payments"]) {
-        testOrder["payments"] = data["payments"];
-      }
-
-      return Promise.resolve(testOrder);
+    afterEach(() => {
+      sandbox.restore();
     });
 
     it("should reject if order is not found", () => {

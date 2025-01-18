@@ -2,36 +2,37 @@ import "mocha";
 
 import { OrderPlacedHandler } from "@backend/collections/order/helpers/order-placed-handler/order-placed-handler";
 import { OrderConfirmOperation } from "@backend/collections/order/operations/confirm/order-confirm.operation";
-import { OrderModel } from "@backend/collections/order/order.model";
 import { SEResponseHandler } from "@backend/response/se.response.handler";
-import { BlStorage } from "@backend/storage/blStorage";
+import { BlStorage } from "@backend/storage/bl-storage";
 import { BlError } from "@shared/bl-error/bl-error";
-import { Order } from "@shared/order/order";
 import { expect, use as chaiUse, should } from "chai";
 import chaiAsPromised from "chai-as-promised";
-import sinon from "sinon";
+import sinon, { createSandbox } from "sinon";
 chaiUse(chaiAsPromised);
 should();
 
 describe("OrderConfirmOperation", () => {
   const resHandler = new SEResponseHandler();
-  const orderStorage = new BlStorage(OrderModel);
   const orderPlacedHandler = new OrderPlacedHandler();
 
-  const orderGetStub = sinon.stub(orderStorage, "get");
-  const orderPlaceStub = sinon.stub(orderPlacedHandler, "placeOrder");
-  const sendResponseStub = sinon.stub(resHandler, "sendResponse");
+  let orderGetStub: sinon.SinonStub;
+  let orderPlaceStub: sinon.SinonStub;
+  let sendResponseStub: sinon.SinonStub;
 
   const orderConfirmOperation = new OrderConfirmOperation(
     resHandler,
-    orderStorage,
     orderPlacedHandler,
   );
+  let sandbox: sinon.SinonSandbox;
 
   beforeEach(() => {
-    orderGetStub.reset();
-    sendResponseStub.reset();
-    orderPlaceStub.reset();
+    sandbox = createSandbox();
+    orderGetStub = sandbox.stub(BlStorage.Orders, "get");
+    orderPlaceStub = sandbox.stub(orderPlacedHandler, "placeOrder");
+    sendResponseStub = sandbox.stub(resHandler, "sendResponse");
+  });
+  afterEach(() => {
+    sandbox.restore();
   });
 
   describe("run()", () => {

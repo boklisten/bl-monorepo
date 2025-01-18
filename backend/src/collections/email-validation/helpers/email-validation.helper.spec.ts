@@ -1,33 +1,26 @@
 import "mocha";
 
 import { EmailValidation } from "@backend/collections/email-validation/email-validation";
-import { EmailValidationModel } from "@backend/collections/email-validation/email-validation.model";
 import { EmailValidationHelper } from "@backend/collections/email-validation/helpers/email-validation.helper";
-import { UserDetailModel } from "@backend/collections/user-detail/user-detail.model";
 import { Messenger } from "@backend/messenger/messenger";
-import { BlStorage } from "@backend/storage/blStorage";
+import { BlStorage } from "@backend/storage/bl-storage";
 import { BlError } from "@shared/bl-error/bl-error";
 import { UserDetail } from "@shared/user/user-detail/user-detail";
 import { expect, use as chaiUse, should } from "chai";
 import chaiAsPromised from "chai-as-promised";
-import sinon from "sinon";
+import sinon, { createSandbox } from "sinon";
 
 chaiUse(chaiAsPromised);
 should();
 
 describe("EmailValidationHelper", () => {
   const messenger = new Messenger();
-  const userDetailStorage = new BlStorage(UserDetailModel);
-  const emailValidationStorage = new BlStorage(EmailValidationModel);
-  const emailValidationHelper = new EmailValidationHelper(
-    messenger,
-    userDetailStorage,
-    emailValidationStorage,
-  );
+  const emailValidationHelper = new EmailValidationHelper(messenger);
 
   const testUserDetail = { id: "", email: "" } as UserDetail;
   let emailValidationStorageAddSuccess: boolean;
   let testEmailValidation: EmailValidation;
+  let sandbox: sinon.SinonSandbox;
 
   beforeEach(() => {
     testUserDetail.id = "userDetail1";
@@ -38,21 +31,25 @@ describe("EmailValidationHelper", () => {
       userDetail: testUserDetail.id,
       email: testUserDetail.email,
     };
+
+    sandbox = createSandbox();
+    sandbox.stub(BlStorage.UserDetails, "get").callsFake((id) => {
+      if (id !== testUserDetail.id) {
+        return Promise.reject(new BlError("not found"));
+      }
+
+      return Promise.resolve(testUserDetail);
+    });
+
+    sandbox.stub(BlStorage.EmailValidations, "add").callsFake(() => {
+      if (!emailValidationStorageAddSuccess) {
+        return Promise.reject(new BlError("could not add"));
+      }
+      return Promise.resolve(testEmailValidation);
+    });
   });
-
-  sinon.stub(userDetailStorage, "get").callsFake((id) => {
-    if (id !== testUserDetail.id) {
-      return Promise.reject(new BlError("not found"));
-    }
-
-    return Promise.resolve(testUserDetail);
-  });
-
-  sinon.stub(emailValidationStorage, "add").callsFake(() => {
-    if (!emailValidationStorageAddSuccess) {
-      return Promise.reject(new BlError("could not add"));
-    }
-    return Promise.resolve(testEmailValidation);
+  afterEach(() => {
+    sandbox.restore();
   });
 
   const messengerEmailConfirmationStub = sinon

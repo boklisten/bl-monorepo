@@ -4,7 +4,7 @@ import { SeCrypto } from "@backend/crypto/se.crypto";
 import { BlError } from "@shared/bl-error/bl-error";
 import { use as chaiUse, should } from "chai";
 import chaiAsPromised from "chai-as-promised";
-import sinon from "sinon";
+import sinon, { createSandbox } from "sinon";
 
 chaiUse(chaiAsPromised);
 should();
@@ -13,21 +13,26 @@ describe("LocalLoginPasswordValidator", () => {
   const seCrypto = new SeCrypto();
   const localLoginPasswordValidator = new LocalLoginPasswordValidator(seCrypto);
 
-  sinon.stub(seCrypto, "hash").callsFake((password: string, salt: string) => {
-    return Promise.resolve(password + salt);
+  let sandbox: sinon.SinonSandbox;
+  let testPassword = "";
+  let testSalt = "";
+  let testHashedPassword = "";
+  beforeEach(() => {
+    sandbox = createSandbox();
+    sandbox
+      .stub(seCrypto, "hash")
+      .callsFake((password: string, salt: string) => {
+        return Promise.resolve(password + salt);
+      });
+    testPassword = "dog";
+    testSalt = "salt";
+    testHashedPassword = testPassword + testSalt;
+  });
+  afterEach(() => {
+    sandbox.restore();
   });
 
   describe("validate", () => {
-    let testPassword = "";
-    let testSalt = "";
-    let testHashedPassword = "";
-
-    beforeEach(() => {
-      testPassword = "dog";
-      testSalt = "salt";
-      testHashedPassword = testPassword + testSalt;
-    });
-
     describe("should reject with BlError when", () => {
       it("password is empty", () => {
         testPassword = "";

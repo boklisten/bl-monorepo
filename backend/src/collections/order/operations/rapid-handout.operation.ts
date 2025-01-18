@@ -1,17 +1,12 @@
-import { BranchModel } from "@backend/collections/branch/branch.model";
-import { CustomerItemModel } from "@backend/collections/customer-item/customer-item.model";
 import { CustomerItemActiveBlid } from "@backend/collections/customer-item/helpers/customer-item-active-blid";
 import { OrderToCustomerItemGenerator } from "@backend/collections/customer-item/helpers/order-to-customer-item-generator";
-import { ItemModel } from "@backend/collections/item/item.model";
 import { OrderActive } from "@backend/collections/order/helpers/order-active/order-active";
 import { OrderItemMovedFromOrderHandler } from "@backend/collections/order/helpers/order-item-moved-from-order-handler/order-item-moved-from-order-handler";
 import { OrderValidator } from "@backend/collections/order/helpers/order-validator/order-validator";
-import { OrderModel } from "@backend/collections/order/order.model";
-import { UniqueItemModel } from "@backend/collections/unique-item/unique-item.model";
 import { Operation } from "@backend/operation/operation";
 import { SEDbQuery } from "@backend/query/se.db-query";
 import { BlApiRequest } from "@backend/request/bl-api-request";
-import { BlStorage } from "@backend/storage/blStorage";
+import { BlStorage } from "@backend/storage/bl-storage";
 import { BlError } from "@shared/bl-error/bl-error";
 import { BlapiResponse } from "@shared/blapi-response/blapi-response";
 import { Order } from "@shared/order/order";
@@ -24,12 +19,6 @@ const blidNotActiveFeedback =
   "Denne bliden er ikke tilknyttet noen bok. Registrer den i bl-admin for å dele den ut.";
 
 export class RapidHandoutOperation implements Operation {
-  private orderStorage = new BlStorage(OrderModel);
-  private customerItemStorage = new BlStorage(CustomerItemModel);
-  private uniqueItemStorage = new BlStorage(UniqueItemModel);
-  private branchStorage = new BlStorage(BranchModel);
-  private itemStorage = new BlStorage(ItemModel);
-
   async run(blApiRequest: BlApiRequest): Promise<BlapiResponse> {
     const parsedRequest = z
       .object({ blid: z.string(), customerId: z.string() })
@@ -71,11 +60,11 @@ export class RapidHandoutOperation implements Operation {
       throw new BlError("Failed to create new customer items");
     }
 
-    const addedCustomerItem = await this.customerItemStorage.add(
+    const addedCustomerItem = await BlStorage.CustomerItems.add(
       generatedReceiverCustomerItem,
     );
 
-    await this.orderStorage.update(placedReceiverOrder.id, {
+    await BlStorage.Orders.update(placedReceiverOrder.id, {
       orderItems: placedReceiverOrder.orderItems.map((orderItem) => ({
         ...orderItem,
         customerItem: addedCustomerItem.id,
@@ -88,7 +77,7 @@ export class RapidHandoutOperation implements Operation {
     itemId: string,
     customerId: string,
   ): Promise<Order> {
-    const item = await this.itemStorage.get(itemId);
+    const item = await BlStorage.Items.get(itemId);
     if (!item) {
       throw new BlError("Failed to get item");
     }
@@ -117,7 +106,7 @@ export class RapidHandoutOperation implements Operation {
     if (!customerOrder) {
       throw new BlError("No customer order for rapid handout item").code(805);
     }
-    const branch = await this.branchStorage.get(customerOrder.order.branch);
+    const branch = await BlStorage.Branches.get(customerOrder.order.branch);
 
     const movedFromOrder = customerOrder.order.id;
 
@@ -166,13 +155,11 @@ export class RapidHandoutOperation implements Operation {
         },
       ],
     };
-    const placedHandoutOrder = await this.orderStorage.add(handoutOrder);
+    const placedHandoutOrder = await BlStorage.Orders.add(handoutOrder);
 
     await new OrderValidator().validate(placedHandoutOrder, false);
 
-    const orderMovedToHandler = new OrderItemMovedFromOrderHandler(
-      this.orderStorage,
-    );
+    const orderMovedToHandler = new OrderItemMovedFromOrderHandler();
     await orderMovedToHandler.updateOrderItems(placedHandoutOrder);
 
     return placedHandoutOrder;
@@ -204,7 +191,7 @@ export class RapidHandoutOperation implements Operation {
     uniqueItemQuery.stringFilters = [{ fieldName: "blid", value: blid }];
     try {
       const uniqueItems =
-        await this.uniqueItemStorage.getByQuery(uniqueItemQuery);
+        await BlStorage.UniqueItems.getByQuery(uniqueItemQuery);
       if (uniqueItems.length === 0) return blidNotActiveFeedback;
       return uniqueItems[0] ?? "";
     } catch {

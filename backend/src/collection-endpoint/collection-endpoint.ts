@@ -4,26 +4,17 @@ import { CollectionEndpointGetId } from "@backend/collection-endpoint/collection
 import { CollectionEndpointPatch } from "@backend/collection-endpoint/collection-endpoint-patch/collection-endpoint-patch";
 import { CollectionEndpointPost } from "@backend/collection-endpoint/collection-endpoint-post/collection-endpoint-post";
 import { CollectionEndpointPut } from "@backend/collection-endpoint/collection-endpoint-put/collection-endpoint-put";
-import {
-  BlCollection,
-  BlEndpoint,
-  BlModel,
-} from "@backend/collections/bl-collection";
+import { BlCollection, BlEndpoint } from "@backend/collections/bl-collection";
 import { ApiPath } from "@backend/config/api-path";
 import { logger } from "@backend/logger/logger";
-import { BlStorage } from "@backend/storage/blStorage";
-import { BlDocument } from "@shared/bl-document/bl-document";
 import { BlError } from "@shared/bl-error/bl-error";
 import { Router } from "express";
 
-export class CollectionEndpoint<T extends BlDocument> {
-  private readonly documentStorage: BlStorage<T>;
-
+export class CollectionEndpoint {
   constructor(
     private router: Router,
     private collection: BlCollection,
   ) {
-    this.documentStorage = new BlStorage(collection.model as BlModel<T>);
     new ApiPath();
   }
 
@@ -66,7 +57,7 @@ export class CollectionEndpoint<T extends BlDocument> {
   public printEndpoints() {
     for (const endpoint of this.collection.endpoints) {
       let method: string = endpoint.method;
-      let uri = this.collection.model.name.toString();
+      let uri = this.collection.storage.path;
 
       if (method === "getAll" || method === "getId") {
         method = "get";
@@ -98,67 +89,55 @@ export class CollectionEndpoint<T extends BlDocument> {
   }
 
   private createGetAll(endpoint: BlEndpoint) {
-    const collectionEndpointGetAll = new CollectionEndpointGetAll<T>(
+    const collectionEndpointGetAll = new CollectionEndpointGetAll(
       this.router,
       endpoint,
-      this.collection.model.name,
-      this.documentStorage,
-      this.collection.documentPermission,
+      this.collection,
     );
     collectionEndpointGetAll.create();
   }
 
   private createGetId(endpoint: BlEndpoint) {
-    const collectionEndpointGetId = new CollectionEndpointGetId<T>(
+    const collectionEndpointGetId = new CollectionEndpointGetId(
       this.router,
       endpoint,
-      this.collection.model.name,
-      this.documentStorage,
-      this.collection.documentPermission,
+      this.collection,
     );
     collectionEndpointGetId.create();
   }
 
   private createPost(endpoint: BlEndpoint) {
-    const collectionEndpointPost = new CollectionEndpointPost<T>(
+    const collectionEndpointPost = new CollectionEndpointPost(
       this.router,
       endpoint,
-      this.collection.model.name,
-      this.documentStorage,
-      this.collection.documentPermission,
+      this.collection,
     );
     collectionEndpointPost.create();
   }
 
   private createDelete(endpoint: BlEndpoint) {
-    const collectionEndpointDelete = new CollectionEndpointDelete<T>(
+    const collectionEndpointDelete = new CollectionEndpointDelete(
       this.router,
       endpoint,
-      this.collection.model.name,
-      this.documentStorage,
-      this.collection.documentPermission,
+      this.collection,
     );
     collectionEndpointDelete.create();
   }
 
   private createPatch(endpoint: BlEndpoint) {
-    const collectionEndpointPatch = new CollectionEndpointPatch<T>(
+    const collectionEndpointPatch = new CollectionEndpointPatch(
       this.router,
       endpoint,
-      this.collection.model.name,
-      this.documentStorage,
-      this.collection.documentPermission,
+      this.collection,
     );
     collectionEndpointPatch.create();
   }
 
   private createPut(endpoint: BlEndpoint) {
-    const collectionEndpointPut = new CollectionEndpointPut<T>(
+    const collectionEndpointPut = new CollectionEndpointPut(
       this.router,
       endpoint,
-      this.collection.model.name,
-      this.documentStorage,
-      this.collection.documentPermission,
+      this.collection,
     );
     collectionEndpointPut.create();
   }

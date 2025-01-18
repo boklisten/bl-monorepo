@@ -5,10 +5,10 @@ import { UserDetailChangeEmailOperation } from "@backend/collections/user-detail
 import { UserDetailPermissionOperation } from "@backend/collections/user-detail/operations/permission/user-detail-permission.operation";
 import { UserDetailReadPermissionOperation } from "@backend/collections/user-detail/operations/read-permission/user-detail-read-permission.operation";
 import { UserDetailValidOperation } from "@backend/collections/user-detail/operations/user-detail-valid.operation";
-import { UserDetailModel } from "@backend/collections/user-detail/user-detail.model";
+import { BlStorage } from "@backend/storage/bl-storage";
 
 export const UserDetailCollection: BlCollection = {
-  model: UserDetailModel,
+  storage: BlStorage.UserDetails,
   documentPermission: {
     viewableForPermission: "employee",
   },

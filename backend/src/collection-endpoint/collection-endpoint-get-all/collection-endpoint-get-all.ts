@@ -3,13 +3,12 @@ import { CollectionEndpointOnRequest } from "@backend/collection-endpoint/collec
 import { SEDbQuery } from "@backend/query/se.db-query";
 import { SEDbQueryBuilder } from "@backend/query/se.db-query-builder";
 import { BlApiRequest } from "@backend/request/bl-api-request";
-import { BlDocument } from "@shared/bl-document/bl-document";
 import { BlError } from "@shared/bl-error/bl-error";
-export class CollectionEndpointGetAll<T extends BlDocument>
-  extends CollectionEndpointMethod<T>
-  implements CollectionEndpointOnRequest<T>
+export class CollectionEndpointGetAll
+  extends CollectionEndpointMethod
+  implements CollectionEndpointOnRequest
 {
-  public override async onRequest(blApiRequest: BlApiRequest): Promise<T[]> {
+  public override async onRequest(blApiRequest: BlApiRequest) {
     if (
       blApiRequest.query &&
       Object.getOwnPropertyNames(blApiRequest.query).length > 0 &&
@@ -36,7 +35,7 @@ export class CollectionEndpointGetAll<T extends BlDocument>
         );
       }
 
-      return await this.documentStorage.getByQuery(
+      return await this.collection.storage.getByQuery(
         databaseQuery,
         this.endpoint.nestedDocuments,
       );
@@ -47,9 +46,9 @@ export class CollectionEndpointGetAll<T extends BlDocument>
         permission = blApiRequest.user.permission;
       }
 
-      return this.documentStorage
+      return this.collection.storage
         .getAll(permission)
-        .then((docs: T[]) => {
+        .then((docs) => {
           return docs;
         })
         .catch((blError: BlError) => {

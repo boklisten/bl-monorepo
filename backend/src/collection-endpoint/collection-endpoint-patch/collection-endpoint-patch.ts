@@ -1,30 +1,20 @@
 import { CollectionEndpointMethod } from "@backend/collection-endpoint/collection-endpoint-method";
 import { CollectionEndpointOnRequest } from "@backend/collection-endpoint/collection-endpoint-on-request";
 import { BlApiRequest } from "@backend/request/bl-api-request";
-import { BlDocument } from "@shared/bl-document/bl-document";
 import { BlError } from "@shared/bl-error/bl-error";
-export class CollectionEndpointPatch<T extends BlDocument>
-  extends CollectionEndpointMethod<T>
-  implements CollectionEndpointOnRequest<T>
+export class CollectionEndpointPatch
+  extends CollectionEndpointMethod
+  implements CollectionEndpointOnRequest
 {
-  override onRequest(blApiRequest: BlApiRequest): Promise<T[]> {
-    return (
-      this.documentStorage
-        // @ts-expect-error fixme: auto ignored
-        .update(blApiRequest.documentId, blApiRequest.data)
-        .then((document_: T) => {
-          return [document_];
-        })
-        .catch((blError) => {
-          throw blError;
-        })
-    );
+  override async onRequest(blApiRequest: BlApiRequest) {
+    const doc = await this.collection.storage
+      // @ts-expect-error fixme: auto ignored
+      .update(blApiRequest.documentId, blApiRequest.data);
+    return [doc];
   }
 
-  override async validateDocumentPermission(
-    blApiRequest: BlApiRequest,
-  ): Promise<BlApiRequest> {
-    const document_ = await this.documentStorage.get(
+  override async validateDocumentPermission(blApiRequest: BlApiRequest) {
+    const document_ = await this.collection.storage.get(
       blApiRequest.documentId ?? "",
     );
     if (

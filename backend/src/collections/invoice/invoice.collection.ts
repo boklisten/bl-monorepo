@@ -1,8 +1,8 @@
 import { BlCollection } from "@backend/collections/bl-collection";
-import { InvoiceModel } from "@backend/collections/invoice/invoice.model";
+import { BlStorage } from "@backend/storage/bl-storage";
 
 export const InvoiceCollection: BlCollection = {
-  model: InvoiceModel,
+  storage: BlStorage.Invoices,
   endpoints: [
     {
       method: "getId",

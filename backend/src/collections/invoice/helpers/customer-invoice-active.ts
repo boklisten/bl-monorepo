@@ -1,18 +1,12 @@
 import { InvoiceActive } from "@backend/collections/invoice/helpers/invoice-active";
-import { InvoiceModel } from "@backend/collections/invoice/invoice.model";
 import { SEDbQueryBuilder } from "@backend/query/se.db-query-builder";
-import { BlStorage } from "@backend/storage/blStorage";
+import { BlStorage } from "@backend/storage/bl-storage";
 import { BlError } from "@shared/bl-error/bl-error";
 import { Invoice } from "@shared/invoice/invoice";
 
 export class CustomerInvoiceActive {
   private queryBuilder = new SEDbQueryBuilder();
   private invoiceActive = new InvoiceActive();
-  private invoiceStorage: BlStorage<Invoice>;
-
-  constructor(invoiceStorage?: BlStorage<Invoice>) {
-    this.invoiceStorage = invoiceStorage ?? new BlStorage(InvoiceModel);
-  }
 
   public async haveActiveInvoices(userId: string): Promise<boolean> {
     const databaseQuery = this.queryBuilder.getDbQuery(
@@ -21,7 +15,7 @@ export class CustomerInvoiceActive {
     );
     let invoices: Invoice[];
     try {
-      invoices = await this.invoiceStorage.getByQuery(databaseQuery);
+      invoices = await BlStorage.Invoices.getByQuery(databaseQuery);
     } catch (error) {
       if (error instanceof BlError && error.getCode() == 702) {
         return false;

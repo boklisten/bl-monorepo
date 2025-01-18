@@ -1,26 +1,32 @@
 import "mocha";
 
 import { OpeningHourHelper } from "@backend/collections/opening-hour/helpers/opening-hour-helper";
-import { OpeningHourModel } from "@backend/collections/opening-hour/opening-hour.model";
-import { BlStorage } from "@backend/storage/blStorage";
+import { BlStorage } from "@backend/storage/bl-storage";
 import { BlError } from "@shared/bl-error/bl-error";
 import { Branch } from "@shared/branch/branch";
 import { OpeningHour } from "@shared/opening-hour/opening-hour";
 import { use as chaiUse, should } from "chai";
 import chaiAsPromised from "chai-as-promised";
 import moment from "moment-timezone";
-import sinon from "sinon";
+import sinon, { createSandbox } from "sinon";
 import sinonChai from "sinon-chai";
 
 chaiUse(chaiAsPromised);
 should();
 chaiUse(sinonChai);
 
-const openingHourStorage = new BlStorage(OpeningHourModel);
-const openingHourHelper = new OpeningHourHelper(openingHourStorage);
-const openingHourStorageGetMany = sinon.stub(openingHourStorage, "getMany");
+const openingHourHelper = new OpeningHourHelper();
 
 describe("getNextAvailableOpeningHour()", () => {
+  let openingHourStorageGetMany: sinon.SinonStub;
+  let sandbox: sinon.SinonSandbox;
+  beforeEach(() => {
+    sandbox = createSandbox();
+    openingHourStorageGetMany = sandbox.stub(BlStorage.OpeningHours, "getMany");
+  });
+  afterEach(() => {
+    sandbox.restore();
+  });
   it("should reject if no opening hour is found in Branch", () => {
     // @ts-expect-error fixme: auto ignored
     const branch = {

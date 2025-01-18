@@ -1,34 +1,30 @@
 import "mocha";
 
 import { User } from "@backend/collections/user/user";
-import { UserModel } from "@backend/collections/user/user.model";
 import { UserCanDeleteUserDetail } from "@backend/collections/user-detail/helpers/user-can-delete-user-detail";
-import { UserDetailModel } from "@backend/collections/user-detail/user-detail.model";
-import { BlStorage } from "@backend/storage/blStorage";
+import { BlStorage } from "@backend/storage/bl-storage";
 import { AccessToken } from "@shared/token/access-token";
 import { UserDetail } from "@shared/user/user-detail/user-detail";
 import { expect, use as chaiUse, should } from "chai";
 import chaiAsPromised from "chai-as-promised";
-import sinon from "sinon";
+import sinon, { createSandbox } from "sinon";
 
 chaiUse(chaiAsPromised);
 should();
 
 describe("UserCanDeleteUserDetail", () => {
-  const userDetailStorage = new BlStorage(UserDetailModel);
-  const userDetailGetIdStub = sinon.stub(userDetailStorage, "get");
-
-  const userStorage = new BlStorage(UserModel);
-  const userGetByQueryStub = sinon.stub(userStorage, "getByQuery");
-
-  const userCanDeleteUserDetail = new UserCanDeleteUserDetail(
-    userDetailStorage,
-    userStorage,
-  );
+  const userCanDeleteUserDetail = new UserCanDeleteUserDetail();
+  let userDetailGetIdStub: sinon.SinonStub;
+  let userGetByQueryStub: sinon.SinonStub;
+  let sandbox: sinon.SinonSandbox;
 
   beforeEach(() => {
-    userDetailGetIdStub.reset();
-    userGetByQueryStub.reset();
+    sandbox = createSandbox();
+    userDetailGetIdStub = sandbox.stub(BlStorage.UserDetails, "get");
+    userGetByQueryStub = sandbox.stub(BlStorage.Users, "getByQuery");
+  });
+  afterEach(() => {
+    sandbox.restore();
   });
 
   describe("canDelete()", () => {

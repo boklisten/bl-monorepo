@@ -1,10 +1,10 @@
 import { BlCollection } from "@backend/collections/bl-collection";
 import { GenerateUniqueIdsOperation } from "@backend/collections/unique-item/operations/generate-unique-ids-operation";
 import { UniqueItemActiveOperation } from "@backend/collections/unique-item/operations/unique-item-active.operation";
-import { UniqueItemModel } from "@backend/collections/unique-item/unique-item.model";
+import { BlStorage } from "@backend/storage/bl-storage";
 
 export const UniqueItemCollection: BlCollection = {
-  model: UniqueItemModel,
+  storage: BlStorage.UniqueItems,
   documentPermission: {
     viewableForPermission: "employee",
   },

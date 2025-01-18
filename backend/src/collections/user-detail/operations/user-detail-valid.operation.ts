@@ -1,31 +1,24 @@
 import { UserDetailHelper } from "@backend/collections/user-detail/helpers/user-detail.helper";
-import { UserDetailModel } from "@backend/collections/user-detail/user-detail.model";
 import { Operation } from "@backend/operation/operation";
 import { BlApiRequest } from "@backend/request/bl-api-request";
 import { SEResponseHandler } from "@backend/response/se.response.handler";
-import { BlStorage } from "@backend/storage/blStorage";
+import { BlStorage } from "@backend/storage/bl-storage";
 import { BlError } from "@shared/bl-error/bl-error";
 import { BlapiResponse } from "@shared/blapi-response/blapi-response";
-import { UserDetail } from "@shared/user/user-detail/user-detail";
 import { Request, Response } from "express";
 
 export class UserDetailValidOperation implements Operation {
   private userDetailHelper = new UserDetailHelper();
-  private userDetailStorage: BlStorage<UserDetail>;
+
   private resHandler: SEResponseHandler;
 
-  constructor(
-    userDetailStorage?: BlStorage<UserDetail>,
-    resHandler?: SEResponseHandler,
-  ) {
-    this.userDetailStorage =
-      userDetailStorage ?? new BlStorage(UserDetailModel);
+  constructor(resHandler?: SEResponseHandler) {
     this.resHandler = resHandler ?? new SEResponseHandler();
   }
 
   async run(blApiRequest: BlApiRequest, request: Request, res: Response) {
     try {
-      const userDetail = await this.userDetailStorage.get(
+      const userDetail = await BlStorage.UserDetails.get(
         blApiRequest.documentId,
       );
 

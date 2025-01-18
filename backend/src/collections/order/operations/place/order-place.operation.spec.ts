@@ -1,16 +1,10 @@
-import { CustomerItemModel } from "@backend/collections/customer-item/customer-item.model";
 import { OrderToCustomerItemGenerator } from "@backend/collections/customer-item/helpers/order-to-customer-item-generator";
 import { OrderPlacedHandler } from "@backend/collections/order/helpers/order-placed-handler/order-placed-handler";
 import { OrderValidator } from "@backend/collections/order/helpers/order-validator/order-validator";
 import { OrderPlaceOperation } from "@backend/collections/order/operations/place/order-place.operation";
-import { OrderModel } from "@backend/collections/order/order.model";
-import { SignatureModel } from "@backend/collections/signature/signature.model";
-import { Signature } from "@backend/collections/signature/signature.model";
-import { StandMatchModel } from "@backend/collections/stand-match/stand-match.model";
-import { UserDetailModel } from "@backend/collections/user-detail/user-detail.model";
-import { UserMatchModel } from "@backend/collections/user-match/user-match.model";
 import { SEResponseHandler } from "@backend/response/se.response.handler";
-import { BlStorage } from "@backend/storage/blStorage";
+import { BlStorage } from "@backend/storage/bl-storage";
+import { Signature } from "@backend/storage/models/signature.model";
 import { BlError } from "@shared/bl-error/bl-error";
 import { Order } from "@shared/order/order";
 import { SIGNATURE_NUM_MONTHS_VALID } from "@shared/signature/serialized-signature";
@@ -18,7 +12,7 @@ import { UserDetail } from "@shared/user/user-detail/user-detail";
 import { expect, use as chaiUse, should } from "chai";
 import chaiAsPromised from "chai-as-promised";
 import moment from "moment-timezone";
-import sinon from "sinon";
+import sinon, { createSandbox } from "sinon";
 
 import "mocha";
 
@@ -27,69 +21,63 @@ should();
 
 describe("OrderPlaceOperation", () => {
   const resHandler = new SEResponseHandler();
-  const orderStorage = new BlStorage(OrderModel);
   const orderToCustomerItemGenerator = new OrderToCustomerItemGenerator();
-  const customerItemStorage = new BlStorage(CustomerItemModel);
-  const userMatchStorage = new BlStorage(UserMatchModel);
-  const standMatchStorage = new BlStorage(StandMatchModel);
-  const userDetailStorage = new BlStorage(UserDetailModel);
-  const signatureStorage = new BlStorage(SignatureModel);
   const orderPlacedHandler = new OrderPlacedHandler(
-    orderStorage,
-    undefined,
-    userDetailStorage,
     undefined,
     undefined,
     undefined,
-    signatureStorage,
+    undefined,
   );
   const orderValidator = new OrderValidator();
 
   const orderPlaceOperation = new OrderPlaceOperation(
     resHandler,
     orderToCustomerItemGenerator,
-    orderStorage,
-    customerItemStorage,
     orderPlacedHandler,
     orderValidator,
-    userDetailStorage,
-    userMatchStorage,
-    standMatchStorage,
   );
 
-  const placeOrderStub = sinon.stub(orderPlacedHandler, "placeOrder");
-  const sendResponseStub = sinon.stub(resHandler, "sendResponse");
-  const getOrderStub = sinon.stub(orderStorage, "get");
-  const getCustomerItemStub = sinon.stub(customerItemStorage, "get");
-  const aggregateCustomerItemsStub = sinon.stub(
-    customerItemStorage,
-    "aggregate",
-  );
-  const getManyCustomerItemsStub = sinon.stub(customerItemStorage, "getMany");
-  const generateCustomerItemStub = sinon.stub(
-    orderToCustomerItemGenerator,
-    "generate",
-  );
-  const validateOrderStub = sinon.stub(orderValidator, "validate");
-  const getAllUserMatchesStub = sinon.stub(userMatchStorage, "getAll");
-  const getAllStandMatchesStub = sinon.stub(standMatchStorage, "getAll");
-  const getUserDetailStub = sinon.stub(userDetailStorage, "get");
-  const getSignatureStub = sinon.stub(signatureStorage, "get");
+  let placeOrderStub: sinon.SinonStub;
+  let sendResponseStub: sinon.SinonStub;
+  let getOrderStub: sinon.SinonStub;
+  let getCustomerItemStub: sinon.SinonStub;
+  let aggregateCustomerItemsStub: sinon.SinonStub;
+  let getManyCustomerItemsStub: sinon.SinonStub;
+  let generateCustomerItemStub: sinon.SinonStub;
+  let validateOrderStub: sinon.SinonStub;
+  let getAllUserMatchesStub: sinon.SinonStub;
+  let getAllStandMatchesStub: sinon.SinonStub;
+  let getUserDetailStub: sinon.SinonStub;
+  let getSignatureStub: sinon.SinonStub;
+  let sandbox: sinon.SinonSandbox;
 
   describe("run()", () => {
     beforeEach(() => {
-      placeOrderStub.reset();
-      sendResponseStub.reset();
-      getOrderStub.reset();
-      getCustomerItemStub.reset();
-      getManyCustomerItemsStub.reset();
-      aggregateCustomerItemsStub.reset();
-      generateCustomerItemStub.reset();
-      validateOrderStub.reset();
-      getAllUserMatchesStub.reset();
-      getAllStandMatchesStub.reset();
-      getUserDetailStub.reset();
-      getSignatureStub.reset();
+      sandbox = createSandbox();
+      placeOrderStub = sandbox.stub(orderPlacedHandler, "placeOrder");
+      sendResponseStub = sandbox.stub(resHandler, "sendResponse");
+      getOrderStub = sandbox.stub(BlStorage.Orders, "get");
+      getCustomerItemStub = sandbox.stub(BlStorage.CustomerItems, "get");
+      aggregateCustomerItemsStub = sandbox.stub(
+        BlStorage.CustomerItems,
+        "aggregate",
+      );
+      getManyCustomerItemsStub = sandbox.stub(
+        BlStorage.CustomerItems,
+        "getMany",
+      );
+      generateCustomerItemStub = sandbox.stub(
+        orderToCustomerItemGenerator,
+        "generate",
+      );
+      validateOrderStub = sandbox.stub(orderValidator, "validate");
+      getAllUserMatchesStub = sandbox.stub(BlStorage.UserMatches, "getAll");
+      getAllStandMatchesStub = sandbox.stub(BlStorage.StandMatches, "getAll");
+      getUserDetailStub = sandbox.stub(BlStorage.UserDetails, "get");
+      getSignatureStub = sandbox.stub(BlStorage.Signatures, "get");
+    });
+    afterEach(() => {
+      sandbox.restore();
     });
 
     const validOrder: Order = {

@@ -1,11 +1,8 @@
-import { StandMatchModel } from "@backend/collections/stand-match/stand-match.model";
-import { UserDetailModel } from "@backend/collections/user-detail/user-detail.model";
-import { UserMatchModel } from "@backend/collections/user-match/user-match.model";
 import { sendMail } from "@backend/messenger/email/email-service";
 import { sendSMS } from "@backend/messenger/sms/sms-service";
 import { Operation } from "@backend/operation/operation";
 import { BlApiRequest } from "@backend/request/bl-api-request";
-import { BlStorage } from "@backend/storage/blStorage";
+import { BlStorage } from "@backend/storage/bl-storage";
 import { BlError } from "@shared/bl-error/bl-error";
 import { BlapiResponse } from "@shared/blapi-response/blapi-response";
 import { z } from "zod";
@@ -17,18 +14,14 @@ const MatchNotifySpec = z.object({
 });
 
 export class MatchNotifyOperation implements Operation {
-  private userMatchStorage = new BlStorage(UserMatchModel);
-  private standMatchStorage = new BlStorage(StandMatchModel);
-  private userDetailStorage = new BlStorage(UserDetailModel);
-
   async run(blApiRequest: BlApiRequest): Promise<BlapiResponse> {
     const parsedRequest = MatchNotifySpec.safeParse(blApiRequest.data);
     if (!parsedRequest.success) {
       throw new BlError(fromError(parsedRequest.error).toString()).code(701);
     }
 
-    const userMatches = await this.userMatchStorage.getAll();
-    const standMatches = await this.standMatchStorage.getAll();
+    const userMatches = await BlStorage.UserMatches.getAll();
+    const standMatches = await BlStorage.StandMatches.getAll();
     if (userMatches.length === 0 && standMatches.length === 0) {
       throw new BlError("Could not find any matches!");
     }
@@ -63,7 +56,7 @@ export class MatchNotifyOperation implements Operation {
 
     return new BlapiResponse(
       await Promise.allSettled(
-        (await this.userDetailStorage.getMany([...targetCustomerIds])).map(
+        (await BlStorage.UserDetails.getMany([...targetCustomerIds])).map(
           async (customer) => {
             await sendSMS(
               customer.phone,

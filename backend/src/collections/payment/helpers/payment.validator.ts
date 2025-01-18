@@ -1,23 +1,10 @@
-import { DeliveryModel } from "@backend/collections/delivery/delivery.model";
-import { OrderModel } from "@backend/collections/order/order.model";
-import { BlStorage } from "@backend/storage/blStorage";
+import { BlStorage } from "@backend/storage/bl-storage";
 import { BlError } from "@shared/bl-error/bl-error";
 import { Delivery } from "@shared/delivery/delivery";
 import { Order } from "@shared/order/order";
 import { Payment } from "@shared/payment/payment";
 
 export class PaymentValidator {
-  private orderStorage: BlStorage<Order>;
-  private deliveryStorage: BlStorage<Delivery>;
-
-  constructor(
-    orderStorage?: BlStorage<Order>,
-    deliveryStorage?: BlStorage<Delivery>,
-  ) {
-    this.orderStorage = orderStorage ?? new BlStorage(OrderModel);
-    this.deliveryStorage = deliveryStorage ?? new BlStorage(DeliveryModel);
-  }
-
   public validate(payment: Payment): Promise<boolean> {
     if (!payment) {
       return Promise.reject(new BlError("payment is not defined"));
@@ -25,8 +12,7 @@ export class PaymentValidator {
 
     let order: Order;
 
-    return this.orderStorage
-      .get(payment.order)
+    return BlStorage.Orders.get(payment.order)
       .then((orderInStorage: Order) => {
         order = orderInStorage;
         return this.validateIfOrderHasDelivery(payment, order);
@@ -53,9 +39,8 @@ export class PaymentValidator {
       return Promise.resolve(true);
     }
 
-    return this.deliveryStorage
-      .get(order.delivery)
-      .then((delivery: Delivery) => {
+    return BlStorage.Deliveries.get(order.delivery).then(
+      (delivery: Delivery) => {
         const expectedAmount = order.amount + delivery.amount;
 
         if (payment.amount !== expectedAmount) {
@@ -64,7 +49,8 @@ export class PaymentValidator {
           );
         }
         return true;
-      });
+      },
+    );
   }
 
   private validatePaymentBasedOnMethod(payment: Payment): boolean {

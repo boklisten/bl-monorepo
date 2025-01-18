@@ -1,9 +1,8 @@
 import { PermissionService } from "@backend/auth/permission/permission.service";
-import { BlModel } from "@backend/collections/bl-collection";
 import { logger } from "@backend/logger/logger";
 import { ExpandFilter } from "@backend/query/expand-filter/db-query-expand-filter";
 import { SEDbQuery } from "@backend/query/se.db-query";
-import { BlStorageHandler } from "@backend/storage/blStorageHandler";
+import { BlModel } from "@backend/storage/bl-storage";
 import { MongooseModelCreator } from "@backend/storage/mongoDb/mongoose-schema-creator";
 import { NestedDocument } from "@backend/storage/nested-document";
 import { BlDocument } from "@shared/bl-document/bl-document";
@@ -19,12 +18,12 @@ import {
   UpdateWriteOpResult,
 } from "mongoose";
 
-export class MongoDbBlStorageHandler<T extends BlDocument>
-  implements BlStorageHandler<T>
-{
+export class MongoDbBlStorageHandler<T extends BlDocument> {
   private readonly mongooseModel: Model<T>;
+  public path: string;
 
   constructor(model: BlModel<T>) {
+    this.path = model.name;
     this.mongooseModel = new MongooseModelCreator<T>(model).create();
   }
 
@@ -59,7 +58,7 @@ export class MongoDbBlStorageHandler<T extends BlDocument>
       )})`,
     );
     const docs = (await this.mongooseModel
-      .find<T>(databaseQuery.getFilter(), databaseQuery.getOgFilter())
+      .find(databaseQuery.getFilter(), databaseQuery.getOgFilter())
       .limit(databaseQuery.getLimitFilter())
       .skip(databaseQuery.getSkipFilter())
       .sort(databaseQuery.getSortFilter())
@@ -86,10 +85,7 @@ export class MongoDbBlStorageHandler<T extends BlDocument>
       : docs;
   }
 
-  public async getMany(
-    ids: string[],
-    userPermission?: UserPermission,
-  ): Promise<T[]> {
+  public async getMany(ids: string[], userPermission?: UserPermission) {
     try {
       const idArray = ids.map((id) => new Types.ObjectId(id));
       // if user have admin privileges, he can also get documents that are inactive
@@ -99,7 +95,7 @@ export class MongoDbBlStorageHandler<T extends BlDocument>
           : { _id: { $in: idArray }, active: true };
 
       return (await this.mongooseModel
-        .find<T>(filter)
+        .find(filter)
         .lean({ transform: MongooseModelCreator.transformObject })
         .exec()) as T[];
     } catch (error) {
@@ -110,9 +106,9 @@ export class MongoDbBlStorageHandler<T extends BlDocument>
     }
   }
 
-  public async aggregate(aggregation: PipelineStage[]): Promise<T[]> {
+  public async aggregate(aggregation: PipelineStage[]): Promise<unknown[]> {
     const docs = await this.mongooseModel
-      .aggregate<T>(aggregation)
+      .aggregate(aggregation)
       .exec()
       .catch((error) => {
         throw this.handleError(
@@ -128,13 +124,13 @@ export class MongoDbBlStorageHandler<T extends BlDocument>
     return docs;
   }
 
-  public async getAll(userPermission?: UserPermission): Promise<T[]> {
+  public async getAll(userPermission?: UserPermission) {
     const filter =
       userPermission && PermissionService.isAdmin(userPermission)
         ? {}
         : { active: true };
     const document_ = (await this.mongooseModel
-      .find<T>(filter)
+      .find(filter)
       .lean({ transform: MongooseModelCreator.transformObject })
       .exec()
       .catch((error) => {
@@ -172,18 +168,18 @@ export class MongoDbBlStorageHandler<T extends BlDocument>
     }
   }
 
-  public async addMany(docs: T[]): Promise<T[]> {
+  public async addMany(docs: T[]) {
     const insertedDocs = await this.mongooseModel.insertMany(docs);
     return insertedDocs.map((document_) => document_.toObject());
   }
 
-  public async update(id: string, data: Partial<T>): Promise<T> {
+  public async update(id: string, data: Partial<T>) {
     const newData = { ...data, lastUpdated: new Date() };
     // Don't update the user of a document after creation
     delete newData["user"];
 
     const document_ = (await this.mongooseModel
-      .findOneAndUpdate<T>({ _id: id }, newData, { new: true })
+      .findOneAndUpdate({ _id: id }, newData, { new: true })
       .lean({ transform: MongooseModelCreator.transformObject })
       .exec()
       .catch((error) => {
@@ -227,7 +223,7 @@ export class MongoDbBlStorageHandler<T extends BlDocument>
       });
   }
 
-  public async remove(id: string): Promise<T> {
+  public async remove(id: string) {
     const document_ = (await this.mongooseModel
       .findByIdAndDelete<T>(id)
       .lean({ transform: MongooseModelCreator.transformObject })
@@ -245,7 +241,7 @@ export class MongoDbBlStorageHandler<T extends BlDocument>
     return document_;
   }
 
-  public async exists(id: string): Promise<boolean> {
+  public async exists(id: string) {
     try {
       await this.get(id);
       return true;
@@ -265,7 +261,7 @@ export class MongoDbBlStorageHandler<T extends BlDocument>
     docs: T[],
     allowedNestedDocuments: NestedDocument[],
     expandFilters: ExpandFilter[],
-  ): Promise<T[]> {
+  ) {
     if (!expandFilters || expandFilters.length <= 0) {
       return docs;
     }
@@ -296,7 +292,7 @@ export class MongoDbBlStorageHandler<T extends BlDocument>
   private async getNestedDocuments(
     document_: T,
     nestedDocuments: NestedDocument[],
-  ): Promise<T> {
+  ) {
     const nestedDocumentsPromArray = nestedDocuments.flatMap((nestedDocument) =>
       // @ts-expect-error fixme: auto ignored
       document_ && document_[nestedDocument.field]
@@ -324,14 +320,8 @@ export class MongoDbBlStorageHandler<T extends BlDocument>
     }
   }
 
-  private getNestedDocument(
-    id: string,
-    nestedDocument: NestedDocument,
-  ): Promise<T> {
-    const documentStorage = new MongoDbBlStorageHandler<T>(
-      nestedDocument.model as BlModel<T>,
-    );
-    return documentStorage.get(id);
+  private getNestedDocument(id: string, nestedDocument: NestedDocument) {
+    return nestedDocument.storage.get(id);
   }
 
   private handleError(blError: BlError, error: unknown): BlError {

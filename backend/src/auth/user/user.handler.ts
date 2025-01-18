@@ -2,32 +2,25 @@ import { Blid } from "@backend/auth/blid/blid";
 import { LocalLoginHandler } from "@backend/auth/local/local-login.handler";
 import { EmailValidationHelper } from "@backend/collections/email-validation/helpers/email-validation.helper";
 import { User } from "@backend/collections/user/user";
-import { UserModel } from "@backend/collections/user/user.model";
-import { UserDetailModel } from "@backend/collections/user-detail/user-detail.model";
 import { SEDbQuery } from "@backend/query/se.db-query";
-import { BlStorage } from "@backend/storage/blStorage";
+import { BlStorage } from "@backend/storage/bl-storage";
 import { BlError } from "@shared/bl-error/bl-error";
 import { UserDetail } from "@shared/user/user-detail/user-detail";
 
 export class UserHandler {
   private blid: Blid;
-  private userDetailStorage: BlStorage<UserDetail>;
-  private userStorage: BlStorage<User>;
   private emailValidationHelper: EmailValidationHelper;
   private localLoginHandler: LocalLoginHandler;
 
   constructor(
-    userDetailStorage?: BlStorage<UserDetail>,
-    userStorage?: BlStorage<User>,
     emailValidationHelper?: EmailValidationHelper,
     localLoginHandler?: LocalLoginHandler,
   ) {
     this.blid = new Blid();
-    this.userDetailStorage =
-      userDetailStorage ?? new BlStorage(UserDetailModel);
+
     this.emailValidationHelper =
       emailValidationHelper ?? new EmailValidationHelper();
-    this.userStorage = userStorage ?? new BlStorage(UserModel);
+
     this.localLoginHandler = localLoginHandler ?? new LocalLoginHandler();
   }
 
@@ -41,7 +34,7 @@ export class UserHandler {
         { fieldName: "username", value: username },
       ];
 
-      this.userStorage.getByQuery(databaseQuery).then(
+      BlStorage.Users.getByQuery(databaseQuery).then(
         (docs: User[]) => {
           if (docs.length > 1) {
             this.handleIfMultipleUsersWithSameEmail(docs)
@@ -90,12 +83,12 @@ export class UserHandler {
       selectedUser = users[0];
 
       return (
-        this.userStorage
+        BlStorage.Users
           // @ts-expect-error fixme: auto ignored
           .update(selectedUser, { primary: true })
           .then(() => {
             const promiseArray = users.map((user) =>
-              this.userStorage.update(
+              BlStorage.Users.update(
                 user.id,
                 // @ts-expect-error fixme: auto ignored
                 { movedToPrimary: selectedUser.id },
@@ -139,8 +132,7 @@ export class UserHandler {
         { fieldName: "login.providerId", value: providerId },
       ];
 
-      this.userStorage
-        .getByQuery(databaseQuery)
+      BlStorage.Users.getByQuery(databaseQuery)
         .then((users: User[]) => {
           // @ts-expect-error fixme: auto ignored
           resolve(users[0]);
@@ -215,7 +207,7 @@ export class UserHandler {
         await this.localLoginHandler.createDefaultLocalLogin(username);
       }
 
-      const addedUserDetail: UserDetail = await this.userDetailStorage.add(
+      const addedUserDetail: UserDetail = await BlStorage.UserDetails.add(
         userDetail,
         { id: blid, permission: "customer" },
       );
@@ -237,7 +229,7 @@ export class UserHandler {
         },
       };
 
-      return await this.userStorage.add(newUser, {
+      return await BlStorage.Users.add(newUser, {
         id: blid,
         permission: newUser.permission,
       });
@@ -296,8 +288,7 @@ export class UserHandler {
     ];
 
     return new Promise((resolve, reject) => {
-      this.userStorage
-        .getByQuery(databaseQuery)
+      BlStorage.Users.getByQuery(databaseQuery)
         .then(() => {
           resolve();
         })

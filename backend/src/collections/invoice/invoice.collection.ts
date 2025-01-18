@@ -7,25 +7,25 @@ export const InvoiceCollection: BlCollection = {
     {
       method: "getId",
       restriction: {
-        permissions: ["admin"],
+        permission: "admin",
       },
     },
     {
       method: "getAll",
       restriction: {
-        permissions: ["admin"],
+        permission: "admin",
       },
     },
     {
       method: "post",
       restriction: {
-        permissions: ["admin"],
+        permission: "admin",
       },
     },
     {
       method: "patch",
       restriction: {
-        permissions: ["admin"],
+        permission: "admin",
       },
     },
   ],

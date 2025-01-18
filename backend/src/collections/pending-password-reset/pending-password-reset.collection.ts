@@ -13,7 +13,7 @@ export const PendingPasswordResetCollection: BlCollection = {
     {
       method: "patch",
       restriction: {
-        permissions: ["admin"],
+        permission: "admin",
       },
       operations: [
         {

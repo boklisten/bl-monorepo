@@ -13,14 +13,14 @@ export const CustomerItemCollection: BlCollection = {
     {
       method: "getId",
       restriction: {
-        permissions: ["customer", "employee", "manager", "admin"],
+        permission: "customer",
         restricted: true,
       },
     },
     {
       method: "patch",
       restriction: {
-        permissions: ["customer", "employee", "manager", "admin"],
+        permission: "customer",
         restricted: true,
       },
     },
@@ -32,25 +32,25 @@ export const CustomerItemCollection: BlCollection = {
           name: "generate-report",
           operation: new CustomerItemGenerateReportOperation(),
           restriction: {
-            permissions: ["admin"],
+            permission: "admin",
           },
         },
         {
           name: "public-blid-lookup",
           operation: new PublicBlidLookupOperation(),
           restriction: {
-            permissions: ["customer", "employee", "manager", "admin"],
+            permission: "customer",
           },
         },
       ],
       restriction: {
-        permissions: ["employee", "manager", "admin"],
+        permission: "employee",
       },
     },
     {
       method: "getAll",
       restriction: {
-        permissions: ["employee", "manager", "admin"],
+        permission: "employee",
       },
       nestedDocuments: [
         {

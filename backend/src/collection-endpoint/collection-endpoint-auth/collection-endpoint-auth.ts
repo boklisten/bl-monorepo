@@ -1,3 +1,4 @@
+import { PermissionService } from "@backend/auth/permission/permission.service";
 import { BlEndpointRestriction } from "@backend/collections/bl-collection";
 import { isNotNullish } from "@backend/helper/typescript-helpers";
 import { BlError } from "@shared/bl-error/bl-error";
@@ -46,8 +47,10 @@ export class CollectionEndpointAuth {
 
     if (
       restriction &&
-      restriction.permissions &&
-      restriction.permissions.indexOf(accessToken.permission) <= -1
+      !PermissionService.isPermissionEqualOrOver(
+        accessToken.permission,
+        restriction.permission,
+      )
     ) {
       throw new BlError(
         `user "${accessToken.sub}" with permission "${accessToken.permission}" does not have access to this endpoint`,

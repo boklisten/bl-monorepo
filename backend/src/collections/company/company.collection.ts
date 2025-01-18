@@ -7,7 +7,7 @@ export const CompanyCollection: BlCollection = {
     {
       method: "getAll",
       restriction: {
-        permissions: ["admin"],
+        permission: "admin",
       },
       validQueryParams: [
         {
@@ -19,25 +19,25 @@ export const CompanyCollection: BlCollection = {
     {
       method: "getId",
       restriction: {
-        permissions: ["admin"],
+        permission: "admin",
       },
     },
     {
       method: "post",
       restriction: {
-        permissions: ["admin"],
+        permission: "admin",
       },
     },
     {
       method: "patch",
       restriction: {
-        permissions: ["admin"],
+        permission: "admin",
       },
     },
     {
       method: "delete",
       restriction: {
-        permissions: ["admin"],
+        permission: "admin",
       },
     },
   ],

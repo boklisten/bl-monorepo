@@ -18,7 +18,7 @@ export const OrderCollection: BlCollection = {
       method: "post",
       hook: new OrderPostHook(),
       restriction: {
-        permissions: ["customer", "employee", "manager", "admin"],
+        permission: "customer",
         restricted: true,
       },
       operations: [
@@ -26,7 +26,7 @@ export const OrderCollection: BlCollection = {
           name: "rapid-handout",
           operation: new RapidHandoutOperation(),
           restriction: {
-            permissions: ["employee", "manager", "admin"],
+            permission: "employee",
           },
         },
         /*
@@ -36,7 +36,7 @@ export const OrderCollection: BlCollection = {
           name: "temp-bulk-create-orders",
           operation: new BulkOrderOperation(),
           restriction: {
-            permissions: ["admin"],
+            permission: "admin",
           },
         },
 */
@@ -45,14 +45,14 @@ export const OrderCollection: BlCollection = {
     {
       method: "delete",
       restriction: {
-        permissions: ["admin"],
+        permission: "admin",
       },
     },
     {
       method: "patch",
       hook: new OrderPatchHook(),
       restriction: {
-        permissions: ["customer", "employee", "manager", "admin"],
+        permission: "customer",
         restricted: true,
       },
       operations: [
@@ -60,7 +60,7 @@ export const OrderCollection: BlCollection = {
           name: "place",
           operation: new OrderPlaceOperation(),
           restriction: {
-            permissions: ["employee", "manager", "admin"],
+            permission: "employee",
             restricted: true,
           },
         },
@@ -68,7 +68,7 @@ export const OrderCollection: BlCollection = {
           name: "confirm",
           operation: new OrderConfirmOperation(),
           restriction: {
-            permissions: ["customer", "employee", "manager", "admin"],
+            permission: "customer",
             restricted: true,
           },
         },
@@ -83,7 +83,7 @@ export const OrderCollection: BlCollection = {
         },
       ],
       restriction: {
-        permissions: ["customer", "employee", "manager", "admin"],
+        permission: "customer",
         restricted: true,
       },
       operations: [
@@ -91,7 +91,7 @@ export const OrderCollection: BlCollection = {
           name: "receipt",
           operation: new OrderReceiptPdfOperation(),
           restriction: {
-            permissions: ["customer", "employee", "manager", "admin"],
+            permission: "customer",
             restricted: true,
           },
         },
@@ -99,7 +99,7 @@ export const OrderCollection: BlCollection = {
           name: "agreement",
           operation: new OrderAgreementPdfOperation(),
           restriction: {
-            permissions: ["customer", "employee", "manager", "admin"],
+            permission: "customer",
             restricted: true,
           },
         },
@@ -108,7 +108,7 @@ export const OrderCollection: BlCollection = {
     {
       method: "getAll",
       restriction: {
-        permissions: ["employee", "manager", "admin"],
+        permission: "employee",
       },
       nestedDocuments: [
         {

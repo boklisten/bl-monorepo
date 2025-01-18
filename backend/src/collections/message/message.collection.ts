@@ -11,7 +11,7 @@ export const MessageCollection: BlCollection = {
       method: "post",
       hook: new MessagePostHook(),
       restriction: {
-        permissions: ["admin"],
+        permission: "admin",
       },
       operations: [
         {
@@ -33,19 +33,19 @@ export const MessageCollection: BlCollection = {
         },
       ],
       restriction: {
-        permissions: ["employee", "admin"],
+        permission: "employee",
       },
     },
     {
       method: "getId",
       restriction: {
-        permissions: ["admin"],
+        permission: "admin",
       },
     },
     {
       method: "delete",
       restriction: {
-        permissions: ["admin"],
+        permission: "admin",
       },
     },
   ],

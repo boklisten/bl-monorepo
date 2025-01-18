@@ -11,7 +11,7 @@ export const DeliveryCollection: BlCollection = {
       method: "post",
       hook: new DeliveryPostHook(),
       restriction: {
-        permissions: ["customer", "employee", "manager", "admin"],
+        permission: "customer",
       },
       operations: [
         {
@@ -23,7 +23,7 @@ export const DeliveryCollection: BlCollection = {
     {
       method: "getAll",
       restriction: {
-        permissions: ["admin"],
+        permission: "admin",
         restricted: true,
       },
       validQueryParams: [
@@ -36,7 +36,7 @@ export const DeliveryCollection: BlCollection = {
     {
       method: "getId",
       restriction: {
-        permissions: ["customer", "employee", "manager", "admin"],
+        permission: "customer",
         restricted: true,
       },
     },
@@ -44,14 +44,14 @@ export const DeliveryCollection: BlCollection = {
       method: "patch",
       hook: new DeliveryPatchHook(),
       restriction: {
-        permissions: ["customer", "employee", "manager", "admin"],
+        permission: "customer",
         restricted: true,
       },
     },
     {
       method: "delete",
       restriction: {
-        permissions: ["admin"],
+        permission: "admin",
       },
     },
   ],

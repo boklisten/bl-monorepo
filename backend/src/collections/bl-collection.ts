@@ -12,7 +12,7 @@ export interface BlCollection {
 }
 
 export interface BlEndpointRestriction {
-  permissions: UserPermission[]; //a list of the permission the user needs
+  permission: UserPermission; // The minimum permission the user needs
   restricted?: boolean; //if set this endpoint is restricted to the user or for a user with higher permission
   secured?: boolean; //this endpoint is only accessible to the user that created it
 }

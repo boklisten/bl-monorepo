@@ -14,7 +14,7 @@ export const PaymentCollection: BlCollection = {
       method: "post",
       hook: new PaymentPostHook(),
       restriction: {
-        permissions: ["customer", "employee", "manager", "admin"],
+        permission: "customer",
         restricted: true,
       },
     },
@@ -22,7 +22,7 @@ export const PaymentCollection: BlCollection = {
       method: "getAll",
       hook: new PaymentGetAllHook(),
       restriction: {
-        permissions: ["customer", "employee", "manager", "admin"],
+        permission: "customer",
         restricted: true,
       },
       validQueryParams: [
@@ -36,7 +36,7 @@ export const PaymentCollection: BlCollection = {
     {
       method: "getId",
       restriction: {
-        permissions: ["customer", "employee", "manager", "admin"],
+        permission: "customer",
         restricted: true,
       },
     },
@@ -44,14 +44,14 @@ export const PaymentCollection: BlCollection = {
       method: "patch",
       hook: new PaymentPatchHook(),
       restriction: {
-        permissions: ["customer", "employee", "manager", "admin"],
+        permission: "customer",
         restricted: true,
       },
     },
     {
       method: "delete",
       restriction: {
-        permissions: ["admin"],
+        permission: "admin",
       },
     },
   ],

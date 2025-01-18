@@ -43,13 +43,13 @@ export const ItemCollection: BlCollection = {
     {
       method: "post",
       restriction: {
-        permissions: ["admin"],
+        permission: "admin",
       },
     },
     {
       method: "patch",
       restriction: {
-        permissions: ["admin"],
+        permission: "admin",
       },
     },
   ],

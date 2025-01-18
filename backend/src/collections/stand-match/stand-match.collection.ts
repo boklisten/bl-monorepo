@@ -12,12 +12,12 @@ export const StandMatchCollection: BlCollection = {
           name: "me",
           operation: new GetMyStandMatchesOperation(),
           restriction: {
-            permissions: ["customer", "employee", "manager", "admin"],
+            permission: "customer",
           },
         },
       ],
       restriction: {
-        permissions: ["employee", "manager", "admin"],
+        permission: "employee",
       },
     },
   ],

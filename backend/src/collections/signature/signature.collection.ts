@@ -14,7 +14,7 @@ export const SignatureCollection: BlCollection = {
     {
       method: "post",
       restriction: {
-        permissions: ["customer", "employee", "manager", "admin"],
+        permission: "customer",
         restricted: false,
       },
       hook: new SignaturePostHook(),
@@ -32,7 +32,7 @@ export const SignatureCollection: BlCollection = {
     {
       method: "getId",
       restriction: {
-        permissions: ["customer", "employee", "manager", "admin"],
+        permission: "customer",
       },
       hook: new SignatureGetIdHook(),
     },

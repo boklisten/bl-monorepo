@@ -12,20 +12,20 @@ export const UniqueItemCollection: BlCollection = {
     {
       method: "post",
       restriction: {
-        permissions: ["employee", "manager", "admin"],
+        permission: "employee",
       },
       operations: [
         {
           name: "generate",
           operation: new GenerateUniqueIdsOperation(),
-          restriction: { permissions: ["admin"] },
+          restriction: { permission: "admin" },
         },
       ],
     },
     {
       method: "getId",
       restriction: {
-        permissions: ["employee", "manager", "admin"],
+        permission: "employee",
       },
       operations: [
         {
@@ -42,7 +42,7 @@ export const UniqueItemCollection: BlCollection = {
     {
       method: "getAll",
       restriction: {
-        permissions: ["employee", "manager", "admin"],
+        permission: "employee",
       },
       validQueryParams: [
         { fieldName: "blid", type: "string" },

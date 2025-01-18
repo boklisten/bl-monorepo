@@ -15,30 +15,30 @@ export const UserMatchCollection: BlCollection = {
         {
           name: "generate",
           operation: new MatchGenerateOperation(),
-          restriction: { permissions: ["admin"] },
+          restriction: { permission: "admin" },
         },
         {
           name: "notify",
           operation: new MatchNotifyOperation(),
-          restriction: { permissions: ["admin"] },
+          restriction: { permission: "admin" },
         },
         {
           name: "transfer-item",
           operation: new UserMatchTransferItemOperation(),
           restriction: {
-            permissions: ["customer", "employee", "manager", "admin"],
+            permission: "customer",
           },
         },
         {
           name: "lock",
           operation: new UserMatchLockOperation(),
           restriction: {
-            permissions: ["employee", "manager", "admin"],
+            permission: "employee",
           },
         },
       ],
       restriction: {
-        permissions: ["admin"],
+        permission: "admin",
       },
     },
     {
@@ -48,12 +48,12 @@ export const UserMatchCollection: BlCollection = {
           name: "me",
           operation: new GetMyUserMatchesOperation(),
           restriction: {
-            permissions: ["customer", "employee", "manager", "admin"],
+            permission: "customer",
           },
         },
       ],
       restriction: {
-        permissions: ["employee", "manager", "admin"],
+        permission: "employee",
       },
     },
   ],

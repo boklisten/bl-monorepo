@@ -16,7 +16,7 @@ export const UserDetailCollection: BlCollection = {
     {
       method: "getId",
       restriction: {
-        permissions: ["customer", "employee", "manager", "admin"],
+        permission: "customer",
         restricted: true,
       },
       operations: [
@@ -24,7 +24,7 @@ export const UserDetailCollection: BlCollection = {
           name: "valid",
           operation: new UserDetailValidOperation(),
           restriction: {
-            permissions: ["customer", "employee", "manager", "admin"],
+            permission: "customer",
             restricted: true,
           },
         },
@@ -32,7 +32,7 @@ export const UserDetailCollection: BlCollection = {
           name: "permission",
           operation: new UserDetailReadPermissionOperation(),
           restriction: {
-            permissions: ["admin"],
+            permission: "admin",
           },
         },
       ],
@@ -41,7 +41,7 @@ export const UserDetailCollection: BlCollection = {
       method: "patch",
       hook: new UserDetailUpdateHook(),
       restriction: {
-        permissions: ["customer", "employee", "manager", "admin"],
+        permission: "customer",
         restricted: true,
       },
       operations: [
@@ -49,14 +49,14 @@ export const UserDetailCollection: BlCollection = {
           name: "permission",
           operation: new UserDetailPermissionOperation(),
           restriction: {
-            permissions: ["admin"],
+            permission: "admin",
           },
         },
         {
           name: "email",
           operation: new UserDetailChangeEmailOperation(),
           restriction: {
-            permissions: ["manager", "admin"],
+            permission: "manager",
           },
         },
       ],
@@ -64,7 +64,7 @@ export const UserDetailCollection: BlCollection = {
     {
       method: "delete",
       restriction: {
-        permissions: ["admin"],
+        permission: "admin",
       },
       hook: new UserDetailDeleteHook(),
     },
@@ -105,7 +105,7 @@ export const UserDetailCollection: BlCollection = {
         },
       ],
       restriction: {
-        permissions: ["employee", "manager", "admin"],
+        permission: "employee",
       },
     },
   ],

@@ -15,13 +15,13 @@ export const EditableTextCollection: BlCollection = {
       method: "put",
       hook: new EditableTextPutHook(),
       restriction: {
-        permissions: ["admin"],
+        permission: "admin",
       },
     },
     {
       method: "delete",
       restriction: {
-        permissions: ["admin"],
+        permission: "admin",
       },
     },
   ],

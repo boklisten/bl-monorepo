@@ -27,13 +27,13 @@ export const OpeningHourCollection: BlCollection = {
     {
       method: "post",
       restriction: {
-        permissions: ["admin"],
+        permission: "admin",
       },
     },
     {
       method: "patch",
       restriction: {
-        permissions: ["admin"],
+        permission: "admin",
       },
     },
   ],

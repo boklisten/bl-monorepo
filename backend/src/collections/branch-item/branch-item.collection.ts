@@ -10,13 +10,13 @@ export const BranchItemCollection: BlCollection = {
     {
       method: "post",
       restriction: {
-        permissions: ["admin"],
+        permission: "admin",
       },
     },
     {
       method: "patch",
       restriction: {
-        permissions: ["admin"],
+        permission: "admin",
       },
     },
     {
@@ -26,7 +26,7 @@ export const BranchItemCollection: BlCollection = {
     {
       method: "delete",
       restriction: {
-        permissions: ["admin"],
+        permission: "admin",
       },
     },
   ],

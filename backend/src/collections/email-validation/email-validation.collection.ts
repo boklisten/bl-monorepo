@@ -10,14 +10,14 @@ export const EmailValidationCollection: BlCollection = {
       method: "post",
       hook: new EmailValidationPostHook(),
       restriction: {
-        permissions: ["customer", "employee", "manager", "admin"],
+        permission: "customer",
         restricted: true,
       },
     },
     {
       method: "patch",
       restriction: {
-        permissions: ["admin"],
+        permission: "admin",
       },
       operations: [
         {

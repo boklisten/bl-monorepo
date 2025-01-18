@@ -154,8 +154,10 @@ export class Server {
   }
 
   private serverStart() {
-    Sentry.profiler.startProfiler();
-    Sentry.setupExpressErrorHandler(this.app);
+    if (assertEnv(BlEnvironment.API_ENV) === "production") {
+      Sentry.profiler.startProfiler();
+      Sentry.setupExpressErrorHandler(this.app);
+    }
     this.app.set("port", assertEnv(BlEnvironment.PORT));
     this.app.listen(this.app.get("port"), () => {
       logger.info("ready to take requests!");

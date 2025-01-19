@@ -1,8 +1,5 @@
 {
-  "extends": [
-    "../tsconfig.base.json",
-    "@tsconfig/next/tsconfig.json"
-  ],
+  "extends": ["../tsconfig.base.json", "@tsconfig/next/tsconfig.json"],
   "compilerOptions": {
     "composite": true,
     "declaration": true
@@ -13,5 +10,5 @@
     }
   ],
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
-  "exclude": ["node_modules"],
+  "exclude": ["node_modules"]
 }

@@ -1,8 +1,7 @@
 import { assertEnv, BlEnvironment } from "@backend/config/environment";
 import { logger } from "@backend/logger/logger";
-import * as Sentry from "@sentry/node";
 import cors from "cors";
-import { Express, RequestHandler } from "express";
+import { Express, Request, RequestHandler, Response } from "express";
 import session from "express-session";
 import mongoose from "mongoose";
 
@@ -27,6 +26,44 @@ export function getSessionHandler(): RequestHandler {
   });
 }
 
+export function getRedirectToHttpsHandler(): RequestHandler {
+  return (request, res, next) => {
+    if (
+      request.headers["x-forwarded-proto"] !== "https" &&
+      assertEnv(BlEnvironment.API_ENV) === "production"
+    ) {
+      res.redirect("https://" + request.hostname + request.url);
+    } else {
+      next();
+    }
+  };
+}
+
+export function getDebugLoggerHandler(): RequestHandler {
+  return (request: Request, res: Response, next: () => void) => {
+    if (request.method !== "OPTIONS") {
+      // no point in showing all the preflight requests
+      logger.debug(`-> ${request.method} ${request.url}`);
+      if (
+        !(
+          request.url.includes("auth") &&
+          assertEnv(BlEnvironment.API_ENV) === "production"
+        )
+      ) {
+        let body: string;
+        try {
+          body = JSON.stringify(request.body);
+        } catch {
+          body = request.body.toString("utf8");
+        }
+
+        logger.silly(`-> ${body}`);
+      }
+    }
+    next();
+  };
+}
+
 export async function connectToDbAndStartServer(app: Express) {
   mongoose.connection.on("disconnected", () => {
     logger.error("mongoose connection was disconnected");
@@ -46,13 +83,7 @@ export async function connectToDbAndStartServer(app: Express) {
     socketTimeoutMS: 45_000,
   });
 
-  if (assertEnv(BlEnvironment.API_ENV) === "production") {
-    Sentry.profiler.startProfiler();
-    Sentry.setupExpressErrorHandler(app);
-  }
-
-  app.set("port", assertEnv(BlEnvironment.PORT));
-  app.listen(app.get("port"), () => {
+  app.listen(assertEnv(BlEnvironment.PORT), () => {
     logger.info("ready to take requests!");
   });
 }

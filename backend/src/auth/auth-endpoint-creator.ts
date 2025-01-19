@@ -16,7 +16,7 @@ import { SeCrypto } from "@backend/crypto/se.crypto";
 import { SEResponseHandler } from "@backend/response/se.response.handler";
 import { Router } from "express";
 
-export function initAuthEndpoints(router: Router) {
+export function createAuthEndpoints(router: Router) {
   const userHandler = new UserHandler();
 
   const localLoginPasswordValidator = new LocalLoginPasswordValidator(

@@ -1,6 +1,7 @@
 import { BlCollection } from "@backend/collections/bl-collection";
 import { OrderPatchHook } from "@backend/collections/order/hooks/order.patch.hook";
 import { OrderPostHook } from "@backend/collections/order/hooks/order.post.hook";
+import { BulkOrderOperation } from "@backend/collections/order/operations/bulk-order.operation";
 import { OrderConfirmOperation } from "@backend/collections/order/operations/confirm/order-confirm.operation";
 import { OrderAgreementPdfOperation } from "@backend/collections/order/operations/order-agreement-pdf.operation";
 import { OrderReceiptPdfOperation } from "@backend/collections/order/operations/order-receipt-pdf.operation";

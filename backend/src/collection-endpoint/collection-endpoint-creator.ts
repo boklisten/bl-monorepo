@@ -18,40 +18,33 @@ import { StandMatchCollection } from "@backend/collections/stand-match/stand-mat
 import { UniqueItemCollection } from "@backend/collections/unique-item/unique-item.collection";
 import { UserDetailCollection } from "@backend/collections/user-detail/user-detail.collection";
 import { UserMatchCollection } from "@backend/collections/user-match/user-match.collection";
-import { SEResponseHandler } from "@backend/response/se.response.handler";
 import { Router } from "express";
 
-export class CollectionEndpointCreator {
-  constructor(private router: Router) {
-    new SEResponseHandler();
-  }
+export function createCollectionEndpoints(router: Router) {
+  const collectionEndpoints = [
+    new CollectionEndpoint(router, BranchCollection),
+    new CollectionEndpoint(router, BranchItemCollection),
+    new CollectionEndpoint(router, CustomerItemCollection),
+    new CollectionEndpoint(router, DeliveryCollection),
+    new CollectionEndpoint(router, ItemCollection),
+    new CollectionEndpoint(router, OpeningHourCollection),
+    new CollectionEndpoint(router, OrderCollection),
+    new CollectionEndpoint(router, PaymentCollection),
+    new CollectionEndpoint(router, UserDetailCollection),
+    new CollectionEndpoint(router, PendingPasswordResetCollection),
+    new CollectionEndpoint(router, EmailValidationCollection),
+    new CollectionEndpoint(router, MessageCollection),
+    new CollectionEndpoint(router, StandMatchCollection),
+    new CollectionEndpoint(router, UserMatchCollection),
+    new CollectionEndpoint(router, InvoiceCollection),
+    new CollectionEndpoint(router, CompanyCollection),
+    new CollectionEndpoint(router, UniqueItemCollection),
+    new CollectionEndpoint(router, EditableTextCollection),
+    new CollectionEndpoint(router, SignatureCollection),
+  ];
 
-  create() {
-    const collectionEndpoints = [
-      new CollectionEndpoint(this.router, BranchCollection),
-      new CollectionEndpoint(this.router, BranchItemCollection),
-      new CollectionEndpoint(this.router, CustomerItemCollection),
-      new CollectionEndpoint(this.router, DeliveryCollection),
-      new CollectionEndpoint(this.router, ItemCollection),
-      new CollectionEndpoint(this.router, OpeningHourCollection),
-      new CollectionEndpoint(this.router, OrderCollection),
-      new CollectionEndpoint(this.router, PaymentCollection),
-      new CollectionEndpoint(this.router, UserDetailCollection),
-      new CollectionEndpoint(this.router, PendingPasswordResetCollection),
-      new CollectionEndpoint(this.router, EmailValidationCollection),
-      new CollectionEndpoint(this.router, MessageCollection),
-      new CollectionEndpoint(this.router, StandMatchCollection),
-      new CollectionEndpoint(this.router, UserMatchCollection),
-      new CollectionEndpoint(this.router, InvoiceCollection),
-      new CollectionEndpoint(this.router, CompanyCollection),
-      new CollectionEndpoint(this.router, UniqueItemCollection),
-      new CollectionEndpoint(this.router, EditableTextCollection),
-      new CollectionEndpoint(this.router, SignatureCollection),
-    ];
-
-    for (const collectionEndpoint of collectionEndpoints) {
-      collectionEndpoint.create();
-      collectionEndpoint.printEndpoints();
-    }
+  for (const collectionEndpoint of collectionEndpoints) {
+    collectionEndpoint.create();
+    collectionEndpoint.printEndpoints();
   }
 }

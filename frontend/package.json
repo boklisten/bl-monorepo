@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "license": "UNLICENSED",
   "scripts": {
-    "dev": "next dev --turbopack",
+    "dev": "next dev",
     "build": "next build",
     "serve": "next start",
     "lint": "next lint"
@@ -40,6 +40,8 @@
   },
   "devDependencies": {
     "@testing-library/react": "^16.1.0",
+    "@tsconfig/cypress": "^1.0.2",
+    "@tsconfig/next": "^2.0.3",
     "@types/draft-js": "^0.11.18",
     "@types/react": "19.0.6",
     "@types/react-draft-wysiwyg": "^1.13.8",

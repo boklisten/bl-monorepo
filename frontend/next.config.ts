@@ -56,7 +56,6 @@ export default withSentryConfig(nextConfig, {
     enabled: true,
   },
   tunnelRoute: "/monitoring",
-  hideSourceMaps: true,
   disableLogger: true,
   automaticVercelMonitors: true,
 });

@@ -1,6 +1,7 @@
 {
   "private": true,
   "license": "UNLICENSED",
+  "type": "module",
   "scripts": {
     "prettier": "prettier --write '**/*.{js,mjs,ts,tsx,md,json,yml,css}' --ignore-path=.gitignore",
     "prettier:check": "prettier --check '**/*.{js,mjs,ts,tsx,md,json,yml,css}' --ignore-path=.gitignore",

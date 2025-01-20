@@ -1,9 +1,8 @@
 import { assertEnv, BlEnvironment } from "@backend/config/environment.js";
 import { logger } from "@backend/logger/logger.js";
 import cors from "cors";
-import { Express, Request, RequestHandler, Response } from "express";
+import { Request, RequestHandler, Response } from "express";
 import session from "express-session";
-import mongoose from "mongoose";
 
 export function getCorsHandler(): RequestHandler {
   return assertEnv(BlEnvironment.API_ENV) === "production"
@@ -62,28 +61,4 @@ export function getDebugLoggerHandler(): RequestHandler {
     }
     next();
   };
-}
-
-export async function connectToDbAndStartServer(app: Express) {
-  mongoose.connection.on("disconnected", () => {
-    logger.error("mongoose connection was disconnected");
-  });
-
-  mongoose.connection.on("reconnected", () => {
-    logger.warn("mongoose connection was reconnected");
-  });
-
-  mongoose.connection.on("error", () => {
-    logger.error("mongoose connection has error");
-  });
-
-  await mongoose.connect(assertEnv(BlEnvironment.MONGODB_URI), {
-    maxPoolSize: 10,
-    connectTimeoutMS: 10_000,
-    socketTimeoutMS: 45_000,
-  });
-
-  app.listen(assertEnv(BlEnvironment.PORT), () => {
-    logger.info("ready to take requests!");
-  });
 }

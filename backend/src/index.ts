@@ -2,9 +2,9 @@ import "@backend/instrument";
 
 import { createAuthEndpoints } from "@backend/auth/auth-endpoint-creator.js";
 import { createCollectionEndpoints } from "@backend/collection-endpoint/collection-endpoint-creator.js";
+import { assertEnv, BlEnvironment } from "@backend/config/environment.js";
 import { logger } from "@backend/logger/logger.js";
 import {
-  connectToDbAndStartServer,
   getCorsHandler,
   getDebugLoggerHandler,
   getRedirectToHttpsHandler,
@@ -12,6 +12,7 @@ import {
 } from "@backend/server/server.js";
 import * as Sentry from "@sentry/node";
 import express, { json, Router } from "express";
+import mongoose from "mongoose";
 import passport from "passport";
 
 logger.silly(" _     _             _");
@@ -44,7 +45,27 @@ createAuthEndpoints(router);
 createCollectionEndpoints(router);
 app.use(router);
 
+mongoose.connection.on("disconnected", () => {
+  logger.error("mongoose connection was disconnected");
+});
+
+mongoose.connection.on("reconnected", () => {
+  logger.warn("mongoose connection was reconnected");
+});
+
+mongoose.connection.on("error", () => {
+  logger.error("mongoose connection has error");
+});
+
+await mongoose.connect(assertEnv(BlEnvironment.MONGODB_URI), {
+  maxPoolSize: 10,
+  connectTimeoutMS: 10_000,
+  socketTimeoutMS: 45_000,
+});
+
 Sentry.profiler.startProfiler();
 Sentry.setupExpressErrorHandler(app);
 
-connectToDbAndStartServer(app);
+app.listen(assertEnv(BlEnvironment.PORT), () => {
+  logger.info("ready to take requests!");
+});

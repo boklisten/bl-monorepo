@@ -1,7 +1,7 @@
 import "mocha";
-import { TokenHandler } from "@backend/auth/token/token.handler";
-import { UserHandler } from "@backend/auth/user/user.handler";
-import { BlError } from "@shared/bl-error/bl-error";
+import { TokenHandler } from "@backend/auth/token/token.handler.js";
+import { UserHandler } from "@backend/auth/user/user.handler.js";
+import { BlError } from "@shared/bl-error/bl-error.js";
 import { use as chaiUse, should } from "chai";
 import chaiAsPromised from "chai-as-promised";
 import sinon from "sinon";

@@ -1,5 +1,5 @@
-import { BlModel } from "@backend/storage/bl-storage";
-import { OpeningHour } from "@shared/opening-hour/opening-hour";
+import { BlModel } from "@backend/storage/bl-storage.js";
+import { OpeningHour } from "@shared/opening-hour/opening-hour.js";
 import { Schema } from "mongoose";
 
 export const OpeningHourModel: BlModel<OpeningHour> = {

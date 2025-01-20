@@ -1,7 +1,7 @@
-import { LocalLoginHandler } from "@backend/auth/local/local-login.handler";
-import { TokenHandler } from "@backend/auth/token/token.handler";
-import { UserHandler } from "@backend/auth/user/user.handler";
-import { User } from "@backend/collections/user/user";
+import { LocalLoginHandler } from "@backend/auth/local/local-login.handler.js";
+import { TokenHandler } from "@backend/auth/token/token.handler.js";
+import { UserHandler } from "@backend/auth/user/user.handler.js";
+import { User } from "@backend/collections/user/user.js";
 
 export class UserProvider {
   private userHandler: UserHandler;

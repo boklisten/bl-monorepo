@@ -1,14 +1,14 @@
 import "mocha";
 
-import { MessagePostHook } from "@backend/collections/message/hooks/message-post.hook";
-import { Messenger } from "@backend/messenger/messenger";
-import { MessengerReminder } from "@backend/messenger/reminder/messenger-reminder";
-import { BlStorage } from "@backend/storage/bl-storage";
-import { BlError } from "@shared/bl-error/bl-error";
-import { Message } from "@shared/message/message";
-import { MessageMethod } from "@shared/message/message-method/message-method";
-import { AccessToken } from "@shared/token/access-token";
-import { UserDetail } from "@shared/user/user-detail/user-detail";
+import { MessagePostHook } from "@backend/collections/message/hooks/message-post.hook.js";
+import { Messenger } from "@backend/messenger/messenger.js";
+import { MessengerReminder } from "@backend/messenger/reminder/messenger-reminder.js";
+import { BlStorage } from "@backend/storage/bl-storage.js";
+import { BlError } from "@shared/bl-error/bl-error.js";
+import { Message } from "@shared/message/message.js";
+import { MessageMethod } from "@shared/message/message-method/message-method.js";
+import { AccessToken } from "@shared/token/access-token.js";
+import { UserDetail } from "@shared/user/user-detail/user-detail.js";
 import { expect, should, use as chaiUse } from "chai";
 import chaiAsPromised from "chai-as-promised";
 import sinon, { createSandbox } from "sinon";

@@ -1,11 +1,11 @@
 import "mocha";
 
-import { User } from "@backend/collections/user/user";
-import { UserDetailPermissionOperation } from "@backend/collections/user-detail/operations/permission/user-detail-permission.operation";
-import { SEResponseHandler } from "@backend/response/se.response.handler";
-import { BlStorage } from "@backend/storage/bl-storage";
-import { BlError } from "@shared/bl-error/bl-error";
-import { UserDetail } from "@shared/user/user-detail/user-detail";
+import { User } from "@backend/collections/user/user.js";
+import { UserDetailPermissionOperation } from "@backend/collections/user-detail/operations/permission/user-detail-permission.operation.js";
+import { SEResponseHandler } from "@backend/response/se.response.handler.js";
+import { BlStorage } from "@backend/storage/bl-storage.js";
+import { BlError } from "@shared/bl-error/bl-error.js";
+import { UserDetail } from "@shared/user/user-detail/user-detail.js";
 import { expect, use as chaiUse, should } from "chai";
 import chaiAsPromised from "chai-as-promised";
 import sinon, { createSandbox } from "sinon";

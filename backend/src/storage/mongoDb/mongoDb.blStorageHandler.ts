@@ -1,13 +1,13 @@
-import { PermissionService } from "@backend/auth/permission/permission.service";
-import { logger } from "@backend/logger/logger";
-import { ExpandFilter } from "@backend/query/expand-filter/db-query-expand-filter";
-import { SEDbQuery } from "@backend/query/se.db-query";
-import { BlModel } from "@backend/storage/bl-storage";
-import { MongooseModelCreator } from "@backend/storage/mongoDb/mongoose-schema-creator";
-import { NestedDocument } from "@backend/storage/nested-document";
-import { BlDocument } from "@shared/bl-document/bl-document";
-import { BlError } from "@shared/bl-error/bl-error";
-import { UserPermission } from "@shared/permission/user-permission";
+import { PermissionService } from "@backend/auth/permission/permission.service.js";
+import { logger } from "@backend/logger/logger.js";
+import { ExpandFilter } from "@backend/query/expand-filter/db-query-expand-filter.js";
+import { SEDbQuery } from "@backend/query/se.db-query.js";
+import { BlModel } from "@backend/storage/bl-storage.js";
+import { MongooseModelCreator } from "@backend/storage/mongoDb/mongoose-schema-creator.js";
+import { NestedDocument } from "@backend/storage/nested-document.js";
+import { BlDocument } from "@shared/bl-document/bl-document.js";
+import { BlError } from "@shared/bl-error/bl-error.js";
+import { UserPermission } from "@shared/permission/user-permission.js";
 import {
   FilterQuery,
   Model,

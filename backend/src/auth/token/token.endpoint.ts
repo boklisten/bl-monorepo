@@ -1,10 +1,10 @@
-import { RefreshToken } from "@backend/auth/token/refresh/refresh-token";
-import { RefreshTokenValidator } from "@backend/auth/token/refresh/refresh-token.validator";
-import { TokenHandler } from "@backend/auth/token/token.handler";
-import { ApiPath } from "@backend/config/api-path";
-import { SEResponseHandler } from "@backend/response/se.response.handler";
-import { BlError } from "@shared/bl-error/bl-error";
-import { BlapiResponse } from "@shared/blapi-response/blapi-response";
+import { RefreshToken } from "@backend/auth/token/refresh/refresh-token.js";
+import { RefreshTokenValidator } from "@backend/auth/token/refresh/refresh-token.validator.js";
+import { TokenHandler } from "@backend/auth/token/token.handler.js";
+import { ApiPath } from "@backend/config/api-path.js";
+import { SEResponseHandler } from "@backend/response/se.response.handler.js";
+import { BlError } from "@shared/bl-error/bl-error.js";
+import { BlapiResponse } from "@shared/blapi-response/blapi-response.js";
 import { Router } from "express";
 
 export class TokenEndpoint {

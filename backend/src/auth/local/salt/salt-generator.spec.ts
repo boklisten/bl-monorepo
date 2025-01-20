@@ -1,5 +1,5 @@
 import "mocha";
-import { SaltGenerator } from "@backend/auth/local/salt/salt-generator";
+import { SaltGenerator } from "@backend/auth/local/salt/salt-generator.js";
 import { use as chaiUse, should } from "chai";
 import chaiAsPromised from "chai-as-promised";
 

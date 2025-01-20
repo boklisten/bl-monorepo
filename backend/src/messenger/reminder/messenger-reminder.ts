@@ -1,8 +1,8 @@
-import { CustomerItemHandler } from "@backend/collections/customer-item/helpers/customer-item-handler";
-import { EmailService } from "@backend/messenger/email/email-service";
-import { BlStorage } from "@backend/storage/bl-storage";
-import { BlError } from "@shared/bl-error/bl-error";
-import { Message } from "@shared/message/message";
+import { CustomerItemHandler } from "@backend/collections/customer-item/helpers/customer-item-handler.js";
+import { EmailService } from "@backend/messenger/email/email-service.js";
+import { BlStorage } from "@backend/storage/bl-storage.js";
+import { BlError } from "@shared/bl-error/bl-error.js";
+import { Message } from "@shared/message/message.js";
 
 export class MessengerReminder {
   private readonly customerItemHandler: CustomerItemHandler;

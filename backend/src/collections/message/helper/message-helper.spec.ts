@@ -1,10 +1,10 @@
 import "mocha";
 
-import { MessageHelper } from "@backend/collections/message/helper/message-helper";
-import { BlStorage } from "@backend/storage/bl-storage";
-import { BlError } from "@shared/bl-error/bl-error";
-import { Message } from "@shared/message/message";
-import { MessageMethod } from "@shared/message/message-method/message-method";
+import { MessageHelper } from "@backend/collections/message/helper/message-helper.js";
+import { BlStorage } from "@backend/storage/bl-storage.js";
+import { BlError } from "@shared/bl-error/bl-error.js";
+import { Message } from "@shared/message/message.js";
+import { MessageMethod } from "@shared/message/message-method/message-method.js";
 import { expect, should, use as chaiUse } from "chai";
 import chaiAsPromised from "chai-as-promised";
 import sinon from "sinon";

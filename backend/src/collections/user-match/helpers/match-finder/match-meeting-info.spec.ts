@@ -2,19 +2,19 @@
 fixme: rewrite
 import "mocha";
 
-import { MatchFinder } from "@backend/collections/user-match/helpers/match-finder/match-finder";
-import assignMeetingInfoToMatches from "@backend/collections/user-match/helpers/match-finder/match-meeting-info";
+import { MatchFinder } from "@backend/collections/user-match/helpers/match-finder/match-finder.js";
+import assignMeetingInfoToMatches from "@backend/collections/user-match/helpers/match-finder/match-meeting-info.js";
 import {
   createFakeMatchableUser,
   createUserGroup,
   seededRandom,
   shuffler,
-} from "@backend/collections/user-match/helpers/match-finder/match-testing-utils";
+} from "@backend/collections/user-match/helpers/match-finder/match-testing-utils.js";
 import {
   CandidateMatchVariant,
   MatchableUser,
   MatchWithMeetingInfo,
-} from "@backend/collections/user-match/helpers/match-finder/match-types";
+} from "@backend/collections/user-match/helpers/match-finder/match-types.js";
 import otto_treider_test_users_year_0 from "@backend/collections/user-match/helpers/match-finder/test-data/test_users_year_0.json";
 import otto_treider_test_users_year_1 from "@backend/collections/user-match/helpers/match-finder/test-data/test_users_year_1.json";
 import { expect, use as chaiUse, should } from "chai";

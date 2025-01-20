@@ -1,13 +1,13 @@
 import "mocha";
 
-import { UserHandler } from "@backend/auth/user/user.handler";
-import { LocalLogin } from "@backend/collections/local-login/local-login";
-import { User } from "@backend/collections/user/user";
-import { UserDetailChangeEmailOperation } from "@backend/collections/user-detail/operations/change-email/user-detail-change-email.operation";
-import { SEResponseHandler } from "@backend/response/se.response.handler";
-import { BlStorage } from "@backend/storage/bl-storage";
-import { BlError } from "@shared/bl-error/bl-error";
-import { UserDetail } from "@shared/user/user-detail/user-detail";
+import { UserHandler } from "@backend/auth/user/user.handler.js";
+import { LocalLogin } from "@backend/collections/local-login/local-login.js";
+import { User } from "@backend/collections/user/user.js";
+import { UserDetailChangeEmailOperation } from "@backend/collections/user-detail/operations/change-email/user-detail-change-email.operation.js";
+import { SEResponseHandler } from "@backend/response/se.response.handler.js";
+import { BlStorage } from "@backend/storage/bl-storage.js";
+import { BlError } from "@shared/bl-error/bl-error.js";
+import { UserDetail } from "@shared/user/user-detail/user-detail.js";
 import { expect, use as chaiUse, should } from "chai";
 import chaiAsPromised from "chai-as-promised";
 import sinon, { createSandbox } from "sinon";

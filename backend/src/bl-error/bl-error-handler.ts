@@ -1,6 +1,6 @@
-import { logger } from "@backend/logger/logger";
-import { BlError } from "@shared/bl-error/bl-error";
-import { BlapiErrorResponse } from "@shared/blapi-response/blapi-error-response";
+import { logger } from "@backend/logger/logger.js";
+import { BlError } from "@shared/bl-error/bl-error.js";
+import { BlapiErrorResponse } from "@shared/blapi-response/blapi-error-response.js";
 
 export class BlErrorHandler {
   public createBlapiErrorResponse(error: unknown): BlapiErrorResponse {

@@ -1,6 +1,6 @@
-import { isNullish } from "@backend/helper/typescript-helpers";
-import { BlError } from "@shared/bl-error/bl-error";
-import { Delivery } from "@shared/delivery/delivery";
+import { isNullish } from "@backend/helper/typescript-helpers.js";
+import { BlError } from "@shared/bl-error/bl-error.js";
+import { Delivery } from "@shared/delivery/delivery.js";
 
 export class DeliveryBringHandler {
   public validate(delivery: Delivery): Promise<boolean> {

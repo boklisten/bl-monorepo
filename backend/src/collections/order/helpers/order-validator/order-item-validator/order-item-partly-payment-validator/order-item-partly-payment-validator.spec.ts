@@ -1,9 +1,9 @@
 import "mocha";
-import { OrderItemPartlyPaymentValidator } from "@backend/collections/order/helpers/order-validator/order-item-validator/order-item-partly-payment-validator/order-item-partly-payment-validator";
-import { BlError } from "@shared/bl-error/bl-error";
-import { Branch } from "@shared/branch/branch";
-import { Item } from "@shared/item/item";
-import { OrderItem } from "@shared/order/order-item/order-item";
+import { OrderItemPartlyPaymentValidator } from "@backend/collections/order/helpers/order-validator/order-item-validator/order-item-partly-payment-validator/order-item-partly-payment-validator.js";
+import { BlError } from "@shared/bl-error/bl-error.js";
+import { Branch } from "@shared/branch/branch.js";
+import { Item } from "@shared/item/item.js";
+import { OrderItem } from "@shared/order/order-item/order-item.js";
 import { expect, use as chaiUse, should } from "chai";
 import chaiAsPromised from "chai-as-promised";
 

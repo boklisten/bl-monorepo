@@ -1,4 +1,4 @@
-import { dateService } from "@backend/blc/date.service";
+import { dateService } from "@backend/blc/date.service.js";
 import { expect, use as chaiUse, should } from "chai";
 import chaiAsPromised from "chai-as-promised";
 import moment from "moment-timezone";

@@ -1,10 +1,10 @@
 import "mocha";
-import { UserDetailHelper } from "@backend/collections/user-detail/helpers/user-detail.helper";
-import { DibsEasyPayment } from "@backend/payment/dibs/dibs-easy-payment/dibs-easy-payment";
-import { BlStorage } from "@backend/storage/bl-storage";
-import { BlError } from "@shared/bl-error/bl-error";
-import { AccessToken } from "@shared/token/access-token";
-import { UserDetail } from "@shared/user/user-detail/user-detail";
+import { UserDetailHelper } from "@backend/collections/user-detail/helpers/user-detail.helper.js";
+import { DibsEasyPayment } from "@backend/payment/dibs/dibs-easy-payment/dibs-easy-payment.js";
+import { BlStorage } from "@backend/storage/bl-storage.js";
+import { BlError } from "@shared/bl-error/bl-error.js";
+import { AccessToken } from "@shared/token/access-token.js";
+import { UserDetail } from "@shared/user/user-detail/user-detail.js";
 import { expect, use as chaiUse, should } from "chai";
 import chaiAsPromised from "chai-as-promised";
 import sinon, { createSandbox, SinonSandbox } from "sinon";

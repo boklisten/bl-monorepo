@@ -1,6 +1,6 @@
 import crypto from "node:crypto";
 
-import { BlError } from "@shared/bl-error/bl-error";
+import { BlError } from "@shared/bl-error/bl-error.js";
 
 export class SaltGenerator {
   public generate(): Promise<string> {

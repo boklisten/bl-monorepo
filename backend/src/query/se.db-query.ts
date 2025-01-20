@@ -1,15 +1,15 @@
-import { BooleanFilter } from "@backend/query/boolean-filter/db-query-boolean-filter";
-import { DateFilter } from "@backend/query/date-filter/db-query-date-filter";
-import { ExpandFilter } from "@backend/query/expand-filter/db-query-expand-filter";
-import { LimitFilter } from "@backend/query/limit-filter/db-query-limit-filter";
-import { NumberFilter } from "@backend/query/number-filter/db-query-number-filter";
-import { ObjectIdFilter } from "@backend/query/object-id-filter/db-query-object-id-filter";
-import { OnlyGetFilter } from "@backend/query/only-get-filter/db-query-only-get-filter";
-import { RegexFilter } from "@backend/query/regex-filter/db-query-regex-filter";
-import { SkipFilter } from "@backend/query/skip-filter/db-query-skip-filter";
-import { SortFilter } from "@backend/query/sort-filter/db-query-sort-filter";
-import { StringFilter } from "@backend/query/string-filter/db-query-string-filter";
-import { BlError } from "@shared/bl-error/bl-error";
+import { BooleanFilter } from "@backend/query/boolean-filter/db-query-boolean-filter.js";
+import { DateFilter } from "@backend/query/date-filter/db-query-date-filter.js";
+import { ExpandFilter } from "@backend/query/expand-filter/db-query-expand-filter.js";
+import { LimitFilter } from "@backend/query/limit-filter/db-query-limit-filter.js";
+import { NumberFilter } from "@backend/query/number-filter/db-query-number-filter.js";
+import { ObjectIdFilter } from "@backend/query/object-id-filter/db-query-object-id-filter.js";
+import { OnlyGetFilter } from "@backend/query/only-get-filter/db-query-only-get-filter.js";
+import { RegexFilter } from "@backend/query/regex-filter/db-query-regex-filter.js";
+import { SkipFilter } from "@backend/query/skip-filter/db-query-skip-filter.js";
+import { SortFilter } from "@backend/query/sort-filter/db-query-sort-filter.js";
+import { StringFilter } from "@backend/query/string-filter/db-query-string-filter.js";
+import { BlError } from "@shared/bl-error/bl-error.js";
 import { ObjectId } from "mongodb";
 
 export class SEDbQuery {

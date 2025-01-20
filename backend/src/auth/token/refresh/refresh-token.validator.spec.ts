@@ -1,14 +1,14 @@
 import "mocha";
 
-import { AccessToken } from "@backend/auth/token/access-token/access-token";
-import { RefreshToken } from "@backend/auth/token/refresh/refresh-token";
-import { RefreshTokenCreator } from "@backend/auth/token/refresh/refresh-token.creator";
-import { RefreshTokenValidator } from "@backend/auth/token/refresh/refresh-token.validator";
-import { TokenConfig } from "@backend/auth/token/token.config";
-import { BlError } from "@shared/bl-error/bl-error";
+import { AccessToken } from "@backend/auth/token/access-token/access-token.js";
+import { RefreshTokenCreator } from "@backend/auth/token/refresh/refresh-token.creator.js";
+import { RefreshToken } from "@backend/auth/token/refresh/refresh-token.js";
+import { RefreshTokenValidator } from "@backend/auth/token/refresh/refresh-token.validator.js";
+import { TokenConfig } from "@backend/auth/token/token.config.js";
+import { BlError } from "@shared/bl-error/bl-error.js";
 import { use as chaiUse, should } from "chai";
 import chaiAsPromised from "chai-as-promised";
-import { sign } from "jsonwebtoken";
+import jwt from "jsonwebtoken";
 
 chaiUse(chaiAsPromised);
 should();
@@ -64,7 +64,7 @@ describe("RefreshTokenValidator", () => {
 
     context("when refreshToken is expired", () => {
       it("should reject with BlCode 909", (done) => {
-        sign(
+        jwt.sign(
           { username: "test", iat: Math.floor(Date.now() / 1000) - 10000 },
           "test",
           { expiresIn: "1s" },

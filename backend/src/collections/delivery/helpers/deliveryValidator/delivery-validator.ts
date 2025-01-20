@@ -1,8 +1,8 @@
-import { DeliveryBranchHandler } from "@backend/collections/delivery/helpers/deliveryBranch/delivery-branch-handler";
-import { DeliveryBringHandler } from "@backend/collections/delivery/helpers/deliveryBring/delivery-bring-handler";
-import { isNullish } from "@backend/helper/typescript-helpers";
-import { BlError } from "@shared/bl-error/bl-error";
-import { Delivery } from "@shared/delivery/delivery";
+import { DeliveryBranchHandler } from "@backend/collections/delivery/helpers/deliveryBranch/delivery-branch-handler.js";
+import { DeliveryBringHandler } from "@backend/collections/delivery/helpers/deliveryBring/delivery-bring-handler.js";
+import { isNullish } from "@backend/helper/typescript-helpers.js";
+import { BlError } from "@shared/bl-error/bl-error.js";
+import { Delivery } from "@shared/delivery/delivery.js";
 
 export class DeliveryValidator {
   private deliveryBranchHandler: DeliveryBranchHandler;

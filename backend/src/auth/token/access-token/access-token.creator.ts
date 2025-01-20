@@ -1,9 +1,9 @@
-import { AccessTokenSecret } from "@backend/auth/token/access-token/access-token.secret";
-import { RefreshTokenValidator } from "@backend/auth/token/refresh/refresh-token.validator";
-import { TokenConfig } from "@backend/auth/token/token.config";
-import { BlError } from "@shared/bl-error/bl-error";
-import { UserPermission } from "@shared/permission/user-permission";
-import { sign } from "jsonwebtoken";
+import { AccessTokenSecret } from "@backend/auth/token/access-token/access-token.secret.js";
+import { RefreshTokenValidator } from "@backend/auth/token/refresh/refresh-token.validator.js";
+import { TokenConfig } from "@backend/auth/token/token.config.js";
+import { BlError } from "@shared/bl-error/bl-error.js";
+import { UserPermission } from "@shared/permission/user-permission.js";
+import jwt from "jsonwebtoken";
 
 export class AccessTokenCreator {
   private refreshTokenValidator: RefreshTokenValidator;
@@ -31,7 +31,7 @@ export class AccessTokenCreator {
 
       this.refreshTokenValidator.validate(refreshToken).then(
         () => {
-          sign(
+          jwt.sign(
             this.createPayload(username, userid, permission, userDetailId),
             this.accessTokenSecret.get(),
             { expiresIn: this.tokenConfig.accessToken.expiresIn },

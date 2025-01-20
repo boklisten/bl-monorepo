@@ -1,5 +1,5 @@
-import { logger } from "@backend/logger/logger";
-import { BlError } from "@shared/bl-error/bl-error";
+import { logger } from "@backend/logger/logger.js";
+import { BlError } from "@shared/bl-error/bl-error.js";
 import { stringify } from "qs";
 import request from "request";
 import rp from "request-promise";

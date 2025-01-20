@@ -1,5 +1,5 @@
-import { SEDbQueryBuilder } from "@backend/query/se.db-query-builder";
-import { BlStorage } from "@backend/storage/bl-storage";
+import { SEDbQueryBuilder } from "@backend/query/se.db-query-builder.js";
+import { BlStorage } from "@backend/storage/bl-storage.js";
 
 export class DeleteUserService {
   private queryBuilder = new SEDbQueryBuilder();

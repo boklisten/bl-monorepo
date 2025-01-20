@@ -1,6 +1,6 @@
-import { SaltGenerator } from "@backend/auth/local/salt/salt-generator";
-import { SeCrypto } from "@backend/crypto/se.crypto";
-import { BlError } from "@shared/bl-error/bl-error";
+import { SaltGenerator } from "@backend/auth/local/salt/salt-generator.js";
+import { SeCrypto } from "@backend/crypto/se.crypto.js";
+import { BlError } from "@shared/bl-error/bl-error.js";
 
 export class HashedPasswordGenerator {
   constructor(

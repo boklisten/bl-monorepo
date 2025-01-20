@@ -1,11 +1,11 @@
-import { APP_CONFIG } from "@backend/application-config";
-import { BringDelivery } from "@backend/collections/delivery/helpers/deliveryBring/bringDelivery";
-import { assertEnv, BlEnvironment } from "@backend/config/environment";
-import { isNullish } from "@backend/helper/typescript-helpers";
-import { HttpHandler } from "@backend/http/http.handler";
-import { BlError } from "@shared/bl-error/bl-error";
-import { DeliveryInfoBring } from "@shared/delivery/delivery-info/delivery-info-bring";
-import { Item } from "@shared/item/item";
+import { APP_CONFIG } from "@backend/application-config.js";
+import { BringDelivery } from "@backend/collections/delivery/helpers/deliveryBring/bringDelivery.js";
+import { assertEnv, BlEnvironment } from "@backend/config/environment.js";
+import { isNullish } from "@backend/helper/typescript-helpers.js";
+import { HttpHandler } from "@backend/http/http.handler.js";
+import { BlError } from "@shared/bl-error/bl-error.js";
+import { DeliveryInfoBring } from "@shared/delivery/delivery-info/delivery-info-bring.js";
+import { Item } from "@shared/item/item.js";
 import moment from "moment";
 
 export interface ShipmentAddress {

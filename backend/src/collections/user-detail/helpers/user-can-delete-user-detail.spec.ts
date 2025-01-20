@@ -1,10 +1,10 @@
 import "mocha";
 
-import { User } from "@backend/collections/user/user";
-import { UserCanDeleteUserDetail } from "@backend/collections/user-detail/helpers/user-can-delete-user-detail";
-import { BlStorage } from "@backend/storage/bl-storage";
-import { AccessToken } from "@shared/token/access-token";
-import { UserDetail } from "@shared/user/user-detail/user-detail";
+import { User } from "@backend/collections/user/user.js";
+import { UserCanDeleteUserDetail } from "@backend/collections/user-detail/helpers/user-can-delete-user-detail.js";
+import { BlStorage } from "@backend/storage/bl-storage.js";
+import { AccessToken } from "@shared/token/access-token.js";
+import { UserDetail } from "@shared/user/user-detail/user-detail.js";
 import { expect, use as chaiUse, should } from "chai";
 import chaiAsPromised from "chai-as-promised";
 import sinon, { createSandbox } from "sinon";

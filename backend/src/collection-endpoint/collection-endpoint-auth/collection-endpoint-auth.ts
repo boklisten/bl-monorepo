@@ -1,8 +1,8 @@
-import { PermissionService } from "@backend/auth/permission/permission.service";
-import { BlEndpointRestriction } from "@backend/collections/bl-collection";
-import { isNotNullish } from "@backend/helper/typescript-helpers";
-import { BlError } from "@shared/bl-error/bl-error";
-import { AccessToken } from "@shared/token/access-token";
+import { PermissionService } from "@backend/auth/permission/permission.service.js";
+import { BlEndpointRestriction } from "@backend/collections/bl-collection.js";
+import { isNotNullish } from "@backend/helper/typescript-helpers.js";
+import { BlError } from "@shared/bl-error/bl-error.js";
+import { AccessToken } from "@shared/token/access-token.js";
 import { NextFunction, Request, Response } from "express";
 import passport from "passport";
 

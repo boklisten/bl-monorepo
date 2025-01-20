@@ -1,8 +1,8 @@
 import "mocha";
-import { APP_CONFIG } from "@backend/application-config";
-import { BringDeliveryService } from "@backend/collections/delivery/helpers/deliveryBring/bringDelivery.service";
-import { HttpHandler } from "@backend/http/http.handler";
-import { BlError } from "@shared/bl-error/bl-error";
+import { APP_CONFIG } from "@backend/application-config.js";
+import { BringDeliveryService } from "@backend/collections/delivery/helpers/deliveryBring/bringDelivery.service.js";
+import { HttpHandler } from "@backend/http/http.handler.js";
+import { BlError } from "@shared/bl-error/bl-error.js";
 import { use as chaiUse, should } from "chai";
 import chaiAsPromised from "chai-as-promised";
 import sinon from "sinon";

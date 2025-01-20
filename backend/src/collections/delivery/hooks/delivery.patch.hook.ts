@@ -1,11 +1,11 @@
-import { DeliveryHandler } from "@backend/collections/delivery/helpers/deliveryHandler/delivery-handler";
-import { DeliveryValidator } from "@backend/collections/delivery/helpers/deliveryValidator/delivery-validator";
-import { Hook } from "@backend/hook/hook";
-import { BlStorage } from "@backend/storage/bl-storage";
-import { BlError } from "@shared/bl-error/bl-error";
-import { Delivery } from "@shared/delivery/delivery";
-import { Order } from "@shared/order/order";
-import { AccessToken } from "@shared/token/access-token";
+import { DeliveryHandler } from "@backend/collections/delivery/helpers/deliveryHandler/delivery-handler.js";
+import { DeliveryValidator } from "@backend/collections/delivery/helpers/deliveryValidator/delivery-validator.js";
+import { Hook } from "@backend/hook/hook.js";
+import { BlStorage } from "@backend/storage/bl-storage.js";
+import { BlError } from "@shared/bl-error/bl-error.js";
+import { Delivery } from "@shared/delivery/delivery.js";
+import { Order } from "@shared/order/order.js";
+import { AccessToken } from "@shared/token/access-token.js";
 
 export class DeliveryPatchHook extends Hook {
   private deliveryValidator: DeliveryValidator;

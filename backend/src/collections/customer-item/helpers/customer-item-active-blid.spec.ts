@@ -1,6 +1,6 @@
 import "mocha";
-import { CustomerItemActiveBlid } from "@backend/collections/customer-item/helpers/customer-item-active-blid";
-import { BlStorage } from "@backend/storage/bl-storage";
+import { CustomerItemActiveBlid } from "@backend/collections/customer-item/helpers/customer-item-active-blid.js";
+import { BlStorage } from "@backend/storage/bl-storage.js";
 import { expect, use as chaiUse, should } from "chai";
 import chaiAsPromised from "chai-as-promised";
 import sinon, { createSandbox } from "sinon";

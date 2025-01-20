@@ -1,9 +1,9 @@
-import { BlDocumentPermission } from "@backend/collections/bl-collection";
-import { BlDocument } from "@shared/bl-document/bl-document";
+import { BlDocumentPermission } from "@backend/collections/bl-collection.js";
+import { BlDocument } from "@shared/bl-document/bl-document.js";
 import {
   UserPermission,
   UserPermissionEnum,
-} from "@shared/permission/user-permission";
+} from "@shared/permission/user-permission.js";
 
 function isAdmin(userPermission: UserPermission) {
   return userPermission === UserPermissionEnum.enum.admin;

@@ -5,7 +5,7 @@ import chaiAsPromised from "chai-as-promised";
 chaiUse(chaiAsPromised);
 should();
 
-import { DbQueryNumberFilter } from "@backend/query/number-filter/db-query-number-filter";
+import { DbQueryNumberFilter } from "@backend/query/number-filter/db-query-number-filter.js";
 
 describe("DbQueryNumberFilter", () => {
   const dbQueryNumberFilter: DbQueryNumberFilter = new DbQueryNumberFilter();

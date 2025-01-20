@@ -1,5 +1,5 @@
-import { BlModel } from "@backend/storage/bl-storage";
-import { SignatureMetadata } from "@shared/signature/serialized-signature";
+import { BlModel } from "@backend/storage/bl-storage.js";
+import { SignatureMetadata } from "@shared/signature/serialized-signature.js";
 import { Schema } from "mongoose";
 
 export interface Signature extends SignatureMetadata {

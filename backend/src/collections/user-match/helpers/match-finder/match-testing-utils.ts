@@ -1,7 +1,7 @@
 // mulberry32 PRNG: https://stackoverflow.com/a/47593316
-import { MatchableUser } from "@backend/collections/user-match/helpers/match-finder/match-types";
-import { CandidateStandMatch } from "@shared/match/stand-match";
-import { CandidateUserMatch } from "@shared/match/user-match";
+import { MatchableUser } from "@backend/collections/user-match/helpers/match-finder/match-types.js";
+import { CandidateStandMatch } from "@shared/match/stand-match.js";
+import { CandidateUserMatch } from "@shared/match/user-match.js";
 
 export function seededRandom(seed: number) {
   return function () {

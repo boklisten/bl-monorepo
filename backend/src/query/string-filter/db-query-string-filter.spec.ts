@@ -1,5 +1,5 @@
 import "mocha";
-import { DbQueryStringFilter } from "@backend/query/string-filter/db-query-string-filter";
+import { DbQueryStringFilter } from "@backend/query/string-filter/db-query-string-filter.js";
 import { expect, use as chaiUse, should } from "chai";
 import chaiAsPromised from "chai-as-promised";
 

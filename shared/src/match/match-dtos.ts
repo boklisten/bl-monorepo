@@ -1,7 +1,7 @@
-import { Item } from "@shared/item/item";
-import { StandMatch } from "@shared/match/stand-match";
-import { UserMatch } from "@shared/match/user-match";
-import { UserDetail } from "@shared/user/user-detail/user-detail";
+import { Item } from "@shared/item/item.js";
+import { StandMatch } from "@shared/match/stand-match.js";
+import { UserMatch } from "@shared/match/user-match.js";
+import { UserDetail } from "@shared/user/user-detail/user-detail.js";
 
 export type MatchRelevantUserDetails = Pick<UserDetail, "name" | "phone">;
 

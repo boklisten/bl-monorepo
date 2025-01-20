@@ -1,10 +1,10 @@
-import { SEDbQueryBuilder } from "@backend/query/se.db-query-builder";
-import { BlStorage } from "@backend/storage/bl-storage";
-import { BlError } from "@shared/bl-error/bl-error";
-import { Branch } from "@shared/branch/branch";
-import { CustomerItem } from "@shared/customer-item/customer-item";
-import { OrderItem } from "@shared/order/order-item/order-item";
-import { Period } from "@shared/period/period";
+import { SEDbQueryBuilder } from "@backend/query/se.db-query-builder.js";
+import { BlStorage } from "@backend/storage/bl-storage.js";
+import { BlError } from "@shared/bl-error/bl-error.js";
+import { Branch } from "@shared/branch/branch.js";
+import { CustomerItem } from "@shared/customer-item/customer-item.js";
+import { OrderItem } from "@shared/order/order-item/order-item.js";
+import { Period } from "@shared/period/period.js";
 import moment from "moment-timezone";
 
 export class CustomerItemHandler {

@@ -1,7 +1,7 @@
 import "mocha";
-import { DeliveryBringHandler } from "@backend/collections/delivery/helpers/deliveryBring/delivery-bring-handler";
-import { BlError } from "@shared/bl-error/bl-error";
-import { Delivery } from "@shared/delivery/delivery";
+import { DeliveryBringHandler } from "@backend/collections/delivery/helpers/deliveryBring/delivery-bring-handler.js";
+import { BlError } from "@shared/bl-error/bl-error.js";
+import { Delivery } from "@shared/delivery/delivery.js";
 import { expect, use as chaiUse, should } from "chai";
 import chaiAsPromised from "chai-as-promised";
 

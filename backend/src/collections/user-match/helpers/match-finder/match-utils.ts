@@ -1,6 +1,6 @@
-import { MatchableUser } from "@backend/collections/user-match/helpers/match-finder/match-types";
-import { CandidateStandMatch } from "@shared/match/stand-match";
-import { CandidateUserMatch } from "@shared/match/user-match";
+import { MatchableUser } from "@backend/collections/user-match/helpers/match-finder/match-types.js";
+import { CandidateStandMatch } from "@shared/match/stand-match.js";
+import { CandidateUserMatch } from "@shared/match/user-match.js";
 
 /**
  * Create a sorted deep copy of the input users

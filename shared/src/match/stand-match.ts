@@ -1,5 +1,5 @@
-import { BlDocumentSchema } from "@shared/bl-document/bl-document";
-import { MatchMeetingInfoSchema } from "@shared/match/match";
+import { BlDocumentSchema } from "@shared/bl-document/bl-document.js";
+import { MatchMeetingInfoSchema } from "@shared/match/match.js";
 import { z } from "zod";
 
 export const CandidateStandMatchSchema = z.object({

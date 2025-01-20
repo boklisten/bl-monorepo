@@ -1,4 +1,4 @@
-import { CustomerItem } from "@shared/customer-item/customer-item";
+import { CustomerItem } from "@shared/customer-item/customer-item.js";
 
 export class CustomerItemActive {
   public isActive(customerItem: CustomerItem): boolean {

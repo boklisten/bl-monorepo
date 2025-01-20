@@ -1,13 +1,16 @@
-import { CollectionEndpointDelete } from "@backend/collection-endpoint/collection-endpoint-delete/collection-endpoint-delete";
-import { CollectionEndpointGetAll } from "@backend/collection-endpoint/collection-endpoint-get-all/collection-endpoint-get-all";
-import { CollectionEndpointGetId } from "@backend/collection-endpoint/collection-endpoint-get-id/collection-endpoint-get-id";
-import { CollectionEndpointPatch } from "@backend/collection-endpoint/collection-endpoint-patch/collection-endpoint-patch";
-import { CollectionEndpointPost } from "@backend/collection-endpoint/collection-endpoint-post/collection-endpoint-post";
-import { CollectionEndpointPut } from "@backend/collection-endpoint/collection-endpoint-put/collection-endpoint-put";
-import { BlCollection, BlEndpoint } from "@backend/collections/bl-collection";
-import { ApiPath } from "@backend/config/api-path";
-import { logger } from "@backend/logger/logger";
-import { BlError } from "@shared/bl-error/bl-error";
+import { CollectionEndpointDelete } from "@backend/collection-endpoint/collection-endpoint-delete/collection-endpoint-delete.js";
+import { CollectionEndpointGetAll } from "@backend/collection-endpoint/collection-endpoint-get-all/collection-endpoint-get-all.js";
+import { CollectionEndpointGetId } from "@backend/collection-endpoint/collection-endpoint-get-id/collection-endpoint-get-id.js";
+import { CollectionEndpointPatch } from "@backend/collection-endpoint/collection-endpoint-patch/collection-endpoint-patch.js";
+import { CollectionEndpointPost } from "@backend/collection-endpoint/collection-endpoint-post/collection-endpoint-post.js";
+import { CollectionEndpointPut } from "@backend/collection-endpoint/collection-endpoint-put/collection-endpoint-put.js";
+import {
+  BlCollection,
+  BlEndpoint,
+} from "@backend/collections/bl-collection.js";
+import { ApiPath } from "@backend/config/api-path.js";
+import { logger } from "@backend/logger/logger.js";
+import { BlError } from "@shared/bl-error/bl-error.js";
 import { Router } from "express";
 
 export class CollectionEndpoint {

@@ -1,7 +1,7 @@
-import { PermissionService } from "@backend/auth/permission/permission.service";
-import { SEDbQueryBuilder } from "@backend/query/se.db-query-builder";
-import { BlStorage } from "@backend/storage/bl-storage";
-import { AccessToken } from "@shared/token/access-token";
+import { PermissionService } from "@backend/auth/permission/permission.service.js";
+import { SEDbQueryBuilder } from "@backend/query/se.db-query-builder.js";
+import { BlStorage } from "@backend/storage/bl-storage.js";
+import { AccessToken } from "@shared/token/access-token.js";
 
 export class UserCanDeleteUserDetail {
   private queryBuilder = new SEDbQueryBuilder();

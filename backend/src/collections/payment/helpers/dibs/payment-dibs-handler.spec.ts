@@ -1,15 +1,15 @@
 import "mocha";
 
-import { PaymentDibsHandler } from "@backend/collections/payment/helpers/dibs/payment-dibs-handler";
-import { DibsEasyOrder } from "@backend/payment/dibs/dibs-easy-order/dibs-easy-order";
-import { DibsPaymentService } from "@backend/payment/dibs/dibs-payment.service";
-import { BlStorage } from "@backend/storage/bl-storage";
-import { BlError } from "@shared/bl-error/bl-error";
-import { Delivery } from "@shared/delivery/delivery";
-import { Order } from "@shared/order/order";
-import { Payment } from "@shared/payment/payment";
-import { AccessToken } from "@shared/token/access-token";
-import { UserDetail } from "@shared/user/user-detail/user-detail";
+import { PaymentDibsHandler } from "@backend/collections/payment/helpers/dibs/payment-dibs-handler.js";
+import { DibsEasyOrder } from "@backend/payment/dibs/dibs-easy-order/dibs-easy-order.js";
+import { DibsPaymentService } from "@backend/payment/dibs/dibs-payment.service.js";
+import { BlStorage } from "@backend/storage/bl-storage.js";
+import { BlError } from "@shared/bl-error/bl-error.js";
+import { Delivery } from "@shared/delivery/delivery.js";
+import { Order } from "@shared/order/order.js";
+import { Payment } from "@shared/payment/payment.js";
+import { AccessToken } from "@shared/token/access-token.js";
+import { UserDetail } from "@shared/user/user-detail/user-detail.js";
 import { expect, use as chaiUse, should } from "chai";
 import chaiAsPromised from "chai-as-promised";
 import sinon, { createSandbox } from "sinon";

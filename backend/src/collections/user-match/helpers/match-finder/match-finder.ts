@@ -1,4 +1,4 @@
-import { MatchableUser } from "@backend/collections/user-match/helpers/match-finder/match-types";
+import { MatchableUser } from "@backend/collections/user-match/helpers/match-finder/match-types.js";
 import {
   calculateItemImbalances,
   calculateUnmatchableItems,
@@ -11,11 +11,11 @@ import {
   tryFindPartialMatch,
   tryFindTwoWayMatch,
   updateItemImbalances,
-} from "@backend/collections/user-match/helpers/match-finder/match-utils";
-import { logger } from "@backend/logger/logger";
-import { BlError } from "@shared/bl-error/bl-error";
-import { CandidateStandMatch } from "@shared/match/stand-match";
-import { CandidateUserMatch } from "@shared/match/user-match";
+} from "@backend/collections/user-match/helpers/match-finder/match-utils.js";
+import { logger } from "@backend/logger/logger.js";
+import { BlError } from "@shared/bl-error/bl-error.js";
+import { CandidateStandMatch } from "@shared/match/stand-match.js";
+import { CandidateUserMatch } from "@shared/match/user-match.js";
 
 /**
  * ****Some useful terms****

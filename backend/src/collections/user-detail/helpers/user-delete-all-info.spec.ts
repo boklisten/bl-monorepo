@@ -1,9 +1,9 @@
 import "mocha";
 
-import { LocalLogin } from "@backend/collections/local-login/local-login";
-import { User } from "@backend/collections/user/user";
-import { DeleteUserService } from "@backend/collections/user-detail/helpers/delete-user-service";
-import { BlStorage } from "@backend/storage/bl-storage";
+import { LocalLogin } from "@backend/collections/local-login/local-login.js";
+import { User } from "@backend/collections/user/user.js";
+import { DeleteUserService } from "@backend/collections/user-detail/helpers/delete-user-service.js";
+import { BlStorage } from "@backend/storage/bl-storage.js";
 import { expect, use as chaiUse, should } from "chai";
 import chaiAsPromised from "chai-as-promised";
 import sinon, { createSandbox } from "sinon";

@@ -1,8 +1,8 @@
-import { BlStorage } from "@backend/storage/bl-storage";
-import { CustomerItem } from "@shared/customer-item/customer-item";
-import { Order } from "@shared/order/order";
-import { OrderItem } from "@shared/order/order-item/order-item";
-import { UserDetail } from "@shared/user/user-detail/user-detail";
+import { BlStorage } from "@backend/storage/bl-storage.js";
+import { CustomerItem } from "@shared/customer-item/customer-item.js";
+import { OrderItem } from "@shared/order/order-item/order-item.js";
+import { Order } from "@shared/order/order.js";
+import { UserDetail } from "@shared/user/user-detail/user-detail.js";
 
 export class OrderToCustomerItemGenerator {
   public async generate(order: Order): Promise<CustomerItem[]> {

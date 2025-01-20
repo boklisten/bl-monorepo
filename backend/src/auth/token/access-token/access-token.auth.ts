@@ -1,9 +1,9 @@
-import { APP_CONFIG } from "@backend/application-config";
-import { AccessToken } from "@backend/auth/token/access-token/access-token";
-import { AccessTokenSecret } from "@backend/auth/token/access-token/access-token.secret";
-import { RefreshToken } from "@backend/auth/token/refresh/refresh-token";
-import { SEToken } from "@backend/auth/token/se.token";
-import { TokenConfig } from "@backend/auth/token/token.config";
+import { APP_CONFIG } from "@backend/application-config.js";
+import { AccessToken } from "@backend/auth/token/access-token/access-token.js";
+import { AccessTokenSecret } from "@backend/auth/token/access-token/access-token.secret.js";
+import { RefreshToken } from "@backend/auth/token/refresh/refresh-token.js";
+import { SEToken } from "@backend/auth/token/se.token.js";
+import { TokenConfig } from "@backend/auth/token/token.config.js";
 import passport from "passport";
 import { ExtractJwt, Strategy } from "passport-jwt";
 

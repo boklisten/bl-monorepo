@@ -1,12 +1,12 @@
 import "mocha";
 
-import { EmailValidation } from "@backend/collections/email-validation/email-validation";
-import { EmailValidationConfirmOperation } from "@backend/collections/email-validation/operations/email-validation-confirm.operation";
-import { SEResponseHandler } from "@backend/response/se.response.handler";
-import { BlStorage } from "@backend/storage/bl-storage";
-import { BlError } from "@shared/bl-error/bl-error";
-import { BlapiResponse } from "@shared/blapi-response/blapi-response";
-import { UserDetail } from "@shared/user/user-detail/user-detail";
+import { EmailValidation } from "@backend/collections/email-validation/email-validation.js";
+import { EmailValidationConfirmOperation } from "@backend/collections/email-validation/operations/email-validation-confirm.operation.js";
+import { SEResponseHandler } from "@backend/response/se.response.handler.js";
+import { BlStorage } from "@backend/storage/bl-storage.js";
+import { BlError } from "@shared/bl-error/bl-error.js";
+import { BlapiResponse } from "@shared/blapi-response/blapi-response.js";
+import { UserDetail } from "@shared/user/user-detail/user-detail.js";
 import { expect, use as chaiUse, should } from "chai";
 import chaiAsPromised from "chai-as-promised";
 import { Request, Response } from "express";

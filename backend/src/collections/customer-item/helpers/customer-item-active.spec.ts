@@ -1,5 +1,5 @@
-import { CustomerItemActive } from "@backend/collections/customer-item/helpers/customer-item-active";
-import { CustomerItem } from "@shared/customer-item/customer-item";
+import { CustomerItemActive } from "@backend/collections/customer-item/helpers/customer-item-active.js";
+import { CustomerItem } from "@shared/customer-item/customer-item.js";
 import { expect } from "chai";
 
 import "mocha";

@@ -1,8 +1,8 @@
 import "mocha";
-import { EmailValidation } from "@backend/collections/email-validation/email-validation";
-import { EmailValidationHelper } from "@backend/collections/email-validation/helpers/email-validation.helper";
-import { EmailValidationPostHook } from "@backend/collections/email-validation/hooks/email-validation-post.hook";
-import { BlError } from "@shared/bl-error/bl-error";
+import { EmailValidation } from "@backend/collections/email-validation/email-validation.js";
+import { EmailValidationHelper } from "@backend/collections/email-validation/helpers/email-validation.helper.js";
+import { EmailValidationPostHook } from "@backend/collections/email-validation/hooks/email-validation-post.hook.js";
+import { BlError } from "@shared/bl-error/bl-error.js";
 import { expect, use as chaiUse, should } from "chai";
 import chaiAsPromised from "chai-as-promised";
 import sinon from "sinon";

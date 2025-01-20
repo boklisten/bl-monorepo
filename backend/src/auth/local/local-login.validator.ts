@@ -1,11 +1,11 @@
-import { LocalLoginCreator } from "@backend/auth/local/local-login-creator/local-login-creator";
-import { LocalLoginHandler } from "@backend/auth/local/local-login.handler";
-import { LocalLoginPasswordValidator } from "@backend/auth/local/password/local-login-password.validator";
-import { UserHandler } from "@backend/auth/user/user.handler";
-import { LocalLogin } from "@backend/collections/local-login/local-login";
-import { User } from "@backend/collections/user/user";
-import { BlError } from "@shared/bl-error/bl-error";
-import isEmail from "validator/lib/isEmail";
+import { LocalLoginCreator } from "@backend/auth/local/local-login-creator/local-login-creator.js";
+import { LocalLoginHandler } from "@backend/auth/local/local-login.handler.js";
+import { LocalLoginPasswordValidator } from "@backend/auth/local/password/local-login-password.validator.js";
+import { UserHandler } from "@backend/auth/user/user.handler.js";
+import { LocalLogin } from "@backend/collections/local-login/local-login.js";
+import { User } from "@backend/collections/user/user.js";
+import { BlError } from "@shared/bl-error/bl-error.js";
+import validator from "validator";
 
 export class LocalLoginValidator {
   constructor(
@@ -23,7 +23,7 @@ export class LocalLoginValidator {
       const blError = new BlError("")
         .className("LocalLoginValidator")
         .methodName("validate");
-      if (!username || !isEmail(username))
+      if (!username || !validator.isEmail(username))
         return reject(
           blError.msg('username "' + username + '" is not an email'),
         );

@@ -1,9 +1,9 @@
 import "mocha";
 
-import { CustomerInvoiceActive } from "@backend/collections/invoice/helpers/customer-invoice-active";
-import { BlStorage } from "@backend/storage/bl-storage";
-import { BlError } from "@shared/bl-error/bl-error";
-import { Invoice } from "@shared/invoice/invoice";
+import { CustomerInvoiceActive } from "@backend/collections/invoice/helpers/customer-invoice-active.js";
+import { BlStorage } from "@backend/storage/bl-storage.js";
+import { BlError } from "@shared/bl-error/bl-error.js";
+import { Invoice } from "@shared/invoice/invoice.js";
 import { expect, use as chaiUse, should } from "chai";
 import chaiAsPromised from "chai-as-promised";
 import sinon, { createSandbox } from "sinon";

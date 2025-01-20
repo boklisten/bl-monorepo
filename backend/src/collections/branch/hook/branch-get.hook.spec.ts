@@ -1,6 +1,6 @@
 import "mocha";
-import { BranchGetHook } from "@backend/collections/branch/hook/branch-get.hook";
-import { AccessToken } from "@shared/token/access-token";
+import { BranchGetHook } from "@backend/collections/branch/hook/branch-get.hook.js";
+import { AccessToken } from "@shared/token/access-token.js";
 import { expect, use as chaiUse, should } from "chai";
 import chaiAsPromised from "chai-as-promised";
 import sinonChai from "sinon-chai";

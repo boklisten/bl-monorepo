@@ -1,14 +1,14 @@
-import { dateService } from "@backend/blc/date.service";
-import { assertEnv, BlEnvironment } from "@backend/config/environment";
-import { logger } from "@backend/logger/logger";
-import { EMAIL_SETTINGS } from "@backend/messenger/email/email-settings";
-import { OrderEmailHandler } from "@backend/messenger/email/order-email/order-email-handler";
-import { MessengerService } from "@backend/messenger/messenger-service";
-import { BlStorage } from "@backend/storage/bl-storage";
+import { dateService } from "@backend/blc/date.service.js";
+import { assertEnv, BlEnvironment } from "@backend/config/environment.js";
+import { logger } from "@backend/logger/logger.js";
+import { EMAIL_SETTINGS } from "@backend/messenger/email/email-settings.js";
+import { OrderEmailHandler } from "@backend/messenger/email/order-email/order-email-handler.js";
+import { MessengerService } from "@backend/messenger/messenger-service.js";
+import { BlStorage } from "@backend/storage/bl-storage.js";
 import { EmailHandler } from "@boklisten/bl-email";
-import { EmailOrder } from "@boklisten/bl-email/dist/ts/template/email-order";
-import { EmailSetting } from "@boklisten/bl-email/dist/ts/template/email-setting";
-import { EmailUser } from "@boklisten/bl-email/dist/ts/template/email-user";
+import { EmailOrder } from "@boklisten/bl-email/dist/ts/template/email-order.js";
+import { EmailSetting } from "@boklisten/bl-email/dist/ts/template/email-setting.js";
+import { EmailUser } from "@boklisten/bl-email/dist/ts/template/email-user.js";
 import {
   ItemList,
   MessageOptions,
@@ -17,15 +17,15 @@ import {
   Recipient,
 } from "@boklisten/bl-post-office";
 import sgMail from "@sendgrid/mail";
-import { BlError } from "@shared/bl-error/bl-error";
-import { CustomerItem } from "@shared/customer-item/customer-item";
-import { Delivery } from "@shared/delivery/delivery";
-import { Item } from "@shared/item/item";
-import { Message } from "@shared/message/message";
-import { MessageMethod } from "@shared/message/message-method/message-method";
-import { Order } from "@shared/order/order";
-import { OrderItem } from "@shared/order/order-item/order-item";
-import { UserDetail } from "@shared/user/user-detail/user-detail";
+import { BlError } from "@shared/bl-error/bl-error.js";
+import { CustomerItem } from "@shared/customer-item/customer-item.js";
+import { Delivery } from "@shared/delivery/delivery.js";
+import { Item } from "@shared/item/item.js";
+import { MessageMethod } from "@shared/message/message-method/message-method.js";
+import { Message } from "@shared/message/message.js";
+import { OrderItem } from "@shared/order/order-item/order-item.js";
+import { Order } from "@shared/order/order.js";
+import { UserDetail } from "@shared/user/user-detail/user-detail.js";
 
 export class EmailService implements MessengerService {
   private emailHandler: EmailHandler;

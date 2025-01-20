@@ -1,9 +1,9 @@
-import { OrderValidator } from "@backend/collections/order/helpers/order-validator/order-validator";
-import { Operation } from "@backend/operation/operation";
-import { BlStorage } from "@backend/storage/bl-storage";
-import { BlError } from "@shared/bl-error/bl-error";
-import { BlapiResponse } from "@shared/blapi-response/blapi-response";
-import { Order } from "@shared/order/order";
+import { OrderValidator } from "@backend/collections/order/helpers/order-validator/order-validator.js";
+import { Operation } from "@backend/operation/operation.js";
+import { BlStorage } from "@backend/storage/bl-storage.js";
+import { BlError } from "@shared/bl-error/bl-error.js";
+import { BlapiResponse } from "@shared/blapi-response/blapi-response.js";
+import { Order } from "@shared/order/order.js";
 import { ObjectId } from "mongodb";
 
 // fixme: rewrite and generalize this for use in the future

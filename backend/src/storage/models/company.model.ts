@@ -1,5 +1,5 @@
-import { BlModel } from "@backend/storage/bl-storage";
-import { Company } from "@shared/company/company";
+import { BlModel } from "@backend/storage/bl-storage.js";
+import { Company } from "@shared/company/company.js";
 import { Schema } from "mongoose";
 
 export const CompanyModel: BlModel<Company> = {

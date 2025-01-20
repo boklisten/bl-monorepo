@@ -1,4 +1,4 @@
-import { UserPermission } from "@shared/permission/user-permission";
+import { UserPermission } from "@shared/permission/user-permission.js";
 import { ParsedQs } from "qs";
 
 export interface BlApiRequest {

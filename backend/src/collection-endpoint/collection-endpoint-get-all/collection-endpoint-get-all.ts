@@ -1,9 +1,9 @@
-import { CollectionEndpointMethod } from "@backend/collection-endpoint/collection-endpoint-method";
-import { CollectionEndpointOnRequest } from "@backend/collection-endpoint/collection-endpoint-on-request";
-import { SEDbQuery } from "@backend/query/se.db-query";
-import { SEDbQueryBuilder } from "@backend/query/se.db-query-builder";
-import { BlApiRequest } from "@backend/request/bl-api-request";
-import { BlError } from "@shared/bl-error/bl-error";
+import { CollectionEndpointMethod } from "@backend/collection-endpoint/collection-endpoint-method.js";
+import { CollectionEndpointOnRequest } from "@backend/collection-endpoint/collection-endpoint-on-request.js";
+import { SEDbQueryBuilder } from "@backend/query/se.db-query-builder.js";
+import { SEDbQuery } from "@backend/query/se.db-query.js";
+import { BlApiRequest } from "@backend/request/bl-api-request.js";
+import { BlError } from "@shared/bl-error/bl-error.js";
 export class CollectionEndpointGetAll
   extends CollectionEndpointMethod
   implements CollectionEndpointOnRequest

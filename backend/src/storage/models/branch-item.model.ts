@@ -1,5 +1,5 @@
-import { BlModel } from "@backend/storage/bl-storage";
-import { BranchItem } from "@shared/branch-item/branch-item";
+import { BlModel } from "@backend/storage/bl-storage.js";
+import { BranchItem } from "@shared/branch-item/branch-item.js";
 import { Schema } from "mongoose";
 
 export const BranchItemModel: BlModel<BranchItem> = {

@@ -1,4 +1,4 @@
-import { DibsEasyItem } from "@backend/payment/dibs/dibs-easy-item/dibs-easy-item";
+import { DibsEasyItem } from "@backend/payment/dibs/dibs-easy-item/dibs-easy-item.js";
 
 export class DibsEasyOrder {
   order: {

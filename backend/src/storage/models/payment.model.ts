@@ -1,5 +1,5 @@
-import { BlModel } from "@backend/storage/bl-storage";
-import { Payment } from "@shared/payment/payment";
+import { BlModel } from "@backend/storage/bl-storage.js";
+import { Payment } from "@shared/payment/payment.js";
 import { Schema } from "mongoose";
 
 export const PaymentModel: BlModel<Payment> = {

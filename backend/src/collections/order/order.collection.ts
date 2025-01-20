@@ -1,12 +1,12 @@
-import { BlCollection } from "@backend/collections/bl-collection";
-import { OrderPatchHook } from "@backend/collections/order/hooks/order.patch.hook";
-import { OrderPostHook } from "@backend/collections/order/hooks/order.post.hook";
-import { OrderConfirmOperation } from "@backend/collections/order/operations/confirm/order-confirm.operation";
-import { OrderAgreementPdfOperation } from "@backend/collections/order/operations/order-agreement-pdf.operation";
-import { OrderReceiptPdfOperation } from "@backend/collections/order/operations/order-receipt-pdf.operation";
-import { OrderPlaceOperation } from "@backend/collections/order/operations/place/order-place.operation";
-import { RapidHandoutOperation } from "@backend/collections/order/operations/rapid-handout.operation";
-import { BlStorage } from "@backend/storage/bl-storage";
+import { BlCollection } from "@backend/collections/bl-collection.js";
+import { OrderPatchHook } from "@backend/collections/order/hooks/order.patch.hook.js";
+import { OrderPostHook } from "@backend/collections/order/hooks/order.post.hook.js";
+import { OrderConfirmOperation } from "@backend/collections/order/operations/confirm/order-confirm.operation.js";
+import { OrderAgreementPdfOperation } from "@backend/collections/order/operations/order-agreement-pdf.operation.js";
+import { OrderReceiptPdfOperation } from "@backend/collections/order/operations/order-receipt-pdf.operation.js";
+import { OrderPlaceOperation } from "@backend/collections/order/operations/place/order-place.operation.js";
+import { RapidHandoutOperation } from "@backend/collections/order/operations/rapid-handout.operation.js";
+import { BlStorage } from "@backend/storage/bl-storage.js";
 
 export const OrderCollection: BlCollection = {
   storage: BlStorage.Orders,

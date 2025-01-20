@@ -1,6 +1,6 @@
-import { BlError } from "@shared/bl-error/bl-error";
-import { Item } from "@shared/item/item";
-import { OrderItem } from "@shared/order/order-item/order-item";
+import { BlError } from "@shared/bl-error/bl-error.js";
+import { Item } from "@shared/item/item.js";
+import { OrderItem } from "@shared/order/order-item/order-item.js";
 
 export class ItemValidator {
   public validateItemInOrder(item: Item, orderItem: OrderItem): boolean {

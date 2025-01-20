@@ -1,8 +1,8 @@
-import { BlErrorHandler } from "@backend/bl-error/bl-error-handler";
-import { BlEnvironment, assertEnv } from "@backend/config/environment";
-import { logger } from "@backend/logger/logger";
-import { BlapiErrorResponse } from "@shared/blapi-response/blapi-error-response";
-import { BlapiResponse } from "@shared/blapi-response/blapi-response";
+import { BlErrorHandler } from "@backend/bl-error/bl-error-handler.js";
+import { BlEnvironment, assertEnv } from "@backend/config/environment.js";
+import { logger } from "@backend/logger/logger.js";
+import { BlapiErrorResponse } from "@shared/blapi-response/blapi-error-response.js";
+import { BlapiResponse } from "@shared/blapi-response/blapi-response.js";
 import { Response } from "express";
 
 export class SEResponseHandler {

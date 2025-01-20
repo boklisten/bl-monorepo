@@ -1,15 +1,15 @@
 import "@backend/instrument";
 
-import { createAuthEndpoints } from "@backend/auth/auth-endpoint-creator";
-import { createCollectionEndpoints } from "@backend/collection-endpoint/collection-endpoint-creator";
-import { logger } from "@backend/logger/logger";
+import { createAuthEndpoints } from "@backend/auth/auth-endpoint-creator.js";
+import { createCollectionEndpoints } from "@backend/collection-endpoint/collection-endpoint-creator.js";
+import { logger } from "@backend/logger/logger.js";
 import {
   connectToDbAndStartServer,
   getCorsHandler,
   getDebugLoggerHandler,
   getRedirectToHttpsHandler,
   getSessionHandler,
-} from "@backend/server/server";
+} from "@backend/server/server.js";
 import * as Sentry from "@sentry/node";
 import express, { json, Router } from "express";
 import passport from "passport";

@@ -1,12 +1,12 @@
 import "mocha";
 
-import { CustomerItemHandler } from "@backend/collections/customer-item/helpers/customer-item-handler";
-import { SEDbQuery } from "@backend/query/se.db-query";
-import { BlStorage } from "@backend/storage/bl-storage";
-import { BlError } from "@shared/bl-error/bl-error";
-import { Branch } from "@shared/branch/branch";
-import { CustomerItem } from "@shared/customer-item/customer-item";
-import { OrderItem } from "@shared/order/order-item/order-item";
+import { CustomerItemHandler } from "@backend/collections/customer-item/helpers/customer-item-handler.js";
+import { SEDbQuery } from "@backend/query/se.db-query.js";
+import { BlStorage } from "@backend/storage/bl-storage.js";
+import { BlError } from "@shared/bl-error/bl-error.js";
+import { Branch } from "@shared/branch/branch.js";
+import { CustomerItem } from "@shared/customer-item/customer-item.js";
+import { OrderItem } from "@shared/order/order-item/order-item.js";
 import { expect, use as chaiUse, should } from "chai";
 import chaiAsPromised from "chai-as-promised";
 import mongoose from "mongoose";

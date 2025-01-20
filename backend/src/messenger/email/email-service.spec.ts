@@ -1,19 +1,19 @@
 import "mocha";
 
-import { EmailService } from "@backend/messenger/email/email-service";
-import { BlStorage } from "@backend/storage/bl-storage";
+import { EmailService } from "@backend/messenger/email/email-service.js";
+import { BlStorage } from "@backend/storage/bl-storage.js";
 import { EmailHandler, EmailLog } from "@boklisten/bl-email";
 import {
   MessageOptions,
   PostOffice,
   Recipient,
 } from "@boklisten/bl-post-office";
-import { BlError } from "@shared/bl-error/bl-error";
-import { CustomerItem } from "@shared/customer-item/customer-item";
-import { Item } from "@shared/item/item";
-import { Message } from "@shared/message/message";
-import { MessageMethod } from "@shared/message/message-method/message-method";
-import { UserDetail } from "@shared/user/user-detail/user-detail";
+import { BlError } from "@shared/bl-error/bl-error.js";
+import { CustomerItem } from "@shared/customer-item/customer-item.js";
+import { Item } from "@shared/item/item.js";
+import { MessageMethod } from "@shared/message/message-method/message-method.js";
+import { Message } from "@shared/message/message.js";
+import { UserDetail } from "@shared/user/user-detail/user-detail.js";
 import { expect, should, use as chaiUse } from "chai";
 import chaiAsPromised from "chai-as-promised";
 import sinon, { createSandbox } from "sinon";

@@ -1,8 +1,8 @@
-import { isNullish } from "@backend/helper/typescript-helpers";
-import { DibsEasyPayment } from "@backend/payment/dibs/dibs-easy-payment/dibs-easy-payment";
-import { BlStorage } from "@backend/storage/bl-storage";
-import { BlError } from "@shared/bl-error/bl-error";
-import { UserDetail } from "@shared/user/user-detail/user-detail";
+import { isNullish } from "@backend/helper/typescript-helpers.js";
+import { DibsEasyPayment } from "@backend/payment/dibs/dibs-easy-payment/dibs-easy-payment.js";
+import { BlStorage } from "@backend/storage/bl-storage.js";
+import { BlError } from "@shared/bl-error/bl-error.js";
+import { UserDetail } from "@shared/user/user-detail/user-detail.js";
 
 export class UserDetailHelper {
   public updateUserDetailBasedOnDibsEasyPayment(

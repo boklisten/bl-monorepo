@@ -1,14 +1,14 @@
-import { LocalLoginCreator } from "@backend/auth/local/local-login-creator/local-login-creator";
-import { HashedPasswordGenerator } from "@backend/auth/local/password/hashed-password-generator";
-import { SaltGenerator } from "@backend/auth/local/salt/salt-generator";
-import { LocalLogin } from "@backend/collections/local-login/local-login";
-import { SeCrypto } from "@backend/crypto/se.crypto";
-import { isNullish } from "@backend/helper/typescript-helpers";
-import { SEDbQuery } from "@backend/query/se.db-query";
-import { BlStorage } from "@backend/storage/bl-storage";
-import { BlError } from "@shared/bl-error/bl-error";
-import { BlapiErrorResponse } from "@shared/blapi-response/blapi-error-response";
-import isEmail from "validator/lib/isEmail";
+import { LocalLoginCreator } from "@backend/auth/local/local-login-creator/local-login-creator.js";
+import { HashedPasswordGenerator } from "@backend/auth/local/password/hashed-password-generator.js";
+import { SaltGenerator } from "@backend/auth/local/salt/salt-generator.js";
+import { LocalLogin } from "@backend/collections/local-login/local-login.js";
+import { SeCrypto } from "@backend/crypto/se.crypto.js";
+import { isNullish } from "@backend/helper/typescript-helpers.js";
+import { SEDbQuery } from "@backend/query/se.db-query.js";
+import { BlStorage } from "@backend/storage/bl-storage.js";
+import { BlError } from "@shared/bl-error/bl-error.js";
+import { BlapiErrorResponse } from "@shared/blapi-response/blapi-error-response.js";
+import validator from "validator";
 
 export class LocalLoginHandler {
   private hashedPasswordGenerator: HashedPasswordGenerator;
@@ -29,7 +29,7 @@ export class LocalLoginHandler {
 
   public get(username: string): Promise<LocalLogin> {
     return new Promise((resolve, reject) => {
-      if (!username || !isEmail(username))
+      if (!username || !validator.isEmail(username))
         return reject(
           new BlError(`username "${username}" is not a valid email`),
         );
@@ -183,7 +183,7 @@ export class LocalLoginHandler {
         );
       if (!localLogin.salt || localLogin.salt.length <= 0)
         return reject(blError.msg("salt of LocalLogin needs to be provided"));
-      if (!isEmail(localLogin.username))
+      if (!validator.isEmail(localLogin.username))
         return reject(
           blError.msg(
             'username "' + localLogin.username + '" is not a valid email',

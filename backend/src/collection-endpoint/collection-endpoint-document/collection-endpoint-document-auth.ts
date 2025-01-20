@@ -1,12 +1,12 @@
-import { PermissionService } from "@backend/auth/permission/permission.service";
+import { PermissionService } from "@backend/auth/permission/permission.service.js";
 import {
   BlDocumentPermission,
   BlEndpointRestriction,
-} from "@backend/collections/bl-collection";
-import { isNullish } from "@backend/helper/typescript-helpers";
-import { BlApiRequest } from "@backend/request/bl-api-request";
-import { BlStorageData } from "@backend/storage/bl-storage";
-import { BlError } from "@shared/bl-error/bl-error";
+} from "@backend/collections/bl-collection.js";
+import { isNullish } from "@backend/helper/typescript-helpers.js";
+import { BlApiRequest } from "@backend/request/bl-api-request.js";
+import { BlStorageData } from "@backend/storage/bl-storage.js";
+import { BlError } from "@shared/bl-error/bl-error.js";
 
 export class CollectionEndpointDocumentAuth {
   public validate(

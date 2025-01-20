@@ -1,8 +1,8 @@
-import { InvoiceActive } from "@backend/collections/invoice/helpers/invoice-active";
-import { SEDbQueryBuilder } from "@backend/query/se.db-query-builder";
-import { BlStorage } from "@backend/storage/bl-storage";
-import { BlError } from "@shared/bl-error/bl-error";
-import { Invoice } from "@shared/invoice/invoice";
+import { InvoiceActive } from "@backend/collections/invoice/helpers/invoice-active.js";
+import { SEDbQueryBuilder } from "@backend/query/se.db-query-builder.js";
+import { BlStorage } from "@backend/storage/bl-storage.js";
+import { BlError } from "@shared/bl-error/bl-error.js";
+import { Invoice } from "@shared/invoice/invoice.js";
 
 export class CustomerInvoiceActive {
   private queryBuilder = new SEDbQueryBuilder();

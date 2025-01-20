@@ -1,5 +1,5 @@
-import { BlDocument } from "@shared/bl-document/bl-document";
-import { UserPermission } from "@shared/permission/user-permission";
+import { BlDocument } from "@shared/bl-document/bl-document.js";
+import { UserPermission } from "@shared/permission/user-permission.js";
 
 export interface User extends BlDocument {
   id: string;

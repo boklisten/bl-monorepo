@@ -1,10 +1,10 @@
-import { isNullish } from "@backend/helper/typescript-helpers";
-import { DibsEasyPayment } from "@backend/payment/dibs/dibs-easy-payment/dibs-easy-payment";
-import { DibsPaymentService } from "@backend/payment/dibs/dibs-payment.service";
-import { BlStorage } from "@backend/storage/bl-storage";
-import { BlError } from "@shared/bl-error/bl-error";
-import { Order } from "@shared/order/order";
-import { Payment } from "@shared/payment/payment";
+import { isNullish } from "@backend/helper/typescript-helpers.js";
+import { DibsEasyPayment } from "@backend/payment/dibs/dibs-easy-payment/dibs-easy-payment.js";
+import { DibsPaymentService } from "@backend/payment/dibs/dibs-payment.service.js";
+import { BlStorage } from "@backend/storage/bl-storage.js";
+import { BlError } from "@shared/bl-error/bl-error.js";
+import { Order } from "@shared/order/order.js";
+import { Payment } from "@shared/payment/payment.js";
 
 export class PaymentDibsConfirmer {
   private dibsPaymentService: DibsPaymentService;

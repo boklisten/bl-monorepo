@@ -2,8 +2,8 @@ import "mocha";
 import {
   UserDetailUpdateHook,
   UserDetailPatch,
-} from "@backend/collections/user-detail/hooks/user-detail-update.hook";
-import { AccessToken } from "@shared/token/access-token";
+} from "@backend/collections/user-detail/hooks/user-detail-update.hook.js";
+import { AccessToken } from "@shared/token/access-token.js";
 import { assert, use as chaiUse, should } from "chai";
 import chaiAsPromised from "chai-as-promised";
 

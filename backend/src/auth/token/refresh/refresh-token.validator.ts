@@ -1,6 +1,6 @@
-import { RefreshTokenSecret } from "@backend/auth/token/refresh/refresh-token.secret";
-import { BlError } from "@shared/bl-error/bl-error";
-import { verify } from "jsonwebtoken";
+import { RefreshTokenSecret } from "@backend/auth/token/refresh/refresh-token.secret.js";
+import { BlError } from "@shared/bl-error/bl-error.js";
+import jwt from "jsonwebtoken";
 
 export class RefreshTokenValidator {
   private refreshTokenSecret: RefreshTokenSecret;
@@ -15,7 +15,7 @@ export class RefreshTokenValidator {
         return reject(new BlError("refreshToken is empty or undefined"));
 
       try {
-        verify(
+        jwt.verify(
           refreshToken,
           this.refreshTokenSecret.get(),
           (error, payload) => {

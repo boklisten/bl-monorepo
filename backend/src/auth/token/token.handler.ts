@@ -1,12 +1,12 @@
-import { APP_CONFIG } from "@backend/application-config";
-import { AccessToken } from "@backend/auth/token/access-token/access-token";
-import { AccessTokenCreator } from "@backend/auth/token/access-token/access-token.creator";
-import { RefreshToken } from "@backend/auth/token/refresh/refresh-token";
-import { RefreshTokenCreator } from "@backend/auth/token/refresh/refresh-token.creator";
-import { TokenConfig } from "@backend/auth/token/token.config";
-import { UserHandler } from "@backend/auth/user/user.handler";
-import { User } from "@backend/collections/user/user";
-import { BlError } from "@shared/bl-error/bl-error";
+import { APP_CONFIG } from "@backend/application-config.js";
+import { AccessTokenCreator } from "@backend/auth/token/access-token/access-token.creator.js";
+import { AccessToken } from "@backend/auth/token/access-token/access-token.js";
+import { RefreshTokenCreator } from "@backend/auth/token/refresh/refresh-token.creator.js";
+import { RefreshToken } from "@backend/auth/token/refresh/refresh-token.js";
+import { TokenConfig } from "@backend/auth/token/token.config.js";
+import { UserHandler } from "@backend/auth/user/user.handler.js";
+import { User } from "@backend/collections/user/user.js";
+import { BlError } from "@shared/bl-error/bl-error.js";
 
 export class TokenHandler {
   private refreshTokenCreator: RefreshTokenCreator;

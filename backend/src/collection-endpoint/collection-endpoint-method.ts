@@ -1,16 +1,19 @@
-import { CollectionEndpointAuth } from "@backend/collection-endpoint/collection-endpoint-auth/collection-endpoint-auth";
-import { CollectionEndpointDocumentAuth } from "@backend/collection-endpoint/collection-endpoint-document/collection-endpoint-document-auth";
-import { CollectionEndpointOperation } from "@backend/collection-endpoint/collection-endpoint-operation";
-import { BlCollection, BlEndpoint } from "@backend/collections/bl-collection";
-import { ApiPath } from "@backend/config/api-path";
-import { isBoolean, isNotNullish } from "@backend/helper/typescript-helpers";
-import { Hook } from "@backend/hook/hook";
-import { BlApiRequest } from "@backend/request/bl-api-request";
-import { SEResponseHandler } from "@backend/response/se.response.handler";
-import { BlStorageData } from "@backend/storage/bl-storage";
-import { BlError } from "@shared/bl-error/bl-error";
-import { BlapiResponse } from "@shared/blapi-response/blapi-response";
-import { AccessToken } from "@shared/token/access-token";
+import { CollectionEndpointAuth } from "@backend/collection-endpoint/collection-endpoint-auth/collection-endpoint-auth.js";
+import { CollectionEndpointDocumentAuth } from "@backend/collection-endpoint/collection-endpoint-document/collection-endpoint-document-auth.js";
+import { CollectionEndpointOperation } from "@backend/collection-endpoint/collection-endpoint-operation.js";
+import {
+  BlCollection,
+  BlEndpoint,
+} from "@backend/collections/bl-collection.js";
+import { ApiPath } from "@backend/config/api-path.js";
+import { isBoolean, isNotNullish } from "@backend/helper/typescript-helpers.js";
+import { Hook } from "@backend/hook/hook.js";
+import { BlApiRequest } from "@backend/request/bl-api-request.js";
+import { SEResponseHandler } from "@backend/response/se.response.handler.js";
+import { BlStorageData } from "@backend/storage/bl-storage.js";
+import { BlError } from "@shared/bl-error/bl-error.js";
+import { BlapiResponse } from "@shared/blapi-response/blapi-response.js";
+import { AccessToken } from "@shared/token/access-token.js";
 import { NextFunction, Request, Response, Router } from "express";
 
 export abstract class CollectionEndpointMethod {

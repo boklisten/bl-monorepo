@@ -1,10 +1,10 @@
-import { PaymentDibsHandler } from "@backend/collections/payment/helpers/dibs/payment-dibs-handler";
-import { PaymentValidator } from "@backend/collections/payment/helpers/payment.validator";
-import { Hook } from "@backend/hook/hook";
-import { BlStorage } from "@backend/storage/bl-storage";
-import { BlError } from "@shared/bl-error/bl-error";
-import { Order } from "@shared/order/order";
-import { Payment } from "@shared/payment/payment";
+import { PaymentDibsHandler } from "@backend/collections/payment/helpers/dibs/payment-dibs-handler.js";
+import { PaymentValidator } from "@backend/collections/payment/helpers/payment.validator.js";
+import { Hook } from "@backend/hook/hook.js";
+import { BlStorage } from "@backend/storage/bl-storage.js";
+import { BlError } from "@shared/bl-error/bl-error.js";
+import { Order } from "@shared/order/order.js";
+import { Payment } from "@shared/payment/payment.js";
 
 export class PaymentPostHook extends Hook {
   private paymentValidator: PaymentValidator;

@@ -1,5 +1,5 @@
-import { LocalLogin } from "@backend/collections/local-login/local-login";
-import { BlModel } from "@backend/storage/bl-storage";
+import { LocalLogin } from "@backend/collections/local-login/local-login.js";
+import { BlModel } from "@backend/storage/bl-storage.js";
 import { Schema } from "mongoose";
 
 export const LocalLoginModel: BlModel<LocalLogin> = {

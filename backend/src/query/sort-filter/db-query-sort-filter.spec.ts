@@ -1,5 +1,5 @@
 import "mocha";
-import { DbQuerySortFilter } from "@backend/query/sort-filter/db-query-sort-filter";
+import { DbQuerySortFilter } from "@backend/query/sort-filter/db-query-sort-filter.js";
 import { expect, use as chaiUse, should } from "chai";
 import chaiAsPromised from "chai-as-promised";
 

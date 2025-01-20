@@ -3,13 +3,13 @@ import {
   isUnderage,
   serializeSignature,
   signOrders,
-} from "@backend/collections/signature/helpers/signature.helper";
-import { Hook } from "@backend/hook/hook";
-import { BlStorage } from "@backend/storage/bl-storage";
-import { Signature } from "@backend/storage/models/signature.model";
-import { BlError } from "@shared/bl-error/bl-error";
-import { SerializedSignature } from "@shared/signature/serialized-signature";
-import { AccessToken } from "@shared/token/access-token";
+} from "@backend/collections/signature/helpers/signature.helper.js";
+import { Hook } from "@backend/hook/hook.js";
+import { BlStorage } from "@backend/storage/bl-storage.js";
+import { Signature } from "@backend/storage/models/signature.model.js";
+import { BlError } from "@shared/bl-error/bl-error.js";
+import { SerializedSignature } from "@shared/signature/serialized-signature.js";
+import { AccessToken } from "@shared/token/access-token.js";
 
 export class SignaturePostHook extends Hook {
   override async before(

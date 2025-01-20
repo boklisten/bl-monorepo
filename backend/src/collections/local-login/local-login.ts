@@ -1,4 +1,4 @@
-import { BlDocument } from "@shared/bl-document/bl-document";
+import { BlDocument } from "@shared/bl-document/bl-document.js";
 
 export interface LocalLogin extends BlDocument {
   username: string;

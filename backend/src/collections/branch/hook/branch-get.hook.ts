@@ -1,7 +1,7 @@
-import { PermissionService } from "@backend/auth/permission/permission.service";
-import { Hook } from "@backend/hook/hook";
-import { Branch } from "@shared/branch/branch";
-import { AccessToken } from "@shared/token/access-token";
+import { PermissionService } from "@backend/auth/permission/permission.service.js";
+import { Hook } from "@backend/hook/hook.js";
+import { Branch } from "@shared/branch/branch.js";
+import { AccessToken } from "@shared/token/access-token.js";
 
 export class BranchGetHook extends Hook {
   public override after(

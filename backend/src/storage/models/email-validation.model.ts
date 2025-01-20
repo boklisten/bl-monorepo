@@ -1,5 +1,5 @@
-import { EmailValidation } from "@backend/collections/email-validation/email-validation";
-import { BlModel } from "@backend/storage/bl-storage";
+import { EmailValidation } from "@backend/collections/email-validation/email-validation.js";
+import { BlModel } from "@backend/storage/bl-storage.js";
 import { Schema } from "mongoose";
 
 export const EmailValidationModel: BlModel<EmailValidation> = {

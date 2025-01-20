@@ -1,6 +1,6 @@
-import { CollectionEndpointMethod } from "@backend/collection-endpoint/collection-endpoint-method";
-import { CollectionEndpointOnRequest } from "@backend/collection-endpoint/collection-endpoint-on-request";
-import { BlApiRequest } from "@backend/request/bl-api-request";
+import { CollectionEndpointMethod } from "@backend/collection-endpoint/collection-endpoint-method.js";
+import { CollectionEndpointOnRequest } from "@backend/collection-endpoint/collection-endpoint-on-request.js";
+import { BlApiRequest } from "@backend/request/bl-api-request.js";
 export class CollectionEndpointGetId
   extends CollectionEndpointMethod
   implements CollectionEndpointOnRequest

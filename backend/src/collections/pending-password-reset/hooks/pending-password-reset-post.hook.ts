@@ -1,10 +1,10 @@
-import { UserHandler } from "@backend/auth/user/user.handler";
-import { SeCrypto } from "@backend/crypto/se.crypto";
-import { Hook } from "@backend/hook/hook";
-import { Messenger } from "@backend/messenger/messenger";
-import { BlError } from "@shared/bl-error/bl-error";
-import { PasswordResetRequest } from "@shared/password-reset/password-reset-request";
-import { PendingPasswordReset } from "@shared/password-reset/pending-password-reset";
+import { UserHandler } from "@backend/auth/user/user.handler.js";
+import { SeCrypto } from "@backend/crypto/se.crypto.js";
+import { Hook } from "@backend/hook/hook.js";
+import { Messenger } from "@backend/messenger/messenger.js";
+import { BlError } from "@shared/bl-error/bl-error.js";
+import { PasswordResetRequest } from "@shared/password-reset/password-reset-request.js";
+import { PendingPasswordReset } from "@shared/password-reset/pending-password-reset.js";
 
 export class PendingPasswordResetPostHook extends Hook {
   private userHandler: UserHandler;

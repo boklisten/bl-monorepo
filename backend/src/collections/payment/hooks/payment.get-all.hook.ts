@@ -1,7 +1,7 @@
-import { PermissionService } from "@backend/auth/permission/permission.service";
-import { Hook } from "@backend/hook/hook";
-import { BlError } from "@shared/bl-error/bl-error";
-import { AccessToken } from "@shared/token/access-token";
+import { PermissionService } from "@backend/auth/permission/permission.service.js";
+import { Hook } from "@backend/hook/hook.js";
+import { BlError } from "@shared/bl-error/bl-error.js";
+import { AccessToken } from "@shared/token/access-token.js";
 
 export class PaymentGetAllHook extends Hook {
   public override async before(

@@ -1,4 +1,4 @@
-import { assertEnv, BlEnvironment } from "@backend/config/environment";
+import { assertEnv, BlEnvironment } from "@backend/config/environment.js";
 import * as Sentry from "@sentry/node";
 import { mongooseIntegration } from "@sentry/node";
 import { nodeProfilingIntegration } from "@sentry/profiling-node";

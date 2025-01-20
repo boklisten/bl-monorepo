@@ -1,11 +1,11 @@
 import "mocha";
 
-import { EmailValidation } from "@backend/collections/email-validation/email-validation";
-import { EmailValidationHelper } from "@backend/collections/email-validation/helpers/email-validation.helper";
-import { Messenger } from "@backend/messenger/messenger";
-import { BlStorage } from "@backend/storage/bl-storage";
-import { BlError } from "@shared/bl-error/bl-error";
-import { UserDetail } from "@shared/user/user-detail/user-detail";
+import { EmailValidation } from "@backend/collections/email-validation/email-validation.js";
+import { EmailValidationHelper } from "@backend/collections/email-validation/helpers/email-validation.helper.js";
+import { Messenger } from "@backend/messenger/messenger.js";
+import { BlStorage } from "@backend/storage/bl-storage.js";
+import { BlError } from "@shared/bl-error/bl-error.js";
+import { UserDetail } from "@shared/user/user-detail/user-detail.js";
 import { expect, use as chaiUse, should } from "chai";
 import chaiAsPromised from "chai-as-promised";
 import sinon, { createSandbox } from "sinon";

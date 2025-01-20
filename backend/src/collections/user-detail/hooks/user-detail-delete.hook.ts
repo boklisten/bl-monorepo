@@ -1,11 +1,11 @@
-import { CustomerHaveActiveCustomerItems } from "@backend/collections/customer-item/helpers/customer-have-active-customer-items";
-import { CustomerInvoiceActive } from "@backend/collections/invoice/helpers/customer-invoice-active";
-import { OrderActive } from "@backend/collections/order/helpers/order-active/order-active";
-import { DeleteUserService } from "@backend/collections/user-detail/helpers/delete-user-service";
-import { UserCanDeleteUserDetail } from "@backend/collections/user-detail/helpers/user-can-delete-user-detail";
-import { Hook } from "@backend/hook/hook";
-import { BlError } from "@shared/bl-error/bl-error";
-import { AccessToken } from "@shared/token/access-token";
+import { CustomerHaveActiveCustomerItems } from "@backend/collections/customer-item/helpers/customer-have-active-customer-items.js";
+import { CustomerInvoiceActive } from "@backend/collections/invoice/helpers/customer-invoice-active.js";
+import { OrderActive } from "@backend/collections/order/helpers/order-active/order-active.js";
+import { DeleteUserService } from "@backend/collections/user-detail/helpers/delete-user-service.js";
+import { UserCanDeleteUserDetail } from "@backend/collections/user-detail/helpers/user-can-delete-user-detail.js";
+import { Hook } from "@backend/hook/hook.js";
+import { BlError } from "@shared/bl-error/bl-error.js";
+import { AccessToken } from "@shared/token/access-token.js";
 import { z } from "zod";
 import { fromError } from "zod-validation-error";
 

@@ -1,5 +1,5 @@
-import { BlApiRequest } from "@backend/request/bl-api-request";
-import { BlapiResponse } from "@shared/blapi-response/blapi-response";
+import { BlApiRequest } from "@backend/request/bl-api-request.js";
+import { BlapiResponse } from "@shared/blapi-response/blapi-response.js";
 import { NextFunction, Request, Response } from "express";
 
 export interface Operation {

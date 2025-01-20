@@ -1,15 +1,15 @@
-import { APP_CONFIG } from "@backend/application-config";
-import { UserDetailHelper } from "@backend/collections/user-detail/helpers/user-detail.helper";
-import { assertEnv, BlEnvironment } from "@backend/config/environment";
-import { HttpHandler } from "@backend/http/http.handler";
-import { DibsEasyItem } from "@backend/payment/dibs/dibs-easy-item/dibs-easy-item";
-import { DibsEasyOrder } from "@backend/payment/dibs/dibs-easy-order/dibs-easy-order";
-import { DibsEasyPayment } from "@backend/payment/dibs/dibs-easy-payment/dibs-easy-payment";
-import { BlError } from "@shared/bl-error/bl-error";
-import { Delivery } from "@shared/delivery/delivery";
-import { Order } from "@shared/order/order";
-import { OrderItem } from "@shared/order/order-item/order-item";
-import { UserDetail } from "@shared/user/user-detail/user-detail";
+import { APP_CONFIG } from "@backend/application-config.js";
+import { UserDetailHelper } from "@backend/collections/user-detail/helpers/user-detail.helper.js";
+import { assertEnv, BlEnvironment } from "@backend/config/environment.js";
+import { HttpHandler } from "@backend/http/http.handler.js";
+import { DibsEasyItem } from "@backend/payment/dibs/dibs-easy-item/dibs-easy-item.js";
+import { DibsEasyOrder } from "@backend/payment/dibs/dibs-easy-order/dibs-easy-order.js";
+import { DibsEasyPayment } from "@backend/payment/dibs/dibs-easy-payment/dibs-easy-payment.js";
+import { BlError } from "@shared/bl-error/bl-error.js";
+import { Delivery } from "@shared/delivery/delivery.js";
+import { OrderItem } from "@shared/order/order-item/order-item.js";
+import { Order } from "@shared/order/order.js";
+import { UserDetail } from "@shared/user/user-detail/user-detail.js";
 
 export class DibsPaymentService {
   private userDetailHelper = new UserDetailHelper();

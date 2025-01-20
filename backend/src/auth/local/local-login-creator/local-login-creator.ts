@@ -1,10 +1,10 @@
-import { HashedPasswordGenerator } from "@backend/auth/local/password/hashed-password-generator";
-import { ProviderIdGenerator } from "@backend/auth/local/provider-id/provider-id-generator";
-import { SaltGenerator } from "@backend/auth/local/salt/salt-generator";
-import { LocalLogin } from "@backend/collections/local-login/local-login";
-import { SeCrypto } from "@backend/crypto/se.crypto";
-import { BlError } from "@shared/bl-error/bl-error";
-import isEmail from "validator/lib/isEmail";
+import { HashedPasswordGenerator } from "@backend/auth/local/password/hashed-password-generator.js";
+import { ProviderIdGenerator } from "@backend/auth/local/provider-id/provider-id-generator.js";
+import { SaltGenerator } from "@backend/auth/local/salt/salt-generator.js";
+import { LocalLogin } from "@backend/collections/local-login/local-login.js";
+import { SeCrypto } from "@backend/crypto/se.crypto.js";
+import { BlError } from "@shared/bl-error/bl-error.js";
+import validator from "validator";
 
 export class LocalLoginCreator {
   private hashedPasswordGenerator: HashedPasswordGenerator;
@@ -26,7 +26,7 @@ export class LocalLoginCreator {
       const blError = new BlError("")
         .className("LocalLoginCreator")
         .methodName("create");
-      if (!username || !isEmail(username))
+      if (!username || !validator.isEmail(username))
         return reject(
           blError
             .msg('username "' + username + '" is undefined or not an Email')

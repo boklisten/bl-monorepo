@@ -1,16 +1,16 @@
-import { CustomerItemHandler } from "@backend/collections/customer-item/helpers/customer-item-handler";
-import { OrderItemMovedFromOrderHandler } from "@backend/collections/order/helpers/order-item-moved-from-order-handler/order-item-moved-from-order-handler";
-import { PaymentHandler } from "@backend/collections/payment/helpers/payment-handler";
-import { userHasValidSignature } from "@backend/collections/signature/helpers/signature.helper";
-import { logger } from "@backend/logger/logger";
-import { Messenger } from "@backend/messenger/messenger";
-import { BlStorage } from "@backend/storage/bl-storage";
-import { BlError } from "@shared/bl-error/bl-error";
-import { Order } from "@shared/order/order";
-import { OrderItem } from "@shared/order/order-item/order-item";
-import { OrderItemType } from "@shared/order/order-item/order-item-type";
-import { AccessToken } from "@shared/token/access-token";
-import { UserDetail } from "@shared/user/user-detail/user-detail";
+import { CustomerItemHandler } from "@backend/collections/customer-item/helpers/customer-item-handler.js";
+import { OrderItemMovedFromOrderHandler } from "@backend/collections/order/helpers/order-item-moved-from-order-handler/order-item-moved-from-order-handler.js";
+import { PaymentHandler } from "@backend/collections/payment/helpers/payment-handler.js";
+import { userHasValidSignature } from "@backend/collections/signature/helpers/signature.helper.js";
+import { logger } from "@backend/logger/logger.js";
+import { Messenger } from "@backend/messenger/messenger.js";
+import { BlStorage } from "@backend/storage/bl-storage.js";
+import { BlError } from "@shared/bl-error/bl-error.js";
+import { OrderItemType } from "@shared/order/order-item/order-item-type.js";
+import { OrderItem } from "@shared/order/order-item/order-item.js";
+import { Order } from "@shared/order/order.js";
+import { AccessToken } from "@shared/token/access-token.js";
+import { UserDetail } from "@shared/user/user-detail/user-detail.js";
 
 export class OrderPlacedHandler {
   private paymentHandler: PaymentHandler;

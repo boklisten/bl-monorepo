@@ -1,14 +1,14 @@
-import { SEDbQuery } from "@backend/query/se.db-query";
-import { BlStorage } from "@backend/storage/bl-storage";
-import { BlError } from "@shared/bl-error/bl-error";
-import { Item } from "@shared/item/item";
+import { SEDbQuery } from "@backend/query/se.db-query.js";
+import { BlStorage } from "@backend/storage/bl-storage.js";
+import { BlError } from "@shared/bl-error/bl-error.js";
+import { Item } from "@shared/item/item.js";
 import {
   MatchRelevantItemDetails,
   MatchRelevantUserDetails,
   UserMatchWithDetails,
-} from "@shared/match/match-dtos";
-import { UserMatch } from "@shared/match/user-match";
-import { UserDetail } from "@shared/user/user-detail/user-detail";
+} from "@shared/match/match-dtos.js";
+import { UserMatch } from "@shared/match/user-match.js";
+import { UserDetail } from "@shared/user/user-detail/user-detail.js";
 
 function selectMatchRelevantUserDetails(
   userDetail?: UserDetail,

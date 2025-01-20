@@ -1,7 +1,7 @@
-import { CustomerItem } from "@shared/customer-item/customer-item";
-import { Message } from "@shared/message/message";
-import { Order } from "@shared/order/order";
-import { UserDetail } from "@shared/user/user-detail/user-detail";
+import { CustomerItem } from "@shared/customer-item/customer-item.js";
+import { Message } from "@shared/message/message.js";
+import { Order } from "@shared/order/order.js";
+import { UserDetail } from "@shared/user/user-detail/user-detail.js";
 
 export interface CustomerDetailWithCustomerItem {
   customerDetail: UserDetail;

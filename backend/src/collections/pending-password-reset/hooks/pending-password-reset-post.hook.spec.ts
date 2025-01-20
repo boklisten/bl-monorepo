@@ -1,10 +1,10 @@
-import { UserHandler } from "@backend/auth/user/user.handler";
-import { PendingPasswordResetPostHook } from "@backend/collections/pending-password-reset/hooks/pending-password-reset-post.hook";
-import { User } from "@backend/collections/user/user";
-import { SeCrypto } from "@backend/crypto/se.crypto";
-import { Messenger } from "@backend/messenger/messenger";
-import { BlError } from "@shared/bl-error/bl-error";
-import { PasswordResetRequest } from "@shared/password-reset/password-reset-request";
+import { UserHandler } from "@backend/auth/user/user.handler.js";
+import { PendingPasswordResetPostHook } from "@backend/collections/pending-password-reset/hooks/pending-password-reset-post.hook.js";
+import { User } from "@backend/collections/user/user.js";
+import { SeCrypto } from "@backend/crypto/se.crypto.js";
+import { Messenger } from "@backend/messenger/messenger.js";
+import { BlError } from "@shared/bl-error/bl-error.js";
+import { PasswordResetRequest } from "@shared/password-reset/password-reset-request.js";
 import { expect, use as chaiUse, should } from "chai";
 import chaiAsPromised from "chai-as-promised";
 import sinon from "sinon";

@@ -1,5 +1,5 @@
-import { BlModel } from "@backend/storage/bl-storage";
-import { EditableText } from "@shared/editable-text/editable-text";
+import { BlModel } from "@backend/storage/bl-storage.js";
+import { EditableText } from "@shared/editable-text/editable-text.js";
 import { Schema } from "mongoose";
 
 export const EditableTextModel: BlModel<EditableText> = {

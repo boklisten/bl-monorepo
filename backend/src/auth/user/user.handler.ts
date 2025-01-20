@@ -1,11 +1,11 @@
-import { Blid } from "@backend/auth/blid/blid";
-import { LocalLoginHandler } from "@backend/auth/local/local-login.handler";
-import { EmailValidationHelper } from "@backend/collections/email-validation/helpers/email-validation.helper";
-import { User } from "@backend/collections/user/user";
-import { SEDbQuery } from "@backend/query/se.db-query";
-import { BlStorage } from "@backend/storage/bl-storage";
-import { BlError } from "@shared/bl-error/bl-error";
-import { UserDetail } from "@shared/user/user-detail/user-detail";
+import { Blid } from "@backend/auth/blid/blid.js";
+import { LocalLoginHandler } from "@backend/auth/local/local-login.handler.js";
+import { EmailValidationHelper } from "@backend/collections/email-validation/helpers/email-validation.helper.js";
+import { User } from "@backend/collections/user/user.js";
+import { SEDbQuery } from "@backend/query/se.db-query.js";
+import { BlStorage } from "@backend/storage/bl-storage.js";
+import { BlError } from "@shared/bl-error/bl-error.js";
+import { UserDetail } from "@shared/user/user-detail/user-detail.js";
 
 export class UserHandler {
   private blid: Blid;

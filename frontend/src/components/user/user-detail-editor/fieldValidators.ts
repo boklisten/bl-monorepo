@@ -3,7 +3,7 @@ import { UserEditorFields } from "@frontend/components/user/user-detail-editor/u
 import BL_CONFIG from "@frontend/utils/bl-config";
 import moment from "moment/moment";
 import { RegisterOptions } from "react-hook-form";
-import isEmail from "validator/lib/isEmail";
+import validator from "validator";
 import isMobilePhone from "validator/lib/isMobilePhone";
 import isPostalCode from "validator/lib/isPostalCode";
 
@@ -12,7 +12,8 @@ export const fieldValidators: {
 } = {
   email: {
     required: "Du må fylle inn e-post",
-    validate: (v) => (isEmail(v) ? true : "Du må fylle inn en gyldig e-post"),
+    validate: (v) =>
+      validator.isEmail(v) ? true : "Du må fylle inn en gyldig e-post",
   },
   password: {
     required: "Du må fylle inn passord",
@@ -88,7 +89,8 @@ export const fieldValidators: {
   guardianEmail: {
     required: "Du må fylle inn foresatt sin epost",
     validate: (v, otherFields) => {
-      if (!isEmail(v)) return "Du må fylle inn en gyldig e-post for foresatt";
+      if (!validator.isEmail(v))
+        return "Du må fylle inn en gyldig e-post for foresatt";
 
       if (v === otherFields.email)
         return `Foresatt sin e-post må være forskjellig fra kontoens e-post (${otherFields.email})`;

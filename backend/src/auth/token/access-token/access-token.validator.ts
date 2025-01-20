@@ -1,7 +1,7 @@
-import { AccessToken } from "@backend/auth/token/access-token/access-token";
-import { AccessTokenSecret } from "@backend/auth/token/access-token/access-token.secret";
-import { BlError } from "@shared/bl-error/bl-error";
-import { verify } from "jsonwebtoken";
+import { AccessToken } from "@backend/auth/token/access-token/access-token.js";
+import { AccessTokenSecret } from "@backend/auth/token/access-token/access-token.secret.js";
+import { BlError } from "@shared/bl-error/bl-error.js";
+import jwt from "jsonwebtoken";
 
 export class AccessTokenValidator {
   private accessTokenSecret: AccessTokenSecret;
@@ -16,17 +16,21 @@ export class AccessTokenValidator {
         return reject(new BlError("accessToken is empty or undefined"));
 
       try {
-        verify(accessToken, this.accessTokenSecret.get(), (error, payload) => {
-          if (error || payload === undefined)
-            return reject(
-              new BlError("could not verify jwt")
-                .store("accessToken", accessToken)
-                .code(910),
-            );
+        jwt.verify(
+          accessToken,
+          this.accessTokenSecret.get(),
+          (error, payload) => {
+            if (error || payload === undefined)
+              return reject(
+                new BlError("could not verify jwt")
+                  .store("accessToken", accessToken)
+                  .code(910),
+              );
 
-          // @ts-expect-error fixme: auto ignored
-          resolve(payload);
-        });
+            // @ts-expect-error fixme: auto ignored
+            resolve(payload);
+          },
+        );
       } catch {
         return reject(new BlError("could not verify accessToken").code(910));
       }

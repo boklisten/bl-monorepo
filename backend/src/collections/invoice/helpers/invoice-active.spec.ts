@@ -1,6 +1,6 @@
 import "mocha";
-import { InvoiceActive } from "@backend/collections/invoice/helpers/invoice-active";
-import { Invoice } from "@shared/invoice/invoice";
+import { InvoiceActive } from "@backend/collections/invoice/helpers/invoice-active.js";
+import { Invoice } from "@shared/invoice/invoice.js";
 import { expect, should } from "chai";
 
 describe("InvoiceActive", () => {

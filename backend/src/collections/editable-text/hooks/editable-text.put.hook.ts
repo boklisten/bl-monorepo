@@ -1,6 +1,6 @@
-import { Hook } from "@backend/hook/hook";
-import { BlError } from "@shared/bl-error/bl-error";
-import { EditableText } from "@shared/editable-text/editable-text";
+import { Hook } from "@backend/hook/hook.js";
+import { BlError } from "@shared/bl-error/bl-error.js";
+import { EditableText } from "@shared/editable-text/editable-text.js";
 
 export class EditableTextPutHook extends Hook {
   // Our PUT implementation resets creationTime, but it shouldn't matter for this use case

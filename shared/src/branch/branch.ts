@@ -1,6 +1,6 @@
-import { BlDocument } from "@shared/bl-document/bl-document";
-import { BranchPaymentInfo } from "@shared/branch/branch-payment-info";
-import { UserPermission } from "@shared/permission/user-permission";
+import { BlDocument } from "@shared/bl-document/bl-document.js";
+import { BranchPaymentInfo } from "@shared/branch/branch-payment-info.js";
+import { UserPermission } from "@shared/permission/user-permission.js";
 
 export interface Branch extends BlDocument {
   name: string; // the name of the branch

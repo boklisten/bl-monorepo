@@ -1,11 +1,11 @@
 import "mocha";
 
-import { PaymentDibsHandler } from "@backend/collections/payment/helpers/dibs/payment-dibs-handler";
-import { PaymentValidator } from "@backend/collections/payment/helpers/payment.validator";
-import { PaymentPatchHook } from "@backend/collections/payment/hooks/payment.patch.hook";
-import { BlStorage } from "@backend/storage/bl-storage";
-import { BlError } from "@shared/bl-error/bl-error";
-import { Payment } from "@shared/payment/payment";
+import { PaymentDibsHandler } from "@backend/collections/payment/helpers/dibs/payment-dibs-handler.js";
+import { PaymentValidator } from "@backend/collections/payment/helpers/payment.validator.js";
+import { PaymentPatchHook } from "@backend/collections/payment/hooks/payment.patch.hook.js";
+import { BlStorage } from "@backend/storage/bl-storage.js";
+import { BlError } from "@shared/bl-error/bl-error.js";
+import { Payment } from "@shared/payment/payment.js";
 import { expect, use as chaiUse, should } from "chai";
 import chaiAsPromised from "chai-as-promised";
 import sinon, { createSandbox } from "sinon";

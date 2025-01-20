@@ -1,9 +1,9 @@
-import { LocalLoginValidator } from "@backend/auth/local/local-login.validator";
-import { TokenHandler } from "@backend/auth/token/token.handler";
-import { ApiPath } from "@backend/config/api-path";
-import { SEResponseHandler } from "@backend/response/se.response.handler";
-import { BlError } from "@shared/bl-error/bl-error";
-import { BlapiResponse } from "@shared/blapi-response/blapi-response";
+import { LocalLoginValidator } from "@backend/auth/local/local-login.validator.js";
+import { TokenHandler } from "@backend/auth/token/token.handler.js";
+import { ApiPath } from "@backend/config/api-path.js";
+import { SEResponseHandler } from "@backend/response/se.response.handler.js";
+import { BlError } from "@shared/bl-error/bl-error.js";
+import { BlapiResponse } from "@shared/blapi-response/blapi-response.js";
 import { Response, Router } from "express";
 import passport from "passport";
 import { Strategy } from "passport-local";

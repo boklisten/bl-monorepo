@@ -1,10 +1,10 @@
 import "mocha";
 
-import { OrderPlacedHandler } from "@backend/collections/order/helpers/order-placed-handler/order-placed-handler";
-import { OrderConfirmOperation } from "@backend/collections/order/operations/confirm/order-confirm.operation";
-import { SEResponseHandler } from "@backend/response/se.response.handler";
-import { BlStorage } from "@backend/storage/bl-storage";
-import { BlError } from "@shared/bl-error/bl-error";
+import { OrderPlacedHandler } from "@backend/collections/order/helpers/order-placed-handler/order-placed-handler.js";
+import { OrderConfirmOperation } from "@backend/collections/order/operations/confirm/order-confirm.operation.js";
+import { SEResponseHandler } from "@backend/response/se.response.handler.js";
+import { BlStorage } from "@backend/storage/bl-storage.js";
+import { BlError } from "@shared/bl-error/bl-error.js";
 import { expect, use as chaiUse, should } from "chai";
 import chaiAsPromised from "chai-as-promised";
 import sinon, { createSandbox } from "sinon";

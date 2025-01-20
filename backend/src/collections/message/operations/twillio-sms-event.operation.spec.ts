@@ -1,8 +1,8 @@
 import "mocha";
 
-import { TwilioSmsEventOperation } from "@backend/collections/message/operations/twillio-sms-event.operation";
-import { BlStorage } from "@backend/storage/bl-storage";
-import { Message } from "@shared/message/message";
+import { TwilioSmsEventOperation } from "@backend/collections/message/operations/twillio-sms-event.operation.js";
+import { BlStorage } from "@backend/storage/bl-storage.js";
+import { Message } from "@shared/message/message.js";
 import { expect, use as chaiUse, should } from "chai";
 import chaiAsPromised from "chai-as-promised";
 import sinon, { createSandbox } from "sinon";

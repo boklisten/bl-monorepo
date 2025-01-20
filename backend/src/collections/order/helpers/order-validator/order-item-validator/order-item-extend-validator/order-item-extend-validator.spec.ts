@@ -1,11 +1,11 @@
 import "mocha";
 
-import { OrderItemExtendValidator } from "@backend/collections/order/helpers/order-validator/order-item-validator/order-item-extend-validator/order-item-extend-validator";
-import { BlStorage } from "@backend/storage/bl-storage";
-import { BlError } from "@shared/bl-error/bl-error";
-import { Branch } from "@shared/branch/branch";
-import { CustomerItem } from "@shared/customer-item/customer-item";
-import { Order } from "@shared/order/order";
+import { OrderItemExtendValidator } from "@backend/collections/order/helpers/order-validator/order-item-validator/order-item-extend-validator/order-item-extend-validator.js";
+import { BlStorage } from "@backend/storage/bl-storage.js";
+import { BlError } from "@shared/bl-error/bl-error.js";
+import { Branch } from "@shared/branch/branch.js";
+import { CustomerItem } from "@shared/customer-item/customer-item.js";
+import { Order } from "@shared/order/order.js";
 import { expect, use as chaiUse, should } from "chai";
 import chaiAsPromised from "chai-as-promised";
 import sinon, { createSandbox } from "sinon";

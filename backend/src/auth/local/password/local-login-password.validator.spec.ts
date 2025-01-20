@@ -1,7 +1,7 @@
 import "mocha";
-import { LocalLoginPasswordValidator } from "@backend/auth/local/password/local-login-password.validator";
-import { SeCrypto } from "@backend/crypto/se.crypto";
-import { BlError } from "@shared/bl-error/bl-error";
+import { LocalLoginPasswordValidator } from "@backend/auth/local/password/local-login-password.validator.js";
+import { SeCrypto } from "@backend/crypto/se.crypto.js";
+import { BlError } from "@shared/bl-error/bl-error.js";
 import { use as chaiUse, should } from "chai";
 import chaiAsPromised from "chai-as-promised";
 import sinon, { createSandbox } from "sinon";

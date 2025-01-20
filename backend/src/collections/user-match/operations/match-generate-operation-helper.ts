@@ -1,8 +1,8 @@
 import {
   MatchableUser,
   MatchLocationSchema,
-} from "@backend/collections/user-match/helpers/match-finder/match-types";
-import { BlStorage } from "@backend/storage/bl-storage";
+} from "@backend/collections/user-match/helpers/match-finder/match-types.js";
+import { BlStorage } from "@backend/storage/bl-storage.js";
 import { ObjectId } from "mongodb";
 import { z } from "zod";
 

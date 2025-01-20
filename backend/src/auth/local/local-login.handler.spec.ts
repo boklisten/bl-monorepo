@@ -1,10 +1,10 @@
 import "mocha";
 
-import { LocalLoginHandler } from "@backend/auth/local/local-login.handler";
-import { LocalLogin } from "@backend/collections/local-login/local-login";
-import { SEDbQuery } from "@backend/query/se.db-query";
-import { BlStorage } from "@backend/storage/bl-storage";
-import { BlError } from "@shared/bl-error/bl-error";
+import { LocalLoginHandler } from "@backend/auth/local/local-login.handler.js";
+import { LocalLogin } from "@backend/collections/local-login/local-login.js";
+import { SEDbQuery } from "@backend/query/se.db-query.js";
+import { BlStorage } from "@backend/storage/bl-storage.js";
+import { BlError } from "@shared/bl-error/bl-error.js";
 import { expect, use as chaiUse, should } from "chai";
 import chaiAsPromised from "chai-as-promised";
 import sinon, { createSandbox } from "sinon";

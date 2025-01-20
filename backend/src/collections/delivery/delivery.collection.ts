@@ -1,8 +1,8 @@
-import { BlCollection } from "@backend/collections/bl-collection";
-import { DeliveryPatchHook } from "@backend/collections/delivery/hooks/delivery.patch.hook";
-import { DeliveryPostHook } from "@backend/collections/delivery/hooks/delivery.post.hook";
-import { PostalCodeLookupOperation } from "@backend/collections/delivery/operations/postal-code-lookup.operation";
-import { BlStorage } from "@backend/storage/bl-storage";
+import { BlCollection } from "@backend/collections/bl-collection.js";
+import { DeliveryPatchHook } from "@backend/collections/delivery/hooks/delivery.patch.hook.js";
+import { DeliveryPostHook } from "@backend/collections/delivery/hooks/delivery.post.hook.js";
+import { PostalCodeLookupOperation } from "@backend/collections/delivery/operations/postal-code-lookup.operation.js";
+import { BlStorage } from "@backend/storage/bl-storage.js";
 
 export const DeliveryCollection: BlCollection = {
   storage: BlStorage.Deliveries,

@@ -1,13 +1,13 @@
 import "mocha";
 
-import { PaymentDibsConfirmer } from "@backend/collections/payment/helpers/dibs/payment-dibs-confirmer";
-import { PaymentHandler } from "@backend/collections/payment/helpers/payment-handler";
-import { DibsPaymentService } from "@backend/payment/dibs/dibs-payment.service";
-import { BlStorage } from "@backend/storage/bl-storage";
-import { BlError } from "@shared/bl-error/bl-error";
-import { Delivery } from "@shared/delivery/delivery";
-import { Order } from "@shared/order/order";
-import { Payment } from "@shared/payment/payment";
+import { PaymentDibsConfirmer } from "@backend/collections/payment/helpers/dibs/payment-dibs-confirmer.js";
+import { PaymentHandler } from "@backend/collections/payment/helpers/payment-handler.js";
+import { DibsPaymentService } from "@backend/payment/dibs/dibs-payment.service.js";
+import { BlStorage } from "@backend/storage/bl-storage.js";
+import { BlError } from "@shared/bl-error/bl-error.js";
+import { Delivery } from "@shared/delivery/delivery.js";
+import { Order } from "@shared/order/order.js";
+import { Payment } from "@shared/payment/payment.js";
 import { expect, use as chaiUse, should } from "chai";
 import chaiAsPromised from "chai-as-promised";
 import sinon, { createSandbox } from "sinon";

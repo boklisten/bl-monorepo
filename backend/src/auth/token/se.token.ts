@@ -1,6 +1,6 @@
-import { BlError } from "@shared/bl-error/bl-error";
-import { UserPermission } from "@shared/permission/user-permission";
-import { sign, verify } from "jsonwebtoken";
+import { BlError } from "@shared/bl-error/bl-error.js";
+import { UserPermission } from "@shared/permission/user-permission.js";
+import jwt from "jsonwebtoken";
 
 export interface JwtPayload {
   iss: string;
@@ -57,7 +57,7 @@ export class SEToken {
       return Promise.reject(blError.msg('blid "' + blid + '" is to short'));
 
     return new Promise((resolve, reject) => {
-      sign(
+      jwt.sign(
         this.createJwtPayload(username, permission, blid),
         this.getSecret(),
         (error, token) => {
@@ -85,7 +85,7 @@ export class SEToken {
     if (token.length <= 0) return Promise.reject(blError.msg("token is empty"));
 
     return new Promise((resolve, reject) => {
-      verify(token, this.getSecret(), (error, decoded) => {
+      jwt.verify(token, this.getSecret(), (error, decoded) => {
         if (error) {
           return reject(
             blError

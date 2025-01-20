@@ -1,4 +1,4 @@
-import { Period } from "@shared/period/period";
+import { Period } from "@shared/period/period.js";
 
 export interface OrderItemRentInfo {
   from: Date; //rent period start

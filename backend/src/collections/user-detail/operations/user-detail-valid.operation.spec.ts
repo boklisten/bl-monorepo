@@ -1,12 +1,12 @@
 import "mocha";
 
-import { UserDetailValidOperation } from "@backend/collections/user-detail/operations/user-detail-valid.operation";
-import { BlApiRequest } from "@backend/request/bl-api-request";
-import { SEResponseHandler } from "@backend/response/se.response.handler";
-import { BlStorage } from "@backend/storage/bl-storage";
-import { BlError } from "@shared/bl-error/bl-error";
-import { BlapiResponse } from "@shared/blapi-response/blapi-response";
-import { UserDetail } from "@shared/user/user-detail/user-detail";
+import { UserDetailValidOperation } from "@backend/collections/user-detail/operations/user-detail-valid.operation.js";
+import { BlApiRequest } from "@backend/request/bl-api-request.js";
+import { SEResponseHandler } from "@backend/response/se.response.handler.js";
+import { BlStorage } from "@backend/storage/bl-storage.js";
+import { BlError } from "@shared/bl-error/bl-error.js";
+import { BlapiResponse } from "@shared/blapi-response/blapi-response.js";
+import { UserDetail } from "@shared/user/user-detail/user-detail.js";
 import { expect, use as chaiUse, should } from "chai";
 import chaiAsPromised from "chai-as-promised";
 import sinon, { createSandbox } from "sinon";

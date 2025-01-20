@@ -14,7 +14,7 @@ import {
 } from "@mui/material";
 import { useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
-import isEmail from "validator/lib/isEmail";
+import validator from "validator";
 
 interface ForgotFields {
   email: string;
@@ -98,7 +98,9 @@ const ForgotPage = () => {
                 {...register("email", {
                   required: "Du må fylle inn epost",
                   validate: (v) =>
-                    isEmail(v) ? true : "Du må fylle inn en gyldig epost",
+                    validator.isEmail(v)
+                      ? true
+                      : "Du må fylle inn en gyldig epost",
                 })}
               />
               <Button

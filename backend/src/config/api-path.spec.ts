@@ -1,6 +1,6 @@
 import "mocha";
-import { APP_CONFIG } from "@backend/application-config";
-import { ApiPath } from "@backend/config/api-path";
+import { APP_CONFIG } from "@backend/application-config.js";
+import { ApiPath } from "@backend/config/api-path.js";
 import { expect, use as chaiUse, should } from "chai";
 import chaiAsPromised from "chai-as-promised";
 

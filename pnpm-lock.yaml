@@ -21,9 +21,9 @@ importers:
       '@next/eslint-plugin-next':
         specifier: ^15.1.4
         version: 15.1.4
-      '@tsconfig/recommended':
-        specifier: ^1.0.8
-        version: 1.0.8
+      '@tsconfig/node-lts':
+        specifier: ^22.0.1
+        version: 22.0.1
       '@tsconfig/strictest':
         specifier: ^2.0.5
         version: 2.0.5
@@ -2215,8 +2215,8 @@ packages:
   '@tsconfig/next@2.0.3':
     resolution: {integrity: sha512-b4aKvmdWnv9aUy+NStUFlefirk3SItW20OJtbi5/ue9oMRaQtUYbN5zsr7OmV3rlx6Gp6h7A82gPoCXhrNGVPQ==}
 
-  '@tsconfig/recommended@1.0.8':
-    resolution: {integrity: sha512-TotjFaaXveVUdsrXCdalyF6E5RyG6+7hHHQVZonQtdlk1rJZ1myDIvPUUKPhoYv+JAzThb2lQJh9+9ZfF46hsA==}
+  '@tsconfig/node-lts@22.0.1':
+    resolution: {integrity: sha512-BwlbLiYurZKrj+Pa6etSE1jXmr3VEDdgJto1jEYKcpBVwZZSWVkCPyFEFYbHdIOaFMlSTtV206DYPlT109aqug==}
 
   '@tsconfig/strictest@2.0.5':
     resolution: {integrity: sha512-ec4tjL2Rr0pkZ5hww65c+EEPYwxOi4Ryv+0MtjeaSQRJyq322Q27eOQiFbuNgw2hpL4hB1/W/HBGk3VKS43osg==}
@@ -7867,7 +7867,7 @@ snapshots:
 
   '@tsconfig/next@2.0.3': {}
 
-  '@tsconfig/recommended@1.0.8': {}
+  '@tsconfig/node-lts@22.0.1': {}
 
   '@tsconfig/strictest@2.0.5': {}
 

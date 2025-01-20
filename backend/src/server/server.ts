@@ -1,5 +1,5 @@
-import { assertEnv, BlEnvironment } from "@backend/config/environment";
-import { logger } from "@backend/logger/logger";
+import { assertEnv, BlEnvironment } from "@backend/config/environment.js";
+import { logger } from "@backend/logger/logger.js";
 import cors from "cors";
 import { Express, Request, RequestHandler, Response } from "express";
 import session from "express-session";

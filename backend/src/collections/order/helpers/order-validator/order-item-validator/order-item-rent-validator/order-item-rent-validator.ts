@@ -1,9 +1,9 @@
-import { OrderItemRentPeriodValidator } from "@backend/collections/order/helpers/order-validator/order-item-validator/order-item-rent-validator/order-item-rent-period-validator/order-item-rent-period-validator";
-import { isNullish } from "@backend/helper/typescript-helpers";
-import { BlError } from "@shared/bl-error/bl-error";
-import { Branch } from "@shared/branch/branch";
-import { Item } from "@shared/item/item";
-import { OrderItem } from "@shared/order/order-item/order-item";
+import { OrderItemRentPeriodValidator } from "@backend/collections/order/helpers/order-validator/order-item-validator/order-item-rent-validator/order-item-rent-period-validator/order-item-rent-period-validator.js";
+import { isNullish } from "@backend/helper/typescript-helpers.js";
+import { BlError } from "@shared/bl-error/bl-error.js";
+import { Branch } from "@shared/branch/branch.js";
+import { Item } from "@shared/item/item.js";
+import { OrderItem } from "@shared/order/order-item/order-item.js";
 
 export class OrderItemRentValidator {
   private orderItemRentPeriodValidator = new OrderItemRentPeriodValidator();

@@ -1,8 +1,8 @@
-import { EmailValidation } from "@backend/collections/email-validation/email-validation";
-import { Messenger } from "@backend/messenger/messenger";
-import { BlStorage } from "@backend/storage/bl-storage";
-import { BlError } from "@shared/bl-error/bl-error";
-import { UserDetail } from "@shared/user/user-detail/user-detail";
+import { EmailValidation } from "@backend/collections/email-validation/email-validation.js";
+import { Messenger } from "@backend/messenger/messenger.js";
+import { BlStorage } from "@backend/storage/bl-storage.js";
+import { BlError } from "@shared/bl-error/bl-error.js";
+import { UserDetail } from "@shared/user/user-detail/user-detail.js";
 
 export class EmailValidationHelper {
   private messenger: Messenger;

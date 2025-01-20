@@ -2,7 +2,7 @@ import "mocha";
 import {
   DbQueryValidParams,
   ValidParameter,
-} from "@backend/query/valid-param/db-query-valid-params";
+} from "@backend/query/valid-param/db-query-valid-params.js";
 import { expect, use as chaiUse, should } from "chai";
 import chaiAsPromised from "chai-as-promised";
 

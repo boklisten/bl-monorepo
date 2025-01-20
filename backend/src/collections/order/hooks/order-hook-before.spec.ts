@@ -1,6 +1,6 @@
 import "mocha";
-import { OrderHookBefore } from "@backend/collections/order/hooks/order-hook-before";
-import { BlError } from "@shared/bl-error/bl-error";
+import { OrderHookBefore } from "@backend/collections/order/hooks/order-hook-before.js";
+import { BlError } from "@shared/bl-error/bl-error.js";
 import { expect, use as chaiUse, should } from "chai";
 import chaiAsPromised from "chai-as-promised";
 

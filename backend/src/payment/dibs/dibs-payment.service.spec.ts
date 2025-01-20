@@ -1,12 +1,12 @@
 import "mocha";
 
-import { HttpHandler } from "@backend/http/http.handler";
-import { DibsEasyOrder } from "@backend/payment/dibs/dibs-easy-order/dibs-easy-order";
-import { DibsPaymentService } from "@backend/payment/dibs/dibs-payment.service";
-import { BlStorage } from "@backend/storage/bl-storage";
-import { BlError } from "@shared/bl-error/bl-error";
-import { Delivery } from "@shared/delivery/delivery";
-import { Order } from "@shared/order/order";
+import { HttpHandler } from "@backend/http/http.handler.js";
+import { DibsEasyOrder } from "@backend/payment/dibs/dibs-easy-order/dibs-easy-order.js";
+import { DibsPaymentService } from "@backend/payment/dibs/dibs-payment.service.js";
+import { BlStorage } from "@backend/storage/bl-storage.js";
+import { BlError } from "@shared/bl-error/bl-error.js";
+import { Delivery } from "@shared/delivery/delivery.js";
+import { Order } from "@shared/order/order.js";
 import { expect, use as chaiUse, should } from "chai";
 import chaiAsPromised from "chai-as-promised";
 import sinon from "sinon";

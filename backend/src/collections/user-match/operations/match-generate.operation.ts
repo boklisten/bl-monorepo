@@ -1,15 +1,15 @@
-import { MatchFinder } from "@backend/collections/user-match/helpers/match-finder/match-finder";
+import { MatchFinder } from "@backend/collections/user-match/helpers/match-finder/match-finder.js";
 import {
   getMatchableUsers,
   MatchGenerateSpec,
-} from "@backend/collections/user-match/operations/match-generate-operation-helper";
-import { Operation } from "@backend/operation/operation";
-import { BlApiRequest } from "@backend/request/bl-api-request";
-import { BlStorage } from "@backend/storage/bl-storage";
-import { BlError } from "@shared/bl-error/bl-error";
-import { BlapiResponse } from "@shared/blapi-response/blapi-response";
-import { StandMatch } from "@shared/match/stand-match";
-import { UserMatch } from "@shared/match/user-match";
+} from "@backend/collections/user-match/operations/match-generate-operation-helper.js";
+import { Operation } from "@backend/operation/operation.js";
+import { BlApiRequest } from "@backend/request/bl-api-request.js";
+import { BlStorage } from "@backend/storage/bl-storage.js";
+import { BlError } from "@shared/bl-error/bl-error.js";
+import { BlapiResponse } from "@shared/blapi-response/blapi-response.js";
+import { StandMatch } from "@shared/match/stand-match.js";
+import { UserMatch } from "@shared/match/user-match.js";
 import { fromError } from "zod-validation-error";
 
 export class MatchGenerateOperation implements Operation {

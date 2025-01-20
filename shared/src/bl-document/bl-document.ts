@@ -1,4 +1,4 @@
-import { UserPermissionEnum } from "@shared/permission/user-permission";
+import { UserPermissionEnum } from "@shared/permission/user-permission.js";
 import { z } from "zod";
 
 export const BlDocumentSchema = z.object({

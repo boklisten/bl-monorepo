@@ -1,7 +1,7 @@
-import { BlModel } from "@backend/storage/bl-storage";
-import { ItemModel } from "@backend/storage/models/item.model";
-import { UserDetailModel } from "@backend/storage/models/user-detail.model";
-import { StandMatch } from "@shared/match/stand-match";
+import { BlModel } from "@backend/storage/bl-storage.js";
+import { ItemModel } from "@backend/storage/models/item.model.js";
+import { UserDetailModel } from "@backend/storage/models/user-detail.model.js";
+import { StandMatch } from "@shared/match/stand-match.js";
 import { Schema } from "mongoose";
 
 const { ObjectId } = Schema.Types;

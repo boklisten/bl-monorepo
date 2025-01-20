@@ -1,6 +1,6 @@
 import "mocha";
-import { JwtPayload, SEToken } from "@backend/auth/token/se.token";
-import { BlError } from "@shared/bl-error/bl-error";
+import { JwtPayload, SEToken } from "@backend/auth/token/se.token.js";
+import { BlError } from "@shared/bl-error/bl-error.js";
 import { use as chaiUse, should } from "chai";
 import chaiAsPromised from "chai-as-promised";
 

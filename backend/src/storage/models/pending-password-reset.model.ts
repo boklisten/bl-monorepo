@@ -1,5 +1,5 @@
-import { BlModel } from "@backend/storage/bl-storage";
-import { PendingPasswordReset } from "@shared/password-reset/pending-password-reset";
+import { BlModel } from "@backend/storage/bl-storage.js";
+import { PendingPasswordReset } from "@shared/password-reset/pending-password-reset.js";
 import { Schema } from "mongoose";
 
 export const PendingPasswordResetModel: BlModel<PendingPasswordReset> = {

@@ -1,8 +1,8 @@
-import { DibsEasyPaymentConsumer } from "@backend/payment/dibs/dibs-easy-payment/dibs-easy-payment-consumer/dibs-easy-payment-consumer";
-import { DibsEasyPaymentDetails } from "@backend/payment/dibs/dibs-easy-payment/dibs-easy-payment-details/dibs-easy-payment-details";
-import { DibsEasyPaymentOrderDetails } from "@backend/payment/dibs/dibs-easy-payment/dibs-easy-payment-order-details/dibs-easy-payment-order-details";
-import { DibsEasyPaymentRefund } from "@backend/payment/dibs/dibs-easy-payment/dibs-easy-payment-refund/dibs-easy-payment-refund";
-import { DibsEasyPaymentSummary } from "@backend/payment/dibs/dibs-easy-payment/dibs-easy-payment-summary/dibs-easy-payment-summary";
+import { DibsEasyPaymentConsumer } from "@backend/payment/dibs/dibs-easy-payment/dibs-easy-payment-consumer/dibs-easy-payment-consumer.js";
+import { DibsEasyPaymentDetails } from "@backend/payment/dibs/dibs-easy-payment/dibs-easy-payment-details/dibs-easy-payment-details.js";
+import { DibsEasyPaymentOrderDetails } from "@backend/payment/dibs/dibs-easy-payment/dibs-easy-payment-order-details/dibs-easy-payment-order-details.js";
+import { DibsEasyPaymentRefund } from "@backend/payment/dibs/dibs-easy-payment/dibs-easy-payment-refund/dibs-easy-payment-refund.js";
+import { DibsEasyPaymentSummary } from "@backend/payment/dibs/dibs-easy-payment/dibs-easy-payment-summary/dibs-easy-payment-summary.js";
 
 export interface DibsEasyPayment {
   paymentId: string;

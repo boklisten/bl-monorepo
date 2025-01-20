@@ -1,10 +1,10 @@
 import "mocha";
 
-import { OpeningHourHelper } from "@backend/collections/opening-hour/helpers/opening-hour-helper";
-import { BlStorage } from "@backend/storage/bl-storage";
-import { BlError } from "@shared/bl-error/bl-error";
-import { Branch } from "@shared/branch/branch";
-import { OpeningHour } from "@shared/opening-hour/opening-hour";
+import { OpeningHourHelper } from "@backend/collections/opening-hour/helpers/opening-hour-helper.js";
+import { BlStorage } from "@backend/storage/bl-storage.js";
+import { BlError } from "@shared/bl-error/bl-error.js";
+import { Branch } from "@shared/branch/branch.js";
+import { OpeningHour } from "@shared/opening-hour/opening-hour.js";
 import { use as chaiUse, should } from "chai";
 import chaiAsPromised from "chai-as-promised";
 import moment from "moment-timezone";

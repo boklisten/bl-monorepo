@@ -1,6 +1,6 @@
-import { OrderItemInfo } from "@shared/order/order-item/order-item-info";
-import { OrderItemType } from "@shared/order/order-item/order-item-type";
-import { PaymentDiscount } from "@shared/payment/payment-discount/payment-discount";
+import { OrderItemInfo } from "@shared/order/order-item/order-item-info.js";
+import { OrderItemType } from "@shared/order/order-item/order-item-type.js";
+import { PaymentDiscount } from "@shared/payment/payment-discount/payment-discount.js";
 
 export interface OrderItem {
   type: OrderItemType; //the operation on this OrderItem

@@ -1,12 +1,12 @@
-import { BlError } from "@shared/bl-error/bl-error";
+import { BlError } from "@shared/bl-error/bl-error.js";
 import { expect, use as chaiUse, should } from "chai";
 import chaiAsPromised from "chai-as-promised";
 import "mocha";
 import sinon from "sinon";
-import { LocalLoginHandler } from "@backend/auth/local/local-login.handler";
-import { TokenHandler } from "@backend/auth/token/token.handler";
-import { UserProvider } from "@backend/auth/user/user-provider/user-provider";
-import { UserHandler } from "@backend/auth/user/user.handler";
+import { LocalLoginHandler } from "@backend/auth/local/local-login.handler.js";
+import { TokenHandler } from "@backend/auth/token/token.handler.js";
+import { UserProvider } from "@backend/auth/user/user-provider/user-provider.js";
+import { UserHandler } from "@backend/auth/user/user.handler.js";
 
 chaiUse(chaiAsPromised);
 should();

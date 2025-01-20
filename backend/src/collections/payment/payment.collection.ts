@@ -1,8 +1,8 @@
-import { BlCollection } from "@backend/collections/bl-collection";
-import { PaymentGetAllHook } from "@backend/collections/payment/hooks/payment.get-all.hook";
-import { PaymentPatchHook } from "@backend/collections/payment/hooks/payment.patch.hook";
-import { PaymentPostHook } from "@backend/collections/payment/hooks/payment.post.hook";
-import { BlStorage } from "@backend/storage/bl-storage";
+import { BlCollection } from "@backend/collections/bl-collection.js";
+import { PaymentGetAllHook } from "@backend/collections/payment/hooks/payment.get-all.hook.js";
+import { PaymentPatchHook } from "@backend/collections/payment/hooks/payment.patch.hook.js";
+import { PaymentPostHook } from "@backend/collections/payment/hooks/payment.post.hook.js";
+import { BlStorage } from "@backend/storage/bl-storage.js";
 
 export const PaymentCollection: BlCollection = {
   storage: BlStorage.Payments,

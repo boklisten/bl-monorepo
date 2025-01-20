@@ -1,9 +1,9 @@
-import { Hook } from "@backend/hook/hook";
-import { Operation } from "@backend/operation/operation";
-import { ValidParameter } from "@backend/query/valid-param/db-query-valid-params";
-import { BlStorageHandler } from "@backend/storage/bl-storage";
-import { NestedDocument } from "@backend/storage/nested-document";
-import { UserPermission } from "@shared/permission/user-permission";
+import { Hook } from "@backend/hook/hook.js";
+import { Operation } from "@backend/operation/operation.js";
+import { ValidParameter } from "@backend/query/valid-param/db-query-valid-params.js";
+import { BlStorageHandler } from "@backend/storage/bl-storage.js";
+import { NestedDocument } from "@backend/storage/nested-document.js";
+import { UserPermission } from "@shared/permission/user-permission.js";
 
 export interface BlCollection {
   storage: BlStorageHandler;

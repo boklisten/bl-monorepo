@@ -1,5 +1,5 @@
-import { BlError } from "@shared/bl-error/bl-error";
-import { Delivery } from "@shared/delivery/delivery";
+import { BlError } from "@shared/bl-error/bl-error.js";
+import { Delivery } from "@shared/delivery/delivery.js";
 
 export class DeliveryBranchHandler {
   validate(delivery: Delivery): Promise<boolean> {

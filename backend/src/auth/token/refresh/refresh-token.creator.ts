@@ -1,8 +1,8 @@
-import { RefreshTokenSecret } from "@backend/auth/token/refresh/refresh-token.secret";
-import { TokenConfig } from "@backend/auth/token/token.config";
-import { BlError } from "@shared/bl-error/bl-error";
-import { sign } from "jsonwebtoken";
-import isEmail from "validator/lib/isEmail";
+import { RefreshTokenSecret } from "@backend/auth/token/refresh/refresh-token.secret.js";
+import { TokenConfig } from "@backend/auth/token/token.config.js";
+import { BlError } from "@shared/bl-error/bl-error.js";
+import jwt from "jsonwebtoken";
+import validator from "validator";
 
 export class RefreshTokenCreator {
   private refreshTokenSecret: RefreshTokenSecret;
@@ -19,14 +19,14 @@ export class RefreshTokenCreator {
         .store("username", username)
         .store("userid", userid);
 
-      if (!username || !isEmail(username))
+      if (!username || !validator.isEmail(username))
         return reject(
           blError.msg("username is undefined or not an email").code(103),
         );
       if (!userid || userid.length <= 0)
         return reject(blError.msg("userid is empty or undefined").code(103));
 
-      sign(
+      jwt.sign(
         this.createPayload(username, userid),
         this.refreshTokenSecret.get(),
         { expiresIn: this.tokenConfig.refreshToken.expiresIn },

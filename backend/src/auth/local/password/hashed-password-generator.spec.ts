@@ -1,8 +1,8 @@
 import "mocha";
-import { HashedPasswordGenerator } from "@backend/auth/local/password/hashed-password-generator";
-import { SaltGenerator } from "@backend/auth/local/salt/salt-generator";
-import { SeCrypto } from "@backend/crypto/se.crypto";
-import { BlError } from "@shared/bl-error/bl-error";
+import { HashedPasswordGenerator } from "@backend/auth/local/password/hashed-password-generator.js";
+import { SaltGenerator } from "@backend/auth/local/salt/salt-generator.js";
+import { SeCrypto } from "@backend/crypto/se.crypto.js";
+import { BlError } from "@shared/bl-error/bl-error.js";
 import { use as chaiUse, should } from "chai";
 import chaiAsPromised from "chai-as-promised";
 

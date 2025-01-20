@@ -1,12 +1,12 @@
 import "mocha";
 
-import { CustomerItemHandler } from "@backend/collections/customer-item/helpers/customer-item-handler";
-import { EmailService } from "@backend/messenger/email/email-service";
-import { MessengerReminder } from "@backend/messenger/reminder/messenger-reminder";
-import { BlStorage } from "@backend/storage/bl-storage";
-import { CustomerItem } from "@shared/customer-item/customer-item";
-import { Message } from "@shared/message/message";
-import { UserDetail } from "@shared/user/user-detail/user-detail";
+import { CustomerItemHandler } from "@backend/collections/customer-item/helpers/customer-item-handler.js";
+import { EmailService } from "@backend/messenger/email/email-service.js";
+import { MessengerReminder } from "@backend/messenger/reminder/messenger-reminder.js";
+import { BlStorage } from "@backend/storage/bl-storage.js";
+import { CustomerItem } from "@shared/customer-item/customer-item.js";
+import { Message } from "@shared/message/message.js";
+import { UserDetail } from "@shared/user/user-detail/user-detail.js";
 import { expect, use as chaiUse, should } from "chai";
 import chaiAsPromised from "chai-as-promised";
 import sinon, { createSandbox } from "sinon";

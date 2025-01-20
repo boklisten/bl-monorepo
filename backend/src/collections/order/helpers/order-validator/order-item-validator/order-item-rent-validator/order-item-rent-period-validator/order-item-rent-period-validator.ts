@@ -1,12 +1,12 @@
-import { APP_CONFIG } from "@backend/application-config";
-import { isNotNullish } from "@backend/helper/typescript-helpers";
-import { PriceService } from "@backend/price/price.service";
-import { BlStorage } from "@backend/storage/bl-storage";
-import { BlError } from "@shared/bl-error/bl-error";
-import { BranchPaymentInfo } from "@shared/branch/branch-payment-info";
-import { Order } from "@shared/order/order";
-import { OrderItem } from "@shared/order/order-item/order-item";
-import { Period } from "@shared/period/period";
+import { APP_CONFIG } from "@backend/application-config.js";
+import { isNotNullish } from "@backend/helper/typescript-helpers.js";
+import { PriceService } from "@backend/price/price.service.js";
+import { BlStorage } from "@backend/storage/bl-storage.js";
+import { BlError } from "@shared/bl-error/bl-error.js";
+import { BranchPaymentInfo } from "@shared/branch/branch-payment-info.js";
+import { OrderItem } from "@shared/order/order-item/order-item.js";
+import { Order } from "@shared/order/order.js";
+import { Period } from "@shared/period/period.js";
 
 interface BranchPaymentPeriod {
   type: Period;

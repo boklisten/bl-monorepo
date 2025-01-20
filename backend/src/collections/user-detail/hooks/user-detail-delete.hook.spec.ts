@@ -1,15 +1,15 @@
 import "mocha";
 
-import { CustomerHaveActiveCustomerItems } from "@backend/collections/customer-item/helpers/customer-have-active-customer-items";
-import { CustomerInvoiceActive } from "@backend/collections/invoice/helpers/customer-invoice-active";
-import { OrderActive } from "@backend/collections/order/helpers/order-active/order-active";
-import { DeleteUserService } from "@backend/collections/user-detail/helpers/delete-user-service";
-import { UserCanDeleteUserDetail } from "@backend/collections/user-detail/helpers/user-can-delete-user-detail";
-import { UserDetailDeleteHook } from "@backend/collections/user-detail/hooks/user-detail-delete.hook";
-import { BlStorage } from "@backend/storage/bl-storage";
-import { BlError } from "@shared/bl-error/bl-error";
-import { AccessToken } from "@shared/token/access-token";
-import { UserDetail } from "@shared/user/user-detail/user-detail";
+import { CustomerHaveActiveCustomerItems } from "@backend/collections/customer-item/helpers/customer-have-active-customer-items.js";
+import { CustomerInvoiceActive } from "@backend/collections/invoice/helpers/customer-invoice-active.js";
+import { OrderActive } from "@backend/collections/order/helpers/order-active/order-active.js";
+import { DeleteUserService } from "@backend/collections/user-detail/helpers/delete-user-service.js";
+import { UserCanDeleteUserDetail } from "@backend/collections/user-detail/helpers/user-can-delete-user-detail.js";
+import { UserDetailDeleteHook } from "@backend/collections/user-detail/hooks/user-detail-delete.hook.js";
+import { BlStorage } from "@backend/storage/bl-storage.js";
+import { BlError } from "@shared/bl-error/bl-error.js";
+import { AccessToken } from "@shared/token/access-token.js";
+import { UserDetail } from "@shared/user/user-detail/user-detail.js";
 import { expect, use as chaiUse, should } from "chai";
 import chaiAsPromised from "chai-as-promised";
 import sinon from "sinon";

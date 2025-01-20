@@ -1,6 +1,6 @@
-import { BlDocument } from "@shared/bl-document/bl-document";
-import { CustomerItemType } from "@shared/customer-item/customer-item-type";
-import { Period } from "@shared/period/period";
+import { BlDocument } from "@shared/bl-document/bl-document.js";
+import { CustomerItemType } from "@shared/customer-item/customer-item-type.js";
+import { Period } from "@shared/period/period.js";
 
 /**
  * A CustomerItem is an item that the customer is holding, either by renting

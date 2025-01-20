@@ -1,9 +1,9 @@
-import { PriceService } from "@backend/price/price.service";
-import { BlStorage } from "@backend/storage/bl-storage";
-import { BlError } from "@shared/bl-error/bl-error";
-import { Item } from "@shared/item/item";
-import { Order } from "@shared/order/order";
-import { OrderItem } from "@shared/order/order-item/order-item";
+import { PriceService } from "@backend/price/price.service.js";
+import { BlStorage } from "@backend/storage/bl-storage.js";
+import { BlError } from "@shared/bl-error/bl-error.js";
+import { Item } from "@shared/item/item.js";
+import { OrderItem } from "@shared/order/order-item/order-item.js";
+import { Order } from "@shared/order/order.js";
 
 export class OrderItemBuyValidator {
   private priceService: PriceService;

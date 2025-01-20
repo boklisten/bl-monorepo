@@ -1,16 +1,16 @@
-import { OrderFieldValidator } from "@backend/collections/order/helpers/order-validator/order-field-validator/order-field-validator";
-import { OrderItemBuyValidator } from "@backend/collections/order/helpers/order-validator/order-item-validator/order-item-buy-validator/order-item-buy-validator";
-import { OrderItemExtendValidator } from "@backend/collections/order/helpers/order-validator/order-item-validator/order-item-extend-validator/order-item-extend-validator";
-import { OrderItemPartlyPaymentValidator } from "@backend/collections/order/helpers/order-validator/order-item-validator/order-item-partly-payment-validator/order-item-partly-payment-validator";
-import { OrderItemRentValidator } from "@backend/collections/order/helpers/order-validator/order-item-validator/order-item-rent-validator/order-item-rent-validator";
-import { isNotNullish } from "@backend/helper/typescript-helpers";
-import { PriceService } from "@backend/price/price.service";
-import { BlStorage } from "@backend/storage/bl-storage";
-import { BlError } from "@shared/bl-error/bl-error";
-import { Branch } from "@shared/branch/branch";
-import { Item } from "@shared/item/item";
-import { Order } from "@shared/order/order";
-import { OrderItem } from "@shared/order/order-item/order-item";
+import { OrderFieldValidator } from "@backend/collections/order/helpers/order-validator/order-field-validator/order-field-validator.js";
+import { OrderItemBuyValidator } from "@backend/collections/order/helpers/order-validator/order-item-validator/order-item-buy-validator/order-item-buy-validator.js";
+import { OrderItemExtendValidator } from "@backend/collections/order/helpers/order-validator/order-item-validator/order-item-extend-validator/order-item-extend-validator.js";
+import { OrderItemPartlyPaymentValidator } from "@backend/collections/order/helpers/order-validator/order-item-validator/order-item-partly-payment-validator/order-item-partly-payment-validator.js";
+import { OrderItemRentValidator } from "@backend/collections/order/helpers/order-validator/order-item-validator/order-item-rent-validator/order-item-rent-validator.js";
+import { isNotNullish } from "@backend/helper/typescript-helpers.js";
+import { PriceService } from "@backend/price/price.service.js";
+import { BlStorage } from "@backend/storage/bl-storage.js";
+import { BlError } from "@shared/bl-error/bl-error.js";
+import { Branch } from "@shared/branch/branch.js";
+import { Item } from "@shared/item/item.js";
+import { OrderItem } from "@shared/order/order-item/order-item.js";
+import { Order } from "@shared/order/order.js";
 
 export class OrderItemValidator {
   private orderItemFieldValidator: OrderFieldValidator;

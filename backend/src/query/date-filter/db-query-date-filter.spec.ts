@@ -1,5 +1,5 @@
 import "mocha";
-import { DbQueryDateFilter } from "@backend/query/date-filter/db-query-date-filter";
+import { DbQueryDateFilter } from "@backend/query/date-filter/db-query-date-filter.js";
 import { expect, use as chaiUse, should } from "chai";
 import chaiAsPromised from "chai-as-promised";
 import moment from "moment";

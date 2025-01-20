@@ -17,7 +17,7 @@ import TextField from "@mui/material/TextField";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
-import isEmail from "validator/lib/isEmail";
+import validator from "validator";
 
 interface SignInFields {
   email: string;
@@ -113,7 +113,9 @@ export default function SignIn() {
             autoComplete="email"
             {...register("email", {
               validate: (v) =>
-                !v || isEmail(v) ? true : "Du må fylle inn en gyldig e-post",
+                !v || validator.isEmail(v)
+                  ? true
+                  : "Du må fylle inn en gyldig e-post",
             })}
             slotProps={{
               htmlInput: {

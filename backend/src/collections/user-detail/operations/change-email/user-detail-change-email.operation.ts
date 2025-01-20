@@ -1,16 +1,16 @@
-import { PermissionService } from "@backend/auth/permission/permission.service";
-import { UserHandler } from "@backend/auth/user/user.handler";
-import { LocalLogin } from "@backend/collections/local-login/local-login";
-import { User } from "@backend/collections/user/user";
-import { isNotNullish, isNullish } from "@backend/helper/typescript-helpers";
-import { Operation } from "@backend/operation/operation";
-import { BlApiRequest } from "@backend/request/bl-api-request";
-import { SEResponseHandler } from "@backend/response/se.response.handler";
-import { BlStorage } from "@backend/storage/bl-storage";
-import { BlError } from "@shared/bl-error/bl-error";
-import { BlapiResponse } from "@shared/blapi-response/blapi-response";
+import { PermissionService } from "@backend/auth/permission/permission.service.js";
+import { UserHandler } from "@backend/auth/user/user.handler.js";
+import { LocalLogin } from "@backend/collections/local-login/local-login.js";
+import { User } from "@backend/collections/user/user.js";
+import { isNotNullish, isNullish } from "@backend/helper/typescript-helpers.js";
+import { Operation } from "@backend/operation/operation.js";
+import { BlApiRequest } from "@backend/request/bl-api-request.js";
+import { SEResponseHandler } from "@backend/response/se.response.handler.js";
+import { BlStorage } from "@backend/storage/bl-storage.js";
+import { BlError } from "@shared/bl-error/bl-error.js";
+import { BlapiResponse } from "@shared/blapi-response/blapi-response.js";
 import { Request, Response } from "express";
-import isEmail from "validator/lib/isEmail";
+import validator from "validator";
 
 export class UserDetailChangeEmailOperation implements Operation {
   private userHandler: UserHandler;
@@ -120,7 +120,7 @@ export class UserDetailChangeEmailOperation implements Operation {
   }
 
   private validateEmail(email: string) {
-    if (isNullish(email) || !isEmail(email)) {
+    if (isNullish(email) || !validator.isEmail(email)) {
       throw new BlError("email is not valid").code(701);
     }
   }

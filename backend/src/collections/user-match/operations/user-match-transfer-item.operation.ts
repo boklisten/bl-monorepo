@@ -1,22 +1,22 @@
-import { CustomerItemActiveBlid } from "@backend/collections/customer-item/helpers/customer-item-active-blid";
-import { OrderToCustomerItemGenerator } from "@backend/collections/customer-item/helpers/order-to-customer-item-generator";
-import { OrderItemMovedFromOrderHandler } from "@backend/collections/order/helpers/order-item-moved-from-order-handler/order-item-moved-from-order-handler";
-import { OrderValidator } from "@backend/collections/order/helpers/order-validator/order-validator";
+import { CustomerItemActiveBlid } from "@backend/collections/customer-item/helpers/customer-item-active-blid.js";
+import { OrderToCustomerItemGenerator } from "@backend/collections/customer-item/helpers/order-to-customer-item-generator.js";
+import { OrderItemMovedFromOrderHandler } from "@backend/collections/order/helpers/order-item-moved-from-order-handler/order-item-moved-from-order-handler.js";
+import { OrderValidator } from "@backend/collections/order/helpers/order-validator/order-validator.js";
 import {
   createMatchDeliverOrder,
   createMatchReceiveOrder,
-} from "@backend/collections/user-match/operations/user-match-operation-utils";
-import { isNullish } from "@backend/helper/typescript-helpers";
-import { Operation } from "@backend/operation/operation";
-import { SEDbQuery } from "@backend/query/se.db-query";
-import { BlApiRequest } from "@backend/request/bl-api-request";
-import { BlStorage } from "@backend/storage/bl-storage";
-import { BlError } from "@shared/bl-error/bl-error";
-import { BlapiResponse } from "@shared/blapi-response/blapi-response";
-import { CustomerItem } from "@shared/customer-item/customer-item";
-import { StandMatch } from "@shared/match/stand-match";
-import { UserMatch } from "@shared/match/user-match";
-import { Order } from "@shared/order/order";
+} from "@backend/collections/user-match/operations/user-match-operation-utils.js";
+import { isNullish } from "@backend/helper/typescript-helpers.js";
+import { Operation } from "@backend/operation/operation.js";
+import { SEDbQuery } from "@backend/query/se.db-query.js";
+import { BlApiRequest } from "@backend/request/bl-api-request.js";
+import { BlStorage } from "@backend/storage/bl-storage.js";
+import { BlError } from "@shared/bl-error/bl-error.js";
+import { BlapiResponse } from "@shared/blapi-response/blapi-response.js";
+import { CustomerItem } from "@shared/customer-item/customer-item.js";
+import { StandMatch } from "@shared/match/stand-match.js";
+import { UserMatch } from "@shared/match/user-match.js";
+import { Order } from "@shared/order/order.js";
 import { ObjectId } from "mongodb";
 import { z } from "zod";
 import { fromError } from "zod-validation-error";

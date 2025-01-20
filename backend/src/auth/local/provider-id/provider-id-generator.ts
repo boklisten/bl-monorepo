@@ -1,7 +1,7 @@
 import crypto from "node:crypto";
 
-import { SeCrypto } from "@backend/crypto/se.crypto";
-import { BlError } from "@shared/bl-error/bl-error";
+import { SeCrypto } from "@backend/crypto/se.crypto.js";
+import { BlError } from "@shared/bl-error/bl-error.js";
 
 export class ProviderIdGenerator {
   constructor(private seCrypto: SeCrypto) {}

@@ -1,5 +1,5 @@
-import { BlModel } from "@backend/storage/bl-storage";
-import { CustomerItem } from "@shared/customer-item/customer-item";
+import { BlModel } from "@backend/storage/bl-storage.js";
+import { CustomerItem } from "@shared/customer-item/customer-item.js";
 import { Schema } from "mongoose";
 
 export const CustomerItemModel: BlModel<CustomerItem> = {

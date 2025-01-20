@@ -1,7 +1,7 @@
-import { BlDocument } from "@shared/bl-document/bl-document";
-import { PaymentDiscount } from "@shared/payment/payment-discount/payment-discount";
-import { PaymentInfo } from "@shared/payment/payment-info/payment-info";
-import { PaymentMethod } from "@shared/payment/payment-method/payment-method";
+import { BlDocument } from "@shared/bl-document/bl-document.js";
+import { PaymentDiscount } from "@shared/payment/payment-discount/payment-discount.js";
+import { PaymentInfo } from "@shared/payment/payment-info/payment-info.js";
+import { PaymentMethod } from "@shared/payment/payment-method/payment-method.js";
 
 export interface Payment extends BlDocument {
   method: PaymentMethod; //the method used for payment

@@ -1,9 +1,9 @@
-import { APP_CONFIG } from "@backend/application-config";
-import { UserProvider } from "@backend/auth/user/user-provider/user-provider";
-import { ApiPath } from "@backend/config/api-path";
-import { assertEnv, BlEnvironment } from "@backend/config/environment";
-import { SEResponseHandler } from "@backend/response/se.response.handler";
-import { BlError } from "@shared/bl-error/bl-error";
+import { APP_CONFIG } from "@backend/application-config.js";
+import { UserProvider } from "@backend/auth/user/user-provider/user-provider.js";
+import { ApiPath } from "@backend/config/api-path.js";
+import { assertEnv, BlEnvironment } from "@backend/config/environment.js";
+import { SEResponseHandler } from "@backend/response/se.response.handler.js";
+import { BlError } from "@shared/bl-error/bl-error.js";
 import { Router } from "express";
 import passport from "passport";
 import { Profile, Strategy, StrategyOptions } from "passport-facebook";

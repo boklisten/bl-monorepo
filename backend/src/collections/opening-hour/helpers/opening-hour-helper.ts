@@ -1,7 +1,7 @@
-import { BlStorage } from "@backend/storage/bl-storage";
-import { BlError } from "@shared/bl-error/bl-error";
-import { Branch } from "@shared/branch/branch";
-import { OpeningHour } from "@shared/opening-hour/opening-hour";
+import { BlStorage } from "@backend/storage/bl-storage.js";
+import { BlError } from "@shared/bl-error/bl-error.js";
+import { Branch } from "@shared/branch/branch.js";
+import { OpeningHour } from "@shared/opening-hour/opening-hour.js";
 import moment from "moment-timezone";
 
 export class OpeningHourHelper {

@@ -1,11 +1,9 @@
 import crypto from "node:crypto";
 
-import { SeCrypto } from "@backend/crypto/se.crypto.js";
+import BlCrypto from "@backend/crypto/bl-crypto.js";
 import { BlError } from "@shared/bl-error/bl-error.js";
 
 export class ProviderIdGenerator {
-  constructor(private seCrypto: SeCrypto) {}
-
   generate(username: string): Promise<string> {
     return new Promise((resolve, reject) => {
       const blError = new BlError("")
@@ -17,7 +15,7 @@ export class ProviderIdGenerator {
         if (error)
           reject(blError.msg("could not generate random bytes").data(error));
 
-        this.seCrypto.hash(username, buffer.toString("hex")).then(
+        BlCrypto.hash(username, buffer.toString("hex")).then(
           (hashedMessage: string) => {
             resolve(hashedMessage);
           },

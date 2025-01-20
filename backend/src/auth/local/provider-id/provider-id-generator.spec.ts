@@ -1,6 +1,5 @@
 import "mocha";
 import { ProviderIdGenerator } from "@backend/auth/local/provider-id/provider-id-generator.js";
-import { SeCrypto } from "@backend/crypto/se.crypto.js";
 import { BlError } from "@shared/bl-error/bl-error.js";
 import { use as chaiUse, should } from "chai";
 import chaiAsPromised from "chai-as-promised";
@@ -10,8 +9,7 @@ should();
 
 describe("ProviderIdGenerator", () => {
   describe("generate()", () => {
-    const seCrypto = new SeCrypto();
-    const providerIdGenerator = new ProviderIdGenerator(seCrypto);
+    const providerIdGenerator = new ProviderIdGenerator();
 
     describe("should reject with BlError when", () => {
       it("username is empty", () => {

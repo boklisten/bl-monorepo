@@ -2,7 +2,7 @@ import { LocalLoginCreator } from "@backend/auth/local/local-login-creator/local
 import { HashedPasswordGenerator } from "@backend/auth/local/password/hashed-password-generator.js";
 import { SaltGenerator } from "@backend/auth/local/salt/salt-generator.js";
 import { LocalLogin } from "@backend/collections/local-login/local-login.js";
-import { SeCrypto } from "@backend/crypto/se.crypto.js";
+import BlCrypto from "@backend/crypto/bl-crypto.js";
 import { isNullish } from "@backend/helper/typescript-helpers.js";
 import { SEDbQuery } from "@backend/query/se.db-query.js";
 import { BlStorage } from "@backend/storage/bl-storage.js";
@@ -13,17 +13,14 @@ import validator from "validator";
 export class LocalLoginHandler {
   private hashedPasswordGenerator: HashedPasswordGenerator;
   private localLoginCreator: LocalLoginCreator;
-  private seCrypto: SeCrypto;
 
   constructor(
     hashedPasswordGenerator?: HashedPasswordGenerator,
     localLoginCreator?: LocalLoginCreator,
   ) {
-    this.seCrypto = new SeCrypto();
-
     this.hashedPasswordGenerator =
       hashedPasswordGenerator ??
-      new HashedPasswordGenerator(new SaltGenerator(), this.seCrypto);
+      new HashedPasswordGenerator(new SaltGenerator());
     this.localLoginCreator = localLoginCreator ?? new LocalLoginCreator();
   }
 
@@ -94,7 +91,7 @@ export class LocalLoginHandler {
     }
 
     try {
-      const randomPassword = this.seCrypto.random();
+      const randomPassword = BlCrypto.random();
 
       const defaultLocalLogin = await this.localLoginCreator.create(
         username,

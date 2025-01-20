@@ -1,7 +1,7 @@
 import { UserHandler } from "@backend/auth/user/user.handler.js";
 import { PendingPasswordResetPostHook } from "@backend/collections/pending-password-reset/hooks/pending-password-reset-post.hook.js";
 import { User } from "@backend/collections/user/user.js";
-import { SeCrypto } from "@backend/crypto/se.crypto.js";
+import BlCrypto from "@backend/crypto/bl-crypto.js";
 import { Messenger } from "@backend/messenger/messenger.js";
 import { BlError } from "@shared/bl-error/bl-error.js";
 import { PasswordResetRequest } from "@shared/password-reset/password-reset-request.js";
@@ -16,11 +16,9 @@ should();
 
 describe("PendingPasswordResetPostHook", () => {
   const userHandler = new UserHandler();
-  const seCrypto = new SeCrypto();
   const messenger = new Messenger();
   const pendingPasswordResetPostHook = new PendingPasswordResetPostHook(
     userHandler,
-    seCrypto,
     messenger,
   );
 
@@ -38,7 +36,7 @@ describe("PendingPasswordResetPostHook", () => {
   const testId = "IDentificator";
 
   beforeEach(async () => {
-    tokenHash = await new SeCrypto().hash(testToken, testSalt);
+    tokenHash = await BlCrypto.hash(testToken, testSalt);
 
     testUser = {
       id: "user1",
@@ -118,7 +116,7 @@ describe("PendingPasswordResetPostHook", () => {
 
       beforeEach(async () => {
         sinon
-          .stub(seCrypto, "random")
+          .stub(BlCrypto, "random")
           .onFirstCall()
           .returns(testId)
           .onSecondCall()

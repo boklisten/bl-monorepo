@@ -12,25 +12,18 @@ import { AccessTokenAuth } from "@backend/auth/token/access-token/access-token.a
 import { TokenEndpoint } from "@backend/auth/token/token.endpoint.js";
 import { TokenHandler } from "@backend/auth/token/token.handler.js";
 import { UserHandler } from "@backend/auth/user/user.handler.js";
-import { SeCrypto } from "@backend/crypto/se.crypto.js";
 import { SEResponseHandler } from "@backend/response/se.response.handler.js";
 import { Router } from "express";
 
 export function createAuthEndpoints(router: Router) {
   const userHandler = new UserHandler();
 
-  const localLoginPasswordValidator = new LocalLoginPasswordValidator(
-    new SeCrypto(),
-  );
+  const localLoginPasswordValidator = new LocalLoginPasswordValidator();
 
   const localLoginHandler = new LocalLoginHandler();
-  const seCrypto = new SeCrypto();
   const saltGenerator = new SaltGenerator();
-  const hashedPasswordGenerator = new HashedPasswordGenerator(
-    saltGenerator,
-    seCrypto,
-  );
-  const providerIdGenerator = new ProviderIdGenerator(seCrypto);
+  const hashedPasswordGenerator = new HashedPasswordGenerator(saltGenerator);
+  const providerIdGenerator = new ProviderIdGenerator();
   const localLoginCreator = new LocalLoginCreator(
     hashedPasswordGenerator,
     providerIdGenerator,

@@ -1,12 +1,9 @@
 import { SaltGenerator } from "@backend/auth/local/salt/salt-generator.js";
-import { SeCrypto } from "@backend/crypto/se.crypto.js";
+import BlCrypto from "@backend/crypto/bl-crypto.js";
 import { BlError } from "@shared/bl-error/bl-error.js";
 
 export class HashedPasswordGenerator {
-  constructor(
-    private saltGenerator: SaltGenerator,
-    private seCrypto: SeCrypto,
-  ) {}
+  constructor(private saltGenerator: SaltGenerator) {}
 
   public generate(
     password: string,
@@ -20,7 +17,7 @@ export class HashedPasswordGenerator {
 
       this.saltGenerator.generate().then(
         (generatedSalt) => {
-          this.seCrypto.hash(password, generatedSalt).then(
+          BlCrypto.hash(password, generatedSalt).then(
             (hash) => {
               resolve({ hashedPassword: hash, salt: generatedSalt });
             },

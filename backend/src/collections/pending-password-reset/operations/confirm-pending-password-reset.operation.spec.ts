@@ -1,6 +1,6 @@
 import { LocalLoginHandler } from "@backend/auth/local/local-login.handler.js";
 import { ConfirmPendingPasswordResetOperation } from "@backend/collections/pending-password-reset/operations/confirm-pending-password-reset.operation.js";
-import { SeCrypto } from "@backend/crypto/se.crypto.js";
+import BlCrypto from "@backend/crypto/bl-crypto.js";
 import { BlApiRequest } from "@backend/request/bl-api-request.js";
 import { BlStorage } from "@backend/storage/bl-storage.js";
 import { BlError } from "@shared/bl-error/bl-error.js";
@@ -27,7 +27,7 @@ describe("ConfirmPendingPasswordResetOperation", () => {
   let sandbox: sinon.SinonSandbox;
 
   beforeEach(async () => {
-    tokenHash = await new SeCrypto().hash(testToken, testSalt);
+    tokenHash = await BlCrypto.hash(testToken, testSalt);
     testPendingPasswordReset = {
       id: "id",
       tokenHash,

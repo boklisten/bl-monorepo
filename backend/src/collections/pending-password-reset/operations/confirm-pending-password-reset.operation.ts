@@ -1,5 +1,5 @@
 import { LocalLoginHandler } from "@backend/auth/local/local-login.handler.js";
-import { SeCrypto } from "@backend/crypto/se.crypto.js";
+import BlCrypto from "@backend/crypto/bl-crypto.js";
 import { Operation } from "@backend/operation/operation.js";
 import { BlApiRequest } from "@backend/request/bl-api-request.js";
 import { BlStorage } from "@backend/storage/bl-storage.js";
@@ -10,11 +10,9 @@ import { PendingPasswordReset } from "@shared/password-reset/pending-password-re
 
 export class ConfirmPendingPasswordResetOperation implements Operation {
   private readonly localLoginHandler: LocalLoginHandler;
-  private readonly seCrypto: SeCrypto;
 
-  constructor(localLoginHandler?: LocalLoginHandler, seCrypto?: SeCrypto) {
+  constructor(localLoginHandler?: LocalLoginHandler) {
     this.localLoginHandler = localLoginHandler ?? new LocalLoginHandler();
-    this.seCrypto = seCrypto ?? new SeCrypto();
   }
 
   async run(blApiRequest: BlApiRequest): Promise<BlapiResponse> {
@@ -37,7 +35,6 @@ export class ConfirmPendingPasswordResetOperation implements Operation {
     await verifyResetToken(
       passwordResetConfirmationRequest.resetToken,
       pendingPasswordReset,
-      this.seCrypto,
     );
 
     await updatePassword(
@@ -94,14 +91,13 @@ function validatePasswordResetConfirmationRequest(
 async function verifyResetToken(
   candidateToken: string,
   pendingPasswordReset: PendingPasswordReset,
-  seCrypto: SeCrypto,
 ): Promise<void> {
-  const candiateTokenHash = await seCrypto.hash(
+  const candiateTokenHash = await BlCrypto.hash(
     candidateToken,
     pendingPasswordReset.salt,
   );
   if (
-    !seCrypto.timingSafeEqual(candiateTokenHash, pendingPasswordReset.tokenHash)
+    !BlCrypto.timingSafeEqual(candiateTokenHash, pendingPasswordReset.tokenHash)
   ) {
     throw new BlError(
       "Invalid password reset attempt: computed token hash does not match stored hash",

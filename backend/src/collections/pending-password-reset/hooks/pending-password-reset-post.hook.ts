@@ -1,5 +1,5 @@
 import { UserHandler } from "@backend/auth/user/user.handler.js";
-import { SeCrypto } from "@backend/crypto/se.crypto.js";
+import BlCrypto from "@backend/crypto/bl-crypto.js";
 import { Hook } from "@backend/hook/hook.js";
 import { Messenger } from "@backend/messenger/messenger.js";
 import { BlError } from "@shared/bl-error/bl-error.js";
@@ -8,17 +8,11 @@ import { PendingPasswordReset } from "@shared/password-reset/pending-password-re
 
 export class PendingPasswordResetPostHook extends Hook {
   private userHandler: UserHandler;
-  private seCrypto: SeCrypto;
   private messenger: Messenger;
 
-  constructor(
-    userHandler?: UserHandler,
-    seCrypto?: SeCrypto,
-    messenger?: Messenger,
-  ) {
+  constructor(userHandler?: UserHandler, messenger?: Messenger) {
     super();
     this.userHandler = userHandler ?? new UserHandler();
-    this.seCrypto = seCrypto ?? new SeCrypto();
     this.messenger = messenger ?? new Messenger();
   }
 
@@ -39,13 +33,13 @@ export class PendingPasswordResetPostHook extends Hook {
           .add(getUserError);
       });
 
-    const id = this.seCrypto.random();
+    const id = BlCrypto.random();
 
-    const token = this.seCrypto.random();
+    const token = BlCrypto.random();
 
-    const salt = this.seCrypto.random();
+    const salt = BlCrypto.random();
 
-    const tokenHash = await this.seCrypto.hash(token, salt);
+    const tokenHash = await BlCrypto.hash(token, salt);
 
     // We should really wait to send the email until the password reset has been successfully written to the
     // database, but it would be poor security to save the unhashed token in the database, and we have no other way

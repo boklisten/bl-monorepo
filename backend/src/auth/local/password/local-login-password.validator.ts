@@ -1,9 +1,7 @@
-import { SeCrypto } from "@backend/crypto/se.crypto.js";
+import BlCrypto from "@backend/crypto/bl-crypto.js";
 import { BlError } from "@shared/bl-error/bl-error.js";
 
 export class LocalLoginPasswordValidator {
-  constructor(private seCrypto: SeCrypto) {}
-
   public validate(
     password: string,
     salt: string,
@@ -21,7 +19,7 @@ export class LocalLoginPasswordValidator {
       if (!hashedPassword || hashedPassword.length <= 0)
         reject(blError.msg("hashedPassword is empty or undefined"));
 
-      this.seCrypto.hash(password, salt).then(
+      BlCrypto.hash(password, salt).then(
         (passwordAndSaltHashed: string) => {
           if (passwordAndSaltHashed === hashedPassword) {
             resolve(true);

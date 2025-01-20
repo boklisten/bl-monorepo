@@ -5,7 +5,6 @@ import { HashedPasswordGenerator } from "@backend/auth/local/password/hashed-pas
 import { ProviderIdGenerator } from "@backend/auth/local/provider-id/provider-id-generator.js";
 import { SaltGenerator } from "@backend/auth/local/salt/salt-generator.js";
 import { LocalLogin } from "@backend/collections/local-login/local-login.js";
-import { SeCrypto } from "@backend/crypto/se.crypto.js";
 import { BlError } from "@shared/bl-error/bl-error.js";
 import { use as chaiUse, should } from "chai";
 import chaiAsPromised from "chai-as-promised";
@@ -15,12 +14,8 @@ should();
 
 describe("LocalLoginCreator", () => {
   const saltGenerator = new SaltGenerator();
-  const seCrypto = new SeCrypto();
-  const hashedPasswordGenerator = new HashedPasswordGenerator(
-    saltGenerator,
-    seCrypto,
-  );
-  const providerIdGenerator = new ProviderIdGenerator(seCrypto);
+  const hashedPasswordGenerator = new HashedPasswordGenerator(saltGenerator);
+  const providerIdGenerator = new ProviderIdGenerator();
   const localLoginCreator = new LocalLoginCreator(
     hashedPasswordGenerator,
     providerIdGenerator,

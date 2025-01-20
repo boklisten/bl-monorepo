@@ -2,7 +2,6 @@ import { HashedPasswordGenerator } from "@backend/auth/local/password/hashed-pas
 import { ProviderIdGenerator } from "@backend/auth/local/provider-id/provider-id-generator.js";
 import { SaltGenerator } from "@backend/auth/local/salt/salt-generator.js";
 import { LocalLogin } from "@backend/collections/local-login/local-login.js";
-import { SeCrypto } from "@backend/crypto/se.crypto.js";
 import { BlError } from "@shared/bl-error/bl-error.js";
 import validator from "validator";
 
@@ -16,9 +15,8 @@ export class LocalLoginCreator {
   ) {
     this.hashedPasswordGenerator =
       hashedPasswordGenerator ??
-      new HashedPasswordGenerator(new SaltGenerator(), new SeCrypto());
-    this.providerIdGenerator =
-      providerIdGenerator ?? new ProviderIdGenerator(new SeCrypto());
+      new HashedPasswordGenerator(new SaltGenerator());
+    this.providerIdGenerator = providerIdGenerator ?? new ProviderIdGenerator();
   }
 
   public create(username: string, password: string): Promise<LocalLogin> {

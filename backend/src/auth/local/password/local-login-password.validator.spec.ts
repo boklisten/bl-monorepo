@@ -1,6 +1,6 @@
 import "mocha";
 import { LocalLoginPasswordValidator } from "@backend/auth/local/password/local-login-password.validator.js";
-import { SeCrypto } from "@backend/crypto/se.crypto.js";
+import BlCrypto from "@backend/crypto/bl-crypto.js";
 import { BlError } from "@shared/bl-error/bl-error.js";
 import { use as chaiUse, should } from "chai";
 import chaiAsPromised from "chai-as-promised";
@@ -10,8 +10,7 @@ chaiUse(chaiAsPromised);
 should();
 
 describe("LocalLoginPasswordValidator", () => {
-  const seCrypto = new SeCrypto();
-  const localLoginPasswordValidator = new LocalLoginPasswordValidator(seCrypto);
+  const localLoginPasswordValidator = new LocalLoginPasswordValidator();
 
   let sandbox: sinon.SinonSandbox;
   let testPassword = "";
@@ -20,7 +19,7 @@ describe("LocalLoginPasswordValidator", () => {
   beforeEach(() => {
     sandbox = createSandbox();
     sandbox
-      .stub(seCrypto, "hash")
+      .stub(BlCrypto, "hash")
       .callsFake((password: string, salt: string) => {
         return Promise.resolve(password + salt);
       });

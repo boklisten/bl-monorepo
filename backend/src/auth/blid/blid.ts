@@ -1,13 +1,7 @@
-import { SeCrypto } from "@backend/crypto/se.crypto.js";
+import BlCrypto from "@backend/crypto/bl-crypto.js";
 import { BlError } from "@shared/bl-error/bl-error.js";
 
 export class Blid {
-  private seCrypto: SeCrypto;
-
-  constructor() {
-    this.seCrypto = new SeCrypto();
-  }
-
   public createUserBlid(provider: string, providerId: string): Promise<string> {
     if (provider.length <= 0 || providerId.length <= 0) {
       return Promise.reject(
@@ -18,7 +12,7 @@ export class Blid {
     }
 
     return new Promise((resolve, reject) => {
-      this.seCrypto.cipher(provider + providerId).then(
+      BlCrypto.cipher(provider + providerId).then(
         (cipher: string) => {
           resolve("u#" + cipher);
         },

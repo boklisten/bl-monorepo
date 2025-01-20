@@ -4,7 +4,7 @@ import { UserHandler } from "@backend/auth/user/user.handler.js";
 import { LocalLogin } from "@backend/collections/local-login/local-login.js";
 import { User } from "@backend/collections/user/user.js";
 import { UserDetailChangeEmailOperation } from "@backend/collections/user-detail/operations/change-email/user-detail-change-email.operation.js";
-import { SEResponseHandler } from "@backend/response/se.response.handler.js";
+import BlResponseHandler from "@backend/response/bl-response.handler.js";
 import { BlStorage } from "@backend/storage/bl-storage.js";
 import { BlError } from "@shared/bl-error/bl-error.js";
 import { UserDetail } from "@shared/user/user-detail/user-detail.js";
@@ -16,11 +16,9 @@ should();
 
 describe("UserDetailChangeEmailOperation", () => {
   const userHandler = new UserHandler();
-  const resHandler = new SEResponseHandler();
 
   const userDetailChangeEmailOperation = new UserDetailChangeEmailOperation(
     userHandler,
-    resHandler,
   );
 
   let userDetailGetStub: sinon.SinonStub;
@@ -42,7 +40,10 @@ describe("UserDetailChangeEmailOperation", () => {
     userHandlerGetByUsernameStub = sandbox.stub(userHandler, "getByUsername");
     localLoginAggregateStub = sandbox.stub(BlStorage.LocalLogins, "aggregate");
     localLoginUpdateStub = sandbox.stub(BlStorage.LocalLogins, "update");
-    resHandlerSendResponseStub = sandbox.stub(resHandler, "sendResponse");
+    resHandlerSendResponseStub = sandbox.stub(
+      BlResponseHandler,
+      "sendResponse",
+    );
   });
   afterEach(() => {
     sandbox.restore();

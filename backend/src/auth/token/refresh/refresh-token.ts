@@ -1,8 +1,8 @@
 export interface RefreshToken {
   iss: string;
   aud: string;
-  expiresIn: string;
   iat: number;
+  expiresIn: string;
   sub: string;
   username: string;
 }

@@ -1,21 +1,13 @@
-import { LocalLoginHandler } from "@backend/auth/local/local-login.handler.js";
+import LocalLoginHandler from "@backend/auth/local/local-login.handler.js";
 import { TokenHandler } from "@backend/auth/token/token.handler.js";
 import { UserHandler } from "@backend/auth/user/user.handler.js";
 import { User } from "@backend/collections/user/user.js";
 
 export class UserProvider {
   private userHandler: UserHandler;
-  private localLoginHandler: LocalLoginHandler;
   private tokenHandler: TokenHandler;
-  constructor(
-    userHandler?: UserHandler,
-    localLoginHandler?: LocalLoginHandler,
-    tokenHandler?: TokenHandler,
-  ) {
+  constructor(userHandler?: UserHandler, tokenHandler?: TokenHandler) {
     this.userHandler = userHandler ?? new UserHandler();
-
-    this.localLoginHandler = localLoginHandler ?? new LocalLoginHandler();
-
     this.tokenHandler = tokenHandler ?? new TokenHandler(this.userHandler);
   }
 
@@ -31,7 +23,7 @@ export class UserProvider {
 
     await this.userHandler.valid(username);
 
-    await this.localLoginHandler.createDefaultLocalLoginIfNoneIsFound(username);
+    await LocalLoginHandler.createDefaultLocalLoginIfNoneIsFound(username);
 
     const tokens = await this.tokenHandler.createTokens(username);
 

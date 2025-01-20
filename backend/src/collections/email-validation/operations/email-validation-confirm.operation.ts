@@ -2,19 +2,13 @@ import { EmailValidation } from "@backend/collections/email-validation/email-val
 import { isNullish } from "@backend/helper/typescript-helpers.js";
 import { Operation } from "@backend/operation/operation.js";
 import { BlApiRequest } from "@backend/request/bl-api-request.js";
-import { SEResponseHandler } from "@backend/response/se.response.handler.js";
+import BlResponseHandler from "@backend/response/bl-response.handler.js";
 import { BlStorage } from "@backend/storage/bl-storage.js";
 import { BlError } from "@shared/bl-error/bl-error.js";
 import { BlapiResponse } from "@shared/blapi-response/blapi-response.js";
 import { Request, Response } from "express";
 
 export class EmailValidationConfirmOperation implements Operation {
-  private resHandler: SEResponseHandler;
-
-  constructor(resHandler?: SEResponseHandler) {
-    this.resHandler = resHandler ?? new SEResponseHandler();
-  }
-
   run(
     blApiRequest: BlApiRequest,
     request: Request,
@@ -31,7 +25,7 @@ export class EmailValidationConfirmOperation implements Operation {
             emailConfirmed: true,
           })
             .then(() => {
-              this.resHandler.sendResponse(
+              BlResponseHandler.sendResponse(
                 res,
                 new BlapiResponse([{ confirmed: true }]),
               );
@@ -42,12 +36,12 @@ export class EmailValidationConfirmOperation implements Operation {
                 `could not update userDetail "${emailValidation.id}" with emailConfirmed true`,
               ).add(updateUserDetailError);
 
-              this.resHandler.sendErrorResponse(res, error);
+              BlResponseHandler.sendErrorResponse(res, error);
               reject(error);
             });
         })
         .catch((getEmailValidationError: BlError) => {
-          this.resHandler.sendErrorResponse(res, getEmailValidationError);
+          BlResponseHandler.sendErrorResponse(res, getEmailValidationError);
           reject(
             new BlError(
               `emailValidation "${blApiRequest.documentId}" not found`,

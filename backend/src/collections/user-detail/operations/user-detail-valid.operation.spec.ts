@@ -2,7 +2,7 @@ import "mocha";
 
 import { UserDetailValidOperation } from "@backend/collections/user-detail/operations/user-detail-valid.operation.js";
 import { BlApiRequest } from "@backend/request/bl-api-request.js";
-import { SEResponseHandler } from "@backend/response/se.response.handler.js";
+import BlResponseHandler from "@backend/response/bl-response.handler.js";
 import { BlStorage } from "@backend/storage/bl-storage.js";
 import { BlError } from "@shared/bl-error/bl-error.js";
 import { BlapiResponse } from "@shared/blapi-response/blapi-response.js";
@@ -15,10 +15,7 @@ chaiUse(chaiAsPromised);
 should();
 
 describe("UserDetailValidOperation", () => {
-  const responseHandler = new SEResponseHandler();
-  const userDetailValidOperation = new UserDetailValidOperation(
-    responseHandler,
-  );
+  const userDetailValidOperation = new UserDetailValidOperation();
 
   let testUserDetail: UserDetail;
   let resHandlerSendResponseStub: sinon.SinonStub;
@@ -37,13 +34,12 @@ describe("UserDetailValidOperation", () => {
       });
 
       resHandlerSendResponseStub = sandbox
-        .stub(responseHandler, "sendResponse")
-        .callsFake((res: any, blApiResponse: BlapiResponse) => {});
+        .stub(BlResponseHandler, "sendResponse")
+        .callsFake(() => {});
 
       resHandlerSendErrorResponseStub = sandbox
-        .stub(responseHandler, "sendErrorResponse")
-        // @ts-expect-error fixme: auto ignored
-        .callsFake((res: any, blError: BlError) => {});
+        .stub(BlResponseHandler, "sendErrorResponse")
+        .callsFake(() => {});
     });
     afterEach(() => {
       sandbox.restore();

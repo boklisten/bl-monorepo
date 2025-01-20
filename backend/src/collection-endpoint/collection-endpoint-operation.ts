@@ -5,12 +5,11 @@ import {
 } from "@backend/collections/bl-collection.js";
 import { isBoolean } from "@backend/helper/typescript-helpers.js";
 import { BlApiRequest } from "@backend/request/bl-api-request.js";
-import { SEResponseHandler } from "@backend/response/se.response.handler.js";
+import BlResponseHandler from "@backend/response/bl-response.handler.js";
 import { NextFunction, Request, Response, Router } from "express";
 
 export class CollectionEndpointOperation {
   private collectionEndpointAuth = new CollectionEndpointAuth();
-  private responseHandler = new SEResponseHandler();
 
   constructor(
     protected router: Router,
@@ -97,12 +96,12 @@ export class CollectionEndpointOperation {
               return;
             }
 
-            this.responseHandler.sendResponse(res, result);
+            BlResponseHandler.sendResponse(res, result);
           })
           .catch((error) => {
-            this.responseHandler.sendErrorResponse(res, error);
+            BlResponseHandler.sendErrorResponse(res, error);
           });
       })
-      .catch((error) => this.responseHandler.sendErrorResponse(res, error));
+      .catch((error) => BlResponseHandler.sendErrorResponse(res, error));
   }
 }

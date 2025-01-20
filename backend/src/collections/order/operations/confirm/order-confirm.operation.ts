@@ -2,7 +2,7 @@ import { OrderPlacedHandler } from "@backend/collections/order/helpers/order-pla
 import { Operation } from "@backend/operation/operation.js";
 import { SEDbQueryBuilder } from "@backend/query/se.db-query-builder.js";
 import { BlApiRequest } from "@backend/request/bl-api-request.js";
-import { SEResponseHandler } from "@backend/response/se.response.handler.js";
+import BlResponseHandler from "@backend/response/bl-response.handler.js";
 import { BlStorage } from "@backend/storage/bl-storage.js";
 import { BlError } from "@shared/bl-error/bl-error.js";
 import { BlapiResponse } from "@shared/blapi-response/blapi-response.js";
@@ -12,14 +12,9 @@ import { Request, Response } from "express";
 
 export class OrderConfirmOperation implements Operation {
   private queryBuilder = new SEDbQueryBuilder();
-  private resHandler: SEResponseHandler;
   private orderPlacedHandler: OrderPlacedHandler;
 
-  constructor(
-    resHandler?: SEResponseHandler,
-    orderPlacedHandler?: OrderPlacedHandler,
-  ) {
-    this.resHandler = resHandler ?? new SEResponseHandler();
+  constructor(orderPlacedHandler?: OrderPlacedHandler) {
     this.orderPlacedHandler = orderPlacedHandler ?? new OrderPlacedHandler();
   }
 
@@ -125,7 +120,7 @@ export class OrderConfirmOperation implements Operation {
     } catch (error) {
       throw new BlError("order could not be placed:" + error);
     }
-    this.resHandler.sendResponse(res, new BlapiResponse([placedOrder]));
+    BlResponseHandler.sendResponse(res, new BlapiResponse([placedOrder]));
 
     return true;
   }

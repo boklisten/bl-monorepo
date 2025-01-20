@@ -1,19 +1,15 @@
 import "mocha";
 
-import { LocalLoginCreator } from "@backend/auth/local/local-login-creator/local-login-creator.js";
-import { LocalLoginHandler } from "@backend/auth/local/local-login.handler.js";
+import LocalLoginHandler from "@backend/auth/local/local-login.handler.js";
 import { LocalLoginValidator } from "@backend/auth/local/local-login.validator.js";
-import { HashedPasswordGenerator } from "@backend/auth/local/password/hashed-password-generator.js";
-import { LocalLoginPasswordValidator } from "@backend/auth/local/password/local-login-password.validator.js";
-import { ProviderIdGenerator } from "@backend/auth/local/provider-id/provider-id-generator.js";
-import { SaltGenerator } from "@backend/auth/local/salt/salt-generator.js";
+import LocalLoginPasswordValidator from "@backend/auth/local/password/local-login-password.validator.js";
 import { UserHandler } from "@backend/auth/user/user.handler.js";
 import { LocalLogin } from "@backend/collections/local-login/local-login.js";
 import { User } from "@backend/collections/user/user.js";
 import { BlError } from "@shared/bl-error/bl-error.js";
 import { use as chaiUse, should } from "chai";
 import chaiAsPromised from "chai-as-promised";
-import sinon from "sinon";
+import sinon, { createSandbox } from "sinon";
 
 chaiUse(chaiAsPromised);
 should();
@@ -28,57 +24,51 @@ const testLocalLogin = {
 };
 
 describe("LocalLoginValidator", () => {
-  const localLoginPasswordValidator = new LocalLoginPasswordValidator();
-  const saltGenerator = new SaltGenerator();
-  const hashedPasswordGenerator = new HashedPasswordGenerator(saltGenerator);
-  const providerIdGenerator = new ProviderIdGenerator();
-  const localLoginCreator = new LocalLoginCreator(
-    hashedPasswordGenerator,
-    providerIdGenerator,
-  );
-  const localLoginHandler = new LocalLoginHandler();
   const userHandler = new UserHandler();
-  const localLoginValidator = new LocalLoginValidator(
-    localLoginHandler,
-    localLoginPasswordValidator,
-    localLoginCreator,
-    userHandler,
-  );
+  const localLoginValidator = new LocalLoginValidator(userHandler);
+  let sandbox: sinon.SinonSandbox;
+  beforeEach(() => {
+    sandbox = createSandbox();
+    sandbox.stub(LocalLoginHandler, "get").callsFake((username: string) => {
+      return new Promise((resolve, reject) => {
+        if (username === testLocalLogin.username) resolve(testLocalLogin);
+        reject(new BlError("").code(702));
+      });
+    });
 
-  sinon.stub(localLoginHandler, "get").callsFake((username: string) => {
-    return new Promise((resolve, reject) => {
-      if (username === testLocalLogin.username) resolve(testLocalLogin);
-      reject(new BlError("").code(702));
+    sandbox
+      .stub(LocalLoginHandler, "add")
+      .callsFake((localLogin: LocalLogin) => {
+        return new Promise((resolve) => {
+          resolve(localLogin);
+        });
+      });
+
+    sandbox.stub(LocalLoginPasswordValidator, "validate").resolves(true);
+
+    sandbox
+      .stub(userHandler, "create")
+      .callsFake((username: string, provider: string, providerId: string) => {
+        return Promise.resolve({
+          id: "",
+          userDetail: "",
+          permission: "customer",
+          login: {
+            provider: provider,
+            providerId: providerId,
+          },
+          blid: "",
+          username: username,
+          valid: true,
+        } as User);
+      });
+
+    sandbox.stub(userHandler, "valid").callsFake(() => {
+      return Promise.resolve();
     });
   });
-
-  sinon.stub(localLoginHandler, "add").callsFake((localLogin: LocalLogin) => {
-    return new Promise((resolve) => {
-      resolve(localLogin);
-    });
-  });
-
-  sinon.stub(localLoginPasswordValidator, "validate").resolves(true);
-
-  sinon
-    .stub(userHandler, "create")
-    .callsFake((username: string, provider: string, providerId: string) => {
-      return Promise.resolve({
-        id: "",
-        userDetail: "",
-        permission: "customer",
-        login: {
-          provider: provider,
-          providerId: providerId,
-        },
-        blid: "",
-        username: username,
-        valid: true,
-      } as User);
-    });
-
-  sinon.stub(userHandler, "valid").callsFake(() => {
-    return Promise.resolve();
+  afterEach(() => {
+    sandbox.restore();
   });
 
   describe("validate()", () => {
@@ -111,7 +101,7 @@ describe("LocalLoginValidator", () => {
         testUserName = "billy@user.com";
         testPassword = "thePassword";
         return localLoginValidator.validate(testUserName, testPassword).then(
-          (value: any) => {
+          (value) => {
             value.should.not.be.fulfilled;
           },
           (error: BlError) => {
@@ -133,7 +123,7 @@ describe("LocalLoginValidator", () => {
               resolve(true);
             reject(new Error("provider is not equal to expectedProvider"));
           },
-          (error: any) => {
+          (error) => {
             reject(error);
           },
         );
@@ -147,7 +137,7 @@ describe("LocalLoginValidator", () => {
       const password = "something";
 
       return localLoginValidator.create(username, password).then(
-        (value: any) => {
+        (value) => {
           value.should.not.be.fulfilled;
         },
         (error: BlError) => {

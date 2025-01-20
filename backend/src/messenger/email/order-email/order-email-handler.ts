@@ -1,4 +1,4 @@
-import { dateService } from "@backend/blc/date.service.js";
+import { DateService } from "@backend/blc/date.service.js";
 import { userHasValidSignature } from "@backend/collections/signature/helpers/signature.helper.js";
 import { assertEnv, BlEnvironment } from "@backend/config/environment.js";
 import { sendMail } from "@backend/messenger/email/email-service.js";
@@ -56,7 +56,7 @@ export class OrderEmailHandler {
     const emailUser: EmailUser = {
       id: customerDetail.id,
       dob: customerDetail.dob
-        ? dateService.toPrintFormat(customerDetail.dob, "Europe/Oslo")
+        ? DateService.toPrintFormat(customerDetail.dob, "Europe/Oslo")
         : "",
       name: customerDetail.name,
       email: customerDetail.email,
@@ -295,7 +295,7 @@ export class OrderEmailHandler {
       paymentId: "",
       status: this.translatePaymentConfirmed(),
       creationTime: payment.creationTime
-        ? dateService.format(
+        ? DateService.format(
             payment.creationTime,
             "Europe/Oslo",
             this.standardTimeFormat,
@@ -365,7 +365,7 @@ export class OrderEmailHandler {
 
       // @ts-expect-error fixme: auto ignored
       estimatedDeliveryDate: delivery.info["estimatedDelivery"]
-        ? dateService.toPrintFormat(
+        ? DateService.toPrintFormat(
             // @ts-expect-error fixme: auto ignored
             delivery.info["estimatedDelivery"],
             "Europe/Oslo",
@@ -384,7 +384,7 @@ export class OrderEmailHandler {
       deadline:
         orderItem.type === "rent" || orderItem.type === "extend"
           ? // @ts-expect-error fixme: auto ignored
-            dateService.toPrintFormat(orderItem.info.to, "Europe/Oslo")
+            DateService.toPrintFormat(orderItem.info.to, "Europe/Oslo")
           : null,
       price:
         orderItem.type !== "return" && orderItem.amount

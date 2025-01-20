@@ -1,5 +1,5 @@
-import { Blid } from "@backend/auth/blid/blid.js";
-import { LocalLoginHandler } from "@backend/auth/local/local-login.handler.js";
+import Blid from "@backend/auth/blid/blid.js";
+import LocalLoginHandler from "@backend/auth/local/local-login.handler.js";
 import { EmailValidationHelper } from "@backend/collections/email-validation/helpers/email-validation.helper.js";
 import { User } from "@backend/collections/user/user.js";
 import { SEDbQuery } from "@backend/query/se.db-query.js";
@@ -8,20 +8,11 @@ import { BlError } from "@shared/bl-error/bl-error.js";
 import { UserDetail } from "@shared/user/user-detail/user-detail.js";
 
 export class UserHandler {
-  private blid: Blid;
   private emailValidationHelper: EmailValidationHelper;
-  private localLoginHandler: LocalLoginHandler;
 
-  constructor(
-    emailValidationHelper?: EmailValidationHelper,
-    localLoginHandler?: LocalLoginHandler,
-  ) {
-    this.blid = new Blid();
-
+  constructor(emailValidationHelper?: EmailValidationHelper) {
     this.emailValidationHelper =
       emailValidationHelper ?? new EmailValidationHelper();
-
-    this.localLoginHandler = localLoginHandler ?? new LocalLoginHandler();
   }
 
   public getByUsername(username: string): Promise<User> {
@@ -176,10 +167,10 @@ export class UserHandler {
       } else if (this.isThirdPartyProvider(provider)) {
         // if user already exists and the creation is with google or facebook
         try {
-          await this.localLoginHandler.get(username);
+          await LocalLoginHandler.get(username);
         } catch {
           // if localLogin is not found, should create a default one
-          await this.localLoginHandler.createDefaultLocalLogin(username);
+          await LocalLoginHandler.createDefaultLocalLogin(username);
         }
 
         return userExists;
@@ -191,7 +182,7 @@ export class UserHandler {
     }
 
     try {
-      const blid = await this.blid.createUserBlid(provider, providerId);
+      const blid = await Blid.createUserBlid(provider, providerId);
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const userDetail: any = {
         email: username,
@@ -204,7 +195,7 @@ export class UserHandler {
         // this so that when the user tries to login with username or password he can
         // ask for a new password via email
 
-        await this.localLoginHandler.createDefaultLocalLogin(username);
+        await LocalLoginHandler.createDefaultLocalLogin(username);
       }
 
       const addedUserDetail: UserDetail = await BlStorage.UserDetails.add(

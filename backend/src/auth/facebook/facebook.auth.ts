@@ -2,7 +2,7 @@ import { APP_CONFIG } from "@backend/application-config.js";
 import { UserProvider } from "@backend/auth/user/user-provider/user-provider.js";
 import { createPath, retrieveRefererPath } from "@backend/config/api-path.js";
 import { assertEnv, BlEnvironment } from "@backend/config/environment.js";
-import { SEResponseHandler } from "@backend/response/se.response.handler.js";
+import BlResponseHandler from "@backend/response/bl-response.handler.js";
 import { BlError } from "@shared/bl-error/bl-error.js";
 import { Router } from "express";
 import passport from "passport";
@@ -12,10 +12,7 @@ export class FacebookAuth {
   private userProvider = new UserProvider();
   private readonly facebookPassportStrategySettings: StrategyOptions;
 
-  constructor(
-    private router: Router,
-    private resHandler: SEResponseHandler,
-  ) {
+  constructor(private router: Router) {
     this.facebookPassportStrategySettings = {
       clientID: assertEnv(BlEnvironment.FACEBOOK_CLIENT_ID),
       clientSecret: assertEnv(BlEnvironment.FACEBOOK_SECRET),
@@ -98,7 +95,7 @@ export class FacebookAuth {
           }
 
           if (tokens) {
-            this.resHandler.sendAuthTokens(
+            BlResponseHandler.sendAuthTokens(
               res,
               tokens.accessToken,
               tokens.refreshToken,

@@ -1,7 +1,7 @@
 import { LocalLoginValidator } from "@backend/auth/local/local-login.validator.js";
 import { TokenHandler } from "@backend/auth/token/token.handler.js";
 import { createPath } from "@backend/config/api-path.js";
-import { SEResponseHandler } from "@backend/response/se.response.handler.js";
+import BlResponseHandler from "@backend/response/bl-response.handler.js";
 import { BlError } from "@shared/bl-error/bl-error.js";
 import { BlapiResponse } from "@shared/blapi-response/blapi-response.js";
 import { Response, Router } from "express";
@@ -12,7 +12,6 @@ export class LocalAuth {
   constructor(
     router: Router,
     localLoginValidator: LocalLoginValidator,
-    private resHandler: SEResponseHandler,
     private tokenHandler: TokenHandler,
   ) {
     this.createPassportStrategy(localLoginValidator);
@@ -74,7 +73,7 @@ export class LocalAuth {
         ) => {
           if (blError && !(blError instanceof BlError)) {
             blError = new BlError("unknown error").code(500);
-            return this.resHandler.sendErrorResponse(res, blError);
+            return BlResponseHandler.sendErrorResponse(res, blError);
           }
 
           if (error) {
@@ -82,7 +81,7 @@ export class LocalAuth {
           }
 
           if (!jwTokens) {
-            return this.resHandler.sendErrorResponse(res, blError);
+            return BlResponseHandler.sendErrorResponse(res, blError);
           }
 
           request.login(jwTokens, (error) => {
@@ -101,7 +100,7 @@ export class LocalAuth {
     res: Response,
     tokens: { accessToken: string; refreshToken: string },
   ) {
-    return this.resHandler.sendResponse(
+    return BlResponseHandler.sendResponse(
       res,
       new BlapiResponse([
         { documentName: "refreshToken", data: tokens.refreshToken },
@@ -124,7 +123,7 @@ export class LocalAuth {
                 this.respondWithTokens(res, tokens);
               },
               (createTokensError: BlError) => {
-                this.resHandler.sendErrorResponse(
+                BlResponseHandler.sendErrorResponse(
                   res,
                   new BlError("could not create tokens")
                     .add(createTokensError)
@@ -135,9 +134,12 @@ export class LocalAuth {
           },
           (loginValidatorCreateError: BlError) => {
             if (loginValidatorCreateError.getCode() === 903) {
-              this.resHandler.sendErrorResponse(res, loginValidatorCreateError);
+              BlResponseHandler.sendErrorResponse(
+                res,
+                loginValidatorCreateError,
+              );
             } else {
-              this.resHandler.sendErrorResponse(
+              BlResponseHandler.sendErrorResponse(
                 res,
                 new BlError("could not create user")
                   .add(loginValidatorCreateError)

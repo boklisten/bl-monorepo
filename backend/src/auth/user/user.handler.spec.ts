@@ -1,6 +1,6 @@
 import "mocha";
 
-import { LocalLoginHandler } from "@backend/auth/local/local-login.handler.js";
+import LocalLoginHandler from "@backend/auth/local/local-login.handler.js";
 import { UserHandler } from "@backend/auth/user/user.handler.js";
 import { EmailValidationHelper } from "@backend/collections/email-validation/helpers/email-validation.helper.js";
 import { LocalLogin } from "@backend/collections/local-login/local-login.js";
@@ -8,7 +8,6 @@ import { User } from "@backend/collections/user/user.js";
 import { SEDbQuery } from "@backend/query/se.db-query.js";
 import { BlStorage } from "@backend/storage/bl-storage.js";
 import { BlError } from "@shared/bl-error/bl-error.js";
-import { UserDetail } from "@shared/user/user-detail/user-detail.js";
 import { expect, use as chaiUse, should } from "chai";
 import chaiAsPromised from "chai-as-promised";
 import sinon, { createSandbox } from "sinon";
@@ -32,8 +31,7 @@ const testUser = {
 describe("UserHandler", () => {
   const emailValidationHelper: EmailValidationHelper =
     new EmailValidationHelper();
-  const localLoginHandler: LocalLoginHandler = new LocalLoginHandler();
-  const userHandler = new UserHandler(emailValidationHelper, localLoginHandler);
+  const userHandler = new UserHandler(emailValidationHelper);
   let testProvider = "";
   let testProviderId = "";
   let testUsername = "";
@@ -59,7 +57,7 @@ describe("UserHandler", () => {
 
     sandbox.stub(BlStorage.Users, "add").resolves(testUser);
 
-    sandbox.stub(localLoginHandler, "get").resolves({} as LocalLogin);
+    sandbox.stub(LocalLoginHandler, "get").resolves({} as LocalLogin);
 
     userStorageGetByQueryStub = sandbox
       .stub(BlStorage.Users, "getByQuery")

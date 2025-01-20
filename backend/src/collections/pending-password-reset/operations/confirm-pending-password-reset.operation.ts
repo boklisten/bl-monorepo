@@ -1,4 +1,4 @@
-import { LocalLoginHandler } from "@backend/auth/local/local-login.handler.js";
+import LocalLoginHandler from "@backend/auth/local/local-login.handler.js";
 import BlCrypto from "@backend/crypto/bl-crypto.js";
 import { Operation } from "@backend/operation/operation.js";
 import { BlApiRequest } from "@backend/request/bl-api-request.js";
@@ -9,12 +9,6 @@ import { PasswordResetConfirmationRequest } from "@shared/password-reset/passwor
 import { PendingPasswordReset } from "@shared/password-reset/pending-password-reset.js";
 
 export class ConfirmPendingPasswordResetOperation implements Operation {
-  private readonly localLoginHandler: LocalLoginHandler;
-
-  constructor(localLoginHandler?: LocalLoginHandler) {
-    this.localLoginHandler = localLoginHandler ?? new LocalLoginHandler();
-  }
-
   async run(blApiRequest: BlApiRequest): Promise<BlapiResponse> {
     const pendingPasswordResetId = blApiRequest.documentId;
     const passwordResetConfirmationRequest: unknown = blApiRequest.data;
@@ -40,7 +34,6 @@ export class ConfirmPendingPasswordResetOperation implements Operation {
     await updatePassword(
       pendingPasswordReset,
       passwordResetConfirmationRequest.newPassword,
-      this.localLoginHandler,
     );
 
     await deactivatePendingPasswordReset(pendingPasswordReset);
@@ -135,15 +128,15 @@ function validatePendingPasswordResetUnused(
 async function updatePassword(
   pendingPasswordReset: PendingPasswordReset,
   newPassword: string,
-  localLoginHandler: LocalLoginHandler,
 ): Promise<void> {
-  await localLoginHandler
-    .setPassword(pendingPasswordReset.email, newPassword)
-    .catch((setPasswordError: BlError) => {
-      throw new BlError("Could not update localLogin with password")
-        .code(200)
-        .add(setPasswordError);
-    });
+  await LocalLoginHandler.setPassword(
+    pendingPasswordReset.email,
+    newPassword,
+  ).catch((setPasswordError: BlError) => {
+    throw new BlError("Could not update localLogin with password")
+      .code(200)
+      .add(setPasswordError);
+  });
 }
 
 async function deactivatePendingPasswordReset(

@@ -1,5 +1,5 @@
 import "mocha";
-import { LocalLoginPasswordValidator } from "@backend/auth/local/password/local-login-password.validator.js";
+import LocalLoginPasswordValidator from "@backend/auth/local/password/local-login-password.validator.js";
 import BlCrypto from "@backend/crypto/bl-crypto.js";
 import { BlError } from "@shared/bl-error/bl-error.js";
 import { use as chaiUse, should } from "chai";
@@ -10,12 +10,10 @@ chaiUse(chaiAsPromised);
 should();
 
 describe("LocalLoginPasswordValidator", () => {
-  const localLoginPasswordValidator = new LocalLoginPasswordValidator();
-
   let sandbox: sinon.SinonSandbox;
-  let testPassword = "";
-  let testSalt = "";
-  let testHashedPassword = "";
+  const testPassword = "dog";
+  const testSalt = "salt";
+  const testHashedPassword = testPassword + testSalt;
   beforeEach(() => {
     sandbox = createSandbox();
     sandbox
@@ -23,9 +21,6 @@ describe("LocalLoginPasswordValidator", () => {
       .callsFake((password: string, salt: string) => {
         return Promise.resolve(password + salt);
       });
-    testPassword = "dog";
-    testSalt = "salt";
-    testHashedPassword = testPassword + testSalt;
   });
   afterEach(() => {
     sandbox.restore();
@@ -34,37 +29,40 @@ describe("LocalLoginPasswordValidator", () => {
   describe("validate", () => {
     describe("should reject with BlError when", () => {
       it("password is empty", () => {
-        testPassword = "";
-
-        return localLoginPasswordValidator
-          .validate(testPassword, testSalt, testHashedPassword)
-          .should.be.rejectedWith(BlError);
+        return LocalLoginPasswordValidator.validate(
+          "",
+          testSalt,
+          testHashedPassword,
+        ).should.be.rejectedWith(BlError);
       });
 
       it("salt is empty", () => {
-        testSalt = "";
-        return localLoginPasswordValidator
-          .validate(testPassword, testSalt, testHashedPassword)
-          .should.be.rejectedWith(BlError);
+        return LocalLoginPasswordValidator.validate(
+          testPassword,
+          "",
+          testHashedPassword,
+        ).should.be.rejectedWith(BlError);
       });
 
       it("hashedPassword is empty", () => {
-        testHashedPassword = "";
-        return localLoginPasswordValidator
-          .validate(testPassword, testSalt, testHashedPassword)
-          .should.be.rejectedWith(BlError);
+        return LocalLoginPasswordValidator.validate(
+          testPassword,
+          testSalt,
+          "",
+        ).should.be.rejectedWith(BlError);
       });
     });
 
     it("should reject with Error when password is not correct", () => {
-      testPassword = "human";
-      return localLoginPasswordValidator
-        .validate(testPassword, testSalt, testHashedPassword)
-        .should.be.rejectedWith(BlError);
+      return LocalLoginPasswordValidator.validate(
+        "human",
+        testSalt,
+        testHashedPassword,
+      ).should.be.rejectedWith(BlError);
     });
 
     it("should resolve with true when password is correct", () => {
-      return localLoginPasswordValidator.validate(
+      return LocalLoginPasswordValidator.validate(
         testPassword,
         testSalt,
         testHashedPassword,

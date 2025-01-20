@@ -1,14 +1,13 @@
 import { Messenger } from "@backend/messenger/messenger.js";
 import { Operation } from "@backend/operation/operation.js";
 import { BlApiRequest } from "@backend/request/bl-api-request.js";
-import { SEResponseHandler } from "@backend/response/se.response.handler.js";
+import BlResponseHandler from "@backend/response/bl-response.handler.js";
 import { BlStorage } from "@backend/storage/bl-storage.js";
 import { BlapiResponse } from "@shared/blapi-response/blapi-response.js";
 import { Request, Response } from "express";
 
 export class OrderReceiptPdfOperation implements Operation {
   private messenger = new Messenger();
-  private resHandler = new SEResponseHandler();
 
   async run(
     blApiRequest: BlApiRequest,
@@ -23,7 +22,7 @@ export class OrderReceiptPdfOperation implements Operation {
       order,
     );
 
-    this.resHandler.sendResponse(res, new BlapiResponse([orderReceiptPdf]));
+    BlResponseHandler.sendResponse(res, new BlapiResponse([orderReceiptPdf]));
 
     return true;
   }

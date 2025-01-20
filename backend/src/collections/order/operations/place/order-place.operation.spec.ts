@@ -2,7 +2,7 @@ import { OrderToCustomerItemGenerator } from "@backend/collections/customer-item
 import { OrderPlacedHandler } from "@backend/collections/order/helpers/order-placed-handler/order-placed-handler.js";
 import { OrderValidator } from "@backend/collections/order/helpers/order-validator/order-validator.js";
 import { OrderPlaceOperation } from "@backend/collections/order/operations/place/order-place.operation.js";
-import { SEResponseHandler } from "@backend/response/se.response.handler.js";
+import BlResponseHandler from "@backend/response/bl-response.handler.js";
 import { BlStorage } from "@backend/storage/bl-storage.js";
 import { Signature } from "@backend/storage/models/signature.model.js";
 import { BlError } from "@shared/bl-error/bl-error.js";
@@ -20,7 +20,6 @@ chaiUse(chaiAsPromised);
 should();
 
 describe("OrderPlaceOperation", () => {
-  const resHandler = new SEResponseHandler();
   const orderToCustomerItemGenerator = new OrderToCustomerItemGenerator();
   const orderPlacedHandler = new OrderPlacedHandler(
     undefined,
@@ -31,7 +30,6 @@ describe("OrderPlaceOperation", () => {
   const orderValidator = new OrderValidator();
 
   const orderPlaceOperation = new OrderPlaceOperation(
-    resHandler,
     orderToCustomerItemGenerator,
     orderPlacedHandler,
     orderValidator,
@@ -55,7 +53,7 @@ describe("OrderPlaceOperation", () => {
     beforeEach(() => {
       sandbox = createSandbox();
       placeOrderStub = sandbox.stub(orderPlacedHandler, "placeOrder");
-      sendResponseStub = sandbox.stub(resHandler, "sendResponse");
+      sendResponseStub = sandbox.stub(BlResponseHandler, "sendResponse");
       getOrderStub = sandbox.stub(BlStorage.Orders, "get");
       getCustomerItemStub = sandbox.stub(BlStorage.CustomerItems, "get");
       aggregateCustomerItemsStub = sandbox.stub(

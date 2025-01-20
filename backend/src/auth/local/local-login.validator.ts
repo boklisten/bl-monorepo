@@ -1,6 +1,6 @@
-import { LocalLoginCreator } from "@backend/auth/local/local-login-creator/local-login-creator.js";
-import { LocalLoginHandler } from "@backend/auth/local/local-login.handler.js";
-import { LocalLoginPasswordValidator } from "@backend/auth/local/password/local-login-password.validator.js";
+import LocalLoginCreator from "@backend/auth/local/local-login-creator/local-login-creator.js";
+import LocalLoginHandler from "@backend/auth/local/local-login.handler.js";
+import LocalLoginPasswordValidator from "@backend/auth/local/password/local-login-password.validator.js";
 import { UserHandler } from "@backend/auth/user/user.handler.js";
 import { LocalLogin } from "@backend/collections/local-login/local-login.js";
 import { User } from "@backend/collections/user/user.js";
@@ -8,12 +8,7 @@ import { BlError } from "@shared/bl-error/bl-error.js";
 import validator from "validator";
 
 export class LocalLoginValidator {
-  constructor(
-    private localLoginHandler: LocalLoginHandler,
-    private localLoginPasswordValidator: LocalLoginPasswordValidator,
-    private localLoginCreator: LocalLoginCreator,
-    private userHandler: UserHandler,
-  ) {}
+  constructor(private userHandler: UserHandler) {}
 
   public validate(
     username: string,
@@ -33,27 +28,29 @@ export class LocalLoginValidator {
       this.userHandler
         .valid(username)
         .then(() => {
-          this.localLoginHandler.get(username).then(
+          LocalLoginHandler.get(username).then(
             (localLogin: LocalLogin) => {
-              this.localLoginPasswordValidator
-                .validate(password, localLogin.salt, localLogin.hashedPassword)
-                .then(
-                  () => {
-                    resolve({
-                      provider: localLogin.provider,
-                      providerId: localLogin.providerId,
-                    });
-                  },
-                  (error: BlError) => {
-                    reject(
-                      error.add(
-                        blError
-                          .msg("username or password is not correct")
-                          .code(908),
-                      ),
-                    );
-                  },
-                );
+              LocalLoginPasswordValidator.validate(
+                password,
+                localLogin.salt,
+                localLogin.hashedPassword,
+              ).then(
+                () => {
+                  resolve({
+                    provider: localLogin.provider,
+                    providerId: localLogin.providerId,
+                  });
+                },
+                (error: BlError) => {
+                  reject(
+                    error.add(
+                      blError
+                        .msg("username or password is not correct")
+                        .code(908),
+                    ),
+                  );
+                },
+              );
             },
             (error: BlError) => {
               reject(
@@ -91,7 +88,7 @@ export class LocalLoginValidator {
 
       username = username.toString().toLocaleLowerCase();
 
-      this.localLoginHandler.get(username).then(
+      LocalLoginHandler.get(username).then(
         () => {
           reject(
             blError
@@ -101,9 +98,9 @@ export class LocalLoginValidator {
           );
         },
         () => {
-          this.localLoginCreator.create(username, password).then(
+          LocalLoginCreator.create(username, password).then(
             (localLogin: LocalLogin) => {
-              this.localLoginHandler.add(localLogin).then(
+              LocalLoginHandler.add(localLogin).then(
                 (addedLocalLogin: LocalLogin) => {
                   this.userHandler
                     .create(

@@ -1,9 +1,6 @@
 import "mocha";
 
-import { LocalLoginCreator } from "@backend/auth/local/local-login-creator/local-login-creator.js";
-import { HashedPasswordGenerator } from "@backend/auth/local/password/hashed-password-generator.js";
-import { ProviderIdGenerator } from "@backend/auth/local/provider-id/provider-id-generator.js";
-import { SaltGenerator } from "@backend/auth/local/salt/salt-generator.js";
+import LocalLoginCreator from "@backend/auth/local/local-login-creator/local-login-creator.js";
 import { LocalLogin } from "@backend/collections/local-login/local-login.js";
 import { BlError } from "@shared/bl-error/bl-error.js";
 import { use as chaiUse, should } from "chai";
@@ -13,29 +10,22 @@ chaiUse(chaiAsPromised);
 should();
 
 describe("LocalLoginCreator", () => {
-  const saltGenerator = new SaltGenerator();
-  const hashedPasswordGenerator = new HashedPasswordGenerator(saltGenerator);
-  const providerIdGenerator = new ProviderIdGenerator();
-  const localLoginCreator = new LocalLoginCreator(
-    hashedPasswordGenerator,
-    providerIdGenerator,
-  );
-
   describe("create()", () => {
     describe("should reject with BlError when", () => {
       it("username is empty", () => {
         const username = "";
         const password = "thisIsAValidPassword";
-        return localLoginCreator
-          .create(username, password)
-          .should.be.rejectedWith(BlError);
+        return LocalLoginCreator.create(
+          username,
+          password,
+        ).should.be.rejectedWith(BlError);
       });
 
       it("username is undefined", () => {
         const username = undefined;
         const password = "thisisavalidpassword";
         return (
-          localLoginCreator
+          LocalLoginCreator
             // @ts-expect-error fixme: auto ignored
             .create(username, password)
             .should.be.rejectedWith(BlError)
@@ -46,7 +36,7 @@ describe("LocalLoginCreator", () => {
         const username = "bill@mail.com";
         const password = null;
         return (
-          localLoginCreator
+          LocalLoginCreator
 
             // @ts-expect-error fixme: auto ignored
             .create(username, password)
@@ -58,9 +48,10 @@ describe("LocalLoginCreator", () => {
         const username = "bill@gmail.com";
         const password = "abc";
 
-        return localLoginCreator
-          .create(username, password)
-          .should.be.rejectedWith(BlError);
+        return LocalLoginCreator.create(
+          username,
+          password,
+        ).should.be.rejectedWith(BlError);
       });
     });
 
@@ -69,7 +60,7 @@ describe("LocalLoginCreator", () => {
         const username = "bill@mail.com";
         const password = "thisIsAValidPassword";
 
-        return localLoginCreator.create(username, password).then(
+        return LocalLoginCreator.create(username, password).then(
           (localLogin: LocalLogin) => {
             localLogin.should.have.property("username").and.be.eq(username);
 

@@ -1,6 +1,6 @@
 import "mocha";
 
-import { LocalLoginHandler } from "@backend/auth/local/local-login.handler.js";
+import LocalLoginHandler from "@backend/auth/local/local-login.handler.js";
 import { LocalLogin } from "@backend/collections/local-login/local-login.js";
 import { SEDbQuery } from "@backend/query/se.db-query.js";
 import { BlStorage } from "@backend/storage/bl-storage.js";
@@ -33,8 +33,6 @@ describe("LocalLoginHandler", () => {
   let testLocalLogin: LocalLogin = baseLocalLogin;
   let testUsername = "";
   let updateSuccess: boolean;
-
-  const localLoginHandler = new LocalLoginHandler();
 
   let sandbox: sinon.SinonSandbox;
   beforeEach(() => {
@@ -87,67 +85,67 @@ describe("LocalLoginHandler", () => {
     describe("should reject with TypeError when", () => {
       it("username is empty or undefined", () => {
         testLocalLogin.username = "";
-        return localLoginHandler
-          .add(testLocalLogin)
-          .should.be.rejectedWith(BlError);
+        return LocalLoginHandler.add(testLocalLogin).should.be.rejectedWith(
+          BlError,
+        );
       });
 
       it("provider is empty or undefiend", () => {
         testLocalLogin.provider = "";
-        return localLoginHandler
-          .add(testLocalLogin)
-          .should.be.rejectedWith(BlError);
+        return LocalLoginHandler.add(testLocalLogin).should.be.rejectedWith(
+          BlError,
+        );
       });
 
       it("providerId is empty or undefined", () => {
         testLocalLogin.providerId = "";
-        return localLoginHandler
-          .add(testLocalLogin)
-          .should.be.rejectedWith(BlError);
+        return LocalLoginHandler.add(testLocalLogin).should.be.rejectedWith(
+          BlError,
+        );
       });
 
       it("hashedPassword is empty or undefined", () => {
         testLocalLogin.hashedPassword = "";
-        return localLoginHandler
-          .add(testLocalLogin)
-          .should.be.rejectedWith(BlError);
+        return LocalLoginHandler.add(testLocalLogin).should.be.rejectedWith(
+          BlError,
+        );
       });
 
       it("salt is empty or undefined", () => {
         testLocalLogin.salt = "";
-        return localLoginHandler
-          .add(testLocalLogin)
-          .should.be.rejectedWith(BlError);
+        return LocalLoginHandler.add(testLocalLogin).should.be.rejectedWith(
+          BlError,
+        );
       });
     });
 
     describe("should reject with TypeError when", () => {
       it('username is "alb@"', () => {
         testLocalLogin.username = "alb@";
-        return localLoginHandler
-          .add(testLocalLogin)
-          .should.be.rejectedWith(BlError);
+        return LocalLoginHandler.add(testLocalLogin).should.be.rejectedWith(
+          BlError,
+        );
       });
 
       it('username is "bill@mail."', () => {
         testLocalLogin.username = "bill@mail.";
-        return localLoginHandler
-          .add(testLocalLogin)
-          .should.be.rejectedWith(BlError);
+        return LocalLoginHandler.add(testLocalLogin).should.be.rejectedWith(
+          BlError,
+        );
       });
 
       it('username is "alli @mail.com"', () => {
         testLocalLogin.username = "alli @mail.com";
-        return localLoginHandler
-          .add(testLocalLogin)
-          .should.be.rejectedWith(BlError);
+        return LocalLoginHandler.add(testLocalLogin).should.be.rejectedWith(
+          BlError,
+        );
       });
     });
 
     it("should resolve when LocalLogin is valid", () => {
-      return localLoginHandler
-        .add(testLocalLogin)
-        .should.eventually.eq(testLocalLogin);
+      return LocalLoginHandler.add(testLocalLogin).should.eventually.eq(
+        testLocalLogin,
+      );
     });
   });
 
@@ -155,38 +153,38 @@ describe("LocalLoginHandler", () => {
     describe("should reject with TypeError when", () => {
       it("username is not a valid Email", () => {
         testUsername = "al";
-        return localLoginHandler
-          .get(testUsername)
-          .should.be.rejectedWith(BlError);
+        return LocalLoginHandler.get(testUsername).should.be.rejectedWith(
+          BlError,
+        );
       });
 
       it("username is not empty", () => {
         testUsername = "";
-        return localLoginHandler
-          .get(testUsername)
-          .should.be.rejectedWith(BlError);
+        return LocalLoginHandler.get(testUsername).should.be.rejectedWith(
+          BlError,
+        );
       });
 
       it("username is null", () => {
         // @ts-expect-error fixme: auto ignored
         testUsername = null;
-        return localLoginHandler
-          .get(testUsername)
-          .should.be.rejectedWith(BlError);
+        return LocalLoginHandler.get(testUsername).should.be.rejectedWith(
+          BlError,
+        );
       });
     });
 
     it("should reject with blError.code 702 when username is not found in db", (done) => {
-      localLoginHandler.get("notFound@mail.com").catch((blError: BlError) => {
+      LocalLoginHandler.get("notFound@mail.com").catch((blError: BlError) => {
         expect(blError.getCode()).to.eql(702);
         done();
       });
     });
 
     it("should resolve with LocalLogin object when username is found", () => {
-      return localLoginHandler
-        .get(testUsername)
-        .should.eventually.eq(dummyLocalLogin);
+      return LocalLoginHandler.get(testUsername).should.eventually.eq(
+        dummyLocalLogin,
+      );
     });
   });
 
@@ -195,7 +193,7 @@ describe("LocalLoginHandler", () => {
       const testUsername = "notFound@mail.com";
 
       return expect(
-        localLoginHandler.setPassword(testUsername, "password"),
+        LocalLoginHandler.setPassword(testUsername, "password"),
       ).to.be.rejectedWith(
         BlError,
         /localLogin was not found with username "notFound@mail.com/,
@@ -206,7 +204,7 @@ describe("LocalLoginHandler", () => {
       const testPassword = "short";
 
       return expect(
-        localLoginHandler.setPassword(testUsername, testPassword),
+        LocalLoginHandler.setPassword(testUsername, testPassword),
       ).to.be.rejectedWith(BlError, /localLogin password to short/);
     });
 
@@ -214,7 +212,7 @@ describe("LocalLoginHandler", () => {
       const notFoundUsername = "notFound@mail.com";
 
       return expect(
-        localLoginHandler.setPassword(notFoundUsername, "password"),
+        LocalLoginHandler.setPassword(notFoundUsername, "password"),
       ).to.be.rejectedWith(
         BlError,
         /localLogin was not found with username "notFound@mail.com"/,
@@ -225,12 +223,12 @@ describe("LocalLoginHandler", () => {
       updateSuccess = false;
 
       return expect(
-        localLoginHandler.setPassword(testUsername, "password"),
+        LocalLoginHandler.setPassword(testUsername, "password"),
       ).to.be.rejectedWith(BlError, /localLogin could not be updated/);
     });
 
     it("should resolve if valid username and password is set", () => {
-      return expect(localLoginHandler.setPassword(testUsername, "password123"))
+      return expect(LocalLoginHandler.setPassword(testUsername, "password123"))
         .to.be.fulfilled;
     });
   });

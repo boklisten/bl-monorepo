@@ -1,4 +1,4 @@
-import { dateService } from "@backend/blc/date.service.js";
+import { DateService } from "@backend/blc/date.service.js";
 import { expect, use as chaiUse, should } from "chai";
 import chaiAsPromised from "chai-as-promised";
 import moment from "moment-timezone";
@@ -13,7 +13,7 @@ describe("DateService", () => {
       const expectedDateString = "2019-12-20T01:00:00.000+01:00";
 
       return expect(
-        dateService.utcToLocalTimeString(utcDate, "Europe/Oslo"),
+        DateService.utcToLocalTimeString(utcDate, "Europe/Oslo"),
       ).equal(expectedDateString);
     });
 
@@ -22,7 +22,7 @@ describe("DateService", () => {
       const expectedDateString = "2019-12-20T00:00:00.000+01:00";
 
       return expect(
-        dateService.utcToLocalTimeString(datestring, "Europe/Oslo"),
+        DateService.utcToLocalTimeString(datestring, "Europe/Oslo"),
       ).equal(expectedDateString);
     });
 
@@ -32,7 +32,7 @@ describe("DateService", () => {
       const expectedDateString = "2020-07-01T00:00:00.000+02:00";
 
       return expect(
-        dateService.utcToLocalTimeString(datestring, "Europe/Oslo"),
+        DateService.utcToLocalTimeString(datestring, "Europe/Oslo"),
       ).equal(expectedDateString);
     });
 
@@ -40,8 +40,8 @@ describe("DateService", () => {
       const utcDate = new Date(Date.UTC(2019, 11, 20));
 
       return expect(
-        dateService.toPrintFormat(
-          dateService.utcToLocalTimeString(utcDate, "Europe/Oslo"),
+        DateService.toPrintFormat(
+          DateService.utcToLocalTimeString(utcDate, "Europe/Oslo"),
           "Europe/Oslo",
         ),
       ).equal("20.12.19");
@@ -51,8 +51,8 @@ describe("DateService", () => {
       const utcDate = "2019-12-20T00:00:00.000+01:00";
 
       return expect(
-        dateService.toPrintFormat(
-          dateService.utcToLocalTimeString(utcDate, "Europe/Oslo"),
+        DateService.toPrintFormat(
+          DateService.utcToLocalTimeString(utcDate, "Europe/Oslo"),
           "Europe/Oslo",
         ),
       ).equal("20.12.19");
@@ -61,19 +61,19 @@ describe("DateService", () => {
     it("should be possible to convert from timezone America/Los_Angeles to Europe/Oslo", () => {
       const utcDate = new Date(Date.UTC(2018, 11, 20));
 
-      const americaDate = dateService.utcToLocalTimeString(
+      const americaDate = DateService.utcToLocalTimeString(
         utcDate,
         "America/Los_Angeles",
       );
 
       return expect(
-        dateService.utcToLocalTimeString(americaDate, "Europe/Oslo"),
+        DateService.utcToLocalTimeString(americaDate, "Europe/Oslo"),
       ).equal("2018-12-20T01:00:00.000+01:00");
     });
 
     it("should convert to local time", () => {
       return expect(
-        dateService.utcToLocalTimeString(
+        DateService.utcToLocalTimeString(
           "2018-12-20T00:00:00.000+00:00",
           "Europe/Oslo",
         ),
@@ -82,7 +82,7 @@ describe("DateService", () => {
 
     it("should convert to correct local time", () => {
       return expect(
-        dateService.utcToLocalTimeString(
+        DateService.utcToLocalTimeString(
           "2018-12-19T23:00:00.000+00:00",
           "Europe/Oslo",
         ),
@@ -93,7 +93,7 @@ describe("DateService", () => {
   describe("toPrintFormat", () => {
     it("should return date on correct format", () => {
       const date = "2019-12-20T22:00:00.000+01:00";
-      return expect(dateService.toPrintFormat(date, "Europe/Oslo")).equal(
+      return expect(DateService.toPrintFormat(date, "Europe/Oslo")).equal(
         "20.12.19",
       );
     });
@@ -103,7 +103,7 @@ describe("DateService", () => {
     it("should return a time with added 23:59 hours", () => {
       const date = "2020-06-30T22:00:00.000+00:00";
       return expect(
-        dateService.toEndOfDay(date, "Europe/Oslo").toISOString(),
+        DateService.toEndOfDay(date, "Europe/Oslo").toISOString(),
       ).equal("2020-07-01T21:59:59.999Z");
     });
   });
@@ -112,7 +112,7 @@ describe("DateService", () => {
     it("should return date on correct format", () => {
       const date = "2020-01-01T10:12:20.000+01:00";
       return expect(
-        dateService.format(date, "Europe/Oslo", "DD.MM.YYYY HH:mm:ss"),
+        DateService.format(date, "Europe/Oslo", "DD.MM.YYYY HH:mm:ss"),
       ).equal("01.01.2020 10:12:20");
     });
   });
@@ -123,7 +123,7 @@ describe("DateService", () => {
       const from = new Date(1900, 1, 10, 9);
       const to = new Date(1900, 1, 10, 20);
 
-      return expect(dateService.between(date, from, to, "Europe/Oslo")).to.be
+      return expect(DateService.between(date, from, to, "Europe/Oslo")).to.be
         .true;
     });
   });
@@ -139,7 +139,7 @@ describe("DateService", () => {
       ];
 
       for (const birthday of birthdays) {
-        expect(dateService.isOver18(birthday)).to.be.false;
+        expect(DateService.isOver18(birthday)).to.be.false;
       }
     });
 
@@ -152,7 +152,7 @@ describe("DateService", () => {
       ];
 
       for (const birthday of birthdays) {
-        expect(dateService.isOver18(birthday)).to.be.true;
+        expect(DateService.isOver18(birthday)).to.be.true;
       }
     });
   });
@@ -166,7 +166,7 @@ describe("DateService", () => {
         .seconds(22)
         .toDate();
 
-      return expect(dateService.betweenHours(date, 8, 18, "Europe/Oslo")).to.be
+      return expect(DateService.betweenHours(date, 8, 18, "Europe/Oslo")).to.be
         .true;
     });
 
@@ -178,7 +178,7 @@ describe("DateService", () => {
         .seconds(22)
         .toDate();
 
-      return expect(dateService.betweenHours(date, 8, 18, "Europe/Oslo")).to.be
+      return expect(DateService.betweenHours(date, 8, 18, "Europe/Oslo")).to.be
         .false;
     });
   });

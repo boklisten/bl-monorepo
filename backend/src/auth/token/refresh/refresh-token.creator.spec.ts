@@ -1,8 +1,8 @@
 import "mocha";
 
 import { AccessToken } from "@backend/auth/token/access-token/access-token.js";
-import { RefreshToken } from "@backend/auth/token/refresh/refresh-token.js";
 import { RefreshTokenCreator } from "@backend/auth/token/refresh/refresh-token.creator.js";
+import { RefreshToken } from "@backend/auth/token/refresh/refresh-token.js";
 import { TokenConfig } from "@backend/auth/token/token.config.js";
 import { BlError } from "@shared/bl-error/bl-error.js";
 import { use as chaiUse, should } from "chai";

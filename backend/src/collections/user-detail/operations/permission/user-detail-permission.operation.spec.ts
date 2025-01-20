@@ -2,7 +2,7 @@ import "mocha";
 
 import { User } from "@backend/collections/user/user.js";
 import { UserDetailPermissionOperation } from "@backend/collections/user-detail/operations/permission/user-detail-permission.operation.js";
-import { SEResponseHandler } from "@backend/response/se.response.handler.js";
+import BlResponseHandler from "@backend/response/bl-response.handler.js";
 import { BlStorage } from "@backend/storage/bl-storage.js";
 import { BlError } from "@shared/bl-error/bl-error.js";
 import { UserDetail } from "@shared/user/user-detail/user-detail.js";
@@ -13,10 +13,7 @@ chaiUse(chaiAsPromised);
 should();
 
 describe("UserDetailPermissionOperation", () => {
-  const resHandler = new SEResponseHandler();
-  const userDetailPermissionOperation = new UserDetailPermissionOperation(
-    resHandler,
-  );
+  const userDetailPermissionOperation = new UserDetailPermissionOperation();
 
   let userAggregateStub: sinon.SinonStub;
   let userDetailGetStub: sinon.SinonStub;
@@ -29,7 +26,7 @@ describe("UserDetailPermissionOperation", () => {
     userAggregateStub = sandbox.stub(BlStorage.Users, "aggregate");
     userDetailGetStub = sandbox.stub(BlStorage.UserDetails, "get");
     userUpdateStub = sandbox.stub(BlStorage.Users, "update");
-    resHandlerStub = sandbox.stub(resHandler, "sendResponse");
+    resHandlerStub = sandbox.stub(BlResponseHandler, "sendResponse");
   });
   afterEach(() => {
     sandbox.restore();
@@ -66,7 +63,7 @@ describe("UserDetailPermissionOperation", () => {
     ).to.eventually.be.rejectedWith(BlError, /user not found/);
   });
 
-  const permissions: any[] = ["customer", "employee", "manager", "admin"];
+  const permissions = ["customer", "employee", "manager", "admin"];
 
   for (const permission of permissions) {
     it(`should reject if blApiRequest.user.permission "${permission}" is lower than user.permission "admin"`, () => {

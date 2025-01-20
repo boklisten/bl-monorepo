@@ -6,7 +6,7 @@ import { isNotNullish } from "@backend/helper/typescript-helpers.js";
 import { Operation } from "@backend/operation/operation.js";
 import { SEDbQueryBuilder } from "@backend/query/se.db-query-builder.js";
 import { BlApiRequest } from "@backend/request/bl-api-request.js";
-import { SEResponseHandler } from "@backend/response/se.response.handler.js";
+import BlResponseHandler from "@backend/response/bl-response.handler.js";
 import { BlStorage } from "@backend/storage/bl-storage.js";
 import { BlError } from "@shared/bl-error/bl-error.js";
 import { BlapiResponse } from "@shared/blapi-response/blapi-response.js";
@@ -21,19 +21,15 @@ import { Request, Response } from "express";
 
 export class OrderPlaceOperation implements Operation {
   private queryBuilder = new SEDbQueryBuilder();
-  private resHandler: SEResponseHandler;
   private orderToCustomerItemGenerator: OrderToCustomerItemGenerator;
   private orderPlacedHandler: OrderPlacedHandler;
   private orderValidator: OrderValidator;
 
   constructor(
-    resHandler?: SEResponseHandler,
     orderToCustomerItemGenerator?: OrderToCustomerItemGenerator,
     orderPlacedHandler?: OrderPlacedHandler,
     orderValidator?: OrderValidator,
   ) {
-    this.resHandler = resHandler ?? new SEResponseHandler();
-
     this.orderToCustomerItemGenerator =
       orderToCustomerItemGenerator ?? new OrderToCustomerItemGenerator();
 
@@ -532,7 +528,7 @@ export class OrderPlaceOperation implements Operation {
         // eslint-disable-next-line no-empty
       } catch {}
     }
-    this.resHandler.sendResponse(res, new BlapiResponse([order]));
+    BlResponseHandler.sendResponse(res, new BlapiResponse([order]));
     return true;
   }
 

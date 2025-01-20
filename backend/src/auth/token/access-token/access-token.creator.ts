@@ -1,18 +1,12 @@
-import { AccessTokenSecret } from "@backend/auth/token/access-token/access-token.secret.js";
-import { RefreshTokenValidator } from "@backend/auth/token/refresh/refresh-token.validator.js";
+import RefreshTokenValidator from "@backend/auth/token/refresh/refresh-token.validator.js";
 import { TokenConfig } from "@backend/auth/token/token.config.js";
+import { assertEnv, BlEnvironment } from "@backend/config/environment.js";
 import { BlError } from "@shared/bl-error/bl-error.js";
 import { UserPermission } from "@shared/permission/user-permission.js";
 import jwt from "jsonwebtoken";
 
 export class AccessTokenCreator {
-  private refreshTokenValidator: RefreshTokenValidator;
-  private accessTokenSecret: AccessTokenSecret;
-
-  constructor(private tokenConfig: TokenConfig) {
-    this.refreshTokenValidator = new RefreshTokenValidator();
-    this.accessTokenSecret = new AccessTokenSecret();
-  }
+  constructor(private tokenConfig: TokenConfig) {}
 
   public create(
     username: string,
@@ -29,11 +23,11 @@ export class AccessTokenCreator {
             .methodName("createAccessToken"),
         );
 
-      this.refreshTokenValidator.validate(refreshToken).then(
+      RefreshTokenValidator.validate(refreshToken).then(
         () => {
           jwt.sign(
             this.createPayload(username, userid, permission, userDetailId),
-            this.accessTokenSecret.get(),
+            assertEnv(BlEnvironment.ACCESS_TOKEN_SECRET),
             { expiresIn: this.tokenConfig.accessToken.expiresIn },
             (error, accessToken) => {
               if (error || accessToken === undefined)

@@ -9,7 +9,7 @@ import { createPath } from "@backend/config/api-path.js";
 import { isBoolean, isNotNullish } from "@backend/helper/typescript-helpers.js";
 import { Hook } from "@backend/hook/hook.js";
 import { BlApiRequest } from "@backend/request/bl-api-request.js";
-import { SEResponseHandler } from "@backend/response/se.response.handler.js";
+import BlResponseHandler from "@backend/response/bl-response.handler.js";
 import { BlStorageData } from "@backend/storage/bl-storage.js";
 import { BlError } from "@shared/bl-error/bl-error.js";
 import { BlapiResponse } from "@shared/blapi-response/blapi-response.js";
@@ -19,7 +19,6 @@ import { NextFunction, Request, Response, Router } from "express";
 export abstract class CollectionEndpointMethod {
   protected collectionUri: string;
   protected collectionEndpointAuth: CollectionEndpointAuth;
-  protected responseHandler: SEResponseHandler;
   protected collectionEndpointDocumentAuth: CollectionEndpointDocumentAuth;
 
   constructor(
@@ -29,7 +28,6 @@ export abstract class CollectionEndpointMethod {
   ) {
     this.collectionUri = createPath(this.collection.storage.path);
     this.collectionEndpointAuth = new CollectionEndpointAuth();
-    this.responseHandler = new SEResponseHandler();
     this.collectionEndpointDocumentAuth = new CollectionEndpointDocumentAuth();
   }
 
@@ -142,9 +140,9 @@ export abstract class CollectionEndpointMethod {
       )
       .then((docs) => hook.after(docs, userAccessToken))
       .then((docs) =>
-        this.responseHandler.sendResponse(res, new BlapiResponse(docs)),
+        BlResponseHandler.sendResponse(res, new BlapiResponse(docs)),
       )
-      .catch((error) => this.responseHandler.sendErrorResponse(res, error));
+      .catch((error) => BlResponseHandler.sendErrorResponse(res, error));
   }
 
   private routerGetAll() {

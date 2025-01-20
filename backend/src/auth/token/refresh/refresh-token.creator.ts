@@ -1,15 +1,11 @@
-import { RefreshTokenSecret } from "@backend/auth/token/refresh/refresh-token.secret.js";
 import { TokenConfig } from "@backend/auth/token/token.config.js";
+import { assertEnv, BlEnvironment } from "@backend/config/environment.js";
 import { BlError } from "@shared/bl-error/bl-error.js";
 import jwt from "jsonwebtoken";
 import validator from "validator";
 
 export class RefreshTokenCreator {
-  private refreshTokenSecret: RefreshTokenSecret;
-
-  constructor(private tokenConfig: TokenConfig) {
-    this.refreshTokenSecret = new RefreshTokenSecret();
-  }
+  constructor(private tokenConfig: TokenConfig) {}
 
   public create(username: string, userid: string): Promise<string> {
     return new Promise((resolve, reject) => {
@@ -28,7 +24,7 @@ export class RefreshTokenCreator {
 
       jwt.sign(
         this.createPayload(username, userid),
-        this.refreshTokenSecret.get(),
+        assertEnv(BlEnvironment.REFRESH_TOKEN_SECRET),
         { expiresIn: this.tokenConfig.refreshToken.expiresIn },
         (error, refreshToken) => {
           if (error || refreshToken === undefined)

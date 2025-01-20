@@ -1,4 +1,4 @@
-import { dateService } from "@backend/blc/date.service.js";
+import { DateService } from "@backend/blc/date.service.js";
 import { assertEnv, BlEnvironment } from "@backend/config/environment.js";
 import { logger } from "@backend/logger/logger.js";
 import { EMAIL_SETTINGS } from "@backend/messenger/email/email-settings.js";
@@ -122,7 +122,7 @@ export class EmailService implements MessengerService {
       if (
         customerDetail.dob &&
         customerDetail.guardian &&
-        !dateService.isOver18(customerDetail.dob)
+        !DateService.isOver18(customerDetail.dob)
       ) {
         await this.sendToGuardian(customerDetail, recipient, messageOptions);
       }
@@ -276,7 +276,7 @@ export class EmailService implements MessengerService {
   private formatDeadline(deadline?: Date): string {
     return deadline == undefined
       ? ""
-      : dateService.toPrintFormat(deadline, "Europe/Oslo");
+      : DateService.toPrintFormat(deadline, "Europe/Oslo");
   }
   private getCustomerItemLeftToPayTotal(customerItems: CustomerItem[]): number {
     return customerItems.reduce(
@@ -311,7 +311,7 @@ export class EmailService implements MessengerService {
       name: customerDetail.name,
       dob:
         customerDetail.dob !== undefined && customerDetail.dob !== null
-          ? dateService.format(customerDetail.dob, "Europe/Oslo", "DD.MM.YYYY")
+          ? DateService.format(customerDetail.dob, "Europe/Oslo", "DD.MM.YYYY")
           : "",
       email: customerDetail.email,
       address: customerDetail.address,

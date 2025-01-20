@@ -3,7 +3,7 @@ import "mocha";
 import { AccessToken } from "@backend/auth/token/access-token/access-token.js";
 import { RefreshTokenCreator } from "@backend/auth/token/refresh/refresh-token.creator.js";
 import { RefreshToken } from "@backend/auth/token/refresh/refresh-token.js";
-import { RefreshTokenValidator } from "@backend/auth/token/refresh/refresh-token.validator.js";
+import RefreshTokenValidator from "@backend/auth/token/refresh/refresh-token.validator.js";
 import { TokenConfig } from "@backend/auth/token/token.config.js";
 import { BlError } from "@shared/bl-error/bl-error.js";
 import { use as chaiUse, should } from "chai";
@@ -37,19 +37,17 @@ describe("RefreshTokenValidator", () => {
   const tokenConfig = new TokenConfig(accessTokenConfig, refreshTokenConfig);
   const refreshTokenCreator = new RefreshTokenCreator(tokenConfig);
 
-  const refreshTokenValidator = new RefreshTokenValidator();
-
   describe("validateRefreshToken()", () => {
     it("should reject with BlError when refreshToken is empty", () => {
       const refreshToken = "";
-      return refreshTokenValidator
-        .validate(refreshToken)
-        .should.be.rejectedWith(BlError);
+      return RefreshTokenValidator.validate(
+        refreshToken,
+      ).should.be.rejectedWith(BlError);
     });
 
     it("should reject with BlError when refreshToken is not valid", (done) => {
       const refreshToken = "this is not a valid token";
-      refreshTokenValidator.validate(refreshToken).then(
+      RefreshTokenValidator.validate(refreshToken).then(
         // @ts-expect-error fixme: auto ignored
         (valid: boolean) => {
           valid.should.not.be.fulfilled;
@@ -69,12 +67,12 @@ describe("RefreshTokenValidator", () => {
           "test",
           { expiresIn: "1s" },
           (error, refreshToken) => {
-            refreshTokenValidator
-              .validate(refreshToken)
-              .catch((rtokenError: BlError) => {
+            RefreshTokenValidator.validate(refreshToken).catch(
+              (rtokenError: BlError) => {
                 rtokenError.getCode().should.be.eql(909);
                 done();
-              });
+              },
+            );
           },
         );
       });
@@ -87,7 +85,7 @@ describe("RefreshTokenValidator", () => {
 
         refreshTokenCreator.create(username, userid).then(
           (refreshToken: string) => {
-            refreshTokenValidator.validate(refreshToken).then(
+            RefreshTokenValidator.validate(refreshToken).then(
               // @ts-expect-error fixme: auto ignored
               (refreshToken: RefreshToken) => {
                 refreshToken.aud.should.be.eq(tokenConfig.refreshToken.aud);

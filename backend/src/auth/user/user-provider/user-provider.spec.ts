@@ -1,12 +1,12 @@
-import { BlError } from "@shared/bl-error/bl-error.js";
-import { expect, use as chaiUse, should } from "chai";
-import chaiAsPromised from "chai-as-promised";
 import "mocha";
-import sinon from "sinon";
-import { LocalLoginHandler } from "@backend/auth/local/local-login.handler.js";
+import LocalLoginHandler from "@backend/auth/local/local-login.handler.js";
 import { TokenHandler } from "@backend/auth/token/token.handler.js";
 import { UserProvider } from "@backend/auth/user/user-provider/user-provider.js";
 import { UserHandler } from "@backend/auth/user/user.handler.js";
+import { BlError } from "@shared/bl-error/bl-error.js";
+import { expect, use as chaiUse, should } from "chai";
+import chaiAsPromised from "chai-as-promised";
+import sinon from "sinon";
 
 chaiUse(chaiAsPromised);
 should();
@@ -17,18 +17,13 @@ describe("UserProvider", () => {
   const userGetStub = sinon.stub(userHandler, "get");
   const userCreateStub = sinon.stub(userHandler, "create");
   const userValidStub = sinon.stub(userHandler, "valid");
-  const localLoginHandler = new LocalLoginHandler();
   const createTokenStub = sinon.stub(tokenHandler, "createTokens");
 
   const createDefaultLocalLoginStub = sinon.stub(
-    localLoginHandler,
+    LocalLoginHandler,
     "createDefaultLocalLoginIfNoneIsFound",
   );
-  const userProvider = new UserProvider(
-    userHandler,
-    localLoginHandler,
-    tokenHandler,
-  );
+  const userProvider = new UserProvider(userHandler, tokenHandler);
 
   beforeEach(() => {
     userGetStub.reset();
@@ -48,7 +43,7 @@ describe("UserProvider", () => {
       ).to.eventually.be.rejectedWith(BlError, /user is not valid/);
     });
 
-    it("should reject if localLoginHandler.createDefaultLocalLoginIfNoneIsFound rejects", () => {
+    it("should reject if LocalLoginHandler.createDefaultLocalLoginIfNoneIsFound rejects", () => {
       userGetStub.resolves({ id: "user1" } as any);
       userValidStub.resolves();
       createDefaultLocalLoginStub.rejects(

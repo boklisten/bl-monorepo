@@ -1,5 +1,5 @@
 import "mocha";
-import { ProviderIdGenerator } from "@backend/auth/local/provider-id/provider-id-generator.js";
+import ProviderIdGenerator from "@backend/auth/local/provider-id/provider-id-generator.js";
 import { BlError } from "@shared/bl-error/bl-error.js";
 import { use as chaiUse, should } from "chai";
 import chaiAsPromised from "chai-as-promised";
@@ -9,21 +9,18 @@ should();
 
 describe("ProviderIdGenerator", () => {
   describe("generate()", () => {
-    const providerIdGenerator = new ProviderIdGenerator();
-
     describe("should reject with BlError when", () => {
       it("username is empty", () => {
         const username = "";
-        return providerIdGenerator
-          .generate(username)
-          .should.be.rejectedWith(BlError);
+        return ProviderIdGenerator.generate(username).should.be.rejectedWith(
+          BlError,
+        );
       });
 
       it("username is undefined", () => {
         const username = undefined;
         return (
-          providerIdGenerator
-
+          ProviderIdGenerator
             // @ts-expect-error fixme: auto ignored
             .generate(username)
             .should.be.rejectedWith(BlError)
@@ -34,8 +31,7 @@ describe("ProviderIdGenerator", () => {
     describe("should return a providerId when", () => {
       it("usename is valid", () => {
         const username = "bill@mail.com";
-        return providerIdGenerator
-          .generate(username)
+        return ProviderIdGenerator.generate(username)
           .should.eventually.be.fulfilled.and.be.a("string")
           .and.have.length.greaterThan(63);
       });

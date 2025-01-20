@@ -1,4 +1,3 @@
-import { LocalLoginHandler } from "@backend/auth/local/local-login.handler.js";
 import { ConfirmPendingPasswordResetOperation } from "@backend/collections/pending-password-reset/operations/confirm-pending-password-reset.operation.js";
 import BlCrypto from "@backend/crypto/bl-crypto.js";
 import { BlApiRequest } from "@backend/request/bl-api-request.js";
@@ -10,14 +9,14 @@ import chaiAsPromised from "chai-as-promised";
 import sinon, { createSandbox } from "sinon";
 
 import "mocha";
+import LocalLoginHandler from "@backend/auth/local/local-login.handler.js";
 
 chaiUse(chaiAsPromised);
 should();
 
 describe("ConfirmPendingPasswordResetOperation", () => {
-  const localLoginHandler = new LocalLoginHandler();
   const confirmPendingPasswordResetOperation =
-    new ConfirmPendingPasswordResetOperation(localLoginHandler);
+    new ConfirmPendingPasswordResetOperation();
   let testBlApiRequest: BlApiRequest;
   let testPendingPasswordReset: PendingPasswordReset;
   let localLoginUpdateSuccess: boolean;
@@ -61,7 +60,7 @@ describe("ConfirmPendingPasswordResetOperation", () => {
         return Object.assign(testPendingPasswordReset, data);
       });
 
-    sandbox.stub(localLoginHandler, "setPassword").callsFake(() => {
+    sandbox.stub(LocalLoginHandler, "setPassword").callsFake(() => {
       if (localLoginUpdateSuccess) {
         return Promise.resolve(true);
       }
@@ -140,7 +139,7 @@ describe("ConfirmPendingPasswordResetOperation", () => {
       await confirmPendingPasswordResetOperation.run(testBlApiRequest);
     });
 
-    it("should reject if localLoginHandler.setPassword rejects", async () => {
+    it("should reject if LocalLoginHandler.setPassword rejects", async () => {
       localLoginUpdateSuccess = false;
 
       await expect(

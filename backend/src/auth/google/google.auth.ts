@@ -2,7 +2,7 @@ import { APP_CONFIG } from "@backend/application-config.js";
 import { UserProvider } from "@backend/auth/user/user-provider/user-provider.js";
 import { createPath, retrieveRefererPath } from "@backend/config/api-path.js";
 import { assertEnv, BlEnvironment } from "@backend/config/environment.js";
-import { SEResponseHandler } from "@backend/response/se.response.handler.js";
+import BlResponseHandler from "@backend/response/bl-response.handler.js";
 import { BlError } from "@shared/bl-error/bl-error.js";
 import { Router } from "express";
 import passport from "passport";
@@ -11,10 +11,7 @@ import { Profile, Strategy as GoogleStrategy } from "passport-google-oauth20";
 export class GoogleAuth {
   private userProvider = new UserProvider();
 
-  constructor(
-    private router: Router,
-    private resHandler: SEResponseHandler,
-  ) {
+  constructor(private router: Router) {
     this.createAuthGet(router);
     this.createCallbackGet(router);
 
@@ -88,8 +85,6 @@ export class GoogleAuth {
         APP_CONFIG.login.google.name,
         // @ts-expect-error fixme: auto ignored
         (error, tokens, blError: BlError) => {
-          const resHandler = new SEResponseHandler();
-
           if (!tokens && (error || blError)) {
             return res.redirect(
               assertEnv(BlEnvironment.CLIENT_URI) +
@@ -98,7 +93,7 @@ export class GoogleAuth {
           }
 
           if (tokens) {
-            return resHandler.sendAuthTokens(
+            return BlResponseHandler.sendAuthTokens(
               res,
               tokens.accessToken,
               tokens.refreshToken,

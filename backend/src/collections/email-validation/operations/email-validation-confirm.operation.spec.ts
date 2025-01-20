@@ -2,7 +2,7 @@ import "mocha";
 
 import { EmailValidation } from "@backend/collections/email-validation/email-validation.js";
 import { EmailValidationConfirmOperation } from "@backend/collections/email-validation/operations/email-validation-confirm.operation.js";
-import { SEResponseHandler } from "@backend/response/se.response.handler.js";
+import BlResponseHandler from "@backend/response/bl-response.handler.js";
 import { BlStorage } from "@backend/storage/bl-storage.js";
 import { BlError } from "@shared/bl-error/bl-error.js";
 import { BlapiResponse } from "@shared/blapi-response/blapi-response.js";
@@ -16,12 +16,11 @@ chaiUse(chaiAsPromised);
 should();
 
 describe("EmailValidationConfirmOperation", () => {
-  const resHandler = new SEResponseHandler();
-  const emailValidationConfirmOperation = new EmailValidationConfirmOperation(
-    resHandler,
-  );
+  const emailValidationConfirmOperation = new EmailValidationConfirmOperation();
   let sandbox: sinon.SinonSandbox;
   let userDetailStorageUpdateStub: sinon.SinonStub;
+  let resHandlerSendErrorStub: sinon.SinonStub;
+  let resHandlerSendResponseStub: sinon.SinonStub;
 
   const testUserDetail: UserDetail = {
     id: "userDetail1",
@@ -61,7 +60,7 @@ describe("EmailValidationConfirmOperation", () => {
 
     userDetailStorageUpdateStub = sandbox
       .stub(BlStorage.UserDetails, "update")
-      .callsFake((id: string, data: any) => {
+      .callsFake((id) => {
         if (id !== testUserDetail.id) {
           return Promise.reject(new BlError("not found"));
         }
@@ -72,18 +71,20 @@ describe("EmailValidationConfirmOperation", () => {
 
         return Promise.resolve(testUserDetail);
       });
+
+    resHandlerSendErrorStub = sandbox.stub(
+      BlResponseHandler,
+      "sendErrorResponse",
+    );
+
+    resHandlerSendResponseStub = sandbox.stub(
+      BlResponseHandler,
+      "sendResponse",
+    );
   });
   afterEach(() => {
     sandbox.restore();
   });
-
-  const resHandlerSendErrorStub = sinon
-    .stub(resHandler, "sendErrorResponse")
-    .callsFake(() => {});
-
-  const resHandlerSendResponseStub = sinon
-    .stub(resHandler, "sendResponse")
-    .callsFake(() => {});
 
   describe("#run", () => {
     it("should reject if no documentId is provided", (done) => {

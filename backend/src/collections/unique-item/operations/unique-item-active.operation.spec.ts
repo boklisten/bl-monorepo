@@ -2,7 +2,7 @@ import "mocha";
 
 import { CustomerItemActiveBlid } from "@backend/collections/customer-item/helpers/customer-item-active-blid.js";
 import { UniqueItemActiveOperation } from "@backend/collections/unique-item/operations/unique-item-active.operation.js";
-import { SEResponseHandler } from "@backend/response/se.response.handler.js";
+import BlResponseHandler from "@backend/response/bl-response.handler.js";
 import { BlStorage } from "@backend/storage/bl-storage.js";
 import { UniqueItem } from "@shared/unique-item/unique-item.js";
 import { expect, use as chaiUse, should } from "chai";
@@ -23,17 +23,19 @@ describe("UniqueItemActiveOperation", () => {
 
     const getUniqueItemStub = sinon.stub(BlStorage.UniqueItems, "get");
 
-    const resHandler = new SEResponseHandler();
-
     const uniqueItemActiveOperation = new UniqueItemActiveOperation(
       customerItemActiveBlid,
-      resHandler,
     );
 
-    sinon.stub(resHandler, "sendResponse").resolves(true);
+    let sandbox: sinon.SinonSandbox;
 
     beforeEach(() => {
+      sandbox = sinon.createSandbox();
+      sandbox.stub(BlResponseHandler, "sendResponse").resolves(true);
       getUniqueItemStub.reset();
+    });
+    afterEach(() => {
+      sandbox.restore();
     });
 
     it("should return true", () => {

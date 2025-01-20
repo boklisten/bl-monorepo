@@ -1,5 +1,5 @@
 import "mocha";
-import { dateService } from "@backend/blc/date.service.js";
+import { DateService } from "@backend/blc/date.service.js";
 import { OrderEmailHandler } from "@backend/messenger/email/order-email/order-email-handler.js";
 import { BlStorage } from "@backend/storage/bl-storage.js";
 import { EmailHandler, EmailLog } from "@boklisten/bl-email";
@@ -315,7 +315,7 @@ describe("OrderEmailHandler", () => {
             );
 
             expect(emailOrder.items[0].deadline).to.be.eq(
-              dateService.format(
+              DateService.format(
                 // @ts-expect-error fixme: auto ignored
                 testOrder.orderItems[0].info.to,
                 "Europe/Oslo",
@@ -375,7 +375,7 @@ describe("OrderEmailHandler", () => {
             expect(emailOrder.items[0].price).to.be.null;
 
             expect(emailOrder.items[0].deadline).to.be.eq(
-              dateService.format(
+              DateService.format(
                 // @ts-expect-error fixme: auto ignored
                 testOrder.orderItems[1].info.to,
                 "Europe/Oslo",
@@ -391,7 +391,7 @@ describe("OrderEmailHandler", () => {
             expect(emailOrder.items[1].price).to.be.null;
 
             expect(emailOrder.items[1].deadline).to.be.eq(
-              dateService.format(
+              DateService.format(
                 // @ts-expect-error fixme: auto ignored
                 testOrder.orderItems[1].info.to,
                 "Europe/Oslo",
@@ -514,7 +514,7 @@ describe("OrderEmailHandler", () => {
 
               // @ts-expect-error fixme: auto ignored
               trackingNumber: testDelivery.info["trackingNumber"],
-              estimatedDeliveryDate: dateService.toPrintFormat(
+              estimatedDeliveryDate: DateService.toPrintFormat(
                 // @ts-expect-error fixme: auto ignored
                 testDelivery.info["estimatedDelivery"],
                 "Europe/Oslo",
@@ -590,7 +590,7 @@ describe("OrderEmailHandler", () => {
             );
             expect(emailOrder.payment.payments[0].status).to.be.eq("bekreftet");
             expect(emailOrder.payment.payments[0].creationTime).to.be.eq(
-              dateService.format(
+              DateService.format(
                 // @ts-expect-error fixme: auto ignored
                 testPayment.creationTime,
                 "Europe/Oslo",
@@ -672,7 +672,7 @@ describe("OrderEmailHandler", () => {
             );
             expect(emailOrder.payment.payments[0].status).to.be.eq("bekreftet");
             expect(emailOrder.payment.payments[0].creationTime).to.be.eq(
-              dateService.format(
+              DateService.format(
                 // @ts-expect-error fixme: auto ignored
                 payments[0].creationTime,
                 "Europe/Oslo",
@@ -697,7 +697,7 @@ describe("OrderEmailHandler", () => {
             );
             expect(emailOrder.payment.payments[1].status).to.be.eq("bekreftet");
             expect(emailOrder.payment.payments[1].creationTime).to.be.eq(
-              dateService.format(
+              DateService.format(
                 // @ts-expect-error fixme: auto ignored
                 payments[1].creationTime,
                 "Europe/Oslo",

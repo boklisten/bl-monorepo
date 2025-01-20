@@ -3,11 +3,6 @@ import { IncomingHttpHeaders } from "node:http";
 import { APP_CONFIG } from "@backend/application-config.js";
 import { BlEnvironment, assertEnv } from "@backend/config/environment.js";
 
-const baseHost =
-  assertEnv(BlEnvironment.API_ENV) === "production"
-    ? APP_CONFIG.path.host
-    : APP_CONFIG.path.local.host;
-
 export function createPath(customPath: string): string {
   return assertEnv(BlEnvironment.SERVER_PATH) + customPath;
 }
@@ -31,6 +26,11 @@ export function retrieveRefererPath(requestHeaders: IncomingHttpHeaders) {
   } else if (reffererPath) {
     refererUrl = retrieveBasePath(reffererPath as string);
   }
+
+  const baseHost =
+    assertEnv(BlEnvironment.API_ENV) === "production"
+      ? APP_CONFIG.path.host
+      : APP_CONFIG.path.local.host;
 
   if (refererUrl && !refererUrl.includes(baseHost)) {
     refererUrl = null;

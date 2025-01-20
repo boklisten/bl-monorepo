@@ -1,6 +1,6 @@
 import { APP_CONFIG } from "@backend/application-config.js";
 import { UserProvider } from "@backend/auth/user/user-provider/user-provider.js";
-import { ApiPath } from "@backend/config/api-path.js";
+import { createPath, retrieveRefererPath } from "@backend/config/api-path.js";
 import { assertEnv, BlEnvironment } from "@backend/config/environment.js";
 import { SEResponseHandler } from "@backend/response/se.response.handler.js";
 import { BlError } from "@shared/bl-error/bl-error.js";
@@ -9,7 +9,6 @@ import passport from "passport";
 import { Profile, Strategy, StrategyOptions } from "passport-facebook";
 
 export class FacebookAuth {
-  private apiPath = new ApiPath();
   private userProvider = new UserProvider();
   private readonly facebookPassportStrategySettings: StrategyOptions;
 
@@ -22,7 +21,7 @@ export class FacebookAuth {
       clientSecret: assertEnv(BlEnvironment.FACEBOOK_SECRET),
       callbackURL:
         assertEnv(BlEnvironment.BL_API_URI) +
-        this.apiPath.createPath("auth/facebook/callback"),
+        createPath("auth/facebook/callback"),
       profileFields: ["id", "email", "name"],
       enableProof: true,
     };
@@ -78,7 +77,7 @@ export class FacebookAuth {
 
   private createAuthGet(router: Router) {
     router.get(
-      this.apiPath.createPath("auth/facebook"),
+      createPath("auth/facebook"),
       passport.authenticate(APP_CONFIG.login.facebook.name, {
         scope: ["public_profile", "email"],
       }),
@@ -86,31 +85,28 @@ export class FacebookAuth {
   }
 
   private createCallbackGet(router: Router) {
-    router.get(
-      this.apiPath.createPath("auth/facebook/callback"),
-      (request, res) => {
-        passport.authenticate(
-          APP_CONFIG.login.facebook.name,
-          // @ts-expect-error fixme: auto ignored
-          (error, tokens, blError: BlError) => {
-            if (!tokens && (error || blError)) {
-              return res.redirect(
-                assertEnv(BlEnvironment.CLIENT_URI) +
-                  APP_CONFIG.path.client.auth.socialLoginFailure,
-              );
-            }
+    router.get(createPath("auth/facebook/callback"), (request, res) => {
+      passport.authenticate(
+        APP_CONFIG.login.facebook.name,
+        // @ts-expect-error fixme: auto ignored
+        (error, tokens, blError: BlError) => {
+          if (!tokens && (error || blError)) {
+            return res.redirect(
+              assertEnv(BlEnvironment.CLIENT_URI) +
+                APP_CONFIG.path.client.auth.socialLoginFailure,
+            );
+          }
 
-            if (tokens) {
-              this.resHandler.sendAuthTokens(
-                res,
-                tokens.accessToken,
-                tokens.refreshToken,
-                this.apiPath.retrieveRefererPath(request.headers) ?? undefined,
-              );
-            }
-          },
-        )(request, res);
-      },
-    );
+          if (tokens) {
+            this.resHandler.sendAuthTokens(
+              res,
+              tokens.accessToken,
+              tokens.refreshToken,
+              retrieveRefererPath(request.headers) ?? undefined,
+            );
+          }
+        },
+      )(request, res);
+    });
   }
 }

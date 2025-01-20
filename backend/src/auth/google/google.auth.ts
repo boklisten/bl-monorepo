@@ -1,6 +1,6 @@
 import { APP_CONFIG } from "@backend/application-config.js";
 import { UserProvider } from "@backend/auth/user/user-provider/user-provider.js";
-import { ApiPath } from "@backend/config/api-path.js";
+import { createPath } from "@backend/config/api-path.js";
 import { assertEnv, BlEnvironment } from "@backend/config/environment.js";
 import { SEResponseHandler } from "@backend/response/se.response.handler.js";
 import { BlError } from "@shared/bl-error/bl-error.js";
@@ -9,7 +9,6 @@ import passport from "passport";
 import { Profile, Strategy as GoogleStrategy } from "passport-google-oauth20";
 
 export class GoogleAuth {
-  private apiPath = new ApiPath();
   private userProvider = new UserProvider();
 
   constructor(
@@ -31,7 +30,7 @@ export class GoogleAuth {
           passReqToCallback: true,
           callbackURL:
             assertEnv(BlEnvironment.BL_API_URI) +
-            this.apiPath.createPath("auth/google/callback"),
+            createPath("auth/google/callback"),
         },
         async (request, accessToken, refreshToken, profile, done) => {
           const provider = APP_CONFIG.login.google.name;
@@ -76,7 +75,7 @@ export class GoogleAuth {
 
   private createAuthGet(router: Router) {
     router.get(
-      this.apiPath.createPath("auth/google"),
+      createPath("auth/google"),
       passport.authenticate(APP_CONFIG.login.google.name, {
         scope: ["profile", "email"],
       }),
@@ -84,35 +83,32 @@ export class GoogleAuth {
   }
 
   private createCallbackGet(router: Router) {
-    router.get(
-      this.apiPath.createPath("auth/google/callback"),
-      (request, res) => {
-        passport.authenticate(
-          APP_CONFIG.login.google.name,
-          // @ts-expect-error fixme: auto ignored
-          (error, tokens, blError: BlError) => {
-            const resHandler = new SEResponseHandler();
+    router.get(createPath("auth/google/callback"), (request, res) => {
+      passport.authenticate(
+        APP_CONFIG.login.google.name,
+        // @ts-expect-error fixme: auto ignored
+        (error, tokens, blError: BlError) => {
+          const resHandler = new SEResponseHandler();
 
-            if (!tokens && (error || blError)) {
-              return res.redirect(
-                assertEnv(BlEnvironment.CLIENT_URI) +
-                  APP_CONFIG.path.client.auth.socialLoginFailure,
-              );
-            }
+          if (!tokens && (error || blError)) {
+            return res.redirect(
+              assertEnv(BlEnvironment.CLIENT_URI) +
+                APP_CONFIG.path.client.auth.socialLoginFailure,
+            );
+          }
 
-            if (tokens) {
-              return resHandler.sendAuthTokens(
-                res,
-                tokens.accessToken,
-                tokens.refreshToken,
+          if (tokens) {
+            return resHandler.sendAuthTokens(
+              res,
+              tokens.accessToken,
+              tokens.refreshToken,
 
-                // @ts-expect-error fixme: auto ignored
-                this.apiPath.retrieveRefererPath(request.headers),
-              );
-            }
-          },
-        )(request, res);
-      },
-    );
+              // @ts-expect-error fixme: auto ignored
+              retrieveRefererPath(request.headers),
+            );
+          }
+        },
+      )(request, res);
+    });
   }
 }

@@ -5,7 +5,7 @@ import {
   BlCollection,
   BlEndpoint,
 } from "@backend/collections/bl-collection.js";
-import { ApiPath } from "@backend/config/api-path.js";
+import { createPath } from "@backend/config/api-path.js";
 import { isBoolean, isNotNullish } from "@backend/helper/typescript-helpers.js";
 import { Hook } from "@backend/hook/hook.js";
 import { BlApiRequest } from "@backend/request/bl-api-request.js";
@@ -27,8 +27,7 @@ export abstract class CollectionEndpointMethod {
     protected endpoint: BlEndpoint,
     protected collection: BlCollection,
   ) {
-    const apiPath = new ApiPath();
-    this.collectionUri = apiPath.createPath(this.collection.storage.path);
+    this.collectionUri = createPath(this.collection.storage.path);
     this.collectionEndpointAuth = new CollectionEndpointAuth();
     this.responseHandler = new SEResponseHandler();
     this.collectionEndpointDocumentAuth = new CollectionEndpointDocumentAuth();

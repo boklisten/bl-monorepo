@@ -1,33 +1,30 @@
 import "mocha";
 import { APP_CONFIG } from "@backend/application-config.js";
-import { ApiPath } from "@backend/config/api-path.js";
+import { retrieveRefererPath } from "@backend/config/api-path.js";
 import { expect, use as chaiUse, should } from "chai";
 import chaiAsPromised from "chai-as-promised";
 
 chaiUse(chaiAsPromised);
 should();
 
-describe("ApiPath", () => {
+describe("Api Path", () => {
   describe("#retrieveRefererPath", () => {
     it("should return null if path does not include our basePath", () => {
-      const apiPath = new ApiPath();
       return expect(
-        apiPath.retrieveRefererPath({ referer: "https://www.m.facebook.com" }),
+        retrieveRefererPath({ referer: "https://www.m.facebook.com" }),
       ).to.be.eq(null);
     });
 
     it("should return null if path does not include our basePath", () => {
-      const apiPath = new ApiPath();
       return expect(
-        apiPath.retrieveRefererPath({ refferer: "https://google.com" }),
+        retrieveRefererPath({ refferer: "https://google.com" }),
       ).to.be.eq(null);
     });
 
     it("should return refererPath if url includes our basePath", () => {
       APP_CONFIG.path.local.host = "boklisten";
-      const apiPath = new ApiPath();
       return expect(
-        apiPath.retrieveRefererPath({
+        retrieveRefererPath({
           referer: "https://www.boklisten.no/auth/login",
         }),
       ).to.be.eq("https://www.boklisten.no/");
@@ -35,9 +32,8 @@ describe("ApiPath", () => {
 
     it("should return refererPath if url includes our basePath", () => {
       APP_CONFIG.path.local.host = "boklisten";
-      const apiPath = new ApiPath();
       return expect(
-        apiPath.retrieveRefererPath({
+        retrieveRefererPath({
           referer: "https://bladmin.boklisten.no/auth/login",
         }),
       ).to.be.eq("https://bladmin.boklisten.no/");
@@ -45,9 +41,8 @@ describe("ApiPath", () => {
 
     it("should return refererPath if url includes our basePath", () => {
       APP_CONFIG.path.local.host = "boklisten";
-      const apiPath = new ApiPath();
       return expect(
-        apiPath.retrieveRefererPath({
+        retrieveRefererPath({
           referer: "https://api.boklisten.no/auth/login",
         }),
       ).to.be.eq("https://api.boklisten.no/");
@@ -55,9 +50,8 @@ describe("ApiPath", () => {
 
     it("should return refererPath if url includes our basePath", () => {
       APP_CONFIG.path.local.host = "boklisten";
-      const apiPath = new ApiPath();
       return expect(
-        apiPath.retrieveRefererPath({
+        retrieveRefererPath({
           referer: "http://staging.boklisten.no/auth/login",
         }),
       ).to.be.eq("http://staging.boklisten.no/");
@@ -65,9 +59,8 @@ describe("ApiPath", () => {
 
     it("should return refererPath if url includes our basePath", () => {
       APP_CONFIG.path.local.host = "boklisten";
-      const apiPath = new ApiPath();
       return expect(
-        apiPath.retrieveRefererPath({
+        retrieveRefererPath({
           referer: "http://staging.bladmin.boklisten.no/auth/login",
         }),
       ).to.be.eq("http://staging.bladmin.boklisten.no/");
@@ -75,9 +68,8 @@ describe("ApiPath", () => {
 
     it("should return refererPath if url includes our local basePath", () => {
       APP_CONFIG.path.local.host = "localhost";
-      const apiPath = new ApiPath();
       return expect(
-        apiPath.retrieveRefererPath({
+        retrieveRefererPath({
           referer: "http://localhost:4200/auth/login",
         }),
       ).to.be.eq("http://localhost:4200/");

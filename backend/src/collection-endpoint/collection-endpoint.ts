@@ -8,7 +8,6 @@ import {
   BlCollection,
   BlEndpoint,
 } from "@backend/collections/bl-collection.js";
-import { ApiPath } from "@backend/config/api-path.js";
 import { logger } from "@backend/logger/logger.js";
 import { BlError } from "@shared/bl-error/bl-error.js";
 import { Router } from "express";
@@ -17,9 +16,7 @@ export class CollectionEndpoint {
   constructor(
     private router: Router,
     private collection: BlCollection,
-  ) {
-    new ApiPath();
-  }
+  ) {}
 
   public create() {
     for (const endpoint of this.collection.endpoints) {

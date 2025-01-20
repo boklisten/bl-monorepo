@@ -1,14 +1,13 @@
 import { RefreshToken } from "@backend/auth/token/refresh/refresh-token.js";
 import { RefreshTokenValidator } from "@backend/auth/token/refresh/refresh-token.validator.js";
 import { TokenHandler } from "@backend/auth/token/token.handler.js";
-import { ApiPath } from "@backend/config/api-path.js";
+import { createPath } from "@backend/config/api-path.js";
 import { SEResponseHandler } from "@backend/response/se.response.handler.js";
 import { BlError } from "@shared/bl-error/bl-error.js";
 import { BlapiResponse } from "@shared/blapi-response/blapi-response.js";
 import { Router } from "express";
 
 export class TokenEndpoint {
-  private apiPath: ApiPath;
   private refreshTokenValidator: RefreshTokenValidator;
 
   constructor(
@@ -16,13 +15,12 @@ export class TokenEndpoint {
     private resHandler: SEResponseHandler,
     private tokenHandler: TokenHandler,
   ) {
-    this.apiPath = new ApiPath();
     this.createPostEndpoint();
     this.refreshTokenValidator = new RefreshTokenValidator();
   }
 
   createPostEndpoint() {
-    this.router.post(this.apiPath.createPath("token"), (request, res) => {
+    this.router.post(createPath("token"), (request, res) => {
       if (request.body && request.body["refreshToken"]) {
         this.refreshTokenValidator.validate(request.body["refreshToken"]).then(
           // @ts-expect-error fixme: auto ignored

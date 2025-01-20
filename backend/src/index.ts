@@ -2,14 +2,12 @@ import "@backend/instrument";
 
 import { createAuthEndpoints } from "@backend/auth/auth-endpoint-creator.js";
 import { createCollectionEndpoints } from "@backend/collection-endpoint/collection-endpoint-creator.js";
+import corsHandler from "@backend/config/cors.js";
+import debugLoggerHandler from "@backend/config/debug-logger.js";
 import { assertEnv, BlEnvironment } from "@backend/config/environment.js";
+import redirectToHttpsHandler from "@backend/config/https.js";
+import sessionHandler from "@backend/config/session.js";
 import { logger } from "@backend/logger/logger.js";
-import {
-  getCorsHandler,
-  getDebugLoggerHandler,
-  getRedirectToHttpsHandler,
-  getSessionHandler,
-} from "@backend/server/server.js";
 import * as Sentry from "@sentry/node";
 import express, { json, Router } from "express";
 import mongoose from "mongoose";
@@ -25,9 +23,9 @@ logger.silly("               |_|");
 const app = express();
 const router = Router();
 app.use(json({ limit: "1mb" }));
-app.use(getCorsHandler());
-app.use(getSessionHandler());
-app.use(getDebugLoggerHandler());
+app.use(corsHandler);
+app.use(sessionHandler);
+app.use(debugLoggerHandler);
 app.use(passport.initialize());
 app.use(passport.session());
 
@@ -39,7 +37,7 @@ passport.deserializeUser((user, done) => {
   done(null, user);
 });
 
-app.get("*", getRedirectToHttpsHandler());
+app.get("*", redirectToHttpsHandler);
 
 createAuthEndpoints(router);
 createCollectionEndpoints(router);

@@ -1,6 +1,6 @@
 import { assertEnv, BlEnvironment } from "@backend/config/environment.js";
 import { isNullish } from "@backend/helper/typescript-helpers.js";
-import { HttpHandler } from "@backend/http/http.handler.js";
+import HttpHandler from "@backend/http/http.handler.js";
 import { Operation } from "@backend/operation/operation.js";
 import { BlApiRequest } from "@backend/request/bl-api-request.js";
 import { BlError } from "@shared/bl-error/bl-error.js";
@@ -29,12 +29,6 @@ const PostalCodeLookupSpec = z.object({
 });
 
 export class PostalCodeLookupOperation implements Operation {
-  private httpHandler: HttpHandler;
-
-  constructor(httpHandler?: HttpHandler) {
-    this.httpHandler = httpHandler ? httpHandler : new HttpHandler();
-  }
-
   async run(blApiRequest: BlApiRequest): Promise<BlapiResponse> {
     const parsedRequest = PostalCodeLookupSpec.safeParse(blApiRequest.data);
     if (!parsedRequest.success) {
@@ -45,7 +39,7 @@ export class PostalCodeLookupOperation implements Operation {
       "X-MyBring-API-Uid": assertEnv(BlEnvironment.BRING_API_ID),
     };
     try {
-      const response = (await this.httpHandler.getWithQuery(
+      const response = (await HttpHandler.getWithQuery(
         `https://api.bring.com/address/api/NO/postal-codes/${parsedRequest.data.postalCode}`,
         "",
         bringAuthHeaders,

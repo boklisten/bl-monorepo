@@ -1,24 +1,19 @@
 import "mocha";
 
-import { HttpHandler } from "@backend/http/http.handler.js";
+import HttpHandler from "@backend/http/http.handler.js";
 import { DibsEasyOrder } from "@backend/payment/dibs/dibs-easy-order/dibs-easy-order.js";
 import { DibsPaymentService } from "@backend/payment/dibs/dibs-payment.service.js";
-import { BlStorage } from "@backend/storage/bl-storage.js";
 import { BlError } from "@shared/bl-error/bl-error.js";
-import { Delivery } from "@shared/delivery/delivery.js";
 import { Order } from "@shared/order/order.js";
 import { expect, use as chaiUse, should } from "chai";
 import chaiAsPromised from "chai-as-promised";
-import sinon from "sinon";
+import sinon, { createSandbox } from "sinon";
 
 chaiUse(chaiAsPromised);
 should();
 
 describe("DibsPaymentService", () => {
-  const httpHandler = new HttpHandler();
-  const dibsPaymentService: DibsPaymentService = new DibsPaymentService(
-    httpHandler,
-  );
+  const dibsPaymentService: DibsPaymentService = new DibsPaymentService();
   let testOrder: Order;
 
   let testDibsEasyOrder: DibsEasyOrder;
@@ -224,6 +219,7 @@ describe("DibsPaymentService", () => {
 
   let testDibsEasyPaymentResponse: any;
   let httpHandlerGetSuccess: boolean;
+  let sandbox: sinon.SinonSandbox;
 
   beforeEach(() => {
     testDibsEasyPaymentResponse = {
@@ -231,19 +227,21 @@ describe("DibsPaymentService", () => {
         paymentId: "dibsPaymentId1",
       },
     };
-
     httpHandlerGetSuccess = true;
+    sandbox = createSandbox();
+    sandbox
+      .stub(HttpHandler, "get")
+      .callsFake((url: string, authorization?: string) => {
+        if (!httpHandlerGetSuccess) {
+          return Promise.reject(new BlError("could not get resource"));
+        }
+
+        return Promise.resolve(testDibsEasyPaymentResponse);
+      });
   });
-
-  sinon
-    .stub(httpHandler, "get")
-    .callsFake((url: string, authorization?: string) => {
-      if (!httpHandlerGetSuccess) {
-        return Promise.reject(new BlError("could not get resource"));
-      }
-
-      return Promise.resolve(testDibsEasyPaymentResponse);
-    });
+  afterEach(() => {
+    sandbox.restore();
+  });
 
   describe("#fetchDibsPaymentData", () => {
     it("should reject if httpHandler rejects", () => {

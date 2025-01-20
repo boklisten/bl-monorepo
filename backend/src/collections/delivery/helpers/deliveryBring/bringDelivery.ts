@@ -1,14 +1,7 @@
-export class BringDelivery {
-  // @ts-expect-error fixme: auto ignored
+export interface BringDelivery {
   frompostalcode: string; //from postal code
-
-  // @ts-expect-error fixme: auto ignored
   topostalcode: string; //to postal code
-
-  // @ts-expect-error fixme: auto ignored
   fromcountry: string;
-
-  // @ts-expect-error fixme: auto ignored
   tocountry: string;
   weight?: number; //the weight of the packet
   width?: number; //the width of the packet

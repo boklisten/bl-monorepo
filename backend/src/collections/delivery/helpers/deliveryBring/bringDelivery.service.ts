@@ -2,7 +2,7 @@ import { APP_CONFIG } from "@backend/application-config.js";
 import { BringDelivery } from "@backend/collections/delivery/helpers/deliveryBring/bringDelivery.js";
 import { assertEnv, BlEnvironment } from "@backend/config/environment.js";
 import { isNullish } from "@backend/helper/typescript-helpers.js";
-import { HttpHandler } from "@backend/http/http.handler.js";
+import HttpHandler from "@backend/http/http.handler.js";
 import { BlError } from "@shared/bl-error/bl-error.js";
 import { DeliveryInfoBring } from "@shared/delivery/delivery-info/delivery-info-bring.js";
 import { Item } from "@shared/item/item.js";
@@ -22,15 +22,8 @@ export interface FacilityAddress {
 }
 
 export class BringDeliveryService {
-  private httpHandler: HttpHandler;
-  private bringShipmentUrl: string;
-  private clientUrl: string;
-
-  constructor(httpHandler?: HttpHandler) {
-    this.httpHandler = httpHandler ? httpHandler : new HttpHandler();
-    this.bringShipmentUrl = APP_CONFIG.url.bring.shipmentInfo;
-    this.clientUrl = APP_CONFIG.url.blWeb.base;
-  }
+  private bringShipmentUrl = APP_CONFIG.url.bring.shipmentInfo;
+  private clientUrl = APP_CONFIG.url.blWeb.base;
 
   public async getDeliveryInfoBring(
     facilityAddress: FacilityAddress,
@@ -62,7 +55,7 @@ export class BringDeliveryService {
 
     const postalInfoUrl = `https://api.bring.com/pickuppoint/api/postalCode/NO/getCityAndType/${shipmentAddress.postalCode}.json`;
     try {
-      const postalInfo = await this.httpHandler.getWithQuery(
+      const postalInfo = await HttpHandler.getWithQuery(
         postalInfoUrl,
         "",
         bringAuthHeaders,
@@ -95,10 +88,13 @@ export class BringDeliveryService {
         items,
         product,
       );
-      const queryString = this.httpHandler.createQueryString(bringDelivery);
+      const queryString = HttpHandler.createQueryString(bringDelivery);
 
-      this.httpHandler
-        .getWithQuery(this.bringShipmentUrl, queryString, bringAuthHeaders)
+      HttpHandler.getWithQuery(
+        this.bringShipmentUrl,
+        queryString,
+        bringAuthHeaders,
+      )
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         .then((responseData: any) => {
           let deliveryInfoBring: DeliveryInfoBring;
@@ -154,7 +150,6 @@ export class BringDeliveryService {
     facilityAddress: FacilityAddress,
     shipmentAddress: ShipmentAddress,
     items: Item[],
-
     // @ts-expect-error fixme: auto ignored
     product,
   ): BringDelivery {

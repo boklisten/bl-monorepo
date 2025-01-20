@@ -1,7 +1,7 @@
 import { APP_CONFIG } from "@backend/application-config.js";
 import { UserDetailHelper } from "@backend/collections/user-detail/helpers/user-detail.helper.js";
 import { assertEnv, BlEnvironment } from "@backend/config/environment.js";
-import { HttpHandler } from "@backend/http/http.handler.js";
+import HttpHandler from "@backend/http/http.handler.js";
 import { DibsEasyItem } from "@backend/payment/dibs/dibs-easy-item/dibs-easy-item.js";
 import { DibsEasyOrder } from "@backend/payment/dibs/dibs-easy-order/dibs-easy-order.js";
 import { DibsEasyPayment } from "@backend/payment/dibs/dibs-easy-payment/dibs-easy-payment.js";
@@ -13,20 +13,14 @@ import { UserDetail } from "@shared/user/user-detail/user-detail.js";
 
 export class DibsPaymentService {
   private userDetailHelper = new UserDetailHelper();
-  private httpHandler: HttpHandler;
-
-  constructor(httpHandler?: HttpHandler) {
-    this.httpHandler = httpHandler ?? new HttpHandler();
-  }
 
   public getPaymentId(dibsEasyOrder: DibsEasyOrder): Promise<string> {
     return new Promise((resolve, reject) => {
-      this.httpHandler
-        .post(
-          assertEnv(BlEnvironment.DIBS_URI) + APP_CONFIG.path.dibs.payment,
-          dibsEasyOrder,
-          assertEnv(BlEnvironment.DIBS_SECRET_KEY),
-        )
+      HttpHandler.post(
+        assertEnv(BlEnvironment.DIBS_URI) + APP_CONFIG.path.dibs.payment,
+        dibsEasyOrder,
+        assertEnv(BlEnvironment.DIBS_SECRET_KEY),
+      )
         .then((responseData) => {
           if (
             responseData &&
@@ -47,14 +41,13 @@ export class DibsPaymentService {
   }
 
   public fetchDibsPaymentData(paymentId: string): Promise<DibsEasyPayment> {
-    return this.httpHandler
-      .get(
-        assertEnv(BlEnvironment.DIBS_URI) +
-          APP_CONFIG.path.dibs.payment +
-          "/" +
-          paymentId,
-        assertEnv(BlEnvironment.DIBS_SECRET_KEY),
-      )
+    return HttpHandler.get(
+      assertEnv(BlEnvironment.DIBS_URI) +
+        APP_CONFIG.path.dibs.payment +
+        "/" +
+        paymentId,
+      assertEnv(BlEnvironment.DIBS_SECRET_KEY),
+    )
       .then((response) => {
         // @ts-expect-error fixme: auto ignored
         if (!response["payment"]) {

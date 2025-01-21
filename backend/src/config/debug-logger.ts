@@ -1,5 +1,5 @@
 import { assertEnv, BlEnvironment } from "@backend/config/environment.js";
-import { logger } from "@backend/logger/logger.js";
+import { logger } from "@backend/config/logger.js";
 import { Request, RequestHandler, Response } from "express";
 
 const debugLoggerHandler: RequestHandler = (

@@ -1,4 +1,4 @@
-import { logger } from "@backend/logger/logger.js";
+import { logger } from "@backend/config/logger.js";
 import { BlStorage } from "@backend/storage/bl-storage.js";
 import { Signature } from "@backend/storage/models/signature.model.js";
 import { Transformer } from "@napi-rs/image";

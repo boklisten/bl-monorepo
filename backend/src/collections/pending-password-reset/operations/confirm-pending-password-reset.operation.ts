@@ -1,5 +1,5 @@
 import LocalLoginHandler from "@backend/auth/local/local-login.handler.js";
-import BlCrypto from "@backend/crypto/bl-crypto.js";
+import BlCrypto from "@backend/config/bl-crypto.js";
 import { BlStorage } from "@backend/storage/bl-storage.js";
 import { BlApiRequest } from "@backend/types/bl-api-request.js";
 import { Operation } from "@backend/types/operation.js";

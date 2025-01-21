@@ -1,6 +1,6 @@
 import "mocha";
 import LocalLoginPasswordValidator from "@backend/auth/local/local-login-password.validator.js";
-import BlCrypto from "@backend/crypto/bl-crypto.js";
+import BlCrypto from "@backend/config/bl-crypto.js";
 import { BlError } from "@shared/bl-error/bl-error.js";
 import { use as chaiUse, should } from "chai";
 import chaiAsPromised from "chai-as-promised";

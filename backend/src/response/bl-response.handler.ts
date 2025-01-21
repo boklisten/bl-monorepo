@@ -1,6 +1,6 @@
 import BlErrorHandler from "@backend/bl-error/bl-error.handler.js";
 import { BlEnvironment, assertEnv } from "@backend/config/environment.js";
-import { logger } from "@backend/logger/logger.js";
+import { logger } from "@backend/config/logger.js";
 import { BlapiErrorResponse } from "@shared/blapi-response/blapi-error-response.js";
 import { BlapiResponse } from "@shared/blapi-response/blapi-response.js";
 import { Response } from "express";

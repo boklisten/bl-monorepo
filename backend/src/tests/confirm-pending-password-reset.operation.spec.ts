@@ -1,5 +1,5 @@
 import { ConfirmPendingPasswordResetOperation } from "@backend/collections/pending-password-reset/operations/confirm-pending-password-reset.operation.js";
-import BlCrypto from "@backend/crypto/bl-crypto.js";
+import BlCrypto from "@backend/config/bl-crypto.js";
 import { BlStorage } from "@backend/storage/bl-storage.js";
 import { BlApiRequest } from "@backend/types/bl-api-request.js";
 import { BlError } from "@shared/bl-error/bl-error.js";

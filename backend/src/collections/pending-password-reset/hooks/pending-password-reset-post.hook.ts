@@ -1,5 +1,5 @@
 import { UserHandler } from "@backend/auth/user/user.handler.js";
-import BlCrypto from "@backend/crypto/bl-crypto.js";
+import BlCrypto from "@backend/config/bl-crypto.js";
 import { Hook } from "@backend/hook/hook.js";
 import { Messenger } from "@backend/messenger/messenger.js";
 import { BlError } from "@shared/bl-error/bl-error.js";

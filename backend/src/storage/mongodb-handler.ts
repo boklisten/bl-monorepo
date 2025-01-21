@@ -1,5 +1,5 @@
 import { PermissionService } from "@backend/auth/permission.service.js";
-import { logger } from "@backend/logger/logger.js";
+import { logger } from "@backend/config/logger.js";
 import { ExpandFilter } from "@backend/query/db-query-expand-filter.js";
 import { SEDbQuery } from "@backend/query/se.db-query.js";
 import { BlModel } from "@backend/storage/bl-storage.js";

@@ -1,5 +1,5 @@
 import SaltGenerator from "@backend/auth/local/salt-generator.js";
-import BlCrypto from "@backend/crypto/bl-crypto.js";
+import BlCrypto from "@backend/config/bl-crypto.js";
 import { BlError } from "@shared/bl-error/bl-error.js";
 
 function generate(

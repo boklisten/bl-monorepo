@@ -1,4 +1,4 @@
-import { logger } from "@backend/logger/logger.js";
+import { logger } from "@backend/config/logger.js";
 import { BlError } from "@shared/bl-error/bl-error.js";
 import { BlapiErrorResponse } from "@shared/blapi-response/blapi-error-response.js";
 

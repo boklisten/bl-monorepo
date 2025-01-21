@@ -4,10 +4,9 @@ import { CustomerItemHandler } from "@backend/collections/customer-item/helpers/
 import { OrderItemMovedFromOrderHandler } from "@backend/collections/order/helpers/order-item-moved-from-order-handler/order-item-moved-from-order-handler.js";
 import { OrderPlacedHandler } from "@backend/collections/order/helpers/order-placed-handler/order-placed-handler.js";
 import { PaymentHandler } from "@backend/collections/payment/helpers/payment-handler.js";
-import { Messenger } from "@backend/messenger/messenger.js";
+import Messenger from "@backend/messenger/messenger.js";
 import { BlStorage } from "@backend/storage/bl-storage.js";
 import { BlError } from "@shared/bl-error/bl-error.js";
-import { CustomerItem } from "@shared/customer-item/customer-item.js";
 import { Order } from "@shared/order/order.js";
 import { Payment } from "@shared/payment/payment.js";
 import { AccessToken } from "@shared/token/access-token.js";
@@ -29,12 +28,10 @@ describe("OrderPlacedHandler", () => {
   let userDeatilUpdate: boolean;
 
   const paymentHandler = new PaymentHandler();
-  const messenger = new Messenger();
   const orderItemMovedFromOrderHandler = new OrderItemMovedFromOrderHandler();
   const customerItemHandler = new CustomerItemHandler();
   const orderPlacedHandler = new OrderPlacedHandler(
     paymentHandler,
-    messenger,
     customerItemHandler,
     orderItemMovedFromOrderHandler,
   );
@@ -48,7 +45,7 @@ describe("OrderPlacedHandler", () => {
       .resolves(true);
 
     const customerItemsStub = {
-      add: sandbox.stub().callsFake((customerItem: any) => {
+      add: sandbox.stub().callsFake((customerItem) => {
         if (customerItem.item === "item1") {
           customerItem.id = "customerItem1";
           return Promise.resolve(customerItem);
@@ -69,7 +66,7 @@ describe("OrderPlacedHandler", () => {
         }
         return Promise.resolve(testUserDetail);
       }),
-      update: sandbox.stub().callsFake((id: string, data: any) => {
+      update: sandbox.stub().callsFake((id, data) => {
         if (userDeatilUpdate) {
           if (data["orders"]) {
             testUserDetail.orders = data["orders"];
@@ -104,7 +101,7 @@ describe("OrderPlacedHandler", () => {
     };
     sandbox.stub(BlStorage, "Orders").value(ordersStub);
 
-    sandbox.stub(messenger, "orderPlaced").resolves();
+    sandbox.stub(Messenger, "orderPlaced").resolves();
 
     paymentsConfirmed = true;
     orderUpdate = true;

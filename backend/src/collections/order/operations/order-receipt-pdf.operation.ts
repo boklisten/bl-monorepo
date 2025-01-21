@@ -1,4 +1,4 @@
-import { Messenger } from "@backend/messenger/messenger.js";
+import Messenger from "@backend/messenger/messenger.js";
 import BlResponseHandler from "@backend/response/bl-response.handler.js";
 import { BlStorage } from "@backend/storage/bl-storage.js";
 import { BlApiRequest } from "@backend/types/bl-api-request.js";
@@ -7,8 +7,6 @@ import { BlapiResponse } from "@shared/blapi-response/blapi-response.js";
 import { Request, Response } from "express";
 
 export class OrderReceiptPdfOperation implements Operation {
-  private messenger = new Messenger();
-
   async run(
     blApiRequest: BlApiRequest,
     request: Request,
@@ -17,7 +15,7 @@ export class OrderReceiptPdfOperation implements Operation {
     const order = await BlStorage.Orders.get(blApiRequest.documentId);
     const customerDetail = await BlStorage.UserDetails.get(order.customer);
 
-    const orderReceiptPdf = await this.messenger.getOrderReceiptPdf(
+    const orderReceiptPdf = await Messenger.getOrderReceiptPdf(
       customerDetail,
       order,
     );

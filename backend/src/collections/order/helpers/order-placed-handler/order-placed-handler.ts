@@ -3,7 +3,7 @@ import { OrderItemMovedFromOrderHandler } from "@backend/collections/order/helpe
 import { PaymentHandler } from "@backend/collections/payment/helpers/payment-handler.js";
 import { userHasValidSignature } from "@backend/collections/signature/helpers/signature.helper.js";
 import { logger } from "@backend/config/logger.js";
-import { Messenger } from "@backend/messenger/messenger.js";
+import Messenger from "@backend/messenger/messenger.js";
 import { BlStorage } from "@backend/storage/bl-storage.js";
 import { BlError } from "@shared/bl-error/bl-error.js";
 import { OrderItemType } from "@shared/order/order-item/order-item-type.js";
@@ -17,17 +17,14 @@ export class OrderPlacedHandler {
 
   private customerItemHandler: CustomerItemHandler;
   private orderItemMovedFromOrderHandler: OrderItemMovedFromOrderHandler;
-  private messenger: Messenger;
 
   constructor(
     paymentHandler?: PaymentHandler,
-    messenger?: Messenger,
     customerItemHandler?: CustomerItemHandler,
     orderItemMovedFromOrderHandler?: OrderItemMovedFromOrderHandler,
   ) {
     this.paymentHandler = paymentHandler ?? new PaymentHandler();
 
-    this.messenger = messenger ?? new Messenger();
     this.customerItemHandler = customerItemHandler ?? new CustomerItemHandler();
     this.orderItemMovedFromOrderHandler =
       orderItemMovedFromOrderHandler ?? new OrderItemMovedFromOrderHandler();
@@ -185,8 +182,8 @@ export class OrderPlacedHandler {
     }
     const customerDetail = await BlStorage.UserDetails.get(order.customer);
     await (order.handoutByDelivery
-      ? this.messenger.sendDeliveryInformation(customerDetail, order)
-      : this.messenger.orderPlaced(customerDetail, order));
+      ? Messenger.sendDeliveryInformation(customerDetail, order)
+      : Messenger.orderPlaced(customerDetail, order));
   }
 
   /**

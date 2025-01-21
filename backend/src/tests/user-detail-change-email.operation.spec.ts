@@ -1,6 +1,6 @@
 import "mocha";
 
-import { UserHandler } from "@backend/auth/user/user.handler.js";
+import UserHandler from "@backend/auth/user/user.handler.js";
 import { UserDetailChangeEmailOperation } from "@backend/collections/user-detail/operations/change-email/user-detail-change-email.operation.js";
 import BlResponseHandler from "@backend/response/bl-response.handler.js";
 import { BlStorage } from "@backend/storage/bl-storage.js";
@@ -15,11 +15,7 @@ chaiUse(chaiAsPromised);
 should();
 
 describe("UserDetailChangeEmailOperation", () => {
-  const userHandler = new UserHandler();
-
-  const userDetailChangeEmailOperation = new UserDetailChangeEmailOperation(
-    userHandler,
-  );
+  const userDetailChangeEmailOperation = new UserDetailChangeEmailOperation();
 
   let userDetailGetStub: sinon.SinonStub;
   let userDetailUpdateStub: sinon.SinonStub;
@@ -37,7 +33,7 @@ describe("UserDetailChangeEmailOperation", () => {
     userDetailUpdateStub = sandbox.stub(BlStorage.UserDetails, "update");
     userAggregateStub = sandbox.stub(BlStorage.Users, "aggregate");
     userUpdateStub = sandbox.stub(BlStorage.Users, "update");
-    userHandlerGetByUsernameStub = sandbox.stub(userHandler, "getByUsername");
+    userHandlerGetByUsernameStub = sandbox.stub(UserHandler, "getByUsername");
     localLoginAggregateStub = sandbox.stub(BlStorage.LocalLogins, "aggregate");
     localLoginUpdateStub = sandbox.stub(BlStorage.LocalLogins, "update");
     resHandlerSendResponseStub = sandbox.stub(
@@ -91,8 +87,8 @@ describe("UserDetailChangeEmailOperation", () => {
     ).to.eventually.be.rejectedWith(BlError, /no user found/);
   });
 
-  const permissions: any[] = ["customer", "employee", "manager", "admin"];
-  const higherPermissions: any[] = ["customer", "employee", "manager", "admin"];
+  const permissions = ["customer", "employee", "manager", "admin"];
+  const higherPermissions = ["customer", "employee", "manager", "admin"];
   for (const permission of permissions) {
     for (const higherPermission of higherPermissions) {
       it(`should reject if blApiRequest.user.permission "${permission}" tries to change a higher permission "${higherPermission}"`, () => {

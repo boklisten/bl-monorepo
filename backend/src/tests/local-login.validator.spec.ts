@@ -2,8 +2,8 @@ import "mocha";
 
 import LocalLoginPasswordValidator from "@backend/auth/local/local-login-password.validator.js";
 import LocalLoginHandler from "@backend/auth/local/local-login.handler.js";
-import { LocalLoginValidator } from "@backend/auth/local/local-login.validator.js";
-import { UserHandler } from "@backend/auth/user/user.handler.js";
+import LocalLoginValidator from "@backend/auth/local/local-login.validator.js";
+import UserHandler from "@backend/auth/user/user.handler.js";
 import { LocalLogin } from "@backend/types/local-login.js";
 import { User } from "@backend/types/user.js";
 import { BlError } from "@shared/bl-error/bl-error.js";
@@ -24,8 +24,6 @@ const testLocalLogin = {
 };
 
 describe("LocalLoginValidator", () => {
-  const userHandler = new UserHandler();
-  const localLoginValidator = new LocalLoginValidator(userHandler);
   let sandbox: sinon.SinonSandbox;
   beforeEach(() => {
     sandbox = createSandbox();
@@ -47,7 +45,7 @@ describe("LocalLoginValidator", () => {
     sandbox.stub(LocalLoginPasswordValidator, "validate").resolves(true);
 
     sandbox
-      .stub(userHandler, "create")
+      .stub(UserHandler, "create")
       .callsFake((username: string, provider: string, providerId: string) => {
         return Promise.resolve({
           id: "",
@@ -63,7 +61,7 @@ describe("LocalLoginValidator", () => {
         } as User);
       });
 
-    sandbox.stub(userHandler, "valid").callsFake(() => {
+    sandbox.stub(UserHandler, "valid").callsFake(() => {
       return Promise.resolve();
     });
   });
@@ -83,16 +81,18 @@ describe("LocalLoginValidator", () => {
     describe("should reject with BlError when", () => {
       it("username is not an email", () => {
         testUserName = "bill";
-        return localLoginValidator
-          .validate(testUserName, testPassword)
-          .should.be.rejectedWith(BlError);
+        return LocalLoginValidator.validate(
+          testUserName,
+          testPassword,
+        ).should.be.rejectedWith(BlError);
       });
 
       it("password is empty", () => {
         testPassword = "";
-        return localLoginValidator
-          .validate(testUserName, testPassword)
-          .should.be.rejectedWith(BlError);
+        return LocalLoginValidator.validate(
+          testUserName,
+          testPassword,
+        ).should.be.rejectedWith(BlError);
       });
     });
 
@@ -100,7 +100,7 @@ describe("LocalLoginValidator", () => {
       it("username does not exist", () => {
         testUserName = "billy@user.com";
         testPassword = "thePassword";
-        return localLoginValidator.validate(testUserName, testPassword).then(
+        return LocalLoginValidator.validate(testUserName, testPassword).then(
           (value) => {
             value.should.not.be.fulfilled;
           },
@@ -117,7 +117,7 @@ describe("LocalLoginValidator", () => {
         providerId: testLocalLogin.providerId,
       };
       return new Promise((resolve, reject) => {
-        localLoginValidator.validate(testUserName, testPassword).then(
+        LocalLoginValidator.validate(testUserName, testPassword).then(
           (returnedProvider: { provider: string; providerId: string }) => {
             if (returnedProvider.providerId === expectedProvider.providerId)
               resolve(true);
@@ -136,7 +136,7 @@ describe("LocalLoginValidator", () => {
       const username = testLocalLogin.username;
       const password = "something";
 
-      return localLoginValidator.create(username, password).then(
+      return LocalLoginValidator.create(username, password).then(
         (value) => {
           value.should.not.be.fulfilled;
         },
@@ -150,7 +150,7 @@ describe("LocalLoginValidator", () => {
       const username = "amail@address.com";
       const password = "thisIsAValidPassword";
 
-      return localLoginValidator.create(username, password).then(
+      return LocalLoginValidator.create(username, password).then(
         (providerAndProviderId: { provider: string; providerId: string }) => {
           providerAndProviderId.should.have
             .property("provider")

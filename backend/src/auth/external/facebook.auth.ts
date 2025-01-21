@@ -6,101 +6,99 @@ import BlResponseHandler from "@backend/response/bl-response.handler.js";
 import { BlError } from "@shared/bl-error/bl-error.js";
 import { Router } from "express";
 import passport from "passport";
-import { Profile, Strategy, StrategyOptions } from "passport-facebook";
+import { Profile, Strategy } from "passport-facebook";
 
-export class FacebookAuth {
-  private userProvider = new UserProvider();
-  private readonly facebookPassportStrategySettings: StrategyOptions;
+function createPassportStrategy() {
+  passport.use(
+    new Strategy(
+      {
+        clientID: BlEnv.FACEBOOK_CLIENT_ID,
+        clientSecret: BlEnv.FACEBOOK_SECRET,
+        callbackURL: BlEnv.BL_API_URI + createPath("auth/facebook/callback"),
+        profileFields: ["id", "email", "name"],
+        enableProof: true,
+      },
+      async (accessToken, refreshToken, profile, done) => {
+        const provider = APP_CONFIG.login.facebook.name;
+        const providerId = profile.id;
 
-  constructor(private router: Router) {
-    this.facebookPassportStrategySettings = {
-      clientID: BlEnv.FACEBOOK_CLIENT_ID,
-      clientSecret: BlEnv.FACEBOOK_SECRET,
-      callbackURL: BlEnv.BL_API_URI + createPath("auth/facebook/callback"),
-      profileFields: ["id", "email", "name"],
-      enableProof: true,
-    };
+        let userAndTokens;
 
-    this.createAuthGet(router);
-    this.createCallbackGet(router);
-    this.createPassportStrategy();
-  }
-
-  private createPassportStrategy() {
-    passport.use(
-      new Strategy(
-        this.facebookPassportStrategySettings,
-        async (accessToken, refreshToken, profile, done) => {
-          const provider = APP_CONFIG.login.facebook.name;
-          const providerId = profile.id;
-
-          let userAndTokens;
-
-          try {
-            const username = this.extractUsername(profile);
-            userAndTokens = await this.userProvider.loginOrCreate(
-              username,
-              provider,
-              providerId,
-            );
-          } catch {
-            return done(
-              null,
-              null,
-              new BlError("could not create user").code(902),
-            );
-          }
-          done(null, userAndTokens.tokens);
-        },
-      ),
-    );
-  }
-
-  private extractUsername(profile: Profile): string {
-    let username;
-
-    if (profile.emails && profile.emails[0] && profile.emails[0].value) {
-      username = profile.emails[0].value;
-    }
-
-    if (!username) {
-      throw new BlError("username not found from facebook").code(902);
-    }
-
-    return username;
-  }
-
-  private createAuthGet(router: Router) {
-    router.get(
-      createPath("auth/facebook"),
-      passport.authenticate(APP_CONFIG.login.facebook.name, {
-        scope: ["public_profile", "email"],
-      }),
-    );
-  }
-
-  private createCallbackGet(router: Router) {
-    router.get(createPath("auth/facebook/callback"), (request, res) => {
-      passport.authenticate(
-        APP_CONFIG.login.facebook.name,
-        // @ts-expect-error fixme: auto ignored
-        (error, tokens, blError: BlError) => {
-          if (!tokens && (error || blError)) {
-            return res.redirect(
-              BlEnv.CLIENT_URI + APP_CONFIG.path.client.auth.socialLoginFailure,
-            );
-          }
-
-          if (tokens) {
-            BlResponseHandler.sendAuthTokens(
-              res,
-              tokens.accessToken,
-              tokens.refreshToken,
-              retrieveRefererPath(request.headers) ?? undefined,
-            );
-          }
-        },
-      )(request, res);
-    });
-  }
+        try {
+          const username = extractUsername(profile);
+          userAndTokens = await new UserProvider().loginOrCreate(
+            username,
+            provider,
+            providerId,
+          );
+        } catch {
+          return done(
+            null,
+            null,
+            new BlError("could not create user").code(902),
+          );
+        }
+        done(null, userAndTokens.tokens);
+      },
+    ),
+  );
 }
+
+function extractUsername(profile: Profile): string {
+  let username;
+
+  if (profile.emails && profile.emails[0] && profile.emails[0].value) {
+    username = profile.emails[0].value;
+  }
+
+  if (!username) {
+    throw new BlError("username not found from facebook").code(902);
+  }
+
+  return username;
+}
+
+function createAuthGet(router: Router) {
+  router.get(
+    createPath("auth/facebook"),
+    passport.authenticate(APP_CONFIG.login.facebook.name, {
+      scope: ["public_profile", "email"],
+    }),
+  );
+}
+
+function createCallbackGet(router: Router) {
+  router.get(createPath("auth/facebook/callback"), (request, res) => {
+    passport.authenticate(
+      APP_CONFIG.login.facebook.name,
+      // @ts-expect-error fixme: auto ignored
+      (error, tokens, blError: BlError) => {
+        if (!tokens && (error || blError)) {
+          return res.redirect(
+            BlEnv.CLIENT_URI + APP_CONFIG.path.client.auth.socialLoginFailure,
+          );
+        }
+
+        if (tokens) {
+          BlResponseHandler.sendAuthTokens(
+            res,
+            tokens.accessToken,
+            tokens.refreshToken,
+            retrieveRefererPath(request.headers) ?? undefined,
+          );
+        }
+      },
+    )(request, res);
+  });
+}
+
+const FacebookAuth = {
+  createRouter: () => {
+    const router: Router = Router();
+    createAuthGet(router);
+    createCallbackGet(router);
+    createPassportStrategy();
+    return router;
+  },
+};
+export default FacebookAuth;

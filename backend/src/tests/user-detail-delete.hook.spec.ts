@@ -6,37 +6,24 @@ import { OrderActive } from "@backend/collections/order/helpers/order-active/ord
 import { DeleteUserService } from "@backend/collections/user-detail/helpers/delete-user-service.js";
 import { UserCanDeleteUserDetail } from "@backend/collections/user-detail/helpers/user-can-delete-user-detail.js";
 import { UserDetailDeleteHook } from "@backend/collections/user-detail/hooks/user-detail-delete.hook.js";
-import { BlStorage } from "@backend/storage/bl-storage.js";
 import { BlError } from "@shared/bl-error/bl-error.js";
 import { AccessToken } from "@shared/token/access-token.js";
-import { UserDetail } from "@shared/user/user-detail/user-detail.js";
 import { expect, use as chaiUse, should } from "chai";
 import chaiAsPromised from "chai-as-promised";
-import sinon from "sinon";
+import sinon, { createSandbox } from "sinon";
 
 chaiUse(chaiAsPromised);
 should();
 
 describe("UserDetailDeleteHook", () => {
   const customerHaveActiveCustomerItems = new CustomerHaveActiveCustomerItems();
-  const haveActiveCustomerItemsStub = sinon.stub(
-    customerHaveActiveCustomerItems,
-    "haveActiveCustomerItems",
-  );
 
   const testUserId = "5c88070b83d0da001a4ea01d";
 
   const orderActive = new OrderActive();
-  const haveActiveOrdersStub = sinon.stub(orderActive, "haveActiveOrders");
   const customerInvoiceActive = new CustomerInvoiceActive();
-  const haveActiveInvoicesStub = sinon.stub(
-    customerInvoiceActive,
-    "haveActiveInvoices",
-  );
   const userCanDeleteUserDetail = new UserCanDeleteUserDetail();
-  const canDeleteStub = sinon.stub(userCanDeleteUserDetail, "canDelete");
   const deleteUserService = new DeleteUserService();
-  const deleteUserServiceStub = sinon.stub(deleteUserService, "deleteUser");
 
   const userDetailDeleteHook = new UserDetailDeleteHook(
     orderActive,
@@ -45,13 +32,29 @@ describe("UserDetailDeleteHook", () => {
     userCanDeleteUserDetail,
     deleteUserService,
   );
+  let sandbox: sinon.SinonSandbox;
+  let haveActiveOrdersStub: sinon.SinonStub;
+  let haveActiveCustomerItemsStub: sinon.SinonStub;
+  let haveActiveInvoicesStub: sinon.SinonStub;
+  let canDeleteStub: sinon.SinonStub;
+  let deleteUserServiceStub: sinon.SinonStub;
 
   beforeEach(() => {
-    haveActiveOrdersStub.reset();
-    haveActiveCustomerItemsStub.reset();
-    haveActiveCustomerItemsStub.reset();
-    canDeleteStub.reset();
-    deleteUserServiceStub.reset();
+    sandbox = createSandbox();
+    haveActiveCustomerItemsStub = sandbox.stub(
+      customerHaveActiveCustomerItems,
+      "haveActiveCustomerItems",
+    );
+    haveActiveOrdersStub = sandbox.stub(orderActive, "haveActiveOrders");
+    haveActiveInvoicesStub = sandbox.stub(
+      customerInvoiceActive,
+      "haveActiveInvoices",
+    );
+    canDeleteStub = sandbox.stub(userCanDeleteUserDetail, "canDelete");
+    deleteUserServiceStub = sandbox.stub(deleteUserService, "deleteUser");
+  });
+  afterEach(() => {
+    sandbox.restore();
   });
 
   describe("before()", () => {

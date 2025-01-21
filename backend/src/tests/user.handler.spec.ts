@@ -1,8 +1,8 @@
 import "mocha";
 
 import LocalLoginHandler from "@backend/auth/local/local-login.handler.js";
-import { UserHandler } from "@backend/auth/user/user.handler.js";
-import { EmailValidationHelper } from "@backend/collections/email-validation/helpers/email-validation.helper.js";
+import UserHandler from "@backend/auth/user/user.handler.js";
+import EmailValidationHelper from "@backend/collections/email-validation/helpers/email-validation.helper.js";
 import { SEDbQuery } from "@backend/query/se.db-query.js";
 import { BlStorage } from "@backend/storage/bl-storage.js";
 import { LocalLogin } from "@backend/types/local-login.js";
@@ -29,15 +29,13 @@ const testUser = {
 } as User;
 
 describe("UserHandler", () => {
-  const emailValidationHelper: EmailValidationHelper =
-    new EmailValidationHelper();
-  const userHandler = new UserHandler(emailValidationHelper);
   let testProvider = "";
   let testProviderId = "";
   let testUsername = "";
   let emailValidationLinkSuccess = true;
   let sandbox: sinon.SinonSandbox;
   let userStorageGetByQueryStub: sinon.SinonStub;
+  let emailValidationHelperSendLinkStub: sinon.SinonStub;
 
   beforeEach(() => {
     testProvider = testUser.login.provider;
@@ -71,36 +69,35 @@ describe("UserHandler", () => {
           resolve([{ username: testUser.username } as User]);
         });
       });
+    emailValidationHelperSendLinkStub = sandbox
+      .stub(EmailValidationHelper, "createAndSendEmailValidationLink")
+      .callsFake(() => {
+        if (!emailValidationLinkSuccess) {
+          return Promise.reject(
+            new BlError("could not create and send email validation"),
+          );
+        }
+
+        return Promise.resolve();
+      });
   });
   afterEach(() => {
     sandbox.restore();
   });
 
-  const emailValidationHelperSendLinkStub = sinon
-    .stub(emailValidationHelper, "createAndSendEmailValidationLink")
-    .callsFake(() => {
-      if (!emailValidationLinkSuccess) {
-        return Promise.reject(
-          new BlError("could not create and send email validation"),
-        );
-      }
-
-      return Promise.resolve();
-    });
-
   describe("get()", () => {
     describe("should reject with BlError when", () => {
       it("provider is empty", () => {
         const provider = "";
-        return userHandler
-          .get(provider, testProviderId)
-          .should.rejectedWith(BlError);
+        return UserHandler.get(provider, testProviderId).should.rejectedWith(
+          BlError,
+        );
       });
 
       it("provider is null", () => {
         const provider = null;
         return (
-          userHandler
+          UserHandler
 
             // @ts-expect-error fixme: auto ignored
             .get(provider, testProviderId)
@@ -111,7 +108,7 @@ describe("UserHandler", () => {
       it("providerId is null", () => {
         const providerId = null;
         return (
-          userHandler
+          UserHandler
 
             // @ts-expect-error fixme: auto ignored
             .get(testProvider, providerId)
@@ -121,9 +118,9 @@ describe("UserHandler", () => {
 
       it("providerId is empty", () => {
         const providerId = "";
-        return userHandler
-          .get(testProvider, providerId)
-          .should.rejectedWith(BlError);
+        return UserHandler.get(testProvider, providerId).should.rejectedWith(
+          BlError,
+        );
       });
     });
   });
@@ -133,7 +130,7 @@ describe("UserHandler", () => {
       it("should reject with BlError", () => {
         const username = undefined;
         return (
-          userHandler
+          UserHandler
 
             // @ts-expect-error fixme: auto ignored
             .getByUsername(username)
@@ -146,7 +143,7 @@ describe("UserHandler", () => {
       it("should reject with BlError code 702 not found", (done) => {
         const username = "thisis@notfound.com";
 
-        userHandler.getByUsername(username).catch((error: BlError) => {
+        UserHandler.getByUsername(username).catch((error: BlError) => {
           error.getCode().should.be.eq(702);
           done();
         });
@@ -155,7 +152,7 @@ describe("UserHandler", () => {
 
     context("when username is found", () => {
       it("should resolve with a User object", (done) => {
-        userHandler.getByUsername(testUser.username).then((user: User) => {
+        UserHandler.getByUsername(testUser.username).then((user: User) => {
           user.username.should.be.eq(testUser.username);
           done();
         });
@@ -177,7 +174,7 @@ describe("UserHandler", () => {
 
         userStorageGetByQueryStub.withArgs(dbQuery).resolves(testUsers);
 
-        return expect(userHandler.getByUsername(username)).to.eventually.be.eql(
+        return expect(UserHandler.getByUsername(username)).to.eventually.be.eql(
           { username: username, primary: true },
         );
       });
@@ -189,7 +186,7 @@ describe("UserHandler", () => {
       it("username is undefined", () => {
         const username = undefined;
         return (
-          userHandler
+          UserHandler
 
             // @ts-expect-error fixme: auto ignored
             .create(username, testProvider, testProviderId)
@@ -199,26 +196,32 @@ describe("UserHandler", () => {
 
       it("provider is empty", () => {
         const provider = "";
-        return userHandler
-          .create(testUsername, provider, testProviderId)
-          .should.be.rejectedWith(BlError);
+        return UserHandler.create(
+          testUsername,
+          provider,
+          testProviderId,
+        ).should.be.rejectedWith(BlError);
       });
 
       it("providerId is null", () => {
         const providerId = "";
-        return userHandler
-          .create(testUsername, testProvider, providerId)
-          .should.be.rejectedWith(BlError);
+        return UserHandler.create(
+          testUsername,
+          testProvider,
+          providerId,
+        ).should.be.rejectedWith(BlError);
       });
     });
 
     it("should resolve with a user when username, provider and providerId is valid", () => {
-      return userHandler
-        .create("jesus@christ.com", testProvider, testProviderId)
-        .then((user: User) => {
-          user.username.should.be.eql(testUser.username);
-          user.login.should.be.eql(testUser.login);
-        });
+      return UserHandler.create(
+        "jesus@christ.com",
+        testProvider,
+        testProviderId,
+      ).then((user: User) => {
+        user.username.should.be.eql(testUser.username);
+        user.login.should.be.eql(testUser.login);
+      });
     });
 
     it('should reject if username already exists and provider is "local"', (done) => {
@@ -228,16 +231,16 @@ describe("UserHandler", () => {
 
       userStorageGetByQueryStub.withArgs(dbQuery).resolves([testUser]);
 
-      userHandler
-        .create(testUsername, "local", "someProviderId")
-        .catch((blError: BlError) => {
+      UserHandler.create(testUsername, "local", "someProviderId").catch(
+        (blError: BlError) => {
           expect(blError.getMsg()).to.be.eq(
             `username "${testUsername}" already exists, but trying to create new user with provider "local"`,
           );
 
           expect(blError.getCode()).to.be.eq(903);
           done();
-        });
+        },
+      );
     });
 
     it('should resolve if username already exists and provider is "google"', () => {
@@ -247,7 +250,7 @@ describe("UserHandler", () => {
 
       userStorageGetByQueryStub.withArgs(dbQuery).resolves([testUser]);
 
-      return expect(userHandler.create(testUsername, "google", "someGoogleId"))
+      return expect(UserHandler.create(testUsername, "google", "someGoogleId"))
         .to.be.fulfilled;
     });
 
@@ -259,16 +262,15 @@ describe("UserHandler", () => {
       userStorageGetByQueryStub.withArgs(dbQuery).resolves([testUser]);
 
       return expect(
-        userHandler.create(testUsername, "facebook", "someFacebookId"),
+        UserHandler.create(testUsername, "facebook", "someFacebookId"),
       ).to.be.fulfilled;
     });
 
     it("should reject if emailValidationHelper rejects on sending of email validation link", (done) => {
       emailValidationLinkSuccess = false;
 
-      userHandler
-        .create("jhon@boi.com", testProvider, testProviderId)
-        .catch((blError: BlError) => {
+      UserHandler.create("jhon@boi.com", testProvider, testProviderId).catch(
+        (blError: BlError) => {
           expect(blError.errorStack.length).to.be.gte(1);
 
           // @ts-expect-error fixme: auto ignored
@@ -279,22 +281,23 @@ describe("UserHandler", () => {
           expect(blError.getCode()).to.eq(903);
 
           done();
-        });
+        },
+      );
     });
 
     it("should send out email validation link on user creation", (done) => {
       emailValidationLinkSuccess = true;
       testUsername = "johnny@ronny.com";
 
-      userHandler
-        .create(testUsername, testProvider, testProviderId)
-        .then(() => {
+      UserHandler.create(testUsername, testProvider, testProviderId).then(
+        () => {
           expect(emailValidationHelperSendLinkStub).to.have.been.calledWith(
             testUser.userDetail,
           );
 
           done();
-        });
+        },
+      );
     });
   });
 
@@ -303,7 +306,7 @@ describe("UserHandler", () => {
       it("provider is undefined", () => {
         const provider = undefined;
         return (
-          userHandler
+          UserHandler
 
             // @ts-expect-error fixme: auto ignored
             .exists(provider, testProviderId)
@@ -313,9 +316,10 @@ describe("UserHandler", () => {
 
       it("providerId is empty", () => {
         const providerId = "";
-        return userHandler
-          .exists(testProvider, providerId)
-          .should.be.rejectedWith(BlError);
+        return UserHandler.exists(
+          testProvider,
+          providerId,
+        ).should.be.rejectedWith(BlError);
       });
     });
   });

@@ -1,10 +1,8 @@
 import "mocha";
 
-import { RefreshTokenCreator } from "@backend/auth/token/refresh/refresh-token.creator.js";
+import RefreshTokenCreator from "@backend/auth/token/refresh/refresh-token.creator.js";
 import RefreshTokenValidator from "@backend/auth/token/refresh/refresh-token.validator.js";
-import { TokenConfig } from "@backend/auth/token/token.config.js";
-import { AccessToken } from "@backend/types/access-token.js";
-import { RefreshToken } from "@backend/types/refresh-token.js";
+import { APP_CONFIG } from "@backend/config/application-config.js";
 import { BlError } from "@shared/bl-error/bl-error.js";
 import { use as chaiUse, should } from "chai";
 import chaiAsPromised from "chai-as-promised";
@@ -14,29 +12,6 @@ chaiUse(chaiAsPromised);
 should();
 
 describe("RefreshTokenValidator", () => {
-  const refreshTokenConfig: RefreshToken = {
-    iss: "",
-    aud: "",
-    expiresIn: "12h",
-    iat: 0,
-    sub: "",
-    username: "",
-  };
-
-  const accessTokenConfig: AccessToken = {
-    iss: "",
-    aud: "",
-    expiresIn: "30s",
-    iat: 0,
-    sub: "",
-    username: "",
-    permission: "customer",
-    details: "",
-  };
-
-  const tokenConfig = new TokenConfig(accessTokenConfig, refreshTokenConfig);
-  const refreshTokenCreator = new RefreshTokenCreator(tokenConfig);
-
   describe("validateRefreshToken()", () => {
     it("should reject with BlError when refreshToken is empty", () => {
       const refreshToken = "";
@@ -83,13 +58,13 @@ describe("RefreshTokenValidator", () => {
         const username = "bill@hicks.com";
         const userid = "abc";
 
-        refreshTokenCreator.create(username, userid).then(
+        RefreshTokenCreator.create(username, userid).then(
           (refreshToken: string) => {
             RefreshTokenValidator.validate(refreshToken).then(
               // @ts-expect-error fixme: auto ignored
               (refreshToken: RefreshToken) => {
-                refreshToken.aud.should.be.eq(tokenConfig.refreshToken.aud);
-                refreshToken.iss.should.be.eq(tokenConfig.refreshToken.iss);
+                refreshToken.aud.should.be.eq(APP_CONFIG.token.refresh.aud);
+                refreshToken.iss.should.be.eq(APP_CONFIG.token.refresh.iss);
 
                 done();
               },

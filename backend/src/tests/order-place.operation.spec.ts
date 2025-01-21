@@ -21,12 +21,7 @@ should();
 
 describe("OrderPlaceOperation", () => {
   const orderToCustomerItemGenerator = new OrderToCustomerItemGenerator();
-  const orderPlacedHandler = new OrderPlacedHandler(
-    undefined,
-    undefined,
-    undefined,
-    undefined,
-  );
+  const orderPlacedHandler = new OrderPlacedHandler();
   const orderValidator = new OrderValidator();
 
   const orderPlaceOperation = new OrderPlaceOperation(

@@ -1,12 +1,12 @@
 import "mocha";
 
 import { MessagePostHook } from "@backend/collections/message/hooks/message-post.hook.js";
-import { Messenger } from "@backend/messenger/messenger.js";
+import Messenger from "@backend/messenger/messenger.js";
 import { MessengerReminder } from "@backend/messenger/reminder/messenger-reminder.js";
 import { BlStorage } from "@backend/storage/bl-storage.js";
 import { BlError } from "@shared/bl-error/bl-error.js";
-import { Message } from "@shared/message/message.js";
 import { MessageMethod } from "@shared/message/message-method/message-method.js";
+import { Message } from "@shared/message/message.js";
 import { AccessToken } from "@shared/token/access-token.js";
 import { UserDetail } from "@shared/user/user-detail/user-detail.js";
 import { expect, should, use as chaiUse } from "chai";
@@ -20,8 +20,7 @@ chaiUse(sinonChai);
 
 describe("MessagePostHook", () => {
   const messengerReminder = new MessengerReminder();
-  const messenger = new Messenger();
-  const messagePostHook = new MessagePostHook(messengerReminder, messenger);
+  const messagePostHook = new MessagePostHook(messengerReminder);
   let messengerSendStub: sinon.SinonStub;
 
   let messengerReminderRemindCustomerStub: sinon.SinonStub;
@@ -35,7 +34,7 @@ describe("MessagePostHook", () => {
 
   beforeEach(() => {
     sandbox = createSandbox();
-    messengerSendStub = sandbox.stub(messenger, "send");
+    messengerSendStub = sandbox.stub(Messenger, "send");
     messengerReminderRemindCustomerStub = sandbox.stub(
       messengerReminder,
       "remindCustomer",

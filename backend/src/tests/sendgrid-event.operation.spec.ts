@@ -19,8 +19,8 @@ describe("SendgridEventOperation", () => {
   beforeEach(() => {
     sandbox = createSandbox();
     const messagesStub = {
-      get: sinon.stub(),
-      update: sinon.stub(),
+      get: sandbox.stub(),
+      update: sandbox.stub(),
     };
     sandbox.stub(BlStorage, "Messages").value(messagesStub);
 

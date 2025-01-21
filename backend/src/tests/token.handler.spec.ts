@@ -1,10 +1,10 @@
 import "mocha";
-import { TokenHandler } from "@backend/auth/token/token.handler.js";
-import { UserHandler } from "@backend/auth/user/user.handler.js";
+import TokenHandler from "@backend/auth/token/token.handler.js";
+import UserHandler from "@backend/auth/user/user.handler.js";
 import { BlError } from "@shared/bl-error/bl-error.js";
 import { use as chaiUse, should } from "chai";
 import chaiAsPromised from "chai-as-promised";
-import sinon from "sinon";
+import sinon, { createSandbox } from "sinon";
 
 chaiUse(chaiAsPromised);
 should();
@@ -23,20 +23,24 @@ const testUser: any = {
 };
 
 describe("TokenHandler", () => {
-  const userHandler = new UserHandler();
-  const tokenHandler = new TokenHandler(userHandler);
+  let sandbox: sinon.SinonSandbox;
+  beforeEach(() => {
+    sandbox = createSandbox();
+    sandbox.stub(UserHandler, "getByUsername").callsFake((username: string) => {
+      return new Promise((resolve, reject) => {
+        if (username === testUser.username) {
+          return resolve(testUser);
+        }
+        reject(new BlError("could not find user"));
+      });
+    });
 
-  sinon.stub(userHandler, "getByUsername").callsFake((username: string) => {
-    return new Promise((resolve, reject) => {
-      if (username === testUser.username) {
-        return resolve(testUser);
-      }
-      reject(new BlError("could not find user"));
+    sandbox.stub(UserHandler, "valid").callsFake(() => {
+      return Promise.resolve();
     });
   });
-
-  sinon.stub(userHandler, "valid").callsFake(() => {
-    return Promise.resolve();
+  afterEach(() => {
+    sandbox.restore();
   });
 
   describe("createTokens()", () => {
@@ -44,8 +48,7 @@ describe("TokenHandler", () => {
       it("should reject with BlError", () => {
         const username = undefined;
         return (
-          tokenHandler
-
+          TokenHandler
             // @ts-expect-error fixme: auto ignored
             .createTokens(username)
             .should.be.rejectedWith(BlError)
@@ -55,13 +58,13 @@ describe("TokenHandler", () => {
 
     context("when username is valid", () => {
       it("should resolve with accessToken and refreshToken", (done) => {
-        tokenHandler
-          .createTokens(testUser.username)
-          .then((tokens: { accessToken: string; refreshToken: string }) => {
+        TokenHandler.createTokens(testUser.username).then(
+          (tokens: { accessToken: string; refreshToken: string }) => {
             tokens.accessToken.should.have.length.gte(50);
             tokens.refreshToken.should.have.length.gte(50);
             done();
-          });
+          },
+        );
       });
     });
   });

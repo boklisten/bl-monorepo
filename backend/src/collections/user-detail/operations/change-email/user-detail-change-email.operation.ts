@@ -1,5 +1,5 @@
 import { PermissionService } from "@backend/auth/permission.service.js";
-import { UserHandler } from "@backend/auth/user/user.handler.js";
+import UserHandler from "@backend/auth/user/user.handler.js";
 import { isNotNullish, isNullish } from "@backend/helper/typescript-helpers.js";
 import BlResponseHandler from "@backend/response/bl-response.handler.js";
 import { BlStorage } from "@backend/storage/bl-storage.js";
@@ -13,12 +13,6 @@ import { Request, Response } from "express";
 import validator from "validator";
 
 export class UserDetailChangeEmailOperation implements Operation {
-  private userHandler: UserHandler;
-
-  constructor(userHandler?: UserHandler) {
-    this.userHandler = userHandler ?? new UserHandler();
-  }
-
   async run(
     blApiRequest: BlApiRequest,
     request: Request,
@@ -70,7 +64,7 @@ export class UserDetailChangeEmailOperation implements Operation {
     let alreadyAddedUser;
 
     try {
-      alreadyAddedUser = await this.userHandler.getByUsername(email);
+      alreadyAddedUser = await UserHandler.getByUsername(email);
       // eslint-disable-next-line no-empty
     } catch {}
 

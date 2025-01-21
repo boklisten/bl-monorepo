@@ -1,8 +1,8 @@
 import "mocha";
 
 import { EmailValidation } from "@backend/collections/email-validation/email-validation.js";
-import { EmailValidationHelper } from "@backend/collections/email-validation/helpers/email-validation.helper.js";
-import { Messenger } from "@backend/messenger/messenger.js";
+import EmailValidationHelper from "@backend/collections/email-validation/helpers/email-validation.helper.js";
+import Messenger from "@backend/messenger/messenger.js";
 import { BlStorage } from "@backend/storage/bl-storage.js";
 import { BlError } from "@shared/bl-error/bl-error.js";
 import { UserDetail } from "@shared/user/user-detail/user-detail.js";
@@ -14,12 +14,10 @@ chaiUse(chaiAsPromised);
 should();
 
 describe("EmailValidationHelper", () => {
-  const messenger = new Messenger();
-  const emailValidationHelper = new EmailValidationHelper(messenger);
-
   const testUserDetail = { id: "", email: "" } as UserDetail;
   let emailValidationStorageAddSuccess: boolean;
   let testEmailValidation: EmailValidation;
+  let messengerEmailConfirmationStub: sinon.SinonStub;
   let sandbox: sinon.SinonSandbox;
 
   beforeEach(() => {
@@ -47,19 +45,19 @@ describe("EmailValidationHelper", () => {
       }
       return Promise.resolve(testEmailValidation);
     });
+
+    messengerEmailConfirmationStub = sandbox
+      .stub(Messenger, "emailConfirmation")
+      .resolves();
   });
   afterEach(() => {
     sandbox.restore();
   });
 
-  const messengerEmailConfirmationStub = sinon
-    .stub(messenger, "emailConfirmation")
-    .resolves();
-
   describe("#createAndSendEmailValidationLink", () => {
     it("should reject if userId is not found", () => {
       return expect(
-        emailValidationHelper.createAndSendEmailValidationLink(
+        EmailValidationHelper.createAndSendEmailValidationLink(
           "notFoundUserDetail",
         ),
       ).to.be.rejectedWith(
@@ -72,7 +70,7 @@ describe("EmailValidationHelper", () => {
       emailValidationStorageAddSuccess = false;
 
       return expect(
-        emailValidationHelper.createAndSendEmailValidationLink(
+        EmailValidationHelper.createAndSendEmailValidationLink(
           testUserDetail.id,
         ),
       ).to.be.rejectedWith(BlError, /could not add emailValidation/);
@@ -81,15 +79,15 @@ describe("EmailValidationHelper", () => {
     it("should send message to user on emailValidation creation", (done) => {
       emailValidationStorageAddSuccess = true;
 
-      emailValidationHelper
-        .createAndSendEmailValidationLink(testUserDetail.id)
-        .then(() => {
-          expect(messengerEmailConfirmationStub).to.have.been.calledWith(
-            testUserDetail,
-            testEmailValidation.id,
-          );
-          done();
-        });
+      EmailValidationHelper.createAndSendEmailValidationLink(
+        testUserDetail.id,
+      ).then(() => {
+        expect(messengerEmailConfirmationStub).to.have.been.calledWith(
+          testUserDetail,
+          testEmailValidation.id,
+        );
+        done();
+      });
     });
   });
 
@@ -98,20 +96,20 @@ describe("EmailValidationHelper", () => {
       testEmailValidation.userDetail = "notFound";
 
       return expect(
-        emailValidationHelper.sendEmailValidationLink(testEmailValidation),
+        EmailValidationHelper.sendEmailValidationLink(testEmailValidation),
       ).to.be.rejectedWith(BlError, /userDetail "notFound" not found/);
     });
 
     it("should call messenger.emailConfirmation", (done) => {
-      emailValidationHelper
-        .sendEmailValidationLink(testEmailValidation)
-        .then(() => {
+      EmailValidationHelper.sendEmailValidationLink(testEmailValidation).then(
+        () => {
           expect(messengerEmailConfirmationStub).to.have.been.calledWith(
             testUserDetail,
             testEmailValidation.id,
           );
           done();
-        });
+        },
+      );
     });
   });
 });

@@ -8,7 +8,8 @@ import BlCollections from "@backend/collections/bl-collections.js";
 import { BlError } from "@shared/bl-error/bl-error.js";
 import { Router } from "express";
 
-export function createCollectionEndpoints(router: Router) {
+export function createRouter() {
+  const router: Router = Router();
   for (const collection of BlCollections) {
     for (const endpoint of collection.endpoints) {
       switch (endpoint.method) {
@@ -44,4 +45,10 @@ export function createCollectionEndpoints(router: Router) {
       }
     }
   }
+  return router;
 }
+
+const CollectionEndpointCreator = {
+  createRouter,
+};
+export default CollectionEndpointCreator;

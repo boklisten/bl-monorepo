@@ -114,13 +114,7 @@ describe("OrderPostHook", () => {
       }
       return Promise.resolve(testOrder);
     });
-  });
-  afterEach(() => {
-    sandbox.restore();
-  });
-
-  describe("#before()", () => {
-    sinon.stub(orderHookBefore, "validate").callsFake((requestBody: any) => {
+    sandbox.stub(orderHookBefore, "validate").callsFake((requestBody) => {
       return new Promise((resolve, reject) => {
         if (!requestBody["valid"]) {
           return reject(new BlError("not a valid order").code(701));
@@ -128,7 +122,12 @@ describe("OrderPostHook", () => {
         resolve(true);
       });
     });
+  });
+  afterEach(() => {
+    sandbox.restore();
+  });
 
+  describe("#before()", () => {
     it("should reject if requestBody is not valid", () => {
       return expect(
         orderPostHook.before({ valid: false }, testAccessToken),

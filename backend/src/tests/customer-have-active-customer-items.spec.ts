@@ -6,23 +6,27 @@ import { BlError } from "@shared/bl-error/bl-error.js";
 import { CustomerItem } from "@shared/customer-item/customer-item.js";
 import { expect, use as chaiUse, should } from "chai";
 import chaiAsPromised from "chai-as-promised";
-import sinon from "sinon";
+import sinon, { createSandbox } from "sinon";
 
 chaiUse(chaiAsPromised);
 should();
 
 describe("CustomerHaveActiveCustomerItems", () => {
-  const customerItemByQueryStub = sinon.stub(
-    BlStorage.CustomerItems,
-    "getByQuery",
-  );
-
   const customerHaveActiveCustomerItems = new CustomerHaveActiveCustomerItems();
 
   const testUserId = "5d765db5fc8c47001c408d8d";
 
+  let sandbox: sinon.SinonSandbox;
+  let customerItemByQueryStub: sinon.SinonStub;
   beforeEach(() => {
-    customerItemByQueryStub.reset();
+    sandbox = createSandbox();
+    customerItemByQueryStub = sandbox.stub(
+      BlStorage.CustomerItems,
+      "getByQuery",
+    );
+  });
+  afterEach(() => {
+    sandbox.restore();
   });
 
   describe("haveActiveCustomerItems()", () => {

@@ -3,11 +3,11 @@ import "mocha";
 import { MessageHelper } from "@backend/collections/message/helper/message-helper.js";
 import { BlStorage } from "@backend/storage/bl-storage.js";
 import { BlError } from "@shared/bl-error/bl-error.js";
-import { Message } from "@shared/message/message.js";
 import { MessageMethod } from "@shared/message/message-method/message-method.js";
+import { Message } from "@shared/message/message.js";
 import { expect, should, use as chaiUse } from "chai";
 import chaiAsPromised from "chai-as-promised";
-import sinon from "sinon";
+import sinon, { createSandbox } from "sinon";
 import sinonChai from "sinon-chai";
 
 chaiUse(chaiAsPromised);
@@ -16,11 +16,19 @@ chaiUse(sinonChai);
 
 describe("MessageHelper", () => {
   const messageHelper = new MessageHelper();
+  let sandbox: sinon.SinonSandbox;
+  let messageStorageGetByQueryStub: sinon.SinonStub;
 
-  const messageStorageGetByQueryStub = sinon.stub(
-    BlStorage.Messages,
-    "getByQuery",
-  );
+  beforeEach(() => {
+    sandbox = createSandbox();
+    messageStorageGetByQueryStub = sandbox.stub(
+      BlStorage.Messages,
+      "getByQuery",
+    );
+  });
+  afterEach(() => {
+    sandbox.restore();
+  });
 
   describe("#isAdded", () => {
     it("should throw error if messageStorage.get fails", async () => {
@@ -61,12 +69,8 @@ describe("MessageHelper", () => {
         return Promise.resolve([message]);
       });
 
-      try {
-        const isAdded = await messageHelper.isAdded(message);
-        return expect(isAdded).to.be.true;
-      } catch (e) {
-        throw e;
-      }
+      const isAdded = await messageHelper.isAdded(message);
+      return expect(isAdded).to.be.true;
     });
 
     it("should return false if type, subtype, sequence, method and customerId is already in storage, but htmlContent is not the same as in storage", async () => {
@@ -94,12 +98,8 @@ describe("MessageHelper", () => {
         return Promise.resolve([storedMessage]);
       });
 
-      try {
-        const isAdded = await messageHelper.isAdded(message);
-        return expect(isAdded).to.be.false;
-      } catch (e) {
-        throw e;
-      }
+      const isAdded = await messageHelper.isAdded(message);
+      return expect(isAdded).to.be.false;
     });
 
     it("should return false if type, subtype, sequence, method and customerId is not in storage", async () => {
@@ -116,12 +116,8 @@ describe("MessageHelper", () => {
         return Promise.reject(new BlError("not found").code(702));
       });
 
-      try {
-        const isAdded = await messageHelper.isAdded(message);
-        return expect(isAdded).to.be.false;
-      } catch (e) {
-        throw e;
-      }
+      const isAdded = await messageHelper.isAdded(message);
+      return expect(isAdded).to.be.false;
     });
   });
 });

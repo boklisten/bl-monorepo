@@ -7,7 +7,6 @@ import { BlStorage } from "@backend/storage/bl-storage.js";
 import { BlError } from "@shared/bl-error/bl-error.js";
 import { Order } from "@shared/order/order.js";
 import { Payment } from "@shared/payment/payment.js";
-import { AccessToken } from "@shared/token/access-token.js";
 import { expect, use as chaiUse, should } from "chai";
 import chaiAsPromised from "chai-as-promised";
 import sinon, { createSandbox } from "sinon";
@@ -17,16 +16,16 @@ should();
 describe("PaymentDibsConfirmer", () => {
   const dibsPaymentService = new DibsPaymentService();
   const paymentDibsConfirmer = new PaymentDibsConfirmer(dibsPaymentService);
-  const dibsPaymentFetchStub = sinon.stub(
-    dibsPaymentService,
-    "fetchDibsPaymentData",
-  );
   let updatePaymentStub: sinon.SinonStub;
+  let dibsPaymentFetchStub: sinon.SinonStub;
   let sandbox: sinon.SinonSandbox;
 
   beforeEach(() => {
     sandbox = createSandbox();
-    dibsPaymentFetchStub.reset();
+    dibsPaymentFetchStub = sandbox.stub(
+      dibsPaymentService,
+      "fetchDibsPaymentData",
+    );
     updatePaymentStub = sandbox.stub(BlStorage.Payments, "update");
   });
   afterEach(() => {

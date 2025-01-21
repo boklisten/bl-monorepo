@@ -16,23 +16,23 @@ describe("UniqueItemActiveOperation", () => {
   describe("run()", () => {
     const customerItemActiveBlid = new CustomerItemActiveBlid();
 
-    const getActiveCustomerItemsStub = sinon.stub(
-      customerItemActiveBlid,
-      "getActiveCustomerItems",
-    );
-
-    const getUniqueItemStub = sinon.stub(BlStorage.UniqueItems, "get");
-
     const uniqueItemActiveOperation = new UniqueItemActiveOperation(
       customerItemActiveBlid,
     );
 
     let sandbox: sinon.SinonSandbox;
+    let getUniqueItemStub: sinon.SinonStub;
+    let getActiveCustomerItemsStub: sinon.SinonStub;
 
     beforeEach(() => {
       sandbox = sinon.createSandbox();
       sandbox.stub(BlResponseHandler, "sendResponse").resolves(true);
-      getUniqueItemStub.reset();
+      getActiveCustomerItemsStub = sandbox.stub(
+        customerItemActiveBlid,
+        "getActiveCustomerItems",
+      );
+
+      getUniqueItemStub = sandbox.stub(BlStorage.UniqueItems, "get");
     });
     afterEach(() => {
       sandbox.restore();

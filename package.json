@@ -6,13 +6,18 @@
     "prettier": "prettier --write '**/*.{js,mjs,ts,tsx,md,json,yml,css}' --ignore-path=.gitignore",
     "prettier:check": "prettier --check '**/*.{js,mjs,ts,tsx,md,json,yml,css}' --ignore-path=.gitignore",
     "lint": "eslint . --ignore-pattern '**/*.spec.ts' --ignore-pattern '**/dist/*' --ignore-pattern '**/.next/*'",
-    "typecheck": "pnpm --filter shared exec tsc && pnpm --filter backend exec tsc --noEmit && pnpm --filter frontend exec tsc --noEmit"
+    "typecheck:shared": "pnpm --filter shared exec tsc",
+    "typecheck:backend": "pnpm --filter backend exec tsc --noEmit",
+    "typecheck:frontend": "pnpm --filter frontend exec tsc --noEmit",
+    "typecheck": "pnpm run typecheck:shared && pnpm exec concurrently \"pnpm run typecheck:backend\" \"pnpm run typecheck:frontend\"",
+    "fix": "pnpm exec concurrently \"pnpm run prettier --log-level silent\" \"pnpm run lint --fix\" \"pnpm run typecheck\""
   },
   "devDependencies": {
     "@eslint/js": "^9.18.0",
     "@next/eslint-plugin-next": "^15.1.4",
     "@tsconfig/strictest": "^2.0.5",
     "@types/node": "^22.10.6",
+    "concurrently": "^9.1.2",
     "eslint": "9.18.0",
     "eslint-config-prettier": "^10.0.1",
     "eslint-plugin-cypress": "^4.1.0",

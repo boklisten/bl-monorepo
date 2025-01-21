@@ -1,4 +1,4 @@
-import { CollectionEndpointAuth } from "@backend/collection-endpoint/collection-endpoint-auth.js";
+import CollectionEndpointAuth from "@backend/collection-endpoint/collection-endpoint-auth.js";
 import { CollectionEndpointDocumentAuth } from "@backend/collection-endpoint/collection-endpoint-document-auth.js";
 import { CollectionEndpointOperation } from "@backend/collection-endpoint/collection-endpoint-operation.js";
 import { createPath } from "@backend/config/api-path.js";
@@ -15,7 +15,6 @@ import { NextFunction, Request, Response, Router } from "express";
 
 export abstract class CollectionEndpointMethod {
   protected collectionUri: string;
-  protected collectionEndpointAuth: CollectionEndpointAuth;
   protected collectionEndpointDocumentAuth: CollectionEndpointDocumentAuth;
 
   constructor(
@@ -24,34 +23,45 @@ export abstract class CollectionEndpointMethod {
     protected collection: BlCollection,
   ) {
     this.collectionUri = createPath(this.collection.storage.path);
-    this.collectionEndpointAuth = new CollectionEndpointAuth();
     this.collectionEndpointDocumentAuth = new CollectionEndpointDocumentAuth();
   }
 
   public create() {
     switch (this.endpoint.method) {
       case "getAll": {
-        this.routerGetAll();
+        this.router.get(this.collectionUri, this.handleRequest.bind(this));
         break;
       }
       case "getId": {
-        this.routerGetId();
+        this.router.get(
+          this.collectionUri + "/:id",
+          this.handleRequest.bind(this),
+        );
         break;
       }
       case "post": {
-        this.routerPost();
+        this.router.post(this.collectionUri, this.handleRequest.bind(this));
         break;
       }
       case "patch": {
-        this.routerPatch();
+        this.router.patch(
+          this.collectionUri + "/:id",
+          this.handleRequest.bind(this),
+        );
         break;
       }
       case "delete": {
-        this.routerDelete();
+        this.router.delete(
+          this.collectionUri + "/:id",
+          this.handleRequest.bind(this),
+        );
         break;
       }
       case "put": {
-        this.routerPut();
+        this.router.put(
+          this.collectionUri + "/:id",
+          this.handleRequest.bind(this),
+        );
         break;
       }
       default: {
@@ -61,7 +71,16 @@ export abstract class CollectionEndpointMethod {
       }
     }
 
-    this.createOperations(this.endpoint);
+    if (this.endpoint.operations) {
+      for (const operation of this.endpoint.operations) {
+        new CollectionEndpointOperation(
+          this.router,
+          this.collectionUri,
+          this.endpoint.method,
+          operation,
+        ).create();
+      }
+    }
   }
 
   abstract onRequest(blApiRequest: BlApiRequest): Promise<BlStorageData>;
@@ -70,28 +89,18 @@ export abstract class CollectionEndpointMethod {
     blApiRequest: BlApiRequest,
   ): Promise<BlApiRequest>;
 
-  private createOperations(endpoint: BlEndpoint) {
-    if (endpoint.operations) {
-      for (const operation of endpoint.operations) {
-        const collectionEndpointOperation = new CollectionEndpointOperation(
-          this.router,
-          this.collectionUri,
-          endpoint.method,
-          operation,
-        );
-        collectionEndpointOperation.create();
-      }
-    }
-  }
-
   private handleRequest(request: Request, res: Response, next: NextFunction) {
     let userAccessToken: AccessToken | undefined;
     let blApiRequest: BlApiRequest;
 
     const hook = this.endpoint.hook ?? new Hook();
 
-    this.collectionEndpointAuth
-      .authenticate(this.endpoint.restriction, request, res, next)
+    CollectionEndpointAuth.authenticate(
+      this.endpoint.restriction,
+      request,
+      res,
+      next,
+    )
       .then((authResult) => {
         if (!isBoolean(authResult)) {
           userAccessToken = authResult;
@@ -140,35 +149,5 @@ export abstract class CollectionEndpointMethod {
         BlResponseHandler.sendResponse(res, new BlapiResponse(docs)),
       )
       .catch((error) => BlResponseHandler.sendErrorResponse(res, error));
-  }
-
-  private routerGetAll() {
-    this.router.get(this.collectionUri, this.handleRequest.bind(this));
-  }
-
-  private routerGetId() {
-    this.router.get(this.collectionUri + "/:id", this.handleRequest.bind(this));
-  }
-
-  private routerPost() {
-    this.router.post(this.collectionUri, this.handleRequest.bind(this));
-  }
-
-  private routerDelete() {
-    this.router.delete(
-      this.collectionUri + "/:id",
-      this.handleRequest.bind(this),
-    );
-  }
-
-  private routerPatch() {
-    this.router.patch(
-      this.collectionUri + "/:id",
-      this.handleRequest.bind(this),
-    );
-  }
-
-  private routerPut() {
-    this.router.put(this.collectionUri + "/:id", this.handleRequest.bind(this));
   }
 }

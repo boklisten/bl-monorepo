@@ -159,6 +159,9 @@ importers:
       express:
         specifier: ^4.21.2
         version: 4.21.2
+      express-list-endpoints:
+        specifier: ^7.1.1
+        version: 7.1.1
       express-session:
         specifier: ^1.18.1
         version: 1.18.1
@@ -3544,6 +3547,10 @@ packages:
   expand-template@2.0.3:
     resolution: {integrity: sha512-XYfuKMvj4O35f/pOXLObndIRvyQ+/+6AhODh+OKWj9S9498pHHn/IMszH+gt0fBCRWMNfk1ZSp5x3AifmnI2vg==}
     engines: {node: '>=6'}
+
+  express-list-endpoints@7.1.1:
+    resolution: {integrity: sha512-SA6YHH1r6DrioJ4fFJNqiwu1FweGFqJZO9KBApMzwPosoSGPOX2AW0wiMepOXjojjEXDuP9whIvckomheErbJA==}
+    engines: {node: '>=18'}
 
   express-session@1.18.1:
     resolution: {integrity: sha512-a5mtTqEaZvBCL9A9aqkrtfz+3SMDhOVUnjafjo+s7A9Txkq+SVX2DLvSp1Zrv4uCXa3lMSK3viWnh9Gg07PBUA==}
@@ -9573,6 +9580,8 @@ snapshots:
       pify: 2.3.0
 
   expand-template@2.0.3: {}
+
+  express-list-endpoints@7.1.1: {}
 
   express-session@1.18.1:
     dependencies:

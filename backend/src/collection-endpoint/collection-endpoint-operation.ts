@@ -1,4 +1,4 @@
-import { CollectionEndpointAuth } from "@backend/collection-endpoint/collection-endpoint-auth.js";
+import CollectionEndpointAuth from "@backend/collection-endpoint/collection-endpoint-auth.js";
 import { isBoolean } from "@backend/helper/typescript-helpers.js";
 import BlResponseHandler from "@backend/response/bl-response.handler.js";
 import { BlApiRequest } from "@backend/types/bl-api-request.js";
@@ -9,8 +9,6 @@ import {
 import { NextFunction, Request, Response, Router } from "express";
 
 export class CollectionEndpointOperation {
-  private collectionEndpointAuth = new CollectionEndpointAuth();
-
   constructor(
     protected router: Router,
     private collectionUri: string,
@@ -74,8 +72,12 @@ export class CollectionEndpointOperation {
   private handleRequest(request: Request, res: Response, next: NextFunction) {
     let blApiRequest: BlApiRequest | undefined;
 
-    this.collectionEndpointAuth
-      .authenticate(this.operation.restriction, request, res, next)
+    CollectionEndpointAuth.authenticate(
+      this.operation.restriction,
+      request,
+      res,
+      next,
+    )
       .then((accessToken) => {
         blApiRequest = {
           documentId: request.params["id"],

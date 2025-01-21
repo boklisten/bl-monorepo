@@ -10,6 +10,7 @@ import { logger } from "@backend/config/logger.js";
 import sessionHandler from "@backend/config/session.js";
 import * as Sentry from "@sentry/node";
 import express, { json, Router } from "express";
+import expressListEndpoints from "express-list-endpoints";
 import mongoose from "mongoose";
 import passport from "passport";
 
@@ -42,6 +43,16 @@ app.get("*", redirectToHttpsHandler);
 createAuthEndpoints(router);
 createCollectionEndpoints(router);
 app.use(router);
+
+logger.silly(
+  expressListEndpoints(app)
+    .map((endpoint) =>
+      endpoint.methods
+        .map((method) => `${method}\t${endpoint.path}`)
+        .join("\n"),
+    )
+    .join("\n"),
+);
 
 mongoose.connection.on("disconnected", () => {
   logger.error("mongoose connection was disconnected");

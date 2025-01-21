@@ -1,4 +1,4 @@
-import { UserProvider } from "@backend/auth/user/user-provider.js";
+import UserProvider from "@backend/auth/user/user-provider.js";
 import { createPath, retrieveRefererPath } from "@backend/config/api-path.js";
 import { APP_CONFIG } from "@backend/config/application-config.js";
 import { BlEnv } from "@backend/config/env.js";
@@ -26,7 +26,7 @@ function createPassportStrategy() {
 
         try {
           const username = extractUsername(profile);
-          userAndTokens = await new UserProvider().loginOrCreate(
+          userAndTokens = await UserProvider.loginOrCreate(
             username,
             provider,
             providerId,

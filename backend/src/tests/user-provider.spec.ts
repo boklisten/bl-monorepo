@@ -1,7 +1,7 @@
 import "mocha";
 import LocalLoginHandler from "@backend/auth/local/local-login.handler.js";
 import TokenHandler from "@backend/auth/token/token.handler.js";
-import { UserProvider } from "@backend/auth/user/user-provider.js";
+import UserProvider from "@backend/auth/user/user-provider.js";
 import UserHandler from "@backend/auth/user/user.handler.js";
 import { BlError } from "@shared/bl-error/bl-error.js";
 import { expect, use as chaiUse, should } from "chai";
@@ -18,7 +18,6 @@ describe("UserProvider", () => {
   let userValidStub: sinon.SinonStub;
   let createTokenStub: sinon.SinonStub;
   let createDefaultLocalLoginStub: sinon.SinonStub;
-  const userProvider = new UserProvider();
 
   beforeEach(() => {
     sandbox = createSandbox();
@@ -41,7 +40,7 @@ describe("UserProvider", () => {
       userValidStub.rejects(new BlError("user is not valid"));
 
       return expect(
-        userProvider.loginOrCreate("username@mail.com", "local", "abcdef"),
+        UserProvider.loginOrCreate("username@mail.com", "local", "abcdef"),
       ).to.eventually.be.rejectedWith(BlError, /user is not valid/);
     });
 
@@ -53,7 +52,7 @@ describe("UserProvider", () => {
       );
 
       return expect(
-        userProvider.loginOrCreate("username@mail.com", "local", "abcde"),
+        UserProvider.loginOrCreate("username@mail.com", "local", "abcde"),
       ).to.eventually.be.rejectedWith(
         BlError,
         /local login could not be created/,
@@ -66,7 +65,7 @@ describe("UserProvider", () => {
         userCreateStub.rejects(new BlError("user could not be created"));
 
         return expect(
-          userProvider.loginOrCreate("username@mail.com", "local", "abcde"),
+          UserProvider.loginOrCreate("username@mail.com", "local", "abcde"),
         ).to.eventually.be.rejectedWith(BlError, /user could not be created/);
       });
 
@@ -80,7 +79,7 @@ describe("UserProvider", () => {
         createTokenStub.resolves(tokens);
 
         return expect(
-          userProvider.loginOrCreate("username@mail.com", "local", "abcdefg"),
+          UserProvider.loginOrCreate("username@mail.com", "local", "abcdefg"),
         ).to.eventually.be.eql({ user: user, tokens: tokens });
       });
     });
@@ -96,7 +95,7 @@ describe("UserProvider", () => {
         createTokenStub.resolves(tokens);
 
         return expect(
-          userProvider.loginOrCreate("username@mail.com", "local", "abcdefg"),
+          UserProvider.loginOrCreate("username@mail.com", "local", "abcdefg"),
         ).to.eventually.be.eql({ user: user, tokens: tokens });
       });
     });

@@ -1,16 +1,13 @@
-import { CollectionEndpointAuth } from "@backend/collection-endpoint/collection-endpoint-auth/collection-endpoint-auth.js";
-import { CollectionEndpointDocumentAuth } from "@backend/collection-endpoint/collection-endpoint-document/collection-endpoint-document-auth.js";
+import { CollectionEndpointAuth } from "@backend/collection-endpoint/collection-endpoint-auth.js";
+import { CollectionEndpointDocumentAuth } from "@backend/collection-endpoint/collection-endpoint-document-auth.js";
 import { CollectionEndpointOperation } from "@backend/collection-endpoint/collection-endpoint-operation.js";
-import {
-  BlCollection,
-  BlEndpoint,
-} from "@backend/collections/bl-collection.js";
 import { createPath } from "@backend/config/api-path.js";
 import { isBoolean, isNotNullish } from "@backend/helper/typescript-helpers.js";
 import { Hook } from "@backend/hook/hook.js";
-import { BlApiRequest } from "@backend/request/bl-api-request.js";
 import BlResponseHandler from "@backend/response/bl-response.handler.js";
 import { BlStorageData } from "@backend/storage/bl-storage.js";
+import { BlApiRequest } from "@backend/types/bl-api-request.js";
+import { BlCollection, BlEndpoint } from "@backend/types/bl-collection.js";
 import { BlError } from "@shared/bl-error/bl-error.js";
 import { BlapiResponse } from "@shared/blapi-response/blapi-response.js";
 import { AccessToken } from "@shared/token/access-token.js";

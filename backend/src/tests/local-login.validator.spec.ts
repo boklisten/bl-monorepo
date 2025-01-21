@@ -1,11 +1,11 @@
 import "mocha";
 
+import LocalLoginPasswordValidator from "@backend/auth/local/local-login-password.validator.js";
 import LocalLoginHandler from "@backend/auth/local/local-login.handler.js";
 import { LocalLoginValidator } from "@backend/auth/local/local-login.validator.js";
-import LocalLoginPasswordValidator from "@backend/auth/local/password/local-login-password.validator.js";
 import { UserHandler } from "@backend/auth/user/user.handler.js";
-import { LocalLogin } from "@backend/collections/local-login/local-login.js";
-import { User } from "@backend/collections/user/user.js";
+import { LocalLogin } from "@backend/types/local-login.js";
+import { User } from "@backend/types/user.js";
 import { BlError } from "@shared/bl-error/bl-error.js";
 import { use as chaiUse, should } from "chai";
 import chaiAsPromised from "chai-as-promised";

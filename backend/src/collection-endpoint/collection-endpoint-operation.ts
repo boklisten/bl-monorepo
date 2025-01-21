@@ -1,11 +1,11 @@
-import { CollectionEndpointAuth } from "@backend/collection-endpoint/collection-endpoint-auth/collection-endpoint-auth.js";
+import { CollectionEndpointAuth } from "@backend/collection-endpoint/collection-endpoint-auth.js";
+import { isBoolean } from "@backend/helper/typescript-helpers.js";
+import BlResponseHandler from "@backend/response/bl-response.handler.js";
+import { BlApiRequest } from "@backend/types/bl-api-request.js";
 import {
   BlEndpointMethod,
   BlEndpointOperation,
-} from "@backend/collections/bl-collection.js";
-import { isBoolean } from "@backend/helper/typescript-helpers.js";
-import { BlApiRequest } from "@backend/request/bl-api-request.js";
-import BlResponseHandler from "@backend/response/bl-response.handler.js";
+} from "@backend/types/bl-collection.js";
 import { NextFunction, Request, Response, Router } from "express";
 
 export class CollectionEndpointOperation {

@@ -1,6 +1,6 @@
-import { Operation } from "@backend/operation/operation.js";
-import { BlApiRequest } from "@backend/request/bl-api-request.js";
 import { BlStorage } from "@backend/storage/bl-storage.js";
+import { BlApiRequest } from "@backend/types/bl-api-request.js";
+import { Operation } from "@backend/types/operation.js";
 import { BlError } from "@shared/bl-error/bl-error.js";
 import { BlapiResponse } from "@shared/blapi-response/blapi-response.js";
 import { UserMatch } from "@shared/match/user-match.js";

@@ -1,5 +1,5 @@
-import { BlCollection } from "@backend/collections/bl-collection.js";
 import { BlStorage } from "@backend/storage/bl-storage.js";
+import { BlCollection } from "@backend/types/bl-collection.js";
 
 export const BranchItemCollection: BlCollection = {
   storage: BlStorage.BranchItems,

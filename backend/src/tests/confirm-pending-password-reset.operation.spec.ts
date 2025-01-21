@@ -1,7 +1,7 @@
 import { ConfirmPendingPasswordResetOperation } from "@backend/collections/pending-password-reset/operations/confirm-pending-password-reset.operation.js";
 import BlCrypto from "@backend/crypto/bl-crypto.js";
-import { BlApiRequest } from "@backend/request/bl-api-request.js";
 import { BlStorage } from "@backend/storage/bl-storage.js";
+import { BlApiRequest } from "@backend/types/bl-api-request.js";
 import { BlError } from "@shared/bl-error/bl-error.js";
 import { PendingPasswordReset } from "@shared/password-reset/pending-password-reset.js";
 import { expect, use as chaiUse, should } from "chai";

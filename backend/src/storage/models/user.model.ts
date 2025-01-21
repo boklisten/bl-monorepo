@@ -1,5 +1,5 @@
-import { User } from "@backend/collections/user/user.js";
 import { BlModel } from "@backend/storage/bl-storage.js";
+import { User } from "@backend/types/user.js";
 import { Schema } from "mongoose";
 
 export const UserModel: BlModel<User> = {

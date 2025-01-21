@@ -1,7 +1,7 @@
 import "mocha";
 
-import LocalLoginCreator from "@backend/auth/local/local-login-creator/local-login-creator.js";
-import { LocalLogin } from "@backend/collections/local-login/local-login.js";
+import LocalLoginCreator from "@backend/auth/local/local-login-creator.js";
+import { LocalLogin } from "@backend/types/local-login.js";
 import { BlError } from "@shared/bl-error/bl-error.js";
 import { use as chaiUse, should } from "chai";
 import chaiAsPromised from "chai-as-promised";

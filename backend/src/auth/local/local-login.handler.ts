@@ -1,10 +1,10 @@
-import LocalLoginCreator from "@backend/auth/local/local-login-creator/local-login-creator.js";
-import HashedPasswordGenerator from "@backend/auth/local/password/hashed-password-generator.js";
-import { LocalLogin } from "@backend/collections/local-login/local-login.js";
+import HashedPasswordGenerator from "@backend/auth/local/hashed-password-generator.js";
+import LocalLoginCreator from "@backend/auth/local/local-login-creator.js";
 import BlCrypto from "@backend/crypto/bl-crypto.js";
 import { isNullish } from "@backend/helper/typescript-helpers.js";
 import { SEDbQuery } from "@backend/query/se.db-query.js";
 import { BlStorage } from "@backend/storage/bl-storage.js";
+import { LocalLogin } from "@backend/types/local-login.js";
 import { BlError } from "@shared/bl-error/bl-error.js";
 import { BlapiErrorResponse } from "@shared/blapi-response/blapi-error-response.js";
 import validator from "validator";

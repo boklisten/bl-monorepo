@@ -20,7 +20,7 @@ import { UniqueItemModel } from "@backend/storage/models/unique-item.model.js";
 import { UserDetailModel } from "@backend/storage/models/user-detail.model.js";
 import { UserMatchModel } from "@backend/storage/models/user-match.model.js";
 import { UserModel } from "@backend/storage/models/user.model.js";
-import { MongoDbBlStorageHandler } from "@backend/storage/mongoDb/mongoDb.blStorageHandler.js";
+import { MongodbHandler } from "@backend/storage/mongodb-handler.js";
 import { Schema } from "mongoose";
 
 export interface BlModel<T> {
@@ -29,33 +29,33 @@ export interface BlModel<T> {
 }
 
 export const BlStorage = {
-  Branches: new MongoDbBlStorageHandler(BranchModel),
-  BranchItems: new MongoDbBlStorageHandler(BranchItemModel),
-  Companies: new MongoDbBlStorageHandler(CompanyModel),
-  CustomerItems: new MongoDbBlStorageHandler(CustomerItemModel),
-  Deliveries: new MongoDbBlStorageHandler(DeliveryModel),
-  EditableTexts: new MongoDbBlStorageHandler(EditableTextModel),
-  EmailValidations: new MongoDbBlStorageHandler(EmailValidationModel),
-  Invoices: new MongoDbBlStorageHandler(InvoiceModel),
-  Items: new MongoDbBlStorageHandler(ItemModel),
-  LocalLogins: new MongoDbBlStorageHandler(LocalLoginModel),
-  Messages: new MongoDbBlStorageHandler(MessageModel),
-  OpeningHours: new MongoDbBlStorageHandler(OpeningHourModel),
-  Orders: new MongoDbBlStorageHandler(OrderModel),
-  Payments: new MongoDbBlStorageHandler(PaymentModel),
-  PendingPasswordResets: new MongoDbBlStorageHandler(PendingPasswordResetModel),
-  Signatures: new MongoDbBlStorageHandler(SignatureModel),
-  StandMatches: new MongoDbBlStorageHandler(StandMatchModel),
-  UniqueItems: new MongoDbBlStorageHandler(UniqueItemModel),
-  Users: new MongoDbBlStorageHandler(UserModel),
-  UserDetails: new MongoDbBlStorageHandler(UserDetailModel),
-  UserMatches: new MongoDbBlStorageHandler(UserMatchModel),
+  Branches: new MongodbHandler(BranchModel),
+  BranchItems: new MongodbHandler(BranchItemModel),
+  Companies: new MongodbHandler(CompanyModel),
+  CustomerItems: new MongodbHandler(CustomerItemModel),
+  Deliveries: new MongodbHandler(DeliveryModel),
+  EditableTexts: new MongodbHandler(EditableTextModel),
+  EmailValidations: new MongodbHandler(EmailValidationModel),
+  Invoices: new MongodbHandler(InvoiceModel),
+  Items: new MongodbHandler(ItemModel),
+  LocalLogins: new MongodbHandler(LocalLoginModel),
+  Messages: new MongodbHandler(MessageModel),
+  OpeningHours: new MongodbHandler(OpeningHourModel),
+  Orders: new MongodbHandler(OrderModel),
+  Payments: new MongodbHandler(PaymentModel),
+  PendingPasswordResets: new MongodbHandler(PendingPasswordResetModel),
+  Signatures: new MongodbHandler(SignatureModel),
+  StandMatches: new MongodbHandler(StandMatchModel),
+  UniqueItems: new MongodbHandler(UniqueItemModel),
+  Users: new MongodbHandler(UserModel),
+  UserDetails: new MongodbHandler(UserDetailModel),
+  UserMatches: new MongodbHandler(UserMatchModel),
 };
 
 export type BlStorageHandler = (typeof BlStorage)[keyof typeof BlStorage];
 
 type BlModelTypes = {
-  [K in keyof typeof BlStorage]: (typeof BlStorage)[K] extends MongoDbBlStorageHandler<
+  [K in keyof typeof BlStorage]: (typeof BlStorage)[K] extends MongodbHandler<
     infer T
   >
     ? T
@@ -64,7 +64,7 @@ type BlModelTypes = {
 
 export type BlStorageData =
   | {
-      [K in keyof typeof BlStorage]: (typeof BlStorage)[K] extends MongoDbBlStorageHandler<
+      [K in keyof typeof BlStorage]: (typeof BlStorage)[K] extends MongodbHandler<
         infer T
       >
         ? T[]

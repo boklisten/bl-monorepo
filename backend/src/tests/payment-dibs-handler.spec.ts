@@ -1,7 +1,7 @@
 import "mocha";
 
 import { PaymentDibsHandler } from "@backend/collections/payment/helpers/dibs/payment-dibs-handler.js";
-import { DibsEasyOrder } from "@backend/payment/dibs/dibs-easy-order/dibs-easy-order.js";
+import { DibsEasyOrder } from "@backend/payment/dibs/dibs-easy-order.js";
 import { DibsPaymentService } from "@backend/payment/dibs/dibs-payment.service.js";
 import { BlStorage } from "@backend/storage/bl-storage.js";
 import { BlError } from "@shared/bl-error/bl-error.js";

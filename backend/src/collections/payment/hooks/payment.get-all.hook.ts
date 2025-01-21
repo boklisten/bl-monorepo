@@ -1,4 +1,4 @@
-import { PermissionService } from "@backend/auth/permission/permission.service.js";
+import { PermissionService } from "@backend/auth/permission.service.js";
 import { Hook } from "@backend/hook/hook.js";
 import { BlError } from "@shared/bl-error/bl-error.js";
 import { AccessToken } from "@shared/token/access-token.js";

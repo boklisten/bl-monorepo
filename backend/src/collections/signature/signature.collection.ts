@@ -1,9 +1,9 @@
-import { BlCollection } from "@backend/collections/bl-collection.js";
 import { SignatureGetIdHook } from "@backend/collections/signature/hooks/signature.get-id.hook.js";
 import { SignaturePostHook } from "@backend/collections/signature/hooks/signature.post.hook.js";
 import { CheckGuardianSignatureOperation } from "@backend/collections/signature/operations/check-guardian-signature.operation.js";
 import { GuardianSignatureOperation } from "@backend/collections/signature/operations/guardian-signature.operation.js";
 import { BlStorage } from "@backend/storage/bl-storage.js";
+import { BlCollection } from "@backend/types/bl-collection.js";
 
 export const SignatureCollection: BlCollection = {
   storage: BlStorage.Signatures,

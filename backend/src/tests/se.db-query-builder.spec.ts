@@ -1,8 +1,8 @@
 import "mocha";
 
-import { SEDbQuery } from "@backend/query/se.db-query.js";
+import { ValidParameter } from "@backend/query/db-query-valid-params.js";
 import { SEDbQueryBuilder } from "@backend/query/se.db-query-builder.js";
-import { ValidParameter } from "@backend/query/valid-param/db-query-valid-params.js";
+import { SEDbQuery } from "@backend/query/se.db-query.js";
 import { expect, use as chaiUse, should } from "chai";
 import chaiAsPromised from "chai-as-promised";
 

@@ -1,7 +1,7 @@
-import { BlCollection } from "@backend/collections/bl-collection.js";
 import { GenerateUniqueIdsOperation } from "@backend/collections/unique-item/operations/generate-unique-ids-operation.js";
 import { UniqueItemActiveOperation } from "@backend/collections/unique-item/operations/unique-item-active.operation.js";
 import { BlStorage } from "@backend/storage/bl-storage.js";
+import { BlCollection } from "@backend/types/bl-collection.js";
 
 export const UniqueItemCollection: BlCollection = {
   storage: BlStorage.UniqueItems,

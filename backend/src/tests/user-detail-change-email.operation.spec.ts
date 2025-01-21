@@ -1,11 +1,11 @@
 import "mocha";
 
 import { UserHandler } from "@backend/auth/user/user.handler.js";
-import { LocalLogin } from "@backend/collections/local-login/local-login.js";
-import { User } from "@backend/collections/user/user.js";
 import { UserDetailChangeEmailOperation } from "@backend/collections/user-detail/operations/change-email/user-detail-change-email.operation.js";
 import BlResponseHandler from "@backend/response/bl-response.handler.js";
 import { BlStorage } from "@backend/storage/bl-storage.js";
+import { LocalLogin } from "@backend/types/local-login.js";
+import { User } from "@backend/types/user.js";
 import { BlError } from "@shared/bl-error/bl-error.js";
 import { UserDetail } from "@shared/user/user-detail/user-detail.js";
 import { expect, use as chaiUse, should } from "chai";

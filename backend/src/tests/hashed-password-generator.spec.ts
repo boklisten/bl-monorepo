@@ -1,5 +1,5 @@
 import "mocha";
-import HashedPasswordGenerator from "@backend/auth/local/password/hashed-password-generator.js";
+import HashedPasswordGenerator from "@backend/auth/local/hashed-password-generator.js";
 import { BlError } from "@shared/bl-error/bl-error.js";
 import { use as chaiUse, should } from "chai";
 import chaiAsPromised from "chai-as-promised";

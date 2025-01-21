@@ -1,11 +1,11 @@
 import "mocha";
-import { CollectionEndpointDocumentAuth } from "@backend/collection-endpoint/collection-endpoint-document/collection-endpoint-document-auth.js";
+import { CollectionEndpointDocumentAuth } from "@backend/collection-endpoint/collection-endpoint-document-auth.js";
+import { BlStorageData } from "@backend/storage/bl-storage.js";
+import { BlApiRequest } from "@backend/types/bl-api-request.js";
 import {
   BlDocumentPermission,
   BlEndpointRestriction,
-} from "@backend/collections/bl-collection.js";
-import { BlApiRequest } from "@backend/request/bl-api-request.js";
-import { BlStorageData } from "@backend/storage/bl-storage.js";
+} from "@backend/types/bl-collection.js";
 import { BlDocument } from "@shared/bl-document/bl-document.js";
 import { BlError } from "@shared/bl-error/bl-error.js";
 import { Branch } from "@shared/branch/branch.js";

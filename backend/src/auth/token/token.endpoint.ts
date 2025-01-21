@@ -1,8 +1,8 @@
-import { RefreshToken } from "@backend/auth/token/refresh/refresh-token.js";
 import RefreshTokenValidator from "@backend/auth/token/refresh/refresh-token.validator.js";
 import { TokenHandler } from "@backend/auth/token/token.handler.js";
 import { createPath } from "@backend/config/api-path.js";
 import BlResponseHandler from "@backend/response/bl-response.handler.js";
+import { RefreshToken } from "@backend/types/refresh-token.js";
 import { BlError } from "@shared/bl-error/bl-error.js";
 import { BlapiResponse } from "@shared/blapi-response/blapi-response.js";
 import { Router } from "express";

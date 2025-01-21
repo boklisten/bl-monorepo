@@ -1,5 +1,5 @@
-import { AccessToken } from "@backend/auth/token/access-token/access-token.js";
-import { RefreshToken } from "@backend/auth/token/refresh/refresh-token.js";
+import { AccessToken } from "@backend/types/access-token.js";
+import { RefreshToken } from "@backend/types/refresh-token.js";
 
 export class TokenConfig {
   public accessToken: AccessToken;

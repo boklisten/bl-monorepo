@@ -1,8 +1,8 @@
 import { UserHandler } from "@backend/auth/user/user.handler.js";
 import { PendingPasswordResetPostHook } from "@backend/collections/pending-password-reset/hooks/pending-password-reset-post.hook.js";
-import { User } from "@backend/collections/user/user.js";
 import BlCrypto from "@backend/crypto/bl-crypto.js";
 import { Messenger } from "@backend/messenger/messenger.js";
+import { User } from "@backend/types/user.js";
 import { BlError } from "@shared/bl-error/bl-error.js";
 import { PasswordResetRequest } from "@shared/password-reset/password-reset-request.js";
 import { expect, use as chaiUse, should } from "chai";

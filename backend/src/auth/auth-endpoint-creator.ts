@@ -1,6 +1,6 @@
 import { APP_CONFIG } from "@backend/application-config.js";
-import { FacebookAuth } from "@backend/auth/facebook/facebook.auth.js";
-import { GoogleAuth } from "@backend/auth/google/google.auth.js";
+import { FacebookAuth } from "@backend/auth/external/facebook.auth.js";
+import { GoogleAuth } from "@backend/auth/external/google.auth.js";
 import { LocalLoginValidator } from "@backend/auth/local/local-login.validator.js";
 import { LocalAuth } from "@backend/auth/local/local.auth.js";
 import { TokenEndpoint } from "@backend/auth/token/token.endpoint.js";

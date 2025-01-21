@@ -1,19 +1,19 @@
-import { DbQueryBooleanFilter } from "@backend/query/boolean-filter/db-query-boolean-filter.js";
-import { DbQueryDateFilter } from "@backend/query/date-filter/db-query-date-filter.js";
-import { DbQueryExpandFilter } from "@backend/query/expand-filter/db-query-expand-filter.js";
-import { DbQueryLimitFilter } from "@backend/query/limit-filter/db-query-limit-filter.js";
-import { DbQueryNumberFilter } from "@backend/query/number-filter/db-query-number-filter.js";
-import { DbQueryObjectIdFilter } from "@backend/query/object-id-filter/db-query-object-id-filter.js";
-import { DbQueryOnlyGetFilter } from "@backend/query/only-get-filter/db-query-only-get-filter.js";
-import { DbQueryRegexFilter } from "@backend/query/regex-filter/db-query-regex-filter.js";
-import { SEDbQuery } from "@backend/query/se.db-query.js";
-import { DbQuerySkipFilter } from "@backend/query/skip-filter/db-query-skip-filter.js";
-import { DbQuerySortFilter } from "@backend/query/sort-filter/db-query-sort-filter.js";
-import { DbQueryStringFilter } from "@backend/query/string-filter/db-query-string-filter.js";
+import { DbQueryBooleanFilter } from "@backend/query/db-query-boolean-filter.js";
+import { DbQueryDateFilter } from "@backend/query/db-query-date-filter.js";
+import { DbQueryExpandFilter } from "@backend/query/db-query-expand-filter.js";
+import { DbQueryLimitFilter } from "@backend/query/db-query-limit-filter.js";
+import { DbQueryNumberFilter } from "@backend/query/db-query-number-filter.js";
+import { DbQueryObjectIdFilter } from "@backend/query/db-query-object-id-filter.js";
+import { DbQueryOnlyGetFilter } from "@backend/query/db-query-only-get-filter.js";
+import { DbQueryRegexFilter } from "@backend/query/db-query-regex-filter.js";
+import { DbQuerySkipFilter } from "@backend/query/db-query-skip-filter.js";
+import { DbQuerySortFilter } from "@backend/query/db-query-sort-filter.js";
+import { DbQueryStringFilter } from "@backend/query/db-query-string-filter.js";
 import {
   DbQueryValidParams,
   ValidParameter,
-} from "@backend/query/valid-param/db-query-valid-params.js";
+} from "@backend/query/db-query-valid-params.js";
+import { SEDbQuery } from "@backend/query/se.db-query.js";
 import { ParsedQs } from "qs";
 
 export class SEDbQueryBuilder {

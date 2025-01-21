@@ -1,4 +1,3 @@
-import { BlCollection } from "@backend/collections/bl-collection.js";
 import { OrderPatchHook } from "@backend/collections/order/hooks/order.patch.hook.js";
 import { OrderPostHook } from "@backend/collections/order/hooks/order.post.hook.js";
 import { OrderConfirmOperation } from "@backend/collections/order/operations/confirm/order-confirm.operation.js";
@@ -7,6 +6,7 @@ import { OrderReceiptPdfOperation } from "@backend/collections/order/operations/
 import { OrderPlaceOperation } from "@backend/collections/order/operations/place/order-place.operation.js";
 import { RapidHandoutOperation } from "@backend/collections/order/operations/rapid-handout.operation.js";
 import { BlStorage } from "@backend/storage/bl-storage.js";
+import { BlCollection } from "@backend/types/bl-collection.js";
 
 export const OrderCollection: BlCollection = {
   storage: BlStorage.Orders,

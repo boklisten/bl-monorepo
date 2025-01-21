@@ -1,9 +1,9 @@
 import "mocha";
 
 import LocalLoginHandler from "@backend/auth/local/local-login.handler.js";
-import { LocalLogin } from "@backend/collections/local-login/local-login.js";
 import { SEDbQuery } from "@backend/query/se.db-query.js";
 import { BlStorage } from "@backend/storage/bl-storage.js";
+import { LocalLogin } from "@backend/types/local-login.js";
 import { BlError } from "@shared/bl-error/bl-error.js";
 import { expect, use as chaiUse, should } from "chai";
 import chaiAsPromised from "chai-as-promised";

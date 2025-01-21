@@ -1,5 +1,5 @@
 import "mocha";
-import { DbQuerySkipFilter } from "@backend/query/skip-filter/db-query-skip-filter.js";
+import { DbQuerySkipFilter } from "@backend/query/db-query-skip-filter.js";
 import { expect, use as chaiUse, should } from "chai";
 import chaiAsPromised from "chai-as-promised";
 

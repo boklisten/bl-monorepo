@@ -1,7 +1,7 @@
 import { mapItemIdsToItemDetails } from "@backend/collections/user-match/operations/user-match-getall-me-operation-helper.js";
-import { Operation } from "@backend/operation/operation.js";
-import { BlApiRequest } from "@backend/request/bl-api-request.js";
 import { BlStorage } from "@backend/storage/bl-storage.js";
+import { BlApiRequest } from "@backend/types/bl-api-request.js";
+import { Operation } from "@backend/types/operation.js";
 import { BlapiResponse } from "@shared/blapi-response/blapi-response.js";
 import { StandMatchWithDetails } from "@shared/match/match-dtos.js";
 import { StandMatch } from "@shared/match/stand-match.js";

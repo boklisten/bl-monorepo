@@ -1,10 +1,10 @@
 import "mocha";
 
 import { AccessTokenCreator } from "@backend/auth/token/access-token/access-token.creator.js";
-import { AccessToken } from "@backend/auth/token/access-token/access-token.js";
 import { RefreshTokenCreator } from "@backend/auth/token/refresh/refresh-token.creator.js";
-import { RefreshToken } from "@backend/auth/token/refresh/refresh-token.js";
 import { TokenConfig } from "@backend/auth/token/token.config.js";
+import { AccessToken } from "@backend/types/access-token.js";
+import { RefreshToken } from "@backend/types/refresh-token.js";
 import { BlError } from "@shared/bl-error/bl-error.js";
 import { UserPermission } from "@shared/permission/user-permission.js";
 import { use as chaiUse, should } from "chai";

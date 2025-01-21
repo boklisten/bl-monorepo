@@ -1,6 +1,6 @@
-import { BlCollection } from "@backend/collections/bl-collection.js";
 import { BranchGetHook } from "@backend/collections/branch/hook/branch-get.hook.js";
 import { BlStorage } from "@backend/storage/bl-storage.js";
+import { BlCollection } from "@backend/types/bl-collection.js";
 
 export const BranchCollection: BlCollection = {
   storage: BlStorage.Branches,

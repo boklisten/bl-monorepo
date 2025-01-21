@@ -1,4 +1,4 @@
-import { PermissionService } from "@backend/auth/permission/permission.service.js";
+import { PermissionService } from "@backend/auth/permission.service.js";
 import { OrderPlacedHandler } from "@backend/collections/order/helpers/order-placed-handler/order-placed-handler.js";
 import { OrderValidator } from "@backend/collections/order/helpers/order-validator/order-validator.js";
 import { Hook } from "@backend/hook/hook.js";

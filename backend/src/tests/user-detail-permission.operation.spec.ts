@@ -1,9 +1,9 @@
 import "mocha";
 
-import { User } from "@backend/collections/user/user.js";
 import { UserDetailPermissionOperation } from "@backend/collections/user-detail/operations/permission/user-detail-permission.operation.js";
 import BlResponseHandler from "@backend/response/bl-response.handler.js";
 import { BlStorage } from "@backend/storage/bl-storage.js";
+import { User } from "@backend/types/user.js";
 import { BlError } from "@shared/bl-error/bl-error.js";
 import { UserDetail } from "@shared/user/user-detail/user-detail.js";
 import { expect, use as chaiUse, should } from "chai";

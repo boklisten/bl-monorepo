@@ -1,5 +1,5 @@
 import "mocha";
-import { DbQueryObjectIdFilter } from "@backend/query/object-id-filter/db-query-object-id-filter.js";
+import { DbQueryObjectIdFilter } from "@backend/query/db-query-object-id-filter.js";
 import { expect, use as chaiUse, should } from "chai";
 import chaiAsPromised from "chai-as-promised";
 import mongoose from "mongoose";

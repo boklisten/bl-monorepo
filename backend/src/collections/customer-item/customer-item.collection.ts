@@ -1,8 +1,8 @@
-import { BlCollection } from "@backend/collections/bl-collection.js";
 import { CustomerItemGenerateReportOperation } from "@backend/collections/customer-item/customer-item-generate-report.operation.js";
 import { CustomerItemPostHook } from "@backend/collections/customer-item/hooks/customer-item-post.hook.js";
 import { PublicBlidLookupOperation } from "@backend/collections/customer-item/public-blid-lookup.operation.js";
 import { BlStorage } from "@backend/storage/bl-storage.js";
+import { BlCollection } from "@backend/types/bl-collection.js";
 
 export const CustomerItemCollection: BlCollection = {
   storage: BlStorage.CustomerItems,

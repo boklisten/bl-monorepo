@@ -11,10 +11,10 @@ import {
   createMatchableUsersWithIdSuffix,
 } from "@backend/collections/user-match/helpers/match-finder/match-testing-utils.js";
 import { MatchableUser } from "@backend/collections/user-match/helpers/match-finder/match-types.js";
-import otto_treider_test_users_year_0 from "@backend/tests/matches/test-data/test_users_year_0.json";
-import otto_treider_test_users_year_1 from "@backend/tests/matches/test-data/test_users_year_1.json";
-import otto_treider_test_users_year_2 from "@backend/tests/matches/test-data/test_users_year_2.json";
-import ullern_test_users from "@backend/tests/matches/test-data/ullern_test_users.json";
+import otto_treider_test_users_year_0 from "@backend/tests/matches/test-data/test_users_year_0.json" with { type: "json" };
+import otto_treider_test_users_year_1 from "@backend/tests/matches/test-data/test_users_year_1.json" with { type: "json" };
+import otto_treider_test_users_year_2 from "@backend/tests/matches/test-data/test_users_year_2.json" with { type: "json" };
+import ullern_test_users from "@backend/tests/matches/test-data/ullern_test_users.json" with { type: "json" };
 import { BlError } from "@shared/bl-error/bl-error.js";
 import { assert, expect, use as chaiUse, should } from "chai";
 import chaiAsPromised from "chai-as-promised";

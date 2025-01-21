@@ -1,10 +1,9 @@
 {
-  "extends": [
-    "@tsconfig/node-lts/tsconfig.json",
-    "@tsconfig/strictest/tsconfig.json"
-  ],
+  "extends": ["@tsconfig/strictest/tsconfig.json"],
   "compilerOptions": {
-    "lib": ["esnext"],
+    "module": "NodeNext",
+    "lib": ["ESNext"],
+    "target": "ESNext",
     "noUnusedLocals": false, // fixme: delete this for line stricter checks
     "noUnusedParameters": false, // fixme: delete this line for stricter checks
     "typeRoots": ["./node_modules/@types"],

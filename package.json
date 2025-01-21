@@ -11,7 +11,6 @@
   "devDependencies": {
     "@eslint/js": "^9.18.0",
     "@next/eslint-plugin-next": "^15.1.4",
-    "@tsconfig/node-lts": "^22.0.1",
     "@tsconfig/strictest": "^2.0.5",
     "@types/node": "^22.10.6",
     "eslint": "9.18.0",

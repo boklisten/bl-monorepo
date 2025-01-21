@@ -1,4 +1,4 @@
-import { assertEnv, BlEnvironment } from "@backend/config/environment.js";
+import { BlEnv } from "@backend/config/env.js";
 import { BlError } from "@shared/bl-error/bl-error.js";
 import jwt from "jsonwebtoken";
 
@@ -8,15 +8,11 @@ function validate(refreshToken: string | undefined): Promise<unknown> {
       return reject(new BlError("refreshToken is empty or undefined"));
 
     try {
-      jwt.verify(
-        refreshToken,
-        assertEnv(BlEnvironment.REFRESH_TOKEN_SECRET),
-        (error, payload) => {
-          if (error)
-            return reject(new BlError("could not validate token").code(909));
-          resolve(payload);
-        },
-      );
+      jwt.verify(refreshToken, BlEnv.REFRESH_TOKEN_SECRET, (error, payload) => {
+        if (error)
+          return reject(new BlError("could not validate token").code(909));
+        resolve(payload);
+      });
     } catch (error) {
       reject(
         new BlError("could not validate token")

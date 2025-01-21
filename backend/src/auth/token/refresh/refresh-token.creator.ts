@@ -1,5 +1,5 @@
 import { TokenConfig } from "@backend/auth/token/token.config.js";
-import { assertEnv, BlEnvironment } from "@backend/config/environment.js";
+import { BlEnv } from "@backend/config/env.js";
 import { BlError } from "@shared/bl-error/bl-error.js";
 import jwt from "jsonwebtoken";
 import validator from "validator";
@@ -24,7 +24,7 @@ export class RefreshTokenCreator {
 
       jwt.sign(
         this.createPayload(username, userid),
-        assertEnv(BlEnvironment.REFRESH_TOKEN_SECRET),
+        BlEnv.REFRESH_TOKEN_SECRET,
         { expiresIn: this.tokenConfig.refreshToken.expiresIn },
         (error, refreshToken) => {
           if (error || refreshToken === undefined)

@@ -1,7 +1,7 @@
 import { APP_CONFIG } from "@backend/application-config.js";
 import { UserProvider } from "@backend/auth/user/user-provider.js";
 import { createPath, retrieveRefererPath } from "@backend/config/api-path.js";
-import { assertEnv, BlEnvironment } from "@backend/config/environment.js";
+import { BlEnv } from "@backend/config/env.js";
 import BlResponseHandler from "@backend/response/bl-response.handler.js";
 import { BlError } from "@shared/bl-error/bl-error.js";
 import { Router } from "express";
@@ -22,12 +22,10 @@ export class GoogleAuth {
     passport.use(
       new GoogleStrategy(
         {
-          clientID: assertEnv(BlEnvironment.GOOGLE_CLIENT_ID),
-          clientSecret: assertEnv(BlEnvironment.GOOGLE_SECRET),
+          clientID: BlEnv.GOOGLE_CLIENT_ID,
+          clientSecret: BlEnv.GOOGLE_SECRET,
           passReqToCallback: true,
-          callbackURL:
-            assertEnv(BlEnvironment.BL_API_URI) +
-            createPath("auth/google/callback"),
+          callbackURL: BlEnv.BL_API_URI + createPath("auth/google/callback"),
         },
         async (request, accessToken, refreshToken, profile, done) => {
           const provider = APP_CONFIG.login.google.name;
@@ -87,8 +85,7 @@ export class GoogleAuth {
         (error, tokens, blError: BlError) => {
           if (!tokens && (error || blError)) {
             return res.redirect(
-              assertEnv(BlEnvironment.CLIENT_URI) +
-                APP_CONFIG.path.client.auth.socialLoginFailure,
+              BlEnv.CLIENT_URI + APP_CONFIG.path.client.auth.socialLoginFailure,
             );
           }
 

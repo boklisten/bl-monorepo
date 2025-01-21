@@ -1,5 +1,5 @@
 import BlErrorHandler from "@backend/bl-error/bl-error.handler.js";
-import { BlEnvironment, assertEnv } from "@backend/config/environment.js";
+import { BlEnv } from "@backend/config/env.js";
 import { logger } from "@backend/config/logger.js";
 import { BlapiErrorResponse } from "@shared/blapi-response/blapi-error-response.js";
 import { BlapiResponse } from "@shared/blapi-response/blapi-response.js";
@@ -24,7 +24,7 @@ function sendAuthTokens(
   referer?: string,
 ) {
   const redirectUrl = `${
-    referer ?? assertEnv(BlEnvironment.CLIENT_URI)
+    referer ?? BlEnv.CLIENT_URI
   }auth/token?access_token=${accessToken}&refresh_token=${refreshToken}`;
   res.redirect(redirectUrl);
 }

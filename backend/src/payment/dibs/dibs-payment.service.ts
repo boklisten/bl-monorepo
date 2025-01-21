@@ -1,6 +1,6 @@
 import { APP_CONFIG } from "@backend/application-config.js";
 import { UserDetailHelper } from "@backend/collections/user-detail/helpers/user-detail.helper.js";
-import { assertEnv, BlEnvironment } from "@backend/config/environment.js";
+import { BlEnv } from "@backend/config/env.js";
 import HttpHandler from "@backend/http/http.handler.js";
 import { DibsEasyOrder } from "@backend/payment/dibs/dibs-easy-order.js";
 import { DibsEasyPayment } from "@backend/payment/dibs/dibs-easy-payment/dibs-easy-payment.js";
@@ -17,9 +17,9 @@ export class DibsPaymentService {
   public getPaymentId(dibsEasyOrder: DibsEasyOrder): Promise<string> {
     return new Promise((resolve, reject) => {
       HttpHandler.post(
-        assertEnv(BlEnvironment.DIBS_URI) + APP_CONFIG.path.dibs.payment,
+        BlEnv.DIBS_URI + APP_CONFIG.path.dibs.payment,
         dibsEasyOrder,
-        assertEnv(BlEnvironment.DIBS_SECRET_KEY),
+        BlEnv.DIBS_SECRET_KEY,
       )
         .then((responseData) => {
           if (
@@ -42,11 +42,8 @@ export class DibsPaymentService {
 
   public fetchDibsPaymentData(paymentId: string): Promise<DibsEasyPayment> {
     return HttpHandler.get(
-      assertEnv(BlEnvironment.DIBS_URI) +
-        APP_CONFIG.path.dibs.payment +
-        "/" +
-        paymentId,
-      assertEnv(BlEnvironment.DIBS_SECRET_KEY),
+      BlEnv.DIBS_URI + APP_CONFIG.path.dibs.payment + "/" + paymentId,
+      BlEnv.DIBS_SECRET_KEY,
     )
       .then((response) => {
         // @ts-expect-error fixme: auto ignored
@@ -90,7 +87,7 @@ export class DibsPaymentService {
 
     const userDetailValid = this.userDetailHelper.isValid(userDetail);
 
-    const clientUri = assertEnv(BlEnvironment.CLIENT_URI);
+    const clientUri = BlEnv.CLIENT_URI;
     dibsEasyOrder.checkout = {
       url: clientUri + APP_CONFIG.path.client.checkout,
       termsUrl: clientUri + APP_CONFIG.path.client.agreement.rent,

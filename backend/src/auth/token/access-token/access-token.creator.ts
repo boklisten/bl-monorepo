@@ -1,6 +1,6 @@
 import RefreshTokenValidator from "@backend/auth/token/refresh/refresh-token.validator.js";
 import { TokenConfig } from "@backend/auth/token/token.config.js";
-import { assertEnv, BlEnvironment } from "@backend/config/environment.js";
+import { BlEnv } from "@backend/config/env.js";
 import { BlError } from "@shared/bl-error/bl-error.js";
 import { UserPermission } from "@shared/permission/user-permission.js";
 import jwt from "jsonwebtoken";
@@ -27,7 +27,7 @@ export class AccessTokenCreator {
         () => {
           jwt.sign(
             this.createPayload(username, userid, permission, userDetailId),
-            assertEnv(BlEnvironment.ACCESS_TOKEN_SECRET),
+            BlEnv.ACCESS_TOKEN_SECRET,
             { expiresIn: this.tokenConfig.accessToken.expiresIn },
             (error, accessToken) => {
               if (error || accessToken === undefined)

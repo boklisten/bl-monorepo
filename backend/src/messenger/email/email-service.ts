@@ -1,5 +1,5 @@
 import { DateService } from "@backend/blc/date.service.js";
-import { assertEnv, BlEnvironment } from "@backend/config/environment.js";
+import { BlEnv } from "@backend/config/env.js";
 import { logger } from "@backend/config/logger.js";
 import { EMAIL_SETTINGS } from "@backend/messenger/email/email-settings.js";
 import { OrderEmailHandler } from "@backend/messenger/email/order-email/order-email-handler.js";
@@ -33,12 +33,12 @@ export class EmailService implements MessengerService {
   private postOffice: PostOffice;
 
   constructor(emailHandler?: EmailHandler, inputPostOffice?: PostOffice) {
-    sgMail.setApiKey(assertEnv(BlEnvironment.SENDGRID_API_KEY));
+    sgMail.setApiKey(BlEnv.SENDGRID_API_KEY);
     this.emailHandler =
       emailHandler ??
       new EmailHandler({
         sendgrid: {
-          apiKey: assertEnv(BlEnvironment.SENDGRID_API_KEY),
+          apiKey: BlEnv.SENDGRID_API_KEY,
         },
         locale: "nb",
       });
@@ -397,7 +397,7 @@ export class EmailService implements MessengerService {
       userId: customerDetail.id,
     };
 
-    let emailVerificationUri = assertEnv(BlEnvironment.CLIENT_URI);
+    let emailVerificationUri = BlEnv.CLIENT_URI;
     emailVerificationUri +=
       EMAIL_SETTINGS.types.emailConfirmation.path + confirmationCode;
 
@@ -423,7 +423,7 @@ export class EmailService implements MessengerService {
       userId: userId,
     };
 
-    let passwordResetUri = assertEnv(BlEnvironment.CLIENT_URI);
+    let passwordResetUri = BlEnv.CLIENT_URI;
     passwordResetUri +=
       EMAIL_SETTINGS.types.passwordReset.path +
       pendingPasswordResetId +

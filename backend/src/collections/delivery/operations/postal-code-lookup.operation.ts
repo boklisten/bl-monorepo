@@ -1,4 +1,4 @@
-import { assertEnv, BlEnvironment } from "@backend/config/environment.js";
+import { BlEnv } from "@backend/config/env.js";
 import { isNullish } from "@backend/helper/typescript-helpers.js";
 import HttpHandler from "@backend/http/http.handler.js";
 import { BlApiRequest } from "@backend/types/bl-api-request.js";
@@ -35,8 +35,8 @@ export class PostalCodeLookupOperation implements Operation {
       throw new BlError(fromError(parsedRequest.error).toString()).code(701);
     }
     const bringAuthHeaders = {
-      "X-MyBring-API-Key": assertEnv(BlEnvironment.BRING_API_KEY),
-      "X-MyBring-API-Uid": assertEnv(BlEnvironment.BRING_API_ID),
+      "X-MyBring-API-Key": BlEnv.BRING_API_KEY,
+      "X-MyBring-API-Uid": BlEnv.BRING_API_ID,
     };
     try {
       const response = (await HttpHandler.getWithQuery(

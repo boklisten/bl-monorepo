@@ -6,7 +6,7 @@ import { LocalAuth } from "@backend/auth/local/local.auth.js";
 import { TokenEndpoint } from "@backend/auth/token/token.endpoint.js";
 import { TokenHandler } from "@backend/auth/token/token.handler.js";
 import { UserHandler } from "@backend/auth/user/user.handler.js";
-import { assertEnv, BlEnvironment } from "@backend/config/environment.js";
+import { BlEnv } from "@backend/config/env.js";
 import { Router } from "express";
 import passport from "passport";
 import { ExtractJwt, Strategy } from "passport-jwt";
@@ -17,7 +17,7 @@ export function createAuthEndpoints(router: Router) {
   const tokenHandler = new TokenHandler(userHandler);
   const options = {
     jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
-    secretOrKey: assertEnv(BlEnvironment.ACCESS_TOKEN_SECRET),
+    secretOrKey: BlEnv.ACCESS_TOKEN_SECRET,
     issuer: APP_CONFIG.token.access.iss,
     audience: APP_CONFIG.token.access.aud,
   };

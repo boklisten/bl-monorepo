@@ -1,10 +1,10 @@
 import { IncomingHttpHeaders } from "node:http";
 
 import { APP_CONFIG } from "@backend/application-config.js";
-import { BlEnvironment, assertEnv } from "@backend/config/environment.js";
+import { BlEnv } from "@backend/config/env.js";
 
 export function createPath(customPath: string): string {
-  return assertEnv(BlEnvironment.SERVER_PATH) + customPath;
+  return BlEnv.SERVER_PATH + customPath;
 }
 
 function retrieveBasePath(href: string) {
@@ -28,7 +28,7 @@ export function retrieveRefererPath(requestHeaders: IncomingHttpHeaders) {
   }
 
   const baseHost =
-    assertEnv(BlEnvironment.API_ENV) === "production"
+    BlEnv.API_ENV === "production"
       ? APP_CONFIG.path.host
       : APP_CONFIG.path.local.host;
 

@@ -1,4 +1,4 @@
-import { assertEnv, BlEnvironment } from "@backend/config/environment.js";
+import { BlEnv } from "@backend/config/env.js";
 import { logger } from "@backend/config/logger.js";
 import { Request, RequestHandler, Response } from "express";
 
@@ -10,12 +10,7 @@ const debugLoggerHandler: RequestHandler = (
   if (request.method !== "OPTIONS") {
     // no point in showing all the preflight requests
     logger.debug(`-> ${request.method} ${request.url}`);
-    if (
-      !(
-        request.url.includes("auth") &&
-        assertEnv(BlEnvironment.API_ENV) === "production"
-      )
-    ) {
+    if (!(request.url.includes("auth") && BlEnv.API_ENV === "production")) {
       let body: string;
       try {
         body = JSON.stringify(request.body);

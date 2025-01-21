@@ -1,11 +1,11 @@
-import { assertEnv, BlEnvironment } from "@backend/config/environment.js";
+import { BlEnv } from "@backend/config/env.js";
 import cors from "cors";
 import { RequestHandler } from "express";
 
 const corsHandler: RequestHandler =
-  assertEnv(BlEnvironment.API_ENV) === "production"
+  BlEnv.API_ENV === "production"
     ? cors({
-        origin: assertEnv(BlEnvironment.URI_WHITELIST).split(" "),
+        origin: BlEnv.URI_WHITELIST.split(" "),
         methods: ["GET", "PUT", "PATCH", "POST", "DELETE"],
         allowedHeaders: ["Content-Type", "Authorization", "X-Requested-With"],
         preflightContinue: true,

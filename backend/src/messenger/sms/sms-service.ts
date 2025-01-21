@@ -1,15 +1,11 @@
-import { assertEnv, BlEnvironment } from "@backend/config/environment.js";
+import { BlEnv } from "@backend/config/env.js";
 import { logger } from "@backend/config/logger.js";
 import twilio from "twilio";
 
-const client = twilio(
-  assertEnv(BlEnvironment.TWILIO_SMS_SID),
-  assertEnv(BlEnvironment.TWILIO_SMS_AUTH_TOKEN),
-  {
-    autoRetry: true,
-    maxRetries: 5,
-  },
-);
+const client = twilio(BlEnv.TWILIO_SMS_SID, BlEnv.TWILIO_SMS_AUTH_TOKEN, {
+  autoRetry: true,
+  maxRetries: 5,
+});
 
 /**
  * Send a single SMS to a single recipient

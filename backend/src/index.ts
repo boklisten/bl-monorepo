@@ -4,7 +4,7 @@ import { createAuthEndpoints } from "@backend/auth/auth-endpoint-creator.js";
 import { createCollectionEndpoints } from "@backend/collection-endpoint/collection-endpoint-creator.js";
 import corsHandler from "@backend/config/cors.js";
 import debugLoggerHandler from "@backend/config/debug-logger.js";
-import { assertEnv, BlEnvironment } from "@backend/config/environment.js";
+import { BlEnv } from "@backend/config/env.js";
 import redirectToHttpsHandler from "@backend/config/https.js";
 import { logger } from "@backend/config/logger.js";
 import sessionHandler from "@backend/config/session.js";
@@ -55,7 +55,7 @@ mongoose.connection.on("error", () => {
   logger.error("mongoose connection has error");
 });
 
-await mongoose.connect(assertEnv(BlEnvironment.MONGODB_URI), {
+await mongoose.connect(BlEnv.MONGODB_URI, {
   maxPoolSize: 10,
   connectTimeoutMS: 10_000,
   socketTimeoutMS: 45_000,
@@ -64,6 +64,6 @@ await mongoose.connect(assertEnv(BlEnvironment.MONGODB_URI), {
 Sentry.profiler.startProfiler();
 Sentry.setupExpressErrorHandler(app);
 
-app.listen(assertEnv(BlEnvironment.PORT), () => {
+app.listen(BlEnv.PORT, () => {
   logger.info("ready to take requests!");
 });

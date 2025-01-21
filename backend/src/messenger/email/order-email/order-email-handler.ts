@@ -1,6 +1,6 @@
 import { DateService } from "@backend/blc/date.service.js";
 import { userHasValidSignature } from "@backend/collections/signature/helpers/signature.helper.js";
-import { assertEnv, BlEnvironment } from "@backend/config/environment.js";
+import { BlEnv } from "@backend/config/env.js";
 import { sendMail } from "@backend/messenger/email/email-service.js";
 import { EMAIL_SETTINGS } from "@backend/messenger/email/email-settings.js";
 import { sendSMS } from "@backend/messenger/sms/sms-service.js";
@@ -149,7 +149,7 @@ export class OrderEmailHandler {
         emailSetting,
         EMAIL_SETTINGS.types.guardianSignature.templateId,
         {
-          guardianSignatureUri: `${assertEnv(BlEnvironment.CLIENT_URI)}${EMAIL_SETTINGS.types.guardianSignature.path}${customerDetail.id}`,
+          guardianSignatureUri: `${BlEnv.CLIENT_URI}${EMAIL_SETTINGS.types.guardianSignature.path}${customerDetail.id}`,
           customerName: customerDetail.name,
           guardianName: customerDetail.guardian.name,
           branchName: branchName,

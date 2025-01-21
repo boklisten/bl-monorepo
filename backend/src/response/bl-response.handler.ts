@@ -1,6 +1,7 @@
 import BlErrorHandler from "@backend/bl-error/bl-error.handler.js";
 import { BlEnv } from "@backend/config/env.js";
 import { logger } from "@backend/config/logger.js";
+import * as Sentry from "@sentry/node";
 import { BlapiErrorResponse } from "@shared/blapi-response/blapi-error-response.js";
 import { BlapiResponse } from "@shared/blapi-response/blapi-response.js";
 import { Response } from "express";
@@ -50,7 +51,7 @@ function sendErrorResponse(res: Response, blError: unknown) {
 
   // Send unknown errors to Sentry
   if (blapiErrorRes.httpStatus === 500) {
-    throw blError;
+    Sentry.captureException(blError);
   }
 }
 

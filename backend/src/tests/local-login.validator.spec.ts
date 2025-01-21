@@ -1,5 +1,3 @@
-import "mocha";
-
 import LocalLoginPasswordValidator from "@backend/auth/local/local-login-password.validator.js";
 import LocalLoginHandler from "@backend/auth/local/local-login.handler.js";
 import LocalLoginValidator from "@backend/auth/local/local-login.validator.js";

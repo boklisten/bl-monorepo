@@ -1,5 +1,3 @@
-import "mocha";
-
 import { CustomerItemHandler } from "@backend/collections/customer-item/helpers/customer-item-handler.js";
 import { SEDbQuery } from "@backend/query/se.db-query.js";
 import { BlStorage } from "@backend/storage/bl-storage.js";

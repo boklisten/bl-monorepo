@@ -1,6 +1,5 @@
 /*
 fixme: rewrite
-import "mocha";
 
 import { MatchFinder } from "@backend/collections/user-match/helpers/match-finder/match-finder.js";
 import assignMeetingInfoToMatches from "@backend/collections/user-match/helpers/match-finder/match-meeting-info.js";

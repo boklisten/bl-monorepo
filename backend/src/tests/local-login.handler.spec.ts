@@ -1,5 +1,3 @@
-import "mocha";
-
 import LocalLoginHandler from "@backend/auth/local/local-login.handler.js";
 import { SEDbQuery } from "@backend/query/se.db-query.js";
 import { BlStorage } from "@backend/storage/bl-storage.js";

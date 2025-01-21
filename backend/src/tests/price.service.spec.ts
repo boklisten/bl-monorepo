@@ -1,4 +1,3 @@
-import "mocha";
 import { PriceService } from "@backend/price/price.service.js";
 import { expect, use as chaiUse, should } from "chai";
 import chaiAsPromised from "chai-as-promised";

@@ -2,8 +2,6 @@ import { CustomerItemActive } from "@backend/collections/customer-item/helpers/c
 import { CustomerItem } from "@shared/customer-item/customer-item.js";
 import { expect } from "chai";
 
-import "mocha";
-
 describe("CustomerItemActive", () => {
   describe("isActive()", () => {
     const customerItemActive = new CustomerItemActive();

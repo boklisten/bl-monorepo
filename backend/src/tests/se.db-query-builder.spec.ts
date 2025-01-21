@@ -1,5 +1,3 @@
-import "mocha";
-
 import { ValidParameter } from "@backend/query/db-query-valid-params.js";
 import { SEDbQueryBuilder } from "@backend/query/se.db-query-builder.js";
 import { SEDbQuery } from "@backend/query/se.db-query.js";

@@ -1,5 +1,3 @@
-import "mocha";
-
 import { CustomerItemActiveBlid } from "@backend/collections/customer-item/helpers/customer-item-active-blid.js";
 import { UniqueItemActiveOperation } from "@backend/collections/unique-item/operations/unique-item-active.operation.js";
 import BlResponseHandler from "@backend/response/bl-response.handler.js";

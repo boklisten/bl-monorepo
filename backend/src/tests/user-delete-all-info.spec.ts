@@ -1,5 +1,3 @@
-import "mocha";
-
 import { DeleteUserService } from "@backend/collections/user-detail/helpers/delete-user-service.js";
 import { BlStorage } from "@backend/storage/bl-storage.js";
 import { LocalLogin } from "@backend/types/local-login.js";

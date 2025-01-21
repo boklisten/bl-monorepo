@@ -1,5 +1,3 @@
-import "mocha";
-
 import { EmailService } from "@backend/messenger/email/email-service.js";
 import { BlStorage } from "@backend/storage/bl-storage.js";
 import { EmailHandler, EmailLog } from "@boklisten/bl-email";

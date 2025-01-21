@@ -1,4 +1,3 @@
-import "mocha";
 import LocalLoginHandler from "@backend/auth/local/local-login.handler.js";
 import TokenHandler from "@backend/auth/token/token.handler.js";
 import UserProvider from "@backend/auth/user/user-provider.js";

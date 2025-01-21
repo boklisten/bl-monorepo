@@ -1,5 +1,3 @@
-import "mocha";
-
 import { MessageHelper } from "@backend/collections/message/helper/message-helper.js";
 import { BlStorage } from "@backend/storage/bl-storage.js";
 import { BlError } from "@shared/bl-error/bl-error.js";

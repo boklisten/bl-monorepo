@@ -1,4 +1,3 @@
-import "mocha";
 import { UserDetailHelper } from "@backend/collections/user-detail/helpers/user-detail.helper.js";
 import { DibsEasyPayment } from "@backend/payment/dibs/dibs-easy-payment/dibs-easy-payment.js";
 import { BlStorage } from "@backend/storage/bl-storage.js";

@@ -1,5 +1,3 @@
-import "mocha";
-
 import { OrderPlacedHandler } from "@backend/collections/order/helpers/order-placed-handler/order-placed-handler.js";
 import { OrderConfirmOperation } from "@backend/collections/order/operations/confirm/order-confirm.operation.js";
 import BlResponseHandler from "@backend/response/bl-response.handler.js";

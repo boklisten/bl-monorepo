@@ -1,5 +1,3 @@
-import "mocha";
-
 import { CustomerItemHandler } from "@backend/collections/customer-item/helpers/customer-item-handler.js";
 import { EmailService } from "@backend/messenger/email/email-service.js";
 import { MessengerReminder } from "@backend/messenger/reminder/messenger-reminder.js";

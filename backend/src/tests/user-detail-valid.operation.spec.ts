@@ -1,5 +1,3 @@
-import "mocha";
-
 import { UserDetailValidOperation } from "@backend/collections/user-detail/operations/user-detail-valid.operation.js";
 import BlResponseHandler from "@backend/response/bl-response.handler.js";
 import { BlStorage } from "@backend/storage/bl-storage.js";

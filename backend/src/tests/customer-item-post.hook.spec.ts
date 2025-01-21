@@ -1,5 +1,3 @@
-import "mocha";
-
 import { CustomerItemPostHook } from "@backend/collections/customer-item/hooks/customer-item-post.hook.js";
 import { CustomerItemValidator } from "@backend/collections/customer-item/validators/customer-item-validator.js";
 import { BlStorage } from "@backend/storage/bl-storage.js";

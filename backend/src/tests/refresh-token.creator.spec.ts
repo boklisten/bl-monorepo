@@ -1,5 +1,3 @@
-import "mocha";
-
 import RefreshTokenCreator from "@backend/auth/token/refresh/refresh-token.creator.js";
 import { BlError } from "@shared/bl-error/bl-error.js";
 import { use as chaiUse, should } from "chai";

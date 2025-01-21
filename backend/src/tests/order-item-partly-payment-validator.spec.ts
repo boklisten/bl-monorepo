@@ -1,4 +1,3 @@
-import "mocha";
 import { OrderItemPartlyPaymentValidator } from "@backend/collections/order/helpers/order-validator/order-item-validator/order-item-partly-payment-validator/order-item-partly-payment-validator.js";
 import { BlError } from "@shared/bl-error/bl-error.js";
 import { Branch } from "@shared/branch/branch.js";

@@ -1,5 +1,3 @@
-import "mocha";
-
 import { CustomerItemHandler } from "@backend/collections/customer-item/helpers/customer-item-handler.js";
 import { OrderItemMovedFromOrderHandler } from "@backend/collections/order/helpers/order-item-moved-from-order-handler/order-item-moved-from-order-handler.js";
 import { OrderPlacedHandler } from "@backend/collections/order/helpers/order-placed-handler/order-placed-handler.js";

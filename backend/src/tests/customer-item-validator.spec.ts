@@ -1,4 +1,3 @@
-import "mocha";
 import { CustomerItemValidator } from "@backend/collections/customer-item/validators/customer-item-validator.js";
 import { BlError } from "@shared/bl-error/bl-error.js";
 import { CustomerItem } from "@shared/customer-item/customer-item.js";

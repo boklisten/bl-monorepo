@@ -1,5 +1,3 @@
-import "mocha";
-
 import { PaymentValidator } from "@backend/collections/payment/helpers/payment.validator.js";
 import { BlStorage } from "@backend/storage/bl-storage.js";
 import { BlError } from "@shared/bl-error/bl-error.js";

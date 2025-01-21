@@ -1,4 +1,3 @@
-import "mocha";
 import ProviderIdGenerator from "@backend/auth/local/provider-id-generator.js";
 import { BlError } from "@shared/bl-error/bl-error.js";
 import { use as chaiUse, should } from "chai";

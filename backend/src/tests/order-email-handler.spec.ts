@@ -1,4 +1,3 @@
-import "mocha";
 import { DateService } from "@backend/blc/date.service.js";
 import { OrderEmailHandler } from "@backend/messenger/email/order-email/order-email-handler.js";
 import { BlStorage } from "@backend/storage/bl-storage.js";
@@ -12,7 +11,6 @@ import { Payment } from "@shared/payment/payment.js";
 import { UserDetail } from "@shared/user/user-detail/user-detail.js";
 import { expect, use as chaiUse, should } from "chai";
 import chaiAsPromised from "chai-as-promised";
-import { afterEach } from "mocha";
 import moment from "moment-timezone";
 import sinon, { createSandbox } from "sinon";
 

@@ -1,4 +1,3 @@
-import "mocha";
 import { retrieveRefererPath } from "@backend/config/api-path.js";
 import { APP_CONFIG } from "@backend/config/application-config.js";
 import { expect, use as chaiUse, should } from "chai";

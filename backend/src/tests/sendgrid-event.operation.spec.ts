@@ -1,5 +1,3 @@
-import "mocha";
-
 import { SendgridEventOperation } from "@backend/collections/message/operations/sendgrid-event.operation.js";
 import { BlStorage } from "@backend/storage/bl-storage.js";
 import { Message } from "@shared/message/message.js";

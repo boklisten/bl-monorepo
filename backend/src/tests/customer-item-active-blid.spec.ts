@@ -1,4 +1,3 @@
-import "mocha";
 import { CustomerItemActiveBlid } from "@backend/collections/customer-item/helpers/customer-item-active-blid.js";
 import { BlStorage } from "@backend/storage/bl-storage.js";
 import { expect, use as chaiUse, should } from "chai";

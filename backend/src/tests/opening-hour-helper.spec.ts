@@ -1,5 +1,3 @@
-import "mocha";
-
 import { OpeningHourHelper } from "@backend/collections/opening-hour/helpers/opening-hour-helper.js";
 import { BlStorage } from "@backend/storage/bl-storage.js";
 import { BlError } from "@shared/bl-error/bl-error.js";

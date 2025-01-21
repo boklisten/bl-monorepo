@@ -1,5 +1,3 @@
-import "mocha";
-
 import { CustomerInvoiceActive } from "@backend/collections/invoice/helpers/customer-invoice-active.js";
 import { BlStorage } from "@backend/storage/bl-storage.js";
 import { BlError } from "@shared/bl-error/bl-error.js";

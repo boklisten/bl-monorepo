@@ -1,4 +1,3 @@
-import "mocha";
 import TokenHandler from "@backend/auth/token/token.handler.js";
 import UserHandler from "@backend/auth/user/user.handler.js";
 import { BlError } from "@shared/bl-error/bl-error.js";

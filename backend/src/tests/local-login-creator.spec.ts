@@ -1,5 +1,3 @@
-import "mocha";
-
 import LocalLoginCreator from "@backend/auth/local/local-login-creator.js";
 import { LocalLogin } from "@backend/types/local-login.js";
 import { BlError } from "@shared/bl-error/bl-error.js";

@@ -1,5 +1,3 @@
-import "mocha";
-
 import { UserCanDeleteUserDetail } from "@backend/collections/user-detail/helpers/user-can-delete-user-detail.js";
 import { BlStorage } from "@backend/storage/bl-storage.js";
 import { User } from "@backend/types/user.js";

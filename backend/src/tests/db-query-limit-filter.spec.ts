@@ -1,4 +1,3 @@
-import "mocha";
 import { DbQueryLimitFilter } from "@backend/query/db-query-limit-filter.js";
 import { expect, use as chaiUse, should } from "chai";
 import chaiAsPromised from "chai-as-promised";

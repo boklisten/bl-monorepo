@@ -1,4 +1,3 @@
-import "mocha";
 import UserHandler from "@backend/auth/user/user.handler.js";
 import { PendingPasswordResetPostHook } from "@backend/collections/pending-password-reset/hooks/pending-password-reset-post.hook.js";
 import BlCrypto from "@backend/config/bl-crypto.js";

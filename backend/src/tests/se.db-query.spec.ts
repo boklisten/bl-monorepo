@@ -1,4 +1,3 @@
-import "mocha";
 import { SEDbQuery } from "@backend/query/se.db-query.js";
 import { expect, use as chaiUse, should } from "chai";
 import chaiAsPromised from "chai-as-promised";

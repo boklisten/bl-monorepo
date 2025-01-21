@@ -1,5 +1,3 @@
-import "mocha";
-
 import { MessagePostHook } from "@backend/collections/message/hooks/message-post.hook.js";
 import Messenger from "@backend/messenger/messenger.js";
 import { MessengerReminder } from "@backend/messenger/reminder/messenger-reminder.js";

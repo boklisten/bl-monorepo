@@ -1,5 +1,3 @@
-import "mocha";
-
 import RefreshTokenCreator from "@backend/auth/token/refresh/refresh-token.creator.js";
 import RefreshTokenValidator from "@backend/auth/token/refresh/refresh-token.validator.js";
 import { APP_CONFIG } from "@backend/config/application-config.js";

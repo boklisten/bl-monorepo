@@ -1,4 +1,3 @@
-import "mocha";
 import { EmailValidation } from "@backend/collections/email-validation/email-validation.js";
 import EmailValidationHelper from "@backend/collections/email-validation/helpers/email-validation.helper.js";
 import { EmailValidationPostHook } from "@backend/collections/email-validation/hooks/email-validation-post.hook.js";

@@ -14,8 +14,6 @@ import chaiAsPromised from "chai-as-promised";
 import moment from "moment-timezone";
 import sinon, { createSandbox } from "sinon";
 
-import "mocha";
-
 chaiUse(chaiAsPromised);
 should();
 

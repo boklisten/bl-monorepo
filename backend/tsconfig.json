@@ -1,9 +1,14 @@
 {
   "extends": "../tsconfig.base.json",
   "compilerOptions": {
-    "resolveJsonModule": true
+    "resolveJsonModule": true,
+    "module": "NodeNext"
   },
   "include": ["src/**/*"],
   "exclude": ["node_modules"],
-  "references": [{ "path": "../shared" }]
+  "references": [
+    {
+      "path": "../shared"
+    }
+  ]
 }

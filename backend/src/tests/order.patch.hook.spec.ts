@@ -1,5 +1,3 @@
-import "mocha";
-
 import { OrderPlacedHandler } from "@backend/collections/order/helpers/order-placed-handler/order-placed-handler.js";
 import { OrderValidator } from "@backend/collections/order/helpers/order-validator/order-validator.js";
 import { OrderPatchHook } from "@backend/collections/order/hooks/order.patch.hook.js";

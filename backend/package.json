@@ -9,7 +9,7 @@
     "build": "pkgroll --sourcemap --tsconfig=tsconfig.build.json",
     "build:sentry": "pnpm build && pnpm run sentry:sourcemaps",
     "serve": "node --env-file=.env ./dist/index.js",
-    "test": "API_ENV=test mocha \"src/**/*.spec.ts\"",
+    "test": "API_ENV=test tsx src/bin/test.ts",
     "sentry:sourcemaps": "sentry-cli sourcemaps inject --org boklisten --project backend ./dist && sentry-cli sourcemaps upload --org boklisten --project backend ./dist"
   },
   "dependencies": {
@@ -26,7 +26,6 @@
     "@types/express": "^5.0.0",
     "@types/express-session": "^1.18.1",
     "@types/jsonwebtoken": "^9.0.7",
-    "@types/mocha": "^10.0.10",
     "@types/passport": "^1.0.17",
     "@types/passport-facebook": "^3.0.3",
     "@types/passport-google-oauth20": "^2.0.16",
@@ -66,9 +65,10 @@
     "winston": "^3.17.0"
   },
   "devDependencies": {
+    "@japa/assert": "^4.0.1",
+    "@japa/runner": "^4.1.0",
     "chai": "^5.1.2",
     "chai-as-promised": "^8.0.1",
-    "mocha": "^11.0.1",
     "pkgroll": "^2.6.1",
     "sinon": "^19.0.2",
     "sinon-chai": "^4.0.0",

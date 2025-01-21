@@ -1,4 +1,3 @@
-import "mocha";
 import {
   DbQueryValidParams,
   ValidParameter,

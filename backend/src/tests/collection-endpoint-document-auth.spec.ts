@@ -1,4 +1,3 @@
-import "mocha";
 import CollectionEndpointDocumentAuth from "@backend/collection-endpoint/collection-endpoint-document-auth.js";
 import { BlStorageData } from "@backend/storage/bl-storage.js";
 import { BlApiRequest } from "@backend/types/bl-api-request.js";

@@ -1,4 +1,3 @@
-import "mocha";
 import BlCrypto from "@backend/config/bl-crypto.js";
 import { BlError } from "@shared/bl-error/bl-error.js";
 import { use as chaiUse, should } from "chai";

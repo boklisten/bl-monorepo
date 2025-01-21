@@ -1,4 +1,3 @@
-import "mocha";
 import Blid from "@backend/auth/blid.js";
 import { BlError } from "@shared/bl-error/bl-error.js";
 import { use as chaiUse, should } from "chai";

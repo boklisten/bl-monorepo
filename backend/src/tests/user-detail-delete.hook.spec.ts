@@ -1,5 +1,3 @@
-import "mocha";
-
 import { CustomerHaveActiveCustomerItems } from "@backend/collections/customer-item/helpers/customer-have-active-customer-items.js";
 import { CustomerInvoiceActive } from "@backend/collections/invoice/helpers/customer-invoice-active.js";
 import { OrderActive } from "@backend/collections/order/helpers/order-active/order-active.js";

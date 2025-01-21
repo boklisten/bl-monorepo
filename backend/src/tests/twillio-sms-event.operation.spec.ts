@@ -1,5 +1,3 @@
-import "mocha";
-
 import { TwilioSmsEventOperation } from "@backend/collections/message/operations/twillio-sms-event.operation.js";
 import { BlStorage } from "@backend/storage/bl-storage.js";
 import { Message } from "@shared/message/message.js";

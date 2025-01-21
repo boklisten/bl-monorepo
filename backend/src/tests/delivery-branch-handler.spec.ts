@@ -1,4 +1,3 @@
-import "mocha";
 import { DeliveryBranchHandler } from "@backend/collections/delivery/helpers/deliveryBranch/delivery-branch-handler.js";
 import { BlError } from "@shared/bl-error/bl-error.js";
 import { Delivery } from "@shared/delivery/delivery.js";

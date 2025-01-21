@@ -1,5 +1,3 @@
-import "mocha";
-
 import { OrderFieldValidator } from "@backend/collections/order/helpers/order-validator/order-field-validator/order-field-validator.js";
 import { OrderItemValidator } from "@backend/collections/order/helpers/order-validator/order-item-validator/order-item-validator.js";
 import { OrderPlacedValidator } from "@backend/collections/order/helpers/order-validator/order-placed-validator/order-placed-validator.js";

@@ -1,4 +1,3 @@
-import "mocha";
 import { OrderItemBuyValidator } from "@backend/collections/order/helpers/order-validator/order-item-validator/order-item-buy-validator/order-item-buy-validator.js";
 import { PriceService } from "@backend/price/price.service.js";
 import { BlError } from "@shared/bl-error/bl-error.js";

@@ -1,5 +1,3 @@
-import "mocha";
-
 import LocalLoginHandler from "@backend/auth/local/local-login.handler.js";
 import UserHandler from "@backend/auth/user/user.handler.js";
 import EmailValidationHelper from "@backend/collections/email-validation/helpers/email-validation.helper.js";

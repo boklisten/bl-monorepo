@@ -1,5 +1,3 @@
-import "mocha";
-
 import { DeliveryValidator } from "@backend/collections/delivery/helpers/deliveryValidator/delivery-validator.js";
 import { DeliveryPatchHook } from "@backend/collections/delivery/hooks/delivery.patch.hook.js";
 import { BlStorage } from "@backend/storage/bl-storage.js";

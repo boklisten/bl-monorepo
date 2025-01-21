@@ -1,5 +1,3 @@
-import "mocha";
-
 import UserHandler from "@backend/auth/user/user.handler.js";
 import { UserDetailChangeEmailOperation } from "@backend/collections/user-detail/operations/change-email/user-detail-change-email.operation.js";
 import BlResponseHandler from "@backend/response/bl-response.handler.js";

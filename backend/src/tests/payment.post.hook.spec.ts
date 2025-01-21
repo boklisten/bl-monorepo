@@ -1,5 +1,3 @@
-import "mocha";
-
 import { PaymentDibsHandler } from "@backend/collections/payment/helpers/dibs/payment-dibs-handler.js";
 import { PaymentValidator } from "@backend/collections/payment/helpers/payment.validator.js";
 import { PaymentPostHook } from "@backend/collections/payment/hooks/payment.post.hook.js";

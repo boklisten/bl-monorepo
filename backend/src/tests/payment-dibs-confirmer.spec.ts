@@ -1,5 +1,3 @@
-import "mocha";
-
 import { PaymentDibsConfirmer } from "@backend/collections/payment/helpers/dibs/payment-dibs-confirmer.js";
 import { DibsEasyPayment } from "@backend/payment/dibs/dibs-easy-payment/dibs-easy-payment.js";
 import { DibsPaymentService } from "@backend/payment/dibs/dibs-payment.service.js";

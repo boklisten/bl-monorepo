@@ -1,5 +1,3 @@
-import "mocha";
-
 import { EmailValidation } from "@backend/collections/email-validation/email-validation.js";
 import { EmailValidationConfirmOperation } from "@backend/collections/email-validation/operations/email-validation-confirm.operation.js";
 import BlResponseHandler from "@backend/response/bl-response.handler.js";

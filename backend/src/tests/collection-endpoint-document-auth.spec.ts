@@ -1,12 +1,11 @@
 import "mocha";
-import { CollectionEndpointDocumentAuth } from "@backend/collection-endpoint/collection-endpoint-document-auth.js";
+import CollectionEndpointDocumentAuth from "@backend/collection-endpoint/collection-endpoint-document-auth.js";
 import { BlStorageData } from "@backend/storage/bl-storage.js";
 import { BlApiRequest } from "@backend/types/bl-api-request.js";
 import {
   BlDocumentPermission,
   BlEndpointRestriction,
 } from "@backend/types/bl-collection.js";
-import { BlDocument } from "@shared/bl-document/bl-document.js";
 import { BlError } from "@shared/bl-error/bl-error.js";
 import { Branch } from "@shared/branch/branch.js";
 import { expect, use as chaiUse, should } from "chai";
@@ -16,7 +15,6 @@ chaiUse(chaiAsPromised);
 should();
 
 describe("CollectionEndpointDocumentAuth", () => {
-  const collectionEndpointDocumentAuth = new CollectionEndpointDocumentAuth();
   let testBlApiRequest: BlApiRequest;
   let testDocs: BlStorageData;
   let testRestriction: BlEndpointRestriction;
@@ -47,7 +45,7 @@ describe("CollectionEndpointDocumentAuth", () => {
   it("should reject if blApiRequest is null or undefined", () => {
     return expect(
       // @ts-expect-error fixme: auto ignored
-      collectionEndpointDocumentAuth.validate(testRestriction, testDocs, null),
+      CollectionEndpointDocumentAuth.validate(testRestriction, testDocs, null),
     ).to.be.rejectedWith(BlError, /blApiRequest is null or undefined/);
   });
 
@@ -58,7 +56,7 @@ describe("CollectionEndpointDocumentAuth", () => {
     testDocs[0].user.id = "user1";
 
     return expect(
-      collectionEndpointDocumentAuth.validate(
+      CollectionEndpointDocumentAuth.validate(
         testRestriction,
         testDocs,
         testBlApiRequest,
@@ -89,7 +87,7 @@ describe("CollectionEndpointDocumentAuth", () => {
             testDocs[0].user.permission = "manager";
 
             return expect(
-              collectionEndpointDocumentAuth.validate(
+              CollectionEndpointDocumentAuth.validate(
                 testRestriction,
                 testDocs,
                 testBlApiRequest,
@@ -112,7 +110,7 @@ describe("CollectionEndpointDocumentAuth", () => {
             testDocs[0].user.permission = "admin"; // the doc was created by a admin, but should be viewable for a employee also
 
             return expect(
-              collectionEndpointDocumentAuth.validate(
+              CollectionEndpointDocumentAuth.validate(
                 testRestriction,
                 testDocs,
                 testBlApiRequest,
@@ -130,7 +128,7 @@ describe("CollectionEndpointDocumentAuth", () => {
         testDocs[0].user.permission = "employee";
 
         return expect(
-          collectionEndpointDocumentAuth.validate(
+          CollectionEndpointDocumentAuth.validate(
             testRestriction,
             testDocs,
             testBlApiRequest,
@@ -148,7 +146,7 @@ describe("CollectionEndpointDocumentAuth", () => {
         testDocs[0].user.permission = "employee";
 
         return expect(
-          collectionEndpointDocumentAuth.validate(
+          CollectionEndpointDocumentAuth.validate(
             testRestriction,
             testDocs,
             testBlApiRequest,
@@ -187,7 +185,7 @@ describe("CollectionEndpointDocumentAuth", () => {
             testBlApiRequest.user.id = "user2";
 
             return expect(
-              collectionEndpointDocumentAuth.validate(
+              CollectionEndpointDocumentAuth.validate(
                 testRestriction,
                 testDocs,
                 testBlApiRequest,
@@ -203,7 +201,7 @@ describe("CollectionEndpointDocumentAuth", () => {
             testBlApiRequest.user.id = "user4";
 
             return expect(
-              collectionEndpointDocumentAuth.validate(
+              CollectionEndpointDocumentAuth.validate(
                 testRestriction,
                 testDocs,
                 testBlApiRequest,

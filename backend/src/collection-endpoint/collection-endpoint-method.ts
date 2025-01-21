@@ -1,5 +1,5 @@
 import CollectionEndpointAuth from "@backend/collection-endpoint/collection-endpoint-auth.js";
-import { CollectionEndpointDocumentAuth } from "@backend/collection-endpoint/collection-endpoint-document-auth.js";
+import CollectionEndpointDocumentAuth from "@backend/collection-endpoint/collection-endpoint-document-auth.js";
 import { CollectionEndpointOperation } from "@backend/collection-endpoint/collection-endpoint-operation.js";
 import { createPath } from "@backend/config/api-path.js";
 import { isBoolean, isNotNullish } from "@backend/helper/typescript-helpers.js";
@@ -15,7 +15,6 @@ import { NextFunction, Request, Response, Router } from "express";
 
 export abstract class CollectionEndpointMethod {
   protected collectionUri: string;
-  protected collectionEndpointDocumentAuth: CollectionEndpointDocumentAuth;
 
   constructor(
     protected router: Router,
@@ -23,7 +22,6 @@ export abstract class CollectionEndpointMethod {
     protected collection: BlCollection,
   ) {
     this.collectionUri = createPath(this.collection.storage.path);
-    this.collectionEndpointDocumentAuth = new CollectionEndpointDocumentAuth();
   }
 
   public create() {
@@ -137,7 +135,7 @@ export abstract class CollectionEndpointMethod {
       })
       .then((blApiRequest) => this.onRequest(blApiRequest))
       .then((docs) =>
-        this.collectionEndpointDocumentAuth.validate(
+        CollectionEndpointDocumentAuth.validate(
           this.endpoint.restriction,
           docs,
           blApiRequest,

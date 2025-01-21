@@ -1,13 +1,9 @@
 {
   "extends": "../tsconfig.base.json",
   "compilerOptions": {
-    "resolveJsonModule": true,
-    "composite": true,
-    "declaration": true,
-    "outDir": "./dist",
-    "incremental": true
+    "resolveJsonModule": true
   },
-  "include": ["src/**/*", "src/**/*.json"],
+  "include": ["src/**/*"],
   "exclude": ["node_modules"],
   "references": [{ "path": "../shared" }]
 }

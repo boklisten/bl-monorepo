@@ -1,9 +1,6 @@
 {
   "extends": ["../tsconfig.base.json", "@tsconfig/next/tsconfig.json"],
-  "compilerOptions": {
-    "composite": true,
-    "declaration": true
-  },
+  "compilerOptions": {},
   "references": [
     {
       "path": "../shared"

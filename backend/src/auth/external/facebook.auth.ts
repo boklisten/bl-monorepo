@@ -1,6 +1,6 @@
-import { APP_CONFIG } from "@backend/application-config.js";
 import { UserProvider } from "@backend/auth/user/user-provider.js";
 import { createPath, retrieveRefererPath } from "@backend/config/api-path.js";
+import { APP_CONFIG } from "@backend/config/application-config.js";
 import { BlEnv } from "@backend/config/env.js";
 import BlResponseHandler from "@backend/response/bl-response.handler.js";
 import { BlError } from "@shared/bl-error/bl-error.js";

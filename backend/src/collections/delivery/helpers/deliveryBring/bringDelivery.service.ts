@@ -1,5 +1,5 @@
-import { APP_CONFIG } from "@backend/application-config.js";
 import { BringDelivery } from "@backend/collections/delivery/helpers/deliveryBring/bringDelivery.js";
+import { APP_CONFIG } from "@backend/config/application-config.js";
 import { BlEnv } from "@backend/config/env.js";
 import { isNullish } from "@backend/helper/typescript-helpers.js";
 import HttpHandler from "@backend/http/http.handler.js";

@@ -1,4 +1,3 @@
-import { APP_CONFIG } from "@backend/application-config.js";
 import { FacebookAuth } from "@backend/auth/external/facebook.auth.js";
 import { GoogleAuth } from "@backend/auth/external/google.auth.js";
 import { LocalLoginValidator } from "@backend/auth/local/local-login.validator.js";
@@ -6,6 +5,7 @@ import { LocalAuth } from "@backend/auth/local/local.auth.js";
 import { TokenEndpoint } from "@backend/auth/token/token.endpoint.js";
 import { TokenHandler } from "@backend/auth/token/token.handler.js";
 import { UserHandler } from "@backend/auth/user/user.handler.js";
+import { APP_CONFIG } from "@backend/config/application-config.js";
 import { BlEnv } from "@backend/config/env.js";
 import { Router } from "express";
 import passport from "passport";

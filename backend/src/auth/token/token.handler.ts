@@ -1,8 +1,8 @@
-import { APP_CONFIG } from "@backend/application-config.js";
 import { AccessTokenCreator } from "@backend/auth/token/access-token/access-token.creator.js";
 import { RefreshTokenCreator } from "@backend/auth/token/refresh/refresh-token.creator.js";
 import { TokenConfig } from "@backend/auth/token/token.config.js";
 import { UserHandler } from "@backend/auth/user/user.handler.js";
+import { APP_CONFIG } from "@backend/config/application-config.js";
 import { AccessToken } from "@backend/types/access-token.js";
 import { RefreshToken } from "@backend/types/refresh-token.js";
 import { User } from "@backend/types/user.js";

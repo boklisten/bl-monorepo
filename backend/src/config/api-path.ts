@@ -1,6 +1,6 @@
 import { IncomingHttpHeaders } from "node:http";
 
-import { APP_CONFIG } from "@backend/application-config.js";
+import { APP_CONFIG } from "@backend/config/application-config.js";
 import { BlEnv } from "@backend/config/env.js";
 
 export function createPath(customPath: string): string {

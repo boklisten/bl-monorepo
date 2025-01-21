@@ -1,4 +1,4 @@
-import "@backend/instrument";
+import "@backend/config/instrument.js";
 
 import { createAuthEndpoints } from "@backend/auth/auth-endpoint-creator.js";
 import { createCollectionEndpoints } from "@backend/collection-endpoint/collection-endpoint-creator.js";

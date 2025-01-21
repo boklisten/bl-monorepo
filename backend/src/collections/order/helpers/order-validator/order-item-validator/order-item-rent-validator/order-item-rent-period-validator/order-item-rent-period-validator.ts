@@ -1,4 +1,4 @@
-import { APP_CONFIG } from "@backend/application-config.js";
+import { APP_CONFIG } from "@backend/config/application-config.js";
 import { isNotNullish } from "@backend/helper/typescript-helpers.js";
 import { PriceService } from "@backend/price/price.service.js";
 import { BlStorage } from "@backend/storage/bl-storage.js";

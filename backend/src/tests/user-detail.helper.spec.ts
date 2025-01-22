@@ -1,6 +1,6 @@
-import { UserDetailHelper } from "@backend/collections/user-detail/helpers/user-detail.helper.js";
-import { DibsEasyPayment } from "@backend/payment/dibs/dibs-easy-payment/dibs-easy-payment.js";
-import { BlStorage } from "@backend/storage/bl-storage.js";
+import { UserDetailHelper } from "@backend/express/collections/user-detail/helpers/user-detail.helper.js";
+import { DibsEasyPayment } from "@backend/express/payment/dibs/dibs-easy-payment/dibs-easy-payment.js";
+import { BlStorage } from "@backend/express/storage/bl-storage.js";
 import { test } from "@japa/runner";
 import { BlError } from "@shared/bl-error/bl-error.js";
 import { UserDetail } from "@shared/user/user-detail/user-detail.js";

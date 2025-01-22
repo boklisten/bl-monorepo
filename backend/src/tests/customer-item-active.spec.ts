@@ -1,4 +1,4 @@
-import { CustomerItemActive } from "@backend/collections/customer-item/helpers/customer-item-active.js";
+import { CustomerItemActive } from "@backend/express/collections/customer-item/helpers/customer-item-active.js";
 import { test } from "@japa/runner";
 import { CustomerItem } from "@shared/customer-item/customer-item.js";
 import { expect } from "chai";

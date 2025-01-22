@@ -1,5 +1,5 @@
-import { MessageHelper } from "@backend/collections/message/helper/message-helper.js";
-import { BlStorage } from "@backend/storage/bl-storage.js";
+import { MessageHelper } from "@backend/express/collections/message/helper/message-helper.js";
+import { BlStorage } from "@backend/express/storage/bl-storage.js";
 import { test } from "@japa/runner";
 import { BlError } from "@shared/bl-error/bl-error.js";
 import { MessageMethod } from "@shared/message/message-method/message-method.js";

@@ -1,7 +1,7 @@
-import LocalLoginHandler from "@backend/auth/local/local-login.handler.js";
-import { ConfirmPendingPasswordResetOperation } from "@backend/collections/pending-password-reset/operations/confirm-pending-password-reset.operation.js";
-import BlCrypto from "@backend/express-config/bl-crypto.js";
-import { BlStorage } from "@backend/storage/bl-storage.js";
+import LocalLoginHandler from "@backend/express/auth/local/local-login.handler.js";
+import { ConfirmPendingPasswordResetOperation } from "@backend/express/collections/pending-password-reset/operations/confirm-pending-password-reset.operation.js";
+import BlCrypto from "@backend/express/config/bl-crypto.js";
+import { BlStorage } from "@backend/express/storage/bl-storage.js";
 import { BlApiRequest } from "@backend/types/bl-api-request.js";
 import { test } from "@japa/runner";
 import { BlError } from "@shared/bl-error/bl-error.js";

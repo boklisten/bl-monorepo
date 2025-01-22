@@ -1,4 +1,4 @@
-import { OrderHookBefore } from "@backend/collections/order/hooks/order-hook-before.js";
+import { OrderHookBefore } from "@backend/express/collections/order/hooks/order-hook-before.js";
 import { test } from "@japa/runner";
 import { BlError } from "@shared/bl-error/bl-error.js";
 import { expect, use as chaiUse, should } from "chai";

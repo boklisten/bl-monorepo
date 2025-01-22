@@ -1,4 +1,4 @@
-import { DbQueryOnlyGetFilter } from "@backend/query/db-query-only-get-filter.js";
+import { DbQueryOnlyGetFilter } from "@backend/express/query/db-query-only-get-filter.js";
 import { test } from "@japa/runner";
 import { expect, use as chaiUse, should } from "chai";
 import chaiAsPromised from "chai-as-promised";

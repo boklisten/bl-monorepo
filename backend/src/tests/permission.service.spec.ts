@@ -1,4 +1,4 @@
-import { PermissionService } from "@backend/auth/permission.service.js";
+import { PermissionService } from "@backend/express/auth/permission.service.js";
 import { test } from "@japa/runner";
 import { BlDocument } from "@shared/bl-document/bl-document.js";
 import { expect, use as chaiUse, should } from "chai";

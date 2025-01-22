@@ -1,5 +1,5 @@
-import { SendgridEventOperation } from "@backend/collections/message/operations/sendgrid-event.operation.js";
-import { BlStorage } from "@backend/storage/bl-storage.js";
+import { SendgridEventOperation } from "@backend/express/collections/message/operations/sendgrid-event.operation.js";
+import { BlStorage } from "@backend/express/storage/bl-storage.js";
 import { test } from "@japa/runner";
 import { Message } from "@shared/message/message.js";
 import { expect, use as chaiUse, should } from "chai";

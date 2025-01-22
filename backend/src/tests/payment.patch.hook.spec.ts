@@ -1,7 +1,7 @@
-import { PaymentDibsHandler } from "@backend/collections/payment/helpers/dibs/payment-dibs-handler.js";
-import { PaymentValidator } from "@backend/collections/payment/helpers/payment.validator.js";
-import { PaymentPatchHook } from "@backend/collections/payment/hooks/payment.patch.hook.js";
-import { BlStorage } from "@backend/storage/bl-storage.js";
+import { PaymentDibsHandler } from "@backend/express/collections/payment/helpers/dibs/payment-dibs-handler.js";
+import { PaymentValidator } from "@backend/express/collections/payment/helpers/payment.validator.js";
+import { PaymentPatchHook } from "@backend/express/collections/payment/hooks/payment.patch.hook.js";
+import { BlStorage } from "@backend/express/storage/bl-storage.js";
 import { test } from "@japa/runner";
 import { BlError } from "@shared/bl-error/bl-error.js";
 import { Payment } from "@shared/payment/payment.js";

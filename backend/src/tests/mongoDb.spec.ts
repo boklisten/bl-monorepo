@@ -1,4 +1,4 @@
-import { MongooseModelCreator } from "@backend/storage/mongoose-schema-creator.js";
+import { MongooseModelCreator } from "@backend/express/storage/mongoose-schema-creator.js";
 import { test } from "@japa/runner";
 import { expect, use as chaiUse, should } from "chai";
 import chaiAsPromised from "chai-as-promised";

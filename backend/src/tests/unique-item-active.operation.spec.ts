@@ -1,7 +1,7 @@
-import { CustomerItemActiveBlid } from "@backend/collections/customer-item/helpers/customer-item-active-blid.js";
-import { UniqueItemActiveOperation } from "@backend/collections/unique-item/operations/unique-item-active.operation.js";
-import BlResponseHandler from "@backend/response/bl-response.handler.js";
-import { BlStorage } from "@backend/storage/bl-storage.js";
+import { CustomerItemActiveBlid } from "@backend/express/collections/customer-item/helpers/customer-item-active-blid.js";
+import { UniqueItemActiveOperation } from "@backend/express/collections/unique-item/operations/unique-item-active.operation.js";
+import BlResponseHandler from "@backend/express/response/bl-response.handler.js";
+import { BlStorage } from "@backend/express/storage/bl-storage.js";
 import { test } from "@japa/runner";
 import { UniqueItem } from "@shared/unique-item/unique-item.js";
 import { expect, use as chaiUse, should } from "chai";

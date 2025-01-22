@@ -1,4 +1,4 @@
-import { DbQueryNumberFilter } from "@backend/query/db-query-number-filter.js";
+import { DbQueryNumberFilter } from "@backend/express/query/db-query-number-filter.js";
 import { test } from "@japa/runner";
 import { expect, use as chaiUse, should } from "chai";
 import chaiAsPromised from "chai-as-promised";

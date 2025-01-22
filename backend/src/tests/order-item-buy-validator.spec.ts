@@ -1,5 +1,5 @@
-import { OrderItemBuyValidator } from "@backend/collections/order/helpers/order-validator/order-item-validator/order-item-buy-validator/order-item-buy-validator.js";
-import { PriceService } from "@backend/price/price.service.js";
+import { OrderItemBuyValidator } from "@backend/express/collections/order/helpers/order-validator/order-item-validator/order-item-buy-validator/order-item-buy-validator.js";
+import { PriceService } from "@backend/express/price/price.service.js";
 import { test } from "@japa/runner";
 import { BlError } from "@shared/bl-error/bl-error.js";
 import { Branch } from "@shared/branch/branch.js";

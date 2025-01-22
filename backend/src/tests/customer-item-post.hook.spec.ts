@@ -1,6 +1,6 @@
-import { CustomerItemPostHook } from "@backend/collections/customer-item/hooks/customer-item-post.hook.js";
-import { CustomerItemValidator } from "@backend/collections/customer-item/validators/customer-item-validator.js";
-import { BlStorage } from "@backend/storage/bl-storage.js";
+import { CustomerItemPostHook } from "@backend/express/collections/customer-item/hooks/customer-item-post.hook.js";
+import { CustomerItemValidator } from "@backend/express/collections/customer-item/validators/customer-item-validator.js";
+import { BlStorage } from "@backend/express/storage/bl-storage.js";
 import { test } from "@japa/runner";
 import { BlError } from "@shared/bl-error/bl-error.js";
 import { CustomerItem } from "@shared/customer-item/customer-item.js";

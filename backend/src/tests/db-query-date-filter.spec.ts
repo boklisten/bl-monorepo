@@ -1,4 +1,4 @@
-import { DbQueryDateFilter } from "@backend/query/db-query-date-filter.js";
+import { DbQueryDateFilter } from "@backend/express/query/db-query-date-filter.js";
 import { test } from "@japa/runner";
 import { expect, should, use as chaiUse } from "chai";
 import chaiAsPromised from "chai-as-promised";

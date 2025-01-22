@@ -1,4 +1,4 @@
-import ProviderIdGenerator from "@backend/auth/local/provider-id-generator.js";
+import ProviderIdGenerator from "@backend/express/auth/local/provider-id-generator.js";
 import { test } from "@japa/runner";
 import { BlError } from "@shared/bl-error/bl-error.js";
 import { use as chaiUse, should } from "chai";

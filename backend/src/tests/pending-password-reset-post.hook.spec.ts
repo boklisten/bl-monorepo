@@ -1,7 +1,7 @@
-import UserHandler from "@backend/auth/user/user.handler.js";
-import { PendingPasswordResetPostHook } from "@backend/collections/pending-password-reset/hooks/pending-password-reset-post.hook.js";
-import BlCrypto from "@backend/express-config/bl-crypto.js";
-import Messenger from "@backend/messenger/messenger.js";
+import UserHandler from "@backend/express/auth/user/user.handler.js";
+import { PendingPasswordResetPostHook } from "@backend/express/collections/pending-password-reset/hooks/pending-password-reset-post.hook.js";
+import BlCrypto from "@backend/express/config/bl-crypto.js";
+import Messenger from "@backend/express/messenger/messenger.js";
 import { User } from "@backend/types/user.js";
 import { test } from "@japa/runner";
 import { BlError } from "@shared/bl-error/bl-error.js";

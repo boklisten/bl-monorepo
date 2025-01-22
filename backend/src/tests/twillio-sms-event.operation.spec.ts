@@ -1,5 +1,5 @@
-import { TwilioSmsEventOperation } from "@backend/collections/message/operations/twillio-sms-event.operation.js";
-import { BlStorage } from "@backend/storage/bl-storage.js";
+import { TwilioSmsEventOperation } from "@backend/express/collections/message/operations/twillio-sms-event.operation.js";
+import { BlStorage } from "@backend/express/storage/bl-storage.js";
 import { test } from "@japa/runner";
 import { Message } from "@shared/message/message.js";
 import { expect, use as chaiUse, should } from "chai";

@@ -1,5 +1,5 @@
-import { OpeningHourHelper } from "@backend/collections/opening-hour/helpers/opening-hour-helper.js";
-import { BlStorage } from "@backend/storage/bl-storage.js";
+import { OpeningHourHelper } from "@backend/express/collections/opening-hour/helpers/opening-hour-helper.js";
+import { BlStorage } from "@backend/express/storage/bl-storage.js";
 import { test } from "@japa/runner";
 import { BlError } from "@shared/bl-error/bl-error.js";
 import { Branch } from "@shared/branch/branch.js";

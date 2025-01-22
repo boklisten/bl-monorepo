@@ -1,5 +1,5 @@
-import AccessTokenCreator from "@backend/auth/token/access-token/access-token.creator.js";
-import RefreshTokenCreator from "@backend/auth/token/refresh/refresh-token.creator.js";
+import AccessTokenCreator from "@backend/express/auth/token/access-token/access-token.creator.js";
+import RefreshTokenCreator from "@backend/express/auth/token/refresh/refresh-token.creator.js";
 import { test } from "@japa/runner";
 import { BlError } from "@shared/bl-error/bl-error.js";
 import { UserPermission } from "@shared/permission/user-permission.js";

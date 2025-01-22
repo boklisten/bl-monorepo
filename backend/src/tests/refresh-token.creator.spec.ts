@@ -1,4 +1,4 @@
-import RefreshTokenCreator from "@backend/auth/token/refresh/refresh-token.creator.js";
+import RefreshTokenCreator from "@backend/express/auth/token/refresh/refresh-token.creator.js";
 import { test } from "@japa/runner";
 import { BlError } from "@shared/bl-error/bl-error.js";
 import { use as chaiUse, should } from "chai";

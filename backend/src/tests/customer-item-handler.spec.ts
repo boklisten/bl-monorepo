@@ -1,6 +1,6 @@
-import { CustomerItemHandler } from "@backend/collections/customer-item/helpers/customer-item-handler.js";
-import { SEDbQuery } from "@backend/query/se.db-query.js";
-import { BlStorage } from "@backend/storage/bl-storage.js";
+import { CustomerItemHandler } from "@backend/express/collections/customer-item/helpers/customer-item-handler.js";
+import { SEDbQuery } from "@backend/express/query/se.db-query.js";
+import { BlStorage } from "@backend/express/storage/bl-storage.js";
 import { test } from "@japa/runner";
 import { BlError } from "@shared/bl-error/bl-error.js";
 import { Branch } from "@shared/branch/branch.js";

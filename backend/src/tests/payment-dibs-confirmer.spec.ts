@@ -1,7 +1,7 @@
-import { PaymentDibsConfirmer } from "@backend/collections/payment/helpers/dibs/payment-dibs-confirmer.js";
-import { DibsEasyPayment } from "@backend/payment/dibs/dibs-easy-payment/dibs-easy-payment.js";
-import { DibsPaymentService } from "@backend/payment/dibs/dibs-payment.service.js";
-import { BlStorage } from "@backend/storage/bl-storage.js";
+import { PaymentDibsConfirmer } from "@backend/express/collections/payment/helpers/dibs/payment-dibs-confirmer.js";
+import { DibsEasyPayment } from "@backend/express/payment/dibs/dibs-easy-payment/dibs-easy-payment.js";
+import { DibsPaymentService } from "@backend/express/payment/dibs/dibs-payment.service.js";
+import { BlStorage } from "@backend/express/storage/bl-storage.js";
 import { test } from "@japa/runner";
 import { BlError } from "@shared/bl-error/bl-error.js";
 import { Order } from "@shared/order/order.js";

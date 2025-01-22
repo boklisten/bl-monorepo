@@ -1,5 +1,5 @@
-import TokenHandler from "@backend/auth/token/token.handler.js";
-import UserHandler from "@backend/auth/user/user.handler.js";
+import TokenHandler from "@backend/express/auth/token/token.handler.js";
+import UserHandler from "@backend/express/auth/user/user.handler.js";
 import { test } from "@japa/runner";
 import { BlError } from "@shared/bl-error/bl-error.js";
 import { use as chaiUse, should } from "chai";

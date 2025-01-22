@@ -1,4 +1,4 @@
-import { DbQueryRegexFilter } from "@backend/query/db-query-regex-filter.js";
+import { DbQueryRegexFilter } from "@backend/express/query/db-query-regex-filter.js";
 import { test } from "@japa/runner";
 import { expect, use as chaiUse, should } from "chai";
 import chaiAsPromised from "chai-as-promised";

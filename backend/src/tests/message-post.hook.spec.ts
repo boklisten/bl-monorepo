@@ -1,7 +1,7 @@
-import { MessagePostHook } from "@backend/collections/message/hooks/message-post.hook.js";
-import Messenger from "@backend/messenger/messenger.js";
-import { MessengerReminder } from "@backend/messenger/reminder/messenger-reminder.js";
-import { BlStorage } from "@backend/storage/bl-storage.js";
+import { MessagePostHook } from "@backend/express/collections/message/hooks/message-post.hook.js";
+import Messenger from "@backend/express/messenger/messenger.js";
+import { MessengerReminder } from "@backend/express/messenger/reminder/messenger-reminder.js";
+import { BlStorage } from "@backend/express/storage/bl-storage.js";
 import { test } from "@japa/runner";
 import { BlError } from "@shared/bl-error/bl-error.js";
 import { MessageMethod } from "@shared/message/message-method/message-method.js";

@@ -1,5 +1,5 @@
-import { OrderToCustomerItemGenerator } from "@backend/collections/customer-item/helpers/order-to-customer-item-generator.js";
-import { BlStorage } from "@backend/storage/bl-storage.js";
+import { OrderToCustomerItemGenerator } from "@backend/express/collections/customer-item/helpers/order-to-customer-item-generator.js";
+import { BlStorage } from "@backend/express/storage/bl-storage.js";
 import { test } from "@japa/runner";
 import { BlError } from "@shared/bl-error/bl-error.js";
 import { OrderItem } from "@shared/order/order-item/order-item.js";

@@ -1,7 +1,7 @@
 import {
   DbQueryValidParams,
   ValidParameter,
-} from "@backend/query/db-query-valid-params.js";
+} from "@backend/express/query/db-query-valid-params.js";
 import { test } from "@japa/runner";
 import { expect, use as chaiUse, should } from "chai";
 import chaiAsPromised from "chai-as-promised";

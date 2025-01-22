@@ -1,7 +1,7 @@
-import { CustomerItemHandler } from "@backend/collections/customer-item/helpers/customer-item-handler.js";
-import { EmailService } from "@backend/messenger/email/email-service.js";
-import { MessengerReminder } from "@backend/messenger/reminder/messenger-reminder.js";
-import { BlStorage } from "@backend/storage/bl-storage.js";
+import { CustomerItemHandler } from "@backend/express/collections/customer-item/helpers/customer-item-handler.js";
+import { EmailService } from "@backend/express/messenger/email/email-service.js";
+import { MessengerReminder } from "@backend/express/messenger/reminder/messenger-reminder.js";
+import { BlStorage } from "@backend/express/storage/bl-storage.js";
 import { test } from "@japa/runner";
 import { CustomerItem } from "@shared/customer-item/customer-item.js";
 import { Message } from "@shared/message/message.js";

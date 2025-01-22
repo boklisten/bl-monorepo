@@ -1,5 +1,5 @@
-import LocalLoginPasswordValidator from "@backend/auth/local/local-login-password.validator.js";
-import BlCrypto from "@backend/express-config/bl-crypto.js";
+import LocalLoginPasswordValidator from "@backend/express/auth/local/local-login-password.validator.js";
+import BlCrypto from "@backend/express/config/bl-crypto.js";
 import { test } from "@japa/runner";
 import { BlError } from "@shared/bl-error/bl-error.js";
 import { use as chaiUse, should } from "chai";

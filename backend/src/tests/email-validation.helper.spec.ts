@@ -1,7 +1,7 @@
-import { EmailValidation } from "@backend/collections/email-validation/email-validation.js";
-import EmailValidationHelper from "@backend/collections/email-validation/helpers/email-validation.helper.js";
-import Messenger from "@backend/messenger/messenger.js";
-import { BlStorage } from "@backend/storage/bl-storage.js";
+import { EmailValidation } from "@backend/express/collections/email-validation/email-validation.js";
+import EmailValidationHelper from "@backend/express/collections/email-validation/helpers/email-validation.helper.js";
+import Messenger from "@backend/express/messenger/messenger.js";
+import { BlStorage } from "@backend/express/storage/bl-storage.js";
 import { test } from "@japa/runner";
 import { BlError } from "@shared/bl-error/bl-error.js";
 import { UserDetail } from "@shared/user/user-detail/user-detail.js";

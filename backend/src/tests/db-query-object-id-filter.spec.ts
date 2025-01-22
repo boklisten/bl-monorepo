@@ -1,4 +1,4 @@
-import { DbQueryObjectIdFilter } from "@backend/query/db-query-object-id-filter.js";
+import { DbQueryObjectIdFilter } from "@backend/express/query/db-query-object-id-filter.js";
 import { test } from "@japa/runner";
 import { expect, use as chaiUse, should } from "chai";
 import chaiAsPromised from "chai-as-promised";

@@ -1,5 +1,5 @@
-import { PaymentValidator } from "@backend/collections/payment/helpers/payment.validator.js";
-import { BlStorage } from "@backend/storage/bl-storage.js";
+import { PaymentValidator } from "@backend/express/collections/payment/helpers/payment.validator.js";
+import { BlStorage } from "@backend/express/storage/bl-storage.js";
 import { test } from "@japa/runner";
 import { BlError } from "@shared/bl-error/bl-error.js";
 import { Delivery } from "@shared/delivery/delivery.js";

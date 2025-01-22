@@ -1,6 +1,6 @@
-import { UserDetailValidOperation } from "@backend/collections/user-detail/operations/user-detail-valid.operation.js";
-import BlResponseHandler from "@backend/response/bl-response.handler.js";
-import { BlStorage } from "@backend/storage/bl-storage.js";
+import { UserDetailValidOperation } from "@backend/express/collections/user-detail/operations/user-detail-valid.operation.js";
+import BlResponseHandler from "@backend/express/response/bl-response.handler.js";
+import { BlStorage } from "@backend/express/storage/bl-storage.js";
 import { BlApiRequest } from "@backend/types/bl-api-request.js";
 import { test } from "@japa/runner";
 import { BlError } from "@shared/bl-error/bl-error.js";

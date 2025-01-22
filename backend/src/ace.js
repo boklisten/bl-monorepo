@@ -1,1 +1,1 @@
-await import("./bin/console.ts");
+await import("./bin/console.js");

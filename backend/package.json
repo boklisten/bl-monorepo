@@ -10,6 +10,7 @@
     "build:sentry": "pnpm build && pnpm run sentry:sourcemaps",
     "serve": "node --env-file=.env ./dist/index.js",
     "start": "tsx --env-file=.env src/bin/server.ts",
+    "ace": "tsx --env-file=.env src/ace.js",
     "test": "API_ENV=test tsx src/bin/test.ts",
     "sentry:sourcemaps": "sentry-cli sourcemaps inject --org boklisten --project backend ./dist && sentry-cli sourcemaps upload --org boklisten --project backend ./dist"
   },

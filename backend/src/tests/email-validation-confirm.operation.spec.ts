@@ -2,6 +2,7 @@ import { EmailValidation } from "@backend/collections/email-validation/email-val
 import { EmailValidationConfirmOperation } from "@backend/collections/email-validation/operations/email-validation-confirm.operation.js";
 import BlResponseHandler from "@backend/response/bl-response.handler.js";
 import { BlStorage } from "@backend/storage/bl-storage.js";
+import { test } from "@japa/runner";
 import { BlError } from "@shared/bl-error/bl-error.js";
 import { BlapiResponse } from "@shared/blapi-response/blapi-response.js";
 import { UserDetail } from "@shared/user/user-detail/user-detail.js";
@@ -13,7 +14,7 @@ import sinon, { createSandbox } from "sinon";
 chaiUse(chaiAsPromised);
 should();
 
-describe("EmailValidationConfirmOperation", () => {
+test.group("EmailValidationConfirmOperation", (group) => {
   const emailValidationConfirmOperation = new EmailValidationConfirmOperation();
   let sandbox: sinon.SinonSandbox;
   let userDetailStorageUpdateStub: sinon.SinonStub;
@@ -27,7 +28,7 @@ describe("EmailValidationConfirmOperation", () => {
   let testEmailValidation: EmailValidation;
   let testUserDetailUpdateSucess: boolean;
 
-  beforeEach(() => {
+  group.each.setup(() => {
     testUserDetail.id = "userDetail1";
     testUserDetail.emailConfirmed = false;
 
@@ -80,74 +81,68 @@ describe("EmailValidationConfirmOperation", () => {
       "sendResponse",
     );
   });
-  afterEach(() => {
+  group.each.teardown(() => {
     sandbox.restore();
   });
 
-  describe("#run", () => {
-    it("should reject if no documentId is provided", (done) => {
-      const blApiRequest = {};
+  test("should reject if no documentId is provided", async () => {
+    const blApiRequest = {};
 
-      emailValidationConfirmOperation
-        // @ts-expect-error fixme missing params
-        .run(blApiRequest)
-        .catch((blError: BlError) => {
-          expect(blError.getMsg()).to.be.eql(`no documentId provided`);
-          expect(resHandlerSendErrorStub.called);
-          done();
-        });
-    });
+    emailValidationConfirmOperation
+      // @ts-expect-error fixme missing params
+      .run(blApiRequest)
+      .catch((blError: BlError) => {
+        expect(blError.getMsg()).to.be.eql(`no documentId provided`);
+        return expect(resHandlerSendErrorStub.called);
+      });
+  });
 
-    it("should reject if emailValidation is not found by id", (done) => {
-      const blApiRequest = {
-        documentId: "notFoundEmailValidation",
-      };
+  test("should reject if emailValidation is not found by id", async () => {
+    const blApiRequest = {
+      documentId: "notFoundEmailValidation",
+    };
 
-      emailValidationConfirmOperation
-        // @ts-expect-error fixme missing params
-        .run(blApiRequest)
-        .catch((blErr: BlError) => {
-          expect(resHandlerSendErrorStub.called);
-          expect(blErr.getCode()).to.be.eql(702);
-          done();
-        });
-    });
+    emailValidationConfirmOperation
+      // @ts-expect-error fixme missing params
+      .run(blApiRequest)
+      .catch((blErr: BlError) => {
+        expect(resHandlerSendErrorStub.called);
+        return expect(blErr.getCode()).to.be.eql(702);
+      });
+  });
 
-    it("should reject if userDetail is not found", () => {
-      const blApiRequest = {
-        documentId: testEmailValidation.id,
-      };
+  test("should reject if userDetail is not found", async () => {
+    const blApiRequest = {
+      documentId: testEmailValidation.id,
+    };
 
-      testEmailValidation.userDetail = "notFoundUserDetail";
+    testEmailValidation.userDetail = "notFoundUserDetail";
 
-      expect(
-        // @ts-expect-error fixme missing params
-        emailValidationConfirmOperation.run(blApiRequest),
-      ).to.be.rejectedWith(BlError, /could not update userDetail/);
-    });
+    return expect(
+      // @ts-expect-error fixme missing params
+      emailValidationConfirmOperation.run(blApiRequest),
+    ).to.be.rejectedWith(BlError, /could not update userDetail/);
+  });
 
-    it("should update userDetail with emailConfirmed if all valid inputs are provided", (done) => {
-      const blApiRequest = {
-        documentId: testEmailValidation.id,
-      };
+  test("should update userDetail with emailConfirmed if all valid inputs are provided", async () => {
+    const blApiRequest = {
+      documentId: testEmailValidation.id,
+    };
 
-      emailValidationConfirmOperation
-        .run(blApiRequest, {} as Request, {} as Response)
-        .then(() => {
-          expect(userDetailStorageUpdateStub).to.have.been.calledWith(
-            testEmailValidation.userDetail,
-            {
-              emailConfirmed: true,
-            },
-          );
+    emailValidationConfirmOperation
+      .run(blApiRequest, {} as Request, {} as Response)
+      .then(() => {
+        expect(userDetailStorageUpdateStub).to.have.been.calledWith(
+          testEmailValidation.userDetail,
+          {
+            emailConfirmed: true,
+          },
+        );
 
-          expect(resHandlerSendResponseStub).to.have.been.calledWith(
-            {},
-            new BlapiResponse([{ confirmed: true }]),
-          );
-
-          done();
-        });
-    });
+        return expect(resHandlerSendResponseStub).to.have.been.calledWith(
+          {},
+          new BlapiResponse([{ confirmed: true }]),
+        );
+      });
   });
 });

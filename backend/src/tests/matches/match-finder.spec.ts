@@ -13,6 +13,7 @@ import otto_treider_test_users_year_0 from "@backend/tests/matches/test-data/tes
 import otto_treider_test_users_year_1 from "@backend/tests/matches/test-data/test_users_year_1.json" with { type: "json" };
 import otto_treider_test_users_year_2 from "@backend/tests/matches/test-data/test_users_year_2.json" with { type: "json" };
 import ullern_test_users from "@backend/tests/matches/test-data/ullern_test_users.json" with { type: "json" };
+import { test } from "@japa/runner";
 import { BlError } from "@shared/bl-error/bl-error.js";
 import { assert, expect, use as chaiUse, should } from "chai";
 import chaiAsPromised from "chai-as-promised";
@@ -41,8 +42,8 @@ const mathea = createFakeMatchableUser(
   ["book1", "book2", "book3", "book4"],
 );
 
-describe("Full User Match", () => {
-  it("should be able to full match with other user", () => {
+test.group("Full User Match", async () => {
+  test("should be able to full match with other user", async () => {
     const matchFinder = new MatchFinder([andrine, beate]);
     const [userMatches, standMatches] = matchFinder.generateMatches();
     const expectedMatch = createFakeUserMatch(andrine, beate, andrine.items);
@@ -50,7 +51,7 @@ describe("Full User Match", () => {
     assert.deepEqual(standMatches, []);
   });
 
-  it("should not fully match with non overlapping receivers", () => {
+  test("should not fully match with non overlapping receivers", async () => {
     const matchFinder = new MatchFinder([andrine, mons]);
     const [userMatches, standMatches] = matchFinder.generateMatches();
     assert.deepEqual(userMatches, []);
@@ -60,7 +61,7 @@ describe("Full User Match", () => {
     ]);
   });
 
-  it("should full match after removing excessive delivery items", () => {
+  test("should full match after removing excessive delivery items", async () => {
     const matchFinder = new MatchFinder([mathias, beate]);
     const [userMatches, standMatches] = matchFinder.generateMatches();
 
@@ -78,7 +79,7 @@ describe("Full User Match", () => {
     assert.deepEqual(standMatches, [expectedStandMatch]);
   });
 
-  it("should create delivery match when all items are not wanted", () => {
+  test("should create delivery match when all items are not wanted", async () => {
     const matchFinder = new MatchFinder([andrine]);
     const [userMatches, standMatches] = matchFinder.generateMatches();
     // NB: assert.deepEqual cares about the order of items in a set!
@@ -88,7 +89,7 @@ describe("Full User Match", () => {
     assert.deepEqual(userMatches, []);
   });
 
-  it("should be able to create multiple full matches with overlapping books", () => {
+  test("should be able to create multiple full matches with overlapping books", async () => {
     const mathea2 = { ...mathea, id: "mathea2" };
     const matchFinder = new MatchFinder([
       monika,
@@ -102,8 +103,8 @@ describe("Full User Match", () => {
   });
 });
 
-describe("Partly User Match", () => {
-  it("should create one full match and one partly", () => {
+test.group("Partly User Match", async () => {
+  test("should create one full match and one partly", async () => {
     const matchFinder = new MatchFinder([andrine, mathias, mons, beate]);
     const [userMatches, standMatches] = matchFinder.generateMatches();
     const andrineXbeate = createFakeUserMatch(andrine, beate, andrine.items);
@@ -123,7 +124,7 @@ describe("Partly User Match", () => {
     assert.deepEqual(standMatches, [mathiasXstand]);
   });
 
-  it("should be able to fully match and partly match a set of ordered users", () => {
+  test("should be able to fully match and partly match a set of ordered users", async () => {
     const senderGroupA = createUserGroup("sender-A", 10, ["A", "B", "C"], []);
     const senderGroupB = createUserGroup("sender-B", 5, ["A"], []);
     const senderGroupC = createUserGroup("sender-C", 5, ["B", "C"], []);
@@ -156,7 +157,7 @@ describe("Partly User Match", () => {
     expect(standMatches.length).to.equal(0);
   });
 
-  it("should be able to fully match and partly match a set of shuffled users", () => {
+  test("should be able to fully match and partly match a set of shuffled users", async () => {
     const shuffle = shuffler(seededRandom(12345));
     const senderGroupA = createUserGroup("sender-A", 10, ["A", "B", "C"], []);
     const senderGroupB = createUserGroup("sender-B", 5, ["A"], []);
@@ -192,7 +193,7 @@ describe("Partly User Match", () => {
     expect(standMatches.length).to.equal(0);
   });
 
-  it("should be able to fully and partly match some ordered users, leaving some receivers to match with stand", () => {
+  test("should be able to fully and partly match some ordered users, leaving some receivers to match with stand", async () => {
     const senderGroupA = createUserGroup("sender-A", 3, ["A"], []);
     const senderGroupB = createUserGroup("sender-B", 4, ["B"], []);
     const senderGroupC = createUserGroup("sender-C", 5, ["A", "B"], []);
@@ -212,7 +213,7 @@ describe("Partly User Match", () => {
     expect(standMatches.length).to.equal(2);
   });
 
-  it("should be able to fully and partly match some shuffled users, leaving some receivers to match with stand", () => {
+  test("should be able to fully and partly match some shuffled users, leaving some receivers to match with stand", async () => {
     const shuffle = shuffler(seededRandom(12345));
     const senderGroupA = createUserGroup("sender-A", 3, ["A"], []);
     const senderGroupB = createUserGroup("sender-B", 4, ["B"], []);
@@ -236,8 +237,8 @@ describe("Partly User Match", () => {
   });
 });
 
-describe("Large User Groups", () => {
-  it("can sufficiently match created user groups", () => {
+test.group("Large User Groups", async () => {
+  test("can sufficiently match created user groups", async () => {
     const shuffle = shuffler(seededRandom(324892));
     const users = [
       createUserGroup("sender-A", 210, ["A", "C", "D"], []),
@@ -256,7 +257,7 @@ describe("Large User Groups", () => {
     expect(standMatches.length).to.be.lessThan(450);
   });
 
-  it("can perfectly match realistic user data with itself", () => {
+  test("can perfectly match realistic user data with itself", async () => {
     const shuffle = shuffler(seededRandom(12345));
     const rawData = ullern_test_users;
     const test_senders = createMatchableUsersWithIdSuffix(rawData, true);
@@ -272,7 +273,7 @@ describe("Large User Groups", () => {
     expect(standMatches.length).to.equal(0);
   });
 
-  it("can sufficiently match realistic user data with a modified version of itself", () => {
+  test("can sufficiently match realistic user data with a modified version of itself", async () => {
     const shuffle = shuffler(seededRandom(123454332));
     const rawData = ullern_test_users;
     const test_senders = createMatchableUsersWithIdSuffix(rawData, true);
@@ -288,7 +289,7 @@ describe("Large User Groups", () => {
     expect(standMatches.length).to.be.lessThanOrEqual(23);
   });
 
-  it("should have a lot of pickup and deliveries when many new books are introduced", () => {
+  test("should have a lot of pickup and deliveries when many new books are introduced", async () => {
     const shuffle = shuffler(seededRandom(128738745));
     const testUsersYear1: MatchableUser[] = otto_treider_test_users_year_1.map(
       ({ items, id }) => ({
@@ -317,7 +318,7 @@ describe("Large User Groups", () => {
     expect(standMatches.length).to.be.lessThanOrEqual(192);
   });
 
-  it("should be able to sufficiently match two different year classes with similar books", () => {
+  test("should be able to sufficiently match two different year classes with similar books", async () => {
     const shuffle = shuffler(seededRandom(123982));
     const testUsersYear0: MatchableUser[] = otto_treider_test_users_year_0.map(
       ({ items, id }) => ({
@@ -358,8 +359,8 @@ describe("Large User Groups", () => {
   });
 });
 
-describe("Users with both wantedItems and items", () => {
-  it("should partially match users that have disjoint sets of items and wants", () => {
+test.group("Users with both wantedItems and items", async () => {
+  test("should partially match users that have disjoint sets of items and wants", async () => {
     const user1 = createFakeMatchableUser(
       "user1",
       ["book1", "book2"],
@@ -377,7 +378,7 @@ describe("Users with both wantedItems and items", () => {
     expect(standMatches.length).to.be.eq(1);
   });
 
-  it("should handle a scenario where two users want each other’s items", () => {
+  test("should handle a scenario where two users want each other’s items", async () => {
     // Perfect swap, no user is wanting their own items.
     const userA = createFakeMatchableUser(
       "userA",
@@ -401,7 +402,7 @@ describe("Users with both wantedItems and items", () => {
     expect(match?.expectedBToAItems).to.have.members(["book3", "book4"]);
   });
 
-  it("should be able to solve complex scenario without stand matches", () => {
+  test("should be able to solve complex scenario without stand matches", async () => {
     const group1Users = createUserGroup("group1", 2, ["A"], ["B"]);
     const group2Users = createUserGroup("group2", 2, ["B"], ["C"]);
     const group3Users = createUserGroup("group3", 2, ["C"], ["A"]);
@@ -417,8 +418,8 @@ describe("Users with both wantedItems and items", () => {
   });
 });
 
-describe("Group matching logic", () => {
-  it("should prioritize matching similar groups first", () => {
+test.group("Group matching logic", async () => {
+  test("should prioritize matching similar groups first", async () => {
     const shuffle = shuffler(seededRandom(12345));
     const group1Users = createUserGroup("group1", 2, ["A"], ["B"], "STA");
     const group2Users = createUserGroup("group2", 2, ["B"], ["A"], "STB");
@@ -442,8 +443,8 @@ describe("Group matching logic", () => {
   });
 });
 
-describe("Faulty data checks", () => {
-  it("should throw an error if the same user is listed twice in MatchableUsers", () => {
+test.group("Faulty data checks", async () => {
+  test("should throw an error if the same user is listed twice in MatchableUsers", async () => {
     const userDuplicateA = createFakeMatchableUser("userDup", ["A"], ["B"]);
     const userDuplicateB = { ...userDuplicateA };
 
@@ -452,7 +453,7 @@ describe("Faulty data checks", () => {
     );
   });
 
-  it("should throw an error if a user wants any items that they already have", () => {
+  test("should throw an error if a user wants any items that they already have", async () => {
     const userX = createFakeMatchableUser(
       "userX",
       ["book1", "book2"],

@@ -1,30 +1,31 @@
 import { DbQueryExpandFilter } from "@backend/query/db-query-expand-filter.js";
+import { test } from "@japa/runner";
 import { expect, use as chaiUse, should } from "chai";
 import chaiAsPromised from "chai-as-promised";
 
 chaiUse(chaiAsPromised);
 should();
 
-describe("DbQueryExpandFilter", () => {
+test.group("DbQueryExpandFilter", async () => {
   const dbQueryExpandFilter = new DbQueryExpandFilter();
 
-  it("should throw TypeError if query is empty or null", () => {
+  test("should throw TypeError if query is empty or null", async () => {
     expect(() => {
       dbQueryExpandFilter.getExpandFilters(null);
     }).to.throw(TypeError);
   });
 
-  it('should return empty array if "expand" keyword is not found in query', () => {
+  test('should return empty array if "expand" keyword is not found in query', async () => {
     expect(dbQueryExpandFilter.getExpandFilters({ og: "customer" })).to.eql([]);
   });
 
-  it("should return array of expand field when present in query", () => {
+  test("should return array of expand field when present in query", async () => {
     expect(dbQueryExpandFilter.getExpandFilters({ expand: "customer" })).to.eql(
       [{ fieldName: "customer" }],
     );
   });
 
-  it("should return array of expand fields when present in query", () => {
+  test("should return array of expand fields when present in query", async () => {
     expect(
       dbQueryExpandFilter.getExpandFilters({ expand: ["customer", "order"] }),
     ).to.eql([{ fieldName: "customer" }, { fieldName: "order" }]);

@@ -1,6 +1,7 @@
 import { CustomerItemPostHook } from "@backend/collections/customer-item/hooks/customer-item-post.hook.js";
 import { CustomerItemValidator } from "@backend/collections/customer-item/validators/customer-item-validator.js";
 import { BlStorage } from "@backend/storage/bl-storage.js";
+import { test } from "@japa/runner";
 import { BlError } from "@shared/bl-error/bl-error.js";
 import { CustomerItem } from "@shared/customer-item/customer-item.js";
 import { Order } from "@shared/order/order.js";
@@ -15,7 +16,7 @@ chaiUse(chaiAsPromised);
 should();
 chaiUse(sinonChai);
 
-describe("CustomerItemPostHook", () => {
+test.group("CustomerItemPostHook", (group) => {
   let sandbox: sinon.SinonSandbox;
   let testCustomerItem: CustomerItem;
   let testOrder: Order;
@@ -27,7 +28,7 @@ describe("CustomerItemPostHook", () => {
   let orderUpdateStub: sinon.SinonStub;
   let userDetailStub: sinon.SinonStub;
 
-  beforeEach(() => {
+  group.each.setup(() => {
     sandbox = createSandbox();
     testAccessToken = {
       sub: "user1",
@@ -104,20 +105,16 @@ describe("CustomerItemPostHook", () => {
       return Promise.resolve(testOrder);
     });
 
-    orderUpdateStub = sandbox
-      .stub(BlStorage.Orders, "update")
-      .callsFake((id: string, data: any) => {
-        return Promise.resolve(testOrder);
-      });
+    orderUpdateStub = sandbox.stub(BlStorage.Orders, "update").callsFake(() => {
+      return Promise.resolve(testOrder);
+    });
 
-    sandbox
-      .stub(customerItemValidator, "validate")
-      .callsFake((customerItem: CustomerItem) => {
-        if (!validateCustomerItem) {
-          return Promise.reject("could not validate");
-        }
-        return Promise.resolve(true);
-      });
+    sandbox.stub(customerItemValidator, "validate").callsFake(() => {
+      if (!validateCustomerItem) {
+        return Promise.reject("could not validate");
+      }
+      return Promise.resolve(true);
+    });
 
     sandbox.stub(BlStorage.CustomerItems, "get").callsFake((id) => {
       if (id !== testCustomerItem.id) {
@@ -136,151 +133,134 @@ describe("CustomerItemPostHook", () => {
 
     userDetailStub = sandbox
       .stub(BlStorage.UserDetails, "update")
-      .callsFake((id: string, data: any) => {
+      .callsFake(() => {
         return Promise.resolve(testUserDetail);
       });
   });
 
-  afterEach(() => {
+  group.each.teardown(() => {
     sandbox.restore();
   });
 
-  describe("before()", () => {
-    it("should reject if customerItem parameter is undefined", () => {
-      return expect(
-        // @ts-expect-error fixme: auto ignored
-        customerItemPostHook.before(undefined, testAccessToken),
-      ).to.be.rejectedWith(BlError, /customerItem is undefined/);
-    });
-
-    it("should reject if customerItemValidator.validate rejects", () => {
-      validateCustomerItem = false;
-
-      return expect(
-        customerItemPostHook.before(testCustomerItem),
-      ).to.be.rejectedWith(BlError, "could not validate customerItem");
-    });
-
-    it("should resolve with true if customerItemValidator.validate resolves", () => {
-      return expect(customerItemPostHook.before(testCustomerItem)).to.be
-        .fulfilled;
-    });
-
-    it("should reject if userDetail is not valid", () => {
+  test("should reject if customerItem parameter is undefined", async () => {
+    return expect(
       // @ts-expect-error fixme: auto ignored
-      testUserDetail.name = null;
+      customerItemPostHook.before(undefined, testAccessToken),
+    ).to.be.rejectedWith(BlError, /customerItem is undefined/);
+  });
 
-      // @ts-expect-error fixme: auto ignored
-      testUserDetail.dob = null;
+  test("should reject if customerItemValidator.validate rejects", async () => {
+    validateCustomerItem = false;
 
+    return expect(
+      customerItemPostHook.before(testCustomerItem),
+    ).to.be.rejectedWith(BlError, "could not validate customerItem");
+  });
+
+  test("should resolve with true if customerItemValidator.validate resolves", async () => {
+    return expect(customerItemPostHook.before(testCustomerItem)).to.be
+      .fulfilled;
+  });
+
+  test("should reject if userDetail is not valid", async () => {
+    // @ts-expect-error fixme: auto ignored
+    testUserDetail.name = null;
+
+    // @ts-expect-error fixme: auto ignored
+    testUserDetail.dob = null;
+
+    return expect(
+      customerItemPostHook.before(testCustomerItem),
+    ).to.be.rejectedWith(BlError, /userDetail "userDetail1" not valid/);
+  });
+
+  test("should reject if customerItems are empty", async () => {
+    return expect(
+      customerItemPostHook.after([], testAccessToken),
+    ).to.be.rejectedWith(BlError, /customerItems is empty or undefined/);
+  });
+
+  test("should reject if customerItem.customer is not defined", async () => {
+    testCustomerItem.customer = "notFoundCustomer";
+
+    return expect(
+      customerItemPostHook.after([testCustomerItem], testAccessToken),
+    ).to.be.rejectedWith(BlError, /userDetail not found/);
+  });
+
+  test("should update userDetail with the ids array if it was empty", async () => {
+    testUserDetail.customerItems = [];
+    customerItemPostHook.after([testCustomerItem], testAccessToken).then(() => {
       return expect(
-        customerItemPostHook.before(testCustomerItem),
-      ).to.be.rejectedWith(BlError, /userDetail "userDetail1" not valid/);
+        userDetailStub.calledWithMatch("userDetail1", {
+          customerItems: ["customerItem1"],
+        }),
+      ).to.be.true;
     });
   });
 
-  describe("after()", () => {
-    it("should reject if customerItems are empty", () => {
-      return expect(
-        customerItemPostHook.after([], testAccessToken),
-      ).to.be.rejectedWith(BlError, /customerItems is empty or undefined/);
+  test("should add the new id to the old userDetail.customerItem array", async () => {
+    testUserDetail.customerItems = ["customerItem2"];
+    customerItemPostHook.after([testCustomerItem], testAccessToken).then(() => {
+      userDetailStub.should.have.been.calledWith("userDetail1", {
+        customerItems: ["customerItem2", "customerItem1"],
+      });
     });
+  });
 
-    it("should reject if customerItem.customer is not defined", () => {
-      testCustomerItem.customer = "notFoundCustomer";
+  test("should reject with error if customerItems.orders.length is over 1", async () => {
+    testCustomerItem.orders = ["order1", "order2"];
 
-      return expect(
-        customerItemPostHook.after([testCustomerItem], testAccessToken),
-      ).to.be.rejectedWith(BlError, /userDetail not found/);
-    });
+    return expect(
+      customerItemPostHook.after([testCustomerItem], testAccessToken),
+    ).to.be.rejectedWith(
+      BlError,
+      /customerItem.orders.length is "2" but should be "1"/,
+    );
+  });
 
-    it("should update userDetail with the ids array if it was empty", (done) => {
-      testUserDetail.customerItems = [];
-      const ids = ["customerItem1"];
-
-      customerItemPostHook
-        .after([testCustomerItem], testAccessToken)
-        .then(() => {
-          expect(
-            userDetailStub.calledWithMatch("userDetail1", {
-              customerItems: ["customerItem1"],
-            }),
-          ).to.be.true;
-          done();
-        });
-    });
-
-    it("should add the new id to the old userDetail.customerItem array", (done) => {
-      testUserDetail.customerItems = ["customerItem2"];
-      const ids = ["customerItem1"];
-
-      customerItemPostHook
-        .after([testCustomerItem], testAccessToken)
-        .then(() => {
-          userDetailStub.should.have.been.calledWith("userDetail1", {
-            customerItems: ["customerItem2", "customerItem1"],
-          });
-          done();
-        });
-    });
-
-    it("should reject with error if customerItems.orders.length is over 1", () => {
-      testCustomerItem.orders = ["order1", "order2"];
-
-      expect(
-        customerItemPostHook.after([testCustomerItem], testAccessToken),
-      ).to.be.rejectedWith(
-        BlError,
-        /customerItem.orders.length is "2" but should be "1"/,
-      );
-    });
-
-    it("should update order.orderItems with the customerItem", (done) => {
-      testOrder.orderItems = [
-        {
-          type: "rent",
-          item: "item1",
-          title: "Signatur 1",
-          amount: 100,
-          unitPrice: 400,
-          taxRate: 0,
-          taxAmount: 0,
-          info: {
-            from: new Date(),
-            to: new Date(),
-            numberOfPeriods: 1,
-            periodType: "semester",
-          },
+  test("should update order.orderItems with the customerItem", async () => {
+    testOrder.orderItems = [
+      {
+        type: "rent",
+        item: "item1",
+        title: "Signatur 1",
+        amount: 100,
+        unitPrice: 400,
+        taxRate: 0,
+        taxAmount: 0,
+        info: {
+          from: new Date(),
+          to: new Date(),
+          numberOfPeriods: 1,
+          periodType: "semester",
         },
-      ];
+      },
+    ];
 
-      const expectedOrderUpdateParameter = [
-        {
-          type: "rent",
-          item: "item1",
-          title: "Signatur 1",
-          amount: 100,
-          unitPrice: 400,
-          taxRate: 0,
-          taxAmount: 0,
-          info: {
-            from: new Date(),
-            to: new Date(),
-            numberOfPeriods: 1,
-            periodType: "semester",
-            customerItem: "customerItem1", // expect to have this set
-          },
+    const expectedOrderUpdateParameter = [
+      {
+        type: "rent",
+        item: "item1",
+        title: "Signatur 1",
+        amount: 100,
+        unitPrice: 400,
+        taxRate: 0,
+        taxAmount: 0,
+        info: {
+          from: new Date(),
+          to: new Date(),
+          numberOfPeriods: 1,
+          periodType: "semester",
+          customerItem: "customerItem1", // expect to have this set
         },
-      ];
+      },
+    ];
 
-      customerItemPostHook
-        .after([testCustomerItem], testAccessToken)
-        .then(() => {
-          orderUpdateStub.should.have.been.calledWith("order1", {
-            orderItems: expectedOrderUpdateParameter,
-          });
-          done();
-        });
+    customerItemPostHook.after([testCustomerItem], testAccessToken).then(() => {
+      orderUpdateStub.should.have.been.calledWith("order1", {
+        orderItems: expectedOrderUpdateParameter,
+      });
     });
   });
 });

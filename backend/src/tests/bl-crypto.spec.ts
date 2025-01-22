@@ -1,4 +1,5 @@
 import BlCrypto from "@backend/config/bl-crypto.js";
+import { test } from "@japa/runner";
 import { BlError } from "@shared/bl-error/bl-error.js";
 import { use as chaiUse, should } from "chai";
 import chaiAsPromised from "chai-as-promised";
@@ -6,61 +7,57 @@ import chaiAsPromised from "chai-as-promised";
 chaiUse(chaiAsPromised);
 should();
 
-describe("Crypto", () => {
-  describe("BlCrypto.cipher()", () => {
-    it("should reject with BlError when message is empty", () => {
-      return BlCrypto.cipher("").should.be.rejectedWith(BlError);
-    });
-
-    it("should return chipher when msg is valid", () => {
-      return BlCrypto.cipher("hello").should.be.fulfilled;
-    });
+test.group("BlCrypto.cipher()", async () => {
+  test("should reject with BlError when message is empty", async () => {
+    BlCrypto.cipher("").should.be.rejectedWith(BlError);
   });
 
-  describe("BlCrypto.hash()", () => {
-    let testMsg = "";
-    let testSalt = "";
+  test("should return chipher when msg is valid", async () => {
+    BlCrypto.cipher("hello").should.be.fulfilled;
+  });
+});
 
-    beforeEach(() => {
-      testMsg = "hello";
-      testSalt = "dog";
-    });
+test.group("BlCrypto.hash()", (group) => {
+  let testMsg = "";
+  let testSalt = "";
 
-    describe("should reject with BlError when", () => {
-      it("msg is empty", () => {
-        testMsg = "";
-        return BlCrypto.hash(testMsg, testSalt).should.be.rejectedWith(BlError);
-      });
+  group.each.setup(() => {
+    testMsg = "hello";
+    testSalt = "dog";
+  });
 
-      it("salt is empty", () => {
-        testSalt = "";
-        return BlCrypto.hash(testMsg, testSalt).should.be.rejectedWith(BlError);
-      });
-    });
+  test("msg is empty", async () => {
+    testMsg = "";
+    BlCrypto.hash(testMsg, testSalt).should.be.rejectedWith(BlError);
+  });
 
-    it("should return BlCrypto.hash when salt and password is provided", () => {
-      return BlCrypto.hash(testMsg, testSalt).should.eventually.be.fulfilled;
-    });
+  test("salt is empty", async () => {
+    testSalt = "";
+    BlCrypto.hash(testMsg, testSalt).should.be.rejectedWith(BlError);
+  });
 
-    it("should not return the same BlCrypto.hash if different salt", () => {
-      return new Promise((resolve, reject) => {
-        BlCrypto.hash(testMsg, "dog").then(
-          (hashedPassword) => {
-            BlCrypto.hash(testMsg, "dot").then(
-              (anotherhashedPassword) => {
-                if (anotherhashedPassword !== hashedPassword) resolve(true);
-                reject(true);
-              },
-              (error) => {
-                reject(error);
-              },
-            );
-          },
-          (error) => {
-            reject(error);
-          },
-        );
-      }).should.eventually.be.fulfilled;
-    });
+  test("should return BlCrypto.hash when salt and password is provided", async () => {
+    BlCrypto.hash(testMsg, testSalt).should.eventually.be.fulfilled;
+  });
+
+  test("should not return the same BlCrypto.hash if different salt", async () => {
+    return new Promise((resolve, reject) => {
+      BlCrypto.hash(testMsg, "dog").then(
+        (hashedPassword) => {
+          BlCrypto.hash(testMsg, "dot").then(
+            (anotherhashedPassword) => {
+              if (anotherhashedPassword !== hashedPassword) resolve(true);
+              reject(true);
+            },
+            (error) => {
+              reject(error);
+            },
+          );
+        },
+        (error) => {
+          reject(error);
+        },
+      );
+    }).should.eventually.be.fulfilled;
   });
 });

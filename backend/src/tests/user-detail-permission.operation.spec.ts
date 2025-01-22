@@ -2,6 +2,7 @@ import { UserDetailPermissionOperation } from "@backend/collections/user-detail/
 import BlResponseHandler from "@backend/response/bl-response.handler.js";
 import { BlStorage } from "@backend/storage/bl-storage.js";
 import { User } from "@backend/types/user.js";
+import { test } from "@japa/runner";
 import { BlError } from "@shared/bl-error/bl-error.js";
 import { UserDetail } from "@shared/user/user-detail/user-detail.js";
 import { expect, use as chaiUse, should } from "chai";
@@ -10,7 +11,7 @@ import sinon, { createSandbox } from "sinon";
 chaiUse(chaiAsPromised);
 should();
 
-describe("UserDetailPermissionOperation", () => {
+test.group("UserDetailPermissionOperation", (group) => {
   const userDetailPermissionOperation = new UserDetailPermissionOperation();
 
   let userAggregateStub: sinon.SinonStub;
@@ -19,18 +20,18 @@ describe("UserDetailPermissionOperation", () => {
   let resHandlerStub: sinon.SinonStub;
   let sandbox: sinon.SinonSandbox;
 
-  beforeEach(() => {
+  group.each.setup(() => {
     sandbox = createSandbox();
     userAggregateStub = sandbox.stub(BlStorage.Users, "aggregate");
     userDetailGetStub = sandbox.stub(BlStorage.UserDetails, "get");
     userUpdateStub = sandbox.stub(BlStorage.Users, "update");
     resHandlerStub = sandbox.stub(BlResponseHandler, "sendResponse");
   });
-  afterEach(() => {
+  group.each.teardown(() => {
     sandbox.restore();
   });
 
-  it("should reject if userDetail is not found", () => {
+  test("should reject if userDetail is not found", async () => {
     userDetailGetStub.rejects(new BlError("user-detail not found"));
 
     return expect(
@@ -43,7 +44,7 @@ describe("UserDetailPermissionOperation", () => {
     ).to.eventually.be.rejectedWith(BlError, /user-detail not found/);
   });
 
-  it("should reject if user is not found", () => {
+  test("should reject if user is not found", async () => {
     userDetailGetStub.resolves({
       id: "userDetail1",
       blid: "abcdef",
@@ -64,7 +65,7 @@ describe("UserDetailPermissionOperation", () => {
   const permissions = ["customer", "employee", "manager", "admin"];
 
   for (const permission of permissions) {
-    it(`should reject if blApiRequest.user.permission "${permission}" is lower than user.permission "admin"`, () => {
+    test(`should reject if blApiRequest.user.permission "${permission}" is lower than user.permission "admin"`, async () => {
       userDetailGetStub.resolves({
         id: "userDetail1",
         blid: "abcdef",
@@ -88,7 +89,7 @@ describe("UserDetailPermissionOperation", () => {
     });
   }
 
-  it(`should reject if blApiRequest.user.permission is not "admin" or higher`, () => {
+  test(`should reject if blApiRequest.user.permission is not "admin" or higher`, async () => {
     userDetailGetStub.resolves({
       id: "userDetail1",
       blid: "abcdef",
@@ -108,7 +109,7 @@ describe("UserDetailPermissionOperation", () => {
     ).to.eventually.be.rejectedWith(BlError, "no access to change permission");
   });
 
-  it("should reject if trying to change users own permission", () => {
+  test("should reject if trying to change users own permission", async () => {
     userDetailGetStub.resolves({
       id: "userDetail1",
       blid: "abcdef",
@@ -131,7 +132,7 @@ describe("UserDetailPermissionOperation", () => {
     );
   });
 
-  it("should reject if blApiRequest.data.permission is not a valid permission", () => {
+  test("should reject if blApiRequest.data.permission is not a valid permission", async () => {
     return expect(
       // @ts-expect-error fixme missing params
       userDetailPermissionOperation.run({
@@ -142,7 +143,7 @@ describe("UserDetailPermissionOperation", () => {
     ).to.eventually.be.rejectedWith(BlError);
   });
 
-  it("should reject if userStorage.update rejects", () => {
+  test("should reject if userStorage.update rejects", async () => {
     userDetailGetStub.resolves({
       id: "userDetail1",
       blid: "abcdef",
@@ -163,7 +164,7 @@ describe("UserDetailPermissionOperation", () => {
     ).to.eventually.be.rejectedWith(BlError, "could not update permission");
   });
 
-  it("should resolve", () => {
+  test("should resolve", async () => {
     userDetailGetStub.resolves({
       id: "userDetail1",
       blid: "abcdef",

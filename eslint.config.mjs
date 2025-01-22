@@ -2,6 +2,7 @@
 import eslint from "@eslint/js";
 import nextPlugin from "@next/eslint-plugin-next";
 import eslintConfigPrettier from "eslint-config-prettier";
+import pluginChaiFriendly from "eslint-plugin-chai-friendly";
 import pluginCypress from "eslint-plugin-cypress/flat";
 import importPlugin from "eslint-plugin-import";
 import jsxA11y from "eslint-plugin-jsx-a11y";
@@ -61,6 +62,14 @@ export default tseslint.config(
         },
       ],
       /** */
+    },
+  },
+  {
+    files: ["backend/src/tests/*.ts"],
+    plugins: { "chai-friendly": pluginChaiFriendly },
+    rules: {
+      "@typescript-eslint/no-unused-expressions": "off",
+      "chai-friendly/no-unused-expressions": "error",
     },
   },
   eslintConfigPrettier,

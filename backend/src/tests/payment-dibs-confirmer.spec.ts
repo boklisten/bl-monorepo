@@ -2,6 +2,7 @@ import { PaymentDibsConfirmer } from "@backend/collections/payment/helpers/dibs/
 import { DibsEasyPayment } from "@backend/payment/dibs/dibs-easy-payment/dibs-easy-payment.js";
 import { DibsPaymentService } from "@backend/payment/dibs/dibs-payment.service.js";
 import { BlStorage } from "@backend/storage/bl-storage.js";
+import { test } from "@japa/runner";
 import { BlError } from "@shared/bl-error/bl-error.js";
 import { Order } from "@shared/order/order.js";
 import { Payment } from "@shared/payment/payment.js";
@@ -11,14 +12,14 @@ import sinon, { createSandbox } from "sinon";
 chaiUse(chaiAsPromised);
 should();
 
-describe("PaymentDibsConfirmer", () => {
+test.group("PaymentDibsConfirmer", (group) => {
   const dibsPaymentService = new DibsPaymentService();
   const paymentDibsConfirmer = new PaymentDibsConfirmer(dibsPaymentService);
   let updatePaymentStub: sinon.SinonStub;
   let dibsPaymentFetchStub: sinon.SinonStub;
   let sandbox: sinon.SinonSandbox;
 
-  beforeEach(() => {
+  group.each.setup(() => {
     sandbox = createSandbox();
     dibsPaymentFetchStub = sandbox.stub(
       dibsPaymentService,
@@ -26,100 +27,98 @@ describe("PaymentDibsConfirmer", () => {
     );
     updatePaymentStub = sandbox.stub(BlStorage.Payments, "update");
   });
-  afterEach(() => {
+  group.each.teardown(() => {
     sandbox.restore();
   });
 
-  describe("confirm()", () => {
-    it("should reject if BlStorage.Payments.update rejects", () => {
-      dibsPaymentFetchStub.resolves({
-        orderDetails: { amount: 12000, reference: "order1" },
-        summary: { reservedAmount: 12000 },
-      } as DibsEasyPayment);
+  test("should reject if BlStorage.Payments.update rejects", async () => {
+    dibsPaymentFetchStub.resolves({
+      orderDetails: { amount: 12000, reference: "order1" },
+      summary: { reservedAmount: 12000 },
+    } as DibsEasyPayment);
 
-      const payment = {
-        id: "payment1",
-        info: { paymentId: "dibs1" },
-        amount: 120,
-      } as unknown as Payment;
+    const payment = {
+      id: "payment1",
+      info: { paymentId: "dibs1" },
+      amount: 120,
+    } as unknown as Payment;
 
-      const order = {
-        id: "order1",
-        amount: 120,
-        payments: [payment.id],
-      } as Order;
+    const order = {
+      id: "order1",
+      amount: 120,
+      payments: [payment.id],
+    } as Order;
 
-      updatePaymentStub.rejects(new BlError("could not update payment"));
+    updatePaymentStub.rejects(new BlError("could not update payment"));
 
-      return expect(
-        paymentDibsConfirmer.confirm(order, payment),
-      ).to.eventually.be.rejectedWith(
-        BlError,
-        /payment could not be updated with dibs information/,
-      );
-    });
+    return expect(
+      paymentDibsConfirmer.confirm(order, payment),
+    ).to.eventually.be.rejectedWith(
+      BlError,
+      /payment could not be updated with dibs information/,
+    );
+  });
 
-    it("should reject if dibsEasyPaymentDetails.summary.reservedAmount is not equal to order.amount", () => {
-      dibsPaymentFetchStub.resolves({
-        orderDetails: { amount: 10000, reference: "order1" },
-        summary: { reservedAmount: 10000 },
-      } as DibsEasyPayment);
+  test("should reject if dibsEasyPaymentDetails.summary.reservedAmount is not equal to order.amount", async () => {
+    dibsPaymentFetchStub.resolves({
+      orderDetails: { amount: 10000, reference: "order1" },
+      summary: { reservedAmount: 10000 },
+    } as DibsEasyPayment);
 
-      const payment = {
-        id: "payment1",
-        info: { paymentId: "dibs1" },
-        amount: 110,
-      } as unknown as Payment;
+    const payment = {
+      id: "payment1",
+      info: { paymentId: "dibs1" },
+      amount: 110,
+    } as unknown as Payment;
 
-      const order = {
-        id: "order1",
-        amount: 110,
-        payments: [payment.id],
-      } as Order;
+    const order = {
+      id: "order1",
+      amount: 110,
+      payments: [payment.id],
+    } as Order;
 
-      return expect(
-        paymentDibsConfirmer.confirm(order, payment),
-      ).to.eventually.be.rejectedWith(
-        BlError,
-        /dibsEasyPaymentDetails.summary.reservedAmount "10000" is not equal to payment.amount "11000"/,
-      );
-    });
+    return expect(
+      paymentDibsConfirmer.confirm(order, payment),
+    ).to.eventually.be.rejectedWith(
+      BlError,
+      /dibsEasyPaymentDetails.summary.reservedAmount "10000" is not equal to payment.amount "11000"/,
+    );
+  });
 
-    it("should resolve if payment is valid", () => {
-      dibsPaymentFetchStub.resolves({
-        orderDetails: { amount: 12000, reference: "order1" },
-        summary: { reservedAmount: 12000 },
-      } as DibsEasyPayment);
+  test("should resolve if payment is valid", async () => {
+    dibsPaymentFetchStub.resolves({
+      orderDetails: { amount: 12000, reference: "order1" },
+      summary: { reservedAmount: 12000 },
+    } as DibsEasyPayment);
 
-      updatePaymentStub.resolves({} as Payment);
+    updatePaymentStub.resolves({} as Payment);
 
-      const payment = {
-        id: "payment1",
-        info: { paymentId: "dibs1" },
-        amount: 120,
-      } as unknown as Payment;
+    const payment = {
+      id: "payment1",
+      info: { paymentId: "dibs1" },
+      amount: 120,
+    } as unknown as Payment;
 
-      const order = {
-        id: "order1",
-        amount: 120,
-        payments: [payment.id],
-      } as Order;
+    const order = {
+      id: "order1",
+      amount: 120,
+      payments: [payment.id],
+    } as Order;
 
-      return expect(paymentDibsConfirmer.confirm(order, payment)).to.eventually
-        .be.true;
-    });
+    return expect(paymentDibsConfirmer.confirm(order, payment)).to.eventually.be
+      .true;
   });
 
   /*
 
-      it('should update payment with confirmed true if dibsEasyPayment is valid', done => {
+      test('should update payment with confirmed true if dibsEasyPayment is valid', done => {
         testPayment1.confirmed = false;
 
         paymentHandler
           .confirmPayments(testOrder, testAccessToken)
           .then((payments: Payment[]) => {
-            expect(payments[0].confirmed).to.be.true;
-            done();
+            return expect( payments[0].confirmed).to.be.true;
+            
           });
       });
 

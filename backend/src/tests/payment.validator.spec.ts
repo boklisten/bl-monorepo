@@ -1,5 +1,6 @@
 import { PaymentValidator } from "@backend/collections/payment/helpers/payment.validator.js";
 import { BlStorage } from "@backend/storage/bl-storage.js";
+import { test } from "@japa/runner";
 import { BlError } from "@shared/bl-error/bl-error.js";
 import { Delivery } from "@shared/delivery/delivery.js";
 import { Order } from "@shared/order/order.js";
@@ -11,15 +12,14 @@ import sinon, { createSandbox } from "sinon";
 chaiUse(chaiAsPromised);
 should();
 
-describe("PaymentValidator", () => {
+test.group("PaymentValidator", (group) => {
   const paymentValidator = new PaymentValidator();
-
   let testPayment: Payment;
   let testOrder: Order;
   let testDelivery: Delivery;
   let sandbox: sinon.SinonSandbox;
 
-  beforeEach(() => {
+  group.each.setup(() => {
     testPayment = {
       id: "payment1",
       method: "dibs",
@@ -68,69 +68,62 @@ describe("PaymentValidator", () => {
         : Promise.reject(new BlError("delivery not found"));
     });
   });
-  afterEach(() => {
+  group.each.teardown(() => {
     sandbox.restore();
   });
-  describe("#validate()", () => {
-    it("should reject if payment is undefined", () => {
-      return expect(
-        // @ts-expect-error fixme: auto ignored
-        paymentValidator.validate(undefined),
-      ).to.eventually.be.rejectedWith(BlError, /payment is not defined/);
-    });
 
-    it("should reject if paymentMethod is not valid", () => {
-      testPayment.method = "something" as any;
-      return expect(
-        paymentValidator.validate(testPayment),
-      ).to.eventually.be.rejectedWith(
-        BlError,
-        /payment.method "something" not supported/,
-      );
-    });
+  test("validate() - should reject if payment is undefined", async () => {
+    return expect(
+      // @ts-expect-error fixme: auto ignored
+      paymentValidator.validate(undefined),
+    ).to.eventually.be.rejectedWith(BlError, /payment is not defined/);
+  });
 
-    it("should resolve when payment is valid", () => {
-      return expect(paymentValidator.validate(testPayment)).to.eventually.be
-        .fulfilled;
-    });
+  test("validate() - should reject if paymentMethod is not valid", async () => {
+    return expect(
+      paymentValidator.validate(
+        JSON.parse(
+          JSON.stringify({ method: "something", order: testOrder.id }),
+        ),
+      ),
+    ).to.eventually.be.rejectedWith(
+      BlError,
+      'payment.method "something" not supported',
+    );
+  });
 
-    it("should reject if order is not found", () => {
-      testPayment.order = "orderNotFound";
+  test("validate() - should resolve when payment is valid", async () => {
+    return expect(paymentValidator.validate(testPayment)).to.eventually.be
+      .fulfilled;
+  });
 
-      return expect(paymentValidator.validate(testPayment)).to.be.rejectedWith(
-        BlError,
-        /order not found/,
-      );
-    });
+  test("validate() - should reject if order is not found", async () => {
+    testPayment.order = "orderNotFound";
 
-    context('when paymentMethod is "dibs"', () => {});
+    return expect(paymentValidator.validate(testPayment)).to.be.rejectedWith(
+      BlError,
+      /order not found/,
+    );
+  });
 
-    context('when paymentMethod is "card"', () => {});
+  test("validate() - should reject if order.delivery is not found", async () => {
+    testOrder.delivery = "notFoundDelivery";
 
-    context("when order.delivery is set", () => {
-      it("should reject if order.delivery is not found", () => {
-        testOrder.delivery = "notFoundDelivery";
+    return expect(paymentValidator.validate(testPayment)).to.be.rejectedWith(
+      BlError,
+      /delivery not found/,
+    );
+  });
 
-        return expect(
-          paymentValidator.validate(testPayment),
-        ).to.be.rejectedWith(BlError, /delivery not found/);
-      });
+  test("validate() - should reject if payment.amount is not equal to order.amount + delivery.amount", async () => {
+    testOrder.amount = 200;
+    testPayment.amount = 200;
+    testDelivery.amount = 100;
+    testOrder.delivery = testDelivery.id;
 
-      it("should reject if payment.amount is not equal to order.amount + delivery.amount", () => {
-        testOrder.amount = 200;
-        testPayment.amount = 200;
-        testDelivery.amount = 100;
-        testOrder.delivery = testDelivery.id;
-
-        return expect(
-          paymentValidator.validate(testPayment),
-        ).to.be.rejectedWith(
-          BlError,
-          /payment.amount "200" is not equal to \(order.amount \+ delivery.amount\) "300"/,
-        );
-      });
-    });
-
-    context('when paymentMethod is "later"', () => {});
+    return expect(paymentValidator.validate(testPayment)).to.be.rejectedWith(
+      BlError,
+      /payment.amount "200" is not equal to \(order.amount \+ delivery.amount\) "300"/,
+    );
   });
 });

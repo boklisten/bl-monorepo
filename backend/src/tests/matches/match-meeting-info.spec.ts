@@ -20,6 +20,7 @@ import { expect, use as chaiUse, should } from "chai";
 import chaiAsPromised from "chai-as-promised";
 import sinonChai from "sinon-chai";
 
+import { test } from '@japa/runner'
 chaiUse(chaiAsPromised);
 should();
 chaiUse(sinonChai);
@@ -69,8 +70,8 @@ function printLocationMetrics(matches: MatchWithMeetingInfo[]) {
   console.log(aggregatedLocationInfo);
 }
 
-describe("Simple Matches", () => {
-  it("should be able to assign non overlapping time a simple match setup", () => {
+test.group("Simple Matches", async () => {
+  test("should be able to assign non overlapping time a simple match setup", async () => {
     const matchFinder = new MatchFinder([audun, kristine], [siri, elRi]);
     const matches = matchFinder.generateMatches();
     const standLocation = "Resepsjonen";
@@ -84,7 +85,7 @@ describe("Simple Matches", () => {
     );
   });
 
-  it("should assign users to a stand match time slot right after their final match", () => {
+  test("should assign users to a stand match time slot right after their final match", async () => {
     const matchFinder = new MatchFinder([audun, kristine], [siri]);
     const matches = matchFinder.generateMatches();
     const standLocation = "Resepsjonen";
@@ -113,13 +114,13 @@ describe("Simple Matches", () => {
         );
       const latestUserMatchTime =
         latestUserMatchForStandMatchCustomer.meetingInfo.date.getTime();
-      expect(matchWithMeetingInfo.meetingInfo.date.getTime()).to.eq(
+      return expect( matchWithMeetingInfo.meetingInfo.date.getTime()).to.eq(
         latestUserMatchTime + meetingDuration,
       );
     }
   });
 
-  it("should assign the StandMatch date to startTime if the user only has Stand Matches", () => {
+  test("should assign the StandMatch date to startTime if the user only has Stand Matches", async () => {
     const matchFinder = new MatchFinder([audun], [elRi]);
     const matches = matchFinder.generateMatches();
     const startTime = new Date("2024-06-12T12:00:00+0100");
@@ -131,13 +132,13 @@ describe("Simple Matches", () => {
       900000,
     );
     for (const matchWithMeetingInfo of matchesWithMeetingInfo) {
-      expect(matchWithMeetingInfo.meetingInfo.date.getTime()).to.eq(
+      return expect( matchWithMeetingInfo.meetingInfo.date.getTime()).to.eq(
         startTime.getTime(),
       );
     }
   });
 
-  it("should not be able to be more matches than the location limit at a given time", () => {
+  test("should not be able to be more matches than the location limit at a given time", async () => {
     const senders = createUserGroup("sender", 10, "A", "B", "C");
     const receivers = createUserGroup("receiver", 10, "A", "B", "C");
     const matchFinder = new MatchFinder(senders, receivers);
@@ -170,13 +171,13 @@ describe("Simple Matches", () => {
           meetingTime.getTime() === distinctMeetingTime.getTime(),
       ).length;
 
-      expect(simultaneousMatches).to.be.lessThanOrEqual(simultaneousMatchLimit);
+      return expect( simultaneousMatches).to.be.lessThanOrEqual(simultaneousMatchLimit);
     }
   });
 });
 
-describe("Large User Groups", () => {
-  it("should be able to assign non overlapping time with the Otto Treider test data", () => {
+test.group("Large User Groups", async () => {
+  test("should be able to assign non overlapping time with the Otto Treider test data", async () => {
     const shuffle = shuffler(seededRandom(123982));
     const testUsersYear0: MatchableUser[] = otto_treider_test_users_year_0.map(
       ({ items, id }) => ({ items: new Set(items), id }),

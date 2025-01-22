@@ -2,13 +2,14 @@ import { DeleteUserService } from "@backend/collections/user-detail/helpers/dele
 import { BlStorage } from "@backend/storage/bl-storage.js";
 import { LocalLogin } from "@backend/types/local-login.js";
 import { User } from "@backend/types/user.js";
+import { test } from "@japa/runner";
 import { expect, use as chaiUse, should } from "chai";
 import chaiAsPromised from "chai-as-promised";
 import sinon, { createSandbox } from "sinon";
 chaiUse(chaiAsPromised);
 should();
 
-describe("UserDeleteAllInfo", () => {
+test.group("UserDeleteAllInfo", (group) => {
   const userDeleteAllInfo = new DeleteUserService();
   let localLoginRemoveStub: sinon.SinonStub;
   let localLoginGetByQueryStub: sinon.SinonStub;
@@ -16,7 +17,7 @@ describe("UserDeleteAllInfo", () => {
   let userGetByQueryStub: sinon.SinonStub;
   let sandbox: sinon.SinonSandbox;
 
-  beforeEach(() => {
+  group.each.setup(() => {
     sandbox = createSandbox();
     localLoginRemoveStub = sandbox.stub(BlStorage.LocalLogins, "remove");
     localLoginGetByQueryStub = sandbox.stub(
@@ -26,72 +27,70 @@ describe("UserDeleteAllInfo", () => {
     userRemoveStub = sandbox.stub(BlStorage.Users, "remove");
     userGetByQueryStub = sandbox.stub(BlStorage.Users, "getByQuery");
   });
-  afterEach(() => {
+  group.each.teardown(() => {
     sandbox.restore();
   });
 
-  describe("deleteAllInfo()", () => {
-    it("should call userStorage.remove with correct data", async () => {
-      const userIdToRemove = "5daf2cf19f92d901e41c10d4";
-      const userDetailIdToRemove = "5daf2cf19f92d901e41c10d6";
-      const localLoginIdToRemove = "5daf2cf19f92d901e41c10ff";
+  test("should call userStorage.remove with correct data", async () => {
+    const userIdToRemove = "5daf2cf19f92d901e41c10d4";
+    const userDetailIdToRemove = "5daf2cf19f92d901e41c10d6";
+    const localLoginIdToRemove = "5daf2cf19f92d901e41c10ff";
 
-      userRemoveStub.resolves({} as User);
-      localLoginRemoveStub.resolves({} as LocalLogin);
+    userRemoveStub.resolves({} as User);
+    localLoginRemoveStub.resolves({} as LocalLogin);
 
-      userGetByQueryStub.resolves([
-        { id: userIdToRemove, username: "user@1234.com" } as User,
-      ]);
-      localLoginGetByQueryStub.resolves([
-        { id: localLoginIdToRemove },
-      ] as LocalLogin[]);
+    userGetByQueryStub.resolves([
+      { id: userIdToRemove, username: "user@1234.com" } as User,
+    ]);
+    localLoginGetByQueryStub.resolves([
+      { id: localLoginIdToRemove },
+    ] as LocalLogin[]);
 
-      await userDeleteAllInfo.deleteUser(userDetailIdToRemove);
+    await userDeleteAllInfo.deleteUser(userDetailIdToRemove);
 
-      return expect(userRemoveStub.getCall(0).calledWithMatch(userIdToRemove))
-        .to.be.true;
-    });
+    expect(userRemoveStub.getCall(0).calledWithMatch(userIdToRemove)).to.be
+      .true;
+  });
 
-    it("should call localLoginStorage.remove with correct data", async () => {
-      const userIdToRemove = "5daf2cf19f92d901e41c10d4";
-      const userDetailIdToRemove = "5daf2cf19f92d901e41c10d6";
-      const localLoginIdToRemove = "5daf2cf19f92d901e41c10ff";
+  test("should call localLoginStorage.remove with correct data", async () => {
+    const userIdToRemove = "5daf2cf19f92d901e41c10d4";
+    const userDetailIdToRemove = "5daf2cf19f92d901e41c10d6";
+    const localLoginIdToRemove = "5daf2cf19f92d901e41c10ff";
 
-      userRemoveStub.resolves({} as User);
-      localLoginRemoveStub.resolves({} as LocalLogin);
+    userRemoveStub.resolves({} as User);
+    localLoginRemoveStub.resolves({} as LocalLogin);
 
-      userGetByQueryStub.resolves([
-        { id: userIdToRemove, username: "user@1234.com" } as User,
-      ]);
+    userGetByQueryStub.resolves([
+      { id: userIdToRemove, username: "user@1234.com" } as User,
+    ]);
 
-      localLoginGetByQueryStub.resolves([
-        { id: localLoginIdToRemove },
-      ] as LocalLogin[]);
+    localLoginGetByQueryStub.resolves([
+      { id: localLoginIdToRemove },
+    ] as LocalLogin[]);
 
-      await userDeleteAllInfo.deleteUser(userDetailIdToRemove);
+    await userDeleteAllInfo.deleteUser(userDetailIdToRemove);
 
-      return expect(
-        localLoginRemoveStub.getCall(0).calledWithMatch(localLoginIdToRemove),
-      ).to.be.true;
-    });
+    expect(
+      localLoginRemoveStub.getCall(0).calledWithMatch(localLoginIdToRemove),
+    ).to.be.true;
+  });
 
-    it("should resolve with true if user info was deleted", async () => {
-      const userIdToRemove = "5daf2cf19f92d901e41c10d4";
-      const userDetailIdToRemove = "5daf2cf19f92d901e41c10d6";
-      const localLoginIdToRemove = "5daf2cf19f92d901e41c10ff";
+  test("should resolve with true if user info was deleted", async () => {
+    const userIdToRemove = "5daf2cf19f92d901e41c10d4";
+    const userDetailIdToRemove = "5daf2cf19f92d901e41c10d6";
+    const localLoginIdToRemove = "5daf2cf19f92d901e41c10ff";
 
-      userRemoveStub.resolves({} as User);
-      localLoginRemoveStub.resolves({} as LocalLogin);
+    userRemoveStub.resolves({} as User);
+    localLoginRemoveStub.resolves({} as LocalLogin);
 
-      userGetByQueryStub.resolves([
-        { id: userIdToRemove, username: "user@1234.com" } as User,
-      ]);
-      localLoginGetByQueryStub.resolves([
-        { id: localLoginIdToRemove },
-      ] as LocalLogin[]);
+    userGetByQueryStub.resolves([
+      { id: userIdToRemove, username: "user@1234.com" } as User,
+    ]);
+    localLoginGetByQueryStub.resolves([
+      { id: localLoginIdToRemove },
+    ] as LocalLogin[]);
 
-      return expect(userDeleteAllInfo.deleteUser(userDetailIdToRemove)).to
-        .eventually.be.fulfilled;
-    });
+    return expect(userDeleteAllInfo.deleteUser(userDetailIdToRemove)).to
+      .eventually.be.fulfilled;
   });
 });

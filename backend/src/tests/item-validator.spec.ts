@@ -1,4 +1,5 @@
 import { ItemValidator } from "@backend/collections/order/helpers/order-validator/item-validator/item-validator.js";
+import { test } from "@japa/runner";
 import { BlError } from "@shared/bl-error/bl-error.js";
 import { Item } from "@shared/item/item.js";
 import { OrderItem } from "@shared/order/order-item/order-item.js";
@@ -8,12 +9,12 @@ import chaiAsPromised from "chai-as-promised";
 chaiUse(chaiAsPromised);
 should();
 
-describe("ItemValidator", () => {
+test.group("ItemValidator", (group) => {
   let testItem: Item;
   let testOrderItem: OrderItem;
   const itemValidator: ItemValidator = new ItemValidator();
 
-  beforeEach(() => {
+  group.each.setup(() => {
     testItem = {
       id: "i1",
       buyback: false,
@@ -46,27 +47,25 @@ describe("ItemValidator", () => {
     };
   });
 
-  describe("#validateWithOrderItem()", () => {
-    it("should return true when using valid orderItem and valid item", () => {
-      expect(itemValidator.validateItemInOrder(testItem, testOrderItem)).to.be
-        .true;
-    });
+  test("should return true when using valid orderItem and valid item", async () => {
+    expect(itemValidator.validateItemInOrder(testItem, testOrderItem)).to.be
+      .true;
+  });
 
-    it("should throw BlError when orderItem.item is not the same as item.id", () => {
-      testItem.id = "notarealId";
-      testOrderItem.item = "i4";
+  test("should throw BlError when orderItem.item is not the same as item.id", async () => {
+    testItem.id = "notarealId";
+    testOrderItem.item = "i4";
 
-      expect(() => {
-        itemValidator.validateItemInOrder(testItem, testOrderItem);
-      }).to.throw(BlError);
-    });
+    expect(() => {
+      itemValidator.validateItemInOrder(testItem, testOrderItem);
+    }).to.throw(BlError);
+  });
 
-    it("should throw error when item.actve is false", () => {
-      testItem.active = false;
+  test("should throw error when item.actve is false", async () => {
+    testItem.active = false;
 
-      expect(() => {
-        itemValidator.validateItemInOrder(testItem, testOrderItem);
-      }).to.throw(BlError, /item.active is false/);
-    });
+    expect(() => {
+      itemValidator.validateItemInOrder(testItem, testOrderItem);
+    }).to.throw(BlError, /item.active is false/);
   });
 });

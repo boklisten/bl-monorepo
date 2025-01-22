@@ -2,6 +2,7 @@ import { UserDetailValidOperation } from "@backend/collections/user-detail/opera
 import BlResponseHandler from "@backend/response/bl-response.handler.js";
 import { BlStorage } from "@backend/storage/bl-storage.js";
 import { BlApiRequest } from "@backend/types/bl-api-request.js";
+import { test } from "@japa/runner";
 import { BlError } from "@shared/bl-error/bl-error.js";
 import { BlapiResponse } from "@shared/blapi-response/blapi-response.js";
 import { UserDetail } from "@shared/user/user-detail/user-detail.js";
@@ -12,7 +13,7 @@ import sinon, { createSandbox } from "sinon";
 chaiUse(chaiAsPromised);
 should();
 
-describe("UserDetailValidOperation", () => {
+test.group("UserDetailValidOperation", (group) => {
   const userDetailValidOperation = new UserDetailValidOperation();
 
   let testUserDetail: UserDetail;
@@ -20,201 +21,167 @@ describe("UserDetailValidOperation", () => {
   let resHandlerSendErrorResponseStub: sinon.SinonStub;
   let sandbox: sinon.SinonSandbox;
 
-  describe("#run", () => {
-    beforeEach(() => {
-      sandbox = createSandbox();
-      sandbox.stub(BlStorage.UserDetails, "get").callsFake((id) => {
-        if (id !== testUserDetail.id) {
-          return Promise.reject(new BlError(`userDetail "${id}" not found`));
-        }
+  group.each.setup(() => {
+    sandbox = createSandbox();
+    sandbox.stub(BlStorage.UserDetails, "get").callsFake((id) => {
+      if (id !== testUserDetail.id) {
+        return Promise.reject(new BlError(`userDetail "${id}" not found`));
+      }
 
-        return Promise.resolve(testUserDetail);
-      });
-
-      resHandlerSendResponseStub = sandbox
-        .stub(BlResponseHandler, "sendResponse")
-        .callsFake(() => {});
-
-      resHandlerSendErrorResponseStub = sandbox
-        .stub(BlResponseHandler, "sendErrorResponse")
-        .callsFake(() => {});
-    });
-    afterEach(() => {
-      sandbox.restore();
+      return Promise.resolve(testUserDetail);
     });
 
-    it("should reject if userDetail is not found", (done) => {
-      testUserDetail = {
-        id: "userDetail1",
-      } as UserDetail;
+    resHandlerSendResponseStub = sandbox.stub(
+      BlResponseHandler,
+      "sendResponse",
+    );
 
-      const blApiRequest = {
-        documentId: "notFoundUserDetail",
-      };
+    resHandlerSendErrorResponseStub = sandbox.stub(
+      BlResponseHandler,
+      "sendErrorResponse",
+    );
+    testUserDetail = {
+      id: "userDetail1",
+      name: "Freddy Mercury",
+      email: "freddy@blapi.co",
+      phone: "12345678",
+      address: "Star road 1",
+      postCode: "0123",
+      postCity: "LONDON",
+      country: "ENGLAND",
+      dob: new Date(1946, 9, 5),
+      branch: "branch1",
+      emailConfirmed: true,
+      signatures: [],
+      blid: "",
+    };
+  });
+  group.each.teardown(() => {
+    sandbox.restore();
+  });
 
-      userDetailValidOperation
+  test("should reject if userDetail is not found", async () => {
+    testUserDetail = {
+      id: "userDetail1",
+    } as UserDetail;
+
+    const blApiRequest = {
+      documentId: "notFoundUserDetail",
+    };
+
+    userDetailValidOperation
+
+      // @ts-expect-error fixme: auto ignored
+      .run(blApiRequest, null, null)
+      .catch((blError: BlError) => {
+        expect(resHandlerSendErrorResponseStub).to.have.been.called;
+
+        expect(blError.getMsg()).to.be.eql("userDetail could not be validated");
 
         // @ts-expect-error fixme: auto ignored
-        .run(blApiRequest, null, null)
-        .catch((blError: BlError) => {
-          expect(resHandlerSendErrorResponseStub).to.have.been.called;
+        return expect(blError.errorStack[0].getMsg()).to.be.eql(
+          `userDetail "notFoundUserDetail" not found`,
+        );
+      });
+  });
 
-          expect(blError.getMsg()).to.be.eql(
-            "userDetail could not be validated",
-          );
+  test("should send response with {valid: true}", async () => {
+    const blApiRequest = {
+      documentId: "userDetail1",
+    };
 
-          // @ts-expect-error fixme: auto ignored
-          expect(blError.errorStack[0].getMsg()).to.be.eql(
-            `userDetail "notFoundUserDetail" not found`,
-          );
-          done();
-        });
+    // @ts-expect-error fixme: auto ignored
+    userDetailValidOperation.run(blApiRequest, null, null).then(() => {
+      return expect(resHandlerSendResponseStub).to.have.been.calledWith(
+        null,
+        new BlapiResponse([{ valid: true }]),
+      );
     });
+  });
 
-    context("when user detail is valid", () => {
-      beforeEach(() => {
-        testUserDetail = {
-          id: "userDetail1",
-          name: "Freddy Mercury",
-          email: "freddy@blapi.co",
-          phone: "12345678",
-          address: "Star road 1",
-          postCode: "0123",
-          postCity: "LONDON",
-          country: "ENGLAND",
-          dob: new Date(1946, 9, 5),
-          branch: "branch1",
-          emailConfirmed: true,
-          signatures: [],
-          blid: "",
-        };
-      });
+  test("should resolve with valid false if name is not defined", async () => {
+    testUserDetail.name = "";
+    const blApiRequest: BlApiRequest = {
+      documentId: "userDetail1",
+    };
 
-      it("should send response with {valid: true}", (done) => {
-        const blApiRequest = {
-          documentId: "userDetail1",
-        };
-
-        // @ts-expect-error fixme: auto ignored
-        userDetailValidOperation.run(blApiRequest, null, null).then(() => {
-          expect(resHandlerSendResponseStub).to.have.been.calledWith(
-            null,
-            new BlapiResponse([{ valid: true }]),
-          );
-
-          done();
-        });
-      });
+    // @ts-expect-error fixme: auto ignored
+    userDetailValidOperation.run(blApiRequest, null, null).then(() => {
+      return expect(resHandlerSendResponseStub).to.have.been.calledWith(
+        null,
+        new BlapiResponse([{ valid: false, invalidFields: ["name"] }]),
+      );
     });
+  });
 
-    context("when user detail is not valid", () => {
-      beforeEach(() => {
-        testUserDetail = {
-          id: "userDetail1",
-          name: "Freddy Mercury",
-          email: "freddy@blapi.co",
-          phone: "12345678",
-          address: "Star road 1",
-          postCode: "0123",
-          postCity: "LONDON",
-          country: "ENGLAND",
-          dob: new Date(1946, 9, 5),
-          branch: "branch1",
-          emailConfirmed: true,
-          signatures: [],
-          blid: "",
-        };
-      });
+  test("should resolve with valid false if address and postCode is not defined", async () => {
+    testUserDetail.address = "";
 
-      it("should resolve with valid false if name is not defined", (done) => {
-        testUserDetail.name = "";
-        const blApiRequest: BlApiRequest = {
-          documentId: "userDetail1",
-        };
+    // @ts-expect-error fixme: auto ignored
+    testUserDetail.postCode = null;
+    const blApiRequest: BlApiRequest = {
+      documentId: "userDetail1",
+    };
 
-        // @ts-expect-error fixme: auto ignored
-        userDetailValidOperation.run(blApiRequest, null, null).then(() => {
-          expect(resHandlerSendResponseStub).to.have.been.calledWith(
-            null,
-            new BlapiResponse([{ valid: false, invalidFields: ["name"] }]),
-          );
-          done();
-        });
-      });
+    // @ts-expect-error fixme: auto ignored
+    userDetailValidOperation.run(blApiRequest, null, null).then(() => {
+      return expect(resHandlerSendResponseStub).to.have.been.calledWith(
+        null,
+        new BlapiResponse([
+          { valid: false, invalidFields: ["address", "postCode"] },
+        ]),
+      );
+    });
+  });
 
-      it("should resolve with valid false if address and postCode is not defined", (done) => {
-        testUserDetail.address = "";
+  test("should resolve with valid false if postCity and phone is not defined", async () => {
+    testUserDetail.postCity = "";
 
-        // @ts-expect-error fixme: auto ignored
-        testUserDetail.postCode = null;
-        const blApiRequest: BlApiRequest = {
-          documentId: "userDetail1",
-        };
+    // @ts-expect-error fixme: auto ignored
+    testUserDetail.phone = undefined;
+    const blApiRequest: BlApiRequest = {
+      documentId: "userDetail1",
+    };
 
-        // @ts-expect-error fixme: auto ignored
-        userDetailValidOperation.run(blApiRequest, null, null).then(() => {
-          expect(resHandlerSendResponseStub).to.have.been.calledWith(
-            null,
-            new BlapiResponse([
-              { valid: false, invalidFields: ["address", "postCode"] },
-            ]),
-          );
-          done();
-        });
-      });
-
-      it("should resolve with valid false if postCity and phone is not defined", (done) => {
-        testUserDetail.postCity = "";
-
-        // @ts-expect-error fixme: auto ignored
-        testUserDetail.phone = undefined;
-        const blApiRequest: BlApiRequest = {
-          documentId: "userDetail1",
-        };
-
-        // @ts-expect-error fixme: auto ignored
-        userDetailValidOperation.run(blApiRequest, null, null).then(() => {
-          expect(resHandlerSendResponseStub).to.have.been.calledWith(
-            null,
-            new BlapiResponse([
-              { valid: false, invalidFields: ["postCity", "phone"] },
-            ]),
-          );
-          done();
-        });
-      });
-      /*
-			it('should resolve with valid false if emailConfirmed is not true', (done) => {
+    // @ts-expect-error fixme: auto ignored
+    userDetailValidOperation.run(blApiRequest, null, null).then(() => {
+      return expect(resHandlerSendResponseStub).to.have.been.calledWith(
+        null,
+        new BlapiResponse([
+          { valid: false, invalidFields: ["postCity", "phone"] },
+        ]),
+      );
+    });
+  });
+  /*
+			test('should resolve with valid false if emailConfirmed is not true', async () => {
 				testUserDetail.emailConfirmed = false;
 				let blApiRequest: BlApiRequest = {
 					documentId: 'userDetail1'
 				};
 
 				userDetailValidOperation.run(blApiRequest, null, null).then(() => {
-					expect(resHandlerSendResponseStub)
+					return expect( resHandlerSendResponseStub)
 						.to.have.been
 						.calledWith(null, new BlapiResponse([{valid: false, invalidFields: ['emailConfirmed']}]));
-					done();
+
 				})
 			});
       */
 
-      it("should resolve with valid false if dob is not defined", (done) => {
-        // @ts-expect-error fixme: auto ignored
-        testUserDetail.dob = undefined;
-        const blApiRequest: BlApiRequest = {
-          documentId: "userDetail1",
-        };
+  test("should resolve with valid false if dob is not defined", async () => {
+    // @ts-expect-error fixme: auto ignored
+    testUserDetail.dob = undefined;
+    const blApiRequest: BlApiRequest = {
+      documentId: "userDetail1",
+    };
 
-        // @ts-expect-error fixme: auto ignored
-        userDetailValidOperation.run(blApiRequest, null, null).then(() => {
-          expect(resHandlerSendResponseStub).to.have.been.calledWith(
-            null,
-            new BlapiResponse([{ valid: false, invalidFields: ["dob"] }]),
-          );
-          done();
-        });
-      });
+    // @ts-expect-error fixme: auto ignored
+    userDetailValidOperation.run(blApiRequest, null, null).then(() => {
+      return expect(resHandlerSendResponseStub).to.have.been.calledWith(
+        null,
+        new BlapiResponse([{ valid: false, invalidFields: ["dob"] }]),
+      );
     });
   });
 });

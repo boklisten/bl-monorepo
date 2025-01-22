@@ -4,6 +4,7 @@ import { OrderPlacedValidator } from "@backend/collections/order/helpers/order-v
 import { OrderUserDetailValidator } from "@backend/collections/order/helpers/order-validator/order-user-detail-validator/order-user-detail-validator.js";
 import { OrderValidator } from "@backend/collections/order/helpers/order-validator/order-validator.js";
 import { BlStorage } from "@backend/storage/bl-storage.js";
+import { test } from "@japa/runner";
 import { BlError } from "@shared/bl-error/bl-error.js";
 import { Branch } from "@shared/branch/branch.js";
 import { Order } from "@shared/order/order.js";
@@ -14,7 +15,7 @@ import sinon, { createSandbox } from "sinon";
 chaiUse(chaiAsPromised);
 should();
 
-describe("OrderValidator", () => {
+test.group("OrderValidator", (group) => {
   let testOrder: Order;
   let testBranch: Branch;
 
@@ -39,7 +40,7 @@ describe("OrderValidator", () => {
   // @ts-expect-error fixme: auto ignored
   let orderUserDetailValidatorShouldResolve;
   let sandbox: sinon.SinonSandbox;
-  beforeEach(() => {
+  group.each.setup(() => {
     sandbox = createSandbox();
     sandbox.stub(BlStorage.Branches, "get").callsFake((id) => {
       if (id !== testBranch.id) {
@@ -49,7 +50,7 @@ describe("OrderValidator", () => {
       return Promise.resolve(testBranch);
     });
 
-    sandbox.stub(orderItemValidator, "validate").callsFake((order) => {
+    sandbox.stub(orderItemValidator, "validate").callsFake(() => {
       // @ts-expect-error fixme: auto ignored
       if (!orderItemShouldResolve) {
         return Promise.reject(new BlError("orderItems not valid"));
@@ -57,7 +58,7 @@ describe("OrderValidator", () => {
       return Promise.resolve(true);
     });
 
-    sandbox.stub(orderPlacedValidator, "validate").callsFake((order: Order) => {
+    sandbox.stub(orderPlacedValidator, "validate").callsFake(() => {
       // @ts-expect-error fixme: auto ignored
       if (!orderPlacedShouldResolve) {
         return Promise.reject(new BlError("validation of order.placed failed"));
@@ -65,83 +66,15 @@ describe("OrderValidator", () => {
       return Promise.resolve(true);
     });
 
-    sandbox
-      .stub(orderUserDetailValidator, "validate")
-      .callsFake((order: Order) => {
-        // @ts-expect-error fixme: auto ignored
-        if (!orderUserDetailValidatorShouldResolve) {
-          return Promise.reject(new BlError("validation of UserDetail failed"));
-        }
-
-        return Promise.resolve(true);
-      });
-  });
-  afterEach(() => {
-    sandbox.restore();
-  });
-
-  describe("#validate()", () => {
-    it("should reject if amount is null or undefined", () => {
+    sandbox.stub(orderUserDetailValidator, "validate").callsFake(() => {
       // @ts-expect-error fixme: auto ignored
-      testOrder.amount = undefined;
-      return expect(
-        orderValidator.validate(testOrder, false),
-      ).to.eventually.be.rejectedWith(BlError, /order.amount is undefined/);
+      if (!orderUserDetailValidatorShouldResolve) {
+        return Promise.reject(new BlError("validation of UserDetail failed"));
+      }
+
+      return Promise.resolve(true);
     });
 
-    it("should reject if branch is not found", () => {
-      testOrder.branch = "notFoundBranch";
-
-      return expect(
-        orderValidator.validate(testOrder, false),
-      ).to.be.rejectedWith(BlError, "not found");
-    });
-
-    it("should reject if orderItems is empty or undefined", () => {
-      testOrder.orderItems = [];
-      return expect(
-        orderValidator.validate(testOrder, false),
-      ).to.eventually.be.rejectedWith(
-        BlError,
-        /order.orderItems is empty or undefined/,
-      );
-    });
-
-    context("when orderItemValidator rejects", () => {
-      it("should reject with error", () => {
-        orderItemShouldResolve = false;
-
-        return expect(
-          orderValidator.validate(testOrder, false),
-        ).to.eventually.be.rejectedWith(BlError, /orderItems not valid/);
-      });
-    });
-
-    context("when orderPlacedValidator rejects", () => {
-      it("should reject with error", () => {
-        orderPlacedShouldResolve = false;
-
-        return expect(
-          orderValidator.validate(testOrder, false),
-        ).to.eventually.be.rejectedWith(
-          BlError,
-          /validation of order.placed failed/,
-        );
-      });
-    });
-
-    context("when orderUserDetailValidator rejects", () => {
-      it("should reject with error", () => {
-        orderUserDetailValidatorShouldResolve = false;
-
-        return expect(
-          orderValidator.validate(testOrder, false),
-        ).to.be.rejectedWith(BlError, /validation of UserDetail failed/);
-      });
-    });
-  });
-
-  beforeEach(() => {
     orderItemShouldResolve = true;
     orderPlacedShouldResolve = true;
     orderUserDetailValidatorShouldResolve = true;
@@ -201,5 +134,63 @@ describe("OrderValidator", () => {
         },
       },
     };
+  });
+  group.each.teardown(() => {
+    sandbox.restore();
+  });
+
+  test("should reject if amount is null or undefined", async () => {
+    // @ts-expect-error fixme: auto ignored
+    testOrder.amount = undefined;
+    return expect(
+      orderValidator.validate(testOrder, false),
+    ).to.eventually.be.rejectedWith(BlError, /order.amount is undefined/);
+  });
+
+  test("should reject if branch is not found", async () => {
+    testOrder.branch = "notFoundBranch";
+
+    return expect(orderValidator.validate(testOrder, false)).to.be.rejectedWith(
+      BlError,
+      "not found",
+    );
+  });
+
+  test("should reject if orderItems is empty or undefined", async () => {
+    testOrder.orderItems = [];
+    return expect(
+      orderValidator.validate(testOrder, false),
+    ).to.eventually.be.rejectedWith(
+      BlError,
+      /order.orderItems is empty or undefined/,
+    );
+  });
+
+  test("should reject with error", async () => {
+    orderItemShouldResolve = false;
+
+    return expect(
+      orderValidator.validate(testOrder, false),
+    ).to.eventually.be.rejectedWith(BlError, /orderItems not valid/);
+  });
+
+  test("should reject with error", async () => {
+    orderPlacedShouldResolve = false;
+
+    return expect(
+      orderValidator.validate(testOrder, false),
+    ).to.eventually.be.rejectedWith(
+      BlError,
+      /validation of order.placed failed/,
+    );
+  });
+
+  test("should reject with error", async () => {
+    orderUserDetailValidatorShouldResolve = false;
+
+    return expect(orderValidator.validate(testOrder, false)).to.be.rejectedWith(
+      BlError,
+      /validation of UserDetail failed/,
+    );
   });
 });

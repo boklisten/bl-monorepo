@@ -1,5 +1,6 @@
 import { OrderUserDetailValidator } from "@backend/collections/order/helpers/order-validator/order-user-detail-validator/order-user-detail-validator.js";
 import { BlStorage } from "@backend/storage/bl-storage.js";
+import { test } from "@japa/runner";
 import { BlError } from "@shared/bl-error/bl-error.js";
 import { Order } from "@shared/order/order.js";
 import { UserDetail } from "@shared/user/user-detail/user-detail.js";
@@ -10,13 +11,13 @@ import sinon, { createSandbox } from "sinon";
 chaiUse(chaiAsPromised);
 should();
 
-describe("OrderUserDetailValidator", () => {
+test.group("OrderUserDetailValidator", (group) => {
   const orderUserDetailValidator = new OrderUserDetailValidator();
   let testOrder: Order;
   let testUserDetail: UserDetail;
 
   let sandbox: sinon.SinonSandbox;
-  beforeEach(() => {
+  group.each.setup(() => {
     testOrder = {
       id: "order1",
       customer: "userDetail1",
@@ -35,24 +36,22 @@ describe("OrderUserDetailValidator", () => {
       return Promise.resolve(testUserDetail);
     });
   });
-  afterEach(() => {
+  group.each.teardown(() => {
     sandbox.restore();
   });
 
-  describe("#validate", () => {
-    it("should reject if userDetail is not found", (done) => {
-      testOrder.customer = "notFound";
+  test("should reject if userDetail is not found", async () => {
+    testOrder.customer = "notFound";
 
-      orderUserDetailValidator.validate(testOrder).catch((err: BlError) => {
-        // @ts-expect-error fixme: auto ignored
-        expect(err.errorStack[0].getMsg()).to.be.eq("could not get userDetail");
-        done();
-      });
+    orderUserDetailValidator.validate(testOrder).catch(async (err: BlError) => {
+      // @ts-expect-error fixme: auto ignored
+      return expect(err.errorStack[0].getMsg()).to.be.eq(
+        "could not get userDetail",
+      );
     });
+  });
 
-    it("should resolve if userDetail is valid", () => {
-      return expect(orderUserDetailValidator.validate(testOrder)).to.be
-        .fulfilled;
-    });
+  test("should resolve if userDetail is valid", async () => {
+    return expect(orderUserDetailValidator.validate(testOrder)).to.be.fulfilled;
   });
 });

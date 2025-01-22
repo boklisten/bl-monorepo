@@ -2,6 +2,7 @@ import {
   UserDetailUpdateHook,
   UserDetailPatch,
 } from "@backend/collections/user-detail/hooks/user-detail-update.hook.js";
+import { test } from "@japa/runner";
 import { AccessToken } from "@shared/token/access-token.js";
 import { assert, use as chaiUse, should } from "chai";
 import chaiAsPromised from "chai-as-promised";
@@ -12,10 +13,10 @@ should();
 const customerAccessToken = { permission: "customer" } as AccessToken;
 const adminAccessToken = { permission: "admin" } as AccessToken;
 
-describe("UserDetailUpdateHook", () => {
+test.group("UserDetailUpdateHook", async () => {
   const userDetailUpdateHook = new UserDetailUpdateHook();
 
-  it("should do proper capitalization with latin letters", async () => {
+  test("should do proper capitalization with latin letters", async () => {
     const body: UserDetailPatch = {
       name: "siri matheus berge",
       address: "portalgata 15c",
@@ -30,7 +31,7 @@ describe("UserDetailUpdateHook", () => {
     assert.deepEqual(result, expected);
   });
 
-  it("should do proper capitalization and spacing with Norwegian letters", async () => {
+  test("should do proper capitalization and spacing with Norwegian letters", async () => {
     const body: UserDetailPatch = {
       name: "        TOR åGE       bRingsVær       ",
       address: "øygatÆn     ",
@@ -45,7 +46,7 @@ describe("UserDetailUpdateHook", () => {
     assert.deepEqual(result, expected);
   });
 
-  it("should do proper capitalization on exotic characters", async () => {
+  test("should do proper capitalization on exotic characters", async () => {
     const body: UserDetailPatch = {
       name: "İgiorİ ßißßa",
       address: "łFEłŁlo 12ł",
@@ -60,7 +61,7 @@ describe("UserDetailUpdateHook", () => {
     assert.deepEqual(result, expected);
   });
 
-  it("should capitalize each part of hyphenated names", async () => {
+  test("should capitalize each part of hyphenated names", async () => {
     const body: UserDetailPatch = {
       name: "john maYor-taylor",
       address: "johnson st  2",
@@ -75,7 +76,7 @@ describe("UserDetailUpdateHook", () => {
     assert.deepEqual(result, expected);
   });
 
-  it("should disallow email-confirmed status change by customer", async () => {
+  test("should disallow email-confirmed status change by customer", async () => {
     const body: UserDetailPatch = {
       emailConfirmed: true,
     };
@@ -84,7 +85,7 @@ describe("UserDetailUpdateHook", () => {
     );
   });
 
-  it("should allow email-confirmed status change by admin", async () => {
+  test("should allow email-confirmed status change by admin", async () => {
     const body: UserDetailPatch = {
       emailConfirmed: true,
     };
@@ -95,7 +96,7 @@ describe("UserDetailUpdateHook", () => {
     assert.deepEqual(result, expected);
   });
 
-  it("should allow patch by customer", async () => {
+  test("should allow patch by customer", async () => {
     const body: UserDetailPatch = {
       name: "1",
       postCode: "3",
@@ -109,7 +110,7 @@ describe("UserDetailUpdateHook", () => {
     assert.deepEqual(result, expected);
   });
 
-  it("should error on wrongly-typed field", async () => {
+  test("should error on wrongly-typed field", async () => {
     const properties: (keyof UserDetailPatch)[] = [
       "name",
       "address",

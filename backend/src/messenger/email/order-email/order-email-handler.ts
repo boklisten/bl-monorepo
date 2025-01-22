@@ -22,8 +22,6 @@ import moment from "moment-timezone";
 
 export class OrderEmailHandler {
   private defaultCurrency = "NOK";
-
-  private standardDayFormat = "DD.MM.YY";
   private standardTimeFormat = "DD.MM.YYYY HH.mm.ss";
   private localeSetting = "nb";
   private noPaymentNoticeText =

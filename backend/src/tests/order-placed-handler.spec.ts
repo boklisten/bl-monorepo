@@ -4,6 +4,7 @@ import { OrderPlacedHandler } from "@backend/collections/order/helpers/order-pla
 import { PaymentHandler } from "@backend/collections/payment/helpers/payment-handler.js";
 import Messenger from "@backend/messenger/messenger.js";
 import { BlStorage } from "@backend/storage/bl-storage.js";
+import { test } from "@japa/runner";
 import { BlError } from "@shared/bl-error/bl-error.js";
 import { Order } from "@shared/order/order.js";
 import { Payment } from "@shared/payment/payment.js";
@@ -16,7 +17,7 @@ import sinon, { createSandbox } from "sinon";
 chaiUse(chaiAsPromised);
 should();
 
-describe("OrderPlacedHandler", () => {
+test.group("OrderPlacedHandler", (group) => {
   let testOrder: Order;
   let testPayment: Payment;
   let paymentsConfirmed: boolean;
@@ -35,7 +36,7 @@ describe("OrderPlacedHandler", () => {
   );
 
   let sandbox: sinon.SinonSandbox;
-  beforeEach(() => {
+  group.each.setup(() => {
     sandbox = createSandbox();
 
     sandbox
@@ -174,76 +175,72 @@ describe("OrderPlacedHandler", () => {
       blid: "",
     };
   });
-  afterEach(() => {
+  group.each.teardown(() => {
     sandbox.restore();
   });
 
-  describe("#placeOrder()", () => {
-    it("should reject if order could not be updated with confirm true", (done) => {
-      orderUpdate = false;
+  test("should reject if order could not be updated with confirm true", async () => {
+    orderUpdate = false;
 
-      orderPlacedHandler
-        .placeOrder(testOrder, testAccessToken)
-        .catch((err: BlError) => {
-          // @ts-expect-error fixme: auto ignored
-          expect(err.errorStack[0].getMsg()).to.be.eq("could not update order");
-
-          done();
-        });
-    });
-
-    it("should reject if paymentHandler.confirmPayments rejects", (done) => {
-      paymentsConfirmed = false;
-
-      orderPlacedHandler
-        .placeOrder(testOrder, testAccessToken)
-        .catch((err: BlError) => {
-          // @ts-expect-error fixme: auto ignored
-          expect(err.errorStack[0].getMsg()).to.be.eq(
-            "could not confirm payments",
-          );
-          done();
-        });
-    });
-
-    it("should reject if order.customer is not found", async () => {
-      testOrder.customer = "notFoundUserDetails";
-
-      try {
-        return await orderPlacedHandler.placeOrder(testOrder, testAccessToken);
-      } catch (e) {
+    orderPlacedHandler
+      .placeOrder(testOrder, testAccessToken)
+      .catch((err: BlError) => {
         // @ts-expect-error fixme: auto ignored
-        return expect(e.errorStack[0].getMsg()).to.eq("user detail not found");
-      }
-    });
+        return expect(err.errorStack[0].getMsg()).to.be.eq(
+          "could not update order",
+        );
+      });
+  });
 
-    it("should reject if userDetailStorage.updates rejects", (done) => {
-      userDeatilUpdate = false;
+  test("should reject if paymentHandler.confirmPayments rejects", async () => {
+    paymentsConfirmed = false;
 
-      orderPlacedHandler
-        .placeOrder(testOrder, testAccessToken)
-        .catch((err: BlError) => {
-          // @ts-expect-error fixme: auto ignored
-          expect(err.errorStack[0].getMsg()).to.be.eq(
-            "could not update userDetail with placed order",
-          );
-          done();
-        });
-    });
+    orderPlacedHandler
+      .placeOrder(testOrder, testAccessToken)
+      .catch((err: BlError) => {
+        // @ts-expect-error fixme: auto ignored
+        return expect(err.errorStack[0].getMsg()).to.be.eq(
+          "could not confirm payments",
+        );
+      });
+  });
 
-    //it('should reject if userDetail.emailConfirmed is false', (done) => {
-    //testUserDetail.emailConfirmed = false;
+  test("should reject if order.customer is not found", async () => {
+    testOrder.customer = "notFoundUserDetails";
 
-    //orderPlacedHandler.placeOrder(testOrder, testAccessToken).catch((err: BlError) => {
-    //expect(err.errorStack[0].getMsg())
-    //.to.be.eq('userDetail.emailConfirmed is not true');
-    //done();
-    //})
-    /*});*/
+    try {
+      await orderPlacedHandler.placeOrder(testOrder, testAccessToken);
+    } catch (e) {
+      // @ts-expect-error fixme: auto ignored
+      expect(e.errorStack[0].getMsg()).to.eq("user detail not found");
+    }
+  });
 
-    it("should resolve when order was placed", () => {
-      return expect(orderPlacedHandler.placeOrder(testOrder, testAccessToken))
-        .to.be.fulfilled;
-    });
+  test("should reject if userDetailStorage.updates rejects", async () => {
+    userDeatilUpdate = false;
+
+    orderPlacedHandler
+      .placeOrder(testOrder, testAccessToken)
+      .catch((err: BlError) => {
+        // @ts-expect-error fixme: auto ignored
+        return expect(err.errorStack[0].getMsg()).to.be.eq(
+          "could not update userDetail with placed order",
+        );
+      });
+  });
+
+  //test('should reject if userDetail.emailConfirmed is false', async () => {
+  //testUserDetail.emailConfirmed = false;
+
+  //orderPlacedHandler.placeOrder(testOrder, testAccessToken).catch((err: BlError) => {
+  //return expect( err.errorStack[0].getMsg())
+  //.to.be.eq('userDetail.emailConfirmed is not true');
+  //
+  //})
+  /*});*/
+
+  test("should resolve when order was placed", async () => {
+    return expect(orderPlacedHandler.placeOrder(testOrder, testAccessToken)).to
+      .be.fulfilled;
   });
 });

@@ -1,5 +1,6 @@
 import TokenHandler from "@backend/auth/token/token.handler.js";
 import UserHandler from "@backend/auth/user/user.handler.js";
+import { test } from "@japa/runner";
 import { BlError } from "@shared/bl-error/bl-error.js";
 import { use as chaiUse, should } from "chai";
 import chaiAsPromised from "chai-as-promised";
@@ -8,6 +9,7 @@ import sinon, { createSandbox } from "sinon";
 chaiUse(chaiAsPromised);
 should();
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const testUser: any = {
   id: "abc",
   username: "bill@clintonisugly.com",
@@ -21,9 +23,9 @@ const testUser: any = {
   valid: true,
 };
 
-describe("TokenHandler", () => {
+test.group("TokenHandler", (group) => {
   let sandbox: sinon.SinonSandbox;
-  beforeEach(() => {
+  group.each.setup(() => {
     sandbox = createSandbox();
     sandbox.stub(UserHandler, "getByUsername").callsFake((username: string) => {
       return new Promise((resolve, reject) => {
@@ -38,33 +40,24 @@ describe("TokenHandler", () => {
       return Promise.resolve();
     });
   });
-  afterEach(() => {
+  group.each.teardown(() => {
     sandbox.restore();
   });
 
-  describe("createTokens()", () => {
-    context("when username is not valid", () => {
-      it("should reject with BlError", () => {
-        const username = undefined;
-        return (
-          TokenHandler
-            // @ts-expect-error fixme: auto ignored
-            .createTokens(username)
-            .should.be.rejectedWith(BlError)
-        );
-      });
-    });
+  test("should reject with BlError", async () => {
+    const username = undefined;
+    TokenHandler
+      // @ts-expect-error fixme: auto ignored
+      .createTokens(username)
+      .should.be.rejectedWith(BlError);
+  });
 
-    context("when username is valid", () => {
-      it("should resolve with accessToken and refreshToken", (done) => {
-        TokenHandler.createTokens(testUser.username).then(
-          (tokens: { accessToken: string; refreshToken: string }) => {
-            tokens.accessToken.should.have.length.gte(50);
-            tokens.refreshToken.should.have.length.gte(50);
-            done();
-          },
-        );
-      });
-    });
+  test("should resolve with accessToken and refreshToken", async () => {
+    TokenHandler.createTokens(testUser.username).then(
+      (tokens: { accessToken: string; refreshToken: string }) => {
+        tokens.accessToken.should.have.length.gte(50);
+        tokens.refreshToken.should.have.length.gte(50);
+      },
+    );
   });
 });

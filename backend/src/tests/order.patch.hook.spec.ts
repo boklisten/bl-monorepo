@@ -2,6 +2,7 @@ import { OrderPlacedHandler } from "@backend/collections/order/helpers/order-pla
 import { OrderValidator } from "@backend/collections/order/helpers/order-validator/order-validator.js";
 import { OrderPatchHook } from "@backend/collections/order/hooks/order.patch.hook.js";
 import { BlStorage } from "@backend/storage/bl-storage.js";
+import { test } from "@japa/runner";
 import { BlError } from "@shared/bl-error/bl-error.js";
 import { Order } from "@shared/order/order.js";
 import { AccessToken } from "@shared/token/access-token.js";
@@ -13,12 +14,13 @@ import sinon, { createSandbox } from "sinon";
 chaiUse(chaiAsPromised);
 should();
 
-describe("OrderPatchHook", () => {
+test.group("OrderPatchHook", (group) => {
   const orderValidator = new OrderValidator();
   const orderPlacedHandler = new OrderPlacedHandler();
   const orderPatchHook = new OrderPatchHook(orderValidator, orderPlacedHandler);
 
   let testAccessToken: AccessToken;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   let testRequestBody: any;
   let testOrder: Order;
   let orderUpdated = true;
@@ -28,7 +30,7 @@ describe("OrderPatchHook", () => {
   let orderPlacedConfirmed: boolean;
   let sandbox: sinon.SinonSandbox;
 
-  beforeEach(() => {
+  group.each.setup(() => {
     testRequestBody = {
       placed: true,
     };
@@ -84,26 +86,24 @@ describe("OrderPatchHook", () => {
       return Promise.resolve(testOrder);
     });
 
-    sandbox.stub(orderPlacedHandler, "placeOrder").callsFake((order: Order) => {
+    sandbox.stub(orderPlacedHandler, "placeOrder").callsFake(() => {
       if (!orderPlacedConfirmed) {
         return Promise.reject(new BlError("could not place order"));
       }
       return Promise.resolve({} as Order);
     });
 
-    sandbox
-      .stub(BlStorage.UserDetails, "update")
-      .callsFake((id: string, data: any) => {
-        if (!userDetailUpdated) {
-          return Promise.reject(new BlError("could not update"));
-        }
+    sandbox.stub(BlStorage.UserDetails, "update").callsFake((id, data) => {
+      if (!userDetailUpdated) {
+        return Promise.reject(new BlError("could not update"));
+      }
 
-        if (data["orders"]) {
-          testUserDetail.orders = data["orders"];
-        }
+      if (data["orders"]) {
+        testUserDetail.orders = data["orders"];
+      }
 
-        return Promise.resolve({} as UserDetail);
-      });
+      return Promise.resolve({} as UserDetail);
+    });
 
     sandbox.stub(BlStorage.UserDetails, "get").callsFake((id) => {
       if (id !== testUserDetail.id) {
@@ -112,71 +112,63 @@ describe("OrderPatchHook", () => {
       return Promise.resolve(testUserDetail);
     });
 
-    sandbox
-      .stub(BlStorage.Orders, "update")
-      .callsFake((id: string, data: any) => {
-        if (!orderUpdated) {
-          return Promise.reject("could not update");
-        }
-        return Promise.resolve(testOrder);
-      });
+    sandbox.stub(BlStorage.Orders, "update").callsFake(() => {
+      if (!orderUpdated) {
+        return Promise.reject("could not update");
+      }
+      return Promise.resolve(testOrder);
+    });
 
     sandbox
       .stub(orderValidator, "validate")
 
-      .callsFake((order: Order) => {
+      .callsFake(() => {
         if (!orderValidated) {
           return Promise.reject(new BlError("could not validate"));
         }
         return Promise.resolve(true);
       });
   });
-  afterEach(() => {
+  group.each.teardown(() => {
     sandbox.restore();
   });
 
-  describe("before()", () => {
-    it("should reject if body is empty or undefined", () => {
-      return expect(
-        orderPatchHook.before(undefined, testAccessToken, "order1"),
-      ).to.be.rejectedWith(BlError, /body not defined/);
-    });
-
-    it("should reject if accessToken is empty or undefined", () => {
-      return expect(
-        // @ts-expect-error fixme: auto ignored
-        orderPatchHook.before({ placed: true }, undefined, "order1"),
-      ).to.be.rejectedWith(BlError, /accessToken not defined/);
-    });
-
-    it("should reject if id is not defined", () => {
-      return expect(
-        // @ts-expect-error fixme: auto ignored
-        orderPatchHook.before(testRequestBody, testAccessToken, null),
-      ).to.be.rejectedWith(BlError, /id not defined/);
-    });
+  test("should reject if body is empty or undefined", async () => {
+    return expect(
+      orderPatchHook.before(undefined, testAccessToken, "order1"),
+    ).to.be.rejectedWith(BlError, /body not defined/);
   });
 
-  describe("after()", () => {
-    it("should reject if accessToken is not defined", () => {
-      return expect(
-        // @ts-expect-error fixme: auto ignored
-        orderPatchHook.after([testOrder], undefined),
-      ).to.be.rejectedWith(BlError, /accessToken not defined/);
-    });
+  test("should reject if accessToken is empty or undefined", async () => {
+    return expect(
+      // @ts-expect-error fixme: auto ignored
+      orderPatchHook.before({ placed: true }, undefined, "order1"),
+    ).to.be.rejectedWith(BlError, /accessToken not defined/);
+  });
 
-    context("when order.placed is true", () => {
-      beforeEach(() => {
-        testOrder.placed = true;
-      });
+  test("should reject if id is not defined", async () => {
+    return expect(
+      // @ts-expect-error fixme: auto ignored
+      orderPatchHook.before(testRequestBody, testAccessToken, null),
+    ).to.be.rejectedWith(BlError, /id not defined/);
+  });
 
-      it("should reject if OrderPlaced.placeOrder rejects", () => {
-        orderPlacedConfirmed = false;
+  test("should reject if accessToken is not defined", async () => {
+    return expect(
+      // @ts-expect-error fixme: auto ignored
+      orderPatchHook.after([testOrder], undefined),
+    ).to.be.rejectedWith(BlError, /accessToken not defined/);
+  });
 
-        return expect(
-          orderPatchHook.after([testOrder], testAccessToken),
-        ).to.be.rejectedWith(BlError, /order could not be placed/);
-      });
-    });
+  test("should reject if OrderPlaced.placeOrder rejects", async ({
+    assert,
+  }) => {
+    testOrder.placed = true;
+    orderPlacedConfirmed = false;
+
+    return assert.rejects(
+      () => orderPatchHook.after([testOrder], testAccessToken),
+      "order could not be placed",
+    );
   });
 });

@@ -3,6 +3,7 @@ import { ConfirmPendingPasswordResetOperation } from "@backend/collections/pendi
 import BlCrypto from "@backend/config/bl-crypto.js";
 import { BlStorage } from "@backend/storage/bl-storage.js";
 import { BlApiRequest } from "@backend/types/bl-api-request.js";
+import { test } from "@japa/runner";
 import { BlError } from "@shared/bl-error/bl-error.js";
 import { PendingPasswordReset } from "@shared/password-reset/pending-password-reset.js";
 import { expect, use as chaiUse, should } from "chai";
@@ -12,7 +13,7 @@ import sinon, { createSandbox } from "sinon";
 chaiUse(chaiAsPromised);
 should();
 
-describe("ConfirmPendingPasswordResetOperation", () => {
+test.group("ConfirmPendingPasswordResetOperation", (group) => {
   const confirmPendingPasswordResetOperation =
     new ConfirmPendingPasswordResetOperation();
   let testBlApiRequest: BlApiRequest;
@@ -23,7 +24,7 @@ describe("ConfirmPendingPasswordResetOperation", () => {
   let tokenHash: string;
   let sandbox: sinon.SinonSandbox;
 
-  beforeEach(async () => {
+  group.each.setup(async () => {
     tokenHash = await BlCrypto.hash(testToken, testSalt);
     testPendingPasswordReset = {
       id: "id",
@@ -66,113 +67,108 @@ describe("ConfirmPendingPasswordResetOperation", () => {
       return Promise.reject(new BlError("could not set password"));
     });
   });
-  afterEach(() => {
+  group.each.teardown(() => {
     sandbox.restore();
   });
 
-  describe("#run", () => {
-    it("should reject if documentId is not found", async () => {
-      testBlApiRequest.documentId = "notFoundPasswordReset";
+  test("should reject if documentId is not found", async () => {
+    testBlApiRequest.documentId = "notFoundPasswordReset";
 
-      await expect(
-        confirmPendingPasswordResetOperation.run(testBlApiRequest),
-      ).to.be.rejectedWith(
-        BlError,
-        /PendingPasswordReset "notFoundPasswordReset" not found/,
-      );
-    });
+    return expect(
+      confirmPendingPasswordResetOperation.run(testBlApiRequest),
+    ).to.be.rejectedWith(
+      BlError,
+      /PendingPasswordReset "notFoundPasswordReset" not found/,
+    );
+  });
 
-    it("should reject if token does not match", async () => {
-      // @ts-expect-error fixme: auto ignored
-      testBlApiRequest.data["resetToken"] = "notAValidToken";
+  test("should reject if token does not match", async () => {
+    // @ts-expect-error fixme: auto ignored
+    testBlApiRequest.data["resetToken"] = "notAValidToken";
 
-      await expect(
-        confirmPendingPasswordResetOperation.run(testBlApiRequest),
-      ).to.be.rejectedWith(
-        BlError,
-        /Invalid password reset attempt: computed token hash does not match stored hash/,
-      );
-    });
+    return expect(
+      confirmPendingPasswordResetOperation.run(testBlApiRequest),
+    ).to.be.rejectedWith(
+      BlError,
+      /Invalid password reset attempt: computed token hash does not match stored hash/,
+    );
+  });
 
-    it("should reject if blApiRequest.data.newPassword is null, empty or undefined", async () => {
-      // @ts-expect-error fixme: auto ignored
-      testBlApiRequest.data["newPassword"] = null;
+  test("should reject if blApiRequest.data.newPassword is null, empty or undefined", async () => {
+    // @ts-expect-error fixme: auto ignored
+    testBlApiRequest.data["newPassword"] = null;
 
-      await expect(
-        confirmPendingPasswordResetOperation.run(testBlApiRequest),
-      ).to.be.rejectedWith(
-        BlError,
-        /blApiRequest.data.newPassword is null, empty or undefined/,
-      );
-    });
+    return expect(
+      confirmPendingPasswordResetOperation.run(testBlApiRequest),
+    ).to.be.rejectedWith(
+      BlError,
+      /blApiRequest.data.newPassword is null, empty or undefined/,
+    );
+  });
 
-    it("should reject if blApiRequest.data.newPassword is under length of 6", async () => {
-      // @ts-expect-error fixme: auto ignored
-      testBlApiRequest.data["newPassword"] = "abcde";
+  test("should reject if blApiRequest.data.newPassword is under length of 6", async () => {
+    // @ts-expect-error fixme: auto ignored
+    testBlApiRequest.data["newPassword"] = "abcde";
 
-      await expect(
-        confirmPendingPasswordResetOperation.run(testBlApiRequest),
-      ).to.be.rejectedWith(
-        BlError,
-        /blApiRequest.data.newPassword is under length of 6/,
-      );
-    });
+    return expect(
+      confirmPendingPasswordResetOperation.run(testBlApiRequest),
+    ).to.be.rejectedWith(
+      BlError,
+      /blApiRequest.data.newPassword is under length of 6/,
+    );
+  });
 
-    it("should reject if PendingPasswordReset is expired", async () => {
-      testPendingPasswordReset.creationTime = new Date();
-      testPendingPasswordReset.creationTime.setDate(
-        testPendingPasswordReset.creationTime.getDate() - 8,
-      );
+  test("should reject if PendingPasswordReset is expired", async () => {
+    testPendingPasswordReset.creationTime = new Date();
+    testPendingPasswordReset.creationTime.setDate(
+      testPendingPasswordReset.creationTime.getDate() - 8,
+    );
 
-      await expect(
-        confirmPendingPasswordResetOperation.run(testBlApiRequest),
-      ).to.be.rejectedWith(BlError, /PendingPasswordReset (.*) expired/);
-    });
+    return expect(
+      confirmPendingPasswordResetOperation.run(testBlApiRequest),
+    ).to.be.rejectedWith(BlError, /PendingPasswordReset (.*) expired/);
+  });
 
-    it("should accept even if PendingPasswordReset is nearing expired", async () => {
-      const date = new Date();
-      date.setDate(date.getDate() - 6);
-      testPendingPasswordReset.creationTime = date;
+  test("should accept even if PendingPasswordReset is nearing expired", async () => {
+    const date = new Date();
+    date.setDate(date.getDate() - 6);
+    testPendingPasswordReset.creationTime = date;
 
-      await confirmPendingPasswordResetOperation.run(testBlApiRequest);
-    });
+    await confirmPendingPasswordResetOperation.run(testBlApiRequest);
+  });
 
-    it("should reject if LocalLoginHandler.setPassword rejects", async () => {
-      localLoginUpdateSuccess = false;
+  test("should reject if LocalLoginHandler.setPassword rejects", async () => {
+    localLoginUpdateSuccess = false;
 
-      await expect(
-        confirmPendingPasswordResetOperation.run(testBlApiRequest),
-      ).to.be.rejectedWith(
-        BlError,
-        /Could not update localLogin with password/,
-      );
-    });
+    return expect(
+      confirmPendingPasswordResetOperation.run(testBlApiRequest),
+    ).to.be.rejectedWith(BlError, /Could not update localLogin with password/);
+  });
 
-    it("should reject if PendingPasswordReset inactive", async () => {
-      testPendingPasswordReset.active = false;
+  test("should reject if PendingPasswordReset inactive", async () => {
+    testPendingPasswordReset.active = false;
 
-      await expect(
-        confirmPendingPasswordResetOperation.run(testBlApiRequest),
-      ).to.be.rejectedWith(BlError, /PendingPasswordReset (.*) already used/);
-    });
+    return expect(
+      confirmPendingPasswordResetOperation.run(testBlApiRequest),
+    ).to.be.rejectedWith(BlError, /PendingPasswordReset (.*) already used/);
+  });
 
-    it("should deactivate PendingPasswordReset after use", async () => {
-      await confirmPendingPasswordResetOperation.run(testBlApiRequest);
-      expect(testPendingPasswordReset.active).to.be.false;
-    });
+  test("should deactivate PendingPasswordReset after use", async () => {
+    await confirmPendingPasswordResetOperation.run(testBlApiRequest);
+    expect(testPendingPasswordReset.active).to.be.false;
+  });
 
-    it("should not allow reusing PendingPasswordReset", async () => {
-      expect(testPendingPasswordReset.active).to.be.true;
-      await confirmPendingPasswordResetOperation.run(testBlApiRequest);
-      expect(testPendingPasswordReset.active).to.be.false;
-      await expect(
-        confirmPendingPasswordResetOperation.run(testBlApiRequest),
-      ).to.be.rejectedWith(BlError, /PendingPasswordReset (.*) already used/);
-    });
+  test("should not allow reusing PendingPasswordReset", async () => {
+    expect(testPendingPasswordReset.active).to.be.true;
+    await confirmPendingPasswordResetOperation.run(testBlApiRequest);
+    expect(testPendingPasswordReset.active).to.be.false;
+    return expect(
+      confirmPendingPasswordResetOperation.run(testBlApiRequest),
+    ).to.be.rejectedWith(BlError, /PendingPasswordReset (.*) already used/);
+  });
 
-    it("should resolve if given valid ID, token and password", async () => {
-      await expect(confirmPendingPasswordResetOperation.run(testBlApiRequest))
-        .to.be.fulfilled;
-    });
+  test("should resolve if given valid ID, token and password", async () => {
+    return expect(confirmPendingPasswordResetOperation.run(testBlApiRequest)).to
+      .be.fulfilled;
   });
 });

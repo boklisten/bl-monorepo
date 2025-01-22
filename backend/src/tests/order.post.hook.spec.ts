@@ -3,10 +3,10 @@ import { OrderHookBefore } from "@backend/collections/order/hooks/order-hook-bef
 import { OrderPostHook } from "@backend/collections/order/hooks/order.post.hook.js";
 import { UserDetailHelper } from "@backend/collections/user-detail/helpers/user-detail.helper.js";
 import { BlStorage } from "@backend/storage/bl-storage.js";
+import { test } from "@japa/runner";
 import { BlError } from "@shared/bl-error/bl-error.js";
 import { Order } from "@shared/order/order.js";
 import { AccessToken } from "@shared/token/access-token.js";
-import { UserDetail } from "@shared/user/user-detail/user-detail.js";
 import { expect, use as chaiUse, should } from "chai";
 import chaiAsPromised from "chai-as-promised";
 import sinon, { createSandbox } from "sinon";
@@ -14,7 +14,7 @@ import sinon, { createSandbox } from "sinon";
 chaiUse(chaiAsPromised);
 should();
 
-describe("OrderPostHook", () => {
+test.group("OrderPostHook", (group) => {
   const orderValidator: OrderValidator = new OrderValidator();
   const userDetailHelper = new UserDetailHelper();
   const orderHookBefore: OrderHookBefore = new OrderHookBefore();
@@ -26,12 +26,11 @@ describe("OrderPostHook", () => {
 
   let testOrder: Order;
 
-  let testUserDetails: UserDetail;
   let testAccessToken: AccessToken;
   let orderValidated: boolean;
   let sandbox: sinon.SinonSandbox;
 
-  beforeEach(() => {
+  group.each.setup(() => {
     testAccessToken = {
       iss: "boklisten.co",
       aud: "boklisten.co",
@@ -44,22 +43,6 @@ describe("OrderPostHook", () => {
     };
 
     orderValidated = true;
-
-    testUserDetails = {
-      id: "user1",
-      name: "Olly Molly",
-      email: "a@b.com",
-      phone: "",
-      address: "",
-      postCode: "",
-      postCity: "",
-      country: "",
-      dob: new Date(),
-      branch: "branch1",
-      orders: [],
-      signatures: [],
-      blid: "",
-    };
 
     testOrder = {
       id: "order1",
@@ -121,67 +104,57 @@ describe("OrderPostHook", () => {
       });
     });
   });
-  afterEach(() => {
+  group.each.teardown(() => {
     sandbox.restore();
   });
 
-  describe("#before()", () => {
-    it("should reject if requestBody is not valid", () => {
-      return expect(
-        orderPostHook.before({ valid: false }, testAccessToken),
-      ).to.eventually.be.rejectedWith(BlError, /not a valid order/);
-    });
-
-    it("should resolve if requestBody is valid", () => {
-      return expect(orderHookBefore.validate({ valid: true })).to.eventually.be
-        .fulfilled;
-    });
+  test("should reject if requestBody is not valid", async () => {
+    return expect(
+      orderPostHook.before({ valid: false }, testAccessToken),
+    ).to.eventually.be.rejectedWith(BlError, /not a valid order/);
   });
-  describe("#after()", () => {
-    it("should reject if accessToken is empty or undefined", (done) => {
-      orderPostHook.after([testOrder]).catch((blError: BlError) => {
-        expect(blError.getMsg()).to.contain(
-          "accessToken was not specified when trying to process order",
-        );
-        done();
-      });
-    });
 
-    context("when orderValidator rejects", () => {
-      it("should reject if orderValidator.validate rejected with error", () => {
-        orderValidated = false;
-
-        testOrder.id = "order1";
-        return expect(
-          orderPostHook.after([testOrder], testAccessToken),
-        ).to.eventually.be.rejectedWith(BlError, /not a valid order/);
-      });
-    });
-
-    context("when orderValidator resolves", () => {
-      it("should resolve with testOrder when orderValidator.validate is resolved", (done) => {
-        orderValidated = true;
-        testOrder.id = "order1";
-
-        orderPostHook
-          .after([testOrder], testAccessToken)
-          .then((orders: Order[]) => {
-            expect(orders.length).to.be.eql(1);
-            expect(orders[0]).to.eql(testOrder);
-            done();
-          });
-      });
-    });
-
-    it("should reject if order.placed is set to true", () => {
-      testOrder.placed = true;
-
-      return expect(
-        orderPostHook.after([testOrder], testAccessToken),
-      ).to.be.rejectedWith(
-        BlError,
-        /order.placed is set to true on post of order/,
+  test("should resolve if requestBody is valid", async () => {
+    return expect(orderHookBefore.validate({ valid: true })).to.eventually.be
+      .fulfilled;
+  });
+  test("should reject if accessToken is empty or undefined", async () => {
+    orderPostHook.after([testOrder]).catch((blError: BlError) => {
+      return expect(blError.getMsg()).to.contain(
+        "accessToken was not specified when trying to process order",
       );
     });
+  });
+
+  test("should reject if orderValidator.validate rejected with error", async () => {
+    orderValidated = false;
+
+    testOrder.id = "order1";
+    return expect(
+      orderPostHook.after([testOrder], testAccessToken),
+    ).to.eventually.be.rejectedWith(BlError, /not a valid order/);
+  });
+
+  test("should resolve with testOrder when orderValidator.validate is resolved", async () => {
+    orderValidated = true;
+    testOrder.id = "order1";
+
+    orderPostHook
+      .after([testOrder], testAccessToken)
+      .then((orders: Order[]) => {
+        expect(orders.length).to.be.eql(1);
+        return expect(orders[0]).to.eql(testOrder);
+      });
+  });
+
+  test("should reject if order.placed is set to true", async () => {
+    testOrder.placed = true;
+
+    return expect(
+      orderPostHook.after([testOrder], testAccessToken),
+    ).to.be.rejectedWith(
+      BlError,
+      /order.placed is set to true on post of order/,
+    );
   });
 });

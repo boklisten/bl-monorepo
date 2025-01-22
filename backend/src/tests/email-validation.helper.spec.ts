@@ -2,6 +2,7 @@ import { EmailValidation } from "@backend/collections/email-validation/email-val
 import EmailValidationHelper from "@backend/collections/email-validation/helpers/email-validation.helper.js";
 import Messenger from "@backend/messenger/messenger.js";
 import { BlStorage } from "@backend/storage/bl-storage.js";
+import { test } from "@japa/runner";
 import { BlError } from "@shared/bl-error/bl-error.js";
 import { UserDetail } from "@shared/user/user-detail/user-detail.js";
 import { expect, use as chaiUse, should } from "chai";
@@ -11,14 +12,14 @@ import sinon, { createSandbox } from "sinon";
 chaiUse(chaiAsPromised);
 should();
 
-describe("EmailValidationHelper", () => {
+test.group("EmailValidationHelper", (group) => {
   const testUserDetail = { id: "", email: "" } as UserDetail;
   let emailValidationStorageAddSuccess: boolean;
   let testEmailValidation: EmailValidation;
   let messengerEmailConfirmationStub: sinon.SinonStub;
   let sandbox: sinon.SinonSandbox;
 
-  beforeEach(() => {
+  group.each.setup(() => {
     testUserDetail.id = "userDetail1";
     testUserDetail.email = "user@detail.com";
     emailValidationStorageAddSuccess = true;
@@ -48,66 +49,55 @@ describe("EmailValidationHelper", () => {
       .stub(Messenger, "emailConfirmation")
       .resolves();
   });
-  afterEach(() => {
+  group.each.teardown(() => {
     sandbox.restore();
   });
 
-  describe("#createAndSendEmailValidationLink", () => {
-    it("should reject if userId is not found", () => {
-      return expect(
-        EmailValidationHelper.createAndSendEmailValidationLink(
-          "notFoundUserDetail",
-        ),
-      ).to.be.rejectedWith(
-        BlError,
-        /userDetail "notFoundUserDetail" not found/,
-      );
-    });
-
-    it("should reject if emailValidationStorage.add rejects", () => {
-      emailValidationStorageAddSuccess = false;
-
-      return expect(
-        EmailValidationHelper.createAndSendEmailValidationLink(
-          testUserDetail.id,
-        ),
-      ).to.be.rejectedWith(BlError, /could not add emailValidation/);
-    });
-
-    it("should send message to user on emailValidation creation", (done) => {
-      emailValidationStorageAddSuccess = true;
-
+  test("should reject if userId is not found", async () => {
+    return expect(
       EmailValidationHelper.createAndSendEmailValidationLink(
-        testUserDetail.id,
-      ).then(() => {
-        expect(messengerEmailConfirmationStub).to.have.been.calledWith(
-          testUserDetail,
-          testEmailValidation.id,
-        );
-        done();
-      });
+        "notFoundUserDetail",
+      ),
+    ).to.be.rejectedWith(BlError, /userDetail "notFoundUserDetail" not found/);
+  });
+
+  test("should reject if emailValidationStorage.add rejects", async () => {
+    emailValidationStorageAddSuccess = false;
+
+    return expect(
+      EmailValidationHelper.createAndSendEmailValidationLink(testUserDetail.id),
+    ).to.be.rejectedWith(BlError, /could not add emailValidation/);
+  });
+
+  test("should send message to user on emailValidation creation", async () => {
+    emailValidationStorageAddSuccess = true;
+
+    EmailValidationHelper.createAndSendEmailValidationLink(
+      testUserDetail.id,
+    ).then(() => {
+      return expect(messengerEmailConfirmationStub).to.have.been.calledWith(
+        testUserDetail,
+        testEmailValidation.id,
+      );
     });
   });
 
-  describe("#sendEmailValidationLink", () => {
-    it("should reject if userDetail is not found", () => {
-      testEmailValidation.userDetail = "notFound";
+  test("should reject if userDetail is not found", async () => {
+    testEmailValidation.userDetail = "notFound";
 
-      return expect(
-        EmailValidationHelper.sendEmailValidationLink(testEmailValidation),
-      ).to.be.rejectedWith(BlError, /userDetail "notFound" not found/);
-    });
+    return expect(
+      EmailValidationHelper.sendEmailValidationLink(testEmailValidation),
+    ).to.be.rejectedWith(BlError, /userDetail "notFound" not found/);
+  });
 
-    it("should call messenger.emailConfirmation", (done) => {
-      EmailValidationHelper.sendEmailValidationLink(testEmailValidation).then(
-        () => {
-          expect(messengerEmailConfirmationStub).to.have.been.calledWith(
-            testUserDetail,
-            testEmailValidation.id,
-          );
-          done();
-        },
-      );
-    });
+  test("should call messenger.emailConfirmation", async () => {
+    EmailValidationHelper.sendEmailValidationLink(testEmailValidation).then(
+      () => {
+        return expect(messengerEmailConfirmationStub).to.have.been.calledWith(
+          testUserDetail,
+          testEmailValidation.id,
+        );
+      },
+    );
   });
 });

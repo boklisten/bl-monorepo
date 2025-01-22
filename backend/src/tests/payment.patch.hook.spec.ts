@@ -2,6 +2,7 @@ import { PaymentDibsHandler } from "@backend/collections/payment/helpers/dibs/pa
 import { PaymentValidator } from "@backend/collections/payment/helpers/payment.validator.js";
 import { PaymentPatchHook } from "@backend/collections/payment/hooks/payment.patch.hook.js";
 import { BlStorage } from "@backend/storage/bl-storage.js";
+import { test } from "@japa/runner";
 import { BlError } from "@shared/bl-error/bl-error.js";
 import { Payment } from "@shared/payment/payment.js";
 import { expect, use as chaiUse, should } from "chai";
@@ -11,7 +12,7 @@ import sinon, { createSandbox } from "sinon";
 chaiUse(chaiAsPromised);
 should();
 
-describe("PaymentPatchHook", () => {
+test.group("PaymentPatchHook", (group) => {
   const paymentDibsHandler = new PaymentDibsHandler();
   const paymentValidator = new PaymentValidator();
   const paymentPatchHook = new PaymentPatchHook(
@@ -25,7 +26,7 @@ describe("PaymentPatchHook", () => {
   let paymentValidated: boolean;
   let sandbox: sinon.SinonSandbox;
 
-  beforeEach(() => {
+  group.each.setup(() => {
     testPayment = {
       id: "payment1",
       method: "dibs",
@@ -45,58 +46,51 @@ describe("PaymentPatchHook", () => {
         : Promise.reject(new BlError("not found"));
     });
 
-    sandbox
-      .stub(paymentDibsHandler, "handleDibsPayment")
-      .callsFake((payment) => {
-        return dibsPaymentCreated
-          ? Promise.resolve(testPayment)
-          : Promise.reject(new BlError("could not create dibs payment"));
-      });
+    sandbox.stub(paymentDibsHandler, "handleDibsPayment").callsFake(() => {
+      return dibsPaymentCreated
+        ? Promise.resolve(testPayment)
+        : Promise.reject(new BlError("could not create dibs payment"));
+    });
 
-    sandbox.stub(paymentValidator, "validate").callsFake((valid) => {
+    sandbox.stub(paymentValidator, "validate").callsFake(() => {
       return paymentValidated
         ? Promise.resolve(true)
         : Promise.reject(new BlError("could not validate payment"));
     });
   });
-  afterEach(() => {
+  group.each.teardown(() => {
     sandbox.restore();
   });
 
-  describe("after()", () => {
-    it("should reject if paymentValidator.validate rejects", () => {
-      paymentValidated = false;
+  test("should reject if paymentValidator.validate rejects", async () => {
+    paymentValidated = false;
 
-      return expect(paymentPatchHook.after([testPayment])).to.be.rejectedWith(
-        BlError,
-        /could not validate payment/,
-      );
-    });
+    return expect(paymentPatchHook.after([testPayment])).to.be.rejectedWith(
+      BlError,
+      /could not validate payment/,
+    );
+  });
 
-    it("should resolve when given a valid payment", () => {
-      return expect(paymentPatchHook.after([testPayment])).to.be.fulfilled;
-    });
+  test("should resolve when given a valid payment", async () => {
+    return expect(paymentPatchHook.after([testPayment])).to.be.fulfilled;
+  });
 
-    context('when payment.method is "dibs"', () => {
-      it("should reject if paymentDibsHandler.handleDibsPayment rejects", () => {
-        dibsPaymentCreated = false;
+  test("should reject if paymentDibsHandler.handleDibsPayment rejects", async () => {
+    dibsPaymentCreated = false;
 
-        return expect(paymentPatchHook.after([testPayment])).to.be.rejectedWith(
-          BlError,
-          /could not create dibs payment/,
-        );
-      });
-    });
+    return expect(paymentPatchHook.after([testPayment])).to.be.rejectedWith(
+      BlError,
+      /could not create dibs payment/,
+    );
+  });
 
-    context("when payment.method is not valid", () => {
-      it("should reject with error", () => {
-        testPayment.method = "something" as any;
+  test("should reject with error", async () => {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    testPayment.method = "something" as any;
 
-        return expect(paymentPatchHook.after([testPayment])).to.be.rejectedWith(
-          BlError,
-          /payment.method "something" not supported/,
-        );
-      });
-    });
+    return expect(paymentPatchHook.after([testPayment])).to.be.rejectedWith(
+      BlError,
+      /payment.method "something" not supported/,
+    );
   });
 });

@@ -6,7 +6,6 @@
     "target": "ESNext",
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
-    "noUnusedLocals": false, // fixme: delete this for line stricter checks
     "noUnusedParameters": false, // fixme: delete this line for stricter checks
     "typeRoots": ["./node_modules/@types"],
     "baseUrl": ".",

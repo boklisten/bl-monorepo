@@ -4,6 +4,7 @@ import BlResponseHandler from "@backend/response/bl-response.handler.js";
 import { BlStorage } from "@backend/storage/bl-storage.js";
 import { LocalLogin } from "@backend/types/local-login.js";
 import { User } from "@backend/types/user.js";
+import { test } from "@japa/runner";
 import { BlError } from "@shared/bl-error/bl-error.js";
 import { UserDetail } from "@shared/user/user-detail/user-detail.js";
 import { expect, use as chaiUse, should } from "chai";
@@ -12,7 +13,7 @@ import sinon, { createSandbox } from "sinon";
 chaiUse(chaiAsPromised);
 should();
 
-describe("UserDetailChangeEmailOperation", () => {
+test.group("UserDetailChangeEmailOperation", (group) => {
   const userDetailChangeEmailOperation = new UserDetailChangeEmailOperation();
 
   let userDetailGetStub: sinon.SinonStub;
@@ -25,7 +26,7 @@ describe("UserDetailChangeEmailOperation", () => {
   let resHandlerSendResponseStub: sinon.SinonStub;
   let sandbox: sinon.SinonSandbox;
 
-  beforeEach(() => {
+  group.each.setup(() => {
     sandbox = createSandbox();
     userDetailGetStub = sandbox.stub(BlStorage.UserDetails, "get");
     userDetailUpdateStub = sandbox.stub(BlStorage.UserDetails, "update");
@@ -39,11 +40,11 @@ describe("UserDetailChangeEmailOperation", () => {
       "sendResponse",
     );
   });
-  afterEach(() => {
+  group.each.teardown(() => {
     sandbox.restore();
   });
 
-  it("should reject if blApiRequest.data is empty", () => {
+  test("should reject if blApiRequest.data is empty", async () => {
     return expect(
       // @ts-expect-error fixme missing params
       userDetailChangeEmailOperation.run({
@@ -54,7 +55,7 @@ describe("UserDetailChangeEmailOperation", () => {
     ).to.eventually.be.rejectedWith(BlError, /email is not valid/);
   });
 
-  it("should reject if userDetail is not found", () => {
+  test("should reject if userDetail is not found", async () => {
     userDetailGetStub.rejects(new BlError("user detail not found"));
 
     return expect(
@@ -68,7 +69,7 @@ describe("UserDetailChangeEmailOperation", () => {
     ).to.eventually.be.rejectedWith(BlError, /user detail not found/);
   });
 
-  it("should reject if user is not found", () => {
+  test("should reject if user is not found", async () => {
     userDetailGetStub.resolves({
       blid: "blid1",
       email: "email@email.com",
@@ -89,7 +90,7 @@ describe("UserDetailChangeEmailOperation", () => {
   const higherPermissions = ["customer", "employee", "manager", "admin"];
   for (const permission of permissions) {
     for (const higherPermission of higherPermissions) {
-      it(`should reject if blApiRequest.user.permission "${permission}" tries to change a higher permission "${higherPermission}"`, () => {
+      test(`should reject if blApiRequest.user.permission "${permission}" tries to change a higher permission "${higherPermission}"`, async () => {
         userDetailGetStub.resolves({
           blid: "blid1",
           email: "email@email.com",
@@ -115,7 +116,7 @@ describe("UserDetailChangeEmailOperation", () => {
     higherPermissions.shift();
   }
 
-  it("should reject if local login is not found", () => {
+  test("should reject if local login is not found", async () => {
     userDetailGetStub.resolves({
       blid: "blid1",
       email: "email@email.com",
@@ -139,7 +140,7 @@ describe("UserDetailChangeEmailOperation", () => {
     ).to.eventually.be.rejectedWith(BlError, /local login not found/);
   });
 
-  it("should reject if the email is already in database", () => {
+  test("should reject if the email is already in database", async () => {
     userDetailGetStub.resolves({
       blid: "blid1",
       email: "email@email.com",
@@ -171,7 +172,7 @@ describe("UserDetailChangeEmailOperation", () => {
     );
   });
 
-  it("should reject if userDetailStorage.update rejects", () => {
+  test("should reject if userDetailStorage.update rejects", async () => {
     userDetailGetStub.resolves({
       blid: "blid1",
       email: "email@email.com",
@@ -199,7 +200,7 @@ describe("UserDetailChangeEmailOperation", () => {
     ).to.eventually.be.rejectedWith(BlError, /could not update user detail/);
   });
 
-  it("should reject if user.update rejects", () => {
+  test("should reject if user.update rejects", async () => {
     userDetailGetStub.resolves({
       blid: "blid1",
       email: "email@email.com",
@@ -228,7 +229,7 @@ describe("UserDetailChangeEmailOperation", () => {
     ).to.eventually.be.rejectedWith(BlError, /could not update user/);
   });
 
-  it("should reject if user.update rejects", () => {
+  test("should reject if user.update rejects", async () => {
     userDetailGetStub.resolves({
       blid: "blid1",
       email: "email@email.com",
@@ -258,7 +259,7 @@ describe("UserDetailChangeEmailOperation", () => {
     ).to.eventually.be.rejectedWith(BlError, /could not update local login/);
   });
 
-  it("should resolve", () => {
+  test("should resolve", async () => {
     userDetailGetStub.resolves({
       blid: "blid1",
       email: "email@email.com",

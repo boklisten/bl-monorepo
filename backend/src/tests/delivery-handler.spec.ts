@@ -1,5 +1,6 @@
 import { DeliveryHandler } from "@backend/collections/delivery/helpers/deliveryHandler/delivery-handler.js";
 import { BlStorage } from "@backend/storage/bl-storage.js";
+import { test } from "@japa/runner";
 import { BlError } from "@shared/bl-error/bl-error.js";
 import { Delivery } from "@shared/delivery/delivery.js";
 import { Order } from "@shared/order/order.js";
@@ -17,8 +18,8 @@ let canUpdateOrder = true;
 const deliveryHandler = new DeliveryHandler();
 let sandbox: sinon.SinonSandbox;
 
-describe("DeliveryHandler", () => {
-  beforeEach(() => {
+test.group("DeliveryHandler", (group) => {
+  group.each.setup(() => {
     testOrder = {
       id: "order1",
       amount: 100,
@@ -43,27 +44,23 @@ describe("DeliveryHandler", () => {
       },
     };
     sandbox = createSandbox();
-    sandbox
-      .stub(BlStorage.Orders, "update")
-      .callsFake((id: string, data: any) => {
-        if (!canUpdateOrder) {
-          return Promise.reject(new BlError("could not update"));
-        }
-        return Promise.resolve(testOrder);
-      });
+    sandbox.stub(BlStorage.Orders, "update").callsFake(() => {
+      if (!canUpdateOrder) {
+        return Promise.reject(new BlError("could not update"));
+      }
+      return Promise.resolve(testOrder);
+    });
   });
-  afterEach(() => {
+  group.each.teardown(() => {
     sandbox.restore();
   });
 
-  describe("updateOrderBasedOnMethod()", () => {
-    it("should reject if OrderStorage.update rejects", () => {
-      testDelivery.method = "branch";
-      canUpdateOrder = false;
+  test("should reject if OrderStorage.update rejects", async () => {
+    testDelivery.method = "branch";
+    canUpdateOrder = false;
 
-      return expect(
-        deliveryHandler.updateOrderBasedOnMethod(testDelivery, testOrder),
-      ).to.be.rejectedWith(BlError, /could not update/);
-    });
+    return expect(
+      deliveryHandler.updateOrderBasedOnMethod(testDelivery, testOrder),
+    ).to.be.rejectedWith(BlError, /could not update/);
   });
 });

@@ -1,6 +1,7 @@
 import { DeliveryValidator } from "@backend/collections/delivery/helpers/deliveryValidator/delivery-validator.js";
 import { DeliveryPatchHook } from "@backend/collections/delivery/hooks/delivery.patch.hook.js";
 import { BlStorage } from "@backend/storage/bl-storage.js";
+import { test } from "@japa/runner";
 import { BlError } from "@shared/bl-error/bl-error.js";
 import { Delivery } from "@shared/delivery/delivery.js";
 import { Order } from "@shared/order/order.js";
@@ -12,10 +13,11 @@ import sinon, { createSandbox } from "sinon";
 chaiUse(chaiAsPromised);
 should();
 
-describe("DeliveryPatchHook", () => {
+test.group("DeliveryPatchHook", (group) => {
   const deliveryValidator = new DeliveryValidator();
   const deliveryPatchHook = new DeliveryPatchHook(deliveryValidator);
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   let testRequest: any;
   let testDelivery: Delivery;
   let testAccessToken: AccessToken;
@@ -23,7 +25,7 @@ describe("DeliveryPatchHook", () => {
   let deliveryValidated = true;
   let sandbox: sinon.SinonSandbox;
 
-  beforeEach(() => {
+  group.each.setup(() => {
     testOrder = {
       id: "order1",
       amount: 100,
@@ -83,60 +85,56 @@ describe("DeliveryPatchHook", () => {
       return Promise.resolve(testOrder);
     });
 
-    sandbox
-      .stub(deliveryValidator, "validate")
-      .callsFake((delivery: Delivery) => {
-        if (!deliveryValidated) {
-          return Promise.reject(new BlError("could not validate delivery"));
-        }
-        return Promise.resolve(true);
-      });
+    sandbox.stub(deliveryValidator, "validate").callsFake(() => {
+      if (!deliveryValidated) {
+        return Promise.reject(new BlError("could not validate delivery"));
+      }
+      return Promise.resolve(true);
+    });
   });
-  afterEach(() => {
+  group.each.teardown(() => {
     sandbox.restore();
   });
 
-  describe("before()", () => {
-    it("should resolve if all parameters are valid", () => {
-      return expect(
-        deliveryPatchHook.before(testRequest, testAccessToken, "delivery1"),
-      ).to.be.fulfilled;
-    });
+  test("should resolve if all parameters are valid", async () => {
+    return expect(
+      deliveryPatchHook.before(testRequest, testAccessToken, "delivery1"),
+    ).to.be.fulfilled;
+  });
 
-    it("should reject if id is undefined", () => {
-      return expect(
-        deliveryPatchHook.before(testRequest, testAccessToken, undefined),
-      ).to.be.rejectedWith(BlError, /id is undefined/);
-    });
+  test("should reject if id is undefined", async () => {
+    return expect(
+      deliveryPatchHook.before(testRequest, testAccessToken, undefined),
+    ).to.be.rejectedWith(BlError, /id is undefined/);
+  });
 
-    it("should reject if body is empty or undefined", () => {
-      return expect(
-        deliveryPatchHook.before(null, testAccessToken, "delivery1"),
-      ).to.be.rejectedWith(BlError, /body is undefined/);
-    });
+  test("should reject if body is empty or undefined", async () => {
+    return expect(
+      deliveryPatchHook.before(null, testAccessToken, "delivery1"),
+    ).to.be.rejectedWith(BlError, /body is undefined/);
+  });
 
-    it("should reject if accessToken is empty or undefined", () => {
-      return expect(
-        deliveryPatchHook.before(testRequest, undefined, "delivery1"),
-      ).to.be.rejectedWith(BlError, /accessToken is undefined/);
-    });
+  test("should reject if accessToken is empty or undefined", async () => {
+    return expect(
+      deliveryPatchHook.before(testRequest, undefined, "delivery1"),
+    ).to.be.rejectedWith(BlError, /accessToken is undefined/);
+  });
 
-    it("should reject if delivery is not found", () => {
-      return expect(
-        deliveryPatchHook.before(
-          testRequest,
-          testAccessToken,
-          "deliveryNotFound",
-        ),
-      ).to.be.rejectedWith(BlError, /delivery "deliveryNotFound" not found/);
-    });
+  test("should reject if delivery is not found", async () => {
+    return expect(
+      deliveryPatchHook.before(
+        testRequest,
+        testAccessToken,
+        "deliveryNotFound",
+      ),
+    ).to.be.rejectedWith(BlError, /delivery "deliveryNotFound" not found/);
+  });
 
-    it("should reject if deliveryValidator fails", () => {
-      deliveryValidated = false;
+  test("should reject if deliveryValidator fails", async () => {
+    deliveryValidated = false;
 
-      return expect(
-        deliveryPatchHook.before(testRequest, testAccessToken, "delivery1"),
-      ).to.be.rejectedWith(BlError, /patched delivery could not be validated/);
-    });
+    return expect(
+      deliveryPatchHook.before(testRequest, testAccessToken, "delivery1"),
+    ).to.be.rejectedWith(BlError, /patched delivery could not be validated/);
   });
 });

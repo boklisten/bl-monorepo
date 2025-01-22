@@ -2,6 +2,7 @@ import { DeliveryHandler } from "@backend/collections/delivery/helpers/deliveryH
 import { DeliveryValidator } from "@backend/collections/delivery/helpers/deliveryValidator/delivery-validator.js";
 import { DeliveryPostHook } from "@backend/collections/delivery/hooks/delivery.post.hook.js";
 import { BlStorage } from "@backend/storage/bl-storage.js";
+import { test } from "@japa/runner";
 import { BlError } from "@shared/bl-error/bl-error.js";
 import { Delivery } from "@shared/delivery/delivery.js";
 import { Item } from "@shared/item/item.js";
@@ -14,7 +15,7 @@ import sinon, { createSandbox } from "sinon";
 chaiUse(chaiAsPromised);
 should();
 
-describe("DeliveryPostHook", () => {
+test.group("DeliveryPostHook", (group) => {
   const deliveryValidator = new DeliveryValidator();
   const deliveryHandler = new DeliveryHandler();
   const deliveryPostHook = new DeliveryPostHook(
@@ -26,13 +27,11 @@ describe("DeliveryPostHook", () => {
   let testOrder: Order;
   let testItem: Item;
   let testAccessToken: AccessToken;
-  let orderUpdated = true;
 
   let deliveryValidated = true;
   let sandbox: sinon.SinonSandbox;
 
-  beforeEach(() => {
-    orderUpdated = true;
+  group.each.setup(() => {
     deliveryValidated = true;
 
     testDelivery = {
@@ -98,20 +97,16 @@ describe("DeliveryPostHook", () => {
     };
 
     sandbox = createSandbox();
-    sandbox
-      .stub(deliveryValidator, "validate")
-      .callsFake((delivery: Delivery) => {
-        if (!deliveryValidated) {
-          return Promise.reject(new BlError("delivery could not be validated"));
-        }
-        return Promise.resolve(true);
-      });
+    sandbox.stub(deliveryValidator, "validate").callsFake(() => {
+      if (!deliveryValidated) {
+        return Promise.reject(new BlError("delivery could not be validated"));
+      }
+      return Promise.resolve(true);
+    });
 
-    sandbox
-      .stub(deliveryHandler, "updateOrderBasedOnMethod")
-      .callsFake((delivery, order) => {
-        return Promise.reject(new BlError("order could not be updated"));
-      });
+    sandbox.stub(deliveryHandler, "updateOrderBasedOnMethod").callsFake(() => {
+      return Promise.reject(new BlError("order could not be updated"));
+    });
 
     sandbox.stub(BlStorage.Deliveries, "get").callsFake((id) => {
       return new Promise((resolve, reject) => {
@@ -140,46 +135,40 @@ describe("DeliveryPostHook", () => {
       });
     });
   });
-  afterEach(() => {
+  group.each.teardown(() => {
     sandbox.restore();
   });
 
-  describe("#after()", () => {
-    it("should reject if deliveryIds is empty or undefined", (done) => {
-      deliveryPostHook.after([]).catch((blError) => {
-        expect(blError.getMsg()).to.contain("deliveries is empty or undefined");
-        done();
+  test("should reject if deliveryIds is empty or undefined", async () => {
+    deliveryPostHook.after([]).catch((blError) => {
+      return expect(blError.getMsg()).to.contain(
+        "deliveries is empty or undefined",
+      );
+    });
+  });
+
+  test("should reject if delivery.order is not found", async () => {
+    testDelivery.order = "notFoundOrder";
+
+    deliveryPostHook
+      .after([testDelivery], testAccessToken)
+      .catch((blError: BlError) => {
+        expect(blError.getCode()).to.be.eql(702);
+
+        return expect(blError.getMsg()).to.contain(`not found`);
       });
-    });
+  });
+  test("should reject if deliveryValidator.validate rejects", async () => {
+    deliveryValidated = false;
 
-    it("should reject if delivery.order is not found", (done) => {
-      testDelivery.order = "notFoundOrder";
+    return expect(
+      deliveryPostHook.after([testDelivery], testAccessToken),
+    ).to.be.rejectedWith(BlError, /delivery could not be validated/);
+  });
 
-      deliveryPostHook
-        .after([testDelivery], testAccessToken)
-        .catch((blError: BlError) => {
-          expect(blError.getCode()).to.be.eql(702);
-
-          expect(blError.getMsg()).to.contain(`not found`);
-
-          done();
-        });
-    });
-
-    it("should reject if deliveryValidator.validate rejects", () => {
-      deliveryValidated = false;
-
-      return expect(
-        deliveryPostHook.after([testDelivery], testAccessToken),
-      ).to.be.rejectedWith(BlError, /delivery could not be validated/);
-    });
-
-    it("should reject if DeliveryHandler.updateOrderBasedOnMethod rejects", () => {
-      orderUpdated = false;
-
-      return expect(
-        deliveryPostHook.after([testDelivery], testAccessToken),
-      ).to.be.rejectedWith(BlError, /order could not be updated/);
-    });
+  test("should reject if DeliveryHandler.updateOrderBasedOnMethod rejects", async () => {
+    return expect(
+      deliveryPostHook.after([testDelivery], testAccessToken),
+    ).to.be.rejectedWith(BlError, /order could not be updated/);
   });
 });

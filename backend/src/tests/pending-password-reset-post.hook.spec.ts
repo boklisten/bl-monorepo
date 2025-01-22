@@ -3,6 +3,7 @@ import { PendingPasswordResetPostHook } from "@backend/collections/pending-passw
 import BlCrypto from "@backend/config/bl-crypto.js";
 import Messenger from "@backend/messenger/messenger.js";
 import { User } from "@backend/types/user.js";
+import { test } from "@japa/runner";
 import { BlError } from "@shared/bl-error/bl-error.js";
 import { PasswordResetRequest } from "@shared/password-reset/password-reset-request.js";
 import { expect, use as chaiUse, should } from "chai";
@@ -12,7 +13,7 @@ import sinon, { createSandbox } from "sinon";
 chaiUse(chaiAsPromised);
 should();
 
-describe("PendingPasswordResetPostHook", () => {
+test.group("PendingPasswordResetPostHook", (group) => {
   const pendingPasswordResetPostHook = new PendingPasswordResetPostHook();
 
   const testUsername = "albert@blapi.com";
@@ -21,17 +22,13 @@ describe("PendingPasswordResetPostHook", () => {
     email: testUsername,
   };
 
-  // @ts-expect-error fixme: auto ignored
-  let testPendingPasswordReset: PendingPasswordReset;
   const testSalt = "salt";
   const testToken = "aLongRandomTokenString";
-  let tokenHash: string;
   const testId = "IDentificator";
   let sandbox: sinon.SinonSandbox;
+  let messengerPasswordResetStub: sinon.SinonStub;
 
-  beforeEach(async () => {
-    tokenHash = await BlCrypto.hash(testToken, testSalt);
-
+  group.each.setup(() => {
     testUser = {
       id: "user1",
       userDetail: "userDetail1",
@@ -58,93 +55,70 @@ describe("PendingPasswordResetPostHook", () => {
         }
         return testUser;
       });
+    sandbox
+      .stub(BlCrypto, "random")
+      .onFirstCall()
+      .returns(testId)
+      .onSecondCall()
+      .returns(testToken)
+      .onThirdCall()
+      .returns(testSalt);
+    messengerPasswordResetStub = sandbox
+      .stub(Messenger, "passwordReset")
+      .returns(new Promise((resolve) => resolve()));
   });
-  afterEach(() => {
+  group.each.teardown(() => {
     sandbox.restore();
   });
 
-  describe("#before", () => {
-    it("should reject if passwordReset is null, empty or undefined", async () => {
-      await expect(
-        pendingPasswordResetPostHook.before(undefined),
-      ).to.be.rejectedWith(
-        BlError,
-        /passwordResetRequest.email is null, empty or undefined/,
-      );
-    });
+  test("should reject if passwordReset is null, empty or undefined", async () => {
+    return expect(
+      pendingPasswordResetPostHook.before(undefined),
+    ).to.be.rejectedWith(
+      BlError,
+      /passwordResetRequest.email is null, empty or undefined/,
+    );
+  });
 
-    it("should reject if passwordResetRequest.email is undefined", async () => {
-      // @ts-expect-error fixme: auto ignored
-      const passwordResetRequest: PasswordResetRequest = { email: undefined };
+  test("should reject if passwordResetRequest.email is undefined", async () => {
+    // @ts-expect-error fixme: auto ignored
+    const passwordResetRequest: PasswordResetRequest = { email: undefined };
 
-      await expect(
-        pendingPasswordResetPostHook.before(passwordResetRequest),
-      ).to.be.rejectedWith(
-        BlError,
-        /passwordResetRequest.email is null, empty or undefined/,
-      );
-    });
+    return expect(
+      pendingPasswordResetPostHook.before(passwordResetRequest),
+    ).to.be.rejectedWith(
+      BlError,
+      /passwordResetRequest.email is null, empty or undefined/,
+    );
+  });
 
-    it("should reject if username (email) is not found in storage", async () => {
-      const passwordResetRequest: PasswordResetRequest = {
-        email: "cityofatlantis@mail.com",
-      };
+  test("should reject if username (email) is not found in storage", async () => {
+    const passwordResetRequest: PasswordResetRequest = {
+      email: "cityofatlantis@mail.com",
+    };
 
-      await expect(
-        pendingPasswordResetPostHook.before(passwordResetRequest),
-      ).to.be.rejectedWith(
-        BlError,
-        /username "cityofatlantis@mail.com" not found/,
-      );
-    });
+    return expect(
+      pendingPasswordResetPostHook.before(passwordResetRequest),
+    ).to.be.rejectedWith(
+      BlError,
+      /username "cityofatlantis@mail.com" not found/,
+    );
+  });
 
-    beforeEach(() => {
-      testPendingPasswordReset = {
-        id: "passwordReset1",
-        email: testUsername,
-        tokenHash,
-        salt: testSalt,
-      };
-    });
+  test("should send email to user with reset password token", async () => {
+    await pendingPasswordResetPostHook
+      .before(testPasswordResetRequest)
+      .then(() => {
+        expect(messengerPasswordResetStub.called).to.be.true;
 
-    describe("when everything is valid", () => {
-      let messengerPasswordResetStub: sinon.SinonStub;
-      let sandbox: sinon.SinonSandbox;
-
-      beforeEach(async () => {
-        sandbox = createSandbox();
-        sandbox
-          .stub(BlCrypto, "random")
-          .onFirstCall()
-          .returns(testId)
-          .onSecondCall()
-          .returns(testToken)
-          .onThirdCall()
-          .returns(testSalt);
-        messengerPasswordResetStub = sandbox
-          .stub(Messenger, "passwordReset")
-          .returns(new Promise((resolve) => resolve()));
+        return expect(
+          messengerPasswordResetStub.calledWithExactly(
+            testUser.id,
+            testUser.username,
+            testId,
+            testToken,
+          ),
+        ).to.be.true;
       });
-      afterEach(() => {
-        sandbox.restore();
-      });
-
-      it("should send email to user with reset password token", async () => {
-        await pendingPasswordResetPostHook
-          .before(testPasswordResetRequest)
-          .then(() => {
-            expect(messengerPasswordResetStub.called).to.be.true;
-
-            expect(
-              messengerPasswordResetStub.calledWithExactly(
-                testUser.id,
-                testUser.username,
-                testId,
-                testToken,
-              ),
-            ).to.be.true;
-          });
-      });
-    });
   });
 });

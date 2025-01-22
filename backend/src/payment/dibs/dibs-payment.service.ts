@@ -1,6 +1,6 @@
 import { UserDetailHelper } from "@backend/collections/user-detail/helpers/user-detail.helper.js";
-import { APP_CONFIG } from "@backend/config/application-config.js";
-import { BlEnv } from "@backend/config/env.js";
+import { APP_CONFIG } from "@backend/express-config/application-config.js";
+import { BlEnv } from "@backend/express-config/env.js";
 import HttpHandler from "@backend/http/http.handler.js";
 import { DibsEasyOrder } from "@backend/payment/dibs/dibs-easy-order.js";
 import { DibsEasyPayment } from "@backend/payment/dibs/dibs-easy-payment/dibs-easy-payment.js";

@@ -2,7 +2,7 @@ import { CustomerItemHandler } from "@backend/collections/customer-item/helpers/
 import { OrderItemMovedFromOrderHandler } from "@backend/collections/order/helpers/order-item-moved-from-order-handler/order-item-moved-from-order-handler.js";
 import { PaymentHandler } from "@backend/collections/payment/helpers/payment-handler.js";
 import { userHasValidSignature } from "@backend/collections/signature/helpers/signature.helper.js";
-import { logger } from "@backend/config/logger.js";
+import { logger } from "@backend/express-config/logger.js";
 import Messenger from "@backend/messenger/messenger.js";
 import { BlStorage } from "@backend/storage/bl-storage.js";
 import { BlError } from "@shared/bl-error/bl-error.js";

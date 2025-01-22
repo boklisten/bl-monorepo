@@ -1,4 +1,4 @@
-import { BlEnv } from "@backend/config/env.js";
+import { BlEnv } from "@backend/express-config/env.js";
 import { createLogger, format, transports } from "winston";
 
 export const logger = createLogger({

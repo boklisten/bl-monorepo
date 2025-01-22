@@ -1,4 +1,4 @@
-import { BlEnv } from "@backend/config/env.js";
+import { BlEnv } from "@backend/express-config/env.js";
 import { BlError } from "@shared/bl-error/bl-error.js";
 import jwt from "jsonwebtoken";
 

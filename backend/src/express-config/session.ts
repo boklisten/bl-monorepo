@@ -1,4 +1,4 @@
-import { BlEnv } from "@backend/config/env.js";
+import { BlEnv } from "@backend/express-config/env.js";
 import { RequestHandler } from "express";
 import session from "express-session";
 

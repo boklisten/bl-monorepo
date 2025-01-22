@@ -1,4 +1,4 @@
-import BlCrypto from "@backend/config/bl-crypto.js";
+import BlCrypto from "@backend/express-config/bl-crypto.js";
 import { BlError } from "@shared/bl-error/bl-error.js";
 
 function createUserBlid(provider: string, providerId: string): Promise<string> {

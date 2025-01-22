@@ -1,4 +1,4 @@
-import BlCrypto from "@backend/config/bl-crypto.js";
+import BlCrypto from "@backend/express-config/bl-crypto.js";
 import { test } from "@japa/runner";
 import { BlError } from "@shared/bl-error/bl-error.js";
 import { use as chaiUse, should } from "chai";

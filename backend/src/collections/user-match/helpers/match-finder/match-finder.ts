@@ -12,7 +12,7 @@ import {
   tryFindTwoWayMatch,
   updateItemImbalances,
 } from "@backend/collections/user-match/helpers/match-finder/match-utils.js";
-import { logger } from "@backend/config/logger.js";
+import { logger } from "@backend/express-config/logger.js";
 import { BlError } from "@shared/bl-error/bl-error.js";
 import { CandidateStandMatch } from "@shared/match/stand-match.js";
 import { CandidateUserMatch } from "@shared/match/user-match.js";

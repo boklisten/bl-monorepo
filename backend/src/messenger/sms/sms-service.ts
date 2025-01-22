@@ -1,5 +1,5 @@
-import { BlEnv } from "@backend/config/env.js";
-import { logger } from "@backend/config/logger.js";
+import { BlEnv } from "@backend/express-config/env.js";
+import { logger } from "@backend/express-config/logger.js";
 import twilio from "twilio";
 
 const client = twilio(BlEnv.TWILIO_SMS_SID, BlEnv.TWILIO_SMS_AUTH_TOKEN, {

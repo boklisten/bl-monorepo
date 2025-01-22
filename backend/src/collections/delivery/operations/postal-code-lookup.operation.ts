@@ -1,4 +1,4 @@
-import { BlEnv } from "@backend/config/env.js";
+import { BlEnv } from "@backend/express-config/env.js";
 import { isNullish } from "@backend/helper/typescript-helpers.js";
 import HttpHandler from "@backend/http/http.handler.js";
 import { BlApiRequest } from "@backend/types/bl-api-request.js";

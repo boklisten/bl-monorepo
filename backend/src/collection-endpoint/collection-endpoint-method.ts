@@ -1,7 +1,7 @@
 import CollectionEndpointAuth from "@backend/collection-endpoint/collection-endpoint-auth.js";
 import CollectionEndpointDocumentAuth from "@backend/collection-endpoint/collection-endpoint-document-auth.js";
 import { CollectionEndpointOperation } from "@backend/collection-endpoint/collection-endpoint-operation.js";
-import { createPath } from "@backend/config/api-path.js";
+import { createPath } from "@backend/express-config/api-path.js";
 import { isBoolean, isNotNullish } from "@backend/helper/typescript-helpers.js";
 import { Hook } from "@backend/hook/hook.js";
 import BlResponseHandler from "@backend/response/bl-response.handler.js";

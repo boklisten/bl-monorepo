@@ -1,6 +1,6 @@
 import HashedPasswordGenerator from "@backend/auth/local/hashed-password-generator.js";
 import LocalLoginCreator from "@backend/auth/local/local-login-creator.js";
-import BlCrypto from "@backend/config/bl-crypto.js";
+import BlCrypto from "@backend/express-config/bl-crypto.js";
 import { isNullish } from "@backend/helper/typescript-helpers.js";
 import { SEDbQuery } from "@backend/query/se.db-query.js";
 import { BlStorage } from "@backend/storage/bl-storage.js";

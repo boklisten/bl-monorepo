@@ -1,6 +1,6 @@
 import LocalLoginValidator from "@backend/auth/local/local-login.validator.js";
 import TokenHandler from "@backend/auth/token/token.handler.js";
-import { createPath } from "@backend/config/api-path.js";
+import { createPath } from "@backend/express-config/api-path.js";
 import BlResponseHandler from "@backend/response/bl-response.handler.js";
 import { BlError } from "@shared/bl-error/bl-error.js";
 import { BlapiResponse } from "@shared/blapi-response/blapi-response.js";

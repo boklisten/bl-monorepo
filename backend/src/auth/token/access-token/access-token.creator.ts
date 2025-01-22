@@ -1,6 +1,6 @@
 import RefreshTokenValidator from "@backend/auth/token/refresh/refresh-token.validator.js";
-import { APP_CONFIG } from "@backend/config/application-config.js";
-import { BlEnv } from "@backend/config/env.js";
+import { APP_CONFIG } from "@backend/express-config/application-config.js";
+import { BlEnv } from "@backend/express-config/env.js";
 import { BlError } from "@shared/bl-error/bl-error.js";
 import { UserPermission } from "@shared/permission/user-permission.js";
 import jwt from "jsonwebtoken";

@@ -1,6 +1,6 @@
 import BlErrorHandler from "@backend/bl-error/bl-error.handler.js";
-import { BlEnv } from "@backend/config/env.js";
-import { logger } from "@backend/config/logger.js";
+import { BlEnv } from "@backend/express-config/env.js";
+import { logger } from "@backend/express-config/logger.js";
 import * as Sentry from "@sentry/node";
 import { BlapiErrorResponse } from "@shared/blapi-response/blapi-error-response.js";
 import { BlapiResponse } from "@shared/blapi-response/blapi-response.js";

@@ -1,4 +1,4 @@
-import { logger } from "@backend/config/logger.js";
+import { logger } from "@backend/express-config/logger.js";
 import { BlStorage } from "@backend/storage/bl-storage.js";
 import { BlApiRequest } from "@backend/types/bl-api-request.js";
 import { Operation } from "@backend/types/operation.js";

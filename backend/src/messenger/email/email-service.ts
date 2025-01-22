@@ -1,6 +1,6 @@
 import { DateService } from "@backend/blc/date.service.js";
-import { BlEnv } from "@backend/config/env.js";
-import { logger } from "@backend/config/logger.js";
+import { BlEnv } from "@backend/express-config/env.js";
+import { logger } from "@backend/express-config/logger.js";
 import { EMAIL_SETTINGS } from "@backend/messenger/email/email-settings.js";
 import { OrderEmailHandler } from "@backend/messenger/email/order-email/order-email-handler.js";
 import { MessengerService } from "@backend/messenger/messenger-service.js";

@@ -1,4 +1,4 @@
-import { BlEnv } from "@backend/config/env.js";
+import { BlEnv } from "@backend/express-config/env.js";
 import * as Sentry from "@sentry/node";
 import { mongooseIntegration } from "@sentry/node";
 import { nodeProfilingIntegration } from "@sentry/profiling-node";

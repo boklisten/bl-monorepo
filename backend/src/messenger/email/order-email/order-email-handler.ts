@@ -1,6 +1,6 @@
 import { DateService } from "@backend/blc/date.service.js";
 import { userHasValidSignature } from "@backend/collections/signature/helpers/signature.helper.js";
-import { BlEnv } from "@backend/config/env.js";
+import { BlEnv } from "@backend/express-config/env.js";
 import { sendMail } from "@backend/messenger/email/email-service.js";
 import { EMAIL_SETTINGS } from "@backend/messenger/email/email-settings.js";
 import { sendSMS } from "@backend/messenger/sms/sms-service.js";

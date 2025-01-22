@@ -11,7 +11,8 @@
     "typecheck:frontend": "pnpm --filter frontend exec tsc --noEmit",
     "typecheck": "pnpm run typecheck:shared && pnpm exec concurrently \"pnpm run typecheck:backend\" \"pnpm run typecheck:frontend\"",
     "fix": "pnpm exec concurrently \"pnpm run prettier --log-level silent\" \"pnpm run lint --fix\" \"pnpm run typecheck\"",
-    "test": "pnpm --filter backend test"
+    "test": "pnpm --filter backend test",
+    "ace": "pnpm --filter backend run ace"
   },
   "devDependencies": {
     "@eslint/js": "^9.18.0",

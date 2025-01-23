@@ -41,7 +41,6 @@ async function validateDocumentPermission(
       `user "${blApiRequest.user?.id}" cannot ${method} document owned by ${document_.user?.id}`,
     ).code(904);
   }
-  return blApiRequest;
 }
 
 function createRequestHandler(
@@ -50,78 +49,71 @@ function createRequestHandler(
   onRequest: (blApiRequest: BlApiRequest) => Promise<BlStorageData>,
   checkDocumentPermission: boolean,
 ) {
-  return function handleRequest(
+  return async function handleRequest(
     request: Request,
     res: Response,
     next: NextFunction,
   ) {
     let userAccessToken: AccessToken | undefined;
     let blApiRequest: BlApiRequest;
-
     const hook = endpoint.hook ?? new Hook();
 
-    CollectionEndpointAuth.authenticate(
-      endpoint.restriction,
-      request,
-      res,
-      next,
-    )
-      .then((authResult) => {
-        if (!isBoolean(authResult)) {
-          userAccessToken = authResult;
-        }
-        return hook.before(
-          request.body,
-          userAccessToken,
-          request.params["id"],
-          request.query,
-        );
-      })
-      .then((hookData) => {
-        // is the endpoint specific request handler
-        let data = request.body;
+    try {
+      const authResult = await CollectionEndpointAuth.authenticate(
+        endpoint.restriction,
+        request,
+        res,
+        next,
+      );
+      if (!isBoolean(authResult)) {
+        userAccessToken = authResult;
+      }
+      const beforeData = await hook.before(
+        request.body,
+        userAccessToken,
+        request.params["id"],
+        request.query,
+      );
 
-        if (isNotNullish(hookData) && !isBoolean(hookData)) {
-          data = hookData;
-        }
+      blApiRequest = {
+        documentId: request.params["id"],
+        query: request.query,
+        data:
+          isNotNullish(beforeData) && !isBoolean(beforeData)
+            ? beforeData
+            : request.body,
+      };
 
-        blApiRequest = {
-          documentId: request.params["id"],
-          query: request.query,
-          data: data,
+      if (userAccessToken !== undefined) {
+        blApiRequest.user = {
+          id: userAccessToken.sub,
+          details: userAccessToken.details,
+          permission: userAccessToken.permission,
         };
-        if (userAccessToken !== undefined) {
-          blApiRequest.user = {
-            id: userAccessToken.sub,
-            details: userAccessToken.details,
-            permission: userAccessToken.permission,
-          };
-        }
+      }
 
-        if (checkDocumentPermission) {
-          return validateDocumentPermission(
-            blApiRequest,
-            collection.storage,
-            endpoint.method,
-          );
-        }
-
-        return blApiRequest;
-      })
-      .then((blApiRequest) => onRequest(blApiRequest))
-      .then((docs) =>
-        CollectionEndpointDocumentAuth.validate(
-          endpoint.restriction,
-          docs,
+      if (checkDocumentPermission) {
+        await validateDocumentPermission(
           blApiRequest,
-          collection.documentPermission,
-        ),
-      )
-      .then((docs) => hook.after(docs, userAccessToken))
-      .then((docs) =>
-        BlResponseHandler.sendResponse(res, new BlapiResponse(docs)),
-      )
-      .catch((error) => BlResponseHandler.sendErrorResponse(res, error));
+          collection.storage,
+          endpoint.method,
+        );
+      }
+
+      const requestData = await onRequest(blApiRequest);
+
+      await CollectionEndpointDocumentAuth.validate(
+        endpoint.restriction,
+        requestData,
+        blApiRequest,
+        collection.documentPermission,
+      );
+
+      const afterData = await hook.after(requestData, userAccessToken);
+      BlResponseHandler.sendResponse(res, new BlapiResponse(afterData));
+    } catch (error) {
+      BlResponseHandler.sendErrorResponse(res, error);
+    }
   };
 }
 

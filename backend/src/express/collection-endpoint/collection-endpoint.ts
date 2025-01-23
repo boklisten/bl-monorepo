@@ -47,9 +47,12 @@ function createExpressRequestHandler(
           onRequest,
         });
 
-      BlResponseHandler.sendResponse(res, new BlapiResponse(responseData));
+      BlResponseHandler.sendResponseExpress(
+        res,
+        new BlapiResponse(responseData),
+      );
     } catch (error) {
-      BlResponseHandler.sendErrorResponse(res, error);
+      BlResponseHandler.sendErrorResponseExpress(res, error);
     }
   };
 }

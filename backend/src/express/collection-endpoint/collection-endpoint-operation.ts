@@ -50,9 +50,9 @@ function createExpressRequestHandler(operation: BlEndpointOperation) {
           : undefined,
       };
       const operationResponse = await operation.operation.run(blApiRequest);
-      BlResponseHandler.sendResponse(res, operationResponse);
+      BlResponseHandler.sendResponseExpress(res, operationResponse);
     } catch (error) {
-      BlResponseHandler.sendErrorResponse(res, error);
+      BlResponseHandler.sendErrorResponseExpress(res, error);
     }
   };
 }

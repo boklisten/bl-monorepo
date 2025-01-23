@@ -1,4 +1,5 @@
 import "@backend/express/config/instrument.js";
+import configureMongoose from "@backend/config/database.js";
 import FacebookAuth from "@backend/express/auth/external/facebook.auth.js";
 import GoogleAuth from "@backend/express/auth/external/google.auth.js";
 import LocalAuth from "@backend/express/auth/local/local.auth.js";
@@ -6,7 +7,6 @@ import TokenEndpoint from "@backend/express/auth/token/token.endpoint.js";
 import CollectionEndpointCreator from "@backend/express/collection-endpoint/collection-endpoint-creator.js";
 import configurePassport from "@backend/express/config/auth.js";
 import corsHandler from "@backend/express/config/cors.js";
-import configureMongoose from "@backend/express/config/database.js";
 import debugLoggerHandler from "@backend/express/config/debug-logger.js";
 import { BlEnv } from "@backend/express/config/env.js";
 import redirectToHttpsHandler from "@backend/express/config/https.js";

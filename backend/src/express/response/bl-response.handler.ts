@@ -1,3 +1,4 @@
+import { HttpContext } from "@adonisjs/core/http";
 import BlErrorHandler from "@backend/express/bl-error/bl-error.handler.js";
 import { BlEnv } from "@backend/express/config/env.js";
 import { logger } from "@backend/express/config/logger.js";
@@ -11,11 +12,15 @@ function setHeaders(res: Response) {
   res.setHeader("Content-Type", "application/json");
 }
 
-function sendResponse(res: Response, blapiRes: BlapiResponse) {
+function sendResponseExpress(res: Response, blapiRes: BlapiResponse) {
   logger.silly(`<- 200`);
   res.status(200);
   setHeaders(res);
   res.send(blapiRes);
+}
+function sendResponse(ctx: HttpContext, blapiRes: BlapiResponse) {
+  ctx.response.status(200);
+  ctx.response.send(blapiRes);
 }
 
 function sendAuthTokens(
@@ -30,7 +35,7 @@ function sendAuthTokens(
   res.redirect(redirectUrl);
 }
 
-function sendErrorResponse(res: Response, blError: unknown) {
+function sendErrorResponseExpress(res: Response, blError: unknown) {
   const blapiErrorRes: BlapiErrorResponse =
     BlErrorHandler.createBlapiErrorResponse(blError);
 
@@ -40,7 +45,7 @@ function sendErrorResponse(res: Response, blError: unknown) {
 
   if (blapiErrorRes.httpStatus === 200) {
     logger.verbose(`<- ${blapiErrorRes.httpStatus} ${blapiErrorRes.msg}`);
-    sendResponse(res, new BlapiResponse(blapiErrorRes.data));
+    sendResponseExpress(res, new BlapiResponse(blapiErrorRes.data));
     return;
   }
 
@@ -55,9 +60,28 @@ function sendErrorResponse(res: Response, blError: unknown) {
   }
 }
 
+function sendErrorResponse(ctx: HttpContext, blError: unknown) {
+  const blapiErrorRes: BlapiErrorResponse =
+    BlErrorHandler.createBlapiErrorResponse(blError);
+  ctx.response.status(blapiErrorRes.httpStatus);
+  if (blapiErrorRes.httpStatus === 200) {
+    sendResponse(ctx, new BlapiResponse(blapiErrorRes.data));
+    return;
+  }
+
+  ctx.response.send(blapiErrorRes);
+
+  // Send unknown errors to Sentry
+  if (blapiErrorRes.httpStatus === 500) {
+    Sentry.captureException(blError);
+  }
+}
+
 const BlResponseHandler = {
   sendResponse,
+  sendResponseExpress,
   sendAuthTokens,
   sendErrorResponse,
+  sendErrorResponseExpress,
 };
 export default BlResponseHandler;

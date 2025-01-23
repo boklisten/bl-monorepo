@@ -7,10 +7,9 @@
 |
 */
 
-import router from "@adonisjs/core/services/router";
+import CollectionsController from "@backend/app/controllers/collections/collections_controller.js";
+import configureMongoose from "@backend/config/database.js";
 
-router.get("/", async () => {
-  return {
-    hello: "world",
-  };
-});
+await configureMongoose();
+
+CollectionsController.generateEndpoints();

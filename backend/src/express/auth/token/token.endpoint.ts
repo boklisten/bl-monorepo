@@ -16,7 +16,7 @@ function createRouter() {
         (refreshToken: RefreshToken) => {
           TokenHandler.createTokens(refreshToken.username).then(
             (jwTokens: { accessToken: string; refreshToken: string }) => {
-              BlResponseHandler.sendResponse(
+              BlResponseHandler.sendResponseExpress(
                 res,
                 new BlapiResponse([
                   { accessToken: jwTokens.accessToken },
@@ -25,7 +25,7 @@ function createRouter() {
               );
             },
             (createTokenError: BlError) => {
-              BlResponseHandler.sendErrorResponse(
+              BlResponseHandler.sendErrorResponseExpress(
                 res,
                 new BlError("could not create tokens")
                   .store("oldRefreshToken", request.body["refreshToken"])
@@ -36,7 +36,7 @@ function createRouter() {
           );
         },
         (refreshTokenValidationError: BlError) => {
-          BlResponseHandler.sendErrorResponse(
+          BlResponseHandler.sendErrorResponseExpress(
             res,
             new BlError("refreshToken not valid")
               .code(909)
@@ -45,7 +45,7 @@ function createRouter() {
         },
       );
     } else {
-      BlResponseHandler.sendErrorResponse(
+      BlResponseHandler.sendErrorResponseExpress(
         res,
         new BlError("bad format").code(701),
       );

@@ -62,7 +62,7 @@ function createAuthLogin(router: Router) {
       ) => {
         if (blError && !(blError instanceof BlError)) {
           blError = new BlError("unknown error").code(500);
-          return BlResponseHandler.sendErrorResponse(res, blError);
+          return BlResponseHandler.sendErrorResponseExpress(res, blError);
         }
 
         if (error) {
@@ -70,7 +70,7 @@ function createAuthLogin(router: Router) {
         }
 
         if (!jwTokens) {
-          return BlResponseHandler.sendErrorResponse(res, blError);
+          return BlResponseHandler.sendErrorResponseExpress(res, blError);
         }
 
         request.login(jwTokens, (error) => {
@@ -89,7 +89,7 @@ function respondWithTokens(
   res: Response,
   tokens: { accessToken: string; refreshToken: string },
 ) {
-  return BlResponseHandler.sendResponse(
+  return BlResponseHandler.sendResponseExpress(
     res,
     new BlapiResponse([
       { documentName: "refreshToken", data: tokens.refreshToken },
@@ -110,7 +110,7 @@ function createAuthRegister(router: Router) {
             respondWithTokens(res, tokens);
           },
           (createTokensError: BlError) => {
-            BlResponseHandler.sendErrorResponse(
+            BlResponseHandler.sendErrorResponseExpress(
               res,
               new BlError("could not create tokens")
                 .add(createTokensError)
@@ -121,9 +121,12 @@ function createAuthRegister(router: Router) {
       },
       (loginValidatorCreateError: BlError) => {
         if (loginValidatorCreateError.getCode() === 903) {
-          BlResponseHandler.sendErrorResponse(res, loginValidatorCreateError);
+          BlResponseHandler.sendErrorResponseExpress(
+            res,
+            loginValidatorCreateError,
+          );
         } else {
-          BlResponseHandler.sendErrorResponse(
+          BlResponseHandler.sendErrorResponseExpress(
             res,
             new BlError("could not create user")
               .add(loginValidatorCreateError)

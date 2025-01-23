@@ -1,12 +1,7 @@
 import CollectionEndpointAuth from "@backend/express/collection-endpoint/collection-endpoint-auth.js";
-import CollectionEndpointDelete from "@backend/express/collection-endpoint/collection-endpoint-delete.js";
 import CollectionEndpointDocumentAuth from "@backend/express/collection-endpoint/collection-endpoint-document-auth.js";
-import CollectionEndpointGetAll from "@backend/express/collection-endpoint/collection-endpoint-get-all.js";
-import CollectionEndpointGetId from "@backend/express/collection-endpoint/collection-endpoint-get-id.js";
+import CollectionEndpointHandler from "@backend/express/collection-endpoint/collection-endpoint-handler.js";
 import CollectionEndpointOperation from "@backend/express/collection-endpoint/collection-endpoint-operation.js";
-import CollectionEndpointPatch from "@backend/express/collection-endpoint/collection-endpoint-patch.js";
-import CollectionEndpointPost from "@backend/express/collection-endpoint/collection-endpoint-post.js";
-import CollectionEndpointPut from "@backend/express/collection-endpoint/collection-endpoint-put.js";
 import { createPath } from "@backend/express/config/api-path.js";
 import {
   isBoolean,
@@ -14,7 +9,10 @@ import {
 } from "@backend/express/helper/typescript-helpers.js";
 import { Hook } from "@backend/express/hook/hook.js";
 import BlResponseHandler from "@backend/express/response/bl-response.handler.js";
-import { BlStorageData } from "@backend/express/storage/bl-storage.js";
+import {
+  BlStorageData,
+  BlStorageHandler,
+} from "@backend/express/storage/bl-storage.js";
 import { BlApiRequest } from "@backend/types/bl-api-request.js";
 import { BlCollection, BlEndpoint } from "@backend/types/bl-collection.js";
 import { BlError } from "@shared/bl-error/bl-error.js";
@@ -28,13 +26,29 @@ import {
   Router,
 } from "express";
 
+async function validateDocumentPermission(
+  blApiRequest: BlApiRequest,
+  storageHandler: BlStorageHandler,
+  method: string,
+) {
+  const document_ = await storageHandler.get(blApiRequest.documentId ?? "");
+  if (
+    document_ &&
+    blApiRequest.user?.permission === "customer" &&
+    document_.user?.id !== blApiRequest.user.id
+  ) {
+    throw new BlError(
+      `user "${blApiRequest.user?.id}" cannot ${method} document owned by ${document_.user?.id}`,
+    ).code(904);
+  }
+  return blApiRequest;
+}
+
 function createRequestHandler(
   endpoint: BlEndpoint,
   collection: BlCollection,
   onRequest: (blApiRequest: BlApiRequest) => Promise<BlStorageData>,
-  validateDocumentPermission: (
-    blApiRequest: BlApiRequest,
-  ) => Promise<BlApiRequest>,
+  checkDocumentPermission: boolean,
 ) {
   return function handleRequest(
     request: Request,
@@ -84,7 +98,15 @@ function createRequestHandler(
           };
         }
 
-        return validateDocumentPermission(blApiRequest);
+        if (checkDocumentPermission) {
+          return validateDocumentPermission(
+            blApiRequest,
+            collection.storage,
+            endpoint.method,
+          );
+        }
+
+        return blApiRequest;
       })
       .then((blApiRequest) => onRequest(blApiRequest))
       .then((docs) =>
@@ -110,57 +132,46 @@ function create(
 ) {
   const collectionUri = createPath(collection.storage.path);
   let onRequest: (blApiRequest: BlApiRequest) => Promise<BlStorageData>;
-  let validateDocumentPermission: (
-    blApiRequest: BlApiRequest,
-  ) => Promise<BlApiRequest>;
+  let checkDocumentPermission = false;
   let uri = collectionUri;
   let createRoute: (path: string, handler: RequestHandler) => void;
 
   switch (endpoint.method) {
     case "getAll": {
       createRoute = (path, handler) => router.get(path, handler);
-      onRequest = CollectionEndpointGetAll.create(collection, endpoint);
-      validateDocumentPermission =
-        CollectionEndpointGetAll.validateDocumentPermission;
+      onRequest = CollectionEndpointHandler.onGetAll(collection, endpoint);
       break;
     }
     case "getId": {
       uri += "/:id";
       createRoute = (path, handler) => router.get(path, handler);
-      onRequest = CollectionEndpointGetId.create(collection);
-      validateDocumentPermission =
-        CollectionEndpointGetId.validateDocumentPermission;
+      onRequest = CollectionEndpointHandler.onGetId(collection);
       break;
     }
     case "post": {
       createRoute = (path, handler) => router.post(path, handler);
-      onRequest = CollectionEndpointPost.create(collection);
-      validateDocumentPermission =
-        CollectionEndpointPost.validateDocumentPermission;
+      onRequest = CollectionEndpointHandler.onPost(collection);
       break;
     }
     case "patch": {
       uri += "/:id";
       createRoute = (path, handler) => router.patch(path, handler);
-      onRequest = CollectionEndpointPatch.create(collection);
-      validateDocumentPermission =
-        CollectionEndpointPatch.createDocumentValidation(collection);
+      onRequest = CollectionEndpointHandler.onPatch(collection);
+      checkDocumentPermission = true;
       break;
     }
     case "delete": {
       uri += "/:id";
       createRoute = (path, handler) => router.delete(path, handler);
-      onRequest = CollectionEndpointDelete.create(collection);
-      validateDocumentPermission =
-        CollectionEndpointDelete.createDocumentValidation(collection);
+      onRequest = CollectionEndpointHandler.onDelete(collection);
+      checkDocumentPermission = true;
       break;
     }
     case "put": {
       uri += "/:id";
       createRoute = (path, handler) => router.put(path, handler);
-      onRequest = CollectionEndpointPut.create(collection);
-      validateDocumentPermission =
-        CollectionEndpointPut.createDocumentValidation(collection);
+      onRequest = CollectionEndpointHandler.onPut(collection);
+      checkDocumentPermission = true;
       break;
     }
     default: {
@@ -174,7 +185,7 @@ function create(
     endpoint,
     collection,
     onRequest,
-    validateDocumentPermission,
+    checkDocumentPermission,
   );
 
   createRoute(uri, requestHandler);

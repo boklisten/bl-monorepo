@@ -1,11 +1,9 @@
 {
-  "extends": ["@tsconfig/strictest/tsconfig.json"],
+  "extends": "@tsconfig/strictest/tsconfig.json",
   "compilerOptions": {
     "module": "NodeNext",
     "lib": ["ESNext"],
     "target": "ESNext",
-    "experimentalDecorators": true,
-    "emitDecoratorMetadata": true,
     "noUnusedParameters": false, // fixme: delete this line for stricter checks
     "typeRoots": ["./node_modules/@types"],
     "baseUrl": ".",

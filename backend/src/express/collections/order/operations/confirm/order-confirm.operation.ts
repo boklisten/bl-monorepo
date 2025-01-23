@@ -1,6 +1,5 @@
 import { OrderPlacedHandler } from "@backend/express/collections/order/helpers/order-placed-handler/order-placed-handler.js";
 import { SEDbQueryBuilder } from "@backend/express/query/se.db-query-builder.js";
-import BlResponseHandler from "@backend/express/response/bl-response.handler.js";
 import { BlStorage } from "@backend/express/storage/bl-storage.js";
 import { BlApiRequest } from "@backend/types/bl-api-request.js";
 import { Operation } from "@backend/types/operation.js";
@@ -8,7 +7,6 @@ import { BlError } from "@shared/bl-error/bl-error.js";
 import { BlapiResponse } from "@shared/blapi-response/blapi-response.js";
 import { Order } from "@shared/order/order.js";
 import { AccessToken } from "@shared/token/access-token.js";
-import { Request, Response } from "express";
 
 export class OrderConfirmOperation implements Operation {
   private queryBuilder = new SEDbQueryBuilder();
@@ -81,11 +79,7 @@ export class OrderConfirmOperation implements Operation {
     return false;
   }
 
-  public async run(
-    blApiRequest: BlApiRequest,
-    request: Request,
-    res: Response,
-  ): Promise<boolean> {
+  public async run(blApiRequest: BlApiRequest) {
     const accessToken = {
       // @ts-expect-error fixme: auto ignored
       details: blApiRequest.user.id,
@@ -120,8 +114,6 @@ export class OrderConfirmOperation implements Operation {
     } catch (error) {
       throw new BlError("order could not be placed:" + error);
     }
-    BlResponseHandler.sendResponse(res, new BlapiResponse([placedOrder]));
-
-    return true;
+    return new BlapiResponse([placedOrder]);
   }
 }

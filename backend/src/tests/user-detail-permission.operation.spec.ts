@@ -35,7 +35,6 @@ test.group("UserDetailPermissionOperation", (group) => {
     userDetailGetStub.rejects(new BlError("user-detail not found"));
 
     return expect(
-      // @ts-expect-error fixme missing params
       userDetailPermissionOperation.run({
         user: { id: "userDetail2", permission: "admin", details: "" },
         data: { permission: "employee" },
@@ -53,7 +52,6 @@ test.group("UserDetailPermissionOperation", (group) => {
     userAggregateStub.rejects(new BlError("user not found"));
 
     return expect(
-      // @ts-expect-error fixme missing params
       userDetailPermissionOperation.run({
         user: { id: "userDetail2", permission: "admin", details: "" },
         data: { permission: "employee" },
@@ -76,8 +74,8 @@ test.group("UserDetailPermissionOperation", (group) => {
       ]);
 
       return expect(
-        // @ts-expect-error fixme missing params
         userDetailPermissionOperation.run({
+          // @ts-expect-error fixme missing params
           user: { id: "userDetail2", permission: permission, details: "" },
           documentId: "userDetail1",
           data: { permission: "employee" },
@@ -100,7 +98,6 @@ test.group("UserDetailPermissionOperation", (group) => {
     ]);
 
     return expect(
-      // @ts-expect-error fixme missing params
       userDetailPermissionOperation.run({
         user: { id: "userDetail2", permission: "manager", details: "" },
         documentId: "userDetail1",
@@ -120,7 +117,6 @@ test.group("UserDetailPermissionOperation", (group) => {
     ]);
 
     return expect(
-      // @ts-expect-error fixme missing params
       userDetailPermissionOperation.run({
         user: { id: "userDetail1", permission: "manager", details: "" },
         documentId: "userDetail1",
@@ -134,7 +130,6 @@ test.group("UserDetailPermissionOperation", (group) => {
 
   test("should reject if blApiRequest.data.permission is not a valid permission", async () => {
     return expect(
-      // @ts-expect-error fixme missing params
       userDetailPermissionOperation.run({
         user: { id: "userDetail1", permission: "admin", details: "" },
         documentId: "userDetail2",
@@ -155,7 +150,6 @@ test.group("UserDetailPermissionOperation", (group) => {
     userUpdateStub.rejects(new BlError("could not update permission"));
 
     return expect(
-      // @ts-expect-error fixme missing params
       userDetailPermissionOperation.run({
         user: { id: "userDetail1", permission: "admin", details: "" },
         documentId: "userDetail2",
@@ -164,7 +158,7 @@ test.group("UserDetailPermissionOperation", (group) => {
     ).to.eventually.be.rejectedWith(BlError, "could not update permission");
   });
 
-  test("should resolve", async () => {
+  test("should resolve", async ({ assert }) => {
     userDetailGetStub.resolves({
       id: "userDetail1",
       blid: "abcdef",
@@ -176,13 +170,12 @@ test.group("UserDetailPermissionOperation", (group) => {
     userUpdateStub.resolves({} as User);
     resHandlerStub.resolves(true);
 
-    return expect(
-      // @ts-expect-error fixme missing params
+    return assert.doesNotReject(() =>
       userDetailPermissionOperation.run({
         user: { id: "userDetail1", permission: "admin", details: "" },
         documentId: "userDetail2",
         data: { permission: "employee" },
       }),
-    ).to.eventually.be.true;
+    );
   });
 });

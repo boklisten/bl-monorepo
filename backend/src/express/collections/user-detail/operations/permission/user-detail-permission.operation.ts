@@ -1,12 +1,10 @@
 import { PermissionService } from "@backend/express/auth/permission.service.js";
-import BlResponseHandler from "@backend/express/response/bl-response.handler.js";
 import { BlStorage } from "@backend/express/storage/bl-storage.js";
 import { BlApiRequest } from "@backend/types/bl-api-request.js";
 import { Operation } from "@backend/types/operation.js";
 import { BlError } from "@shared/bl-error/bl-error.js";
 import { BlapiResponse } from "@shared/blapi-response/blapi-response.js";
 import { UserPermissionEnum } from "@shared/permission/user-permission.js";
-import { Request, Response } from "express";
 import { z } from "zod";
 import { fromError } from "zod-validation-error";
 
@@ -22,11 +20,7 @@ const UserDetailPermissionSpec = z.object({
 });
 
 export class UserDetailPermissionOperation implements Operation {
-  async run(
-    blApiRequest: BlApiRequest,
-    request: Request,
-    res: Response,
-  ): Promise<boolean> {
+  async run(blApiRequest: BlApiRequest) {
     const {
       data: parsedRequest,
       success,
@@ -68,8 +62,6 @@ export class UserDetailPermissionOperation implements Operation {
 
     await BlStorage.Users.update(user.id, { permission: permissionChange });
 
-    BlResponseHandler.sendResponse(res, new BlapiResponse([{ success: true }]));
-
-    return true;
+    return new BlapiResponse([{ success: true }]);
   }
 }

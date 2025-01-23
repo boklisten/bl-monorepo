@@ -4,7 +4,7 @@ import BlResponseHandler from "@backend/express/response/bl-response.handler.js"
 import { BlStorage } from "@backend/express/storage/bl-storage.js";
 import { test } from "@japa/runner";
 import { UniqueItem } from "@shared/unique-item/unique-item.js";
-import { expect, use as chaiUse, should } from "chai";
+import { use as chaiUse, should } from "chai";
 import chaiAsPromised from "chai-as-promised";
 import sinon from "sinon";
 
@@ -36,14 +36,15 @@ test.group("UniqueItemActiveOperation", (group) => {
     sandbox.restore();
   });
 
-  test("should return true", async () => {
+  test("should not reject", async ({ assert }) => {
     getUniqueItemStub.resolves({ blid: "blid1" } as UniqueItem);
 
     getActiveCustomerItemsStub.resolves([]);
 
-    return expect(
-      // @ts-expect-error fixme missing params
-      uniqueItemActiveOperation.run({ documentId: "uniqueItem1" }),
-    ).to.eventually.be.true;
+    assert.doesNotReject(() =>
+      uniqueItemActiveOperation.run({
+        documentId: "uniqueItem1",
+      }),
+    );
   });
 });

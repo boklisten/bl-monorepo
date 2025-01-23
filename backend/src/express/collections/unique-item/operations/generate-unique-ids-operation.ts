@@ -1,19 +1,16 @@
-import generateBlIdPDF from "@backend/express/collections/unique-item/helpers/bl-id-generator.js";
-import { BlApiRequest } from "@backend/types/bl-api-request.js";
 import { Operation } from "@backend/types/operation.js";
-import { Request, Response } from "express";
+import { BlapiResponse } from "@shared/blapi-response/blapi-response.js";
 
 export class GenerateUniqueIdsOperation implements Operation {
-  async run(
-    blApiRequest: BlApiRequest,
-    request: Request,
-    res: Response,
-  ): Promise<boolean> {
+  async run() {
+    /*
+    fixme: reimplement when needed
     res.writeHead(200, {
       "Content-Type": "application/pdf",
     });
 
     res.end(await generateBlIdPDF());
-    return true;
+     */
+    return new BlapiResponse(["not implemented"]);
   }
 }

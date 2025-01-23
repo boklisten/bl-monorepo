@@ -4,7 +4,6 @@ import {
   isNotNullish,
   isNullish,
 } from "@backend/express/helper/typescript-helpers.js";
-import BlResponseHandler from "@backend/express/response/bl-response.handler.js";
 import { BlStorage } from "@backend/express/storage/bl-storage.js";
 import { BlApiRequest } from "@backend/types/bl-api-request.js";
 import { LocalLogin } from "@backend/types/local-login.js";
@@ -12,15 +11,10 @@ import { Operation } from "@backend/types/operation.js";
 import { User } from "@backend/types/user.js";
 import { BlError } from "@shared/bl-error/bl-error.js";
 import { BlapiResponse } from "@shared/blapi-response/blapi-response.js";
-import { Request, Response } from "express";
 import validator from "validator";
 
 export class UserDetailChangeEmailOperation implements Operation {
-  async run(
-    blApiRequest: BlApiRequest,
-    request: Request,
-    res: Response,
-  ): Promise<boolean> {
+  async run(blApiRequest: BlApiRequest) {
     // @ts-expect-error fixme: auto ignored
     const emailChange = blApiRequest.data["email"];
 
@@ -59,8 +53,7 @@ export class UserDetailChangeEmailOperation implements Operation {
       blApiRequest.user,
     );
 
-    BlResponseHandler.sendResponse(res, new BlapiResponse([{ success: true }]));
-    return true;
+    return new BlapiResponse([{ success: true }]);
   }
 
   private async checkIfAlreadyAdded(email: string): Promise<boolean> {

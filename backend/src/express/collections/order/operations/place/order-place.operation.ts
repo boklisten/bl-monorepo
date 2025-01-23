@@ -4,7 +4,6 @@ import { OrderPlacedHandler } from "@backend/express/collections/order/helpers/o
 import { OrderValidator } from "@backend/express/collections/order/helpers/order-validator/order-validator.js";
 import { isNotNullish } from "@backend/express/helper/typescript-helpers.js";
 import { SEDbQueryBuilder } from "@backend/express/query/se.db-query-builder.js";
-import BlResponseHandler from "@backend/express/response/bl-response.handler.js";
 import { BlStorage } from "@backend/express/storage/bl-storage.js";
 import { BlApiRequest } from "@backend/types/bl-api-request.js";
 import { Operation } from "@backend/types/operation.js";
@@ -17,7 +16,6 @@ import { OrderItemType } from "@shared/order/order-item/order-item-type.js";
 import { OrderItem } from "@shared/order/order-item/order-item.js";
 import { Order } from "@shared/order/order.js";
 import { UserPermission } from "@shared/permission/user-permission.js";
-import { Request, Response } from "express";
 
 export class OrderPlaceOperation implements Operation {
   private queryBuilder = new SEDbQueryBuilder();
@@ -416,11 +414,7 @@ export class OrderPlaceOperation implements Operation {
     return map;
   }
 
-  public async run(
-    blApiRequest: BlApiRequest,
-    request: Request,
-    res: Response,
-  ): Promise<boolean> {
+  public async run(blApiRequest: BlApiRequest) {
     let order: Order;
 
     try {
@@ -528,8 +522,7 @@ export class OrderPlaceOperation implements Operation {
         // eslint-disable-next-line no-empty
       } catch {}
     }
-    BlResponseHandler.sendResponse(res, new BlapiResponse([order]));
-    return true;
+    return new BlapiResponse([order]);
   }
 
   /**

@@ -1,7 +1,5 @@
 import CollectionEndpointAuth from "@backend/express/collection-endpoint/collection-endpoint-auth.js";
-import { isBoolean } from "@backend/express/helper/typescript-helpers.js";
 import BlResponseHandler from "@backend/express/response/bl-response.handler.js";
-import { BlApiRequest } from "@backend/types/bl-api-request.js";
 import {
   BlEndpointMethod,
   BlEndpointOperation,
@@ -32,7 +30,6 @@ function createRequestHandler(operation: BlEndpointOperation) {
     res: Response,
     next: NextFunction,
   ) {
-    let blApiRequest: BlApiRequest | undefined;
     try {
       const accessToken = await CollectionEndpointAuth.authenticate(
         operation.restriction,
@@ -40,28 +37,20 @@ function createRequestHandler(operation: BlEndpointOperation) {
         res,
         next,
       );
-      blApiRequest = {
+      const blApiRequest = {
         documentId: request.params["id"],
         query: request.query,
         data: request.body,
+        user: accessToken
+          ? {
+              id: accessToken.sub,
+              details: accessToken.details,
+              permission: accessToken.permission,
+            }
+          : undefined,
       };
-      if (!isBoolean(accessToken)) {
-        blApiRequest.user = {
-          id: accessToken.sub,
-          details: accessToken.details,
-          permission: accessToken.permission,
-        };
-      }
-      const operationResult = await operation.operation.run(
-        blApiRequest,
-        request,
-        res,
-        next,
-      );
-      if (isBoolean(operationResult)) {
-        return;
-      }
-      BlResponseHandler.sendResponse(res, operationResult);
+      const operationResponse = await operation.operation.run(blApiRequest);
+      BlResponseHandler.sendResponse(res, operationResponse);
     } catch (error) {
       BlResponseHandler.sendErrorResponse(res, error);
     }

@@ -17,7 +17,6 @@ import { BlApiRequest } from "@backend/types/bl-api-request.js";
 import { BlCollection, BlEndpoint } from "@backend/types/bl-collection.js";
 import { BlError } from "@shared/bl-error/bl-error.js";
 import { BlapiResponse } from "@shared/blapi-response/blapi-response.js";
-import { AccessToken } from "@shared/token/access-token.js";
 import {
   NextFunction,
   Request,
@@ -54,43 +53,38 @@ function createRequestHandler(
     res: Response,
     next: NextFunction,
   ) {
-    let userAccessToken: AccessToken | undefined;
-    let blApiRequest: BlApiRequest;
     const hook = endpoint.hook ?? new Hook();
 
     try {
-      const authResult = await CollectionEndpointAuth.authenticate(
+      const accessToken = await CollectionEndpointAuth.authenticate(
         endpoint.restriction,
         request,
         res,
         next,
       );
-      if (!isBoolean(authResult)) {
-        userAccessToken = authResult;
-      }
+
       const beforeData = await hook.before(
         request.body,
-        userAccessToken,
+        accessToken,
         request.params["id"],
         request.query,
       );
 
-      blApiRequest = {
+      const blApiRequest = {
         documentId: request.params["id"],
         query: request.query,
         data:
           isNotNullish(beforeData) && !isBoolean(beforeData)
             ? beforeData
             : request.body,
+        user: accessToken
+          ? {
+              id: accessToken.sub,
+              details: accessToken.details,
+              permission: accessToken.permission,
+            }
+          : undefined,
       };
-
-      if (userAccessToken !== undefined) {
-        blApiRequest.user = {
-          id: userAccessToken.sub,
-          details: userAccessToken.details,
-          permission: userAccessToken.permission,
-        };
-      }
 
       if (checkDocumentPermission) {
         await validateDocumentPermission(
@@ -109,7 +103,8 @@ function createRequestHandler(
         collection.documentPermission,
       );
 
-      const afterData = await hook.after(requestData, userAccessToken);
+      const afterData = await hook.after(requestData, accessToken);
+
       BlResponseHandler.sendResponse(res, new BlapiResponse(afterData));
     } catch (error) {
       BlResponseHandler.sendErrorResponse(res, error);

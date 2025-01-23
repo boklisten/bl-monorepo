@@ -34,7 +34,7 @@ function authenticate(
   request: Request,
   res: Response,
   next: NextFunction,
-): Promise<AccessToken | boolean> {
+): Promise<AccessToken | undefined> {
   return new Promise((resolve, reject) => {
     if (restriction || isNotNullish(request.headers["authorization"])) {
       // it is a restriction on this endpoint and authentication is required, also try if there are sent with a auth header
@@ -52,7 +52,7 @@ function authenticate(
       )(request, res, next);
     } else {
       // no authentication needed
-      return resolve(true);
+      return resolve(undefined);
     }
   });
 }

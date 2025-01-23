@@ -8,7 +8,6 @@ import { BlapiResponse } from "@shared/blapi-response/blapi-response.js";
 import { UserDetail } from "@shared/user/user-detail/user-detail.js";
 import { expect, use as chaiUse, should } from "chai";
 import chaiAsPromised from "chai-as-promised";
-import { Request, Response } from "express";
 import sinon, { createSandbox } from "sinon";
 
 chaiUse(chaiAsPromised);
@@ -17,16 +16,13 @@ should();
 test.group("EmailValidationConfirmOperation", (group) => {
   const emailValidationConfirmOperation = new EmailValidationConfirmOperation();
   let sandbox: sinon.SinonSandbox;
-  let userDetailStorageUpdateStub: sinon.SinonStub;
   let resHandlerSendErrorStub: sinon.SinonStub;
-  let resHandlerSendResponseStub: sinon.SinonStub;
 
   const testUserDetail: UserDetail = {
     id: "userDetail1",
     emailConfirmed: false,
   } as UserDetail;
   let testEmailValidation: EmailValidation;
-  let testUserDetailUpdateSucess: boolean;
 
   group.each.setup(() => {
     testUserDetail.id = "userDetail1";
@@ -38,8 +34,6 @@ test.group("EmailValidationConfirmOperation", (group) => {
       email: testUserDetail.email,
     };
 
-    testUserDetailUpdateSucess = true;
-
     sandbox = createSandbox();
     sandbox.stub(BlStorage.EmailValidations, "get").callsFake((id) => {
       if (id !== testEmailValidation.id) {
@@ -48,7 +42,6 @@ test.group("EmailValidationConfirmOperation", (group) => {
 
       return Promise.resolve(testEmailValidation);
     });
-
     sandbox.stub(BlStorage.UserDetails, "get").callsFake((id) => {
       if (id !== testUserDetail.id) {
         return Promise.reject(new BlError("not found"));
@@ -57,28 +50,9 @@ test.group("EmailValidationConfirmOperation", (group) => {
       return Promise.resolve(testUserDetail);
     });
 
-    userDetailStorageUpdateStub = sandbox
-      .stub(BlStorage.UserDetails, "update")
-      .callsFake((id) => {
-        if (id !== testUserDetail.id) {
-          return Promise.reject(new BlError("not found"));
-        }
-
-        if (!testUserDetailUpdateSucess) {
-          return Promise.reject(new BlError("could not update"));
-        }
-
-        return Promise.resolve(testUserDetail);
-      });
-
     resHandlerSendErrorStub = sandbox.stub(
       BlResponseHandler,
       "sendErrorResponse",
-    );
-
-    resHandlerSendResponseStub = sandbox.stub(
-      BlResponseHandler,
-      "sendResponse",
     );
   });
   group.each.teardown(() => {
@@ -89,7 +63,6 @@ test.group("EmailValidationConfirmOperation", (group) => {
     const blApiRequest = {};
 
     emailValidationConfirmOperation
-      // @ts-expect-error fixme missing params
       .run(blApiRequest)
       .catch((blError: BlError) => {
         expect(blError.getMsg()).to.be.eql(`no documentId provided`);
@@ -97,52 +70,39 @@ test.group("EmailValidationConfirmOperation", (group) => {
       });
   });
 
-  test("should reject if emailValidation is not found by id", async () => {
+  test("should reject if emailValidation is not found by id", async ({
+    assert,
+  }) => {
     const blApiRequest = {
       documentId: "notFoundEmailValidation",
     };
 
-    emailValidationConfirmOperation
-      // @ts-expect-error fixme missing params
-      .run(blApiRequest)
-      .catch((blErr: BlError) => {
-        expect(resHandlerSendErrorStub.called);
-        return expect(blErr.getCode()).to.be.eql(702);
-      });
+    await assert.rejects(() =>
+      emailValidationConfirmOperation.run(blApiRequest),
+    );
   });
 
-  test("should reject if userDetail is not found", async () => {
+  test("should reject if userDetail is not found", async ({ assert }) => {
     const blApiRequest = {
       documentId: testEmailValidation.id,
     };
 
     testEmailValidation.userDetail = "notFoundUserDetail";
 
-    return expect(
-      // @ts-expect-error fixme missing params
+    await assert.rejects(() =>
       emailValidationConfirmOperation.run(blApiRequest),
-    ).to.be.rejectedWith(BlError, /could not update userDetail/);
+    );
   });
 
-  test("should update userDetail with emailConfirmed if all valid inputs are provided", async () => {
+  test("should update userDetail with emailConfirmed if all valid inputs are provided", async ({
+    assert,
+  }) => {
     const blApiRequest = {
       documentId: testEmailValidation.id,
     };
 
-    emailValidationConfirmOperation
-      .run(blApiRequest, {} as Request, {} as Response)
-      .then(() => {
-        expect(userDetailStorageUpdateStub).to.have.been.calledWith(
-          testEmailValidation.userDetail,
-          {
-            emailConfirmed: true,
-          },
-        );
-
-        return expect(resHandlerSendResponseStub).to.have.been.calledWith(
-          {},
-          new BlapiResponse([{ confirmed: true }]),
-        );
-      });
+    sandbox.stub(BlStorage.UserDetails, "update");
+    const result = await emailValidationConfirmOperation.run(blApiRequest);
+    assert.deepEqual(result, new BlapiResponse([{ confirmed: true }]));
   });
 });

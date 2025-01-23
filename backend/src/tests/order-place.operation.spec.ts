@@ -7,6 +7,7 @@ import { BlStorage } from "@backend/express/storage/bl-storage.js";
 import { Signature } from "@backend/express/storage/models/signature.model.js";
 import { test } from "@japa/runner";
 import { BlError } from "@shared/bl-error/bl-error.js";
+import { BlapiResponse } from "@shared/blapi-response/blapi-response.js";
 import { Order } from "@shared/order/order.js";
 import { SIGNATURE_NUM_MONTHS_VALID } from "@shared/signature/serialized-signature.js";
 import { UserDetail } from "@shared/user/user-detail/user-detail.js";
@@ -125,12 +126,11 @@ test.group("OrderPlaceOperation", (group) => {
     getOrderStub.rejects(new BlError('order "randomOrder" not found'));
 
     return expect(
-      // @ts-expect-error fixme missing params
       orderPlaceOperation.run({ documentId: "randomOrder" }),
     ).to.eventually.be.rejectedWith(/order "randomOrder" not found/);
   });
 
-  test("should reject if orderPlacedHandler.placeOrder rejects", ({
+  test("should reject if orderPlacedHandler.placeOrder rejects", async ({
     assert,
   }) => {
     getOrderStub.resolves(validOrder);
@@ -142,8 +142,7 @@ test.group("OrderPlaceOperation", (group) => {
     getUserDetailStub.resolves(userDetailWithSignatures);
     getSignatureStub.resolves(validSignature);
 
-    assert.rejects(() =>
-      // @ts-expect-error fixme missing params
+    await assert.rejects(() =>
       orderPlaceOperation.run({
         documentId: validOrder.id,
         user: { id: "user1", permission: "admin", details: "" },
@@ -163,7 +162,6 @@ test.group("OrderPlaceOperation", (group) => {
     getUserDetailStub.resolves(userDetailWithSignatures);
 
     return expect(
-      // @ts-expect-error fixme missing params
       orderPlaceOperation.run({
         documentId: validOrder.id,
         user: { id: "user1", permission: "admin", details: "" },
@@ -171,7 +169,7 @@ test.group("OrderPlaceOperation", (group) => {
     ).to.eventually.be.rejected;
   });
 
-  test("should resolve if order is valid", async () => {
+  test("should resolve if order is valid", async ({ assert }) => {
     getAllUserMatchesStub.resolves([]);
     getAllStandMatchesStub.resolves([]);
     getManyCustomerItemsStub.resolves([]);
@@ -194,12 +192,11 @@ test.group("OrderPlaceOperation", (group) => {
     getSignatureStub.resolves(validSignature);
     getUserDetailStub.resolves(userDetailWithSignatures);
 
-    // @ts-expect-error fixme missing params
     const result = await orderPlaceOperation.run({
       documentId: validOrder.id,
       user: { id: "user1", permission: "admin", details: "" },
     });
 
-    expect(result).to.be.true;
+    assert.deepEqual(result, new BlapiResponse([order]));
   });
 });

@@ -1,18 +1,15 @@
-import { CollectionEndpointMethod } from "@backend/express/collection-endpoint/collection-endpoint-method.js";
-import { CollectionEndpointOnRequest } from "@backend/express/collection-endpoint/collection-endpoint-on-request.js";
 import { SEDbQueryBuilder } from "@backend/express/query/se.db-query-builder.js";
 import { SEDbQuery } from "@backend/express/query/se.db-query.js";
 import { BlApiRequest } from "@backend/types/bl-api-request.js";
+import { BlCollection, BlEndpoint } from "@backend/types/bl-collection.js";
 import { BlError } from "@shared/bl-error/bl-error.js";
-export class CollectionEndpointGetAll
-  extends CollectionEndpointMethod
-  implements CollectionEndpointOnRequest
-{
-  public override async onRequest(blApiRequest: BlApiRequest) {
+
+function create(collection: BlCollection, endpoint: BlEndpoint) {
+  return async function onRequest(blApiRequest: BlApiRequest) {
     if (
       blApiRequest.query &&
       Object.getOwnPropertyNames(blApiRequest.query).length > 0 &&
-      this.endpoint.validQueryParams
+      endpoint.validQueryParams
     ) {
       // if the request includes a query
 
@@ -22,7 +19,7 @@ export class CollectionEndpointGetAll
       try {
         databaseQuery = databaseQueryBuilder.getDbQuery(
           blApiRequest.query,
-          this.endpoint.validQueryParams,
+          endpoint.validQueryParams,
         );
       } catch (error) {
         throw (
@@ -35,9 +32,9 @@ export class CollectionEndpointGetAll
         );
       }
 
-      return await this.collection.storage.getByQuery(
+      return await collection.storage.getByQuery(
         databaseQuery,
-        this.endpoint.nestedDocuments,
+        endpoint.nestedDocuments,
       );
     } else {
       // if no query, give back all objects in collection
@@ -46,7 +43,7 @@ export class CollectionEndpointGetAll
         permission = blApiRequest.user.permission;
       }
 
-      return this.collection.storage
+      return collection.storage
         .getAll(permission)
         .then((docs) => {
           return docs;
@@ -55,11 +52,17 @@ export class CollectionEndpointGetAll
           throw blError;
         });
     }
-  }
-
-  override async validateDocumentPermission(
-    blApiRequest: BlApiRequest,
-  ): Promise<BlApiRequest> {
-    return blApiRequest;
-  }
+  };
 }
+
+async function validateDocumentPermission(
+  blApiRequest: BlApiRequest,
+): Promise<BlApiRequest> {
+  return blApiRequest;
+}
+
+const CollectionEndpointGetAll = {
+  create,
+  validateDocumentPermission,
+};
+export default CollectionEndpointGetAll;

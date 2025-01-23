@@ -1,14 +1,10 @@
-import { CollectionEndpointMethod } from "@backend/express/collection-endpoint/collection-endpoint-method.js";
-import { CollectionEndpointOnRequest } from "@backend/express/collection-endpoint/collection-endpoint-on-request.js";
 import { BlApiRequest } from "@backend/types/bl-api-request.js";
+import { BlCollection } from "@backend/types/bl-collection.js";
 import { BlError } from "@shared/bl-error/bl-error.js";
 
-export class CollectionEndpointDelete
-  extends CollectionEndpointMethod
-  implements CollectionEndpointOnRequest
-{
-  override async onRequest(blApiRequest: BlApiRequest) {
-    const doc = await this.collection.storage
+function create(collection: BlCollection) {
+  return async function onRequest(blApiRequest: BlApiRequest) {
+    const doc = await collection.storage
       // @ts-expect-error fixme: auto ignored
       .remove(blApiRequest.documentId, {
         // @ts-expect-error fixme: auto ignored
@@ -17,10 +13,11 @@ export class CollectionEndpointDelete
         permission: blApiRequest.user.permission,
       });
     return [doc];
-  }
-
-  override async validateDocumentPermission(blApiRequest: BlApiRequest) {
-    const document_ = await this.collection.storage.get(
+  };
+}
+function createDocumentValidation(collection: BlCollection) {
+  return async function validateDocumentPermission(blApiRequest: BlApiRequest) {
+    const document_ = await collection.storage.get(
       blApiRequest.documentId ?? "",
     );
     if (
@@ -33,5 +30,12 @@ export class CollectionEndpointDelete
       ).code(904);
     }
     return blApiRequest;
-  }
+  };
 }
+
+const CollectionEndpointDelete = {
+  create,
+  createDocumentValidation,
+};
+
+export default CollectionEndpointDelete;

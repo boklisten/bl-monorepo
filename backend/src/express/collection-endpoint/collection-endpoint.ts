@@ -1,18 +1,9 @@
 import CollectionEndpointAuth from "@backend/express/collection-endpoint/collection-endpoint-auth.js";
-import CollectionEndpointDocumentAuth from "@backend/express/collection-endpoint/collection-endpoint-document-auth.js";
 import CollectionEndpointHandler from "@backend/express/collection-endpoint/collection-endpoint-handler.js";
 import CollectionEndpointOperation from "@backend/express/collection-endpoint/collection-endpoint-operation.js";
 import { createPath } from "@backend/express/config/api-path.js";
-import {
-  isBoolean,
-  isNotNullish,
-} from "@backend/express/helper/typescript-helpers.js";
-import { Hook } from "@backend/express/hook/hook.js";
 import BlResponseHandler from "@backend/express/response/bl-response.handler.js";
-import {
-  BlStorageData,
-  BlStorageHandler,
-} from "@backend/express/storage/bl-storage.js";
+import { BlStorageData } from "@backend/express/storage/bl-storage.js";
 import { BlApiRequest } from "@backend/types/bl-api-request.js";
 import { BlCollection, BlEndpoint } from "@backend/types/bl-collection.js";
 import { BlError } from "@shared/bl-error/bl-error.js";
@@ -25,24 +16,7 @@ import {
   Router,
 } from "express";
 
-async function validateDocumentPermission(
-  blApiRequest: BlApiRequest,
-  storageHandler: BlStorageHandler,
-  method: string,
-) {
-  const document_ = await storageHandler.get(blApiRequest.documentId ?? "");
-  if (
-    document_ &&
-    blApiRequest.user?.permission === "customer" &&
-    document_.user?.id !== blApiRequest.user.id
-  ) {
-    throw new BlError(
-      `user "${blApiRequest.user?.id}" cannot ${method} document owned by ${document_.user?.id}`,
-    ).code(904);
-  }
-}
-
-function createRequestHandler(
+function createExpressRequestHandler(
   endpoint: BlEndpoint,
   collection: BlCollection,
   onRequest: (blApiRequest: BlApiRequest) => Promise<BlStorageData>,
@@ -53,8 +27,6 @@ function createRequestHandler(
     res: Response,
     next: NextFunction,
   ) {
-    const hook = endpoint.hook ?? new Hook();
-
     try {
       const accessToken = await CollectionEndpointAuth.authenticate(
         endpoint.restriction,
@@ -63,49 +35,19 @@ function createRequestHandler(
         next,
       );
 
-      const beforeData = await hook.before(
-        request.body,
-        accessToken,
-        request.params["id"],
-        request.query,
-      );
+      const responseData =
+        await CollectionEndpointHandler.handleEndpointRequest({
+          endpoint,
+          collection,
+          accessToken,
+          requestData: request.body,
+          documentId: request.params["id"],
+          query: request.query,
+          checkDocumentPermission,
+          onRequest,
+        });
 
-      const blApiRequest = {
-        documentId: request.params["id"],
-        query: request.query,
-        data:
-          isNotNullish(beforeData) && !isBoolean(beforeData)
-            ? beforeData
-            : request.body,
-        user: accessToken
-          ? {
-              id: accessToken.sub,
-              details: accessToken.details,
-              permission: accessToken.permission,
-            }
-          : undefined,
-      };
-
-      if (checkDocumentPermission) {
-        await validateDocumentPermission(
-          blApiRequest,
-          collection.storage,
-          endpoint.method,
-        );
-      }
-
-      const requestData = await onRequest(blApiRequest);
-
-      await CollectionEndpointDocumentAuth.validate(
-        endpoint.restriction,
-        requestData,
-        blApiRequest,
-        collection.documentPermission,
-      );
-
-      const afterData = await hook.after(requestData, accessToken);
-
-      BlResponseHandler.sendResponse(res, new BlapiResponse(afterData));
+      BlResponseHandler.sendResponse(res, new BlapiResponse(responseData));
     } catch (error) {
       BlResponseHandler.sendErrorResponse(res, error);
     }
@@ -168,14 +110,15 @@ function create(
     }
   }
 
-  const requestHandler = createRequestHandler(
-    endpoint,
-    collection,
-    onRequest,
-    checkDocumentPermission,
+  createRoute(
+    uri,
+    createExpressRequestHandler(
+      endpoint,
+      collection,
+      onRequest,
+      checkDocumentPermission,
+    ),
   );
-
-  createRoute(uri, requestHandler);
 
   if (endpoint.operations) {
     for (const operation of endpoint.operations) {

@@ -24,7 +24,7 @@ function createUri(
   return uri;
 }
 
-function createRequestHandler(operation: BlEndpointOperation) {
+function createExpressRequestHandler(operation: BlEndpointOperation) {
   return async function handleRequest(
     request: Request,
     res: Response,
@@ -66,23 +66,23 @@ function create(
   const uri = createUri(collectionUri, operation.name, method);
   switch (method) {
     case "getId": {
-      router.get(uri, createRequestHandler(operation));
+      router.get(uri, createExpressRequestHandler(operation));
       break;
     }
     case "getAll": {
-      router.get(uri, createRequestHandler(operation));
+      router.get(uri, createExpressRequestHandler(operation));
       break;
     }
     case "patch": {
-      router.patch(uri, createRequestHandler(operation));
+      router.patch(uri, createExpressRequestHandler(operation));
       break;
     }
     case "post": {
-      router.post(uri, createRequestHandler(operation));
+      router.post(uri, createExpressRequestHandler(operation));
       break;
     }
     case "put": {
-      router.put(uri, createRequestHandler(operation));
+      router.put(uri, createExpressRequestHandler(operation));
       break;
     }
     default: {

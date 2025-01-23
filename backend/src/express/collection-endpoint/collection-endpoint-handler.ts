@@ -1,8 +1,21 @@
+import CollectionEndpointDocumentAuth from "@backend/express/collection-endpoint/collection-endpoint-document-auth.js";
+import {
+  isBoolean,
+  isNotNullish,
+} from "@backend/express/helper/typescript-helpers.js";
+import { Hook } from "@backend/express/hook/hook.js";
 import { SEDbQueryBuilder } from "@backend/express/query/se.db-query-builder.js";
 import { SEDbQuery } from "@backend/express/query/se.db-query.js";
+import {
+  BlStorageData,
+  BlStorageHandler,
+} from "@backend/express/storage/bl-storage.js";
 import { BlApiRequest } from "@backend/types/bl-api-request.js";
 import { BlCollection, BlEndpoint } from "@backend/types/bl-collection.js";
+import { BlDocument } from "@shared/bl-document/bl-document.js";
 import { BlError } from "@shared/bl-error/bl-error.js";
+import { AccessToken } from "@shared/token/access-token.js";
+import { ParsedQs } from "qs";
 
 function onGetAll(collection: BlCollection, endpoint: BlEndpoint) {
   return async function onRequest(blApiRequest: BlApiRequest) {
@@ -113,6 +126,86 @@ function onDelete(collection: BlCollection) {
   };
 }
 
+async function validateDocumentPermission(
+  blApiRequest: BlApiRequest,
+  storageHandler: BlStorageHandler,
+  method: string,
+) {
+  const document_ = await storageHandler.get(blApiRequest.documentId ?? "");
+  if (
+    document_ &&
+    blApiRequest.user?.permission === "customer" &&
+    document_.user?.id !== blApiRequest.user.id
+  ) {
+    throw new BlError(
+      `user "${blApiRequest.user?.id}" cannot ${method} document owned by ${document_.user?.id}`,
+    ).code(904);
+  }
+}
+
+async function handleEndpointRequest({
+  endpoint,
+  collection,
+  accessToken,
+  requestData,
+  documentId,
+  query,
+  checkDocumentPermission,
+  onRequest,
+}: {
+  endpoint: BlEndpoint;
+  collection: BlCollection;
+  accessToken: AccessToken | undefined;
+  requestData: unknown;
+  documentId: string | undefined;
+  query: ParsedQs;
+  checkDocumentPermission: boolean;
+  onRequest: (blApiRequest: BlApiRequest) => Promise<BlStorageData>;
+}): Promise<BlDocument[]> {
+  const hook = endpoint.hook ?? new Hook();
+  const beforeData = await hook.before(
+    requestData,
+    accessToken,
+    documentId,
+    query,
+  );
+
+  const blApiRequest = {
+    documentId,
+    query: query,
+    data:
+      isNotNullish(beforeData) && !isBoolean(beforeData)
+        ? beforeData
+        : requestData,
+    user: accessToken
+      ? {
+          id: accessToken.sub,
+          details: accessToken.details,
+          permission: accessToken.permission,
+        }
+      : undefined,
+  };
+
+  if (checkDocumentPermission) {
+    await validateDocumentPermission(
+      blApiRequest,
+      collection.storage,
+      endpoint.method,
+    );
+  }
+
+  const responseData = await onRequest(blApiRequest);
+
+  await CollectionEndpointDocumentAuth.validate(
+    endpoint.restriction,
+    responseData,
+    blApiRequest,
+    collection.documentPermission,
+  );
+
+  return await hook.after(responseData, accessToken);
+}
+
 const CollectionEndpointHandler = {
   onGetAll,
   onGetId,
@@ -120,5 +213,6 @@ const CollectionEndpointHandler = {
   onPut,
   onPatch,
   onDelete,
+  handleEndpointRequest,
 };
 export default CollectionEndpointHandler;

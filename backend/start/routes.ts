@@ -10,6 +10,7 @@ import { retrieveRefererPath } from "@backend/lib/config/api-path.js";
 import { APP_CONFIG } from "@backend/lib/config/application-config.js";
 import setupPassport from "@backend/lib/config/auth.js";
 import { BlEnv } from "@backend/lib/config/env.js";
+import * as Sentry from "@sentry/node";
 
 router.get("/auth/facebook", ({ ally }) => {
   return ally.use("facebook").redirect();
@@ -78,4 +79,5 @@ TokenEndpoint.generateEndpoint();
 CollectionEndpointCreator.generateEndpoints();
 if (BlEnv.API_ENV !== "test") {
   await configureMongoose();
+  Sentry.profiler.startProfiler();
 }

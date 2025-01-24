@@ -1,0 +1,140 @@
+import { DeliveryHandler } from "@backend/lib/collections/delivery/helpers/deliveryHandler/delivery-handler.js";
+import { DeliveryValidator } from "@backend/lib/collections/delivery/helpers/deliveryValidator/delivery-validator.js";
+import { DeliveryPostHook } from "@backend/lib/collections/delivery/hooks/delivery.post.hook.js";
+import { BlStorage } from "@backend/lib/storage/bl-storage.js";
+import { test } from "@japa/runner";
+import { BlError } from "@shared/bl-error/bl-error.js";
+import { expect, use as chaiUse, should } from "chai";
+import chaiAsPromised from "chai-as-promised";
+import { createSandbox } from "sinon";
+chaiUse(chaiAsPromised);
+should();
+test.group("DeliveryPostHook", (group) => {
+    const deliveryValidator = new DeliveryValidator();
+    const deliveryHandler = new DeliveryHandler();
+    const deliveryPostHook = new DeliveryPostHook(deliveryValidator, deliveryHandler);
+    let testDelivery;
+    let testOrder;
+    let testItem;
+    let testAccessToken;
+    let deliveryValidated = true;
+    let sandbox;
+    group.each.setup(() => {
+        deliveryValidated = true;
+        testDelivery = {
+            id: "delivery1",
+            method: "bring",
+            amount: 100,
+            order: "order1",
+            info: {
+                branch: "branch1",
+            },
+        };
+        testAccessToken = {
+            iss: "boklisten.co",
+            aud: "boklisten.co",
+            iat: 1234,
+            exp: 2345,
+            sub: "user1",
+            username: "a@b.com",
+            permission: "customer",
+            details: "details1",
+        };
+        testItem = {
+            id: "item1",
+            title: "signatur 3",
+            price: 100,
+            taxRate: 0,
+            buyback: false,
+            info: {
+                isbn: 0,
+                subject: "",
+                year: 0,
+                price: {},
+                weight: "",
+                distributor: "",
+                discount: 0,
+                publisher: "",
+            },
+        };
+        testOrder = {
+            id: "order1",
+            customer: "customer1",
+            amount: 100,
+            byCustomer: true,
+            branch: "branch1",
+            pendingSignature: false,
+            orderItems: [
+                {
+                    item: "item1",
+                    title: "signatur 3",
+                    amount: 100,
+                    unitPrice: 100,
+                    taxAmount: 0,
+                    taxRate: 0,
+                    type: "buy",
+                },
+            ],
+            payments: [],
+            delivery: "",
+        };
+        sandbox = createSandbox();
+        sandbox.stub(deliveryValidator, "validate").callsFake(() => {
+            if (!deliveryValidated) {
+                return Promise.reject(new BlError("delivery could not be validated"));
+            }
+            return Promise.resolve(true);
+        });
+        sandbox.stub(deliveryHandler, "updateOrderBasedOnMethod").callsFake(() => {
+            return Promise.reject(new BlError("order could not be updated"));
+        });
+        sandbox.stub(BlStorage.Deliveries, "get").callsFake((id) => {
+            return new Promise((resolve, reject) => {
+                if (id === "delivery1") {
+                    return resolve(testDelivery);
+                }
+                return reject(new BlError("not found").code(702));
+            });
+        });
+        sandbox.stub(BlStorage.Orders, "get").callsFake((id) => {
+            return new Promise((resolve, reject) => {
+                if (id === "order1") {
+                    return resolve(testOrder);
+                }
+                return reject(new BlError("not found").code(702));
+            });
+        });
+        sandbox.stub(BlStorage.Items, "getMany").callsFake((ids) => {
+            return new Promise((resolve, reject) => {
+                if (ids[0] === "item1") {
+                    return resolve([testItem]);
+                }
+                return reject(new BlError("not found").code(702));
+            });
+        });
+    });
+    group.each.teardown(() => {
+        sandbox.restore();
+    });
+    test("should reject if deliveryIds is empty or undefined", async () => {
+        deliveryPostHook.after([]).catch((blError) => {
+            return expect(blError.getMsg()).to.contain("deliveries is empty or undefined");
+        });
+    });
+    test("should reject if delivery.order is not found", async () => {
+        testDelivery.order = "notFoundOrder";
+        deliveryPostHook
+            .after([testDelivery], testAccessToken)
+            .catch((blError) => {
+            expect(blError.getCode()).to.be.eql(702);
+            return expect(blError.getMsg()).to.contain(`not found`);
+        });
+    });
+    test("should reject if deliveryValidator.validate rejects", async () => {
+        deliveryValidated = false;
+        return expect(deliveryPostHook.after([testDelivery], testAccessToken)).to.be.rejectedWith(BlError, /delivery could not be validated/);
+    });
+    test("should reject if DeliveryHandler.updateOrderBasedOnMethod rejects", async () => {
+        return expect(deliveryPostHook.after([testDelivery], testAccessToken)).to.be.rejectedWith(BlError, /order could not be updated/);
+    });
+});

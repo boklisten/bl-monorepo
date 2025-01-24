@@ -65,7 +65,7 @@ export default tseslint.config(
     },
   },
   {
-    files: ["backend/src/tests/*.ts"],
+    files: ["backend/tests/*.ts"],
     plugins: { "chai-friendly": pluginChaiFriendly },
     rules: {
       "@typescript-eslint/no-unused-expressions": "off",

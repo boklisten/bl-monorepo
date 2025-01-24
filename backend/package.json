@@ -5,13 +5,13 @@
   "exports": "./dist/index.js",
   "type": "module",
   "scripts": {
-    "dev": "tsx watch --env-file=.env src/bin/server.ts",
-    "build": "pkgroll --sourcemap --tsconfig=tsconfig.build.json",
+    "ace": "tsx --env-file=.env ace",
+    "dev": "tsx watch --env-file=.env bin/server.ts",
+    "test": "API_ENV=test tsx bin/test.ts",
+    "build": "tsx ace build",
     "build:sentry": "pnpm build && pnpm run sentry:sourcemaps",
-    "serve": "node --env-file=.env ./dist/index.js",
-    "ace": "tsx --env-file=.env src/ace.ts",
-    "test": "API_ENV=test tsx src/bin/test.ts",
-    "sentry:sourcemaps": "sentry-cli sourcemaps inject --org boklisten --project backend ./dist && sentry-cli sourcemaps upload --org boklisten --project backend ./dist"
+    "start": "tsx --env-file=.env ./build/bin/server.js",
+    "sentry:sourcemaps": "sentry-cli sourcemaps inject --org boklisten --project backend ./build && sentry-cli sourcemaps upload --org boklisten --project backend ./build"
   },
   "dependencies": {
     "@adonisjs/ally": "^5.0.2",

@@ -10,7 +10,7 @@
     "paths": {
       "@shared/*": ["shared/src/*"],
       "@frontend/*": ["frontend/src/*"],
-      "@backend/*": ["backend/src/*"]
+      "@backend/*": ["backend/*"]
     }
   }
 }

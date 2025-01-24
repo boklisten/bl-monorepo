@@ -5,14 +5,14 @@
   "scripts": {
     "prettier": "prettier --write '**/*.{js,mjs,ts,tsx,md,json,yml,css}' --ignore-path=.gitignore",
     "prettier:check": "prettier --check '**/*.{js,mjs,ts,tsx,md,json,yml,css}' --ignore-path=.gitignore",
-    "lint": "eslint . --ignore-pattern '**/dist/*' --ignore-pattern '**/.next/*'",
+    "lint": "eslint . --ignore-pattern '**/dist/*' --ignore-pattern '**/build/*' --ignore-pattern '**/.next/*'",
     "typecheck:shared": "pnpm --filter shared exec tsc",
     "typecheck:backend": "pnpm --filter backend exec tsc --noEmit",
     "typecheck:frontend": "pnpm --filter frontend exec tsc --noEmit",
     "typecheck": "pnpm run typecheck:shared && pnpm exec concurrently \"pnpm run typecheck:backend\" \"pnpm run typecheck:frontend\"",
     "fix": "pnpm exec concurrently \"pnpm run prettier --log-level silent\" \"pnpm run lint --fix\" \"pnpm run typecheck\"",
     "test": "pnpm --filter backend test",
-    "ace": "pnpm --filter backend run ace"
+    "ace": "pnpm --filter backend ace"
   },
   "devDependencies": {
     "@eslint/js": "^9.18.0",

@@ -3,10 +3,11 @@
   "compilerOptions": {
     "resolveJsonModule": true,
     "experimentalDecorators": true,
-    "emitDecoratorMetadata": true
+    "emitDecoratorMetadata": true,
+    "moduleResolution": "NodeNext"
   },
-  "include": ["src/**/*"],
-  "exclude": ["node_modules"],
+  "include": ["."],
+  "exclude": ["node_modules", "build"],
   "references": [
     {
       "path": "../shared"

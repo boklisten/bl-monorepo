@@ -1,11 +1,4 @@
-/*
-|--------------------------------------------------------------------------
-| Routes file
-|--------------------------------------------------------------------------
-|
-| The routes file is used for defining the HTTP routes.
-|
-*/
+import("@backend/lib/config/instrument.js");
 
 import router from "@adonisjs/core/services/router";
 import configureMongoose from "@backend/config/database.js";

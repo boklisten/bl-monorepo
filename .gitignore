@@ -5,6 +5,7 @@
 
 # Build outputs
 **/dist/
+**/build/
 .build/
 .out/
 .next/

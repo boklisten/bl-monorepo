@@ -10,7 +10,7 @@
     "test": "API_ENV=test tsx bin/test.ts",
     "build": "tsx ace build --ignore-ts-errors",
     "build:sentry": "pnpm build && pnpm run sentry:sourcemaps",
-    "start": "tsx --env-file=.env ./build/bin/server.js",
+    "serve": "tsx --env-file=.env ./build/bin/server.js",
     "sentry:sourcemaps": "sentry-cli sourcemaps inject --org boklisten --project backend ./build && sentry-cli sourcemaps upload --org boklisten --project backend ./build"
   },
   "dependencies": {

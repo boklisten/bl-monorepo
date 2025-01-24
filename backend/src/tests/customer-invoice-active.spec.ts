@@ -1,5 +1,5 @@
-import { CustomerInvoiceActive } from "@backend/express/collections/invoice/helpers/customer-invoice-active.js";
-import { BlStorage } from "@backend/express/storage/bl-storage.js";
+import { CustomerInvoiceActive } from "@backend/lib/collections/invoice/helpers/customer-invoice-active.js";
+import { BlStorage } from "@backend/lib/storage/bl-storage.js";
 import { test } from "@japa/runner";
 import { BlError } from "@shared/bl-error/bl-error.js";
 import { Invoice } from "@shared/invoice/invoice.js";

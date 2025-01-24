@@ -1,9 +1,9 @@
-import { CustomerItemHandler } from "@backend/express/collections/customer-item/helpers/customer-item-handler.js";
-import { OrderItemMovedFromOrderHandler } from "@backend/express/collections/order/helpers/order-item-moved-from-order-handler/order-item-moved-from-order-handler.js";
-import { OrderPlacedHandler } from "@backend/express/collections/order/helpers/order-placed-handler/order-placed-handler.js";
-import { PaymentHandler } from "@backend/express/collections/payment/helpers/payment-handler.js";
-import Messenger from "@backend/express/messenger/messenger.js";
-import { BlStorage } from "@backend/express/storage/bl-storage.js";
+import { CustomerItemHandler } from "@backend/lib/collections/customer-item/helpers/customer-item-handler.js";
+import { OrderItemMovedFromOrderHandler } from "@backend/lib/collections/order/helpers/order-item-moved-from-order-handler/order-item-moved-from-order-handler.js";
+import { OrderPlacedHandler } from "@backend/lib/collections/order/helpers/order-placed-handler/order-placed-handler.js";
+import { PaymentHandler } from "@backend/lib/collections/payment/helpers/payment-handler.js";
+import Messenger from "@backend/lib/messenger/messenger.js";
+import { BlStorage } from "@backend/lib/storage/bl-storage.js";
 import { test } from "@japa/runner";
 import { BlError } from "@shared/bl-error/bl-error.js";
 import { Order } from "@shared/order/order.js";

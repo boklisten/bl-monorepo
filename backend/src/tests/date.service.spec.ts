@@ -1,4 +1,4 @@
-import { DateService } from "@backend/express/blc/date.service.js";
+import { DateService } from "@backend/lib/blc/date.service.js";
 import { test } from "@japa/runner";
 import { expect, use as chaiUse, should } from "chai";
 import chaiAsPromised from "chai-as-promised";

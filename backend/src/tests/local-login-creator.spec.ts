@@ -1,4 +1,4 @@
-import LocalLoginCreator from "@backend/express/auth/local/local-login-creator.js";
+import LocalLoginCreator from "@backend/lib/auth/local/local-login-creator.js";
 import { LocalLogin } from "@backend/types/local-login.js";
 import { test } from "@japa/runner";
 import { BlError } from "@shared/bl-error/bl-error.js";

@@ -1,5 +1,5 @@
-import CollectionEndpointDocumentAuth from "@backend/express/collection-endpoint/collection-endpoint-document-auth.js";
-import { BlStorageData } from "@backend/express/storage/bl-storage.js";
+import CollectionEndpointDocumentAuth from "@backend/lib/collection-endpoint/collection-endpoint-document-auth.js";
+import { BlStorageData } from "@backend/lib/storage/bl-storage.js";
 import { BlApiRequest } from "@backend/types/bl-api-request.js";
 import {
   BlDocumentPermission,

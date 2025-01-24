@@ -1,6 +1,6 @@
-import { Hook } from "@backend/express/hook/hook.js";
-import { ValidParameter } from "@backend/express/query/db-query-valid-params.js";
-import { BlStorageHandler } from "@backend/express/storage/bl-storage.js";
+import { Hook } from "@backend/lib/hook/hook.js";
+import { ValidParameter } from "@backend/lib/query/db-query-valid-params.js";
+import { BlStorageHandler } from "@backend/lib/storage/bl-storage.js";
 import { NestedDocument } from "@backend/types/nested-document.js";
 import { Operation } from "@backend/types/operation.js";
 import { UserPermission } from "@shared/permission/user-permission.js";

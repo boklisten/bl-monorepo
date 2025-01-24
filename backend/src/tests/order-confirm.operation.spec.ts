@@ -1,7 +1,7 @@
-import { OrderPlacedHandler } from "@backend/express/collections/order/helpers/order-placed-handler/order-placed-handler.js";
-import { OrderConfirmOperation } from "@backend/express/collections/order/operations/confirm/order-confirm.operation.js";
-import BlResponseHandler from "@backend/express/response/bl-response.handler.js";
-import { BlStorage } from "@backend/express/storage/bl-storage.js";
+import { OrderPlacedHandler } from "@backend/lib/collections/order/helpers/order-placed-handler/order-placed-handler.js";
+import { OrderConfirmOperation } from "@backend/lib/collections/order/operations/confirm/order-confirm.operation.js";
+import BlResponseHandler from "@backend/lib/response/bl-response.handler.js";
+import { BlStorage } from "@backend/lib/storage/bl-storage.js";
 import { test } from "@japa/runner";
 import { BlError } from "@shared/bl-error/bl-error.js";
 import { expect, use as chaiUse, should } from "chai";

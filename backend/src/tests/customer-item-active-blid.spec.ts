@@ -1,5 +1,5 @@
-import { CustomerItemActiveBlid } from "@backend/express/collections/customer-item/helpers/customer-item-active-blid.js";
-import { BlStorage } from "@backend/express/storage/bl-storage.js";
+import { CustomerItemActiveBlid } from "@backend/lib/collections/customer-item/helpers/customer-item-active-blid.js";
+import { BlStorage } from "@backend/lib/storage/bl-storage.js";
 import { test } from "@japa/runner";
 import { expect, use as chaiUse, should } from "chai";
 import chaiAsPromised from "chai-as-promised";

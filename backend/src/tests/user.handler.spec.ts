@@ -1,8 +1,8 @@
-import LocalLoginHandler from "@backend/express/auth/local/local-login.handler.js";
-import UserHandler from "@backend/express/auth/user/user.handler.js";
-import EmailValidationHelper from "@backend/express/collections/email-validation/helpers/email-validation.helper.js";
-import { SEDbQuery } from "@backend/express/query/se.db-query.js";
-import { BlStorage } from "@backend/express/storage/bl-storage.js";
+import LocalLoginHandler from "@backend/lib/auth/local/local-login.handler.js";
+import UserHandler from "@backend/lib/auth/user/user.handler.js";
+import EmailValidationHelper from "@backend/lib/collections/email-validation/helpers/email-validation.helper.js";
+import { SEDbQuery } from "@backend/lib/query/se.db-query.js";
+import { BlStorage } from "@backend/lib/storage/bl-storage.js";
 import { LocalLogin } from "@backend/types/local-login.js";
 import { User } from "@backend/types/user.js";
 import { test } from "@japa/runner";

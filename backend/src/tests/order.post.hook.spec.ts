@@ -1,8 +1,8 @@
-import { OrderValidator } from "@backend/express/collections/order/helpers/order-validator/order-validator.js";
-import { OrderHookBefore } from "@backend/express/collections/order/hooks/order-hook-before.js";
-import { OrderPostHook } from "@backend/express/collections/order/hooks/order.post.hook.js";
-import { UserDetailHelper } from "@backend/express/collections/user-detail/helpers/user-detail.helper.js";
-import { BlStorage } from "@backend/express/storage/bl-storage.js";
+import { OrderValidator } from "@backend/lib/collections/order/helpers/order-validator/order-validator.js";
+import { OrderHookBefore } from "@backend/lib/collections/order/hooks/order-hook-before.js";
+import { OrderPostHook } from "@backend/lib/collections/order/hooks/order.post.hook.js";
+import { UserDetailHelper } from "@backend/lib/collections/user-detail/helpers/user-detail.helper.js";
+import { BlStorage } from "@backend/lib/storage/bl-storage.js";
 import { test } from "@japa/runner";
 import { BlError } from "@shared/bl-error/bl-error.js";
 import { Order } from "@shared/order/order.js";

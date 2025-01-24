@@ -1,6 +1,6 @@
-import { DeliveryValidator } from "@backend/express/collections/delivery/helpers/deliveryValidator/delivery-validator.js";
-import { DeliveryPatchHook } from "@backend/express/collections/delivery/hooks/delivery.patch.hook.js";
-import { BlStorage } from "@backend/express/storage/bl-storage.js";
+import { DeliveryValidator } from "@backend/lib/collections/delivery/helpers/deliveryValidator/delivery-validator.js";
+import { DeliveryPatchHook } from "@backend/lib/collections/delivery/hooks/delivery.patch.hook.js";
+import { BlStorage } from "@backend/lib/storage/bl-storage.js";
 import { test } from "@japa/runner";
 import { BlError } from "@shared/bl-error/bl-error.js";
 import { Delivery } from "@shared/delivery/delivery.js";

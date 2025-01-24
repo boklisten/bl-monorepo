@@ -1,5 +1,5 @@
-import { OrderPlacedValidator } from "@backend/express/collections/order/helpers/order-validator/order-placed-validator/order-placed-validator.js";
-import { BlStorage } from "@backend/express/storage/bl-storage.js";
+import { OrderPlacedValidator } from "@backend/lib/collections/order/helpers/order-validator/order-placed-validator/order-placed-validator.js";
+import { BlStorage } from "@backend/lib/storage/bl-storage.js";
 import { test } from "@japa/runner";
 import { BlError } from "@shared/bl-error/bl-error.js";
 import { Delivery } from "@shared/delivery/delivery.js";

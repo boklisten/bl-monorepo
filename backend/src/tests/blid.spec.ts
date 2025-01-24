@@ -1,4 +1,4 @@
-import Blid from "@backend/express/auth/blid.js";
+import Blid from "@backend/lib/auth/blid.js";
 import { test } from "@japa/runner";
 import { BlError } from "@shared/bl-error/bl-error.js";
 import { use as chaiUse, should } from "chai";

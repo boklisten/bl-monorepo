@@ -1,4 +1,4 @@
-import { DeliveryBranchHandler } from "@backend/express/collections/delivery/helpers/deliveryBranch/delivery-branch-handler.js";
+import { DeliveryBranchHandler } from "@backend/lib/collections/delivery/helpers/deliveryBranch/delivery-branch-handler.js";
 import { test } from "@japa/runner";
 import { BlError } from "@shared/bl-error/bl-error.js";
 import { Delivery } from "@shared/delivery/delivery.js";

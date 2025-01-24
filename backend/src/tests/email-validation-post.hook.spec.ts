@@ -1,6 +1,6 @@
-import { EmailValidation } from "@backend/express/collections/email-validation/email-validation.js";
-import EmailValidationHelper from "@backend/express/collections/email-validation/helpers/email-validation.helper.js";
-import { EmailValidationPostHook } from "@backend/express/collections/email-validation/hooks/email-validation-post.hook.js";
+import { EmailValidation } from "@backend/lib/collections/email-validation/email-validation.js";
+import EmailValidationHelper from "@backend/lib/collections/email-validation/helpers/email-validation.helper.js";
+import { EmailValidationPostHook } from "@backend/lib/collections/email-validation/hooks/email-validation-post.hook.js";
 import { test } from "@japa/runner";
 import { BlError } from "@shared/bl-error/bl-error.js";
 import { expect, use as chaiUse, should } from "chai";

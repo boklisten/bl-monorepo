@@ -1,5 +1,5 @@
-import { UserCanDeleteUserDetail } from "@backend/express/collections/user-detail/helpers/user-can-delete-user-detail.js";
-import { BlStorage } from "@backend/express/storage/bl-storage.js";
+import { UserCanDeleteUserDetail } from "@backend/lib/collections/user-detail/helpers/user-can-delete-user-detail.js";
+import { BlStorage } from "@backend/lib/storage/bl-storage.js";
 import { User } from "@backend/types/user.js";
 import { test } from "@japa/runner";
 import { AccessToken } from "@shared/token/access-token.js";

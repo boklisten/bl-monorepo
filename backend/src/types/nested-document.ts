@@ -1,4 +1,4 @@
-import { BlStorageHandler } from "@backend/express/storage/bl-storage.js";
+import { BlStorageHandler } from "@backend/lib/storage/bl-storage.js";
 
 export interface NestedDocument {
   field: string;

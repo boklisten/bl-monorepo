@@ -1,4 +1,4 @@
-import { SEDbQuery } from "@backend/express/query/se.db-query.js";
+import { SEDbQuery } from "@backend/lib/query/se.db-query.js";
 import { test } from "@japa/runner";
 import { expect, use as chaiUse, should } from "chai";
 import chaiAsPromised from "chai-as-promised";

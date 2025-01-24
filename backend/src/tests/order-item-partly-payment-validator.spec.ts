@@ -1,4 +1,4 @@
-import { OrderItemPartlyPaymentValidator } from "@backend/express/collections/order/helpers/order-validator/order-item-validator/order-item-partly-payment-validator/order-item-partly-payment-validator.js";
+import { OrderItemPartlyPaymentValidator } from "@backend/lib/collections/order/helpers/order-validator/order-item-validator/order-item-partly-payment-validator/order-item-partly-payment-validator.js";
 import { test } from "@japa/runner";
 import { BlError } from "@shared/bl-error/bl-error.js";
 import { Branch } from "@shared/branch/branch.js";

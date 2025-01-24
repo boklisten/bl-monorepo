@@ -1,5 +1,5 @@
-import { CustomerHaveActiveCustomerItems } from "@backend/express/collections/customer-item/helpers/customer-have-active-customer-items.js";
-import { BlStorage } from "@backend/express/storage/bl-storage.js";
+import { CustomerHaveActiveCustomerItems } from "@backend/lib/collections/customer-item/helpers/customer-have-active-customer-items.js";
+import { BlStorage } from "@backend/lib/storage/bl-storage.js";
 import { test } from "@japa/runner";
 import { BlError } from "@shared/bl-error/bl-error.js";
 import { CustomerItem } from "@shared/customer-item/customer-item.js";

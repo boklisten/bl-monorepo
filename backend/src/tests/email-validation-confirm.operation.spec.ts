@@ -1,7 +1,7 @@
-import { EmailValidation } from "@backend/express/collections/email-validation/email-validation.js";
-import { EmailValidationConfirmOperation } from "@backend/express/collections/email-validation/operations/email-validation-confirm.operation.js";
-import BlResponseHandler from "@backend/express/response/bl-response.handler.js";
-import { BlStorage } from "@backend/express/storage/bl-storage.js";
+import { EmailValidation } from "@backend/lib/collections/email-validation/email-validation.js";
+import { EmailValidationConfirmOperation } from "@backend/lib/collections/email-validation/operations/email-validation-confirm.operation.js";
+import BlResponseHandler from "@backend/lib/response/bl-response.handler.js";
+import { BlStorage } from "@backend/lib/storage/bl-storage.js";
 import { test } from "@japa/runner";
 import { BlError } from "@shared/bl-error/bl-error.js";
 import { BlapiResponse } from "@shared/blapi-response/blapi-response.js";

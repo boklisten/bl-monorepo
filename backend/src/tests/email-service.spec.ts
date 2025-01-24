@@ -1,5 +1,5 @@
-import { EmailService } from "@backend/express/messenger/email/email-service.js";
-import { BlStorage } from "@backend/express/storage/bl-storage.js";
+import { EmailService } from "@backend/lib/messenger/email/email-service.js";
+import { BlStorage } from "@backend/lib/storage/bl-storage.js";
 import { EmailHandler, EmailLog } from "@boklisten/bl-email";
 import { PostOffice } from "@boklisten/bl-post-office";
 import { test } from "@japa/runner";

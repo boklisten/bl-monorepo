@@ -1,5 +1,5 @@
-import { BlEnv } from "@backend/express/config/env.js";
-import { logger } from "@backend/express/config/logger.js";
+import { BlEnv } from "@backend/lib/config/env.js";
+import { logger } from "@backend/lib/config/logger.js";
 import mongoose from "mongoose";
 
 export default async function configureMongoose() {

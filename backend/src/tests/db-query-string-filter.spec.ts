@@ -1,4 +1,4 @@
-import { DbQueryStringFilter } from "@backend/express/query/db-query-string-filter.js";
+import { DbQueryStringFilter } from "@backend/lib/query/db-query-string-filter.js";
 import { test } from "@japa/runner";
 import { expect, use as chaiUse, should } from "chai";
 import chaiAsPromised from "chai-as-promised";

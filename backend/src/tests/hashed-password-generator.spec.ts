@@ -1,4 +1,4 @@
-import HashedPasswordGenerator from "@backend/express/auth/local/hashed-password-generator.js";
+import HashedPasswordGenerator from "@backend/lib/auth/local/hashed-password-generator.js";
 import { test } from "@japa/runner";
 import { BlError } from "@shared/bl-error/bl-error.js";
 import { use as chaiUse, should } from "chai";

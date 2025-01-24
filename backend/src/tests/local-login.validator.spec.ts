@@ -1,7 +1,7 @@
-import LocalLoginPasswordValidator from "@backend/express/auth/local/local-login-password.validator.js";
-import LocalLoginHandler from "@backend/express/auth/local/local-login.handler.js";
-import LocalLoginValidator from "@backend/express/auth/local/local-login.validator.js";
-import UserHandler from "@backend/express/auth/user/user.handler.js";
+import LocalLoginPasswordValidator from "@backend/lib/auth/local/local-login-password.validator.js";
+import LocalLoginHandler from "@backend/lib/auth/local/local-login.handler.js";
+import LocalLoginValidator from "@backend/lib/auth/local/local-login.validator.js";
+import UserHandler from "@backend/lib/auth/user/user.handler.js";
 import { LocalLogin } from "@backend/types/local-login.js";
 import { User } from "@backend/types/user.js";
 import { test } from "@japa/runner";

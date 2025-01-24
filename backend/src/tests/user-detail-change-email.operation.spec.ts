@@ -1,7 +1,7 @@
-import UserHandler from "@backend/express/auth/user/user.handler.js";
-import { UserDetailChangeEmailOperation } from "@backend/express/collections/user-detail/operations/change-email/user-detail-change-email.operation.js";
-import BlResponseHandler from "@backend/express/response/bl-response.handler.js";
-import { BlStorage } from "@backend/express/storage/bl-storage.js";
+import UserHandler from "@backend/lib/auth/user/user.handler.js";
+import { UserDetailChangeEmailOperation } from "@backend/lib/collections/user-detail/operations/change-email/user-detail-change-email.operation.js";
+import BlResponseHandler from "@backend/lib/response/bl-response.handler.js";
+import { BlStorage } from "@backend/lib/storage/bl-storage.js";
 import { LocalLogin } from "@backend/types/local-login.js";
 import { User } from "@backend/types/user.js";
 import { test } from "@japa/runner";

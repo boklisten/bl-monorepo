@@ -1,9 +1,9 @@
-import { OrderFieldValidator } from "@backend/express/collections/order/helpers/order-validator/order-field-validator/order-field-validator.js";
-import { OrderItemBuyValidator } from "@backend/express/collections/order/helpers/order-validator/order-item-validator/order-item-buy-validator/order-item-buy-validator.js";
-import { OrderItemExtendValidator } from "@backend/express/collections/order/helpers/order-validator/order-item-validator/order-item-extend-validator/order-item-extend-validator.js";
-import { OrderItemRentValidator } from "@backend/express/collections/order/helpers/order-validator/order-item-validator/order-item-rent-validator/order-item-rent-validator.js";
-import { OrderItemValidator } from "@backend/express/collections/order/helpers/order-validator/order-item-validator/order-item-validator.js";
-import { BlStorage } from "@backend/express/storage/bl-storage.js";
+import { OrderFieldValidator } from "@backend/lib/collections/order/helpers/order-validator/order-field-validator/order-field-validator.js";
+import { OrderItemBuyValidator } from "@backend/lib/collections/order/helpers/order-validator/order-item-validator/order-item-buy-validator/order-item-buy-validator.js";
+import { OrderItemExtendValidator } from "@backend/lib/collections/order/helpers/order-validator/order-item-validator/order-item-extend-validator/order-item-extend-validator.js";
+import { OrderItemRentValidator } from "@backend/lib/collections/order/helpers/order-validator/order-item-validator/order-item-rent-validator/order-item-rent-validator.js";
+import { OrderItemValidator } from "@backend/lib/collections/order/helpers/order-validator/order-item-validator/order-item-validator.js";
+import { BlStorage } from "@backend/lib/storage/bl-storage.js";
 import { test } from "@japa/runner";
 import { BlError } from "@shared/bl-error/bl-error.js";
 import { Branch } from "@shared/branch/branch.js";

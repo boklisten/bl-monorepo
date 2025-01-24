@@ -1,9 +1,10 @@
 import { defineConfig } from "@adonisjs/cors";
+import { BlEnv } from "@backend/lib/config/env.js";
 
 const corsConfig = defineConfig({
   enabled: true,
-  origin: true,
-  methods: ["GET", "HEAD", "POST", "PUT", "DELETE"],
+  origin: BlEnv.URI_WHITELIST.split(" "),
+  methods: ["GET", "PUT", "PATCH", "POST", "DELETE"],
   headers: true,
   exposeHeaders: [],
   credentials: true,

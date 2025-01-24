@@ -1,4 +1,4 @@
-import { PriceService } from "@backend/express/price/price.service.js";
+import { PriceService } from "@backend/lib/price/price.service.js";
 import { test } from "@japa/runner";
 import { expect, use as chaiUse, should } from "chai";
 import chaiAsPromised from "chai-as-promised";

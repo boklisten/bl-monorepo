@@ -1,4 +1,4 @@
-import { BranchGetHook } from "@backend/express/collections/branch/hook/branch-get.hook.js";
+import { BranchGetHook } from "@backend/lib/collections/branch/hook/branch-get.hook.js";
 import { test } from "@japa/runner";
 import { AccessToken } from "@shared/token/access-token.js";
 import { expect, use as chaiUse, should } from "chai";

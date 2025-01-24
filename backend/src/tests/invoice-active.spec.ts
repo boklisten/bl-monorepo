@@ -1,4 +1,4 @@
-import { InvoiceActive } from "@backend/express/collections/invoice/helpers/invoice-active.js";
+import { InvoiceActive } from "@backend/lib/collections/invoice/helpers/invoice-active.js";
 import { test } from "@japa/runner";
 import { Invoice } from "@shared/invoice/invoice.js";
 import { expect } from "chai";

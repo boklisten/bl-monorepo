@@ -1,4 +1,4 @@
-import { CustomerItemValidator } from "@backend/express/collections/customer-item/validators/customer-item-validator.js";
+import { CustomerItemValidator } from "@backend/lib/collections/customer-item/validators/customer-item-validator.js";
 import { test } from "@japa/runner";
 import { BlError } from "@shared/bl-error/bl-error.js";
 import { expect, use as chaiUse, should } from "chai";

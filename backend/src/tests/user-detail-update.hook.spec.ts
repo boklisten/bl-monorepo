@@ -1,7 +1,7 @@
 import {
   UserDetailUpdateHook,
   UserDetailPatch,
-} from "@backend/express/collections/user-detail/hooks/user-detail-update.hook.js";
+} from "@backend/lib/collections/user-detail/hooks/user-detail-update.hook.js";
 import { test } from "@japa/runner";
 import { AccessToken } from "@shared/token/access-token.js";
 import { assert, use as chaiUse, should } from "chai";

@@ -1,5 +1,5 @@
-import { DeleteUserService } from "@backend/express/collections/user-detail/helpers/delete-user-service.js";
-import { BlStorage } from "@backend/express/storage/bl-storage.js";
+import { DeleteUserService } from "@backend/lib/collections/user-detail/helpers/delete-user-service.js";
+import { BlStorage } from "@backend/lib/storage/bl-storage.js";
 import { LocalLogin } from "@backend/types/local-login.js";
 import { User } from "@backend/types/user.js";
 import { test } from "@japa/runner";

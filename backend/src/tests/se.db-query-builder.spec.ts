@@ -1,6 +1,6 @@
-import { ValidParameter } from "@backend/express/query/db-query-valid-params.js";
-import { SEDbQueryBuilder } from "@backend/express/query/se.db-query-builder.js";
-import { SEDbQuery } from "@backend/express/query/se.db-query.js";
+import { ValidParameter } from "@backend/lib/query/db-query-valid-params.js";
+import { SEDbQueryBuilder } from "@backend/lib/query/se.db-query-builder.js";
+import { SEDbQuery } from "@backend/lib/query/se.db-query.js";
 import { test } from "@japa/runner";
 import { expect, use as chaiUse, should } from "chai";
 import chaiAsPromised from "chai-as-promised";

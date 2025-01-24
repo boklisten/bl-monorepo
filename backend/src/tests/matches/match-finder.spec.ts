@@ -1,4 +1,4 @@
-import { MatchFinder } from "@backend/express/collections/user-match/helpers/match-finder/match-finder.js";
+import { MatchFinder } from "@backend/lib/collections/user-match/helpers/match-finder/match-finder.js";
 import {
   createFakeMatchableUser,
   createFakeStandMatch,
@@ -7,8 +7,8 @@ import {
   seededRandom,
   shuffler,
   createMatchableUsersWithIdSuffix,
-} from "@backend/express/collections/user-match/helpers/match-finder/match-testing-utils.js";
-import { MatchableUser } from "@backend/express/collections/user-match/helpers/match-finder/match-types.js";
+} from "@backend/lib/collections/user-match/helpers/match-finder/match-testing-utils.js";
+import { MatchableUser } from "@backend/lib/collections/user-match/helpers/match-finder/match-types.js";
 import otto_treider_test_users_year_0 from "@backend/tests/matches/test-data/test_users_year_0.json" with { type: "json" };
 import otto_treider_test_users_year_1 from "@backend/tests/matches/test-data/test_users_year_1.json" with { type: "json" };
 import otto_treider_test_users_year_2 from "@backend/tests/matches/test-data/test_users_year_2.json" with { type: "json" };

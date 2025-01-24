@@ -1,6 +1,6 @@
-import LocalLoginHandler from "@backend/express/auth/local/local-login.handler.js";
-import { SEDbQuery } from "@backend/express/query/se.db-query.js";
-import { BlStorage } from "@backend/express/storage/bl-storage.js";
+import LocalLoginHandler from "@backend/lib/auth/local/local-login.handler.js";
+import { SEDbQuery } from "@backend/lib/query/se.db-query.js";
+import { BlStorage } from "@backend/lib/storage/bl-storage.js";
 import { LocalLogin } from "@backend/types/local-login.js";
 import { test } from "@japa/runner";
 import { BlError } from "@shared/bl-error/bl-error.js";

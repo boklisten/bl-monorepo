@@ -1,7 +1,7 @@
-import LocalLoginHandler from "@backend/express/auth/local/local-login.handler.js";
-import TokenHandler from "@backend/express/auth/token/token.handler.js";
-import UserProvider from "@backend/express/auth/user/user-provider.js";
-import UserHandler from "@backend/express/auth/user/user.handler.js";
+import LocalLoginHandler from "@backend/lib/auth/local/local-login.handler.js";
+import TokenHandler from "@backend/lib/auth/token/token.handler.js";
+import UserProvider from "@backend/lib/auth/user/user-provider.js";
+import UserHandler from "@backend/lib/auth/user/user.handler.js";
 import { test } from "@japa/runner";
 import { BlError } from "@shared/bl-error/bl-error.js";
 import { expect, use as chaiUse, should } from "chai";

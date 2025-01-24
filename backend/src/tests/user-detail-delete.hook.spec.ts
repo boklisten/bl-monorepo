@@ -1,9 +1,9 @@
-import { CustomerHaveActiveCustomerItems } from "@backend/express/collections/customer-item/helpers/customer-have-active-customer-items.js";
-import { CustomerInvoiceActive } from "@backend/express/collections/invoice/helpers/customer-invoice-active.js";
-import { OrderActive } from "@backend/express/collections/order/helpers/order-active/order-active.js";
-import { DeleteUserService } from "@backend/express/collections/user-detail/helpers/delete-user-service.js";
-import { UserCanDeleteUserDetail } from "@backend/express/collections/user-detail/helpers/user-can-delete-user-detail.js";
-import { UserDetailDeleteHook } from "@backend/express/collections/user-detail/hooks/user-detail-delete.hook.js";
+import { CustomerHaveActiveCustomerItems } from "@backend/lib/collections/customer-item/helpers/customer-have-active-customer-items.js";
+import { CustomerInvoiceActive } from "@backend/lib/collections/invoice/helpers/customer-invoice-active.js";
+import { OrderActive } from "@backend/lib/collections/order/helpers/order-active/order-active.js";
+import { DeleteUserService } from "@backend/lib/collections/user-detail/helpers/delete-user-service.js";
+import { UserCanDeleteUserDetail } from "@backend/lib/collections/user-detail/helpers/user-can-delete-user-detail.js";
+import { UserDetailDeleteHook } from "@backend/lib/collections/user-detail/hooks/user-detail-delete.hook.js";
 import { test } from "@japa/runner";
 import { BlError } from "@shared/bl-error/bl-error.js";
 import { AccessToken } from "@shared/token/access-token.js";

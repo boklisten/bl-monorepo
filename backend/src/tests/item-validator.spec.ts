@@ -1,4 +1,4 @@
-import { ItemValidator } from "@backend/express/collections/order/helpers/order-validator/item-validator/item-validator.js";
+import { ItemValidator } from "@backend/lib/collections/order/helpers/order-validator/item-validator/item-validator.js";
 import { test } from "@japa/runner";
 import { BlError } from "@shared/bl-error/bl-error.js";
 import { Item } from "@shared/item/item.js";

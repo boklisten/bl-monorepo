@@ -18,10 +18,10 @@ const BL_CONFIG = {
       url: "auth/local/login",
     },
     facebook: {
-      url: "auth/facebook",
+      url: "auth/facebook/redirect",
     },
     google: {
-      url: "auth/google",
+      url: "auth/google/redirect",
     },
     localStorageKeys: {
       redirect: "bl-redirect",

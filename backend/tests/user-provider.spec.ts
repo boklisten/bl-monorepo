@@ -79,7 +79,7 @@ test.group("UserProvider", (group) => {
 
     return expect(
       UserProvider.loginOrCreate("username@mail.com", "local", "abcdefg"),
-    ).to.eventually.be.eql({ user: user, tokens: tokens });
+    ).to.eventually.be.eql(tokens);
   });
 
   test("loginOrCreate() - should resolve with a user object and tokens", async () => {
@@ -93,6 +93,6 @@ test.group("UserProvider", (group) => {
 
     return expect(
       UserProvider.loginOrCreate("username@mail.com", "local", "abcdefg"),
-    ).to.eventually.be.eql({ user: user, tokens: tokens });
+    ).to.eventually.be.eql(tokens);
   });
 });

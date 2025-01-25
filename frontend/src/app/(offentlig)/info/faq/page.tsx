@@ -1,6 +1,7 @@
-import EditableQNA from "@frontend/components/info/EditableQna";
-import { QNAs } from "@frontend/utils/mockData";
 import { Metadata } from "next";
+
+import EditableQNA from "@/components/info/EditableQna";
+import { QNAs } from "@/utils/mockData";
 
 export const metadata: Metadata = {
   title: "Spørsmål og svar",

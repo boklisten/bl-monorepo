@@ -1,4 +1,4 @@
-import { LinkTabProps } from "@frontend/components/info/DynamicNav";
+import { LinkTabProps } from "@/components/info/DynamicNav";
 
 export const infoPageTabs: LinkTabProps[] = [
   { label: "Generell informasjon", href: "/info/general" },

@@ -1,7 +1,4 @@
 "use client";
-import { isEmployee, isLoggedIn } from "@frontend/api/auth";
-import DynamicLink from "@frontend/components/DynamicLink";
-import useIsHydrated from "@frontend/utils/useIsHydrated";
 import { AdminPanelSettings, Handshake, Search } from "@mui/icons-material";
 import AccessTimeIcon from "@mui/icons-material/AccessTime";
 import BookIcon from "@mui/icons-material/Book";
@@ -22,6 +19,10 @@ import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 import SwipeableDrawer from "@mui/material/SwipeableDrawer";
 import { useState, KeyboardEvent, MouseEvent, ReactNode } from "react";
+
+import { isEmployee, isLoggedIn } from "@/api/auth";
+import DynamicLink from "@/components/DynamicLink";
+import useIsHydrated from "@/utils/useIsHydrated";
 
 interface DrawerLinkProps {
   title: string;

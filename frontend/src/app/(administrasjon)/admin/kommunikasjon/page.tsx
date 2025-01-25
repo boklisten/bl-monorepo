@@ -1,7 +1,7 @@
 "use client";
 
-import AdminNavigationCards from "@frontend/components/AdminNavigationCards";
-import { COMMUNICATION_SUB_PAGES } from "@frontend/utils/adminNavigation";
+import AdminNavigationCards from "@/components/AdminNavigationCards";
+import { COMMUNICATION_SUB_PAGES } from "@/utils/adminNavigation";
 
 export default function CommunicationRootPage() {
   /**

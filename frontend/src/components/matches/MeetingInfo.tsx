@@ -1,8 +1,9 @@
-import DynamicLink from "@frontend/components/DynamicLink";
-import { FormattedDatetime } from "@frontend/components/matches/matchesList/helper";
 import PlaceIcon from "@mui/icons-material/Place";
 import ScheduleIcon from "@mui/icons-material/Schedule";
 import { Box, Typography } from "@mui/material";
+
+import DynamicLink from "@/components/DynamicLink";
+import { FormattedDatetime } from "@/components/matches/matchesList/helper";
 
 const MeetingInfo = ({
   meetingTime,

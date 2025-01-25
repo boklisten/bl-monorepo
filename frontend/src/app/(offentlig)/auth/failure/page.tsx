@@ -1,6 +1,7 @@
-import DynamicLink from "@frontend/components/DynamicLink";
 import { Alert, AlertTitle, Card, Container, Box } from "@mui/material";
 import { Metadata } from "next";
+
+import DynamicLink from "@/components/DynamicLink";
 
 export const metadata: Metadata = {
   title: "Klarte ikke logge inn",

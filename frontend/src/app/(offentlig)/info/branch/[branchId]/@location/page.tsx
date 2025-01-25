@@ -1,7 +1,8 @@
-import BlFetcher from "@frontend/api/blFetcher";
-import BranchLocationInfo from "@frontend/components/info/BranchLocationInfo";
-import BL_CONFIG from "@frontend/utils/bl-config";
 import { Branch } from "@shared/branch/branch";
+
+import BlFetcher from "@/api/blFetcher";
+import BranchLocationInfo from "@/components/info/BranchLocationInfo";
+import BL_CONFIG from "@/utils/bl-config";
 
 export default async function BranchLocationSlot({
   params,

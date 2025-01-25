@@ -1,18 +1,19 @@
+import { Box, Typography } from "@mui/material";
+import { StandMatchWithDetails } from "@shared/match/match-dtos";
+import { FC } from "react";
+
 import {
   calculateFulfilledStandMatchItems,
   isStandMatchBegun,
   isStandMatchFulfilled,
-} from "@frontend/components/matches/matches-helper";
+} from "@/components/matches/matches-helper";
 import {
   formatActionsString,
   StandMatchTitle,
-} from "@frontend/components/matches/matchesList/helper";
-import MatchListItemBox from "@frontend/components/matches/matchesList/MatchListItemBox";
-import ProgressBar from "@frontend/components/matches/matchesList/ProgressBar";
-import MeetingInfo from "@frontend/components/matches/MeetingInfo";
-import { Box, Typography } from "@mui/material";
-import { StandMatchWithDetails } from "@shared/match/match-dtos";
-import { FC } from "react";
+} from "@/components/matches/matchesList/helper";
+import MatchListItemBox from "@/components/matches/matchesList/MatchListItemBox";
+import ProgressBar from "@/components/matches/matchesList/ProgressBar";
+import MeetingInfo from "@/components/matches/MeetingInfo";
 
 const StandMatchListItem: FC<{
   standMatch: StandMatchWithDetails;

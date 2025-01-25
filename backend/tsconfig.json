@@ -4,7 +4,10 @@
     "resolveJsonModule": true,
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
-    "rootDir": "./"
+    "rootDir": "./",
+    "paths": {
+      "@shared/*": ["shared/src/*"]
+    }
   },
   "include": ["."],
   "exclude": ["node_modules", "build"],

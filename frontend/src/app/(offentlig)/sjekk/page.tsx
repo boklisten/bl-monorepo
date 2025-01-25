@@ -1,6 +1,7 @@
-import PublicBlidSearch from "@frontend/components/search/PublicBlidSearch";
 import { Card, Container, Stack, Typography, Box } from "@mui/material";
 import { Metadata } from "next";
+
+import PublicBlidSearch from "@/components/search/PublicBlidSearch";
 
 export const metadata: Metadata = {
   title: "Boksøk",

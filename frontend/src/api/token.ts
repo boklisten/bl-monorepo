@@ -1,10 +1,11 @@
-import BlFetcher from "@frontend/api/blFetcher";
-import { add, get, removeAll } from "@frontend/api/storage";
-import BL_CONFIG from "@frontend/utils/bl-config";
-import { AuthResponse } from "@frontend/utils/types";
 import { BlError } from "@shared/bl-error/bl-error";
 import { AccessToken } from "@shared/token/access-token";
 import { decodeToken } from "react-jwt";
+
+import BlFetcher from "@/api/blFetcher";
+import { add, get, removeAll } from "@/api/storage";
+import BL_CONFIG from "@/utils/bl-config";
+import { AuthResponse } from "@/utils/types";
 
 const accessTokenName = BL_CONFIG.token.accessToken;
 const refreshTokenName = BL_CONFIG.token.refreshToken;

@@ -1,6 +1,7 @@
-import EmailConfirmer from "@frontend/components/EmailConfirmer";
 import { Box, Card, Container } from "@mui/material";
 import { Metadata } from "next";
+
+import EmailConfirmer from "@/components/EmailConfirmer";
 
 export const metadata: Metadata = {
   title: "Bekreft e-post",

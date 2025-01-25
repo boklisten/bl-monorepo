@@ -1,9 +1,10 @@
-import BlFetcher from "@frontend/api/blFetcher";
-import UserDetailSearchResult from "@frontend/components/search/UserDetailSearchResult";
-import BL_CONFIG from "@frontend/utils/bl-config";
 import { Autocomplete, Box, TextField, Typography } from "@mui/material";
 import { UserDetail } from "@shared/user/user-detail/user-detail";
 import { useState } from "react";
+
+import BlFetcher from "@/api/blFetcher";
+import UserDetailSearchResult from "@/components/search/UserDetailSearchResult";
+import BL_CONFIG from "@/utils/bl-config";
 
 export default function UserDetailSearchField({
   onSelectedResult,

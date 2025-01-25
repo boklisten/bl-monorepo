@@ -1,11 +1,12 @@
-import StandMatchListItem from "@frontend/components/matches/matchesList/StandMatchListItem";
-import UserMatchListItem from "@frontend/components/matches/matchesList/UserMatchListItem";
 import { Typography, Box } from "@mui/material";
 import {
   StandMatchWithDetails,
   UserMatchWithDetails,
 } from "@shared/match/match-dtos";
 import { FC } from "react";
+
+import StandMatchListItem from "@/components/matches/matchesList/StandMatchListItem";
+import UserMatchListItem from "@/components/matches/matchesList/UserMatchListItem";
 
 export const MatchListItemGroups: FC<{
   userMatches: UserMatchWithDetails[];

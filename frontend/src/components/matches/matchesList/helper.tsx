@@ -1,8 +1,9 @@
-import { UserMatchStatus } from "@frontend/components/matches/matches-helper";
-import theme from "@frontend/utils/theme";
 import { KeyboardDoubleArrowRight, SwapHoriz } from "@mui/icons-material";
 import { SxProps, Typography, Box } from "@mui/material";
 import { StandMatchWithDetails } from "@shared/match/match-dtos";
+
+import { UserMatchStatus } from "@/components/matches/matches-helper";
+import theme from "@/utils/theme";
 
 export function formatActionsString(handoffItems: number, pickupItems: number) {
   const hasHandoffItems = handoffItems > 0;

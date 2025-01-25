@@ -1,8 +1,9 @@
 import "react-quill/dist/quill.core.css";
 
-import { sanitizeQuillHtml } from "@frontend/utils/sanitizeHtml";
-import { MaybeEmptyEditableText } from "@frontend/utils/types";
 import { Box } from "@mui/material";
+
+import { sanitizeQuillHtml } from "@/utils/sanitizeHtml";
+import { MaybeEmptyEditableText } from "@/utils/types";
 
 export const EditableTextRenderer = ({
   editableText,

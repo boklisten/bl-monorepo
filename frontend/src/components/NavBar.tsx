@@ -1,11 +1,12 @@
-import BranchSelect from "@frontend/components/BranchSelect";
-import DynamicLink from "@frontend/components/DynamicLink";
-import Logo from "@frontend/components/Logo";
-import DropDownMenu from "@frontend/components/SideMenuDrawer";
 import { Button } from "@mui/material";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
+
+import BranchSelect from "@/components/BranchSelect";
+import DynamicLink from "@/components/DynamicLink";
+import Logo from "@/components/Logo";
+import DropDownMenu from "@/components/SideMenuDrawer";
 
 interface TabLinkProps {
   title: string;

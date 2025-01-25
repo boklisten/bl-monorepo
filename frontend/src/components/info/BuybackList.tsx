@@ -1,6 +1,4 @@
 "use client";
-import BlFetcher from "@frontend/api/blFetcher";
-import BL_CONFIG from "@frontend/utils/bl-config";
 import {
   Alert,
   Paper,
@@ -15,6 +13,9 @@ import {
 } from "@mui/material";
 import { Item } from "@shared/item/item";
 import useSWR from "swr";
+
+import BlFetcher from "@/api/blFetcher";
+import BL_CONFIG from "@/utils/bl-config";
 
 const BuybackList = ({
   defaultBuybackItems,

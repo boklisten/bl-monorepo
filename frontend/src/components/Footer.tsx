@@ -1,10 +1,11 @@
-import DynamicLink from "@frontend/components/DynamicLink";
-import ContactInfo from "@frontend/components/info/ContactInfo";
 import CopyrightIcon from "@mui/icons-material/Copyright";
 import { Stack, Typography } from "@mui/material";
 import Box from "@mui/material/Box";
 import moment from "moment";
 import Image from "next/image";
+
+import DynamicLink from "@/components/DynamicLink";
+import ContactInfo from "@/components/info/ContactInfo";
 
 export default function Footer() {
   return (

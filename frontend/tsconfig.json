@@ -1,6 +1,11 @@
 {
   "extends": ["../tsconfig.base.json", "@tsconfig/next/tsconfig.json"],
-  "compilerOptions": {},
+  "compilerOptions": {
+    "paths": {
+      "@/*": ["frontend/src/*"],
+      "@shared/*": ["shared/src/*"]
+    }
+  },
   "references": [
     {
       "path": "../shared"

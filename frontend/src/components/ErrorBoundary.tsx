@@ -1,7 +1,8 @@
-import DynamicLink from "@frontend/components/DynamicLink";
-import Logo from "@frontend/components/Logo";
 import { Alert, AlertTitle, Grid2 } from "@mui/material";
 import { useEffect } from "react";
+
+import DynamicLink from "@/components/DynamicLink";
+import Logo from "@/components/Logo";
 
 export default function ErrorBoundary({
   error,

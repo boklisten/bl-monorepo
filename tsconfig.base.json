@@ -6,10 +6,6 @@
     "target": "ESNext",
     "noUnusedParameters": false, // fixme: delete this line for stricter checks
     "typeRoots": ["./node_modules/@types"],
-    "baseUrl": ".",
-    "paths": {
-      "@shared/*": ["shared/src/*"],
-      "@frontend/*": ["frontend/src/*"]
-    }
+    "baseUrl": "."
   }
 }

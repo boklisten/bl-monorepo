@@ -1,9 +1,10 @@
 "use client";
 
-import { isAdmin, isEmployee, isLoggedIn, isManager } from "@frontend/api/auth";
 import { UserPermission } from "@shared/permission/user-permission";
 import { usePathname, useRouter } from "next/navigation";
 import { useCallback, useEffect } from "react";
+
+import { isAdmin, isEmployee, isLoggedIn, isManager } from "@/api/auth";
 
 export default function PagePermissionGuard({
   requiredPermission,

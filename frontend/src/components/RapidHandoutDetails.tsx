@@ -1,9 +1,3 @@
-import BlFetcher from "@frontend/api/blFetcher";
-import { ItemStatus } from "@frontend/components/matches/matches-helper";
-import MatchItemTable from "@frontend/components/matches/MatchItemTable";
-import MatchScannerContent from "@frontend/components/matches/MatchScannerContent";
-import ScannerModal from "@frontend/components/scanner/ScannerModal";
-import BL_CONFIG from "@frontend/utils/bl-config";
 import QrCodeScannerIcon from "@mui/icons-material/QrCodeScanner";
 import { Alert, Button, Typography } from "@mui/material";
 import { Order } from "@shared/order/order";
@@ -11,6 +5,13 @@ import { OrderItem } from "@shared/order/order-item/order-item";
 import { UserDetail } from "@shared/user/user-detail/user-detail";
 import { useEffect, useState } from "react";
 import useSWR from "swr";
+
+import BlFetcher from "@/api/blFetcher";
+import { ItemStatus } from "@/components/matches/matches-helper";
+import MatchItemTable from "@/components/matches/MatchItemTable";
+import MatchScannerContent from "@/components/matches/MatchScannerContent";
+import ScannerModal from "@/components/scanner/ScannerModal";
+import BL_CONFIG from "@/utils/bl-config";
 
 function calculateUnfulfilledOrderItems(orders: Order[]): OrderItem[] {
   return orders

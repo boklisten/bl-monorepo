@@ -1,4 +1,3 @@
-import DynamicLink from "@frontend/components/DynamicLink";
 import {
   Button,
   Card,
@@ -8,6 +7,8 @@ import {
 } from "@mui/material";
 import { green, grey } from "@mui/material/colors";
 import { FC, PropsWithChildren } from "react";
+
+import DynamicLink from "@/components/DynamicLink";
 
 const MatchListItemBox: FC<
   PropsWithChildren<{

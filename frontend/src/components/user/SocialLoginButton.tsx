@@ -1,11 +1,12 @@
 "use client";
-import { add } from "@frontend/api/storage";
-import BL_CONFIG from "@frontend/utils/bl-config";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import { useRouter, useSearchParams } from "next/navigation";
 import { ReactNode } from "react";
+
+import { add } from "@/api/storage";
+import BL_CONFIG from "@/utils/bl-config";
 
 interface SocialLoginProps {
   label: string;

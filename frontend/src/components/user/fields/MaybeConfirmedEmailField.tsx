@@ -1,7 +1,8 @@
-import EmailField from "@frontend/components/user/fields/EmailField";
 import { Check, Info } from "@mui/icons-material";
 import { InputAdornment, TextFieldProps, Tooltip } from "@mui/material";
 import { forwardRef, Ref } from "react";
+
+import EmailField from "@/components/user/fields/EmailField";
 
 type EmailFieldProps = Omit<TextFieldProps, "ref"> & {
   isSignUp: boolean | undefined;

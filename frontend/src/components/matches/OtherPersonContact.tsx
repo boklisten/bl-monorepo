@@ -1,7 +1,8 @@
-import DynamicLink from "@frontend/components/DynamicLink";
 import PhoneIphoneIcon from "@mui/icons-material/PhoneIphone";
 import { Box, Typography } from "@mui/material";
 import { UserMatchWithDetails } from "@shared/match/match-dtos";
+
+import DynamicLink from "@/components/DynamicLink";
 
 const OtherPersonContact = ({
   userMatch,

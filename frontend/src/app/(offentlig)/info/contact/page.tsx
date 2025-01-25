@@ -1,6 +1,7 @@
-import ContactInfo from "@frontend/components/info/ContactInfo";
 import { Typography } from "@mui/material";
 import { Metadata } from "next";
+
+import ContactInfo from "@/components/info/ContactInfo";
 
 export const metadata: Metadata = {
   title: "Kontakt oss",

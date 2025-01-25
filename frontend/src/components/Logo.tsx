@@ -1,6 +1,7 @@
-import DynamicLink from "@frontend/components/DynamicLink";
 import { Box, Typography } from "@mui/material";
 import Image from "next/image";
+
+import DynamicLink from "@/components/DynamicLink";
 
 export default function Logo({ variant }: { variant: "white" | "blue" }) {
   return (

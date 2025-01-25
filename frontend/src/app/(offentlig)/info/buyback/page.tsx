@@ -1,9 +1,10 @@
-import BlFetcher from "@frontend/api/blFetcher";
-import BuybackList from "@frontend/components/info/BuybackList";
-import BL_CONFIG from "@frontend/utils/bl-config";
-import { assertBlApiError } from "@frontend/utils/types";
 import { Item } from "@shared/item/item";
 import { Metadata } from "next";
+
+import BlFetcher from "@/api/blFetcher";
+import BuybackList from "@/components/info/BuybackList";
+import BL_CONFIG from "@/utils/bl-config";
+import { assertBlApiError } from "@/utils/types";
 
 export const revalidate = 60;
 

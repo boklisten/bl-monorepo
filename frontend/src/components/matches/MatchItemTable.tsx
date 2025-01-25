@@ -1,4 +1,3 @@
-import { ItemStatus } from "@frontend/components/matches/matches-helper";
 import CheckBoxIcon from "@mui/icons-material/CheckBox";
 import ErrorIcon from "@mui/icons-material/Error";
 import {
@@ -11,6 +10,8 @@ import {
   TableRow,
   Tooltip,
 } from "@mui/material";
+
+import { ItemStatus } from "@/components/matches/matches-helper";
 
 const MatchItemTable = ({
   itemFilter = null,

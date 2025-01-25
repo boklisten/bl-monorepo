@@ -1,12 +1,13 @@
-import EmailField from "@frontend/components/user/fields/EmailField";
-import FieldErrorAlert from "@frontend/components/user/fields/FieldErrorAlert";
-import PhoneNumberField from "@frontend/components/user/fields/PhoneNumberField";
-import { fieldValidators } from "@frontend/components/user/user-detail-editor/fieldValidators";
-import { UserEditorFields } from "@frontend/components/user/user-detail-editor/useUserDetailEditorForm";
 import { Divider, Typography } from "@mui/material";
 import Grid from "@mui/material/Grid";
 import TextField from "@mui/material/TextField";
 import { FieldErrors, UseFormRegister } from "react-hook-form";
+
+import EmailField from "@/components/user/fields/EmailField";
+import FieldErrorAlert from "@/components/user/fields/FieldErrorAlert";
+import PhoneNumberField from "@/components/user/fields/PhoneNumberField";
+import { fieldValidators } from "@/components/user/user-detail-editor/fieldValidators";
+import { UserEditorFields } from "@/components/user/user-detail-editor/useUserDetailEditorForm";
 
 const GuardianInfoSection = ({
   errors,

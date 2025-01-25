@@ -1,11 +1,12 @@
 "use client";
 
-import BlFetcher from "@frontend/api/blFetcher";
-import CountdownToRedirect from "@frontend/components/CountdownToRedirect";
-import DynamicLink from "@frontend/components/DynamicLink";
-import BL_CONFIG from "@frontend/utils/bl-config";
 import { Alert, CircularProgress, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
+
+import BlFetcher from "@/api/blFetcher";
+import CountdownToRedirect from "@/components/CountdownToRedirect";
+import DynamicLink from "@/components/DynamicLink";
+import BL_CONFIG from "@/utils/bl-config";
 
 function validateEmail(confirmationId: string) {
   return BlFetcher.patch(

@@ -1,7 +1,4 @@
 "use client";
-import { resetPassword } from "@frontend/api/user";
-import DynamicLink from "@frontend/components/DynamicLink";
-import { assertBlApiError } from "@frontend/utils/types";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import {
   Alert,
@@ -17,6 +14,10 @@ import TextField from "@mui/material/TextField";
 import { useSearchParams } from "next/navigation";
 import React, { useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
+
+import { resetPassword } from "@/api/user";
+import DynamicLink from "@/components/DynamicLink";
+import { assertBlApiError } from "@/utils/types";
 
 interface PasswordResetFields {
   password: string;

@@ -1,12 +1,13 @@
-import EmailConfirmationStatus from "@frontend/components/user/fields/EmailConfirmationStatus";
-import FieldErrorAlert from "@frontend/components/user/fields/FieldErrorAlert";
-import MaybeConfirmedEmailField from "@frontend/components/user/fields/MaybeConfirmedEmailField";
-import PasswordField from "@frontend/components/user/fields/PasswordField";
-import { fieldValidators } from "@frontend/components/user/user-detail-editor/fieldValidators";
-import { UserEditorFields } from "@frontend/components/user/user-detail-editor/useUserDetailEditorForm";
 import Grid from "@mui/material/Grid";
 import { UserDetail } from "@shared/user/user-detail/user-detail";
 import { FieldErrors, UseFormRegister, UseFormSetError } from "react-hook-form";
+
+import EmailConfirmationStatus from "@/components/user/fields/EmailConfirmationStatus";
+import FieldErrorAlert from "@/components/user/fields/FieldErrorAlert";
+import MaybeConfirmedEmailField from "@/components/user/fields/MaybeConfirmedEmailField";
+import PasswordField from "@/components/user/fields/PasswordField";
+import { fieldValidators } from "@/components/user/user-detail-editor/fieldValidators";
+import { UserEditorFields } from "@/components/user/user-detail-editor/useUserDetailEditorForm";
 
 interface LoginInfoSectionProps {
   signUp: boolean | undefined;

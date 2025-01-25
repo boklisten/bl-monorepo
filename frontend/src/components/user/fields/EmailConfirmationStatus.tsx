@@ -1,10 +1,11 @@
-import BlFetcher from "@frontend/api/blFetcher";
-import BL_CONFIG from "@frontend/utils/bl-config";
 import { Email, Info } from "@mui/icons-material";
 import { Alert } from "@mui/material";
 import Button from "@mui/material/Button";
 import { UserDetail } from "@shared/user/user-detail/user-detail";
 import { useState } from "react";
+
+import BlFetcher from "@/api/blFetcher";
+import BL_CONFIG from "@/utils/bl-config";
 
 interface EmailConfirmationStatusProps {
   isSignUp: boolean | undefined;

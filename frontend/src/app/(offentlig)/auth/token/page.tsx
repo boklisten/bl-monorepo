@@ -1,4 +1,3 @@
-import AuthVerifier from "@frontend/components/AuthVerifier";
 import {
   Card,
   CircularProgress,
@@ -7,6 +6,8 @@ import {
   Box,
 } from "@mui/material";
 import { Metadata } from "next";
+
+import AuthVerifier from "@/components/AuthVerifier";
 
 export const metadata: Metadata = {
   title: "Logger inn...",

@@ -1,9 +1,6 @@
-import {
-  haveAccessToken,
-  removeTokens,
-  getAccessTokenBody,
-} from "@frontend/api/token";
 import { UserPermission } from "@shared/permission/user-permission";
+
+import { haveAccessToken, removeTokens, getAccessTokenBody } from "@/api/token";
 
 export const isLoggedIn = () => haveAccessToken();
 

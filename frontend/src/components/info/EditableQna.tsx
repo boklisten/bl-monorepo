@@ -1,5 +1,4 @@
 "use client";
-import { isAdmin } from "@frontend/api/auth";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
@@ -16,6 +15,8 @@ import {
   Box,
 } from "@mui/material";
 import { useEffect, useRef, useState } from "react";
+
+import { isAdmin } from "@/api/auth";
 
 interface QNA {
   id: string;

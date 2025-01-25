@@ -1,7 +1,8 @@
-import EditableTextElement from "@frontend/components/editableText/EditableTextElement";
-import theme from "@frontend/utils/theme";
 import { Box } from "@mui/material";
 import { ComponentProps } from "react";
+
+import EditableTextElement from "@/components/editableText/EditableTextElement";
+import theme from "@/utils/theme";
 
 const NewsBanner = (props: ComponentProps<typeof EditableTextElement>) => {
   if (

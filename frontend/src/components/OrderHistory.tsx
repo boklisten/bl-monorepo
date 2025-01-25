@@ -1,5 +1,3 @@
-import BlFetcher from "@frontend/api/blFetcher";
-import BL_CONFIG from "@frontend/utils/bl-config";
 import { LoadingButton } from "@mui/lab";
 import {
   Box,
@@ -21,6 +19,9 @@ import { Order } from "@shared/order/order";
 import { Payment } from "@shared/payment/payment";
 import moment from "moment";
 import { useState } from "react";
+
+import BlFetcher from "@/api/blFetcher";
+import BL_CONFIG from "@/utils/bl-config";
 
 // fetchPayments(orders);
 // types are from a business POV

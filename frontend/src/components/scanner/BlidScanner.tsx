@@ -1,5 +1,6 @@
-import { ScannedTextType, TextType } from "@frontend/utils/types";
 import { IDetectedBarcode, Scanner } from "@yudiel/react-qr-scanner";
+
+import { ScannedTextType, TextType } from "@/utils/types";
 
 export function determineScannedTextType(scannedText: string): ScannedTextType {
   if (/^[\dA-Za-z]{12}$|^\d{8}$/.test(scannedText)) {

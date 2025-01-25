@@ -1,8 +1,9 @@
 "use client";
 
-import { attachTokensToHref } from "@frontend/components/AuthLinker";
-import BL_CONFIG from "@frontend/utils/bl-config";
 import { redirect } from "next/navigation";
+
+import { attachTokensToHref } from "@/components/AuthLinker";
+import BL_CONFIG from "@/utils/bl-config";
 
 export default function DatabaseBranchesPage() {
   redirect(

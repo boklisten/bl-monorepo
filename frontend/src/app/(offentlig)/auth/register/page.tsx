@@ -1,7 +1,8 @@
-import UserDetailEditor from "@frontend/components/user/user-detail-editor/UserDetailEditor";
 import { Card } from "@mui/material";
 import { Metadata } from "next";
 import { Suspense } from "react";
+
+import UserDetailEditor from "@/components/user/user-detail-editor/UserDetailEditor";
 
 export const metadata: Metadata = {
   title: "Ny bruker",

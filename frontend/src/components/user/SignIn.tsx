@@ -1,12 +1,4 @@
 "use client";
-import { isLoggedIn } from "@frontend/api/auth";
-import { login } from "@frontend/api/user";
-import { executeReturnRedirect } from "@frontend/components/AuthLinker";
-import DynamicLink from "@frontend/components/DynamicLink";
-import FacebookButton from "@frontend/components/user/FacebookButton";
-import PasswordField from "@frontend/components/user/fields/PasswordField";
-import GoogleButton from "@frontend/components/user/GoogleButton";
-import { assertBlApiError } from "@frontend/utils/types";
 import { Alert, Typography } from "@mui/material";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
@@ -18,6 +10,15 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import validator from "validator";
+
+import { isLoggedIn } from "@/api/auth";
+import { login } from "@/api/user";
+import { executeReturnRedirect } from "@/components/AuthLinker";
+import DynamicLink from "@/components/DynamicLink";
+import FacebookButton from "@/components/user/FacebookButton";
+import PasswordField from "@/components/user/fields/PasswordField";
+import GoogleButton from "@/components/user/GoogleButton";
+import { assertBlApiError } from "@/utils/types";
 
 interface SignInFields {
   email: string;

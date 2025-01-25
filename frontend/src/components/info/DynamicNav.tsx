@@ -1,5 +1,4 @@
 "use client";
-import DynamicLink from "@frontend/components/DynamicLink";
 import {
   Divider,
   FormControl,
@@ -13,6 +12,8 @@ import Tab from "@mui/material/Tab";
 import Tabs from "@mui/material/Tabs";
 import { usePathname, useRouter } from "next/navigation";
 import stringSimilarity from "string-similarity";
+
+import DynamicLink from "@/components/DynamicLink";
 
 export interface LinkTabProps {
   label: string;

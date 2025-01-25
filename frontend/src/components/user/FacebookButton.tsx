@@ -1,5 +1,6 @@
-import SocialLoginButton from "@frontend/components/user/SocialLoginButton";
 import FacebookRoundedIcon from "@mui/icons-material/FacebookRounded";
+
+import SocialLoginButton from "@/components/user/SocialLoginButton";
 
 const FacebookButton = ({ label }: { label: string }) => (
   <SocialLoginButton

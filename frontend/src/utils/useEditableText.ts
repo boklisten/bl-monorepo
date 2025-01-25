@@ -1,10 +1,8 @@
-import BlFetcher from "@frontend/api/blFetcher";
-import BL_CONFIG from "@frontend/utils/bl-config";
-import {
-  assertBlApiError,
-  MaybeEmptyEditableText,
-} from "@frontend/utils/types";
 import { EditableText } from "@shared/editable-text/editable-text";
+
+import BlFetcher from "@/api/blFetcher";
+import BL_CONFIG from "@/utils/bl-config";
+import { assertBlApiError, MaybeEmptyEditableText } from "@/utils/types";
 
 const useEditableText = async (
   editableTextId: string,

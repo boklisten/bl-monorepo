@@ -1,15 +1,4 @@
 "use client";
-import DynamicLink from "@frontend/components/DynamicLink";
-import FacebookButton from "@frontend/components/user/FacebookButton";
-import ErrorSummary from "@frontend/components/user/fields/ErrorSummary";
-import FieldErrorAlert from "@frontend/components/user/fields/FieldErrorAlert";
-import GoogleButton from "@frontend/components/user/GoogleButton";
-import { fieldValidators } from "@frontend/components/user/user-detail-editor/fieldValidators";
-import GuardianInfoSection from "@frontend/components/user/user-detail-editor/GuardianInfoSection";
-import LoginInfoSection from "@frontend/components/user/user-detail-editor/LoginInfoSection";
-import TermsAndConditionsDisclaimer from "@frontend/components/user/user-detail-editor/TermsAndConditionsDisclaimer";
-import { useUserDetailEditorForm } from "@frontend/components/user/user-detail-editor/useUserDetailEditorForm";
-import YourInfoSection from "@frontend/components/user/user-detail-editor/YourInfoSection";
 import { LoadingButton } from "@mui/lab";
 import { Alert, Divider, Stack, Typography } from "@mui/material";
 import Box from "@mui/material/Box";
@@ -18,6 +7,18 @@ import Container from "@mui/material/Container";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Grid from "@mui/material/Grid";
 import { UserDetail } from "@shared/user/user-detail/user-detail";
+
+import DynamicLink from "@/components/DynamicLink";
+import FacebookButton from "@/components/user/FacebookButton";
+import ErrorSummary from "@/components/user/fields/ErrorSummary";
+import FieldErrorAlert from "@/components/user/fields/FieldErrorAlert";
+import GoogleButton from "@/components/user/GoogleButton";
+import { fieldValidators } from "@/components/user/user-detail-editor/fieldValidators";
+import GuardianInfoSection from "@/components/user/user-detail-editor/GuardianInfoSection";
+import LoginInfoSection from "@/components/user/user-detail-editor/LoginInfoSection";
+import TermsAndConditionsDisclaimer from "@/components/user/user-detail-editor/TermsAndConditionsDisclaimer";
+import { useUserDetailEditorForm } from "@/components/user/user-detail-editor/useUserDetailEditorForm";
+import YourInfoSection from "@/components/user/user-detail-editor/YourInfoSection";
 
 const UserDetailEditor = ({
   isSignUp,

@@ -1,5 +1,3 @@
-import BlFetcher from "@frontend/api/blFetcher";
-import BL_CONFIG from "@frontend/utils/bl-config";
 import { LocationOff } from "@mui/icons-material";
 import ErrorIcon from "@mui/icons-material/Error";
 import {
@@ -10,6 +8,9 @@ import {
 import TextField from "@mui/material/TextField";
 import { forwardRef, Ref, useRef, useState } from "react";
 import isPostalCode from "validator/lib/isPostalCode";
+
+import BlFetcher from "@/api/blFetcher";
+import BL_CONFIG from "@/utils/bl-config";
 
 const PostalCodeField = forwardRef(
   (

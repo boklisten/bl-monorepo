@@ -1,11 +1,3 @@
-import DatePickerField from "@frontend/components/user/fields/DatePickerField";
-import FieldErrorAlert from "@frontend/components/user/fields/FieldErrorAlert";
-import PhoneNumberField from "@frontend/components/user/fields/PhoneNumberField";
-import PostalCodeField, {
-  PostalCityState,
-} from "@frontend/components/user/fields/PostalCodeField";
-import { fieldValidators } from "@frontend/components/user/user-detail-editor/fieldValidators";
-import { UserEditorFields } from "@frontend/components/user/user-detail-editor/useUserDetailEditorForm";
 import { Divider, Typography } from "@mui/material";
 import Grid from "@mui/material/Grid";
 import TextField from "@mui/material/TextField";
@@ -15,6 +7,15 @@ import {
   FieldErrors,
   UseFormRegister,
 } from "react-hook-form";
+
+import DatePickerField from "@/components/user/fields/DatePickerField";
+import FieldErrorAlert from "@/components/user/fields/FieldErrorAlert";
+import PhoneNumberField from "@/components/user/fields/PhoneNumberField";
+import PostalCodeField, {
+  PostalCityState,
+} from "@/components/user/fields/PostalCodeField";
+import { fieldValidators } from "@/components/user/user-detail-editor/fieldValidators";
+import { UserEditorFields } from "@/components/user/user-detail-editor/useUserDetailEditorForm";
 
 interface YourInfoSectionProps {
   errors: FieldErrors<UserEditorFields>;

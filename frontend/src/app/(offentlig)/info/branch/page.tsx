@@ -1,6 +1,7 @@
-import BranchSelect from "@frontend/components/BranchSelect";
 import { Box, Typography } from "@mui/material";
 import { Metadata } from "next";
+
+import BranchSelect from "@/components/BranchSelect";
 
 export const metadata: Metadata = {
   title: "Skoler og åpningstider",

@@ -1,12 +1,3 @@
-import BlFetcher from "@frontend/api/blFetcher";
-import { getAccessTokenBody } from "@frontend/api/token";
-import {
-  calculateUserMatchStatus,
-  isStandMatchFulfilled,
-} from "@frontend/components/matches/matches-helper";
-import { MatchListItemGroups } from "@frontend/components/matches/matchesList/MatchListItemGroups";
-import ProgressBar from "@frontend/components/matches/matchesList/ProgressBar";
-import BL_CONFIG from "@frontend/utils/bl-config";
 import { Alert, Skeleton } from "@mui/material";
 import {
   StandMatchWithDetails,
@@ -14,6 +5,16 @@ import {
 } from "@shared/match/match-dtos";
 import { FC } from "react";
 import useSWR from "swr";
+
+import BlFetcher from "@/api/blFetcher";
+import { getAccessTokenBody } from "@/api/token";
+import {
+  calculateUserMatchStatus,
+  isStandMatchFulfilled,
+} from "@/components/matches/matches-helper";
+import { MatchListItemGroups } from "@/components/matches/matchesList/MatchListItemGroups";
+import ProgressBar from "@/components/matches/matchesList/ProgressBar";
+import BL_CONFIG from "@/utils/bl-config";
 
 export const MatchesList: FC = () => {
   const { data: accessToken, error: tokenError } = useSWR("userId", () =>

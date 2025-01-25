@@ -1,5 +1,4 @@
 "use client";
-import ContactInfo from "@frontend/components/info/ContactInfo";
 import { Alert } from "@mui/material";
 import TableCell from "@mui/material/TableCell";
 import TableRow from "@mui/material/TableRow";
@@ -7,6 +6,8 @@ import { Branch } from "@shared/branch/branch";
 import { OpeningHour } from "@shared/opening-hour/opening-hour";
 import moment from "moment";
 import { use } from "react";
+
+import ContactInfo from "@/components/info/ContactInfo";
 
 import "moment/locale/nb";
 

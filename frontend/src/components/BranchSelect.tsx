@@ -1,7 +1,4 @@
 "use client";
-import BlFetcher from "@frontend/api/blFetcher";
-import BL_CONFIG from "@frontend/utils/bl-config";
-import { useGlobalState } from "@frontend/utils/useGlobalState";
 import {
   Box,
   FormControl,
@@ -14,6 +11,10 @@ import { Branch } from "@shared/branch/branch";
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect } from "react";
 import useSWR from "swr";
+
+import BlFetcher from "@/api/blFetcher";
+import BL_CONFIG from "@/utils/bl-config";
+import { useGlobalState } from "@/utils/useGlobalState";
 
 const BranchSelect = ({ isNav }: { isNav?: boolean }) => {
   const { data: branches } = useSWR(

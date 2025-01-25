@@ -1,7 +1,8 @@
-import AuthAutoLogout from "@frontend/components/AuthLogoutComponent";
-import DynamicLink from "@frontend/components/DynamicLink";
 import { Alert, AlertTitle, Box, Card, Container } from "@mui/material";
 import { Metadata } from "next";
+
+import AuthAutoLogout from "@/components/AuthLogoutComponent";
+import DynamicLink from "@/components/DynamicLink";
 
 export const metadata: Metadata = {
   title: "Tilgang avslått",

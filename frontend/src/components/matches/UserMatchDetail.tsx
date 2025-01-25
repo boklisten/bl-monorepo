@@ -1,24 +1,25 @@
-import BlFetcher from "@frontend/api/blFetcher";
-import CountdownToRedirect from "@frontend/components/CountdownToRedirect";
+import QrCodeScannerIcon from "@mui/icons-material/QrCodeScanner";
+import { Alert, AlertTitle, Box, Button, Typography } from "@mui/material";
+import { UserMatchWithDetails } from "@shared/match/match-dtos";
+import { useState } from "react";
+
+import BlFetcher from "@/api/blFetcher";
+import CountdownToRedirect from "@/components/CountdownToRedirect";
 import {
   calculateUserMatchStatus,
   calculateItemStatuses,
   ItemStatus,
   MatchHeader,
-} from "@frontend/components/matches/matches-helper";
-import { UserMatchTitle } from "@frontend/components/matches/matchesList/helper";
-import ProgressBar from "@frontend/components/matches/matchesList/ProgressBar";
-import MatchItemTable from "@frontend/components/matches/MatchItemTable";
-import MatchScannerContent from "@frontend/components/matches/MatchScannerContent";
-import MeetingInfo from "@frontend/components/matches/MeetingInfo";
-import OtherPersonContact from "@frontend/components/matches/OtherPersonContact";
-import ScannerModal from "@frontend/components/scanner/ScannerModal";
-import ScannerTutorial from "@frontend/components/scanner/ScannerTutorial";
-import BL_CONFIG from "@frontend/utils/bl-config";
-import QrCodeScannerIcon from "@mui/icons-material/QrCodeScanner";
-import { Alert, AlertTitle, Box, Button, Typography } from "@mui/material";
-import { UserMatchWithDetails } from "@shared/match/match-dtos";
-import { useState } from "react";
+} from "@/components/matches/matches-helper";
+import { UserMatchTitle } from "@/components/matches/matchesList/helper";
+import ProgressBar from "@/components/matches/matchesList/ProgressBar";
+import MatchItemTable from "@/components/matches/MatchItemTable";
+import MatchScannerContent from "@/components/matches/MatchScannerContent";
+import MeetingInfo from "@/components/matches/MeetingInfo";
+import OtherPersonContact from "@/components/matches/OtherPersonContact";
+import ScannerModal from "@/components/scanner/ScannerModal";
+import ScannerTutorial from "@/components/scanner/ScannerTutorial";
+import BL_CONFIG from "@/utils/bl-config";
 
 const UserMatchDetail = ({
   userMatch,

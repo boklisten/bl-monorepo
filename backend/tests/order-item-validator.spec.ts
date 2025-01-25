@@ -1,9 +1,3 @@
-import { OrderFieldValidator } from "@backend/lib/collections/order/helpers/order-validator/order-field-validator/order-field-validator.js";
-import { OrderItemBuyValidator } from "@backend/lib/collections/order/helpers/order-validator/order-item-validator/order-item-buy-validator/order-item-buy-validator.js";
-import { OrderItemExtendValidator } from "@backend/lib/collections/order/helpers/order-validator/order-item-validator/order-item-extend-validator/order-item-extend-validator.js";
-import { OrderItemRentValidator } from "@backend/lib/collections/order/helpers/order-validator/order-item-validator/order-item-rent-validator/order-item-rent-validator.js";
-import { OrderItemValidator } from "@backend/lib/collections/order/helpers/order-validator/order-item-validator/order-item-validator.js";
-import { BlStorage } from "@backend/lib/storage/bl-storage.js";
 import { test } from "@japa/runner";
 import { BlError } from "@shared/bl-error/bl-error.js";
 import { Branch } from "@shared/branch/branch.js";
@@ -12,6 +6,13 @@ import { Order } from "@shared/order/order.js";
 import { expect, use as chaiUse, should } from "chai";
 import chaiAsPromised from "chai-as-promised";
 import sinon, { createSandbox } from "sinon";
+
+import { OrderFieldValidator } from "#services/collections/order/helpers/order-validator/order-field-validator/order-field-validator";
+import { OrderItemBuyValidator } from "#services/collections/order/helpers/order-validator/order-item-validator/order-item-buy-validator/order-item-buy-validator";
+import { OrderItemExtendValidator } from "#services/collections/order/helpers/order-validator/order-item-validator/order-item-extend-validator/order-item-extend-validator";
+import { OrderItemRentValidator } from "#services/collections/order/helpers/order-validator/order-item-validator/order-item-rent-validator/order-item-rent-validator";
+import { OrderItemValidator } from "#services/collections/order/helpers/order-validator/order-item-validator/order-item-validator";
+import { BlStorage } from "#services/storage/bl-storage";
 chaiUse(chaiAsPromised);
 should();
 

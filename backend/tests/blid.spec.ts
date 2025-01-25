@@ -1,8 +1,9 @@
-import Blid from "@backend/lib/auth/blid.js";
 import { test } from "@japa/runner";
 import { BlError } from "@shared/bl-error/bl-error.js";
 import { use as chaiUse, should } from "chai";
 import chaiAsPromised from "chai-as-promised";
+
+import Blid from "#services/auth/blid";
 
 chaiUse(chaiAsPromised);
 should();

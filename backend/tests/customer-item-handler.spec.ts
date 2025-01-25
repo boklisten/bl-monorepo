@@ -1,6 +1,3 @@
-import { CustomerItemHandler } from "@backend/lib/collections/customer-item/helpers/customer-item-handler.js";
-import { SEDbQuery } from "@backend/lib/query/se.db-query.js";
-import { BlStorage } from "@backend/lib/storage/bl-storage.js";
 import { test } from "@japa/runner";
 import { BlError } from "@shared/bl-error/bl-error.js";
 import { Branch } from "@shared/branch/branch.js";
@@ -10,6 +7,10 @@ import { expect, use as chaiUse, should } from "chai";
 import chaiAsPromised from "chai-as-promised";
 import mongoose from "mongoose";
 import sinon, { createSandbox } from "sinon";
+
+import { CustomerItemHandler } from "#services/collections/customer-item/helpers/customer-item-handler";
+import { SEDbQuery } from "#services/query/se.db-query";
+import { BlStorage } from "#services/storage/bl-storage";
 
 chaiUse(chaiAsPromised);
 should();

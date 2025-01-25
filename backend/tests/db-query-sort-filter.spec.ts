@@ -1,7 +1,8 @@
-import { DbQuerySortFilter } from "@backend/lib/query/db-query-sort-filter.js";
 import { test } from "@japa/runner";
 import { expect, use as chaiUse, should } from "chai";
 import chaiAsPromised from "chai-as-promised";
+
+import { DbQuerySortFilter } from "#services/query/db-query-sort-filter";
 
 chaiUse(chaiAsPromised);
 should();

@@ -1,11 +1,12 @@
-import RefreshTokenCreator from "@backend/lib/auth/token/refresh/refresh-token.creator.js";
-import RefreshTokenValidator from "@backend/lib/auth/token/refresh/refresh-token.validator.js";
-import { APP_CONFIG } from "@backend/lib/config/application-config.js";
 import { test } from "@japa/runner";
 import { BlError } from "@shared/bl-error/bl-error.js";
 import { use as chaiUse, should } from "chai";
 import chaiAsPromised from "chai-as-promised";
 import jwt from "jsonwebtoken";
+
+import RefreshTokenCreator from "#services/auth/token/refresh/refresh-token.creator";
+import RefreshTokenValidator from "#services/auth/token/refresh/refresh-token.validator";
+import { APP_CONFIG } from "#services/config/application-config";
 
 chaiUse(chaiAsPromised);
 should();

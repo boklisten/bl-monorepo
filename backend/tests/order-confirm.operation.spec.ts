@@ -1,12 +1,13 @@
-import { OrderPlacedHandler } from "@backend/lib/collections/order/helpers/order-placed-handler/order-placed-handler.js";
-import { OrderConfirmOperation } from "@backend/lib/collections/order/operations/confirm/order-confirm.operation.js";
-import BlResponseHandler from "@backend/lib/response/bl-response.handler.js";
-import { BlStorage } from "@backend/lib/storage/bl-storage.js";
 import { test } from "@japa/runner";
 import { BlError } from "@shared/bl-error/bl-error.js";
 import { expect, use as chaiUse, should } from "chai";
 import chaiAsPromised from "chai-as-promised";
 import sinon, { createSandbox } from "sinon";
+
+import { OrderPlacedHandler } from "#services/collections/order/helpers/order-placed-handler/order-placed-handler";
+import { OrderConfirmOperation } from "#services/collections/order/operations/confirm/order-confirm.operation";
+import BlResponseHandler from "#services/response/bl-response.handler";
+import { BlStorage } from "#services/storage/bl-storage";
 chaiUse(chaiAsPromised);
 should();
 

@@ -1,9 +1,3 @@
-import { CustomerItemHandler } from "@backend/lib/collections/customer-item/helpers/customer-item-handler.js";
-import { OrderItemMovedFromOrderHandler } from "@backend/lib/collections/order/helpers/order-item-moved-from-order-handler/order-item-moved-from-order-handler.js";
-import { OrderPlacedHandler } from "@backend/lib/collections/order/helpers/order-placed-handler/order-placed-handler.js";
-import { PaymentHandler } from "@backend/lib/collections/payment/helpers/payment-handler.js";
-import Messenger from "@backend/lib/messenger/messenger.js";
-import { BlStorage } from "@backend/lib/storage/bl-storage.js";
 import { test } from "@japa/runner";
 import { BlError } from "@shared/bl-error/bl-error.js";
 import { Order } from "@shared/order/order.js";
@@ -13,6 +7,13 @@ import { UserDetail } from "@shared/user/user-detail/user-detail.js";
 import { expect, use as chaiUse, should } from "chai";
 import chaiAsPromised from "chai-as-promised";
 import sinon, { createSandbox } from "sinon";
+
+import { CustomerItemHandler } from "#services/collections/customer-item/helpers/customer-item-handler";
+import { OrderItemMovedFromOrderHandler } from "#services/collections/order/helpers/order-item-moved-from-order-handler/order-item-moved-from-order-handler";
+import { OrderPlacedHandler } from "#services/collections/order/helpers/order-placed-handler/order-placed-handler";
+import { PaymentHandler } from "#services/collections/payment/helpers/payment-handler";
+import Messenger from "#services/messenger/messenger";
+import { BlStorage } from "#services/storage/bl-storage";
 
 chaiUse(chaiAsPromised);
 should();

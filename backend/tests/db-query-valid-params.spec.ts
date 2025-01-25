@@ -1,10 +1,11 @@
-import {
-  DbQueryValidParams,
-  ValidParameter,
-} from "@backend/lib/query/db-query-valid-params.js";
 import { test } from "@japa/runner";
 import { expect, use as chaiUse, should } from "chai";
 import chaiAsPromised from "chai-as-promised";
+
+import {
+  DbQueryValidParams,
+  ValidParameter,
+} from "#services/query/db-query-valid-params";
 
 chaiUse(chaiAsPromised);
 should();

@@ -1,9 +1,10 @@
-import { CustomerItemActiveBlid } from "@backend/lib/collections/customer-item/helpers/customer-item-active-blid.js";
-import { BlStorage } from "@backend/lib/storage/bl-storage.js";
 import { test } from "@japa/runner";
 import { expect, use as chaiUse, should } from "chai";
 import chaiAsPromised from "chai-as-promised";
 import sinon, { createSandbox } from "sinon";
+
+import { CustomerItemActiveBlid } from "#services/collections/customer-item/helpers/customer-item-active-blid";
+import { BlStorage } from "#services/storage/bl-storage";
 
 chaiUse(chaiAsPromised);
 should();

@@ -1,6 +1,7 @@
-import { BlEnv } from "@backend/lib/config/env.js";
-import { logger } from "@backend/lib/config/logger.js";
 import mongoose from "mongoose";
+
+import { BlEnv } from "#services/config/env";
+import { logger } from "#services/config/logger";
 
 export default async function configureMongoose() {
   mongoose.connection.on("disconnected", () => {

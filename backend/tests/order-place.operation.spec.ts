@@ -1,10 +1,3 @@
-import { OrderToCustomerItemGenerator } from "@backend/lib/collections/customer-item/helpers/order-to-customer-item-generator.js";
-import { OrderPlacedHandler } from "@backend/lib/collections/order/helpers/order-placed-handler/order-placed-handler.js";
-import { OrderValidator } from "@backend/lib/collections/order/helpers/order-validator/order-validator.js";
-import { OrderPlaceOperation } from "@backend/lib/collections/order/operations/place/order-place.operation.js";
-import BlResponseHandler from "@backend/lib/response/bl-response.handler.js";
-import { BlStorage } from "@backend/lib/storage/bl-storage.js";
-import { Signature } from "@backend/lib/storage/models/signature.model.js";
 import { test } from "@japa/runner";
 import { BlError } from "@shared/bl-error/bl-error.js";
 import { BlapiResponse } from "@shared/blapi-response/blapi-response.js";
@@ -15,6 +8,14 @@ import { expect, use as chaiUse, should } from "chai";
 import chaiAsPromised from "chai-as-promised";
 import moment from "moment-timezone";
 import sinon, { createSandbox } from "sinon";
+
+import { OrderToCustomerItemGenerator } from "#services/collections/customer-item/helpers/order-to-customer-item-generator";
+import { OrderPlacedHandler } from "#services/collections/order/helpers/order-placed-handler/order-placed-handler";
+import { OrderValidator } from "#services/collections/order/helpers/order-validator/order-validator";
+import { OrderPlaceOperation } from "#services/collections/order/operations/place/order-place.operation";
+import BlResponseHandler from "#services/response/bl-response.handler";
+import { BlStorage } from "#services/storage/bl-storage";
+import { Signature } from "#services/storage/models/signature.model";
 
 chaiUse(chaiAsPromised);
 should();

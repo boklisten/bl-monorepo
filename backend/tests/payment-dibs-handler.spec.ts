@@ -1,7 +1,3 @@
-import { PaymentDibsHandler } from "@backend/lib/collections/payment/helpers/dibs/payment-dibs-handler.js";
-import { DibsEasyOrder } from "@backend/lib/payment/dibs/dibs-easy-order.js";
-import { DibsPaymentService } from "@backend/lib/payment/dibs/dibs-payment.service.js";
-import { BlStorage } from "@backend/lib/storage/bl-storage.js";
 import { test } from "@japa/runner";
 import { BlError } from "@shared/bl-error/bl-error.js";
 import { Order } from "@shared/order/order.js";
@@ -10,6 +6,11 @@ import { UserDetail } from "@shared/user/user-detail/user-detail.js";
 import { expect, use as chaiUse, should } from "chai";
 import chaiAsPromised from "chai-as-promised";
 import sinon, { createSandbox } from "sinon";
+
+import { PaymentDibsHandler } from "#services/collections/payment/helpers/dibs/payment-dibs-handler";
+import { DibsEasyOrder } from "#services/payment/dibs/dibs-easy-order";
+import { DibsPaymentService } from "#services/payment/dibs/dibs-payment.service";
+import { BlStorage } from "#services/storage/bl-storage";
 
 chaiUse(chaiAsPromised);
 should();

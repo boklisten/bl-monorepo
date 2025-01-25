@@ -1,5 +1,3 @@
-import { EmailService } from "@backend/lib/messenger/email/email-service.js";
-import { BlStorage } from "@backend/lib/storage/bl-storage.js";
 import { EmailHandler, EmailLog } from "@boklisten/bl-email";
 import { PostOffice } from "@boklisten/bl-post-office";
 import { test } from "@japa/runner";
@@ -12,6 +10,9 @@ import { UserDetail } from "@shared/user/user-detail/user-detail.js";
 import { expect, should, use as chaiUse } from "chai";
 import chaiAsPromised from "chai-as-promised";
 import sinon, { createSandbox } from "sinon";
+
+import { EmailService } from "#services/messenger/email/email-service";
+import { BlStorage } from "#services/storage/bl-storage";
 
 class MockPostOffice extends PostOffice {
   constructor() {

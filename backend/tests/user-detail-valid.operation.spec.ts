@@ -1,6 +1,3 @@
-import { UserDetailValidOperation } from "@backend/lib/collections/user-detail/operations/user-detail-valid.operation.js";
-import { BlStorage } from "@backend/lib/storage/bl-storage.js";
-import { BlApiRequest } from "@backend/types/bl-api-request.js";
 import { test } from "@japa/runner";
 import { BlError } from "@shared/bl-error/bl-error.js";
 import { BlapiResponse } from "@shared/blapi-response/blapi-response.js";
@@ -8,6 +5,10 @@ import { UserDetail } from "@shared/user/user-detail/user-detail.js";
 import { use as chaiUse, should } from "chai";
 import chaiAsPromised from "chai-as-promised";
 import sinon, { createSandbox } from "sinon";
+
+import { UserDetailValidOperation } from "#services/collections/user-detail/operations/user-detail-valid.operation";
+import { BlStorage } from "#services/storage/bl-storage";
+import { BlApiRequest } from "#services/types/bl-api-request";
 
 chaiUse(chaiAsPromised);
 should();

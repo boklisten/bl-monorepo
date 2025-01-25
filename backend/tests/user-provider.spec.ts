@@ -1,12 +1,13 @@
-import LocalLoginHandler from "@backend/lib/auth/local/local-login.handler.js";
-import TokenHandler from "@backend/lib/auth/token/token.handler.js";
-import UserProvider from "@backend/lib/auth/user/user-provider.js";
-import UserHandler from "@backend/lib/auth/user/user.handler.js";
 import { test } from "@japa/runner";
 import { BlError } from "@shared/bl-error/bl-error.js";
 import { expect, use as chaiUse, should } from "chai";
 import chaiAsPromised from "chai-as-promised";
 import sinon, { createSandbox } from "sinon";
+
+import LocalLoginHandler from "#services/auth/local/local-login.handler";
+import TokenHandler from "#services/auth/token/token.handler";
+import UserProvider from "#services/auth/user/user-provider";
+import UserHandler from "#services/auth/user/user.handler";
 
 chaiUse(chaiAsPromised);
 should();

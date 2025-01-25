@@ -1,13 +1,14 @@
-import { UserDetailPermissionOperation } from "@backend/lib/collections/user-detail/operations/permission/user-detail-permission.operation.js";
-import BlResponseHandler from "@backend/lib/response/bl-response.handler.js";
-import { BlStorage } from "@backend/lib/storage/bl-storage.js";
-import { User } from "@backend/types/user.js";
 import { test } from "@japa/runner";
 import { BlError } from "@shared/bl-error/bl-error.js";
 import { UserDetail } from "@shared/user/user-detail/user-detail.js";
 import { expect, use as chaiUse, should } from "chai";
 import chaiAsPromised from "chai-as-promised";
 import sinon, { createSandbox } from "sinon";
+
+import { UserDetailPermissionOperation } from "#services/collections/user-detail/operations/permission/user-detail-permission.operation";
+import BlResponseHandler from "#services/response/bl-response.handler";
+import { BlStorage } from "#services/storage/bl-storage";
+import { User } from "#services/types/user";
 chaiUse(chaiAsPromised);
 should();
 

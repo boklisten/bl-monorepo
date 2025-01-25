@@ -1,7 +1,8 @@
-import { DbQueryBooleanFilter } from "@backend/lib/query/db-query-boolean-filter.js";
 import { test } from "@japa/runner";
 import { expect, use as chaiUse, should } from "chai";
 import chaiAsPromised from "chai-as-promised";
+
+import { DbQueryBooleanFilter } from "#services/query/db-query-boolean-filter";
 
 chaiUse(chaiAsPromised);
 should();

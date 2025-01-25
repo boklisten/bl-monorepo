@@ -1,7 +1,8 @@
-import { DbQueryExpandFilter } from "@backend/lib/query/db-query-expand-filter.js";
 import { test } from "@japa/runner";
 import { expect, use as chaiUse, should } from "chai";
 import chaiAsPromised from "chai-as-promised";
+
+import { DbQueryExpandFilter } from "#services/query/db-query-expand-filter";
 
 chaiUse(chaiAsPromised);
 should();

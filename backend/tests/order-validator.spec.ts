@@ -1,9 +1,3 @@
-import { OrderFieldValidator } from "@backend/lib/collections/order/helpers/order-validator/order-field-validator/order-field-validator.js";
-import { OrderItemValidator } from "@backend/lib/collections/order/helpers/order-validator/order-item-validator/order-item-validator.js";
-import { OrderPlacedValidator } from "@backend/lib/collections/order/helpers/order-validator/order-placed-validator/order-placed-validator.js";
-import { OrderUserDetailValidator } from "@backend/lib/collections/order/helpers/order-validator/order-user-detail-validator/order-user-detail-validator.js";
-import { OrderValidator } from "@backend/lib/collections/order/helpers/order-validator/order-validator.js";
-import { BlStorage } from "@backend/lib/storage/bl-storage.js";
 import { test } from "@japa/runner";
 import { BlError } from "@shared/bl-error/bl-error.js";
 import { Branch } from "@shared/branch/branch.js";
@@ -11,6 +5,13 @@ import { Order } from "@shared/order/order.js";
 import { expect, use as chaiUse, should } from "chai";
 import chaiAsPromised from "chai-as-promised";
 import sinon, { createSandbox } from "sinon";
+
+import { OrderFieldValidator } from "#services/collections/order/helpers/order-validator/order-field-validator/order-field-validator";
+import { OrderItemValidator } from "#services/collections/order/helpers/order-validator/order-item-validator/order-item-validator";
+import { OrderPlacedValidator } from "#services/collections/order/helpers/order-validator/order-placed-validator/order-placed-validator";
+import { OrderUserDetailValidator } from "#services/collections/order/helpers/order-validator/order-user-detail-validator/order-user-detail-validator";
+import { OrderValidator } from "#services/collections/order/helpers/order-validator/order-validator";
+import { BlStorage } from "#services/storage/bl-storage";
 
 chaiUse(chaiAsPromised);
 should();

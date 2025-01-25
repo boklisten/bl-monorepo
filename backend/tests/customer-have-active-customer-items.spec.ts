@@ -1,11 +1,12 @@
-import { CustomerHaveActiveCustomerItems } from "@backend/lib/collections/customer-item/helpers/customer-have-active-customer-items.js";
-import { BlStorage } from "@backend/lib/storage/bl-storage.js";
 import { test } from "@japa/runner";
 import { BlError } from "@shared/bl-error/bl-error.js";
 import { CustomerItem } from "@shared/customer-item/customer-item.js";
 import { expect, use as chaiUse, should } from "chai";
 import chaiAsPromised from "chai-as-promised";
 import sinon, { createSandbox } from "sinon";
+
+import { CustomerHaveActiveCustomerItems } from "#services/collections/customer-item/helpers/customer-have-active-customer-items";
+import { BlStorage } from "#services/storage/bl-storage";
 
 chaiUse(chaiAsPromised);
 should();

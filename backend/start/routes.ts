@@ -1,16 +1,17 @@
-import("@backend/lib/config/instrument.js");
+import("#services/config/instrument");
 
 import router from "@adonisjs/core/services/router";
-import configureMongoose from "@backend/config/database.js";
-import LocalAuth from "@backend/lib/auth/local/local.auth.js";
-import TokenEndpoint from "@backend/lib/auth/token/token.endpoint.js";
-import UserProvider from "@backend/lib/auth/user/user-provider.js";
-import CollectionEndpointCreator from "@backend/lib/collection-endpoint/collection-endpoint-creator.js";
-import { retrieveRefererPath } from "@backend/lib/config/api-path.js";
-import { APP_CONFIG } from "@backend/lib/config/application-config.js";
-import setupPassport from "@backend/lib/config/auth.js";
-import { BlEnv } from "@backend/lib/config/env.js";
 import * as Sentry from "@sentry/node";
+
+import configureMongoose from "#config/database";
+import LocalAuth from "#services/auth/local/local.auth";
+import TokenEndpoint from "#services/auth/token/token.endpoint";
+import UserProvider from "#services/auth/user/user-provider";
+import CollectionEndpointCreator from "#services/collection-endpoint/collection-endpoint-creator";
+import { retrieveRefererPath } from "#services/config/api-path";
+import { APP_CONFIG } from "#services/config/application-config";
+import setupPassport from "#services/config/auth";
+import { BlEnv } from "#services/config/env";
 
 router.get("/auth/facebook", ({ ally }) => {
   return ally.use("facebook").redirect();

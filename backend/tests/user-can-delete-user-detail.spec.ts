@@ -1,12 +1,13 @@
-import { UserCanDeleteUserDetail } from "@backend/lib/collections/user-detail/helpers/user-can-delete-user-detail.js";
-import { BlStorage } from "@backend/lib/storage/bl-storage.js";
-import { User } from "@backend/types/user.js";
 import { test } from "@japa/runner";
 import { AccessToken } from "@shared/token/access-token.js";
 import { UserDetail } from "@shared/user/user-detail/user-detail.js";
 import { expect, use as chaiUse, should } from "chai";
 import chaiAsPromised from "chai-as-promised";
 import sinon, { createSandbox } from "sinon";
+
+import { UserCanDeleteUserDetail } from "#services/collections/user-detail/helpers/user-can-delete-user-detail";
+import { BlStorage } from "#services/storage/bl-storage";
+import { User } from "#services/types/user";
 
 chaiUse(chaiAsPromised);
 should();

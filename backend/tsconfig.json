@@ -4,7 +4,7 @@
     "resolveJsonModule": true,
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
-    "moduleResolution": "NodeNext"
+    "rootDir": "./"
   },
   "include": ["."],
   "exclude": ["node_modules", "build"],

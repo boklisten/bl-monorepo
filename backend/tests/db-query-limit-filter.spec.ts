@@ -1,7 +1,8 @@
-import { DbQueryLimitFilter } from "@backend/lib/query/db-query-limit-filter.js";
 import { test } from "@japa/runner";
 import { expect, use as chaiUse, should } from "chai";
 import chaiAsPromised from "chai-as-promised";
+
+import { DbQueryLimitFilter } from "#services/query/db-query-limit-filter";
 
 chaiUse(chaiAsPromised);
 should();

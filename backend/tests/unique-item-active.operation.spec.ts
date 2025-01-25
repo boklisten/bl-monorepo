@@ -1,12 +1,13 @@
-import { CustomerItemActiveBlid } from "@backend/lib/collections/customer-item/helpers/customer-item-active-blid.js";
-import { UniqueItemActiveOperation } from "@backend/lib/collections/unique-item/operations/unique-item-active.operation.js";
-import BlResponseHandler from "@backend/lib/response/bl-response.handler.js";
-import { BlStorage } from "@backend/lib/storage/bl-storage.js";
 import { test } from "@japa/runner";
 import { UniqueItem } from "@shared/unique-item/unique-item.js";
 import { use as chaiUse, should } from "chai";
 import chaiAsPromised from "chai-as-promised";
 import sinon from "sinon";
+
+import { CustomerItemActiveBlid } from "#services/collections/customer-item/helpers/customer-item-active-blid";
+import { UniqueItemActiveOperation } from "#services/collections/unique-item/operations/unique-item-active.operation";
+import BlResponseHandler from "#services/response/bl-response.handler";
+import { BlStorage } from "#services/storage/bl-storage";
 
 chaiUse(chaiAsPromised);
 should();

@@ -1,16 +1,17 @@
-import LocalLoginHandler from "@backend/lib/auth/local/local-login.handler.js";
-import UserHandler from "@backend/lib/auth/user/user.handler.js";
-import EmailValidationHelper from "@backend/lib/collections/email-validation/helpers/email-validation.helper.js";
-import { SEDbQuery } from "@backend/lib/query/se.db-query.js";
-import { BlStorage } from "@backend/lib/storage/bl-storage.js";
-import { LocalLogin } from "@backend/types/local-login.js";
-import { User } from "@backend/types/user.js";
 import { test } from "@japa/runner";
 import { BlError } from "@shared/bl-error/bl-error.js";
 import { UserDetail } from "@shared/user/user-detail/user-detail.js";
 import { expect, use as chaiUse, should } from "chai";
 import chaiAsPromised from "chai-as-promised";
 import sinon, { createSandbox } from "sinon";
+
+import LocalLoginHandler from "#services/auth/local/local-login.handler";
+import UserHandler from "#services/auth/user/user.handler";
+import EmailValidationHelper from "#services/collections/email-validation/helpers/email-validation.helper";
+import { SEDbQuery } from "#services/query/se.db-query";
+import { BlStorage } from "#services/storage/bl-storage";
+import { LocalLogin } from "#services/types/local-login";
+import { User } from "#services/types/user";
 
 chaiUse(chaiAsPromised);
 should();

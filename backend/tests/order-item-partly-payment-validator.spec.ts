@@ -1,4 +1,3 @@
-import { OrderItemPartlyPaymentValidator } from "@backend/lib/collections/order/helpers/order-validator/order-item-validator/order-item-partly-payment-validator/order-item-partly-payment-validator.js";
 import { test } from "@japa/runner";
 import { BlError } from "@shared/bl-error/bl-error.js";
 import { Branch } from "@shared/branch/branch.js";
@@ -6,6 +5,8 @@ import { Item } from "@shared/item/item.js";
 import { OrderItem } from "@shared/order/order-item/order-item.js";
 import { expect, use as chaiUse, should } from "chai";
 import chaiAsPromised from "chai-as-promised";
+
+import { OrderItemPartlyPaymentValidator } from "#services/collections/order/helpers/order-validator/order-item-validator/order-item-partly-payment-validator/order-item-partly-payment-validator";
 
 chaiUse(chaiAsPromised);
 should();

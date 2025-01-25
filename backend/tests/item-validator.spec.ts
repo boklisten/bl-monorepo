@@ -1,10 +1,11 @@
-import { ItemValidator } from "@backend/lib/collections/order/helpers/order-validator/item-validator/item-validator.js";
 import { test } from "@japa/runner";
 import { BlError } from "@shared/bl-error/bl-error.js";
 import { Item } from "@shared/item/item.js";
 import { OrderItem } from "@shared/order/order-item/order-item.js";
 import { expect, use as chaiUse, should } from "chai";
 import chaiAsPromised from "chai-as-promised";
+
+import { ItemValidator } from "#services/collections/order/helpers/order-validator/item-validator/item-validator";
 
 chaiUse(chaiAsPromised);
 should();

@@ -1,5 +1,3 @@
-import { OpeningHourHelper } from "@backend/lib/collections/opening-hour/helpers/opening-hour-helper.js";
-import { BlStorage } from "@backend/lib/storage/bl-storage.js";
 import { test } from "@japa/runner";
 import { BlError } from "@shared/bl-error/bl-error.js";
 import { Branch } from "@shared/branch/branch.js";
@@ -9,6 +7,9 @@ import chaiAsPromised from "chai-as-promised";
 import moment from "moment-timezone";
 import sinon, { createSandbox } from "sinon";
 import sinonChai from "sinon-chai";
+
+import { OpeningHourHelper } from "#services/collections/opening-hour/helpers/opening-hour-helper";
+import { BlStorage } from "#services/storage/bl-storage";
 
 chaiUse(chaiAsPromised);
 should();

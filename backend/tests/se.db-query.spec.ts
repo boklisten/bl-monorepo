@@ -1,7 +1,8 @@
-import { SEDbQuery } from "@backend/lib/query/se.db-query.js";
 import { test } from "@japa/runner";
 import { expect, use as chaiUse, should } from "chai";
 import chaiAsPromised from "chai-as-promised";
+
+import { SEDbQuery } from "#services/query/se.db-query";
 
 chaiUse(chaiAsPromised);
 should();

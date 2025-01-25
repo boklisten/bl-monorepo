@@ -1,7 +1,8 @@
-import { DbQueryOnlyGetFilter } from "@backend/lib/query/db-query-only-get-filter.js";
 import { test } from "@japa/runner";
 import { expect, use as chaiUse, should } from "chai";
 import chaiAsPromised from "chai-as-promised";
+
+import { DbQueryOnlyGetFilter } from "#services/query/db-query-only-get-filter";
 
 chaiUse(chaiAsPromised);
 should();

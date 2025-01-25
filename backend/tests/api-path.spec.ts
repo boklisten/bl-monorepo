@@ -1,8 +1,9 @@
-import { retrieveRefererPath } from "@backend/lib/config/api-path.js";
-import { APP_CONFIG } from "@backend/lib/config/application-config.js";
 import { test } from "@japa/runner";
 import { expect, use as chaiUse, should } from "chai";
 import chaiAsPromised from "chai-as-promised";
+
+import { retrieveRefererPath } from "#services/config/api-path";
+import { APP_CONFIG } from "#services/config/application-config";
 
 chaiUse(chaiAsPromised);
 should();

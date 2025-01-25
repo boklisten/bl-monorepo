@@ -1,11 +1,11 @@
 import router from "@adonisjs/core/services/router";
 import server from "@adonisjs/core/services/server";
 
-server.errorHandler(() => import("@backend/app/exceptions/handler.js"));
+server.errorHandler(() => import("#exceptions/handler"));
 
 server.use([
-  () => import("@backend/app/middleware/container_bindings_middleware.js"),
-  () => import("@backend/app/middleware/force_json_response_middleware.js"),
+  () => import("#middleware/container_bindings_middleware"),
+  () => import("#middleware/force_json_response_middleware"),
   () => import("@adonisjs/cors/cors_middleware"),
 ]);
 

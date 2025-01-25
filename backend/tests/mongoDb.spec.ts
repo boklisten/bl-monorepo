@@ -1,8 +1,9 @@
-import { MongooseModelCreator } from "@backend/lib/storage/mongoose-schema-creator.js";
 import { test } from "@japa/runner";
 import { expect, use as chaiUse, should } from "chai";
 import chaiAsPromised from "chai-as-promised";
 import { ObjectId } from "mongodb";
+
+import { MongooseModelCreator } from "#services/storage/mongoose-schema-creator";
 
 chaiUse(chaiAsPromised);
 should();

@@ -1,7 +1,8 @@
-import { DbQueryRegexFilter } from "@backend/lib/query/db-query-regex-filter.js";
 import { test } from "@japa/runner";
 import { expect, use as chaiUse, should } from "chai";
 import chaiAsPromised from "chai-as-promised";
+
+import { DbQueryRegexFilter } from "#services/query/db-query-regex-filter";
 
 chaiUse(chaiAsPromised);
 should();

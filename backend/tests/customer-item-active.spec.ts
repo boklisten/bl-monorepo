@@ -1,7 +1,8 @@
-import { CustomerItemActive } from "@backend/lib/collections/customer-item/helpers/customer-item-active.js";
 import { test } from "@japa/runner";
 import { CustomerItem } from "@shared/customer-item/customer-item.js";
 import { expect } from "chai";
+
+import { CustomerItemActive } from "#services/collections/customer-item/helpers/customer-item-active";
 
 test.group("CustomerItemActive", async () => {
   const customerItemActive = new CustomerItemActive();

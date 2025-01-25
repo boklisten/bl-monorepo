@@ -1,7 +1,8 @@
-import { InvoiceActive } from "@backend/lib/collections/invoice/helpers/invoice-active.js";
 import { test } from "@japa/runner";
 import { Invoice } from "@shared/invoice/invoice.js";
 import { expect } from "chai";
+
+import { InvoiceActive } from "#services/collections/invoice/helpers/invoice-active";
 
 test.group("InvoiceActive", async () => {
   const invoiceActive = new InvoiceActive();

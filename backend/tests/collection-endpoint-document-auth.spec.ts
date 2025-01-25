@@ -1,15 +1,16 @@
-import CollectionEndpointDocumentAuth from "@backend/lib/collection-endpoint/collection-endpoint-document-auth.js";
-import { BlStorageData } from "@backend/lib/storage/bl-storage.js";
-import { BlApiRequest } from "@backend/types/bl-api-request.js";
-import {
-  BlDocumentPermission,
-  BlEndpointRestriction,
-} from "@backend/types/bl-collection.js";
 import { test } from "@japa/runner";
 import { BlError } from "@shared/bl-error/bl-error.js";
 import { Branch } from "@shared/branch/branch.js";
 import { expect, use as chaiUse, should } from "chai";
 import chaiAsPromised from "chai-as-promised";
+
+import CollectionEndpointDocumentAuth from "#services/collection-endpoint/collection-endpoint-document-auth";
+import { BlStorageData } from "#services/storage/bl-storage";
+import { BlApiRequest } from "#services/types/bl-api-request";
+import {
+  BlDocumentPermission,
+  BlEndpointRestriction,
+} from "#services/types/bl-collection";
 
 chaiUse(chaiAsPromised);
 should();

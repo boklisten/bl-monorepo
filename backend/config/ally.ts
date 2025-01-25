@@ -1,6 +1,7 @@
 import { defineConfig, services } from "@adonisjs/ally";
-import { createPath } from "@backend/lib/config/api-path.js";
-import { BlEnv } from "@backend/lib/config/env.js";
+
+import { createPath } from "#services/config/api-path";
+import { BlEnv } from "#services/config/env";
 
 const allyConfig = defineConfig({
   facebook: services.facebook({

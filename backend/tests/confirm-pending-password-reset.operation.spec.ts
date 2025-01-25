@@ -1,14 +1,15 @@
-import LocalLoginHandler from "@backend/lib/auth/local/local-login.handler.js";
-import { ConfirmPendingPasswordResetOperation } from "@backend/lib/collections/pending-password-reset/operations/confirm-pending-password-reset.operation.js";
-import BlCrypto from "@backend/lib/config/bl-crypto.js";
-import { BlStorage } from "@backend/lib/storage/bl-storage.js";
-import { BlApiRequest } from "@backend/types/bl-api-request.js";
 import { test } from "@japa/runner";
 import { BlError } from "@shared/bl-error/bl-error.js";
 import { PendingPasswordReset } from "@shared/password-reset/pending-password-reset.js";
 import { expect, use as chaiUse, should } from "chai";
 import chaiAsPromised from "chai-as-promised";
 import sinon, { createSandbox } from "sinon";
+
+import LocalLoginHandler from "#services/auth/local/local-login.handler";
+import { ConfirmPendingPasswordResetOperation } from "#services/collections/pending-password-reset/operations/confirm-pending-password-reset.operation";
+import BlCrypto from "#services/config/bl-crypto";
+import { BlStorage } from "#services/storage/bl-storage";
+import { BlApiRequest } from "#services/types/bl-api-request";
 
 chaiUse(chaiAsPromised);
 should();

@@ -1,8 +1,9 @@
-import { DbQueryObjectIdFilter } from "@backend/lib/query/db-query-object-id-filter.js";
 import { test } from "@japa/runner";
 import { expect, use as chaiUse, should } from "chai";
 import chaiAsPromised from "chai-as-promised";
 import mongoose from "mongoose";
+
+import { DbQueryObjectIdFilter } from "#services/query/db-query-object-id-filter";
 
 chaiUse(chaiAsPromised);
 should();

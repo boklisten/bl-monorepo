@@ -1,8 +1,9 @@
-import { PermissionService } from "@backend/lib/auth/permission.service.js";
 import { test } from "@japa/runner";
 import { BlDocument } from "@shared/bl-document/bl-document.js";
 import { expect, use as chaiUse, should } from "chai";
 import chaiAsPromised from "chai-as-promised";
+
+import { PermissionService } from "#services/auth/permission.service";
 
 chaiUse(chaiAsPromised);
 should();

@@ -1,14 +1,15 @@
-import LocalLoginPasswordValidator from "@backend/lib/auth/local/local-login-password.validator.js";
-import LocalLoginHandler from "@backend/lib/auth/local/local-login.handler.js";
-import LocalLoginValidator from "@backend/lib/auth/local/local-login.validator.js";
-import UserHandler from "@backend/lib/auth/user/user.handler.js";
-import { LocalLogin } from "@backend/types/local-login.js";
-import { User } from "@backend/types/user.js";
 import { test } from "@japa/runner";
 import { BlError } from "@shared/bl-error/bl-error.js";
 import { use as chaiUse, should } from "chai";
 import chaiAsPromised from "chai-as-promised";
 import sinon, { createSandbox } from "sinon";
+
+import LocalLoginPasswordValidator from "#services/auth/local/local-login-password.validator";
+import LocalLoginHandler from "#services/auth/local/local-login.handler";
+import LocalLoginValidator from "#services/auth/local/local-login.validator";
+import UserHandler from "#services/auth/user/user.handler";
+import { LocalLogin } from "#services/types/local-login";
+import { User } from "#services/types/user";
 
 chaiUse(chaiAsPromised);
 should();

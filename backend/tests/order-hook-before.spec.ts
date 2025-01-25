@@ -1,8 +1,9 @@
-import { OrderHookBefore } from "@backend/lib/collections/order/hooks/order-hook-before.js";
 import { test } from "@japa/runner";
 import { BlError } from "@shared/bl-error/bl-error.js";
 import { expect, use as chaiUse, should } from "chai";
 import chaiAsPromised from "chai-as-promised";
+
+import { OrderHookBefore } from "#services/collections/order/hooks/order-hook-before";
 
 chaiUse(chaiAsPromised);
 should();

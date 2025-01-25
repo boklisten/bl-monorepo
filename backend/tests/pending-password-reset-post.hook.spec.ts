@@ -1,14 +1,15 @@
-import UserHandler from "@backend/lib/auth/user/user.handler.js";
-import { PendingPasswordResetPostHook } from "@backend/lib/collections/pending-password-reset/hooks/pending-password-reset-post.hook.js";
-import BlCrypto from "@backend/lib/config/bl-crypto.js";
-import Messenger from "@backend/lib/messenger/messenger.js";
-import { User } from "@backend/types/user.js";
 import { test } from "@japa/runner";
 import { BlError } from "@shared/bl-error/bl-error.js";
 import { PasswordResetRequest } from "@shared/password-reset/password-reset-request.js";
 import { expect, use as chaiUse, should } from "chai";
 import chaiAsPromised from "chai-as-promised";
 import sinon, { createSandbox } from "sinon";
+
+import UserHandler from "#services/auth/user/user.handler";
+import { PendingPasswordResetPostHook } from "#services/collections/pending-password-reset/hooks/pending-password-reset-post.hook";
+import BlCrypto from "#services/config/bl-crypto";
+import Messenger from "#services/messenger/messenger";
+import { User } from "#services/types/user";
 
 chaiUse(chaiAsPromised);
 should();

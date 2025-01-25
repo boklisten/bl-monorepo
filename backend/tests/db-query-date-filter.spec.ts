@@ -1,8 +1,9 @@
-import { DbQueryDateFilter } from "@backend/lib/query/db-query-date-filter.js";
 import { test } from "@japa/runner";
 import { expect, should, use as chaiUse } from "chai";
 import chaiAsPromised from "chai-as-promised";
 import moment from "moment";
+
+import { DbQueryDateFilter } from "#services/query/db-query-date-filter";
 
 chaiUse(chaiAsPromised);
 should();

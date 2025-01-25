@@ -1,13 +1,14 @@
-import { EmailValidation } from "@backend/lib/collections/email-validation/email-validation.js";
-import EmailValidationHelper from "@backend/lib/collections/email-validation/helpers/email-validation.helper.js";
-import Messenger from "@backend/lib/messenger/messenger.js";
-import { BlStorage } from "@backend/lib/storage/bl-storage.js";
 import { test } from "@japa/runner";
 import { BlError } from "@shared/bl-error/bl-error.js";
 import { UserDetail } from "@shared/user/user-detail/user-detail.js";
 import { expect, use as chaiUse, should } from "chai";
 import chaiAsPromised from "chai-as-promised";
 import sinon, { createSandbox } from "sinon";
+
+import { EmailValidation } from "#services/collections/email-validation/email-validation";
+import EmailValidationHelper from "#services/collections/email-validation/helpers/email-validation.helper";
+import Messenger from "#services/messenger/messenger";
+import { BlStorage } from "#services/storage/bl-storage";
 
 chaiUse(chaiAsPromised);
 should();

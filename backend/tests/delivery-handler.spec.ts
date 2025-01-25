@@ -1,5 +1,3 @@
-import { DeliveryHandler } from "@backend/lib/collections/delivery/helpers/deliveryHandler/delivery-handler.js";
-import { BlStorage } from "@backend/lib/storage/bl-storage.js";
 import { test } from "@japa/runner";
 import { BlError } from "@shared/bl-error/bl-error.js";
 import { Delivery } from "@shared/delivery/delivery.js";
@@ -7,6 +5,9 @@ import { Order } from "@shared/order/order.js";
 import { expect, use as chaiUse, should } from "chai";
 import chaiAsPromised from "chai-as-promised";
 import sinon, { createSandbox } from "sinon";
+
+import { DeliveryHandler } from "#services/collections/delivery/helpers/deliveryHandler/delivery-handler";
+import { BlStorage } from "#services/storage/bl-storage";
 
 chaiUse(chaiAsPromised);
 should();

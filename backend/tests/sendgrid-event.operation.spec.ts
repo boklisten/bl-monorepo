@@ -1,10 +1,11 @@
-import { SendgridEventOperation } from "@backend/lib/collections/message/operations/sendgrid-event.operation.js";
-import { BlStorage } from "@backend/lib/storage/bl-storage.js";
 import { test } from "@japa/runner";
 import { Message } from "@shared/message/message.js";
 import { expect, use as chaiUse, should } from "chai";
 import chaiAsPromised from "chai-as-promised";
 import sinon, { createSandbox } from "sinon";
+
+import { SendgridEventOperation } from "#services/collections/message/operations/sendgrid-event.operation";
+import { BlStorage } from "#services/storage/bl-storage";
 
 chaiUse(chaiAsPromised);
 should();

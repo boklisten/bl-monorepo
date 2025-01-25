@@ -1,10 +1,11 @@
-import LocalLoginPasswordValidator from "@backend/lib/auth/local/local-login-password.validator.js";
-import BlCrypto from "@backend/lib/config/bl-crypto.js";
 import { test } from "@japa/runner";
 import { BlError } from "@shared/bl-error/bl-error.js";
 import { use as chaiUse, should } from "chai";
 import chaiAsPromised from "chai-as-promised";
 import sinon, { createSandbox } from "sinon";
+
+import LocalLoginPasswordValidator from "#services/auth/local/local-login-password.validator";
+import BlCrypto from "#services/config/bl-crypto";
 
 chaiUse(chaiAsPromised);
 should();

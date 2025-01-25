@@ -2,7 +2,6 @@
   "name": "backend",
   "version": "1.0.0",
   "license": "UNLICENSED",
-  "exports": "./dist/index.js",
   "type": "module",
   "scripts": {
     "ace": "tsx --env-file=.env ace",
@@ -12,6 +11,24 @@
     "build:sentry": "pnpm build && pnpm run sentry:sourcemaps",
     "serve": "tsx --env-file=.env ./build/bin/server.js",
     "sentry:sourcemaps": "sentry-cli sourcemaps inject --org boklisten --project backend ./build && sentry-cli sourcemaps upload --org boklisten --project backend ./build"
+  },
+  "imports": {
+    "#controllers/*": "./app/controllers/*.js",
+    "#exceptions/*": "./app/exceptions/*.js",
+    "#models/*": "./app/models/*.js",
+    "#mails/*": "./app/mails/*.js",
+    "#services/*": "./app/services/*.js",
+    "#listeners/*": "./app/listeners/*.js",
+    "#events/*": "./app/events/*.js",
+    "#middleware/*": "./app/middleware/*.js",
+    "#validators/*": "./app/validators/*.js",
+    "#providers/*": "./providers/*.js",
+    "#policies/*": "./app/policies/*.js",
+    "#abilities/*": "./app/abilities/*.js",
+    "#database/*": "./database/*.js",
+    "#start/*": "./start/*.js",
+    "#tests/*": "./tests/*.js",
+    "#config/*": "./config/*.js"
   },
   "dependencies": {
     "@adonisjs/ally": "^5.0.2",

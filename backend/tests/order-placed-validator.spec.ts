@@ -1,5 +1,3 @@
-import { OrderPlacedValidator } from "@backend/lib/collections/order/helpers/order-validator/order-placed-validator/order-placed-validator.js";
-import { BlStorage } from "@backend/lib/storage/bl-storage.js";
 import { test } from "@japa/runner";
 import { BlError } from "@shared/bl-error/bl-error.js";
 import { Delivery } from "@shared/delivery/delivery.js";
@@ -8,6 +6,9 @@ import { Payment } from "@shared/payment/payment.js";
 import { expect, use as chaiUse, should } from "chai";
 import chaiAsPromised from "chai-as-promised";
 import sinon, { createSandbox } from "sinon";
+
+import { OrderPlacedValidator } from "#services/collections/order/helpers/order-validator/order-placed-validator/order-placed-validator";
+import { BlStorage } from "#services/storage/bl-storage";
 
 chaiUse(chaiAsPromised);
 should();

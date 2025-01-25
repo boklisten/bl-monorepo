@@ -1,7 +1,3 @@
-import { EmailValidation } from "@backend/lib/collections/email-validation/email-validation.js";
-import { EmailValidationConfirmOperation } from "@backend/lib/collections/email-validation/operations/email-validation-confirm.operation.js";
-import BlResponseHandler from "@backend/lib/response/bl-response.handler.js";
-import { BlStorage } from "@backend/lib/storage/bl-storage.js";
 import { test } from "@japa/runner";
 import { BlError } from "@shared/bl-error/bl-error.js";
 import { BlapiResponse } from "@shared/blapi-response/blapi-response.js";
@@ -9,6 +5,11 @@ import { UserDetail } from "@shared/user/user-detail/user-detail.js";
 import { expect, use as chaiUse, should } from "chai";
 import chaiAsPromised from "chai-as-promised";
 import sinon, { createSandbox } from "sinon";
+
+import { EmailValidation } from "#services/collections/email-validation/email-validation";
+import { EmailValidationConfirmOperation } from "#services/collections/email-validation/operations/email-validation-confirm.operation";
+import BlResponseHandler from "#services/response/bl-response.handler";
+import { BlStorage } from "#services/storage/bl-storage";
 
 chaiUse(chaiAsPromised);
 should();

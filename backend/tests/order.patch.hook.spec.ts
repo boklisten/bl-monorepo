@@ -1,7 +1,3 @@
-import { OrderPlacedHandler } from "@backend/lib/collections/order/helpers/order-placed-handler/order-placed-handler.js";
-import { OrderValidator } from "@backend/lib/collections/order/helpers/order-validator/order-validator.js";
-import { OrderPatchHook } from "@backend/lib/collections/order/hooks/order.patch.hook.js";
-import { BlStorage } from "@backend/lib/storage/bl-storage.js";
 import { test } from "@japa/runner";
 import { BlError } from "@shared/bl-error/bl-error.js";
 import { Order } from "@shared/order/order.js";
@@ -10,6 +6,11 @@ import { UserDetail } from "@shared/user/user-detail/user-detail.js";
 import { expect, use as chaiUse, should } from "chai";
 import chaiAsPromised from "chai-as-promised";
 import sinon, { createSandbox } from "sinon";
+
+import { OrderPlacedHandler } from "#services/collections/order/helpers/order-placed-handler/order-placed-handler";
+import { OrderValidator } from "#services/collections/order/helpers/order-validator/order-validator";
+import { OrderPatchHook } from "#services/collections/order/hooks/order.patch.hook";
+import { BlStorage } from "#services/storage/bl-storage";
 
 chaiUse(chaiAsPromised);
 should();

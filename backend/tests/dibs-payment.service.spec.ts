@@ -1,12 +1,13 @@
-import HttpHandler from "@backend/lib/http/http.handler.js";
-import { DibsEasyOrder } from "@backend/lib/payment/dibs/dibs-easy-order.js";
-import { DibsPaymentService } from "@backend/lib/payment/dibs/dibs-payment.service.js";
 import { test } from "@japa/runner";
 import { BlError } from "@shared/bl-error/bl-error.js";
 import { Order } from "@shared/order/order.js";
 import { expect, use as chaiUse, should } from "chai";
 import chaiAsPromised from "chai-as-promised";
 import sinon, { createSandbox } from "sinon";
+
+import HttpHandler from "#services/http/http.handler";
+import { DibsEasyOrder } from "#services/payment/dibs/dibs-easy-order";
+import { DibsPaymentService } from "#services/payment/dibs/dibs-payment.service";
 
 chaiUse(chaiAsPromised);
 should();

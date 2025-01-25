@@ -1,8 +1,9 @@
-import BlCrypto from "@backend/lib/config/bl-crypto.js";
 import { test } from "@japa/runner";
 import { BlError } from "@shared/bl-error/bl-error.js";
 import { use as chaiUse, should } from "chai";
 import chaiAsPromised from "chai-as-promised";
+
+import BlCrypto from "#services/config/bl-crypto";
 
 chaiUse(chaiAsPromised);
 should();

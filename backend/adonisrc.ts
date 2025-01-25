@@ -14,15 +14,12 @@ export default defineConfig({
     () => import("@adonisjs/ally/ally_provider"),
   ],
 
-  preloads: [
-    () => import("@backend/start/routes.js"),
-    () => import("@backend/start/kernel.js"),
-  ],
+  preloads: [() => import("#start/routes"), () => import("#start/kernel")],
 
   tests: {
     suites: [
       {
-        files: ["src/tests/**/*.spec.ts"],
+        files: ["tests/**/*.spec.ts"],
         name: "unit",
         timeout: 2000,
       },

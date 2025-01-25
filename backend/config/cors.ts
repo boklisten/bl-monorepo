@@ -1,5 +1,6 @@
 import { defineConfig } from "@adonisjs/cors";
-import { BlEnv } from "@backend/lib/config/env.js";
+
+import { BlEnv } from "#services/config/env";
 
 const corsConfig = defineConfig({
   enabled: true,

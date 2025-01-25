@@ -1,7 +1,8 @@
-import { DbQueryNumberFilter } from "@backend/lib/query/db-query-number-filter.js";
 import { test } from "@japa/runner";
 import { expect, use as chaiUse, should } from "chai";
 import chaiAsPromised from "chai-as-promised";
+
+import { DbQueryNumberFilter } from "#services/query/db-query-number-filter";
 
 chaiUse(chaiAsPromised);
 should();

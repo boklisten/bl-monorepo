@@ -1,21 +1,21 @@
 /*
 fixme: rewrite
 
-import { MatchFinder } from "@backend/src/collections/user-match/helpers/match-finder/match-finder.js";
-import assignMeetingInfoToMatches from "@backend/src/collections/user-match/helpers/match-finder/match-meeting-info.js";
+import { MatchFinder } from "#services/collections/user-match/helpers/match-finder/match-finder";
+import assignMeetingInfoToMatches from "#services/collections/user-match/helpers/match-finder/match-meeting-info";
 import {
   createFakeMatchableUser,
   createUserGroup,
   seededRandom,
   shuffler,
-} from "@backend/src/collections/user-match/helpers/match-finder/match-testing-utils.js";
+} from "#services/collections/user-match/helpers/match-finder/match-testing-utils";
 import {
   CandidateMatchVariant,
   MatchableUser,
   MatchWithMeetingInfo,
-} from "@backend/src/collections/user-match/helpers/match-finder/match-types.js";
-import otto_treider_test_users_year_0 from "@backend/src/collections/user-match/helpers/match-finder/test-data/test_users_year_0.json";
-import otto_treider_test_users_year_1 from "@backend/src/collections/user-match/helpers/match-finder/test-data/test_users_year_1.json";
+} from "#services/collections/user-match/helpers/match-finder/match-types";
+import otto_treider_test_users_year_0 from "#services/collections/user-match/helpers/match-finder/test-data/test_users_year_0.json";
+import otto_treider_test_users_year_1 from "#services/collections/user-match/helpers/match-finder/test-data/test_users_year_1.json";
 import { expect, use as chaiUse, should } from "chai";
 import chaiAsPromised from "chai-as-promised";
 import sinonChai from "sinon-chai";

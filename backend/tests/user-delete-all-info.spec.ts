@@ -1,11 +1,12 @@
-import { DeleteUserService } from "@backend/lib/collections/user-detail/helpers/delete-user-service.js";
-import { BlStorage } from "@backend/lib/storage/bl-storage.js";
-import { LocalLogin } from "@backend/types/local-login.js";
-import { User } from "@backend/types/user.js";
 import { test } from "@japa/runner";
 import { expect, use as chaiUse, should } from "chai";
 import chaiAsPromised from "chai-as-promised";
 import sinon, { createSandbox } from "sinon";
+
+import { DeleteUserService } from "#services/collections/user-detail/helpers/delete-user-service";
+import { BlStorage } from "#services/storage/bl-storage";
+import { LocalLogin } from "#services/types/local-login";
+import { User } from "#services/types/user";
 chaiUse(chaiAsPromised);
 should();
 

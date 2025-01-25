@@ -1,15 +1,16 @@
-import { CustomerHaveActiveCustomerItems } from "@backend/lib/collections/customer-item/helpers/customer-have-active-customer-items.js";
-import { CustomerInvoiceActive } from "@backend/lib/collections/invoice/helpers/customer-invoice-active.js";
-import { OrderActive } from "@backend/lib/collections/order/helpers/order-active/order-active.js";
-import { DeleteUserService } from "@backend/lib/collections/user-detail/helpers/delete-user-service.js";
-import { UserCanDeleteUserDetail } from "@backend/lib/collections/user-detail/helpers/user-can-delete-user-detail.js";
-import { UserDetailDeleteHook } from "@backend/lib/collections/user-detail/hooks/user-detail-delete.hook.js";
 import { test } from "@japa/runner";
 import { BlError } from "@shared/bl-error/bl-error.js";
 import { AccessToken } from "@shared/token/access-token.js";
 import { expect, use as chaiUse, should } from "chai";
 import chaiAsPromised from "chai-as-promised";
 import sinon, { createSandbox } from "sinon";
+
+import { CustomerHaveActiveCustomerItems } from "#services/collections/customer-item/helpers/customer-have-active-customer-items";
+import { CustomerInvoiceActive } from "#services/collections/invoice/helpers/customer-invoice-active";
+import { OrderActive } from "#services/collections/order/helpers/order-active/order-active";
+import { DeleteUserService } from "#services/collections/user-detail/helpers/delete-user-service";
+import { UserCanDeleteUserDetail } from "#services/collections/user-detail/helpers/user-can-delete-user-detail";
+import { UserDetailDeleteHook } from "#services/collections/user-detail/hooks/user-detail-delete.hook";
 
 chaiUse(chaiAsPromised);
 should();

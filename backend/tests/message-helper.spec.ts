@@ -1,5 +1,3 @@
-import { MessageHelper } from "@backend/lib/collections/message/helper/message-helper.js";
-import { BlStorage } from "@backend/lib/storage/bl-storage.js";
 import { test } from "@japa/runner";
 import { BlError } from "@shared/bl-error/bl-error.js";
 import { MessageMethod } from "@shared/message/message-method/message-method.js";
@@ -8,6 +6,9 @@ import { expect, should, use as chaiUse } from "chai";
 import chaiAsPromised from "chai-as-promised";
 import sinon, { createSandbox } from "sinon";
 import sinonChai from "sinon-chai";
+
+import { MessageHelper } from "#services/collections/message/helper/message-helper";
+import { BlStorage } from "#services/storage/bl-storage";
 
 chaiUse(chaiAsPromised);
 should();

@@ -1,7 +1,3 @@
-import { DeliveryHandler } from "@backend/lib/collections/delivery/helpers/deliveryHandler/delivery-handler.js";
-import { DeliveryValidator } from "@backend/lib/collections/delivery/helpers/deliveryValidator/delivery-validator.js";
-import { DeliveryPostHook } from "@backend/lib/collections/delivery/hooks/delivery.post.hook.js";
-import { BlStorage } from "@backend/lib/storage/bl-storage.js";
 import { test } from "@japa/runner";
 import { BlError } from "@shared/bl-error/bl-error.js";
 import { Delivery } from "@shared/delivery/delivery.js";
@@ -11,6 +7,11 @@ import { AccessToken } from "@shared/token/access-token.js";
 import { expect, use as chaiUse, should } from "chai";
 import chaiAsPromised from "chai-as-promised";
 import sinon, { createSandbox } from "sinon";
+
+import { DeliveryHandler } from "#services/collections/delivery/helpers/deliveryHandler/delivery-handler";
+import { DeliveryValidator } from "#services/collections/delivery/helpers/deliveryValidator/delivery-validator";
+import { DeliveryPostHook } from "#services/collections/delivery/hooks/delivery.post.hook";
+import { BlStorage } from "#services/storage/bl-storage";
 
 chaiUse(chaiAsPromised);
 should();

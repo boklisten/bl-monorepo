@@ -1,7 +1,8 @@
-import { PriceService } from "@backend/lib/price/price.service.js";
 import { test } from "@japa/runner";
 import { expect, use as chaiUse, should } from "chai";
 import chaiAsPromised from "chai-as-promised";
+
+import { PriceService } from "#services/price/price.service";
 
 chaiUse(chaiAsPromised);
 should();

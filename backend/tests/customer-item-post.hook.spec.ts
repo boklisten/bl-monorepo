@@ -1,6 +1,3 @@
-import { CustomerItemPostHook } from "@backend/lib/collections/customer-item/hooks/customer-item-post.hook.js";
-import { CustomerItemValidator } from "@backend/lib/collections/customer-item/validators/customer-item-validator.js";
-import { BlStorage } from "@backend/lib/storage/bl-storage.js";
 import { test } from "@japa/runner";
 import { BlError } from "@shared/bl-error/bl-error.js";
 import { CustomerItem } from "@shared/customer-item/customer-item.js";
@@ -11,6 +8,10 @@ import { expect, use as chaiUse, should } from "chai";
 import chaiAsPromised from "chai-as-promised";
 import sinon, { createSandbox } from "sinon";
 import sinonChai from "sinon-chai";
+
+import { CustomerItemPostHook } from "#services/collections/customer-item/hooks/customer-item-post.hook";
+import { CustomerItemValidator } from "#services/collections/customer-item/validators/customer-item-validator";
+import { BlStorage } from "#services/storage/bl-storage";
 
 chaiUse(chaiAsPromised);
 should();

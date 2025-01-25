@@ -1,13 +1,14 @@
-import { PaymentDibsHandler } from "@backend/lib/collections/payment/helpers/dibs/payment-dibs-handler.js";
-import { PaymentValidator } from "@backend/lib/collections/payment/helpers/payment.validator.js";
-import { PaymentPatchHook } from "@backend/lib/collections/payment/hooks/payment.patch.hook.js";
-import { BlStorage } from "@backend/lib/storage/bl-storage.js";
 import { test } from "@japa/runner";
 import { BlError } from "@shared/bl-error/bl-error.js";
 import { Payment } from "@shared/payment/payment.js";
 import { expect, use as chaiUse, should } from "chai";
 import chaiAsPromised from "chai-as-promised";
 import sinon, { createSandbox } from "sinon";
+
+import { PaymentDibsHandler } from "#services/collections/payment/helpers/dibs/payment-dibs-handler";
+import { PaymentValidator } from "#services/collections/payment/helpers/payment.validator";
+import { PaymentPatchHook } from "#services/collections/payment/hooks/payment.patch.hook";
+import { BlStorage } from "#services/storage/bl-storage";
 
 chaiUse(chaiAsPromised);
 should();

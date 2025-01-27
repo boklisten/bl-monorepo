@@ -17,12 +17,6 @@ const BL_CONFIG = {
     local: {
       url: "auth/local/login",
     },
-    facebook: {
-      url: "auth/facebook/redirect",
-    },
-    google: {
-      url: "auth/google/redirect",
-    },
     localStorageKeys: {
       redirect: "bl-redirect",
       caller: "bl-caller",
@@ -31,12 +25,6 @@ const BL_CONFIG = {
   register: {
     local: {
       url: "auth/local/register",
-    },
-    facebook: {
-      url: "auth/facebook",
-    },
-    google: {
-      url: "auth/google",
     },
   },
   order: {

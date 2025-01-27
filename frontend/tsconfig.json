@@ -3,7 +3,8 @@
   "compilerOptions": {
     "paths": {
       "@/*": ["frontend/src/*"],
-      "@shared/*": ["backend/shared/src/*"]
+      "@shared/*": ["backend/shared/src/*"],
+      "@backend/tuyau/*": ["backend/dist/.adonisjs/*"]
     }
   },
   "references": [

@@ -1,0 +1,9 @@
+{
+  "compilerOptions": {
+    "outDir": "./dist",
+    "composite": true,
+    "declaration": true
+  },
+  "include": ["."],
+  "exclude": ["node_modules", "build", "**/dist", "tests/*"]
+}

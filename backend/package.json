@@ -5,6 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "node ace serve --watch",
+    "tuyau": "node ace tuyau:generate",
     "typecheck": "pnpm exec tsc --noEmit",
     "test": "NODE_ENV=test tsx bin/test",
     "build": "node ace build",
@@ -42,6 +43,7 @@
     "@sentry/cli": "^2.41.1",
     "@sentry/node": "^8.50.0",
     "@sentry/profiling-node": "^8.50.0",
+    "@tuyau/core": "^0.3.0",
     "@vinejs/vine": "^3.0.0",
     "canvas": "^3.1.0",
     "jsbarcode": "^3.11.6",

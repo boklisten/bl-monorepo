@@ -7,6 +7,7 @@ import { ReactNode } from "react";
 
 import { add } from "@/api/storage";
 import BL_CONFIG from "@/utils/bl-config";
+import { tuyau } from "@/utils/tuyau";
 
 interface SocialLoginProps {
   label: string;
@@ -35,7 +36,7 @@ const SocialLoginButton = ({
         if (redirect) {
           add(BL_CONFIG.login.localStorageKeys.redirect, redirect);
         }
-        router.push(BL_CONFIG.api.basePath + BL_CONFIG.login[brandName].url);
+        router.push(tuyau.auth({ provider: brandName }).redirect.$url());
       }}
       data-testid={`${brandName}-button`}
       fullWidth

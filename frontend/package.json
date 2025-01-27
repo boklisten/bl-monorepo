@@ -4,10 +4,12 @@
   "license": "UNLICENSED",
   "type": "module",
   "scripts": {
+    "build:tuyau": "pnpm exec tsc --project ../backend/tsconfig.tuyau.json --noResolve --noCheck",
     "build:shared": "pnpm exec tsc --build ../backend/shared",
-    "dev": "pnpm build:shared && next dev",
-    "typecheck": "pnpm build:shared && pnpm exec tsc --noEmit",
-    "build": "pnpm build:shared && next build",
+    "build:external": "pnpm exec concurrently \"pnpm run build:shared\" \"pnpm run build:tuyau\"",
+    "dev": "pnpm build:external && next dev",
+    "typecheck": "pnpm build:external && pnpm exec tsc --noEmit",
+    "build": "pnpm build:external && next build",
     "serve": "next start"
   },
   "dependencies": {
@@ -23,6 +25,7 @@
     "@mui/x-date-pickers": "^7.24.0",
     "@sentry/nextjs": "^8.50.0",
     "@toolpad/core": "^0.12.0",
+    "@tuyau/client": "^0.2.4",
     "@yudiel/react-qr-scanner": "^2.1.0",
     "draft-js": "^0.11.7",
     "moment": "^2.30.1",

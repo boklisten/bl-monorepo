@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "node ace serve --watch",
     "typecheck": "pnpm exec tsc --noEmit",
-    "test": "tsx bin/test",
+    "test": "NODE_ENV=test tsx bin/test",
     "build": "node ace build",
     "start": "ENV_PATH=../ node build/bin/server.js"
   },

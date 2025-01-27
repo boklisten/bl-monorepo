@@ -5,9 +5,10 @@
   "type": "module",
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
-    "serve": "next start",
-    "lint": "next lint"
+    "typecheck": "pnpm build:shared && pnpm exec tsc --noEmit",
+    "build:shared": "pnpm exec tsc --build ../backend/shared",
+    "build": "pnpm build:shared && next build",
+    "serve": "next start"
   },
   "dependencies": {
     "@date-io/moment": "^3.2.0",

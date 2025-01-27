@@ -4,10 +4,11 @@
   "license": "UNLICENSED",
   "type": "module",
   "scripts": {
-    "start": "ENV_PATH=../ node build/bin/server.js",
-    "build": "node ace build",
     "dev": "node ace serve --watch",
-    "test": "tsx bin/test"
+    "typecheck": "pnpm exec tsc --noEmit",
+    "test": "tsx bin/test",
+    "build": "node ace build",
+    "start": "ENV_PATH=../ node build/bin/server.js"
   },
   "imports": {
     "#controllers/*": "./app/controllers/*.js",

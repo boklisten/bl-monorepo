@@ -1,13 +1,12 @@
-import { BlError } from "@shared/bl-error/bl-error.js";
-import { BlapiResponse } from "@shared/blapi-response/blapi-response.js";
-import { PasswordResetConfirmationRequest } from "@shared/password-reset/password-reset-confirmation-request.js";
-import { PendingPasswordReset } from "@shared/password-reset/pending-password-reset.js";
-
 import LocalLoginHandler from "#services/auth/local/local-login.handler";
 import BlCrypto from "#services/config/bl-crypto";
 import { BlStorage } from "#services/storage/bl-storage";
 import { BlApiRequest } from "#services/types/bl-api-request";
 import { Operation } from "#services/types/operation";
+import { BlError } from "#shared/bl-error/bl-error";
+import { BlapiResponse } from "#shared/blapi-response/blapi-response";
+import { PasswordResetConfirmationRequest } from "#shared/password-reset/password-reset-confirmation-request";
+import { PendingPasswordReset } from "#shared/password-reset/pending-password-reset";
 
 export class ConfirmPendingPasswordResetOperation implements Operation {
   async run(blApiRequest: BlApiRequest): Promise<BlapiResponse> {

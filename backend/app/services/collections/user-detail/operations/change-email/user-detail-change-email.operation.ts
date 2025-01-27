@@ -1,5 +1,3 @@
-import { BlError } from "@shared/bl-error/bl-error.js";
-import { BlapiResponse } from "@shared/blapi-response/blapi-response.js";
 import validator from "validator";
 
 import { PermissionService } from "#services/auth/permission.service";
@@ -10,6 +8,8 @@ import { BlApiRequest } from "#services/types/bl-api-request";
 import { LocalLogin } from "#services/types/local-login";
 import { Operation } from "#services/types/operation";
 import { User } from "#services/types/user";
+import { BlError } from "#shared/bl-error/bl-error";
+import { BlapiResponse } from "#shared/blapi-response/blapi-response";
 
 export class UserDetailChangeEmailOperation implements Operation {
   async run(blApiRequest: BlApiRequest) {

@@ -1,13 +1,13 @@
-import { BlError } from "@shared/bl-error/bl-error.js";
-import { DeliveryInfoBring } from "@shared/delivery/delivery-info/delivery-info-bring.js";
-import { Item } from "@shared/item/item.js";
 import moment from "moment";
 
 import { BringDelivery } from "#services/collections/delivery/helpers/deliveryBring/bringDelivery";
 import { APP_CONFIG } from "#services/config/application-config";
-import { BlEnv } from "#services/config/env";
 import { isNullish } from "#services/helper/typescript-helpers";
 import HttpHandler from "#services/http/http.handler";
+import { BlError } from "#shared/bl-error/bl-error";
+import { DeliveryInfoBring } from "#shared/delivery/delivery-info/delivery-info-bring";
+import { Item } from "#shared/item/item";
+import env from "#start/env";
 
 export interface ShipmentAddress {
   name: string;
@@ -50,8 +50,8 @@ export class BringDeliveryService {
     }
 
     const bringAuthHeaders = {
-      "X-MyBring-API-Key": BlEnv.BRING_API_KEY,
-      "X-MyBring-API-Uid": BlEnv.BRING_API_ID,
+      "X-MyBring-API-Key": env.get("BRING_API_KEY"),
+      "X-MyBring-API-Uid": env.get("BRING_API_ID"),
     };
 
     const postalInfoUrl = `https://api.bring.com/pickuppoint/api/postalCode/NO/getCityAndType/${shipmentAddress.postalCode}.json`;

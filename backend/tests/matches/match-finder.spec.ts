@@ -1,5 +1,4 @@
 import { test } from "@japa/runner";
-import { BlError } from "@shared/bl-error/bl-error.js";
 import otto_treider_test_users_year_0 from "backend/tests/matches/test-data/test_users_year_0.json" with { type: "json" };
 import otto_treider_test_users_year_1 from "backend/tests/matches/test-data/test_users_year_1.json" with { type: "json" };
 import otto_treider_test_users_year_2 from "backend/tests/matches/test-data/test_users_year_2.json" with { type: "json" };
@@ -19,6 +18,7 @@ import {
   createMatchableUsersWithIdSuffix,
 } from "#services/collections/user-match/helpers/match-finder/match-testing-utils";
 import { MatchableUser } from "#services/collections/user-match/helpers/match-finder/match-types";
+import { BlError } from "#shared/bl-error/bl-error";
 
 chaiUse(chaiAsPromised);
 should();

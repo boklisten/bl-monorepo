@@ -1,6 +1,4 @@
 import { test } from "@japa/runner";
-import { BlError } from "@shared/bl-error/bl-error.js";
-import { AccessToken } from "@shared/token/access-token.js";
 import { expect, use as chaiUse, should } from "chai";
 import chaiAsPromised from "chai-as-promised";
 import sinon, { createSandbox } from "sinon";
@@ -11,6 +9,8 @@ import { OrderActive } from "#services/collections/order/helpers/order-active/or
 import { DeleteUserService } from "#services/collections/user-detail/helpers/delete-user-service";
 import { UserCanDeleteUserDetail } from "#services/collections/user-detail/helpers/user-can-delete-user-detail";
 import { UserDetailDeleteHook } from "#services/collections/user-detail/hooks/user-detail-delete.hook";
+import { BlError } from "#shared/bl-error/bl-error";
+import { AccessToken } from "#shared/token/access-token";
 
 chaiUse(chaiAsPromised);
 should();

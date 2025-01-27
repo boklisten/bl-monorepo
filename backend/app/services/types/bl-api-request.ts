@@ -1,5 +1,6 @@
-import { UserPermission } from "@shared/permission/user-permission.js";
 import { ParsedQs } from "qs";
+
+import { UserPermission } from "#shared/permission/user-permission";
 
 export interface BlApiRequest {
   documentId?: string | undefined;

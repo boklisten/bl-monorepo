@@ -1,12 +1,16 @@
 import twilio from "twilio";
 
-import { BlEnv } from "#services/config/env";
 import { logger } from "#services/config/logger";
+import env from "#start/env";
 
-const client = twilio(BlEnv.TWILIO_SMS_SID, BlEnv.TWILIO_SMS_AUTH_TOKEN, {
-  autoRetry: true,
-  maxRetries: 5,
-});
+const client = twilio(
+  env.get("TWILIO_SMS_SID"),
+  env.get("TWILIO_SMS_AUTH_TOKEN"),
+  {
+    autoRetry: true,
+    maxRetries: 5,
+  },
+);
 
 /**
  * Send a single SMS to a single recipient

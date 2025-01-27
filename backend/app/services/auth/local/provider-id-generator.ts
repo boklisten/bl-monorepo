@@ -1,8 +1,7 @@
 import crypto from "node:crypto";
 
-import { BlError } from "@shared/bl-error/bl-error.js";
-
 import BlCrypto from "#services/config/bl-crypto";
+import { BlError } from "#shared/bl-error/bl-error";
 
 function generate(username: string): Promise<string> {
   return new Promise((resolve, reject) => {

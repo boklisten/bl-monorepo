@@ -1,6 +1,4 @@
 import { test } from "@japa/runner";
-import { BlError } from "@shared/bl-error/bl-error.js";
-import { Branch } from "@shared/branch/branch.js";
 import { expect, use as chaiUse, should } from "chai";
 import chaiAsPromised from "chai-as-promised";
 
@@ -11,6 +9,8 @@ import {
   BlDocumentPermission,
   BlEndpointRestriction,
 } from "#services/types/bl-collection";
+import { BlError } from "#shared/bl-error/bl-error";
+import { Branch } from "#shared/branch/branch";
 
 chaiUse(chaiAsPromised);
 should();

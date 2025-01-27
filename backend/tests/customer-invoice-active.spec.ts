@@ -1,12 +1,12 @@
 import { test } from "@japa/runner";
-import { BlError } from "@shared/bl-error/bl-error.js";
-import { Invoice } from "@shared/invoice/invoice.js";
 import { expect, use as chaiUse, should } from "chai";
 import chaiAsPromised from "chai-as-promised";
 import sinon, { createSandbox } from "sinon";
 
 import { CustomerInvoiceActive } from "#services/collections/invoice/helpers/customer-invoice-active";
 import { BlStorage } from "#services/storage/bl-storage";
+import { BlError } from "#shared/bl-error/bl-error";
+import { Invoice } from "#shared/invoice/invoice";
 
 chaiUse(chaiAsPromised);
 should();

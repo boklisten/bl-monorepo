@@ -1,7 +1,4 @@
 import { test } from "@japa/runner";
-import { CustomerItem } from "@shared/customer-item/customer-item.js";
-import { Message } from "@shared/message/message.js";
-import { UserDetail } from "@shared/user/user-detail/user-detail.js";
 import { expect, use as chaiUse, should } from "chai";
 import chaiAsPromised from "chai-as-promised";
 import sinon, { createSandbox } from "sinon";
@@ -10,6 +7,9 @@ import { CustomerItemHandler } from "#services/collections/customer-item/helpers
 import { EmailService } from "#services/messenger/email/email-service";
 import { MessengerReminder } from "#services/messenger/reminder/messenger-reminder";
 import { BlStorage } from "#services/storage/bl-storage";
+import { CustomerItem } from "#shared/customer-item/customer-item";
+import { Message } from "#shared/message/message";
+import { UserDetail } from "#shared/user/user-detail/user-detail";
 
 chaiUse(chaiAsPromised);
 should();

@@ -1,14 +1,14 @@
 import { test } from "@japa/runner";
-import { BlError } from "@shared/bl-error/bl-error.js";
-import { Delivery } from "@shared/delivery/delivery.js";
-import { Order } from "@shared/order/order.js";
-import { Payment } from "@shared/payment/payment.js";
 import { expect, use as chaiUse, should } from "chai";
 import chaiAsPromised from "chai-as-promised";
 import sinon, { createSandbox } from "sinon";
 
 import { PaymentValidator } from "#services/collections/payment/helpers/payment.validator";
 import { BlStorage } from "#services/storage/bl-storage";
+import { BlError } from "#shared/bl-error/bl-error";
+import { Delivery } from "#shared/delivery/delivery";
+import { Order } from "#shared/order/order";
+import { Payment } from "#shared/payment/payment";
 
 chaiUse(chaiAsPromised);
 should();

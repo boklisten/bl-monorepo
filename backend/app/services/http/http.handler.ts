@@ -1,9 +1,9 @@
-import { BlError } from "@shared/bl-error/bl-error.js";
 import { stringify } from "qs";
 import request from "request";
 import rp from "request-promise";
 
 import { logger } from "#services/config/logger";
+import { BlError } from "#shared/bl-error/bl-error";
 
 // fixme: request and request-promise is deprecated, rewrite to use fetch
 function post(

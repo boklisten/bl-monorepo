@@ -1,7 +1,7 @@
-import { BranchItem } from "@shared/branch-item/branch-item.js";
 import { Schema } from "mongoose";
 
 import { BlModel } from "#services/storage/bl-storage";
+import { BranchItem } from "#shared/branch-item/branch-item";
 
 export const BranchItemModel: BlModel<BranchItem> = {
   name: "branchitems",

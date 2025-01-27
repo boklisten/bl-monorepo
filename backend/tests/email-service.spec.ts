@@ -1,18 +1,18 @@
 import { EmailHandler, EmailLog } from "@boklisten/bl-email";
 import { PostOffice } from "@boklisten/bl-post-office";
 import { test } from "@japa/runner";
-import { BlError } from "@shared/bl-error/bl-error.js";
-import { CustomerItem } from "@shared/customer-item/customer-item.js";
-import { Item } from "@shared/item/item.js";
-import { MessageMethod } from "@shared/message/message-method/message-method.js";
-import { Message } from "@shared/message/message.js";
-import { UserDetail } from "@shared/user/user-detail/user-detail.js";
 import { expect, should, use as chaiUse } from "chai";
 import chaiAsPromised from "chai-as-promised";
 import sinon, { createSandbox } from "sinon";
 
 import { EmailService } from "#services/messenger/email/email-service";
 import { BlStorage } from "#services/storage/bl-storage";
+import { BlError } from "#shared/bl-error/bl-error";
+import { CustomerItem } from "#shared/customer-item/customer-item";
+import { Item } from "#shared/item/item";
+import { Message } from "#shared/message/message";
+import { MessageMethod } from "#shared/message/message-method/message-method";
+import { UserDetail } from "#shared/user/user-detail/user-detail";
 
 class MockPostOffice extends PostOffice {
   constructor() {

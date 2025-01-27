@@ -1,9 +1,8 @@
-import { BlError } from "@shared/bl-error/bl-error.js";
-import { Order } from "@shared/order/order.js";
-import { Payment } from "@shared/payment/payment.js";
-
 import { PaymentDibsConfirmer } from "#services/collections/payment/helpers/dibs/payment-dibs-confirmer";
 import { BlStorage } from "#services/storage/bl-storage";
+import { BlError } from "#shared/bl-error/bl-error";
+import { Order } from "#shared/order/order";
+import { Payment } from "#shared/payment/payment";
 
 export class PaymentHandler {
   private paymentDibsConfirmer: PaymentDibsConfirmer;

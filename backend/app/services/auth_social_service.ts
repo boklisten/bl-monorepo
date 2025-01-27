@@ -3,14 +3,14 @@ import { HttpContext } from "@adonisjs/core/http";
 
 import UserProvider from "#services/auth/user/user-provider";
 import { retrieveRefererPath } from "#services/config/api-path";
-import { BlEnv } from "#services/config/env";
+import env from "#start/env";
 
 async function handleCallback(ctx: HttpContext) {
   const provider: keyof SocialProviders = ctx.params["provider"];
   const social = ctx.ally.use(provider);
 
   if (social.accessDenied() || social.stateMisMatch() || social.hasError()) {
-    return ctx.response.redirect(`${BlEnv.CLIENT_URI}auth/social/failure`);
+    return ctx.response.redirect(`${env.get("CLIENT_URI")}auth/social/failure`);
   }
 
   const user = await social.user();
@@ -23,7 +23,7 @@ async function handleCallback(ctx: HttpContext) {
 
   return ctx.response.redirect(
     `${
-      retrieveRefererPath(ctx.request.headers()) ?? BlEnv.CLIENT_URI
+      retrieveRefererPath(ctx.request.headers()) ?? env.get("CLIENT_URI")
     }auth/token?access_token=${accessToken}&refresh_token=${refreshToken}`,
   );
 }

@@ -1,7 +1,7 @@
-import { UserDetail } from "@shared/user/user-detail/user-detail.js";
 import { Schema } from "mongoose";
 
 import { BlModel } from "#services/storage/bl-storage";
+import { UserDetail } from "#shared/user/user-detail/user-detail";
 
 export const UserDetailModel: BlModel<UserDetail> = {
   name: "userdetails",

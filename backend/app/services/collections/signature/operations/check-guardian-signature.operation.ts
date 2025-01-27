@@ -1,6 +1,3 @@
-import { BlError } from "@shared/bl-error/bl-error.js";
-import { BlapiResponse } from "@shared/blapi-response/blapi-response.js";
-import { CheckGuardianSignatureSpec } from "@shared/signature/serialized-signature.js";
 import { ObjectId } from "mongodb";
 
 import {
@@ -11,6 +8,9 @@ import {
 import { BlStorage } from "#services/storage/bl-storage";
 import { BlApiRequest } from "#services/types/bl-api-request";
 import { Operation } from "#services/types/operation";
+import { BlError } from "#shared/bl-error/bl-error";
+import { BlapiResponse } from "#shared/blapi-response/blapi-response";
+import { CheckGuardianSignatureSpec } from "#shared/signature/serialized-signature";
 
 export class CheckGuardianSignatureOperation implements Operation {
   async run(blApiRequest: BlApiRequest): Promise<BlapiResponse> {

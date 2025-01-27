@@ -1,4 +1,3 @@
-import { BlError } from "@shared/bl-error/bl-error.js";
 import { ObjectId } from "mongodb";
 
 import { BooleanFilter } from "#services/query/db-query-boolean-filter";
@@ -12,6 +11,7 @@ import { RegexFilter } from "#services/query/db-query-regex-filter";
 import { SkipFilter } from "#services/query/db-query-skip-filter";
 import { SortFilter } from "#services/query/db-query-sort-filter";
 import { StringFilter } from "#services/query/db-query-string-filter";
+import { BlError } from "#shared/bl-error/bl-error";
 
 export class SEDbQuery {
   booleanFilters: BooleanFilter[];

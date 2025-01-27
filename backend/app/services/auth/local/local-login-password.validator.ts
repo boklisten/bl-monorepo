@@ -1,6 +1,5 @@
-import { BlError } from "@shared/bl-error/bl-error.js";
-
 import BlCrypto from "#services/config/bl-crypto";
+import { BlError } from "#shared/bl-error/bl-error";
 
 async function validate(
   password: string,

@@ -1,10 +1,3 @@
-import { BlError } from "@shared/bl-error/bl-error.js";
-import { OrderItemType } from "@shared/order/order-item/order-item-type.js";
-import { OrderItem } from "@shared/order/order-item/order-item.js";
-import { Order } from "@shared/order/order.js";
-import { AccessToken } from "@shared/token/access-token.js";
-import { UserDetail } from "@shared/user/user-detail/user-detail.js";
-
 import { CustomerItemHandler } from "#services/collections/customer-item/helpers/customer-item-handler";
 import { OrderItemMovedFromOrderHandler } from "#services/collections/order/helpers/order-item-moved-from-order-handler/order-item-moved-from-order-handler";
 import { PaymentHandler } from "#services/collections/payment/helpers/payment-handler";
@@ -12,6 +5,12 @@ import { userHasValidSignature } from "#services/collections/signature/helpers/s
 import { logger } from "#services/config/logger";
 import Messenger from "#services/messenger/messenger";
 import { BlStorage } from "#services/storage/bl-storage";
+import { BlError } from "#shared/bl-error/bl-error";
+import { Order } from "#shared/order/order";
+import { OrderItem } from "#shared/order/order-item/order-item";
+import { OrderItemType } from "#shared/order/order-item/order-item-type";
+import { AccessToken } from "#shared/token/access-token";
+import { UserDetail } from "#shared/user/user-detail/user-detail";
 
 export class OrderPlacedHandler {
   private paymentHandler: PaymentHandler;

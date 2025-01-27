@@ -1,8 +1,4 @@
 import { test } from "@japa/runner";
-import { BlError } from "@shared/bl-error/bl-error.js";
-import { Branch } from "@shared/branch/branch.js";
-import { Item } from "@shared/item/item.js";
-import { Order } from "@shared/order/order.js";
 import { expect, use as chaiUse, should } from "chai";
 import chaiAsPromised from "chai-as-promised";
 import sinon, { createSandbox } from "sinon";
@@ -13,6 +9,10 @@ import { OrderItemExtendValidator } from "#services/collections/order/helpers/or
 import { OrderItemRentValidator } from "#services/collections/order/helpers/order-validator/order-item-validator/order-item-rent-validator/order-item-rent-validator";
 import { OrderItemValidator } from "#services/collections/order/helpers/order-validator/order-item-validator/order-item-validator";
 import { BlStorage } from "#services/storage/bl-storage";
+import { BlError } from "#shared/bl-error/bl-error";
+import { Branch } from "#shared/branch/branch";
+import { Item } from "#shared/item/item";
+import { Order } from "#shared/order/order";
 chaiUse(chaiAsPromised);
 should();
 

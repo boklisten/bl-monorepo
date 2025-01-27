@@ -1,4 +1,3 @@
-import { BlError } from "@shared/bl-error/bl-error.js";
 import validator from "validator";
 
 import LocalLoginCreator from "#services/auth/local/local-login-creator";
@@ -7,6 +6,7 @@ import LocalLoginHandler from "#services/auth/local/local-login.handler";
 import UserHandler from "#services/auth/user/user.handler";
 import { LocalLogin } from "#services/types/local-login";
 import { User } from "#services/types/user";
+import { BlError } from "#shared/bl-error/bl-error";
 
 function validate(
   username: string,

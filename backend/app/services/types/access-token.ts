@@ -1,4 +1,4 @@
-import { UserPermission } from "@shared/permission/user-permission.js";
+import { UserPermission } from "#shared/permission/user-permission";
 
 // fixme: is this dupe of the type in shared?
 export interface AccessToken {

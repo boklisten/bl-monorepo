@@ -1,7 +1,3 @@
-import { BlError } from "@shared/bl-error/bl-error.js";
-import { SerializedSignature } from "@shared/signature/serialized-signature.js";
-import { AccessToken } from "@shared/token/access-token.js";
-
 import {
   deserializeSignature,
   isUnderage,
@@ -11,6 +7,9 @@ import {
 import { Hook } from "#services/hook/hook";
 import { BlStorage } from "#services/storage/bl-storage";
 import { Signature } from "#services/storage/models/signature.model";
+import { BlError } from "#shared/bl-error/bl-error";
+import { SerializedSignature } from "#shared/signature/serialized-signature";
+import { AccessToken } from "#shared/token/access-token";
 
 export class SignaturePostHook extends Hook {
   override async before(

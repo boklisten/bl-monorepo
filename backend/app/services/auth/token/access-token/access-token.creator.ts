@@ -1,10 +1,10 @@
-import { BlError } from "@shared/bl-error/bl-error.js";
-import { UserPermission } from "@shared/permission/user-permission.js";
 import jwt from "jsonwebtoken";
 
 import RefreshTokenValidator from "#services/auth/token/refresh/refresh-token.validator";
 import { APP_CONFIG } from "#services/config/application-config";
-import { BlEnv } from "#services/config/env";
+import { BlError } from "#shared/bl-error/bl-error";
+import { UserPermission } from "#shared/permission/user-permission";
+import env from "#start/env";
 
 function createPayload(
   username: string,
@@ -42,7 +42,7 @@ function create(
       () => {
         jwt.sign(
           createPayload(username, userid, permission, userDetailId),
-          BlEnv.ACCESS_TOKEN_SECRET,
+          env.get("ACCESS_TOKEN_SECRET"),
           { expiresIn: APP_CONFIG.token.access.expiresIn },
           (error, accessToken) => {
             if (error || accessToken === undefined)

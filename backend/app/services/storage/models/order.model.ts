@@ -1,7 +1,7 @@
-import { Order } from "@shared/order/order.js";
 import { Schema } from "mongoose";
 
 import { BlModel } from "#services/storage/bl-storage";
+import { Order } from "#shared/order/order";
 
 export const OrderModel: BlModel<Order> = {
   name: "orders",

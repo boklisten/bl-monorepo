@@ -1,9 +1,4 @@
 import { test } from "@japa/runner";
-import { BlError } from "@shared/bl-error/bl-error.js";
-import { MessageMethod } from "@shared/message/message-method/message-method.js";
-import { Message } from "@shared/message/message.js";
-import { AccessToken } from "@shared/token/access-token.js";
-import { UserDetail } from "@shared/user/user-detail/user-detail.js";
 import { expect, should, use as chaiUse } from "chai";
 import chaiAsPromised from "chai-as-promised";
 import sinon, { createSandbox } from "sinon";
@@ -13,6 +8,11 @@ import { MessagePostHook } from "#services/collections/message/hooks/message-pos
 import Messenger from "#services/messenger/messenger";
 import { MessengerReminder } from "#services/messenger/reminder/messenger-reminder";
 import { BlStorage } from "#services/storage/bl-storage";
+import { BlError } from "#shared/bl-error/bl-error";
+import { Message } from "#shared/message/message";
+import { MessageMethod } from "#shared/message/message-method/message-method";
+import { AccessToken } from "#shared/token/access-token";
+import { UserDetail } from "#shared/user/user-detail/user-detail";
 
 chaiUse(chaiAsPromised);
 should();

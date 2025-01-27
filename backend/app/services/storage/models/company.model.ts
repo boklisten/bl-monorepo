@@ -1,7 +1,7 @@
-import { Company } from "@shared/company/company.js";
 import { Schema } from "mongoose";
 
 import { BlModel } from "#services/storage/bl-storage";
+import { Company } from "#shared/company/company";
 
 export const CompanyModel: BlModel<Company> = {
   name: "companies",

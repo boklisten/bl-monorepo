@@ -1,11 +1,11 @@
 import { test } from "@japa/runner";
-import { BlError } from "@shared/bl-error/bl-error.js";
-import { UserPermission } from "@shared/permission/user-permission.js";
 import { use as chaiUse, should } from "chai";
 import chaiAsPromised from "chai-as-promised";
 
 import AccessTokenCreator from "#services/auth/token/access-token/access-token.creator";
 import RefreshTokenCreator from "#services/auth/token/refresh/refresh-token.creator";
+import { BlError } from "#shared/bl-error/bl-error";
+import { UserPermission } from "#shared/permission/user-permission";
 
 chaiUse(chaiAsPromised);
 should();

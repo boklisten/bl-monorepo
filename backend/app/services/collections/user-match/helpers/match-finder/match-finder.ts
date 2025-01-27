@@ -1,7 +1,3 @@
-import { BlError } from "@shared/bl-error/bl-error.js";
-import { CandidateStandMatch } from "@shared/match/stand-match.js";
-import { CandidateUserMatch } from "@shared/match/user-match.js";
-
 import { MatchableUser } from "#services/collections/user-match/helpers/match-finder/match-types";
 import {
   calculateItemImbalances,
@@ -17,6 +13,9 @@ import {
   updateItemImbalances,
 } from "#services/collections/user-match/helpers/match-finder/match-utils";
 import { logger } from "#services/config/logger";
+import { BlError } from "#shared/bl-error/bl-error";
+import { CandidateStandMatch } from "#shared/match/stand-match";
+import { CandidateUserMatch } from "#shared/match/user-match";
 
 /**
  * ****Some useful terms****

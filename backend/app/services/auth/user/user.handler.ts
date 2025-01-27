@@ -1,12 +1,11 @@
-import { BlError } from "@shared/bl-error/bl-error.js";
-import { UserDetail } from "@shared/user/user-detail/user-detail.js";
-
 import Blid from "#services/auth/blid";
 import LocalLoginHandler from "#services/auth/local/local-login.handler";
 import EmailValidationHelper from "#services/collections/email-validation/helpers/email-validation.helper";
 import { SEDbQuery } from "#services/query/se.db-query";
 import { BlStorage } from "#services/storage/bl-storage";
 import { User } from "#services/types/user";
+import { BlError } from "#shared/bl-error/bl-error";
+import { UserDetail } from "#shared/user/user-detail/user-detail";
 
 function getByUsername(username: string): Promise<User> {
   return new Promise((resolve, reject) => {

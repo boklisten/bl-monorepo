@@ -1,7 +1,3 @@
-import { BlError } from "@shared/bl-error/bl-error.js";
-import { BlapiResponse } from "@shared/blapi-response/blapi-response.js";
-import { StandMatch } from "@shared/match/stand-match.js";
-import { UserMatch } from "@shared/match/user-match.js";
 import { fromError } from "zod-validation-error";
 
 import { MatchFinder } from "#services/collections/user-match/helpers/match-finder/match-finder";
@@ -12,6 +8,10 @@ import {
 import { BlStorage } from "#services/storage/bl-storage";
 import { BlApiRequest } from "#services/types/bl-api-request";
 import { Operation } from "#services/types/operation";
+import { BlError } from "#shared/bl-error/bl-error";
+import { BlapiResponse } from "#shared/blapi-response/blapi-response";
+import { StandMatch } from "#shared/match/stand-match";
+import { UserMatch } from "#shared/match/user-match";
 
 export class MatchGenerateOperation implements Operation {
   async run(blApiRequest: BlApiRequest): Promise<BlapiResponse> {

@@ -1,11 +1,10 @@
-import { BlError } from "@shared/bl-error/bl-error.js";
-import { PasswordResetRequest } from "@shared/password-reset/password-reset-request.js";
-import { PendingPasswordReset } from "@shared/password-reset/pending-password-reset.js";
-
 import UserHandler from "#services/auth/user/user.handler";
 import BlCrypto from "#services/config/bl-crypto";
 import { Hook } from "#services/hook/hook";
 import Messenger from "#services/messenger/messenger";
+import { BlError } from "#shared/bl-error/bl-error";
+import { PasswordResetRequest } from "#shared/password-reset/password-reset-request";
+import { PendingPasswordReset } from "#shared/password-reset/pending-password-reset";
 
 export class PendingPasswordResetPostHook extends Hook {
   override async before(

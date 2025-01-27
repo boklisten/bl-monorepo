@@ -1,5 +1,3 @@
-import { BlError } from "@shared/bl-error/bl-error.js";
-import { AccessToken } from "@shared/token/access-token.js";
 import { z } from "zod";
 import { fromError } from "zod-validation-error";
 
@@ -9,6 +7,8 @@ import { OrderActive } from "#services/collections/order/helpers/order-active/or
 import { DeleteUserService } from "#services/collections/user-detail/helpers/delete-user-service";
 import { UserCanDeleteUserDetail } from "#services/collections/user-detail/helpers/user-can-delete-user-detail";
 import { Hook } from "#services/hook/hook";
+import { BlError } from "#shared/bl-error/bl-error";
+import { AccessToken } from "#shared/token/access-token";
 
 const UserDetailDeleteSpec = z.object({
   mergeInto: z.string().optional(),

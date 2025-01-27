@@ -1,12 +1,11 @@
-import { BlError } from "@shared/bl-error/bl-error.js";
-import { Message } from "@shared/message/message.js";
-import { AccessToken } from "@shared/token/access-token.js";
-
 import { PermissionService } from "#services/auth/permission.service";
 import { Hook } from "#services/hook/hook";
 import Messenger from "#services/messenger/messenger";
 import { MessengerReminder } from "#services/messenger/reminder/messenger-reminder";
 import { BlStorage } from "#services/storage/bl-storage";
+import { BlError } from "#shared/bl-error/bl-error";
+import { Message } from "#shared/message/message";
+import { AccessToken } from "#shared/token/access-token";
 
 export class MessagePostHook extends Hook {
   private readonly messengerReminder: MessengerReminder;

@@ -1,6 +1,4 @@
 import { test } from "@japa/runner";
-import { BlError } from "@shared/bl-error/bl-error.js";
-import { PasswordResetRequest } from "@shared/password-reset/password-reset-request.js";
 import { expect, use as chaiUse, should } from "chai";
 import chaiAsPromised from "chai-as-promised";
 import sinon, { createSandbox } from "sinon";
@@ -10,6 +8,8 @@ import { PendingPasswordResetPostHook } from "#services/collections/pending-pass
 import BlCrypto from "#services/config/bl-crypto";
 import Messenger from "#services/messenger/messenger";
 import { User } from "#services/types/user";
+import { BlError } from "#shared/bl-error/bl-error";
+import { PasswordResetRequest } from "#shared/password-reset/password-reset-request";
 
 chaiUse(chaiAsPromised);
 should();

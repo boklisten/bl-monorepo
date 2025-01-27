@@ -1,12 +1,12 @@
 import router from "@adonisjs/core/services/router";
-import { BlError } from "@shared/bl-error/bl-error.js";
-import { BlapiResponse } from "@shared/blapi-response/blapi-response.js";
 
 import RefreshTokenValidator from "#services/auth/token/refresh/refresh-token.validator";
 import TokenHandler from "#services/auth/token/token.handler";
 import { createPath } from "#services/config/api-path";
 import BlResponseHandler from "#services/response/bl-response.handler";
 import { RefreshToken } from "#services/types/refresh-token";
+import { BlError } from "#shared/bl-error/bl-error";
+import { BlapiResponse } from "#shared/blapi-response/blapi-response";
 
 function generateEndpoint() {
   router.post(createPath("token"), (ctx) => {

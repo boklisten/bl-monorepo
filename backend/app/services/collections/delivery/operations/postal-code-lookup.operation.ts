@@ -1,13 +1,13 @@
-import { BlError } from "@shared/bl-error/bl-error.js";
-import { BlapiResponse } from "@shared/blapi-response/blapi-response.js";
 import { z } from "zod";
 import { fromError } from "zod-validation-error";
 
-import { BlEnv } from "#services/config/env";
 import { isNullish } from "#services/helper/typescript-helpers";
 import HttpHandler from "#services/http/http.handler";
 import { BlApiRequest } from "#services/types/bl-api-request";
 import { Operation } from "#services/types/operation";
+import { BlError } from "#shared/bl-error/bl-error";
+import { BlapiResponse } from "#shared/blapi-response/blapi-response";
+import env from "#start/env";
 
 interface SimplifiedBringPostalCodeResponse {
   postal_codes?:
@@ -36,8 +36,8 @@ export class PostalCodeLookupOperation implements Operation {
       throw new BlError(fromError(parsedRequest.error).toString()).code(701);
     }
     const bringAuthHeaders = {
-      "X-MyBring-API-Key": BlEnv.BRING_API_KEY,
-      "X-MyBring-API-Uid": BlEnv.BRING_API_ID,
+      "X-MyBring-API-Key": env.get("BRING_API_KEY"),
+      "X-MyBring-API-Uid": env.get("BRING_API_ID"),
     };
     try {
       const response = (await HttpHandler.getWithQuery(

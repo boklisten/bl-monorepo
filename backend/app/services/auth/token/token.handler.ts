@@ -1,9 +1,8 @@
-import { BlError } from "@shared/bl-error/bl-error.js";
-
 import AccessTokenCreator from "#services/auth/token/access-token/access-token.creator";
 import RefreshTokenCreator from "#services/auth/token/refresh/refresh-token.creator";
 import UserHandler from "#services/auth/user/user.handler";
 import { User } from "#services/types/user";
+import { BlError } from "#shared/bl-error/bl-error";
 
 function createTokens(
   username: string,

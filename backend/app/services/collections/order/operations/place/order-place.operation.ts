@@ -1,13 +1,3 @@
-import { BlError } from "@shared/bl-error/bl-error.js";
-import { BlapiResponse } from "@shared/blapi-response/blapi-response.js";
-import { CustomerItem } from "@shared/customer-item/customer-item.js";
-import { StandMatch } from "@shared/match/stand-match.js";
-import { UserMatch } from "@shared/match/user-match.js";
-import { OrderItemType } from "@shared/order/order-item/order-item-type.js";
-import { OrderItem } from "@shared/order/order-item/order-item.js";
-import { Order } from "@shared/order/order.js";
-import { UserPermission } from "@shared/permission/user-permission.js";
-
 import { PermissionService } from "#services/auth/permission.service";
 import { OrderToCustomerItemGenerator } from "#services/collections/customer-item/helpers/order-to-customer-item-generator";
 import { OrderPlacedHandler } from "#services/collections/order/helpers/order-placed-handler/order-placed-handler";
@@ -17,6 +7,15 @@ import { SEDbQueryBuilder } from "#services/query/se.db-query-builder";
 import { BlStorage } from "#services/storage/bl-storage";
 import { BlApiRequest } from "#services/types/bl-api-request";
 import { Operation } from "#services/types/operation";
+import { BlError } from "#shared/bl-error/bl-error";
+import { BlapiResponse } from "#shared/blapi-response/blapi-response";
+import { CustomerItem } from "#shared/customer-item/customer-item";
+import { StandMatch } from "#shared/match/stand-match";
+import { UserMatch } from "#shared/match/user-match";
+import { Order } from "#shared/order/order";
+import { OrderItem } from "#shared/order/order-item/order-item";
+import { OrderItemType } from "#shared/order/order-item/order-item-type";
+import { UserPermission } from "#shared/permission/user-permission";
 
 export class OrderPlaceOperation implements Operation {
   private queryBuilder = new SEDbQueryBuilder();

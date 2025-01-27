@@ -1,6 +1,4 @@
 import { test } from "@japa/runner";
-import { BlError } from "@shared/bl-error/bl-error.js";
-import { UserDetail } from "@shared/user/user-detail/user-detail.js";
 import { expect, use as chaiUse, should } from "chai";
 import chaiAsPromised from "chai-as-promised";
 import sinon, { createSandbox } from "sinon";
@@ -11,6 +9,8 @@ import BlResponseHandler from "#services/response/bl-response.handler";
 import { BlStorage } from "#services/storage/bl-storage";
 import { LocalLogin } from "#services/types/local-login";
 import { User } from "#services/types/user";
+import { BlError } from "#shared/bl-error/bl-error";
+import { UserDetail } from "#shared/user/user-detail/user-detail";
 chaiUse(chaiAsPromised);
 should();
 

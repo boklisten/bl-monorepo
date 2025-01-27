@@ -1,8 +1,7 @@
-import { CustomerItem } from "@shared/customer-item/customer-item.js";
-
 import { CustomerItemActive } from "#services/collections/customer-item/helpers/customer-item-active";
 import { SEDbQueryBuilder } from "#services/query/se.db-query-builder";
 import { BlStorage } from "#services/storage/bl-storage";
+import { CustomerItem } from "#shared/customer-item/customer-item";
 
 export class CustomerItemActiveBlid {
   private customerItemActive = new CustomerItemActive();

@@ -1,8 +1,7 @@
-import { BlError } from "@shared/bl-error/bl-error.js";
-import { Order } from "@shared/order/order.js";
-
 import { isNullish } from "#services/helper/typescript-helpers";
 import { BlStorage } from "#services/storage/bl-storage";
+import { BlError } from "#shared/bl-error/bl-error";
+import { Order } from "#shared/order/order";
 
 interface OrderItemToUpdate {
   itemId: string;

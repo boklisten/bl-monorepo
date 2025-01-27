@@ -1,9 +1,9 @@
-import { BlError } from "@shared/bl-error/bl-error.js";
 import validator from "validator";
 
 import HashedPasswordGenerator from "#services/auth/local/hashed-password-generator";
 import ProviderIdGenerator from "#services/auth/local/provider-id-generator";
 import { LocalLogin } from "#services/types/local-login";
+import { BlError } from "#shared/bl-error/bl-error";
 
 function create(username: string, password: string): Promise<LocalLogin> {
   return new Promise((resolve, reject) => {

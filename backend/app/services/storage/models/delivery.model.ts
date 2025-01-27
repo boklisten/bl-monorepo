@@ -1,7 +1,7 @@
-import { Delivery } from "@shared/delivery/delivery.js";
 import { Schema } from "mongoose";
 
 import { BlModel } from "#services/storage/bl-storage";
+import { Delivery } from "#shared/delivery/delivery";
 
 export const DeliveryModel: BlModel<Delivery> = {
   name: "deliveries",

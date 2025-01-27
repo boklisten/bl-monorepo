@@ -1,7 +1,7 @@
-import { UniqueItem } from "@shared/unique-item/unique-item.js";
 import { Schema } from "mongoose";
 
 import { BlModel } from "#services/storage/bl-storage";
+import { UniqueItem } from "#shared/unique-item/unique-item";
 
 export const UniqueItemModel: BlModel<UniqueItem> = {
   name: "uniqueitems",

@@ -1,10 +1,9 @@
-import { BlError } from "@shared/bl-error/bl-error.js";
-import { BlapiResponse } from "@shared/blapi-response/blapi-response.js";
-
 import { isNullish } from "#services/helper/typescript-helpers";
 import { BlStorage } from "#services/storage/bl-storage";
 import { BlApiRequest } from "#services/types/bl-api-request";
 import { Operation } from "#services/types/operation";
+import { BlError } from "#shared/bl-error/bl-error";
+import { BlapiResponse } from "#shared/blapi-response/blapi-response";
 
 export class EmailValidationConfirmOperation implements Operation {
   async run(blApiRequest: BlApiRequest) {

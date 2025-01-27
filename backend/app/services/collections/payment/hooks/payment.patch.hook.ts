@@ -1,9 +1,8 @@
-import { BlError } from "@shared/bl-error/bl-error.js";
-import { Payment } from "@shared/payment/payment.js";
-
 import { PaymentDibsHandler } from "#services/collections/payment/helpers/dibs/payment-dibs-handler";
 import { PaymentValidator } from "#services/collections/payment/helpers/payment.validator";
 import { Hook } from "#services/hook/hook";
+import { BlError } from "#shared/bl-error/bl-error";
+import { Payment } from "#shared/payment/payment";
 
 export class PaymentPatchHook extends Hook {
   private paymentDibsHandler: PaymentDibsHandler;

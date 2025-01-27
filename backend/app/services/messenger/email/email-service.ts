@@ -1,7 +1,4 @@
 import { EmailHandler } from "@boklisten/bl-email";
-import { EmailOrder } from "@boklisten/bl-email/dist/ts/template/email-order.js";
-import { EmailSetting } from "@boklisten/bl-email/dist/ts/template/email-setting.js";
-import { EmailUser } from "@boklisten/bl-email/dist/ts/template/email-user.js";
 import {
   ItemList,
   MessageOptions,
@@ -10,23 +7,24 @@ import {
   Recipient,
 } from "@boklisten/bl-post-office";
 import sgMail from "@sendgrid/mail";
-import { BlError } from "@shared/bl-error/bl-error.js";
-import { CustomerItem } from "@shared/customer-item/customer-item.js";
-import { Delivery } from "@shared/delivery/delivery.js";
-import { Item } from "@shared/item/item.js";
-import { MessageMethod } from "@shared/message/message-method/message-method.js";
-import { Message } from "@shared/message/message.js";
-import { OrderItem } from "@shared/order/order-item/order-item.js";
-import { Order } from "@shared/order/order.js";
-import { UserDetail } from "@shared/user/user-detail/user-detail.js";
 
 import { DateService } from "#services/blc/date.service";
-import { BlEnv } from "#services/config/env";
 import { logger } from "#services/config/logger";
 import { EMAIL_SETTINGS } from "#services/messenger/email/email-settings";
 import { OrderEmailHandler } from "#services/messenger/email/order-email/order-email-handler";
 import { MessengerService } from "#services/messenger/messenger-service";
 import { BlStorage } from "#services/storage/bl-storage";
+import { EmailOrder, EmailSetting, EmailUser } from "#services/types/email";
+import { BlError } from "#shared/bl-error/bl-error";
+import { CustomerItem } from "#shared/customer-item/customer-item";
+import { Delivery } from "#shared/delivery/delivery";
+import { Item } from "#shared/item/item";
+import { Message } from "#shared/message/message";
+import { MessageMethod } from "#shared/message/message-method/message-method";
+import { Order } from "#shared/order/order";
+import { OrderItem } from "#shared/order/order-item/order-item";
+import { UserDetail } from "#shared/user/user-detail/user-detail";
+import env from "#start/env";
 
 export class EmailService implements MessengerService {
   private emailHandler: EmailHandler;
@@ -34,12 +32,12 @@ export class EmailService implements MessengerService {
   private postOffice: PostOffice;
 
   constructor(emailHandler?: EmailHandler, inputPostOffice?: PostOffice) {
-    sgMail.setApiKey(BlEnv.SENDGRID_API_KEY);
+    sgMail.setApiKey(env.get("SENDGRID_API_KEY"));
     this.emailHandler =
       emailHandler ??
       new EmailHandler({
         sendgrid: {
-          apiKey: BlEnv.SENDGRID_API_KEY,
+          apiKey: env.get("SENDGRID_API_KEY"),
         },
         locale: "nb",
       });
@@ -398,7 +396,7 @@ export class EmailService implements MessengerService {
       userId: customerDetail.id,
     };
 
-    let emailVerificationUri = BlEnv.CLIENT_URI;
+    let emailVerificationUri = env.get("CLIENT_URI");
     emailVerificationUri +=
       EMAIL_SETTINGS.types.emailConfirmation.path + confirmationCode;
 
@@ -424,7 +422,7 @@ export class EmailService implements MessengerService {
       userId: userId,
     };
 
-    let passwordResetUri = BlEnv.CLIENT_URI;
+    let passwordResetUri = env.get("CLIENT_URI");
     passwordResetUri +=
       EMAIL_SETTINGS.types.passwordReset.path +
       pendingPasswordResetId +

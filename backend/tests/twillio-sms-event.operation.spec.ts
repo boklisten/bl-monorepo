@@ -1,11 +1,11 @@
 import { test } from "@japa/runner";
-import { Message } from "@shared/message/message.js";
 import { expect, use as chaiUse, should } from "chai";
 import chaiAsPromised from "chai-as-promised";
 import sinon, { createSandbox } from "sinon";
 
 import { TwilioSmsEventOperation } from "#services/collections/message/operations/twillio-sms-event.operation";
 import { BlStorage } from "#services/storage/bl-storage";
+import { Message } from "#shared/message/message";
 
 chaiUse(chaiAsPromised);
 should();

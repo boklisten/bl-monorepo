@@ -1,9 +1,8 @@
-import { BlError } from "@shared/bl-error/bl-error.js";
-import { OrderItem } from "@shared/order/order-item/order-item.js";
-import { Order } from "@shared/order/order.js";
-
 import { SEDbQueryBuilder } from "#services/query/se.db-query-builder";
 import { BlStorage } from "#services/storage/bl-storage";
+import { BlError } from "#shared/bl-error/bl-error";
+import { Order } from "#shared/order/order";
+import { OrderItem } from "#shared/order/order-item/order-item";
 
 export class OrderActive {
   private queryBuilder = new SEDbQueryBuilder();

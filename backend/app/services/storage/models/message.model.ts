@@ -1,7 +1,7 @@
-import { Message } from "@shared/message/message.js";
 import { Schema } from "mongoose";
 
 import { BlModel } from "#services/storage/bl-storage";
+import { Message } from "#shared/message/message";
 
 export const MessageModel: BlModel<Message> = {
   name: "messages",

@@ -4,16 +4,8 @@
     "resolveJsonModule": true,
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
-    "rootDir": "./",
-    "paths": {
-      "@shared/*": ["shared/src/*"]
-    }
+    "rootDir": "./"
   },
-  "include": ["."],
-  "exclude": ["node_modules", "build"],
-  "references": [
-    {
-      "path": "../shared"
-    }
-  ]
+  "include": [".", "./**/*.json"],
+  "exclude": ["node_modules", "build", "shared/dist"]
 }

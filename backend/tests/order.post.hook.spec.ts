@@ -1,7 +1,4 @@
 import { test } from "@japa/runner";
-import { BlError } from "@shared/bl-error/bl-error.js";
-import { Order } from "@shared/order/order.js";
-import { AccessToken } from "@shared/token/access-token.js";
 import { expect, use as chaiUse, should } from "chai";
 import chaiAsPromised from "chai-as-promised";
 import sinon, { createSandbox } from "sinon";
@@ -11,6 +8,9 @@ import { OrderHookBefore } from "#services/collections/order/hooks/order-hook-be
 import { OrderPostHook } from "#services/collections/order/hooks/order.post.hook";
 import { UserDetailHelper } from "#services/collections/user-detail/helpers/user-detail.helper";
 import { BlStorage } from "#services/storage/bl-storage";
+import { BlError } from "#shared/bl-error/bl-error";
+import { Order } from "#shared/order/order";
+import { AccessToken } from "#shared/token/access-token";
 
 chaiUse(chaiAsPromised);
 should();

@@ -1,6 +1,7 @@
-import { BlDocument } from "@shared/bl-document/bl-document.js";
-import { AccessToken } from "@shared/token/access-token.js";
 import { ParsedQs } from "qs";
+
+import { BlDocument } from "#shared/bl-document/bl-document";
+import { AccessToken } from "#shared/token/access-token";
 
 export class Hook {
   public before(

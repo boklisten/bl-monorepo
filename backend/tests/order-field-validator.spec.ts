@@ -1,10 +1,10 @@
 import { test } from "@japa/runner";
-import { BlError } from "@shared/bl-error/bl-error.js";
-import { Order } from "@shared/order/order.js";
 import { expect, use as chaiUse, should } from "chai";
 import chaiAsPromised from "chai-as-promised";
 
 import { OrderFieldValidator } from "#services/collections/order/helpers/order-validator/order-field-validator/order-field-validator";
+import { BlError } from "#shared/bl-error/bl-error";
+import { Order } from "#shared/order/order";
 
 chaiUse(chaiAsPromised);
 should();

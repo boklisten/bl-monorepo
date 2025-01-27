@@ -1,9 +1,9 @@
-import { BlError } from "@shared/bl-error/bl-error.js";
 import jwt from "jsonwebtoken";
 import validator from "validator";
 
 import { APP_CONFIG } from "#services/config/application-config";
-import { BlEnv } from "#services/config/env";
+import { BlError } from "#shared/bl-error/bl-error";
+import env from "#start/env";
 
 function createPayload(username: string, userid: string) {
   return {
@@ -32,7 +32,7 @@ function create(username: string, userid: string): Promise<string> {
 
     jwt.sign(
       createPayload(username, userid),
-      BlEnv.REFRESH_TOKEN_SECRET,
+      env.get("REFRESH_TOKEN_SECRET"),
       { expiresIn: APP_CONFIG.token.refresh.expiresIn },
       (error, refreshToken) => {
         if (error || refreshToken === undefined)

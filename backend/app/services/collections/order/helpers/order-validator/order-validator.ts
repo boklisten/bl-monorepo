@@ -1,11 +1,10 @@
-import { BlError } from "@shared/bl-error/bl-error.js";
-import { Order } from "@shared/order/order.js";
-
 import { OrderFieldValidator } from "#services/collections/order/helpers/order-validator/order-field-validator/order-field-validator";
 import { OrderItemValidator } from "#services/collections/order/helpers/order-validator/order-item-validator/order-item-validator";
 import { OrderPlacedValidator } from "#services/collections/order/helpers/order-validator/order-placed-validator/order-placed-validator";
 import { OrderUserDetailValidator } from "#services/collections/order/helpers/order-validator/order-user-detail-validator/order-user-detail-validator";
 import { BlStorage } from "#services/storage/bl-storage";
+import { BlError } from "#shared/bl-error/bl-error";
+import { Order } from "#shared/order/order";
 
 export class OrderValidator {
   private orderPlacedValidator: OrderPlacedValidator;

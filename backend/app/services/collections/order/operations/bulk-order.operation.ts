@@ -1,11 +1,11 @@
-import { BlError } from "@shared/bl-error/bl-error.js";
-import { BlapiResponse } from "@shared/blapi-response/blapi-response.js";
-import { Order } from "@shared/order/order.js";
 import { ObjectId } from "mongodb";
 
 import { OrderValidator } from "#services/collections/order/helpers/order-validator/order-validator";
 import { BlStorage } from "#services/storage/bl-storage";
 import { Operation } from "#services/types/operation";
+import { BlError } from "#shared/bl-error/bl-error";
+import { BlapiResponse } from "#shared/blapi-response/blapi-response";
+import { Order } from "#shared/order/order";
 
 // fixme: rewrite and generalize this for use in the future
 export class BulkOrderOperation implements Operation {

@@ -1,5 +1,4 @@
 import { test } from "@japa/runner";
-import { BlError } from "@shared/bl-error/bl-error.js";
 import { expect, should, use as chaiUse } from "chai";
 import chaiAsPromised from "chai-as-promised";
 import sinon, { createSandbox } from "sinon";
@@ -8,6 +7,7 @@ import LocalLoginHandler from "#services/auth/local/local-login.handler";
 import { SEDbQuery } from "#services/query/se.db-query";
 import { BlStorage } from "#services/storage/bl-storage";
 import { LocalLogin } from "#services/types/local-login";
+import { BlError } from "#shared/bl-error/bl-error";
 
 chaiUse(chaiAsPromised);
 should();

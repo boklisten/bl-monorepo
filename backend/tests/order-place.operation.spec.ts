@@ -1,9 +1,4 @@
 import { test } from "@japa/runner";
-import { BlError } from "@shared/bl-error/bl-error.js";
-import { BlapiResponse } from "@shared/blapi-response/blapi-response.js";
-import { Order } from "@shared/order/order.js";
-import { SIGNATURE_NUM_MONTHS_VALID } from "@shared/signature/serialized-signature.js";
-import { UserDetail } from "@shared/user/user-detail/user-detail.js";
 import { expect, use as chaiUse, should } from "chai";
 import chaiAsPromised from "chai-as-promised";
 import moment from "moment-timezone";
@@ -16,6 +11,11 @@ import { OrderPlaceOperation } from "#services/collections/order/operations/plac
 import BlResponseHandler from "#services/response/bl-response.handler";
 import { BlStorage } from "#services/storage/bl-storage";
 import { Signature } from "#services/storage/models/signature.model";
+import { BlError } from "#shared/bl-error/bl-error";
+import { BlapiResponse } from "#shared/blapi-response/blapi-response";
+import { Order } from "#shared/order/order";
+import { SIGNATURE_NUM_MONTHS_VALID } from "#shared/signature/serialized-signature";
+import { UserDetail } from "#shared/user/user-detail/user-detail";
 
 chaiUse(chaiAsPromised);
 should();

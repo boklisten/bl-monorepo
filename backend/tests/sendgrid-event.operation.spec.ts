@@ -1,11 +1,11 @@
 import { test } from "@japa/runner";
-import { Message } from "@shared/message/message.js";
 import { expect, use as chaiUse, should } from "chai";
 import chaiAsPromised from "chai-as-promised";
 import sinon, { createSandbox } from "sinon";
 
 import { SendgridEventOperation } from "#services/collections/message/operations/sendgrid-event.operation";
 import { BlStorage } from "#services/storage/bl-storage";
+import { Message } from "#shared/message/message";
 
 chaiUse(chaiAsPromised);
 should();

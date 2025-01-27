@@ -3,12 +3,12 @@
   "compilerOptions": {
     "paths": {
       "@/*": ["frontend/src/*"],
-      "@shared/*": ["shared/src/*"]
+      "@shared/*": ["backend/shared/dist/src/*"]
     }
   },
   "references": [
     {
-      "path": "../shared"
+      "path": "../backend/shared"
     }
   ],
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],

@@ -1,9 +1,9 @@
 import { test } from "@japa/runner";
-import { BlError } from "@shared/bl-error/bl-error.js";
 import { use as chaiUse, should } from "chai";
 import chaiAsPromised from "chai-as-promised";
 
 import ProviderIdGenerator from "#services/auth/local/provider-id-generator";
+import { BlError } from "#shared/bl-error/bl-error";
 
 chaiUse(chaiAsPromised);
 should();

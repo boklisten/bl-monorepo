@@ -1,5 +1,4 @@
 import { test } from "@japa/runner";
-import { BlError } from "@shared/bl-error/bl-error.js";
 import { expect, use as chaiUse, should } from "chai";
 import chaiAsPromised from "chai-as-promised";
 import sinon, { createSandbox } from "sinon";
@@ -7,6 +6,7 @@ import sinon, { createSandbox } from "sinon";
 import { EmailValidation } from "#services/collections/email-validation/email-validation";
 import EmailValidationHelper from "#services/collections/email-validation/helpers/email-validation.helper";
 import { EmailValidationPostHook } from "#services/collections/email-validation/hooks/email-validation-post.hook";
+import { BlError } from "#shared/bl-error/bl-error";
 
 chaiUse(chaiAsPromised);
 should();

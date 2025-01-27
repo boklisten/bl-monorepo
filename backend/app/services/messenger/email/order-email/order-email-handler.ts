@@ -1,25 +1,23 @@
 import { EmailHandler, EmailLog } from "@boklisten/bl-email";
-import { EmailOrder } from "@boklisten/bl-email/dist/ts/template/email-order.js";
-import { EmailSetting } from "@boklisten/bl-email/dist/ts/template/email-setting.js";
-import { EmailUser } from "@boklisten/bl-email/dist/ts/template/email-user.js";
-import { BlError } from "@shared/bl-error/bl-error.js";
-import { Branch } from "@shared/branch/branch.js";
-import { Delivery } from "@shared/delivery/delivery.js";
-import { OrderItemType } from "@shared/order/order-item/order-item-type.js";
-import { OrderItem } from "@shared/order/order-item/order-item.js";
-import { Order } from "@shared/order/order.js";
-import { Payment } from "@shared/payment/payment.js";
-import { UserDetail } from "@shared/user/user-detail/user-detail.js";
 import moment from "moment-timezone";
 
 import { DateService } from "#services/blc/date.service";
 import { userHasValidSignature } from "#services/collections/signature/helpers/signature.helper";
-import { BlEnv } from "#services/config/env";
 import { sendMail } from "#services/messenger/email/email-service";
 import { EMAIL_SETTINGS } from "#services/messenger/email/email-settings";
 import { sendSMS } from "#services/messenger/sms/sms-service";
 import { DibsEasyPayment } from "#services/payment/dibs/dibs-easy-payment/dibs-easy-payment";
 import { BlStorage } from "#services/storage/bl-storage";
+import { EmailOrder, EmailSetting, EmailUser } from "#services/types/email";
+import { BlError } from "#shared/bl-error/bl-error";
+import { Branch } from "#shared/branch/branch";
+import { Delivery } from "#shared/delivery/delivery";
+import { Order } from "#shared/order/order";
+import { OrderItem } from "#shared/order/order-item/order-item";
+import { OrderItemType } from "#shared/order/order-item/order-item-type";
+import { Payment } from "#shared/payment/payment";
+import { UserDetail } from "#shared/user/user-detail/user-detail";
+import env from "#start/env";
 
 export class OrderEmailHandler {
   private defaultCurrency = "NOK";
@@ -148,7 +146,7 @@ export class OrderEmailHandler {
         emailSetting,
         EMAIL_SETTINGS.types.guardianSignature.templateId,
         {
-          guardianSignatureUri: `${BlEnv.CLIENT_URI}${EMAIL_SETTINGS.types.guardianSignature.path}${customerDetail.id}`,
+          guardianSignatureUri: `${env.get("CLIENT_URI")}${EMAIL_SETTINGS.types.guardianSignature.path}${customerDetail.id}`,
           customerName: customerDetail.name,
           guardianName: customerDetail.guardian.name,
           branchName: branchName,

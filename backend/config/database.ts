@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 
-import { BlEnv } from "#services/config/env";
 import { logger } from "#services/config/logger";
+import env from "#start/env";
 
 export default async function configureMongoose() {
   mongoose.connection.on("disconnected", () => {
@@ -16,7 +16,7 @@ export default async function configureMongoose() {
     logger.error("mongoose connection has error");
   });
 
-  await mongoose.connect(BlEnv.MONGODB_URI, {
+  await mongoose.connect(env.get("MONGODB_URI"), {
     maxPoolSize: 10,
     connectTimeoutMS: 10_000,
     socketTimeoutMS: 45_000,

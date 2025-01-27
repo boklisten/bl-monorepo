@@ -1,11 +1,11 @@
-import { BlapiResponse } from "@shared/blapi-response/blapi-response.js";
-import { UserMatch } from "@shared/match/user-match.js";
 import { ObjectId } from "mongodb";
 
 import { addDetailsToUserMatches } from "#services/collections/user-match/operations/user-match-getall-me-operation-helper";
 import { BlStorage } from "#services/storage/bl-storage";
 import { BlApiRequest } from "#services/types/bl-api-request";
 import { Operation } from "#services/types/operation";
+import { BlapiResponse } from "#shared/blapi-response/blapi-response";
+import { UserMatch } from "#shared/match/user-match";
 
 export class GetMyUserMatchesOperation implements Operation {
   async run(blApiRequest: BlApiRequest): Promise<BlapiResponse> {

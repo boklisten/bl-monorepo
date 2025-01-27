@@ -1,12 +1,11 @@
-import { BlError } from "@shared/bl-error/bl-error.js";
-import { Order } from "@shared/order/order.js";
-import { AccessToken } from "@shared/token/access-token.js";
-
 import { PermissionService } from "#services/auth/permission.service";
 import { OrderPlacedHandler } from "#services/collections/order/helpers/order-placed-handler/order-placed-handler";
 import { OrderValidator } from "#services/collections/order/helpers/order-validator/order-validator";
 import { Hook } from "#services/hook/hook";
 import { BlStorage } from "#services/storage/bl-storage";
+import { BlError } from "#shared/bl-error/bl-error";
+import { Order } from "#shared/order/order";
+import { AccessToken } from "#shared/token/access-token";
 
 export class OrderPatchHook extends Hook {
   private orderValidator: OrderValidator;

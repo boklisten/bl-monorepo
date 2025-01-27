@@ -1,6 +1,3 @@
-import { BlDocument } from "@shared/bl-document/bl-document.js";
-import { BlError } from "@shared/bl-error/bl-error.js";
-import { AccessToken } from "@shared/token/access-token.js";
 import { ParsedQs } from "qs";
 
 import CollectionEndpointDocumentAuth from "#services/collection-endpoint/collection-endpoint-document-auth";
@@ -11,6 +8,9 @@ import { SEDbQueryBuilder } from "#services/query/se.db-query-builder";
 import { BlStorageData, BlStorageHandler } from "#services/storage/bl-storage";
 import { BlApiRequest } from "#services/types/bl-api-request";
 import { BlCollection, BlEndpoint } from "#services/types/bl-collection";
+import { BlDocument } from "#shared/bl-document/bl-document";
+import { BlError } from "#shared/bl-error/bl-error";
+import { AccessToken } from "#shared/token/access-token";
 
 function onGetAll(collection: BlCollection, endpoint: BlEndpoint) {
   return async function onRequest(blApiRequest: BlApiRequest) {

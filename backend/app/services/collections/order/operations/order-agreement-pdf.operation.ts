@@ -1,9 +1,8 @@
-import { BlapiResponse } from "@shared/blapi-response/blapi-response.js";
-
 import Messenger from "#services/messenger/messenger";
 import { BlStorage } from "#services/storage/bl-storage";
 import { BlApiRequest } from "#services/types/bl-api-request";
 import { Operation } from "#services/types/operation";
+import { BlapiResponse } from "#shared/blapi-response/blapi-response";
 
 export class OrderAgreementPdfOperation implements Operation {
   async run(blApiRequest: BlApiRequest) {

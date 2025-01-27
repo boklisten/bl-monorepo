@@ -1,9 +1,8 @@
-import { BlError } from "@shared/bl-error/bl-error.js";
-import { UserDetail } from "@shared/user/user-detail/user-detail.js";
-
 import { EmailValidation } from "#services/collections/email-validation/email-validation";
 import Messenger from "#services/messenger/messenger";
 import { BlStorage } from "#services/storage/bl-storage";
+import { BlError } from "#shared/bl-error/bl-error";
+import { UserDetail } from "#shared/user/user-detail/user-detail";
 
 function createAndSendEmailValidationLink(userDetailId: string): Promise<void> {
   return new Promise((resolve, reject) => {

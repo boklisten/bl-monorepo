@@ -1,7 +1,4 @@
 import { test } from "@japa/runner";
-import { BlError } from "@shared/bl-error/bl-error.js";
-import { Branch } from "@shared/branch/branch.js";
-import { OpeningHour } from "@shared/opening-hour/opening-hour.js";
 import { use as chaiUse, should } from "chai";
 import chaiAsPromised from "chai-as-promised";
 import moment from "moment-timezone";
@@ -10,6 +7,9 @@ import sinonChai from "sinon-chai";
 
 import { OpeningHourHelper } from "#services/collections/opening-hour/helpers/opening-hour-helper";
 import { BlStorage } from "#services/storage/bl-storage";
+import { BlError } from "#shared/bl-error/bl-error";
+import { Branch } from "#shared/branch/branch";
+import { OpeningHour } from "#shared/opening-hour/opening-hour";
 
 chaiUse(chaiAsPromised);
 should();

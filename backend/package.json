@@ -4,13 +4,14 @@
   "license": "UNLICENSED",
   "type": "module",
   "scripts": {
-    "ace": "tsx --env-file=.env ace",
-    "dev": "tsx watch --env-file=.env bin/server.ts",
-    "test": "API_ENV=test tsx bin/test.ts",
-    "build": "tsx ace build --ignore-ts-errors",
+    "ace": "node ace",
+    "start": "node build/bin/server.js",
+    "build": "node ace build",
     "build:sentry": "pnpm build && pnpm run sentry:sourcemaps",
-    "serve": "tsx --env-file=.env ./build/bin/server.js",
-    "sentry:sourcemaps": "sentry-cli sourcemaps inject --org boklisten --project backend ./build && sentry-cli sourcemaps upload --org boklisten --project backend ./build"
+    "dev": "node ace serve --watch",
+    "test": "node ace test",
+    "sentry:sourcemaps": "sentry-cli sourcemaps inject --org boklisten --project backend ./build && sentry-cli sourcemaps upload --org boklisten --project backend ./build",
+    "compile:shared": "pnpm exec tsc shared/**/*.ts"
   },
   "imports": {
     "#controllers/*": "./app/controllers/*.js",
@@ -28,7 +29,8 @@
     "#database/*": "./database/*.js",
     "#start/*": "./start/*.js",
     "#tests/*": "./tests/*.js",
-    "#config/*": "./config/*.js"
+    "#config/*": "./config/*.js",
+    "#shared/*": "./shared/src/*.js"
   },
   "dependencies": {
     "@adonisjs/ally": "^5.0.2",
@@ -70,6 +72,7 @@
     "@japa/assert": "^4.0.1",
     "@japa/plugin-adonisjs": "^4.0.0",
     "@japa/runner": "^4.1.0",
+    "@swc/core": "^1.10.9",
     "@types/chai": "^5.0.1",
     "@types/chai-as-promised": "^8.0.1",
     "@types/cors": "^2.8.17",
@@ -90,6 +93,6 @@
     "pino-pretty": "^13.0.0",
     "sinon": "^19.0.2",
     "sinon-chai": "^4.0.0",
-    "tsx": "^4.19.2"
+    "ts-node-maintained": "^10.9.5"
   }
 }

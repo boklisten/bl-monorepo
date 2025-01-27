@@ -1,9 +1,8 @@
-import { BlError } from "@shared/bl-error/bl-error.js";
-import { CustomerItem } from "@shared/customer-item/customer-item.js";
-
 import { CustomerItemActive } from "#services/collections/customer-item/helpers/customer-item-active";
 import { SEDbQueryBuilder } from "#services/query/se.db-query-builder";
 import { BlStorage } from "#services/storage/bl-storage";
+import { BlError } from "#shared/bl-error/bl-error";
+import { CustomerItem } from "#shared/customer-item/customer-item";
 
 export class CustomerHaveActiveCustomerItems {
   private queryBuilder = new SEDbQueryBuilder();

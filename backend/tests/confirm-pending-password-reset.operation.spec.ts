@@ -1,6 +1,4 @@
 import { test } from "@japa/runner";
-import { BlError } from "@shared/bl-error/bl-error.js";
-import { PendingPasswordReset } from "@shared/password-reset/pending-password-reset.js";
 import { expect, use as chaiUse, should } from "chai";
 import chaiAsPromised from "chai-as-promised";
 import sinon, { createSandbox } from "sinon";
@@ -10,6 +8,8 @@ import { ConfirmPendingPasswordResetOperation } from "#services/collections/pend
 import BlCrypto from "#services/config/bl-crypto";
 import { BlStorage } from "#services/storage/bl-storage";
 import { BlApiRequest } from "#services/types/bl-api-request";
+import { BlError } from "#shared/bl-error/bl-error";
+import { PendingPasswordReset } from "#shared/password-reset/pending-password-reset";
 
 chaiUse(chaiAsPromised);
 should();

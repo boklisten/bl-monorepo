@@ -1,6 +1,6 @@
 import crypto from "node:crypto";
 
-import { BlError } from "@shared/bl-error/bl-error.js";
+import { BlError } from "#shared/bl-error/bl-error";
 
 function cipher(message: string): Promise<string> {
   return new Promise((resolve, reject) => {

@@ -1,10 +1,9 @@
-import { BlError } from "@shared/bl-error/bl-error.js";
-import { Delivery } from "@shared/delivery/delivery.js";
-import { Order } from "@shared/order/order.js";
-import { Payment } from "@shared/payment/payment.js";
-
 import { isNullish } from "#services/helper/typescript-helpers";
 import { BlStorage } from "#services/storage/bl-storage";
+import { BlError } from "#shared/bl-error/bl-error";
+import { Delivery } from "#shared/delivery/delivery";
+import { Order } from "#shared/order/order";
+import { Payment } from "#shared/payment/payment";
 
 export class OrderPlacedValidator {
   public validate(order: Order): Promise<boolean> {

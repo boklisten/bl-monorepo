@@ -1,10 +1,10 @@
 import { test } from "@japa/runner";
-import { BlError } from "@shared/bl-error/bl-error.js";
 import { use as chaiUse, should } from "chai";
 import chaiAsPromised from "chai-as-promised";
 
 import LocalLoginCreator from "#services/auth/local/local-login-creator";
 import { LocalLogin } from "#services/types/local-login";
+import { BlError } from "#shared/bl-error/bl-error";
 
 chaiUse(chaiAsPromised);
 should();

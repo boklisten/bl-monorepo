@@ -1,11 +1,11 @@
 import { HttpContext } from "@adonisjs/core/http";
-import { BlError } from "@shared/bl-error/bl-error.js";
-import { AccessToken } from "@shared/token/access-token.js";
 import passport from "passport";
 
 import { PermissionService } from "#services/auth/permission.service";
 import { isNotNullish } from "#services/helper/typescript-helpers";
 import { BlEndpointRestriction } from "#services/types/bl-collection";
+import { BlError } from "#shared/bl-error/bl-error";
+import { AccessToken } from "#shared/token/access-token";
 
 function validateAuth(
   restriction: BlEndpointRestriction | undefined,

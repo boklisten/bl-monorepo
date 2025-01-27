@@ -1,8 +1,7 @@
-import { BlError } from "@shared/bl-error/bl-error.js";
-import { Order } from "@shared/order/order.js";
-import { UserDetail } from "@shared/user/user-detail/user-detail.js";
-
 import { BlStorage } from "#services/storage/bl-storage";
+import { BlError } from "#shared/bl-error/bl-error";
+import { Order } from "#shared/order/order";
+import { UserDetail } from "#shared/user/user-detail/user-detail";
 
 export class OrderUserDetailValidator {
   public validate(order: Order): Promise<boolean> {

@@ -1,12 +1,12 @@
-import { BlapiResponse } from "@shared/blapi-response/blapi-response.js";
-import { StandMatchWithDetails } from "@shared/match/match-dtos.js";
-import { StandMatch } from "@shared/match/stand-match.js";
 import { ObjectId } from "mongodb";
 
 import { mapItemIdsToItemDetails } from "#services/collections/user-match/operations/user-match-getall-me-operation-helper";
 import { BlStorage } from "#services/storage/bl-storage";
 import { BlApiRequest } from "#services/types/bl-api-request";
 import { Operation } from "#services/types/operation";
+import { BlapiResponse } from "#shared/blapi-response/blapi-response";
+import { StandMatchWithDetails } from "#shared/match/match-dtos";
+import { StandMatch } from "#shared/match/stand-match";
 
 export class GetMyStandMatchesOperation implements Operation {
   private async addDetailsToStandMatch(

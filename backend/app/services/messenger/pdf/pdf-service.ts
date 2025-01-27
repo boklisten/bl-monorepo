@@ -1,13 +1,11 @@
 import { EmailAttachment, EmailHandler, PdfHandler } from "@boklisten/bl-email";
-import { EmailOrder } from "@boklisten/bl-email/dist/ts/template/email-order.js";
-import { EmailSetting } from "@boklisten/bl-email/dist/ts/template/email-setting.js";
-import { EmailUser } from "@boklisten/bl-email/dist/ts/template/email-user.js";
-import { Order } from "@shared/order/order.js";
-import { UserDetail } from "@shared/user/user-detail/user-detail.js";
 import moment from "moment";
 
 import { isNotNullish } from "#services/helper/typescript-helpers";
 import { OrderEmailHandler } from "#services/messenger/email/order-email/order-email-handler";
+import { EmailOrder, EmailSetting, EmailUser } from "#services/types/email";
+import { Order } from "#shared/order/order";
+import { UserDetail } from "#shared/user/user-detail/user-detail";
 
 export class PdfService {
   private pdfHandler: PdfHandler;

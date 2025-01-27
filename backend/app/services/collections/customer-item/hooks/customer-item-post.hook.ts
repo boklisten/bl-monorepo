@@ -1,13 +1,12 @@
-import { BlError } from "@shared/bl-error/bl-error.js";
-import { CustomerItem } from "@shared/customer-item/customer-item.js";
-import { Order } from "@shared/order/order.js";
-import { AccessToken } from "@shared/token/access-token.js";
-import { UserDetail } from "@shared/user/user-detail/user-detail.js";
-
 import { CustomerItemValidator } from "#services/collections/customer-item/validators/customer-item-validator";
 import { UserDetailHelper } from "#services/collections/user-detail/helpers/user-detail.helper";
 import { Hook } from "#services/hook/hook";
 import { BlStorage } from "#services/storage/bl-storage";
+import { BlError } from "#shared/bl-error/bl-error";
+import { CustomerItem } from "#shared/customer-item/customer-item";
+import { Order } from "#shared/order/order";
+import { AccessToken } from "#shared/token/access-token";
+import { UserDetail } from "#shared/user/user-detail/user-detail";
 
 export class CustomerItemPostHook extends Hook {
   private customerItemValidator: CustomerItemValidator;

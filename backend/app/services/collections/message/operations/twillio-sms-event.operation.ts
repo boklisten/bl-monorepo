@@ -1,11 +1,10 @@
-import { BlError } from "@shared/bl-error/bl-error.js";
-import { BlapiResponse } from "@shared/blapi-response/blapi-response.js";
-import { Message } from "@shared/message/message.js";
-
 import { logger } from "#services/config/logger";
 import { BlStorage } from "#services/storage/bl-storage";
 import { BlApiRequest } from "#services/types/bl-api-request";
 import { Operation } from "#services/types/operation";
+import { BlError } from "#shared/bl-error/bl-error";
+import { BlapiResponse } from "#shared/blapi-response/blapi-response";
+import { Message } from "#shared/message/message";
 
 export class TwilioSmsEventOperation implements Operation {
   public async run(blApiRequest: BlApiRequest): Promise<BlapiResponse> {

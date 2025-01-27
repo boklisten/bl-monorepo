@@ -1,18 +1,18 @@
 import { defineConfig, services } from "@adonisjs/ally";
 
 import { createPath } from "#services/config/api-path";
-import { BlEnv } from "#services/config/env";
+import env from "#start/env";
 
 const allyConfig = defineConfig({
   facebook: services.facebook({
-    clientId: BlEnv.FACEBOOK_CLIENT_ID,
-    clientSecret: BlEnv.FACEBOOK_SECRET,
-    callbackUrl: BlEnv.BL_API_URI + createPath("auth/facebook/callback"),
+    clientId: env.get("FACEBOOK_CLIENT_ID"),
+    clientSecret: env.get("FACEBOOK_SECRET"),
+    callbackUrl: env.get("BL_API_URI") + createPath("auth/facebook/callback"),
   }),
   google: services.google({
-    clientId: BlEnv.GOOGLE_CLIENT_ID,
-    clientSecret: BlEnv.GOOGLE_SECRET,
-    callbackUrl: BlEnv.BL_API_URI + createPath("auth/google/callback"),
+    clientId: env.get("GOOGLE_CLIENT_ID"),
+    clientSecret: env.get("GOOGLE_SECRET"),
+    callbackUrl: env.get("BL_API_URI") + createPath("auth/google/callback"),
   }),
 });
 export default allyConfig;

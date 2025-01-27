@@ -1,5 +1,4 @@
 import { test } from "@japa/runner";
-import { BlError } from "@shared/bl-error/bl-error.js";
 import { expect, use as chaiUse, should } from "chai";
 import chaiAsPromised from "chai-as-promised";
 import sinon, { createSandbox } from "sinon";
@@ -8,6 +7,7 @@ import { OrderPlacedHandler } from "#services/collections/order/helpers/order-pl
 import { OrderConfirmOperation } from "#services/collections/order/operations/confirm/order-confirm.operation";
 import BlResponseHandler from "#services/response/bl-response.handler";
 import { BlStorage } from "#services/storage/bl-storage";
+import { BlError } from "#shared/bl-error/bl-error";
 chaiUse(chaiAsPromised);
 should();
 

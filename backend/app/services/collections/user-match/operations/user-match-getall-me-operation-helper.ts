@@ -1,15 +1,14 @@
-import { BlError } from "@shared/bl-error/bl-error.js";
-import { Item } from "@shared/item/item.js";
+import { SEDbQuery } from "#services/query/se.db-query";
+import { BlStorage } from "#services/storage/bl-storage";
+import { BlError } from "#shared/bl-error/bl-error";
+import { Item } from "#shared/item/item";
 import {
   MatchRelevantItemDetails,
   MatchRelevantUserDetails,
   UserMatchWithDetails,
-} from "@shared/match/match-dtos.js";
-import { UserMatch } from "@shared/match/user-match.js";
-import { UserDetail } from "@shared/user/user-detail/user-detail.js";
-
-import { SEDbQuery } from "#services/query/se.db-query";
-import { BlStorage } from "#services/storage/bl-storage";
+} from "#shared/match/match-dtos";
+import { UserMatch } from "#shared/match/user-match";
+import { UserDetail } from "#shared/user/user-detail/user-detail";
 
 function selectMatchRelevantUserDetails(
   userDetail?: UserDetail,

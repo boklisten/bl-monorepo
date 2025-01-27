@@ -1,16 +1,15 @@
-import { BlError } from "@shared/bl-error/bl-error.js";
-import { Delivery } from "@shared/delivery/delivery.js";
-import { OrderItem } from "@shared/order/order-item/order-item.js";
-import { Order } from "@shared/order/order.js";
-import { UserDetail } from "@shared/user/user-detail/user-detail.js";
-
 import { UserDetailHelper } from "#services/collections/user-detail/helpers/user-detail.helper";
 import { APP_CONFIG } from "#services/config/application-config";
-import { BlEnv } from "#services/config/env";
 import HttpHandler from "#services/http/http.handler";
 import { DibsEasyOrder } from "#services/payment/dibs/dibs-easy-order";
 import { DibsEasyPayment } from "#services/payment/dibs/dibs-easy-payment/dibs-easy-payment";
 import { DibsEasyItem } from "#services/types/dibs-easy-item";
+import { BlError } from "#shared/bl-error/bl-error";
+import { Delivery } from "#shared/delivery/delivery";
+import { Order } from "#shared/order/order";
+import { OrderItem } from "#shared/order/order-item/order-item";
+import { UserDetail } from "#shared/user/user-detail/user-detail";
+import env from "#start/env";
 
 export class DibsPaymentService {
   private userDetailHelper = new UserDetailHelper();
@@ -18,9 +17,9 @@ export class DibsPaymentService {
   public getPaymentId(dibsEasyOrder: DibsEasyOrder): Promise<string> {
     return new Promise((resolve, reject) => {
       HttpHandler.post(
-        BlEnv.DIBS_URI + APP_CONFIG.path.dibs.payment,
+        env.get("DIBS_URI") + APP_CONFIG.path.dibs.payment,
         dibsEasyOrder,
-        BlEnv.DIBS_SECRET_KEY,
+        env.get("DIBS_SECRET_KEY"),
       )
         .then((responseData) => {
           if (
@@ -43,8 +42,8 @@ export class DibsPaymentService {
 
   public fetchDibsPaymentData(paymentId: string): Promise<DibsEasyPayment> {
     return HttpHandler.get(
-      BlEnv.DIBS_URI + APP_CONFIG.path.dibs.payment + "/" + paymentId,
-      BlEnv.DIBS_SECRET_KEY,
+      env.get("DIBS_URI") + APP_CONFIG.path.dibs.payment + "/" + paymentId,
+      env.get("DIBS_SECRET_KEY"),
     )
       .then((response) => {
         // @ts-expect-error fixme: auto ignored
@@ -88,7 +87,7 @@ export class DibsPaymentService {
 
     const userDetailValid = this.userDetailHelper.isValid(userDetail);
 
-    const clientUri = BlEnv.CLIENT_URI;
+    const clientUri = env.get("CLIENT_URI");
     dibsEasyOrder.checkout = {
       url: clientUri + APP_CONFIG.path.client.checkout,
       termsUrl: clientUri + APP_CONFIG.path.client.agreement.rent,

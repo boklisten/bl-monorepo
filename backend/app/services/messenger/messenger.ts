@@ -1,12 +1,12 @@
 import { EmailAttachment } from "@boklisten/bl-email";
-import { CustomerItem } from "@shared/customer-item/customer-item.js";
-import { Message } from "@shared/message/message.js";
-import { Order } from "@shared/order/order.js";
-import { UserDetail } from "@shared/user/user-detail/user-detail.js";
 
 import { EmailService } from "#services/messenger/email/email-service";
 import { PdfService } from "#services/messenger/pdf/pdf-service";
 import { BlStorage } from "#services/storage/bl-storage";
+import { CustomerItem } from "#shared/customer-item/customer-item";
+import { Message } from "#shared/message/message";
+import { Order } from "#shared/order/order";
+import { UserDetail } from "#shared/user/user-detail/user-detail";
 
 const emailService = new EmailService();
 const pdfService = new PdfService();

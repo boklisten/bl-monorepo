@@ -1,8 +1,7 @@
-import { BlError } from "@shared/bl-error/bl-error.js";
-import { Message } from "@shared/message/message.js";
-
 import { SEDbQueryBuilder } from "#services/query/se.db-query-builder";
 import { BlStorage } from "#services/storage/bl-storage";
+import { BlError } from "#shared/bl-error/bl-error";
+import { Message } from "#shared/message/message";
 
 export class MessageHelper {
   private queryBuilder = new SEDbQueryBuilder();

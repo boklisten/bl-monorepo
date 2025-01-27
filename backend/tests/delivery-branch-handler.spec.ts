@@ -1,10 +1,10 @@
 import { test } from "@japa/runner";
-import { BlError } from "@shared/bl-error/bl-error.js";
-import { Delivery } from "@shared/delivery/delivery.js";
 import { expect, use as chaiUse, should } from "chai";
 import chaiAsPromised from "chai-as-promised";
 
 import { DeliveryBranchHandler } from "#services/collections/delivery/helpers/deliveryBranch/delivery-branch-handler";
+import { BlError } from "#shared/bl-error/bl-error";
+import { Delivery } from "#shared/delivery/delivery";
 
 chaiUse(chaiAsPromised);
 should();

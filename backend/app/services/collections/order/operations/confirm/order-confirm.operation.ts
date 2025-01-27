@@ -1,13 +1,12 @@
-import { BlError } from "@shared/bl-error/bl-error.js";
-import { BlapiResponse } from "@shared/blapi-response/blapi-response.js";
-import { Order } from "@shared/order/order.js";
-import { AccessToken } from "@shared/token/access-token.js";
-
 import { OrderPlacedHandler } from "#services/collections/order/helpers/order-placed-handler/order-placed-handler";
 import { SEDbQueryBuilder } from "#services/query/se.db-query-builder";
 import { BlStorage } from "#services/storage/bl-storage";
 import { BlApiRequest } from "#services/types/bl-api-request";
 import { Operation } from "#services/types/operation";
+import { BlError } from "#shared/bl-error/bl-error";
+import { BlapiResponse } from "#shared/blapi-response/blapi-response";
+import { Order } from "#shared/order/order";
+import { AccessToken } from "#shared/token/access-token";
 
 export class OrderConfirmOperation implements Operation {
   private queryBuilder = new SEDbQueryBuilder();

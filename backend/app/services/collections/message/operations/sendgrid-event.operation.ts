@@ -1,12 +1,11 @@
-import { BlError } from "@shared/bl-error/bl-error.js";
-import { BlapiResponse } from "@shared/blapi-response/blapi-response.js";
-import { SendgridEvent } from "@shared/message/message-sendgrid-event/message-sendgrid-event.js";
-import { Message } from "@shared/message/message.js";
-
 import { logger } from "#services/config/logger";
 import { BlStorage } from "#services/storage/bl-storage";
 import { BlApiRequest } from "#services/types/bl-api-request";
 import { Operation } from "#services/types/operation";
+import { BlError } from "#shared/bl-error/bl-error";
+import { BlapiResponse } from "#shared/blapi-response/blapi-response";
+import { Message } from "#shared/message/message";
+import { SendgridEvent } from "#shared/message/message-sendgrid-event/message-sendgrid-event";
 
 export class SendgridEventOperation implements Operation {
   public async run(blApiRequest: BlApiRequest): Promise<BlapiResponse> {

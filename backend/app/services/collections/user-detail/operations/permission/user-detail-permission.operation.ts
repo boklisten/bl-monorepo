@@ -1,6 +1,3 @@
-import { BlError } from "@shared/bl-error/bl-error.js";
-import { BlapiResponse } from "@shared/blapi-response/blapi-response.js";
-import { UserPermissionEnum } from "@shared/permission/user-permission.js";
 import { z } from "zod";
 import { fromError } from "zod-validation-error";
 
@@ -8,6 +5,9 @@ import { PermissionService } from "#services/auth/permission.service";
 import { BlStorage } from "#services/storage/bl-storage";
 import { BlApiRequest } from "#services/types/bl-api-request";
 import { Operation } from "#services/types/operation";
+import { BlError } from "#shared/bl-error/bl-error";
+import { BlapiResponse } from "#shared/blapi-response/blapi-response";
+import { UserPermissionEnum } from "#shared/permission/user-permission";
 
 const UserDetailPermissionSpec = z.object({
   documentId: z.string(),

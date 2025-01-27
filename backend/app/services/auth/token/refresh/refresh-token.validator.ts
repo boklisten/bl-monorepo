@@ -1,7 +1,7 @@
-import { BlError } from "@shared/bl-error/bl-error.js";
 import jwt from "jsonwebtoken";
 
-import { BlEnv } from "#services/config/env";
+import { BlError } from "#shared/bl-error/bl-error";
+import env from "#start/env";
 
 function validate(refreshToken: string | undefined): Promise<unknown> {
   return new Promise((resolve, reject) => {
@@ -9,11 +9,15 @@ function validate(refreshToken: string | undefined): Promise<unknown> {
       return reject(new BlError("refreshToken is empty or undefined"));
 
     try {
-      jwt.verify(refreshToken, BlEnv.REFRESH_TOKEN_SECRET, (error, payload) => {
-        if (error)
-          return reject(new BlError("could not validate token").code(909));
-        resolve(payload);
-      });
+      jwt.verify(
+        refreshToken,
+        env.get("REFRESH_TOKEN_SECRET"),
+        (error, payload) => {
+          if (error)
+            return reject(new BlError("could not validate token").code(909));
+          resolve(payload);
+        },
+      );
     } catch (error) {
       reject(
         new BlError("could not validate token")

@@ -1,8 +1,7 @@
-import { AccessToken } from "@shared/token/access-token.js";
-
 import { PermissionService } from "#services/auth/permission.service";
 import { SEDbQueryBuilder } from "#services/query/se.db-query-builder";
 import { BlStorage } from "#services/storage/bl-storage";
+import { AccessToken } from "#shared/token/access-token";
 
 export class UserCanDeleteUserDetail {
   private queryBuilder = new SEDbQueryBuilder();

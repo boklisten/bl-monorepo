@@ -1,9 +1,9 @@
-import { BlError } from "@shared/bl-error/bl-error.js";
-import { Branch } from "@shared/branch/branch.js";
-import { OpeningHour } from "@shared/opening-hour/opening-hour.js";
 import moment from "moment-timezone";
 
 import { BlStorage } from "#services/storage/bl-storage";
+import { BlError } from "#shared/bl-error/bl-error";
+import { Branch } from "#shared/branch/branch";
+import { OpeningHour } from "#shared/opening-hour/opening-hour";
 
 export class OpeningHourHelper {
   public async getNextAvailableOpeningHour(

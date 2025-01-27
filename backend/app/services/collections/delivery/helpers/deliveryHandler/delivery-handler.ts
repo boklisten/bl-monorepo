@@ -1,12 +1,11 @@
-import { BlError } from "@shared/bl-error/bl-error.js";
-import { Branch } from "@shared/branch/branch.js";
-import { DeliveryInfoBring } from "@shared/delivery/delivery-info/delivery-info-bring.js";
-import { Delivery } from "@shared/delivery/delivery.js";
-import { Item } from "@shared/item/item.js";
-import { Order } from "@shared/order/order.js";
-
 import { BringDeliveryService } from "#services/collections/delivery/helpers/deliveryBring/bringDelivery.service";
 import { BlStorage } from "#services/storage/bl-storage";
+import { BlError } from "#shared/bl-error/bl-error";
+import { Branch } from "#shared/branch/branch";
+import { Delivery } from "#shared/delivery/delivery";
+import { DeliveryInfoBring } from "#shared/delivery/delivery-info/delivery-info-bring";
+import { Item } from "#shared/item/item";
+import { Order } from "#shared/order/order";
 
 export class DeliveryHandler {
   private bringDeliveryService: BringDeliveryService;

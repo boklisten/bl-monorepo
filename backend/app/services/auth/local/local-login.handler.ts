@@ -1,5 +1,3 @@
-import { BlError } from "@shared/bl-error/bl-error.js";
-import { BlapiErrorResponse } from "@shared/blapi-response/blapi-error-response.js";
 import validator from "validator";
 
 import HashedPasswordGenerator from "#services/auth/local/hashed-password-generator";
@@ -9,6 +7,8 @@ import { isNullish } from "#services/helper/typescript-helpers";
 import { SEDbQuery } from "#services/query/se.db-query";
 import { BlStorage } from "#services/storage/bl-storage";
 import { LocalLogin } from "#services/types/local-login";
+import { BlError } from "#shared/bl-error/bl-error";
+import { BlapiErrorResponse } from "#shared/blapi-response/blapi-error-response";
 
 function get(username: string): Promise<LocalLogin> {
   return new Promise((resolve, reject) => {

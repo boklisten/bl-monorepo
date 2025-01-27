@@ -1,5 +1,3 @@
-import { BlError } from "@shared/bl-error/bl-error.js";
-
 import { PermissionService } from "#services/auth/permission.service";
 import { isNullish } from "#services/helper/typescript-helpers";
 import { BlStorageData } from "#services/storage/bl-storage";
@@ -8,6 +6,7 @@ import {
   BlDocumentPermission,
   BlEndpointRestriction,
 } from "#services/types/bl-collection";
+import { BlError } from "#shared/bl-error/bl-error";
 
 function validate(
   restriction: BlEndpointRestriction | undefined,

@@ -1,11 +1,10 @@
-import { Delivery } from "@shared/delivery/delivery.js";
-import { Order } from "@shared/order/order.js";
-import { Payment } from "@shared/payment/payment.js";
-import { UserDetail } from "@shared/user/user-detail/user-detail.js";
-
 import { DibsEasyOrder } from "#services/payment/dibs/dibs-easy-order";
 import { DibsPaymentService } from "#services/payment/dibs/dibs-payment.service";
 import { BlStorage } from "#services/storage/bl-storage";
+import { Delivery } from "#shared/delivery/delivery";
+import { Order } from "#shared/order/order";
+import { Payment } from "#shared/payment/payment";
+import { UserDetail } from "#shared/user/user-detail/user-detail";
 
 export class PaymentDibsHandler {
   private dibsPaymentService: DibsPaymentService;

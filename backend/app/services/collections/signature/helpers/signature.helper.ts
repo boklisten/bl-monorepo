@@ -1,15 +1,15 @@
 import { Transformer } from "@napi-rs/image";
-import { BlError } from "@shared/bl-error/bl-error.js";
-import {
-  SerializedSignature,
-  SIGNATURE_NUM_MONTHS_VALID,
-  SignatureMetadata,
-} from "@shared/signature/serialized-signature.js";
-import { UserDetail } from "@shared/user/user-detail/user-detail.js";
 
 import { logger } from "#services/config/logger";
 import { BlStorage } from "#services/storage/bl-storage";
 import { Signature } from "#services/storage/models/signature.model";
+import { BlError } from "#shared/bl-error/bl-error";
+import {
+  SerializedSignature,
+  SIGNATURE_NUM_MONTHS_VALID,
+  SignatureMetadata,
+} from "#shared/signature/serialized-signature";
+import { UserDetail } from "#shared/user/user-detail/user-detail";
 
 const qualityFactor = 10;
 

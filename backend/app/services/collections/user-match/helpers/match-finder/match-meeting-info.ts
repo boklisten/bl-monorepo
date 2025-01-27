@@ -1,9 +1,9 @@
 /* fixme: rewrite
 import { MatchLocation } from "#services/collections/user-match/helpers/match-finder/match-types";
 import { logger } from "#services/logger/logger";
-import { BlError } from "@shared/bl-error/bl-error.js";
-import { CandidateStandMatch, StandMatch } from "@shared/match/stand-match.js";
-import { CandidateUserMatch, UserMatch } from "@shared/match/user-match.js";
+import { BlError } from "#shared/bl-error/bl-error";
+import { CandidateStandMatch, StandMatch } from "#shared/match/stand-match";
+import { CandidateUserMatch, UserMatch } from "#shared/match/user-match";
 import moment from "moment";
 
 /!**

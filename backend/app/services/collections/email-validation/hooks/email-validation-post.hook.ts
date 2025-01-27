@@ -1,8 +1,7 @@
-import { BlError } from "@shared/bl-error/bl-error.js";
-
 import { EmailValidation } from "#services/collections/email-validation/email-validation";
 import EmailValidationHelper from "#services/collections/email-validation/helpers/email-validation.helper";
 import { Hook } from "#services/hook/hook";
+import { BlError } from "#shared/bl-error/bl-error";
 
 export class EmailValidationPostHook extends Hook {
   public override after(

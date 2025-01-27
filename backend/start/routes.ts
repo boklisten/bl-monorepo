@@ -8,7 +8,7 @@ import LocalAuth from "#services/auth/local/local.auth";
 import TokenEndpoint from "#services/auth/token/token.endpoint";
 import CollectionEndpointCreator from "#services/collection-endpoint/collection-endpoint-creator";
 import setupPassport from "#services/config/auth";
-import { BlEnv } from "#services/config/env";
+import env from "#start/env";
 
 const AuthSocialController = () =>
   import("#controllers/auth/social_controller");
@@ -28,7 +28,7 @@ LocalAuth.generateEndpoints();
 TokenEndpoint.generateEndpoint();
 
 CollectionEndpointCreator.generateEndpoints();
-if (BlEnv.API_ENV !== "test") {
+if (env.get("API_ENV") !== "test") {
   await configureMongoose();
   Sentry.profiler.startProfiler();
 }

@@ -1,5 +1,3 @@
-import { BlError } from "@shared/bl-error/bl-error.js";
-import { BlapiResponse } from "@shared/blapi-response/blapi-response.js";
 import { ObjectId } from "mongodb";
 import { z } from "zod";
 import { fromError } from "zod-validation-error";
@@ -7,6 +5,8 @@ import { fromError } from "zod-validation-error";
 import { BlStorage } from "#services/storage/bl-storage";
 import { BlApiRequest } from "#services/types/bl-api-request";
 import { Operation } from "#services/types/operation";
+import { BlError } from "#shared/bl-error/bl-error";
+import { BlapiResponse } from "#shared/blapi-response/blapi-response";
 
 const CustomerItemGenerateReportSpec = z.object({
   branchFilter: z.string().array().optional(),

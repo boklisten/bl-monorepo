@@ -1,7 +1,7 @@
-import { Invoice } from "@shared/invoice/invoice.js";
 import { Schema } from "mongoose";
 
 import { BlModel } from "#services/storage/bl-storage";
+import { Invoice } from "#shared/invoice/invoice";
 
 export const InvoiceModel: BlModel<Invoice> = {
   name: "invoices",

@@ -6,10 +6,10 @@
     "prettier": "prettier --write '**/*.{js,mjs,ts,tsx,md,json,yml,css}' --ignore-path=.gitignore",
     "prettier:check": "prettier --check '**/*.{js,mjs,ts,tsx,md,json,yml,css}' --ignore-path=.gitignore",
     "lint": "eslint . --ignore-pattern '**/dist/*' --ignore-pattern '**/build/*' --ignore-pattern '**/.next/*'",
-    "typecheck:shared": "pnpm --filter shared exec tsc",
+    "build:shared": "pnpm exec tsc --build backend/shared",
     "typecheck:backend": "pnpm --filter backend exec tsc --noEmit",
-    "typecheck:frontend": "pnpm --filter frontend exec tsc --noEmit",
-    "typecheck": "pnpm run typecheck:shared && pnpm exec concurrently \"pnpm run typecheck:backend\" \"pnpm run typecheck:frontend\"",
+    "typecheck:frontend": "pnpm run build:shared && pnpm --filter frontend exec tsc --noEmit",
+    "typecheck": "pnpm exec concurrently \"pnpm run typecheck:backend\" \"pnpm run typecheck:frontend\"",
     "fix": "pnpm exec concurrently \"pnpm run prettier --log-level silent\" \"pnpm run lint --fix\" \"pnpm run typecheck\"",
     "test": "pnpm --filter backend test",
     "ace": "pnpm --filter backend ace"

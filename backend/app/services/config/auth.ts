@@ -2,7 +2,7 @@ import passport from "passport";
 import { ExtractJwt, Strategy } from "passport-jwt";
 
 import { APP_CONFIG } from "#services/config/application-config";
-import { BlEnv } from "#services/config/env";
+import env from "#start/env";
 
 // fixme: do we really need this setup?
 export default function setupPassport() {
@@ -17,7 +17,7 @@ export default function setupPassport() {
     new Strategy(
       {
         jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
-        secretOrKey: BlEnv.ACCESS_TOKEN_SECRET,
+        secretOrKey: env.get("ACCESS_TOKEN_SECRET"),
         issuer: APP_CONFIG.token.access.iss,
         audience: APP_CONFIG.token.access.aud,
       },

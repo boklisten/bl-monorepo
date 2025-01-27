@@ -1,6 +1,6 @@
 import { createLogger, format, transports } from "winston";
 
-import { BlEnv } from "#services/config/env";
+import env from "#start/env";
 
 export const logger = createLogger({
   format: format.printf((info) =>
@@ -8,7 +8,7 @@ export const logger = createLogger({
   ),
   transports: [
     new transports.Console({
-      level: BlEnv.LOG_LEVEL,
+      level: env.get("LOG_LEVEL"),
       handleExceptions: true,
     }),
   ],

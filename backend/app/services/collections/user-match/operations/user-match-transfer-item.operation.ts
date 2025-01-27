@@ -1,9 +1,3 @@
-import { BlError } from "@shared/bl-error/bl-error.js";
-import { BlapiResponse } from "@shared/blapi-response/blapi-response.js";
-import { CustomerItem } from "@shared/customer-item/customer-item.js";
-import { StandMatch } from "@shared/match/stand-match.js";
-import { UserMatch } from "@shared/match/user-match.js";
-import { Order } from "@shared/order/order.js";
 import { ObjectId } from "mongodb";
 import { z } from "zod";
 import { fromError } from "zod-validation-error";
@@ -21,6 +15,12 @@ import { SEDbQuery } from "#services/query/se.db-query";
 import { BlStorage } from "#services/storage/bl-storage";
 import { BlApiRequest } from "#services/types/bl-api-request";
 import { Operation } from "#services/types/operation";
+import { BlError } from "#shared/bl-error/bl-error";
+import { BlapiResponse } from "#shared/blapi-response/blapi-response";
+import { CustomerItem } from "#shared/customer-item/customer-item";
+import { StandMatch } from "#shared/match/stand-match";
+import { UserMatch } from "#shared/match/user-match";
+import { Order } from "#shared/order/order";
 
 export class UserMatchTransferItemOperation implements Operation {
   private readonly wrongSenderFeedback = `Boken du skannet tilhørte en annen elev enn den som ga deg den. Du skal beholde den, men eleven som ga deg boken er fortsatt ansvarlig for at den opprinnelige boken blir levert.`;

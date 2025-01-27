@@ -1,7 +1,4 @@
 import { test } from "@japa/runner";
-import { BlError } from "@shared/bl-error/bl-error.js";
-import { Order } from "@shared/order/order.js";
-import { Payment } from "@shared/payment/payment.js";
 import { expect, use as chaiUse, should } from "chai";
 import chaiAsPromised from "chai-as-promised";
 import sinon, { createSandbox } from "sinon";
@@ -10,6 +7,9 @@ import { PaymentDibsHandler } from "#services/collections/payment/helpers/dibs/p
 import { PaymentValidator } from "#services/collections/payment/helpers/payment.validator";
 import { PaymentPostHook } from "#services/collections/payment/hooks/payment.post.hook";
 import { BlStorage } from "#services/storage/bl-storage";
+import { BlError } from "#shared/bl-error/bl-error";
+import { Order } from "#shared/order/order";
+import { Payment } from "#shared/payment/payment";
 
 chaiUse(chaiAsPromised);
 should();

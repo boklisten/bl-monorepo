@@ -1,5 +1,4 @@
 import { test } from "@japa/runner";
-import { AccessToken } from "@shared/token/access-token.js";
 import { assert, use as chaiUse, should } from "chai";
 import chaiAsPromised from "chai-as-promised";
 
@@ -7,6 +6,7 @@ import {
   UserDetailUpdateHook,
   UserDetailPatch,
 } from "#services/collections/user-detail/hooks/user-detail-update.hook";
+import { AccessToken } from "#shared/token/access-token";
 
 chaiUse(chaiAsPromised);
 should();

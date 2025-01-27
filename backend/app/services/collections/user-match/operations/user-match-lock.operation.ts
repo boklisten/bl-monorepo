@@ -1,6 +1,3 @@
-import { BlError } from "@shared/bl-error/bl-error.js";
-import { BlapiResponse } from "@shared/blapi-response/blapi-response.js";
-import { UserMatch } from "@shared/match/user-match.js";
 import { ObjectId } from "mongodb";
 import { z } from "zod";
 import { fromError } from "zod-validation-error";
@@ -8,6 +5,9 @@ import { fromError } from "zod-validation-error";
 import { BlStorage } from "#services/storage/bl-storage";
 import { BlApiRequest } from "#services/types/bl-api-request";
 import { Operation } from "#services/types/operation";
+import { BlError } from "#shared/bl-error/bl-error";
+import { BlapiResponse } from "#shared/blapi-response/blapi-response";
+import { UserMatch } from "#shared/match/user-match";
 
 const MatchLockSpec = z.object({
   customerId: z.string(),

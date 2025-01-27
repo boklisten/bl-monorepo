@@ -1,7 +1,6 @@
-import { BlError } from "@shared/bl-error/bl-error.js";
-import { BlapiErrorResponse } from "@shared/blapi-response/blapi-error-response.js";
-
 import { logger } from "#services/config/logger";
+import { BlError } from "#shared/bl-error/bl-error";
+import { BlapiErrorResponse } from "#shared/blapi-response/blapi-error-response";
 
 function createBlapiErrorResponse(error: unknown): BlapiErrorResponse {
   const blError =

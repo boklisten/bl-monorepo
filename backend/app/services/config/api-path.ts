@@ -1,10 +1,10 @@
 import { IncomingHttpHeaders } from "node:http";
 
 import { APP_CONFIG } from "#services/config/application-config";
-import { BlEnv } from "#services/config/env";
+import env from "#start/env";
 
 export function createPath(customPath: string): string {
-  return BlEnv.SERVER_PATH + customPath;
+  return env.get("SERVER_PATH") + customPath;
 }
 
 function retrieveBasePath(href: string) {
@@ -28,7 +28,7 @@ export function retrieveRefererPath(requestHeaders: IncomingHttpHeaders) {
   }
 
   const baseHost =
-    BlEnv.API_ENV === "production"
+    env.get("API_ENV") === "production"
       ? APP_CONFIG.path.host
       : APP_CONFIG.path.local.host;
 

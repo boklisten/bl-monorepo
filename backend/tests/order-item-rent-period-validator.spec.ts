@@ -1,13 +1,13 @@
 import { test } from "@japa/runner";
-import { BlError } from "@shared/bl-error/bl-error.js";
-import { BranchPaymentInfo } from "@shared/branch/branch-payment-info.js";
-import { OrderItem } from "@shared/order/order-item/order-item.js";
 import { expect, use as chaiUse, should } from "chai";
 import chaiAsPromised from "chai-as-promised";
 import sinon, { createSandbox } from "sinon";
 
 import { OrderItemRentPeriodValidator } from "#services/collections/order/helpers/order-validator/order-item-validator/order-item-rent-validator/order-item-rent-period-validator/order-item-rent-period-validator";
 import { BlStorage } from "#services/storage/bl-storage";
+import { BlError } from "#shared/bl-error/bl-error";
+import { BranchPaymentInfo } from "#shared/branch/branch-payment-info";
+import { OrderItem } from "#shared/order/order-item/order-item";
 
 chaiUse(chaiAsPromised);
 should();

@@ -1,7 +1,6 @@
-import { BlError } from "@shared/bl-error/bl-error.js";
-
 import SaltGenerator from "#services/auth/local/salt-generator";
 import BlCrypto from "#services/config/bl-crypto";
+import { BlError } from "#shared/bl-error/bl-error";
 
 function generate(
   password: string,

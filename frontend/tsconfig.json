@@ -3,7 +3,7 @@
   "compilerOptions": {
     "paths": {
       "@/*": ["frontend/src/*"],
-      "@shared/*": ["backend/shared/dist/src/*"]
+      "@shared/*": ["backend/shared/src/*"]
     }
   },
   "references": [

@@ -4,9 +4,9 @@
   "license": "UNLICENSED",
   "type": "module",
   "scripts": {
-    "dev": "next dev",
-    "typecheck": "pnpm build:shared && pnpm exec tsc --noEmit",
     "build:shared": "pnpm exec tsc --build ../backend/shared",
+    "dev": "pnpm build:shared && next dev",
+    "typecheck": "pnpm build:shared && pnpm exec tsc --noEmit",
     "build": "pnpm build:shared && next build",
     "serve": "next start"
   },

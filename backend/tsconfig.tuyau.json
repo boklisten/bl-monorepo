@@ -4,6 +4,6 @@
     "composite": true,
     "declaration": true
   },
-  "include": ["."],
+  "include": [".", ".adonisjs/*"],
   "exclude": ["node_modules", "build", "**/dist", "tests/*"]
 }

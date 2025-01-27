@@ -12,13 +12,13 @@
     "typecheck": "pnpm exec concurrently \"pnpm run typecheck:backend\" \"pnpm run typecheck:frontend\"",
     "fix": "pnpm exec concurrently \"pnpm run prettier --log-level silent\" \"pnpm run lint --fix\" \"pnpm run typecheck\"",
     "test": "pnpm --filter backend test",
-    "ace": "pnpm --filter backend ace"
+    "ace": "pnpm --filter backend exec node ace"
   },
   "devDependencies": {
     "@eslint/js": "^9.18.0",
     "@next/eslint-plugin-next": "^15.1.5",
     "@tsconfig/strictest": "^2.0.5",
-    "@types/node": "^22.10.7",
+    "@types/node": "^22.10.10",
     "concurrently": "^9.1.2",
     "eslint": "9.18.0",
     "eslint-config-prettier": "^10.0.1",

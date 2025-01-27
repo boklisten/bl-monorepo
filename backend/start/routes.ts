@@ -1,5 +1,3 @@
-import("#services/config/instrument");
-
 import router from "@adonisjs/core/services/router";
 import * as Sentry from "@sentry/node";
 

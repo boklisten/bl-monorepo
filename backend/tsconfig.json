@@ -1,10 +1,10 @@
 {
-  "extends": "../tsconfig.base.json",
+  "extends": ["../tsconfig.base.json", "@adonisjs/tsconfig/tsconfig.app.json"],
   "compilerOptions": {
+    "noUnusedParameters": false, // fixme: delete this line for stricter checks
     "resolveJsonModule": true,
-    "experimentalDecorators": true,
-    "emitDecoratorMetadata": true,
-    "rootDir": "./"
+    "rootDir": "./",
+    "types": null
   },
   "include": [".", "./**/*.json"],
   "exclude": ["node_modules", "build", "shared/dist"]

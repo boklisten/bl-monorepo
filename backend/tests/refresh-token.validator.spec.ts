@@ -38,7 +38,7 @@ test.group("RefreshTokenValidator", async () => {
       "test",
       { expiresIn: "1s" },
       (error, refreshToken) => {
-        RefreshTokenValidator.validate(refreshToken).catch(
+        RefreshTokenValidator.validate(refreshToken ?? "").catch(
           (rtokenError: BlError) => {
             rtokenError.getCode().should.be.eql(909);
           },

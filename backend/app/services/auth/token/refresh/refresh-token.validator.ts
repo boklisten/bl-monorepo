@@ -3,11 +3,8 @@ import jwt from "jsonwebtoken";
 import { BlError } from "#shared/bl-error/bl-error";
 import env from "#start/env";
 
-function validate(refreshToken: string | undefined): Promise<unknown> {
+function validate(refreshToken: string) {
   return new Promise((resolve, reject) => {
-    if (!refreshToken || refreshToken.length <= 0)
-      return reject(new BlError("refreshToken is empty or undefined"));
-
     try {
       jwt.verify(
         refreshToken,

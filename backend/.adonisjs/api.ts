@@ -7,6 +7,15 @@
 import type { MakeTuyauRequest, MakeTuyauResponse } from "@tuyau/utils/types";
 import type { InferInput } from "@vinejs/vine/types";
 
+type TokenPost = {
+  request: MakeTuyauRequest<
+    InferInput<(typeof import("../app/validators/token.ts"))["tokenValidator"]>
+  >;
+  response: MakeTuyauResponse<
+    import("../app/controllers/auth/tokens_controller.ts").default["token"],
+    true
+  >;
+};
 type AuthIdRedirectGetHead = {
   request: unknown;
   response: MakeTuyauResponse<
@@ -22,6 +31,10 @@ type AuthIdCallbackGetHead = {
   >;
 };
 export interface ApiDefinition {
+  token: {
+    $url: {};
+    $post: TokenPost;
+  };
   auth: {
     ":provider": {
       redirect: {
@@ -38,6 +51,13 @@ export interface ApiDefinition {
   };
 }
 const routes = [
+  {
+    params: [],
+    name: "auth.token",
+    path: "/token",
+    method: ["POST"],
+    types: {} as TokenPost,
+  },
   {
     params: ["provider"],
     name: "auth.social.redirect",

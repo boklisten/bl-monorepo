@@ -1,11 +1,17 @@
 import router from "@adonisjs/core/services/router";
 
 import LocalAuth from "#services/auth/local/local.auth";
-import TokenEndpoint from "#services/auth/token/token.endpoint";
 import CollectionEndpointCreator from "#services/collection-endpoint/collection-endpoint-creator";
 
 const AuthSocialController = () =>
   import("#controllers/auth/social_controller");
+const AuthTokensController = () =>
+  import("#controllers/auth/tokens_controller");
+
+/**
+ * auth token
+ */
+router.post("/token", [AuthTokensController, "token"]).as("auth.token");
 
 /**
  * auth social
@@ -18,6 +24,5 @@ router
   .as("auth.social.callback");
 
 LocalAuth.generateEndpoints();
-TokenEndpoint.generateEndpoint();
 
 CollectionEndpointCreator.generateEndpoints();

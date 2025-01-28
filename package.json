@@ -9,7 +9,7 @@
     "lint": "eslint . --ignore-pattern '**/dist/*' --ignore-pattern '**/build/*' --ignore-pattern '**/.next/*' --ignore-pattern 'backend/.adonisjs/*'",
     "lint:fix": "pnpm lint --fix",
     "typecheck": "pnpm -r typecheck",
-    "fix": "pnpm -wr run '/^(prettier|lint:fix|typecheck)$/'",
+    "fix": "pnpm -wr '/^(lint:fix|typecheck)$/' && pnpm prettier",
     "test": "pnpm -r test"
   },
   "devDependencies": {

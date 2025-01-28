@@ -5,8 +5,8 @@
   "type": "module",
   "scripts": {
     "dev": "node ace serve --watch",
-    "tuyau": "node ace tuyau:generate",
-    "typecheck": "pnpm exec tsc --noEmit",
+    "tuyau": "API_ENV=test node ace tuyau:generate",
+    "typecheck": "pnpm tuyau && pnpm exec tsc --noEmit",
     "test": "NODE_ENV=test tsx bin/test",
     "build": "node ace build",
     "start": "ENV_PATH=../ node build/bin/server.js"

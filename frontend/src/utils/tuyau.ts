@@ -1,6 +1,8 @@
+/* eslint-disable @typescript-eslint/triple-slash-reference */
 // Type references
-import("@boklisten/backend/config/ally");
-import("@boklisten/backend/adonisrc");
+
+/// <reference path="../../../backend/config/ally.ts" />
+/// <reference path="../../../backend/adonisrc.ts" />
 
 import { api } from "@boklisten/backend/.adonisjs/api";
 import { createTuyau } from "@tuyau/client";

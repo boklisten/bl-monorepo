@@ -4,15 +4,13 @@
   "license": "UNLICENSED",
   "type": "module",
   "scripts": {
-    "build:tuyau": "pnpm exec tsc --project ../backend/tsconfig.tuyau.json --noResolve --noCheck",
-    "build:shared": "pnpm exec tsc --build ../backend/shared",
-    "build:external": "pnpm exec concurrently \"pnpm run build:shared\" \"pnpm run build:tuyau\"",
-    "dev": "pnpm build:external && next dev",
-    "typecheck": "pnpm build:external && pnpm exec tsc --noEmit",
-    "build": "pnpm build:external && next build",
+    "dev": "next dev",
+    "typecheck": "pnpm exec tsc --noEmit",
+    "build": "next build",
     "serve": "next start"
   },
   "dependencies": {
+    "@boklisten/backend": "workspace:backend@*",
     "@date-io/moment": "^3.2.0",
     "@emotion/cache": "^11.14.0",
     "@emotion/react": "^11.14.0",

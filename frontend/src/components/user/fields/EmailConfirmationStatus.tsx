@@ -1,7 +1,7 @@
+import { UserDetail } from "@boklisten/backend/shared/src/user/user-detail/user-detail";
 import { Email, Info } from "@mui/icons-material";
 import { Alert } from "@mui/material";
 import Button from "@mui/material/Button";
-import { UserDetail } from "@shared/user/user-detail/user-detail";
 import { useState } from "react";
 
 import BlFetcher from "@/api/blFetcher";

@@ -1,6 +1,6 @@
+import { StandMatchWithDetails } from "@boklisten/backend/shared/src/match/match-dtos";
 import { KeyboardDoubleArrowRight, SwapHoriz } from "@mui/icons-material";
 import { SxProps, Typography, Box } from "@mui/material";
-import { StandMatchWithDetails } from "@shared/match/match-dtos";
 
 import { UserMatchStatus } from "@/components/matches/matches-helper";
 import theme from "@/utils/theme";

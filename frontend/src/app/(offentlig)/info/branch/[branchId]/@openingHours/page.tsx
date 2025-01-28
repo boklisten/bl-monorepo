@@ -1,5 +1,5 @@
-import { Branch } from "@shared/branch/branch";
-import { OpeningHour } from "@shared/opening-hour/opening-hour";
+import { Branch } from "@boklisten/backend/shared/src/branch/branch";
+import { OpeningHour } from "@boklisten/backend/shared/src/opening-hour/opening-hour";
 import moment from "moment/moment";
 
 import BlFetcher from "@/api/blFetcher";

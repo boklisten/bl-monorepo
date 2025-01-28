@@ -1,3 +1,5 @@
+import { Order } from "@boklisten/backend/shared/src/order/order";
+import { Payment } from "@boklisten/backend/shared/src/payment/payment";
 import { LoadingButton } from "@mui/lab";
 import {
   Box,
@@ -15,8 +17,6 @@ import {
   Typography,
 } from "@mui/material";
 import Button from "@mui/material/Button";
-import { Order } from "@shared/order/order";
-import { Payment } from "@shared/payment/payment";
 import moment from "moment";
 import { useState } from "react";
 

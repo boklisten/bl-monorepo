@@ -1,4 +1,5 @@
 "use client";
+import { UserDetail } from "@boklisten/backend/shared/src/user/user-detail/user-detail";
 import { LoadingButton } from "@mui/lab";
 import { Alert, Divider, Stack, Typography } from "@mui/material";
 import Box from "@mui/material/Box";
@@ -6,7 +7,6 @@ import Checkbox from "@mui/material/Checkbox";
 import Container from "@mui/material/Container";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Grid from "@mui/material/Grid";
-import { UserDetail } from "@shared/user/user-detail/user-detail";
 
 import DynamicLink from "@/components/DynamicLink";
 import FacebookButton from "@/components/user/FacebookButton";

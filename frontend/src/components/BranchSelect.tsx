@@ -1,4 +1,5 @@
 "use client";
+import { Branch } from "@boklisten/backend/shared/src/branch/branch";
 import {
   Box,
   FormControl,
@@ -7,7 +8,6 @@ import {
   Select,
   SelectChangeEvent,
 } from "@mui/material";
-import { Branch } from "@shared/branch/branch";
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect } from "react";
 import useSWR from "swr";

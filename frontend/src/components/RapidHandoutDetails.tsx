@@ -1,8 +1,8 @@
+import { Order } from "@boklisten/backend/shared/src/order/order";
+import { OrderItem } from "@boklisten/backend/shared/src/order/order-item/order-item";
+import { UserDetail } from "@boklisten/backend/shared/src/user/user-detail/user-detail";
 import QrCodeScannerIcon from "@mui/icons-material/QrCodeScanner";
 import { Alert, Button, Typography } from "@mui/material";
-import { Order } from "@shared/order/order";
-import { OrderItem } from "@shared/order/order-item/order-item";
-import { UserDetail } from "@shared/user/user-detail/user-detail";
 import { useEffect, useState } from "react";
 import useSWR from "swr";
 

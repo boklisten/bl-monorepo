@@ -1,6 +1,6 @@
+import { UserMatchWithDetails } from "@boklisten/backend/shared/src/match/match-dtos";
 import QrCodeScannerIcon from "@mui/icons-material/QrCodeScanner";
 import { Alert, AlertTitle, Box, Button, Typography } from "@mui/material";
-import { UserMatchWithDetails } from "@shared/match/match-dtos";
 import { useState } from "react";
 
 import BlFetcher from "@/api/blFetcher";

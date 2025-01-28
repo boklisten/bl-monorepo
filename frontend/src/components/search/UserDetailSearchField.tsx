@@ -1,5 +1,5 @@
+import { UserDetail } from "@boklisten/backend/shared/src/user/user-detail/user-detail";
 import { Autocomplete, Box, TextField, Typography } from "@mui/material";
-import { UserDetail } from "@shared/user/user-detail/user-detail";
 import { useState } from "react";
 
 import BlFetcher from "@/api/blFetcher";

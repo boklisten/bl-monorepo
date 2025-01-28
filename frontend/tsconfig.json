@@ -1,17 +1,12 @@
 {
   "extends": ["../tsconfig.base.json", "@tsconfig/next/tsconfig.json"],
   "compilerOptions": {
+    "noUnusedParameters": false, // fixme: delete this line for stricter checks
+    "experimentalDecorators": true,
     "paths": {
-      "@/*": ["frontend/src/*"],
-      "@shared/*": ["backend/shared/src/*"],
-      "@backend/tuyau/*": ["backend/dist/.adonisjs/*"]
+      "@/*": ["frontend/src/*"]
     }
   },
-  "references": [
-    {
-      "path": "../backend/shared"
-    }
-  ],
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
   "exclude": ["node_modules"]
 }

@@ -1,6 +1,6 @@
+import { UserDetail } from "@boklisten/backend/shared/src/user/user-detail/user-detail";
 import { Email, Person, Phone } from "@mui/icons-material";
 import { ListItemButton, Stack, Typography } from "@mui/material";
-import { UserDetail } from "@shared/user/user-detail/user-detail";
 
 export default function UserDetailSearchResult({
   userDetail,

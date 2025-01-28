@@ -1,5 +1,5 @@
+import { UserMatchWithDetails } from "@boklisten/backend/shared/src/match/match-dtos";
 import { Box, Typography } from "@mui/material";
-import { UserMatchWithDetails } from "@shared/match/match-dtos";
 import { FC } from "react";
 
 import { calculateUserMatchStatus } from "@/components/matches/matches-helper";

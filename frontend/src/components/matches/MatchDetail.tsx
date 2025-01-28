@@ -1,10 +1,10 @@
 "use client";
-import { ArrowBack } from "@mui/icons-material";
-import { Alert, Button, Card, Container, Skeleton } from "@mui/material";
 import {
   StandMatchWithDetails,
   UserMatchWithDetails,
-} from "@shared/match/match-dtos";
+} from "@boklisten/backend/shared/src/match/match-dtos";
+import { ArrowBack } from "@mui/icons-material";
+import { Alert, Button, Card, Container, Skeleton } from "@mui/material";
 import useSWR from "swr";
 
 import BlFetcher from "@/api/blFetcher";

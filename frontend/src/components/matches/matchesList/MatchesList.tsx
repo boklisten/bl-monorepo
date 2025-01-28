@@ -1,8 +1,8 @@
-import { Alert, Skeleton } from "@mui/material";
 import {
   StandMatchWithDetails,
   UserMatchWithDetails,
-} from "@shared/match/match-dtos";
+} from "@boklisten/backend/shared/src/match/match-dtos";
+import { Alert, Skeleton } from "@mui/material";
 import { FC } from "react";
 import useSWR from "swr";
 

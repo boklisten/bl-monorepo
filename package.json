@@ -4,11 +4,12 @@
   "type": "module",
   "scripts": {
     "ace": "pnpm -F backend exec node ace",
-    "prettier": "prettier --write '**/*.{js,mjs,ts,tsx,md,json,yml,css}' --ignore-path=.gitignore",
+    "prettier": "prettier --write --log-level warn '**/*.{js,mjs,ts,tsx,md,json,yml,css}' --ignore-path=.gitignore",
     "prettier:check": "prettier --check '**/*.{js,mjs,ts,tsx,md,json,yml,css}' --ignore-path=.gitignore",
     "lint": "eslint . --ignore-pattern '**/dist/*' --ignore-pattern '**/build/*' --ignore-pattern '**/.next/*' --ignore-pattern 'backend/.adonisjs/*'",
+    "lint:fix": "pnpm lint --fix",
     "typecheck": "pnpm -r typecheck",
-    "fix": "pnpm exec concurrently \"pnpm prettier --log-level silent\" \"pnpm lint --fix\" \"pnpm typecheck\"",
+    "fix": "pnpm -wr run '/^(prettier|lint:fix|typecheck)$/'",
     "test": "pnpm -r test"
   },
   "devDependencies": {
@@ -16,7 +17,6 @@
     "@next/eslint-plugin-next": "^15.1.5",
     "@tsconfig/strictest": "^2.0.5",
     "@types/node": "^22.10.10",
-    "concurrently": "^9.1.2",
     "eslint": "9.18.0",
     "eslint-config-prettier": "^10.0.1",
     "eslint-plugin-chai-friendly": "^1.0.1",

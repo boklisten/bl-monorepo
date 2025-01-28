@@ -1,6 +1,6 @@
 "use client";
+import { Order } from "@boklisten/backend/shared/src/order/order";
 import { Card } from "@mui/material";
-import { Order } from "@shared/order/order";
 import { useEffect, useState } from "react";
 
 import BlFetcher from "@/api/blFetcher";

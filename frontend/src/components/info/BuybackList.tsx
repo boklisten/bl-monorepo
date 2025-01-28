@@ -1,4 +1,5 @@
 "use client";
+import { Item } from "@boklisten/backend/shared/src/item/item";
 import {
   Alert,
   Paper,
@@ -11,7 +12,6 @@ import {
   Typography,
   Box,
 } from "@mui/material";
-import { Item } from "@shared/item/item";
 import useSWR from "swr";
 
 import BlFetcher from "@/api/blFetcher";

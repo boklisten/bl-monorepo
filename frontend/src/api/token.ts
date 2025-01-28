@@ -1,5 +1,5 @@
-import { BlError } from "@shared/bl-error/bl-error";
-import { AccessToken } from "@shared/token/access-token";
+import { BlError } from "@boklisten/backend/shared/src/bl-error/bl-error";
+import { AccessToken } from "@boklisten/backend/shared/src/token/access-token";
 import { decodeToken } from "react-jwt";
 
 import BlFetcher from "@/api/blFetcher";

@@ -1,5 +1,5 @@
+import { StandMatchWithDetails } from "@boklisten/backend/shared/src/match/match-dtos";
 import { Alert, Typography } from "@mui/material";
-import { StandMatchWithDetails } from "@shared/match/match-dtos";
 
 import {
   calculateFulfilledStandMatchItems,

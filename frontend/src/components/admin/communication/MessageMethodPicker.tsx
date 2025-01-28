@@ -1,7 +1,7 @@
+import { MessageMethod } from "@boklisten/backend/shared/src/message/message-method/message-method";
 import { Box, Typography } from "@mui/material";
 import ToggleButton from "@mui/material/ToggleButton";
 import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
-import { MessageMethod } from "@shared/message/message-method/message-method";
 import { useState } from "react";
 
 export default function MessageMethodPicker({

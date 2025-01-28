@@ -1,8 +1,8 @@
-import { Typography } from "@mui/material";
 import {
   StandMatchWithDetails,
   UserMatchWithDetails,
-} from "@shared/match/match-dtos";
+} from "@boklisten/backend/shared/src/match/match-dtos";
+import { Typography } from "@mui/material";
 import { ReactNode } from "react";
 
 export interface ItemStatus {

@@ -1,4 +1,4 @@
-import { UserDetail } from "@shared/user/user-detail/user-detail";
+import { UserDetail } from "@boklisten/backend/shared/src/user/user-detail/user-detail";
 import moment, { Moment } from "moment/moment";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";

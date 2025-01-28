@@ -1,6 +1,6 @@
+import { UserMatchWithDetails } from "@boklisten/backend/shared/src/match/match-dtos";
 import PhoneIphoneIcon from "@mui/icons-material/PhoneIphone";
 import { Box, Typography } from "@mui/material";
-import { UserMatchWithDetails } from "@shared/match/match-dtos";
 
 import DynamicLink from "@/components/DynamicLink";
 

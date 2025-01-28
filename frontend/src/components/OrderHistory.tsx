@@ -1,5 +1,5 @@
-import { Order } from "@boklisten/backend/shared/src/order/order";
-import { Payment } from "@boklisten/backend/shared/src/payment/payment";
+import { Order } from "@boklisten/backend/shared/order/order";
+import { Payment } from "@boklisten/backend/shared/payment/payment";
 import { LoadingButton } from "@mui/lab";
 import {
   Box,

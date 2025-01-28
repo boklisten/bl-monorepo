@@ -1,4 +1,4 @@
-import { UserMatchWithDetails } from "@boklisten/backend/shared/src/match/match-dtos";
+import { UserMatchWithDetails } from "@boklisten/backend/shared/match/match-dtos";
 import PhoneIphoneIcon from "@mui/icons-material/PhoneIphone";
 import { Box, Typography } from "@mui/material";
 

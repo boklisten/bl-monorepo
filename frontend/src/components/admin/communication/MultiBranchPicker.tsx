@@ -1,4 +1,4 @@
-import { Branch } from "@boklisten/backend/shared/src/branch/branch";
+import { Branch } from "@boklisten/backend/shared/branch/branch";
 import { Button, Typography } from "@mui/material";
 import Box from "@mui/material/Box";
 import Checkbox from "@mui/material/Checkbox";

@@ -1,4 +1,4 @@
-import { Item } from "@boklisten/backend/shared/src/item/item";
+import { Item } from "@boklisten/backend/shared/item/item";
 import { Metadata } from "next";
 
 import BlFetcher from "@/api/blFetcher";

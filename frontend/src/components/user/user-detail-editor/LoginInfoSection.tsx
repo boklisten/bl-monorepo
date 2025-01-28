@@ -1,4 +1,4 @@
-import { UserDetail } from "@boklisten/backend/shared/src/user/user-detail/user-detail";
+import { UserDetail } from "@boklisten/backend/shared/user/user-detail/user-detail";
 import Grid from "@mui/material/Grid";
 import { FieldErrors, UseFormRegister, UseFormSetError } from "react-hook-form";
 

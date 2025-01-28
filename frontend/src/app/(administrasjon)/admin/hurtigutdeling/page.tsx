@@ -1,5 +1,5 @@
 "use client";
-import { UserDetail } from "@boklisten/backend/shared/src/user/user-detail/user-detail";
+import { UserDetail } from "@boklisten/backend/shared/user/user-detail/user-detail";
 import { PageContainer } from "@toolpad/core";
 import { useState } from "react";
 

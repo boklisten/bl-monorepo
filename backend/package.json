@@ -28,7 +28,7 @@
     "#start/*": "./start/*.js",
     "#tests/*": "./tests/*.js",
     "#config/*": "./config/*.js",
-    "#shared/*": "./shared/src/*.js"
+    "#shared/*": "./shared/*.js"
   },
   "dependencies": {
     "@adonisjs/ally": "^5.0.2",

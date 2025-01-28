@@ -1,4 +1,4 @@
-import { UserDetail } from "@boklisten/backend/shared/src/user/user-detail/user-detail";
+import { UserDetail } from "@boklisten/backend/shared/user/user-detail/user-detail";
 import { Autocomplete, Box, TextField, Typography } from "@mui/material";
 import { useState } from "react";
 

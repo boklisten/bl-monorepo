@@ -1,4 +1,4 @@
-import { BlapiErrorResponse } from "@boklisten/backend/shared/src/blapi-response/blapi-error-response";
+import { BlapiErrorResponse } from "@boklisten/backend/shared/blapi-response/blapi-error-response";
 
 export type AuthResponse = {
   documentName: string;

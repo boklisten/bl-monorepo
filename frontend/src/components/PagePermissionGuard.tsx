@@ -1,6 +1,6 @@
 "use client";
 
-import { UserPermission } from "@boklisten/backend/shared/src/permission/user-permission";
+import { UserPermission } from "@boklisten/backend/shared/permission/user-permission";
 import { usePathname, useRouter } from "next/navigation";
 import { useCallback, useEffect } from "react";
 

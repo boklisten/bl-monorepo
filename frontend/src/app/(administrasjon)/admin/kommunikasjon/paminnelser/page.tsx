@@ -1,6 +1,6 @@
 "use client";
-import { CustomerItemType } from "@boklisten/backend/shared/src/customer-item/customer-item-type";
-import { MessageMethod } from "@boklisten/backend/shared/src/message/message-method/message-method";
+import { CustomerItemType } from "@boklisten/backend/shared/customer-item/customer-item-type";
+import { MessageMethod } from "@boklisten/backend/shared/message/message-method/message-method";
 import { Grid2 } from "@mui/material";
 import { useState } from "react";
 

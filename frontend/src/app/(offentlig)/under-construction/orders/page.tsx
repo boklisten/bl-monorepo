@@ -1,5 +1,5 @@
 "use client";
-import { Order } from "@boklisten/backend/shared/src/order/order";
+import { Order } from "@boklisten/backend/shared/order/order";
 import { Card } from "@mui/material";
 import { useEffect, useState } from "react";
 

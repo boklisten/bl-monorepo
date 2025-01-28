@@ -1,4 +1,4 @@
-import { UserPermission } from "@boklisten/backend/shared/src/permission/user-permission";
+import { UserPermission } from "@boklisten/backend/shared/permission/user-permission";
 import {
   AccountCircle,
   Business,

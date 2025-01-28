@@ -1,8 +1,8 @@
-import { CustomerItemType } from "@boklisten/backend/shared/src/customer-item/customer-item-type";
+import { CustomerItemType } from "@boklisten/backend/shared/customer-item/customer-item-type";
 import {
   MessageMethod,
   messageMethodToString,
-} from "@boklisten/backend/shared/src/message/message-method/message-method";
+} from "@boklisten/backend/shared/message/message-method/message-method";
 import { Button } from "@mui/material";
 
 export default function SendButton({

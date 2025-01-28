@@ -1,7 +1,7 @@
 import {
   StandMatchWithDetails,
   UserMatchWithDetails,
-} from "@boklisten/backend/shared/src/match/match-dtos";
+} from "@boklisten/backend/shared/match/match-dtos";
 import { Typography } from "@mui/material";
 import { ReactNode } from "react";
 

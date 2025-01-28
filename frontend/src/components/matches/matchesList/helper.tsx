@@ -1,4 +1,4 @@
-import { StandMatchWithDetails } from "@boklisten/backend/shared/src/match/match-dtos";
+import { StandMatchWithDetails } from "@boklisten/backend/shared/match/match-dtos";
 import { KeyboardDoubleArrowRight, SwapHoriz } from "@mui/icons-material";
 import { SxProps, Typography, Box } from "@mui/material";
 

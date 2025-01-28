@@ -1,4 +1,4 @@
-import { StandMatchWithDetails } from "@boklisten/backend/shared/src/match/match-dtos";
+import { StandMatchWithDetails } from "@boklisten/backend/shared/match/match-dtos";
 import { Box, Typography } from "@mui/material";
 import { FC } from "react";
 

@@ -1,5 +1,5 @@
-import { BlError } from "@boklisten/backend/shared/src/bl-error/bl-error";
-import { BlapiErrorResponse } from "@boklisten/backend/shared/src/blapi-response/blapi-error-response";
+import { BlError } from "@boklisten/backend/shared/bl-error/bl-error";
+import { BlapiErrorResponse } from "@boklisten/backend/shared/blapi-response/blapi-error-response";
 import { HTTP_METHOD } from "next/dist/server/web/http";
 
 import { fetchNewTokens, getAccessToken, haveAccessToken } from "@/api/token";

@@ -1,4 +1,4 @@
-import { EditableText } from "@boklisten/backend/shared/src/editable-text/editable-text";
+import { EditableText } from "@boklisten/backend/shared/editable-text/editable-text";
 
 import BlFetcher from "@/api/blFetcher";
 import BL_CONFIG from "@/utils/bl-config";

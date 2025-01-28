@@ -3,7 +3,7 @@ import mongoose from "mongoose";
 import { logger } from "#services/config/logger";
 import env from "#start/env";
 
-export default async function configureMongoose() {
+if (env.get("API_ENV") !== "test") {
   mongoose.connection.on("disconnected", () => {
     logger.error("mongoose connection was disconnected");
   });

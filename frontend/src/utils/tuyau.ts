@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/triple-slash-reference */
-// Type references
 
+// Type references
 /// <reference path="../../../backend/config/ally.ts" />
 /// <reference path="../../../backend/adonisrc.ts" />
 

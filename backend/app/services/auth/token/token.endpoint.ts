@@ -2,14 +2,13 @@ import router from "@adonisjs/core/services/router";
 
 import RefreshTokenValidator from "#services/auth/token/refresh/refresh-token.validator";
 import TokenHandler from "#services/auth/token/token.handler";
-import { createPath } from "#services/config/api-path";
 import BlResponseHandler from "#services/response/bl-response.handler";
 import { RefreshToken } from "#services/types/refresh-token";
 import { BlError } from "#shared/bl-error/bl-error";
 import { BlapiResponse } from "#shared/blapi-response/blapi-response";
 
 function generateEndpoint() {
-  router.post(createPath("token"), (ctx) => {
+  router.post("/token", (ctx) => {
     const refreshToken = ctx.request.body()["refreshToken"];
     if (refreshToken) {
       RefreshTokenValidator.validate(refreshToken).then(
@@ -52,7 +51,6 @@ function generateEndpoint() {
       );
     }
   });
-  return router;
 }
 const TokenEndpoint = {
   generateEndpoint,

@@ -4,7 +4,6 @@ import { Strategy } from "passport-local";
 
 import LocalLoginValidator from "#services/auth/local/local-login.validator";
 import TokenHandler from "#services/auth/token/token.handler";
-import { createPath } from "#services/config/api-path";
 import BlResponseHandler from "#services/response/bl-response.handler";
 import { BlError } from "#shared/bl-error/bl-error";
 import { BlapiResponse } from "#shared/blapi-response/blapi-response";
@@ -53,7 +52,7 @@ function createPassportStrategy() {
 }
 
 function createAuthLogin() {
-  router.post(createPath("auth/local/login"), (ctx) => {
+  router.post("/auth/local/login", (ctx) => {
     return new Promise((resolve) => {
       passport.authenticate(
         "local",
@@ -93,7 +92,7 @@ function createAuthLogin() {
 }
 
 function createAuthRegister() {
-  router.post(createPath("auth/local/register"), (ctx) => {
+  router.post("/auth/local/register", (ctx) => {
     return new Promise((resolve, reject) => {
       const username = ctx.request.body()["username"];
       LocalLoginValidator.create(

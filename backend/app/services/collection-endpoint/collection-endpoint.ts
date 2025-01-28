@@ -4,7 +4,6 @@ import router from "@adonisjs/core/services/router";
 import CollectionEndpointAuth from "#services/collection-endpoint/collection-endpoint-auth";
 import CollectionEndpointHandler from "#services/collection-endpoint/collection-endpoint-handler";
 import CollectionEndpointOperation from "#services/collection-endpoint/collection-endpoint-operation";
-import { createPath } from "#services/config/api-path";
 import BlResponseHandler from "#services/response/bl-response.handler";
 import { BlStorageData } from "#services/storage/bl-storage";
 import { BlApiRequest } from "#services/types/bl-api-request";
@@ -45,7 +44,7 @@ function createRequestHandler(
 }
 
 function create(endpoint: BlEndpoint, collection: BlCollection) {
-  const collectionUri = createPath(collection.storage.path);
+  const collectionUri = `/${collection.storage.path}`;
   let onRequest: (blApiRequest: BlApiRequest) => Promise<BlStorageData>;
   let checkDocumentPermission = false;
   let uri = collectionUri;

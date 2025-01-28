@@ -3,10 +3,6 @@ import { IncomingHttpHeaders } from "node:http";
 import { APP_CONFIG } from "#services/config/application-config";
 import env from "#start/env";
 
-export function createPath(customPath: string): string {
-  return env.get("SERVER_PATH") + customPath;
-}
-
 function retrieveBasePath(href: string) {
   const url = new URL(href);
   const host = url.host;

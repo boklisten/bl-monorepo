@@ -49,41 +49,47 @@ function create(endpoint: BlEndpoint, collection: BlCollection) {
   let checkDocumentPermission = false;
   let uri = collectionUri;
   let createRoute: (path: string, handler: (ctx: HttpContext) => void) => void;
+  const routeName = `collection.${collection.storage.path}.${endpoint.method}`;
 
   switch (endpoint.method) {
     case "getAll": {
-      createRoute = (path, handler) => router.get(path, handler);
+      createRoute = (path, handler) => router.get(path, handler).as(routeName);
       onRequest = CollectionEndpointHandler.onGetAll(collection, endpoint);
       break;
     }
     case "getId": {
       uri += "/:id";
-      createRoute = (path, handler) => router.get(path, handler);
+      createRoute = (path, handler) =>
+        router
+          .get(path, handler)
+          .as(`collection.${collection.storage.path}.getId`);
       onRequest = CollectionEndpointHandler.onGetId(collection);
       break;
     }
     case "post": {
-      createRoute = (path, handler) => router.post(path, handler);
+      createRoute = (path, handler) => router.post(path, handler).as(routeName);
       onRequest = CollectionEndpointHandler.onPost(collection);
       break;
     }
     case "patch": {
       uri += "/:id";
-      createRoute = (path, handler) => router.patch(path, handler);
+      createRoute = (path, handler) =>
+        router.patch(path, handler).as(routeName);
       onRequest = CollectionEndpointHandler.onPatch(collection);
       checkDocumentPermission = true;
       break;
     }
     case "delete": {
       uri += "/:id";
-      createRoute = (path, handler) => router.delete(path, handler);
+      createRoute = (path, handler) =>
+        router.delete(path, handler).as(routeName);
       onRequest = CollectionEndpointHandler.onDelete(collection);
       checkDocumentPermission = true;
       break;
     }
     case "put": {
       uri += "/:id";
-      createRoute = (path, handler) => router.put(path, handler);
+      createRoute = (path, handler) => router.put(path, handler).as(routeName);
       onRequest = CollectionEndpointHandler.onPut(collection);
       checkDocumentPermission = true;
       break;
@@ -108,7 +114,7 @@ function create(endpoint: BlEndpoint, collection: BlCollection) {
   if (endpoint.operations) {
     for (const operation of endpoint.operations) {
       CollectionEndpointOperation.create(
-        collectionUri,
+        collection.storage.path,
         endpoint.method,
         operation,
       );

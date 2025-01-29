@@ -53,30 +53,32 @@ function createRequestHandler(operation: BlEndpointOperation) {
 }
 
 function create(
-  collectionUri: string,
+  collectionName: string,
   method: BlEndpointMethod,
   operation: BlEndpointOperation,
 ) {
+  const collectionUri = `/${collectionName}`;
   const uri = createUri(collectionUri, operation.name, method);
+  const routeName = `collection.${collectionName}.operation.${operation.name}.${method}`;
   switch (method) {
     case "getId": {
-      router.get(uri, createRequestHandler(operation));
+      router.get(uri, createRequestHandler(operation)).as(routeName);
       break;
     }
     case "getAll": {
-      router.get(uri, createRequestHandler(operation));
+      router.get(uri, createRequestHandler(operation)).as(routeName);
       break;
     }
     case "patch": {
-      router.patch(uri, createRequestHandler(operation));
+      router.patch(uri, createRequestHandler(operation)).as(routeName);
       break;
     }
     case "post": {
-      router.post(uri, createRequestHandler(operation));
+      router.post(uri, createRequestHandler(operation)).as(routeName);
       break;
     }
     case "put": {
-      router.put(uri, createRequestHandler(operation));
+      router.put(uri, createRequestHandler(operation)).as(routeName);
       break;
     }
     default: {

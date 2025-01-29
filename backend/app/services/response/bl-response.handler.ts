@@ -5,11 +5,11 @@ import BlErrorHandler from "#services/bl-error/bl-error.handler";
 import { BlapiErrorResponse } from "#shared/blapi-response/blapi-error-response";
 import { BlapiResponse } from "#shared/blapi-response/blapi-response";
 
-function createErrorResponse(ctx: HttpContext, blError: unknown) {
+function createErrorResponse({ response }: HttpContext, blError: unknown) {
   const blapiErrorRes: BlapiErrorResponse =
     BlErrorHandler.createBlapiErrorResponse(blError);
 
-  ctx.response.status(blapiErrorRes.httpStatus);
+  response.status(blapiErrorRes.httpStatus);
   if (blapiErrorRes.httpStatus === 200) {
     return new BlapiResponse(blapiErrorRes.data);
   }

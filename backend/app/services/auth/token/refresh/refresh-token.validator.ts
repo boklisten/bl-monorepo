@@ -1,9 +1,9 @@
-import jwt from "jsonwebtoken";
+import jwt, { JwtPayload } from "jsonwebtoken";
 
 import { BlError } from "#shared/bl-error/bl-error";
 import env from "#start/env";
 
-function validate(refreshToken: string) {
+function validate(refreshToken: string): Promise<JwtPayload> {
   return new Promise((resolve, reject) => {
     try {
       jwt.verify(
@@ -12,7 +12,7 @@ function validate(refreshToken: string) {
         (error, payload) => {
           if (error)
             return reject(new BlError("could not validate token").code(909));
-          resolve(payload);
+          resolve(payload as JwtPayload);
         },
       );
     } catch (error) {

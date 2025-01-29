@@ -1,6 +1,5 @@
 import { Order } from "@boklisten/backend/shared/order/order";
 import { Payment } from "@boklisten/backend/shared/payment/payment";
-import { LoadingButton } from "@mui/lab";
 import {
   Box,
   Card,
@@ -132,12 +131,12 @@ const OrderHistory = ({ orders }: { orders: Order[] }) => {
                         Ordredetaljer
                       </Typography>
                       <Button onClick={() => setOpenOrder("")}>Lukk</Button>
-                      <LoadingButton
+                      <Button
                         loading={wait}
                         onClick={() => printReceipt(order.id)}
                       >
                         Skriv ut kvittering
-                      </LoadingButton>
+                      </Button>
                       <Table>
                         <TableBody>
                           <TableRow>

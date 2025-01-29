@@ -1,4 +1,4 @@
-import { LoadingButton } from "@mui/lab";
+import { Button } from "@mui/material";
 
 const FixedSuccessButton = ({
   label,
@@ -9,7 +9,7 @@ const FixedSuccessButton = ({
   loading?: boolean;
   onClick: () => unknown;
 }) => (
-  <LoadingButton
+  <Button
     color="success"
     variant="contained"
     sx={{ position: "fixed", bottom: 1, zIndex: 10 }}
@@ -17,7 +17,7 @@ const FixedSuccessButton = ({
     onClick={onClick}
   >
     {label}
-  </LoadingButton>
+  </Button>
 );
 
 export default FixedSuccessButton;

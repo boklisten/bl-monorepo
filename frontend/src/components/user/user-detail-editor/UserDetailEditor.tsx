@@ -1,7 +1,6 @@
 "use client";
 import { UserDetail } from "@boklisten/backend/shared/user/user-detail/user-detail";
-import { LoadingButton } from "@mui/lab";
-import { Alert, Divider, Stack, Typography } from "@mui/material";
+import { Alert, Button, Divider, Stack, Typography } from "@mui/material";
 import Box from "@mui/material/Box";
 import Checkbox from "@mui/material/Checkbox";
 import Container from "@mui/material/Container";
@@ -121,7 +120,7 @@ const UserDetailEditor = ({
               Brukerinnstillingene ble oppdatert
             </Alert>
           )}
-          <LoadingButton
+          <Button
             loading={isSubmitting}
             data-testid="submit-button"
             type="submit"
@@ -130,7 +129,7 @@ const UserDetailEditor = ({
             sx={{ mt: 3, mb: 2 }}
           >
             {isSignUp ? "Registrer deg" : "Lagre"}
-          </LoadingButton>
+          </Button>
           {isSignUp && (
             <DynamicLink href={"/auth/login"}>
               Har du allerede en konto? Logg inn

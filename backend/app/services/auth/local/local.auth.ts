@@ -63,7 +63,7 @@ function createAuthLogin() {
         ) => {
           if (blError && !(blError instanceof BlError)) {
             blError = new BlError("unknown error").code(500);
-            return BlResponseHandler.sendErrorResponse(ctx, blError);
+            resolve(BlResponseHandler.createErrorResponse(ctx, blError));
           }
 
           if (error) {
@@ -71,7 +71,7 @@ function createAuthLogin() {
           }
 
           if (!jwTokens) {
-            return BlResponseHandler.sendErrorResponse(ctx, blError);
+            resolve(BlResponseHandler.createErrorResponse(ctx, blError));
           }
 
           resolve(
@@ -110,24 +110,33 @@ function createAuthRegister() {
               );
             },
             (createTokensError: BlError) => {
-              BlResponseHandler.sendErrorResponse(
-                ctx,
-                new BlError("could not create tokens")
-                  .add(createTokensError)
-                  .code(906),
+              resolve(
+                BlResponseHandler.createErrorResponse(
+                  ctx,
+                  new BlError("could not create tokens")
+                    .add(createTokensError)
+                    .code(906),
+                ),
               );
             },
           );
         },
         (loginValidatorCreateError: BlError) => {
           if (loginValidatorCreateError.getCode() === 903) {
-            BlResponseHandler.sendErrorResponse(ctx, loginValidatorCreateError); // TODO: check these
+            resolve(
+              BlResponseHandler.createErrorResponse(
+                ctx,
+                loginValidatorCreateError,
+              ),
+            );
           } else {
-            BlResponseHandler.sendErrorResponse(
-              ctx,
-              new BlError("could not create user")
-                .add(loginValidatorCreateError)
-                .code(907),
+            resolve(
+              BlResponseHandler.createErrorResponse(
+                ctx,
+                new BlError("could not create user")
+                  .add(loginValidatorCreateError)
+                  .code(907),
+              ),
             );
           }
           reject(loginValidatorCreateError);

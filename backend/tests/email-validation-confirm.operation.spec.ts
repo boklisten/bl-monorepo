@@ -5,7 +5,6 @@ import sinon, { createSandbox } from "sinon";
 
 import { EmailValidation } from "#services/collections/email-validation/email-validation";
 import { EmailValidationConfirmOperation } from "#services/collections/email-validation/operations/email-validation-confirm.operation";
-import BlResponseHandler from "#services/response/bl-response.handler";
 import { BlStorage } from "#services/storage/bl-storage";
 import { BlError } from "#shared/bl-error/bl-error";
 import { BlapiResponse } from "#shared/blapi-response/blapi-response";
@@ -17,7 +16,6 @@ should();
 test.group("EmailValidationConfirmOperation", (group) => {
   const emailValidationConfirmOperation = new EmailValidationConfirmOperation();
   let sandbox: sinon.SinonSandbox;
-  let resHandlerSendErrorStub: sinon.SinonStub;
 
   const testUserDetail: UserDetail = {
     id: "userDetail1",
@@ -50,11 +48,6 @@ test.group("EmailValidationConfirmOperation", (group) => {
 
       return Promise.resolve(testUserDetail);
     });
-
-    resHandlerSendErrorStub = sandbox.stub(
-      BlResponseHandler,
-      "sendErrorResponse",
-    );
   });
   group.each.teardown(() => {
     sandbox.restore();
@@ -67,7 +60,6 @@ test.group("EmailValidationConfirmOperation", (group) => {
       .run(blApiRequest)
       .catch((blError: BlError) => {
         expect(blError.getMsg()).to.be.eql(`no documentId provided`);
-        return expect(resHandlerSendErrorStub.called);
       });
   });
 

@@ -143,21 +143,6 @@ test.group("UserDetailValidOperation", (group) => {
     );
     assert.deepEqual(response, expected);
   });
-  /*
-			test('should resolve with valid false if emailConfirmed is not true', async () => {
-				testUserDetail.emailConfirmed = false;
-				let blApiRequest: BlApiRequest = {
-					documentId: 'userDetail1'
-				};
-
-				userDetailValidOperation.run(blApiRequest, null, null).then(() => {
-					return expect( resHandlerSendResponseStub)
-						.to.have.been
-						.calledWith(null, new BlapiResponse([{valid: false, invalidFields: ['emailConfirmed']}]));
-
-				})
-			});
-      */
 
   test("should resolve with valid false if dob is not defined", async ({
     assert,

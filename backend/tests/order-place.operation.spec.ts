@@ -8,7 +8,6 @@ import { OrderToCustomerItemGenerator } from "#services/collections/customer-ite
 import { OrderPlacedHandler } from "#services/collections/order/helpers/order-placed-handler/order-placed-handler";
 import { OrderValidator } from "#services/collections/order/helpers/order-validator/order-validator";
 import { OrderPlaceOperation } from "#services/collections/order/operations/place/order-place.operation";
-import BlResponseHandler from "#services/response/bl-response.handler";
 import { BlStorage } from "#services/storage/bl-storage";
 import { Signature } from "#services/storage/models/signature.model";
 import { BlError } from "#shared/bl-error/bl-error";
@@ -46,7 +45,6 @@ test.group("OrderPlaceOperation", (group) => {
   group.each.setup(() => {
     sandbox = createSandbox();
     placeOrderStub = sandbox.stub(orderPlacedHandler, "placeOrder");
-    sandbox.stub(BlResponseHandler, "sendResponse");
     getOrderStub = sandbox.stub(BlStorage.Orders, "get");
     sandbox.stub(BlStorage.CustomerItems, "get");
     aggregateCustomerItemsStub = sandbox.stub(

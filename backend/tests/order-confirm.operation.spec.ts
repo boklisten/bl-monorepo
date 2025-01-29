@@ -5,7 +5,6 @@ import sinon, { createSandbox } from "sinon";
 
 import { OrderPlacedHandler } from "#services/collections/order/helpers/order-placed-handler/order-placed-handler";
 import { OrderConfirmOperation } from "#services/collections/order/operations/confirm/order-confirm.operation";
-import BlResponseHandler from "#services/response/bl-response.handler";
 import { BlStorage } from "#services/storage/bl-storage";
 import { BlError } from "#shared/bl-error/bl-error";
 chaiUse(chaiAsPromised);
@@ -23,7 +22,6 @@ test.group("OrderConfirmOperation", (group) => {
     sandbox = createSandbox();
     orderGetStub = sandbox.stub(BlStorage.Orders, "get");
     sandbox.stub(orderPlacedHandler, "placeOrder");
-    sandbox.stub(BlResponseHandler, "sendResponse");
   });
   group.each.teardown(() => {
     sandbox.restore();

@@ -26,7 +26,7 @@ function createUri(
   return uri;
 }
 
-function createExpressRequestHandler(operation: BlEndpointOperation) {
+function createRequestHandler(operation: BlEndpointOperation) {
   return async function handleRequest(ctx: HttpContext) {
     try {
       const accessToken = await CollectionEndpointAuth.authenticate(
@@ -45,10 +45,9 @@ function createExpressRequestHandler(operation: BlEndpointOperation) {
             }
           : undefined,
       };
-      const operationResponse = await operation.operation.run(blApiRequest);
-      BlResponseHandler.sendResponse(ctx, operationResponse);
+      return await operation.operation.run(blApiRequest);
     } catch (error) {
-      BlResponseHandler.sendErrorResponse(ctx, error);
+      return BlResponseHandler.createErrorResponse(ctx, error);
     }
   };
 }
@@ -61,23 +60,23 @@ function create(
   const uri = createUri(collectionUri, operation.name, method);
   switch (method) {
     case "getId": {
-      router.get(uri, createExpressRequestHandler(operation));
+      router.get(uri, createRequestHandler(operation));
       break;
     }
     case "getAll": {
-      router.get(uri, createExpressRequestHandler(operation));
+      router.get(uri, createRequestHandler(operation));
       break;
     }
     case "patch": {
-      router.patch(uri, createExpressRequestHandler(operation));
+      router.patch(uri, createRequestHandler(operation));
       break;
     }
     case "post": {
-      router.post(uri, createExpressRequestHandler(operation));
+      router.post(uri, createRequestHandler(operation));
       break;
     }
     case "put": {
-      router.put(uri, createExpressRequestHandler(operation));
+      router.put(uri, createRequestHandler(operation));
       break;
     }
     default: {

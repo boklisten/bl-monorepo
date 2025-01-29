@@ -36,9 +36,9 @@ function createRequestHandler(
           onRequest,
         });
 
-      BlResponseHandler.sendResponse(ctx, new BlapiResponse(responseData));
+      return new BlapiResponse(responseData);
     } catch (error) {
-      BlResponseHandler.sendErrorResponse(ctx, error);
+      return BlResponseHandler.createErrorResponse(ctx, error);
     }
   };
 }

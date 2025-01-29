@@ -5,7 +5,6 @@ import sinon from "sinon";
 
 import { CustomerItemActiveBlid } from "#services/collections/customer-item/helpers/customer-item-active-blid";
 import { UniqueItemActiveOperation } from "#services/collections/unique-item/operations/unique-item-active.operation";
-import BlResponseHandler from "#services/response/bl-response.handler";
 import { BlStorage } from "#services/storage/bl-storage";
 import { UniqueItem } from "#shared/unique-item/unique-item";
 
@@ -25,7 +24,6 @@ test.group("UniqueItemActiveOperation", (group) => {
 
   group.each.setup(() => {
     sandbox = sinon.createSandbox();
-    sandbox.stub(BlResponseHandler, "sendResponse").resolves(true);
     getActiveCustomerItemsStub = sandbox.stub(
       customerItemActiveBlid,
       "getActiveCustomerItems",

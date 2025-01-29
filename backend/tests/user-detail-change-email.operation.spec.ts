@@ -5,7 +5,6 @@ import sinon, { createSandbox } from "sinon";
 
 import UserHandler from "#services/auth/user/user.handler";
 import { UserDetailChangeEmailOperation } from "#services/collections/user-detail/operations/change-email/user-detail-change-email.operation";
-import BlResponseHandler from "#services/response/bl-response.handler";
 import { BlStorage } from "#services/storage/bl-storage";
 import { LocalLogin } from "#services/types/local-login";
 import { User } from "#services/types/user";
@@ -24,7 +23,6 @@ test.group("UserDetailChangeEmailOperation", (group) => {
   let userHandlerGetByUsernameStub: sinon.SinonStub;
   let localLoginAggregateStub: sinon.SinonStub;
   let localLoginUpdateStub: sinon.SinonStub;
-  let resHandlerSendResponseStub: sinon.SinonStub;
   let sandbox: sinon.SinonSandbox;
 
   group.each.setup(() => {
@@ -36,10 +34,6 @@ test.group("UserDetailChangeEmailOperation", (group) => {
     userHandlerGetByUsernameStub = sandbox.stub(UserHandler, "getByUsername");
     localLoginAggregateStub = sandbox.stub(BlStorage.LocalLogins, "aggregate");
     localLoginUpdateStub = sandbox.stub(BlStorage.LocalLogins, "update");
-    resHandlerSendResponseStub = sandbox.stub(
-      BlResponseHandler,
-      "sendResponse",
-    );
   });
   group.each.teardown(() => {
     sandbox.restore();
@@ -271,7 +265,6 @@ test.group("UserDetailChangeEmailOperation", (group) => {
     userDetailUpdateStub.resolves({} as UserDetail);
     userUpdateStub.resolves({} as User);
     localLoginUpdateStub.resolves({} as LocalLogin);
-    resHandlerSendResponseStub.resolves(true);
 
     return assert.doesNotReject(() =>
       userDetailChangeEmailOperation.run({

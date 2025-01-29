@@ -4,7 +4,6 @@ import chaiAsPromised from "chai-as-promised";
 import sinon, { createSandbox } from "sinon";
 
 import { UserDetailPermissionOperation } from "#services/collections/user-detail/operations/permission/user-detail-permission.operation";
-import BlResponseHandler from "#services/response/bl-response.handler";
 import { BlStorage } from "#services/storage/bl-storage";
 import { User } from "#services/types/user";
 import { BlError } from "#shared/bl-error/bl-error";
@@ -18,7 +17,6 @@ test.group("UserDetailPermissionOperation", (group) => {
   let userAggregateStub: sinon.SinonStub;
   let userDetailGetStub: sinon.SinonStub;
   let userUpdateStub: sinon.SinonStub;
-  let resHandlerStub: sinon.SinonStub;
   let sandbox: sinon.SinonSandbox;
 
   group.each.setup(() => {
@@ -26,7 +24,6 @@ test.group("UserDetailPermissionOperation", (group) => {
     userAggregateStub = sandbox.stub(BlStorage.Users, "aggregate");
     userDetailGetStub = sandbox.stub(BlStorage.UserDetails, "get");
     userUpdateStub = sandbox.stub(BlStorage.Users, "update");
-    resHandlerStub = sandbox.stub(BlResponseHandler, "sendResponse");
   });
   group.each.teardown(() => {
     sandbox.restore();
@@ -169,7 +166,6 @@ test.group("UserDetailPermissionOperation", (group) => {
       { id: "userDetail1", permission: "customer" } as User,
     ]);
     userUpdateStub.resolves({} as User);
-    resHandlerStub.resolves(true);
 
     return assert.doesNotReject(() =>
       userDetailPermissionOperation.run({

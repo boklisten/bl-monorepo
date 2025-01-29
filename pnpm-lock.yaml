@@ -190,6 +190,9 @@ importers:
       '@swc/core':
         specifier: ^1.10.11
         version: 1.10.11(@swc/helpers@0.5.15)
+      '@tuyau/utils':
+        specifier: ^0.0.6
+        version: 0.0.6
       '@types/chai':
         specifier: ^5.0.1
         version: 5.0.1

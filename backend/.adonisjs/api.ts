@@ -30,6 +30,20 @@ type AuthIdCallbackGetHead = {
     false
   >;
 };
+type AuthLocalLoginPost = {
+  request: unknown;
+  response: MakeTuyauResponse<
+    import("../app/controllers/auth/local_controller.ts").default["login"],
+    false
+  >;
+};
+type AuthLocalRegisterPost = {
+  request: unknown;
+  response: MakeTuyauResponse<
+    import("../app/controllers/auth/local_controller.ts").default["register"],
+    false
+  >;
+};
 export interface ApiDefinition {
   token: {
     $url: {};
@@ -46,6 +60,16 @@ export interface ApiDefinition {
         $url: {};
         $get: AuthIdCallbackGetHead;
         $head: AuthIdCallbackGetHead;
+      };
+    };
+    local: {
+      login: {
+        $url: {};
+        $post: AuthLocalLoginPost;
+      };
+      register: {
+        $url: {};
+        $post: AuthLocalRegisterPost;
       };
     };
   };
@@ -71,6 +95,20 @@ const routes = [
     path: "/auth/:provider/callback",
     method: ["GET", "HEAD"],
     types: {} as AuthIdCallbackGetHead,
+  },
+  {
+    params: [],
+    name: "auth.local.login",
+    path: "/auth/local/login",
+    method: ["POST"],
+    types: {} as AuthLocalLoginPost,
+  },
+  {
+    params: [],
+    name: "auth.local.register",
+    path: "/auth/local/register",
+    method: ["POST"],
+    types: {} as AuthLocalRegisterPost,
   },
 ] as const;
 export const api = {

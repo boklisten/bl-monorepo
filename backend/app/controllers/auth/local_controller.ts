@@ -1,4 +1,6 @@
-import router from "@adonisjs/core/services/router";
+// import type { HttpContext } from '@adonisjs/core/http'
+
+import { HttpContext } from "@adonisjs/core/http";
 import passport from "passport";
 import { Strategy } from "passport-local";
 
@@ -8,52 +10,52 @@ import BlResponseHandler from "#services/response/bl-response.handler";
 import { BlError } from "#shared/bl-error/bl-error";
 import { BlapiResponse } from "#shared/blapi-response/blapi-response";
 
-function createPassportStrategy() {
-  passport.use(
-    new Strategy({ session: false }, (username, password, done) => {
-      const normalizedUsername = username.toLowerCase().replace(" ", "");
-      LocalLoginValidator.validate(normalizedUsername, password).then(
-        () => {
-          TokenHandler.createTokens(normalizedUsername).then(
-            (tokens: { accessToken: string; refreshToken: string }) => {
-              done(null, tokens);
-            },
-            (createTokensError: BlError) => {
-              done(
-                null,
-                false,
-                new BlError("error when trying to create tokens")
-                  .code(906)
-                  .add(createTokensError),
-              );
-            },
-          );
-        },
-        (validateError: BlError) => {
-          return validateError.getCode() === 908 ||
-            validateError.getCode() === 901 ||
-            validateError.getCode() === 702
-            ? done(
-                null,
-                false,
-                new BlError("username or password is wrong")
-                  .code(908)
-                  .add(validateError),
-              )
-            : done(
-                null,
-                false,
-                new BlError("could not login").code(900).add(validateError),
-              );
-        },
-      );
-    }),
-  );
-}
+export default class LocalController {
+  constructor() {
+    passport.use(
+      new Strategy({ session: false }, (username, password, done) => {
+        const normalizedUsername = username.toLowerCase().replace(" ", "");
+        LocalLoginValidator.validate(normalizedUsername, password).then(
+          () => {
+            TokenHandler.createTokens(normalizedUsername).then(
+              (tokens: { accessToken: string; refreshToken: string }) => {
+                done(null, tokens);
+              },
+              (createTokensError: BlError) => {
+                done(
+                  null,
+                  false,
+                  new BlError("error when trying to create tokens")
+                    .code(906)
+                    .add(createTokensError),
+                );
+              },
+            );
+          },
+          (validateError: BlError) => {
+            return validateError.getCode() === 908 ||
+              validateError.getCode() === 901 ||
+              validateError.getCode() === 702
+              ? done(
+                  null,
+                  false,
+                  new BlError("username or password is wrong")
+                    .code(908)
+                    .add(validateError),
+                )
+              : done(
+                  null,
+                  false,
+                  new BlError("could not login").code(900).add(validateError),
+                );
+          },
+        );
+      }),
+    );
+  }
 
-function createAuthLogin() {
-  router.post("/auth/local/login", (ctx) => {
-    return new Promise((resolve) => {
+  async login(ctx: HttpContext) {
+    return new Promise((resolve, reject) => {
       passport.authenticate(
         "local",
         (
@@ -71,7 +73,7 @@ function createAuthLogin() {
           }
 
           if (!jwTokens) {
-            resolve(BlResponseHandler.createErrorResponse(ctx, blError));
+            reject(BlResponseHandler.createErrorResponse(ctx, blError));
           }
 
           resolve(
@@ -88,11 +90,9 @@ function createAuthLogin() {
         },
       });
     });
-  });
-}
+  }
 
-function createAuthRegister() {
-  router.post("/auth/local/register", (ctx) => {
+  async register(ctx: HttpContext) {
     return new Promise((resolve, reject) => {
       const username = ctx.request.body()["username"];
       LocalLoginValidator.create(
@@ -143,14 +143,5 @@ function createAuthRegister() {
         },
       );
     });
-  });
+  }
 }
-
-const LocalAuth = {
-  generateEndpoints: () => {
-    createPassportStrategy();
-    createAuthRegister();
-    createAuthLogin();
-  },
-};
-export default LocalAuth;

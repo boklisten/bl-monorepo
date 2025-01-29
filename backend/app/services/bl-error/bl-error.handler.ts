@@ -1,4 +1,5 @@
-import { logger } from "#services/config/logger";
+import logger from "@adonisjs/core/services/logger";
+
 import { BlError } from "#shared/bl-error/bl-error";
 import { BlapiErrorResponse } from "#shared/blapi-response/blapi-error-response";
 
@@ -36,22 +37,22 @@ function printError(error: unknown) {
       }
     }
 
-    logger.verbose(
+    logger.info(
       `! (${error.getCode()}): ${error.getMsg()}` +
         (error.stack ? `, stack:\n${error.stack}` : ""),
     );
 
     if (error.getStore() && error.getStore().length > 0) {
       for (const storeData of error.getStore()) {
-        logger.verbose(
+        logger.info(
           `! (${error.getCode()}) ${JSON.stringify(storeData.value)}`,
         );
       }
     }
   } else if (error instanceof Error) {
-    logger.verbose(`! (err) ${error.message}\n${error.stack}`);
+    logger.info(`! (err) ${error.message}\n${error.stack}`);
   } else {
-    logger.verbose(`! (???) ${error}`);
+    logger.info(`! (???) ${error}`);
   }
 }
 

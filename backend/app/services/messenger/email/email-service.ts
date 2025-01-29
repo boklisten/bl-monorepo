@@ -1,3 +1,4 @@
+import logger from "@adonisjs/core/services/logger";
 import { EmailHandler } from "@boklisten/bl-email";
 import {
   ItemList,
@@ -9,7 +10,6 @@ import {
 import sgMail from "@sendgrid/mail";
 
 import { DateService } from "#services/blc/date.service";
-import { logger } from "#services/config/logger";
 import { EMAIL_SETTINGS } from "#services/messenger/email/email-settings";
 import { OrderEmailHandler } from "#services/messenger/email/order-email/order-email-handler";
 import { MessengerService } from "#services/messenger/messenger-service";

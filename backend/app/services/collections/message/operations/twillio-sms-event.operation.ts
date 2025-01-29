@@ -1,4 +1,5 @@
-import { logger } from "#services/config/logger";
+import logger from "@adonisjs/core/services/logger";
+
 import { BlStorage } from "#services/storage/bl-storage";
 import { BlApiRequest } from "#services/types/bl-api-request";
 import { Operation } from "#services/types/operation";
@@ -67,7 +68,7 @@ export class TwilioSmsEventOperation implements Operation {
 
     await BlStorage.Messages.update(message.id, { smsEvents: newSmsEvents });
 
-    logger.silly(
+    logger.trace(
       // @ts-expect-error fixme bad types
       `updated message "${message.id}" with sms event: "${smsEvent["status"]}"`,
     );

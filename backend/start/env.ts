@@ -14,15 +14,15 @@ import { Env } from "@adonisjs/core/env";
 export default await Env.create(new URL("../", import.meta.url), {
   APP_KEY: Env.schema.string(),
   PORT: Env.schema.number(),
-  API_ENV: Env.schema.enum(["dev", "test", "staging", "production"]),
-  // fixme: Currently used for Winston, consider updating when using Adonis Logger
+  API_ENV: Env.schema.enum(["dev", "test", "staging", "production"] as const),
   LOG_LEVEL: Env.schema.enum([
-    "silly",
-    "debug",
-    "verbose",
-    "info",
-    "warn",
+    "fatal",
     "error",
+    "warn",
+    "info",
+    "debug",
+    "trace",
+    "silent",
   ] as const),
   URI_WHITELIST: Env.schema.string(),
   ACCESS_TOKEN_SECRET: Env.schema.string(),

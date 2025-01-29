@@ -1,6 +1,6 @@
+import logger from "@adonisjs/core/services/logger";
 import twilio from "twilio";
 
-import { logger } from "#services/config/logger";
 import env from "#start/env";
 
 const client = twilio(

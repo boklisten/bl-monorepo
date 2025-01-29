@@ -1,4 +1,5 @@
-import { logger } from "#services/config/logger";
+import logger from "@adonisjs/core/services/logger";
+
 import { BlStorage } from "#services/storage/bl-storage";
 import { BlApiRequest } from "#services/types/bl-api-request";
 import { Operation } from "#services/types/operation";
@@ -67,7 +68,7 @@ export class SendgridEventOperation implements Operation {
       events: newSendgridEvents,
     });
 
-    logger.silly(
+    logger.trace(
       `updated message "${message.id}" with sendgrid event: "${sendgridEvent["event"]}"`,
     );
 

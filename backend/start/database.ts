@@ -1,6 +1,6 @@
+import logger from "@adonisjs/core/services/logger";
 import mongoose from "mongoose";
 
-import { logger } from "#services/config/logger";
 import env from "#start/env";
 
 if (env.get("API_ENV") !== "test") {

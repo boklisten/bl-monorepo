@@ -1,8 +1,8 @@
+import logger from "@adonisjs/core/services/logger";
 import { stringify } from "qs";
 import request from "request";
 import rp from "request-promise";
 
-import { logger } from "#services/config/logger";
 import { BlError } from "#shared/bl-error/bl-error";
 
 // fixme: request and request-promise is deprecated, rewrite to use fetch
@@ -26,7 +26,7 @@ function post(
     logger.debug(`R-> POST ${url}`);
     request.post(options, (error, res, body) => {
       if (error) {
-        logger.verbose(`<-R ERROR ${error}`);
+        logger.info(`<-R ERROR ${error}`);
         return reject(new BlError(`error on request to "${url}"`));
       }
 
@@ -35,7 +35,7 @@ function post(
           return resolve(body);
         }
 
-        logger.verbose(`<-R ERROR ${error}`);
+        logger.info(`<-R ERROR ${error}`);
 
         return reject(
           new BlError(
@@ -66,7 +66,7 @@ function getWithQuery(
         resolve(jsonResponse);
       })
       .catch((error: unknown) => {
-        logger.verbose(`<-R ERROR ${error}`);
+        logger.info(`<-R ERROR ${error}`);
 
         reject(
           new BlError("could not get page with query")
@@ -97,7 +97,7 @@ function get(url: string, authorization?: string): Promise<unknown> {
         resolve(jsonResponse);
       })
       .catch((error: unknown) => {
-        logger.verbose(`<-R ERROR ${error}`);
+        logger.info(`<-R ERROR ${error}`);
 
         reject(
           new BlError(`could not get the requested resource at "${url}"`).store(

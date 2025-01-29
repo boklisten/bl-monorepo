@@ -1,3 +1,4 @@
+import logger from "@adonisjs/core/services/logger";
 import {
   FilterQuery,
   Model,
@@ -9,7 +10,6 @@ import {
 } from "mongoose";
 
 import { PermissionService } from "#services/auth/permission.service";
-import { logger } from "#services/config/logger";
 import { ExpandFilter } from "#services/query/db-query-expand-filter";
 import { SEDbQuery } from "#services/query/se.db-query";
 import { BlModel } from "#services/storage/bl-storage";
@@ -51,7 +51,7 @@ export class MongodbHandler<T extends BlDocument> {
     databaseQuery: SEDbQuery,
     allowedNestedDocuments?: NestedDocument[],
   ): Promise<T[]> {
-    logger.silly(
+    logger.trace(
       `mongoose.find(${JSON.stringify(databaseQuery.getFilter())}, ${JSON.stringify(
         databaseQuery.getOgFilter(),
       )}).limit(${databaseQuery.getLimitFilter()}).skip(${databaseQuery.getSkipFilter()}).sort(${JSON.stringify(

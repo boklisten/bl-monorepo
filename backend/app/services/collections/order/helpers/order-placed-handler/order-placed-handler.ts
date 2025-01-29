@@ -1,8 +1,9 @@
+import logger from "@adonisjs/core/services/logger";
+
 import { CustomerItemHandler } from "#services/collections/customer-item/helpers/customer-item-handler";
 import { OrderItemMovedFromOrderHandler } from "#services/collections/order/helpers/order-item-moved-from-order-handler/order-item-moved-from-order-handler";
 import { PaymentHandler } from "#services/collections/payment/helpers/payment-handler";
 import { userHasValidSignature } from "#services/collections/signature/helpers/signature.helper";
-import { logger } from "#services/config/logger";
 import Messenger from "#services/messenger/messenger";
 import { BlStorage } from "#services/storage/bl-storage";
 import { BlError } from "#shared/bl-error/bl-error";

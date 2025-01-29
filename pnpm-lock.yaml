@@ -165,9 +165,6 @@ importers:
       validator:
         specifier: ^13.12.0
         version: 13.12.0
-      winston:
-        specifier: ^3.17.0
-        version: 3.17.0
     devDependencies:
       '@adonisjs/assembler':
         specifier: ^7.8.2

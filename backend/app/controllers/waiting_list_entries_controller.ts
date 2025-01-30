@@ -6,30 +6,34 @@ import { BlStorage } from "#services/storage/bl-storage";
 import { waitingListEntryValidator } from "#validators/waiting_list";
 
 async function canAccess(ctx: HttpContext) {
-  const accessToken = await CollectionEndpointAuth.authenticate(
-    { permission: "employee" },
-    ctx,
-  );
-  return !!(
-    accessToken &&
-    PermissionService.isPermissionEqualOrOver(
-      accessToken?.permission,
-      "employee",
-    )
-  );
+  try {
+    const accessToken = await CollectionEndpointAuth.authenticate(
+      { permission: "employee" },
+      ctx,
+    );
+    return !!(
+      accessToken &&
+      PermissionService.isPermissionEqualOrOver(
+        accessToken?.permission,
+        "employee",
+      )
+    );
+  } catch {
+    return false;
+  }
 }
 
 export default class WaitingListEntriesController {
   async getAllWaitingListEntries(ctx: HttpContext) {
     if (!(await canAccess(ctx))) {
-      return ctx.response.status(401);
+      return ctx.response.unauthorized();
     }
     return await BlStorage.WaitingListEntries.getAll();
   }
 
   async addWaitingListEntry(ctx: HttpContext) {
     if (!(await canAccess(ctx))) {
-      return ctx.response.status(401);
+      return ctx.response.unauthorized();
     }
     const newEntry = await ctx.request.validateUsing(waitingListEntryValidator);
     return await BlStorage.WaitingListEntries.add({ id: "", ...newEntry });
@@ -37,7 +41,7 @@ export default class WaitingListEntriesController {
 
   async deleteWaitingListEntry(ctx: HttpContext) {
     if (!(await canAccess(ctx))) {
-      return ctx.response.status(401);
+      return ctx.response.unauthorized();
     }
     return await BlStorage.WaitingListEntries.remove(ctx.params["id"]);
   }

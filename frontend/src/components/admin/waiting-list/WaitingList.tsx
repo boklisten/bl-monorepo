@@ -10,9 +10,11 @@ import BlFetcher from "@/api/blFetcher";
 import CreateWaitingListEntry from "@/components/admin/waiting-list/CreateWaitingListEntry";
 import WaitingListTable from "@/components/admin/waiting-list/WaitingListTable";
 import BL_CONFIG from "@/utils/bl-config";
-import { tuyau } from "@/utils/tuyau";
+import useApiClient from "@/utils/useApiClient";
 
 export default function WaitingList() {
+  const client = useApiClient();
+
   const {
     data: items,
     isLoading: isLoadingItems,
@@ -34,10 +36,10 @@ export default function WaitingList() {
     error: waitingListError,
     mutate,
   } = useSWR(
-    tuyau.waiting_list_entries.$url,
+    client.waiting_list_entries.$url,
     // fixme: strange SerializedObject type from Tuyau
     () =>
-      tuyau.waiting_list_entries
+      client.waiting_list_entries
         .$get()
         .unwrap() as unknown as WaitingListEntry[],
   );

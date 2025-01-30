@@ -16,7 +16,7 @@ import { KeyedMutator } from "swr";
 
 import BranchSelect from "@/components/BranchSelect";
 import PhoneNumberField from "@/components/user/fields/PhoneNumberField";
-import { tuyau } from "@/utils/tuyau";
+import useApiClient from "@/utils/useApiClient";
 import { useGlobalState } from "@/utils/useGlobalState";
 
 interface WaitingListEntryFormFields {
@@ -31,6 +31,7 @@ export default function CreateWaitingListEntry({
   items: Item[];
   mutate: KeyedMutator<WaitingListEntry[]>;
 }) {
+  const client = useApiClient();
   const { selectedBranchId } = useGlobalState();
   const [selectedItems, setSelectedItems] = useState<
     { label: string; id: string }[]
@@ -47,7 +48,7 @@ export default function CreateWaitingListEntry({
     setIsSubmitting(true);
     try {
       for (const item of selectedItems) {
-        await tuyau.waiting_list_entries
+        await client.waiting_list_entries
           .$post({
             customerName: data.name,
             customerPhone: data.phoneNumber,

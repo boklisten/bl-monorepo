@@ -28,7 +28,12 @@ export default class WaitingListEntriesController {
     if (!(await canAccess(ctx))) {
       return ctx.response.unauthorized();
     }
-    return await BlStorage.WaitingListEntries.getAll();
+    return (await BlStorage.WaitingListEntries.getAll()).map((entry) => ({
+      ...entry,
+      // fixme: the api client does not like to serialize dates
+      creationTime: undefined,
+      lastUpdated: undefined,
+    }));
   }
 
   async addWaitingListEntry(ctx: HttpContext) {

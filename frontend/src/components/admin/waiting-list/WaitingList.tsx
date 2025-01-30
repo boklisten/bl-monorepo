@@ -2,7 +2,6 @@
 
 import { Branch } from "@boklisten/backend/shared/branch/branch";
 import { Item } from "@boklisten/backend/shared/item/item";
-import { WaitingListEntry } from "@boklisten/backend/shared/waiting-list/waiting-list-entry";
 import { Alert, AlertTitle } from "@mui/material";
 import useSWR from "swr";
 
@@ -35,13 +34,8 @@ export default function WaitingList() {
     isLoading: isLoadingWaitingList,
     error: waitingListError,
     mutate,
-  } = useSWR(
-    client.waiting_list_entries.$url,
-    // fixme: strange SerializedObject type from Tuyau
-    () =>
-      client.waiting_list_entries
-        .$get()
-        .unwrap() as unknown as WaitingListEntry[],
+  } = useSWR(client.waiting_list_entries.$url, () =>
+    client.waiting_list_entries.$get().unwrap(),
   );
 
   if (itemsError || branchesError || waitingListError) {

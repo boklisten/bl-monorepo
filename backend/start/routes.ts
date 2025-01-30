@@ -7,6 +7,8 @@ const AuthTokensController = () =>
 const AuthSocialController = () =>
   import("#controllers/auth/social_controller");
 const AuthLocalController = () => import("#controllers/auth/local_controller");
+const WaitingListEntriesController = () =>
+  import("#controllers/waiting_list_entries_controller");
 
 /**
  * auth token
@@ -32,5 +34,24 @@ router
 router
   .post("/auth/local/register", [AuthLocalController, "register"])
   .as("auth.local.register");
+
+router
+  .get("/waiting_list_entries", [
+    WaitingListEntriesController,
+    "getAllWaitingListEntries",
+  ])
+  .as("waiting_list_entries.getAll");
+router
+  .post("/waiting_list_entries", [
+    WaitingListEntriesController,
+    "addWaitingListEntry",
+  ])
+  .as("waiting_list_entries.add");
+router
+  .delete("/waiting_list_entries/:id", [
+    WaitingListEntriesController,
+    "deleteWaitingListEntry",
+  ])
+  .as("waiting_list_entries.delete");
 
 CollectionEndpointCreator.generateEndpoints();

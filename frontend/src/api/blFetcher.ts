@@ -81,12 +81,17 @@ async function put<T>(path: string, body: Record<string, unknown>): Promise<T> {
   return await blFetch<T>(path, "PUT", body);
 }
 
+async function destroy<T>(path: string): Promise<T> {
+  return await blFetch<T>(path, "DELETE");
+}
+
 const BlFetcher = {
   fetch: blFetch,
   get,
   post,
   patch,
   put,
+  destroy,
 };
 
 export default BlFetcher;

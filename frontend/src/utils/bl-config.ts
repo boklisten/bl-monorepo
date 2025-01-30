@@ -71,6 +71,7 @@ const BL_CONFIG = {
     standMatches: "stand_matches",
     booking: "bookings",
     uniqueItem: "uniqueitems",
+    waitingListEntries: "waiting_list_entries",
   },
 };
 

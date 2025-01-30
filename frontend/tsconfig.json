@@ -4,7 +4,8 @@
     "noUnusedParameters": false, // fixme: delete this line for stricter checks
     "experimentalDecorators": true,
     "paths": {
-      "@/*": ["frontend/src/*"]
+      "@/*": ["frontend/src/*"],
+      "@boklisten/backend/*": ["backend/src/*"]
     }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],

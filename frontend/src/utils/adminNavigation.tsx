@@ -7,6 +7,7 @@ import {
   DocumentScanner,
   Email,
   Equalizer,
+  HourglassBottom,
   LibraryBooks,
   Notifications,
   Public,
@@ -44,6 +45,12 @@ const EMPLOYEE_LINKS: Navigation = [
     title: "Ordreoversikt",
     icon: <Receipt />,
     segment: "admin/ordreoversikt",
+    kind: "page",
+  },
+  {
+    title: "Venteliste",
+    icon: <HourglassBottom />,
+    segment: "admin/venteliste",
     kind: "page",
   },
   {
@@ -123,7 +130,7 @@ const USER_LINKS: Navigation = [
   {
     title: "Gå til Boklisten.no",
     icon: <Public />,
-    segment: "",
+    segment: "offentlig",
     kind: "page",
   },
 ];

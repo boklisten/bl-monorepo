@@ -22,6 +22,7 @@ import { UniqueItemModel } from "#services/storage/models/unique-item.model";
 import { UserDetailModel } from "#services/storage/models/user-detail.model";
 import { UserMatchModel } from "#services/storage/models/user-match.model";
 import { UserModel } from "#services/storage/models/user.model";
+import { WaitingListEntriesModel } from "#services/storage/models/waiting-list-entries.model";
 import { MongodbHandler } from "#services/storage/mongodb-handler";
 
 export interface BlModel<T> {
@@ -51,6 +52,7 @@ export const BlStorage = {
   Users: new MongodbHandler(UserModel),
   UserDetails: new MongodbHandler(UserDetailModel),
   UserMatches: new MongodbHandler(UserMatchModel),
+  WaitingListEntries: new MongodbHandler(WaitingListEntriesModel),
 };
 
 export type BlStorageHandler = (typeof BlStorage)[keyof typeof BlStorage];

@@ -29,7 +29,7 @@ export default function AdminLayout({ children }: { children: ReactNode }) {
             alt="logo"
           />
         ),
-        homeUrl: "/admin/start",
+        homeUrl: "/admin",
       }}
     >
       <DashboardLayout>

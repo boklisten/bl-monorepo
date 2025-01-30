@@ -1,6 +1,9 @@
 "use client";
 import { createTheme, responsiveFontSizes } from "@mui/material";
 import { grey, orange, red } from "@mui/material/colors";
+import { nbNO } from "@mui/material/locale";
+import { nbNO as dataGridnbNo } from "@mui/x-data-grid/locales";
+import { nbNO as pickersnbNO } from "@mui/x-date-pickers/locales";
 import { Roboto } from "next/font/google";
 
 const roboto = Roboto({
@@ -15,68 +18,73 @@ const roboto = Roboto({
  * See typographyVariants.ts for TypeScript definitions for custom typography variants.
  */
 const theme = responsiveFontSizes(
-  createTheme({
-    palette: {
-      primary: {
-        main: "#26768f",
+  createTheme(
+    {
+      palette: {
+        primary: {
+          main: "#26768f",
+        },
+        secondary: {
+          main: "#283d3b",
+        },
+        error: {
+          main: red.A400,
+        },
+        warning: {
+          main: orange["500"],
+          light: orange["100"],
+          dark: orange["700"],
+          contrastText: grey["900"],
+        },
       },
-      secondary: {
-        main: "#283d3b",
+      typography: {
+        fontFamily: roboto.style.fontFamily,
+        h1: {
+          fontSize: "2rem",
+          marginTop: "1.6rem",
+          marginBottom: "0.2rem",
+        },
+        h2: {
+          fontSize: "1.5rem",
+          marginTop: "1.6rem",
+          fontWeight: 400,
+          marginBottom: "0.2rem",
+        },
+        h3: {
+          fontSize: "1.1rem",
+          marginTop: "0.2rem",
+          marginBottom: "0.2rem",
+        },
       },
-      error: {
-        main: red.A400,
-      },
-      warning: {
-        main: orange["500"],
-        light: orange["100"],
-        dark: orange["700"],
-        contrastText: grey["900"],
-      },
-    },
-    typography: {
-      fontFamily: roboto.style.fontFamily,
-      h1: {
-        fontSize: "2rem",
-        marginTop: "1.6rem",
-        marginBottom: "0.2rem",
-      },
-      h2: {
-        fontSize: "1.5rem",
-        marginTop: "1.6rem",
-        fontWeight: 400,
-        marginBottom: "0.2rem",
-      },
-      h3: {
-        fontSize: "1.1rem",
-        marginTop: "0.2rem",
-        marginBottom: "0.2rem",
-      },
-    },
-    components: {
-      MuiAppBar: {
-        styleOverrides: {
-          root: {
-            backgroundColor: "#26768f",
-            "& .MuiIconButton-root": {
-              color: "#FFFFFF",
-            },
-            "& .MuiTypography-root": {
-              color: "#FFFFFF",
+      components: {
+        MuiAppBar: {
+          styleOverrides: {
+            root: {
+              backgroundColor: "#26768f",
+              "& .MuiIconButton-root": {
+                color: "#FFFFFF",
+              },
+              "& .MuiTypography-root": {
+                color: "#FFFFFF",
+              },
             },
           },
         },
       },
-    },
-    breakpoints: {
-      values: {
-        xs: 0,
-        sm: 450,
-        md: 600,
-        lg: 1000,
-        xl: 1200,
+      breakpoints: {
+        values: {
+          xs: 0,
+          sm: 450,
+          md: 600,
+          lg: 1000,
+          xl: 1200,
+        },
       },
     },
-  }),
+    nbNO,
+    dataGridnbNo,
+    pickersnbNO,
+  ),
 );
 
 export default theme;

@@ -44,6 +44,31 @@ type AuthLocalRegisterPost = {
     false
   >;
 };
+type WaitingListEntriesGetHead = {
+  request: unknown;
+  response: MakeTuyauResponse<
+    import("../app/controllers/waiting_list_entries_controller.ts").default["getAllWaitingListEntries"],
+    false
+  >;
+};
+type WaitingListEntriesPost = {
+  request: MakeTuyauRequest<
+    InferInput<
+      (typeof import("../app/validators/waiting_list.ts"))["waitingListEntryValidator"]
+    >
+  >;
+  response: MakeTuyauResponse<
+    import("../app/controllers/waiting_list_entries_controller.ts").default["addWaitingListEntry"],
+    true
+  >;
+};
+type WaitinglistentriesIdDelete = {
+  request: unknown;
+  response: MakeTuyauResponse<
+    import("../app/controllers/waiting_list_entries_controller.ts").default["deleteWaitingListEntry"],
+    false
+  >;
+};
 export interface ApiDefinition {
   token: {
     $url: {};
@@ -71,6 +96,16 @@ export interface ApiDefinition {
         $url: {};
         $post: AuthLocalRegisterPost;
       };
+    };
+  };
+  waiting_list_entries: {
+    $url: {};
+    $get: WaitingListEntriesGetHead;
+    $head: WaitingListEntriesGetHead;
+    $post: WaitingListEntriesPost;
+    ":id": {
+      $url: {};
+      $delete: WaitinglistentriesIdDelete;
     };
   };
 }
@@ -109,6 +144,27 @@ const routes = [
     path: "/auth/local/register",
     method: ["POST"],
     types: {} as AuthLocalRegisterPost,
+  },
+  {
+    params: [],
+    name: "waiting_list_entries.getAll",
+    path: "/waiting_list_entries",
+    method: ["GET", "HEAD"],
+    types: {} as WaitingListEntriesGetHead,
+  },
+  {
+    params: [],
+    name: "waiting_list_entries.add",
+    path: "/waiting_list_entries",
+    method: ["POST"],
+    types: {} as WaitingListEntriesPost,
+  },
+  {
+    params: ["id"],
+    name: "waiting_list_entries.delete",
+    path: "/waiting_list_entries/:id",
+    method: ["DELETE"],
+    types: {} as WaitinglistentriesIdDelete,
   },
   {
     params: ["id"],

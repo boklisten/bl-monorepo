@@ -1,5 +1,5 @@
 {
-  "name": "backend",
+  "name": "@boklisten/backend",
   "version": "1.0.0",
   "license": "UNLICENSED",
   "type": "module",

@@ -2,7 +2,9 @@
 
 import { Branch } from "@boklisten/backend/shared/branch/branch";
 import { Item } from "@boklisten/backend/shared/item/item";
+import { WaitingListEntry } from "@boklisten/backend/shared/waiting-list/waiting-list-entry";
 import { Alert, AlertTitle } from "@mui/material";
+import superjson from "superjson";
 import useSWR from "swr";
 
 import BlFetcher from "@/api/blFetcher";
@@ -34,9 +36,11 @@ export default function WaitingList() {
     isLoading: isLoadingWaitingList,
     error: waitingListError,
     mutate,
-  } = useSWR(client.waiting_list_entries.$url, () =>
-    client.waiting_list_entries.$get().unwrap(),
-  );
+  } = useSWR(client.waiting_list_entries.$url, async () => {
+    const dto = await client.waiting_list_entries.$get().unwrap();
+    // fixme: move parsing to api client
+    return superjson.parse<[WaitingListEntry[]]>(dto as unknown as string)[0];
+  });
 
   if (itemsError || branchesError || waitingListError) {
     return (

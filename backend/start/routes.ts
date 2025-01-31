@@ -1,6 +1,7 @@
 import router from "@adonisjs/core/services/router";
 
 import CollectionEndpointCreator from "#services/collection-endpoint/collection-endpoint-creator";
+import { middleware } from "#start/kernel";
 
 const AuthTokensController = () =>
   import("#controllers/auth/tokens_controller");
@@ -40,6 +41,7 @@ router
     WaitingListEntriesController,
     "getAllWaitingListEntries",
   ])
+  .use(middleware.superjson())
   .as("waiting_list_entries.getAll");
 router
   .post("/waiting_list_entries", [

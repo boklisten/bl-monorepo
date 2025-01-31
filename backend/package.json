@@ -4,7 +4,7 @@
   "license": "UNLICENSED",
   "type": "module",
   "scripts": {
-    "dev": "node ace serve --watch",
+    "dev": "node ace serve --hmr",
     "tuyau": "NODE_ENV=test node ace tuyau:generate",
     "typecheck": "pnpm tuyau && pnpm exec tsc --noEmit",
     "test": "NODE_ENV=test tsx bin/test",
@@ -90,10 +90,17 @@
     "@types/validator": "^13.12.2",
     "chai": "^5.1.2",
     "chai-as-promised": "^8.0.1",
+    "hot-hook": "^0.4.0",
     "pino-pretty": "^13.0.0",
     "sinon": "^19.0.2",
     "sinon-chai": "^4.0.0",
     "ts-node-maintained": "^10.9.5",
     "tsx": "^4.19.2"
+  },
+  "hotHook": {
+    "boundaries": [
+      "./app/controllers/**/*.ts",
+      "./app/middleware/*.ts"
+    ]
   }
 }

@@ -39,7 +39,7 @@ export default function WaitingList() {
   } = useSWR(client.waiting_list_entries.$url, async () => {
     const dto = await client.waiting_list_entries.$get().unwrap();
     // fixme: move parsing to api client
-    return superjson.parse<[WaitingListEntry[]]>(dto as unknown as string)[0];
+    return superjson.parse<WaitingListEntry[]>(dto as unknown as string);
   });
 
   if (itemsError || branchesError || waitingListError) {

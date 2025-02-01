@@ -1,6 +1,6 @@
+import { Signature } from "#models/signature.model";
 import { serializeSignature } from "#services/collections/signature/helpers/signature.helper";
 import { Hook } from "#services/hook/hook";
-import { Signature } from "#services/storage/models/signature.model";
 import { SerializedSignature } from "#shared/signature/serialized-signature";
 
 export class SignatureGetIdHook extends Hook {

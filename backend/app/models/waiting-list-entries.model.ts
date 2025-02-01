@@ -1,8 +1,8 @@
 import { Schema } from "mongoose";
 
+import { BranchModel } from "#models/branch.model";
+import { ItemModel } from "#models/item.model";
 import { BlModel } from "#services/storage/bl-storage";
-import { BranchModel } from "#services/storage/models/branch.model";
-import { ItemModel } from "#services/storage/models/item.model";
 import { WaitingListEntry } from "#shared/waiting-list/waiting-list-entry";
 
 export const WaitingListEntriesModel: BlModel<WaitingListEntry> = {

@@ -1,8 +1,8 @@
 import { Schema } from "mongoose";
 
+import { ItemModel } from "#models/item.model";
+import { UserDetailModel } from "#models/user-detail.model";
 import { BlModel } from "#services/storage/bl-storage";
-import { ItemModel } from "#services/storage/models/item.model";
-import { UserDetailModel } from "#services/storage/models/user-detail.model";
 import { UserMatch } from "#shared/match/user-match";
 
 const { ObjectId } = Schema.Types;

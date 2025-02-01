@@ -1,3 +1,4 @@
+import { Signature } from "#models/signature.model";
 import {
   deserializeSignature,
   isUnderage,
@@ -6,7 +7,6 @@ import {
 } from "#services/collections/signature/helpers/signature.helper";
 import { Hook } from "#services/hook/hook";
 import { BlStorage } from "#services/storage/bl-storage";
-import { Signature } from "#services/storage/models/signature.model";
 import { BlError } from "#shared/bl-error/bl-error";
 import { SerializedSignature } from "#shared/signature/serialized-signature";
 import { AccessToken } from "#shared/token/access-token";

@@ -31,7 +31,7 @@ export default function CreateWaitingListEntry({
   items: Item[];
   mutate: KeyedMutator<WaitingListEntry[]>;
 }) {
-  const client = useApiClient();
+  const { client } = useApiClient();
   const { selectedBranchId } = useGlobalState();
   const [selectedItems, setSelectedItems] = useState<
     { label: string; id: string }[]

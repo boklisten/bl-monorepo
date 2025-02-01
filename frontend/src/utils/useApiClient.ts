@@ -7,6 +7,7 @@
 import { api } from "@boklisten/backend/.adonisjs";
 import { createTuyau } from "@tuyau/client";
 import { usePathname, useRouter } from "next/navigation";
+import superjson from "superjson";
 
 import {
   addAccessToken,
@@ -15,6 +16,10 @@ import {
   getRefreshToken,
 } from "@/api/token";
 import BL_CONFIG from "@/utils/bl-config";
+
+function deserialize<T>(input: unknown) {
+  return superjson.parse<T>(input as string);
+}
 
 export default function useApiClient() {
   const router = useRouter();
@@ -26,77 +31,80 @@ export default function useApiClient() {
     return new Response();
   }
 
-  return createTuyau({
-    api,
-    baseUrl: BL_CONFIG.api.basePath,
-    hooks: {
-      beforeRequest: [
-        (request) => {
-          const token = getAccessToken();
-          if (token) {
-            request.headers.set("Authorization", `Bearer ${token}`);
-          }
-        },
-      ],
-      afterResponse: [
-        async (request, options, response) => {
-          if (response.status === 403) {
-            router.push("/auth/permission/denied");
-            return response;
-          }
+  return {
+    deserialize,
+    client: createTuyau({
+      api,
+      baseUrl: BL_CONFIG.api.basePath,
+      hooks: {
+        beforeRequest: [
+          (request) => {
+            const token = getAccessToken();
+            if (token) {
+              request.headers.set("Authorization", `Bearer ${token}`);
+            }
+          },
+        ],
+        afterResponse: [
+          async (request, options, response) => {
+            if (response.status === 403) {
+              router.push("/auth/permission/denied");
+              return response;
+            }
 
-          if (response.status !== 401) {
-            return response;
-          }
+            if (response.status !== 401) {
+              return response;
+            }
 
-          const refreshToken = getRefreshToken();
-          if (
-            request.headers.get("Authorization") === undefined ||
-            refreshToken === null
-          ) {
-            return redirectToLogin();
-          }
-          const tokenResponse = await createTuyau({
-            api,
-            baseUrl: BL_CONFIG.api.basePath,
-          }).token.$post({ refreshToken });
-          if (!tokenResponse.response.ok) {
-            return redirectToLogin();
-          }
-          // fixme improve token endpoint typing
-          const tokens = tokenResponse.data?.data as unknown as [
-            {
-              accessToken: string;
-            },
-            {
-              refreshToken: string;
-            },
-          ];
-          const accessToken = tokens[0].accessToken;
-          addAccessToken(tokens[0].accessToken);
-          addRefreshToken(tokens[1].refreshToken);
+            const refreshToken = getRefreshToken();
+            if (
+              request.headers.get("Authorization") === undefined ||
+              refreshToken === null
+            ) {
+              return redirectToLogin();
+            }
+            const tokenResponse = await createTuyau({
+              api,
+              baseUrl: BL_CONFIG.api.basePath,
+            }).token.$post({ refreshToken });
+            if (!tokenResponse.response.ok) {
+              return redirectToLogin();
+            }
+            // fixme improve token endpoint typing
+            const tokens = tokenResponse.data?.data as unknown as [
+              {
+                accessToken: string;
+              },
+              {
+                refreshToken: string;
+              },
+            ];
+            const accessToken = tokens[0].accessToken;
+            addAccessToken(tokens[0].accessToken);
+            addRefreshToken(tokens[1].refreshToken);
 
-          const retryResponse = await fetch(request.url, {
-            body: request.body,
-            method: request.method,
-            headers: {
-              ...request.headers,
-              Authorization: `Bearer ${accessToken}`,
-            },
-          });
-          if (retryResponse.ok) {
+            const retryResponse = await fetch(request.url, {
+              body: request.body,
+              method: request.method,
+              headers: {
+                ...request.headers,
+                Authorization: `Bearer ${accessToken}`,
+              },
+            });
+            if (retryResponse.ok) {
+              return retryResponse;
+            }
+
+            if (retryResponse.status === 403) {
+              router.push("/auth/permission/denied");
+            }
+
+            // If we get here, something went terribly wrong and an error will be thrown where the request was initiated
+            // Sentry will capture and log it
             return retryResponse;
-          }
-
-          if (retryResponse.status === 403) {
-            router.push("/auth/permission/denied");
-          }
-
-          // If we get here, something went terribly wrong and an error will be thrown where the request was initiated
-          // Sentry will capture and log it
-          return retryResponse;
-        },
-      ],
-    },
-  });
+          },
+        ],
+      },
+    }),
+  };
 }

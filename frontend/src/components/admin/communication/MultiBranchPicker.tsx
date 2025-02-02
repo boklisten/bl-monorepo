@@ -9,8 +9,8 @@ import ListItemText from "@mui/material/ListItemText";
 import MenuItem from "@mui/material/MenuItem";
 import OutlinedInput from "@mui/material/OutlinedInput";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
+import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
-import useSWR from "swr";
 
 import BlFetcher from "@/api/blFetcher";
 import useApiClient from "@/utils/api/useApiClient";
@@ -34,10 +34,14 @@ export default function MultiBranchPicker({
   const { client } = useApiClient();
   const [branchIDs, setBranchIDs] = useState<string[]>([]);
 
-  const { data: branches } = useSWR(
-    `${client.$url("collection.branches.getAll")}?active=true&sort=name`,
-    BlFetcher.get<Branch[]>,
-  );
+  const { data: branches } = useQuery({
+    queryKey: [
+      client.$url("collection.branches.getAll", {
+        query: { active: true, sort: "name" },
+      }),
+    ],
+    queryFn: ({ queryKey }) => BlFetcher.get<Branch[]>(queryKey[0] ?? ""),
+  });
 
   const handleChange = (event: SelectChangeEvent<typeof branchIDs>) => {
     const {

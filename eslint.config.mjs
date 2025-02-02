@@ -1,6 +1,7 @@
 // @ts-check
 import eslint from "@eslint/js";
 import nextPlugin from "@next/eslint-plugin-next";
+import pluginQuery from "@tanstack/eslint-plugin-query";
 import eslintConfigPrettier from "eslint-config-prettier";
 import pluginChaiFriendly from "eslint-plugin-chai-friendly";
 import pluginCypress from "eslint-plugin-cypress/flat";
@@ -22,6 +23,7 @@ export default tseslint.config(
   pluginCypress.configs.globals,
   jsxA11y.flatConfigs.recommended,
   importPlugin.flatConfigs.typescript,
+  ...pluginQuery.configs["flat/recommended"],
   {
     files: ["**/*.{js,jsx,mjs,cjs,ts,tsx}"],
     plugins: {

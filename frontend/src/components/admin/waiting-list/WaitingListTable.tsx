@@ -9,8 +9,8 @@ import {
   GridColDef,
   GridToolbar,
 } from "@mui/x-data-grid";
+import { useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
-import { KeyedMutator } from "swr";
 
 import blFetcher from "@/api/blFetcher";
 import useApiClient from "@/utils/api/useApiClient";
@@ -20,22 +20,23 @@ export default function WaitingListTable({
   items,
   branches,
   waitingList,
-  mutate,
 }: {
   loading: boolean;
   items: Item[];
   branches: Branch[];
   waitingList: WaitingListEntry[];
-  mutate: KeyedMutator<WaitingListEntry[]>;
 }) {
   const { client } = useApiClient();
+  const queryClient = useQueryClient();
   const [pendingUpdate, setPendingUpdate] = useState(false);
   async function handleDeleteWaitingListEntry(id: string | number) {
     setPendingUpdate(true);
     await blFetcher.destroy(
       client.$url("waiting_list_entries.delete", { params: { id } }),
     );
-    await mutate();
+    await queryClient.invalidateQueries({
+      queryKey: [client.waiting_list_entries.$url()],
+    });
     setPendingUpdate(false);
   }
 

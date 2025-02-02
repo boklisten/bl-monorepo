@@ -12,7 +12,7 @@ import {
   Typography,
   Box,
 } from "@mui/material";
-import useSWR from "swr";
+import { useQuery } from "@tanstack/react-query";
 
 import BlFetcher from "@/api/blFetcher";
 import useApiClient from "@/utils/api/useApiClient";
@@ -24,10 +24,14 @@ const BuybackList = ({
 }) => {
   const { client } = useApiClient();
 
-  const { data, error } = useSWR(
-    `${client.$url("collection.items.getAll")}?buyback=true&sort=title`,
-    BlFetcher.get<Item[]>,
-  );
+  const { data, error } = useQuery({
+    queryKey: [
+      client.$url("collection.items.getAll", {
+        query: { buyback: true, sort: "title" },
+      }),
+    ],
+    queryFn: ({ queryKey }) => BlFetcher.get<Item[]>(queryKey[0] ?? ""),
+  });
   const items = data ?? defaultBuybackItems;
   return (
     <Box

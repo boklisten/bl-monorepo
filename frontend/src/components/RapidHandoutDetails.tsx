@@ -3,8 +3,8 @@ import { OrderItem } from "@boklisten/backend/shared/order/order-item/order-item
 import { UserDetail } from "@boklisten/backend/shared/user/user-detail/user-detail";
 import QrCodeScannerIcon from "@mui/icons-material/QrCodeScanner";
 import { Alert, Button, Typography } from "@mui/material";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
-import useSWR from "swr";
 
 import BlFetcher from "@/api/blFetcher";
 import { ItemStatus } from "@/components/matches/matches-helper";
@@ -39,11 +39,15 @@ export default function RapidHandoutDetails({
   customer: UserDetail;
 }) {
   const { client } = useApiClient();
-  const { data: orders, mutate: updateOrders } = useSWR(
-    `${client.$url("collection.orders.getAll")}?placed=true&customer=${customer.id}`,
-    BlFetcher.get<Order[]>,
-    { refreshInterval: 5000 },
-  );
+  const queryClient = useQueryClient();
+  const ordersUrl = client.$url("collection.orders.getAll", {
+    query: { placed: true, customer: customer.id },
+  });
+  const { data: orders } = useQuery({
+    queryKey: [ordersUrl],
+    queryFn: ({ queryKey }) => BlFetcher.get<Order[]>(queryKey[0] ?? ""),
+    staleTime: 5000,
+  });
   const [itemStatuses, setItemStatuses] = useState<ItemStatus[]>([]);
   const [scanModalOpen, setScanModalOpen] = useState(false);
   useState(false);
@@ -111,7 +115,9 @@ export default function RapidHandoutDetails({
           )
         }
         open={scanModalOpen}
-        handleSuccessfulScan={updateOrders}
+        handleSuccessfulScan={async () => {
+          await queryClient.invalidateQueries({ queryKey: [ordersUrl] });
+        }}
         handleClose={() => {
           setScanModalOpen(false);
         }}

@@ -5,7 +5,7 @@ import {
 } from "@boklisten/backend/shared/match/match-dtos";
 import { ArrowBack } from "@mui/icons-material";
 import { Alert, Button, Card, Container, Skeleton } from "@mui/material";
-import useSWR from "swr";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 
 import BlFetcher from "@/api/blFetcher";
 import { getAccessTokenBody } from "@/api/token";
@@ -23,25 +23,26 @@ const MatchDetail = ({
   standMatchId?: string;
 }) => {
   const { client } = useApiClient();
-  const { data: accessToken, error: tokenError } = useSWR("userId", () =>
-    getAccessTokenBody(),
-  );
+  const queryClient = useQueryClient();
+  const { data: accessToken, error: tokenError } = useQuery({
+    queryKey: ["userId"],
+    queryFn: () => getAccessTokenBody(),
+  });
   const userId = accessToken?.details;
 
-  const {
-    data: userMatches,
-    error: userMatchesError,
-    mutate: updateUserMatches,
-  } = useSWR(
-    client.$url("collection.user_matches.operation.me.getAll"),
-    BlFetcher.get<UserMatchWithDetails[]>,
-    { refreshInterval: 5000 },
-  );
-  const { data: standMatches, error: standMatchesError } = useSWR(
-    client.$url("collection.stand_matches.operation.me.getAll"),
-    BlFetcher.get<StandMatchWithDetails[]>,
-    { refreshInterval: 5000 },
-  );
+  const { data: userMatches, error: userMatchesError } = useQuery({
+    queryKey: [client.$url("collection.user_matches.operation.me.getAll")],
+    queryFn: ({ queryKey }) =>
+      BlFetcher.get<UserMatchWithDetails[]>(queryKey[0] ?? ""),
+    staleTime: 5000,
+  });
+
+  const { data: standMatches, error: standMatchesError } = useQuery({
+    queryKey: [client.$url("collection.stand_matches.operation.me.getAll")],
+    queryFn: ({ queryKey }) =>
+      BlFetcher.get<StandMatchWithDetails[]>(queryKey[0] ?? ""),
+    staleTime: 5000,
+  });
 
   if (tokenError || userMatchesError || standMatchesError) {
     return (
@@ -92,7 +93,13 @@ const MatchDetail = ({
           <UserMatchDetail
             userMatch={userMatch}
             currentUserId={userId}
-            handleItemTransferred={() => updateUserMatches()}
+            handleItemTransferred={() =>
+              queryClient.invalidateQueries({
+                queryKey: [
+                  client.$url("collection.user_matches.operation.me.getAll"),
+                ],
+              })
+            }
           />
         )}
       </Container>

@@ -1,5 +1,4 @@
 import { Item } from "@boklisten/backend/shared/item/item";
-import { WaitingListEntry } from "@boklisten/backend/shared/waiting-list/waiting-list-entry";
 import {
   Alert,
   AlertTitle,
@@ -10,9 +9,9 @@ import {
   Typography,
 } from "@mui/material";
 import TextField from "@mui/material/TextField";
+import { useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
-import { KeyedMutator } from "swr";
 
 import BranchSelect from "@/components/BranchSelect";
 import PhoneNumberField from "@/components/user/fields/PhoneNumberField";
@@ -24,14 +23,9 @@ interface WaitingListEntryFormFields {
   phoneNumber: string;
 }
 
-export default function CreateWaitingListEntry({
-  items,
-  mutate,
-}: {
-  items: Item[];
-  mutate: KeyedMutator<WaitingListEntry[]>;
-}) {
+export default function CreateWaitingListEntry({ items }: { items: Item[] }) {
   const { client } = useApiClient();
+  const queryClient = useQueryClient();
   const { selectedBranchId } = useGlobalState();
   const [selectedItems, setSelectedItems] = useState<
     { label: string; id: string }[]
@@ -65,7 +59,9 @@ export default function CreateWaitingListEntry({
       console.error(error);
       setStatus("error");
     }
-    await mutate();
+    await queryClient.invalidateQueries({
+      queryKey: [client.waiting_list_entries.$url()],
+    });
     setIsSubmitting(false);
     setTimeout(() => {
       setStatus(undefined);

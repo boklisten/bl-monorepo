@@ -7,6 +7,7 @@ import { ReactNode, Suspense } from "react";
 import AuthLinker from "@/components/AuthLinker";
 import DynamicHeightProvider from "@/components/DynamicHeightProvider";
 import CustomLocalizationProvider from "@/components/LocalizationProvider";
+import ReactQueryClientProvider from "@/components/ReactQueryClientProvider";
 import theme from "@/utils/theme";
 
 import "@fontsource/roboto/300.css";
@@ -29,15 +30,17 @@ export default function RootLayout({ children }: { children: ReactNode }) {
         <Suspense>
           <DynamicHeightProvider>
             <CustomLocalizationProvider>
-              <AppRouterCacheProvider>
-                <ThemeProvider theme={theme}>
-                  <AuthLinker>
-                    {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
-                    <CssBaseline />
-                    {children}
-                  </AuthLinker>
-                </ThemeProvider>
-              </AppRouterCacheProvider>
+              <ReactQueryClientProvider>
+                <AppRouterCacheProvider>
+                  <ThemeProvider theme={theme}>
+                    <AuthLinker>
+                      {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
+                      <CssBaseline />
+                      {children}
+                    </AuthLinker>
+                  </ThemeProvider>
+                </AppRouterCacheProvider>
+              </ReactQueryClientProvider>
             </CustomLocalizationProvider>
           </DynamicHeightProvider>
         </Suspense>

@@ -4,7 +4,7 @@ import { Branch } from "@boklisten/backend/shared/branch/branch";
 import { Item } from "@boklisten/backend/shared/item/item";
 import { WaitingListEntry } from "@boklisten/backend/shared/waiting-list/waiting-list-entry";
 import { Alert, AlertTitle } from "@mui/material";
-import useSWR from "swr";
+import { useQuery } from "@tanstack/react-query";
 
 import BlFetcher from "@/api/blFetcher";
 import CreateWaitingListEntry from "@/components/admin/waiting-list/CreateWaitingListEntry";
@@ -18,29 +18,35 @@ export default function WaitingList() {
     data: items,
     isLoading: isLoadingItems,
     error: itemsError,
-  } = useSWR(
-    `${client.$url("collection.items.getAll")}`,
-    BlFetcher.get<Item[]>,
-  );
+  } = useQuery({
+    queryKey: [client.$url("collection.items.getAll")],
+    queryFn: ({ queryKey }) => BlFetcher.get<Item[]>(queryKey[0] ?? ""),
+  });
 
   const {
     data: branches,
     isLoading: isLoadingBranches,
     error: branchesError,
-  } = useSWR(
-    `${client.$url("collection.branches.getAll")}?active=true&sort=name`,
-    BlFetcher.get<Branch[]>,
-  );
+  } = useQuery({
+    queryKey: [
+      client.$url("collection.branches.getAll", {
+        query: { active: true, sort: "name" },
+      }),
+    ],
+    queryFn: ({ queryKey }) => BlFetcher.get<Branch[]>(queryKey[0] ?? ""),
+  });
 
   const {
     data: waitingList,
     isLoading: isLoadingWaitingList,
     error: waitingListError,
-    mutate,
-  } = useSWR(client.waiting_list_entries.$url, async () => {
-    return deserialize<WaitingListEntry[]>(
-      await client.waiting_list_entries.$get().unwrap(),
-    );
+  } = useQuery({
+    queryKey: [client.waiting_list_entries.$url()],
+    queryFn: () =>
+      client.waiting_list_entries
+        .$get()
+        .unwrap()
+        .then((res) => deserialize<WaitingListEntry[]>(res)),
   });
 
   if (itemsError || branchesError || waitingListError) {
@@ -58,10 +64,9 @@ export default function WaitingList() {
         items={items ?? []}
         branches={branches ?? []}
         waitingList={waitingList ?? []}
-        mutate={mutate}
         loading={isLoadingItems || isLoadingBranches || isLoadingWaitingList}
       />
-      <CreateWaitingListEntry items={items ?? []} mutate={mutate} />
+      <CreateWaitingListEntry items={items ?? []} />
     </>
   );
 }

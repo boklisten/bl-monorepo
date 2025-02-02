@@ -3,8 +3,8 @@ import {
   UserMatchWithDetails,
 } from "@boklisten/backend/shared/match/match-dtos";
 import { Alert, Skeleton } from "@mui/material";
+import { useQuery } from "@tanstack/react-query";
 import { FC } from "react";
-import useSWR from "swr";
 
 import BlFetcher from "@/api/blFetcher";
 import { getAccessTokenBody } from "@/api/token";
@@ -18,21 +18,25 @@ import useApiClient from "@/utils/api/useApiClient";
 
 export const MatchesList: FC = () => {
   const { client } = useApiClient();
-  const { data: accessToken, error: tokenError } = useSWR("userId", () =>
-    getAccessTokenBody(),
-  );
+  const { data: accessToken, error: tokenError } = useQuery({
+    queryKey: ["userId"],
+    queryFn: () => getAccessTokenBody(),
+  });
   const customer = accessToken?.details;
 
-  const { data: userMatches, error: userMatchesError } = useSWR(
-    client.$url("collection.user_matches.operation.me.getAll"),
-    BlFetcher.get<UserMatchWithDetails[]>,
-    { refreshInterval: 5000 },
-  );
-  const { data: standMatches, error: standMatchesError } = useSWR(
-    client.$url("collection.stand_matches.getAll"),
-    BlFetcher.get<StandMatchWithDetails[]>,
-    { refreshInterval: 5000 },
-  );
+  const { data: userMatches, error: userMatchesError } = useQuery({
+    queryKey: [client.$url("collection.user_matches.operation.me.getAll")],
+    queryFn: ({ queryKey }) =>
+      BlFetcher.get<UserMatchWithDetails[]>(queryKey[0] ?? ""),
+    staleTime: 5000,
+  });
+
+  const { data: standMatches, error: standMatchesError } = useQuery({
+    queryKey: [client.$url("collection.stand_matches.operation.me.getAll")],
+    queryFn: ({ queryKey }) =>
+      BlFetcher.get<StandMatchWithDetails[]>(queryKey[0] ?? ""),
+    staleTime: 5000,
+  });
 
   if (!customer || tokenError || userMatchesError || standMatchesError) {
     return <Alert severity="error">En feil har oppstått.</Alert>;

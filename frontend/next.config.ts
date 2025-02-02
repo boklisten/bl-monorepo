@@ -2,7 +2,9 @@ import { withSentryConfig } from "@sentry/nextjs";
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  reactStrictMode: true,
+  experimental: {
+    reactCompiler: true,
+  },
   transpilePackages: ["@boklisten/backend"],
   webpack: (config) => {
     config.resolve.extensionAlias = {

@@ -2,7 +2,7 @@
 
 import { UserPermission } from "@boklisten/backend/shared/permission/user-permission";
 import { usePathname, useRouter } from "next/navigation";
-import { useCallback, useEffect } from "react";
+import { useEffect } from "react";
 
 import { isAdmin, isEmployee, isLoggedIn, isManager } from "@/api/auth";
 
@@ -14,15 +14,14 @@ export default function PagePermissionGuard({
   const router = useRouter();
   const pathname = usePathname();
 
-  const goToPermissionDeniedPage = useCallback(() => {
-    router.replace("/auth/permission/denied");
-  }, [router]);
-
-  const goToLoginPage = useCallback(() => {
-    router.replace(`/auth/login?redirect=${pathname.slice(1)}`);
-  }, [router, pathname]);
-
   useEffect(() => {
+    const goToPermissionDeniedPage = () => {
+      router.replace("/auth/permission/denied");
+    };
+
+    const goToLoginPage = () => {
+      router.replace(`/auth/login?redirect=${pathname.slice(1)}`);
+    };
     if (requiredPermission && !isLoggedIn()) {
       return goToLoginPage();
     }
@@ -42,6 +41,6 @@ export default function PagePermissionGuard({
       default:
       // The page is publicly available
     }
-  }, [goToLoginPage, goToPermissionDeniedPage, requiredPermission]);
+  }, [pathname, requiredPermission, router]);
   return <></>;
 }

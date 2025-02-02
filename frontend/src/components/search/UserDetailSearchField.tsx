@@ -38,7 +38,9 @@ export default function UserDetailSearchField({
           }
           try {
             const result = await BlFetcher.get<UserDetail[]>(
-              `${client.$url("collection.userdetails.getAll")}?s=${newInputValue}`,
+              client.$url("collection.userdetails.getAll", {
+                query: { s: newInputValue },
+              }),
             );
             setSearchResults(result);
           } catch {

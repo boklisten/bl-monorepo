@@ -54,7 +54,12 @@ export default function RapidHandoutDetails({
 
   useEffect(() => {
     BlFetcher.get<Order[]>(
-      `${client.$url("collection.orders.getAll")}?placed=true&customer=${customer.id}`,
+      client.$url("collection.orders.getAll", {
+        query: {
+          placed: true,
+          customer: customer.id,
+        },
+      }),
     )
       .then((originalOrders) => {
         return setItemStatuses(mapOrdersToItemStatuses(originalOrders));

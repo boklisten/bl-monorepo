@@ -14,9 +14,12 @@ const OrdersPage = () => {
 
   useEffect(() => {
     const { details } = getAccessTokenBody();
-    const ordersUrl = `${client.$url("collection.orders.getAll")}?customer=${details}&placed=true&sort=-creationTime`;
     const fetchDetails = async () => {
-      const orders = await BlFetcher.get<Order[]>(ordersUrl);
+      const orders = await BlFetcher.get<Order[]>(
+        client.$url("collection.orders.getAll", {
+          query: { customer: details, placed: true, sort: "-creationTime" },
+        }),
+      );
       setOrders(orders);
     };
     fetchDetails();

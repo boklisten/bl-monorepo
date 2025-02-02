@@ -13,7 +13,12 @@ export default async function OpeningHoursSlot({
 }) {
   const { branchId } = await params;
   const now = moment().startOf("day").format("DDMMYYYYHHmm");
-  const openingHoursUrl = `${apiClient.$url("collection.openinghours.getAll")}?branch=${branchId}&from=>${now}`;
+  const openingHoursUrl = apiClient.$url("collection.openinghours.getAll", {
+    query: {
+      branch: branchId,
+      from: ">" + now,
+    },
+  });
 
   return (
     <BranchOpeningHours

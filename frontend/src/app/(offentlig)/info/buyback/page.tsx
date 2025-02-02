@@ -18,7 +18,9 @@ const BuybackPage = async () => {
   let buybackItems: Item[] = [];
   try {
     buybackItems = await BlFetcher.get<Item[]>(
-      `${apiClient.$url("collection.items.getAll")}?buyback=true&sort=title`,
+      apiClient.$url("collection.items.getAll", {
+        query: { buyback: true, sort: "title" },
+      }),
     );
   } catch (error) {
     assertBlApiError(error);

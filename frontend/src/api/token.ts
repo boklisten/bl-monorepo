@@ -4,6 +4,7 @@ import { decodeToken } from "react-jwt";
 
 import BlFetcher from "@/api/blFetcher";
 import { add, get, removeAll } from "@/api/storage";
+import { apiClient } from "@/utils/api/apiClient";
 import BL_CONFIG from "@/utils/bl-config";
 import { AuthResponse } from "@/utils/types";
 
@@ -112,7 +113,7 @@ export const fetchNewTokens = async () => {
       },
     ]
   >(
-    "token",
+    apiClient.$url("auth.token"),
     "POST",
     {
       refreshToken: getRefreshToken(),

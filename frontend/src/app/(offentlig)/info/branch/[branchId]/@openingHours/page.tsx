@@ -4,7 +4,7 @@ import moment from "moment/moment";
 
 import BlFetcher from "@/api/blFetcher";
 import BranchOpeningHours from "@/components/info/BranchOpeningHoursInfo";
-import BL_CONFIG from "@/utils/bl-config";
+import { apiClient } from "@/utils/api/apiClient";
 
 export default async function OpeningHoursSlot({
   params,
@@ -12,13 +12,16 @@ export default async function OpeningHoursSlot({
   params: Promise<{ branchId: string }>;
 }) {
   const { branchId } = await params;
-  const branchUrl = `${BL_CONFIG.collection.branch}/${branchId}`;
   const now = moment().startOf("day").format("DDMMYYYYHHmm");
-  const openingHoursUrl = `${BL_CONFIG.collection.openingHour}?branch=${branchId}&from=>${now}`;
+  const openingHoursUrl = `${apiClient.$url("collection.openinghours.getAll")}?branch=${branchId}&from=>${now}`;
 
   return (
     <BranchOpeningHours
-      branchPromise={BlFetcher.get<[Branch]>(branchUrl)}
+      branchPromise={BlFetcher.get<[Branch]>(
+        apiClient.$url("collection.branches.getId", {
+          params: { id: branchId },
+        }),
+      )}
       openingHoursPromise={BlFetcher.get<OpeningHour[]>(openingHoursUrl)}
     />
   );

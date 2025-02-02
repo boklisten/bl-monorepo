@@ -3,7 +3,6 @@ import { BlapiErrorResponse } from "@boklisten/backend/shared/blapi-response/bla
 import { HTTP_METHOD } from "next/dist/server/web/http";
 
 import { fetchNewTokens, getAccessToken, haveAccessToken } from "@/api/token";
-import BL_CONFIG from "@/utils/bl-config";
 import { assertBlApiError, verifyBlApiError } from "@/utils/types";
 
 const createHeaders = (): Headers => {
@@ -25,7 +24,7 @@ async function blFetch<T>(
     if (body) {
       request.body = JSON.stringify(body);
     }
-    const response = await fetch(BL_CONFIG.api.basePath + path, request);
+    const response = await fetch(path, request);
     const data = await response.json();
     if (!response.ok) {
       throw data;

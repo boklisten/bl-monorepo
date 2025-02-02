@@ -15,15 +15,17 @@ import {
 import useSWR from "swr";
 
 import BlFetcher from "@/api/blFetcher";
-import BL_CONFIG from "@/utils/bl-config";
+import useApiClient from "@/utils/api/useApiClient";
 
 const BuybackList = ({
   defaultBuybackItems,
 }: {
   defaultBuybackItems: Item[];
 }) => {
+  const { client } = useApiClient();
+
   const { data, error } = useSWR(
-    `${BL_CONFIG.collection.item}?buyback=true&sort=title`,
+    `${client.$url("collection.items.getAll")}?buyback=true&sort=title`,
     BlFetcher.get<Item[]>,
   );
   const items = data ?? defaultBuybackItems;

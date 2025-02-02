@@ -16,7 +16,7 @@ import { KeyedMutator } from "swr";
 
 import BranchSelect from "@/components/BranchSelect";
 import PhoneNumberField from "@/components/user/fields/PhoneNumberField";
-import useApiClient from "@/utils/useApiClient";
+import useApiClient from "@/utils/api/useApiClient";
 import { useGlobalState } from "@/utils/useGlobalState";
 
 interface WaitingListEntryFormFields {

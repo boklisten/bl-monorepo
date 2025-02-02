@@ -12,7 +12,7 @@ import { getAccessTokenBody } from "@/api/token";
 import DynamicLink from "@/components/DynamicLink";
 import StandMatchDetail from "@/components/matches/StandMatchDetail";
 import UserMatchDetail from "@/components/matches/UserMatchDetail";
-import BL_CONFIG from "@/utils/bl-config";
+import useApiClient from "@/utils/api/useApiClient";
 import theme from "@/utils/theme";
 
 const MatchDetail = ({
@@ -22,6 +22,7 @@ const MatchDetail = ({
   userMatchId?: string;
   standMatchId?: string;
 }) => {
+  const { client } = useApiClient();
   const { data: accessToken, error: tokenError } = useSWR("userId", () =>
     getAccessTokenBody(),
   );
@@ -32,12 +33,12 @@ const MatchDetail = ({
     error: userMatchesError,
     mutate: updateUserMatches,
   } = useSWR(
-    `${BL_CONFIG.collection.userMatches}/me`,
+    client.$url("collection.user_matches.operation.me.getAll"),
     BlFetcher.get<UserMatchWithDetails[]>,
     { refreshInterval: 5000 },
   );
   const { data: standMatches, error: standMatchesError } = useSWR(
-    `${BL_CONFIG.collection.standMatches}/me`,
+    client.$url("collection.stand_matches.operation.me.getAll"),
     BlFetcher.get<StandMatchWithDetails[]>,
     { refreshInterval: 5000 },
   );

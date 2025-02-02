@@ -6,8 +6,8 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { ReactNode } from "react";
 
 import { add } from "@/api/storage";
+import useApiClient from "@/utils/api/useApiClient";
 import BL_CONFIG from "@/utils/bl-config";
-import useApiClient from "@/utils/useApiClient";
 
 interface SocialLoginProps {
   label: string;

@@ -11,7 +11,7 @@ import { ItemStatus } from "@/components/matches/matches-helper";
 import MatchItemTable from "@/components/matches/MatchItemTable";
 import MatchScannerContent from "@/components/matches/MatchScannerContent";
 import ScannerModal from "@/components/scanner/ScannerModal";
-import BL_CONFIG from "@/utils/bl-config";
+import useApiClient from "@/utils/api/useApiClient";
 
 function calculateUnfulfilledOrderItems(orders: Order[]): OrderItem[] {
   return orders
@@ -38,8 +38,9 @@ export default function RapidHandoutDetails({
 }: {
   customer: UserDetail;
 }) {
+  const { client } = useApiClient();
   const { data: orders, mutate: updateOrders } = useSWR(
-    `${BL_CONFIG.collection.order}?placed=true&customer=${customer.id}`,
+    `${client.$url("collection.orders.getAll")}?placed=true&customer=${customer.id}`,
     BlFetcher.get<Order[]>,
     { refreshInterval: 5000 },
   );
@@ -49,7 +50,7 @@ export default function RapidHandoutDetails({
 
   useEffect(() => {
     BlFetcher.get<Order[]>(
-      `${BL_CONFIG.collection.order}?placed=true&customer=${customer.id}`,
+      `${client.$url("collection.orders.getAll")}?placed=true&customer=${customer.id}`,
     )
       .then((originalOrders) => {
         return setItemStatuses(mapOrdersToItemStatuses(originalOrders));
@@ -57,7 +58,7 @@ export default function RapidHandoutDetails({
       .catch((error) => {
         console.error("Failed to fetch original orders, error:", error);
       });
-  }, [customer.id]);
+  }, [client, customer.id]);
 
   useEffect(() => {
     if (!orders) {
@@ -101,10 +102,13 @@ export default function RapidHandoutDetails({
       <MatchItemTable itemStatuses={itemStatuses} isSender={true} />
       <ScannerModal
         onScan={(blid) =>
-          BlFetcher.post(BL_CONFIG.collection.order + "/rapid-handout", {
-            blid,
-            customerId: customer.id,
-          })
+          BlFetcher.post(
+            client.$url("collection.orders.post") + "/rapid-handout",
+            {
+              blid,
+              customerId: customer.id,
+            },
+          )
         }
         open={scanModalOpen}
         handleSuccessfulScan={updateOrders}

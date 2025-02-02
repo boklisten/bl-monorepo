@@ -20,7 +20,7 @@ import moment from "moment";
 import { useState } from "react";
 
 import BlFetcher from "@/api/blFetcher";
-import BL_CONFIG from "@/utils/bl-config";
+import useApiClient from "@/utils/api/useApiClient";
 
 // fetchPayments(orders);
 // types are from a business POV
@@ -50,22 +50,25 @@ const paymentTypes = {
   cashout: "Uttak",
 };
 
-const fetchPayment = async (paymentId: string) => {
-  const [payment] = await BlFetcher.get<[Payment]>(
-    `${BL_CONFIG.collection.payment}/${paymentId}`,
-  );
-  return payment;
-};
-
 const OrderHistory = ({ orders }: { orders: Order[] }) => {
+  const { client } = useApiClient();
   const [wait, setWait] = useState(false);
   const [openOrder, setOpenOrder] = useState("");
   const [openPayment, setOpenPayment] = useState<Payment | undefined>();
 
+  const fetchPayment = async (paymentId: string) => {
+    const [payment] = await BlFetcher.get<[Payment]>(
+      client.$url("collection.payments.getId", { params: { id: paymentId } }),
+    );
+    return payment;
+  };
+
   const printReceipt = async (orderId: string) => {
     setWait(true);
     const data = await BlFetcher.get<[{ content: string }]>(
-      `${BL_CONFIG.collection.order}/${orderId}/receipt`,
+      client.$url("collection.orders.operation.receipt.getId", {
+        params: { id: orderId },
+      }),
     );
     const byteCharacters = atob(data[0].content);
     const byteNumbers = Array.from({ length: byteCharacters.length });

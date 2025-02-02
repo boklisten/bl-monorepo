@@ -6,23 +6,25 @@ import { useEffect, useState } from "react";
 import BlFetcher from "@/api/blFetcher";
 import CountdownToRedirect from "@/components/CountdownToRedirect";
 import DynamicLink from "@/components/DynamicLink";
-import BL_CONFIG from "@/utils/bl-config";
-
-function validateEmail(confirmationId: string) {
-  return BlFetcher.patch(
-    `${BL_CONFIG.collection.emailValidation}/${confirmationId}/${BL_CONFIG.emailValidation.confirm.operation}`,
-    {},
-  );
-}
+import useApiClient from "@/utils/api/useApiClient";
 
 export default function EmailConfirmer({
   confirmationId,
 }: {
   confirmationId: string;
 }) {
+  const { client } = useApiClient();
   const [status, setStatus] = useState<"WAIT" | "SUCCESS" | "ERROR">("WAIT");
 
   useEffect(() => {
+    function validateEmail(confirmationId: string) {
+      return BlFetcher.patch(
+        client.$url("collection.email_validations.operation.confirm.patch", {
+          params: { id: confirmationId },
+        }),
+        {},
+      );
+    }
     validateEmail(confirmationId)
       .then(() => {
         return setStatus("SUCCESS");
@@ -31,7 +33,7 @@ export default function EmailConfirmer({
         console.error(error);
         setStatus("ERROR");
       });
-  }, [confirmationId]);
+  }, [client, confirmationId]);
 
   return (
     <>

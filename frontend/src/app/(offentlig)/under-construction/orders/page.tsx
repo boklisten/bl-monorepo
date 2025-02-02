@@ -6,20 +6,21 @@ import { useEffect, useState } from "react";
 import BlFetcher from "@/api/blFetcher";
 import { getAccessTokenBody } from "@/api/token";
 import OrderHistory from "@/components/OrderHistory";
-import BL_CONFIG from "@/utils/bl-config";
+import useApiClient from "@/utils/api/useApiClient";
 
 const OrdersPage = () => {
+  const { client } = useApiClient();
   const [orders, setOrders] = useState<Order[]>();
 
   useEffect(() => {
     const { details } = getAccessTokenBody();
-    const ordersUrl = `${BL_CONFIG.collection.order}?customer=${details}&placed=true&sort=-creationTime`;
+    const ordersUrl = `${client.$url("collection.orders.getAll")}?customer=${details}&placed=true&sort=-creationTime`;
     const fetchDetails = async () => {
       const orders = await BlFetcher.get<Order[]>(ordersUrl);
       setOrders(orders);
     };
     fetchDetails();
-  }, []);
+  }, [client]);
   return (
     <>
       <title>Ordrehistorikk | Boklisten.no</title>

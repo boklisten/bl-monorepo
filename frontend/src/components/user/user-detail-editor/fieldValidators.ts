@@ -6,7 +6,7 @@ import isPostalCode from "validator/lib/isPostalCode";
 
 import BlFetcher from "@/api/blFetcher";
 import { UserEditorFields } from "@/components/user/user-detail-editor/useUserDetailEditorForm";
-import BL_CONFIG from "@/utils/bl-config";
+import { apiClient } from "@/utils/api/apiClient";
 
 export const fieldValidators: {
   [K in keyof UserEditorFields]: RegisterOptions<UserEditorFields>;
@@ -63,7 +63,9 @@ export const fieldValidators: {
           },
         ]
       >(
-        `${BL_CONFIG.collection.delivery}/${BL_CONFIG.delivery.postalCodeLookup.operation}`,
+        apiClient.$url(
+          "collection.deliveries.operation.postal-code-lookup.post",
+        ),
         { postalCode: v },
       );
 

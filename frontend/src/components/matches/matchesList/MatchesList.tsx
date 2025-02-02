@@ -14,21 +14,22 @@ import {
 } from "@/components/matches/matches-helper";
 import { MatchListItemGroups } from "@/components/matches/matchesList/MatchListItemGroups";
 import ProgressBar from "@/components/matches/matchesList/ProgressBar";
-import BL_CONFIG from "@/utils/bl-config";
+import useApiClient from "@/utils/api/useApiClient";
 
 export const MatchesList: FC = () => {
+  const { client } = useApiClient();
   const { data: accessToken, error: tokenError } = useSWR("userId", () =>
     getAccessTokenBody(),
   );
   const customer = accessToken?.details;
 
   const { data: userMatches, error: userMatchesError } = useSWR(
-    `${BL_CONFIG.collection.userMatches}/me`,
+    client.$url("collection.user_matches.operation.me.getAll"),
     BlFetcher.get<UserMatchWithDetails[]>,
     { refreshInterval: 5000 },
   );
   const { data: standMatches, error: standMatchesError } = useSWR(
-    `${BL_CONFIG.collection.standMatches}/me`,
+    client.$url("collection.stand_matches.getAll"),
     BlFetcher.get<StandMatchWithDetails[]>,
     { refreshInterval: 5000 },
   );

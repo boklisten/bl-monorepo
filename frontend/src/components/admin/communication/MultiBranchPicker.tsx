@@ -13,7 +13,7 @@ import { useState } from "react";
 import useSWR from "swr";
 
 import BlFetcher from "@/api/blFetcher";
-import BL_CONFIG from "@/utils/bl-config";
+import useApiClient from "@/utils/api/useApiClient";
 
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
@@ -31,10 +31,11 @@ export default function MultiBranchPicker({
 }: {
   onChange: (newBranchIds: string[]) => void;
 }) {
+  const { client } = useApiClient();
   const [branchIDs, setBranchIDs] = useState<string[]>([]);
 
   const { data: branches } = useSWR(
-    `${BL_CONFIG.collection.branch}?active=true&sort=name`,
+    `${client.$url("collection.branches.getAll")}?active=true&sort=name`,
     BlFetcher.get<Branch[]>,
   );
 

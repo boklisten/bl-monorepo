@@ -13,12 +13,13 @@ import { useEffect } from "react";
 import useSWR from "swr";
 
 import BlFetcher from "@/api/blFetcher";
-import BL_CONFIG from "@/utils/bl-config";
+import useApiClient from "@/utils/api/useApiClient";
 import { useGlobalState } from "@/utils/useGlobalState";
 
 const BranchSelect = ({ isNav }: { isNav?: boolean }) => {
+  const { client } = useApiClient();
   const { data: branches } = useSWR(
-    `${BL_CONFIG.collection.branch}?active=true&sort=name`,
+    `${client.$url("collection.branches.getAll")}?active=true&sort=name`,
     BlFetcher.get<Branch[]>,
   );
 

@@ -14,64 +14,10 @@ const BL_CONFIG = {
     refreshToken: "bl-refresh-token",
   },
   login: {
-    local: {
-      url: "auth/local/login",
-    },
     localStorageKeys: {
       redirect: "bl-redirect",
       caller: "bl-caller",
     },
-  },
-  register: {
-    local: {
-      url: "auth/local/register",
-    },
-  },
-  order: {
-    receipt: {
-      operation: "receipt",
-    },
-    agreement: {
-      operation: "agreement",
-    },
-  },
-  pendingPasswordReset: {
-    confirm: {
-      operation: "confirm",
-    },
-  },
-  emailValidation: {
-    confirm: {
-      operation: "confirm",
-    },
-  },
-  delivery: {
-    postalCodeLookup: {
-      operation: "postal-code-lookup",
-    },
-  },
-  collection: {
-    item: "items",
-    branch: "branches",
-    branchItem: "branchitems",
-    editableText: "editabletexts",
-    openingHour: "openinghours",
-    userDetail: "userdetails",
-    customerItem: "customeritems",
-    order: "orders",
-    orderItem: "orderitems",
-    payment: "payments",
-    delivery: "deliveries",
-    pendingPasswordReset: "pendingpasswordresets",
-    company: "companies",
-    emailValidation: "email_validations",
-    message: "messages",
-    invoice: "invoices",
-    userMatches: "user_matches",
-    standMatches: "stand_matches",
-    booking: "bookings",
-    uniqueItem: "uniqueitems",
-    waitingListEntries: "waiting_list_entries",
   },
 };
 

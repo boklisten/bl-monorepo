@@ -5,7 +5,7 @@ import Button from "@mui/material/Button";
 import { useState } from "react";
 
 import BlFetcher from "@/api/blFetcher";
-import BL_CONFIG from "@/utils/bl-config";
+import useApiClient from "@/utils/api/useApiClient";
 
 interface EmailConfirmationStatusProps {
   isSignUp: boolean | undefined;
@@ -18,6 +18,7 @@ const EmailConfirmationStatus = ({
   userDetails,
   onError,
 }: EmailConfirmationStatusProps) => {
+  const { client } = useApiClient();
   const [emailConfirmationRequested, setEmailConfirmationRequested] =
     useState(false);
 
@@ -40,10 +41,13 @@ const EmailConfirmationStatus = ({
             <Button
               onClick={async () => {
                 try {
-                  await BlFetcher.post(BL_CONFIG.collection.emailValidation, {
-                    userDetail: userDetails.id,
-                    email: userDetails.email,
-                  });
+                  await BlFetcher.post(
+                    client.$url("collection.email_validations.post"),
+                    {
+                      userDetail: userDetails.id,
+                      email: userDetails.email,
+                    },
+                  );
                   setEmailConfirmationRequested(true);
                 } catch {
                   onError(

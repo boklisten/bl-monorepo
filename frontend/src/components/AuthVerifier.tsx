@@ -8,9 +8,11 @@ import BlFetcher from "@/api/blFetcher";
 import { get } from "@/api/storage";
 import { getAccessTokenBody } from "@/api/token";
 import { selectRedirectTarget } from "@/components/AuthLinker";
+import useApiClient from "@/utils/api/useApiClient";
 import BL_CONFIG from "@/utils/bl-config";
 
 export default function AuthVerifier() {
+  const { client } = useApiClient();
   const router = useRouter();
   useEffect(() => {
     if (!isLoggedIn()) {
@@ -20,7 +22,9 @@ export default function AuthVerifier() {
     const checkUserDetailsValid = async () => {
       try {
         const [{ valid }] = await BlFetcher.get<[{ valid: boolean }]>(
-          `${BL_CONFIG.collection.userDetail}/${details}/valid`,
+          client.$url("collection.userdetails.operation.valid.getId", {
+            params: { id: details },
+          }),
         );
         if (valid) {
           const caller = get(BL_CONFIG.login.localStorageKeys.caller);
@@ -34,6 +38,6 @@ export default function AuthVerifier() {
       }
     };
     checkUserDetailsValid();
-  }, [router]);
+  }, [client, router]);
   return null;
 }

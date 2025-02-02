@@ -8,9 +8,10 @@ import BlFetcher from "@/api/blFetcher";
 import { getAccessTokenBody } from "@/api/token";
 import UserDetailEditor from "@/components/user/user-detail-editor/UserDetailEditor";
 import UserDetailEditorSkeleton from "@/components/user/user-detail-editor/UserDetailEditorSkeleton";
-import BL_CONFIG from "@/utils/bl-config";
+import useApiClient from "@/utils/api/useApiClient";
 
 const UserSettings = () => {
+  const { client } = useApiClient();
   const router = useRouter();
   const [userDetails, setUserDetails] = useState<UserDetail>();
 
@@ -19,7 +20,9 @@ const UserSettings = () => {
       const { details } = getAccessTokenBody();
       const fetchDetails = async () => {
         const [userDetails] = await BlFetcher.get<[UserDetail]>(
-          `${BL_CONFIG.collection.userDetail}/${details}`,
+          client.$url("collection.userdetails.getId", {
+            params: { id: details },
+          }),
         );
         setUserDetails(userDetails);
       };
@@ -27,7 +30,7 @@ const UserSettings = () => {
     } catch {
       router.push("/auth/login?redirect=user-settings");
     }
-  }, [router]);
+  }, [client, router]);
 
   return (
     <Card sx={{ paddingBottom: 4 }}>

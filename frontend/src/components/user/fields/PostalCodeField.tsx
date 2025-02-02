@@ -10,7 +10,7 @@ import { forwardRef, Ref, useRef, useState } from "react";
 import isPostalCode from "validator/lib/isPostalCode";
 
 import BlFetcher from "@/api/blFetcher";
-import BL_CONFIG from "@/utils/bl-config";
+import useApiClient from "@/utils/api/useApiClient";
 
 const PostalCodeField = forwardRef(
   (
@@ -61,6 +61,7 @@ export const usePostalCity = (
   updatePostalCity: (newPostalCode: string) => void;
   settlePostalCity: Promise<PostalCityStateSettled>;
 } => {
+  const { client } = useApiClient();
   const [postalCity, setPostalCity] = useState<PostalCityState>(
     initialPostCity
       ? { state: "ok", city: initialPostCity }
@@ -88,7 +89,7 @@ export const usePostalCity = (
           },
         ]
       >(
-        `${BL_CONFIG.collection.delivery}/${BL_CONFIG.delivery.postalCodeLookup.operation}`,
+        client.$url("collection.deliveries.operation.postal-code-lookup.post"),
         { postalCode: newPostalCode },
       );
 

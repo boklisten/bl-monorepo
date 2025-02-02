@@ -3,7 +3,7 @@ import { Metadata } from "next";
 
 import BlFetcher from "@/api/blFetcher";
 import BuybackList from "@/components/info/BuybackList";
-import BL_CONFIG from "@/utils/bl-config";
+import { apiClient } from "@/utils/api/apiClient";
 import { assertBlApiError } from "@/utils/types";
 
 export const revalidate = 60;
@@ -18,7 +18,7 @@ const BuybackPage = async () => {
   let buybackItems: Item[] = [];
   try {
     buybackItems = await BlFetcher.get<Item[]>(
-      `${BL_CONFIG.collection.item}?buyback=true&sort=title`,
+      `${apiClient.$url("collection.items.getAll")}?buyback=true&sort=title`,
     );
   } catch (error) {
     assertBlApiError(error);

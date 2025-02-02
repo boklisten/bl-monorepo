@@ -19,7 +19,7 @@ import MeetingInfo from "@/components/matches/MeetingInfo";
 import OtherPersonContact from "@/components/matches/OtherPersonContact";
 import ScannerModal from "@/components/scanner/ScannerModal";
 import ScannerTutorial from "@/components/scanner/ScannerTutorial";
-import BL_CONFIG from "@/utils/bl-config";
+import useApiClient from "@/utils/api/useApiClient";
 
 const UserMatchDetail = ({
   userMatch,
@@ -30,6 +30,7 @@ const UserMatchDetail = ({
   currentUserId: string;
   handleItemTransferred?: (() => void) | undefined;
 }) => {
+  const { client } = useApiClient();
   const [scanModalOpen, setScanModalOpen] = useState(false);
   const [redirectCountdownStarted, setRedirectCountdownStarted] =
     useState(false);
@@ -188,9 +189,12 @@ const UserMatchDetail = ({
       <ScannerModal
         allowManualRegistration
         onScan={(blid) =>
-          BlFetcher.post(BL_CONFIG.collection.userMatches + "/transfer-item", {
-            blid,
-          })
+          BlFetcher.post(
+            client.$url("collection.user_matches.operation.transfer-item.post"),
+            {
+              blid,
+            },
+          )
         }
         open={scanModalOpen}
         handleSuccessfulScan={handleItemTransferred}

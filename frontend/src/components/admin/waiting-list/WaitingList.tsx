@@ -9,8 +9,7 @@ import useSWR from "swr";
 import BlFetcher from "@/api/blFetcher";
 import CreateWaitingListEntry from "@/components/admin/waiting-list/CreateWaitingListEntry";
 import WaitingListTable from "@/components/admin/waiting-list/WaitingListTable";
-import BL_CONFIG from "@/utils/bl-config";
-import useApiClient from "@/utils/useApiClient";
+import useApiClient from "@/utils/api/useApiClient";
 
 export default function WaitingList() {
   const { client, deserialize } = useApiClient();
@@ -19,14 +18,17 @@ export default function WaitingList() {
     data: items,
     isLoading: isLoadingItems,
     error: itemsError,
-  } = useSWR(`${BL_CONFIG.collection.item}`, BlFetcher.get<Item[]>);
+  } = useSWR(
+    `${client.$url("collection.items.getAll")}`,
+    BlFetcher.get<Item[]>,
+  );
 
   const {
     data: branches,
     isLoading: isLoadingBranches,
     error: branchesError,
   } = useSWR(
-    `${BL_CONFIG.collection.branch}?active=true&sort=name`,
+    `${client.$url("collection.branches.getAll")}?active=true&sort=name`,
     BlFetcher.get<Branch[]>,
   );
 

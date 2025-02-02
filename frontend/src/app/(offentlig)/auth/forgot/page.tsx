@@ -15,13 +15,14 @@ import validator from "validator";
 
 import BlFetcher from "@/api/blFetcher";
 import DynamicLink from "@/components/DynamicLink";
-import blConfig from "@/utils/bl-config";
+import useApiClient from "@/utils/api/useApiClient";
 
 interface ForgotFields {
   email: string;
 }
 
 const ForgotPage = () => {
+  const { client } = useApiClient();
   const {
     register,
     handleSubmit,
@@ -33,9 +34,12 @@ const ForgotPage = () => {
     try {
       setError(false);
       setSuccess(false);
-      await BlFetcher.post(blConfig.collection.pendingPasswordReset, {
-        email: data.email,
-      });
+      await BlFetcher.post(
+        client.$url("collection.pendingpasswordresets.post"),
+        {
+          email: data.email,
+        },
+      );
       setSuccess(true);
     } catch {
       setError(true);

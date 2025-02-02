@@ -4,13 +4,14 @@ import { useState } from "react";
 
 import BlFetcher from "@/api/blFetcher";
 import UserDetailSearchResult from "@/components/search/UserDetailSearchResult";
-import BL_CONFIG from "@/utils/bl-config";
+import useApiClient from "@/utils/api/useApiClient";
 
 export default function UserDetailSearchField({
   onSelectedResult,
 }: {
   onSelectedResult: (userDetail: UserDetail | null) => void;
 }) {
+  const { client } = useApiClient();
   const [searchValue, setSearchValue] = useState<UserDetail | null>(null);
   const [searchResults, setSearchResults] = useState<UserDetail[]>([]);
   return (
@@ -37,7 +38,7 @@ export default function UserDetailSearchField({
           }
           try {
             const result = await BlFetcher.get<UserDetail[]>(
-              `${BL_CONFIG.collection.userDetail}?s=${newInputValue}`,
+              `${client.$url("collection.userdetails.getAll")}?s=${newInputValue}`,
             );
             setSearchResults(result);
           } catch {

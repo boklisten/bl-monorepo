@@ -13,7 +13,7 @@ import { useState } from "react";
 import { KeyedMutator } from "swr";
 
 import blFetcher from "@/api/blFetcher";
-import BL_CONFIG from "@/utils/bl-config";
+import useApiClient from "@/utils/api/useApiClient";
 
 export default function WaitingListTable({
   loading,
@@ -28,10 +28,13 @@ export default function WaitingListTable({
   waitingList: WaitingListEntry[];
   mutate: KeyedMutator<WaitingListEntry[]>;
 }) {
+  const { client } = useApiClient();
   const [pendingUpdate, setPendingUpdate] = useState(false);
   async function handleDeleteWaitingListEntry(id: string | number) {
     setPendingUpdate(true);
-    await blFetcher.destroy(`${BL_CONFIG.collection.waitingListEntries}/${id}`);
+    await blFetcher.destroy(
+      client.$url("waiting_list_entries.delete", { params: { id } }),
+    );
     await mutate();
     setPendingUpdate(false);
   }

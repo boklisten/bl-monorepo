@@ -8,7 +8,7 @@ import ReactQuill from "react-quill";
 import BlFetcher from "@/api/blFetcher";
 import { EditorProps } from "@/components/editableText/EditableTextElement";
 import { EditableTextRenderer } from "@/components/editableText/EditableTextRenderer";
-import BL_CONFIG from "@/utils/bl-config";
+import useApiClient from "@/utils/api/useApiClient";
 import useExitInterceptor from "@/utils/useExitInterceptor";
 
 const Quill = styled(
@@ -16,6 +16,7 @@ const Quill = styled(
 )({});
 
 export const EditableTextEditor = ({ editableText }: EditorProps) => {
+  const { client } = useApiClient();
   const initialValue = editableText.text ?? "";
 
   const editorState = useRef<string>(initialValue);
@@ -38,10 +39,16 @@ export const EditableTextEditor = ({ editableText }: EditorProps) => {
     if (editorRef.current?.innerText.trim().length === 0) {
       editorState.current = "";
     }
-    BlFetcher.put(`${BL_CONFIG.collection.editableText}/${editableText.id}/`, {
-      ...editableText,
-      text: editorState.current,
-    })
+
+    BlFetcher.put(
+      client.$url("collection.editabletexts.put", {
+        params: { id: editableText.id },
+      }),
+      {
+        ...editableText,
+        text: editorState.current,
+      },
+    )
       .then(async () => {
         await onEditorSave();
         return;

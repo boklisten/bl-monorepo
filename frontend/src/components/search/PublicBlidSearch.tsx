@@ -20,7 +20,7 @@ import { isLoggedIn } from "@/api/auth";
 import BlFetcher from "@/api/blFetcher";
 import DynamicLink from "@/components/DynamicLink";
 import ScannerModal from "@/components/scanner/ScannerModal";
-import BL_CONFIG from "@/utils/bl-config";
+import useApiClient from "@/utils/api/useApiClient";
 import useIsHydrated from "@/utils/useIsHydrated";
 
 interface PublicBlidLookupResult {
@@ -35,6 +35,7 @@ interface PublicBlidLookupResult {
 }
 
 export default function PublicBlidSearch() {
+  const { client } = useApiClient();
   const hydrated = useIsHydrated();
   const [scannerModalOpen, setScannerModalOpen] = useState(false);
   const [blidSearch, setBlidSearch] = useState("");
@@ -52,7 +53,9 @@ export default function PublicBlidSearch() {
     }
     try {
       const result = await BlFetcher.post<[PublicBlidLookupResult] | []>(
-        BL_CONFIG.collection.customerItem + "/public-blid-lookup",
+        client.$url(
+          "collection.customeritems.operation.public-blid-lookup.post",
+        ),
         {
           blid,
         },

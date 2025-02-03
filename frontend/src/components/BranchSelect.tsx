@@ -12,20 +12,24 @@ import { useQuery } from "@tanstack/react-query";
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect } from "react";
 
-import BlFetcher from "@/api/blFetcher";
+import unpack from "@/utils/api/bl-api-request";
 import useApiClient from "@/utils/api/useApiClient";
 import { useGlobalState } from "@/utils/useGlobalState";
 
 const BranchSelect = ({ isNav }: { isNav?: boolean }) => {
   const client = useApiClient();
+  const branchQuery = {
+    query: { active: true, sort: "name" },
+  };
   const { data: branches } = useQuery({
-    queryKey: [
-      client.$url("collection.branches.getAll", {
-        query: { active: true, sort: "name" },
-      }),
-    ],
-    queryFn: ({ queryKey }) => BlFetcher.get<Branch[]>(queryKey[0] ?? ""),
+    queryKey: [client.$url("collection.branches.getAll", branchQuery)],
+    queryFn: () =>
+      client
+        .$route("collection.branches.getAll")
+        .$get(branchQuery)
+        .then(unpack<Branch[]>),
   });
+  console.log(branches);
 
   const { selectedBranchId, selectBranch } = useGlobalState();
 

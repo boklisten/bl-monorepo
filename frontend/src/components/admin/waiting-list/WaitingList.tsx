@@ -5,9 +5,9 @@ import { Item } from "@boklisten/backend/shared/item/item";
 import { Alert, AlertTitle } from "@mui/material";
 import { useQuery } from "@tanstack/react-query";
 
-import BlFetcher from "@/api/blFetcher";
 import CreateWaitingListEntry from "@/components/admin/waiting-list/CreateWaitingListEntry";
 import WaitingListTable from "@/components/admin/waiting-list/WaitingListTable";
+import unpack from "@/utils/api/bl-api-request";
 import useApiClient from "@/utils/api/useApiClient";
 
 export default function WaitingList() {
@@ -19,7 +19,11 @@ export default function WaitingList() {
     error: itemsError,
   } = useQuery({
     queryKey: [client.$url("collection.items.getAll")],
-    queryFn: ({ queryKey }) => BlFetcher.get<Item[]>(queryKey[0] ?? ""),
+    queryFn: () =>
+      client
+        .$route("collection.items.getAll")
+        .$get()
+        .then(unpack<Item[]>),
   });
 
   const {
@@ -32,7 +36,13 @@ export default function WaitingList() {
         query: { active: true, sort: "name" },
       }),
     ],
-    queryFn: ({ queryKey }) => BlFetcher.get<Branch[]>(queryKey[0] ?? ""),
+    queryFn: () =>
+      client
+        .$route("collection.branches.getAll")
+        .$get({
+          query: { active: true, sort: "name" },
+        })
+        .then(unpack<Branch[]>),
   });
 
   const {

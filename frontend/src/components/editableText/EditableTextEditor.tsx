@@ -16,7 +16,7 @@ const Quill = styled(
 )({});
 
 export const EditableTextEditor = ({ editableText }: EditorProps) => {
-  const { client } = useApiClient();
+  const client = useApiClient();
   const initialValue = editableText.text ?? "";
 
   const editorState = useRef<string>(initialValue);

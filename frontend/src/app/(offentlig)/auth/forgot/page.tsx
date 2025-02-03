@@ -22,7 +22,7 @@ interface ForgotFields {
 }
 
 const ForgotPage = () => {
-  const { client } = useApiClient();
+  const client = useApiClient();
   const {
     register,
     handleSubmit,

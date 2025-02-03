@@ -38,7 +38,7 @@ export default function RapidHandoutDetails({
 }: {
   customer: UserDetail;
 }) {
-  const { client } = useApiClient();
+  const client = useApiClient();
   const queryClient = useQueryClient();
   const ordersUrl = client.$url("collection.orders.getAll", {
     query: { placed: true, customer: customer.id },

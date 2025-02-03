@@ -61,7 +61,7 @@ export const usePostalCity = (
   updatePostalCity: (newPostalCode: string) => void;
   settlePostalCity: Promise<PostalCityStateSettled>;
 } => {
-  const { client } = useApiClient();
+  const client = useApiClient();
   const [postalCity, setPostalCity] = useState<PostalCityState>(
     initialPostCity
       ? { state: "ok", city: initialPostCity }

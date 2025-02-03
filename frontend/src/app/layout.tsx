@@ -2,7 +2,7 @@ import { ThemeProvider } from "@mui/material";
 import CssBaseline from "@mui/material/CssBaseline";
 import { AppRouterCacheProvider } from "@mui/material-nextjs/v15-appRouter";
 import { Metadata } from "next";
-import { ReactNode, Suspense } from "react";
+import { ReactNode } from "react";
 
 import AuthLinker from "@/components/AuthLinker";
 import DynamicHeightProvider from "@/components/DynamicHeightProvider";
@@ -27,23 +27,21 @@ export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html lang="no">
       <body>
-        <Suspense>
+        <ReactQueryClientProvider>
           <DynamicHeightProvider>
             <CustomLocalizationProvider>
-              <ReactQueryClientProvider>
-                <AppRouterCacheProvider>
-                  <ThemeProvider theme={theme}>
-                    <AuthLinker>
-                      {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
-                      <CssBaseline />
-                      {children}
-                    </AuthLinker>
-                  </ThemeProvider>
-                </AppRouterCacheProvider>
-              </ReactQueryClientProvider>
+              <AppRouterCacheProvider>
+                <ThemeProvider theme={theme}>
+                  <AuthLinker>
+                    {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
+                    <CssBaseline />
+                    {children}
+                  </AuthLinker>
+                </ThemeProvider>
+              </AppRouterCacheProvider>
             </CustomLocalizationProvider>
           </DynamicHeightProvider>
-        </Suspense>
+        </ReactQueryClientProvider>
       </body>
     </html>
   );

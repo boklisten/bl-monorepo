@@ -40,7 +40,9 @@ export const updateUserDetails = async (
   userDetails: Partial<UserDetail>,
 ) => {
   return await BlFetcher.patch(
-    apiClient.$url("collection.userdetails.patch", { params: { id: userId } }),
+    apiClient.$url("collection.userdetails.patch", {
+      params: { id: userId },
+    }),
     userDetails,
   );
 };

@@ -17,7 +17,7 @@ import useApiClient from "@/utils/api/useApiClient";
 import { useGlobalState } from "@/utils/useGlobalState";
 
 const BranchSelect = ({ isNav }: { isNav?: boolean }) => {
-  const { client } = useApiClient();
+  const client = useApiClient();
   const { data: branches } = useQuery({
     queryKey: [
       client.$url("collection.branches.getAll", {

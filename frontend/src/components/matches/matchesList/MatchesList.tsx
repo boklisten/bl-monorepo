@@ -17,7 +17,7 @@ import ProgressBar from "@/components/matches/matchesList/ProgressBar";
 import useApiClient from "@/utils/api/useApiClient";
 
 export const MatchesList: FC = () => {
-  const { client } = useApiClient();
+  const client = useApiClient();
   const { data: accessToken, error: tokenError } = useQuery({
     queryKey: ["userId"],
     queryFn: () => getAccessTokenBody(),

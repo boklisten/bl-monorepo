@@ -24,7 +24,7 @@ interface WaitingListEntryFormFields {
 }
 
 export default function CreateWaitingListEntry({ items }: { items: Item[] }) {
-  const { client } = useApiClient();
+  const client = useApiClient();
   const queryClient = useQueryClient();
   const { selectedBranchId } = useGlobalState();
   const [selectedItems, setSelectedItems] = useState<

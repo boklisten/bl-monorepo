@@ -1,6 +1,7 @@
 "use client";
 
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { ReactNode } from "react";
 
 export default function ReactQueryClientProvider({
@@ -21,6 +22,7 @@ export default function ReactQueryClientProvider({
       }
     >
       {children}
+      <ReactQueryDevtools />
     </QueryClientProvider>
   );
 }

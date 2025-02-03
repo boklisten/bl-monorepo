@@ -18,7 +18,7 @@ const EmailConfirmationStatus = ({
   userDetails,
   onError,
 }: EmailConfirmationStatusProps) => {
-  const { client } = useApiClient();
+  const client = useApiClient();
   const [emailConfirmationRequested, setEmailConfirmationRequested] =
     useState(false);
 

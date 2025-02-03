@@ -22,7 +22,7 @@ const MatchDetail = ({
   userMatchId?: string;
   standMatchId?: string;
 }) => {
-  const { client } = useApiClient();
+  const client = useApiClient();
   const queryClient = useQueryClient();
   const { data: accessToken, error: tokenError } = useQuery({
     queryKey: ["userId"],

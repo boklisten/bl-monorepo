@@ -2,7 +2,6 @@
 
 import { Branch } from "@boklisten/backend/shared/branch/branch";
 import { Item } from "@boklisten/backend/shared/item/item";
-import { WaitingListEntry } from "@boklisten/backend/shared/waiting-list/waiting-list-entry";
 import { Alert, AlertTitle } from "@mui/material";
 import { useQuery } from "@tanstack/react-query";
 
@@ -12,7 +11,7 @@ import WaitingListTable from "@/components/admin/waiting-list/WaitingListTable";
 import useApiClient from "@/utils/api/useApiClient";
 
 export default function WaitingList() {
-  const { client, deserialize } = useApiClient();
+  const client = useApiClient();
 
   const {
     data: items,
@@ -42,11 +41,7 @@ export default function WaitingList() {
     error: waitingListError,
   } = useQuery({
     queryKey: [client.waiting_list_entries.$url()],
-    queryFn: () =>
-      client.waiting_list_entries
-        .$get()
-        .unwrap()
-        .then((res) => deserialize<WaitingListEntry[]>(res)),
+    queryFn: () => client.waiting_list_entries.$get().unwrap(),
   });
 
   if (itemsError || branchesError || waitingListError) {

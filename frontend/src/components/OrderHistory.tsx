@@ -51,7 +51,7 @@ const paymentTypes = {
 };
 
 const OrderHistory = ({ orders }: { orders: Order[] }) => {
-  const { client } = useApiClient();
+  const client = useApiClient();
   const [wait, setWait] = useState(false);
   const [openOrder, setOpenOrder] = useState("");
   const [openPayment, setOpenPayment] = useState<Payment | undefined>();

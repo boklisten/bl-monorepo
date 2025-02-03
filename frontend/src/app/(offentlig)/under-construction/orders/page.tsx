@@ -9,7 +9,7 @@ import OrderHistory from "@/components/OrderHistory";
 import useApiClient from "@/utils/api/useApiClient";
 
 const OrdersPage = () => {
-  const { client } = useApiClient();
+  const client = useApiClient();
   const [orders, setOrders] = useState<Order[]>();
 
   useEffect(() => {

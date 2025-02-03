@@ -22,7 +22,7 @@ const SocialLoginButton = ({
   brandIcon,
   brandColor,
 }: SocialLoginProps) => {
-  const { client } = useApiClient();
+  const client = useApiClient();
   const router = useRouter();
   const searchParams = useSearchParams();
 

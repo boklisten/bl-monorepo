@@ -30,7 +30,7 @@ const UserMatchDetail = ({
   currentUserId: string;
   handleItemTransferred?: (() => void) | undefined;
 }) => {
-  const { client } = useApiClient();
+  const client = useApiClient();
   const [scanModalOpen, setScanModalOpen] = useState(false);
   const [redirectCountdownStarted, setRedirectCountdownStarted] =
     useState(false);

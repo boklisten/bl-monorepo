@@ -11,7 +11,7 @@ import UserDetailEditorSkeleton from "@/components/user/user-detail-editor/UserD
 import useApiClient from "@/utils/api/useApiClient";
 
 const UserSettings = () => {
-  const { client } = useApiClient();
+  const client = useApiClient();
   const router = useRouter();
   const [userDetails, setUserDetails] = useState<UserDetail>();
 

@@ -22,7 +22,7 @@ const BuybackList = ({
 }: {
   defaultBuybackItems: Item[];
 }) => {
-  const { client } = useApiClient();
+  const client = useApiClient();
 
   const { data, error } = useQuery({
     queryKey: [

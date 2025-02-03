@@ -13,7 +13,7 @@ export default function EmailConfirmer({
 }: {
   confirmationId: string;
 }) {
-  const { client } = useApiClient();
+  const client = useApiClient();
   const [status, setStatus] = useState<"WAIT" | "SUCCESS" | "ERROR">("WAIT");
 
   useEffect(() => {

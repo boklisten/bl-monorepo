@@ -31,7 +31,7 @@ export default function MultiBranchPicker({
 }: {
   onChange: (newBranchIds: string[]) => void;
 }) {
-  const { client } = useApiClient();
+  const client = useApiClient();
   const [branchIDs, setBranchIDs] = useState<string[]>([]);
 
   const { data: branches } = useQuery({

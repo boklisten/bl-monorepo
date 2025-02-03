@@ -11,7 +11,7 @@ export default function UserDetailSearchField({
 }: {
   onSelectedResult: (userDetail: UserDetail | null) => void;
 }) {
-  const { client } = useApiClient();
+  const client = useApiClient();
   const [searchValue, setSearchValue] = useState<UserDetail | null>(null);
   const [searchResults, setSearchResults] = useState<UserDetail[]>([]);
   return (

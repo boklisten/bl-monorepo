@@ -35,7 +35,7 @@ interface PublicBlidLookupResult {
 }
 
 export default function PublicBlidSearch() {
-  const { client } = useApiClient();
+  const client = useApiClient();
   const hydrated = useIsHydrated();
   const [scannerModalOpen, setScannerModalOpen] = useState(false);
   const [blidSearch, setBlidSearch] = useState("");

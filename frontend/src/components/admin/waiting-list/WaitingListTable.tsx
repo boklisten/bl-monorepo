@@ -26,7 +26,7 @@ export default function WaitingListTable({
   branches: Branch[];
   waitingList: WaitingListEntry[];
 }) {
-  const { client } = useApiClient();
+  const client = useApiClient();
   const queryClient = useQueryClient();
   const [pendingUpdate, setPendingUpdate] = useState(false);
   async function handleDeleteWaitingListEntry(id: string | number) {

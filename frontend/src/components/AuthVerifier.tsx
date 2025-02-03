@@ -12,7 +12,7 @@ import useApiClient from "@/utils/api/useApiClient";
 import BL_CONFIG from "@/utils/bl-config";
 
 export default function AuthVerifier() {
-  const { client } = useApiClient();
+  const client = useApiClient();
   const router = useRouter();
   useEffect(() => {
     if (!isLoggedIn()) {

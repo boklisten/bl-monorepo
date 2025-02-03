@@ -27,21 +27,23 @@ export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html lang="no">
       <body>
-        <ReactQueryClientProvider>
-          <DynamicHeightProvider>
-            <CustomLocalizationProvider>
-              <AppRouterCacheProvider>
-                <ThemeProvider theme={theme}>
-                  <AuthLinker>
-                    {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
-                    <CssBaseline />
-                    <Suspense>{children}</Suspense>
-                  </AuthLinker>
-                </ThemeProvider>
-              </AppRouterCacheProvider>
-            </CustomLocalizationProvider>
-          </DynamicHeightProvider>
-        </ReactQueryClientProvider>
+        <Suspense>
+          <ReactQueryClientProvider>
+            <DynamicHeightProvider>
+              <CustomLocalizationProvider>
+                <AppRouterCacheProvider>
+                  <ThemeProvider theme={theme}>
+                    <AuthLinker>
+                      {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
+                      <CssBaseline />
+                      {children}
+                    </AuthLinker>
+                  </ThemeProvider>
+                </AppRouterCacheProvider>
+              </CustomLocalizationProvider>
+            </DynamicHeightProvider>
+          </ReactQueryClientProvider>
+        </Suspense>
       </body>
     </html>
   );

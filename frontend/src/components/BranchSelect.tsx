@@ -29,7 +29,6 @@ const BranchSelect = ({ isNav }: { isNav?: boolean }) => {
         .$get(branchQuery)
         .then(unpack<Branch[]>),
   });
-  console.log(branches);
 
   const { selectedBranchId, selectBranch } = useGlobalState();
 

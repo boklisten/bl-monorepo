@@ -1,4 +1,4 @@
-import { Container, Box, Grid2 } from "@mui/material";
+import { Container, Box, Grid } from "@mui/material";
 import { ReactNode } from "react";
 
 import Footer from "@/components/Footer";
@@ -11,7 +11,7 @@ export default function PublicPageLayout({
 }) {
   return (
     <>
-      <Grid2
+      <Grid
         container
         sx={{
           minHeight: "100vh",
@@ -29,7 +29,7 @@ export default function PublicPageLayout({
         >
           <Box sx={{ width: "100%" }}>{children}</Box>
         </Container>
-      </Grid2>
+      </Grid>
       <Footer />
     </>
   );

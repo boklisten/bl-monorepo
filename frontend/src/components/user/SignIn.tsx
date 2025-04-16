@@ -138,10 +138,10 @@ export default function SignIn() {
             Logg inn
           </Button>
           <Grid container>
-            <Grid item xs>
+            <Grid>
               <DynamicLink href={"/auth/forgot"}>Glemt passord?</DynamicLink>
             </Grid>
-            <Grid item>
+            <Grid>
               <DynamicLink href={"/auth/register"}>
                 Har du ikke konto? Registrer deg
               </DynamicLink>

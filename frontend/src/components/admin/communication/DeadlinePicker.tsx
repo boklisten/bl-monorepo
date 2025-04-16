@@ -1,4 +1,4 @@
-import { Box, Grid2, Typography } from "@mui/material";
+import { Box, Grid, Typography } from "@mui/material";
 import ToggleButton from "@mui/material/ToggleButton";
 import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
 import { DatePicker } from "@mui/x-date-pickers";
@@ -50,7 +50,7 @@ export default function DeadlinePicker({
       <Typography variant={"h5"} sx={{ mb: 1 }}>
         Frist
       </Typography>
-      <Grid2 container spacing={1.75} direction="column">
+      <Grid container spacing={1.75} direction="column">
         <ToggleButtonGroup
           color="primary"
           value={String(deadlineToggleValue)}
@@ -87,7 +87,7 @@ export default function DeadlinePicker({
             }}
           />
         )}
-      </Grid2>
+      </Grid>
     </Box>
   );
 }

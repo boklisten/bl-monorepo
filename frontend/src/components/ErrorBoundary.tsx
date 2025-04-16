@@ -1,4 +1,4 @@
-import { Alert, AlertTitle, Grid2 } from "@mui/material";
+import { Alert, AlertTitle, Grid } from "@mui/material";
 import { useEffect } from "react";
 
 import DynamicLink from "@/components/DynamicLink";
@@ -18,7 +18,7 @@ export default function ErrorBoundary({
   }, [error]);
 
   return (
-    <Grid2
+    <Grid
       container
       direction={"column"}
       gap={2}
@@ -35,6 +35,6 @@ export default function ErrorBoundary({
         Ta kontakt på teknisk@boklisten.no dersom problemet vedvarer!
       </Alert>
       {href && <DynamicLink href={href}>Gå til forsiden</DynamicLink>}
-    </Grid2>
+    </Grid>
   );
 }

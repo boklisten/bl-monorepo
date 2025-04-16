@@ -36,9 +36,10 @@ const YourInfoSection = ({
 }: YourInfoSectionProps) => (
   <>
     <Grid
-      item
-      xs={12}
-      sm={12}
+      size={{
+        xs: 12,
+        sm: 12,
+      }}
       sx={{
         mt: 1,
       }}
@@ -46,7 +47,7 @@ const YourInfoSection = ({
       <Typography variant="body1">Din informasjon</Typography>
       <Divider />
     </Grid>
-    <Grid item xs={12}>
+    <Grid size={{ xs: 12 }}>
       <TextField
         data-testid="name-field"
         required
@@ -59,14 +60,14 @@ const YourInfoSection = ({
       />
       <FieldErrorAlert error={errors.name} />
     </Grid>
-    <Grid item xs={12}>
+    <Grid size={{ xs: 12 }}>
       <PhoneNumberField
         error={!!errors.phoneNumber}
         {...register("phoneNumber", fieldValidators.phoneNumber)}
       />
       <FieldErrorAlert error={errors.phoneNumber} />
     </Grid>
-    <Grid item xs={12}>
+    <Grid size={{ xs: 12 }}>
       <TextField
         data-testid="address-field"
         required
@@ -79,7 +80,7 @@ const YourInfoSection = ({
       />
       <FieldErrorAlert error={errors.address} />
     </Grid>
-    <Grid item xs={12}>
+    <Grid size={{ xs: 12 }}>
       <PostalCodeField
         error={!!errors.postalCode}
         postCity={postCity}
@@ -90,7 +91,7 @@ const YourInfoSection = ({
       />
       <FieldErrorAlert error={errors.postalCode} />
     </Grid>
-    <Grid item xs={12}>
+    <Grid size={{ xs: 12 }}>
       <DatePickerField
         handleChange={onIsUnderageChange}
         control={control}

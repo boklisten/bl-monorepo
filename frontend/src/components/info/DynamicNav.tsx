@@ -2,7 +2,7 @@
 import {
   Divider,
   FormControl,
-  Grid2,
+  Grid,
   InputLabel,
   MenuItem,
   Select,
@@ -74,7 +74,7 @@ const DynamicNav = ({
   const rowTwoIndex = activeTabIndex >= 4 ? activeTabIndex - 4 : false;
 
   return (
-    <Grid2 container sx={{ my: 3, justifyContent: "center" }}>
+    <Grid container sx={{ my: 3, justifyContent: "center" }}>
       <Box
         sx={{
           display: { xs: "none", sm: "none", lg: "flex" },
@@ -112,7 +112,7 @@ const DynamicNav = ({
       >
         <MobileTabSelect tabs={tabs} activeTabIndex={activeTabIndex} />
       </Box>
-    </Grid2>
+    </Grid>
   );
 };
 

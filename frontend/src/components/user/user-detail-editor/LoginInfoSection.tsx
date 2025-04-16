@@ -27,7 +27,7 @@ const LoginInfoSection = ({
   setError,
 }: LoginInfoSectionProps) => (
   <>
-    <Grid item xs={12}>
+    <Grid size={{ xs: 12 }}>
       <MaybeConfirmedEmailField
         isSignUp={signUp}
         isEmailConfirmed={emailConfirmed}
@@ -42,7 +42,7 @@ const LoginInfoSection = ({
       <FieldErrorAlert error={errors.email} />
     </Grid>
     {signUp && (
-      <Grid item xs={12}>
+      <Grid size={{ xs: 12 }}>
         <PasswordField
           autoComplete="new-password"
           error={!!errors.password}

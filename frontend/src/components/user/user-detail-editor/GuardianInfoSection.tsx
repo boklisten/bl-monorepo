@@ -18,9 +18,10 @@ const GuardianInfoSection = ({
 }) => (
   <>
     <Grid
-      item
-      xs={12}
-      sm={12}
+      size={{
+        xs: 12,
+        sm: 12,
+      }}
       sx={{
         mt: 1,
       }}
@@ -30,7 +31,7 @@ const GuardianInfoSection = ({
       </Typography>
       <Divider />
     </Grid>
-    <Grid item xs={12}>
+    <Grid size={{ xs: 12 }}>
       <TextField
         data-testid="guardian-name-field"
         required
@@ -43,7 +44,7 @@ const GuardianInfoSection = ({
       />
       <FieldErrorAlert error={errors.guardianName} />
     </Grid>
-    <Grid item xs={12}>
+    <Grid size={{ xs: 12 }}>
       <EmailField
         data-testid="guardian-email-field"
         label="Foresatt sin epost"
@@ -52,7 +53,7 @@ const GuardianInfoSection = ({
       />
       <FieldErrorAlert error={errors.guardianEmail} />
     </Grid>
-    <Grid item xs={12}>
+    <Grid size={{ xs: 12 }}>
       <PhoneNumberField
         data-testid="guardian-phone-field"
         id="guardianPhoneNumber"

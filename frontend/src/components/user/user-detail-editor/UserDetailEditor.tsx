@@ -88,7 +88,7 @@ const UserDetailEditor = ({
               <GuardianInfoSection errors={errors} register={register} />
             )}
             {isSignUp && (
-              <Grid item xs={12}>
+              <Grid size={{ xs: 12 }}>
                 <FormControlLabel
                   control={
                     <Checkbox

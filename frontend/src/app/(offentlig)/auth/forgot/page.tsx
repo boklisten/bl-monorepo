@@ -119,7 +119,7 @@ const ForgotPage = () => {
                 Reset passord
               </Button>
               <Grid container>
-                <Grid item>
+                <Grid>
                   <DynamicLink href={"/auth/login"}>
                     Tilbake til innloggingssiden
                   </DynamicLink>

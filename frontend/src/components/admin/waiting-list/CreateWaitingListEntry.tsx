@@ -5,7 +5,7 @@ import {
   Autocomplete,
   Button,
   Collapse,
-  Grid2,
+  Grid,
   Typography,
 } from "@mui/material";
 import TextField from "@mui/material/TextField";
@@ -69,7 +69,7 @@ export default function CreateWaitingListEntry({ items }: { items: Item[] }) {
   };
 
   return (
-    <Grid2
+    <Grid
       container
       spacing={2}
       direction="column"
@@ -84,7 +84,7 @@ export default function CreateWaitingListEntry({ items }: { items: Item[] }) {
       >
         Legg til i venteliste
       </Typography>
-      <Grid2>
+      <Grid>
         <TextField
           id="name"
           required
@@ -92,10 +92,10 @@ export default function CreateWaitingListEntry({ items }: { items: Item[] }) {
           label="Fullt navn"
           {...register("name")}
         />
-      </Grid2>
-      <Grid2>
+      </Grid>
+      <Grid>
         <PhoneNumberField {...register("phoneNumber")} />
-      </Grid2>
+      </Grid>
       <Autocomplete
         value={selectedItems}
         id="itemIds"
@@ -134,6 +134,6 @@ export default function CreateWaitingListEntry({ items }: { items: Item[] }) {
       >
         Legg til
       </Button>
-    </Grid2>
+    </Grid>
   );
 }

@@ -1,7 +1,7 @@
 "use client";
 import { CustomerItemType } from "@boklisten/backend/shared/customer-item/customer-item-type";
 import { MessageMethod } from "@boklisten/backend/shared/message/message-method/message-method";
-import { Grid2 } from "@mui/material";
+import { Grid } from "@mui/material";
 import { useState } from "react";
 
 import CustomerItemTypePicker from "@/components/admin/communication/CustomerItemTypePicker";
@@ -30,7 +30,7 @@ export default function RemindersPage() {
     messageMethod !== null;
 
   return (
-    <Grid2 container spacing={2} direction="column" width={318}>
+    <Grid container spacing={2} direction="column" width={318}>
       <MultiBranchPicker
         onChange={(newBranchIDs) => {
           setBranchIDs(newBranchIDs);
@@ -41,7 +41,7 @@ export default function RemindersPage() {
           setDeadline(newDeadline);
         }}
       />
-      <Grid2 container sx={{ justifyContent: "space-between" }}>
+      <Grid container sx={{ justifyContent: "space-between" }}>
         <CustomerItemTypePicker
           onChange={(newCustomerItemType) => {
             setCustomerItemType(newCustomerItemType);
@@ -57,7 +57,7 @@ export default function RemindersPage() {
             }
           }}
         />
-      </Grid2>
+      </Grid>
       {hasValidConfiguration &&
         (messageMethod === MessageMethod.SMS ? (
           <SMSTextPicker
@@ -82,6 +82,6 @@ export default function RemindersPage() {
           smsText={smsText}
         />
       )}
-    </Grid2>
+    </Grid>
   );
 }

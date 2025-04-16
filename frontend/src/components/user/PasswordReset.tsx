@@ -141,7 +141,7 @@ export default function PasswordReset({ userId }: { userId: string }) {
             Lag nytt passord
           </Button>
           <Grid container>
-            <Grid item>
+            <Grid>
               <DynamicLink href={"/auth/login"}>
                 Tilbake til innloggingssiden
               </DynamicLink>

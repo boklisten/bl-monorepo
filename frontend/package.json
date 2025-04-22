@@ -28,7 +28,7 @@
     "@tuyau/client": "^0.2.7",
     "@tuyau/superjson": "^0.0.2",
     "@yudiel/react-qr-scanner": "^2.2.1",
-    "babel-plugin-react-compiler": "19.0.0-beta-ebf51a3-20250411",
+    "babel-plugin-react-compiler": "19.1.0-rc.1",
     "draft-js": "^0.11.7",
     "moment": "^2.30.1",
     "next": "15.3.1",

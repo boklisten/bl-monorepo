@@ -1,8 +1,16 @@
 import { UserDetail } from "@boklisten/backend/shared/user/user-detail/user-detail";
-import { Autocomplete, Box, TextField, Typography } from "@mui/material";
+import QrCodeScannerIcon from "@mui/icons-material/QrCodeScanner";
+import {
+  Autocomplete,
+  Box,
+  IconButton,
+  TextField,
+  Typography,
+} from "@mui/material";
 import { useState } from "react";
 
 import BlFetcher from "@/api/blFetcher";
+import ScannerModal from "@/components/scanner/ScannerModal";
 import UserDetailSearchResult from "@/components/search/UserDetailSearchResult";
 import useApiClient from "@/utils/api/useApiClient";
 
@@ -14,6 +22,7 @@ export default function UserDetailSearchField({
   const client = useApiClient();
   const [searchValue, setSearchValue] = useState<UserDetail | null>(null);
   const [searchResults, setSearchResults] = useState<UserDetail[]>([]);
+  const [scannerOpen, setScannerOpen] = useState(false);
   return (
     <Box sx={{ width: "100%" }}>
       <Typography sx={{ mt: 2, mb: 1, textAlign: "center" }}>
@@ -67,11 +76,32 @@ export default function UserDetailSearchField({
             slotProps={{
               input: {
                 ...params.InputProps,
+                endAdornment: (
+                  <IconButton onClick={() => setScannerOpen(true)}>
+                    <QrCodeScannerIcon />
+                  </IconButton>
+                ),
                 type: "search",
               },
             }}
           />
         )}
+      />
+      <ScannerModal
+        onScan={async (scannedText) => {
+          const [result] = await BlFetcher.get<[UserDetail]>(
+            client.$url("collection.userdetails.getId", {
+              params: { id: scannedText },
+            }),
+          );
+          setScannerOpen(false);
+          setSearchValue(result);
+          onSelectedResult(result);
+          return [{ feedback: "" }];
+        }}
+        open={scannerOpen}
+        handleClose={() => setScannerOpen(false)}
+        disableTypeChecks
       />
     </Box>
   );

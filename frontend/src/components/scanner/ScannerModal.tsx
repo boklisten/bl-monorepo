@@ -22,6 +22,7 @@ const ScannerModal = ({
   handleSuccessfulScan,
   allowManualRegistration,
   children,
+  disableTypeChecks,
 }: {
   onScan: (blid: string) => Promise<[{ feedback: string }]>;
   open: boolean;
@@ -29,6 +30,7 @@ const ScannerModal = ({
   handleSuccessfulScan?: (() => void) | undefined;
   allowManualRegistration?: boolean;
   children?: ReactNode;
+  disableTypeChecks?: boolean;
 }) => {
   const [manualRegistrationModalOpen, setManualRegistrationModalOpen] =
     useState(false);
@@ -41,7 +43,7 @@ const ScannerModal = ({
 
   const handleRegistration = async (scannedText: string) => {
     const scannedTextType = determineScannedTextType(scannedText);
-    if (scannedTextType === TextType.ISBN) {
+    if (!disableTypeChecks && scannedTextType === TextType.ISBN) {
       setFeedback({
         text: "Feil strekkode. Bruk bokas unike ID. Se instruksjoner for hjelp",
         severity: "error",
@@ -49,7 +51,7 @@ const ScannerModal = ({
       });
       return;
     }
-    if (scannedTextType === TextType.UNKNOWN) {
+    if (!disableTypeChecks && scannedTextType === TextType.UNKNOWN) {
       setFeedback({
         text: "Ugyldig strekkode. Vennligst prøv igjen, eller ta kontakt med stand for hjelp",
         severity: "error",

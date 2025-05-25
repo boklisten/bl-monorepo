@@ -12,10 +12,9 @@ export const BranchModel: BlModel<Branch> = {
     },
     type: {
       type: String,
-      required: true,
     },
-    allowMemberships: Boolean,
     parentBranch: Schema.Types.ObjectId,
+    localName: String,
     childBranches: [Schema.Types.ObjectId],
     paymentInfo: {
       responsible: {

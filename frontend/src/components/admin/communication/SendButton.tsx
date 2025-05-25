@@ -31,10 +31,18 @@ export default function SendButton({
   const [success, setSuccess] = useState<boolean | null>(null);
   const [loading, setLoading] = useState(false);
 
+  // hide alerts on change
   useEffect(() => {
     setSuccess(null);
     setRecipientCount(null);
-  }, [branchIDs, deadline, customerItemType, messageMethod]);
+  }, [
+    branchIDs,
+    deadline,
+    customerItemType,
+    messageMethod,
+    emailTemplateId,
+    smsText,
+  ]);
 
   return (
     <>
@@ -72,6 +80,7 @@ export default function SendButton({
         color={"primary"}
         endIcon={messageMethod === "sms" ? <Sms /> : <Email />}
         onClick={async () => {
+          setSuccess(null);
           setRecipientCount(null);
           setLoading(true);
           try {

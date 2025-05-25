@@ -84,6 +84,7 @@ export default function SendButton({
           setRecipientCount(null);
           setLoading(true);
           try {
+            // fixme: rewrite to use TanStack Query useMutation
             const response = await apiClient.reminders.count_recipients
               .$post({
                 deadlineISO: deadline.toISOString(),
@@ -116,6 +117,7 @@ export default function SendButton({
         onConfirm={async () => {
           setConfirmSendDialogOpen(false);
           try {
+            // fixme: rewrite to use TanStack Query useMutation
             const response = await apiClient.reminders.send
               .$post({
                 deadlineISO: deadline.toISOString(),

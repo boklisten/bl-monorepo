@@ -1,12 +1,15 @@
 "use client";
 
-import { redirect } from "next/navigation";
-
-import { attachTokensToHref } from "@/components/AuthLinker";
-import BL_CONFIG from "@/utils/bl-config";
+import SelectBranchTreeView from "@/components/branches/SelectBranchTreeView";
 
 export default function DatabaseBranchesPage() {
-  redirect(
-    attachTokensToHref(BL_CONFIG.blAdmin.basePath + "database/branches"),
+  return (
+    <>
+      <SelectBranchTreeView
+        onSelect={(branchId) => {
+          console.log("Selected branch", branchId);
+        }}
+      />
+    </>
   );
 }

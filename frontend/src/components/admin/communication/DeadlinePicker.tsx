@@ -59,9 +59,9 @@ export default function DeadlinePicker({
             onChange(
               newDeadline === "custom"
                 ? datePickerValue?.isValid()
-                  ? datePickerValue.toDate()
+                  ? new Date(datePickerValue.toDate())
                   : null
-                : newDeadline,
+                : new Date(newDeadline),
             );
             setDeadlineToggleValue(newDeadline);
           }}

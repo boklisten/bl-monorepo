@@ -9,6 +9,7 @@ const AuthSocialController = () =>
 const AuthLocalController = () => import("#controllers/auth/local_controller");
 const WaitingListEntriesController = () =>
   import("#controllers/waiting_list_entries_controller");
+const RemindersController = () => import("#controllers/reminders_controller");
 
 /**
  * auth token
@@ -53,5 +54,15 @@ router
     "deleteWaitingListEntry",
   ])
   .as("waiting_list_entries.delete");
+
+/**
+ * reminders
+ */
+router
+  .post("/reminders/count_recipients", [RemindersController, "countRecipients"])
+  .as("reminders.count_recipients");
+router
+  .post("/reminders/send", [RemindersController, "remind"])
+  .as("reminders.send");
 
 CollectionEndpointCreator.generateEndpoints();

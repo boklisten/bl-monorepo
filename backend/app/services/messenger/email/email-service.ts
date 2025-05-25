@@ -438,6 +438,9 @@ export class EmailService implements MessengerService {
   }
 }
 
+/**
+ * @deprecated use sendMailV2 instead
+ */
 export async function sendMail(
   emailSetting: EmailSetting,
   templateId: string,
@@ -455,5 +458,33 @@ export async function sendMail(
     logger.error(
       `Failed to send email to ${emailSetting.toEmail}, error: ${error}`,
     );
+  }
+}
+
+export async function sendMailV2(
+  from: string,
+  templateId: string,
+  recipients: {
+    to: string;
+    dynamicTemplateData?: Record<string, unknown>;
+  }[],
+): Promise<{ success: boolean }> {
+  try {
+    const [sendGridResponse] = await sgMail.send({
+      from,
+      templateId,
+      personalizations: recipients,
+    });
+    if (sendGridResponse.statusCode === 202) {
+      logger.info("Successfully sent emails");
+      return { success: true };
+    }
+    logger.error(
+      `Failed to send emails, error: ${sendGridResponse.toString()}`,
+    );
+    return { success: false };
+  } catch (error) {
+    logger.error(`Failed to send emails, error: ${error}`);
+    return { success: false };
   }
 }

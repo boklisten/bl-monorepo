@@ -39,6 +39,14 @@ type WaitinglistentriesIdDelete = {
   request: unknown
   response: MakeNonSerializedTuyauResponse<import('../app/controllers/waiting_list_entries_controller.ts').default['deleteWaitingListEntry'], false>
 }
+type RemindersCountrecipientsPost = {
+  request: MakeTuyauRequest<InferInput<typeof import('../app/validators/reminder.ts')['reminderValidator']>>
+  response: MakeNonSerializedTuyauResponse<import('../app/controllers/reminders_controller.ts').default['countRecipients'], true>
+}
+type RemindersSendPost = {
+  request: MakeTuyauRequest<InferInput<typeof import('../app/validators/reminder.ts')['reminderValidator']>>
+  response: MakeNonSerializedTuyauResponse<import('../app/controllers/reminders_controller.ts').default['remind'], true>
+}
 export interface ApiDefinition {
   'token': {
     '$url': {
@@ -83,6 +91,18 @@ export interface ApiDefinition {
       '$url': {
       };
       '$delete': WaitinglistentriesIdDelete;
+    };
+  };
+  'reminders': {
+    'count_recipients': {
+      '$url': {
+      };
+      '$post': RemindersCountrecipientsPost;
+    };
+    'send': {
+      '$url': {
+      };
+      '$post': RemindersSendPost;
     };
   };
 }
@@ -142,6 +162,20 @@ const routes = [
     path: '/waiting_list_entries/:id',
     method: ["DELETE"],
     types: {} as WaitinglistentriesIdDelete,
+  },
+  {
+    params: [],
+    name: 'reminders.count_recipients',
+    path: '/reminders/count_recipients',
+    method: ["POST"],
+    types: {} as RemindersCountrecipientsPost,
+  },
+  {
+    params: [],
+    name: 'reminders.send',
+    path: '/reminders/send',
+    method: ["POST"],
+    types: {} as RemindersSendPost,
   },
   {
     params: ["id"],

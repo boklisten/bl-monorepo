@@ -17,6 +17,7 @@ test.group("BranchGetHook.after", async () => {
     const branch = {
       id: "branch1",
       name: "some branch",
+      type: "privatist",
       branchItems: ["branchItem1", "branchItem2"],
       isBranchItemsLive: {
         online: false,
@@ -27,6 +28,7 @@ test.group("BranchGetHook.after", async () => {
     const expectedResult = {
       id: "branch1",
       name: "some branch",
+      type: "privatist",
       branchItems: [],
       isBranchItemsLive: {
         online: false,
@@ -43,6 +45,7 @@ test.group("BranchGetHook.after", async () => {
     const branch = {
       id: "branch1",
       name: "some branch",
+      type: "privatist",
       branchItems: ["branchItem1", "branchItem2"],
       isBranchItemsLive: {
         online: true,
@@ -53,6 +56,7 @@ test.group("BranchGetHook.after", async () => {
     const expectedResult = {
       id: "branch1",
       name: "some branch",
+      type: "privatist",
       branchItems: ["branchItem1", "branchItem2"],
       isBranchItemsLive: {
         online: true,
@@ -69,6 +73,7 @@ test.group("BranchGetHook.after", async () => {
     const branch = {
       id: "branch1",
       name: "some branch",
+      type: "privatist",
       branchItems: ["branchItem1", "branchItem2"],
       isBranchItemsLive: {
         online: false,
@@ -83,6 +88,7 @@ test.group("BranchGetHook.after", async () => {
     const expectedResult = {
       id: "branch1",
       name: "some branch",
+      type: "privatist",
       branchItems: [],
       isBranchItemsLive: {
         online: false,
@@ -99,6 +105,7 @@ test.group("BranchGetHook.after", async () => {
     const branch = {
       id: "branch1",
       name: "some branch",
+      type: "privatist",
       branchItems: ["branchItem1", "branchItem2"],
       isBranchItemsLive: {
         online: false,
@@ -113,6 +120,7 @@ test.group("BranchGetHook.after", async () => {
     const expectedResult = {
       id: "branch1",
       name: "some branch",
+      type: "privatist",
       branchItems: ["branchItem1", "branchItem2"],
       isBranchItemsLive: {
         online: false,

@@ -62,6 +62,6 @@ export const UserDetailModel: BlModel<UserDetail> = {
       type: String,
       required: true,
     },
-    temporaryGroupMembership: String, // Temporary field for Ullern Matching January 2024
+    branchMembership: Schema.Types.ObjectId,
   }),
 };

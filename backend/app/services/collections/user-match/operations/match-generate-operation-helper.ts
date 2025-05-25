@@ -56,8 +56,8 @@ export async function getMatchableUsers(
   return await Promise.all(
     matchableUsers.map(async (user) => {
       const userDetails = await BlStorage.UserDetails.get(user.id);
-      if (userDetails.temporaryGroupMembership) {
-        user.groupMembership = userDetails.temporaryGroupMembership;
+      if (userDetails.branchMembership) {
+        user.groupMembership = userDetails.branchMembership;
       } else {
         console.log("unknown: ", user);
       }

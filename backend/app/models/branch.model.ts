@@ -10,31 +10,13 @@ export const BranchModel: BlModel<Branch> = {
       type: String,
       required: true,
     },
-    type: String,
-    desc: String,
-    root: Boolean,
-    viewableFor: [String],
-    contactInfo: {
-      phone: String,
-      email: String,
-      address: String,
-      postCode: String,
-      postCity: String,
-      country: String,
-      locationDesc: String,
-      location: {
-        type: {
-          latitude: {
-            type: String,
-            required: true,
-          },
-          longitude: {
-            type: String,
-            required: true,
-          },
-        },
-      },
+    type: {
+      type: String,
+      required: true,
     },
+    allowMemberships: Boolean,
+    parentBranch: Schema.Types.ObjectId,
+    childBranches: [Schema.Types.ObjectId],
     paymentInfo: {
       responsible: {
         type: Boolean,
@@ -117,6 +99,9 @@ export const BranchModel: BlModel<Branch> = {
     },
     branchItems: [Schema.Types.ObjectId],
     openingHours: [Schema.Types.ObjectId],
-    location: Schema.Types.Mixed,
+    location: {
+      region: String,
+      address: String,
+    },
   }),
 };

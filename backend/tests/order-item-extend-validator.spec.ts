@@ -84,6 +84,7 @@ test.group("OrderItemExtendValidator", (group) => {
 
     testBranch = {
       id: "branch1",
+      type: "privatist",
       name: "Sonans",
       branchItems: [],
       paymentInfo: {

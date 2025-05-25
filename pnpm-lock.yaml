@@ -193,9 +193,6 @@ importers:
       '@swc/core':
         specifier: ^1.11.29
         version: 1.11.29(@swc/helpers@0.5.17)
-      '@tuyau/utils':
-        specifier: ^0.0.7
-        version: 0.0.7
       '@types/chai':
         specifier: ^5.2.2
         version: 5.2.2

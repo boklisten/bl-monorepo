@@ -1,3 +1,9 @@
 packages:
-  - "frontend"
-  - "backend"
+  - frontend
+  - backend
+onlyBuiltDependencies:
+  - '@sentry-internal/node-cpu-profiler'
+  - '@sentry/cli'
+  - '@swc/core'
+  - cypress
+  - sharp

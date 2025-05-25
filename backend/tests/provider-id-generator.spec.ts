@@ -11,6 +11,7 @@ should();
 test.group("ProviderIdGenerator", async () => {
   test("username is empty", async () => {
     const username = "";
+    // @ts-expect-error fixme: auto ignored bad test types
     ProviderIdGenerator.generate(username).should.be.rejectedWith(BlError);
   });
 
@@ -19,12 +20,14 @@ test.group("ProviderIdGenerator", async () => {
     ProviderIdGenerator
       // @ts-expect-error fixme: auto ignored
       .generate(username)
+      // @ts-expect-error fixme: auto ignored bad test types
       .should.be.rejectedWith(BlError);
   });
 
   test("usename is valid", async () => {
     const username = "bill@mail.com";
     ProviderIdGenerator.generate(username)
+      // @ts-expect-error fixme: auto ignored bad test types
       .should.eventually.be.fulfilled.and.be.a("string")
       .and.have.length.greaterThan(63);
   });

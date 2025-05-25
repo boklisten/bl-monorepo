@@ -50,13 +50,16 @@ test.group("TokenHandler", (group) => {
     TokenHandler
       // @ts-expect-error fixme: auto ignored
       .createTokens(username)
+      // @ts-expect-error fixme: auto ignored bad test types
       .should.be.rejectedWith(BlError);
   });
 
   test("should resolve with accessToken and refreshToken", async () => {
     TokenHandler.createTokens(testUser.username).then(
       (tokens: { accessToken: string; refreshToken: string }) => {
+        // @ts-expect-error fixme: auto ignored bad test types
         tokens.accessToken.should.have.length.gte(50);
+        // @ts-expect-error fixme: auto ignored bad test types
         tokens.refreshToken.should.have.length.gte(50);
       },
     );

@@ -9,6 +9,7 @@ should();
 
 test.group("SaltGenerator", async () => {
   test("should return a random salt", async () => {
+    // @ts-expect-error fixme: auto ignored bad test types
     SaltGenerator.generate().should.eventually.be.fulfilled;
   });
 });

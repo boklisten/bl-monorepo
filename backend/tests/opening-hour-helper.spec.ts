@@ -35,6 +35,7 @@ test.group("getNextAvailableOpeningHour()", (group) => {
 
     openingHourHelper
       .getNextAvailableOpeningHour(branch)
+      // @ts-expect-error fixme: auto ignored bad test types
       .should.eventually.be.rejectedWith(
         BlError,
         /no opening hours found at branch/,
@@ -63,6 +64,7 @@ test.group("getNextAvailableOpeningHour()", (group) => {
 
     openingHourHelper
       .getNextAvailableOpeningHour(branch)
+      // @ts-expect-error fixme: auto ignored bad test types
       .should.eventually.be.rejectedWith(
         BlError,
         /no opening hours are found to be valid/,
@@ -93,6 +95,7 @@ test.group("getNextAvailableOpeningHour()", (group) => {
 
     openingHourHelper
       .getNextAvailableOpeningHour(branch)
+      // @ts-expect-error fixme: auto ignored bad test types
       .should.eventually.deep.equal(openingHours[1]);
   });
 
@@ -125,6 +128,7 @@ test.group("getNextAvailableOpeningHour()", (group) => {
 
     openingHourHelper
       .getNextAvailableOpeningHour(branch)
+      // @ts-expect-error fixme: auto ignored bad test types
       .should.eventually.deep.equal(openingHours[1]);
   });
 
@@ -160,6 +164,7 @@ test.group("getNextAvailableOpeningHour()", (group) => {
         branch,
         moment().add(2, "day").add(1, "hour").toDate(),
       )
+      // @ts-expect-error fixme: auto ignored bad test types
       .should.eventually.deep.equal(openingHours[0]);
   });
 
@@ -192,6 +197,7 @@ test.group("getNextAvailableOpeningHour()", (group) => {
 
     openingHourHelper
       .getNextAvailableOpeningHour(branch, moment().add(1, "day").toDate())
+      // @ts-expect-error fixme: auto ignored bad test types
       .should.eventually.deep.equal(openingHours[2]);
   });
 
@@ -224,6 +230,7 @@ test.group("getNextAvailableOpeningHour()", (group) => {
 
     openingHourHelper
       .getNextAvailableOpeningHour(branch, moment().add(5, "day").toDate())
+      // @ts-expect-error fixme: auto ignored bad test types
       .should.eventually.be.rejectedWith(
         BlError,
         /no opening hours are found to be valid/,

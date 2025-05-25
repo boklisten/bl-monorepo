@@ -21,6 +21,7 @@ test.group("RefreshTokenCreator", (group) => {
       // @ts-expect-error fixme: auto ignored
       .create(username, testUserid)
       .catch((blError: BlError) => {
+        // @ts-expect-error fixme: auto ignored bad test types
         blError.getCode().should.be.eq(103);
       });
   });
@@ -32,6 +33,7 @@ test.group("RefreshTokenCreator", (group) => {
       // @ts-expect-error fixme: auto ignored
       .create(testUserid, userid)
       .catch((blError: BlError) => {
+        // @ts-expect-error fixme: auto ignored bad test types
         blError.getCode().should.be.eq(103);
       });
   });
@@ -39,6 +41,7 @@ test.group("RefreshTokenCreator", (group) => {
   test("username is bill@meathome.se and userid is valid", async () => {
     const username = "bill@meathome.se";
     RefreshTokenCreator.create(username, testUserid).then((refreshToken) => {
+      // @ts-expect-error fixme: auto ignored bad test types
       refreshToken.should.be.a("string").and.have.length.gte(50);
     });
   });

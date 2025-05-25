@@ -37,6 +37,7 @@ test.group("AccessTokenCreator", (group) => {
       testPermission,
       testUserDetailId,
       testRefreshToken,
+      // @ts-expect-error fixme: auto ignored bad test types
     ).should.be.rejectedWith(BlError);
   });
 
@@ -48,6 +49,7 @@ test.group("AccessTokenCreator", (group) => {
       testPermission,
       testUserDetailId,
       testRefreshToken,
+      // @ts-expect-error fixme: auto ignored bad test types
     ).should.be.rejectedWith(BlError);
   });
 
@@ -60,6 +62,7 @@ test.group("AccessTokenCreator", (group) => {
       testPermission,
       testUserDetailId,
       testRefreshToken,
+      // @ts-expect-error fixme: auto ignored bad test types
     ).should.be.rejectedWith(BlError);
   });
 
@@ -71,6 +74,7 @@ test.group("AccessTokenCreator", (group) => {
       testPermission,
       testUserDetailId,
       refreshToken,
+      // @ts-expect-error fixme: auto ignored bad test types
     ).should.be.rejectedWith(BlError);
   });
 
@@ -84,9 +88,11 @@ test.group("AccessTokenCreator", (group) => {
       refreshToken,
     ).then(
       (accessToken: string) => {
+        // @ts-expect-error fixme: auto ignored bad test types
         accessToken.should.not.be.fulfilled;
       },
       (error: BlError) => {
+        // @ts-expect-error fixme: auto ignored bad test types
         error.getCode().should.be.eq(905);
       },
     );
@@ -101,9 +107,11 @@ test.group("AccessTokenCreator", (group) => {
       testRefreshToken,
     ).then(
       (accessToken: string) => {
+        // @ts-expect-error fixme: auto ignored bad test types
         accessToken.should.be.a("string");
       },
       (error: BlError) => {
+        // @ts-expect-error fixme: auto ignored bad test types
         error.should.not.be.fulfilled;
       },
     );

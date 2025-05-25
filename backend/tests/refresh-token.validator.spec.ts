@@ -14,6 +14,7 @@ should();
 test.group("RefreshTokenValidator", async () => {
   test("should reject with BlError when refreshToken is empty", async () => {
     const refreshToken = "";
+    // @ts-expect-error fixme: auto ignored bad test types
     RefreshTokenValidator.validate(refreshToken).should.be.rejectedWith(
       BlError,
     );
@@ -24,9 +25,11 @@ test.group("RefreshTokenValidator", async () => {
     RefreshTokenValidator.validate(refreshToken).then(
       // @ts-expect-error fixme: auto ignored
       (valid: boolean) => {
+        // @ts-expect-error fixme: auto ignored bad test types
         valid.should.not.be.fulfilled;
       },
       (error: BlError) => {
+        // @ts-expect-error fixme: auto ignored bad test types
         error.getCode().should.be.eq(909);
       },
     );
@@ -40,6 +43,7 @@ test.group("RefreshTokenValidator", async () => {
       (error, refreshToken) => {
         RefreshTokenValidator.validate(refreshToken ?? "").catch(
           (rtokenError: BlError) => {
+            // @ts-expect-error fixme: auto ignored bad test types
             rtokenError.getCode().should.be.eql(909);
           },
         );

@@ -11,6 +11,7 @@ should();
 test.group("HashedPasswordGenerator", async () => {
   test("password is empty", async () => {
     const password = "";
+    // @ts-expect-error fixme: auto ignored bad test types
     HashedPasswordGenerator.generate(password).should.be.rejectedWith(BlError);
   });
 
@@ -18,10 +19,12 @@ test.group("HashedPasswordGenerator", async () => {
     const password = "thisPasswordIsValid";
     HashedPasswordGenerator.generate(password).then(
       (hashedPasswordAndSalt: { hashedPassword: string; salt: string }) => {
+        // @ts-expect-error fixme: auto ignored bad test types
         hashedPasswordAndSalt.should.have
           .property("hashedPassword")
           .and.be.a("string");
 
+        // @ts-expect-error fixme: auto ignored bad test types
         hashedPasswordAndSalt.should.have.property("salt").and.be.a("string");
       },
     );

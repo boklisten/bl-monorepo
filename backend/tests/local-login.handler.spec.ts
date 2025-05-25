@@ -78,61 +78,73 @@ test.group("LocalLoginHandler", (group) => {
 
   test("username is empty or undefined", async () => {
     testLocalLogin.username = "";
+    // @ts-expect-error fixme: auto ignored bad test types
     LocalLoginHandler.add(testLocalLogin).should.be.rejectedWith(BlError);
   });
 
   test("provider is empty or undefiend", async () => {
     testLocalLogin.provider = "";
+    // @ts-expect-error fixme: auto ignored bad test types
     LocalLoginHandler.add(testLocalLogin).should.be.rejectedWith(BlError);
   });
 
   test("providerId is empty or undefined", async () => {
     testLocalLogin.providerId = "";
+    // @ts-expect-error fixme: auto ignored bad test types
     LocalLoginHandler.add(testLocalLogin).should.be.rejectedWith(BlError);
   });
 
   test("hashedPassword is empty or undefined", async () => {
     testLocalLogin.hashedPassword = "";
+    // @ts-expect-error fixme: auto ignored bad test types
     LocalLoginHandler.add(testLocalLogin).should.be.rejectedWith(BlError);
   });
 
   test("salt is empty or undefined", async () => {
     testLocalLogin.salt = "";
+    // @ts-expect-error fixme: auto ignored bad test types
     LocalLoginHandler.add(testLocalLogin).should.be.rejectedWith(BlError);
   });
 
   test('username is "alb@"', async () => {
     testLocalLogin.username = "alb@";
+    // @ts-expect-error fixme: auto ignored bad test types
     LocalLoginHandler.add(testLocalLogin).should.be.rejectedWith(BlError);
   });
 
   test('username is "bill@mail."', async () => {
     testLocalLogin.username = "bill@mail.";
+    // @ts-expect-error fixme: auto ignored bad test types
     LocalLoginHandler.add(testLocalLogin).should.be.rejectedWith(BlError);
   });
 
   test('username is "alli @mail.com"', async () => {
     testLocalLogin.username = "alli @mail.com";
+    // @ts-expect-error fixme: auto ignored bad test types
     LocalLoginHandler.add(testLocalLogin).should.be.rejectedWith(BlError);
   });
 
   test("should resolve when LocalLogin is valid", async () => {
+    // @ts-expect-error fixme: auto ignored bad test types
     LocalLoginHandler.add(testLocalLogin).should.eventually.eq(testLocalLogin);
   });
 
   test("username is not a valid Email", async () => {
     testUsername = "al";
+    // @ts-expect-error fixme: auto ignored bad test types
     LocalLoginHandler.get(testUsername).should.be.rejectedWith(BlError);
   });
 
   test("username is not empty", async () => {
     testUsername = "";
+    // @ts-expect-error fixme: auto ignored bad test types
     LocalLoginHandler.get(testUsername).should.be.rejectedWith(BlError);
   });
 
   test("username is null", async () => {
     // @ts-expect-error fixme: auto ignored
     testUsername = null;
+    // @ts-expect-error fixme: auto ignored bad test types
     LocalLoginHandler.get(testUsername).should.be.rejectedWith(BlError);
   });
 
@@ -143,6 +155,7 @@ test.group("LocalLoginHandler", (group) => {
   });
 
   test("should resolve with LocalLogin object when username is found", async () => {
+    // @ts-expect-error fixme: auto ignored bad test types
     LocalLoginHandler.get(testUsername).should.eventually.eq(dummyLocalLogin);
   });
 

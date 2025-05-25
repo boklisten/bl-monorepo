@@ -88,7 +88,11 @@ test.group("UserHandler", (group) => {
 
   test("get() - should reject with BlError when provider is empty", async () => {
     const provider = "";
-    UserHandler.get(provider, testProviderId).should.rejectedWith(BlError);
+    UserHandler.get(
+      provider,
+      testProviderId,
+      // @ts-expect-error fixme: auto ignored bad test types
+    ).should.rejectedWith(BlError);
   });
 
   test("get() - should reject with BlError when provider is null", async () => {
@@ -97,6 +101,7 @@ test.group("UserHandler", (group) => {
 
       // @ts-expect-error fixme: auto ignored
       .get(provider, testProviderId)
+      // @ts-expect-error fixme: auto ignored bad test types
       .should.rejectedWith(BlError);
   });
 
@@ -105,12 +110,17 @@ test.group("UserHandler", (group) => {
     UserHandler
       // @ts-expect-error fixme: auto ignored
       .get(testProvider, providerId)
+      // @ts-expect-error fixme: auto ignored bad test types
       .should.rejectedWith(BlError);
   });
 
   test("get() - should reject with BlError when providerId is empty", async () => {
     const providerId = "";
-    UserHandler.get(testProvider, providerId).should.rejectedWith(BlError);
+    UserHandler.get(
+      testProvider,
+      providerId,
+      // @ts-expect-error fixme: auto ignored bad test types
+    ).should.rejectedWith(BlError);
   });
 
   test("getByUsername() - when username is undefined should reject with BlError", async () => {
@@ -119,6 +129,7 @@ test.group("UserHandler", (group) => {
 
       // @ts-expect-error fixme: auto ignored
       .getByUsername(username)
+      // @ts-expect-error fixme: auto ignored bad test types
       .should.be.rejectedWith(BlError);
   });
 
@@ -126,12 +137,14 @@ test.group("UserHandler", (group) => {
     const username = "thisis@notfound.com";
 
     UserHandler.getByUsername(username).catch((error: BlError) => {
+      // @ts-expect-error fixme: auto ignored bad test types
       error.getCode().should.be.eq(702);
     });
   });
 
   test("should resolve with a User object", async () => {
     UserHandler.getByUsername(testUser.username).then((user: User) => {
+      // @ts-expect-error fixme: auto ignored bad test types
       user.username.should.be.eq(testUser.username);
     });
   });
@@ -162,6 +175,7 @@ test.group("UserHandler", (group) => {
 
       // @ts-expect-error fixme: auto ignored
       .create(username, testProvider, testProviderId)
+      // @ts-expect-error fixme: auto ignored bad test types
       .should.be.rejectedWith(BlError);
   });
 
@@ -171,6 +185,7 @@ test.group("UserHandler", (group) => {
       testUsername,
       provider,
       testProviderId,
+      // @ts-expect-error fixme: auto ignored bad test types
     ).should.be.rejectedWith(BlError);
   });
 
@@ -180,13 +195,16 @@ test.group("UserHandler", (group) => {
       testUsername,
       testProvider,
       providerId,
+      // @ts-expect-error fixme: auto ignored bad test types
     ).should.be.rejectedWith(BlError);
   });
 
   test("should resolve with a user when username, provider and providerId is valid", async () => {
     UserHandler.create("jesus@christ.com", testProvider, testProviderId).then(
       (user: User) => {
+        // @ts-expect-error fixme: auto ignored bad test types
         user.username.should.be.eql(testUser.username);
+        // @ts-expect-error fixme: auto ignored bad test types
         user.login.should.be.eql(testUser.login);
       },
     );
@@ -267,13 +285,16 @@ test.group("UserHandler", (group) => {
 
       // @ts-expect-error fixme: auto ignored
       .exists(provider, testProviderId)
+      // @ts-expect-error fixme: auto ignored bad test types
       .should.be.rejectedWith(BlError);
   });
 
   test(".exists() should reject with BlError when ", async () => {
     const providerId = "";
-    UserHandler.exists(testProvider, providerId).should.be.rejectedWith(
-      BlError,
-    );
+    UserHandler.exists(
+      testProvider,
+      providerId,
+      // @ts-expect-error fixme: auto ignored bad test types
+    ).should.be.rejectedWith(BlError);
   });
 });

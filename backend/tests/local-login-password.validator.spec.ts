@@ -32,6 +32,7 @@ test.group("LocalLoginPasswordValidator", (group) => {
       "",
       testSalt,
       testHashedPassword,
+      // @ts-expect-error fixme: auto ignored bad test types
     ).should.be.rejectedWith(BlError);
   });
 
@@ -40,6 +41,7 @@ test.group("LocalLoginPasswordValidator", (group) => {
       testPassword,
       "",
       testHashedPassword,
+      // @ts-expect-error fixme: auto ignored bad test types
     ).should.be.rejectedWith(BlError);
   });
 
@@ -48,6 +50,7 @@ test.group("LocalLoginPasswordValidator", (group) => {
       testPassword,
       testSalt,
       "",
+      // @ts-expect-error fixme: auto ignored bad test types
     ).should.be.rejectedWith(BlError);
   });
 
@@ -56,6 +59,7 @@ test.group("LocalLoginPasswordValidator", (group) => {
       "human",
       testSalt,
       testHashedPassword,
+      // @ts-expect-error fixme: auto ignored bad test types
     ).should.be.rejectedWith(BlError);
   });
 
@@ -64,6 +68,7 @@ test.group("LocalLoginPasswordValidator", (group) => {
       testPassword,
       testSalt,
       testHashedPassword,
+      // @ts-expect-error fixme: auto ignored bad test types
     ).should.eventually.be.true;
   });
 });

@@ -82,6 +82,7 @@ test.group("LocalLoginValidator", (group) => {
     LocalLoginValidator.validate(
       testUserName,
       testPassword,
+      // @ts-expect-error fixme: auto ignored bad test types
     ).should.be.rejectedWith(BlError);
   });
 
@@ -90,6 +91,7 @@ test.group("LocalLoginValidator", (group) => {
     LocalLoginValidator.validate(
       testUserName,
       testPassword,
+      // @ts-expect-error fixme: auto ignored bad test types
     ).should.be.rejectedWith(BlError);
   });
 
@@ -98,9 +100,11 @@ test.group("LocalLoginValidator", (group) => {
     testPassword = "thePassword";
     LocalLoginValidator.validate(testUserName, testPassword).then(
       (value) => {
+        // @ts-expect-error fixme: auto ignored bad test types
         value.should.not.be.fulfilled;
       },
       (error: BlError) => {
+        // @ts-expect-error fixme: auto ignored bad test types
         error.getCode().should.be.eq(702);
       },
     );
@@ -122,6 +126,7 @@ test.group("LocalLoginValidator", (group) => {
           reject(error);
         },
       );
+      // @ts-expect-error fixme: auto ignored bad test types
     }).should.eventually.be.true;
   });
 
@@ -131,9 +136,11 @@ test.group("LocalLoginValidator", (group) => {
 
     LocalLoginValidator.create(username, password).then(
       (value) => {
+        // @ts-expect-error fixme: auto ignored bad test types
         value.should.not.be.fulfilled;
       },
       (error: BlError) => {
+        // @ts-expect-error fixme: auto ignored bad test types
         error.getMsg().should.contain("already exists");
       },
     );
@@ -147,7 +154,9 @@ test.group("LocalLoginValidator", (group) => {
       username,
       password,
     );
+    // @ts-expect-error fixme: auto ignored bad test types
     providerAndProviderId.should.have.property("provider").and.eq("local");
+    // @ts-expect-error fixme: auto ignored bad test types
     providerAndProviderId.should.have
       .property("providerId")
       .and.have.length.gte(64);

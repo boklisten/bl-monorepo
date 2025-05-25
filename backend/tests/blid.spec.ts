@@ -10,10 +10,16 @@ should();
 
 test.group("Blid.createUserBlid()", async () => {
   test("should reject with a BlError when provider or providerId is empty", async () => {
-    Blid.createUserBlid("", "").should.be.rejectedWith(BlError);
+    Blid.createUserBlid(
+      "",
+      "", // @ts-expect-error fixme: auto ignored bad test types
+    ).should.be.rejectedWith(BlError);
   });
 
   test("should return a ciphered version", async () => {
-    Blid.createUserBlid("local", "10102").should.eventually.include("u#");
+    Blid.createUserBlid(
+      "local",
+      "10102", // @ts-expect-error fixme: auto ignored bad test types
+    ).should.eventually.include("u#");
   });
 });

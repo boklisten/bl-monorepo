@@ -6,6 +6,7 @@ export interface Branch extends BlDocument {
   parentBranch?: string; // the ID of the parent branch for the current branch, if any e.g. Ullern Oslo
   localName?: string; // the name of this branch in relation to its parent and/or children. E.g. "VG1"
   childBranches?: string[]; // the IDs (if any) of the child branches, could for instance point to Ullern VG1 ST
+  childLabel?: string; // The descriptive title of what the children represent in the hierarchy, e.g. studieprogram
   type?: string; // the type of branch, privatist or vgs
   openingHours?: string[]; // id of all the opening hours this branch has
   paymentInfo?: BranchPaymentInfo; // payment information for this branch

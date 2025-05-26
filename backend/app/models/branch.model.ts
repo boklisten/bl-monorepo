@@ -16,6 +16,7 @@ export const BranchModel: BlModel<Branch> = {
     parentBranch: Schema.Types.ObjectId,
     localName: String,
     childBranches: [Schema.Types.ObjectId],
+    childLabel: String,
     paymentInfo: {
       responsible: {
         type: Boolean,

@@ -15,7 +15,7 @@ export default function CreateBranchDialog({
       <DialogTitle>Opprett filial</DialogTitle>
       <DialogContent>
         <Box sx={{ width: 1000 }} />
-        <BranchSettings branch={null} />
+        <BranchSettings existingBranch={null} afterSubmit={onClose} />
       </DialogContent>
     </Dialog>
   );

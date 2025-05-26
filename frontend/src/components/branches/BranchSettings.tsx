@@ -10,7 +10,7 @@ import {
   Paper,
   Stack,
 } from "@mui/material";
-import { useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { ReactNode, useEffect, useState } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 
@@ -54,30 +54,61 @@ function branchToDefaultValues(branch: Branch | null) {
   };
 }
 
-export default function BranchSettings({ branch }: { branch: Branch | null }) {
+export default function BranchSettings({
+  existingBranch,
+  afterSubmit = () => undefined,
+}: {
+  existingBranch: Branch | null;
+  afterSubmit?: () => void;
+}) {
   const queryClient = useQueryClient();
   const branchQuery = {
     query: { sort: "name" },
   };
   const client = useApiClient();
+  const addBranchMutation = useMutation({
+    mutationFn: async (newBranch: Partial<Branch>) => {
+      return await client.v2.branches.$post(newBranch);
+    },
+    onSettled: async () => {
+      await queryClient.invalidateQueries({
+        queryKey: [client.$url("collection.branches.getAll", branchQuery)],
+      });
+      setLoading(false);
+      afterSubmit();
+    },
+  });
+
+  const updateBranchMutation = useMutation({
+    mutationFn: async (updatedBranch: Partial<Branch>) => {
+      return await client.v2
+        .branches({ id: existingBranch?.id ?? "" })
+        .$patch(updatedBranch);
+    },
+    onSettled: async () => {
+      await queryClient.invalidateQueries({
+        queryKey: [client.$url("collection.branches.getAll", branchQuery)],
+      });
+      setLoading(false);
+    },
+  });
+
   const methods = useForm({
-    defaultValues: branchToDefaultValues(branch),
+    defaultValues: branchToDefaultValues(existingBranch),
   });
   const [loading, setLoading] = useState(false);
 
   const { reset, getValues } = methods;
   useEffect(() => {
-    reset(branchToDefaultValues(branch));
-  }, [branch, reset]);
+    reset(branchToDefaultValues(existingBranch));
+  }, [existingBranch, reset]);
 
   async function onSubmit() {
     setLoading(true);
-    const formState = getValues();
-    await queryClient.invalidateQueries({
-      queryKey: [client.$url("collection.branches.getAll", branchQuery)],
-    });
-    console.log(formState);
-    setLoading(false);
+    if (existingBranch === null) {
+      return addBranchMutation.mutate(getValues());
+    }
+    updateBranchMutation.mutate(getValues());
   }
 
   return (
@@ -102,7 +133,7 @@ export default function BranchSettings({ branch }: { branch: Branch | null }) {
           onClick={onSubmit}
           loading={loading}
         >
-          {branch === null ? "Opprett" : "Lagre"}
+          {existingBranch === null ? "Opprett" : "Lagre"}
         </Button>
       </Stack>
     </FormProvider>

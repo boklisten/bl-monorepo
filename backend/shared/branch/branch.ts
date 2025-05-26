@@ -3,10 +3,10 @@ import { BranchPaymentInfo } from "#shared/branch/branch-payment-info";
 
 export interface Branch extends BlDocument {
   name: string; // the fully qualified name of the branch e.g. Ullern Oslo VG1
-  parentBranch?: string; // the ID of the parent branch for the current branch, if any e.g. Ullern Oslo
-  localName?: string; // the name of this branch in relation to its parent and/or children. E.g. "VG1"
-  childBranches?: string[]; // the IDs (if any) of the child branches, could for instance point to Ullern VG1 ST
-  childLabel?: string; // The descriptive title of what the children represent in the hierarchy, e.g. studieprogram
+  parentBranch?: string | undefined; // the ID of the parent branch for the current branch, if any e.g. Ullern Oslo
+  localName?: string | undefined; // the name of this branch in relation to its parent and/or children. E.g. "VG1"
+  childBranches?: string[] | undefined; // the IDs (if any) of the child branches, could for instance point to Ullern VG1 ST
+  childLabel?: string | undefined; // The descriptive title of what the children represent in the hierarchy, e.g. studieprogram
   type?: string; // the type of branch, privatist or vgs
   openingHours?: string[]; // id of all the opening hours this branch has
   paymentInfo?: BranchPaymentInfo; // payment information for this branch

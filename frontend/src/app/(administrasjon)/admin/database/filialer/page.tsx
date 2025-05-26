@@ -61,7 +61,7 @@ export default function DatabaseBranchesPage() {
             <Typography variant={"h1"} sx={{ ml: 2 }}>
               Rediger filial
             </Typography>
-            <BranchSettings branch={selectedBranch} />
+            <BranchSettings existingBranch={selectedBranch} />
           </Box>
         )}
       </Stack>

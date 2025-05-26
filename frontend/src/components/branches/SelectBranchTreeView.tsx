@@ -9,11 +9,25 @@ function renderBranchTreeItem(branchId: string, branches: Branch[]): ReactNode {
   if (!branch) return null;
 
   if ((branch.childBranches?.length ?? 0) === 0) {
-    return <TreeItem key={branch.id} itemId={branch.id} label={branch.name} />;
+    return (
+      <TreeItem
+        key={branchId}
+        itemId={branchId}
+        label={branch.localName ?? branch.name}
+      />
+    );
   }
 
-  return branch.childBranches?.map((branchId) =>
-    renderBranchTreeItem(branchId, branches),
+  return (
+    <TreeItem
+      key={branchId}
+      itemId={branchId}
+      label={branch.localName ?? branch.name}
+    >
+      {branch.childBranches?.map((childBranchId) =>
+        renderBranchTreeItem(childBranchId, branches),
+      )}
+    </TreeItem>
   );
 }
 
@@ -34,7 +48,9 @@ export default function SelectBranchTreeView({
           if (isSelected) onSelect(branchId);
         }}
       >
-        {branches?.map((branch) => renderBranchTreeItem(branch.id, branches))}
+        {branches
+          ?.filter((branch) => !branch.parentBranch)
+          .map((branch) => renderBranchTreeItem(branch.id, branches))}
       </SimpleTreeView>
     </Stack>
   );

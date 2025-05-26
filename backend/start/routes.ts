@@ -10,6 +10,7 @@ const AuthLocalController = () => import("#controllers/auth/local_controller");
 const WaitingListEntriesController = () =>
   import("#controllers/waiting_list_entries_controller");
 const RemindersController = () => import("#controllers/reminders_controller");
+const BranchesController = () => import("#controllers/branches_controller");
 
 /**
  * auth token
@@ -64,5 +65,13 @@ router
 router
   .post("/reminders/send", [RemindersController, "remind"])
   .as("reminders.send");
+
+/**
+ * branches
+ */
+router.post("/v2/branches", [BranchesController, "add"]).as("branches.add");
+router
+  .patch("/v2/branches/:id", [BranchesController, "update"])
+  .as("branches.update");
 
 CollectionEndpointCreator.generateEndpoints();

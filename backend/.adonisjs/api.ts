@@ -94,6 +94,28 @@ type RemindersSendPost = {
     true
   >;
 };
+type V2BranchesPost = {
+  request: MakeTuyauRequest<
+    InferInput<
+      (typeof import("../app/validators/branch.ts"))["branchValidator"]
+    >
+  >;
+  response: MakeNonSerializedTuyauResponse<
+    import("../app/controllers/branches_controller.ts").default["add"],
+    true
+  >;
+};
+type V2BranchesIdPatch = {
+  request: MakeTuyauRequest<
+    InferInput<
+      (typeof import("../app/validators/branch.ts"))["branchValidator"]
+    >
+  >;
+  response: MakeNonSerializedTuyauResponse<
+    import("../app/controllers/branches_controller.ts").default["update"],
+    true
+  >;
+};
 export interface ApiDefinition {
   token: {
     $url: {};
@@ -141,6 +163,16 @@ export interface ApiDefinition {
     send: {
       $url: {};
       $post: RemindersSendPost;
+    };
+  };
+  v2: {
+    branches: {
+      $url: {};
+      $post: V2BranchesPost;
+      ":id": {
+        $url: {};
+        $patch: V2BranchesIdPatch;
+      };
     };
   };
 }
@@ -214,6 +246,20 @@ const routes = [
     path: "/reminders/send",
     method: ["POST"],
     types: {} as RemindersSendPost,
+  },
+  {
+    params: [],
+    name: "branches.add",
+    path: "/v2/branches",
+    method: ["POST"],
+    types: {} as V2BranchesPost,
+  },
+  {
+    params: ["id"],
+    name: "branches.update",
+    path: "/v2/branches/:id",
+    method: ["PATCH"],
+    types: {} as V2BranchesIdPatch,
   },
   {
     params: ["id"],

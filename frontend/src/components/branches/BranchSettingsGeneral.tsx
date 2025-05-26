@@ -7,7 +7,11 @@ import BranchAutocompleteMultiple from "@/components/branches/BranchAutocomplete
 import unpack from "@/utils/api/bl-api-request";
 import useApiClient from "@/utils/api/useApiClient";
 
-export default function BranchSettingsGeneral({ branch }: { branch: Branch }) {
+export default function BranchSettingsGeneral({
+  branch,
+}: {
+  branch: Branch | null;
+}) {
   const client = useApiClient();
   const branchQuery = {
     query: { sort: "name" },
@@ -22,8 +26,12 @@ export default function BranchSettingsGeneral({ branch }: { branch: Branch }) {
   });
   return (
     <>
-      <TextField label={"Fullt navn"} defaultValue={branch.name} />
-      <TextField label={"Lokalt navn"} defaultValue={branch.localName} />
+      <TextField label={"Fullt navn"} defaultValue={branch?.name} required />
+      <TextField
+        label={"Lokalt navn"}
+        defaultValue={branch?.localName}
+        required
+      />
       <BranchAutocomplete
         label={"Tilhører"}
         branches={branches ?? []}
@@ -31,7 +39,7 @@ export default function BranchSettingsGeneral({ branch }: { branch: Branch }) {
       />
       <TextField
         label={"Delt inn i"}
-        defaultValue={branch.childLabel}
+        defaultValue={branch?.childLabel}
       ></TextField>
       <BranchAutocompleteMultiple
         label={"Består av"}

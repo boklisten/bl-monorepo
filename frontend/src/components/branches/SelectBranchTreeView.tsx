@@ -1,4 +1,5 @@
 import { Branch } from "@boklisten/backend/shared/branch/branch";
+import { Stack, Typography } from "@mui/material";
 import { TreeItem } from "@mui/x-tree-view";
 import { SimpleTreeView } from "@mui/x-tree-view/SimpleTreeView";
 import { ReactNode } from "react";
@@ -24,12 +25,17 @@ export default function SelectBranchTreeView({
   onSelect: (branchId: string) => void;
 }) {
   return (
-    <SimpleTreeView
-      onItemSelectionToggle={(_, branchId, isSelected) => {
-        if (isSelected) onSelect(branchId);
-      }}
-    >
-      {branches?.map((branch) => renderBranchTreeItem(branch.id, branches))}
-    </SimpleTreeView>
+    <Stack>
+      <Typography sx={{ ml: 4, mb: 1 }} variant={"h3"} fontWeight={"bolder"}>
+        Velg filial
+      </Typography>
+      <SimpleTreeView
+        onItemSelectionToggle={(_, branchId, isSelected) => {
+          if (isSelected) onSelect(branchId);
+        }}
+      >
+        {branches?.map((branch) => renderBranchTreeItem(branch.id, branches))}
+      </SimpleTreeView>
+    </Stack>
   );
 }

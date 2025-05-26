@@ -8,7 +8,6 @@ import {
   AccordionSummary,
   Paper,
   Stack,
-  Typography,
 } from "@mui/material";
 import { ReactNode } from "react";
 
@@ -41,10 +40,9 @@ function BranchEditSection({
   );
 }
 
-export default function BranchSettings({ branch }: { branch: Branch }) {
+export default function BranchSettings({ branch }: { branch: Branch | null }) {
   return (
-    <Stack sx={{ flexGrow: 1 }}>
-      <Typography variant={"h1"}>Rediger filial</Typography>
+    <Stack>
       <BranchEditSection title={"Generelt"} defaultExpanded>
         <BranchSettingsGeneral branch={branch} />
       </BranchEditSection>

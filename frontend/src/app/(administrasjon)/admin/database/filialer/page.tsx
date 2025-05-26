@@ -1,11 +1,13 @@
 "use client";
 
 import { Branch } from "@boklisten/backend/shared/branch/branch";
-import { Stack } from "@mui/material";
+import { AddBusiness } from "@mui/icons-material";
+import { Box, Button, Divider, Stack, Typography } from "@mui/material";
 import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
 
 import BranchSettings from "@/components/branches/BranchSettings";
+import CreateBranchDialog from "@/components/branches/CreateBranchDialog";
 import SelectBranchTreeView from "@/components/branches/SelectBranchTreeView";
 import unpack from "@/utils/api/bl-api-request";
 import useApiClient from "@/utils/api/useApiClient";
@@ -25,25 +27,49 @@ export default function DatabaseBranchesPage() {
   });
 
   const [selectedBranch, setSelectedBranch] = useState<Branch | null>(null);
+  const [createNewBranchDialogOpen, setCreateNewBranchDialogOpen] =
+    useState(false);
   return (
-    <Stack
-      direction={"row"}
-      sx={{
-        display: "flex",
-        flexWrap: 1,
-        justifyContent: "space-between",
-        gap: 5,
-      }}
-    >
-      <SelectBranchTreeView
-        branches={branches ?? []}
-        onSelect={(branchId) => {
-          setSelectedBranch(
-            branches?.find((branch) => branch.id === branchId) ?? null,
-          );
+    <Box>
+      <Button
+        startIcon={<AddBusiness />}
+        color={"primary"}
+        sx={{ mb: 1, ml: 3 }}
+        onClick={() => setCreateNewBranchDialogOpen(true)}
+      >
+        Opprett filial
+      </Button>
+      <Divider sx={{ mb: 2 }} />
+      <Stack
+        direction={"row"}
+        sx={{
+          display: "flex",
+          flexWrap: "wrap",
+          justifyContent: "space-between",
+          gap: 5,
         }}
+      >
+        <SelectBranchTreeView
+          branches={branches ?? []}
+          onSelect={(branchId) => {
+            setSelectedBranch(
+              branches?.find((branch) => branch.id === branchId) ?? null,
+            );
+          }}
+        />
+        {selectedBranch && (
+          <Box sx={{ flexGrow: 1 }}>
+            <Typography variant={"h1"} sx={{ ml: 2 }}>
+              Rediger filial
+            </Typography>
+            <BranchSettings branch={selectedBranch} />
+          </Box>
+        )}
+      </Stack>
+      <CreateBranchDialog
+        open={createNewBranchDialogOpen}
+        onClose={() => setCreateNewBranchDialogOpen(false)}
       />
-      {selectedBranch && <BranchSettings branch={selectedBranch} />}
-    </Stack>
+    </Box>
   );
 }

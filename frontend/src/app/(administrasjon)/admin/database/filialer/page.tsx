@@ -27,15 +27,14 @@ export default function DatabaseBranchesPage() {
   });
 
   const [selectedBranch, setSelectedBranch] = useState<Branch | null>(null);
-  const [createNewBranchDialogOpen, setCreateNewBranchDialogOpen] =
-    useState(false);
+  const [isCreateOpen, setCreateOpen] = useState(false);
   return (
     <Box>
       <Button
         startIcon={<AddBusiness />}
         color={"primary"}
         sx={{ mb: 1, ml: 3 }}
-        onClick={() => setCreateNewBranchDialogOpen(true)}
+        onClick={() => setCreateOpen(true)}
       >
         Opprett filial
       </Button>
@@ -67,8 +66,8 @@ export default function DatabaseBranchesPage() {
         )}
       </Stack>
       <CreateBranchDialog
-        open={createNewBranchDialogOpen}
-        onClose={() => setCreateNewBranchDialogOpen(false)}
+        open={isCreateOpen}
+        onClose={() => setCreateOpen(false)}
       />
     </Box>
   );

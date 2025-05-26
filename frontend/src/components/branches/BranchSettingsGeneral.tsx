@@ -1,17 +1,13 @@
 import { Branch } from "@boklisten/backend/shared/branch/branch";
+import { Autocomplete } from "@mui/material";
 import TextField from "@mui/material/TextField";
 import { useQuery } from "@tanstack/react-query";
+import { useFormContext } from "react-hook-form";
 
-import BranchAutocomplete from "@/components/branches/BranchAutocomplete";
-import BranchAutocompleteMultiple from "@/components/branches/BranchAutocompleteMultiple";
 import unpack from "@/utils/api/bl-api-request";
 import useApiClient from "@/utils/api/useApiClient";
 
-export default function BranchSettingsGeneral({
-  branch,
-}: {
-  branch: Branch | null;
-}) {
+export default function BranchSettingsGeneral() {
   const client = useApiClient();
   const branchQuery = {
     query: { sort: "name" },
@@ -24,27 +20,46 @@ export default function BranchSettingsGeneral({
         .$get(branchQuery)
         .then(unpack<Branch[]>),
   });
+
+  const { register, setValue } = useFormContext();
+
   return (
     <>
-      <TextField label={"Fullt navn"} defaultValue={branch?.name} required />
+      <TextField
+        label={"Fullt navn"}
+        required
+        {...register("name", { required: true })}
+      />
       <TextField
         label={"Lokalt navn"}
-        defaultValue={branch?.localName}
         required
+        {...register("localName", { required: true })}
       />
-      <BranchAutocomplete
-        label={"Tilhører"}
-        branches={branches ?? []}
-        onChange={(selected) => console.log(selected)}
+      <Autocomplete
+        /** @ts-expect-error --exactOptionalPropertyTypes not supported by MUI */
+        renderInput={(params) => <TextField {...params} label={"Tilhører"} />}
+        options={
+          branches?.map((branch) => ({
+            id: branch.id,
+            label: branch.name,
+          })) ?? []
+        }
+        onChange={(_, selected) => setValue("parentBranch", selected?.id ?? "")}
       />
-      <TextField
-        label={"Delt inn i"}
-        defaultValue={branch?.childLabel}
-      ></TextField>
-      <BranchAutocompleteMultiple
-        label={"Består av"}
-        branches={branches ?? []}
-        onChange={(selected) => console.log(selected)}
+      <TextField label={"Delt inn i"} {...register("childLabel")}></TextField>
+      <Autocomplete
+        /** @ts-expect-error --exactOptionalPropertyTypes not supported by MUI */
+        renderInput={(params) => <TextField {...params} label={"Består av"} />}
+        options={
+          branches?.map((branch) => ({
+            id: branch.id,
+            label: branch.name,
+          })) ?? []
+        }
+        multiple
+        onChange={(_, selected) =>
+          setValue("childBranches", selected?.map((s) => s.id) ?? [])
+        }
       />
     </>
   );

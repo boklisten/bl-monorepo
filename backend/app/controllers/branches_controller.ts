@@ -93,22 +93,56 @@ async function updateBranchRelationships({
   }
 }
 
+async function assertValidBranchUpdate(
+  branchId: string,
+  newParentId: string | null,
+  newChildrenIds: string[] | null,
+) {
+  if (branchId === newParentId || newChildrenIds?.includes(branchId)) {
+    throw new Error(`Cycle detected at branch ${branchId}`);
+  }
+  const visited = new Set([...(newChildrenIds ?? []), branchId]);
+
+  let currentId: string | null = newParentId;
+  while (currentId) {
+    if (visited.has(currentId)) {
+      throw new Error(`Cycle detected at branch ${currentId}`);
+    }
+    visited.add(currentId);
+
+    currentId = (await BlStorage.Branches.get(currentId)).parentBranch ?? null;
+  }
+}
+
 export default class BranchesController {
   async add(ctx: HttpContext) {
     if (!(await canAccess(ctx))) {
       return ctx.response.unauthorized();
     }
     const branchData = await ctx.request.validateUsing(branchValidator);
+
+    try {
+      await assertValidBranchUpdate(
+        "new",
+        branchData.parentBranch ?? null,
+        branchData.childBranches ?? null,
+      );
+    } catch (error) {
+      return ctx.response.conflict(error);
+    }
+
     // @ts-expect-error fixme: exactOptionalPropertyTypes
     const newBranch = await BlStorage.Branches.add(branchData);
 
-    return await updateBranchRelationships({
+    await updateBranchRelationships({
       branchId: newBranch.id,
       oldParentId: null,
       oldChildrenIds: null,
       newParentId: newBranch.parentBranch || null,
       newChildrenIds: newBranch.childBranches || null,
     });
+
+    return newBranch;
   }
 
   async update(ctx: HttpContext) {
@@ -118,9 +152,17 @@ export default class BranchesController {
     const branchData = await ctx.request.validateUsing(branchValidator);
     const branchId = ctx.params["id"];
 
+    try {
+      await assertValidBranchUpdate(
+        branchId,
+        branchData.parentBranch ?? null,
+        branchData.childBranches ?? null,
+      );
+    } catch (error) {
+      return ctx.response.conflict(error);
+    }
+
     const storedBranch = await BlStorage.Branches.get(branchId);
-    // TODO: prevent conflicts and circular structures!
-    // TODO: prevent multiple branches claiming a child! aka.
     const updatedBranch = await BlStorage.Branches.update(
       ctx.params["id"],
       // @ts-expect-error fixme: exactOptionalPropertyTypes

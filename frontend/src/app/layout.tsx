@@ -1,6 +1,7 @@
 import { ThemeProvider } from "@mui/material";
 import CssBaseline from "@mui/material/CssBaseline";
 import { AppRouterCacheProvider } from "@mui/material-nextjs/v15-appRouter";
+import { NotificationsProvider } from "@toolpad/core";
 import { Metadata } from "next";
 import { ReactNode, Suspense } from "react";
 
@@ -33,11 +34,13 @@ export default function RootLayout({ children }: { children: ReactNode }) {
               <CustomLocalizationProvider>
                 <AppRouterCacheProvider>
                   <ThemeProvider theme={theme}>
-                    <AuthLinker>
-                      {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
-                      <CssBaseline />
-                      {children}
-                    </AuthLinker>
+                    <NotificationsProvider>
+                      <AuthLinker>
+                        {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
+                        <CssBaseline />
+                        {children}
+                      </AuthLinker>
+                    </NotificationsProvider>
                   </ThemeProvider>
                 </AppRouterCacheProvider>
               </CustomLocalizationProvider>

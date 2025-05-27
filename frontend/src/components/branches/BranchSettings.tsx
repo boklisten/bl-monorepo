@@ -11,6 +11,7 @@ import {
   Stack,
 } from "@mui/material";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useNotifications } from "@toolpad/core";
 import { ReactNode, useEffect, useState } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 
@@ -61,6 +62,7 @@ export default function BranchSettings({
   existingBranch: Branch | null;
   afterSubmit?: () => void;
 }) {
+  const notifications = useNotifications();
   const queryClient = useQueryClient();
   const branchQuery = {
     query: { sort: "name" },
@@ -75,7 +77,19 @@ export default function BranchSettings({
         queryKey: [client.$url("collection.branches.getAll", branchQuery)],
       });
       setLoading(false);
+    },
+    onSuccess: async () => {
+      notifications.show("Filial ble opprettet!", {
+        severity: "success",
+        autoHideDuration: 3000,
+      });
       afterSubmit();
+    },
+    onError: async () => {
+      notifications.show("Klarte ikke opprette filial!", {
+        severity: "error",
+        autoHideDuration: 5000,
+      });
     },
   });
 
@@ -83,13 +97,26 @@ export default function BranchSettings({
     mutationFn: async (updatedBranch: Partial<Branch>) => {
       return await client.v2
         .branches({ id: existingBranch?.id ?? "" })
-        .$patch(updatedBranch);
+        .$patch(updatedBranch)
+        .unwrap();
     },
     onSettled: async () => {
       await queryClient.invalidateQueries({
         queryKey: [client.$url("collection.branches.getAll", branchQuery)],
       });
       setLoading(false);
+    },
+    onSuccess: async () => {
+      notifications.show("Filial ble oppdatert!", {
+        severity: "success",
+        autoHideDuration: 3000,
+      });
+    },
+    onError: async () => {
+      notifications.show("Klarte ikke oppdatere filial!", {
+        severity: "error",
+        autoHideDuration: 5000,
+      });
     },
   });
 

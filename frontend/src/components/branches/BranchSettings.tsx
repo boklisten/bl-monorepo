@@ -142,7 +142,7 @@ export default function BranchSettings({
     <FormProvider {...methods}>
       <Stack sx={{ position: "relative" }}>
         <BranchEditSection title={"Generelt"} defaultExpanded>
-          <BranchSettingsGeneral />
+          <BranchSettingsGeneral currentBranchId={existingBranch?.id ?? null} />
         </BranchEditSection>
         <BranchEditSection disabled title={"Bestillinger"}>
           lorem ipsum

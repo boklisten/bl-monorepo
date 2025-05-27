@@ -7,7 +7,11 @@ import { Controller, useFormContext } from "react-hook-form";
 import unpack from "@/utils/api/bl-api-request";
 import useApiClient from "@/utils/api/useApiClient";
 
-export default function BranchSettingsGeneral() {
+export default function BranchSettingsGeneral({
+  currentBranchId,
+}: {
+  currentBranchId: string | null;
+}) {
   const client = useApiClient();
   const branchQuery = {
     query: { sort: "name" },
@@ -24,10 +28,12 @@ export default function BranchSettingsGeneral() {
   const { register, control } = useFormContext();
 
   const branchOptions =
-    branches?.map((branch) => ({
-      id: branch.id,
-      label: branch.name,
-    })) ?? [];
+    branches
+      ?.filter((branch) => branch.id !== currentBranchId)
+      .map((branch) => ({
+        id: branch.id,
+        label: branch.name,
+      })) ?? [];
 
   return (
     <>

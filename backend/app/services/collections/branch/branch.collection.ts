@@ -34,6 +34,10 @@ export const BranchCollection: BlCollection = {
           type: "boolean",
         },
         {
+          fieldName: "isBranchItemsLive.online",
+          type: "boolean",
+        },
+        {
           fieldName: "location.address",
           type: "string",
         },

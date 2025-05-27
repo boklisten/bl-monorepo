@@ -19,7 +19,7 @@ import { useGlobalState } from "@/utils/useGlobalState";
 const BranchSelect = ({ isNav }: { isNav?: boolean }) => {
   const client = useApiClient();
   const branchQuery = {
-    query: { active: true, sort: "name" },
+    query: { active: true, "isBranchItemsLive.online": true, sort: "name" },
   };
   const { data: branches } = useQuery({
     queryKey: [client.$url("collection.branches.getAll", branchQuery)],

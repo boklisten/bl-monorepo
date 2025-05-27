@@ -38,6 +38,10 @@ export const BranchCollection: BlCollection = {
           type: "boolean",
         },
         {
+          fieldName: "parentBranch",
+          type: "string",
+        },
+        {
           fieldName: "location.address",
           type: "string",
         },

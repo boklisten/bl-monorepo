@@ -81,6 +81,8 @@ const UserDetailEditor = ({
               postCity={postalCity}
               updatePostalCity={updatePostalCity}
               onIsUnderageChange={onIsUnderageChange}
+              isSignUp={isSignUp}
+              branchMembership={userDetails.branchMembership}
               control={control}
               register={register}
             />

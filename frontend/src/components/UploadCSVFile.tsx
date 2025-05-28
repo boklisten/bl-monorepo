@@ -6,7 +6,7 @@ import FileUploadButton from "@/components/FileUploadButton";
 
 function parseRow(
   row: Record<string, string>,
-  validHeaders: string[],
+  validHeaders: readonly string[],
 ): Record<string, string> | null {
   const relevantEntries = validHeaders.map((header) => {
     const value = row[header]?.trim() || null;
@@ -20,14 +20,14 @@ function parseRow(
   return Object.fromEntries(relevantEntries);
 }
 
-export default function UploadCSVFile({
+export default function UploadCSVFile<Headers extends readonly string[]>({
   label,
   allowedHeaders,
   onUpload,
 }: {
   label: string;
-  allowedHeaders: string[];
-  onUpload: (data: Record<string, string>[]) => void;
+  allowedHeaders: Headers;
+  onUpload: (data: Record<Headers[number], string>[]) => void;
 }) {
   const notifications = useNotifications();
 

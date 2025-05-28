@@ -144,6 +144,12 @@ export class UserDetailHelper {
     if (isNullish(userDetail.phone) || userDetail.phone.length <= 0) {
       invalidFields.push("phone");
     }
+    if (
+      isNullish(userDetail.branchMembership) ||
+      userDetail.branchMembership.length <= 0
+    ) {
+      invalidFields.push("branchMembership");
+    }
     /*
     if (
       isNullish(userDetail.emailConfirmed) ||

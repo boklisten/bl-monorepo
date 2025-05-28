@@ -9,6 +9,7 @@ import {
   InputLabel,
   MenuItem,
   Select,
+  Stack,
 } from "@mui/material";
 import DialogTitle from "@mui/material/DialogTitle";
 import TextField from "@mui/material/TextField";
@@ -173,15 +174,17 @@ function ClassMembershipSelect({
         </DialogTitle>
         <DialogContent>
           <Box sx={{ width: 800 }} />
-          <SelectBranchNested
-            branchMembershipTree={calculateBranchMembershipTree()}
-            allBranches={branches ?? []}
-            filteredBranches={
-              branches?.filter((branch) => !branch.parentBranch) ?? []
-            }
-            childLabel={"Velg skole"}
-            onSelect={(selected) => setSelectedBranchId(selected)}
-          />
+          <Stack gap={1}>
+            <SelectBranchNested
+              branchMembershipTree={calculateBranchMembershipTree()}
+              allBranches={branches ?? []}
+              filteredBranches={
+                branches?.filter((branch) => !branch.parentBranch) ?? []
+              }
+              childLabel={"Velg skole"}
+              onSelect={(selected) => setSelectedBranchId(selected)}
+            />
+          </Stack>
         </DialogContent>
         <DialogActions>
           <Button onClick={() => setBranchSelectOpen(false)}>Avbryt</Button>

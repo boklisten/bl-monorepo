@@ -20,13 +20,9 @@ import useApiClient from "@/utils/api/useApiClient";
 
 function formatChildLabel(childLabel?: string) {
   if (!childLabel) {
-    return "Velg gruppe";
+    return "Velg";
   }
-  let modifiedLabel = childLabel;
-  if (childLabel.endsWith("er")) {
-    modifiedLabel = childLabel.slice(0, -2);
-  }
-  return `Velg ${modifiedLabel.toLowerCase()}`;
+  return `Velg ${childLabel.toLowerCase()}`;
 }
 
 function SelectBranchNested({

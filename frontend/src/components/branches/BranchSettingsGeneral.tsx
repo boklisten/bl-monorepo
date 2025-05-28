@@ -62,7 +62,11 @@ export default function BranchSettingsGeneral({
         )}
         name={"parentBranch"}
       />
-      <TextField label={"Delt inn i"} {...register("childLabel")}></TextField>
+      <TextField
+        label={"Delt inn i"}
+        {...register("childLabel")}
+        helperText={"f.eks. årskull, klasse, parallell"}
+      ></TextField>
       <Controller
         name="childBranches"
         control={control}

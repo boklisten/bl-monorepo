@@ -3,7 +3,6 @@ import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
 
-import BranchSelect from "@/components/BranchSelect";
 import DynamicLink from "@/components/DynamicLink";
 import Logo from "@/components/Logo";
 import DropDownMenu from "@/components/SideMenuDrawer";
@@ -63,8 +62,6 @@ export default function NavBar() {
               testID={tabLink.testID}
             />
           ))}
-
-          <BranchSelect isNav />
 
           <DropDownMenu />
         </Toolbar>

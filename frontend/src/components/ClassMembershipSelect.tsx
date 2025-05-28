@@ -1,5 +1,4 @@
 import { Branch } from "@boklisten/backend/shared/branch/branch";
-import { School } from "@mui/icons-material";
 import {
   Box,
   Button,
@@ -12,6 +11,7 @@ import {
   Select,
 } from "@mui/material";
 import DialogTitle from "@mui/material/DialogTitle";
+import TextField from "@mui/material/TextField";
 import { useQuery } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
 
@@ -26,18 +26,20 @@ function formatChildLabel(childLabel?: string) {
 }
 
 function SelectBranchNested({
+  branchMembershipTree,
   allBranches,
   filteredBranches,
   childLabel,
   onSelect,
 }: {
+  branchMembershipTree: string[] | null;
   allBranches: Branch[];
   filteredBranches: Branch[];
   childLabel: string;
   onSelect: (selectedBranchId: string | null) => void;
 }) {
   const [selectedBranchId, setSelectedBranchId] = useState<string | undefined>(
-    undefined,
+    branchMembershipTree?.[0] || undefined,
   );
 
   useEffect(() => {
@@ -62,6 +64,7 @@ function SelectBranchNested({
     }
     return (
       <SelectBranchNested
+        branchMembershipTree={branchMembershipTree?.slice(1) || null}
         allBranches={allBranches}
         filteredBranches={allBranches.filter((branch) =>
           selectedBranch?.childBranches?.includes(branch.id),
@@ -99,9 +102,11 @@ function SelectBranchNested({
 function ClassMembershipSelect({
   branchMembership,
   onChange,
+  error,
 }: {
   branchMembership: string | undefined;
   onChange: (selectedBranchId: string | null) => void;
+  error: boolean;
 }) {
   const client = useApiClient();
   const branchQuery = {
@@ -115,21 +120,50 @@ function ClassMembershipSelect({
         .$get(branchQuery)
         .then(unpack<Branch[]>),
   });
-  const [selectedBranchId, setSelectedBranchId] = useState<string | null>(null);
+  const [selectedBranchId, setSelectedBranchId] = useState<string | null>(
+    branchMembership ?? null,
+  );
   const [branchSelectOpen, setBranchSelectOpen] = useState(false);
 
-  // TODO: autofill branch choice if branchMembership already exists
+  function calculateBranchMembershipTree(): string[] | null {
+    if (!branchMembership) return null;
+    const branchMembershipTree: string[] = [branchMembership];
+    while (true) {
+      const currentBranch = branches?.find(
+        (branch) => branch.id === branchMembershipTree.at(-1),
+      );
+      const parent = branches?.find(
+        (branch) => branch.id === currentBranch?.parentBranch,
+      );
+      if (parent) branchMembershipTree.push(parent?.id);
+
+      if (!parent?.parentBranch) {
+        break;
+      }
+    }
+    return branchMembershipTree.reverse();
+  }
+
+  const selectedBranchName = branches?.find(
+    (branch) => branch.id === branchMembership,
+  )?.name;
+
   return (
     <>
-      <Button
-        sx={{ mt: 2 }}
-        color={"success"}
-        startIcon={<School />}
-        variant={"contained"}
-        onClick={() => setBranchSelectOpen(true)}
+      <TextField
+        error={error}
+        required
+        label={"Velg skole"}
+        fullWidth
+        select
+        value={selectedBranchId ?? ""}
+        slotProps={{ input: { readOnly: true } }}
+        onClick={() => {
+          setBranchSelectOpen(true);
+        }}
       >
-        {branchMembership ? "Endre skole" : "Velg skole"}
-      </Button>
+        <MenuItem value={selectedBranchId ?? ""}>{selectedBranchName}</MenuItem>
+      </TextField>
       <Dialog
         open={branchSelectOpen}
         onClose={() => setBranchSelectOpen(false)}
@@ -140,6 +174,7 @@ function ClassMembershipSelect({
         <DialogContent>
           <Box sx={{ width: 800 }} />
           <SelectBranchNested
+            branchMembershipTree={calculateBranchMembershipTree()}
             allBranches={branches ?? []}
             filteredBranches={
               branches?.filter((branch) => !branch.parentBranch) ?? []

@@ -45,6 +45,7 @@ export class UserDetailUpdateHook extends Hook {
       phone,
       emailConfirmed,
       guardian,
+      branchMembership,
     } = body;
     if (emailConfirmed !== undefined && accessToken.permission === "customer") {
       throw new BlError(
@@ -64,6 +65,7 @@ export class UserDetailUpdateHook extends Hook {
       ...(postCode !== undefined && { postCode }),
       ...(phone !== undefined && { phone }),
       ...(emailConfirmed !== undefined && { emailConfirmed }),
+      ...(branchMembership !== undefined && { branchMembership }),
       ...(guardian?.name &&
         guardian?.email && {
           guardian: this.cleanGuardianInfo(guardian) ?? guardian,
@@ -82,6 +84,7 @@ export type UserDetailPatch = Partial<
     | "phone"
     | "emailConfirmed"
     | "guardian"
+    | "branchMembership"
   > & { dob: string } // DOB is otherwise Date
 >;
 
@@ -104,6 +107,7 @@ const validateUserDetailUpdateType = (
       "dob",
       "postCode",
       "phone",
+      "branchMembership",
     ] as const;
     return (
       stringKeys.every((key) => isTypeOrUndefined(key, "string")) &&

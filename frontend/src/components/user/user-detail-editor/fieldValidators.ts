@@ -124,4 +124,7 @@ export const fieldValidators: {
   agreeToTermsAndConditions: {
     required: "Du må godta våre betingelser og vilkår",
   },
+  branchMembership: {
+    required: "Du må velge din skole",
+  },
 };

@@ -1,8 +1,9 @@
-import { Alert, AlertTitle, Divider, Typography } from "@mui/material";
+import { Divider, Typography } from "@mui/material";
 import Grid from "@mui/material/Grid";
 import TextField from "@mui/material/TextField";
 import {
   Control,
+  Controller,
   FieldError,
   FieldErrors,
   UseFormRegister,
@@ -23,8 +24,6 @@ interface YourInfoSectionProps {
   postCity: PostalCityState;
   updatePostalCity: (newPostalCode: string) => void;
   onIsUnderageChange: (isUnderage: boolean | null) => void;
-  isSignUp: boolean | undefined;
-  branchMembership: string | undefined;
   control: Control<UserEditorFields>;
   register: UseFormRegister<UserEditorFields>;
 }
@@ -35,8 +34,6 @@ const YourInfoSection = ({
   postCity,
   updatePostalCity,
   onIsUnderageChange,
-  isSignUp,
-  branchMembership,
   control,
 }: YourInfoSectionProps) => {
   return (
@@ -106,24 +103,18 @@ const YourInfoSection = ({
         <FieldErrorAlert error={errors.birthday as FieldError} />
       </Grid>
       <Grid size={{ xs: 12 }}>
-        <Typography variant="body1">Din skole</Typography>
-        <Divider />
-        {!isSignUp && !branchMembership && (
-          <Alert severity="info" sx={{ mt: 1 }}>
-            <AlertTitle>Du har ikke valgt skole enda</AlertTitle>
-            Velg din skole for å få riktig informasjon fra oss
-          </Alert>
-        )}
-        {!branchMembership && (
-          <ClassMembershipSelect
-            branchMembership={branchMembership}
-            onChange={(selectedBranchId) => {
-              // TODO: hook me into a controller so react-hook-form registers the value
-              // TODO: when hook form has value, display a badge with the selected school
-              console.log("selected value: ", selectedBranchId);
-            }}
-          />
-        )}
+        <Controller
+          control={control}
+          render={({ field }) => (
+            <ClassMembershipSelect
+              error={!!errors.branchMembership}
+              branchMembership={field.value}
+              onChange={(selectedBranchId) => field.onChange(selectedBranchId)}
+            />
+          )}
+          name={"branchMembership"}
+        />
+        <FieldErrorAlert error={errors.branchMembership as FieldError} />
       </Grid>
     </>
   );

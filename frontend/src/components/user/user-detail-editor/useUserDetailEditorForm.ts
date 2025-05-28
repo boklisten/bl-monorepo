@@ -32,6 +32,7 @@ export interface UserEditorFields {
   guardianName: string | undefined;
   guardianEmail: string | undefined;
   guardianPhoneNumber: string | undefined;
+  branchMembership: string | undefined;
   agreeToTermsAndConditions: boolean;
 }
 
@@ -70,6 +71,7 @@ export function useUserDetailEditorForm(
     guardianName: userDetails.guardian?.name,
     guardianEmail: userDetails.guardian?.email,
     guardianPhoneNumber: userDetails.guardian?.phone,
+    branchMembership: userDetails?.branchMembership,
   };
 
   const {
@@ -137,6 +139,7 @@ export function useUserDetailEditorForm(
         postCode: data.postalCode,
         postCity: postalCityStatus.city,
         dob: data.birthday?.toDate() ?? new Date(),
+        branchMembership: data.branchMembership ?? "",
         guardian: {
           name: data?.guardianName ?? "",
           email: data?.guardianEmail ?? "",

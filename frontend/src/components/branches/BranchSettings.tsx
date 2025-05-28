@@ -125,10 +125,10 @@ export default function BranchSettings({
   });
   const [loading, setLoading] = useState(false);
 
-  const { reset, getValues } = methods;
+  const { reset, getValues, setValue } = methods;
   useEffect(() => {
     reset(branchToDefaultValues(existingBranch));
-  }, [existingBranch, reset]);
+  }, [existingBranch, reset, setValue]);
 
   async function onSubmit() {
     setLoading(true);
@@ -139,7 +139,7 @@ export default function BranchSettings({
   }
 
   return (
-    <FormProvider {...methods}>
+    <FormProvider key={existingBranch?.id ?? "new"} {...methods}>
       <Stack sx={{ position: "relative" }}>
         <BranchEditSection title={"Generelt"} defaultExpanded>
           <BranchSettingsGeneral currentBranchId={existingBranch?.id ?? null} />

@@ -33,10 +33,12 @@ function SelectBranchNested({
   allBranches,
   filteredBranches,
   childLabel,
+  onSelect,
 }: {
   allBranches: Branch[];
   filteredBranches: Branch[];
   childLabel: string;
+  onSelect: (selectedBranchId: string | null) => void;
 }) {
   const [selectedBranchId, setSelectedBranchId] = useState<string | undefined>(
     undefined,
@@ -47,6 +49,13 @@ function SelectBranchNested({
       setSelectedBranchId(filteredBranches[0]?.id);
     }
   }, [filteredBranches]);
+
+  useEffect(() => {
+    const branch = filteredBranches.find((b) => b.id === selectedBranchId);
+    if ((branch?.childBranches ?? []).length === 0) {
+      onSelect(selectedBranchId ?? null);
+    }
+  }, [selectedBranchId, filteredBranches, onSelect]);
 
   function getNextStep() {
     const selectedBranch = filteredBranches?.find(
@@ -62,6 +71,7 @@ function SelectBranchNested({
           selectedBranch?.childBranches?.includes(branch.id),
         )}
         childLabel={formatChildLabel(selectedBranch?.childLabel)}
+        onSelect={onSelect}
       />
     );
   }
@@ -95,7 +105,7 @@ function ClassMembershipSelect({
   onChange,
 }: {
   branchMembership: string | undefined;
-  onChange: (selectedBranchId: string) => void;
+  onChange: (selectedBranchId: string | null) => void;
 }) {
   const client = useApiClient();
   const branchQuery = {
@@ -109,8 +119,10 @@ function ClassMembershipSelect({
         .$get(branchQuery)
         .then(unpack<Branch[]>),
   });
+  const [selectedBranchId, setSelectedBranchId] = useState<string | null>(null);
   const [branchSelectOpen, setBranchSelectOpen] = useState(false);
 
+  // TODO: autofill branch choice if branchMembership already exists
   return (
     <>
       <Button
@@ -137,14 +149,16 @@ function ClassMembershipSelect({
               branches?.filter((branch) => !branch.parentBranch) ?? []
             }
             childLabel={"Velg skole"}
+            onSelect={(selected) => setSelectedBranchId(selected)}
           />
         </DialogContent>
         <DialogActions>
           <Button onClick={() => setBranchSelectOpen(false)}>Avbryt</Button>
           <Button
+            disabled={!selectedBranchId}
             onClick={() => {
-              // TODO: hook me up to the nested select value
-              onChange("TODO");
+              onChange(selectedBranchId);
+              setBranchSelectOpen(false);
             }}
           >
             Bekreft

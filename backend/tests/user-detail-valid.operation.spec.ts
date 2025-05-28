@@ -43,6 +43,7 @@ test.group("UserDetailValidOperation", (group) => {
       emailConfirmed: true,
       signatures: [],
       blid: "",
+      branchMembership: "branch1",
     };
   });
   group.each.teardown(() => {

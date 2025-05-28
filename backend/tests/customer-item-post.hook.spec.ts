@@ -50,6 +50,7 @@ test.group("CustomerItemPostHook", (group) => {
       dob: new Date(1755, 1, 11),
       active: true,
       customerItems: [],
+      branchMembership: "branch1",
     } as UserDetail;
 
     testCustomerItem = {

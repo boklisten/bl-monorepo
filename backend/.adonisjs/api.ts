@@ -116,6 +116,17 @@ type V2BranchesIdPatch = {
     true
   >;
 };
+type V2BranchesMembershipsPost = {
+  request: MakeTuyauRequest<
+    InferInput<
+      (typeof import("../app/validators/branch_membership.ts"))["branchMembershipValidator"]
+    >
+  >;
+  response: MakeNonSerializedTuyauResponse<
+    import("../app/controllers/branches_controller.ts").default["uploadMemberships"],
+    true
+  >;
+};
 export interface ApiDefinition {
   token: {
     $url: {};
@@ -172,6 +183,10 @@ export interface ApiDefinition {
       ":id": {
         $url: {};
         $patch: V2BranchesIdPatch;
+      };
+      memberships: {
+        $url: {};
+        $post: V2BranchesMembershipsPost;
       };
     };
   };
@@ -260,6 +275,13 @@ const routes = [
     path: "/v2/branches/:id",
     method: ["PATCH"],
     types: {} as V2BranchesIdPatch,
+  },
+  {
+    params: [],
+    name: "branches.addMemberships",
+    path: "/v2/branches/memberships",
+    method: ["POST"],
+    types: {} as V2BranchesMembershipsPost,
   },
   {
     params: ["id"],

@@ -73,5 +73,8 @@ router.post("/v2/branches", [BranchesController, "add"]).as("branches.add");
 router
   .patch("/v2/branches/:id", [BranchesController, "update"])
   .as("branches.update");
+router
+  .post("/v2/branches/memberships", [BranchesController, "uploadMemberships"])
+  .as("branches.addMemberships");
 
 CollectionEndpointCreator.generateEndpoints();

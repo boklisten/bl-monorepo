@@ -24,10 +24,12 @@ export default function UploadCSVFile<Headers extends readonly string[]>({
   label,
   allowedHeaders,
   onUpload,
+  loading = false,
 }: {
   label: string;
   allowedHeaders: Headers;
   onUpload: (data: Record<Headers[number], string>[]) => void;
+  loading?: boolean;
 }) {
   const notifications = useNotifications();
 
@@ -106,6 +108,7 @@ export default function UploadCSVFile<Headers extends readonly string[]>({
       multiple={false}
       startIcon={<CloudUploadIcon />}
       label={label}
+      loading={loading}
     />
   );
 }

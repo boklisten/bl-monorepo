@@ -4,6 +4,7 @@ import { PermissionService } from "#services/auth/permission.service";
 import CollectionEndpointAuth from "#services/collection-endpoint/collection-endpoint-auth";
 import { BlStorage } from "#services/storage/bl-storage";
 import { branchValidator } from "#validators/branch";
+import { branchMembershipValidator } from "#validators/branch_membership";
 
 async function canAccess(ctx: HttpContext) {
   try {
@@ -178,5 +179,16 @@ export default class BranchesController {
     });
 
     return updatedBranch;
+  }
+
+  async uploadMemberships(ctx: HttpContext) {
+    if (!(await canAccess(ctx))) {
+      return ctx.response.unauthorized();
+    }
+    const branchMemberships = await ctx.request.validateUsing(
+      branchMembershipValidator,
+    );
+
+    return ctx.response.ok(branchMemberships);
   }
 }

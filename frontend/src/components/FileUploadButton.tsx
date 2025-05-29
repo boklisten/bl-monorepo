@@ -1,7 +1,7 @@
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 import Button from "@mui/material/Button";
 import { styled } from "@mui/material/styles";
-import { ReactNode } from "react";
+import { ReactNode, useRef } from "react";
 
 const VisuallyHiddenInput = styled("input")({
   clip: "rect(0 0 0 0)",
@@ -21,6 +21,7 @@ interface FileUploadButtonProps {
   onUpload: (files: FileList | null) => void;
   accept?: string;
   multiple?: boolean;
+  loading?: boolean;
 }
 
 export default function FileUploadButton({
@@ -29,19 +30,29 @@ export default function FileUploadButton({
   onUpload,
   accept,
   multiple = false,
+  loading = false,
 }: FileUploadButtonProps) {
+  const inputRef = useRef<HTMLInputElement>(null);
+
   return (
     <Button
       component="label"
       tabIndex={-1}
       startIcon={startIcon ?? <CloudUploadIcon />}
+      loading={loading}
     >
       {label ?? "Upload File"}
       <VisuallyHiddenInput
         type="file"
         accept={accept}
         multiple={multiple}
-        onChange={(e) => onUpload(e.target.files)}
+        ref={inputRef}
+        onChange={(e) => {
+          onUpload(e.target.files);
+          if (inputRef.current) {
+            inputRef.current.value = "";
+          }
+        }}
       />
     </Button>
   );

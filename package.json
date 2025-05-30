@@ -14,14 +14,14 @@
   },
   "devDependencies": {
     "@eslint/js": "^9.27.0",
-    "@next/eslint-plugin-next": "^15.3.2",
-    "@tanstack/eslint-plugin-query": "^5.74.7",
+    "@next/eslint-plugin-next": "^15.3.3",
+    "@tanstack/eslint-plugin-query": "^5.78.0",
     "@tsconfig/strictest": "^2.0.5",
-    "@types/node": "^22.15.21",
+    "@types/node": "^22.15.27",
     "eslint": "9.27.0",
     "eslint-config-prettier": "^10.1.5",
     "eslint-plugin-chai-friendly": "^1.0.1",
-    "eslint-plugin-cypress": "^4.3.0",
+    "eslint-plugin-cypress": "^5.0.0",
     "eslint-plugin-import": "^2.31.0",
     "eslint-plugin-jsx-a11y": "^6.10.2",
     "eslint-plugin-no-relative-import-paths": "^1.6.1",
@@ -30,10 +30,10 @@
     "eslint-plugin-react-hooks": "^5.2.0",
     "prettier": "^3.5.3",
     "typescript": "^5.8.3",
-    "typescript-eslint": "^8.32.1"
+    "typescript-eslint": "^8.33.0"
   },
   "dependencies": {
-    "zod": "^3.25.28",
+    "zod": "^3.25.42",
     "zod-validation-error": "^3.4.1"
   }
 }

@@ -9,7 +9,6 @@ import { useState } from "react";
 import BranchSettings from "@/components/branches/BranchSettings";
 import CreateBranchDialog from "@/components/branches/CreateBranchDialog";
 import SelectBranchTreeView from "@/components/branches/SelectBranchTreeView";
-import UploadClassMemberships from "@/components/branches/UploadClassMemberships";
 import unpack from "@/utils/api/bl-api-request";
 import useApiClient from "@/utils/api/useApiClient";
 
@@ -39,7 +38,6 @@ export default function DatabaseBranchesPage() {
         >
           Opprett filial
         </Button>
-        <UploadClassMemberships />
       </Stack>
       <Divider sx={{ mb: 2 }} />
       <Stack

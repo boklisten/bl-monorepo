@@ -16,6 +16,7 @@ import { ReactNode, useEffect, useState } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 
 import BranchSettingsGeneral from "@/components/branches/BranchSettingsGeneral";
+import UploadClassMemberships from "@/components/branches/UploadClassMemberships";
 import useApiClient from "@/utils/api/useApiClient";
 
 function BranchEditSection({
@@ -141,6 +142,9 @@ export default function BranchSettings({
   return (
     <FormProvider key={existingBranch?.id ?? "new"} {...methods}>
       <Stack sx={{ position: "relative" }}>
+        {existingBranch && (
+          <UploadClassMemberships branchId={existingBranch.id} />
+        )}
         <BranchEditSection title={"Generelt"} defaultExpanded>
           <BranchSettingsGeneral currentBranchId={existingBranch?.id ?? null} />
         </BranchEditSection>

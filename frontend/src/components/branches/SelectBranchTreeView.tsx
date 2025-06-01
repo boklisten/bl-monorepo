@@ -8,6 +8,8 @@ function renderBranchTreeItem(branchId: string, branches: Branch[]): ReactNode {
   const branch = branches.find((branch) => branch.id === branchId);
   if (!branch) return null;
 
+  branches.sort((a, b) => a.name.localeCompare(b.name));
+
   if ((branch.childBranches?.length ?? 0) === 0) {
     return (
       <TreeItem

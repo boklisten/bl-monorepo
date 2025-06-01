@@ -5,7 +5,11 @@ import { useState } from "react";
 import UploadCSVFile from "@/components/UploadCSVFile";
 import useApiClient from "@/utils/api/useApiClient";
 
-export default function UploadClassMemberships() {
+export default function UploadClassMemberships({
+  branchId,
+}: {
+  branchId: string;
+}) {
   const client = useApiClient();
   const dialogs = useDialogs();
   const [loading, setLoading] = useState(false);
@@ -14,7 +18,7 @@ export default function UploadClassMemberships() {
     mutationFn: async (membershipData: { branch: string; phone: string }[]) => {
       setLoading(true);
       return await client.v2.branches.memberships
-        .$post({ membershipData })
+        .$post({ membershipData, branchId })
         .unwrap();
     },
     onSettled: () => setLoading(false),

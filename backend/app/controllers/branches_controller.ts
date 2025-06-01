@@ -1,5 +1,7 @@
 import { HttpContext } from "@adonisjs/core/http";
+import { ObjectId } from "mongodb";
 
+import { BranchModel } from "#models/branch.model";
 import { PermissionService } from "#services/auth/permission.service";
 import CollectionEndpointAuth from "#services/collection-endpoint/collection-endpoint-auth";
 import { BlStorage } from "#services/storage/bl-storage";
@@ -115,6 +117,91 @@ async function assertValidBranchUpdate(
   }
 }
 
+function findBranch(branch: string, branches: { id: string; name: string }[]) {
+  return branches.find((candidate) =>
+    candidate.name
+      .replaceAll(" ", "")
+      .toLowerCase()
+      .includes(branch.replaceAll(" ", "").toLowerCase()),
+  );
+}
+
+async function applyMembershipData(
+  branchId: string,
+  membershipData: { branch: string; phone: string }[],
+) {
+  const childBranches = (await BlStorage.Branches.aggregate([
+    {
+      $match: {
+        _id: new ObjectId(branchId),
+      },
+    },
+    {
+      $graphLookup: {
+        from: BranchModel.name,
+        startWith: new ObjectId(branchId),
+        connectFromField: "childBranches",
+        connectToField: "_id",
+        as: "childBranches",
+      },
+    },
+    { $unwind: "$childBranches" },
+    {
+      $match: {
+        "childBranches.childBranches": { $eq: [] },
+      },
+    },
+    {
+      $project: {
+        _id: "$childBranches._id",
+        name: "$childBranches.name",
+      },
+    },
+  ])) as { id: string; name: string }[];
+
+  const status = {
+    unknownBranches: new Set<string>(),
+    unknownRecords: [] as { phone: string; branch: string }[],
+    matchedUsers: 0,
+  };
+
+  async function processMembership(membership: {
+    branch: string;
+    phone: string;
+  }) {
+    const normalizedPhone = membership.phone.trim().slice(-8);
+    const branch = findBranch(membership.branch, childBranches);
+    if (!branch) {
+      status.unknownBranches.add(membership.branch);
+      return;
+    }
+    const result = await BlStorage.UserDetails.updateMany(
+      { phone: normalizedPhone },
+      {
+        branchMembership: branch.id,
+      },
+    );
+    if (result.matchedCount === 0) {
+      status.unknownRecords.push(membership);
+    }
+    status.matchedUsers += result.matchedCount;
+  }
+
+  await Promise.allSettled(
+    membershipData.map((membership) => processMembership(membership)),
+  );
+
+  return {
+    ...status,
+    unknownBranches: [...status.unknownBranches].sort((a, b) =>
+      a.localeCompare(b),
+    ),
+    unknownRecords: status.unknownRecords.sort((a, b) =>
+      a.branch.localeCompare(b.branch),
+    ),
+  };
+}
+
 export default class BranchesController {
   async add(ctx: HttpContext) {
     if (!(await canAccess(ctx))) {
@@ -185,10 +272,9 @@ export default class BranchesController {
     if (!(await canAccess(ctx))) {
       return ctx.response.unauthorized();
     }
-    const branchMemberships = await ctx.request.validateUsing(
+    const { branchId, membershipData } = await ctx.request.validateUsing(
       branchMembershipValidator,
     );
-
-    return ctx.response.ok(branchMemberships);
+    return await applyMembershipData(branchId, membershipData);
   }
 }

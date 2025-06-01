@@ -23,6 +23,7 @@ export default function useApiClient() {
   const pathname = usePathname();
 
   return createTuyau({
+    timeout: 60_000,
     api,
     baseUrl: BL_CONFIG.api.basePath,
     plugins: [superjson()],

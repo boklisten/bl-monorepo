@@ -21,7 +21,16 @@ export const BranchItemCollection: BlCollection = {
     },
     {
       method: "getAll",
-      validQueryParams: [{ fieldName: "branch", type: "object-id" }],
+      validQueryParams: [
+        { fieldName: "branch", type: "object-id" },
+        { fieldName: "item", type: "expand" },
+      ],
+      nestedDocuments: [
+        {
+          field: "item",
+          storage: BlStorage.Items,
+        },
+      ],
     },
     {
       method: "delete",

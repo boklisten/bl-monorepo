@@ -61,5 +61,6 @@ export const BranchItemModel: BlModel<BranchItem> = {
       type: [String],
       default: [],
     },
+    required: Boolean,
   }),
 };

@@ -6,6 +6,7 @@ import {
   Accordion,
   AccordionDetails,
   AccordionSummary,
+  Box,
   Button,
   Paper,
   Stack,
@@ -16,6 +17,7 @@ import { ReactNode, useEffect, useState } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 
 import BranchSettingsGeneral from "@/components/branches/BranchSettingsGeneral";
+import BranchSettingsSubjects from "@/components/branches/BranchSettingsSubjects";
 import UploadClassMemberships from "@/components/branches/UploadClassMemberships";
 import useApiClient from "@/utils/api/useApiClient";
 
@@ -154,9 +156,12 @@ export default function BranchSettings({
         <BranchEditSection disabled title={"Åpningstider"}>
           lorem ipsum
         </BranchEditSection>
-        <BranchEditSection disabled title={"Fag"}>
-          lorem ipsum
+        <BranchEditSection disabled={!existingBranch?.id} title={"Fag"}>
+          {existingBranch && (
+            <BranchSettingsSubjects branchId={existingBranch.id} />
+          )}
         </BranchEditSection>
+        <Box sx={{ height: 50 }} />
         <Button
           sx={{ bottom: 0, right: 10, position: "absolute" }}
           variant={"contained"}

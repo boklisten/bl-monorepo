@@ -78,6 +78,12 @@ router
 router
   .post("/v2/branches/memberships", [BranchesController, "uploadMemberships"])
   .as("branches.addMemberships");
+router
+  .post("/v2/branches/subject_choices", [
+    BranchesController,
+    "uploadSubjectChoices",
+  ])
+  .as("branches.addSubjectChoices");
 
 /**
  * mail template sender

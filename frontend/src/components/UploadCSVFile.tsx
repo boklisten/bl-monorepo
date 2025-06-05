@@ -4,23 +4,12 @@ import Papa from "papaparse";
 
 import FileUploadButton from "@/components/FileUploadButton";
 
-function parseRow(
-  row: Record<string, string>,
-  validHeaders: readonly string[],
-): Record<string, string> | null {
-  const relevantEntries = validHeaders.map((header) => {
-    const value = row[header]?.trim() || null;
-    return [header, value];
-  });
+type ParsedRow<Headers extends string[]> = Record<
+  Headers[number],
+  string | string[]
+>;
 
-  if (relevantEntries.some((entry) => entry[1] === null)) {
-    return null;
-  }
-
-  return Object.fromEntries(relevantEntries);
-}
-
-export default function UploadCSVFile<Headers extends readonly string[]>({
+export default function UploadCSVFile<Headers extends string[]>({
   label,
   allowedHeaders,
   onUpload,
@@ -28,13 +17,13 @@ export default function UploadCSVFile<Headers extends readonly string[]>({
 }: {
   label: string;
   allowedHeaders: Headers;
-  onUpload: (data: Record<Headers[number], string>[]) => void;
+  onUpload: (data: ParsedRow<Headers>[]) => void;
   loading?: boolean;
 }) {
   const notifications = useNotifications();
 
-  function parseRows(rows: Record<string, string>[]) {
-    if (rows.length === 0) {
+  function parseRows(rows: string[][]): ParsedRow<string[]>[] | null {
+    if (rows.length < 2) {
       notifications.show("Opplasting feilet! Filen har ingen data", {
         severity: "error",
         autoHideDuration: 5000,
@@ -42,20 +31,55 @@ export default function UploadCSVFile<Headers extends readonly string[]>({
       return null;
     }
 
-    const parsedRows: Record<string, string>[] = [];
-    for (let rowNumber = 0; rowNumber < rows.length; rowNumber++) {
-      const parsedRow = parseRow(rows[rowNumber] ?? {}, allowedHeaders);
-      if (parsedRow === null) {
-        notifications.show(
-          `Opplasting feilet! Rad nummer ${rowNumber + 2} mangler data. Krever: [${allowedHeaders.join(", ")}]`,
-          {
-            severity: "error",
-            autoHideDuration: 5000,
-          },
-        );
+    const headerRow = rows[0]?.map((h) => h.trim()) ?? [];
+    const headerIndexMap: Record<string, number[]> = {};
+    headerRow.forEach((headerName, i) => {
+      if (allowedHeaders.includes(headerName)) {
+        if (!headerIndexMap[headerName]) {
+          headerIndexMap[headerName] = [];
+        }
+        headerIndexMap[headerName].push(i);
+      }
+    });
+
+    for (const header of allowedHeaders) {
+      if (!headerIndexMap[header] || headerIndexMap[header].length === 0) {
+        notifications.show(`Opplasting feilet! Mangler kolonne: ${header}`, {
+          severity: "error",
+          autoHideDuration: 5000,
+        });
         return null;
       }
-      parsedRows.push(parsedRow);
+    }
+
+    const parsedRows: ParsedRow<string[]>[] = [];
+
+    for (let rowIndex = 1; rowIndex < rows.length; rowIndex++) {
+      const row = rows[rowIndex] ?? [];
+      const parsedRow: Record<string, string | string[]> = {};
+
+      for (const header of allowedHeaders) {
+        const indices = headerIndexMap[header] ?? [];
+        const values = indices
+          .map((i) => (row[i] ?? "").trim())
+          .filter((v) => v !== "");
+
+        if (values.length === 0) {
+          notifications.show(
+            `Opplasting feilet! Rad nummer ${rowIndex + 1} mangler data for "${header}"`,
+            {
+              severity: "error",
+              autoHideDuration: 5000,
+            },
+          );
+          return null;
+        }
+
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+        parsedRow[header] = values.length === 1 ? values[0]! : values;
+      }
+
+      parsedRows.push(parsedRow as ParsedRow<string[]>);
     }
 
     return parsedRows;
@@ -69,8 +93,8 @@ export default function UploadCSVFile<Headers extends readonly string[]>({
     reader.onload = () => {
       const csvText = reader.result as string;
 
-      Papa.parse<Record<string, string>>(csvText, {
-        header: true,
+      Papa.parse<string[]>(csvText, {
+        header: false,
         skipEmptyLines: true,
         complete: ({ data, errors }) => {
           if (errors.length) {

@@ -22,41 +22,41 @@ function SuccessfulUploadDialog({
   open,
   onClose,
 }: DialogProps<{
-  unknownBranches: string[];
-  unknownRecords: { branch: string; phone: string }[];
-  matchedUsers: number;
+  unknownSubjects: string[];
+  unknownUsers: { subjects: string[]; phone: string }[];
+  successfulOrders: number;
 }>) {
   return (
     <Dialog fullWidth open={open} onClose={() => onClose()}>
-      <DialogTitle>Opplasting av klassevalg var vellykket</DialogTitle>
+      <DialogTitle>Opplasting av fagvalg var vellykket</DialogTitle>
       <DialogContent>
         <Stack>
           <Typography variant={"h5"} sx={{ mb: 5 }}>
-            {`${payload.matchedUsers} brukere ble oppdatert!`}
+            {`${payload.successfulOrders} har fått bestillinger for fagvalgene sine!`}
           </Typography>
-          {payload.unknownBranches.length > 0 && (
+          {payload.unknownSubjects.length > 0 && (
             <>
               <Typography
                 variant={"h6"}
-              >{`${payload.unknownBranches.length} filialer ble ikke funnet:`}</Typography>
+              >{`${payload.unknownSubjects.length} fag ble ikke funnet:`}</Typography>
               <List>
-                {payload.unknownBranches.map((branchName) => (
-                  <ListItem key={branchName}>
-                    <ListItemText>{branchName}</ListItemText>
+                {payload.unknownSubjects.map((subject) => (
+                  <ListItem key={subject}>
+                    <ListItemText>{subject}</ListItemText>
                   </ListItem>
                 ))}
               </List>
             </>
           )}
-          {payload.unknownRecords.length > 0 && (
+          {payload.unknownUsers.length > 0 && (
             <>
               <Typography
                 variant={"h6"}
-              >{`${payload.unknownRecords.length} brukere ble ikke funnet:`}</Typography>
+              >{`${payload.unknownUsers.length} brukere ble ikke funnet:`}</Typography>
               <List>
-                {payload.unknownRecords.map(({ branch, phone }) => (
+                {payload.unknownUsers.map(({ subjects, phone }) => (
                   <ListItem key={phone}>
-                    <ListItemText>{`${branch} - ${phone}`}</ListItemText>
+                    <ListItemText>{`${phone} - ${subjects.join(", ")}`}</ListItemText>
                   </ListItem>
                 ))}
               </List>
@@ -71,7 +71,7 @@ function SuccessfulUploadDialog({
   );
 }
 
-export default function UploadClassMemberships({
+export default function UploadSubjectChoices({
   branchId,
 }: {
   branchId: string;
@@ -80,13 +80,22 @@ export default function UploadClassMemberships({
   const dialogs = useDialogs();
   const [loading, setLoading] = useState(false);
 
-  const uploadClassMembership = useMutation({
+  const uploadSubjectChoices = useMutation({
     mutationFn: async (
-      membershipData: { branch: string | string[]; phone: string | string[] }[],
+      subjectChoices: {
+        phone: string | string[];
+        subjects: string | string[];
+      }[],
     ) => {
       setLoading(true);
-      return await client.v2.branches.memberships
-        .$post({ membershipData, branchId })
+      return await client.v2.branches.subject_choices
+        .$post({
+          subjectChoices: subjectChoices.map((subjectChoice) => ({
+            phone: subjectChoice.phone,
+            subjects: [subjectChoice.subjects].flat(),
+          })),
+          branchId,
+        })
         .unwrap();
     },
     onSettled: () => setLoading(false),
@@ -95,16 +104,16 @@ export default function UploadClassMemberships({
     },
 
     onError: () =>
-      dialogs.alert("Opplasting av klassevalg feilet!", {
+      dialogs.alert("Opplasting av fagvalg feilet!", {
         title: "Feilmelding",
       }),
   });
   return (
     <UploadCSVFile
       loading={loading}
-      label={"Last opp klassevalg"}
-      allowedHeaders={["phone", "branch"] as const}
-      onUpload={uploadClassMembership.mutate}
+      label={"Last opp fagvalg"}
+      allowedHeaders={["phone", "subjects"] as const}
+      onUpload={uploadSubjectChoices.mutate}
     />
   );
 }

@@ -127,6 +127,17 @@ type V2BranchesMembershipsPost = {
     true
   >;
 };
+type V2BranchesSubjectchoicesPost = {
+  request: MakeTuyauRequest<
+    InferInput<
+      (typeof import("../app/validators/subject_choices.ts"))["subjectChoicesValidator"]
+    >
+  >;
+  response: MakeNonSerializedTuyauResponse<
+    import("../app/controllers/branches_controller.ts").default["uploadSubjectChoices"],
+    true
+  >;
+};
 type EmailsSendPost = {
   request: MakeTuyauRequest<
     InferInput<
@@ -198,6 +209,10 @@ export interface ApiDefinition {
       memberships: {
         $url: {};
         $post: V2BranchesMembershipsPost;
+      };
+      subject_choices: {
+        $url: {};
+        $post: V2BranchesSubjectchoicesPost;
       };
     };
   };
@@ -299,6 +314,13 @@ const routes = [
     path: "/v2/branches/memberships",
     method: ["POST"],
     types: {} as V2BranchesMembershipsPost,
+  },
+  {
+    params: [],
+    name: "branches.addSubjectChoices",
+    path: "/v2/branches/subject_choices",
+    method: ["POST"],
+    types: {} as V2BranchesSubjectchoicesPost,
   },
   {
     params: [],

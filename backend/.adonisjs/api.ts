@@ -149,6 +149,20 @@ type EmailsSendPost = {
     true
   >;
 };
+type V2OrdersOpenordersGetHead = {
+  request: unknown;
+  response: MakeNonSerializedTuyauResponse<
+    import("../app/controllers/orders_controller.ts").default["getOpenOrders"],
+    false
+  >;
+};
+type V2OrdersCancelorderitemPost = {
+  request: unknown;
+  response: MakeNonSerializedTuyauResponse<
+    import("../app/controllers/orders_controller.ts").default["cancelOrderItem"],
+    false
+  >;
+};
 export interface ApiDefinition {
   token: {
     $url: {};
@@ -213,6 +227,17 @@ export interface ApiDefinition {
       subject_choices: {
         $url: {};
         $post: V2BranchesSubjectchoicesPost;
+      };
+    };
+    orders: {
+      open_orders: {
+        $url: {};
+        $get: V2OrdersOpenordersGetHead;
+        $head: V2OrdersOpenordersGetHead;
+      };
+      cancel_order_item: {
+        $url: {};
+        $post: V2OrdersCancelorderitemPost;
       };
     };
   };
@@ -328,6 +353,20 @@ const routes = [
     path: "/emails/send",
     method: ["POST"],
     types: {} as EmailsSendPost,
+  },
+  {
+    params: [],
+    name: "open_orders.get",
+    path: "/v2/orders/open_orders",
+    method: ["GET", "HEAD"],
+    types: {} as V2OrdersOpenordersGetHead,
+  },
+  {
+    params: [],
+    name: "open_orders.cancel",
+    path: "/v2/orders/cancel_order_item",
+    method: ["POST"],
+    types: {} as V2OrdersCancelorderitemPost,
   },
   {
     params: ["id"],

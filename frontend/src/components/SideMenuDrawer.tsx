@@ -1,5 +1,10 @@
 "use client";
-import { AdminPanelSettings, Handshake, Search } from "@mui/icons-material";
+import {
+  AdminPanelSettings,
+  Checklist,
+  Handshake,
+  Search,
+} from "@mui/icons-material";
 import AccessTimeIcon from "@mui/icons-material/AccessTime";
 import BookIcon from "@mui/icons-material/Book";
 import EmailIcon from "@mui/icons-material/Email";
@@ -88,6 +93,11 @@ export default function SideMenuDrawer() {
                   title={"Dine bøker"}
                   href={"/items"}
                   icon={<MenuBookIcon />}
+                />
+                <DrawerLink
+                  title={"Dine bestillinger"}
+                  href={"/bestillinger"}
+                  icon={<Checklist />}
                 />
                 <DrawerLink
                   title={"Ordrehistorikk"}

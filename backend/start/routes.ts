@@ -13,6 +13,7 @@ const RemindersController = () => import("#controllers/reminders_controller");
 const BranchesController = () => import("#controllers/branches_controller");
 const MailTemplateSenderController = () =>
   import("#controllers/mail_template_sender_controller");
+const OrdersController = () => import("#controllers/orders_controller");
 
 /**
  * auth token
@@ -88,9 +89,18 @@ router
 /**
  * mail template sender
  */
-
 router
   .post("/emails/send", [MailTemplateSenderController, "sendEmails"])
   .as("emails.send");
+
+/**
+ * orders
+ */
+router
+  .get("/v2/orders/open_orders", [OrdersController, "getOpenOrders"])
+  .as("open_orders.get");
+router
+  .post("/v2/orders/cancel_order_item", [OrdersController, "cancelOrderItem"])
+  .as("open_orders.cancel");
 
 CollectionEndpointCreator.generateEndpoints();

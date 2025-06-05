@@ -127,6 +127,17 @@ type V2BranchesMembershipsPost = {
     true
   >;
 };
+type EmailsSendPost = {
+  request: MakeTuyauRequest<
+    InferInput<
+      (typeof import("../app/validators/mail_template_sender.ts"))["emailTemplateSenderValidator"]
+    >
+  >;
+  response: MakeNonSerializedTuyauResponse<
+    import("../app/controllers/mail_template_sender_controller.ts").default["sendEmails"],
+    true
+  >;
+};
 export interface ApiDefinition {
   token: {
     $url: {};
@@ -188,6 +199,12 @@ export interface ApiDefinition {
         $url: {};
         $post: V2BranchesMembershipsPost;
       };
+    };
+  };
+  emails: {
+    send: {
+      $url: {};
+      $post: EmailsSendPost;
     };
   };
 }
@@ -282,6 +299,13 @@ const routes = [
     path: "/v2/branches/memberships",
     method: ["POST"],
     types: {} as V2BranchesMembershipsPost,
+  },
+  {
+    params: [],
+    name: "emails.send",
+    path: "/emails/send",
+    method: ["POST"],
+    types: {} as EmailsSendPost,
   },
   {
     params: ["id"],

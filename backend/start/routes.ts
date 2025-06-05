@@ -11,6 +11,8 @@ const WaitingListEntriesController = () =>
   import("#controllers/waiting_list_entries_controller");
 const RemindersController = () => import("#controllers/reminders_controller");
 const BranchesController = () => import("#controllers/branches_controller");
+const MailTemplateSenderController = () =>
+  import("#controllers/mail_template_sender_controller");
 
 /**
  * auth token
@@ -76,5 +78,13 @@ router
 router
   .post("/v2/branches/memberships", [BranchesController, "uploadMemberships"])
   .as("branches.addMemberships");
+
+/**
+ * mail template sender
+ */
+
+router
+  .post("/emails/send", [MailTemplateSenderController, "sendEmails"])
+  .as("emails.send");
 
 CollectionEndpointCreator.generateEndpoints();

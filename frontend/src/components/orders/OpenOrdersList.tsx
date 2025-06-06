@@ -2,7 +2,6 @@
 import { Book } from "@mui/icons-material";
 import {
   Alert,
-  AlertTitle,
   Box,
   Button,
   Stack,
@@ -13,7 +12,8 @@ import {
 } from "@mui/material";
 import TableCell from "@mui/material/TableCell";
 import TableRow from "@mui/material/TableRow";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useDialogs, useNotifications } from "@toolpad/core";
 import moment from "moment";
 import { useRouter } from "next/navigation";
 
@@ -24,6 +24,9 @@ import useIsHydrated from "@/utils/useIsHydrated";
 
 export default function OpenOrdersList() {
   const hydrated = useIsHydrated();
+  const dialogs = useDialogs();
+  const notifications = useNotifications();
+  const queryClient = useQueryClient();
   const router = useRouter();
   const client = useApiClient();
 
@@ -38,31 +41,58 @@ export default function OpenOrdersList() {
       }[],
   });
 
+  const cancelOrderItemMutation = useMutation({
+    mutationFn: async ({
+      orderId,
+      itemId,
+    }: {
+      orderId: string;
+      itemId: string;
+    }) => {
+      return await client.v2.orders.cancel_order_item
+        .$post({ orderId, itemId })
+        .unwrap();
+    },
+    onSettled: async () => {
+      await queryClient.invalidateQueries({
+        queryKey: [client.v2.orders.open_orders.$url()],
+      });
+    },
+    onSuccess: async () => {
+      notifications.show("Bestilling ble oppdatert!", {
+        severity: "success",
+        autoHideDuration: 3000,
+      });
+    },
+    onError: async () => {
+      notifications.show("Klarte ikke fjerne bok fra bestilling!", {
+        severity: "error",
+        autoHideDuration: 5000,
+      });
+    },
+  });
+
   return (
     hydrated &&
     (isLoggedIn() ? (
       <Stack>
         {(openOrderItems?.length ?? 0) > 0 ? (
-          <>
-            <TableContainer>
-              <Table>
-                <TableHead>
-                  <TableRow>
-                    <TableCell>Tittel</TableCell>
-                    <TableCell>Frist</TableCell>
-                    {/*
+          <TableContainer>
+            <Table>
+              <TableHead>
+                <TableRow>
+                  <TableCell>Tittel</TableCell>
+                  <TableCell>Frist</TableCell>
                   <TableCell>Handling</TableCell>
-*/}
-                  </TableRow>
-                </TableHead>
-                <TableBody>
-                  {openOrderItems?.map((orderItem) => (
-                    <TableRow key={orderItem.orderId + orderItem.itemId}>
-                      <TableCell>{orderItem.title}</TableCell>
-                      <TableCell>
-                        {moment(orderItem.deadline).format("DD/MM/YYYY")}
-                      </TableCell>
-                      {/*
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {openOrderItems?.map((orderItem) => (
+                  <TableRow key={orderItem.orderId + orderItem.itemId}>
+                    <TableCell>{orderItem.title}</TableCell>
+                    <TableCell>
+                      {moment(orderItem.deadline).format("DD/MM/YYYY")}
+                    </TableCell>
                     <TableCell>
                       <Button
                         color={"error"}
@@ -77,26 +107,21 @@ export default function OpenOrdersList() {
                               },
                             )
                           ) {
-                            // mutate
-                            console.log("fjern!");
+                            cancelOrderItemMutation.mutate({
+                              orderId: orderItem.orderId,
+                              itemId: orderItem.itemId,
+                            });
                           }
                         }}
                       >
                         Fjern
                       </Button>
                     </TableCell>
-*/}
-                    </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
-            </TableContainer>
-            <Alert severity={"info"} sx={{ mt: 3 }}>
-              <AlertTitle>Fjerne bestilling?</AlertTitle>
-              Ta kontakt på info@boklisten.no dersom du ønsker å fjerne en bok
-              fra bestillingen din
-            </Alert>
-          </>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </TableContainer>
         ) : (
           <Alert severity={"info"}>
             {

@@ -157,10 +157,14 @@ type V2OrdersOpenordersGetHead = {
   >;
 };
 type V2OrdersCancelorderitemPost = {
-  request: unknown;
+  request: MakeTuyauRequest<
+    InferInput<
+      (typeof import("../app/validators/cancel_order_item_validator.ts"))["cancelOrderItemValidator"]
+    >
+  >;
   response: MakeNonSerializedTuyauResponse<
     import("../app/controllers/orders_controller.ts").default["cancelOrderItem"],
-    false
+    true
   >;
 };
 export interface ApiDefinition {

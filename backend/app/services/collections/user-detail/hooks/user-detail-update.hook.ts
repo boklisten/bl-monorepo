@@ -65,7 +65,7 @@ export class UserDetailUpdateHook extends Hook {
     } catch {
       // Not found
     }
-    if (existingUsers.length > 0) {
+    if (existingUsers.length > 0 && accessToken.permission === "customer") {
       throw new BlError(
         "telefonnummer er allerede registrert på en annen bruker",
       ).code(912);

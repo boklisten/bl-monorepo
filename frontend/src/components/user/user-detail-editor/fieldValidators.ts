@@ -45,6 +45,33 @@ export const fieldValidators: {
       message: "Telefonnummeret må være 8 tegn langt (uten mellomrom og +47)",
     },
   },
+  signUpPhoneNumber: {
+    required: "Du må fylle inn telefonnummer",
+    validate: async (v) => {
+      if (!isMobilePhone(v, "nb-NO"))
+        return "Du må fylle inn et gyldig norsk telefonnummer (uten mellomrom og +47)";
+
+      const existingAccount =
+        await apiClient.v2.userdetails.check_phone_number_already_registered
+          .$post({
+            phone: v,
+          })
+          .unwrap();
+      if (existingAccount) {
+        return "Det finnes allerede en konto med dette nummeret. Ta kontakt med oss på info@boklisten.no hvis du trenger hjelp med å logge inn.";
+      }
+
+      return true;
+    },
+    minLength: {
+      value: 8,
+      message: "Telefonnummeret må være 8 tegn langt (uten mellomrom og +47)",
+    },
+    maxLength: {
+      value: 8,
+      message: "Telefonnummeret må være 8 tegn langt (uten mellomrom og +47)",
+    },
+  },
   address: {
     required: "Du må fylle inn adresse",
   },

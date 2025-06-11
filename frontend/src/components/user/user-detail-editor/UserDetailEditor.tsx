@@ -77,6 +77,7 @@ const UserDetailEditor = ({
               register={register}
             />
             <YourInfoSection
+              signUp={isSignUp}
               errors={errors}
               postCity={postalCity}
               updatePostalCity={updatePostalCity}

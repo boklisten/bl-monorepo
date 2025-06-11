@@ -26,6 +26,7 @@ export interface UserEditorFields {
   password: string;
   name: string;
   phoneNumber: string;
+  signUpPhoneNumber: string | undefined; // unused, only for validator
   address: string;
   postalCode: string;
   birthday: Moment | null;

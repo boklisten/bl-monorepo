@@ -273,6 +273,12 @@ function authErrorResponse(code: number): BlapiErrorResponse {
     case 911: {
       blapiErrorResponse.msg =
         "bruker kan ikke endre egen e-post-bekreftet-status";
+      break;
+    }
+    case 912: {
+      blapiErrorResponse.msg =
+        "telefonnummer er allerede registrert på en annnen bruker";
+      break;
     }
   }
 

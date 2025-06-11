@@ -1,4 +1,6 @@
 import { Hook } from "#services/hook/hook";
+import { SEDbQuery } from "#services/query/se.db-query";
+import { BlStorage } from "#services/storage/bl-storage";
 import { BlError } from "#shared/bl-error/bl-error";
 import { AccessToken } from "#shared/token/access-token";
 import { UserDetail } from "#shared/user/user-detail/user-detail";
@@ -51,6 +53,22 @@ export class UserDetailUpdateHook extends Hook {
       throw new BlError(
         "bruker kan ikke endre egen e-post-bekreftet-status",
       ).code(911);
+    }
+
+    const databaseQuery = new SEDbQuery();
+    databaseQuery.stringFilters = [{ fieldName: "phone", value: phone ?? "" }];
+    let existingUsers = [];
+    try {
+      existingUsers = (
+        await BlStorage.UserDetails.getByQuery(databaseQuery)
+      ).filter((user) => user.id !== accessToken.details);
+    } catch {
+      // Not found
+    }
+    if (existingUsers.length > 0) {
+      throw new BlError(
+        "telefonnummer er allerede registrert på en annen bruker",
+      ).code(912);
     }
 
     // In an update call, a value of 'undefined' will remove a key, so the key

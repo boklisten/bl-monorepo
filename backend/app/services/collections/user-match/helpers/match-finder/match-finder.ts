@@ -41,7 +41,7 @@ export class MatchFinder {
 
   private userMatches: CandidateUserMatch[] = [];
   private standMatches: CandidateStandMatch[] = [];
-  private readonly MAX_USER_MATCH_COUNT = 2;
+  private readonly MAX_USER_MATCH_COUNT = 4;
 
   constructor(private readonly _users: MatchableUser[]) {
     this.users = copyUsers(_users);
@@ -167,7 +167,8 @@ export class MatchFinder {
       foundUsers.add(user.id);
 
       if (user.items.intersection(user.wantedItems).size > 0) {
-        throw new BlError("Users cannot want items that they already have");
+        // fixme: we ignore this for now, since we intend to let people have two of the same item
+        //throw new BlError("Users cannot want items that they already have");
       }
     }
   }
@@ -238,10 +239,12 @@ export class MatchFinder {
     }
     if (
       Object.values(userMatchCounts).some(
-        (userMatchCount) => userMatchCount > 2,
+        (userMatchCount) => userMatchCount > this.MAX_USER_MATCH_COUNT,
       )
     ) {
-      throw new BlError("Users cannot have more than two user matches!");
+      throw new BlError(
+        `Users cannot have more than ${this.MAX_USER_MATCH_COUNT} user matches!`,
+      );
     }
 
     const usersWithStandMatch = new Set<string>();

@@ -1,6 +1,7 @@
 import { OrderPatchHook } from "#services/collections/order/hooks/order.patch.hook";
 import { OrderPostHook } from "#services/collections/order/hooks/order.post.hook";
 import { OrderConfirmOperation } from "#services/collections/order/operations/confirm/order-confirm.operation";
+import { GetCustomerOrdersOperation } from "#services/collections/order/operations/get-customer-orders.operation";
 import { OrderAgreementPdfOperation } from "#services/collections/order/operations/order-agreement-pdf.operation";
 import { OrderReceiptPdfOperation } from "#services/collections/order/operations/order-receipt-pdf.operation";
 import { OrderPlaceOperation } from "#services/collections/order/operations/place/order-place.operation";
@@ -98,6 +99,14 @@ export const OrderCollection: BlCollection = {
         {
           name: "agreement",
           operation: new OrderAgreementPdfOperation(),
+          restriction: {
+            permission: "customer",
+            restricted: true,
+          },
+        },
+        {
+          name: "get_customer_orders",
+          operation: new GetCustomerOrdersOperation(),
           restriction: {
             permission: "customer",
             restricted: true,

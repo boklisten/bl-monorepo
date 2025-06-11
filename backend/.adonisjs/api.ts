@@ -639,6 +639,13 @@ const routes = [
     types: {} as unknown,
   },
   {
+    params: ["id"],
+    name: "collection.orders.operation.get_customer_orders.getId",
+    path: "/orders/:id/get_customer_orders",
+    method: ["GET", "HEAD"],
+    types: {} as unknown,
+  },
+  {
     params: [],
     name: "collection.orders.getAll",
     path: "/orders",

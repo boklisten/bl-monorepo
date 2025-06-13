@@ -137,7 +137,7 @@ async function sendReminderEmail(
       to:
         target === "primary" ? customer.email : (customer.guardian.email ?? ""),
       dynamicTemplateData: {
-        name: customer.name.split(" ")[0] ?? "",
+        name: customer.name?.split(" ")?.[0] ?? "",
         items: customer.customerItems.map((customerItem) => ({
           ...customerItem,
           deadline: moment(customerItem.deadline)

@@ -130,23 +130,31 @@ async function sendReminderEmail(
   if (filteredCustomers.length === 0) {
     return { success: true };
   }
-  return await sendMailV2(
-    "info@boklisten.no",
-    emailTemplateId ?? "",
-    filteredCustomers.map((customer) => ({
-      to:
-        target === "primary" ? customer.email : (customer.guardian.email ?? ""),
-      dynamicTemplateData: {
-        name: customer.name?.split(" ")?.[0] ?? "",
-        items: customer.customerItems.map((customerItem) => ({
-          ...customerItem,
-          deadline: moment(customerItem.deadline)
-            .add(1, "day") // fixme: we need to add one day to get the correct date due to a time zone issue
-            .format("DD/MM/YYYY"),
-        })),
-      },
-    })),
+  const personalizations = filteredCustomers.map((customer) => ({
+    to: target === "primary" ? customer.email : (customer.guardian.email ?? ""),
+    dynamicTemplateData: {
+      name: customer.name?.split(" ")?.[0] ?? "",
+      items: customer.customerItems.map((customerItem) => ({
+        ...customerItem,
+        deadline: moment(customerItem.deadline)
+          .add(1, "day") // fixme: we need to add one day to get the correct date due to a time zone issue
+          .format("DD/MM/YYYY"),
+      })),
+    },
+  }));
+
+  // SendGrid allows a maximum of 1000 personalizations per request
+  const batches: (typeof personalizations)[] = [];
+  for (let i = 0; i < personalizations.length; i += 1000) {
+    batches.push(personalizations.slice(i, i + 1000));
+  }
+  const results = await Promise.all(
+    batches.map((batch) =>
+      sendMailV2("info@boklisten.no", emailTemplateId ?? "", batch),
+    ),
   );
+
+  return { success: results.every((r) => r.success) };
 }
 
 export default class RemindersController {

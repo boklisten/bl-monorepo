@@ -167,8 +167,8 @@ export class MatchFinder {
       foundUsers.add(user.id);
 
       if (user.items.intersection(user.wantedItems).size > 0) {
-        // fixme: we ignore this for now, since we intend to let people have two of the same item
-        //throw new BlError("Users cannot want items that they already have");
+        // fixme: we might want to ignore this, since we intend to let people have two of the same item sometimes
+        throw new BlError("Users cannot want items that they already have");
       }
     }
   }

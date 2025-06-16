@@ -1,4 +1,3 @@
-import { MessagePostHook } from "#services/collections/message/hooks/message-post.hook";
 import { SendgridEventOperation } from "#services/collections/message/operations/sendgrid-event.operation";
 import { TwilioSmsEventOperation } from "#services/collections/message/operations/twillio-sms-event.operation";
 import { BlStorage } from "#services/storage/bl-storage";
@@ -9,7 +8,6 @@ export const MessageCollection: BlCollection = {
   endpoints: [
     {
       method: "post",
-      hook: new MessagePostHook(),
       restriction: {
         permission: "admin",
       },

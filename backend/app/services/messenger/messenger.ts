@@ -3,7 +3,6 @@ import { EmailAttachment } from "@boklisten/bl-email";
 import { EmailService } from "#services/messenger/email/email-service";
 import { PdfService } from "#services/messenger/pdf/pdf-service";
 import { BlStorage } from "#services/storage/bl-storage";
-import { CustomerItem } from "#shared/customer-item/customer-item";
 import { Message } from "#shared/message/message";
 import { Order } from "#shared/order/order";
 import { UserDetail } from "#shared/user/user-detail/user-detail";
@@ -21,20 +20,6 @@ async function send(
   customerDetail: UserDetail,
 ): Promise<void> {
   await emailService.send(message, customerDetail);
-}
-
-/**
- * reminds the customer of the due date of his items
- * @param message the message to send
- * @param customerDetail the customer to send reminder to
- * @param customerItems the customerItems to remind of
- */
-async function remind(
-  message: Message,
-  customerDetail: UserDetail,
-  customerItems: CustomerItem[],
-): Promise<void> {
-  await emailService.remind(message, customerDetail, customerItems);
 }
 
 /**
@@ -117,7 +102,6 @@ async function passwordReset(
 
 const Messenger = {
   send,
-  remind,
   orderPlaced,
   getOrderReceiptPdf,
   getOrderAgreementPdf,

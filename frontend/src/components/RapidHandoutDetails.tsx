@@ -1,3 +1,4 @@
+import { StandMatch } from "@boklisten/backend/shared/match/stand-match";
 import { Order } from "@boklisten/backend/shared/order/order";
 import { OrderItem } from "@boklisten/backend/shared/order/order-item/order-item";
 import { UserDetail } from "@boklisten/backend/shared/user/user-detail/user-detail";
@@ -49,6 +50,7 @@ export default function RapidHandoutDetails({
     staleTime: 5000,
   });
   const [itemStatuses, setItemStatuses] = useState<ItemStatus[]>([]);
+  const [standItemIds, setStandItemIds] = useState<string[]>([]);
   const [scanModalOpen, setScanModalOpen] = useState(false);
   useState(false);
 
@@ -63,6 +65,19 @@ export default function RapidHandoutDetails({
     )
       .then((originalOrders) => {
         return setItemStatuses(mapOrdersToItemStatuses(originalOrders));
+      })
+      .catch((error) => {
+        console.error("Failed to fetch original orders, error:", error);
+      });
+    BlFetcher.get<[StandMatch]>(
+      client.$url("collection.stand_matches.getAll", {
+        query: {
+          customer: customer.id,
+        },
+      }),
+    )
+      .then(([standMatch]) => {
+        setStandItemIds(standMatch.expectedPickupItems);
       })
       .catch((error) => {
         console.error("Failed to fetch original orders, error:", error);
@@ -108,7 +123,12 @@ export default function RapidHandoutDetails({
       >
         Scan bøker
       </Button>
-      <MatchItemTable itemStatuses={itemStatuses} isSender={true} />
+      <MatchItemTable
+        itemStatuses={itemStatuses}
+        standItemIds={standItemIds}
+        isRapidHandout={true}
+        isSender={true}
+      />
       <ScannerModal
         onScan={(blid) =>
           BlFetcher.post(

@@ -16,10 +16,14 @@ import { ItemStatus } from "@/components/matches/matches-helper";
 const MatchItemTable = ({
   itemFilter = null,
   itemStatuses,
+  isRapidHandout = false,
+  standItemIds = [],
   isSender,
 }: {
   itemFilter?: string[] | null;
   itemStatuses: ItemStatus[];
+  standItemIds?: string[];
+  isRapidHandout?: boolean;
   isSender: boolean;
 }) => {
   return (
@@ -34,10 +38,31 @@ const MatchItemTable = ({
         <TableBody>
           {itemStatuses
             .filter((is) => itemFilter === null || itemFilter.includes(is.id))
-            .sort((a, b) => Number(a.fulfilled) - Number(b.fulfilled))
+            .sort((a, b) => {
+              const aIsStand = standItemIds.includes(a.id);
+              const bIsStand = standItemIds.includes(b.id);
+              if (isRapidHandout && aIsStand !== bIsStand) {
+                return bIsStand ? 1 : -1;
+              }
+              return Number(a.fulfilled) - Number(b.fulfilled);
+            })
             .map((item) => (
-              <TableRow key={item.id}>
-                <TableCell>{item.title}</TableCell>
+              <TableRow
+                key={item.id}
+                sx={{
+                  opacity:
+                    isRapidHandout && !standItemIds?.includes(item.id)
+                      ? 0.4
+                      : 1,
+                }}
+              >
+                <TableCell>
+                  {item.title}{" "}
+                  {isRapidHandout &&
+                    (standItemIds?.includes(item.id)
+                      ? "(hentes på stand)"
+                      : "(mottas fra elev)")}
+                </TableCell>
                 <Tooltip
                   title={
                     (item.fulfilled

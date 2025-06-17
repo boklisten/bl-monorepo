@@ -1,5 +1,17 @@
 import { StandMatchWithDetails } from "@boklisten/backend/shared/match/match-dtos";
-import { Alert, Typography } from "@mui/material";
+import { QrCode } from "@mui/icons-material";
+import {
+  Alert,
+  AlertTitle,
+  Button,
+  Dialog,
+  DialogContent,
+  Stack,
+  Typography,
+} from "@mui/material";
+import moment from "moment";
+import { useEffect, useState } from "react";
+import QRCode from "react-qr-code";
 
 import {
   calculateFulfilledStandMatchItems,
@@ -12,11 +24,34 @@ import ProgressBar from "@/components/matches/matchesList/ProgressBar";
 import MatchItemTable from "@/components/matches/MatchItemTable";
 import MeetingInfo from "@/components/matches/MeetingInfo";
 
+export function useMeetingStatus(meetingTime?: string | Date) {
+  const [isTooEarly, setIsTooEarly] = useState(() =>
+    moment().isBefore(moment(meetingTime)),
+  );
+
+  useEffect(() => {
+    if (!meetingTime) return;
+
+    const checkStatus = () => {
+      setIsTooEarly(moment().isBefore(moment(meetingTime)));
+    };
+
+    checkStatus();
+    const interval = setInterval(checkStatus, 10_000);
+
+    return () => clearInterval(interval);
+  }, [meetingTime]);
+
+  return isTooEarly;
+}
+
 const StandMatchDetail = ({
   standMatch,
 }: {
   standMatch: StandMatchWithDetails;
 }) => {
+  const [customerIdDialogOpen, setCustomerIdDialogOpen] = useState(false);
+  const tooEarly = useMeetingStatus(standMatch.meetingInfo.date);
   const { fulfilledHandoffItems, fulfilledPickupItems } =
     calculateFulfilledStandMatchItems(standMatch);
   const isFulfilled =
@@ -85,6 +120,39 @@ const StandMatchDetail = ({
           }
         />
       )}
+
+      <Stack
+        alignItems={"center"}
+        sx={{ width: "100%", textTransform: "none" }}
+      >
+        <Button
+          variant={"contained"}
+          startIcon={<QrCode />}
+          onClick={() => setCustomerIdDialogOpen(true)}
+        >
+          Vis kunde-ID
+        </Button>
+      </Stack>
+      <Dialog
+        open={customerIdDialogOpen}
+        onClose={() => setCustomerIdDialogOpen(false)}
+      >
+        <DialogContent>
+          <Stack sx={{ alignItems: "center", gap: 1 }}>
+            <QRCode value={standMatch.customer} />
+            <Typography variant={"h1"} fontWeight={"bolder"}>
+              Oppmøte {moment(standMatch.meetingInfo?.date).format("HH:mm")}
+            </Typography>
+            {tooEarly && (
+              <Alert severity={"info"}>
+                <AlertTitle>For tidlig ute</AlertTitle>
+                Din oppmøtetid har ikke kommet enda. Vent med å stille deg i kø
+                til tidspunktet du har fått tildelt.
+              </Alert>
+            )}
+          </Stack>
+        </DialogContent>
+      </Dialog>
 
       {hasHandoffItems && (
         <>

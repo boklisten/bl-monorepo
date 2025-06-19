@@ -20,7 +20,7 @@ import GoogleButton from "@/components/user/GoogleButton";
 import { assertBlApiError } from "@/utils/types";
 
 interface SignInFields {
-  email: string;
+  username: string;
   password: string;
 }
 
@@ -37,7 +37,7 @@ export default function SignIn() {
   const onSubmit: SubmitHandler<SignInFields> = async (data) => {
     setApiError("");
     try {
-      await login(data.email, data.password);
+      await login(data.username, data.password);
     } catch (error) {
       if (assertBlApiError(error)) {
         if (error.code === 908) {
@@ -81,9 +81,7 @@ export default function SignIn() {
         <FacebookButton label={"Logg inn med Facebook"} />
         <GoogleButton label={"Logg inn med Google"} />
 
-        <Divider sx={{ width: "100%", my: 3 }}>
-          Eller, logg inn med e-post
-        </Divider>
+        <Divider sx={{ width: "100%", my: 3 }}>eller</Divider>
         <Box
           component="form"
           onSubmit={handleSubmit(onSubmit)}
@@ -102,30 +100,24 @@ export default function SignIn() {
             <Alert
               key={type}
               severity="error"
-              sx={{ mt: 1 }}
+              sx={{ mt: 1, mb: 2 }}
               data-testid="error-message"
             >
               {message.message}
             </Alert>
           ))}
           <TextField
-            data-testid="email-field"
             required
             fullWidth
-            id="email"
-            label="E-post"
-            autoComplete="email"
-            {...register("email", {
+            id="username"
+            label="E-post eller telefonnummer"
+            autoComplete="username"
+            {...register("username", {
               validate: (v) =>
-                !v || validator.isEmail(v)
+                !v || validator.isEmail(v) || validator.isMobilePhone(v)
                   ? true
-                  : "Du må fylle inn en gyldig e-post",
+                  : "Du må fylle inn gyldig e-post eller telefonnummer",
             })}
-            slotProps={{
-              htmlInput: {
-                inputMode: "email",
-              },
-            }}
           />
           <PasswordField
             autoComplete="current-password"

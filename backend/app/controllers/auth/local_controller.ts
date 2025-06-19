@@ -1,20 +1,38 @@
-// import type { HttpContext } from '@adonisjs/core/http'
-
 import { HttpContext } from "@adonisjs/core/http";
 import passport from "passport";
 import { Strategy } from "passport-local";
+import validator from "validator";
 
 import LocalLoginValidator from "#services/auth/local/local-login.validator";
 import TokenHandler from "#services/auth/token/token.handler";
+import { SEDbQuery } from "#services/query/se.db-query";
 import BlResponseHandler from "#services/response/bl-response.handler";
+import { BlStorage } from "#services/storage/bl-storage";
 import { BlError } from "#shared/bl-error/bl-error";
 import { BlapiResponse } from "#shared/blapi-response/blapi-response";
+
+async function normalizeUsername(username: string) {
+  const trimmed = username.toLowerCase().replace(" ", "");
+  if (!validator.isMobilePhone(trimmed)) {
+    return trimmed;
+  }
+  const databaseQuery = new SEDbQuery();
+  databaseQuery.stringFilters = [
+    { fieldName: "phone", value: trimmed.slice(-8) },
+  ];
+  try {
+    const [details] = await BlStorage.UserDetails.getByQuery(databaseQuery);
+    return details?.email ?? "";
+  } catch {
+    return "unknwon@example.org";
+  }
+}
 
 export default class LocalController {
   constructor() {
     passport.use(
-      new Strategy({ session: false }, (username, password, done) => {
-        const normalizedUsername = username.toLowerCase().replace(" ", "");
+      new Strategy({ session: false }, async (username, password, done) => {
+        const normalizedUsername = await normalizeUsername(username);
         LocalLoginValidator.validate(normalizedUsername, password).then(
           () => {
             TokenHandler.createTokens(normalizedUsername).then(

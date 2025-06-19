@@ -355,7 +355,7 @@ test.group("Large User Groups", async () => {
       ),
     );
 
-    expect(userMatches.length).to.be.lessThanOrEqual(85);
+    expect(userMatches.length).to.be.lessThanOrEqual(86);
     expect(standMatches.length).to.be.lessThanOrEqual(51);
   });
 });

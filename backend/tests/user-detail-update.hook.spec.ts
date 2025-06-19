@@ -1,11 +1,13 @@
 import { test } from "@japa/runner";
 import { assert, use as chaiUse, should } from "chai";
 import chaiAsPromised from "chai-as-promised";
+import { createSandbox } from "sinon";
 
 import {
   UserDetailUpdateHook,
   UserDetailPatch,
 } from "#services/collections/user-detail/hooks/user-detail-update.hook";
+import { BlStorage } from "#services/storage/bl-storage";
 import { AccessToken } from "#shared/token/access-token";
 
 chaiUse(chaiAsPromised);
@@ -14,8 +16,19 @@ should();
 const customerAccessToken = { permission: "customer" } as AccessToken;
 const adminAccessToken = { permission: "admin" } as AccessToken;
 
-test.group("UserDetailUpdateHook", async () => {
+test.group("UserDetailUpdateHook", async (group) => {
   const userDetailUpdateHook = new UserDetailUpdateHook();
+
+  let sandbox: sinon.SinonSandbox;
+  group.each.setup(() => {
+    sandbox = createSandbox();
+    sandbox.stub(BlStorage.UserDetails, "getByQuery").callsFake(() => {
+      return Promise.resolve([]);
+    });
+  });
+  group.each.teardown(() => {
+    sandbox.restore();
+  });
 
   test("should do proper capitalization with latin letters", async () => {
     const body: UserDetailPatch = {

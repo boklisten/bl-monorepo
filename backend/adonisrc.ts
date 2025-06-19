@@ -16,6 +16,7 @@ export default defineConfig({
     () => import("@adonisjs/cors/cors_provider"),
     () => import("@adonisjs/ally/ally_provider"),
     () => import("@tuyau/core/tuyau_provider"),
+    () => import("@adonisjs/static/static_provider"),
   ],
 
   preloads: [
@@ -37,4 +38,10 @@ export default defineConfig({
     ],
     forceExit: false,
   },
+  metaFiles: [
+    {
+      pattern: "public/**",
+      reloadServer: false,
+    },
+  ],
 });

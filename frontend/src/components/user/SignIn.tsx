@@ -1,10 +1,9 @@
 "use client";
-import { Alert, Typography } from "@mui/material";
+import { Alert, Stack, Typography } from "@mui/material";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Container from "@mui/material/Container";
 import Divider from "@mui/material/Divider";
-import Grid from "@mui/material/Grid";
 import TextField from "@mui/material/TextField";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -137,16 +136,12 @@ export default function SignIn() {
           >
             Logg inn
           </Button>
-          <Grid container>
-            <Grid>
-              <DynamicLink href={"/auth/forgot"}>Glemt passord?</DynamicLink>
-            </Grid>
-            <Grid>
-              <DynamicLink href={"/auth/register"}>
-                Har du ikke konto? Registrer deg
-              </DynamicLink>
-            </Grid>
-          </Grid>
+          <Stack justifyContent={"space-between"} direction={"row"}>
+            <DynamicLink href={"/auth/forgot"}>Glemt passord?</DynamicLink>
+            <DynamicLink href={"/auth/register"}>
+              Har du ikke konto? Registrer deg
+            </DynamicLink>
+          </Stack>
         </Box>
       </Box>
     </Container>

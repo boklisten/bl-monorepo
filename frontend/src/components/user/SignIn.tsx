@@ -90,7 +90,11 @@ export default function SignIn() {
           sx={{ width: "100%" }}
         >
           {apiError && (
-            <Alert severity="error" data-testid="api-error" sx={{ mt: 1 }}>
+            <Alert
+              severity="error"
+              data-testid="api-error"
+              sx={{ mt: 1, mb: 2 }}
+            >
               {apiError}
             </Alert>
           )}

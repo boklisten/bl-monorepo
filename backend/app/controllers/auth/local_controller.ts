@@ -55,7 +55,7 @@ export default class LocalController {
   }
 
   async login(ctx: HttpContext) {
-    return new Promise((resolve, reject) => {
+    return new Promise((resolve) => {
       passport.authenticate(
         "local",
         (
@@ -73,7 +73,7 @@ export default class LocalController {
           }
 
           if (!jwTokens) {
-            reject(BlResponseHandler.createErrorResponse(ctx, blError));
+            resolve(BlResponseHandler.createErrorResponse(ctx, blError));
           }
 
           resolve(

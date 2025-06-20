@@ -86,7 +86,10 @@ export default function UploadClassMemberships({
     ) => {
       setLoading(true);
       return await client.v2.branches.memberships
-        .$post({ membershipData, branchId })
+        .$post({
+          membershipData: membershipData as { branch: string; phone: string }[],
+          branchId,
+        })
         .unwrap();
     },
     onSettled: () => setLoading(false),

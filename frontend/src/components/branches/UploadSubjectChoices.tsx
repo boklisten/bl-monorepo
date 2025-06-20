@@ -91,7 +91,7 @@ export default function UploadSubjectChoices({
       return await client.v2.branches.subject_choices
         .$post({
           subjectChoices: subjectChoices.map((subjectChoice) => ({
-            phone: subjectChoice.phone,
+            phone: subjectChoice.phone as string,
             subjects: [subjectChoice.subjects].flat(),
           })),
           branchId,

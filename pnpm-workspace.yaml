@@ -5,5 +5,4 @@ onlyBuiltDependencies:
   - '@sentry-internal/node-cpu-profiler'
   - '@sentry/cli'
   - '@swc/core'
-  - cypress
   - sharp

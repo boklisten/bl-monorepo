@@ -37,10 +37,6 @@ Session.vim
 # Platform-specific
 *.pem
 
-# Cypress assets
-cypress/videos/
-cypress/screenshots/
-
 # Sentry
 .sentryclirc
 .env.sentry-build-plugin

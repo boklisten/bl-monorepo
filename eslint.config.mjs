@@ -4,7 +4,6 @@ import nextPlugin from "@next/eslint-plugin-next";
 import pluginQuery from "@tanstack/eslint-plugin-query";
 import eslintConfigPrettier from "eslint-config-prettier";
 import pluginChaiFriendly from "eslint-plugin-chai-friendly";
-import pluginCypress from "eslint-plugin-cypress/flat";
 import importPlugin from "eslint-plugin-import";
 import jsxA11y from "eslint-plugin-jsx-a11y";
 import noRelativeImportPathsPlugin from "eslint-plugin-no-relative-import-paths";
@@ -19,8 +18,6 @@ export default tseslint.config(
   tseslint.configs.stylistic,
   reactPlugin.configs.flat.recommended,
   reactPlugin.configs.flat["jsx-runtime"],
-  pluginCypress.configs.recommended,
-  pluginCypress.configs.globals,
   jsxA11y.flatConfigs.recommended,
   importPlugin.flatConfigs.typescript,
   ...pluginQuery.configs["flat/recommended"],

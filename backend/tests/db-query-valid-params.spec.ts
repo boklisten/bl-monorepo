@@ -1,22 +1,19 @@
 import { test } from "@japa/runner";
-import { expect, use as chaiUse, should } from "chai";
-import chaiAsPromised from "chai-as-promised";
 
 import {
   DbQueryValidParams,
   ValidParameter,
 } from "#services/query/db-query-valid-params";
 
-chaiUse(chaiAsPromised);
-should();
-
 test.group("DbQueryValidParams", async () => {
-  test("should return empty array if no valid NumberParams is set", async () => {
+  test("should return empty array if no valid NumberParams is set", async ({
+    assert,
+  }) => {
     const dbQueryValidParams: DbQueryValidParams = new DbQueryValidParams([]);
-    expect(dbQueryValidParams.getValidNumberParams()).to.eql([]);
+    assert.deepEqual(dbQueryValidParams.getValidNumberParams(), []);
   });
 
-  test('should return array like ["name", "desc"] ', async () => {
+  test('should return array like ["name", "desc"] ', async ({ assert }) => {
     const validParams: ValidParameter[] = [];
     validParams.push({ fieldName: "age", type: "number" });
     validParams.push({ fieldName: "price", type: "number" });
@@ -25,20 +22,24 @@ test.group("DbQueryValidParams", async () => {
     );
     const result = ["age", "price"];
 
-    expect(dbQueryValidParams.getValidNumberParams()).to.eql(result);
+    assert.deepEqual(dbQueryValidParams.getValidNumberParams(), result);
   });
 
-  test("should return empty array if none of the validParams are of type number", async () => {
+  test("should return empty array if none of the validParams are of type number", async ({
+    assert,
+  }) => {
     const validParams: ValidParameter[] = [
       { fieldName: "name", type: "string" },
     ];
     const dbQueryValidParams: DbQueryValidParams = new DbQueryValidParams(
       validParams,
     );
-    expect(dbQueryValidParams.getValidNumberParams()).to.eql([]);
+    assert.deepEqual(dbQueryValidParams.getValidNumberParams(), []);
   });
 
-  test("should return string array with names of all validParams with type string", async () => {
+  test("should return string array with names of all validParams with type string", async ({
+    assert,
+  }) => {
     const validParams: ValidParameter[] = [
       { fieldName: "name", type: "string" },
       { fieldName: "desc", type: "string" },
@@ -48,10 +49,12 @@ test.group("DbQueryValidParams", async () => {
     );
     const result = ["name", "desc"];
 
-    expect(dbQuertyValidParams.getValidStringParams()).to.eql(result);
+    assert.deepEqual(dbQuertyValidParams.getValidStringParams(), result);
   });
 
-  test('should return empty array if no validParams with type "string" is given', async () => {
+  test('should return empty array if no validParams with type "string" is given', async ({
+    assert,
+  }) => {
     const validParams: ValidParameter[] = [
       { fieldName: "age", type: "number" },
     ];
@@ -60,6 +63,6 @@ test.group("DbQueryValidParams", async () => {
       validParams,
     );
 
-    expect(dbQueryValidParams.getValidStringParams()).to.eql([]);
+    assert.deepEqual(dbQueryValidParams.getValidStringParams(), []);
   });
 });

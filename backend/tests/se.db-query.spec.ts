@@ -1,16 +1,13 @@
 import { test } from "@japa/runner";
-import { expect, use as chaiUse, should } from "chai";
-import chaiAsPromised from "chai-as-promised";
 
 import { SEDbQuery } from "#services/query/se.db-query";
-
-chaiUse(chaiAsPromised);
-should();
 
 test.group("SEDbQuery", async () => {
   const dbQuery: SEDbQuery = new SEDbQuery();
 
-  test("should return a object containing all number, boolean, string and regex filters", async () => {
+  test("should return a object containing all number, boolean, string and regex filters", async ({
+    assert,
+  }) => {
     dbQuery.booleanFilters = [
       { fieldName: "isHungry", value: true },
       { fieldName: "haveCar", value: false },
@@ -33,10 +30,12 @@ test.group("SEDbQuery", async () => {
       ],
     };
 
-    expect(dbQuery.getFilter()).to.eql(result);
+    assert.deepEqual(dbQuery.getFilter(), result);
   });
 
-  test("should return correct ogFilterObj based on ogFilter array", async () => {
+  test("should return correct ogFilterObj based on ogFilter array", async ({
+    assert,
+  }) => {
     const dbQuery: SEDbQuery = new SEDbQuery();
 
     dbQuery.onlyGetFilters = [
@@ -49,10 +48,12 @@ test.group("SEDbQuery", async () => {
       age: 1,
     };
 
-    expect(dbQuery.getOgFilter()).to.eql(result);
+    assert.deepEqual(dbQuery.getOgFilter(), result);
   });
 
-  test("should return correct sortFilter object based on sortFilter array", async () => {
+  test("should return correct sortFilter object based on sortFilter array", async ({
+    assert,
+  }) => {
     const dbQuery: SEDbQuery = new SEDbQuery();
 
     dbQuery.sortFilters = [
@@ -62,6 +63,6 @@ test.group("SEDbQuery", async () => {
 
     const result = { age: 1, name: -1 };
 
-    expect(dbQuery.getSortFilter()).to.eql(result);
+    assert.deepEqual(dbQuery.getSortFilter(), result);
   });
 });

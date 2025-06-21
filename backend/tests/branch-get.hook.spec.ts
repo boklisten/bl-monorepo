@@ -1,19 +1,14 @@
 import { test } from "@japa/runner";
-import { expect, use as chaiUse, should } from "chai";
-import chaiAsPromised from "chai-as-promised";
-import sinonChai from "sinon-chai";
 
 import { BranchGetHook } from "#services/collections/branch/hook/branch-get.hook";
 import { AccessToken } from "#shared/token/access-token";
 
-chaiUse(chaiAsPromised);
-should();
-chaiUse(sinonChai);
-
 const branchGetHook = new BranchGetHook();
 
 test.group("BranchGetHook.after", async () => {
-  test("should return empty branchItems array if both online and atBranch in 'isBranchItemsLive' is false", async () => {
+  test("should return empty branchItems array if both online and atBranch in 'isBranchItemsLive' is false", async ({
+    assert,
+  }) => {
     const branch = {
       id: "branch1",
       name: "some branch",
@@ -36,12 +31,14 @@ test.group("BranchGetHook.after", async () => {
       },
     };
 
-    return expect(
-      branchGetHook.after([branch], {} as AccessToken),
-    ).to.eventually.be.eql([expectedResult]);
+    assert.deepEqual(await branchGetHook.after([branch], {} as AccessToken), [
+      expectedResult,
+    ]);
   });
 
-  test("should return branchItems array if both 'online' and 'atBranch' is true on 'isBranchItemsLive'", async () => {
+  test("should return branchItems array if both 'online' and 'atBranch' is true on 'isBranchItemsLive'", async ({
+    assert,
+  }) => {
     const branch = {
       id: "branch1",
       name: "some branch",
@@ -64,12 +61,14 @@ test.group("BranchGetHook.after", async () => {
       },
     };
 
-    return expect(
-      branchGetHook.after([branch], {} as AccessToken),
-    ).to.eventually.be.eql([expectedResult]);
+    assert.deepEqual(await branchGetHook.after([branch], {} as AccessToken), [
+      expectedResult,
+    ]);
   });
 
-  test("should not return branchItems array if 'online' is false on 'isBranchItemsLive' and 'accessToken.permission' is customer or lower", async () => {
+  test("should not return branchItems array if 'online' is false on 'isBranchItemsLive' and 'accessToken.permission' is customer or lower", async ({
+    assert,
+  }) => {
     const branch = {
       id: "branch1",
       name: "some branch",
@@ -96,12 +95,15 @@ test.group("BranchGetHook.after", async () => {
       },
     };
 
-    return expect(
-      branchGetHook.after([branch], accessToken as AccessToken),
-    ).to.eventually.be.eql([expectedResult]);
+    assert.deepEqual(
+      await branchGetHook.after([branch], accessToken as AccessToken),
+      [expectedResult],
+    );
   });
 
-  test("should return branchItems array if 'online' and 'atBranch' is false on 'isBranchItemsLive' and 'accessToken.permission' is admin or above", async () => {
+  test("should return branchItems array if 'online' and 'atBranch' is false on 'isBranchItemsLive' and 'accessToken.permission' is admin or above", async ({
+    assert,
+  }) => {
     const branch = {
       id: "branch1",
       name: "some branch",
@@ -128,8 +130,9 @@ test.group("BranchGetHook.after", async () => {
       },
     };
 
-    return expect(
-      branchGetHook.after([branch], accessToken as AccessToken),
-    ).to.eventually.be.eql([expectedResult]);
+    assert.deepEqual(
+      await branchGetHook.after([branch], accessToken as AccessToken),
+      [expectedResult],
+    );
   });
 });

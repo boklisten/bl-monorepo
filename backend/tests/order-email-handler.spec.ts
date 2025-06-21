@@ -271,7 +271,7 @@ test.group("OrderEmailHandler", () => {
     const sendOrderReceiptArguments = sendOrderReceiptStub.lastCall.args;
     const emailOrder = sendOrderReceiptArguments[1];
 
-    expect(emailOrder.itemAmount).to.be.eq(expectedAmount);
+    assert.equal(emailOrder.itemAmount, expectedAmount);
   });
 
   test("should have showPrice set to true when order.amount is not 0", async () => {
@@ -282,7 +282,7 @@ test.group("OrderEmailHandler", () => {
     const sendOrderReceiptArguments = sendOrderReceiptStub.lastCall.args;
     const emailOrder = sendOrderReceiptArguments[1];
 
-    expect(emailOrder.showPrice).to.be.eq(true);
+    assert.equal(emailOrder.showPrice, true);
   });
 
   test("should have showDeadline set to false if none of the items has type rent or extend", async () => {
@@ -452,7 +452,7 @@ test.group("OrderEmailHandler", () => {
       testOrder.orderItems[0].title,
     );
 
-    expect(emailOrder.items[0].status).to.be.eq("returnert");
+    assert.equal(emailOrder.items[0].status, "returnert");
 
     expect(emailOrder.items[0].price).to.be.null;
 
@@ -473,7 +473,7 @@ test.group("OrderEmailHandler", () => {
 
     expect(emailOrder.delivery).to.be.null;
     expect(emailOrder.showDelivery).to.be.false;
-    expect(emailOrder.totalAmount).to.be.eq(expectedAmount);
+    assert.equal(emailOrder.totalAmount, expectedAmount);
   });
 
   test('should have a delivery object when order.delivery is present and have method "bring"', async () => {
@@ -519,7 +519,7 @@ test.group("OrderEmailHandler", () => {
     });
 
     expect(emailOrder.showDelivery).to.be.true;
-    expect(emailOrder.totalAmount).to.be.eq(expectedAmount);
+    assert.equal(emailOrder.totalAmount, expectedAmount);
   });
 
   test('should not have a delivery object if delivery.method is not "bring"', async () => {
@@ -543,7 +543,7 @@ test.group("OrderEmailHandler", () => {
     const emailOrder = sendOrderReceiptArguments[1]; //second arg is the emailOrder
 
     expect(emailOrder.showPayment).to.be.true;
-    expect(emailOrder.payment.total).to.be.eq(expectedTotal);
+    assert.equal(emailOrder.payment.total, expectedTotal);
     expect(emailOrder.payment.currency).to.be.eq(
       // @ts-expect-error fixme: auto ignored
       testPayment.info["orderDetails"].currency,
@@ -565,7 +565,7 @@ test.group("OrderEmailHandler", () => {
       // @ts-expect-error fixme: auto ignored
       testPayment.info["paymentId"],
     );
-    expect(emailOrder.payment.payments[0].status).to.be.eq("bekreftet");
+    assert.equal(emailOrder.payment.payments[0].status, "bekreftet");
     expect(emailOrder.payment.payments[0].creationTime).to.be.eq(
       DateService.format(
         // @ts-expect-error fixme: auto ignored
@@ -616,8 +616,8 @@ test.group("OrderEmailHandler", () => {
     const sendOrderReceiptArguments = sendOrderReceiptStub.lastCall.args;
     const emailOrder = sendOrderReceiptArguments[1]; //second arg is the emailOrder
 
-    expect(emailOrder.payment.total).to.be.eq(testOrder.amount);
-    expect(emailOrder.payment.currency).to.be.eq("NOK");
+    assert.equal(emailOrder.payment.total, testOrder.amount);
+    assert.equal(emailOrder.payment.currency, "NOK");
     expect(emailOrder.payment.taxAmount).to.be.eq(
       // @ts-expect-error fixme: auto ignored
       payments[0].taxAmount + payments[1].taxAmount,
@@ -638,7 +638,7 @@ test.group("OrderEmailHandler", () => {
       // @ts-expect-error fixme: auto ignored
       payments[0].id,
     );
-    expect(emailOrder.payment.payments[0].status).to.be.eq("bekreftet");
+    assert.equal(emailOrder.payment.payments[0].status, "bekreftet");
     expect(emailOrder.payment.payments[0].creationTime).to.be.eq(
       DateService.format(
         // @ts-expect-error fixme: auto ignored
@@ -663,7 +663,7 @@ test.group("OrderEmailHandler", () => {
       // @ts-expect-error fixme: auto ignored
       payments[1].id,
     );
-    expect(emailOrder.payment.payments[1].status).to.be.eq("bekreftet");
+    assert.equal(emailOrder.payment.payments[1].status, "bekreftet");
     expect(emailOrder.payment.payments[1].creationTime).to.be.eq(
       DateService.format(
         // @ts-expect-error fixme: auto ignored

@@ -210,7 +210,9 @@ test.group("UserHandler", (group) => {
     );
   });
 
-  test('should reject if username already exists and provider is "local"', async () => {
+  test('should reject if username already exists and provider is "local"', async ({
+    assert,
+  }) => {
     testUsername = "James@bond.com";
     const dbQuery = new SEDbQuery();
     dbQuery.stringFilters = [{ fieldName: "username", value: testUsername }];
@@ -223,7 +225,7 @@ test.group("UserHandler", (group) => {
           `username "${testUsername}" already exists, but trying to create new user with provider "local"`,
         );
 
-        return expect(blError.getCode()).to.be.eq(903);
+        return assert.equal(blError.getCode(), 903);
       },
     );
   });

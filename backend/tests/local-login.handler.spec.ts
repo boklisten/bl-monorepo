@@ -148,9 +148,11 @@ test.group("LocalLoginHandler", (group) => {
     LocalLoginHandler.get(testUsername).should.be.rejectedWith(BlError);
   });
 
-  test("should reject with blError.code 702 when username is not found in db", async () => {
+  test("should reject with blError.code 702 when username is not found in db", async ({
+    assert,
+  }) => {
     LocalLoginHandler.get("notFound@mail.com").catch((blError: BlError) => {
-      return expect(blError.getCode()).to.eql(702);
+      return assert.equal(blError.getCode(), 702);
     });
   });
 

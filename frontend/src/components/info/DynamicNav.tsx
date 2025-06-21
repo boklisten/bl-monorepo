@@ -33,7 +33,6 @@ function MobileTabSelect({
       <InputLabel>Velg side</InputLabel>
       <Select
         label={"Velg side"}
-        data-testid="select-info-page"
         value={tabs[activeTabIndex]?.href ?? ""}
         onChange={(event) => {
           router.push(event.target.value);
@@ -52,7 +51,7 @@ function MobileTabSelect({
 function LinkTab({ label, href }: LinkTabProps) {
   return (
     <DynamicLink href={href} style={{ color: "inherit" }}>
-      <Tab data-testid="link-tab" label={label} />
+      <Tab label={label} />
     </DynamicLink>
   );
 }

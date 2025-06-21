@@ -31,7 +31,7 @@ const OpeningHourRow = ({ openingHour }: { openingHour: OpeningHour }) => {
   const capitalize = (s: string) =>
     s.length > 0 && s[0]?.toUpperCase() + s.slice(1);
   return (
-    <TableRow key={openingHour.id} data-testid="openingHourRow">
+    <TableRow key={openingHour.id}>
       <TableCell component="th" scope="row">
         {capitalize(weekday)} {date}
       </TableCell>
@@ -57,7 +57,7 @@ export default function BranchOpeningHours({
   if (processedOpeningHours.length === 0) {
     return (
       <>
-        <Alert severity="info" data-testid="noHours" sx={{ my: 4 }}>
+        <Alert severity="info" sx={{ my: 4 }}>
           Sesongen er over – eller åpningstidene er ikke klare enda. Du kan
           bestille bøker i Posten, eller kontakte oss for spørsmål.
         </Alert>

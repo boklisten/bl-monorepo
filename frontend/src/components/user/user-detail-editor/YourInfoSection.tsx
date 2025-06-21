@@ -54,7 +54,6 @@ const YourInfoSection = ({
       </Grid>
       <Grid size={{ xs: 12 }}>
         <TextField
-          data-testid="name-field"
           required
           autoComplete="name"
           fullWidth
@@ -79,7 +78,6 @@ const YourInfoSection = ({
       </Grid>
       <Grid size={{ xs: 12 }}>
         <TextField
-          data-testid="address-field"
           required
           fullWidth
           id="address"

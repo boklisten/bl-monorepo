@@ -88,21 +88,12 @@ export default function SignIn() {
           sx={{ width: "100%" }}
         >
           {apiError && (
-            <Alert
-              severity="error"
-              data-testid="api-error"
-              sx={{ mt: 1, mb: 2 }}
-            >
+            <Alert severity="error" sx={{ mt: 1, mb: 2 }}>
               {apiError}
             </Alert>
           )}
           {Object.entries(errors).map(([type, message]) => (
-            <Alert
-              key={type}
-              severity="error"
-              sx={{ mt: 1, mb: 2 }}
-              data-testid="error-message"
-            >
+            <Alert key={type} severity="error" sx={{ mt: 1, mb: 2 }}>
               {message.message}
             </Alert>
           ))}
@@ -124,7 +115,6 @@ export default function SignIn() {
             {...register("password")}
           />
           <Button
-            data-testid="login-submit"
             type="submit"
             fullWidth
             variant="contained"

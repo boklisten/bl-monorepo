@@ -5,7 +5,6 @@ import { forwardRef, Ref } from "react";
 const PhoneNumberField = forwardRef(
   (props: TextFieldProps, ref: Ref<HTMLInputElement>) => (
     <TextField
-      data-testid="phone-field"
       required
       fullWidth
       label="Telefonnummer"

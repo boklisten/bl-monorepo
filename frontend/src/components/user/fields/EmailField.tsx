@@ -5,7 +5,6 @@ import { forwardRef, Ref } from "react";
 const EmailField = forwardRef(
   (props: Omit<TextFieldProps, "ref">, ref: Ref<HTMLInputElement>) => (
     <TextField
-      data-testid="email-field"
       label="E-post"
       required
       fullWidth

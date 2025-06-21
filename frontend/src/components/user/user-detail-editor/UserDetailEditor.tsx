@@ -93,7 +93,6 @@ const UserDetailEditor = ({
                 <FormControlLabel
                   control={
                     <Checkbox
-                      data-testid="tos-field"
                       sx={{
                         color: errors.agreeToTermsAndConditions
                           ? "red"
@@ -123,7 +122,6 @@ const UserDetailEditor = ({
           )}
           <Button
             loading={isSubmitting}
-            data-testid="submit-button"
             type="submit"
             fullWidth
             variant="contained"

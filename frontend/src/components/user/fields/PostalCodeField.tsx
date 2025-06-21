@@ -24,7 +24,6 @@ const PostalCodeField = forwardRef(
   ) => {
     return (
       <TextField
-        data-testid="postal-code-field"
         required
         fullWidth
         id="postalCode"

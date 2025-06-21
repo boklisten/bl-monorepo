@@ -50,25 +50,19 @@ const BranchSelect = ({ isNav }: { isNav?: boolean }) => {
     <Box sx={{ minWidth: 120 }}>
       <FormControl fullWidth>
         <InputLabel
-          data-testid="branchSelectLabel"
           id="demo-simple-select-label"
           sx={{ color: isNav ? "white" : "inherit" }}
         >
           {selectedBranchId ? "Valgt skole" : "Velg skole"}
         </InputLabel>
         <Select
-          data-testid="branchSelect"
           sx={{ color: isNav ? "white" : "inherit" }}
           value={selectedBranchId ?? ""}
           label="Valgt skole"
           onChange={handleChange}
         >
           {branches?.map((branch) => (
-            <MenuItem
-              data-testid="branchOption"
-              value={branch.id}
-              key={branch.id}
-            >
+            <MenuItem value={branch.id} key={branch.id}>
               {branch.name}
             </MenuItem>
           ))}

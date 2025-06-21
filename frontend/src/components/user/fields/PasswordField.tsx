@@ -20,7 +20,6 @@ const PasswordField = forwardRef<HTMLInputElement, PasswordFieldProps>(
 
     return (
       <TextField
-        data-testid="password-field"
         required
         margin="normal"
         fullWidth

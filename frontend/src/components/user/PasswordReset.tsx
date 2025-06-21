@@ -75,17 +75,12 @@ export default function PasswordReset({ userId }: { userId: string }) {
       ) : (
         <>
           {apiError && (
-            <Alert severity="error" data-testid="api-error" sx={{ mt: 1 }}>
+            <Alert severity="error" sx={{ mt: 1 }}>
               {apiError}
             </Alert>
           )}
           {Object.entries(errors).map(([type, message]) => (
-            <Alert
-              key={type}
-              severity="error"
-              sx={{ mt: 1 }}
-              data-testid="error-message"
-            >
+            <Alert key={type} severity="error" sx={{ mt: 1 }}>
               {message.message}
             </Alert>
           ))}
@@ -97,7 +92,6 @@ export default function PasswordReset({ userId }: { userId: string }) {
             }}
           >
             <TextField
-              data-testid="password-field"
               required
               margin="normal"
               fullWidth
@@ -132,7 +126,6 @@ export default function PasswordReset({ userId }: { userId: string }) {
             </InputAdornment>
           </Box>
           <Button
-            data-testid="password-reset-submit"
             type="submit"
             fullWidth
             variant="contained"

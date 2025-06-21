@@ -47,7 +47,7 @@ const TAB_LINKS: TabLinkProps[] = [
 
 export default function NavBar() {
   return (
-    <Box data-testid="nav-bar">
+    <Box>
       <AppBar position="fixed">
         <Toolbar sx={{ paddingY: "10px" }}>
           <Logo variant={"white"} />

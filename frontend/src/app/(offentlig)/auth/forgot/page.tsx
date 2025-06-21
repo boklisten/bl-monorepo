@@ -74,7 +74,7 @@ const ForgotPage = () => {
               sx={{ width: "100%" }}
             >
               {Object.entries(errors).map(([type, message]) => (
-                <Alert key={type} severity="error" data-testid="error-message">
+                <Alert key={type} severity="error">
                   {message.message}
                 </Alert>
               ))}
@@ -92,7 +92,6 @@ const ForgotPage = () => {
                 </Alert>
               )}
               <TextField
-                data-testid="email-field"
                 required
                 margin="normal"
                 fullWidth
@@ -109,7 +108,6 @@ const ForgotPage = () => {
                 })}
               />
               <Button
-                data-testid="forgot-submit"
                 type="submit"
                 fullWidth
                 variant="contained"

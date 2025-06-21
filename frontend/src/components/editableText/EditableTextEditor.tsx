@@ -72,12 +72,9 @@ export const EditableTextEditor = ({ editableText }: EditorProps) => {
         gap: 1,
         padding: 0,
       }}
-      data-testid="editor"
     >
       {readOnly ? (
-        <Button data-testid="edit-button" onClick={onEdit}>
-          Rediger
-        </Button>
+        <Button onClick={onEdit}>Rediger</Button>
       ) : (
         <Container
           sx={{
@@ -87,19 +84,10 @@ export const EditableTextEditor = ({ editableText }: EditorProps) => {
             justifyContent: "center",
           }}
         >
-          <Button
-            data-testid="cancel-button"
-            onClick={onCancel}
-            color="warning"
-            variant="outlined"
-          >
+          <Button onClick={onCancel} color="warning" variant="outlined">
             Avbryt
           </Button>
-          <Button
-            data-testid="save-button"
-            onClick={onSave}
-            variant="contained"
-          >
+          <Button onClick={onSave} variant="contained">
             Lagre
           </Button>
         </Container>

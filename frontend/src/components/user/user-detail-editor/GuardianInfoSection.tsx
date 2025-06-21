@@ -33,7 +33,6 @@ const GuardianInfoSection = ({
     </Grid>
     <Grid size={{ xs: 12 }}>
       <TextField
-        data-testid="guardian-name-field"
         required
         fullWidth
         id="lastName"
@@ -46,7 +45,6 @@ const GuardianInfoSection = ({
     </Grid>
     <Grid size={{ xs: 12 }}>
       <EmailField
-        data-testid="guardian-email-field"
         label="Foresatt sin epost"
         error={!!errors.guardianEmail}
         {...register("guardianEmail", fieldValidators.guardianEmail)}
@@ -55,7 +53,6 @@ const GuardianInfoSection = ({
     </Grid>
     <Grid size={{ xs: 12 }}>
       <PhoneNumberField
-        data-testid="guardian-phone-field"
         id="guardianPhoneNumber"
         label="Foresatt sitt telefonnummer"
         error={!!errors.guardianPhoneNumber}

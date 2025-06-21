@@ -8,7 +8,7 @@ export default function BranchLocationLayout({
   children: ReactNode;
 }) {
   return (
-    <Box sx={{ display: "flex", marginBottom: 2 }} data-testid="branch-address">
+    <Box sx={{ display: "flex", marginBottom: 2 }}>
       <LocationOnIcon />
       {children}
     </Box>

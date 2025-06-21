@@ -51,7 +51,6 @@ const QuestionWithAnswer = ({
 
   return (
     <Accordion
-      data-testid="qna-entry"
       expanded={expanded}
       sx={{ width: "100%" }}
       onChange={() => handleExpand(id)}
@@ -73,7 +72,6 @@ const QuestionWithAnswer = ({
           <>
             <Tooltip title={edit ? "Lagre" : "Rediger"}>
               <IconButton
-                data-testid="question-edit-button"
                 onClick={() => {
                   if (edit) {
                     updateQuestion({
@@ -108,9 +106,7 @@ const QuestionWithAnswer = ({
             defaultValue={answer}
           />
         )}
-        {!edit && (
-          <Typography data-testid="qna-entry-answer">{answer}</Typography>
-        )}
+        {!edit && <Typography>{answer}</Typography>}
       </AccordionDetails>
     </Accordion>
   );
@@ -143,11 +139,7 @@ const EditableQNA = ({ QNAs }: { QNAs: QNA[] }) => {
     <Box
       sx={{ display: "flex", flexDirection: "column", alignItems: "center" }}
     >
-      <Typography
-        data-testid="qna-title"
-        variant="h4"
-        sx={{ textAlign: "center", marginBottom: 2 }}
-      >
+      <Typography variant="h4" sx={{ textAlign: "center", marginBottom: 2 }}>
         Spørsmål og svar
       </Typography>
       {QNAs.map((QNA) => (
@@ -164,7 +156,6 @@ const EditableQNA = ({ QNAs }: { QNAs: QNA[] }) => {
       {hydrated && isAdmin() && (
         <Tooltip title="Legg til spørsmål">
           <IconButton
-            data-testid="add-question-button"
             onClick={() =>
               QNAs.push({
                 id: "foo",

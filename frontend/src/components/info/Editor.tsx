@@ -58,11 +58,9 @@ const CustomEditor = ({ rawEditorState }: { rawEditorState: string }) => {
   return (
     <Container
       sx={{ display: "flex", flexDirection: "column", alignItems: "center" }}
-      data-testid="editor"
     >
       {hydrated && isAdmin() && (
         <Button
-          data-testid="edit-button"
           sx={{ width: { xs: "100%", sm: "" }, paddingX: 5 }}
           onClick={onSave}
         >

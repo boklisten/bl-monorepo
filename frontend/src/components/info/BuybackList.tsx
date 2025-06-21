@@ -57,7 +57,6 @@ const BuybackList = ({
             {!error &&
               items.map((item) => (
                 <TableRow
-                  data-testid="table-row"
                   key={item.info.isbn}
                   sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
                 >
@@ -70,13 +69,13 @@ const BuybackList = ({
           </TableBody>
         </Table>
         {!error && items.length === 0 && (
-          <Alert severity="info" data-testid="missing-error">
+          <Alert severity="info">
             Ingen bøker i listen. Kom tilbake senere for å se en oppdatert
             liste.
           </Alert>
         )}
         {error && (
-          <Alert severity="error" data-testid="api-error">
+          <Alert severity="error">
             Noe gikk galt! Vennligst prøv igjen senere.
           </Alert>
         )}

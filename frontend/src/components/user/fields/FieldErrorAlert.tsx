@@ -8,12 +8,7 @@ export default function FieldErrorAlert({
 }) {
   if (!error) return null;
   return (
-    <Alert
-      key={error.type}
-      severity="error"
-      data-testid="error-message"
-      sx={{ my: 1 }}
-    >
+    <Alert key={error.type} severity="error" sx={{ my: 1 }}>
       {error.message}
     </Alert>
   );

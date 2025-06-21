@@ -97,17 +97,6 @@ export default function OpenOrdersList() {
                       <Button
                         color={"error"}
                         onClick={async () => {
-                          const closed = true;
-                          if (closed) {
-                            await dialogs.alert(
-                              "Fristen for å endre bestillinger har utløpet. Ta kontakt på info@boklisten.no dersom du har spørsmål",
-                              {
-                                okText: "Lukk",
-                                title: "Kunne ikke fjerne bestilling",
-                              },
-                            );
-                            return;
-                          }
                           if (
                             await dialogs.confirm(
                               `Du er nå i ferd med å fjerne ${orderItem.title} fra dine bestillinger. Dette kan ikke angres!`,
@@ -146,17 +135,6 @@ export default function OpenOrdersList() {
             startIcon={<Book />}
             variant="contained"
             onClick={async () => {
-              const closed = true;
-              if (closed) {
-                await dialogs.alert(
-                  "Fristen for å endre bestillinger har utløpet. Ta kontakt på info@boklisten.no dersom du har spørsmål",
-                  {
-                    okText: "Lukk",
-                    title: "Kunne ikke endre bestilling",
-                  },
-                );
-                return;
-              }
               router.push("/order");
             }}
           >

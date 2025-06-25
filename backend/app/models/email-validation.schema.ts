@@ -17,7 +17,7 @@ export const EmailValidationSchema: BlSchema<EmailValidation> = new Schema({
     type: Date,
     index: {
       name: "expire_after",
-      expires: 60 * 15,
+      expires: 60 * 20,
     },
   },
 });

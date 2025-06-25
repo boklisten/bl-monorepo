@@ -13,6 +13,9 @@ const createHeaders = (): Headers => {
   return headers;
 };
 
+/**
+ * @depricated use the useApiClient hook instead
+ */
 async function blFetch<T>(
   path: string,
   method: HTTP_METHOD,
@@ -58,10 +61,16 @@ async function blFetch<T>(
   }
 }
 
+/**
+ * @depricated use the useApiClient hook instead
+ */
 async function get<T>(path: string): Promise<T> {
   return await blFetch<T>(path, "GET");
 }
 
+/**
+ * @depricated use the useApiClient hook instead
+ */
 async function post<T>(
   path: string,
   body: Record<string, unknown>,
@@ -69,6 +78,9 @@ async function post<T>(
   return await blFetch<T>(path, "POST", body);
 }
 
+/**
+ * @depricated use the useApiClient hook instead
+ */
 async function patch<T>(
   path: string,
   body: Record<string, unknown>,
@@ -76,14 +88,23 @@ async function patch<T>(
   return await blFetch<T>(path, "PATCH", body);
 }
 
+/**
+ * @depricated use the useApiClient hook instead
+ */
 async function put<T>(path: string, body: Record<string, unknown>): Promise<T> {
   return await blFetch<T>(path, "PUT", body);
 }
 
+/**
+ * @depricated use the useApiClient hook instead
+ */
 async function destroy<T>(path: string): Promise<T> {
   return await blFetch<T>(path, "DELETE");
 }
 
+/**
+ * @depricated use the useApiClient hook instead
+ */
 const BlFetcher = {
   fetch: blFetch,
   get,
@@ -93,4 +114,7 @@ const BlFetcher = {
   destroy,
 };
 
+/**
+ * @depricated use the useApiClient hook instead
+ */
 export default BlFetcher;

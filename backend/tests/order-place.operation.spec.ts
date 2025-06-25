@@ -4,7 +4,7 @@ import chaiAsPromised from "chai-as-promised";
 import moment from "moment-timezone";
 import sinon, { createSandbox } from "sinon";
 
-import { Signature } from "#models/signature.model";
+import { Signature } from "#models/signature.schema";
 import { OrderToCustomerItemGenerator } from "#services/collections/customer-item/helpers/order-to-customer-item-generator";
 import { OrderPlacedHandler } from "#services/collections/order/helpers/order-placed-handler/order-placed-handler";
 import { OrderValidator } from "#services/collections/order/helpers/order-validator/order-validator";

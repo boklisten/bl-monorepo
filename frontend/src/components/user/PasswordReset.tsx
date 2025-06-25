@@ -17,7 +17,6 @@ import { SubmitHandler, useForm } from "react-hook-form";
 
 import { resetPassword } from "@/api/user";
 import DynamicLink from "@/components/DynamicLink";
-import { assertBlApiError } from "@/utils/types";
 
 interface PasswordResetFields {
   password: string;
@@ -36,20 +35,20 @@ export default function PasswordReset({ userId }: { userId: string }) {
   const onSubmit: SubmitHandler<PasswordResetFields> = async (data) => {
     setApiError("");
     try {
+      // fixme: 404 error is ignored here, leading the success message to always be displayed
       await resetPassword(
         userId,
         searchParams.get("resetToken") ?? "",
         data.password,
       );
-    } catch (error) {
-      if (assertBlApiError(error)) {
-        setApiError(
-          "Klarte ikke sette nytt passord. Lenken kan være utløpt. Prøv igjen eller ta kontakt dersom problemet vedvarer.",
-        );
-        return;
-      }
+
+      setSuccess(true);
+    } catch {
+      setApiError(
+        "Klarte ikke sette nytt passord. Lenken kan være utløpt. Prøv igjen eller ta kontakt dersom problemet vedvarer.",
+      );
+      setSuccess(false);
     }
-    setSuccess(true);
   };
   return (
     <Box

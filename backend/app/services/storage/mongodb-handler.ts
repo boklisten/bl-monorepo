@@ -12,7 +12,7 @@ import {
 import { PermissionService } from "#services/auth/permission.service";
 import { ExpandFilter } from "#services/query/db-query-expand-filter";
 import { SEDbQuery } from "#services/query/se.db-query";
-import { BlModel } from "#services/storage/bl-storage";
+import { BlSchema } from "#services/storage/bl-storage";
 import { MongooseModelCreator } from "#services/storage/mongoose-schema-creator";
 import { NestedDocument } from "#services/types/nested-document";
 import { BlDocument } from "#shared/bl-document/bl-document";
@@ -23,9 +23,12 @@ export class MongodbHandler<T extends BlDocument> {
   private readonly mongooseModel: Model<T>;
   public path: string;
 
-  constructor(model: BlModel<T>) {
-    this.path = model.name;
-    this.mongooseModel = new MongooseModelCreator<T>(model).create();
+  constructor(schema: BlSchema<T>, modelName: string) {
+    this.path = modelName;
+    this.mongooseModel = new MongooseModelCreator<T>(
+      schema,
+      modelName,
+    ).create();
   }
 
   // fixme: disallow undefined here, and handle missing values higher up

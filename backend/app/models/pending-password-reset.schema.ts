@@ -1,11 +1,10 @@
 import { Schema } from "mongoose";
 
-import { BlModel } from "#services/storage/bl-storage";
+import { BlSchema } from "#services/storage/bl-storage";
 import { PendingPasswordReset } from "#shared/password-reset/pending-password-reset";
 
-export const PendingPasswordResetModel: BlModel<PendingPasswordReset> = {
-  name: "pendingpasswordresets",
-  schema: new Schema({
+export const PendingPasswordResetSchema: BlSchema<PendingPasswordReset> =
+  new Schema({
     // @ts-expect-error fixme: auto ignored
     _id: {
       type: Schema.Types.String,
@@ -23,5 +22,11 @@ export const PendingPasswordResetModel: BlModel<PendingPasswordReset> = {
       type: Schema.Types.String,
       required: true,
     },
-  }),
-};
+    creationTime: {
+      type: Date,
+      index: {
+        name: "expire_after",
+        expires: 60 * 20,
+      },
+    },
+  });

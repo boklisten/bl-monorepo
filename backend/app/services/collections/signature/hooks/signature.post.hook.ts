@@ -1,4 +1,4 @@
-import { Signature } from "#models/signature.model";
+import { Signature } from "#models/signature.schema";
 import {
   deserializeSignature,
   isUnderage,

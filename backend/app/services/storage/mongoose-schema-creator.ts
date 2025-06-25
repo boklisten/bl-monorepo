@@ -1,14 +1,17 @@
 import mongoose, { Model, Schema } from "mongoose";
 
-import { BlModel } from "#services/storage/bl-storage";
+import { BlSchema } from "#services/storage/bl-storage";
 
 export class MongooseModelCreator<T> {
-  constructor(private model: BlModel<T>) {}
+  constructor(
+    private schema: BlSchema<T>,
+    private schemaName: string,
+  ) {}
 
   create(): Model<T> {
     return mongoose.model<T>(
-      this.model.name,
-      this.standardizeSchema(this.model.schema),
+      this.schemaName,
+      this.standardizeSchema(this.schema),
     );
   }
 

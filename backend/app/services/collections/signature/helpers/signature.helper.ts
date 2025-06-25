@@ -1,7 +1,7 @@
 import logger from "@adonisjs/core/services/logger";
 import { Transformer } from "@napi-rs/image";
 
-import { Signature } from "#models/signature.model";
+import { Signature } from "#models/signature.schema";
 import { BlStorage } from "#services/storage/bl-storage";
 import { BlError } from "#shared/bl-error/bl-error";
 import {

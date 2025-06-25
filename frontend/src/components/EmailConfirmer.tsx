@@ -18,7 +18,7 @@ export default function EmailConfirmer({
 
   useEffect(() => {
     function validateEmail(confirmationId: string) {
-      return BlFetcher.patch(
+      return BlFetcher.patch<[{ confirmed: boolean }]>(
         client.$url("collection.email_validations.operation.confirm.patch", {
           params: { id: confirmationId },
         }),
@@ -26,8 +26,8 @@ export default function EmailConfirmer({
       );
     }
     validateEmail(confirmationId)
-      .then(() => {
-        return setStatus("SUCCESS");
+      .then(([{ confirmed }]) => {
+        return setStatus(confirmed ? "SUCCESS" : "ERROR");
       })
       .catch((error) => {
         console.error(error);

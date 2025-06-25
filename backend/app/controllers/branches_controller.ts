@@ -1,11 +1,11 @@
 import { HttpContext } from "@adonisjs/core/http";
 import { ObjectId } from "mongodb";
 
-import { BranchModel } from "#models/branch.model";
 import { PermissionService } from "#services/auth/permission.service";
 import CollectionEndpointAuth from "#services/collection-endpoint/collection-endpoint-auth";
 import { isNullish } from "#services/helper/typescript-helpers";
 import { SEDbQuery } from "#services/query/se.db-query";
+import { BlSchemaName } from "#services/storage/bl-schema-names";
 import { BlStorage } from "#services/storage/bl-storage";
 import { BranchItem } from "#shared/branch-item/branch-item";
 import { Item } from "#shared/item/item";
@@ -145,7 +145,7 @@ async function applyMembershipData(
     },
     {
       $graphLookup: {
-        from: BranchModel.name,
+        from: BlSchemaName.Branches,
         startWith: new ObjectId(branchId),
         connectFromField: "childBranches",
         connectToField: "_id",

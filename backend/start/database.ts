@@ -20,5 +20,7 @@ if (env.get("API_ENV") !== "test") {
     maxPoolSize: 10,
     connectTimeoutMS: 10_000,
     socketTimeoutMS: 45_000,
+    autoIndex: env.get("API_ENV") !== "production",
   });
+  mongoose.set("debug", env.get("API_ENV") !== "production");
 }

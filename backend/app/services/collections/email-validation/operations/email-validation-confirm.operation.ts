@@ -11,12 +11,16 @@ export class EmailValidationConfirmOperation implements Operation {
       throw new BlError("no documentId provided");
     }
 
-    const emailValidation = await BlStorage.EmailValidations.get(
-      blApiRequest.documentId,
-    );
-    await BlStorage.UserDetails.update(emailValidation.userDetail, {
-      emailConfirmed: true,
-    });
-    return new BlapiResponse([{ confirmed: true }]);
+    try {
+      const emailValidation = await BlStorage.EmailValidations.get(
+        blApiRequest.documentId,
+      );
+      await BlStorage.UserDetails.update(emailValidation.userDetail, {
+        emailConfirmed: true,
+      });
+      return new BlapiResponse([{ confirmed: true }]);
+    } catch {
+      return new BlapiResponse([{ confirmed: false }]);
+    }
   }
 }

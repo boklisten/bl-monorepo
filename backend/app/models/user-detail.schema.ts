@@ -53,22 +53,12 @@ export const UserDetailSchema: BlSchema<UserDetail> = new Schema({
     },
     email: {
       type: String,
-      index: {
-        unique: true,
-        sparse: true,
-        name: "guardian_email_unique",
-      },
     },
     emailConfirmed: {
       type: Boolean,
     },
     phone: {
       type: String,
-      index: {
-        unique: true,
-        sparse: true,
-        name: "guardian_phone_unique",
-      },
     },
     confirmed: {
       type: Boolean,

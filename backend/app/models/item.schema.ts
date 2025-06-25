@@ -6,6 +6,7 @@ import { Item } from "#shared/item/item";
 export const ItemSchema: BlSchema<Item> = new Schema({
   title: {
     type: String,
+    trim: true,
     required: true,
   },
   price: {

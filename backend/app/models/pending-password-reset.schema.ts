@@ -12,6 +12,8 @@ export const PendingPasswordResetSchema: BlSchema<PendingPasswordReset> =
     },
     email: {
       type: Schema.Types.String,
+      trim: true,
+      lowercase: true,
       required: true,
     },
     tokenHash: {

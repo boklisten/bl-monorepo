@@ -7,10 +7,12 @@ import { Branch } from "#shared/branch/branch";
 export const BranchSchema: BlSchema<Branch> = new Schema({
   name: {
     type: String,
+    trim: true,
     required: true,
   },
   type: {
     type: String,
+    trim: true,
     enum: ["VGS", "privatist", null],
   },
   parentBranch: {
@@ -110,7 +112,7 @@ export const BranchSchema: BlSchema<Branch> = new Schema({
     { type: Schema.Types.ObjectId, ref: BlSchemaName.OpeningHours },
   ],
   location: {
-    region: String,
-    address: String,
+    region: { type: String, trim: true },
+    address: { type: String, trim: true },
   },
 });

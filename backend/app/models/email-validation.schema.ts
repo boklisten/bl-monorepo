@@ -7,6 +7,8 @@ import { BlSchema } from "#services/storage/bl-storage";
 export const EmailValidationSchema: BlSchema<EmailValidation> = new Schema({
   email: {
     type: String,
+    trim: true,
+    lowercase: true,
     required: true,
   },
   userDetail: {

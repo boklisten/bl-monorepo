@@ -7,6 +7,7 @@ import { UniqueItem } from "#shared/unique-item/unique-item";
 export const UniqueItemSchema: BlSchema<UniqueItem> = new Schema({
   blid: {
     type: String,
+    trim: true,
     required: true,
     index: {
       unique: true,
@@ -20,6 +21,7 @@ export const UniqueItemSchema: BlSchema<UniqueItem> = new Schema({
   },
   title: {
     type: String,
+    trim: true,
     required: true,
   },
 });

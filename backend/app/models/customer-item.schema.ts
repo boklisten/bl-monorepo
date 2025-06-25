@@ -12,10 +12,13 @@ export const CustomerItemSchema: BlSchema<CustomerItem> = new Schema({
   },
   type: {
     type: String,
+    trim: true,
+    lowercase: true,
     enum: ["rent", "partly-payment", null],
   },
   blid: {
     type: String,
+    trim: true,
     index: {
       name: "unique_active_blid",
       unique: true,

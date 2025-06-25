@@ -24,6 +24,7 @@ export const OrderSchema: BlSchema<Order> = new Schema({
         },
         blid: {
           type: String,
+          trim: true,
         },
         title: {
           type: String,

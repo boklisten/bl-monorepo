@@ -15,6 +15,9 @@ export const UserSchema: BlSchema<User> = new Schema({
   },
   permission: {
     type: String,
+    trim: true,
+    lowercase: true,
+    enum: ["customer", "employee", "manager", "admin"],
     required: true,
   },
   login: {
@@ -36,6 +39,8 @@ export const UserSchema: BlSchema<User> = new Schema({
   },
   username: {
     type: String,
+    trim: true,
+    lowercase: true,
     required: true,
     index: {
       unique: true,

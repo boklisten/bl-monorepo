@@ -14,6 +14,7 @@ export const SignatureSchema: BlSchema<Signature> = new Schema({
   },
   signingName: {
     type: String,
+    trim: true,
     required: true,
   },
   signedByGuardian: {

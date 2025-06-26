@@ -79,8 +79,6 @@ function create(
       .className("LocalLoginValidator")
       .methodName("create");
 
-    username = username.toString().toLocaleLowerCase();
-
     LocalLoginHandler.get(username).then(
       () => {
         reject(

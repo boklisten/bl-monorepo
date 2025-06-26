@@ -10,15 +10,15 @@ import BlResponseHandler from "#services/response/bl-response.handler";
 import { BlStorage } from "#services/storage/bl-storage";
 import { BlError } from "#shared/bl-error/bl-error";
 import { BlapiResponse } from "#shared/blapi-response/blapi-response";
+import { localAuthValidator } from "#validators/local_auth";
 
 async function normalizeUsername(username: string) {
-  const trimmed = username.toLowerCase().replace(" ", "");
-  if (!validator.isMobilePhone(trimmed)) {
-    return trimmed;
+  if (!validator.isMobilePhone(username)) {
+    return username;
   }
   const databaseQuery = new SEDbQuery();
   databaseQuery.stringFilters = [
-    { fieldName: "phone", value: trimmed.slice(-8) },
+    { fieldName: "phone", value: username.slice(-8) },
   ];
   try {
     const [details] = await BlStorage.UserDetails.getByQuery(databaseQuery);
@@ -73,6 +73,8 @@ export default class LocalController {
   }
 
   async login(ctx: HttpContext) {
+    const { username, password } =
+      await ctx.request.validateUsing(localAuthValidator);
     return new Promise((resolve) => {
       passport.authenticate(
         "local",
@@ -103,20 +105,18 @@ export default class LocalController {
         },
       )({
         body: {
-          username: ctx.request.body()["username"],
-          password: ctx.request.body()["password"],
+          username,
+          password,
         },
       });
     });
   }
 
   async register(ctx: HttpContext) {
+    const { username, password } =
+      await ctx.request.validateUsing(localAuthValidator);
     return new Promise((resolve, reject) => {
-      const username = ctx.request.body()["username"];
-      LocalLoginValidator.create(
-        ctx.request.body()["username"],
-        ctx.request.body()["password"],
-      ).then(
+      LocalLoginValidator.create(username, password).then(
         () => {
           TokenHandler.createTokens(username).then(
             (tokens: { accessToken: string; refreshToken: string }) => {

@@ -34,17 +34,25 @@ type AuthIdCallbackGetHead = {
   >;
 };
 type AuthLocalLoginPost = {
-  request: unknown;
+  request: MakeTuyauRequest<
+    InferInput<
+      (typeof import("../app/validators/local_auth.ts"))["localAuthValidator"]
+    >
+  >;
   response: MakeNonSerializedTuyauResponse<
     import("../app/controllers/auth/local_controller.ts").default["login"],
-    false
+    true
   >;
 };
 type AuthLocalRegisterPost = {
-  request: unknown;
+  request: MakeTuyauRequest<
+    InferInput<
+      (typeof import("../app/validators/local_auth.ts"))["localAuthValidator"]
+    >
+  >;
   response: MakeNonSerializedTuyauResponse<
     import("../app/controllers/auth/local_controller.ts").default["register"],
-    false
+    true
   >;
 };
 type WaitingListEntriesGetHead = {

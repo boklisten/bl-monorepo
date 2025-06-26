@@ -112,7 +112,7 @@ export default class LocalController {
     );
   }
 
-  async login({ request }: HttpContext) {
+  async login({ request, response }: HttpContext) {
     const { username, password } =
       await request.validateUsing(localAuthValidator);
 
@@ -120,8 +120,11 @@ export default class LocalController {
       username,
       password,
     );
-    // fixme: consider using actual http status codes to indicate the result (be aware that 401 and 403 are reserved for specific behaviour in useApiClient)
-    return { accessToken, refreshToken, statusCode };
+    response.status(statusCode);
+    if (accessToken && refreshToken) {
+      return { accessToken, refreshToken };
+    }
+    return;
   }
 
   async register(ctx: HttpContext) {

@@ -17,7 +17,7 @@ import DynamicLink from "@/components/DynamicLink";
 import FacebookButton from "@/components/user/FacebookButton";
 import PasswordField from "@/components/user/fields/PasswordField";
 import GoogleButton from "@/components/user/GoogleButton";
-import useApiClient from "@/utils/api/useApiClient";
+import { apiClient } from "@/utils/api/apiClient";
 
 interface SignInFields {
   username: string;
@@ -28,7 +28,6 @@ export default function SignIn() {
   const [apiError, setApiError] = useState("");
   const router = useRouter();
   const searchParams = useSearchParams();
-  const client = useApiClient();
   const {
     register,
     handleSubmit,
@@ -40,24 +39,27 @@ export default function SignIn() {
     password,
   }) => {
     setApiError("");
-    const { accessToken, refreshToken, statusCode } =
-      await client.auth.local.login
-        .$post({
-          username,
-          password,
-        })
-        .unwrap();
-    if (statusCode === 200 && accessToken && refreshToken) {
-      addAccessToken(accessToken);
-      addRefreshToken(refreshToken);
-      executeReturnRedirect(searchParams, router);
-      return;
+    try {
+      const { data, status } = await apiClient.auth.local.login.$post({
+        username,
+        password,
+      });
+      if (status === 200 && data) {
+        addAccessToken(data.accessToken);
+        addRefreshToken(data.refreshToken);
+        executeReturnRedirect(searchParams, router);
+        return;
+      }
+      setApiError(
+        status === 401
+          ? "Feil brukernavn eller passord"
+          : "Noe gikk galt! Prøv igjen eller ta kontakt dersom problemet vedvarer.",
+      );
+    } catch {
+      setApiError(
+        "Noe gikk galt! Prøv igjen eller ta kontakt dersom problemet vedvarer.",
+      );
     }
-    setApiError(
-      statusCode === 401
-        ? "Feil brukernavn eller passord"
-        : "Noe gikk galt! Prøv igjen eller ta kontakt dersom problemet vedvarer.",
-    );
   };
 
   useEffect(() => {

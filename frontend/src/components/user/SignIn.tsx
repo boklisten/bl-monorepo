@@ -26,6 +26,7 @@ interface SignInFields {
 
 export default function SignIn() {
   const [apiError, setApiError] = useState("");
+  const [loading, setLoading] = useState(false);
   const router = useRouter();
   const searchParams = useSearchParams();
   const {
@@ -38,6 +39,7 @@ export default function SignIn() {
     username,
     password,
   }) => {
+    setLoading(true);
     setApiError("");
     try {
       const { data, status } = await apiClient.auth.local.login.$post({
@@ -60,6 +62,7 @@ export default function SignIn() {
         "Noe gikk galt! Prøv igjen eller ta kontakt dersom problemet vedvarer.",
       );
     }
+    setLoading(false);
   };
 
   useEffect(() => {
@@ -124,6 +127,7 @@ export default function SignIn() {
             {...register("password")}
           />
           <Button
+            loading={loading}
             type="submit"
             fullWidth
             variant="contained"

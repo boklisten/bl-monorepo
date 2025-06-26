@@ -280,23 +280,4 @@ test.group("UserHandler", (group) => {
       );
     });
   });
-
-  test(".exists() should reject with BlError when provider is undefined", async () => {
-    const provider = undefined;
-    UserHandler
-
-      // @ts-expect-error fixme: auto ignored
-      .exists(provider, testProviderId)
-      // @ts-expect-error fixme: auto ignored bad test types
-      .should.be.rejectedWith(BlError);
-  });
-
-  test(".exists() should reject with BlError when ", async () => {
-    const providerId = "";
-    UserHandler.exists(
-      testProvider,
-      providerId,
-      // @ts-expect-error fixme: auto ignored bad test types
-    ).should.be.rejectedWith(BlError);
-  });
 });

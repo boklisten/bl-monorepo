@@ -252,35 +252,10 @@ function valid(username: string): Promise<void> {
   });
 }
 
-function exists(provider: string, providerId: string): Promise<void> {
-  if (!provider || !providerId) {
-    return Promise.reject(
-      new BlError("provider or providerId is empty or undefinedl"),
-    );
-  }
-
-  const databaseQuery = new SEDbQuery();
-  databaseQuery.stringFilters = [
-    { fieldName: "login.provider", value: provider },
-    { fieldName: "login.providerId", value: providerId },
-  ];
-
-  return new Promise((resolve, reject) => {
-    BlStorage.Users.getByQuery(databaseQuery)
-      .then(() => {
-        resolve();
-      })
-      .catch((blError: BlError) => {
-        reject(new BlError("does not exist").add(blError));
-      });
-  });
-}
-
 const UserHandler = {
   getByUsername,
   get,
   create,
   valid,
-  exists,
 };
 export default UserHandler;

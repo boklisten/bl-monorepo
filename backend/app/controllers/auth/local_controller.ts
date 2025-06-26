@@ -28,6 +28,46 @@ async function normalizeUsername(username: string) {
   }
 }
 
+async function authenticate(username: string, password: string) {
+  return new Promise<{
+    accessToken?: string;
+    refreshToken?: string;
+    statusCode: number;
+  }>((resolve) => {
+    try {
+      passport.authenticate(
+        "local",
+        (
+          error: unknown,
+          jwTokens: { accessToken: string; refreshToken: string },
+          blError: BlError,
+        ) => {
+          if (error || (blError && !(blError instanceof BlError))) {
+            resolve({ statusCode: 500 });
+          }
+
+          if (!jwTokens) {
+            resolve({ statusCode: 401 });
+          }
+
+          resolve({
+            accessToken: jwTokens.accessToken,
+            refreshToken: jwTokens.refreshToken,
+            statusCode: 200,
+          });
+        },
+      )({
+        body: {
+          username,
+          password,
+        },
+      });
+    } catch {
+      resolve({ statusCode: 500 });
+    }
+  });
+}
+
 export default class LocalController {
   constructor() {
     passport.use(
@@ -72,44 +112,16 @@ export default class LocalController {
     );
   }
 
-  async login(ctx: HttpContext) {
+  async login({ request }: HttpContext) {
     const { username, password } =
-      await ctx.request.validateUsing(localAuthValidator);
-    return new Promise((resolve) => {
-      passport.authenticate(
-        "local",
-        (
-          error: unknown,
-          jwTokens: { accessToken: string; refreshToken: string },
-          blError: BlError,
-        ) => {
-          if (blError && !(blError instanceof BlError)) {
-            blError = new BlError("unknown error").code(500);
-            resolve(BlResponseHandler.createErrorResponse(ctx, blError));
-          }
+      await request.validateUsing(localAuthValidator);
 
-          if (error) {
-            throw error;
-          }
-
-          if (!jwTokens) {
-            resolve(BlResponseHandler.createErrorResponse(ctx, blError));
-          }
-
-          resolve(
-            new BlapiResponse([
-              { documentName: "refreshToken", data: jwTokens.refreshToken },
-              { documentName: "accessToken", data: jwTokens.accessToken },
-            ]),
-          );
-        },
-      )({
-        body: {
-          username,
-          password,
-        },
-      });
-    });
+    const { accessToken, refreshToken, statusCode } = await authenticate(
+      username,
+      password,
+    );
+    // fixme: consider using actual http status codes to indicate the result (be aware that 401 and 403 are reserved for specific behaviour in useApiClient)
+    return { accessToken, refreshToken, statusCode };
   }
 
   async register(ctx: HttpContext) {

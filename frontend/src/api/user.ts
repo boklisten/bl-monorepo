@@ -5,21 +5,6 @@ import { parseTokensFromResponseDataAndStore } from "@/api/token";
 import { apiClient } from "@/utils/api/apiClient";
 import { AuthResponse } from "@/utils/types";
 
-export const login = async (
-  username: string,
-  password: string,
-): Promise<AuthResponse> => {
-  const loginResponse = await BlFetcher.post<AuthResponse>(
-    apiClient.$url("auth.local.login"),
-    {
-      username,
-      password,
-    },
-  );
-  parseTokensFromResponseDataAndStore(loginResponse);
-  return loginResponse;
-};
-
 export const registerUser = async (
   username: string,
   password: string,

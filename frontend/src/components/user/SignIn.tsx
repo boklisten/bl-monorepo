@@ -11,13 +11,13 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import validator from "validator";
 
 import { isLoggedIn } from "@/api/auth";
-import { login } from "@/api/user";
+import { addAccessToken, addRefreshToken } from "@/api/token";
 import { executeReturnRedirect } from "@/components/AuthLinker";
 import DynamicLink from "@/components/DynamicLink";
 import FacebookButton from "@/components/user/FacebookButton";
 import PasswordField from "@/components/user/fields/PasswordField";
 import GoogleButton from "@/components/user/GoogleButton";
-import { assertBlApiError } from "@/utils/types";
+import useApiClient from "@/utils/api/useApiClient";
 
 interface SignInFields {
   username: string;
@@ -28,29 +28,36 @@ export default function SignIn() {
   const [apiError, setApiError] = useState("");
   const router = useRouter();
   const searchParams = useSearchParams();
+  const client = useApiClient();
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm<SignInFields>({ mode: "onTouched" });
 
-  const onSubmit: SubmitHandler<SignInFields> = async (data) => {
+  const onSubmit: SubmitHandler<SignInFields> = async ({
+    username,
+    password,
+  }) => {
     setApiError("");
-    try {
-      await login(data.username, data.password);
-    } catch (error) {
-      if (assertBlApiError(error)) {
-        if (error.code === 908) {
-          setApiError("Feil brukernavn eller passord");
-          return;
-        }
-        setApiError(
-          "Noe gikk galt! Prøv igjen eller ta kontakt dersom problemet vedvarer.",
-        );
-      }
+    const { accessToken, refreshToken, statusCode } =
+      await client.auth.local.login
+        .$post({
+          username,
+          password,
+        })
+        .unwrap();
+    if (statusCode === 200 && accessToken && refreshToken) {
+      addAccessToken(accessToken);
+      addRefreshToken(refreshToken);
+      executeReturnRedirect(searchParams, router);
       return;
     }
-    executeReturnRedirect(searchParams, router);
+    setApiError(
+      statusCode === 401
+        ? "Feil brukernavn eller passord"
+        : "Noe gikk galt! Prøv igjen eller ta kontakt dersom problemet vedvarer.",
+    );
   };
 
   useEffect(() => {

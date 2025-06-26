@@ -14,7 +14,7 @@ should();
 
 test.group("UserProvider", (group) => {
   let sandbox: sinon.SinonSandbox;
-  let userGetStub: sinon.SinonStub;
+  let userExistsStub: sinon.SinonStub;
   let userCreateStub: sinon.SinonStub;
   let userValidStub: sinon.SinonStub;
   let createTokenStub: sinon.SinonStub;
@@ -22,7 +22,7 @@ test.group("UserProvider", (group) => {
 
   group.each.setup(() => {
     sandbox = createSandbox();
-    userGetStub = sandbox.stub(UserHandler, "get");
+    userExistsStub = sandbox.stub(UserHandler, "exists");
     userCreateStub = sandbox.stub(UserHandler, "create");
     userValidStub = sandbox.stub(UserHandler, "valid");
     createTokenStub = sandbox.stub(TokenHandler, "createTokens");
@@ -36,7 +36,7 @@ test.group("UserProvider", (group) => {
   });
 
   test("loginOrCreate() - should reject if userHandler.valid rejects", async () => {
-    userGetStub.resolves({ id: "user1" });
+    userExistsStub.returns(true);
     userValidStub.rejects(new BlError("user is not valid"));
 
     return expect(
@@ -45,7 +45,7 @@ test.group("UserProvider", (group) => {
   });
 
   test("loginOrCreate() - should reject if LocalLoginHandler.createDefaultLocalLoginIfNoneIsFound rejects", async () => {
-    userGetStub.resolves({ id: "user1" });
+    userExistsStub.returns(true);
     userValidStub.resolves();
     createDefaultLocalLoginStub.rejects(
       new BlError("local login could not be created"),
@@ -60,7 +60,7 @@ test.group("UserProvider", (group) => {
   });
 
   test("loginOrCreate() - should reject if userHandler.create rejects", async () => {
-    userGetStub.rejects(new BlError("user not found"));
+    userExistsStub.returns(false);
     userCreateStub.rejects(new BlError("user could not be created"));
 
     return expect(
@@ -70,7 +70,7 @@ test.group("UserProvider", (group) => {
 
   test("loginOrCreate() - should resolve with a user object and tokens", async () => {
     const user = {};
-    userGetStub.rejects(new BlError("user not found"));
+    userExistsStub.returns(false);
     userCreateStub.resolves(user);
     userValidStub.resolves();
     createDefaultLocalLoginStub.resolves(true);
@@ -83,8 +83,7 @@ test.group("UserProvider", (group) => {
   });
 
   test("loginOrCreate() - should resolve with a user object and tokens", async () => {
-    const user = { id: "user1", username: "user@mail.com" };
-    userGetStub.resolves(user);
+    userExistsStub.returns(true);
     userValidStub.resolves();
     createDefaultLocalLoginStub.resolves(true);
 

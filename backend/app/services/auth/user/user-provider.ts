@@ -7,9 +7,7 @@ async function loginOrCreate(
   provider: string,
   providerId: string,
 ) {
-  try {
-    await UserHandler.get(provider, providerId);
-  } catch {
+  if (!(await UserHandler.exists(username))) {
     await UserHandler.create(username, provider, providerId);
   }
 

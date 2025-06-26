@@ -95,35 +95,15 @@ function handleIfMultipleUsersWithSameEmail(users: User[]): Promise<User> {
   }
 }
 
-function get(provider: string, providerId: string): Promise<User> {
-  const blError = new BlError("").className("userHandler").methodName("exists");
-
-  return new Promise((resolve, reject) => {
-    if (!provider || provider.length <= 0)
-      reject(blError.msg("provider is empty or undefined"));
-    if (!providerId || providerId.length <= 0)
-      reject(blError.msg("providerId is empty of undefined"));
-
+async function exists(username: string): Promise<boolean> {
+  try {
     const databaseQuery = new SEDbQuery();
-    databaseQuery.stringFilters = [
-      { fieldName: "login.provider", value: provider },
-      { fieldName: "login.providerId", value: providerId },
-    ];
-
-    BlStorage.Users.getByQuery(databaseQuery)
-      .then((users: User[]) => {
-        // @ts-expect-error fixme: auto ignored
-        resolve(users[0]);
-      })
-      .catch((error: BlError) => {
-        reject(
-          new BlError("an error occured when getting user")
-            .store("provider", provider)
-            .store("providerId", providerId)
-            .add(error),
-        );
-      });
-  });
+    databaseQuery.stringFilters = [{ fieldName: "username", value: username }];
+    const users = await BlStorage.Users.getByQuery(databaseQuery);
+    return users.length > 0;
+  } catch {
+    return false;
+  }
 }
 
 async function create(
@@ -254,7 +234,7 @@ function valid(username: string): Promise<void> {
 
 const UserHandler = {
   getByUsername,
-  get,
+  exists,
   create,
   valid,
 };

@@ -86,43 +86,6 @@ test.group("UserHandler", (group) => {
     sandbox.restore();
   });
 
-  test("get() - should reject with BlError when provider is empty", async () => {
-    const provider = "";
-    UserHandler.get(
-      provider,
-      testProviderId,
-      // @ts-expect-error fixme: auto ignored bad test types
-    ).should.rejectedWith(BlError);
-  });
-
-  test("get() - should reject with BlError when provider is null", async () => {
-    const provider = null;
-    UserHandler
-
-      // @ts-expect-error fixme: auto ignored
-      .get(provider, testProviderId)
-      // @ts-expect-error fixme: auto ignored bad test types
-      .should.rejectedWith(BlError);
-  });
-
-  test("get() - should reject with BlError when providerId is null", async () => {
-    const providerId = null;
-    UserHandler
-      // @ts-expect-error fixme: auto ignored
-      .get(testProvider, providerId)
-      // @ts-expect-error fixme: auto ignored bad test types
-      .should.rejectedWith(BlError);
-  });
-
-  test("get() - should reject with BlError when providerId is empty", async () => {
-    const providerId = "";
-    UserHandler.get(
-      testProvider,
-      providerId,
-      // @ts-expect-error fixme: auto ignored bad test types
-    ).should.rejectedWith(BlError);
-  });
-
   test("getByUsername() - when username is undefined should reject with BlError", async () => {
     const username = undefined;
     UserHandler

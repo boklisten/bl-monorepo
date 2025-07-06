@@ -1,6 +1,4 @@
 import { HttpContext } from "@adonisjs/core/http";
-import passport from "passport";
-import { Strategy } from "passport-local";
 import validator from "validator";
 
 import LocalLoginValidator from "#services/auth/local/local-login.validator";
@@ -29,89 +27,43 @@ async function normalizeUsername(username: string) {
 }
 
 async function authenticate(username: string, password: string) {
+  const normalizedUsername = await normalizeUsername(username);
   return new Promise<{
     accessToken?: string;
     refreshToken?: string;
     statusCode: number;
   }>((resolve) => {
-    try {
-      passport.authenticate(
-        "local",
-        (
-          error: unknown,
-          jwTokens: { accessToken: string; refreshToken: string },
-          blError: BlError,
-        ) => {
-          if (error || (blError && !(blError instanceof BlError))) {
-            resolve({ statusCode: 500 });
-          }
-
-          if (!jwTokens) {
+    LocalLoginValidator.validate(normalizedUsername, password).then(
+      () => {
+        TokenHandler.createTokens(normalizedUsername).then(
+          (tokens: { accessToken: string; refreshToken: string }) => {
+            resolve({
+              accessToken: tokens.accessToken,
+              refreshToken: tokens.refreshToken,
+              statusCode: 200,
+            });
+          },
+          () => {
             resolve({ statusCode: 401 });
-          }
-
-          resolve({
-            accessToken: jwTokens.accessToken,
-            refreshToken: jwTokens.refreshToken,
-            statusCode: 200,
-          });
-        },
-      )({
-        body: {
-          username,
-          password,
-        },
-      });
-    } catch {
-      resolve({ statusCode: 500 });
-    }
+          },
+        );
+      },
+      (validateError) => {
+        if (
+          (validateError && validateError.getCode() === 908) ||
+          validateError.getCode() === 901 ||
+          validateError.getCode() === 702
+        ) {
+          resolve({ statusCode: 401 });
+        } else {
+          resolve({ statusCode: 500 });
+        }
+      },
+    );
   });
 }
 
 export default class LocalController {
-  constructor() {
-    passport.use(
-      new Strategy({ session: false }, async (username, password, done) => {
-        const normalizedUsername = await normalizeUsername(username);
-        LocalLoginValidator.validate(normalizedUsername, password).then(
-          () => {
-            TokenHandler.createTokens(normalizedUsername).then(
-              (tokens: { accessToken: string; refreshToken: string }) => {
-                done(null, tokens);
-              },
-              (createTokensError: BlError) => {
-                done(
-                  null,
-                  false,
-                  new BlError("error when trying to create tokens")
-                    .code(906)
-                    .add(createTokensError),
-                );
-              },
-            );
-          },
-          (validateError: BlError) => {
-            return validateError.getCode() === 908 ||
-              validateError.getCode() === 901 ||
-              validateError.getCode() === 702
-              ? done(
-                  null,
-                  false,
-                  new BlError("username or password is wrong")
-                    .code(908)
-                    .add(validateError),
-                )
-              : done(
-                  null,
-                  false,
-                  new BlError("could not login").code(900).add(validateError),
-                );
-          },
-        );
-      }),
-    );
-  }
-
   async login({ request, response }: HttpContext) {
     const { username, password } =
       await request.validateUsing(localAuthValidator);

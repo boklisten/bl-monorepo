@@ -144,9 +144,6 @@ importers:
       passport-jwt:
         specifier: ^4.0.1
         version: 4.0.1
-      passport-local:
-        specifier: ^1.0.0
-        version: 1.0.0
       pdfkit:
         specifier: ^0.17.1
         version: 0.17.1
@@ -214,9 +211,6 @@ importers:
       '@types/passport-jwt':
         specifier: ^4.0.1
         version: 4.0.1
-      '@types/passport-local':
-        specifier: ^1.0.38
-        version: 1.0.38
       '@types/pdfkit':
         specifier: ^0.14.0
         version: 0.14.0
@@ -261,7 +255,7 @@ importers:
         version: 4.0.0(chai@5.2.0)(sinon@21.0.0)
       ts-node-maintained:
         specifier: ^10.9.5
-        version: 10.9.5(@swc/core@1.12.3(@swc/helpers@0.5.17))(@types/node@24.0.3)(typescript@5.8.3)
+        version: 10.9.5(@swc/core@1.12.3(@swc/helpers@0.5.17))(@types/node@24.0.10)(typescript@5.8.3)
       tsx:
         specifier: ^4.20.3
         version: 4.20.3
@@ -2494,9 +2488,6 @@ packages:
 
   '@types/passport-jwt@4.0.1':
     resolution: {integrity: sha512-Y0Ykz6nWP4jpxgEUYq8NoVZeCQPo1ZndJLfapI249g1jHChvRfZRO/LS3tqu26YgAS/laI1qx98sYGz0IalRXQ==}
-
-  '@types/passport-local@1.0.38':
-    resolution: {integrity: sha512-nsrW4A963lYE7lNTv9cr5WmiUD1ibYJvWrpE13oxApFsRt77b0RdtZvKbCdNIY4v/QZ6TRQWaDDEwV1kCTmcXg==}
 
   '@types/passport-strategy@0.2.38':
     resolution: {integrity: sha512-GC6eMqqojOooq993Tmnmp7AUTbbQSgilyvpCYQjT+H6JfG/g6RGc7nXEniZlp0zyKJ0WUdOiZWLBZft9Yug1uA==}
@@ -5053,10 +5044,6 @@ packages:
 
   passport-jwt@4.0.1:
     resolution: {integrity: sha512-UCKMDYhNuGOBE9/9Ycuoyh7vP6jpeTp/+sfMJl7nLff/t6dps+iaeE0hhNkKN8/HZHcJ7lCdOyDxHdDoxoSvdQ==}
-
-  passport-local@1.0.0:
-    resolution: {integrity: sha512-9wCE6qKznvf9mQYYbgJ3sVOHmCWoUNMVFoZzNoznmISbhnNNPhN9xfY3sLmScHMetEJeoY7CXwfhCe7argfQow==}
-    engines: {node: '>= 0.4.0'}
 
   passport-strategy@1.0.0:
     resolution: {integrity: sha512-CB97UUvDKJde2V0KDWWB3lyf6PC3FaZP7YxZ2G8OAtn9p4HI9j9JLP9qjOGZFvyl8uwNT8qM+hGnz/n16NI7oA==}
@@ -8648,12 +8635,6 @@ snapshots:
       '@types/jsonwebtoken': 9.0.10
       '@types/passport-strategy': 0.2.38
 
-  '@types/passport-local@1.0.38':
-    dependencies:
-      '@types/express': 5.0.3
-      '@types/passport': 1.0.17
-      '@types/passport-strategy': 0.2.38
-
   '@types/passport-strategy@0.2.38':
     dependencies:
       '@types/express': 5.0.3
@@ -11474,10 +11455,6 @@ snapshots:
       jsonwebtoken: 9.0.2
       passport-strategy: 1.0.0
 
-  passport-local@1.0.0:
-    dependencies:
-      passport-strategy: 1.0.0
-
   passport-strategy@1.0.0: {}
 
   passport@0.7.0:
@@ -12573,14 +12550,14 @@ snapshots:
       '@ts-morph/common': 0.27.0
       code-block-writer: 13.0.3
 
-  ts-node-maintained@10.9.5(@swc/core@1.12.3(@swc/helpers@0.5.17))(@types/node@24.0.3)(typescript@5.8.3):
+  ts-node-maintained@10.9.5(@swc/core@1.12.3(@swc/helpers@0.5.17))(@types/node@24.0.10)(typescript@5.8.3):
     dependencies:
       '@cspotcode/source-map-support': 0.8.1
       '@tsconfig/node10': 1.0.11
       '@tsconfig/node12': 1.0.11
       '@tsconfig/node14': 1.0.3
       '@tsconfig/node16': 1.0.4
-      '@types/node': 24.0.3
+      '@types/node': 24.0.10
       acorn: 8.15.0
       acorn-walk: 8.3.4
       arg: 4.1.3

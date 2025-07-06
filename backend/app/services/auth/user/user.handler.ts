@@ -37,14 +37,29 @@ function getByUsername(username: string): Promise<User> {
   });
 }
 
-async function exists(username: string): Promise<boolean> {
+async function getOrNull(username: string): Promise<User | null> {
   try {
     const databaseQuery = new SEDbQuery();
     databaseQuery.stringFilters = [{ fieldName: "username", value: username }];
-    const users = await BlStorage.Users.getByQuery(databaseQuery);
-    return users.length > 0;
+    const [user] = await BlStorage.Users.getByQuery(databaseQuery);
+    return user ?? null;
   } catch {
-    return false;
+    return null;
+  }
+}
+
+async function connectProviderToUser(
+  user: User,
+  provider: "google" | "facebook",
+  providerId: string,
+) {
+  if (!user.login[provider]?.userId) {
+    await BlStorage.Users.update(user.id, {
+      login: {
+        ...user.login,
+        [provider]: { userId: providerId },
+      },
+    });
   }
 }
 
@@ -116,6 +131,15 @@ async function create(
       await sendEmailValidationLink(addedUserDetail);
     }
 
+    const login: Partial<Record<"google" | "facebook", { userId: string }>> =
+      {};
+
+    if (provider === "google") {
+      login.google = { userId: providerId };
+    } else if (provider === "facebook") {
+      login.facebook = { userId: providerId };
+    }
+
     const newUser: User = {
       // @ts-expect-error fixme bad types
       id: undefined,
@@ -123,10 +147,7 @@ async function create(
       permission: "customer",
       blid: blid,
       username: username,
-      login: {
-        provider: provider,
-        providerId: providerId,
-      },
+      login,
     };
 
     return await BlStorage.Users.add(newUser, {
@@ -176,8 +197,9 @@ function valid(username: string): Promise<void> {
 
 const UserHandler = {
   getByUsername,
-  exists,
+  getOrNull,
   create,
   valid,
+  connectProviderToUser,
 };
 export default UserHandler;

@@ -4,6 +4,33 @@ import { BlSchemaName } from "#services/storage/bl-schema-names";
 import { BlSchema } from "#services/storage/bl-storage";
 import { User } from "#services/types/user";
 
+const LoginSchema = new Schema(
+  {
+    google: {
+      type: { userId: { type: String, required: true } },
+      required: false,
+      _id: false,
+    },
+    facebook: {
+      type: { userId: { type: String, required: true } },
+      required: false,
+      _id: false,
+    },
+    /**
+     * fixme: add this when we migrate the local login table to users
+    local: {
+      type: {
+        hashedPassword: { type: String, required: true },
+        salt: { type: String, required: true },
+      },
+      required: false,
+     _id: false,
+    },
+    */
+  },
+  { _id: false },
+);
+
 export const UserSchema: BlSchema<User> = new Schema({
   userDetail: {
     type: Schema.Types.ObjectId,
@@ -20,19 +47,7 @@ export const UserSchema: BlSchema<User> = new Schema({
     enum: ["customer", "employee", "manager", "admin"],
     required: true,
   },
-  login: {
-    type: {
-      provider: {
-        type: String,
-        required: true,
-      },
-      providerId: {
-        type: String,
-        required: true,
-      },
-    },
-    required: true,
-  },
+  login: { type: LoginSchema, required: true },
   blid: {
     type: String,
     required: true,

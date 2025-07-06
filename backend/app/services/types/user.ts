@@ -6,8 +6,17 @@ export interface User extends BlDocument {
   userDetail: string;
   permission: UserPermission;
   login: {
-    provider: string;
-    providerId: string;
+    google?: { userId: string };
+    facebook?: {
+      userId: string;
+    };
+    /**
+     * fixme: add this when we migrate the local login table to users
+    local?: {
+      hashedPassword: string;
+      salt: string;
+    };
+    */
   };
   blid: string;
   username: string;

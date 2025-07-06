@@ -4,10 +4,13 @@ import UserHandler from "#services/auth/user/user.handler";
 
 async function loginOrCreate(
   username: string,
-  provider: string,
+  provider: "google" | "facebook",
   providerId: string,
 ) {
-  if (!(await UserHandler.exists(username))) {
+  const existingUser = await UserHandler.getOrNull(username);
+  if (existingUser) {
+    await UserHandler.connectProviderToUser(existingUser, provider, providerId);
+  } else {
     await UserHandler.create(username, provider, providerId);
   }
 

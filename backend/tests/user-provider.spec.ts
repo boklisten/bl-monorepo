@@ -22,9 +22,10 @@ test.group("UserProvider", (group) => {
 
   group.each.setup(() => {
     sandbox = createSandbox();
-    userExistsStub = sandbox.stub(UserHandler, "exists");
+    userExistsStub = sandbox.stub(UserHandler, "getOrNull");
     userCreateStub = sandbox.stub(UserHandler, "create");
     userValidStub = sandbox.stub(UserHandler, "valid");
+    sandbox.stub(UserHandler, "connectProviderToUser");
     createTokenStub = sandbox.stub(TokenHandler, "createTokens");
     createDefaultLocalLoginStub = sandbox.stub(
       LocalLoginHandler,
@@ -40,7 +41,7 @@ test.group("UserProvider", (group) => {
     userValidStub.rejects(new BlError("user is not valid"));
 
     return expect(
-      UserProvider.loginOrCreate("username@mail.com", "local", "abcdef"),
+      UserProvider.loginOrCreate("username@mail.com", "facebook", "abcdef"),
     ).to.eventually.be.rejectedWith(BlError, /user is not valid/);
   });
 
@@ -52,7 +53,7 @@ test.group("UserProvider", (group) => {
     );
 
     return expect(
-      UserProvider.loginOrCreate("username@mail.com", "local", "abcde"),
+      UserProvider.loginOrCreate("username@mail.com", "facebook", "abcde"),
     ).to.eventually.be.rejectedWith(
       BlError,
       /local login could not be created/,
@@ -64,7 +65,7 @@ test.group("UserProvider", (group) => {
     userCreateStub.rejects(new BlError("user could not be created"));
 
     return expect(
-      UserProvider.loginOrCreate("username@mail.com", "local", "abcde"),
+      UserProvider.loginOrCreate("username@mail.com", "facebook", "abcde"),
     ).to.eventually.be.rejectedWith(BlError, /user could not be created/);
   });
 
@@ -78,7 +79,7 @@ test.group("UserProvider", (group) => {
     createTokenStub.resolves(tokens);
 
     return expect(
-      UserProvider.loginOrCreate("username@mail.com", "local", "abcdefg"),
+      UserProvider.loginOrCreate("username@mail.com", "facebook", "abcdefg"),
     ).to.eventually.be.eql(tokens);
   });
 
@@ -91,7 +92,7 @@ test.group("UserProvider", (group) => {
     createTokenStub.resolves(tokens);
 
     return expect(
-      UserProvider.loginOrCreate("username@mail.com", "local", "abcdefg"),
+      UserProvider.loginOrCreate("username@mail.com", "facebook", "abcdefg"),
     ).to.eventually.be.eql(tokens);
   });
 });

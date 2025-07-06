@@ -2,7 +2,7 @@ import { Branch } from "@boklisten/backend/shared/branch/branch";
 
 import BlFetcher from "@/api/blFetcher";
 import BranchLocationInfo from "@/components/info/BranchLocationInfo";
-import { apiClient } from "@/utils/api/apiClient";
+import { publicApiClient } from "@/utils/api/publicApiClient";
 
 export default async function BranchLocationSlot({
   params,
@@ -14,7 +14,7 @@ export default async function BranchLocationSlot({
   return (
     <BranchLocationInfo
       branchPromise={BlFetcher.get<[Branch]>(
-        apiClient.$url("collection.branches.getId", {
+        publicApiClient.$url("collection.branches.getId", {
           params: { id: branchId },
         }),
       )}

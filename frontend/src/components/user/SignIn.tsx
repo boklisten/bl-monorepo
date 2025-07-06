@@ -17,7 +17,7 @@ import DynamicLink from "@/components/DynamicLink";
 import FacebookButton from "@/components/user/FacebookButton";
 import PasswordField from "@/components/user/fields/PasswordField";
 import GoogleButton from "@/components/user/GoogleButton";
-import { apiClient } from "@/utils/api/apiClient";
+import { publicApiClient } from "@/utils/api/publicApiClient";
 
 interface SignInFields {
   username: string;
@@ -41,7 +41,7 @@ export default function SignIn() {
   }) => {
     setLoading(true);
     setApiError("");
-    const { data, status } = await apiClient.auth.local.login.$post({
+    const { data, status } = await publicApiClient.auth.local.login.$post({
       username,
       password,
     });

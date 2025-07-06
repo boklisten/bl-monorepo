@@ -2,7 +2,7 @@ import { UserDetail } from "@boklisten/backend/shared/user/user-detail/user-deta
 
 import BlFetcher from "@/api/blFetcher";
 import { parseTokensFromResponseDataAndStore } from "@/api/token";
-import { apiClient } from "@/utils/api/apiClient";
+import { publicApiClient } from "@/utils/api/publicApiClient";
 import { AuthResponse } from "@/utils/types";
 
 export const registerUser = async (
@@ -10,7 +10,7 @@ export const registerUser = async (
   password: string,
 ): Promise<AuthResponse> => {
   const registerResponse = await BlFetcher.post<AuthResponse>(
-    apiClient.$url("auth.local.register"),
+    publicApiClient.$url("auth.local.register"),
     {
       username,
       password,
@@ -25,7 +25,7 @@ export const updateUserDetails = async (
   userDetails: Partial<UserDetail>,
 ) => {
   return await BlFetcher.patch(
-    apiClient.$url("collection.userdetails.patch", {
+    publicApiClient.$url("collection.userdetails.patch", {
       params: { id: userId },
     }),
     userDetails,
@@ -38,9 +38,12 @@ export const resetPassword = async (
   newPassword: string,
 ) => {
   return await BlFetcher.patch(
-    apiClient.$url("collection.pendingpasswordresets.operation.confirm.patch", {
-      params: { id: userId },
-    }),
+    publicApiClient.$url(
+      "collection.pendingpasswordresets.operation.confirm.patch",
+      {
+        params: { id: userId },
+      },
+    ),
     {
       resetToken,
       newPassword,

@@ -10,8 +10,10 @@ import { superjson } from "@tuyau/superjson/plugin";
 
 import BL_CONFIG from "@/utils/bl-config";
 
-// Use this for server components only, it has no auth functionality
-export const apiClient = createTuyau({
+/**
+ * API client with no authentication mechanisms, use useApiClient for authenticated requests
+ */
+export const publicApiClient = createTuyau({
   timeout: 60_000,
   api,
   baseUrl: BL_CONFIG.api.basePath,

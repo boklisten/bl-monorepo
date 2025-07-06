@@ -6,7 +6,7 @@ import isPostalCode from "validator/lib/isPostalCode";
 
 import BlFetcher from "@/api/blFetcher";
 import { UserEditorFields } from "@/components/user/user-detail-editor/useUserDetailEditorForm";
-import { apiClient } from "@/utils/api/apiClient";
+import { publicApiClient } from "@/utils/api/publicApiClient";
 
 export const fieldValidators: {
   [K in keyof UserEditorFields]: RegisterOptions<UserEditorFields>;
@@ -52,7 +52,7 @@ export const fieldValidators: {
         return "Du må fylle inn et gyldig norsk telefonnummer (uten mellomrom og +47)";
 
       const existingAccount =
-        await apiClient.v2.userdetails.check_phone_number_already_registered
+        await publicApiClient.v2.userdetails.check_phone_number_already_registered
           .$post({
             phone: v,
           })
@@ -90,7 +90,7 @@ export const fieldValidators: {
           },
         ]
       >(
-        apiClient.$url(
+        publicApiClient.$url(
           "collection.deliveries.operation.postal-code-lookup.post",
         ),
         { postalCode: v },

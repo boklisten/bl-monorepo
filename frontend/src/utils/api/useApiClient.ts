@@ -15,7 +15,7 @@ import {
   getAccessToken,
   getRefreshToken,
 } from "@/api/token";
-import { apiClient } from "@/utils/api/apiClient";
+import { publicApiClient } from "@/utils/api/publicApiClient";
 import BL_CONFIG from "@/utils/bl-config";
 
 export default function useApiClient() {
@@ -60,7 +60,7 @@ export default function useApiClient() {
           ) {
             return redirectToLogin();
           }
-          const tokenResponse = await apiClient.token.$post({
+          const tokenResponse = await publicApiClient.token.$post({
             refreshToken,
           });
           if (!tokenResponse.response.ok) {

@@ -112,26 +112,6 @@ test.group("UserHandler", (group) => {
     });
   });
 
-  test("should select the first one with primary if primary is set", async () => {
-    const username = "jimmy@dore.com";
-
-    // @ts-expect-error fixme: auto ignored
-    const testUsers = [
-      { username: username, movedToPrimary: "someObjectId" },
-      { username: username, primary: true },
-    ] as User[];
-
-    const dbQuery = new SEDbQuery();
-    dbQuery.stringFilters = [{ fieldName: "username", value: username }];
-
-    userStorageGetByQueryStub.withArgs(dbQuery).resolves(testUsers);
-
-    return expect(UserHandler.getByUsername(username)).to.eventually.be.eql({
-      username: username,
-      primary: true,
-    });
-  });
-
   test("username is undefined", async () => {
     const username = undefined;
     UserHandler

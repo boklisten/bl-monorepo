@@ -15,21 +15,16 @@ function getByUsername(username: string): Promise<User> {
     databaseQuery.stringFilters = [{ fieldName: "username", value: username }];
 
     BlStorage.Users.getByQuery(databaseQuery).then(
-      (docs: User[]) => {
-        if (docs.length > 1) {
-          handleIfMultipleUsersWithSameEmail(docs)
-            .then((user: User) => {
-              resolve(user);
-            })
-            .catch(() => {
-              reject(
-                new BlError(`could not handle user with multiple entries`),
-              );
-            });
-        } else {
-          // @ts-expect-error fixme: auto ignored
-          resolve(docs[0]);
+      ([user]) => {
+        if (!user) {
+          reject(
+            new BlError(
+              'could not find user with username "' + username + '"',
+            ).code(702),
+          );
+          return;
         }
+        resolve(user);
       },
       (error: BlError) => {
         reject(
@@ -40,59 +35,6 @@ function getByUsername(username: string): Promise<User> {
       },
     );
   });
-}
-
-function handleIfMultipleUsersWithSameEmail(users: User[]): Promise<User> {
-  // 2024 update: there are still occurrences of duplicated users, seems like a timing issue, where if you send simultaneous requests fast, it might create multiple.
-  // this bit of code is for some of our very first customers that had more than one user
-  // this issue came from multiple logins as it was created a new user for Facbook, Google and local
-  // even with the same email
-
-  // @ts-expect-error fixme: auto ignored
-  let selectedUser = null;
-
-  for (const user of users) {
-    if (user.primary) {
-      selectedUser = user;
-    }
-  }
-
-  if (selectedUser) {
-    return Promise.resolve(selectedUser);
-  } else {
-    selectedUser = users[0];
-
-    return (
-      BlStorage.Users
-        // @ts-expect-error fixme: auto ignored
-        .update(selectedUser, { primary: true })
-        .then(() => {
-          const promiseArray = users.map((user) =>
-            BlStorage.Users.update(
-              user.id,
-              // @ts-expect-error fixme: auto ignored
-              { movedToPrimary: selectedUser.id },
-            ),
-          );
-
-          return Promise.all(promiseArray)
-            .then(() => {
-              // @ts-expect-error fixme: auto ignored
-              return selectedUser;
-            })
-            .catch(() => {
-              throw new BlError(
-                `user with multiple entries could not update the other entries with invalid`,
-              );
-            });
-        })
-        .catch(() => {
-          throw new BlError(
-            "user with multiple entries could not update one to primary",
-          );
-        })
-    );
-  }
 }
 
 async function exists(username: string): Promise<boolean> {

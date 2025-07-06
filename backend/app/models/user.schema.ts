@@ -51,8 +51,4 @@ export const UserSchema: BlSchema<User> = new Schema({
     type: Boolean,
     default: true,
   },
-  primary: {
-    type: Boolean,
-  },
-  movedToPrimary: { type: Schema.Types.ObjectId, ref: BlSchemaName.Users }, // fixme: remove this when the username_unique constraint is enforced
 });

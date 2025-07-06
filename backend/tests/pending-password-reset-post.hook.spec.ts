@@ -34,13 +34,8 @@ test.group("PendingPasswordResetPostHook", (group) => {
       id: "user1",
       userDetail: "userDetail1",
       permission: "customer",
-      login: {
-        provider: "local",
-        providerId: "local123",
-      },
       blid: "u#xyz",
       username: testUsername,
-      valid: true,
       user: {
         id: "u#xyz",
         permission: "customer",

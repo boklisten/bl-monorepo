@@ -44,22 +44,15 @@ test.group("LocalLoginValidator", (group) => {
 
     sandbox.stub(LocalLoginPasswordValidator, "validate").resolves(true);
 
-    sandbox
-      .stub(UserHandler, "create")
-      .callsFake((username: string, provider: string, providerId: string) => {
-        return Promise.resolve({
-          id: "",
-          userDetail: "",
-          permission: "customer",
-          login: {
-            provider: provider,
-            providerId: providerId,
-          },
-          blid: "",
-          username: username,
-          valid: true,
-        } as User);
-      });
+    sandbox.stub(UserHandler, "create").callsFake((username: string) => {
+      return Promise.resolve({
+        id: "",
+        userDetail: "",
+        permission: "customer",
+        blid: "",
+        username: username,
+      } as User);
+    });
 
     sandbox.stub(UserHandler, "valid").callsFake(() => {
       return Promise.resolve();
@@ -144,21 +137,5 @@ test.group("LocalLoginValidator", (group) => {
         error.getMsg().should.contain("already exists");
       },
     );
-  });
-
-  test("should resolve with provider and providerId if username and password is valid", async () => {
-    const username = "amail@address.com";
-    const password = "thisIsAValidPassword";
-
-    const providerAndProviderId = await LocalLoginValidator.create(
-      username,
-      password,
-    );
-    // @ts-expect-error fixme: auto ignored bad test types
-    providerAndProviderId.should.have.property("provider").and.eq("local");
-    // @ts-expect-error fixme: auto ignored bad test types
-    providerAndProviderId.should.have
-      .property("providerId")
-      .and.have.length.gte(64);
   });
 });

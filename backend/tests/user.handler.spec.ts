@@ -20,13 +20,8 @@ const testUser = {
   id: "user1",
   userDetail: "userDetail1",
   permission: "customer",
-  login: {
-    provider: "local",
-    providerId: "123",
-  },
   blid: "",
   username: "bill@gmail.com",
-  valid: false,
 } as User;
 
 test.group("UserHandler", (group) => {
@@ -39,8 +34,8 @@ test.group("UserHandler", (group) => {
   let emailValidationHelperSendLinkStub: sinon.SinonStub;
 
   group.each.setup(() => {
-    testProvider = testUser.login.provider;
-    testProviderId = testUser.login.providerId;
+    testProvider = "local";
+    testProviderId = "123";
     testUsername = testUser.username;
     emailValidationLinkSuccess = true;
     sandbox = createSandbox();
@@ -147,8 +142,6 @@ test.group("UserHandler", (group) => {
       (user: User) => {
         // @ts-expect-error fixme: auto ignored bad test types
         user.username.should.be.eql(testUser.username);
-        // @ts-expect-error fixme: auto ignored bad test types
-        user.login.should.be.eql(testUser.login);
       },
     );
   });

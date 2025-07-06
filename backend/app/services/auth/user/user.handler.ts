@@ -116,13 +116,13 @@ async function create(
       await sendEmailValidationLink(addedUserDetail);
     }
 
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const newUser: any = {
+    const newUser: User = {
+      // @ts-expect-error fixme bad types
+      id: undefined,
       userDetail: addedUserDetail.id,
       permission: "customer",
       blid: blid,
       username: username,
-      valid: false,
       login: {
         provider: provider,
         providerId: providerId,

@@ -16,12 +16,7 @@ const testUser: any = {
   username: "bill@clintonisugly.com",
   userDetail: "abc",
   permission: "customer",
-  login: {
-    provider: "",
-    providerId: "",
-  },
   blid: "123",
-  valid: true,
 };
 
 test.group("TokenHandler", (group) => {

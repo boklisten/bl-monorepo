@@ -5,7 +5,6 @@ import LocalLoginPasswordValidator from "#services/auth/local/local-login-passwo
 import LocalLoginHandler from "#services/auth/local/local-login.handler";
 import UserHandler from "#services/auth/user/user.handler";
 import { LocalLogin } from "#services/types/local-login";
-import { User } from "#services/types/user";
 import { BlError } from "#shared/bl-error/bl-error";
 
 function validate(
@@ -70,10 +69,7 @@ function validate(
   });
 }
 
-function create(
-  username: string,
-  password: string,
-): Promise<{ provider: string; providerId: string }> {
+function create(username: string, password: string): Promise<void> {
   return new Promise((resolve, reject) => {
     const blError = new BlError("")
       .className("LocalLoginValidator")
@@ -98,11 +94,8 @@ function create(
                   addedLocalLogin.provider,
                   addedLocalLogin.providerId,
                 ).then(
-                  (user: User) => {
-                    resolve({
-                      provider: user.login.provider,
-                      providerId: user.login.providerId,
-                    });
+                  () => {
+                    resolve();
                   },
                   (createError: BlError) => {
                     reject(

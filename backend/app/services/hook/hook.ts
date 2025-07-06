@@ -1,14 +1,14 @@
+import { JwtPayload } from "jsonwebtoken";
 import { ParsedQs } from "qs";
 
 import { BlDocument } from "#shared/bl-document/bl-document";
-import { AccessToken } from "#shared/token/access-token";
 
 export class Hook {
   public before(
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     body?: unknown,
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    accessToken?: AccessToken,
+    accessToken?: JwtPayload,
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     id?: string,
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -20,7 +20,7 @@ export class Hook {
   after(
     docs: BlDocument[],
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    accessToken?: AccessToken,
+    accessToken?: JwtPayload,
   ): Promise<BlDocument[]> {
     return Promise.resolve(docs ? docs : []);
   }

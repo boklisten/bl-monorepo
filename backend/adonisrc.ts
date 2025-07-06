@@ -21,7 +21,6 @@ export default defineConfig({
 
   preloads: [
     () => import("#start/instrument"),
-    () => import("#start/auth"),
     () => import("#start/routes"),
     () => import("#start/kernel"),
     () => import("#start/database"),

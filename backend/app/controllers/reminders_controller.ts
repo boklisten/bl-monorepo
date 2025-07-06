@@ -18,7 +18,7 @@ async function canAccess(ctx: HttpContext) {
     return !!(
       accessToken &&
       PermissionService.isPermissionEqualOrOver(
-        accessToken?.permission,
+        accessToken?.["permission"],
         "admin",
       )
     );

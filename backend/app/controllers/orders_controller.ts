@@ -18,7 +18,7 @@ export default class OrdersController {
       if (!accessToken) {
         return ctx.response.unauthorized();
       }
-      details = accessToken.details;
+      details = accessToken["details"];
     } catch {
       return ctx.response.unauthorized();
     }

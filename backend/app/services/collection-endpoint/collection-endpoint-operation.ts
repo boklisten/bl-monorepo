@@ -7,6 +7,7 @@ import {
   BlEndpointMethod,
   BlEndpointOperation,
 } from "#services/types/bl-collection";
+import { UserPermission } from "#shared/permission/user-permission";
 
 function createUri(
   collectionUri: string,
@@ -39,9 +40,9 @@ function createRequestHandler(operation: BlEndpointOperation) {
         data: ctx.request.body(),
         user: accessToken
           ? {
-              id: accessToken.sub,
-              details: accessToken.details,
-              permission: accessToken.permission,
+              id: accessToken.sub as string,
+              details: accessToken["details"] as string,
+              permission: accessToken["permission"] as UserPermission,
             }
           : undefined,
       };

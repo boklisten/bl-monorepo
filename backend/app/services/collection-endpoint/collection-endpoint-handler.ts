@@ -1,3 +1,4 @@
+import { JwtPayload } from "jsonwebtoken";
 import { ParsedQs } from "qs";
 
 import CollectionEndpointDocumentAuth from "#services/collection-endpoint/collection-endpoint-document-auth";
@@ -10,7 +11,7 @@ import { BlApiRequest } from "#services/types/bl-api-request";
 import { BlCollection, BlEndpoint } from "#services/types/bl-collection";
 import { BlDocument } from "#shared/bl-document/bl-document";
 import { BlError } from "#shared/bl-error/bl-error";
-import { AccessToken } from "#shared/token/access-token";
+import { UserPermission } from "#shared/permission/user-permission";
 
 function onGetAll(collection: BlCollection, endpoint: BlEndpoint) {
   return async function onRequest(blApiRequest: BlApiRequest) {
@@ -150,7 +151,7 @@ async function handleEndpointRequest({
 }: {
   endpoint: BlEndpoint;
   collection: BlCollection;
-  accessToken: AccessToken | undefined;
+  accessToken: JwtPayload | undefined;
   requestData: unknown;
   documentId: string | undefined;
   query: ParsedQs;
@@ -174,9 +175,9 @@ async function handleEndpointRequest({
         : requestData,
     user: accessToken
       ? {
-          id: accessToken.sub,
-          details: accessToken.details,
-          permission: accessToken.permission,
+          id: accessToken.sub as string,
+          details: accessToken["details"] as string,
+          permission: accessToken["permission"] as UserPermission,
         }
       : undefined,
   };

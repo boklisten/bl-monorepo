@@ -41,25 +41,19 @@ export default function SignIn() {
   }) => {
     setLoading(true);
     setApiError("");
-    try {
-      const { data, status } = await apiClient.auth.local.login.$post({
-        username,
-        password,
-      });
-      if (status === 200 && data) {
-        addAccessToken(data.accessToken);
-        addRefreshToken(data.refreshToken);
-        executeReturnRedirect(searchParams, router);
-        return;
-      }
+    const { data, status } = await apiClient.auth.local.login.$post({
+      username,
+      password,
+    });
+    if (status === 200 && data) {
+      addAccessToken(data.accessToken);
+      addRefreshToken(data.refreshToken);
+      executeReturnRedirect(searchParams, router);
+    } else {
       setApiError(
         status === 401
           ? "Feil brukernavn eller passord"
           : "Noe gikk galt! Prøv igjen eller ta kontakt dersom problemet vedvarer.",
-      );
-    } catch {
-      setApiError(
-        "Noe gikk galt! Prøv igjen eller ta kontakt dersom problemet vedvarer.",
       );
     }
     setLoading(false);

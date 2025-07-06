@@ -47,8 +47,4 @@ export const UserSchema: BlSchema<User> = new Schema({
       name: "username_unique",
     },
   },
-  valid: {
-    type: Boolean,
-    default: true,
-  },
 });

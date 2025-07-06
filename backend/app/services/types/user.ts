@@ -11,7 +11,6 @@ export interface User extends BlDocument {
   };
   blid: string;
   username: string;
-  valid: boolean;
   user?: {
     id: string;
     permission: UserPermission;

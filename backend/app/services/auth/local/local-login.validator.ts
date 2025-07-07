@@ -83,7 +83,7 @@ function create(username: string, password: string): Promise<void> {
           (localLogin: LocalLogin) => {
             LocalLoginHandler.add(localLogin).then(
               () => {
-                UserHandler.create(username, "local", "localId").then(
+                UserHandler.create(username, "local", localLogin.id).then(
                   () => {
                     resolve();
                   },

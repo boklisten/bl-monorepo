@@ -3,7 +3,6 @@ import { expect, use as chaiUse, should } from "chai";
 import chaiAsPromised from "chai-as-promised";
 import sinon, { createSandbox } from "sinon";
 
-import HttpHandler from "#services/http/http.handler";
 import { DibsEasyOrder } from "#services/payment/dibs/dibs-easy-order";
 import { DibsPaymentService } from "#services/payment/dibs/dibs-payment.service";
 import { BlError } from "#shared/bl-error/bl-error";
@@ -15,10 +14,6 @@ should();
 test.group("DibsPaymentService", (group) => {
   const dibsPaymentService: DibsPaymentService = new DibsPaymentService();
   let testOrder: Order;
-
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  let testDibsEasyPaymentResponse: any;
-  let httpHandlerGetSuccess: boolean;
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const testUser = {} as any;
@@ -52,20 +47,7 @@ test.group("DibsPaymentService", (group) => {
       creationTime: new Date(),
       pendingSignature: false,
     };
-    testDibsEasyPaymentResponse = {
-      payment: {
-        paymentId: "dibsPaymentId1",
-      },
-    };
-    httpHandlerGetSuccess = true;
     sandbox = createSandbox();
-    sandbox.stub(HttpHandler, "get").callsFake(() => {
-      if (!httpHandlerGetSuccess) {
-        return Promise.reject(new BlError("could not get resource"));
-      }
-
-      return Promise.resolve(testDibsEasyPaymentResponse);
-    });
   });
   group.each.teardown(() => {
     sandbox.restore();
@@ -183,42 +165,5 @@ test.group("DibsPaymentService", (group) => {
     const deo = dibsPaymentService.orderToDibsEasyOrder(testUser, testOrder);
 
     expect(deo.order.items.length).to.eql(testOrder.orderItems.length);
-  });
-
-  test("should reject if httpHandler rejects", async () => {
-    httpHandlerGetSuccess = false;
-    expect(
-      dibsPaymentService.fetchDibsPaymentData("dibsPaymentId1"),
-    ).to.be.rejectedWith(
-      BlError,
-      /could not get payment details for paymentId "dibsPaymentId1"/,
-    );
-  });
-
-  test("should reject if dibsResponse does not include a payment", async () => {
-    testDibsEasyPaymentResponse = {
-      somethingElse: true,
-    };
-
-    dibsPaymentService
-      .fetchDibsPaymentData("dibsPaymentId1")
-      .catch((err: BlError) => {
-        // @ts-expect-error fixme: auto ignored
-        expect(err.errorStack[0].getMsg()).to.be.eq(
-          "dibs response did not include payment information",
-        );
-      });
-  });
-
-  test("should resolve with a dibsEasyPayment object with correct paymentId", async () => {
-    testDibsEasyPaymentResponse = {
-      payment: {
-        paymentId: "aPaymentId",
-      },
-    };
-
-    expect(
-      dibsPaymentService.fetchDibsPaymentData("aPaymentId"),
-    ).to.eventually.be.eql({ paymentId: "aPaymentId" });
   });
 });

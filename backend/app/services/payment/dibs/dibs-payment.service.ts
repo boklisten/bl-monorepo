@@ -1,6 +1,5 @@
 import { UserDetailHelper } from "#services/collections/user-detail/helpers/user-detail.helper";
 import { APP_CONFIG } from "#services/config/application-config";
-import HttpHandler from "#services/http/http.handler";
 import { DibsEasyOrder } from "#services/payment/dibs/dibs-easy-order";
 import { DibsEasyPayment } from "#services/payment/dibs/dibs-easy-payment/dibs-easy-payment";
 import { DibsEasyItem } from "#services/types/dibs-easy-item";
@@ -16,18 +15,19 @@ export class DibsPaymentService {
 
   public getPaymentId(dibsEasyOrder: DibsEasyOrder): Promise<string> {
     return new Promise((resolve, reject) => {
-      HttpHandler.post(
-        env.get("DIBS_URI") + APP_CONFIG.path.dibs.payment,
-        dibsEasyOrder,
-        env.get("DIBS_SECRET_KEY"),
-      )
-        .then((responseData) => {
-          if (
-            responseData &&
-            // @ts-expect-error fixme: auto ignored
-            responseData["paymentId"]
-          ) {
-            // @ts-expect-error fixme: auto ignored
+      fetch(env.get("DIBS_URI") + APP_CONFIG.path.dibs.payment, {
+        method: "POST",
+        body: JSON.stringify(dibsEasyOrder),
+        headers: new Headers({
+          Authorization: env.get("DIBS_SECRET_KEY"),
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        }),
+      })
+        .then((response) => response.json())
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        .then((responseData: any) => {
+          if (responseData && responseData["paymentId"]) {
             return resolve(responseData["paymentId"]);
           }
           return reject(
@@ -41,26 +41,33 @@ export class DibsPaymentService {
   }
 
   public fetchDibsPaymentData(paymentId: string): Promise<DibsEasyPayment> {
-    return HttpHandler.get(
-      env.get("DIBS_URI") + APP_CONFIG.path.dibs.payment + "/" + paymentId,
-      env.get("DIBS_SECRET_KEY"),
-    )
-      .then((response) => {
-        // @ts-expect-error fixme: auto ignored
-        if (!response["payment"]) {
-          throw new BlError(
-            "dibs response did not include payment information",
-          ).store("paymentId", paymentId);
-        }
+    return (
+      fetch(
+        env.get("DIBS_URI") + APP_CONFIG.path.dibs.payment + "/" + paymentId,
+        {
+          headers: new Headers({
+            Authorization: env.get("DIBS_SECRET_KEY"),
+            Accept: "application/json",
+          }),
+        },
+      )
+        .then((response) => response.json())
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        .then((response: any) => {
+          if (!response["payment"]) {
+            throw new BlError(
+              "dibs response did not include payment information",
+            ).store("paymentId", paymentId);
+          }
 
-        // @ts-expect-error fixme: auto ignored
-        return response["payment"];
-      })
-      .catch((getDibsPaymentDetailError: BlError) => {
-        throw new BlError(
-          `could not get payment details for paymentId "${paymentId}"`,
-        ).add(getDibsPaymentDetailError);
-      });
+          return response["payment"];
+        })
+        .catch((getDibsPaymentDetailError: BlError) => {
+          throw new BlError(
+            `could not get payment details for paymentId "${paymentId}"`,
+          ).add(getDibsPaymentDetailError);
+        })
+    );
   }
 
   public orderToDibsEasyOrder(

@@ -7,10 +7,7 @@ import UserHandler from "#services/auth/user/user.handler";
 import { LocalLogin } from "#services/types/local-login";
 import { BlError } from "#shared/bl-error/bl-error";
 
-function validate(
-  username: string,
-  password: string,
-): Promise<{ provider: string; providerId: string }> {
+function validate(username: string, password: string): Promise<void> {
   return new Promise((resolve, reject) => {
     const blError = new BlError("")
       .className("LocalLoginValidator")
@@ -30,10 +27,7 @@ function validate(
               localLogin.hashedPassword,
             ).then(
               () => {
-                resolve({
-                  provider: localLogin.provider,
-                  providerId: localLogin.providerId,
-                });
+                resolve();
               },
               (error: BlError) => {
                 reject(
@@ -88,12 +82,8 @@ function create(username: string, password: string): Promise<void> {
         LocalLoginCreator.create(username, password).then(
           (localLogin: LocalLogin) => {
             LocalLoginHandler.add(localLogin).then(
-              (addedLocalLogin: LocalLogin) => {
-                UserHandler.create(
-                  username,
-                  addedLocalLogin.provider,
-                  addedLocalLogin.providerId,
-                ).then(
+              () => {
+                UserHandler.create(username, "local", "localId").then(
                   () => {
                     resolve();
                   },

@@ -25,9 +25,7 @@ test.group("LocalLoginHandler", (group) => {
   let testLocalLogin: LocalLogin = {
     id: "1",
     username: "a",
-    providerId: "1",
     hashedPassword: "b",
-    provider: "c",
     salt: "h",
   };
   let testUsername = "";
@@ -39,8 +37,6 @@ test.group("LocalLoginHandler", (group) => {
     testLocalLogin = {
       id: "abc",
       username: "albert@gmail.com",
-      provider: "local",
-      providerId: "i",
       hashedPassword: "abc",
       salt: "l",
     };
@@ -78,18 +74,6 @@ test.group("LocalLoginHandler", (group) => {
 
   test("username is empty or undefined", async () => {
     testLocalLogin.username = "";
-    // @ts-expect-error fixme: auto ignored bad test types
-    LocalLoginHandler.add(testLocalLogin).should.be.rejectedWith(BlError);
-  });
-
-  test("provider is empty or undefiend", async () => {
-    testLocalLogin.provider = "";
-    // @ts-expect-error fixme: auto ignored bad test types
-    LocalLoginHandler.add(testLocalLogin).should.be.rejectedWith(BlError);
-  });
-
-  test("providerId is empty or undefined", async () => {
-    testLocalLogin.providerId = "";
     // @ts-expect-error fixme: auto ignored bad test types
     LocalLoginHandler.add(testLocalLogin).should.be.rejectedWith(BlError);
   });

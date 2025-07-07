@@ -144,12 +144,6 @@ function add(localLogin: LocalLogin): Promise<LocalLogin> {
       .methodName("add");
     if (!localLogin.username || localLogin.username.length <= 0)
       return reject(blError.msg("username of LocalLogin needs to be provided"));
-    if (!localLogin.provider || localLogin.provider.length <= 0)
-      return reject(blError.msg("provider of LocalLogin needs to be provided"));
-    if (!localLogin.providerId || localLogin.providerId.length <= 0)
-      return reject(
-        blError.msg("providerId of LocalLogin needs to be provided"),
-      );
     if (!localLogin.hashedPassword || localLogin.hashedPassword.length <= 0)
       return reject(
         blError.msg("hashedPassword of LocalLogin needs to be provided"),

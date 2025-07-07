@@ -14,14 +14,6 @@ export const LocalLoginSchema: BlSchema<LocalLogin> = new Schema({
       name: "username_unique",
     },
   },
-  provider: {
-    type: String,
-    required: true,
-  },
-  providerId: {
-    type: String,
-    required: true,
-  },
   hashedPassword: {
     type: String,
     required: true,

@@ -16,8 +16,6 @@ should();
 
 const testLocalLogin = {
   username: "albert@protonmail.com",
-  provider: "local",
-  providerId: "123",
   hashedPassword: "a",
   salt: "dog",
   id: "12354",
@@ -101,26 +99,6 @@ test.group("LocalLoginValidator", (group) => {
         error.getCode().should.be.eq(702);
       },
     );
-  });
-
-  test("should resolve with correct provider and providerId when username and password is correct", async () => {
-    const expectedProvider = {
-      provider: testLocalLogin.provider,
-      providerId: testLocalLogin.providerId,
-    };
-    return new Promise((resolve, reject) => {
-      LocalLoginValidator.validate(testUserName, testPassword).then(
-        (returnedProvider: { provider: string; providerId: string }) => {
-          if (returnedProvider.providerId === expectedProvider.providerId)
-            resolve(true);
-          reject(new Error("provider is not equal to expectedProvider"));
-        },
-        (error) => {
-          reject(error);
-        },
-      );
-      // @ts-expect-error fixme: auto ignored bad test types
-    }).should.eventually.be.true;
   });
 
   test("should reject with BlError if username does exist", async () => {

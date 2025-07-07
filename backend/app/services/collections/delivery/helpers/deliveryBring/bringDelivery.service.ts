@@ -1,9 +1,9 @@
 import moment from "moment";
+import { stringify } from "qs";
 
 import { BringDelivery } from "#services/collections/delivery/helpers/deliveryBring/bringDelivery";
 import { APP_CONFIG } from "#services/config/application-config";
 import { isNullish } from "#services/helper/typescript-helpers";
-import HttpHandler from "#services/http/http.handler";
 import { BlError } from "#shared/bl-error/bl-error";
 import { DeliveryInfoBring } from "#shared/delivery/delivery-info/delivery-info-bring";
 import { Item } from "#shared/item/item";
@@ -56,13 +56,13 @@ export class BringDeliveryService {
 
     const postalInfoUrl = `https://api.bring.com/pickuppoint/api/postalCode/NO/getCityAndType/${shipmentAddress.postalCode}.json`;
     try {
-      const postalInfo = await HttpHandler.getWithQuery(
-        postalInfoUrl,
-        "",
-        bringAuthHeaders,
-      );
+      const response = await fetch(postalInfoUrl, {
+        headers: bringAuthHeaders,
+      });
+      const postalInfo = (await response.json()) as {
+        postalCode: { city: string };
+      };
 
-      // @ts-expect-error fixme: auto ignored
       shipmentAddress.postalCity = postalInfo["postalCode"]["city"];
     } catch {
       return Promise.reject(new BlError("fromPostalCode is not valid"));
@@ -89,15 +89,11 @@ export class BringDeliveryService {
         items,
         product,
       );
-      const queryString = HttpHandler.createQueryString(bringDelivery);
-
-      HttpHandler.getWithQuery(
-        this.bringShipmentUrl,
-        queryString,
-        bringAuthHeaders,
-      )
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        .then((responseData: any) => {
+      fetch(`${this.bringShipmentUrl}?${stringify(bringDelivery)}`, {
+        headers: bringAuthHeaders,
+      })
+        .then((response) => response.json())
+        .then((responseData) => {
           let deliveryInfoBring: DeliveryInfoBring;
           try {
             deliveryInfoBring = this.getDeliveryInfoBringFromBringResponse(

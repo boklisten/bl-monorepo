@@ -1,5 +1,4 @@
 import logger from "@adonisjs/core/services/logger";
-import { stringify } from "qs";
 import request from "request";
 import rp from "request-promise";
 
@@ -47,36 +46,6 @@ function post(
   });
 }
 
-function getWithQuery(
-  url: string,
-  queryString: string,
-  headers?: object,
-): Promise<unknown> {
-  return new Promise((resolve, reject) => {
-    const options = {
-      uri: url + "?" + queryString,
-      json: true,
-      headers: headers,
-    };
-
-    logger.debug(`R-> GET ${options.uri}`);
-
-    rp(options)
-      .then((jsonResponse: unknown) => {
-        resolve(jsonResponse);
-      })
-      .catch((error: unknown) => {
-        logger.info(`<-R ERROR ${error}`);
-
-        reject(
-          new BlError("could not get page with query")
-            .store("responseError", error)
-            .store("uri", url + "?" + queryString),
-        );
-      });
-  });
-}
-
 function get(url: string, authorization?: string): Promise<unknown> {
   return new Promise((resolve, reject) => {
     const options = {
@@ -109,15 +78,9 @@ function get(url: string, authorization?: string): Promise<unknown> {
   });
 }
 
-function createQueryString(data: unknown): string {
-  return stringify(data);
-}
-
 const HttpHandler = {
   post,
-  getWithQuery,
   get,
-  createQueryString,
 };
 
 export default HttpHandler;

@@ -9,7 +9,7 @@ export const metadata: Metadata = {
 };
 
 export default async function PasswordResetPage(props: {
-  params: Promise<{ userId: string }>;
+  params: Promise<{ resetId: string }>;
 }) {
   const params = await props.params;
   return (
@@ -24,7 +24,7 @@ export default async function PasswordResetPage(props: {
           }}
         >
           <Typography variant="h1">Lag nytt passord</Typography>
-          <PasswordReset userId={params.userId} />
+          <PasswordReset resetId={params.resetId} />
         </Box>
       </Container>
     </Card>

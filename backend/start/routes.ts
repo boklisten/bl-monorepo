@@ -7,6 +7,8 @@ const AuthTokensController = () =>
 const AuthSocialController = () =>
   import("#controllers/auth/social_controller");
 const AuthLocalController = () => import("#controllers/auth/local_controller");
+const AuthPasswordResetController = () =>
+  import("#controllers/auth/password_reset_controller");
 const WaitingListEntriesController = () =>
   import("#controllers/waiting_list_entries_controller");
 const RemindersController = () => import("#controllers/reminders_controller");
@@ -41,6 +43,16 @@ router
 router
   .post("/auth/local/register", [AuthLocalController, "register"])
   .as("auth.local.register");
+
+/**
+ * password reset
+ */
+router
+  .post("/forgot-password", [AuthPasswordResetController, "forgotPasswordSend"])
+  .as("auth.password.forgot.send");
+router
+  .post("/reset-password", [AuthPasswordResetController, "resetPasswordStore"])
+  .as("auth.password.reset.store");
 
 router
   .get("/waiting_list_entries", [

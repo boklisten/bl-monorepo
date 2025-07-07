@@ -31,22 +31,3 @@ export const updateUserDetails = async (
     userDetails,
   );
 };
-
-export const resetPassword = async (
-  userId: string,
-  resetToken: string,
-  newPassword: string,
-) => {
-  return await BlFetcher.patch(
-    publicApiClient.$url(
-      "collection.pendingpasswordresets.operation.confirm.patch",
-      {
-        params: { id: userId },
-      },
-    ),
-    {
-      resetToken,
-      newPassword,
-    },
-  );
-};

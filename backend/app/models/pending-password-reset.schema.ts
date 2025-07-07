@@ -5,11 +5,6 @@ import { PendingPasswordReset } from "#shared/password-reset/pending-password-re
 
 export const PendingPasswordResetSchema: BlSchema<PendingPasswordReset> =
   new Schema({
-    // @ts-expect-error fixme: auto ignored
-    _id: {
-      type: Schema.Types.String,
-      required: true,
-    },
     email: {
       type: Schema.Types.String,
       trim: true,

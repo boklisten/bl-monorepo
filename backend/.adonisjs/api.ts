@@ -55,6 +55,28 @@ type AuthLocalRegisterPost = {
     true
   >;
 };
+type ForgotPasswordPost = {
+  request: MakeTuyauRequest<
+    InferInput<
+      (typeof import("../app/validators/auth_validator.ts"))["forgotPasswordValidator"]
+    >
+  >;
+  response: MakeNonSerializedTuyauResponse<
+    import("../app/controllers/auth/password_reset_controller.ts").default["forgotPasswordSend"],
+    true
+  >;
+};
+type ResetPasswordPost = {
+  request: MakeTuyauRequest<
+    InferInput<
+      (typeof import("../app/validators/auth_validator.ts"))["passwordResetValidator"]
+    >
+  >;
+  response: MakeNonSerializedTuyauResponse<
+    import("../app/controllers/auth/password_reset_controller.ts").default["resetPasswordStore"],
+    true
+  >;
+};
 type WaitingListEntriesGetHead = {
   request: unknown;
   response: MakeNonSerializedTuyauResponse<
@@ -215,6 +237,14 @@ export interface ApiDefinition {
       };
     };
   };
+  "forgot-password": {
+    $url: {};
+    $post: ForgotPasswordPost;
+  };
+  "reset-password": {
+    $url: {};
+    $post: ResetPasswordPost;
+  };
   waiting_list_entries: {
     $url: {};
     $get: WaitingListEntriesGetHead;
@@ -312,6 +342,20 @@ const routes = [
     path: "/auth/local/register",
     method: ["POST"],
     types: {} as AuthLocalRegisterPost,
+  },
+  {
+    params: [],
+    name: "auth.password.forgot.send",
+    path: "/forgot-password",
+    method: ["POST"],
+    types: {} as ForgotPasswordPost,
+  },
+  {
+    params: [],
+    name: "auth.password.reset.store",
+    path: "/reset-password",
+    method: ["POST"],
+    types: {} as ResetPasswordPost,
   },
   {
     params: [],
@@ -773,27 +817,6 @@ const routes = [
     name: "collection.userdetails.getAll",
     path: "/userdetails",
     method: ["GET", "HEAD"],
-    types: {} as unknown,
-  },
-  {
-    params: [],
-    name: "collection.pendingpasswordresets.post",
-    path: "/pendingpasswordresets",
-    method: ["POST"],
-    types: {} as unknown,
-  },
-  {
-    params: ["id"],
-    name: "collection.pendingpasswordresets.patch",
-    path: "/pendingpasswordresets/:id",
-    method: ["PATCH"],
-    types: {} as unknown,
-  },
-  {
-    params: ["id"],
-    name: "collection.pendingpasswordresets.operation.confirm.patch",
-    path: "/pendingpasswordresets/:id/confirm",
-    method: ["PATCH"],
     types: {} as unknown,
   },
   {

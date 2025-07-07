@@ -13,7 +13,6 @@ import { useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import validator from "validator";
 
-import BlFetcher from "@/api/blFetcher";
 import DynamicLink from "@/components/DynamicLink";
 import useApiClient from "@/utils/api/useApiClient";
 
@@ -34,12 +33,7 @@ const ForgotPage = () => {
     try {
       setError(false);
       setSuccess(false);
-      await BlFetcher.post(
-        client.$url("collection.pendingpasswordresets.post"),
-        {
-          email: data.email,
-        },
-      );
+      await client["forgot-password"].$post({ email: data.email }).unwrap();
       setSuccess(true);
     } catch {
       setError(true);

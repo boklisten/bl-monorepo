@@ -15,14 +15,14 @@ import { useSearchParams } from "next/navigation";
 import React, { useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 
-import { resetPassword } from "@/api/user";
 import DynamicLink from "@/components/DynamicLink";
+import { publicApiClient } from "@/utils/api/publicApiClient";
 
 interface PasswordResetFields {
   password: string;
 }
 
-export default function PasswordReset({ userId }: { userId: string }) {
+export default function PasswordReset({ resetId }: { resetId: string }) {
   const searchParams = useSearchParams();
   const [showPassword, setShowPassword] = useState(false);
   const [apiError, setApiError] = useState("");
@@ -35,12 +35,13 @@ export default function PasswordReset({ userId }: { userId: string }) {
   const onSubmit: SubmitHandler<PasswordResetFields> = async (data) => {
     setApiError("");
     try {
-      // fixme: 404 error is ignored here, leading the success message to always be displayed
-      await resetPassword(
-        userId,
-        searchParams.get("resetToken") ?? "",
-        data.password,
-      );
+      await publicApiClient["reset-password"]
+        .$post({
+          resetId,
+          resetToken: searchParams.get("resetToken") ?? "",
+          newPassword: data.password,
+        })
+        .unwrap();
 
       setSuccess(true);
     } catch {

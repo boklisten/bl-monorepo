@@ -11,7 +11,6 @@ import { MessageCollection } from "#services/collections/message/message.collect
 import { OpeningHourCollection } from "#services/collections/opening-hour/opening-hour.collection";
 import { OrderCollection } from "#services/collections/order/order.collection";
 import { PaymentCollection } from "#services/collections/payment/payment.collection";
-import { PendingPasswordResetCollection } from "#services/collections/pending-password-reset/pending-password-reset.collection";
 import { SignatureCollection } from "#services/collections/signature/signature.collection";
 import { StandMatchCollection } from "#services/collections/stand-match/stand-match.collection";
 import { UniqueItemCollection } from "#services/collections/unique-item/unique-item.collection";
@@ -28,7 +27,6 @@ const BlCollections = [
   OrderCollection,
   PaymentCollection,
   UserDetailCollection,
-  PendingPasswordResetCollection,
   EmailValidationCollection,
   MessageCollection,
   StandMatchCollection,

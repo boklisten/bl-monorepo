@@ -62,7 +62,7 @@ export class OrderEmailHandler {
 
     if (withAgreement) {
       const branch = await BlStorage.Branches.get(branchId);
-      this.requestGuardianSignature(customerDetail, branch?.name ?? "");
+      await this.requestGuardianSignature(customerDetail, branch?.name ?? "");
     }
 
     if (this.paymentNeeded(order)) {
@@ -111,7 +111,7 @@ export class OrderEmailHandler {
       if (await userHasValidSignature(customerDetail)) {
         return;
       }
-      sendMail(
+      await sendMail(
         EMAIL_SETTINGS.types.guardianSignature.fromEmail,
         EMAIL_SETTINGS.types.guardianSignature.templateId,
         [
@@ -126,7 +126,7 @@ export class OrderEmailHandler {
           },
         ],
       );
-      sendSMS(
+      await sendSMS(
         customerDetail.guardian.phone,
         `Hei. ${customerDetail.name} har nylig bestilt bøker fra ${branchName} gjennom Boklisten.no. Siden ${customerDetail.name} er under 18 år, krever vi at du som foresatt signerer låneavtalen. Vi har derfor sendt en epost til ${customerDetail.guardian.email} med lenke til signering. Ta kontakt på info@boklisten.no om du har spørsmål. Mvh. Boklisten`,
       );

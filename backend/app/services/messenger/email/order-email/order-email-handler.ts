@@ -108,26 +108,23 @@ export class OrderEmailHandler {
       ) &&
       customerDetail?.guardian?.email
     ) {
-      const emailSetting: EmailSetting = {
-        toEmail: customerDetail.guardian.email,
-        fromEmail: EMAIL_SETTINGS.types.guardianSignature.fromEmail,
-        subject: EMAIL_SETTINGS.types.guardianSignature.subject,
-        userId: customerDetail.id,
-        userFullName: customerDetail.name,
-      };
-
       if (await userHasValidSignature(customerDetail)) {
         return;
       }
       sendMail(
-        emailSetting,
+        EMAIL_SETTINGS.types.guardianSignature.fromEmail,
         EMAIL_SETTINGS.types.guardianSignature.templateId,
-        {
-          guardianSignatureUri: `${env.get("CLIENT_URI")}${EMAIL_SETTINGS.types.guardianSignature.path}${customerDetail.id}`,
-          customerName: customerDetail.name,
-          guardianName: customerDetail.guardian.name,
-          branchName: branchName,
-        },
+        [
+          {
+            to: customerDetail.guardian.email,
+            dynamicTemplateData: {
+              guardianSignatureUri: `${env.get("CLIENT_URI")}${EMAIL_SETTINGS.types.guardianSignature.path}${customerDetail.id}`,
+              customerName: customerDetail.name,
+              guardianName: customerDetail.guardian.name,
+              branchName: branchName,
+            },
+          },
+        ],
       );
       sendSMS(
         customerDetail.guardian.phone,

@@ -63,18 +63,19 @@ export class MatchNotifyOperation implements Operation {
               customer.phone,
               `Hei, ${customer.name.split(" ")[0]}. ${parsedRequest.data.message} Mvh Boklisten`,
             );
+            // fixme: rewrite so that we only send one send mail request for all users, using personalizations
             await sendMail(
-              {
-                userId: customer.id,
-                fromEmail: "info@boklisten.no",
-                toEmail: customer.email,
-                subject: "Du skal snart overlevere bøker",
-              },
+              "info@boklisten.no",
               "d-b6d2e8bcf3bc4e6e9aef3f8eb49f1c64",
-              {
-                name: customer.name.split(" ")[0] ?? customer.name,
-                username: customer.email,
-              },
+              [
+                {
+                  to: customer.email,
+                  dynamicTemplateData: {
+                    name: customer.name.split(" ")[0] ?? customer.name,
+                    username: customer.email,
+                  },
+                },
+              ],
             );
           },
         ),

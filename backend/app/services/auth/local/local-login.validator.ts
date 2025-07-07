@@ -4,6 +4,7 @@ import LocalLoginCreator from "#services/auth/local/local-login-creator";
 import LocalLoginPasswordValidator from "#services/auth/local/local-login-password.validator";
 import LocalLoginHandler from "#services/auth/local/local-login.handler";
 import UserHandler from "#services/auth/user/user.handler";
+import BlCrypto from "#services/config/bl-crypto";
 import { LocalLogin } from "#services/types/local-login";
 import { BlError } from "#shared/bl-error/bl-error";
 
@@ -83,7 +84,7 @@ function create(username: string, password: string): Promise<void> {
           (localLogin: LocalLogin) => {
             LocalLoginHandler.add(localLogin).then(
               () => {
-                UserHandler.create(username, "local", localLogin.id).then(
+                UserHandler.create(username, "local", BlCrypto.random()).then(
                   () => {
                     resolve();
                   },

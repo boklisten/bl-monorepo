@@ -2,7 +2,7 @@ import type { HttpContext } from "@adonisjs/core/http";
 
 import { PermissionService } from "#services/auth/permission.service";
 import CollectionEndpointAuth from "#services/collection-endpoint/collection-endpoint-auth";
-import { sendMailV2 } from "#services/messenger/email/email-service";
+import { sendMail } from "#services/messenger/email/email-service";
 import { emailTemplateSenderValidator } from "#validators/mail_template_sender";
 
 async function canAccess(ctx: HttpContext) {
@@ -33,7 +33,7 @@ export default class MailTemplateSenderController {
       emailTemplateSenderValidator,
     );
 
-    return await sendMailV2(
+    return await sendMail(
       "info@boklisten.no",
       emailTemplateId,
       emails.map((email) => ({

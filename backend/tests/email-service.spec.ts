@@ -1,4 +1,3 @@
-import { EmailHandler } from "@boklisten/bl-email";
 import { PostOffice } from "@boklisten/bl-post-office";
 import { test } from "@japa/runner";
 import { expect, should, use as chaiUse } from "chai";
@@ -29,9 +28,8 @@ chaiUse(chaiAsPromised);
 should();
 
 test.group("EmailService", (group) => {
-  const emailHandler = new EmailHandler({ sendgrid: { apiKey: "someKey" } });
   const mockPostOffice = new MockPostOffice();
-  const emailService = new EmailService(emailHandler, mockPostOffice);
+  const emailService = new EmailService(mockPostOffice);
 
   let sandbox: sinon.SinonSandbox;
   let postOfficeSendStub: sinon.SinonStub;

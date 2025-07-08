@@ -1,5 +1,4 @@
 import logger from "@adonisjs/core/services/logger";
-import { EmailHandler } from "@boklisten/bl-email";
 import {
   ItemList,
   MessageOptions,
@@ -15,7 +14,6 @@ import { OrderEmailHandler } from "#services/messenger/email/order-email/order-e
 import { MessengerService } from "#services/messenger/messenger-service";
 import { BlStorage } from "#services/storage/bl-storage";
 import { EmailOrder, EmailSetting, EmailUser } from "#services/types/email";
-import { BlError } from "#shared/bl-error/bl-error";
 import { CustomerItem } from "#shared/customer-item/customer-item";
 import { Delivery } from "#shared/delivery/delivery";
 import { Item } from "#shared/item/item";
@@ -27,21 +25,11 @@ import { UserDetail } from "#shared/user/user-detail/user-detail";
 import env from "#start/env";
 
 export class EmailService implements MessengerService {
-  private emailHandler: EmailHandler;
   private orderEmailHandler: OrderEmailHandler;
   private postOffice: PostOffice;
 
-  constructor(emailHandler?: EmailHandler, inputPostOffice?: PostOffice) {
+  constructor(inputPostOffice?: PostOffice) {
     sgMail.setApiKey(env.get("SENDGRID_API_KEY"));
-    this.emailHandler =
-      emailHandler ??
-      new EmailHandler({
-        sendgrid: {
-          apiKey: env.get("SENDGRID_API_KEY"),
-        },
-        locale: "nb",
-      });
-
     this.orderEmailHandler = new OrderEmailHandler();
     this.postOffice = inputPostOffice ?? postOffice;
     this.postOffice.overrideLogger(logger);
@@ -301,11 +289,23 @@ export class EmailService implements MessengerService {
       },
     };
 
-    await this.emailHandler
-      .sendDelivery(emailSetting, emailOrder, emailUser)
-      .catch((error) => {
-        throw new BlError("Unable to send delivery email").code(200).add(error);
-      });
+    await sendMail(
+      emailSetting.fromEmail,
+      "d-dc8ab3365a0f4fd8a69b6a38e6eb83f9",
+      [
+        {
+          to: emailSetting.toEmail,
+          dynamicTemplateData: {
+            emailTemplateInput: {
+              user: emailUser,
+              order: emailOrder,
+              userFullName: emailSetting.userFullName || emailUser.name,
+              textBlocks: emailSetting.textBlocks,
+            },
+          },
+        },
+      ],
+    );
   }
 
   private orderItemsToDeliveryInformationItems(

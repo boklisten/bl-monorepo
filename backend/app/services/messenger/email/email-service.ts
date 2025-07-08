@@ -1,24 +1,12 @@
 import logger from "@adonisjs/core/services/logger";
-import {
-  ItemList,
-  MessageOptions,
-  postOffice,
-  PostOffice,
-  Recipient,
-} from "@boklisten/bl-post-office";
 import sgMail from "@sendgrid/mail";
 
 import { DateService } from "#services/blc/date.service";
 import { EMAIL_SETTINGS } from "#services/messenger/email/email-settings";
 import { OrderEmailHandler } from "#services/messenger/email/order-email/order-email-handler";
 import { MessengerService } from "#services/messenger/messenger-service";
-import { BlStorage } from "#services/storage/bl-storage";
 import { EmailOrder, EmailSetting, EmailUser } from "#services/types/email";
-import { CustomerItem } from "#shared/customer-item/customer-item";
 import { Delivery } from "#shared/delivery/delivery";
-import { Item } from "#shared/item/item";
-import { Message } from "#shared/message/message";
-import { MessageMethod } from "#shared/message/message-method/message-method";
 import { Order } from "#shared/order/order";
 import { OrderItem } from "#shared/order/order-item/order-item";
 import { UserDetail } from "#shared/user/user-detail/user-detail";
@@ -26,75 +14,10 @@ import env from "#start/env";
 
 export class EmailService implements MessengerService {
   private orderEmailHandler: OrderEmailHandler;
-  private postOffice: PostOffice;
 
-  constructor(inputPostOffice?: PostOffice) {
+  constructor() {
     sgMail.setApiKey(env.get("SENDGRID_API_KEY"));
     this.orderEmailHandler = new OrderEmailHandler();
-    this.postOffice = inputPostOffice ?? postOffice;
-    this.postOffice.overrideLogger(logger);
-    this.postOffice.setConfig({
-      reminder: { mediums: { email: true, sms: true } },
-      generic: { mediums: { email: true } },
-      receipt: { mediums: { email: false, sms: false } },
-    });
-  }
-
-  public send(message: Message, customerDetail: UserDetail): Promise<void> {
-    if (message.messageType === "generic") {
-      return this.sendGeneric(message, customerDetail);
-    }
-
-    throw `message type "${message.messageType}" not supported`;
-  }
-
-  public async sendGeneric(
-    message: Message,
-    customerDetail: UserDetail,
-  ): Promise<void> {
-    const recipient = await this.customerDetailToRecipient(
-      message,
-      customerDetail,
-      [],
-    );
-
-    const messageOptions: MessageOptions = {
-      type: "generic",
-      subtype: "none",
-      subject: message.subject ?? "",
-      sequence_number: message.sequenceNumber ?? 0,
-      htmlContent: message.htmlContent ?? "",
-      textBlocks: message.textBlocks ?? [],
-      mediums: this.getMessageOptionMediums(message),
-    };
-
-    try {
-      await this.postOffice.send([recipient], messageOptions);
-    } catch (error) {
-      logger.error(`could not send generic mail: ${error}`);
-    }
-  }
-
-  private getMessageOptionMediums(message: Message): {
-    email: boolean;
-    sms: boolean;
-    voice: boolean;
-  } {
-    switch (message.messageMethod) {
-      case MessageMethod.EMAIL: {
-        return { email: true, sms: false, voice: false };
-      }
-      case MessageMethod.SMS: {
-        return { email: false, sms: true, voice: false };
-      }
-      default: {
-        return {
-          email: false,
-          sms: false,
-          voice: false,
-        };
-      }
-    }
   }
 
   public async orderPlaced(
@@ -102,111 +25,6 @@ export class EmailService implements MessengerService {
     order: Order,
   ): Promise<void> {
     await this.orderEmailHandler.sendOrderReceipt(customerDetail, order);
-  }
-
-  private async customerDetailToRecipient(
-    message: Message,
-    customerDetail: UserDetail,
-    customerItems: CustomerItem[],
-  ): Promise<Recipient> {
-    return {
-      message_id: message.id,
-      user_id: customerDetail.id,
-      email: customerDetail.email,
-      name: customerDetail.name,
-      phone: "+47" + customerDetail.phone,
-      settings: {
-        text: {
-          deadline: message.info
-            ? // @ts-expect-error fixme: auto ignored
-              this.formatDeadline(message.info["deadline"])
-            : "",
-        },
-      },
-      itemList: await this.customerItemsToItemList(message, customerItems),
-    };
-  }
-
-  private async customerItemsToItemList(
-    message: Message,
-    customerItems: CustomerItem[],
-  ): Promise<ItemList> {
-    if (message.messageSubtype === "partly-payment") {
-      return {
-        summary: {
-          total:
-            this.getCustomerItemLeftToPayTotal(customerItems).toString() +
-            " NOK",
-          totalTax: "0 NOK",
-          taxPercentage: "0",
-        },
-        items: await this.customerItemsToEmailItems(message, customerItems),
-      };
-    } else {
-      return {
-        summary: {
-          // @ts-expect-error fixme: auto ignored
-          total: null,
-
-          // @ts-expect-error fixme: auto ignored
-          totalTax: null,
-
-          // @ts-expect-error fixme: auto ignored
-          taxPercentage: null,
-        },
-        items: await this.customerItemsToEmailItems(message, customerItems),
-      };
-    }
-  }
-
-  private async customerItemsToEmailItems(
-    message: Message,
-    customerItems: CustomerItem[],
-  ): Promise<ItemList["items"]> {
-    const items = [];
-
-    for (const customerItem of customerItems) {
-      const item = await BlStorage.Items.get(customerItem.item);
-      items.push(this.customerItemToEmailItem(message, customerItem, item));
-    }
-
-    return items;
-  }
-
-  private customerItemToEmailItem(
-    message: Message,
-    customerItem: CustomerItem,
-    item: Item,
-  ): ItemList["items"][number] {
-    if (message.messageSubtype === "partly-payment") {
-      return {
-        id: item.info.isbn.toString(),
-        title: item.title,
-        // @ts-expect-error fixme: auto ignored
-        deadline: this.formatDeadline(message.info["deadline"]),
-        leftToPay: customerItem.amountLeftToPay + " NOK",
-      };
-    } else {
-      return {
-        id: item.info.isbn.toString(),
-        title: item.title,
-        // @ts-expect-error fixme: auto ignored
-        deadline: this.formatDeadline(message.info["deadline"]),
-      };
-    }
-  }
-
-  private formatDeadline(deadline?: Date): string {
-    return deadline == undefined
-      ? ""
-      : DateService.toPrintFormat(deadline, "Europe/Oslo");
-  }
-  private getCustomerItemLeftToPayTotal(customerItems: CustomerItem[]): number {
-    return customerItems.reduce(
-      // @ts-expect-error fixme: auto ignored
-      (total, next) => total + next.amountLeftToPay,
-      0,
-    );
   }
 
   public async deliveryInformation(

@@ -3,24 +3,11 @@ import { EmailAttachment } from "@boklisten/bl-email";
 import { EmailService } from "#services/messenger/email/email-service";
 import { PdfService } from "#services/messenger/pdf/pdf-service";
 import { BlStorage } from "#services/storage/bl-storage";
-import { Message } from "#shared/message/message";
 import { Order } from "#shared/order/order";
 import { UserDetail } from "#shared/user/user-detail/user-detail";
 
 const emailService = new EmailService();
 const pdfService = new PdfService();
-
-/**
- * send out message(s) to the customer
- * @param {Message[]} message
- * @param {UserDetail} customerDetail
- */
-async function send(
-  message: Message,
-  customerDetail: UserDetail,
-): Promise<void> {
-  await emailService.send(message, customerDetail);
-}
 
 /**
  * sends out notifications to the customer when order is placed
@@ -101,7 +88,6 @@ async function passwordReset(
 }
 
 const Messenger = {
-  send,
   orderPlaced,
   getOrderReceiptPdf,
   getOrderAgreementPdf,

@@ -16,7 +16,7 @@ export class PdfService {
   constructor() {
     const emailHandler = new EmailHandler({ locale: "nb" });
     this.pdfHandler = new PdfHandler(emailHandler);
-    this.orderEmailHandler = new OrderEmailHandler(emailHandler);
+    this.orderEmailHandler = new OrderEmailHandler();
   }
 
   async getOrderReceiptPdf(

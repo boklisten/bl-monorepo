@@ -42,7 +42,7 @@ export class EmailService implements MessengerService {
         locale: "nb",
       });
 
-    this.orderEmailHandler = new OrderEmailHandler(this.emailHandler);
+    this.orderEmailHandler = new OrderEmailHandler();
     this.postOffice = inputPostOffice ?? postOffice;
     this.postOffice.overrideLogger(logger);
     this.postOffice.setConfig({

@@ -1,4 +1,3 @@
-import { EmailHandler, EmailLog } from "@boklisten/bl-email";
 import moment from "moment-timezone";
 
 import { DateService } from "#services/blc/date.service";
@@ -26,12 +25,10 @@ export class OrderEmailHandler {
   private noPaymentNoticeText =
     "Dette er kun en reservasjon, du har ikke betalt enda. Du betaler først når du kommer til oss på stand.";
 
-  constructor(private emailHandler: EmailHandler) {}
-
   public async sendOrderReceipt(
     customerDetail: UserDetail,
     order: Order,
-  ): Promise<EmailLog> {
+  ): Promise<void> {
     const emailSetting: EmailSetting = {
       toEmail: customerDetail.email,
       fromEmail: EMAIL_SETTINGS.types.receipt.fromEmail,
@@ -69,6 +66,24 @@ export class OrderEmailHandler {
       this.addNoPaymentProvidedNotice(emailSetting);
     }
 
+    await sendMail(
+      emailSetting.fromEmail,
+      "d-dc8ab3365a0f4fd8a69b6a38e6eb83f9",
+      [
+        {
+          to: emailSetting.toEmail,
+          dynamicTemplateData: {
+            emailTemplateInput: {
+              user: emailUser,
+              order: emailOrder,
+              userFullName: emailSetting.userFullName || emailUser.name,
+              textBlocks: emailSetting.textBlocks,
+            },
+          },
+        },
+      ],
+    );
+    /*
     return await this.emailHandler
       .sendOrderReceipt(emailSetting, emailOrder, emailUser, withAgreement)
       .catch((error) => {
@@ -76,6 +91,7 @@ export class OrderEmailHandler {
           .code(200)
           .add(error);
       });
+     */
   }
 
   private paymentNeeded(order: Order): boolean {

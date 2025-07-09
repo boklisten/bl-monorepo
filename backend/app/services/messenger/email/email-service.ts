@@ -11,6 +11,7 @@ import { Order } from "#shared/order/order";
 import { OrderItem } from "#shared/order/order-item/order-item";
 import { UserDetail } from "#shared/user/user-detail/user-detail";
 import env from "#start/env";
+import { SendGridTemplateId } from "#validators/send_grid_template_id_validator";
 
 export class EmailService implements MessengerService {
   private orderEmailHandler: OrderEmailHandler;
@@ -204,7 +205,7 @@ export class EmailService implements MessengerService {
 
 export async function sendMail(
   from: string,
-  templateId: string,
+  templateId: SendGridTemplateId,
   recipients: {
     to: string;
     dynamicTemplateData?: Record<string, unknown>;

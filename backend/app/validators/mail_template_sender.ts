@@ -1,10 +1,10 @@
 import vine from "@vinejs/vine";
 
-const SENDGRID_TEMPLATE_ID_REGEX = /^d-\S{32}$/;
+import { sendGridTemplateIdValidator } from "#validators/send_grid_template_id_validator";
 
 export const emailTemplateSenderValidator = vine.compile(
   vine.object({
     emails: vine.array(vine.string()),
-    emailTemplateId: vine.string().regex(SENDGRID_TEMPLATE_ID_REGEX),
+    emailTemplateId: sendGridTemplateIdValidator,
   }),
 );

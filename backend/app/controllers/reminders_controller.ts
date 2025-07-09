@@ -8,6 +8,10 @@ import { sendMail } from "#services/messenger/email/email-service";
 import { massSendSMS } from "#services/messenger/sms/sms-service";
 import { BlStorage } from "#services/storage/bl-storage";
 import { reminderValidator } from "#validators/reminder";
+import {
+  assertSendGridTemplateId,
+  SendGridTemplateId,
+} from "#validators/send_grid_template_id_validator";
 
 async function canAccess(ctx: HttpContext) {
   try {
@@ -116,7 +120,7 @@ async function aggregateCustomersToRemind(
 }
 
 async function sendReminderEmail(
-  emailTemplateId: string,
+  emailTemplateId: SendGridTemplateId,
   customers: ReminderCustomer[],
   target: "primary" | "guardian",
 ) {
@@ -193,7 +197,7 @@ export default class RemindersController {
 
     if (emailTemplateId) {
       const { success: successPrimaryEmail } = await sendReminderEmail(
-        emailTemplateId,
+        assertSendGridTemplateId(emailTemplateId),
         customers,
         "primary",
       );
@@ -203,7 +207,7 @@ export default class RemindersController {
 
       if (customerItemType === "rent") {
         const { success: successGuardianEmail } = await sendReminderEmail(
-          emailTemplateId,
+          assertSendGridTemplateId(emailTemplateId),
           customers,
           "guardian",
         );

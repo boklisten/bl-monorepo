@@ -4,6 +4,7 @@ import { PermissionService } from "#services/auth/permission.service";
 import CollectionEndpointAuth from "#services/collection-endpoint/collection-endpoint-auth";
 import { sendMail } from "#services/messenger/email/email-service";
 import { emailTemplateSenderValidator } from "#validators/mail_template_sender";
+import { assertSendGridTemplateId } from "#validators/send_grid_template_id_validator";
 
 async function canAccess(ctx: HttpContext) {
   try {
@@ -35,7 +36,7 @@ export default class MailTemplateSenderController {
 
     return await sendMail(
       "info@boklisten.no",
-      emailTemplateId,
+      assertSendGridTemplateId(emailTemplateId),
       emails.map((email) => ({
         to: email,
       })),

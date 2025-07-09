@@ -27,4 +27,4 @@ export const EMAIL_SETTINGS = {
       subject: "Dine bøker er på vei",
     },
   },
-};
+} as const;

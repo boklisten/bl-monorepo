@@ -62,21 +62,23 @@ export class OrderEmailHandler {
       await this.requestGuardianSignature(customerDetail, branch?.name ?? "");
     }
 
+    // fixme: this is not visible since the sendout does not currently show textblocks
     if (this.paymentNeeded(order)) {
       this.addNoPaymentProvidedNotice(emailSetting);
     }
 
+    // fixme: add a custom subject with the order id
     await sendMail({
-      from: emailSetting.fromEmail,
+      from: EMAIL_SETTINGS.types.receipt.fromEmail,
       templateId: "d-dc8ab3365a0f4fd8a69b6a38e6eb83f9",
       recipients: [
         {
-          to: emailSetting.toEmail,
+          to: customerDetail.email,
           dynamicTemplateData: {
             emailTemplateInput: {
               user: emailUser,
               order: emailOrder,
-              userFullName: emailSetting.userFullName || emailUser.name,
+              userFullName: emailUser.name,
               textBlocks: emailSetting.textBlocks,
             },
           },

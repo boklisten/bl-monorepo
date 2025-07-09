@@ -5,7 +5,7 @@ import { DateService } from "#services/blc/date.service";
 import { EMAIL_SETTINGS } from "#services/messenger/email/email-settings";
 import { OrderEmailHandler } from "#services/messenger/email/order-email/order-email-handler";
 import { MessengerService } from "#services/messenger/messenger-service";
-import { EmailOrder, EmailSetting, EmailUser } from "#services/types/email";
+import { EmailOrder, EmailUser } from "#services/types/email";
 import { Delivery } from "#shared/delivery/delivery";
 import { Order } from "#shared/order/order";
 import { OrderItem } from "#shared/order/order-item/order-item";
@@ -33,21 +33,6 @@ export class EmailService implements MessengerService {
     order: Order,
     delivery: Delivery,
   ): Promise<void> {
-    const emailSetting: EmailSetting = {
-      toEmail: customerDetail.email,
-      fromEmail: EMAIL_SETTINGS.types.deliveryInformation.fromEmail,
-      subject: EMAIL_SETTINGS.types.deliveryInformation.subject,
-      userId: customerDetail.id,
-      textBlocks: [
-        {
-          text: "Dine bøker er nå på vei! De vil bli levert til deg ved hjelp av Bring.",
-        },
-        {
-          text: "Vi anser nå disse bøkene som utlevert. Du er ansvarlig for bøkene fra du henter dem på postkontoret til innlevering er gjennomført. Om noe skulle skje med leveringen er det bare å ta kontakt. Fraktkostnader refunderes ikke for pakker som ikke blir hentet innen fristen.",
-        },
-      ],
-    };
-
     const emailUser: EmailUser = {
       id: customerDetail.id,
       name: customerDetail.name,
@@ -108,18 +93,27 @@ export class EmailService implements MessengerService {
       },
     };
 
+    // fixme: create a new template for this, that actually also shows the textblocks and "Dine bøker er på vei" as a subject
+    // fixme: add a custom subject with the order id
     await sendMail({
-      from: emailSetting.fromEmail,
+      from: EMAIL_SETTINGS.types.deliveryInformation.fromEmail,
       templateId: "d-dc8ab3365a0f4fd8a69b6a38e6eb83f9",
       recipients: [
         {
-          to: emailSetting.toEmail,
+          to: customerDetail.email,
           dynamicTemplateData: {
             emailTemplateInput: {
               user: emailUser,
               order: emailOrder,
-              userFullName: emailSetting.userFullName || emailUser.name,
-              textBlocks: emailSetting.textBlocks,
+              userFullName: emailUser.name,
+              textBlocks: [
+                {
+                  text: "Dine bøker er nå på vei! De vil bli levert til deg ved hjelp av Bring.",
+                },
+                {
+                  text: "Vi anser nå disse bøkene som utlevert. Du er ansvarlig for bøkene fra du henter dem på postkontoret til innlevering er gjennomført. Om noe skulle skje med leveringen er det bare å ta kontakt. Fraktkostnader refunderes ikke for pakker som ikke blir hentet innen fristen.",
+                },
+              ],
             },
           },
         },
@@ -144,25 +138,14 @@ export class EmailService implements MessengerService {
     customerDetail: UserDetail,
     confirmationCode: string,
   ): Promise<void> {
-    const emailSetting: EmailSetting = {
-      toEmail: customerDetail.email,
-      fromEmail: EMAIL_SETTINGS.types.emailConfirmation.fromEmail,
-      subject: EMAIL_SETTINGS.types.emailConfirmation.subject,
-      userId: customerDetail.id,
-    };
-
-    let emailVerificationUri = env.get("CLIENT_URI");
-    emailVerificationUri +=
-      EMAIL_SETTINGS.types.emailConfirmation.path + confirmationCode;
-
     await sendMail({
-      from: emailSetting.fromEmail,
+      from: EMAIL_SETTINGS.types.emailConfirmation.fromEmail,
       templateId: EMAIL_SETTINGS.types.emailConfirmation.templateId,
       recipients: [
         {
-          to: emailSetting.toEmail,
+          to: customerDetail.email,
           dynamicTemplateData: {
-            emailVerificationUri,
+            emailVerificationUri: `${env.get("CLIENT_URI")}${EMAIL_SETTINGS.types.emailConfirmation.path}${confirmationCode}`,
           },
         },
       ],
@@ -175,13 +158,6 @@ export class EmailService implements MessengerService {
     pendingPasswordResetId: string,
     resetToken: string,
   ): Promise<void> {
-    const emailSetting: EmailSetting = {
-      toEmail: userEmail,
-      fromEmail: EMAIL_SETTINGS.types.passwordReset.fromEmail,
-      subject: EMAIL_SETTINGS.types.passwordReset.subject,
-      userId: userId,
-    };
-
     let passwordResetUri = env.get("CLIENT_URI");
     passwordResetUri +=
       EMAIL_SETTINGS.types.passwordReset.path +
@@ -189,11 +165,11 @@ export class EmailService implements MessengerService {
       `?resetToken=${resetToken}`;
 
     await sendMail({
-      from: emailSetting.fromEmail,
+      from: EMAIL_SETTINGS.types.passwordReset.fromEmail,
       templateId: EMAIL_SETTINGS.types.passwordReset.templateId,
       recipients: [
         {
-          to: emailSetting.toEmail,
+          to: userEmail,
           dynamicTemplateData: {
             passwordResetUri,
           },
@@ -203,12 +179,13 @@ export class EmailService implements MessengerService {
   }
 }
 
+type BoklistenEmailAddress = `${string}@boklisten.no`;
 export async function sendMail({
   from,
   templateId,
   recipients,
 }: {
-  from: string;
+  from: BoklistenEmailAddress;
   templateId: SendGridTemplateId;
   recipients: {
     to: string;

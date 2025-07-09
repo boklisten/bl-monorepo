@@ -101,7 +101,7 @@ export class EmailService implements MessengerService {
     // fixme: add a custom subject with the order id
     await sendMail({
       from: EMAIL_SENDER.NO_REPLY,
-      templateId: "d-dc8ab3365a0f4fd8a69b6a38e6eb83f9",
+      templateId: EMAIL_SETTINGS.deliveryInformation.templateId,
       recipients: [
         {
           to: customerDetail.email,

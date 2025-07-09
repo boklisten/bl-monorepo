@@ -1,6 +1,7 @@
 export const EMAIL_SETTINGS = {
   receipt: {
     subject: "Kvittering fra Boklisten.no",
+    templateId: "d-dc8ab3365a0f4fd8a69b6a38e6eb83f9",
   },
   emailConfirmation: {
     subject: "Bekreft e-posten din hos Boklisten.no",
@@ -19,6 +20,10 @@ export const EMAIL_SETTINGS = {
   },
   deliveryInformation: {
     subject: "Dine bøker er på vei",
+    templateId: "d-dc8ab3365a0f4fd8a69b6a38e6eb83f9",
+  },
+  matchNotify: {
+    templateId: "d-b6d2e8bcf3bc4e6e9aef3f8eb49f1c64",
   },
 } as const;
 

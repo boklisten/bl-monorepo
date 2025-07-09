@@ -34,12 +34,12 @@ export default class MailTemplateSenderController {
       emailTemplateSenderValidator,
     );
 
-    return await sendMail(
-      "info@boklisten.no",
-      assertSendGridTemplateId(emailTemplateId),
-      emails.map((email) => ({
+    return await sendMail({
+      from: "info@boklisten.no",
+      templateId: assertSendGridTemplateId(emailTemplateId),
+      recipients: emails.map((email) => ({
         to: email,
       })),
-    );
+    });
   }
 }

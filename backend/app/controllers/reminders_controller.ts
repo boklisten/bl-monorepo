@@ -154,7 +154,11 @@ async function sendReminderEmail(
   }
   const results = await Promise.all(
     batches.map((batch) =>
-      sendMail("info@boklisten.no", emailTemplateId ?? "", batch),
+      sendMail({
+        from: "info@boklisten.no",
+        templateId: emailTemplateId ?? "",
+        recipients: batch,
+      }),
     ),
   );
 

@@ -64,10 +64,10 @@ export class MatchNotifyOperation implements Operation {
               `Hei, ${customer.name.split(" ")[0]}. ${parsedRequest.data.message} Mvh Boklisten`,
             );
             // fixme: rewrite so that we only send one send mail request for all users, using personalizations
-            await sendMail(
-              "info@boklisten.no",
-              "d-b6d2e8bcf3bc4e6e9aef3f8eb49f1c64",
-              [
+            await sendMail({
+              from: "info@boklisten.no",
+              templateId: "d-b6d2e8bcf3bc4e6e9aef3f8eb49f1c64",
+              recipients: [
                 {
                   to: customer.email,
                   dynamicTemplateData: {
@@ -76,7 +76,7 @@ export class MatchNotifyOperation implements Operation {
                   },
                 },
               ],
-            );
+            });
           },
         ),
       ),

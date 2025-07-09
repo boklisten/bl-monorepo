@@ -108,10 +108,10 @@ export class EmailService implements MessengerService {
       },
     };
 
-    await sendMail(
-      emailSetting.fromEmail,
-      "d-dc8ab3365a0f4fd8a69b6a38e6eb83f9",
-      [
+    await sendMail({
+      from: emailSetting.fromEmail,
+      templateId: "d-dc8ab3365a0f4fd8a69b6a38e6eb83f9",
+      recipients: [
         {
           to: emailSetting.toEmail,
           dynamicTemplateData: {
@@ -124,7 +124,7 @@ export class EmailService implements MessengerService {
           },
         },
       ],
-    );
+    });
   }
 
   private orderItemsToDeliveryInformationItems(
@@ -155,10 +155,10 @@ export class EmailService implements MessengerService {
     emailVerificationUri +=
       EMAIL_SETTINGS.types.emailConfirmation.path + confirmationCode;
 
-    await sendMail(
-      emailSetting.fromEmail,
-      EMAIL_SETTINGS.types.emailConfirmation.templateId,
-      [
+    await sendMail({
+      from: emailSetting.fromEmail,
+      templateId: EMAIL_SETTINGS.types.emailConfirmation.templateId,
+      recipients: [
         {
           to: emailSetting.toEmail,
           dynamicTemplateData: {
@@ -166,7 +166,7 @@ export class EmailService implements MessengerService {
           },
         },
       ],
-    );
+    });
   }
 
   public async passwordReset(
@@ -188,10 +188,10 @@ export class EmailService implements MessengerService {
       pendingPasswordResetId +
       `?resetToken=${resetToken}`;
 
-    await sendMail(
-      emailSetting.fromEmail,
-      EMAIL_SETTINGS.types.passwordReset.templateId,
-      [
+    await sendMail({
+      from: emailSetting.fromEmail,
+      templateId: EMAIL_SETTINGS.types.passwordReset.templateId,
+      recipients: [
         {
           to: emailSetting.toEmail,
           dynamicTemplateData: {
@@ -199,18 +199,22 @@ export class EmailService implements MessengerService {
           },
         },
       ],
-    );
+    });
   }
 }
 
-export async function sendMail(
-  from: string,
-  templateId: SendGridTemplateId,
+export async function sendMail({
+  from,
+  templateId,
+  recipients,
+}: {
+  from: string;
+  templateId: SendGridTemplateId;
   recipients: {
     to: string;
     dynamicTemplateData?: Record<string, unknown>;
-  }[],
-): Promise<{ success: boolean }> {
+  }[];
+}): Promise<{ success: boolean }> {
   try {
     const [sendGridResponse] = await sgMail.send({
       from,

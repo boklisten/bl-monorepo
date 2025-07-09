@@ -66,10 +66,10 @@ export class OrderEmailHandler {
       this.addNoPaymentProvidedNotice(emailSetting);
     }
 
-    await sendMail(
-      emailSetting.fromEmail,
-      "d-dc8ab3365a0f4fd8a69b6a38e6eb83f9",
-      [
+    await sendMail({
+      from: emailSetting.fromEmail,
+      templateId: "d-dc8ab3365a0f4fd8a69b6a38e6eb83f9",
+      recipients: [
         {
           to: emailSetting.toEmail,
           dynamicTemplateData: {
@@ -82,7 +82,7 @@ export class OrderEmailHandler {
           },
         },
       ],
-    );
+    });
     /*
     return await this.emailHandler
       .sendOrderReceipt(emailSetting, emailOrder, emailUser, withAgreement)
@@ -127,10 +127,10 @@ export class OrderEmailHandler {
       if (await userHasValidSignature(customerDetail)) {
         return;
       }
-      await sendMail(
-        EMAIL_SETTINGS.types.guardianSignature.fromEmail,
-        EMAIL_SETTINGS.types.guardianSignature.templateId,
-        [
+      await sendMail({
+        from: EMAIL_SETTINGS.types.guardianSignature.fromEmail,
+        templateId: EMAIL_SETTINGS.types.guardianSignature.templateId,
+        recipients: [
           {
             to: customerDetail.guardian.email,
             dynamicTemplateData: {
@@ -141,7 +141,7 @@ export class OrderEmailHandler {
             },
           },
         ],
-      );
+      });
       await sendSMS(
         customerDetail.guardian.phone,
         `Hei. ${customerDetail.name} har nylig bestilt bøker fra ${branchName} gjennom Boklisten.no. Siden ${customerDetail.name} er under 18 år, krever vi at du som foresatt signerer låneavtalen. Vi har derfor sendt en epost til ${customerDetail.guardian.email} med lenke til signering. Ta kontakt på info@boklisten.no om du har spørsmål. Mvh. Boklisten`,

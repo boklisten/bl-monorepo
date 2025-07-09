@@ -2,7 +2,11 @@ import logger from "@adonisjs/core/services/logger";
 import sgMail from "@sendgrid/mail";
 
 import { DateService } from "#services/blc/date.service";
-import { EMAIL_SETTINGS } from "#services/messenger/email/email-settings";
+import {
+  AllowedEmailSender,
+  EMAIL_SENDER,
+  EMAIL_SETTINGS,
+} from "#services/messenger/email/email-settings";
 import { OrderEmailHandler } from "#services/messenger/email/order-email/order-email-handler";
 import { MessengerService } from "#services/messenger/messenger-service";
 import { EmailOrder, EmailUser } from "#services/types/email";
@@ -96,7 +100,7 @@ export class EmailService implements MessengerService {
     // fixme: create a new template for this, that actually also shows the textblocks and "Dine bøker er på vei" as a subject
     // fixme: add a custom subject with the order id
     await sendMail({
-      from: EMAIL_SETTINGS.types.deliveryInformation.fromEmail,
+      from: EMAIL_SENDER.NO_REPLY,
       templateId: "d-dc8ab3365a0f4fd8a69b6a38e6eb83f9",
       recipients: [
         {
@@ -139,13 +143,13 @@ export class EmailService implements MessengerService {
     confirmationCode: string,
   ): Promise<void> {
     await sendMail({
-      from: EMAIL_SETTINGS.types.emailConfirmation.fromEmail,
-      templateId: EMAIL_SETTINGS.types.emailConfirmation.templateId,
+      from: EMAIL_SENDER.NO_REPLY,
+      templateId: EMAIL_SETTINGS.emailConfirmation.templateId,
       recipients: [
         {
           to: customerDetail.email,
           dynamicTemplateData: {
-            emailVerificationUri: `${env.get("CLIENT_URI")}${EMAIL_SETTINGS.types.emailConfirmation.path}${confirmationCode}`,
+            emailVerificationUri: `${env.get("CLIENT_URI")}${EMAIL_SETTINGS.emailConfirmation.path}${confirmationCode}`,
           },
         },
       ],
@@ -160,13 +164,13 @@ export class EmailService implements MessengerService {
   ): Promise<void> {
     let passwordResetUri = env.get("CLIENT_URI");
     passwordResetUri +=
-      EMAIL_SETTINGS.types.passwordReset.path +
+      EMAIL_SETTINGS.passwordReset.path +
       pendingPasswordResetId +
       `?resetToken=${resetToken}`;
 
     await sendMail({
-      from: EMAIL_SETTINGS.types.passwordReset.fromEmail,
-      templateId: EMAIL_SETTINGS.types.passwordReset.templateId,
+      from: EMAIL_SENDER.NO_REPLY,
+      templateId: EMAIL_SETTINGS.passwordReset.templateId,
       recipients: [
         {
           to: userEmail,
@@ -179,16 +183,16 @@ export class EmailService implements MessengerService {
   }
 }
 
-type BoklistenEmailAddress = `${string}@boklisten.no`;
 export async function sendMail({
   from,
   templateId,
   recipients,
 }: {
-  from: BoklistenEmailAddress;
+  from: AllowedEmailSender;
   templateId: SendGridTemplateId;
   recipients: {
     to: string;
+    // fixme: make this typesafe by defining the structure for each type of template ID
     dynamicTemplateData?: Record<string, unknown>;
   }[];
 }): Promise<{ success: boolean }> {

@@ -3,7 +3,10 @@ import moment from "moment-timezone";
 import { DateService } from "#services/blc/date.service";
 import { userHasValidSignature } from "#services/collections/signature/helpers/signature.helper";
 import { sendMail } from "#services/messenger/email/email-service";
-import { EMAIL_SETTINGS } from "#services/messenger/email/email-settings";
+import {
+  EMAIL_SENDER,
+  EMAIL_SETTINGS,
+} from "#services/messenger/email/email-settings";
 import { sendSMS } from "#services/messenger/sms/sms-service";
 import { DibsEasyPayment } from "#services/payment/dibs/dibs-easy-payment/dibs-easy-payment";
 import { BlStorage } from "#services/storage/bl-storage";
@@ -31,8 +34,8 @@ export class OrderEmailHandler {
   ): Promise<void> {
     const emailSetting: EmailSetting = {
       toEmail: customerDetail.email,
-      fromEmail: EMAIL_SETTINGS.types.receipt.fromEmail,
-      subject: EMAIL_SETTINGS.types.receipt.subject + ` #${order.id}`,
+      fromEmail: EMAIL_SENDER.NO_REPLY,
+      subject: EMAIL_SETTINGS.receipt.subject + ` #${order.id}`,
       userId: customerDetail.id,
     };
 
@@ -69,7 +72,7 @@ export class OrderEmailHandler {
 
     // fixme: add a custom subject with the order id
     await sendMail({
-      from: EMAIL_SETTINGS.types.receipt.fromEmail,
+      from: EMAIL_SENDER.NO_REPLY,
       templateId: "d-dc8ab3365a0f4fd8a69b6a38e6eb83f9",
       recipients: [
         {
@@ -130,13 +133,13 @@ export class OrderEmailHandler {
         return;
       }
       await sendMail({
-        from: EMAIL_SETTINGS.types.guardianSignature.fromEmail,
-        templateId: EMAIL_SETTINGS.types.guardianSignature.templateId,
+        from: EMAIL_SENDER.NO_REPLY,
+        templateId: EMAIL_SETTINGS.guardianSignature.templateId,
         recipients: [
           {
             to: customerDetail.guardian.email,
             dynamicTemplateData: {
-              guardianSignatureUri: `${env.get("CLIENT_URI")}${EMAIL_SETTINGS.types.guardianSignature.path}${customerDetail.id}`,
+              guardianSignatureUri: `${env.get("CLIENT_URI")}${EMAIL_SETTINGS.guardianSignature.path}${customerDetail.id}`,
               customerName: customerDetail.name,
               guardianName: customerDetail.guardian.name,
               branchName: branchName,

@@ -1,6 +1,7 @@
-import { SENDGRID_TEMPLATE_ID_REGEX } from "@boklisten/backend/app/validators/send_grid_template_id_validator";
 import { TextField } from "@mui/material";
 import { useState } from "react";
+
+const SENDGRID_TEMPLATE_ID_REGEX = /^d-[0-9a-f]{32}$/;
 
 export default function EmailTemplatePicker({
   onChange,

@@ -1,7 +1,7 @@
 import vine from "@vinejs/vine";
 
-export const SENDGRID_TEMPLATE_ID_REGEX = /^d-[0-9a-f]{32}$/;
 export type SendGridTemplateId = `d-${Lowercase<string>}`;
+const SENDGRID_TEMPLATE_ID_REGEX = /^d-[0-9a-f]{32}$/;
 
 export const sendGridTemplateIdValidator = vine
   .string()

@@ -15,11 +15,14 @@ import {
 export default class PasswordResetController {
   async forgotPasswordSend({ request }: HttpContext) {
     const { email } = await request.validateUsing(forgotPasswordValidator);
+    const token = BlCrypto.random();
+    const salt = BlCrypto.random();
+    const tokenHash = await hash.make(token + salt);
+
+    const existingUser = await UserHandler.getOrNull(email);
+    if (!existingUser) return;
+
     try {
-      const user = await UserHandler.getByUsername(email);
-      const token = BlCrypto.random();
-      const salt = BlCrypto.random();
-      const tokenHash = await hash.make(token + salt);
       const passwordReset = await BlStorage.PendingPasswordResets.add({
         // @ts-expect-error id is auto generated
         id: undefined,
@@ -27,7 +30,7 @@ export default class PasswordResetController {
         tokenHash,
         salt,
       });
-      await Messenger.passwordReset(user.id, email, passwordReset.id, token);
+      await Messenger.passwordReset(email, passwordReset.id, token);
     } catch (error) {
       logger.error(
         `Failed to send password reset email to ${email}, error: ${error}`,

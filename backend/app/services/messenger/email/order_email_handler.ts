@@ -7,9 +7,8 @@ import { EMAIL_TEMPLATES } from "#services/messenger/email/email_templates";
 import { sendSMS } from "#services/messenger/sms/sms-service";
 import { DibsEasyPayment } from "#services/payment/dibs/dibs-easy-payment/dibs-easy-payment";
 import { BlStorage } from "#services/storage/bl-storage";
-import { EmailOrder, EmailTextBlock, EmailUser } from "#services/types/email";
+import { EmailOrder, EmailUser } from "#services/types/email";
 import { BlError } from "#shared/bl-error/bl-error";
-import { Branch } from "#shared/branch/branch";
 import { Delivery } from "#shared/delivery/delivery";
 import { Order } from "#shared/order/order";
 import { OrderItem } from "#shared/order/order-item/order-item";
@@ -26,8 +25,6 @@ export class OrderEmailHandler {
     customerDetail: UserDetail,
     order: Order,
   ): Promise<void> {
-    const textBlocks: EmailTextBlock[] = [];
-
     const branchId = order.branch;
 
     const withAgreement: boolean = await this.shouldSendAgreement(
@@ -54,14 +51,6 @@ export class OrderEmailHandler {
       await this.requestGuardianSignature(customerDetail, branch?.name ?? "");
     }
 
-    // fixme: this is not visible since the sendout does not currently show textblocks
-    if (this.paymentNeeded(order)) {
-      textBlocks.push({
-        text: "Dette er kun en reservasjon, du har ikke betalt enda. Du betaler først når du kommer til oss på stand.",
-        warning: true,
-      });
-    }
-
     await sendMail({
       template: EMAIL_TEMPLATES.receipt,
       recipients: [
@@ -73,7 +62,12 @@ export class OrderEmailHandler {
               user: emailUser,
               order: emailOrder,
               userFullName: emailUser.name,
-              textBlocks: textBlocks,
+              // fixme: this is not visible since the sendout does not currently show textblocks
+              textBlocks: this.paymentNeeded(order)
+                ? [
+                    "Dette er kun en reservasjon, du har ikke betalt enda. Du betaler først når du kommer til oss på stand.",
+                  ]
+                : undefined,
             },
           },
         },
@@ -250,7 +244,6 @@ export class OrderEmailHandler {
       method: "",
       amount: "",
       cardInfo: null,
-
       // @ts-expect-error fixme: auto ignored
       taxAmount: isNaN(payment.taxAmount)
         ? null
@@ -278,9 +271,12 @@ export class OrderEmailHandler {
 
           if (paymentInfo.paymentDetails.cardDetails?.maskedPan) {
             // @ts-expect-error fixme: auto ignored
-            paymentObject.cardInfo = `***${this.stripTo4LastDigits(
-              paymentInfo.paymentDetails.cardDetails.maskedPan,
-            )}`;
+            paymentObject.cardInfo = `***${
+              paymentInfo.paymentDetails.cardDetails.maskedPan &&
+              paymentInfo.paymentDetails.cardDetails.maskedPan.length > 4
+                ? paymentInfo.paymentDetails.cardDetails.maskedPan.slice(-4)
+                : paymentInfo.paymentDetails.cardDetails.maskedPan
+            }`;
           }
         }
 
@@ -337,29 +333,24 @@ export class OrderEmailHandler {
     };
   }
 
-  private orderItemsToEmailItems(
-    orderItems: OrderItem[],
-  ): { title: string; status: string; deadline?: string; price?: string }[] {
-    // @ts-expect-error fixme: auto ignored
+  private orderItemsToEmailItems(orderItems: OrderItem[]): {
+    title: string;
+    status: string;
+    deadline: string | null;
+    price: string | null;
+  }[] {
     return orderItems.map((orderItem) => ({
       title: orderItem.title,
       status: this.translateOrderItemType(orderItem.type, orderItem.handout),
       deadline:
         orderItem.type === "rent" || orderItem.type === "extend"
-          ? // @ts-expect-error fixme: auto ignored
-            DateService.toPrintFormat(orderItem.info.to, "Europe/Oslo")
+          ? DateService.toPrintFormat(orderItem.info?.to ?? "", "Europe/Oslo")
           : null,
       price:
         orderItem.type !== "return" && orderItem.amount
           ? orderItem.amount.toString()
           : null,
     }));
-  }
-
-  private stripTo4LastDigits(cardNumber: string) {
-    return cardNumber && cardNumber.length > 4
-      ? cardNumber.slice(-4)
-      : cardNumber;
   }
 
   private translateOrderItemType(
@@ -388,8 +379,7 @@ export class OrderEmailHandler {
     customerDetail: UserDetail,
     branchId: string,
   ): Promise<boolean> {
-    // @ts-expect-error fixme: auto ignored
-    const onlyHandout = order.orderItems[0].handout;
+    const onlyHandout = order.orderItems[0]?.handout;
     const rentFound = order.orderItems.some(
       (orderItem) => orderItem.type === "rent",
     );
@@ -415,14 +405,8 @@ export class OrderEmailHandler {
     return await this.isBranchResponsible(branchId);
   }
 
-  private isBranchResponsible(branchId: string): Promise<boolean> {
-    return BlStorage.Branches.get(branchId)
-      .then((branch: Branch) => {
-        // @ts-expect-error fixme: auto ignored
-        return branch.paymentInfo.responsible;
-      })
-      .catch((getBranchError: BlError) => {
-        throw new BlError("could not get branch").add(getBranchError);
-      });
+  private async isBranchResponsible(branchId: string): Promise<boolean> {
+    const branch = await BlStorage.Branches.get(branchId);
+    return branch.paymentInfo?.responsible ?? false;
   }
 }

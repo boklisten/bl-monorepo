@@ -74,13 +74,11 @@ async function emailConfirmation(
  * @param resetToken the token required to confirm the PendingPasswordReset
  */
 async function passwordReset(
-  userId: string,
   userEmail: string,
   pendingPasswordResetId: string,
   resetToken: string,
 ): Promise<void> {
   await emailService.passwordReset(
-    userId,
     userEmail,
     pendingPasswordResetId,
     resetToken,

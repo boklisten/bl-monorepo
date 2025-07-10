@@ -96,8 +96,6 @@ export class EmailService implements MessengerService {
       },
     };
 
-    // fixme: create a new template for this, that actually also shows the textblocks and "Dine bøker er på vei" as a subject
-    // fixme: add a custom subject with the order id
     await sendMail({
       template: EMAIL_TEMPLATES.deliveryInformation,
       recipients: [
@@ -110,12 +108,8 @@ export class EmailService implements MessengerService {
               order: emailOrder,
               userFullName: emailUser.name,
               textBlocks: [
-                {
-                  text: "Dine bøker er nå på vei! De vil bli levert til deg ved hjelp av Bring.",
-                },
-                {
-                  text: "Vi anser nå disse bøkene som utlevert. Du er ansvarlig for bøkene fra du henter dem på postkontoret til innlevering er gjennomført. Om noe skulle skje med leveringen er det bare å ta kontakt. Fraktkostnader refunderes ikke for pakker som ikke blir hentet innen fristen.",
-                },
+                "Dine bøker er nå på vei! De vil bli levert til deg ved hjelp av Bring.",
+                "Vi anser nå disse bøkene som utlevert. Du er ansvarlig for bøkene fra du henter dem på postkontoret til innlevering er gjennomført. Om noe skulle skje med leveringen er det bare å ta kontakt. Fraktkostnader refunderes ikke for pakker som ikke blir hentet innen fristen.",
               ],
             },
           },
@@ -142,7 +136,6 @@ export class EmailService implements MessengerService {
   }
 
   public async passwordReset(
-    userId: string,
     userEmail: string,
     pendingPasswordResetId: string,
     resetToken: string,

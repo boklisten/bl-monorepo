@@ -56,19 +56,17 @@ export class OrderEmailHandler {
       recipients: [
         {
           to: customerDetail.email,
-          subject: "Din kvittering fra Boklisten.no #" + order.id,
           dynamicTemplateData: {
+            subject: "Din kvittering fra Boklisten.no #" + order.id,
             emailTemplateInput: {
               user: emailUser,
               order: emailOrder,
               userFullName: emailUser.name,
               // fixme: this is not visible since the sendout does not currently show textblocks
-              textBlocks: this.paymentNeeded(order)
-                ? [
-                    "Dette er kun en reservasjon, du har ikke betalt enda. Du betaler først når du kommer til oss på stand.",
-                  ]
-                : undefined,
             },
+            textBlock: this.paymentNeeded(order)
+              ? "Dette er kun en reservasjon, du har ikke betalt enda. Du betaler først når du kommer til oss på stand."
+              : undefined,
           },
         },
       ],

@@ -95,17 +95,16 @@ export class EmailService {
       recipients: [
         {
           to: customerDetail.email,
-          subject: "Dine bøker er på vei",
           dynamicTemplateData: {
+            subject: "Dine bøker er på vei",
             emailTemplateInput: {
               user: emailUser,
               order: emailOrder,
               userFullName: emailUser.name,
-              textBlocks: [
-                "Dine bøker er nå på vei! De vil bli levert til deg ved hjelp av Bring.",
-                "Vi anser nå disse bøkene som utlevert. Du er ansvarlig for bøkene fra du henter dem på postkontoret til innlevering er gjennomført. Om noe skulle skje med leveringen er det bare å ta kontakt. Fraktkostnader refunderes ikke for pakker som ikke blir hentet innen fristen.",
-              ],
             },
+            // fixme: this text is not displayed, make a separate email for deliveries
+            textBlock:
+              "Dine bøker er nå på vei! De vil bli levert til deg ved hjelp av Bring. Vi anser nå disse bøkene som utlevert. Du er ansvarlig for bøkene fra du henter dem på postkontoret til innlevering er gjennomført. Om noe skulle skje med leveringen er det bare å ta kontakt. Fraktkostnader refunderes ikke for pakker som ikke blir hentet innen fristen.",
           },
         },
       ],
@@ -137,7 +136,6 @@ export async function sendMail({
   template: EmailTemplate;
   recipients: {
     to: string;
-    subject?: string;
     dynamicTemplateData?: Record<string, unknown>;
   }[];
 }): Promise<{ success: boolean }> {

@@ -5,7 +5,7 @@ import chaiAsPromised from "chai-as-promised";
 chaiUse(chaiAsPromised);
 should();
 
-test.group("OrderEmailHandler", () => {
+test.group("Order_email_handler", () => {
   /* fixme: implement after updated email config is set up
   let testCustomerDetail: UserDetail;
   let testOrder: Order;
@@ -15,7 +15,7 @@ test.group("OrderEmailHandler", () => {
   const standardTimeFormat = "DD.MM.YYYY HH.mm.ss";
   const standardDayFormat = "DD.MM.YY";
   const emailHandler = new EmailHandler({ sendgrid: { apiKey: "someKey" } });
-  const orderEmailHandler = new OrderEmailHandler(emailHandler);
+  const orderEmailHandler = new Order_email_handler(emailHandler);
 
   let branchStorageGetStub: sinon.SinonStub;
   let paymentStorageStub: sinon.SinonStub;

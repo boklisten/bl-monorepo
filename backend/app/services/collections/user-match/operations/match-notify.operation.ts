@@ -1,8 +1,8 @@
 import { z } from "zod";
 import { fromError } from "zod-validation-error";
 
-import { sendMail } from "#services/messenger/email/email-service";
-import { EMAIL_SETTINGS } from "#services/messenger/email/email-settings";
+import { sendMail } from "#services/messenger/email/email_service";
+import { EMAIL_TEMPLATES } from "#services/messenger/email/email_templates";
 import { sendSMS } from "#services/messenger/sms/sms-service";
 import { BlStorage } from "#services/storage/bl-storage";
 import { BlApiRequest } from "#services/types/bl-api-request";
@@ -66,8 +66,7 @@ export class MatchNotifyOperation implements Operation {
             );
             // fixme: rewrite so that we only send one send mail request for all users, using personalizations
             await sendMail({
-              from: "info@boklisten.no",
-              templateId: EMAIL_SETTINGS.matchNotify.templateId,
+              template: EMAIL_TEMPLATES.matchNotify,
               recipients: [
                 {
                   to: customer.email,

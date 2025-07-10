@@ -1,6 +1,6 @@
 import { EmailAttachment } from "@boklisten/bl-email";
 
-import { EmailService } from "#services/messenger/email/email-service";
+import { EmailService } from "#services/messenger/email/email_service";
 import { PdfService } from "#services/messenger/pdf/pdf-service";
 import { BlStorage } from "#services/storage/bl-storage";
 import { Order } from "#shared/order/order";

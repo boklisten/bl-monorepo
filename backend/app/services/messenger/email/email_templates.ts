@@ -1,0 +1,43 @@
+import { SendGridTemplateId } from "#validators/send_grid_template_id_validator";
+
+export const EMAIL_SENDER = {
+  NO_REPLY: "ikkesvar@boklisten.no",
+  INFO: "info@boklisten.no",
+} as const satisfies Record<
+  Uppercase<string>,
+  `${Lowercase<string>}@boklisten.no`
+>;
+
+type AllowedEmailSender = (typeof EMAIL_SENDER)[keyof typeof EMAIL_SENDER];
+
+export interface EmailTemplate {
+  sender: AllowedEmailSender;
+  templateId: SendGridTemplateId;
+}
+
+export const EMAIL_TEMPLATES = {
+  receipt: {
+    sender: EMAIL_SENDER.NO_REPLY,
+    templateId: "d-dc8ab3365a0f4fd8a69b6a38e6eb83f9",
+  },
+  emailConfirmation: {
+    sender: EMAIL_SENDER.NO_REPLY,
+    templateId: "d-8734d0fdf5fc4d99bf22553c3a0c724a",
+  },
+  passwordReset: {
+    sender: EMAIL_SENDER.NO_REPLY,
+    templateId: "d-66e886995d4e46a0adfb133a163952d9",
+  },
+  guardianSignature: {
+    sender: EMAIL_SENDER.NO_REPLY,
+    templateId: "d-e0eaab765bae483c95f76a178853de74",
+  },
+  deliveryInformation: {
+    sender: EMAIL_SENDER.NO_REPLY,
+    templateId: "d-dc8ab3365a0f4fd8a69b6a38e6eb83f9",
+  },
+  matchNotify: {
+    sender: EMAIL_SENDER.INFO,
+    templateId: "d-b6d2e8bcf3bc4e6e9aef3f8eb49f1c64",
+  },
+} as const satisfies Record<string, EmailTemplate>;

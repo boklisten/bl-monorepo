@@ -4,7 +4,8 @@ import { ObjectId } from "mongodb";
 
 import { PermissionService } from "#services/auth/permission.service";
 import CollectionEndpointAuth from "#services/collection-endpoint/collection-endpoint-auth";
-import { sendMail } from "#services/messenger/email/email-service";
+import { sendMail } from "#services/messenger/email/email_service";
+import { EMAIL_SENDER } from "#services/messenger/email/email_templates";
 import { massSendSMS } from "#services/messenger/sms/sms-service";
 import { BlStorage } from "#services/storage/bl-storage";
 import { reminderValidator } from "#validators/reminder";
@@ -155,8 +156,10 @@ async function sendReminderEmail(
   const results = await Promise.all(
     batches.map((batch) =>
       sendMail({
-        from: "info@boklisten.no",
-        templateId: emailTemplateId ?? "",
+        template: {
+          sender: EMAIL_SENDER.INFO,
+          templateId: emailTemplateId ?? "",
+        },
         recipients: batch,
       }),
     ),

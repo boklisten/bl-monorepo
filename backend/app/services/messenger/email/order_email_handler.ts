@@ -2,15 +2,12 @@ import moment from "moment-timezone";
 
 import { DateService } from "#services/blc/date.service";
 import { userHasValidSignature } from "#services/collections/signature/helpers/signature.helper";
-import { sendMail } from "#services/messenger/email/email-service";
-import {
-  EMAIL_SENDER,
-  EMAIL_SETTINGS,
-} from "#services/messenger/email/email-settings";
+import { sendMail } from "#services/messenger/email/email_service";
+import { EMAIL_TEMPLATES } from "#services/messenger/email/email_templates";
 import { sendSMS } from "#services/messenger/sms/sms-service";
 import { DibsEasyPayment } from "#services/payment/dibs/dibs-easy-payment/dibs-easy-payment";
 import { BlStorage } from "#services/storage/bl-storage";
-import { EmailOrder, EmailSetting, EmailUser } from "#services/types/email";
+import { EmailOrder, EmailTextBlock, EmailUser } from "#services/types/email";
 import { BlError } from "#shared/bl-error/bl-error";
 import { Branch } from "#shared/branch/branch";
 import { Delivery } from "#shared/delivery/delivery";
@@ -24,20 +21,12 @@ import env from "#start/env";
 export class OrderEmailHandler {
   private defaultCurrency = "NOK";
   private standardTimeFormat = "DD.MM.YYYY HH.mm.ss";
-  private localeSetting = "nb";
-  private noPaymentNoticeText =
-    "Dette er kun en reservasjon, du har ikke betalt enda. Du betaler først når du kommer til oss på stand.";
 
   public async sendOrderReceipt(
     customerDetail: UserDetail,
     order: Order,
   ): Promise<void> {
-    const emailSetting: EmailSetting = {
-      toEmail: customerDetail.email,
-      fromEmail: EMAIL_SENDER.NO_REPLY,
-      subject: EMAIL_SETTINGS.receipt.subject + ` #${order.id}`,
-      userId: customerDetail.id,
-    };
+    const textBlocks: EmailTextBlock[] = [];
 
     const branchId = order.branch;
 
@@ -67,36 +56,29 @@ export class OrderEmailHandler {
 
     // fixme: this is not visible since the sendout does not currently show textblocks
     if (this.paymentNeeded(order)) {
-      this.addNoPaymentProvidedNotice(emailSetting);
+      textBlocks.push({
+        text: "Dette er kun en reservasjon, du har ikke betalt enda. Du betaler først når du kommer til oss på stand.",
+        warning: true,
+      });
     }
 
-    // fixme: add a custom subject with the order id
     await sendMail({
-      from: EMAIL_SENDER.NO_REPLY,
-      templateId: EMAIL_SETTINGS.receipt.templateId,
+      template: EMAIL_TEMPLATES.receipt,
       recipients: [
         {
           to: customerDetail.email,
+          subject: "Din kvittering fra Boklisten.no #" + order.id,
           dynamicTemplateData: {
             emailTemplateInput: {
               user: emailUser,
               order: emailOrder,
               userFullName: emailUser.name,
-              textBlocks: emailSetting.textBlocks,
+              textBlocks: textBlocks,
             },
           },
         },
       ],
     });
-    /*
-    return await this.emailHandler
-      .sendOrderReceipt(emailSetting, emailOrder, emailUser, withAgreement)
-      .catch((error) => {
-        throw new BlError("Unable to send order receipt email")
-          .code(200)
-          .add(error);
-      });
-     */
   }
 
   private paymentNeeded(order: Order): boolean {
@@ -105,16 +87,6 @@ export class OrderEmailHandler {
       (!Array.isArray(order.payments) || order.payments.length === 0)
     );
   }
-
-  private addNoPaymentProvidedNotice(emailSetting: EmailSetting) {
-    emailSetting.textBlocks ??= [];
-
-    emailSetting.textBlocks.push({
-      text: this.noPaymentNoticeText,
-      warning: true,
-    });
-  }
-
   /**
    * sends out SMS and email to the guardian of a customer with a signature link if they are under 18
    */
@@ -133,13 +105,12 @@ export class OrderEmailHandler {
         return;
       }
       await sendMail({
-        from: EMAIL_SENDER.NO_REPLY,
-        templateId: EMAIL_SETTINGS.guardianSignature.templateId,
+        template: EMAIL_TEMPLATES.guardianSignature,
         recipients: [
           {
             to: customerDetail.guardian.email,
             dynamicTemplateData: {
-              guardianSignatureUri: `${env.get("CLIENT_URI")}${EMAIL_SETTINGS.guardianSignature.path}${customerDetail.id}`,
+              guardianSignatureUri: `${env.get("CLIENT_URI")}signering/${customerDetail.id}`,
               customerName: customerDetail.name,
               guardianName: customerDetail.guardian.name,
               branchName: branchName,
@@ -285,7 +256,7 @@ export class OrderEmailHandler {
         ? null
         : payment.taxAmount?.toString(),
       paymentId: "",
-      status: this.translatePaymentConfirmed(),
+      status: "bekreftet",
       creationTime: payment.creationTime
         ? DateService.format(
             payment.creationTime,
@@ -391,33 +362,25 @@ export class OrderEmailHandler {
       : cardNumber;
   }
 
-  private translatePaymentConfirmed(): string {
-    return this.localeSetting === "nb" ? "bekreftet" : "confirmed";
-  }
-
   private translateOrderItemType(
     orderItemType: OrderItemType,
     handout?: boolean,
   ): string {
-    if (this.localeSetting === "nb") {
-      const translations = {
-        rent: "lån",
-        return: "returnert",
-        extend: "forlenget",
-        cancel: "kansellert",
-        buy: "kjøp",
-        "partly-payment": "delbetaling",
-        buyback: "tilbakekjøp",
-        buyout: "utkjøp",
-      };
+    const translations = {
+      rent: "lån",
+      return: "returnert",
+      extend: "forlenget",
+      cancel: "kansellert",
+      buy: "kjøp",
+      "partly-payment": "delbetaling",
+      buyback: "tilbakekjøp",
+      buyout: "utkjøp",
+    };
 
-      // @ts-expect-error fixme: auto ignored
-      return `${translations[orderItemType] ?? orderItemType}${
-        handout && orderItemType !== "return" ? " - utlevert" : ""
-      }`;
-    }
-
-    return orderItemType;
+    // @ts-expect-error fixme: auto ignored
+    return `${translations[orderItemType] ?? orderItemType}${
+      handout && orderItemType !== "return" ? " - utlevert" : ""
+    }`;
   }
 
   private async shouldSendAgreement(

@@ -3,19 +3,16 @@ import sgMail from "@sendgrid/mail";
 
 import { DateService } from "#services/blc/date.service";
 import {
-  AllowedEmailSender,
-  EMAIL_SENDER,
-  EMAIL_SETTINGS,
-} from "#services/messenger/email/email-settings";
-import { OrderEmailHandler } from "#services/messenger/email/order-email/order-email-handler";
+  EMAIL_TEMPLATES,
+  EmailTemplate,
+} from "#services/messenger/email/email_templates";
+import { OrderEmailHandler } from "#services/messenger/email/order_email_handler";
 import { MessengerService } from "#services/messenger/messenger-service";
 import { EmailOrder, EmailUser } from "#services/types/email";
 import { Delivery } from "#shared/delivery/delivery";
 import { Order } from "#shared/order/order";
-import { OrderItem } from "#shared/order/order-item/order-item";
 import { UserDetail } from "#shared/user/user-detail/user-detail";
 import env from "#start/env";
-import { SendGridTemplateId } from "#validators/send_grid_template_id_validator";
 
 export class EmailService implements MessengerService {
   private orderEmailHandler: OrderEmailHandler;
@@ -83,11 +80,13 @@ export class EmailService implements MessengerService {
 
       // @ts-expect-error fixme: auto ignored
       totalAmount: null,
-      items: this.orderItemsToDeliveryInformationItems(order.orderItems),
+      items: order.orderItems.map((orderItem) => ({
+        title: orderItem.title,
+        status: "utlevering via Bring",
+      })),
       showDelivery: true,
       delivery: {
         method: "bring",
-
         // @ts-expect-error fixme: auto ignored
         trackingNumber: delivery.info["trackingNumber"],
         estimatedDeliveryDate: null,
@@ -100,11 +99,11 @@ export class EmailService implements MessengerService {
     // fixme: create a new template for this, that actually also shows the textblocks and "Dine bøker er på vei" as a subject
     // fixme: add a custom subject with the order id
     await sendMail({
-      from: EMAIL_SENDER.NO_REPLY,
-      templateId: EMAIL_SETTINGS.deliveryInformation.templateId,
+      template: EMAIL_TEMPLATES.deliveryInformation,
       recipients: [
         {
           to: customerDetail.email,
+          subject: "Dine bøker er på vei",
           dynamicTemplateData: {
             emailTemplateInput: {
               user: emailUser,
@@ -125,31 +124,17 @@ export class EmailService implements MessengerService {
     });
   }
 
-  private orderItemsToDeliveryInformationItems(
-    orderItems: OrderItem[],
-  ): EmailOrder["items"] {
-    const emailInformaitionItems: { title: string; status: string }[] = [];
-    for (const orderItem of orderItems) {
-      emailInformaitionItems.push({
-        title: orderItem.title,
-        status: "utlevering via Bring",
-      });
-    }
-    return emailInformaitionItems;
-  }
-
   public async emailConfirmation(
     customerDetail: UserDetail,
     confirmationCode: string,
   ): Promise<void> {
     await sendMail({
-      from: EMAIL_SENDER.NO_REPLY,
-      templateId: EMAIL_SETTINGS.emailConfirmation.templateId,
+      template: EMAIL_TEMPLATES.emailConfirmation,
       recipients: [
         {
           to: customerDetail.email,
           dynamicTemplateData: {
-            emailVerificationUri: `${env.get("CLIENT_URI")}${EMAIL_SETTINGS.emailConfirmation.path}${confirmationCode}`,
+            emailVerificationUri: `${env.get("CLIENT_URI")}auth/email/confirm/${confirmationCode}`,
           },
         },
       ],
@@ -162,20 +147,13 @@ export class EmailService implements MessengerService {
     pendingPasswordResetId: string,
     resetToken: string,
   ): Promise<void> {
-    let passwordResetUri = env.get("CLIENT_URI");
-    passwordResetUri +=
-      EMAIL_SETTINGS.passwordReset.path +
-      pendingPasswordResetId +
-      `?resetToken=${resetToken}`;
-
     await sendMail({
-      from: EMAIL_SENDER.NO_REPLY,
-      templateId: EMAIL_SETTINGS.passwordReset.templateId,
+      template: EMAIL_TEMPLATES.passwordReset,
       recipients: [
         {
           to: userEmail,
           dynamicTemplateData: {
-            passwordResetUri,
+            passwordResetUri: `${env.get("CLIENT_URI")}auth/reset/${pendingPasswordResetId}?resetToken=${resetToken}`,
           },
         },
       ],
@@ -184,22 +162,20 @@ export class EmailService implements MessengerService {
 }
 
 export async function sendMail({
-  from,
-  templateId,
+  template,
   recipients,
 }: {
-  from: AllowedEmailSender;
-  templateId: SendGridTemplateId;
+  template: EmailTemplate;
   recipients: {
     to: string;
-    // fixme: make this typesafe by defining the structure for each type of template ID
+    subject?: string;
     dynamicTemplateData?: Record<string, unknown>;
   }[];
 }): Promise<{ success: boolean }> {
   try {
     const [sendGridResponse] = await sgMail.send({
-      from,
-      templateId,
+      from: template.sender,
+      templateId: template.templateId,
       personalizations: recipients,
     });
     if (sendGridResponse.statusCode === 202) {

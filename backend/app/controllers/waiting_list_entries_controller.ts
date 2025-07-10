@@ -35,8 +35,9 @@ export default class WaitingListEntriesController {
     if (!(await canAccess(ctx))) {
       return ctx.response.unauthorized();
     }
-    const newEntry = await ctx.request.validateUsing(waitingListEntryValidator);
-    return await BlStorage.WaitingListEntries.add({ id: "", ...newEntry });
+    return await BlStorage.WaitingListEntries.add(
+      await ctx.request.validateUsing(waitingListEntryValidator),
+    );
   }
 
   async deleteWaitingListEntry(ctx: HttpContext) {

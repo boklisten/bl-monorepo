@@ -140,20 +140,19 @@ async function create(
       login.facebook = { userId: providerId };
     }
 
-    const newUser: User = {
-      // @ts-expect-error fixme bad types
-      id: undefined,
-      userDetail: addedUserDetail.id,
-      permission: "customer",
-      blid: blid,
-      username: username,
-      login,
-    };
-
-    return await BlStorage.Users.add(newUser, {
-      id: blid,
-      permission: newUser.permission,
-    });
+    return await BlStorage.Users.add(
+      {
+        userDetail: addedUserDetail.id,
+        permission: "customer",
+        blid: blid,
+        username: username,
+        login,
+      },
+      {
+        id: blid,
+        permission: "customer",
+      },
+    );
   } catch (error) {
     const blError = new BlError("user creation failed").code(903);
 

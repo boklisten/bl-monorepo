@@ -9,7 +9,7 @@ import { OrderItem } from "#shared/order/order-item/order-item";
 export async function createMatchReceiveOrder(
   customerItem: CustomerItem,
   userDetailId: string,
-): Promise<Order> {
+): Promise<Omit<Order, "id">> {
   const item = await BlStorage.Items.get(customerItem.item);
 
   if (!item) {
@@ -61,8 +61,6 @@ export async function createMatchReceiveOrder(
   deadline = new Date(deadline);
 
   return {
-    // @ts-expect-error id will be auto-generated
-    id: undefined,
     placed: true,
     payments: [],
     amount: 0,
@@ -95,7 +93,7 @@ export async function createMatchReceiveOrder(
 export async function createMatchDeliverOrder(
   customerItem: CustomerItem,
   userDetailId: string,
-): Promise<Order> {
+): Promise<Omit<Order, "id">> {
   const item = await BlStorage.Items.get(customerItem.item);
 
   if (!item) {
@@ -110,8 +108,6 @@ export async function createMatchDeliverOrder(
   );
 
   return {
-    // @ts-expect-error id will be auto-generated
-    id: undefined,
     placed: true,
     payments: [],
     amount: 0,

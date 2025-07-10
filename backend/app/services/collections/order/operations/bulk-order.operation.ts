@@ -5,7 +5,6 @@ import { BlStorage } from "#services/storage/bl-storage";
 import { Operation } from "#services/types/operation";
 import { BlError } from "#shared/bl-error/bl-error";
 import { BlapiResponse } from "#shared/blapi-response/blapi-response";
-import { Order } from "#shared/order/order";
 
 // fixme: rewrite and generalize this for use in the future
 export class BulkOrderOperation implements Operation {
@@ -80,9 +79,7 @@ export class BulkOrderOperation implements Operation {
         } else {
           throw new BlError("something wrong!!, " + prevItem);
         }
-        const rentOrder: Order = {
-          // @ts-expect-error id will be auto-generated
-          id: undefined,
+        const placedHandoutOrder = await BlStorage.Orders.add({
           placed: true,
           payments: [],
           amount: 0,
@@ -107,8 +104,7 @@ export class BulkOrderOperation implements Operation {
               },
             },
           ],
-        };
-        const placedHandoutOrder = await BlStorage.Orders.add(rentOrder);
+        });
 
         await new OrderValidator().validate(placedHandoutOrder, false);
       }),

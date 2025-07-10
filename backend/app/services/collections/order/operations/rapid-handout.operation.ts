@@ -125,9 +125,7 @@ export class RapidHandoutOperation implements Operation {
     // It might be solved in the future by Zod or some other strict parser/validation.
     deadline = new Date(deadline);
 
-    const handoutOrder: Order = {
-      // @ts-expect-error id will be auto-generated
-      id: undefined,
+    const placedHandoutOrder = await BlStorage.Orders.add({
       placed: true,
       payments: [],
       amount: 0,
@@ -155,8 +153,7 @@ export class RapidHandoutOperation implements Operation {
           },
         },
       ],
-    };
-    const placedHandoutOrder = await BlStorage.Orders.add(handoutOrder);
+    });
 
     await new OrderValidator().validate(placedHandoutOrder, false);
 

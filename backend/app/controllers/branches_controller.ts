@@ -9,7 +9,6 @@ import { BlSchemaName } from "#services/storage/bl-schema-names";
 import { BlStorage } from "#services/storage/bl-storage";
 import { BranchItem } from "#shared/branch-item/branch-item";
 import { Item } from "#shared/item/item";
-import { Order } from "#shared/order/order";
 import { UserDetail } from "#shared/user/user-detail/user-detail";
 import { branchValidator } from "#validators/branch";
 import { branchMembershipValidator } from "#validators/branch_membership";
@@ -272,9 +271,7 @@ async function applySubjectChoices(
       ),
     );
 
-    const rentOrder: Order = {
-      // @ts-expect-error will be set automatically
-      id: undefined,
+    await BlStorage.Orders.add({
       amount: 0,
       orderItems: requestedBranchItems.map((branchItem) => ({
         type: "rent",
@@ -298,9 +295,7 @@ async function applySubjectChoices(
       placed: true,
       payments: [],
       pendingSignature: false,
-    };
-
-    await BlStorage.Orders.add(rentOrder);
+    });
     status.successfulOrders++;
   }
 

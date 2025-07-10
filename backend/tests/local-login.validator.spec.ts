@@ -7,7 +7,6 @@ import LocalLoginPasswordValidator from "#services/auth/local/local-login-passwo
 import LocalLoginHandler from "#services/auth/local/local-login.handler";
 import LocalLoginValidator from "#services/auth/local/local-login.validator";
 import UserHandler from "#services/auth/user/user.handler";
-import { LocalLogin } from "#services/types/local-login";
 import { User } from "#services/types/user";
 import { BlError } from "#shared/bl-error/bl-error";
 
@@ -32,13 +31,11 @@ test.group("LocalLoginValidator", (group) => {
       });
     });
 
-    sandbox
-      .stub(LocalLoginHandler, "add")
-      .callsFake((localLogin: LocalLogin) => {
-        return new Promise((resolve) => {
-          resolve(localLogin);
-        });
+    sandbox.stub(LocalLoginHandler, "add").callsFake((localLogin) => {
+      return new Promise((resolve) => {
+        resolve({ id: "", ...localLogin });
       });
+    });
 
     sandbox.stub(LocalLoginPasswordValidator, "validate").resolves(true);
 

@@ -151,7 +151,7 @@ export class MongodbHandler<T extends BlDocument> {
   }
 
   public async add(
-    document_: T,
+    document_: Omit<T, "id">,
     user?: { id: string; permission: UserPermission },
   ): Promise<T> {
     try {
@@ -159,10 +159,7 @@ export class MongodbHandler<T extends BlDocument> {
         document_.user = user;
       }
 
-      const newDocument = new this.mongooseModel({
-        ...document_,
-        ...(document_.id && { _id: document_.id }),
-      });
+      const newDocument = new this.mongooseModel(document_);
       return (await newDocument.save()).toObject();
     } catch (error) {
       throw this.handleError(

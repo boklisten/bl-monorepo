@@ -137,7 +137,7 @@ function setPassword(username: string, password: string): Promise<boolean> {
   });
 }
 
-function add(localLogin: LocalLogin): Promise<LocalLogin> {
+function add(localLogin: Omit<LocalLogin, "id">): Promise<LocalLogin> {
   return new Promise((resolve, reject) => {
     const blError = new BlError("")
       .className("LocalLoginHandler")

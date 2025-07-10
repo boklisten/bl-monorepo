@@ -24,8 +24,6 @@ export default class PasswordResetController {
 
     try {
       const passwordReset = await BlStorage.PendingPasswordResets.add({
-        // @ts-expect-error id is auto generated
-        id: undefined,
         email,
         tokenHash,
         salt,

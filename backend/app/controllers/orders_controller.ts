@@ -86,8 +86,6 @@ export default class OrdersController {
     }
 
     const cancelOrder = await BlStorage.Orders.add({
-      // @ts-expect-error id will be auto-generated
-      id: undefined,
       placed: true,
       payments: [],
       amount: 0,

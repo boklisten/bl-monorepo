@@ -5,7 +5,10 @@ import ProviderIdGenerator from "#services/auth/local/provider-id-generator";
 import { LocalLogin } from "#services/types/local-login";
 import { BlError } from "#shared/bl-error/bl-error";
 
-function create(username: string, password: string): Promise<LocalLogin> {
+function create(
+  username: string,
+  password: string,
+): Promise<Omit<LocalLogin, "id">> {
   return new Promise((resolve, reject) => {
     const blError = new BlError("")
       .className("LocalLoginCreator")
@@ -22,15 +25,11 @@ function create(username: string, password: string): Promise<LocalLogin> {
     HashedPasswordGenerator.generate(password).then(
       (hashedPasswordAndSalt: { hashedPassword: string; salt: string }) => {
         ProviderIdGenerator.generate(username).then(
-          (providerId: string) => {
+          () => {
             resolve({
-              // @ts-expect-error fixme bad types
-              id: undefined,
               username: username,
               hashedPassword: hashedPasswordAndSalt.hashedPassword,
               salt: hashedPasswordAndSalt.salt,
-              provider: "local",
-              providerId: providerId,
             });
           },
           (providerIdGeneratorError: BlError) => {

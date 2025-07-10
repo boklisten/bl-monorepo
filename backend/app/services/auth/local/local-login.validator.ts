@@ -81,7 +81,7 @@ function create(username: string, password: string): Promise<void> {
       },
       () => {
         LocalLoginCreator.create(username, password).then(
-          (localLogin: LocalLogin) => {
+          (localLogin) => {
             LocalLoginHandler.add(localLogin).then(
               () => {
                 UserHandler.create(username, "local", BlCrypto.random()).then(

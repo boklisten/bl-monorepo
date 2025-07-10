@@ -66,32 +66,12 @@ async function emailConfirmation(
   await emailService.emailConfirmation(customerDetail, confirmationCode);
 }
 
-/**
- * sends out message to customer with a link to reset password
- * @param {string} userId the ID of the user in the Users collection
- * @param {string} userEmail the email (username) of the user in the Users collection
- * @param pendingPasswordResetId the ID of the PendingPasswordReset for the request
- * @param resetToken the token required to confirm the PendingPasswordReset
- */
-async function passwordReset(
-  userEmail: string,
-  pendingPasswordResetId: string,
-  resetToken: string,
-): Promise<void> {
-  await emailService.passwordReset(
-    userEmail,
-    pendingPasswordResetId,
-    resetToken,
-  );
-}
-
 const Messenger = {
   orderPlaced,
   getOrderReceiptPdf,
   getOrderAgreementPdf,
   sendDeliveryInformation,
   emailConfirmation,
-  passwordReset,
 };
 
 export default Messenger;

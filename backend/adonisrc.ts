@@ -25,6 +25,7 @@ export default defineConfig({
     () => import("#start/kernel"),
     () => import("#start/database"),
     () => import("#start/profiler"),
+    () => import("#start/sendgrid"),
   ],
 
   tests: {

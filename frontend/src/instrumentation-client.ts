@@ -15,9 +15,12 @@ Sentry.init({
       colorScheme: "system",
     }),
   ],
+  sendDefaultPii: true,
   tracesSampleRate: 1,
   replaysSessionSampleRate: 0.1,
   replaysOnErrorSampleRate: 1.0,
   debug: false,
   enabled: process.env.NODE_ENV === "production",
 });
+
+export const onRouterTransitionStart = Sentry.captureRouterTransitionStart;

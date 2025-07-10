@@ -5,8 +5,10 @@ import logger from "@adonisjs/core/services/logger";
 import LocalLoginHandler from "#services/auth/local/local-login.handler";
 import UserHandler from "#services/auth/user/user.handler";
 import BlCrypto from "#services/config/bl-crypto";
-import Messenger from "#services/messenger/messenger";
+import { sendMail } from "#services/messenger/email/email_service";
+import { EMAIL_TEMPLATES } from "#services/messenger/email/email_templates";
 import { BlStorage } from "#services/storage/bl-storage";
+import env from "#start/env";
 import {
   forgotPasswordValidator,
   passwordResetValidator,
@@ -28,7 +30,17 @@ export default class PasswordResetController {
         tokenHash,
         salt,
       });
-      await Messenger.passwordReset(email, passwordReset.id, token);
+      await sendMail({
+        template: EMAIL_TEMPLATES.passwordReset,
+        recipients: [
+          {
+            to: email,
+            dynamicTemplateData: {
+              passwordResetUri: `${env.get("CLIENT_URI")}auth/reset/${passwordReset.id}?resetToken=${token}`,
+            },
+          },
+        ],
+      });
     } catch (error) {
       logger.error(
         `Failed to send password reset email to ${email}, error: ${error}`,

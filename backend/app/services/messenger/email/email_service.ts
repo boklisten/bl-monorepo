@@ -7,20 +7,14 @@ import {
   EmailTemplate,
 } from "#services/messenger/email/email_templates";
 import { OrderEmailHandler } from "#services/messenger/email/order_email_handler";
-import { MessengerService } from "#services/messenger/messenger-service";
 import { EmailOrder, EmailUser } from "#services/types/email";
 import { Delivery } from "#shared/delivery/delivery";
 import { Order } from "#shared/order/order";
 import { UserDetail } from "#shared/user/user-detail/user-detail";
 import env from "#start/env";
 
-export class EmailService implements MessengerService {
-  private orderEmailHandler: OrderEmailHandler;
-
-  constructor() {
-    sgMail.setApiKey(env.get("SENDGRID_API_KEY"));
-    this.orderEmailHandler = new OrderEmailHandler();
-  }
+export class EmailService {
+  private orderEmailHandler = new OrderEmailHandler();
 
   public async orderPlaced(
     customerDetail: UserDetail,
@@ -129,24 +123,6 @@ export class EmailService implements MessengerService {
           to: customerDetail.email,
           dynamicTemplateData: {
             emailVerificationUri: `${env.get("CLIENT_URI")}auth/email/confirm/${confirmationCode}`,
-          },
-        },
-      ],
-    });
-  }
-
-  public async passwordReset(
-    userEmail: string,
-    pendingPasswordResetId: string,
-    resetToken: string,
-  ): Promise<void> {
-    await sendMail({
-      template: EMAIL_TEMPLATES.passwordReset,
-      recipients: [
-        {
-          to: userEmail,
-          dynamicTemplateData: {
-            passwordResetUri: `${env.get("CLIENT_URI")}auth/reset/${pendingPasswordResetId}?resetToken=${resetToken}`,
           },
         },
       ],

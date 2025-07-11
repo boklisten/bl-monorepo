@@ -1,4 +1,7 @@
 // @ts-check
+import path from "node:path";
+import { fileURLToPath } from "node:url";
+
 import eslint from "@eslint/js";
 import nextPlugin from "@next/eslint-plugin-next";
 import pluginQuery from "@tanstack/eslint-plugin-query";
@@ -14,6 +17,14 @@ import reactCompiler from "eslint-plugin-react-compiler";
 // eslint-disable-next-line import-x/default
 import reactHooks from "eslint-plugin-react-hooks";
 import tseslint from "typescript-eslint";
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+const PROJECT_PATHS = [
+  path.join(__dirname, "frontend/tsconfig.json"),
+  path.join(__dirname, "backend/tsconfig.json"),
+  path.join(__dirname, "tsconfig.eslint.json"),
+];
 
 export default tseslint.config(
   eslint.configs.recommended,
@@ -33,11 +44,7 @@ export default tseslint.config(
       ecmaVersion: "latest",
       sourceType: "module",
       parserOptions: {
-        project: [
-          "frontend/tsconfig.json",
-          "backend/tsconfig.json",
-          "./tsconfig.eslint.json",
-        ],
+        project: PROJECT_PATHS,
       },
     },
     plugins: {
@@ -51,11 +58,7 @@ export default tseslint.config(
       },
       "import-x/resolver-next": [
         createTypeScriptImportResolver({
-          project: [
-            "./frontend/tsconfig.json",
-            "./backend/tsconfig.json",
-            "./tsconfig.eslint.json",
-          ],
+          project: PROJECT_PATHS,
         }),
       ],
     },

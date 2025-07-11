@@ -1,5 +1,4 @@
-import { z } from "zod";
-import { fromError } from "zod-validation-error";
+import vine from "@vinejs/vine";
 
 import { sendMail } from "#services/messenger/email/email_service";
 import { EMAIL_TEMPLATES } from "#services/messenger/email/email_templates";
@@ -10,17 +9,17 @@ import { Operation } from "#services/types/operation";
 import { BlError } from "#shared/bl-error/bl-error";
 import { BlapiResponse } from "#shared/blapi-response/blapi-response";
 
-const MatchNotifySpec = z.object({
-  target: z.enum(["user-matches", "stand-only", "all"]),
-  message: z.string().nonempty(),
+const matchNotifyValidator = vine.object({
+  target: vine.enum(["user-matches", "stand-only", "all"]),
+  message: vine.string().minLength(10),
 });
 
 export class MatchNotifyOperation implements Operation {
   async run(blApiRequest: BlApiRequest): Promise<BlapiResponse> {
-    const parsedRequest = MatchNotifySpec.safeParse(blApiRequest.data);
-    if (!parsedRequest.success) {
-      throw new BlError(fromError(parsedRequest.error).toString()).code(701);
-    }
+    const { target, message } = await vine.validate({
+      schema: matchNotifyValidator,
+      data: blApiRequest.data,
+    });
 
     const userMatches = await BlStorage.UserMatches.getAll();
     const standMatches = await BlStorage.StandMatches.getAll();
@@ -40,7 +39,7 @@ export class MatchNotifyOperation implements Operation {
       standMatchCustomers.difference(userMatchCustomers);
 
     let targetCustomerIds: Set<string>;
-    switch (parsedRequest.data.target) {
+    switch (target) {
       case "user-matches": {
         targetCustomerIds = userMatchCustomers;
         break;
@@ -62,7 +61,7 @@ export class MatchNotifyOperation implements Operation {
           async (customer) => {
             await sendSMS(
               customer.phone,
-              `Hei, ${customer.name.split(" ")[0]}. ${parsedRequest.data.message} Mvh Boklisten`,
+              `Hei, ${customer.name.split(" ")[0]}. ${message} Mvh Boklisten`,
             );
             // fixme: rewrite so that we only send one send mail request for all users, using personalizations
             await sendMail({

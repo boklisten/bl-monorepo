@@ -1,12 +1,12 @@
 import { BlDocumentPermission } from "#services/types/bl-collection";
 import { BlDocument } from "#shared/bl-document/bl-document";
 import {
+  USER_PERMISSION,
   UserPermission,
-  UserPermissionEnum,
 } from "#shared/permission/user-permission";
 
 function isAdmin(userPermission: UserPermission) {
-  return userPermission === UserPermissionEnum.enum.admin;
+  return userPermission === USER_PERMISSION.ADMIN;
 }
 
 function haveRestrictedDocumentPermission(
@@ -46,24 +46,24 @@ function isPermissionOver(
   restrictedPermission?: UserPermission,
 ): boolean {
   if (!restrictedPermission || !permission) return false;
-  const { customer, employee, manager, admin } = UserPermissionEnum.enum;
+  const { CUSTOMER, EMPLOYEE, MANAGER, ADMIN } = USER_PERMISSION;
 
-  if (permission === employee && restrictedPermission === customer) {
+  if (permission === EMPLOYEE && restrictedPermission === CUSTOMER) {
     return true;
   }
 
   if (
-    permission === manager &&
-    (restrictedPermission === employee || restrictedPermission === customer)
+    permission === MANAGER &&
+    (restrictedPermission === EMPLOYEE || restrictedPermission === CUSTOMER)
   ) {
     return true;
   }
 
   return (
-    permission === admin &&
-    (restrictedPermission === manager ||
-      restrictedPermission === employee ||
-      restrictedPermission === customer)
+    permission === ADMIN &&
+    (restrictedPermission === MANAGER ||
+      restrictedPermission === EMPLOYEE ||
+      restrictedPermission === CUSTOMER)
   );
 }
 

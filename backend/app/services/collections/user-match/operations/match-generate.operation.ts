@@ -1,9 +1,9 @@
-import { fromError } from "zod-validation-error";
+import vine from "@vinejs/vine";
 
 import { MatchFinder } from "#services/collections/user-match/helpers/match-finder/match-finder";
 import {
   getMatchableUsers,
-  MatchGenerateSpec,
+  matchGenerateValidator,
 } from "#services/collections/user-match/operations/match-generate-operation-helper";
 import { BlStorage } from "#services/storage/bl-storage";
 import { BlApiRequest } from "#services/types/bl-api-request";
@@ -15,14 +15,20 @@ import { UserMatch } from "#shared/match/user-match";
 
 export class MatchGenerateOperation implements Operation {
   async run(blApiRequest: BlApiRequest): Promise<BlapiResponse> {
-    const parsedRequest = MatchGenerateSpec.safeParse(blApiRequest.data);
-    if (!parsedRequest.success) {
-      throw new BlError(fromError(parsedRequest.error).toString()).code(701);
-    }
+    const {
+      branches,
+      standLocation,
+      deadlineBefore,
+      includeCustomerItemsFromOtherBranches,
+    } = await vine.validate({
+      schema: matchGenerateValidator,
+      data: blApiRequest.data,
+    });
+
     const matchableUsers = await getMatchableUsers(
-      parsedRequest.data.branches,
-      parsedRequest.data.deadlineBefore,
-      parsedRequest.data.includeCustomerItemsFromOtherBranches,
+      branches,
+      deadlineBefore,
+      includeCustomerItemsFromOtherBranches,
     );
     if (matchableUsers.length === 0) {
       throw new BlError("No matchable users found");
@@ -40,10 +46,10 @@ export class MatchGenerateOperation implements Operation {
     const [userMatches, standMatches] = assignMeetingInfoToMatches(
       new MatchFinder(matchableUsers).generateMatches(),
       usersGroupedByMembership,
-      parsedRequest.data.standLocation,
-      parsedRequest.data.userMatchLocations,
-      new Date(parsedRequest.data.startTime),
-      parsedRequest.data.matchMeetingDurationInMS,
+      standLocation,
+      userMatchLocations,
+      new Date(startTime),
+      matchMeetingDurationInMS,
     );
      */
     const membershipToTime = {
@@ -89,7 +95,7 @@ export class MatchGenerateOperation implements Operation {
         receivedItems: [],
         deliveredItems: [],
         meetingInfo: {
-          location: parsedRequest.data.standLocation,
+          location: standLocation,
           date: new Date("2025-01-17T10:45:00Z"),
         },
       }),

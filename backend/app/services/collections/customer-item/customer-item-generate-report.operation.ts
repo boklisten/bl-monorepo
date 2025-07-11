@@ -1,43 +1,41 @@
+import vine from "@vinejs/vine";
 import { ObjectId } from "mongodb";
-import { z } from "zod";
-import { fromError } from "zod-validation-error";
 
 import { BlStorage } from "#services/storage/bl-storage";
 import { BlApiRequest } from "#services/types/bl-api-request";
 import { Operation } from "#services/types/operation";
-import { BlError } from "#shared/bl-error/bl-error";
 import { BlapiResponse } from "#shared/blapi-response/blapi-response";
 
-const CustomerItemGenerateReportSpec = z.object({
-  branchFilter: z.string().array().optional(),
-  createdAfter: z.string().datetime().optional(),
-  createdBefore: z.string().datetime().optional(),
-  returned: z.boolean(),
-  buyout: z.boolean(),
+const customerItemGenerateReportValidator = vine.object({
+  branchFilter: vine.array(vine.string()).optional(),
+  createdAfter: vine.date().optional(),
+  createdBefore: vine.date().optional(),
+  returned: vine.boolean(),
+  buyout: vine.boolean(),
 });
 
 export class CustomerItemGenerateReportOperation implements Operation {
   async run(blApiRequest: BlApiRequest): Promise<BlapiResponse> {
-    const parsedRequest = CustomerItemGenerateReportSpec.safeParse(
-      blApiRequest.data,
-    );
-    if (!parsedRequest.success) {
-      throw new BlError(fromError(parsedRequest.error).toString()).code(701);
-    }
-    const filterByHandoutBranchIfPresent = parsedRequest.data.branchFilter
+    const { branchFilter, createdAfter, createdBefore, returned, buyout } =
+      await vine.validate({
+        schema: customerItemGenerateReportValidator,
+        data: blApiRequest.data,
+      });
+
+    const filterByHandoutBranchIfPresent = branchFilter
       ? {
           "handoutInfo.handoutById": {
-            $in: parsedRequest.data.branchFilter.map((id) => new ObjectId(id)),
+            $in: branchFilter.map((id) => new ObjectId(id)),
           },
         }
       : {};
 
     const creationTimeLimiter: Record<string, Date> = {};
-    if (parsedRequest.data.createdAfter) {
-      creationTimeLimiter["$gte"] = new Date(parsedRequest.data.createdAfter);
+    if (createdAfter) {
+      creationTimeLimiter["$gte"] = new Date(createdAfter);
     }
-    if (parsedRequest.data.createdBefore) {
-      creationTimeLimiter["$lte"] = new Date(parsedRequest.data.createdBefore);
+    if (createdBefore) {
+      creationTimeLimiter["$lte"] = new Date(createdBefore);
     }
     const creationTimeFilter =
       Object.keys(creationTimeLimiter).length > 0
@@ -47,8 +45,8 @@ export class CustomerItemGenerateReportOperation implements Operation {
     const reportData = await BlStorage.CustomerItems.aggregate([
       {
         $match: {
-          returned: parsedRequest.data.returned,
-          buyout: parsedRequest.data.buyout,
+          returned: returned,
+          buyout: buyout,
           ...filterByHandoutBranchIfPresent,
           ...creationTimeFilter,
         },

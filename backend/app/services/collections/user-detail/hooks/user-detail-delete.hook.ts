@@ -1,5 +1,4 @@
-import { z } from "zod";
-import { fromError } from "zod-validation-error";
+import vine from "@vinejs/vine";
 
 import { CustomerHaveActiveCustomerItems } from "#services/collections/customer-item/helpers/customer-have-active-customer-items";
 import { CustomerInvoiceActive } from "#services/collections/invoice/helpers/customer-invoice-active";
@@ -10,8 +9,8 @@ import { Hook } from "#services/hook/hook";
 import { BlError } from "#shared/bl-error/bl-error";
 import { AccessToken } from "#shared/token/access-token";
 
-const UserDetailDeleteSpec = z.object({
-  mergeInto: z.string().optional(),
+const userDetailDeleteValidator = vine.object({
+  mergeInto: vine.string().optional(),
 });
 
 export class UserDetailDeleteHook extends Hook {
@@ -40,18 +39,18 @@ export class UserDetailDeleteHook extends Hook {
   }
 
   public override async before(
-    body: z.infer<typeof UserDetailDeleteSpec>,
+    body: unknown,
     accessToken: AccessToken,
     id: string,
   ): Promise<boolean> {
-    const { data, success, error } = UserDetailDeleteSpec.safeParse(body);
-    if (!success) {
-      throw new BlError(fromError(error).toString()).code(701);
-    }
+    const { mergeInto } = await vine.validate({
+      schema: userDetailDeleteValidator,
+      data: body,
+    });
     await this.checkIfUserCanDelete(id, accessToken);
 
-    if (data?.mergeInto) {
-      await this.deleteUserService.mergeIntoOtherUser(id, data.mergeInto);
+    if (mergeInto) {
+      await this.deleteUserService.mergeIntoOtherUser(id, mergeInto);
     } else {
       await this.checkActiveOrders(id);
       await this.checkActiveCustomerItems(id);

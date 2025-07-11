@@ -133,7 +133,7 @@ test.group("UserDetailPermissionOperation", (group) => {
         documentId: "userDetail2",
         data: {},
       }),
-    ).to.eventually.be.rejectedWith(BlError);
+    ).to.eventually.be.rejected;
   });
 
   test("should reject if userStorage.update rejects", async () => {

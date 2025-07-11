@@ -1,5 +1,4 @@
-import { z } from "zod";
-import { fromError } from "zod-validation-error";
+import vine from "@vinejs/vine";
 
 import { CustomerItemActiveBlid } from "#services/collections/customer-item/helpers/customer-item-active-blid";
 import { OrderToCustomerItemGenerator } from "#services/collections/customer-item/helpers/order-to-customer-item-generator";
@@ -21,32 +20,28 @@ const blidNotActiveFeedback =
 
 export class RapidHandoutOperation implements Operation {
   async run(blApiRequest: BlApiRequest): Promise<BlapiResponse> {
-    const parsedRequest = z
-      .object({ blid: z.string(), customerId: z.string() })
-      .safeParse(blApiRequest.data);
-    if (!parsedRequest.success) {
-      throw new BlError(fromError(parsedRequest.error).toString()).code(701);
-    }
+    const { blid, customerId } = await vine.validate({
+      schema: vine.object({
+        blid: vine.string(),
+        customerId: vine.string(),
+      }),
+      data: blApiRequest.data,
+    });
 
-    if (!this.isValidBlid(parsedRequest.data.blid)) {
+    if (!this.isValidBlid(blid)) {
       throw new BlError("blid is not a valid blid").code(803);
     }
-    const userFeedback = await this.verifyBlidNotActive(
-      parsedRequest.data.blid,
-      parsedRequest.data.customerId,
-    );
+    const userFeedback = await this.verifyBlidNotActive(blid, customerId);
     if (userFeedback) return new BlapiResponse([{ feedback: userFeedback }]);
 
-    const uniqueItemOrFeedback = await this.verifyUniqueItemPresent(
-      parsedRequest.data.blid,
-    );
+    const uniqueItemOrFeedback = await this.verifyUniqueItemPresent(blid);
     if (typeof uniqueItemOrFeedback === "string")
       return new BlapiResponse([{ feedback: uniqueItemOrFeedback }]);
 
     const placedRentOrder = await this.placeRentOrder(
-      parsedRequest.data.blid,
+      blid,
       uniqueItemOrFeedback.item,
-      parsedRequest.data.customerId,
+      customerId,
     );
     await this.createCustomerItem(placedRentOrder);
 

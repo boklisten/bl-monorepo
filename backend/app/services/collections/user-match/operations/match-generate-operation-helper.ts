@@ -1,23 +1,25 @@
+import vine from "@vinejs/vine";
 import { ObjectId } from "mongodb";
-import { z } from "zod";
 
-import {
-  MatchableUser,
-  MatchLocationSchema,
-} from "#services/collections/user-match/helpers/match-finder/match-types";
+import { MatchableUser } from "#services/collections/user-match/helpers/match-finder/match-types";
 import { BlStorage } from "#services/storage/bl-storage";
 
 /**
  * The information required to generate matches.
  */
-export const MatchGenerateSpec = z.object({
-  branches: z.string().array(),
-  standLocation: z.string(),
-  userMatchLocations: MatchLocationSchema.array(),
-  startTime: z.string().datetime(),
-  deadlineBefore: z.string().datetime(),
-  matchMeetingDurationInMS: z.number(),
-  includeCustomerItemsFromOtherBranches: z.boolean(),
+export const matchGenerateValidator = vine.object({
+  branches: vine.array(vine.string()),
+  standLocation: vine.string(),
+  userMatchLocations: vine.array(
+    vine.object({
+      name: vine.string(),
+      simultaneousMatchLimit: vine.number().optional(),
+    }),
+  ),
+  startTime: vine.date(),
+  deadlineBefore: vine.date(),
+  matchMeetingDurationInMS: vine.number(),
+  includeCustomerItemsFromOtherBranches: vine.boolean(),
 });
 
 /**
@@ -29,7 +31,7 @@ export const MatchGenerateSpec = z.object({
  */
 export async function getMatchableUsers(
   branchIds: string[],
-  deadlineBefore: string,
+  deadlineBefore: Date,
   includeSenderItemsFromOtherBranches: boolean,
 ): Promise<MatchableUser[]> {
   const [senders, receivers] = await Promise.all([
@@ -75,7 +77,7 @@ export async function getMatchableUsers(
  */
 async function getMatchableSender(
   branchIds: string[],
-  deadlineBefore: string,
+  deadlineBefore: Date,
   includeSenderItemsFromOtherBranches: boolean,
 ): Promise<MatchableUser[]> {
   const groupByCustomerStep = {
@@ -97,7 +99,7 @@ async function getMatchableSender(
         "handoutInfo.handoutById": {
           $in: branchIds.map((branchId) => new ObjectId(branchId)),
         },
-        deadline: { $gt: new Date(), $lte: new Date(deadlineBefore) },
+        deadline: { $gt: new Date(), $lte: deadlineBefore },
       },
     },
     groupByCustomerStep,
@@ -114,7 +116,7 @@ async function getMatchableSender(
           buyout: false,
           cancel: false,
           buyback: false,
-          deadline: { $gt: new Date(), $lte: new Date(deadlineBefore) },
+          deadline: { $gt: new Date(), $lte: deadlineBefore },
         },
       },
       groupByCustomerStep,

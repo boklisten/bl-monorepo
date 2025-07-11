@@ -1,22 +1,20 @@
-import { z } from "zod";
-import { fromError } from "zod-validation-error";
+import vine from "@vinejs/vine";
 
 import { BlStorage } from "#services/storage/bl-storage";
 import { BlApiRequest } from "#services/types/bl-api-request";
 import { Operation } from "#services/types/operation";
-import { BlError } from "#shared/bl-error/bl-error";
 import { BlapiResponse } from "#shared/blapi-response/blapi-response";
 
-const PublicBlidLookupSpec = z.object({
-  blid: z.string(),
+const publicBlidLookupValidator = vine.object({
+  blid: vine.string(),
 });
 
 export class PublicBlidLookupOperation implements Operation {
   async run(blApiRequest: BlApiRequest): Promise<BlapiResponse> {
-    const parsedRequest = PublicBlidLookupSpec.safeParse(blApiRequest.data);
-    if (!parsedRequest.success) {
-      throw new BlError(fromError(parsedRequest.error).toString()).code(701);
-    }
+    const { blid } = await vine.validate({
+      schema: publicBlidLookupValidator,
+      data: blApiRequest.data,
+    });
 
     const customerItemInfo = await BlStorage.CustomerItems.aggregate([
       {
@@ -25,7 +23,7 @@ export class PublicBlidLookupOperation implements Operation {
           buyout: false,
           cancel: false,
           buyback: false,
-          blid: parsedRequest.data.blid,
+          blid: blid,
         },
       },
       {

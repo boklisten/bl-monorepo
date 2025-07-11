@@ -1,5 +1,4 @@
-import { z } from "zod";
-import { fromError } from "zod-validation-error";
+import vine from "@vinejs/vine";
 
 import { PermissionService } from "#services/auth/permission.service";
 import { BlStorage } from "#services/storage/bl-storage";
@@ -7,61 +6,58 @@ import { BlApiRequest } from "#services/types/bl-api-request";
 import { Operation } from "#services/types/operation";
 import { BlError } from "#shared/bl-error/bl-error";
 import { BlapiResponse } from "#shared/blapi-response/blapi-response";
-import { UserPermissionEnum } from "#shared/permission/user-permission";
+import { userPermissionValidator } from "#shared/permission/user-permission";
 
-const UserDetailPermissionSpec = z.object({
-  documentId: z.string(),
-  data: z.object({
-    permission: UserPermissionEnum,
+const userDetailPermissionValidator = vine.object({
+  documentId: vine.string(),
+  data: vine.object({
+    permission: userPermissionValidator,
   }),
-  user: z.object({
-    id: z.string(),
-    permission: UserPermissionEnum,
+  user: vine.object({
+    id: vine.string(),
+    permission: userPermissionValidator,
   }),
 });
 
 export class UserDetailPermissionOperation implements Operation {
   async run(blApiRequest: BlApiRequest) {
-    const {
-      data: parsedRequest,
-      success,
-      error,
-    } = UserDetailPermissionSpec.safeParse(blApiRequest);
-    if (!success) {
-      throw new BlError(fromError(error).toString()).code(701);
-    }
-    const permissionChange = parsedRequest.data.permission;
+    const { documentId, data, user } = await vine.validate({
+      schema: userDetailPermissionValidator,
+      data: blApiRequest,
+    });
+    const permissionChange = data.permission;
 
-    if (parsedRequest.documentId == parsedRequest.user.id) {
+    if (documentId == user.id) {
       throw new BlError("user can not change own permission");
     }
 
-    const userDetail = await BlStorage.UserDetails.get(
-      parsedRequest.documentId,
-    );
+    const userDetail = await BlStorage.UserDetails.get(documentId);
 
-    const users = await BlStorage.Users.aggregate([
+    const foundUsers = await BlStorage.Users.aggregate([
       { $match: { blid: userDetail.blid } },
     ]);
-    const user = z
-      .object({ id: z.string(), permission: UserPermissionEnum })
-      .parse(users[0]);
+    const targetUser = await vine.validate({
+      schema: vine.object({
+        id: vine.string(),
+        permission: userPermissionValidator,
+      }),
+      data: foundUsers[0],
+    });
 
     if (
-      !PermissionService.isAdmin(parsedRequest.user.permission) ||
+      !PermissionService.isAdmin(user.permission) ||
       !PermissionService.isPermissionOver(
-        parsedRequest.user.permission,
         user.permission,
+        targetUser.permission,
       ) ||
-      !PermissionService.isPermissionOver(
-        parsedRequest.user.permission,
-        permissionChange,
-      )
+      !PermissionService.isPermissionOver(user.permission, permissionChange)
     ) {
       throw new BlError("no access to change permission").code(904);
     }
 
-    await BlStorage.Users.update(user.id, { permission: permissionChange });
+    await BlStorage.Users.update(targetUser.id, {
+      permission: permissionChange,
+    });
 
     return new BlapiResponse([{ success: true }]);
   }

@@ -1,6 +1,5 @@
+import vine from "@vinejs/vine";
 import { ObjectId } from "mongodb";
-import { z } from "zod";
-import { fromError } from "zod-validation-error";
 
 import { CustomerItemActiveBlid } from "#services/collections/customer-item/helpers/customer-item-active-blid";
 import { OrderToCustomerItemGenerator } from "#services/collections/customer-item/helpers/order-to-customer-item-generator";
@@ -27,8 +26,18 @@ export class UserMatchTransferItemOperation implements Operation {
 
   async run(blApiRequest: BlApiRequest): Promise<BlapiResponse> {
     let userFeedback;
-    const { blid, receiverUserDetailId } =
-      this.extractRequestData(blApiRequest);
+    const { blid } = await vine.validate({
+      schema: vine.object({
+        blid: vine.string(),
+      }),
+      data: blApiRequest.data,
+    });
+
+    if (!this.isValidBlid(blid)) {
+      throw new BlError("blid is not a valid blid").code(803);
+    }
+
+    const receiverUserDetailId = blApiRequest.user?.details ?? "";
 
     const customerItem = await this.getActiveCustomerItem(blid);
     const receiverUserMatch = await this.findReceiverUserMatch(
@@ -74,24 +83,6 @@ export class UserMatchTransferItemOperation implements Operation {
       return true;
     }
     return false;
-  }
-
-  private extractRequestData(blApiRequest: BlApiRequest): {
-    blid: string;
-    receiverUserDetailId: string;
-  } {
-    const parsedRequest = z
-      .object({ blid: z.string() })
-      .safeParse(blApiRequest.data);
-    if (!parsedRequest.success) {
-      throw new BlError(fromError(parsedRequest.error).toString()).code(701);
-    }
-    if (!this.isValidBlid(parsedRequest.data.blid)) {
-      throw new BlError("blid is not a valid blid").code(803);
-    }
-
-    const receiverUserDetailId = blApiRequest.user?.details ?? "";
-    return { blid: parsedRequest.data.blid, receiverUserDetailId };
   }
 
   private async updateSenderMatches(

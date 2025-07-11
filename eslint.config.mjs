@@ -2,14 +2,17 @@
 import eslint from "@eslint/js";
 import nextPlugin from "@next/eslint-plugin-next";
 import pluginQuery from "@tanstack/eslint-plugin-query";
+import tsParser from "@typescript-eslint/parser";
 import eslintConfigPrettier from "eslint-config-prettier";
+import { createTypeScriptImportResolver } from "eslint-import-resolver-typescript";
 import pluginChaiFriendly from "eslint-plugin-chai-friendly";
-import importPlugin from "eslint-plugin-import";
+import { importX } from "eslint-plugin-import-x";
 import jsxA11y from "eslint-plugin-jsx-a11y";
 import noRelativeImportPathsPlugin from "eslint-plugin-no-relative-import-paths";
 import reactPlugin from "eslint-plugin-react";
 import reactCompiler from "eslint-plugin-react-compiler";
-import hooksPlugin from "eslint-plugin-react-hooks";
+// eslint-disable-next-line import-x/default
+import reactHooks from "eslint-plugin-react-hooks";
 import tseslint from "typescript-eslint";
 
 export default tseslint.config(
@@ -18,31 +21,52 @@ export default tseslint.config(
   tseslint.configs.stylistic,
   reactPlugin.configs.flat.recommended,
   reactPlugin.configs.flat["jsx-runtime"],
+  reactHooks.configs["recommended-latest"],
   jsxA11y.flatConfigs.recommended,
-  importPlugin.flatConfigs.typescript,
+  importX.flatConfigs.recommended,
+  importX.flatConfigs.typescript,
   ...pluginQuery.configs["flat/recommended"],
   {
     files: ["**/*.{js,jsx,mjs,cjs,ts,tsx}"],
+    languageOptions: {
+      parser: tsParser,
+      ecmaVersion: "latest",
+      sourceType: "module",
+      parserOptions: {
+        project: [
+          "frontend/tsconfig.json",
+          "backend/tsconfig.json",
+          "./tsconfig.eslint.json",
+        ],
+      },
+    },
     plugins: {
       "@next/next": nextPlugin,
-      "react-hooks": hooksPlugin,
       "no-relative-import-paths": noRelativeImportPathsPlugin,
-      import: importPlugin,
       "react-compiler": reactCompiler,
     },
     settings: {
       react: {
         version: "detect",
       },
+      "import-x/resolver-next": [
+        createTypeScriptImportResolver({
+          project: [
+            "./frontend/tsconfig.json",
+            "./backend/tsconfig.json",
+            "./tsconfig.eslint.json",
+          ],
+        }),
+      ],
     },
     rules: {
       ...nextPlugin.configs.recommended.rules,
       ...nextPlugin.configs["core-web-vitals"].rules,
-      ...hooksPlugin.configs.recommended.rules,
+      "import-x/no-named-as-default-member": "off",
       "no-relative-import-paths/no-relative-import-paths": "error",
       "react-compiler/react-compiler": "error",
       /** @see https://medium.com/weekly-webtips/how-to-sort-imports-like-a-pro-in-typescript-4ee8afd7258a */
-      "import/order": [
+      "import-x/order": [
         "error",
         {
           groups: [

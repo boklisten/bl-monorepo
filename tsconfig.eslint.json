@@ -1,0 +1,7 @@
+{
+  "files": ["eslint.config.mjs"],
+  "compilerOptions": {
+    "allowJs": true,
+    "checkJs": false
+  }
+}

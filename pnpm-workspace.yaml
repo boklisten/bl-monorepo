@@ -1,6 +1,10 @@
 packages:
   - frontend
   - backend
+
+ignoredBuiltDependencies:
+  - unrs-resolver
+
 onlyBuiltDependencies:
   - '@sentry-internal/node-cpu-profiler'
   - '@sentry/cli'

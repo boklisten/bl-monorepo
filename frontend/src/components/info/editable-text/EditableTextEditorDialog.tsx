@@ -118,11 +118,22 @@ export default function EditableTextEditorDialog({
   }
 
   return (
-    <Dialog open={open} onClose={() => onClose()}>
+    <Dialog
+      open={open}
+      onClose={() => onClose()}
+      slotProps={{
+        paper: {
+          sx: {
+            width: 800,
+            maxWidth: "90%",
+          },
+        },
+      }}
+    >
       <DialogTitle>
         {payload === undefined ? "Opprett" : "Rediger"} innhold
       </DialogTitle>
-      <DialogContent sx={{ minWidth: 350 }}>
+      <DialogContent>
         <Stack gap={2} mt={1}>
           <TextField
             label={"Nøkkel"}

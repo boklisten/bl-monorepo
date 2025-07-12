@@ -1,5 +1,5 @@
 "use client";
-import { Alert, AlertTitle, Container, Skeleton } from "@mui/material";
+import { Alert, AlertTitle, Container } from "@mui/material";
 import { useQuery } from "@tanstack/react-query";
 import { RichTextReadOnly } from "mui-tiptap";
 
@@ -16,11 +16,7 @@ export default function EditableTextReadOnly({ dataKey }: { dataKey: string }) {
     queryFn: () => client.editable_texts.key({ key: dataKey }).$get().unwrap(),
   });
   if (isLoading) {
-    return (
-      <Container>
-        <Skeleton height={400} />
-      </Container>
-    );
+    return;
   }
   if (isError || !data) {
     return (

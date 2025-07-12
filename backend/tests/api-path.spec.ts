@@ -22,6 +22,7 @@ test.group("Api Path - retrieveRefererPath", async () => {
   test("should return refererPath if url includes our basePath", async ({
     assert,
   }) => {
+    // @ts-expect-error updated only for testing purposes
     APP_CONFIG.path.local.host = "boklisten";
     assert.equal(
       retrieveRefererPath({
@@ -34,6 +35,7 @@ test.group("Api Path - retrieveRefererPath", async () => {
   test("should return refererPath if url includes our basePath", async ({
     assert,
   }) => {
+    // @ts-expect-error updated only for testing purposes
     APP_CONFIG.path.local.host = "boklisten";
     assert.equal(
       retrieveRefererPath({
@@ -46,6 +48,7 @@ test.group("Api Path - retrieveRefererPath", async () => {
   test("should return refererPath if url includes our basePath", async ({
     assert,
   }) => {
+    // @ts-expect-error updated only for testing purposes
     APP_CONFIG.path.local.host = "boklisten";
     assert.equal(
       retrieveRefererPath({
@@ -58,6 +61,7 @@ test.group("Api Path - retrieveRefererPath", async () => {
   test("should return refererPath if url includes our basePath", async ({
     assert,
   }) => {
+    // @ts-expect-error updated only for testing purposes
     APP_CONFIG.path.local.host = "boklisten";
     assert.equal(
       retrieveRefererPath({
@@ -70,6 +74,7 @@ test.group("Api Path - retrieveRefererPath", async () => {
   test("should return refererPath if url includes our basePath", async ({
     assert,
   }) => {
+    // @ts-expect-error updated only for testing purposes
     APP_CONFIG.path.local.host = "boklisten";
     assert.equal(
       retrieveRefererPath({
@@ -82,6 +87,7 @@ test.group("Api Path - retrieveRefererPath", async () => {
   test("should return refererPath if url includes our local basePath", async ({
     assert,
   }) => {
+    // @ts-expect-error updated only for testing purposes
     APP_CONFIG.path.local.host = "localhost";
     assert.equal(
       retrieveRefererPath({

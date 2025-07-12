@@ -77,12 +77,12 @@ export const APP_CONFIG = {
     refresh: {
       iss: "boklisten.no",
       aud: "boklisten.no",
-      expiresIn: "1 Year" as const,
+      expiresIn: "1 Year",
     },
     access: {
       iss: "boklisten.no",
       aud: "boklisten.no",
-      expiresIn: "10 Minutes" as const,
+      expiresIn: "10 Minutes",
     },
   },
   date: {
@@ -109,4 +109,4 @@ export const APP_CONFIG = {
         : 7,
     maxWeightLetter: 4800,
   },
-};
+} as const;

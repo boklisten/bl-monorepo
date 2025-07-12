@@ -3,7 +3,6 @@ import { BranchItemCollection } from "#services/collections/branch-item/branch-i
 import { CompanyCollection } from "#services/collections/company/company.collection";
 import { CustomerItemCollection } from "#services/collections/customer-item/customer-item.collection";
 import { DeliveryCollection } from "#services/collections/delivery/delivery.collection";
-import { EditableTextCollection } from "#services/collections/editable-text/editable-text.collection";
 import { EmailValidationCollection } from "#services/collections/email-validation/email-validation.collection";
 import { InvoiceCollection } from "#services/collections/invoice/invoice.collection";
 import { ItemCollection } from "#services/collections/item/item.collection";
@@ -34,7 +33,6 @@ const BlCollections = [
   InvoiceCollection,
   CompanyCollection,
   UniqueItemCollection,
-  EditableTextCollection,
   SignatureCollection,
 ];
 

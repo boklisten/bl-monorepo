@@ -208,6 +208,45 @@ type V2UserdetailsCheckphonenumberalreadyregisteredPost = {
     true
   >;
 };
+type EditableTextsGetHead = {
+  request: unknown;
+  response: MakeNonSerializedTuyauResponse<
+    import("../app/controllers/editable_texts_controller.ts").default["getAll"],
+    false
+  >;
+};
+type EditabletextsKeyIdGetHead = {
+  request: unknown;
+  response: MakeNonSerializedTuyauResponse<
+    import("../app/controllers/editable_texts_controller.ts").default["getByKey"],
+    false
+  >;
+};
+type EditableTextsPost = {
+  request: MakeTuyauRequest<
+    InferInput<
+      (typeof import("../app/validators/editable_texts_validator.ts"))["editableTextsValidator"]
+    >
+  >;
+  response: MakeNonSerializedTuyauResponse<
+    import("../app/controllers/editable_texts_controller.ts").default["store"],
+    true
+  >;
+};
+type EditabletextsIdPatch = {
+  request: unknown;
+  response: MakeNonSerializedTuyauResponse<
+    import("../app/controllers/editable_texts_controller.ts").default["update"],
+    false
+  >;
+};
+type EditabletextsIdDelete = {
+  request: unknown;
+  response: MakeNonSerializedTuyauResponse<
+    import("../app/controllers/editable_texts_controller.ts").default["destroy"],
+    false
+  >;
+};
 export interface ApiDefinition {
   token: {
     $url: {};
@@ -304,6 +343,24 @@ export interface ApiDefinition {
     send: {
       $url: {};
       $post: EmailsSendPost;
+    };
+  };
+  editable_texts: {
+    $url: {};
+    $get: EditableTextsGetHead;
+    $head: EditableTextsGetHead;
+    key: {
+      ":key": {
+        $url: {};
+        $get: EditabletextsKeyIdGetHead;
+        $head: EditabletextsKeyIdGetHead;
+      };
+    };
+    $post: EditableTextsPost;
+    ":id": {
+      $url: {};
+      $patch: EditabletextsIdPatch;
+      $delete: EditabletextsIdDelete;
     };
   };
 }
@@ -447,6 +504,41 @@ const routes = [
     path: "/v2/userdetails/check_phone_number_already_registered",
     method: ["POST"],
     types: {} as V2UserdetailsCheckphonenumberalreadyregisteredPost,
+  },
+  {
+    params: [],
+    name: "editable_texts.getAll",
+    path: "/editable_texts",
+    method: ["GET", "HEAD"],
+    types: {} as EditableTextsGetHead,
+  },
+  {
+    params: ["key"],
+    name: "editable_texts.getByKey",
+    path: "/editable_texts/key/:key",
+    method: ["GET", "HEAD"],
+    types: {} as EditabletextsKeyIdGetHead,
+  },
+  {
+    params: [],
+    name: "editable_texts.store",
+    path: "/editable_texts",
+    method: ["POST"],
+    types: {} as EditableTextsPost,
+  },
+  {
+    params: ["id"],
+    name: "editable_texts.update",
+    path: "/editable_texts/:id",
+    method: ["PATCH"],
+    types: {} as EditabletextsIdPatch,
+  },
+  {
+    params: ["id"],
+    name: "editable_texts.destroy",
+    path: "/editable_texts/:id",
+    method: ["DELETE"],
+    types: {} as EditabletextsIdDelete,
   },
   {
     params: ["id"],
@@ -1041,34 +1133,6 @@ const routes = [
     name: "collection.uniqueitems.getAll",
     path: "/uniqueitems",
     method: ["GET", "HEAD"],
-    types: {} as unknown,
-  },
-  {
-    params: ["id"],
-    name: "collection.editabletexts.getId",
-    path: "/editabletexts/:id",
-    method: ["GET", "HEAD"],
-    types: {} as unknown,
-  },
-  {
-    params: [],
-    name: "collection.editabletexts.getAll",
-    path: "/editabletexts",
-    method: ["GET", "HEAD"],
-    types: {} as unknown,
-  },
-  {
-    params: ["id"],
-    name: "collection.editabletexts.put",
-    path: "/editabletexts/:id",
-    method: ["PUT"],
-    types: {} as unknown,
-  },
-  {
-    params: ["id"],
-    name: "collection.editabletexts.delete",
-    path: "/editabletexts/:id",
-    method: ["DELETE"],
     types: {} as unknown,
   },
   {

@@ -1,7 +1,6 @@
 import { Metadata } from "next";
 
-import Editor from "@/components/info/Editor";
-import { editorData } from "@/utils/mockData";
+import EditableTextReadOnly from "@/components/info/editable-text/EditableTextReadOnly";
 
 export const metadata: Metadata = {
   title: "For skolekunder",
@@ -10,7 +9,7 @@ export const metadata: Metadata = {
 };
 
 const Page = () => {
-  return <Editor rawEditorState={editorData.companies} />;
+  return <EditableTextReadOnly dataKey={"for_skolekunder"} />;
 };
 
 export default Page;

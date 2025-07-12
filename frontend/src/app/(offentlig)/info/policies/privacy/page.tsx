@@ -1,7 +1,6 @@
 import { Metadata } from "next";
 
-import Editor from "@/components/info/Editor";
-import { editorData } from "@/utils/mockData";
+import EditableTextReadOnly from "@/components/info/editable-text/EditableTextReadOnly";
 
 export const metadata: Metadata = {
   title: "Personvernavtale",
@@ -10,7 +9,7 @@ export const metadata: Metadata = {
 };
 
 const PrivacyPage = () => {
-  return <Editor rawEditorState={editorData.privacy} />;
+  return <EditableTextReadOnly dataKey={"personvernavtale"} />;
 };
 
 export default PrivacyPage;

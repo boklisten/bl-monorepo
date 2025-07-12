@@ -18,6 +18,8 @@ const MailTemplateSenderController = () =>
 const OrdersController = () => import("#controllers/orders_controller");
 const UserDetailsController = () =>
   import("#controllers/user_details_controller");
+const EditableTextsController = () =>
+  import("#controllers/editable_texts_controller");
 
 /**
  * auth token
@@ -126,5 +128,24 @@ router
     "checkPhoneNumberAlreadyRegistered",
   ])
   .as("userdetails.checkPhoneNumberAlreadyRegistered");
+
+/**
+ * editable texts
+ */
+router
+  .get("/editable_texts", [EditableTextsController, "getAll"])
+  .as("editable_texts.getAll");
+router
+  .get("/editable_texts/key/:key", [EditableTextsController, "getByKey"])
+  .as("editable_texts.getByKey");
+router
+  .post("/editable_texts", [EditableTextsController, "store"])
+  .as("editable_texts.store");
+router
+  .patch("/editable_texts/:id", [EditableTextsController, "update"])
+  .as("editable_texts.update");
+router
+  .delete("/editable_texts/:id", [EditableTextsController, "destroy"])
+  .as("editable_texts.destroy");
 
 CollectionEndpointCreator.generateEndpoints();

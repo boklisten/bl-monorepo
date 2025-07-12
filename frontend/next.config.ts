@@ -6,13 +6,11 @@ const nextConfig: NextConfig = {
     reactCompiler: true,
   },
   transpilePackages: ["@boklisten/backend"],
-  webpack: (config) => {
-    config.resolve.extensionAlias = {
-      ".js": [".ts", ".tsx", ".js", ".jsx"],
-      ".mjs": [".mts", ".mjs"],
-      ".cjs": [".cts", ".cjs"],
-    };
-    return config;
+  turbopack: {
+    resolveAlias: {
+      "@/*": "./src/*",
+      "@boklisten/backend/*": "../backend/src/*",
+    },
   },
   // fixme: temporary redirects required while in tandem with bl-web / bl-admin
   async redirects() {

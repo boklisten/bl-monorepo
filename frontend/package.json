@@ -4,7 +4,7 @@
   "license": "UNLICENSED",
   "type": "module",
   "scripts": {
-    "dev": "next dev",
+    "dev": "next dev --turbo",
     "typecheck": "pnpm exec tsc --noEmit",
     "build": "next build",
     "serve": "next start"

@@ -1,7 +1,6 @@
 import { ThemeProvider } from "@mui/material";
 import CssBaseline from "@mui/material/CssBaseline";
 import { AppRouterCacheProvider } from "@mui/material-nextjs/v15-appRouter";
-import { DialogsProvider, NotificationsProvider } from "@toolpad/core";
 import { Metadata } from "next";
 import { ReactNode, Suspense } from "react";
 
@@ -10,6 +9,7 @@ import DynamicHeightProvider from "@/components/DynamicHeightProvider";
 import CustomLocalizationProvider from "@/components/LocalizationProvider";
 import ReactQueryClientProvider from "@/components/ReactQueryClientProvider";
 import theme from "@/utils/theme";
+import ToolpadProvider from "@/utils/ToolpadProvider";
 
 import "@fontsource/roboto/300.css";
 import "@fontsource/roboto/400.css";
@@ -34,15 +34,13 @@ export default function RootLayout({ children }: { children: ReactNode }) {
               <CustomLocalizationProvider>
                 <AppRouterCacheProvider>
                   <ThemeProvider theme={theme}>
-                    <NotificationsProvider>
-                      <DialogsProvider>
-                        <AuthLinker>
-                          {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
-                          <CssBaseline />
-                          {children}
-                        </AuthLinker>
-                      </DialogsProvider>
-                    </NotificationsProvider>
+                    <ToolpadProvider>
+                      <AuthLinker>
+                        {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
+                        <CssBaseline />
+                        {children}
+                      </AuthLinker>
+                    </ToolpadProvider>
                   </ThemeProvider>
                 </AppRouterCacheProvider>
               </CustomLocalizationProvider>

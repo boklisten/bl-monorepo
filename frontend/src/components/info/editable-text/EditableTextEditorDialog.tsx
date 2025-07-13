@@ -42,7 +42,7 @@ export default function EditableTextEditorDialog({
   onClose,
 }: DialogProps<EditableText | undefined>) {
   const [isLoading, setIsLoading] = useState(false);
-  const [key, setKey] = useState(payload?.key);
+  const [key, setKey] = useState(payload?.key ?? "");
   const rteRef = useRef<RichTextEditorRef>(null);
   const notifications = useNotifications();
 
@@ -67,10 +67,13 @@ export default function EditableTextEditorDialog({
       await onClose();
     },
     onError: async () => {
-      notifications.show("Klarte ikke opprette dynamisk innhold!", {
-        severity: "error",
-        autoHideDuration: 5000,
-      });
+      notifications.show(
+        `Klarte ikke opprette dynamisk innhold! Vennligst sjekk at nøkkel er formattert riktig. [a-z] og "_" for mellomrom.`,
+        {
+          severity: "error",
+          autoHideDuration: 5000,
+        },
+      );
     },
   });
 
@@ -137,6 +140,7 @@ export default function EditableTextEditorDialog({
         <Stack gap={2} mt={1}>
           <TextField
             label={"Nøkkel"}
+            placeholder={"min_nye_nokkel"}
             value={key}
             onChange={(e) => setKey(e.target.value)}
             disabled={payload !== undefined}

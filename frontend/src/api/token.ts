@@ -15,7 +15,7 @@ export const haveAccessToken = (): boolean => {
   return get(accessTokenName) !== null;
 };
 
-export const haveRefreshToken = (): boolean => {
+const haveRefreshToken = (): boolean => {
   return get(refreshTokenName) !== null;
 };
 

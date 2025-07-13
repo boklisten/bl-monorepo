@@ -75,15 +75,9 @@ async function create(
   if (!providerId || providerId.length <= 0)
     throw new BlError("providerId is empty or undefined").code(907);
 
-  let userExists: User;
-  try {
-    userExists = await getByUsername(username);
-  } catch {
-    // @ts-expect-error fixme: auto ignored
-    userExists = null;
-  }
+  const existingUser = await getOrNull(username);
 
-  if (userExists) {
+  if (existingUser) {
     if (provider === "local") {
       throw new BlError(
         `username "${username}" already exists, but trying to create new user with provider "local"`,
@@ -97,7 +91,7 @@ async function create(
         await LocalLoginHandler.createDefaultLocalLogin(username);
       }
 
-      return userExists;
+      return existingUser;
     } else {
       throw new BlError(
         `username "${username}" already exists, but could not link it with new provider "${provider}"`,

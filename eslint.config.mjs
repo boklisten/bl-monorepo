@@ -65,6 +65,19 @@ export default tseslint.config(
     rules: {
       ...nextPlugin.configs.recommended.rules,
       ...nextPlugin.configs["core-web-vitals"].rules,
+      "import-x/no-unused-modules": [
+        1,
+        {
+          unusedExports: true,
+          missingExports: true,
+          ignoreExports: [
+            "**/*{page,error,loading,layout,spec,config,next-env.d,instrumentation,instrumentation-client,adonisrc,robots}.{ts,tsx}",
+            "backend/{start,config,bin}/*",
+            "backend/ace.js",
+            "eslint.config.mjs",
+          ],
+        },
+      ],
       "import-x/no-named-as-default-member": "off",
       "no-relative-import-paths/no-relative-import-paths": "error",
       "react-compiler/react-compiler": "error",

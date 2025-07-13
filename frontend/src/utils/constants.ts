@@ -32,12 +32,3 @@ export const contactInfo = {
   phone: "91002211",
   address: "Postboks 8, 1316 Eiksmarka",
 };
-
-export const editableTextIds = {
-  frontPage: {
-    newsBanner: "65a7f68e81488330ddcd6fd3",
-  },
-  info: {
-    general: "650ae3eaa4c00a2d1c0824b3",
-  },
-};

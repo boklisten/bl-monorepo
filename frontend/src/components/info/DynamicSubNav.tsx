@@ -7,7 +7,7 @@ import { usePathname } from "next/navigation";
 import { ReactElement } from "react";
 import stringSimilarity from "string-similarity";
 
-export interface DynamicSubNavProps {
+interface DynamicSubNavProps {
   tabs: {
     label: string;
     href: string;

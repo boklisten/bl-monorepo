@@ -24,7 +24,7 @@ import ProgressBar from "@/components/matches/matchesList/ProgressBar";
 import MatchItemTable from "@/components/matches/MatchItemTable";
 import MeetingInfo from "@/components/matches/MeetingInfo";
 
-export function useMeetingStatus(meetingTime?: string | Date) {
+function useMeetingStatus(meetingTime?: string | Date) {
   const [isTooEarly, setIsTooEarly] = useState(() =>
     moment().isBefore(moment(meetingTime)),
   );

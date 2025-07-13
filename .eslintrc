@@ -1,0 +1,12 @@
+{
+  // We include this ESM RC so import-x’s `no-unused-modules`
+  // rule can read ignorePatterns under flat config.
+  // Without it, the rule errors out (see GH issue #3079).
+  // https://github.com/import-js/eslint-plugin-import/issues/3079
+  "ignorePatterns": [
+    "**/dist/*",
+    "**/build/*",
+    "**/.next/*",
+    "backend/.adonisjs/*"
+  ]
+}

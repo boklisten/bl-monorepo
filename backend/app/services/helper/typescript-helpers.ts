@@ -16,16 +16,8 @@ export function isBoolean(maybeBoolean: unknown): maybeBoolean is boolean {
   return typeof maybeBoolean === "boolean";
 }
 
-export function isNotBoolean<T>(maybeBoolean: T | boolean): maybeBoolean is T {
-  return typeof maybeBoolean !== "boolean";
-}
-
 export function isNumber(maybeNumber: unknown): maybeNumber is number {
   return typeof maybeNumber === "number";
-}
-
-export function isNotNumber<T>(maybeNumber: T | number): maybeNumber is T {
-  return typeof maybeNumber !== "number";
 }
 
 // Re-format BlDocument type to one fitting for mongoose schemas

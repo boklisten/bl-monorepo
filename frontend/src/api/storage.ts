@@ -11,11 +11,6 @@ export const get = (key: string): string | null => {
   }
 };
 
-export const remove = (key: string): boolean => {
-  localStorage.removeItem(key);
-  return true;
-};
-
 export const removeAll = (): void => {
   localStorage.clear();
 };

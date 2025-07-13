@@ -13,11 +13,6 @@ export enum TextType {
 
 export type ScannedTextType = TextType.BLID | TextType.ISBN | TextType.UNKNOWN;
 
-export interface MaybeEmptyEditableText {
-  id: string;
-  text: string | null;
-}
-
 export function verifyBlApiError(
   apiError: unknown,
 ): apiError is BlapiErrorResponse {

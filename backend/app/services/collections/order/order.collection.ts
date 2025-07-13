@@ -30,17 +30,6 @@ export const OrderCollection: BlCollection = {
             permission: "employee",
           },
         },
-        /*
-* fixme: Re-enable this when component is rewritten and generalized
-*
-        {
-          name: "temp-bulk-create-orders",
-          operation: new BulkOrderOperation(),
-          restriction: {
-            permission: "admin",
-          },
-        },
-*/
       ],
     },
     {

@@ -43,14 +43,14 @@ export interface EmailOrder {
   };
 }
 
-export interface EmailAttachment {
+interface EmailAttachment {
   content: string;
   filename: string;
   type: string;
   contentId: string;
 }
 
-export interface EmailTextBlock {
+interface EmailTextBlock {
   text: string;
   warning?: boolean;
   alert?: boolean;

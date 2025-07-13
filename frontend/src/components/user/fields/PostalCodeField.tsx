@@ -143,11 +143,11 @@ export type PostalCityState =
       state: "loading";
     };
 
-export interface PostalCityStateOk {
+interface PostalCityStateOk {
   state: "ok";
   city: string;
 }
-export type PostalCityStateSettled =
+type PostalCityStateSettled =
   | PostalCityStateOk
   | { state: "error" | "invalid" };
 

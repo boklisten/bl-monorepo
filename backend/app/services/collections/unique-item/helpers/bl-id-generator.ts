@@ -145,4 +145,6 @@ async function generateBlIdPDF(): Promise<Buffer> {
   return Buffer.concat(buffers);
 }
 
+// fixme: actually use this
+// eslint-disable-next-line import-x/no-unused-modules
 export default generateBlIdPDF;

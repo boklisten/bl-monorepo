@@ -9,14 +9,14 @@ import { DeliveryInfoBring } from "#shared/delivery/delivery-info/delivery-info-
 import { Item } from "#shared/item/item";
 import env from "#start/env";
 
-export interface ShipmentAddress {
+interface ShipmentAddress {
   name: string;
   postalCode: string;
   postalCity: string;
   address: string;
 }
 
-export interface FacilityAddress {
+interface FacilityAddress {
   address: string;
   postalCode: string;
   postalCity: string;

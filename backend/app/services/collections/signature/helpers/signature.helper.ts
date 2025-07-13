@@ -62,7 +62,7 @@ export async function userHasValidSignature(
   return (await getValidUserSignature(userDetail)) != null;
 }
 
-export function signatureIsValidForUser(
+function signatureIsValidForUser(
   userDetail: UserDetail,
   signature: SignatureMetadata,
 ): boolean {
@@ -83,7 +83,7 @@ export function isUnderage(userDetail: UserDetail): boolean {
   return userDetail.dob > latestAdultBirthDate;
 }
 
-export function isSignatureExpired(signature: SignatureMetadata): boolean {
+function isSignatureExpired(signature: SignatureMetadata): boolean {
   const now = new Date();
   const oldestAllowedSignatureTime = new Date(
     now.getFullYear(),

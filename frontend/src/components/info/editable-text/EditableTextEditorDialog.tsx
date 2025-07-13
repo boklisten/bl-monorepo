@@ -10,31 +10,12 @@ import {
 } from "@mui/material";
 import DialogTitle from "@mui/material/DialogTitle";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { Link } from "@tiptap/extension-link";
-import StarterKit from "@tiptap/starter-kit";
 import { DialogProps, useNotifications } from "@toolpad/core";
-import {
-  LinkBubbleMenu,
-  LinkBubbleMenuHandler,
-  MenuButtonBold,
-  MenuButtonEditLink,
-  MenuButtonItalic,
-  MenuControlsContainer,
-  MenuDivider,
-  MenuSelectHeading,
-  RichTextEditor,
-  RichTextEditorRef,
-  TableBubbleMenu,
-} from "mui-tiptap";
+import { RichTextEditorRef } from "mui-tiptap";
 import { useRef, useState } from "react";
 
+import { TextEditor } from "@/components/TextEditor";
 import useApiClient from "@/utils/api/useApiClient";
-
-export const richTextEditorExtensions = [
-  StarterKit,
-  Link,
-  LinkBubbleMenuHandler,
-];
 
 export default function EditableTextEditorDialog({
   payload,
@@ -146,29 +127,7 @@ export default function EditableTextEditorDialog({
             disabled={payload !== undefined}
             helperText={"Nøkkel kan ikke endres etter opprettelse"}
           />
-          <RichTextEditor
-            ref={rteRef}
-            extensions={richTextEditorExtensions}
-            content={payload?.text ?? ""}
-            renderControls={() => (
-              <MenuControlsContainer>
-                <MenuSelectHeading />
-                <MenuDivider />
-                <MenuButtonBold />
-                <MenuButtonItalic />
-                <MenuDivider />
-                <MenuButtonEditLink />
-                <MenuDivider />
-              </MenuControlsContainer>
-            )}
-          >
-            {() => (
-              <>
-                <LinkBubbleMenu />
-                <TableBubbleMenu />
-              </>
-            )}
-          </RichTextEditor>
+          <TextEditor content={payload?.text ?? ""} rteRef={rteRef} />
         </Stack>
       </DialogContent>
       <DialogActions>

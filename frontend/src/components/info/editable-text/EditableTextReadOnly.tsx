@@ -1,9 +1,8 @@
 "use client";
 import { Alert, AlertTitle, Container } from "@mui/material";
 import { useQuery } from "@tanstack/react-query";
-import { RichTextReadOnly } from "mui-tiptap";
 
-import { richTextEditorExtensions } from "@/components/info/editable-text/EditableTextEditorDialog";
+import { TextEditor } from "@/components/TextEditor";
 import useApiClient from "@/utils/api/useApiClient";
 
 export default function EditableTextReadOnly({ dataKey }: { dataKey: string }) {
@@ -31,10 +30,7 @@ export default function EditableTextReadOnly({ dataKey }: { dataKey: string }) {
   }
   return (
     <Container>
-      <RichTextReadOnly
-        content={data.text}
-        extensions={richTextEditorExtensions}
-      />
+      <TextEditor readOnly content={data.text} />
     </Container>
   );
 }

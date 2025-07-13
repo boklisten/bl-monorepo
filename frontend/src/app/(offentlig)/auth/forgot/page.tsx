@@ -82,7 +82,8 @@ const ForgotPage = () => {
                 <Alert severity="success" sx={{ mt: 1 }}>
                   Hvis det finnes en bruker med denne e-postaddressen har vi
                   sendt en e-post med instruksjoner for hvordan du kan endre
-                  passordet ditt.
+                  passordet ditt. Hvis e-posten ikke dukker opp innen noen få
+                  minutter anbefaler vi å sjekke søppelpost.
                 </Alert>
               )}
               <TextField

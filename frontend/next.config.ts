@@ -1,7 +1,7 @@
-import { withSentryConfig } from "@sentry/nextjs";
+import { SentryBuildOptions, withSentryConfig } from "@sentry/nextjs";
 import type { NextConfig } from "next";
 
-const nextConfig: NextConfig = {
+const NEXT_CONFIG = {
   experimental: {
     reactCompiler: true,
   },
@@ -52,9 +52,9 @@ const nextConfig: NextConfig = {
       },
     ];
   },
-};
+} as const satisfies NextConfig;
 
-export default withSentryConfig(nextConfig, {
+const SENTRY_CONFIG = {
   org: "boklisten",
   project: "frontend",
   widenClientFileUpload: true,
@@ -65,4 +65,8 @@ export default withSentryConfig(nextConfig, {
   disableLogger: true,
   automaticVercelMonitors: true,
   telemetry: false,
-});
+} as const satisfies SentryBuildOptions;
+
+export default process.env["NEXT_PUBLIC_APP_ENV"] === "production"
+  ? withSentryConfig(NEXT_CONFIG, SENTRY_CONFIG)
+  : NEXT_CONFIG;

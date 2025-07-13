@@ -78,7 +78,12 @@ export default function useApiClient() {
           addAccessToken(tokens[0].accessToken);
           addRefreshToken(tokens[1].refreshToken);
 
-          return response;
+          const retryRequest = new Request(request);
+          retryRequest.headers.set(
+            "Authorization",
+            `Bearer ${tokens[0].accessToken}`,
+          );
+          return fetch(retryRequest);
         },
       ],
     },

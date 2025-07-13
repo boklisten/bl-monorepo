@@ -91,7 +91,21 @@ export default function EditableTextManager() {
             <GridActionsCellItem
               icon={<DeleteIcon />}
               label="Slett"
-              onClick={() => destroyEditableTextMutation.mutate(id as string)}
+              onClick={async () => {
+                if (
+                  await dialogs.confirm(
+                    "Hvis du sletter dette innholdet, vil sider som bruker denne teksten slutte å fungere. Sjekk at ingen sider er avhengige av denne nøkkelen før du fortsetter.",
+                    {
+                      severity: "error",
+                      title: "Bekreft sletting av dynamisk innhold",
+                      okText: "Slett",
+                      cancelText: "Avbryt",
+                    },
+                  )
+                ) {
+                  destroyEditableTextMutation.mutate(id as string);
+                }
+              }}
             />
           </Tooltip>,
         ];

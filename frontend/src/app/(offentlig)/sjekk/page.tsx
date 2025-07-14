@@ -1,6 +1,7 @@
 import { Card, Container, Stack, Typography, Box } from "@mui/material";
 import { Metadata } from "next";
 
+import AuthGuard from "@/components/common/AuthGuard";
 import PublicBlidSearch from "@/components/search/PublicBlidSearch";
 
 export const metadata: Metadata = {
@@ -24,7 +25,9 @@ export default function PublicBlidSearchPage() {
               width: "100%",
             }}
           >
-            <PublicBlidSearch />
+            <AuthGuard>
+              <PublicBlidSearch />
+            </AuthGuard>
           </Box>
         </Stack>
       </Container>

@@ -1,11 +1,9 @@
 "use client";
 
-import { redirect } from "next/navigation";
-
-import { attachTokensToHref } from "@/components/AuthLinker";
-import BL_CONFIG from "@/utils/bl-config";
+import useAuthLinker from "@/utils/useAuthLinker";
 
 export default function InvoicesPage() {
-  redirect(attachTokensToHref(BL_CONFIG.blAdmin.basePath + "invoices"));
-  // apply permission guard once implemented       <PagePermissionGuard requiredPermission={"admin"} />
+  const { redirectTo } = useAuthLinker();
+  redirectTo("bl-admin", "invoices");
+  // apply auth guard once implemented       <AuthGuard requiredPermission={USER_PERMISSION.ADMIN} />
 }

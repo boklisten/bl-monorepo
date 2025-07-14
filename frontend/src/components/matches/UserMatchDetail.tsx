@@ -83,7 +83,7 @@ const UserMatchDetail = ({
             Du har {statusText} alle bøkene for denne overleveringen.
           </Alert>
           {redirectCountdownStarted && (
-            <CountdownToRedirect path={"/matches"} seconds={5} />
+            <CountdownToRedirect path={"/overleveringer"} seconds={5} />
           )}
         </Box>
       )}

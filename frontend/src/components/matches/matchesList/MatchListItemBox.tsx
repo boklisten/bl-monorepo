@@ -24,7 +24,7 @@ const MatchListItemBox: FC<
       sx={{ backgroundColor: finished ? green["50"] : grey["100"] }}
     >
       <DynamicLink
-        href={`/matches/${matchType}/${matchId}`}
+        href={`/overleveringer/${matchType}/${matchId}`}
         color={"textPrimary"}
         underline={"none"}
       >

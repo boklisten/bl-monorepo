@@ -82,7 +82,7 @@ const MatchDetail = ({
     <Card sx={{ padding: theme.spacing(2, 0, 4, 0) }}>
       <Container>
         <DynamicLink
-          href={`/matches`}
+          href={`/overleveringer`}
           sx={{ marginBottom: 2, display: "inline-block" }}
         >
           <Button startIcon={<ArrowBack />}>Alle overleveringer</Button>

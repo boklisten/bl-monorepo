@@ -5,19 +5,18 @@ import Button from "@mui/material/Button";
 import Container from "@mui/material/Container";
 import Divider from "@mui/material/Divider";
 import TextField from "@mui/material/TextField";
-import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import validator from "validator";
 
-import { isLoggedIn } from "@/api/auth";
 import { addAccessToken, addRefreshToken } from "@/api/token";
-import { executeReturnRedirect } from "@/components/AuthLinker";
 import DynamicLink from "@/components/DynamicLink";
 import FacebookButton from "@/components/user/FacebookButton";
 import PasswordField from "@/components/user/fields/PasswordField";
 import GoogleButton from "@/components/user/GoogleButton";
 import { publicApiClient } from "@/utils/api/publicApiClient";
+import useAuth from "@/utils/useAuth";
+import useAuthLinker from "@/utils/useAuthLinker";
 
 interface SignInFields {
   username: string;
@@ -27,8 +26,8 @@ interface SignInFields {
 export default function SignIn() {
   const [apiError, setApiError] = useState("");
   const [loading, setLoading] = useState(false);
-  const router = useRouter();
-  const searchParams = useSearchParams();
+  const { isLoggedIn } = useAuth();
+  const { redirectToCaller } = useAuthLinker();
   const {
     register,
     handleSubmit,
@@ -48,7 +47,7 @@ export default function SignIn() {
     if (status === 200 && data) {
       addAccessToken(data.accessToken);
       addRefreshToken(data.refreshToken);
-      executeReturnRedirect(searchParams, router);
+      redirectToCaller();
     } else {
       setApiError(
         status === 401
@@ -61,10 +60,10 @@ export default function SignIn() {
 
   useEffect(() => {
     // Next might have valid tokens, even though bl-web and bl-admin might not. If so, the user is redirected automatically
-    if (isLoggedIn()) {
-      executeReturnRedirect(searchParams, router);
+    if (isLoggedIn) {
+      redirectToCaller();
     }
-  }, [router, searchParams]);
+  }, [redirectToCaller, isLoggedIn]);
 
   return (
     <Container component="main" maxWidth="xs">

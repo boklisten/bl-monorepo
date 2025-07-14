@@ -25,9 +25,8 @@ import ListItemText from "@mui/material/ListItemText";
 import SwipeableDrawer from "@mui/material/SwipeableDrawer";
 import { useState, KeyboardEvent, MouseEvent, ReactNode } from "react";
 
-import { isEmployee, isLoggedIn } from "@/api/auth";
 import DynamicLink from "@/components/DynamicLink";
-import useIsHydrated from "@/utils/useIsHydrated";
+import useAuth from "@/utils/useAuth";
 
 interface DrawerLinkProps {
   title: string;
@@ -47,7 +46,7 @@ const DrawerLink = ({ title, href, icon, onClick }: DrawerLinkProps) => (
 
 export default function SideMenuDrawer() {
   const [open, setOpen] = useState(false);
-  const hydrated = useIsHydrated();
+  const { isLoggedIn, isEmployee } = useAuth();
 
   const toggleDrawer =
     (open: boolean) => (event: KeyboardEvent | MouseEvent) => {
@@ -87,7 +86,7 @@ export default function SideMenuDrawer() {
               icon={<BookIcon />}
             />
 
-            {hydrated && isLoggedIn() && (
+            {isLoggedIn && (
               <>
                 <DrawerLink
                   title={"Dine bøker"}
@@ -106,7 +105,7 @@ export default function SideMenuDrawer() {
                 />
                 <DrawerLink
                   title={"Dine overleveringer"}
-                  href={"/matches"}
+                  href={"/overleveringer"}
                   icon={<Handshake />}
                 />
                 <DrawerLink
@@ -136,7 +135,7 @@ export default function SideMenuDrawer() {
 
             <Divider />
 
-            {hydrated && isLoggedIn() && (
+            {isLoggedIn && (
               <>
                 <DrawerLink
                   title={"Brukerinnstillinger"}
@@ -148,17 +147,20 @@ export default function SideMenuDrawer() {
                   href={"/auth/logout"}
                   icon={<LogoutIcon />}
                 />
-                {isEmployee() && (
-                  <DrawerLink
-                    title={"Gå til bl-admin"}
-                    href={"/admin/start"}
-                    icon={<AdminPanelSettings color={"primary"} />}
-                  />
+                {isEmployee && (
+                  <>
+                    <Divider />
+                    <DrawerLink
+                      title={"Gå til bl-admin"}
+                      href={"/admin/start"}
+                      icon={<AdminPanelSettings color={"primary"} />}
+                    />
+                  </>
                 )}
               </>
             )}
 
-            {hydrated && !isLoggedIn() && (
+            {!isLoggedIn && (
               <>
                 <DrawerLink
                   title={"Registrer"}

@@ -1,4 +1,3 @@
-import { UserPermission } from "@boklisten/backend/shared/permission/user-permission";
 import {
   AccountCircle,
   Business,
@@ -141,8 +140,8 @@ const USER_LINKS: Navigation = [
   },
 ];
 
-export function getAdminPagesNavigationLinks(userPermission: UserPermission) {
-  return userPermission === "admin"
+export function getAdminPagesNavigationLinks(isAdmin: boolean) {
+  return isAdmin
     ? [...EMPLOYEE_LINKS, ...ADMIN_LINKS, ...USER_LINKS]
     : [...EMPLOYEE_LINKS, ...USER_LINKS];
 }

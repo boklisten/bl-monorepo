@@ -3,21 +3,23 @@
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 
-import { isLoggedIn } from "@/api/auth";
 import BlFetcher from "@/api/blFetcher";
-import { get } from "@/api/storage";
 import { getAccessTokenBody } from "@/api/token";
-import { selectRedirectTarget } from "@/components/AuthLinker";
 import useApiClient from "@/utils/api/useApiClient";
-import BL_CONFIG from "@/utils/bl-config";
+import useAuth from "@/utils/useAuth";
+import useAuthLinker from "@/utils/useAuthLinker";
 
 export default function AuthVerifier() {
   const client = useApiClient();
   const router = useRouter();
+  const { isLoading, isLoggedIn } = useAuth();
+  const { redirectToCaller } = useAuthLinker();
+
   useEffect(() => {
-    if (!isLoggedIn()) {
-      router.push("/auth/failure");
-    }
+    if (isLoading) return;
+
+    if (!isLoggedIn) router.push("/auth/failure");
+
     const { details } = getAccessTokenBody();
     const checkUserDetailsValid = async () => {
       try {
@@ -27,9 +29,7 @@ export default function AuthVerifier() {
           }),
         );
         if (valid) {
-          const caller = get(BL_CONFIG.login.localStorageKeys.caller);
-          const redirect = get(BL_CONFIG.login.localStorageKeys.redirect);
-          router.push(selectRedirectTarget(caller, redirect));
+          redirectToCaller();
         } else {
           router.push("/user-settings");
         }
@@ -37,7 +37,7 @@ export default function AuthVerifier() {
         router.push("/auth/failure");
       }
     };
-    checkUserDetailsValid();
-  }, [client, router]);
+    void checkUserDetailsValid();
+  }, [client, isLoading, isLoggedIn, redirectToCaller, router]);
   return null;
 }

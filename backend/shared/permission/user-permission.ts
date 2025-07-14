@@ -1,5 +1,3 @@
-import vine from "@vinejs/vine";
-
 export const USER_PERMISSION = {
   CUSTOMER: "customer",
   EMPLOYEE: "employee",
@@ -10,6 +8,9 @@ export const USER_PERMISSION = {
 export type UserPermission =
   (typeof USER_PERMISSION)[keyof typeof USER_PERMISSION];
 
-export const userPermissionValidator = vine.enum(
-  Object.values(USER_PERMISSION),
-);
+export const PERMISSION_LEVELS = {
+  customer: 0,
+  employee: 1,
+  manager: 2,
+  admin: 3,
+} as const satisfies Record<UserPermission, number>;

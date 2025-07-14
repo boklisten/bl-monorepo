@@ -1,12 +1,8 @@
 "use client";
 
-import { redirect } from "next/navigation";
-
-import { attachTokensToHref } from "@/components/AuthLinker";
-import BL_CONFIG from "@/utils/bl-config";
+import useAuthLinker from "@/utils/useAuthLinker";
 
 export default function DatabaseCompaniesPage() {
-  redirect(
-    attachTokensToHref(BL_CONFIG.blAdmin.basePath + "database/companies"),
-  );
+  const { redirectTo } = useAuthLinker();
+  redirectTo("bl-admin", "database/companies");
 }

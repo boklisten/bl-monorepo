@@ -1,8 +1,8 @@
 import { Typography, Box } from "@mui/material";
 import { Metadata } from "next";
-import { Suspense } from "react";
 
-import Matches from "@/components/matches/Matches";
+import AuthGuard from "@/components/common/AuthGuard";
+import { MatchesList } from "@/components/matches/matchesList/MatchesList";
 
 export const metadata: Metadata = {
   title: "Mine overleveringer",
@@ -20,9 +20,9 @@ export default function MatchesPage() {
       >
         Mine overleveringer
       </Typography>
-      <Suspense>
-        <Matches />
-      </Suspense>
+      <AuthGuard>
+        <MatchesList />
+      </AuthGuard>
     </Box>
   );
 }

@@ -6,7 +6,7 @@ import { BlApiRequest } from "#services/types/bl-api-request";
 import { Operation } from "#services/types/operation";
 import { BlError } from "#shared/bl-error/bl-error";
 import { BlapiResponse } from "#shared/blapi-response/blapi-response";
-import { userPermissionValidator } from "#shared/permission/user-permission";
+import { userPermissionValidator } from "#validators/user_permission_validator";
 
 const userDetailPermissionValidator = vine.object({
   documentId: vine.string(),

@@ -1,6 +1,5 @@
 import { UserDetail } from "@boklisten/backend/shared/user/user-detail/user-detail";
 import moment, { Moment } from "moment/moment";
-import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import {
   Control,
@@ -14,12 +13,12 @@ import {
 
 import { getAccessTokenBody } from "@/api/token";
 import { registerUser, updateUserDetails } from "@/api/user";
-import { executeReturnRedirect } from "@/components/AuthLinker";
 import {
   PostalCityState,
   usePostalCity,
 } from "@/components/user/fields/PostalCodeField";
 import { assertBlApiError } from "@/utils/types";
+import useAuthLinker from "@/utils/useAuthLinker";
 
 export interface UserEditorFields {
   email: string;
@@ -58,8 +57,7 @@ export function useUserDetailEditorForm(
 ): UseUserDetailEditorFormReturn {
   const [isJustSaved, setIsJustSaved] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const router = useRouter();
-  const searchParams = useSearchParams();
+  const { redirectToCaller } = useAuthLinker();
 
   const defaultValues = {
     email: userDetails.email,
@@ -157,7 +155,7 @@ export function useUserDetailEditorForm(
     }
 
     if (isSignUp) {
-      executeReturnRedirect(searchParams, router);
+      redirectToCaller();
     } else {
       setIsJustSaved(true);
     }

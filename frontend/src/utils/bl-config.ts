@@ -19,6 +19,6 @@ const BL_CONFIG = {
       caller: "bl-caller",
     },
   },
-};
+} as const;
 
 export default BL_CONFIG;

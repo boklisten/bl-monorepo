@@ -16,11 +16,6 @@ const NEXT_CONFIG = {
   async redirects() {
     return [
       {
-        source: "/overleveringer",
-        destination: "/matches",
-        permanent: false,
-      },
-      {
         source: "/auth/login/forgot",
         destination: "/auth/forgot",
         permanent: false,

@@ -28,7 +28,7 @@ const ContactInfo = () => {
       <Box sx={{ display: "flex", alignItems: "center", padding: 1 }}>
         <EmailIcon />
         <Box sx={{ display: "flex", flexDirection: "column", ml: 1 }}>
-          <Typography variant="body1">Send oss en epost</Typography>
+          <Typography variant="body1">Send oss en e-post</Typography>
           <DynamicLink href={`mailto:${contactInfo.email}`}>
             {contactInfo.email}
           </DynamicLink>

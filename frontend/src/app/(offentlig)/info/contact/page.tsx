@@ -6,7 +6,7 @@ import ContactInfo from "@/components/info/ContactInfo";
 export const metadata: Metadata = {
   title: "Kontakt oss",
   description:
-    "Vi er tilgjengelig for spørsmål og henvendelser både på epost og telefon. Se vår kontaktinformasjon, med epost-adresse, telefonnummer og gateadresse.",
+    "Vi er tilgjengelig for spørsmål og henvendelser både på e-post og telefon. Se vår kontaktinformasjon, med e-post-adresse, telefonnummer og gateadresse.",
 };
 
 const ContactPage = () => {

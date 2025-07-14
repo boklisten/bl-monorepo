@@ -17,35 +17,35 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useDialogs, useNotifications } from "@toolpad/core";
 import { useState } from "react";
 
-import EditableTextEditorDialog from "@/components/info/editable-text/EditableTextEditorDialog";
+import QuestionAndAnswerEditDialog from "@/components/info/questions-and-answers/QuestionAndAnswerEditDialog";
 import useApiClient from "@/utils/api/useApiClient";
 
-export default function EditableTextManager() {
+export default function QuestionsAndAnswersManager() {
   const client = useApiClient();
   const dialogs = useDialogs();
   const notifications = useNotifications();
   const queryClient = useQueryClient();
   const [isMutating, setIsMutating] = useState(false);
 
-  const destroyEditableTextMutation = useMutation({
+  const destroyQuestionAndAnswerMutation = useMutation({
     mutationFn: async (id: string) => {
       setIsMutating(true);
-      return await client.editable_texts({ id: id }).$delete().unwrap();
+      return await client.questions_and_answers({ id: id }).$delete().unwrap();
     },
     onSettled: async () => {
       await queryClient.invalidateQueries({
-        queryKey: [client.editable_texts.$url()],
+        queryKey: [client.questions_and_answers.$url()],
       });
       setIsMutating(false);
     },
     onSuccess: async () => {
-      notifications.show("Dynamisk innhold ble slettet!", {
+      notifications.show("Spørsmål og svar ble slettet!", {
         severity: "success",
         autoHideDuration: 3000,
       });
     },
     onError: async () => {
-      notifications.show("Klarte ikke slette dynamisk innhold!", {
+      notifications.show("Klarte ikke slette spørsmål og svar!", {
         severity: "error",
         autoHideDuration: 5000,
       });
@@ -53,18 +53,18 @@ export default function EditableTextManager() {
   });
 
   const {
-    data: editableTexts,
+    data: questionsAndAnswers,
     isLoading,
     error,
   } = useQuery({
-    queryKey: [client.editable_texts.$url()],
-    queryFn: () => client.editable_texts.$get().unwrap(),
+    queryKey: [client.questions_and_answers.$url()],
+    queryFn: () => client.questions_and_answers.$get().unwrap(),
   });
 
   if (error) {
     return (
       <Alert severity="error">
-        <AlertTitle>Klarte ikke laste inn dynamisk innhold</AlertTitle>
+        <AlertTitle>Klarte ikke laste inn spørsmål og svar</AlertTitle>
         Du kan prøve igjen, eller ta kontakt dersom problemet vedvarer.
       </Alert>
     );
@@ -72,9 +72,14 @@ export default function EditableTextManager() {
 
   const columns: GridColDef[] = [
     {
-      field: "key",
-      headerName: "Unik Nøkkel",
-      width: 150,
+      field: "question",
+      headerName: "Spørsmål",
+      width: 200,
+    },
+    {
+      field: "answer",
+      headerName: "Svar",
+      width: 200,
     },
     {
       field: "actions",
@@ -89,8 +94,8 @@ export default function EditableTextManager() {
               label="Rediger"
               onClick={() =>
                 dialogs.open(
-                  EditableTextEditorDialog,
-                  editableTexts?.find((editableText) => editableText.id === id),
+                  QuestionAndAnswerEditDialog,
+                  questionsAndAnswers?.find((entry) => entry.id === id),
                 )
               }
             />
@@ -101,17 +106,14 @@ export default function EditableTextManager() {
               label="Slett"
               onClick={async () => {
                 if (
-                  await dialogs.confirm(
-                    "Hvis du sletter dette innholdet, vil sider som bruker denne teksten slutte å fungere. Sjekk at ingen sider er avhengige av denne nøkkelen før du fortsetter.",
-                    {
-                      severity: "error",
-                      title: "Bekreft sletting av dynamisk innhold",
-                      okText: "Slett",
-                      cancelText: "Avbryt",
-                    },
-                  )
+                  await dialogs.confirm("Dette kan ikke angres.", {
+                    severity: "error",
+                    title: "Bekreft sletting av spørsmål og svar",
+                    okText: "Slett",
+                    cancelText: "Avbryt",
+                  })
                 ) {
-                  destroyEditableTextMutation.mutate(id as string);
+                  destroyQuestionAndAnswerMutation.mutate(id as string);
                 }
               }}
             />
@@ -123,7 +125,7 @@ export default function EditableTextManager() {
 
   return (
     <Stack>
-      <Typography variant={"h2"}>Tekst</Typography>
+      <Typography variant={"h2"}>Spørsmål og svar</Typography>
       <DataGrid
         initialState={{
           pagination: {
@@ -133,7 +135,7 @@ export default function EditableTextManager() {
           },
         }}
         pageSizeOptions={[5, 10, 100]}
-        rows={editableTexts ?? []}
+        rows={questionsAndAnswers ?? []}
         loading={isLoading || isMutating}
         columns={columns}
         disableRowSelectionOnClick
@@ -144,7 +146,7 @@ export default function EditableTextManager() {
           variant="contained"
           startIcon={<NoteAdd />}
           onClick={async () => {
-            await dialogs.open(EditableTextEditorDialog);
+            await dialogs.open(QuestionAndAnswerEditDialog);
           }}
         >
           Legg til

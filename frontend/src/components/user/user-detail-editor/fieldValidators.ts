@@ -117,7 +117,7 @@ export const fieldValidators: {
     required: "Du må fylle inn foresatt sitt fulle navn",
   },
   guardianEmail: {
-    required: "Du må fylle inn foresatt sin epost",
+    required: "Du må fylle inn foresatt sin e-post",
     validate: (v, otherFields) => {
       if (!validator.isEmail(v))
         return "Du må fylle inn en gyldig e-post for foresatt";

@@ -91,15 +91,15 @@ const ForgotPage = () => {
                 margin="normal"
                 fullWidth
                 id="email"
-                label="Epost"
+                label="E-post"
                 autoComplete="email"
                 error={!!errors.email}
                 {...register("email", {
-                  required: "Du må fylle inn epost",
+                  required: "Du må fylle inn e-post",
                   validate: (v) =>
                     validator.isEmail(v)
                       ? true
-                      : "Du må fylle inn en gyldig epost",
+                      : "Du må fylle inn en gyldig e-post",
                 })}
               />
               <Button

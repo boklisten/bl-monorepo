@@ -1,12 +1,13 @@
 "use client";
-import { EditableText } from "@boklisten/backend/shared/editable-text/editable-text";
+import { QuestionAndAnswer } from "@boklisten/backend/shared/questions-and-answers/question-and-answer";
 import {
+  Box,
   Button,
   Dialog,
   DialogActions,
   DialogContent,
   Stack,
-  TextField,
+  Typography,
 } from "@mui/material";
 import DialogTitle from "@mui/material/DialogTitle";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
@@ -17,58 +18,59 @@ import { useRef, useState } from "react";
 import { TextEditor } from "@/components/TextEditor";
 import useApiClient from "@/utils/api/useApiClient";
 
-export default function EditableTextEditorDialog({
+export default function QuestionAndAnswerEditDialog({
   payload,
   open,
   onClose,
-}: DialogProps<EditableText | undefined>) {
+}: DialogProps<QuestionAndAnswer | undefined>) {
   const [isLoading, setIsLoading] = useState(false);
-  const [key, setKey] = useState(payload?.key ?? "");
-  const rteRef = useRef<RichTextEditorRef>(null);
+  const questionRteRef = useRef<RichTextEditorRef>(null);
+  const answerRteRef = useRef<RichTextEditorRef>(null);
   const notifications = useNotifications();
 
   const queryClient = useQueryClient();
   const client = useApiClient();
-  const addEditableTextMutation = useMutation({
-    mutationFn: async (editableText: { text: string; key: string }) => {
+  const addQuestionAndAnswerMutation = useMutation({
+    mutationFn: async (
+      questionAndAnswer: Pick<QuestionAndAnswer, "question" | "answer">,
+    ) => {
       setIsLoading(true);
-      return await client.editable_texts.$post(editableText).unwrap();
+      return await client.questions_and_answers
+        .$post(questionAndAnswer)
+        .unwrap();
     },
     onSettled: async () => {
       await queryClient.invalidateQueries({
-        queryKey: [client.editable_texts.$url()],
+        queryKey: [client.questions_and_answers.$url()],
       });
       setIsLoading(false);
     },
     onSuccess: async () => {
-      notifications.show("Dynamisk innhold ble opprettet!", {
+      notifications.show("Spørsmål og svar ble opprettet!", {
         severity: "success",
         autoHideDuration: 3000,
       });
       await onClose();
     },
     onError: async () => {
-      notifications.show(
-        `Klarte ikke opprette dynamisk innhold! Vennligst sjekk at unik nøkkel er formattert riktig. [a-z] og "_" for mellomrom.`,
-        {
-          severity: "error",
-          autoHideDuration: 5000,
-        },
-      );
+      notifications.show(`Klarte ikke opprette spørsmål og svar!`, {
+        severity: "error",
+        autoHideDuration: 5000,
+      });
     },
   });
 
-  const updateEditableTextMutation = useMutation({
-    mutationFn: async (editableText: { id: string; text: string }) => {
+  const updateQuestionAndAnswerMutation = useMutation({
+    mutationFn: async (questionAndAnswer: QuestionAndAnswer) => {
       setIsLoading(true);
       return await client
-        .editable_texts({ id: editableText.id })
-        .$patch({ text: editableText.text })
+        .questions_and_answers({ id: questionAndAnswer.id })
+        .$patch(questionAndAnswer)
         .unwrap();
     },
     onSettled: async () => {
       await queryClient.invalidateQueries({
-        queryKey: [client.editable_texts.$url()],
+        queryKey: [client.questions_and_answers.$url()],
       });
       setIsLoading(false);
     },
@@ -89,14 +91,15 @@ export default function EditableTextEditorDialog({
 
   async function handleSubmit() {
     if (payload === undefined) {
-      addEditableTextMutation.mutate({
-        text: rteRef.current?.editor?.getHTML() ?? "",
-        key: key ?? "",
+      addQuestionAndAnswerMutation.mutate({
+        question: questionRteRef.current?.editor?.getHTML() ?? "",
+        answer: answerRteRef.current?.editor?.getHTML() ?? "",
       });
     } else {
-      updateEditableTextMutation.mutate({
+      updateQuestionAndAnswerMutation.mutate({
         id: payload.id,
-        text: rteRef.current?.editor?.getHTML() ?? "",
+        question: questionRteRef.current?.editor?.getHTML() ?? "",
+        answer: answerRteRef.current?.editor?.getHTML() ?? "",
       });
     }
   }
@@ -115,19 +118,25 @@ export default function EditableTextEditorDialog({
       }}
     >
       <DialogTitle>
-        {payload === undefined ? "Opprett" : "Rediger"} innhold
+        {payload === undefined ? "Opprett" : "Rediger"} spørsmål og svar
       </DialogTitle>
       <DialogContent>
         <Stack gap={2} mt={1}>
-          <TextField
-            label={"Unik nøkkel"}
-            placeholder={"min_nye_nokkel"}
-            value={key}
-            onChange={(e) => setKey(e.target.value)}
-            disabled={payload !== undefined}
-            helperText={"Unik nøkkel kan ikke endres etter opprettelse"}
-          />
-          <TextEditor content={payload?.text ?? ""} rteRef={rteRef} />
+          <Box>
+            <Typography variant={"h2"} mb={2}>
+              Spørsmål
+            </Typography>
+            <TextEditor
+              content={payload?.question ?? ""}
+              rteRef={questionRteRef}
+            />
+          </Box>
+          <Box>
+            <Typography variant={"h2"} mb={2}>
+              Svar
+            </Typography>
+            <TextEditor content={payload?.answer ?? ""} rteRef={answerRteRef} />
+          </Box>
         </Stack>
       </DialogContent>
       <DialogActions>

@@ -1,7 +1,7 @@
+import { Container, Typography } from "@mui/material";
 import { Metadata } from "next";
 
-import EditableQNA from "@/components/info/EditableQna";
-import { QNAs } from "@/utils/mockData";
+import QuestionsAndAnswersReadOnly from "@/components/info/questions-and-answers/QuestionsAndAnswersReadOnly";
 
 export const metadata: Metadata = {
   title: "Spørsmål og svar",
@@ -10,7 +10,14 @@ export const metadata: Metadata = {
 };
 
 const FaqPage = () => {
-  return <EditableQNA QNAs={QNAs} />;
+  return (
+    <Container>
+      <Typography variant="h4" sx={{ textAlign: "center", marginBottom: 2 }}>
+        Spørsmål og svar
+      </Typography>
+      <QuestionsAndAnswersReadOnly />
+    </Container>
+  );
 };
 
 export default FaqPage;

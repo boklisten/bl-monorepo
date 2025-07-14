@@ -45,7 +45,7 @@ const GuardianInfoSection = ({
     </Grid>
     <Grid size={{ xs: 12 }}>
       <EmailField
-        label="Foresatt sin epost"
+        label="Foresatt sin e-post"
         error={!!errors.guardianEmail}
         {...register("guardianEmail", fieldValidators.guardianEmail)}
       />

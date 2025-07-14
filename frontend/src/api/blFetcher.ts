@@ -91,27 +91,11 @@ async function patch<T>(
 /**
  * @depricated use the useApiClient hook instead
  */
-async function put<T>(path: string, body: Record<string, unknown>): Promise<T> {
-  return await blFetch<T>(path, "PUT", body);
-}
-
-/**
- * @depricated use the useApiClient hook instead
- */
-async function destroy<T>(path: string): Promise<T> {
-  return await blFetch<T>(path, "DELETE");
-}
-
-/**
- * @depricated use the useApiClient hook instead
- */
 const BlFetcher = {
   fetch: blFetch,
   get,
   post,
   patch,
-  put,
-  destroy,
 };
 
 /**

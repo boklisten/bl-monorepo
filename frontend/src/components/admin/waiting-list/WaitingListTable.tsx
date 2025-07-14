@@ -3,16 +3,11 @@ import { Item } from "@boklisten/backend/shared/item/item";
 import { WaitingListEntry } from "@boklisten/backend/shared/waiting-list/waiting-list-entry";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { Tooltip } from "@mui/material";
-import {
-  DataGrid,
-  GridActionsCellItem,
-  GridColDef,
-  GridToolbar,
-} from "@mui/x-data-grid";
-import { useQueryClient } from "@tanstack/react-query";
+import { DataGrid, GridActionsCellItem, GridColDef } from "@mui/x-data-grid";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useNotifications } from "@toolpad/core";
 import { useState } from "react";
 
-import blFetcher from "@/api/blFetcher";
 import useApiClient from "@/utils/api/useApiClient";
 
 export default function WaitingListTable({
@@ -28,17 +23,33 @@ export default function WaitingListTable({
 }) {
   const client = useApiClient();
   const queryClient = useQueryClient();
-  const [pendingUpdate, setPendingUpdate] = useState(false);
-  async function handleDeleteWaitingListEntry(id: string | number) {
-    setPendingUpdate(true);
-    await blFetcher.destroy(
-      client.$url("waiting_list_entries.delete", { params: { id } }),
-    );
-    await queryClient.invalidateQueries({
-      queryKey: [client.waiting_list_entries.$url()],
-    });
-    setPendingUpdate(false);
-  }
+  const notifications = useNotifications();
+  const [isMutating, setIsMutating] = useState(false);
+
+  const destroyWaitingListEntryMutation = useMutation({
+    mutationFn: async (id: string) => {
+      setIsMutating(true);
+      return await client.waiting_list_entries({ id }).$delete().unwrap();
+    },
+    onSettled: async () => {
+      await queryClient.invalidateQueries({
+        queryKey: [client.waiting_list_entries.$url()],
+      });
+      setIsMutating(false);
+    },
+    onSuccess: async () => {
+      notifications.show("Ventelisteoppføring ble slettet!", {
+        severity: "success",
+        autoHideDuration: 3000,
+      });
+    },
+    onError: async () => {
+      notifications.show("Klarte ikke slette ventelisteoppføring!", {
+        severity: "error",
+        autoHideDuration: 5000,
+      });
+    },
+  });
 
   const columns: GridColDef[] = [
     {
@@ -82,7 +93,9 @@ export default function WaitingListTable({
             <GridActionsCellItem
               icon={<DeleteIcon />}
               label="Delete"
-              onClick={() => handleDeleteWaitingListEntry(id)}
+              onClick={() =>
+                destroyWaitingListEntryMutation.mutate(id as string)
+              }
               color="inherit"
             />
           </Tooltip>,
@@ -102,11 +115,10 @@ export default function WaitingListTable({
       }}
       pageSizeOptions={[5, 10, 100]}
       rows={waitingList}
-      loading={loading || pendingUpdate}
+      loading={loading || isMutating}
       columns={columns}
       checkboxSelection
       disableRowSelectionOnClick
-      slots={{ toolbar: GridToolbar }}
       sx={{ border: 0 }}
     />
   );

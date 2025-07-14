@@ -1,9 +1,8 @@
 import { Alert, AlertTitle, Box, Card, Container } from "@mui/material";
 import { Metadata } from "next";
-import { useEffect } from "react";
 
+import AuthLogoutComponent from "@/components/AuthLogoutComponent";
 import DynamicLink from "@/components/DynamicLink";
-import useAuth from "@/utils/useAuth";
 
 export const metadata: Metadata = {
   title: "Tilgang avslått",
@@ -12,11 +11,6 @@ export const metadata: Metadata = {
 };
 
 export default function PermissionDeniedPage() {
-  const { logout } = useAuth();
-  useEffect(() => {
-    logout();
-  }, [logout]);
-
   return (
     <Card sx={{ paddingBottom: 4 }}>
       <Container component="main" maxWidth="xs">
@@ -35,6 +29,7 @@ export default function PermissionDeniedPage() {
             Du forsøke å logge inn med en annen bruker eller ta kontakt med
             administrator for spørsmål.
           </Alert>
+          <AuthLogoutComponent />
           <DynamicLink href={"/auth/login"}>
             Tilbake til innloggingssiden
           </DynamicLink>

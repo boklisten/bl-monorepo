@@ -7,6 +7,7 @@ import {
   Alert,
   AlertTitle,
   Container,
+  Skeleton,
 } from "@mui/material";
 import { useQuery } from "@tanstack/react-query";
 
@@ -21,7 +22,15 @@ export default function QuestionsAndAnswersReadOnly() {
     queryFn: () => client.questions_and_answers.$get().unwrap(),
   });
   if (isLoading) {
-    return;
+    return (
+      <>
+        {[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16].map(
+          (id) => (
+            <Skeleton height={45} key={`Skeleton-${id}`} />
+          ),
+        )}
+      </>
+    );
   }
   if (isError || !data) {
     return (
@@ -36,6 +45,9 @@ export default function QuestionsAndAnswersReadOnly() {
   }
   return (
     <>
+      {data.length === 0 && (
+        <Alert severity="info">Ingen spørsmål og svar er publisert enda</Alert>
+      )}
       {data.map((questionAndAnswer) => (
         <Accordion key={questionAndAnswer.id}>
           <AccordionSummary expandIcon={<ExpandMoreIcon />}>

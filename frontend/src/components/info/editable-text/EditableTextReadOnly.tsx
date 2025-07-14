@@ -1,5 +1,5 @@
 "use client";
-import { Alert, AlertTitle, Container } from "@mui/material";
+import { Alert, AlertTitle, Container, Skeleton } from "@mui/material";
 import { useQuery } from "@tanstack/react-query";
 
 import { TextEditor } from "@/components/TextEditor";
@@ -15,7 +15,23 @@ export default function EditableTextReadOnly({ dataKey }: { dataKey: string }) {
     queryFn: () => client.editable_texts.key({ key: dataKey }).$get().unwrap(),
   });
   if (isLoading) {
-    return;
+    return (
+      <Container>
+        <Skeleton sx={{ mb: 1 }} width={250} height={40} />
+        <Skeleton />
+        <Skeleton />
+        <Skeleton />
+        <Skeleton />
+        <Skeleton sx={{ mt: 3, mb: 1 }} width={250} height={40} />
+        <Skeleton />
+        <Skeleton />
+        <Skeleton sx={{ mt: 3, mb: 1 }} width={250} height={40} />
+        <Skeleton />
+        <Skeleton />
+        <Skeleton />
+        <Skeleton />
+      </Container>
+    );
   }
   if (isError || !data) {
     return (

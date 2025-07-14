@@ -2,6 +2,7 @@ import { Box, Typography } from "@mui/material";
 import Image from "next/image";
 
 import DynamicLink from "@/components/DynamicLink";
+import TestVersionChip from "@/components/TestVersionChip";
 
 export default function Logo({ variant }: { variant: "white" | "blue" }) {
   return (
@@ -25,6 +26,7 @@ export default function Logo({ variant }: { variant: "white" | "blue" }) {
           component="div"
           noWrap
           sx={{
+            fontWeight: "bold",
             display: { xs: "none", md: "flex" },
             flexGrow: 1,
             marginLeft: 1,
@@ -33,6 +35,7 @@ export default function Logo({ variant }: { variant: "white" | "blue" }) {
         >
           Boklisten.no
         </Typography>
+        <TestVersionChip />
       </Box>
     </DynamicLink>
   );

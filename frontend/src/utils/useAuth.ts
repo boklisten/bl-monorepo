@@ -51,6 +51,10 @@ export default function useAuth() {
     );
   }, [pathname]);
 
+  function logout() {
+    localStorage.clear();
+  }
+
   return {
     isLoading,
     isLoggedIn,
@@ -58,5 +62,6 @@ export default function useAuth() {
     isManager,
     isAdmin,
     canAccess,
+    logout,
   };
 }

@@ -2,16 +2,17 @@
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 
-import { logout } from "@/api/auth";
 import BL_CONFIG from "@/utils/bl-config";
+import useAuth from "@/utils/useAuth";
 
 export default function LogoutPage() {
   const router = useRouter();
+  const { logout } = useAuth();
 
   useEffect(() => {
     logout();
     router.replace(`${BL_CONFIG.blWeb.basePath}logout`);
-  }, [router]);
+  }, [logout, router]);
 
   return null;
   /**

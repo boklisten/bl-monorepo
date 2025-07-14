@@ -10,7 +10,3 @@ export const get = (key: string): string | null => {
     return null;
   }
 };
-
-export const removeAll = (): void => {
-  localStorage.clear();
-};

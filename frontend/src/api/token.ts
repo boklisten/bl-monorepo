@@ -3,7 +3,7 @@ import { AccessToken } from "@boklisten/backend/shared/token/access-token";
 import { decodeToken } from "react-jwt";
 
 import BlFetcher from "@/api/blFetcher";
-import { add, get, removeAll } from "@/api/storage";
+import { add, get } from "@/api/storage";
 import { publicApiClient } from "@/utils/api/publicApiClient";
 import BL_CONFIG from "@/utils/bl-config";
 import { AuthResponse } from "@/utils/types";
@@ -39,10 +39,6 @@ export const getAccessToken = (): string | null => {
 
 export const getRefreshToken = (): string | null => {
   return get(refreshTokenName);
-};
-
-export const removeTokens = (): void => {
-  removeAll();
 };
 
 export const getAccessTokenBody = (): AccessToken => {

@@ -152,7 +152,7 @@ export default function SideMenuDrawer() {
                     <Divider />
                     <DrawerLink
                       title={"Gå til bl-admin"}
-                      href={"/admin/start"}
+                      href={"/admin"}
                       icon={<AdminPanelSettings color={"primary"} />}
                     />
                   </>

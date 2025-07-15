@@ -19,8 +19,8 @@ export const passwordResetValidator = vine.compile(
 
 export const localAuthValidator = vine.compile(
   vine.object({
-    username: emailField.clone(),
-    password: vine.string(), // fixme: eventually replace with passwordField.clone(), but remember to handle validation error in frontend
+    username: vine.string(),
+    password: vine.string(),
   }),
 );
 

@@ -1,7 +1,8 @@
 import { SocialProviders } from "@adonisjs/ally/types";
 import { HttpContext } from "@adonisjs/core/http";
 
-import UserProvider from "#services/auth/user/user-provider";
+import TokenHandler from "#services/auth/token/token.handler";
+import UserHandler from "#services/auth/user/user.handler";
 import { retrieveRefererPath } from "#services/config/api-path";
 import env from "#start/env";
 
@@ -15,10 +16,15 @@ async function handleCallback(ctx: HttpContext) {
 
   const user = await social.user();
 
-  const { accessToken, refreshToken } = await UserProvider.loginOrCreate(
+  const existingUser = await UserHandler.getOrNull(user.email);
+  if (existingUser) {
+    await UserHandler.connectProviderToUser(existingUser, provider, user.id);
+  } else {
+    await UserHandler.create(user.email, provider, user.id);
+  }
+
+  const { accessToken, refreshToken } = await TokenHandler.createTokens(
     user.email,
-    provider,
-    user.id,
   );
 
   return ctx.response.redirect(

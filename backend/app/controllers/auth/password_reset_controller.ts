@@ -2,17 +2,30 @@ import { HttpContext } from "@adonisjs/core/http";
 import hash from "@adonisjs/core/services/hash";
 import logger from "@adonisjs/core/services/logger";
 
-import LocalLoginHandler from "#services/auth/local/local-login.handler";
+import HashedPasswordGenerator from "#services/auth/local/hashed-password-generator";
 import UserHandler from "#services/auth/user/user.handler";
 import BlCrypto from "#services/config/bl-crypto";
 import { sendMail } from "#services/messenger/email/email_service";
 import { EMAIL_TEMPLATES } from "#services/messenger/email/email_templates";
+import { SEDbQuery } from "#services/query/se.db-query";
 import { BlStorage } from "#services/storage/bl-storage";
 import env from "#start/env";
 import {
   forgotPasswordValidator,
   passwordResetValidator,
 } from "#validators/auth_validators";
+
+async function getLocalLoginOrNull(username: string) {
+  const databaseQuery = new SEDbQuery();
+  databaseQuery.stringFilters = [{ fieldName: "username", value: username }];
+
+  try {
+    const [localLogin] = await BlStorage.LocalLogins.getByQuery(databaseQuery);
+    return localLogin ?? null;
+  } catch {
+    return null;
+  }
+}
 
 export default class PasswordResetController {
   async forgotPasswordSend({ request }: HttpContext) {
@@ -62,18 +75,23 @@ export default class PasswordResetController {
         resetToken + pendingPasswordReset.salt,
       );
 
-      try {
-        await LocalLoginHandler.setPassword(
-          pendingPasswordReset.email,
-          newPassword,
-        );
-        await BlStorage.PendingPasswordResets.remove(pendingPasswordReset.id);
-      } catch (error) {
-        logger.error(
-          `Failed to update password for ${pendingPasswordReset.email}: ${error}`,
-        );
-        return response.internalServerError();
+      const { hashedPassword, salt } =
+        await HashedPasswordGenerator.generate(newPassword);
+
+      const localLogin = await getLocalLoginOrNull(pendingPasswordReset.email);
+      if (localLogin) {
+        await BlStorage.LocalLogins.update(localLogin.id, {
+          hashedPassword: hashedPassword,
+          salt: salt,
+        });
+      } else {
+        await BlStorage.LocalLogins.add({
+          username: pendingPasswordReset.email,
+          hashedPassword: hashedPassword,
+          salt: salt,
+        });
       }
+      await BlStorage.PendingPasswordResets.remove(pendingPasswordReset.id);
     } catch (error) {
       logger.info(`Rejected password reset request, reason: ${error}`);
       return response.forbidden();

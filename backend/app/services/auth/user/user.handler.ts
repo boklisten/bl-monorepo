@@ -1,5 +1,4 @@
 import Blid from "#services/auth/blid";
-import LocalLoginHandler from "#services/auth/local/local-login.handler";
 import EmailValidationHelper from "#services/collections/email-validation/helpers/email-validation.helper";
 import { SEDbQuery } from "#services/query/se.db-query";
 import { BlStorage } from "#services/storage/bl-storage";
@@ -63,16 +62,12 @@ async function connectProviderToUser(
   }
 }
 
-async function create(username: string, provider: string, providerId: string) {
+async function create(
+  username: string,
+  provider: "facebook" | "google" | "local",
+  providerId: string,
+) {
   const blid = await Blid.createUserBlid(provider, providerId);
-
-  if (isThirdPartyProvider(provider)) {
-    // if the provider is google or facebook, should create a default localLogin
-    // this so that when the user tries to login with username or password he can
-    // ask for a new password via email
-
-    await LocalLoginHandler.createDefaultLocalLogin(username);
-  }
 
   const addedUserDetail = await BlStorage.UserDetails.add(
     {

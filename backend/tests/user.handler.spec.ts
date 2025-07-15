@@ -3,11 +3,9 @@ import { expect, use as chaiUse, should } from "chai";
 import chaiAsPromised from "chai-as-promised";
 import sinon, { createSandbox } from "sinon";
 
-import LocalLoginHandler from "#services/auth/local/local-login.handler";
 import UserHandler from "#services/auth/user/user.handler";
 import EmailValidationHelper from "#services/collections/email-validation/helpers/email-validation.helper";
 import { BlStorage } from "#services/storage/bl-storage";
-import { LocalLogin } from "#services/types/local-login";
 import { User } from "#services/types/user";
 import { BlError } from "#shared/bl-error/bl-error";
 import { UserDetail } from "#shared/user/user-detail/user-detail";
@@ -24,7 +22,7 @@ const testUser = {
 } as User;
 
 test.group("UserHandler", (group) => {
-  let testProvider = "";
+  const testProvider = "local";
   let testProviderId = "";
   let testUsername = "";
   let emailValidationLinkSuccess = true;
@@ -32,7 +30,6 @@ test.group("UserHandler", (group) => {
   let emailValidationHelperSendLinkStub: sinon.SinonStub;
 
   group.each.setup(() => {
-    testProvider = "local";
     testProviderId = "123";
     testUsername = testUser.username;
     emailValidationLinkSuccess = true;
@@ -48,8 +45,6 @@ test.group("UserHandler", (group) => {
     });
 
     sandbox.stub(BlStorage.Users, "add").resolves(testUser);
-
-    sandbox.stub(LocalLoginHandler, "get").resolves({} as LocalLogin);
 
     emailValidationHelperSendLinkStub = sandbox
       .stub(EmailValidationHelper, "createAndSendEmailValidationLink")

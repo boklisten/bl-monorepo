@@ -22,69 +22,59 @@ export default function EditableTextEditorDialog({
   open,
   onClose,
 }: DialogProps<EditableText | undefined>) {
-  const [isLoading, setIsLoading] = useState(false);
   const [key, setKey] = useState(payload?.key ?? "");
   const rteRef = useRef<RichTextEditorRef>(null);
   const notifications = useNotifications();
 
   const queryClient = useQueryClient();
   const client = useApiClient();
+
   const addEditableTextMutation = useMutation({
-    mutationFn: async (editableText: { text: string; key: string }) => {
-      setIsLoading(true);
-      return await client.editable_texts.$post(editableText).unwrap();
-    },
-    onSettled: async () => {
-      await queryClient.invalidateQueries({
+    mutationFn: (editableText: { text: string; key: string }) =>
+      client.editable_texts.$post(editableText).unwrap(),
+    onSettled: () =>
+      queryClient.invalidateQueries({
         queryKey: [client.editable_texts.$url()],
-      });
-      setIsLoading(false);
-    },
-    onSuccess: async () => {
+      }),
+    onSuccess: () => {
       notifications.show("Dynamisk innhold ble opprettet!", {
         severity: "success",
         autoHideDuration: 3000,
       });
-      await onClose();
+      onClose();
     },
-    onError: async () => {
+    onError: () =>
       notifications.show(
         `Klarte ikke opprette dynamisk innhold! Vennligst sjekk at unik nøkkel er formattert riktig. [a-z] og "_" for mellomrom.`,
         {
           severity: "error",
           autoHideDuration: 5000,
         },
-      );
-    },
+      ),
   });
 
   const updateEditableTextMutation = useMutation({
-    mutationFn: async (editableText: { id: string; text: string }) => {
-      setIsLoading(true);
-      return await client
+    mutationFn: (editableText: { id: string; text: string }) =>
+      client
         .editable_texts({ id: editableText.id })
         .$patch({ text: editableText.text })
-        .unwrap();
-    },
-    onSettled: async () => {
-      await queryClient.invalidateQueries({
+        .unwrap(),
+    onSettled: () =>
+      queryClient.invalidateQueries({
         queryKey: [client.editable_texts.$url()],
-      });
-      setIsLoading(false);
-    },
-    onSuccess: async () => {
+      }),
+    onSuccess: () => {
       notifications.show("Dynamisk innhold ble oppdatert!", {
         severity: "success",
         autoHideDuration: 3000,
       });
-      await onClose();
+      onClose();
     },
-    onError: async () => {
+    onError: () =>
       notifications.show("Klarte ikke oppdatere dynamisk innhold!", {
         severity: "error",
         autoHideDuration: 5000,
-      });
-    },
+      }),
   });
 
   async function handleSubmit() {
@@ -132,7 +122,13 @@ export default function EditableTextEditorDialog({
       </DialogContent>
       <DialogActions>
         <Button onClick={() => onClose()}>Avbryt</Button>
-        <Button loading={isLoading} onClick={handleSubmit}>
+        <Button
+          loading={
+            addEditableTextMutation.isPending ||
+            updateEditableTextMutation.isPending
+          }
+          onClick={handleSubmit}
+        >
           {payload === undefined ? "Opprett" : "Lagre"}
         </Button>
       </DialogActions>

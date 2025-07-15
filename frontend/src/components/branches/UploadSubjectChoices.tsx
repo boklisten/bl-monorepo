@@ -12,7 +12,6 @@ import {
 import ListItemText from "@mui/material/ListItemText";
 import { useMutation } from "@tanstack/react-query";
 import { useDialogs, DialogProps } from "@toolpad/core";
-import { useState } from "react";
 
 import UploadCSVFile from "@/components/UploadCSVFile";
 import useApiClient from "@/utils/api/useApiClient";
@@ -78,17 +77,15 @@ export default function UploadSubjectChoices({
 }) {
   const client = useApiClient();
   const dialogs = useDialogs();
-  const [loading, setLoading] = useState(false);
 
-  const uploadSubjectChoices = useMutation({
-    mutationFn: async (
+  const uploadSubjectChoicesMutation = useMutation({
+    mutationFn: (
       subjectChoices: {
         phone: string | string[];
         subjects: string | string[];
       }[],
-    ) => {
-      setLoading(true);
-      return await client.v2.branches.subject_choices
+    ) =>
+      client.v2.branches.subject_choices
         .$post({
           subjectChoices: subjectChoices.map((subjectChoice) => ({
             phone: subjectChoice.phone as string,
@@ -96,13 +93,8 @@ export default function UploadSubjectChoices({
           })),
           branchId,
         })
-        .unwrap();
-    },
-    onSettled: () => setLoading(false),
-    onSuccess: (data) => {
-      dialogs.open(SuccessfulUploadDialog, data);
-    },
-
+        .unwrap(),
+    onSuccess: (data) => dialogs.open(SuccessfulUploadDialog, data),
     onError: () =>
       dialogs.alert("Opplasting av fagvalg feilet!", {
         title: "Feilmelding",
@@ -110,10 +102,10 @@ export default function UploadSubjectChoices({
   });
   return (
     <UploadCSVFile
-      loading={loading}
+      loading={uploadSubjectChoicesMutation.isPending}
       label={"Last opp fagvalg"}
       allowedHeaders={["phone", "subjects"] as const}
-      onUpload={uploadSubjectChoices.mutate}
+      onUpload={uploadSubjectChoicesMutation.mutate}
     />
   );
 }

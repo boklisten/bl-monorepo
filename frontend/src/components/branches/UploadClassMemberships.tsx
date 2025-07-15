@@ -12,7 +12,6 @@ import {
 import ListItemText from "@mui/material/ListItemText";
 import { useMutation } from "@tanstack/react-query";
 import { useDialogs, DialogProps } from "@toolpad/core";
-import { useState } from "react";
 
 import UploadCSVFile from "@/components/UploadCSVFile";
 import useApiClient from "@/utils/api/useApiClient";
@@ -78,36 +77,30 @@ export default function UploadClassMemberships({
 }) {
   const client = useApiClient();
   const dialogs = useDialogs();
-  const [loading, setLoading] = useState(false);
 
-  const uploadClassMembership = useMutation({
-    mutationFn: async (
+  const uploadClassMembershipMutation = useMutation({
+    mutationFn: (
       membershipData: { branch: string | string[]; phone: string | string[] }[],
-    ) => {
-      setLoading(true);
-      return await client.v2.branches.memberships
+    ) =>
+      client.v2.branches.memberships
         .$post({
           membershipData: membershipData as { branch: string; phone: string }[],
           branchId,
         })
-        .unwrap();
-    },
-    onSettled: () => setLoading(false),
-    onSuccess: (data) => {
-      dialogs.open(SuccessfulUploadDialog, data);
-    },
-
+        .unwrap(),
+    onSuccess: (data) => dialogs.open(SuccessfulUploadDialog, data),
     onError: () =>
       dialogs.alert("Opplasting av klassevalg feilet!", {
         title: "Feilmelding",
       }),
   });
+
   return (
     <UploadCSVFile
-      loading={loading}
+      loading={uploadClassMembershipMutation.isPending}
       label={"Last opp klassevalg"}
       allowedHeaders={["phone", "branch"] as const}
-      onUpload={uploadClassMembership.mutate}
+      onUpload={uploadClassMembershipMutation.mutate}
     />
   );
 }

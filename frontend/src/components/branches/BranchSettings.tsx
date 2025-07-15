@@ -13,7 +13,7 @@ import {
 } from "@mui/material";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useNotifications } from "@toolpad/core";
-import { ReactNode, useEffect, useState } from "react";
+import { ReactNode, useEffect } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 
 import BranchSettingsGeneral from "@/components/branches/BranchSettingsGeneral";
@@ -73,74 +73,56 @@ export default function BranchSettings({
   };
   const client = useApiClient();
   const addBranchMutation = useMutation({
-    mutationFn: async (newBranch: Partial<Branch>) => {
-      return await client.v2.branches.$post(newBranch);
-    },
-    onSettled: async () => {
-      await queryClient.invalidateQueries({
+    mutationFn: (newBranch: Partial<Branch>) =>
+      client.v2.branches.$post(newBranch).unwrap(),
+    onSettled: () =>
+      queryClient.invalidateQueries({
         queryKey: [client.$url("collection.branches.getAll", branchQuery)],
-      });
-      setLoading(false);
-    },
-    onSuccess: async () => {
+      }),
+    onSuccess: () => {
       notifications.show("Filial ble opprettet!", {
         severity: "success",
         autoHideDuration: 3000,
       });
       afterSubmit();
     },
-    onError: async () => {
+    onError: () =>
       notifications.show("Klarte ikke opprette filial!", {
         severity: "error",
         autoHideDuration: 5000,
-      });
-    },
+      }),
   });
 
   const updateBranchMutation = useMutation({
-    mutationFn: async (updatedBranch: Partial<Branch>) => {
-      return await client.v2
+    mutationFn: (updatedBranch: Partial<Branch>) =>
+      client.v2
         .branches({ id: existingBranch?.id ?? "" })
         .$patch(updatedBranch)
-        .unwrap();
-    },
-    onSettled: async () => {
-      await queryClient.invalidateQueries({
+        .unwrap(),
+    onSettled: () =>
+      queryClient.invalidateQueries({
         queryKey: [client.$url("collection.branches.getAll", branchQuery)],
-      });
-      setLoading(false);
-    },
-    onSuccess: async () => {
+      }),
+    onSuccess: () =>
       notifications.show("Filial ble oppdatert!", {
         severity: "success",
         autoHideDuration: 3000,
-      });
-    },
-    onError: async () => {
+      }),
+    onError: () =>
       notifications.show("Klarte ikke oppdatere filial!", {
         severity: "error",
         autoHideDuration: 5000,
-      });
-    },
+      }),
   });
 
   const methods = useForm({
     defaultValues: branchToDefaultValues(existingBranch),
   });
-  const [loading, setLoading] = useState(false);
 
   const { reset, getValues, setValue } = methods;
   useEffect(() => {
     reset(branchToDefaultValues(existingBranch));
   }, [existingBranch, reset, setValue]);
-
-  async function onSubmit() {
-    setLoading(true);
-    if (existingBranch === null) {
-      return addBranchMutation.mutate(getValues());
-    }
-    updateBranchMutation.mutate(getValues());
-  }
 
   return (
     <FormProvider key={existingBranch?.id ?? "new"} {...methods}>
@@ -170,8 +152,14 @@ export default function BranchSettings({
           sx={{ bottom: 0, right: 10, position: "absolute" }}
           variant={"contained"}
           color={"success"}
-          onClick={onSubmit}
-          loading={loading}
+          onClick={() =>
+            existingBranch === null
+              ? addBranchMutation.mutate(getValues())
+              : updateBranchMutation.mutate(getValues())
+          }
+          loading={
+            addBranchMutation.isPending || updateBranchMutation.isPending
+          }
         >
           {existingBranch === null ? "Opprett" : "Lagre"}
         </Button>

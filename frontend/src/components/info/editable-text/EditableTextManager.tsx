@@ -15,7 +15,6 @@ import {
 import { DataGrid, GridActionsCellItem, GridColDef } from "@mui/x-data-grid";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useDialogs, useNotifications } from "@toolpad/core";
-import { useState } from "react";
 
 import EditableTextEditorDialog from "@/components/info/editable-text/EditableTextEditorDialog";
 import useApiClient from "@/utils/api/useApiClient";
@@ -25,31 +24,24 @@ export default function EditableTextManager() {
   const dialogs = useDialogs();
   const notifications = useNotifications();
   const queryClient = useQueryClient();
-  const [isMutating, setIsMutating] = useState(false);
 
   const destroyEditableTextMutation = useMutation({
-    mutationFn: async (id: string) => {
-      setIsMutating(true);
-      return await client.editable_texts({ id: id }).$delete().unwrap();
-    },
-    onSettled: async () => {
-      await queryClient.invalidateQueries({
+    mutationFn: (id: string) =>
+      client.editable_texts({ id: id }).$delete().unwrap(),
+    onSettled: () =>
+      queryClient.invalidateQueries({
         queryKey: [client.editable_texts.$url()],
-      });
-      setIsMutating(false);
-    },
-    onSuccess: async () => {
+      }),
+    onSuccess: () =>
       notifications.show("Dynamisk innhold ble slettet!", {
         severity: "success",
         autoHideDuration: 3000,
-      });
-    },
-    onError: async () => {
+      }),
+    onError: () =>
       notifications.show("Klarte ikke slette dynamisk innhold!", {
         severity: "error",
         autoHideDuration: 5000,
-      });
-    },
+      }),
   });
 
   const {
@@ -134,7 +126,7 @@ export default function EditableTextManager() {
         }}
         pageSizeOptions={[5, 10, 100]}
         rows={editableTexts ?? []}
-        loading={isLoading || isMutating}
+        loading={isLoading || destroyEditableTextMutation.isPending}
         columns={columns}
         disableRowSelectionOnClick
         sx={{ border: 0 }}

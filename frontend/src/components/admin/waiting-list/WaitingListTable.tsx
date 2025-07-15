@@ -6,7 +6,6 @@ import { Tooltip } from "@mui/material";
 import { DataGrid, GridActionsCellItem, GridColDef } from "@mui/x-data-grid";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useNotifications } from "@toolpad/core";
-import { useState } from "react";
 
 import useApiClient from "@/utils/api/useApiClient";
 
@@ -24,31 +23,24 @@ export default function WaitingListTable({
   const client = useApiClient();
   const queryClient = useQueryClient();
   const notifications = useNotifications();
-  const [isMutating, setIsMutating] = useState(false);
 
   const destroyWaitingListEntryMutation = useMutation({
-    mutationFn: async (id: string) => {
-      setIsMutating(true);
-      return await client.waiting_list_entries({ id }).$delete().unwrap();
-    },
-    onSettled: async () => {
-      await queryClient.invalidateQueries({
+    mutationFn: (id: string) =>
+      client.waiting_list_entries({ id }).$delete().unwrap(),
+    onSettled: () =>
+      queryClient.invalidateQueries({
         queryKey: [client.waiting_list_entries.$url()],
-      });
-      setIsMutating(false);
-    },
-    onSuccess: async () => {
+      }),
+    onSuccess: () =>
       notifications.show("Ventelisteoppføring ble slettet!", {
         severity: "success",
         autoHideDuration: 3000,
-      });
-    },
-    onError: async () => {
+      }),
+    onError: async () =>
       notifications.show("Klarte ikke slette ventelisteoppføring!", {
         severity: "error",
         autoHideDuration: 5000,
-      });
-    },
+      }),
   });
 
   const columns: GridColDef[] = [
@@ -115,7 +107,7 @@ export default function WaitingListTable({
       }}
       pageSizeOptions={[5, 10, 100]}
       rows={waitingList}
-      loading={loading || isMutating}
+      loading={loading || destroyWaitingListEntryMutation.isPending}
       columns={columns}
       checkboxSelection
       disableRowSelectionOnClick

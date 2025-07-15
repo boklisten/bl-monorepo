@@ -13,7 +13,7 @@ import DialogTitle from "@mui/material/DialogTitle";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { DialogProps, useNotifications } from "@toolpad/core";
 import { RichTextEditorRef } from "mui-tiptap";
-import { useRef, useState } from "react";
+import { useRef } from "react";
 
 import { TextEditor } from "@/components/TextEditor";
 import useApiClient from "@/utils/api/useApiClient";
@@ -23,7 +23,6 @@ export default function QuestionAndAnswerEditDialog({
   open,
   onClose,
 }: DialogProps<QuestionAndAnswer | undefined>) {
-  const [isLoading, setIsLoading] = useState(false);
   const questionRteRef = useRef<RichTextEditorRef>(null);
   const answerRteRef = useRef<RichTextEditorRef>(null);
   const notifications = useNotifications();
@@ -31,62 +30,49 @@ export default function QuestionAndAnswerEditDialog({
   const queryClient = useQueryClient();
   const client = useApiClient();
   const addQuestionAndAnswerMutation = useMutation({
-    mutationFn: async (
+    mutationFn: (
       questionAndAnswer: Pick<QuestionAndAnswer, "question" | "answer">,
-    ) => {
-      setIsLoading(true);
-      return await client.questions_and_answers
-        .$post(questionAndAnswer)
-        .unwrap();
-    },
-    onSettled: async () => {
-      await queryClient.invalidateQueries({
+    ) => client.questions_and_answers.$post(questionAndAnswer).unwrap(),
+    onSettled: () =>
+      queryClient.invalidateQueries({
         queryKey: [client.questions_and_answers.$url()],
-      });
-      setIsLoading(false);
-    },
-    onSuccess: async () => {
+      }),
+    onSuccess: () => {
       notifications.show("Spørsmål og svar ble opprettet!", {
         severity: "success",
         autoHideDuration: 3000,
       });
-      await onClose();
+      onClose();
     },
-    onError: async () => {
+    onError: () =>
       notifications.show(`Klarte ikke opprette spørsmål og svar!`, {
         severity: "error",
         autoHideDuration: 5000,
-      });
-    },
+      }),
   });
 
   const updateQuestionAndAnswerMutation = useMutation({
-    mutationFn: async (questionAndAnswer: QuestionAndAnswer) => {
-      setIsLoading(true);
-      return await client
+    mutationFn: (questionAndAnswer: QuestionAndAnswer) =>
+      client
         .questions_and_answers({ id: questionAndAnswer.id })
         .$patch(questionAndAnswer)
-        .unwrap();
-    },
-    onSettled: async () => {
-      await queryClient.invalidateQueries({
+        .unwrap(),
+    onSettled: () =>
+      queryClient.invalidateQueries({
         queryKey: [client.questions_and_answers.$url()],
-      });
-      setIsLoading(false);
-    },
-    onSuccess: async () => {
+      }),
+    onSuccess: () => {
       notifications.show("Dynamisk innhold ble oppdatert!", {
         severity: "success",
         autoHideDuration: 3000,
       });
-      await onClose();
+      onClose();
     },
-    onError: async () => {
+    onError: () =>
       notifications.show("Klarte ikke oppdatere dynamisk innhold!", {
         severity: "error",
         autoHideDuration: 5000,
-      });
-    },
+      }),
   });
 
   async function handleSubmit() {
@@ -141,7 +127,13 @@ export default function QuestionAndAnswerEditDialog({
       </DialogContent>
       <DialogActions>
         <Button onClick={() => onClose()}>Avbryt</Button>
-        <Button loading={isLoading} onClick={handleSubmit}>
+        <Button
+          loading={
+            addQuestionAndAnswerMutation.isPending ||
+            updateQuestionAndAnswerMutation.isPending
+          }
+          onClick={handleSubmit}
+        >
           {payload === undefined ? "Opprett" : "Lagre"}
         </Button>
       </DialogActions>

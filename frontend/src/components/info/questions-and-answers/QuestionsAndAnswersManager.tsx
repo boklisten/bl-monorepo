@@ -15,7 +15,6 @@ import {
 import { DataGrid, GridActionsCellItem, GridColDef } from "@mui/x-data-grid";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useDialogs, useNotifications } from "@toolpad/core";
-import { useState } from "react";
 
 import QuestionAndAnswerEditDialog from "@/components/info/questions-and-answers/QuestionAndAnswerEditDialog";
 import useApiClient from "@/utils/api/useApiClient";
@@ -25,31 +24,24 @@ export default function QuestionsAndAnswersManager() {
   const dialogs = useDialogs();
   const notifications = useNotifications();
   const queryClient = useQueryClient();
-  const [isMutating, setIsMutating] = useState(false);
 
   const destroyQuestionAndAnswerMutation = useMutation({
-    mutationFn: async (id: string) => {
-      setIsMutating(true);
-      return await client.questions_and_answers({ id: id }).$delete().unwrap();
-    },
-    onSettled: async () => {
-      await queryClient.invalidateQueries({
+    mutationFn: (id: string) =>
+      client.questions_and_answers({ id: id }).$delete().unwrap(),
+    onSettled: () =>
+      queryClient.invalidateQueries({
         queryKey: [client.questions_and_answers.$url()],
-      });
-      setIsMutating(false);
-    },
-    onSuccess: async () => {
+      }),
+    onSuccess: () =>
       notifications.show("Spørsmål og svar ble slettet!", {
         severity: "success",
         autoHideDuration: 3000,
-      });
-    },
-    onError: async () => {
+      }),
+    onError: () =>
       notifications.show("Klarte ikke slette spørsmål og svar!", {
         severity: "error",
         autoHideDuration: 5000,
-      });
-    },
+      }),
   });
 
   const {
@@ -136,7 +128,7 @@ export default function QuestionsAndAnswersManager() {
         }}
         pageSizeOptions={[5, 10, 100]}
         rows={questionsAndAnswers ?? []}
-        loading={isLoading || isMutating}
+        loading={isLoading || destroyQuestionAndAnswerMutation.isPending}
         columns={columns}
         disableRowSelectionOnClick
         sx={{ border: 0 }}

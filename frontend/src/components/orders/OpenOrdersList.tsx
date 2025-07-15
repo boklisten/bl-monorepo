@@ -38,34 +38,22 @@ export default function OpenOrdersList() {
   });
 
   const cancelOrderItemMutation = useMutation({
-    mutationFn: async ({
-      orderId,
-      itemId,
-    }: {
-      orderId: string;
-      itemId: string;
-    }) => {
-      return await client.v2.orders.cancel_order_item
-        .$post({ orderId, itemId })
-        .unwrap();
-    },
-    onSettled: async () => {
-      await queryClient.invalidateQueries({
+    mutationFn: ({ orderId, itemId }: { orderId: string; itemId: string }) =>
+      client.v2.orders.cancel_order_item.$post({ orderId, itemId }).unwrap(),
+    onSettled: () =>
+      queryClient.invalidateQueries({
         queryKey: [client.v2.orders.open_orders.$url()],
-      });
-    },
-    onSuccess: async () => {
+      }),
+    onSuccess: () =>
       notifications.show("Bestilling ble oppdatert!", {
         severity: "success",
         autoHideDuration: 3000,
-      });
-    },
-    onError: async () => {
+      }),
+    onError: () =>
       notifications.show("Klarte ikke fjerne bok fra bestilling!", {
         severity: "error",
         autoHideDuration: 5000,
-      });
-    },
+      }),
   });
 
   return (
@@ -90,6 +78,7 @@ export default function OpenOrdersList() {
                   <TableCell>
                     <Button
                       color={"error"}
+                      loading={cancelOrderItemMutation.isPending}
                       onClick={async () => {
                         if (
                           await dialogs.confirm(

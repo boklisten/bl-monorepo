@@ -12,7 +12,9 @@ import type { InferInput } from "@vinejs/vine/types";
 
 type TokenPost = {
   request: MakeTuyauRequest<
-    InferInput<(typeof import("../app/validators/token.ts"))["tokenValidator"]>
+    InferInput<
+      (typeof import("../app/validators/auth_validators.ts"))["tokenValidator"]
+    >
   >;
   response: MakeNonSerializedTuyauResponse<
     import("../app/controllers/auth/tokens_controller.ts").default["token"],
@@ -36,7 +38,7 @@ type AuthIdCallbackGetHead = {
 type AuthLocalLoginPost = {
   request: MakeTuyauRequest<
     InferInput<
-      (typeof import("../app/validators/local_auth.ts"))["localAuthValidator"]
+      (typeof import("../app/validators/auth_validators.ts"))["localAuthValidator"]
     >
   >;
   response: MakeNonSerializedTuyauResponse<
@@ -47,7 +49,7 @@ type AuthLocalLoginPost = {
 type AuthLocalRegisterPost = {
   request: MakeTuyauRequest<
     InferInput<
-      (typeof import("../app/validators/local_auth.ts"))["localAuthValidator"]
+      (typeof import("../app/validators/auth_validators.ts"))["localAuthValidator"]
     >
   >;
   response: MakeNonSerializedTuyauResponse<
@@ -58,7 +60,7 @@ type AuthLocalRegisterPost = {
 type ForgotPasswordPost = {
   request: MakeTuyauRequest<
     InferInput<
-      (typeof import("../app/validators/auth_validator.ts"))["forgotPasswordValidator"]
+      (typeof import("../app/validators/auth_validators.ts"))["forgotPasswordValidator"]
     >
   >;
   response: MakeNonSerializedTuyauResponse<
@@ -69,7 +71,7 @@ type ForgotPasswordPost = {
 type ResetPasswordPost = {
   request: MakeTuyauRequest<
     InferInput<
-      (typeof import("../app/validators/auth_validator.ts"))["passwordResetValidator"]
+      (typeof import("../app/validators/auth_validators.ts"))["passwordResetValidator"]
     >
   >;
   response: MakeNonSerializedTuyauResponse<

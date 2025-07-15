@@ -5,7 +5,7 @@ import TokenHandler from "#services/auth/token/token.handler";
 import BlResponseHandler from "#services/response/bl-response.handler";
 import { BlError } from "#shared/bl-error/bl-error";
 import { BlapiResponse } from "#shared/blapi-response/blapi-response";
-import { tokenValidator } from "#validators/token";
+import { tokenValidator } from "#validators/auth_validators";
 
 export default class TokensController {
   async token(ctx: HttpContext) {

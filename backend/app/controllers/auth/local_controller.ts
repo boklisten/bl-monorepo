@@ -8,7 +8,7 @@ import BlResponseHandler from "#services/response/bl-response.handler";
 import { BlStorage } from "#services/storage/bl-storage";
 import { BlError } from "#shared/bl-error/bl-error";
 import { BlapiResponse } from "#shared/blapi-response/blapi-response";
-import { localAuthValidator } from "#validators/local_auth";
+import { localAuthValidator } from "#validators/auth_validators";
 
 async function normalizeUsername(username: string) {
   if (!validator.isMobilePhone(username)) {

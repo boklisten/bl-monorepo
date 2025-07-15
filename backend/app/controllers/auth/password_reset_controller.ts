@@ -12,7 +12,7 @@ import env from "#start/env";
 import {
   forgotPasswordValidator,
   passwordResetValidator,
-} from "#validators/auth_validator";
+} from "#validators/auth_validators";
 
 export default class PasswordResetController {
   async forgotPasswordSend({ request }: HttpContext) {

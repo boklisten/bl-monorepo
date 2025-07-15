@@ -1,68 +1,8 @@
-import validator from "validator";
-
 import LocalLoginCreator from "#services/auth/local/local-login-creator";
-import LocalLoginPasswordValidator from "#services/auth/local/local-login-password.validator";
 import LocalLoginHandler from "#services/auth/local/local-login.handler";
 import UserHandler from "#services/auth/user/user.handler";
 import BlCrypto from "#services/config/bl-crypto";
-import { LocalLogin } from "#services/types/local-login";
 import { BlError } from "#shared/bl-error/bl-error";
-
-function validate(username: string, password: string): Promise<void> {
-  return new Promise((resolve, reject) => {
-    const blError = new BlError("")
-      .className("LocalLoginValidator")
-      .methodName("validate");
-    if (!username || !validator.isEmail(username))
-      return reject(blError.msg('username "' + username + '" is not an email'));
-    if (!password || password.length <= 0)
-      return reject(blError.msg("password is empty or undefined"));
-
-    UserHandler.valid(username)
-      .then(() => {
-        LocalLoginHandler.get(username).then(
-          (localLogin: LocalLogin) => {
-            LocalLoginPasswordValidator.validate(
-              password,
-              localLogin.salt,
-              localLogin.hashedPassword,
-            ).then(
-              () => {
-                resolve();
-              },
-              (error: BlError) => {
-                reject(
-                  error.add(
-                    blError
-                      .msg("username or password is not correct")
-                      .code(908),
-                  ),
-                );
-              },
-            );
-          },
-          (error: BlError) => {
-            reject(
-              error.add(
-                blError
-                  .msg(
-                    'could not find the user with username "' + username + '"',
-                  )
-                  .code(702),
-              ),
-            );
-          },
-        );
-      })
-      .catch((userValidError: BlError) => {
-        if (userValidError.getCode() === 702) {
-          reject(new BlError("user not found").code(702).add(userValidError));
-        } else {
-          reject(new BlError("user not valid").code(902).add(userValidError));
-        }
-      });
-  });
-}
 
 function create(username: string, password: string): Promise<void> {
   return new Promise((resolve, reject) => {
@@ -124,7 +64,6 @@ function create(username: string, password: string): Promise<void> {
 }
 
 const LocalLoginValidator = {
-  validate,
   create,
 };
 export default LocalLoginValidator;

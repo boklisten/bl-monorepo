@@ -3,7 +3,6 @@ import { use as chaiUse, should } from "chai";
 import chaiAsPromised from "chai-as-promised";
 import sinon, { createSandbox } from "sinon";
 
-import LocalLoginPasswordValidator from "#services/auth/local/local-login-password.validator";
 import LocalLoginHandler from "#services/auth/local/local-login.handler";
 import LocalLoginValidator from "#services/auth/local/local-login.validator";
 import UserHandler from "#services/auth/user/user.handler";
@@ -37,8 +36,6 @@ test.group("LocalLoginValidator", (group) => {
       });
     });
 
-    sandbox.stub(LocalLoginPasswordValidator, "validate").resolves(true);
-
     sandbox.stub(UserHandler, "create").callsFake((username: string) => {
       return Promise.resolve({
         id: "",
@@ -55,47 +52,6 @@ test.group("LocalLoginValidator", (group) => {
   });
   group.each.teardown(() => {
     sandbox.restore();
-  });
-
-  let testUserName = "";
-  let testPassword = "";
-
-  group.each.setup(() => {
-    testUserName = "albert@protonmail.com";
-    testPassword = "hello";
-  });
-
-  test("username is not an email", async () => {
-    testUserName = "bill";
-    LocalLoginValidator.validate(
-      testUserName,
-      testPassword,
-      // @ts-expect-error fixme: auto ignored bad test types
-    ).should.be.rejectedWith(BlError);
-  });
-
-  test("password is empty", async () => {
-    testPassword = "";
-    LocalLoginValidator.validate(
-      testUserName,
-      testPassword,
-      // @ts-expect-error fixme: auto ignored bad test types
-    ).should.be.rejectedWith(BlError);
-  });
-
-  test("username does not exist", async () => {
-    testUserName = "billy@user.com";
-    testPassword = "thePassword";
-    LocalLoginValidator.validate(testUserName, testPassword).then(
-      (value) => {
-        // @ts-expect-error fixme: auto ignored bad test types
-        value.should.not.be.fulfilled;
-      },
-      (error: BlError) => {
-        // @ts-expect-error fixme: auto ignored bad test types
-        error.getCode().should.be.eq(702);
-      },
-    );
   });
 
   test("should reject with BlError if username does exist", async () => {

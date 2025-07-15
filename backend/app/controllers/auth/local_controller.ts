@@ -1,8 +1,10 @@
 import { HttpContext } from "@adonisjs/core/http";
 import validator from "validator";
 
+import UnauthorizedException from "#exceptions/unauthorized_exception";
 import LocalLoginValidator from "#services/auth/local/local-login.validator";
 import TokenHandler from "#services/auth/token/token.handler";
+import BlCrypto from "#services/config/bl-crypto";
 import { SEDbQuery } from "#services/query/se.db-query";
 import BlResponseHandler from "#services/response/bl-response.handler";
 import { BlStorage } from "#services/storage/bl-storage";
@@ -26,57 +28,35 @@ async function normalizeUsername(username: string) {
   }
 }
 
-async function authenticate(username: string, password: string) {
-  const normalizedUsername = await normalizeUsername(username);
-  return new Promise<{
-    accessToken?: string;
-    refreshToken?: string;
-    statusCode: number;
-  }>((resolve) => {
-    LocalLoginValidator.validate(normalizedUsername, password).then(
-      () => {
-        TokenHandler.createTokens(normalizedUsername).then(
-          (tokens: { accessToken: string; refreshToken: string }) => {
-            resolve({
-              accessToken: tokens.accessToken,
-              refreshToken: tokens.refreshToken,
-              statusCode: 200,
-            });
-          },
-          () => {
-            resolve({ statusCode: 401 });
-          },
-        );
-      },
-      (validateError) => {
-        if (
-          (validateError && validateError.getCode() === 908) ||
-          validateError.getCode() === 901 ||
-          validateError.getCode() === 702
-        ) {
-          resolve({ statusCode: 401 });
-        } else {
-          resolve({ statusCode: 500 });
-        }
-      },
-    );
-  });
+async function getLocalLogin(username: string) {
+  try {
+    const databaseQuery = new SEDbQuery();
+    databaseQuery.stringFilters = [{ fieldName: "username", value: username }];
+
+    const [localLogin] = await BlStorage.LocalLogins.getByQuery(databaseQuery);
+    return localLogin ?? null;
+  } catch {
+    return null;
+  }
 }
 
 export default class LocalController {
-  async login({ request, response }: HttpContext) {
+  async login({ request }: HttpContext) {
     const { username, password } =
       await request.validateUsing(localAuthValidator);
+    const normalizedUsername = await normalizeUsername(username);
 
-    const { accessToken, refreshToken, statusCode } = await authenticate(
-      username,
-      password,
-    );
-    response.status(statusCode);
-    if (accessToken && refreshToken) {
-      return { accessToken, refreshToken };
-    }
-    return;
+    const localLogin = await getLocalLogin(normalizedUsername);
+
+    if (!localLogin)
+      throw new UnauthorizedException("Feil brukernavn eller passord");
+
+    const candidate = await BlCrypto.hash(password, localLogin.salt);
+
+    if (!BlCrypto.timingSafeEqual(candidate, localLogin.hashedPassword))
+      throw new UnauthorizedException("Feil brukernavn eller passord");
+
+    return await TokenHandler.createTokens(normalizedUsername);
   }
 
   async register(ctx: HttpContext) {

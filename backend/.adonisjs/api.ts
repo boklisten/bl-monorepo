@@ -49,7 +49,7 @@ type AuthLocalLoginPost = {
 type AuthLocalRegisterPost = {
   request: MakeTuyauRequest<
     InferInput<
-      (typeof import("../app/validators/auth_validators.ts"))["localAuthValidator"]
+      (typeof import("../app/validators/auth_validators.ts"))["registerValidator"]
     >
   >;
   response: MakeNonSerializedTuyauResponse<

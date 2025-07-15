@@ -1,10 +1,5 @@
 import { BlapiErrorResponse } from "@boklisten/backend/shared/blapi-response/blapi-error-response";
 
-export type AuthResponse = {
-  documentName: string;
-  data: string;
-}[];
-
 export enum TextType {
   BLID,
   ISBN,

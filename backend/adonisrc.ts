@@ -26,6 +26,7 @@ export default defineConfig({
     () => import("#start/database"),
     () => import("#start/profiler"),
     () => import("#start/sendgrid"),
+    () => import("#start/validator"),
   ],
 
   tests: {

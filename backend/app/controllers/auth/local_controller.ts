@@ -2,15 +2,16 @@ import { HttpContext } from "@adonisjs/core/http";
 import validator from "validator";
 
 import UnauthorizedException from "#exceptions/unauthorized_exception";
-import LocalLoginValidator from "#services/auth/local/local-login.validator";
+import HashedPasswordGenerator from "#services/auth/local/hashed-password-generator";
 import TokenHandler from "#services/auth/token/token.handler";
+import UserHandler from "#services/auth/user/user.handler";
 import BlCrypto from "#services/config/bl-crypto";
 import { SEDbQuery } from "#services/query/se.db-query";
-import BlResponseHandler from "#services/response/bl-response.handler";
 import { BlStorage } from "#services/storage/bl-storage";
-import { BlError } from "#shared/bl-error/bl-error";
-import { BlapiResponse } from "#shared/blapi-response/blapi-response";
-import { localAuthValidator } from "#validators/auth_validators";
+import {
+  localAuthValidator,
+  registerValidator,
+} from "#validators/auth_validators";
 
 async function normalizeUsername(username: string) {
   if (!validator.isMobilePhone(username)) {
@@ -59,54 +60,19 @@ export default class LocalController {
     return await TokenHandler.createTokens(normalizedUsername);
   }
 
-  async register(ctx: HttpContext) {
-    const { username, password } =
-      await ctx.request.validateUsing(localAuthValidator);
-    return new Promise((resolve, reject) => {
-      LocalLoginValidator.create(username, password).then(
-        () => {
-          TokenHandler.createTokens(username).then(
-            (tokens: { accessToken: string; refreshToken: string }) => {
-              resolve(
-                new BlapiResponse([
-                  { documentName: "refreshToken", data: tokens.refreshToken },
-                  { documentName: "accessToken", data: tokens.accessToken },
-                ]),
-              );
-            },
-            (createTokensError: BlError) => {
-              resolve(
-                BlResponseHandler.createErrorResponse(
-                  ctx,
-                  new BlError("could not create tokens")
-                    .add(createTokensError)
-                    .code(906),
-                ),
-              );
-            },
-          );
-        },
-        (loginValidatorCreateError: BlError) => {
-          if (loginValidatorCreateError.getCode() === 903) {
-            resolve(
-              BlResponseHandler.createErrorResponse(
-                ctx,
-                loginValidatorCreateError,
-              ),
-            );
-          } else {
-            resolve(
-              BlResponseHandler.createErrorResponse(
-                ctx,
-                new BlError("could not create user")
-                  .add(loginValidatorCreateError)
-                  .code(907),
-              ),
-            );
-          }
-          reject(loginValidatorCreateError);
-        },
-      );
+  async register({ request }: HttpContext) {
+    const { email, password } = await request.validateUsing(registerValidator);
+
+    const { hashedPassword, salt } =
+      await HashedPasswordGenerator.generate(password);
+    await BlStorage.LocalLogins.add({
+      username: email,
+      hashedPassword,
+      salt,
     });
+
+    await UserHandler.create(email, "local", BlCrypto.random());
+
+    return await TokenHandler.createTokens(email);
   }
 }

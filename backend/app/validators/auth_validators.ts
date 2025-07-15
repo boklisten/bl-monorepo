@@ -1,5 +1,22 @@
 import vine from "@vinejs/vine";
 
+import UserHandler from "#services/auth/user/user.handler";
+
+const uniqueEmail = vine.createRule(async (value, options, field) => {
+  if (typeof value !== "string") {
+    return;
+  }
+  const foundUser = await UserHandler.getOrNull(value);
+
+  if (foundUser) {
+    field.report(
+      `Det eksisterer allerede en konto med e-postadressen ${value}`,
+      "unique_email",
+      field,
+    );
+  }
+});
+
 const emailField = vine.string().email().trim().toLowerCase();
 const passwordField = vine.string().minLength(10);
 
@@ -14,6 +31,13 @@ export const passwordResetValidator = vine.compile(
     resetToken: vine.string(),
     resetId: vine.string(),
     newPassword: passwordField.clone(),
+  }),
+);
+
+export const registerValidator = vine.compile(
+  vine.object({
+    email: emailField.clone().use(uniqueEmail()),
+    password: passwordField.clone(),
   }),
 );
 

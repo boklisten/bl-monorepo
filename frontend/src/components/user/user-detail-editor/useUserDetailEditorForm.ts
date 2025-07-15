@@ -11,12 +11,17 @@ import {
   UseFormSetError,
 } from "react-hook-form";
 
-import { getAccessTokenBody } from "@/api/token";
-import { registerUser, updateUserDetails } from "@/api/user";
+import {
+  addAccessToken,
+  addRefreshToken,
+  getAccessTokenBody,
+} from "@/api/token";
+import { updateUserDetails } from "@/api/user";
 import {
   PostalCityState,
   usePostalCity,
 } from "@/components/user/fields/PostalCodeField";
+import { publicApiClient } from "@/utils/api/publicApiClient";
 import { assertBlApiError } from "@/utils/types";
 import useAuthLinker from "@/utils/useAuthLinker";
 
@@ -90,30 +95,50 @@ export function useUserDetailEditorForm(
     userDetails.postCode,
   );
 
+  const UNKNOWN_ERROR_TEXT =
+    "Noe gikk galt under registreringen! Prøv igjen, eller ta kontakt dersom problemet vedvarer!";
+  async function registerUser(user: { email: string; password: string }) {
+    const { data, error } =
+      await publicApiClient.auth.local.register.$post(user);
+
+    if (error) {
+      if (error.status === 422) {
+        const emailUniqueError = error.value.errors.find(
+          (e) => e.rule === "unique_email",
+        );
+        if (emailUniqueError !== undefined) {
+          setError("email", {
+            message: emailUniqueError.message,
+          });
+          return { success: false };
+        }
+      }
+
+      // fixme: unknown errors should not be on the email field
+      setError("email", {
+        message: UNKNOWN_ERROR_TEXT,
+      });
+      return { success: false };
+    }
+
+    addAccessToken(data.accessToken);
+    addRefreshToken(data.refreshToken);
+    return { success: true };
+  }
+
   const onSubmitValid: SubmitHandler<UserEditorFields> = async (data) => {
     setIsSubmitting(true);
     if (isSignUp) {
-      try {
-        await registerUser(data.email, data.password);
-      } catch (error) {
-        if (assertBlApiError(error)) {
-          if (error.code === 903) {
-            setError("email", {
-              message:
-                "Det finnes allerede en bruker med denne e-postadressen!",
-            });
-            setIsSubmitting(false);
-            return;
-          }
-          if (error.httpStatus === 500) {
-            setError("email", {
-              message:
-                "Noe gikk galt under registreringen! Prøv igjen, eller ta kontakt dersom problemet vedvarer!",
-            });
-          }
-        }
+      const { success } = await registerUser({
+        email: data.email,
+        password: data.password,
+      });
+      if (!success) {
+        setIsSubmitting(false);
+        return;
       }
     }
+
     try {
       const postalCityStatus = await settlePostalCity;
       switch (postalCityStatus.state) {
@@ -148,8 +173,7 @@ export function useUserDetailEditorForm(
     } catch (error) {
       if (assertBlApiError(error)) {
         setError("email", {
-          message:
-            "Noe gikk galt under registreringen! Prøv igjen, eller ta kontakt dersom problemet vedvarer!",
+          message: UNKNOWN_ERROR_TEXT,
         });
       }
     }

@@ -8,6 +8,10 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useNotifications } from "@toolpad/core";
 
 import useApiClient from "@/utils/api/useApiClient";
+import {
+  ERROR_NOTIFICATION,
+  SUCCESS_NOTIFICATION,
+} from "@/utils/notifications";
 
 export default function WaitingListTable({
   loading,
@@ -32,15 +36,15 @@ export default function WaitingListTable({
         queryKey: [client.waiting_list_entries.$url()],
       }),
     onSuccess: () =>
-      notifications.show("Ventelisteoppføring ble slettet!", {
-        severity: "success",
-        autoHideDuration: 3000,
-      }),
+      notifications.show(
+        "Ventelisteoppføring ble slettet!",
+        SUCCESS_NOTIFICATION,
+      ),
     onError: async () =>
-      notifications.show("Klarte ikke slette ventelisteoppføring!", {
-        severity: "error",
-        autoHideDuration: 5000,
-      }),
+      notifications.show(
+        "Klarte ikke slette ventelisteoppføring!",
+        ERROR_NOTIFICATION,
+      ),
   });
 
   const columns: GridColDef[] = [

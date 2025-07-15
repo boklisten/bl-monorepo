@@ -16,6 +16,10 @@ import { useRef, useState } from "react";
 
 import { TextEditor } from "@/components/TextEditor";
 import useApiClient from "@/utils/api/useApiClient";
+import {
+  ERROR_NOTIFICATION,
+  SUCCESS_NOTIFICATION,
+} from "@/utils/notifications";
 
 export default function EditableTextEditorDialog({
   payload,
@@ -37,19 +41,16 @@ export default function EditableTextEditorDialog({
         queryKey: [client.editable_texts.$url()],
       }),
     onSuccess: () => {
-      notifications.show("Dynamisk innhold ble opprettet!", {
-        severity: "success",
-        autoHideDuration: 3000,
-      });
+      notifications.show(
+        "Dynamisk innhold ble opprettet!",
+        SUCCESS_NOTIFICATION,
+      );
       onClose();
     },
     onError: () =>
       notifications.show(
         `Klarte ikke opprette dynamisk innhold! Vennligst sjekk at unik nøkkel er formattert riktig. [a-z] og "_" for mellomrom.`,
-        {
-          severity: "error",
-          autoHideDuration: 5000,
-        },
+        ERROR_NOTIFICATION,
       ),
   });
 
@@ -64,17 +65,17 @@ export default function EditableTextEditorDialog({
         queryKey: [client.editable_texts.$url()],
       }),
     onSuccess: () => {
-      notifications.show("Dynamisk innhold ble oppdatert!", {
-        severity: "success",
-        autoHideDuration: 3000,
-      });
+      notifications.show(
+        "Dynamisk innhold ble oppdatert!",
+        SUCCESS_NOTIFICATION,
+      );
       onClose();
     },
     onError: () =>
-      notifications.show("Klarte ikke oppdatere dynamisk innhold!", {
-        severity: "error",
-        autoHideDuration: 5000,
-      }),
+      notifications.show(
+        "Klarte ikke oppdatere dynamisk innhold!",
+        ERROR_NOTIFICATION,
+      ),
   });
 
   async function handleSubmit() {

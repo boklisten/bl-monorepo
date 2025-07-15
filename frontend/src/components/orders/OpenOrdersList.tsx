@@ -18,6 +18,10 @@ import moment from "moment";
 import { useRouter } from "next/navigation";
 
 import useApiClient from "@/utils/api/useApiClient";
+import {
+  ERROR_NOTIFICATION,
+  SUCCESS_NOTIFICATION,
+} from "@/utils/notifications";
 
 export default function OpenOrdersList() {
   const dialogs = useDialogs();
@@ -45,15 +49,12 @@ export default function OpenOrdersList() {
         queryKey: [client.v2.orders.open_orders.$url()],
       }),
     onSuccess: () =>
-      notifications.show("Bestilling ble oppdatert!", {
-        severity: "success",
-        autoHideDuration: 3000,
-      }),
+      notifications.show("Bestilling ble oppdatert!", SUCCESS_NOTIFICATION),
     onError: () =>
-      notifications.show("Klarte ikke fjerne bok fra bestilling!", {
-        severity: "error",
-        autoHideDuration: 5000,
-      }),
+      notifications.show(
+        "Klarte ikke fjerne bok fra bestilling!",
+        ERROR_NOTIFICATION,
+      ),
   });
 
   return (

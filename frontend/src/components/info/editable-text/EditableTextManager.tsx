@@ -18,6 +18,10 @@ import { useDialogs, useNotifications } from "@toolpad/core";
 
 import EditableTextEditorDialog from "@/components/info/editable-text/EditableTextEditorDialog";
 import useApiClient from "@/utils/api/useApiClient";
+import {
+  ERROR_NOTIFICATION,
+  SUCCESS_NOTIFICATION,
+} from "@/utils/notifications";
 
 export default function EditableTextManager() {
   const client = useApiClient();
@@ -33,15 +37,12 @@ export default function EditableTextManager() {
         queryKey: [client.editable_texts.$url()],
       }),
     onSuccess: () =>
-      notifications.show("Dynamisk innhold ble slettet!", {
-        severity: "success",
-        autoHideDuration: 3000,
-      }),
+      notifications.show("Dynamisk innhold ble slettet!", SUCCESS_NOTIFICATION),
     onError: () =>
-      notifications.show("Klarte ikke slette dynamisk innhold!", {
-        severity: "error",
-        autoHideDuration: 5000,
-      }),
+      notifications.show(
+        "Klarte ikke slette dynamisk innhold!",
+        ERROR_NOTIFICATION,
+      ),
   });
 
   const {

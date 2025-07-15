@@ -18,6 +18,10 @@ import { useDialogs, useNotifications } from "@toolpad/core";
 
 import QuestionAndAnswerEditDialog from "@/components/info/questions-and-answers/QuestionAndAnswerEditDialog";
 import useApiClient from "@/utils/api/useApiClient";
+import {
+  ERROR_NOTIFICATION,
+  SUCCESS_NOTIFICATION,
+} from "@/utils/notifications";
 
 export default function QuestionsAndAnswersManager() {
   const client = useApiClient();
@@ -33,15 +37,12 @@ export default function QuestionsAndAnswersManager() {
         queryKey: [client.questions_and_answers.$url()],
       }),
     onSuccess: () =>
-      notifications.show("Spørsmål og svar ble slettet!", {
-        severity: "success",
-        autoHideDuration: 3000,
-      }),
+      notifications.show("Spørsmål og svar ble slettet!", SUCCESS_NOTIFICATION),
     onError: () =>
-      notifications.show("Klarte ikke slette spørsmål og svar!", {
-        severity: "error",
-        autoHideDuration: 5000,
-      }),
+      notifications.show(
+        "Klarte ikke slette spørsmål og svar!",
+        ERROR_NOTIFICATION,
+      ),
   });
 
   const {

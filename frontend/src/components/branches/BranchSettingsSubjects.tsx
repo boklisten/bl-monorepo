@@ -14,6 +14,10 @@ import { useNotifications } from "@toolpad/core";
 
 import unpack from "@/utils/api/bl-api-request";
 import useApiClient from "@/utils/api/useApiClient";
+import {
+  ERROR_NOTIFICATION,
+  SUCCESS_NOTIFICATION,
+} from "@/utils/notifications";
 
 type BranchItemWithRealItem = Omit<BranchItem, "item"> & { item: Item };
 
@@ -57,16 +61,13 @@ export default function BranchSettingsSubjects({
       });
     },
     onSuccess: async () => {
-      notifications.show("Innstilling ble oppdatert!", {
-        severity: "success",
-        autoHideDuration: 3000,
-      });
+      notifications.show("Innstilling ble oppdatert!", SUCCESS_NOTIFICATION);
     },
     onError: async () => {
-      notifications.show("Klarte ikke oppdatere innstilling!", {
-        severity: "error",
-        autoHideDuration: 5000,
-      });
+      notifications.show(
+        "Klarte ikke oppdatere innstilling!",
+        ERROR_NOTIFICATION,
+      );
     },
   });
 

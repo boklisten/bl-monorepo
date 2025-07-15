@@ -3,6 +3,7 @@ import { useNotifications } from "@toolpad/core";
 import Papa from "papaparse";
 
 import FileUploadButton from "@/components/FileUploadButton";
+import { ERROR_NOTIFICATION } from "@/utils/notifications";
 
 type ParsedRow<Headers extends string[]> = Record<
   Headers[number],
@@ -24,10 +25,10 @@ export default function UploadCSVFile<Headers extends string[]>({
 
   function parseRows(rows: string[][]): ParsedRow<string[]>[] | null {
     if (rows.length < 2) {
-      notifications.show("Opplasting feilet! Filen har ingen data", {
-        severity: "error",
-        autoHideDuration: 5000,
-      });
+      notifications.show(
+        "Opplasting feilet! Filen har ingen data",
+        ERROR_NOTIFICATION,
+      );
       return null;
     }
 
@@ -44,10 +45,10 @@ export default function UploadCSVFile<Headers extends string[]>({
 
     for (const header of allowedHeaders) {
       if (!headerIndexMap[header] || headerIndexMap[header].length === 0) {
-        notifications.show(`Opplasting feilet! Mangler kolonne: ${header}`, {
-          severity: "error",
-          autoHideDuration: 5000,
-        });
+        notifications.show(
+          `Opplasting feilet! Mangler kolonne: ${header}`,
+          ERROR_NOTIFICATION,
+        );
         return null;
       }
     }
@@ -67,10 +68,7 @@ export default function UploadCSVFile<Headers extends string[]>({
         if (values.length === 0) {
           notifications.show(
             `Opplasting feilet! Rad nummer ${rowIndex + 1} mangler data for "${header}"`,
-            {
-              severity: "error",
-              autoHideDuration: 5000,
-            },
+            ERROR_NOTIFICATION,
           );
           return null;
         }
@@ -98,10 +96,10 @@ export default function UploadCSVFile<Headers extends string[]>({
         skipEmptyLines: true,
         complete: ({ data, errors }) => {
           if (errors.length) {
-            notifications.show("Klarte ikke lese CSV: " + errors, {
-              severity: "error",
-              autoHideDuration: 3000,
-            });
+            notifications.show(
+              "Klarte ikke lese CSV: " + errors,
+              ERROR_NOTIFICATION,
+            );
             return;
           }
           const parsedRows = parseRows(data);
@@ -110,10 +108,10 @@ export default function UploadCSVFile<Headers extends string[]>({
           }
         },
         error: (error: unknown) => {
-          notifications.show("Klarte ikke lese CSV: " + error, {
-            severity: "error",
-            autoHideDuration: 3000,
-          });
+          notifications.show(
+            "Klarte ikke lese CSV: " + error,
+            ERROR_NOTIFICATION,
+          );
         },
       });
     };

@@ -17,6 +17,10 @@ import { useRef } from "react";
 
 import { TextEditor } from "@/components/TextEditor";
 import useApiClient from "@/utils/api/useApiClient";
+import {
+  ERROR_NOTIFICATION,
+  SUCCESS_NOTIFICATION,
+} from "@/utils/notifications";
 
 export default function QuestionAndAnswerEditDialog({
   payload,
@@ -38,17 +42,17 @@ export default function QuestionAndAnswerEditDialog({
         queryKey: [client.questions_and_answers.$url()],
       }),
     onSuccess: () => {
-      notifications.show("Spørsmål og svar ble opprettet!", {
-        severity: "success",
-        autoHideDuration: 3000,
-      });
+      notifications.show(
+        "Spørsmål og svar ble opprettet!",
+        SUCCESS_NOTIFICATION,
+      );
       onClose();
     },
     onError: () =>
-      notifications.show(`Klarte ikke opprette spørsmål og svar!`, {
-        severity: "error",
-        autoHideDuration: 5000,
-      }),
+      notifications.show(
+        `Klarte ikke opprette spørsmål og svar!`,
+        ERROR_NOTIFICATION,
+      ),
   });
 
   const updateQuestionAndAnswerMutation = useMutation({
@@ -62,17 +66,17 @@ export default function QuestionAndAnswerEditDialog({
         queryKey: [client.questions_and_answers.$url()],
       }),
     onSuccess: () => {
-      notifications.show("Dynamisk innhold ble oppdatert!", {
-        severity: "success",
-        autoHideDuration: 3000,
-      });
+      notifications.show(
+        "Dynamisk innhold ble oppdatert!",
+        SUCCESS_NOTIFICATION,
+      );
       onClose();
     },
     onError: () =>
-      notifications.show("Klarte ikke oppdatere dynamisk innhold!", {
-        severity: "error",
-        autoHideDuration: 5000,
-      }),
+      notifications.show(
+        "Klarte ikke oppdatere dynamisk innhold!",
+        ERROR_NOTIFICATION,
+      ),
   });
 
   async function handleSubmit() {

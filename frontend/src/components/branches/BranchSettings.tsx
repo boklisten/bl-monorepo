@@ -21,6 +21,10 @@ import BranchSettingsSubjects from "@/components/branches/BranchSettingsSubjects
 import UploadClassMemberships from "@/components/branches/UploadClassMemberships";
 import UploadSubjectChoices from "@/components/branches/UploadSubjectChoices";
 import useApiClient from "@/utils/api/useApiClient";
+import {
+  ERROR_NOTIFICATION,
+  SUCCESS_NOTIFICATION,
+} from "@/utils/notifications";
 
 function BranchEditSection({
   title,
@@ -80,17 +84,11 @@ export default function BranchSettings({
         queryKey: [client.$url("collection.branches.getAll", branchQuery)],
       }),
     onSuccess: () => {
-      notifications.show("Filial ble opprettet!", {
-        severity: "success",
-        autoHideDuration: 3000,
-      });
+      notifications.show("Filial ble opprettet!", SUCCESS_NOTIFICATION);
       afterSubmit();
     },
     onError: () =>
-      notifications.show("Klarte ikke opprette filial!", {
-        severity: "error",
-        autoHideDuration: 5000,
-      }),
+      notifications.show("Klarte ikke opprette filial!", ERROR_NOTIFICATION),
   });
 
   const updateBranchMutation = useMutation({
@@ -104,15 +102,9 @@ export default function BranchSettings({
         queryKey: [client.$url("collection.branches.getAll", branchQuery)],
       }),
     onSuccess: () =>
-      notifications.show("Filial ble oppdatert!", {
-        severity: "success",
-        autoHideDuration: 3000,
-      }),
+      notifications.show("Filial ble oppdatert!", SUCCESS_NOTIFICATION),
     onError: () =>
-      notifications.show("Klarte ikke oppdatere filial!", {
-        severity: "error",
-        autoHideDuration: 5000,
-      }),
+      notifications.show("Klarte ikke oppdatere filial!", ERROR_NOTIFICATION),
   });
 
   const methods = useForm({

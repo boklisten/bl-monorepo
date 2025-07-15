@@ -9,7 +9,7 @@ export const metadata: Metadata = {
     "Vi er tilgjengelig for spørsmål og henvendelser både på e-post og telefon. Se vår kontaktinformasjon, med e-post-adresse, telefonnummer og gateadresse.",
 };
 
-const ContactPage = () => {
+export default function ContactPage() {
   return (
     <>
       <Typography variant="h4" sx={{ textAlign: "center", marginBottom: 2 }}>
@@ -18,6 +18,4 @@ const ContactPage = () => {
       <ContactInfo />
     </>
   );
-};
-
-export default ContactPage;
+}

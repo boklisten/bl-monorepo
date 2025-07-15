@@ -1,4 +1,5 @@
 "use client";
+import { QuestionAndAnswer } from "@boklisten/backend/shared/questions-and-answers/question-and-answer";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import {
   Accordion,
@@ -14,14 +15,25 @@ import { useQuery } from "@tanstack/react-query";
 import { TextEditor } from "@/components/TextEditor";
 import useApiClient from "@/utils/api/useApiClient";
 
-export default function QuestionsAndAnswersReadOnly() {
+export default function QuestionsAndAnswersReadOnly({
+  cachedData,
+}: {
+  cachedData?: QuestionAndAnswer[];
+}) {
   const client = useApiClient();
 
-  const { data, isLoading, isError } = useQuery({
+  const {
+    data: freshData,
+    isLoading,
+    isError,
+  } = useQuery({
     queryKey: [client.questions_and_answers.$url()],
     queryFn: () => client.questions_and_answers.$get().unwrap(),
   });
-  if (isLoading) {
+
+  const data = freshData ?? cachedData;
+
+  if (isLoading && data === undefined) {
     return (
       <>
         {[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16].map(
@@ -32,7 +44,7 @@ export default function QuestionsAndAnswersReadOnly() {
       </>
     );
   }
-  if (isError || !data) {
+  if (isError || data === undefined) {
     return (
       <Container>
         <Alert severity="error">
@@ -43,6 +55,7 @@ export default function QuestionsAndAnswersReadOnly() {
       </Container>
     );
   }
+
   return (
     <>
       {data.length === 0 && (

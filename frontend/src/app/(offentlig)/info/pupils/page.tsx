@@ -1,6 +1,9 @@
 import { Metadata } from "next";
 
 import EditableTextReadOnly from "@/components/info/editable-text/EditableTextReadOnly";
+import { publicApiClient } from "@/utils/api/publicApiClient";
+
+export const revalidate = 60;
 
 export const metadata: Metadata = {
   title: "For VGS-elever",
@@ -8,8 +11,14 @@ export const metadata: Metadata = {
     "Er du videregående-elev? Finn dine kontaktelever og når utdeling og innsamling skjer.",
 };
 
-const Page = () => {
-  return <EditableTextReadOnly dataKey={"vgs_elever"} />;
-};
+export default async function PupilsPage() {
+  const dataKey = "vgs_elever";
+  const cachedData = await publicApiClient.editable_texts
+    .key({ key: dataKey })
+    .$get()
+    .unwrap();
 
-export default Page;
+  return (
+    <EditableTextReadOnly dataKey={dataKey} cachedText={cachedData.text} />
+  );
+}

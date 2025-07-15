@@ -1,6 +1,9 @@
 import { Metadata } from "next";
 
 import EditableTextReadOnly from "@/components/info/editable-text/EditableTextReadOnly";
+import { publicApiClient } from "@/utils/api/publicApiClient";
+
+export const revalidate = 60;
 
 export const metadata: Metadata = {
   title: "Betingelser",
@@ -8,8 +11,14 @@ export const metadata: Metadata = {
     "Vi tar kundene våre på alvor. Derfor har vi laget detaljerte betingelser, slik at du vet hva som gjelder for din ordre.",
 };
 
-const ConditionsPage = () => {
-  return <EditableTextReadOnly dataKey={"betingelser"} />;
-};
+export default async function ConditionsPage() {
+  const dataKey = "betingelser";
+  const cachedData = await publicApiClient.editable_texts
+    .key({ key: dataKey })
+    .$get()
+    .unwrap();
 
-export default ConditionsPage;
+  return (
+    <EditableTextReadOnly dataKey={dataKey} cachedText={cachedData.text} />
+  );
+}

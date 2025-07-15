@@ -9,7 +9,7 @@ export const metadata: Metadata = {
     "Skal du hente eller levere bøker? Finn ut når vi står på stand på din skole.",
 };
 
-const BranchPage = async () => {
+export default function BranchPage() {
   return (
     <Box
       sx={{
@@ -25,6 +25,4 @@ const BranchPage = async () => {
       <BranchSelect />
     </Box>
   );
-};
-
-export default BranchPage;
+}

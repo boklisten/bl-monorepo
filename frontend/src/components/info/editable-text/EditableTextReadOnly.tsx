@@ -5,7 +5,13 @@ import { useQuery } from "@tanstack/react-query";
 import { TextEditor } from "@/components/TextEditor";
 import useApiClient from "@/utils/api/useApiClient";
 
-export default function EditableTextReadOnly({ dataKey }: { dataKey: string }) {
+export default function EditableTextReadOnly({
+  dataKey,
+  cachedText,
+}: {
+  dataKey: string;
+  cachedText?: string;
+}) {
   const client = useApiClient();
 
   const { data, isLoading, isError } = useQuery({
@@ -14,7 +20,10 @@ export default function EditableTextReadOnly({ dataKey }: { dataKey: string }) {
     ],
     queryFn: () => client.editable_texts.key({ key: dataKey }).$get().unwrap(),
   });
-  if (isLoading) {
+
+  const content = data?.text ?? cachedText;
+
+  if (isLoading && content === undefined) {
     return (
       <Container>
         <Skeleton sx={{ mb: 1 }} width={250} height={40} />
@@ -33,7 +42,8 @@ export default function EditableTextReadOnly({ dataKey }: { dataKey: string }) {
       </Container>
     );
   }
-  if (isError || !data) {
+
+  if (isError || content === undefined) {
     return (
       <Container>
         <Alert severity="error">
@@ -44,9 +54,10 @@ export default function EditableTextReadOnly({ dataKey }: { dataKey: string }) {
       </Container>
     );
   }
+
   return (
     <Container>
-      <TextEditor readOnly content={data.text} />
+      <TextEditor readOnly content={content} />
     </Container>
   );
 }

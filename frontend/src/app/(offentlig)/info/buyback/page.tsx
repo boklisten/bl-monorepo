@@ -14,7 +14,7 @@ export const metadata: Metadata = {
     "Har du pensumbøker du ikke lenger har bruk for? Vi kjøper inn de aller fleste pensumbøker. Se oversikten over hvilke bøker vi tar imot her.",
 };
 
-const BuybackPage = async () => {
+export default async function BuybackPage() {
   let buybackItems: Item[] = [];
   try {
     buybackItems = await BlFetcher.get<Item[]>(
@@ -27,6 +27,4 @@ const BuybackPage = async () => {
   }
 
   return <BuybackList defaultBuybackItems={buybackItems} />;
-};
-
-export default BuybackPage;
+}

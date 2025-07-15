@@ -24,7 +24,7 @@
     "@mui/x-date-pickers": "^8.8.0",
     "@mui/x-tree-view": "^8.8.0",
     "@sentry/nextjs": "^9.38.0",
-    "@tanstack/react-query": "^5.82.0",
+    "@tanstack/react-query": "^5.83.0",
     "@tiptap/extension-link": "^2.26.0",
     "@tiptap/react": "^2.26.0",
     "@tiptap/starter-kit": "^2.26.0",
@@ -35,7 +35,7 @@
     "babel-plugin-react-compiler": "19.1.0-rc.2",
     "moment": "^2.30.1",
     "mui-tiptap": "^1.21.0",
-    "next": "15.3.5",
+    "next": "15.4.1",
     "papaparse": "^5.5.3",
     "react": "19.1.0",
     "react-dom": "19.1.0",
@@ -48,7 +48,7 @@
     "zustand": "^5.0.6"
   },
   "devDependencies": {
-    "@tanstack/react-query-devtools": "^5.82.0",
+    "@tanstack/react-query-devtools": "^5.83.0",
     "@tsconfig/next": "^2.0.3",
     "@types/papaparse": "^5.3.16",
     "@types/react": "19.1.8",

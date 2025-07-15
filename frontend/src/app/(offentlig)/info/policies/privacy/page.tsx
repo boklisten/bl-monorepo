@@ -1,6 +1,9 @@
 import { Metadata } from "next";
 
 import EditableTextReadOnly from "@/components/info/editable-text/EditableTextReadOnly";
+import { publicApiClient } from "@/utils/api/publicApiClient";
+
+export const revalidate = 60;
 
 export const metadata: Metadata = {
   title: "Personvernavtale",
@@ -8,8 +11,14 @@ export const metadata: Metadata = {
     "Vi tar personvern på alvor. Derfor har vi laget et dokument som viser en oversikt over hvordan din data bir behandlet hos oss.",
 };
 
-const PrivacyPage = () => {
-  return <EditableTextReadOnly dataKey={"personvernavtale"} />;
-};
+export default async function PrivacyPage() {
+  const dataKey = "personvernavtale";
+  const cachedData = await publicApiClient.editable_texts
+    .key({ key: dataKey })
+    .$get()
+    .unwrap();
 
-export default PrivacyPage;
+  return (
+    <EditableTextReadOnly dataKey={dataKey} cachedText={cachedData.text} />
+  );
+}

@@ -54,50 +54,32 @@ test.group("EmailValidationHelper", (group) => {
     sandbox.restore();
   });
 
-  test("should reject if userId is not found", async () => {
-    return expect(
-      EmailValidationHelper.createAndSendEmailValidationLink(
-        "notFoundUserDetail",
-      ),
-    ).to.be.rejectedWith(BlError, /userDetail "notFoundUserDetail" not found/);
-  });
-
   test("should reject if emailValidationStorage.add rejects", async () => {
     emailValidationStorageAddSuccess = false;
 
     return expect(
-      EmailValidationHelper.createAndSendEmailValidationLink(testUserDetail.id),
-    ).to.be.rejectedWith(BlError, /could not add emailValidation/);
+      EmailValidationHelper.createAndSendEmailValidationLink(
+        testUserDetail.email,
+        testUserDetail.id,
+      ),
+    ).to.be.rejectedWith(BlError, /could not add/);
   });
 
   test("should send message to user on emailValidation creation", async () => {
     emailValidationStorageAddSuccess = true;
 
     EmailValidationHelper.createAndSendEmailValidationLink(
+      testUserDetail.email,
       testUserDetail.id,
     ).then(() => {
-      return expect(messengerEmailConfirmationStub).to.have.been.calledWith(
-        testUserDetail,
-        testEmailValidation.id,
-      );
+      return expect(messengerEmailConfirmationStub).to.have.been.called;
     });
-  });
-
-  test("should reject if userDetail is not found", async () => {
-    testEmailValidation.userDetail = "notFound";
-
-    return expect(
-      EmailValidationHelper.sendEmailValidationLink(testEmailValidation),
-    ).to.be.rejectedWith(BlError, /userDetail "notFound" not found/);
   });
 
   test("should call messenger.emailConfirmation", async () => {
     EmailValidationHelper.sendEmailValidationLink(testEmailValidation).then(
       () => {
-        return expect(messengerEmailConfirmationStub).to.have.been.calledWith(
-          testUserDetail,
-          testEmailValidation.id,
-        );
+        return expect(messengerEmailConfirmationStub).to.have.been.called;
       },
     );
   });

@@ -112,14 +112,14 @@ export class EmailService {
   }
 
   public async emailConfirmation(
-    customerDetail: UserDetail,
+    email: string,
     confirmationCode: string,
   ): Promise<void> {
     await sendMail({
       template: EMAIL_TEMPLATES.emailConfirmation,
       recipients: [
         {
-          to: customerDetail.email,
+          to: email,
           dynamicTemplateData: {
             emailVerificationUri: `${env.get("CLIENT_URI")}auth/email/confirm/${confirmationCode}`,
           },

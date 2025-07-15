@@ -56,14 +56,14 @@ async function sendDeliveryInformation(
 
 /**
  * sends out message to customer with a link to confirm email
- * @param {UserDetail} customerDetail
+ * @param {string} email
  * @param {string} confirmationCode
  */
 async function emailConfirmation(
-  customerDetail: UserDetail,
+  email: string,
   confirmationCode: string,
 ): Promise<void> {
-  await emailService.emailConfirmation(customerDetail, confirmationCode);
+  await emailService.emailConfirmation(email, confirmationCode);
 }
 
 const Messenger = {

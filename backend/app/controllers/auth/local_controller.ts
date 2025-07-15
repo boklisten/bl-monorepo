@@ -63,6 +63,8 @@ export default class LocalController {
   async register({ request }: HttpContext) {
     const { email, password } = await request.validateUsing(registerValidator);
 
+    await UserHandler.create(email, "local", BlCrypto.random());
+
     const { hashedPassword, salt } =
       await HashedPasswordGenerator.generate(password);
     await BlStorage.LocalLogins.add({
@@ -70,8 +72,6 @@ export default class LocalController {
       hashedPassword,
       salt,
     });
-
-    await UserHandler.create(email, "local", BlCrypto.random());
 
     return await TokenHandler.createTokens(email);
   }

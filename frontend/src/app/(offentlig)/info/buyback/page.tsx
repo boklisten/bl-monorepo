@@ -1,10 +1,9 @@
 import { Item } from "@boklisten/backend/shared/item/item";
 import { Metadata } from "next";
 
-import BlFetcher from "@/api/blFetcher";
 import BuybackList from "@/components/info/BuybackList";
+import unpack from "@/utils/api/bl-api-request";
 import { publicApiClient } from "@/utils/api/publicApiClient";
-import { assertBlApiError } from "@/utils/types";
 
 export const revalidate = 60;
 
@@ -15,16 +14,12 @@ export const metadata: Metadata = {
 };
 
 export default async function BuybackPage() {
-  let buybackItems: Item[] = [];
-  try {
-    buybackItems = await BlFetcher.get<Item[]>(
-      publicApiClient.$url("collection.items.getAll", {
-        query: { buyback: true, sort: "title" },
-      }),
-    );
-  } catch (error) {
-    assertBlApiError(error);
-  }
+  const cachedBuybackItems = await publicApiClient
+    .$route("collection.items.getAll")
+    .$get({
+      query: { buyback: true, sort: "title" },
+    })
+    .then(unpack<Item[]>);
 
-  return <BuybackList defaultBuybackItems={buybackItems} />;
+  return <BuybackList cachedBuybackItems={cachedBuybackItems} />;
 }

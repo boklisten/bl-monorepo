@@ -49,7 +49,7 @@ export default function BranchOpeningHours({
   openingHoursPromise: Promise<OpeningHour[]>;
 }) {
   const [branch] = use(branchPromise);
-  const openingHours = use(openingHoursPromise);
+  const openingHours = use(openingHoursPromise) ?? [];
 
   const processedOpeningHours = openingHours
     .filter(({ id }) => branch.openingHours?.includes(id))

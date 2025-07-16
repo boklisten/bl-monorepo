@@ -14,13 +14,13 @@ import {
 } from "@mui/material";
 import { useQuery } from "@tanstack/react-query";
 
-import BlFetcher from "@/api/blFetcher";
+import unpack from "@/utils/api/bl-api-request";
 import useApiClient from "@/utils/api/useApiClient";
 
 const BuybackList = ({
-  defaultBuybackItems,
+  cachedBuybackItems,
 }: {
-  defaultBuybackItems: Item[];
+  cachedBuybackItems: Item[];
 }) => {
   const client = useApiClient();
 
@@ -30,9 +30,15 @@ const BuybackList = ({
         query: { buyback: true, sort: "title" },
       }),
     ],
-    queryFn: ({ queryKey }) => BlFetcher.get<Item[]>(queryKey[0] ?? ""),
+    queryFn: () =>
+      client
+        .$route("collection.items.getAll")
+        .$get({
+          query: { buyback: true, sort: "title" },
+        })
+        .then(unpack<Item[]>),
   });
-  const items = data ?? defaultBuybackItems;
+  const items = data ?? cachedBuybackItems;
   return (
     <Box
       sx={{ display: "flex", flexDirection: "column", alignItems: "center" }}

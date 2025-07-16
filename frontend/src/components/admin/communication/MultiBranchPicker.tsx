@@ -12,7 +12,7 @@ import Select, { SelectChangeEvent } from "@mui/material/Select";
 import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
 
-import BlFetcher from "@/api/blFetcher";
+import unpack from "@/utils/api/bl-api-request";
 import useApiClient from "@/utils/api/useApiClient";
 
 const ITEM_HEIGHT = 48;
@@ -40,7 +40,13 @@ export default function MultiBranchPicker({
         query: { active: true, sort: "name" },
       }),
     ],
-    queryFn: ({ queryKey }) => BlFetcher.get<Branch[]>(queryKey[0] ?? ""),
+    queryFn: () =>
+      client
+        .$route("collection.branches.getAll")
+        .$get({
+          query: { active: true, sort: "name" },
+        })
+        .then(unpack<Branch[]>),
   });
 
   const handleChange = (event: SelectChangeEvent<typeof branchIDs>) => {

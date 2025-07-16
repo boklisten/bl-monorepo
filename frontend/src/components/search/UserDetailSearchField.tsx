@@ -9,9 +9,9 @@ import {
 } from "@mui/material";
 import { useState } from "react";
 
-import BlFetcher from "@/api/blFetcher";
 import ScannerModal from "@/components/scanner/ScannerModal";
 import UserDetailSearchResult from "@/components/search/UserDetailSearchResult";
+import unpack from "@/utils/api/bl-api-request";
 import useApiClient from "@/utils/api/useApiClient";
 
 export default function UserDetailSearchField({
@@ -46,11 +46,12 @@ export default function UserDetailSearchField({
             return;
           }
           try {
-            const result = await BlFetcher.get<UserDetail[]>(
-              client.$url("collection.userdetails.getAll", {
+            const result = await client
+              .$route("collection.userdetails.getAll")
+              .$get({
                 query: { s: newInputValue },
-              }),
-            );
+              })
+              .then(unpack<UserDetail[]>);
             setSearchResults(result);
           } catch {
             setSearchResults([]);
@@ -89,11 +90,10 @@ export default function UserDetailSearchField({
       />
       <ScannerModal
         onScan={async (scannedText) => {
-          const [result] = await BlFetcher.get<[UserDetail]>(
-            client.$url("collection.userdetails.getId", {
-              params: { id: scannedText },
-            }),
-          );
+          const [result] = await client
+            .$route("collection.userdetails.getId", { id: scannedText })
+            .$get()
+            .then(unpack<[UserDetail]>);
           setScannerOpen(false);
           setSearchValue(result);
           onSelectedResult(result);

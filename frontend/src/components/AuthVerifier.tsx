@@ -3,8 +3,8 @@
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 
-import BlFetcher from "@/api/blFetcher";
 import { getAccessTokenBody } from "@/api/token";
+import unpack from "@/utils/api/bl-api-request";
 import useApiClient from "@/utils/api/useApiClient";
 import useAuth from "@/utils/useAuth";
 import useAuthLinker from "@/utils/useAuthLinker";
@@ -23,11 +23,12 @@ export default function AuthVerifier() {
     const { details } = getAccessTokenBody();
     const checkUserDetailsValid = async () => {
       try {
-        const [{ valid }] = await BlFetcher.get<[{ valid: boolean }]>(
-          client.$url("collection.userdetails.operation.valid.getId", {
-            params: { id: details },
-          }),
-        );
+        const [{ valid }] = await client
+          .$route("collection.userdetails.operation.valid.getId", {
+            id: details,
+          })
+          .$get()
+          .then(unpack<[{ valid: boolean }]>);
         if (valid) {
           redirectToCaller();
         } else {

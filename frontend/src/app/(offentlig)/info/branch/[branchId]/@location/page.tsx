@@ -1,7 +1,7 @@
 import { Branch } from "@boklisten/backend/shared/branch/branch";
 
-import BlFetcher from "@/api/blFetcher";
 import BranchLocationInfo from "@/components/info/BranchLocationInfo";
+import unpack from "@/utils/api/bl-api-request";
 import { publicApiClient } from "@/utils/api/publicApiClient";
 
 export default async function BranchLocationSlot({
@@ -13,11 +13,12 @@ export default async function BranchLocationSlot({
 
   return (
     <BranchLocationInfo
-      branchPromise={BlFetcher.get<[Branch]>(
-        publicApiClient.$url("collection.branches.getId", {
-          params: { id: branchId },
-        }),
-      )}
+      branchPromise={publicApiClient
+        .$route("collection.branches.getId", {
+          id: branchId,
+        })
+        .$get()
+        .then(unpack<[Branch]>)}
     />
   );
 }

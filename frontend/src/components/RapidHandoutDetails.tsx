@@ -58,7 +58,7 @@ export default function RapidHandoutDetails({
             customer: customer.id,
           },
         })
-        .then(unpack<Order[]>),
+        .then((res) => unpack<Order[]>(res) ?? []),
     staleTime: 5000,
   });
   const [itemStatuses, setItemStatuses] = useState<ItemStatus[]>([]);
@@ -74,7 +74,7 @@ export default function RapidHandoutDetails({
           customer: customer.id,
         },
       })
-      .then(unpack<Order[]>)
+      .then((res) => unpack<Order[]>(res) ?? [])
       .then((originalOrders) => {
         return setItemStatuses(mapOrdersToItemStatuses(originalOrders));
       })

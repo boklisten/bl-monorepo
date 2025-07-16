@@ -60,30 +60,25 @@ export default function useApiClient() {
           ) {
             return redirectToLogin();
           }
-          const tokenResponse = await publicApiClient.token.$post({
-            refreshToken,
-          });
-          if (!tokenResponse.response.ok) {
+
+          try {
+            const newTokens = await publicApiClient.v2.token
+              .$post({
+                refreshToken,
+              })
+              .unwrap();
+            addAccessToken(newTokens.accessToken);
+            addRefreshToken(newTokens.refreshToken);
+
+            const retryRequest = new Request(request);
+            retryRequest.headers.set(
+              "Authorization",
+              `Bearer ${newTokens.accessToken}`,
+            );
+            return fetch(retryRequest);
+          } catch {
             return redirectToLogin();
           }
-          // fixme improve token endpoint typing
-          const tokens = tokenResponse.data?.data as unknown as [
-            {
-              accessToken: string;
-            },
-            {
-              refreshToken: string;
-            },
-          ];
-          addAccessToken(tokens[0].accessToken);
-          addRefreshToken(tokens[1].refreshToken);
-
-          const retryRequest = new Request(request);
-          retryRequest.headers.set(
-            "Authorization",
-            `Bearer ${tokens[0].accessToken}`,
-          );
-          return fetch(retryRequest);
         },
       ],
     },

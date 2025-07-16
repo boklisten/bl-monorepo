@@ -21,6 +21,17 @@ type TokenPost = {
     true
   >;
 };
+type V2TokenPost = {
+  request: MakeTuyauRequest<
+    InferInput<
+      (typeof import("../app/validators/auth_validators.ts"))["tokenValidator"]
+    >
+  >;
+  response: MakeNonSerializedTuyauResponse<
+    import("../app/controllers/auth/tokens_controller.ts").default["tokenV2"],
+    true
+  >;
+};
 type AuthIdRedirectGetHead = {
   request: unknown;
   response: MakeNonSerializedTuyauResponse<
@@ -290,6 +301,45 @@ export interface ApiDefinition {
     $url: {};
     $post: TokenPost;
   };
+  v2: {
+    token: {
+      $url: {};
+      $post: V2TokenPost;
+    };
+    branches: {
+      $url: {};
+      $post: V2BranchesPost;
+      ":id": {
+        $url: {};
+        $patch: V2BranchesIdPatch;
+      };
+      memberships: {
+        $url: {};
+        $post: V2BranchesMembershipsPost;
+      };
+      subject_choices: {
+        $url: {};
+        $post: V2BranchesSubjectchoicesPost;
+      };
+    };
+    orders: {
+      open_orders: {
+        $url: {};
+        $get: V2OrdersOpenordersGetHead;
+        $head: V2OrdersOpenordersGetHead;
+      };
+      cancel_order_item: {
+        $url: {};
+        $post: V2OrdersCancelorderitemPost;
+      };
+    };
+    userdetails: {
+      check_phone_number_already_registered: {
+        $url: {};
+        $post: V2UserdetailsCheckphonenumberalreadyregisteredPost;
+      };
+    };
+  };
   auth: {
     ":provider": {
       redirect: {
@@ -342,41 +392,6 @@ export interface ApiDefinition {
       $post: RemindersSendPost;
     };
   };
-  v2: {
-    branches: {
-      $url: {};
-      $post: V2BranchesPost;
-      ":id": {
-        $url: {};
-        $patch: V2BranchesIdPatch;
-      };
-      memberships: {
-        $url: {};
-        $post: V2BranchesMembershipsPost;
-      };
-      subject_choices: {
-        $url: {};
-        $post: V2BranchesSubjectchoicesPost;
-      };
-    };
-    orders: {
-      open_orders: {
-        $url: {};
-        $get: V2OrdersOpenordersGetHead;
-        $head: V2OrdersOpenordersGetHead;
-      };
-      cancel_order_item: {
-        $url: {};
-        $post: V2OrdersCancelorderitemPost;
-      };
-    };
-    userdetails: {
-      check_phone_number_already_registered: {
-        $url: {};
-        $post: V2UserdetailsCheckphonenumberalreadyregisteredPost;
-      };
-    };
-  };
   emails: {
     send: {
       $url: {};
@@ -420,6 +435,13 @@ const routes = [
     path: "/token",
     method: ["POST"],
     types: {} as TokenPost,
+  },
+  {
+    params: [],
+    name: "v2.auth.token",
+    path: "/v2/token",
+    method: ["POST"],
+    types: {} as V2TokenPost,
   },
   {
     params: ["provider"],

@@ -8,6 +8,7 @@ import { BlapiResponse } from "#shared/blapi-response/blapi-response";
 import { tokenValidator } from "#validators/auth_validators";
 
 export default class TokensController {
+  // @deprecated Only used for bl-web and bl-admin, use tokenV2 for new adoptions
   async token(ctx: HttpContext) {
     const { refreshToken } = await ctx.request.validateUsing(tokenValidator);
     const validatedRefreshToken =
@@ -36,5 +37,11 @@ export default class TokensController {
         new BlError("refreshToken not valid").code(909).add(error as BlError),
       );
     }
+  }
+  async tokenV2(ctx: HttpContext) {
+    const { refreshToken } = await ctx.request.validateUsing(tokenValidator);
+    const validatedRefreshToken =
+      await RefreshTokenValidator.validate(refreshToken);
+    return await TokenHandler.createTokens(validatedRefreshToken["username"]);
   }
 }

@@ -1,9 +1,15 @@
-import { BlError } from "@boklisten/backend/shared/bl-error/bl-error";
 import { BlapiErrorResponse } from "@boklisten/backend/shared/blapi-response/blapi-error-response";
 import { HTTP_METHOD } from "next/dist/server/web/http";
 
-import { fetchNewTokens, getAccessToken, haveAccessToken } from "@/api/token";
-import { assertBlApiError, verifyBlApiError } from "@/utils/types";
+import {
+  addAccessToken,
+  addRefreshToken,
+  getAccessToken,
+  getRefreshToken,
+  haveAccessToken,
+} from "@/api/token";
+import { publicApiClient } from "@/utils/api/publicApiClient";
+import { verifyBlApiError } from "@/utils/types";
 
 const createHeaders = (): Headers => {
   const headers = new Headers({ "Content-Type": "application/json" });
@@ -36,14 +42,13 @@ async function blFetch<T>(
   } catch (error: unknown) {
     if (verifyBlApiError(error)) {
       if (error.httpStatus === 401 && !isRetry) {
-        try {
-          await fetchNewTokens();
-        } catch (tokenError) {
-          // fixme: login required error boundary
-          if (!(tokenError instanceof BlError)) {
-            assertBlApiError(tokenError);
-          }
-        }
+        const { accessToken, refreshToken } = await publicApiClient.v2.token
+          .$post({
+            refreshToken: getRefreshToken() ?? "",
+          })
+          .unwrap();
+        addAccessToken(accessToken);
+        addRefreshToken(refreshToken);
         return await blFetch(path, method, body, true);
       }
       if (error.httpStatus === 404) {

@@ -15,9 +15,7 @@ export default function EditableTextReadOnly({
   const client = useApiClient();
 
   const { data, isLoading, isError } = useQuery({
-    queryKey: [
-      client.$url("editable_texts.getByKey", { params: { key: dataKey } }),
-    ],
+    queryKey: [client.editable_texts.key({ key: dataKey }).$url(), dataKey],
     queryFn: () => client.editable_texts.key({ key: dataKey }).$get().unwrap(),
   });
 

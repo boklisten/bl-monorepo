@@ -16,13 +16,12 @@ import {
   addRefreshToken,
   getAccessTokenBody,
 } from "@/api/token";
-import { updateUserDetails } from "@/api/user";
 import {
   PostalCityState,
   usePostalCity,
 } from "@/components/user/fields/PostalCodeField";
 import { publicApiClient } from "@/utils/api/publicApiClient";
-import { assertBlApiError } from "@/utils/types";
+import useApiClient from "@/utils/api/useApiClient";
 import useAuthLinker from "@/utils/useAuthLinker";
 
 export interface UserEditorFields {
@@ -63,6 +62,7 @@ export function useUserDetailEditorForm(
   const [isJustSaved, setIsJustSaved] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const { redirectToCaller } = useAuthLinker();
+  const client = useApiClient();
 
   const defaultValues = {
     email: userDetails.email,
@@ -155,27 +155,29 @@ export function useUserDetailEditorForm(
           return;
         }
       }
-      await updateUserDetails(getAccessTokenBody().details, {
-        name: data.name,
-        email: data.email,
-        phone: data.phoneNumber,
-        address: data.address,
-        postCode: data.postalCode,
-        postCity: postalCityStatus.city,
-        dob: data.birthday?.toDate() ?? new Date(),
-        branchMembership: data.branchMembership ?? "",
-        guardian: {
-          name: data?.guardianName ?? "",
-          email: data?.guardianEmail ?? "",
-          phone: data?.guardianPhoneNumber ?? "",
-        },
-      });
-    } catch (error) {
-      if (assertBlApiError(error)) {
-        setError("email", {
-          message: UNKNOWN_ERROR_TEXT,
+      await client
+        .$route("collection.userdetails.patch", {
+          id: getAccessTokenBody().details,
+        })
+        .$patch({
+          name: data.name,
+          email: data.email,
+          phone: data.phoneNumber,
+          address: data.address,
+          postCode: data.postalCode,
+          postCity: postalCityStatus.city,
+          dob: data.birthday?.toString(),
+          branchMembership: data.branchMembership,
+          guardian: {
+            name: data?.guardianName,
+            email: data?.guardianEmail,
+            phone: data?.guardianPhoneNumber,
+          },
         });
-      }
+    } catch {
+      setError("email", {
+        message: UNKNOWN_ERROR_TEXT,
+      });
     }
 
     if (isSignUp) {

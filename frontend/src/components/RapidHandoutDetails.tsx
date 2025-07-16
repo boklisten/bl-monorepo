@@ -6,11 +6,11 @@ import { Alert, Button, Typography } from "@mui/material";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
 
-import BlFetcher from "@/api/blFetcher";
 import { ItemStatus } from "@/components/matches/matches-helper";
 import MatchItemTable from "@/components/matches/MatchItemTable";
 import MatchScannerContent from "@/components/matches/MatchScannerContent";
 import ScannerModal from "@/components/scanner/ScannerModal";
+import unpack from "@/utils/api/bl-api-request";
 import useApiClient from "@/utils/api/useApiClient";
 
 function calculateUnfulfilledOrderItems(orders: Order[]): OrderItem[] {
@@ -44,8 +44,21 @@ export default function RapidHandoutDetails({
     query: { placed: true, customer: customer.id },
   });
   const { data: orders } = useQuery({
-    queryKey: [ordersUrl],
-    queryFn: ({ queryKey }) => BlFetcher.get<Order[]>(queryKey[0] ?? ""),
+    queryKey: [
+      client.$url("collection.orders.getAll", {
+        query: { placed: true, customer: customer.id },
+      }),
+    ],
+    queryFn: () =>
+      client
+        .$route("collection.orders.getAll")
+        .$get({
+          query: {
+            placed: true,
+            customer: customer.id,
+          },
+        })
+        .then(unpack<Order[]>),
     staleTime: 5000,
   });
   const [itemStatuses, setItemStatuses] = useState<ItemStatus[]>([]);
@@ -53,14 +66,15 @@ export default function RapidHandoutDetails({
   useState(false);
 
   useEffect(() => {
-    BlFetcher.get<Order[]>(
-      client.$url("collection.orders.getAll", {
+    client
+      .$route("collection.orders.getAll")
+      .$get({
         query: {
           placed: true,
           customer: customer.id,
         },
-      }),
-    )
+      })
+      .then(unpack<Order[]>)
       .then((originalOrders) => {
         return setItemStatuses(mapOrdersToItemStatuses(originalOrders));
       })
@@ -110,15 +124,16 @@ export default function RapidHandoutDetails({
       </Button>
       <MatchItemTable itemStatuses={itemStatuses} isSender={true} />
       <ScannerModal
-        onScan={(blid) =>
-          BlFetcher.post(
-            client.$url("collection.orders.post") + "/rapid-handout",
-            {
+        onScan={async (blid) => {
+          const response = await client
+            .$route("collection.orders.operation.rapid-handout.post")
+            .$post({
               blid,
               customerId: customer.id,
-            },
-          )
-        }
+            });
+
+          return unpack<[{ feedback: string }]>(response);
+        }}
         open={scanModalOpen}
         handleSuccessfulScan={async () => {
           await queryClient.invalidateQueries({ queryKey: [ordersUrl] });

@@ -4,8 +4,8 @@ import validator from "validator";
 import isMobilePhone from "validator/lib/isMobilePhone";
 import isPostalCode from "validator/lib/isPostalCode";
 
-import BlFetcher from "@/api/blFetcher";
 import { UserEditorFields } from "@/components/user/user-detail-editor/useUserDetailEditorForm";
+import unpack from "@/utils/api/bl-api-request";
 import { publicApiClient } from "@/utils/api/publicApiClient";
 
 export const fieldValidators: {
@@ -83,18 +83,18 @@ export const fieldValidators: {
         return illegalPostalCodeMessage;
       }
 
-      const response = await BlFetcher.post<
-        [
-          {
-            postalCity: string | null;
-          },
-        ]
-      >(
-        publicApiClient.$url(
-          "collection.deliveries.operation.postal-code-lookup.post",
-        ),
-        { postalCode: v },
-      );
+      const response = await publicApiClient
+        .$route("collection.deliveries.operation.postal-code-lookup.post")
+        .$post({ postalCode: v })
+        .then(
+          unpack<
+            [
+              {
+                postalCity: string | null;
+              },
+            ]
+          >,
+        );
 
       if (!response[0].postalCity) {
         return illegalPostalCodeMessage;

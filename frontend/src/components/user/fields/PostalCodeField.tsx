@@ -9,8 +9,8 @@ import TextField from "@mui/material/TextField";
 import { forwardRef, Ref, useRef, useState } from "react";
 import isPostalCode from "validator/lib/isPostalCode";
 
-import BlFetcher from "@/api/blFetcher";
-import useApiClient from "@/utils/api/useApiClient";
+import unpack from "@/utils/api/bl-api-request";
+import { publicApiClient } from "@/utils/api/publicApiClient";
 
 const PostalCodeField = forwardRef(
   (
@@ -60,7 +60,6 @@ export const usePostalCity = (
   updatePostalCity: (newPostalCode: string) => void;
   settlePostalCity: Promise<PostalCityStateSettled>;
 } => {
-  const client = useApiClient();
   const [postalCity, setPostalCity] = useState<PostalCityState>(
     initialPostCity
       ? { state: "ok", city: initialPostCity }
@@ -81,16 +80,18 @@ export const usePostalCity = (
     newPostalCode: string,
   ): Promise<PostalCityStateSettled> {
     try {
-      const [{ postalCity: newPostalCity }] = await BlFetcher.post<
-        [
-          {
-            postalCity: string | null;
-          },
-        ]
-      >(
-        client.$url("collection.deliveries.operation.postal-code-lookup.post"),
-        { postalCode: newPostalCode },
-      );
+      const [{ postalCity: newPostalCity }] = await publicApiClient
+        .$route("collection.deliveries.operation.postal-code-lookup.post")
+        .$post({ postalCode: newPostalCode })
+        .then(
+          unpack<
+            [
+              {
+                postalCity: string | null;
+              },
+            ]
+          >,
+        );
 
       if (!newPostalCity) {
         return { state: "invalid" };

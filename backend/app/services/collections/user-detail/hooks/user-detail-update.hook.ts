@@ -4,6 +4,7 @@ import { BlStorage } from "#services/storage/bl-storage";
 import { BlError } from "#shared/bl-error/bl-error";
 import { AccessToken } from "#shared/token/access-token";
 import { UserDetail } from "#shared/user/user-detail/user-detail";
+import { userDetailPatchValidator } from "#validators/user_detail";
 
 export class UserDetailUpdateHook extends Hook {
   private cleanUserInput = (dirtyText: string): string => {
@@ -31,11 +32,9 @@ export class UserDetailUpdateHook extends Hook {
     );
   }
 
-  public override async before(
-    body: unknown,
-    accessToken: AccessToken,
-  ): Promise<UserDetailPatch> {
-    if (!validateUserDetailUpdateType(body)) {
+  public override async before(body: unknown, accessToken: AccessToken) {
+    const [error, data] = await userDetailPatchValidator.tryValidate(body);
+    if (error || !data) {
       throw new BlError("Invalid UserDetailUpdateType request body").code(701);
     }
     const {
@@ -48,7 +47,7 @@ export class UserDetailUpdateHook extends Hook {
       emailConfirmed,
       guardian,
       branchMembership,
-    } = body;
+    } = data;
     if (emailConfirmed !== undefined && accessToken.permission === "customer") {
       throw new BlError(
         "bruker kan ikke endre egen e-post-bekreftet-status",
@@ -91,48 +90,3 @@ export class UserDetailUpdateHook extends Hook {
     };
   }
 }
-
-export type UserDetailPatch = Partial<
-  Pick<
-    UserDetail,
-    | "name"
-    | "address"
-    | "postCity"
-    | "postCode"
-    | "phone"
-    | "emailConfirmed"
-    | "guardian"
-    | "branchMembership"
-  > & { dob: string } // DOB is otherwise Date
->;
-
-const validateUserDetailUpdateType = (
-  candidate: unknown,
-): candidate is UserDetailPatch => {
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const _typeofTypeHelper = typeof ("" as unknown);
-  const isTypeOrUndefined = (
-    key: keyof UserDetailPatch,
-    typeName: typeof _typeofTypeHelper,
-    // @ts-expect-error fixme: auto ignored
-  ) => candidate[key] === undefined || typeof candidate[key] === typeName;
-
-  try {
-    const stringKeys = [
-      "name",
-      "address",
-      "postCity",
-      "dob",
-      "postCode",
-      "phone",
-      "branchMembership",
-    ] as const;
-    return (
-      stringKeys.every((key) => isTypeOrUndefined(key, "string")) &&
-      isTypeOrUndefined("emailConfirmed", "boolean") &&
-      isTypeOrUndefined("guardian", "object")
-    );
-  } catch {
-    return false;
-  }
-};

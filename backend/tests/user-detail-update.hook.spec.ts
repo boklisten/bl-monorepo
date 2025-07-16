@@ -3,10 +3,7 @@ import { assert, use as chaiUse, should } from "chai";
 import chaiAsPromised from "chai-as-promised";
 import { createSandbox } from "sinon";
 
-import {
-  UserDetailUpdateHook,
-  UserDetailPatch,
-} from "#services/collections/user-detail/hooks/user-detail-update.hook";
+import { UserDetailUpdateHook } from "#services/collections/user-detail/hooks/user-detail-update.hook";
 import { BlStorage } from "#services/storage/bl-storage";
 import { AccessToken } from "#shared/token/access-token";
 
@@ -31,12 +28,12 @@ test.group("UserDetailUpdateHook", async (group) => {
   });
 
   test("should do proper capitalization with latin letters", async () => {
-    const body: UserDetailPatch = {
+    const body = {
       name: "siri matheus berge",
       address: "portalgata 15c",
       postCity: "bartebyen",
     };
-    const expected: UserDetailPatch = {
+    const expected = {
       name: "Siri Matheus Berge",
       address: "Portalgata 15c",
       postCity: "Bartebyen",
@@ -46,12 +43,12 @@ test.group("UserDetailUpdateHook", async (group) => {
   });
 
   test("should do proper capitalization and spacing with Norwegian letters", async () => {
-    const body: UserDetailPatch = {
+    const body = {
       name: "        TOR åGE       bRingsVær       ",
       address: "øygatÆn     ",
       postCity: "æresGøta   ",
     };
-    const expected: UserDetailPatch = {
+    const expected = {
       name: "Tor Åge Bringsvær",
       address: "Øygatæn",
       postCity: "Æresgøta",
@@ -61,12 +58,12 @@ test.group("UserDetailUpdateHook", async (group) => {
   });
 
   test("should do proper capitalization on exotic characters", async () => {
-    const body: UserDetailPatch = {
+    const body = {
       name: "İgiorİ ßißßa",
       address: "łFEłŁlo 12ł",
       postCity: "æresGøta   ",
     };
-    const expected: UserDetailPatch = {
+    const expected = {
       name: "İgiori̇ SSißßa",
       address: "Łfełłlo 12ł",
       postCity: "Æresgøta",
@@ -76,12 +73,12 @@ test.group("UserDetailUpdateHook", async (group) => {
   });
 
   test("should capitalize each part of hyphenated names", async () => {
-    const body: UserDetailPatch = {
+    const body = {
       name: "john maYor-taylor",
       address: "johnson st  2",
       postCity: "æresGøta   ",
     };
-    const expected: UserDetailPatch = {
+    const expected = {
       name: "John Mayor-Taylor",
       address: "Johnson St 2",
       postCity: "Æresgøta",
@@ -91,7 +88,7 @@ test.group("UserDetailUpdateHook", async (group) => {
   });
 
   test("should disallow email-confirmed status change by customer", async () => {
-    const body: UserDetailPatch = {
+    const body = {
       emailConfirmed: true,
     };
     await assert.isRejected(
@@ -100,7 +97,7 @@ test.group("UserDetailUpdateHook", async (group) => {
   });
 
   test("should allow email-confirmed status change by admin", async () => {
-    const body: UserDetailPatch = {
+    const body = {
       emailConfirmed: true,
     };
     const expected = {
@@ -111,7 +108,7 @@ test.group("UserDetailUpdateHook", async (group) => {
   });
 
   test("should allow patch by customer", async () => {
-    const body: UserDetailPatch = {
+    const body = {
       name: "1",
       postCode: "3",
       address: "4",
@@ -125,7 +122,7 @@ test.group("UserDetailUpdateHook", async (group) => {
   });
 
   test("should error on wrongly-typed field", async () => {
-    const properties: (keyof UserDetailPatch)[] = [
+    const properties = [
       "name",
       "address",
       "phone",

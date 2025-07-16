@@ -310,6 +310,13 @@ type EmailvalidationsIdGetHead = {
     false
   >;
 };
+type PublicblidlookupIdGetHead = {
+  request: unknown;
+  response: MakeNonSerializedTuyauResponse<
+    import("../app/controllers/public_blid_lookup_controller.ts").default["lookup"],
+    false
+  >;
+};
 export interface ApiDefinition {
   token: {
     $url: {};
@@ -448,6 +455,13 @@ export interface ApiDefinition {
       $url: {};
       $get: EmailvalidationsIdGetHead;
       $head: EmailvalidationsIdGetHead;
+    };
+  };
+  public_blid_lookup: {
+    ":blid": {
+      $url: {};
+      $get: PublicblidlookupIdGetHead;
+      $head: PublicblidlookupIdGetHead;
     };
   };
 }
@@ -663,6 +677,27 @@ const routes = [
     types: {} as QuestionsandanswersIdDelete,
   },
   {
+    params: [],
+    name: "email_validations.create",
+    path: "/email_validations",
+    method: ["POST"],
+    types: {} as EmailValidationsPost,
+  },
+  {
+    params: ["id"],
+    name: "email_validations.confirm",
+    path: "/email_validations/:id",
+    method: ["GET", "HEAD"],
+    types: {} as EmailvalidationsIdGetHead,
+  },
+  {
+    params: ["blid"],
+    name: "blid.lookup",
+    path: "/public_blid_lookup/:blid",
+    method: ["GET", "HEAD"],
+    types: {} as PublicblidlookupIdGetHead,
+  },
+  {
     params: ["id"],
     name: "collection.branches.getId",
     path: "/branches/:id",
@@ -750,13 +785,6 @@ const routes = [
     params: [],
     name: "collection.customeritems.operation.generate-report.post",
     path: "/customeritems/generate-report",
-    method: ["POST"],
-    types: {} as unknown,
-  },
-  {
-    params: [],
-    name: "collection.customeritems.operation.public-blid-lookup.post",
-    path: "/customeritems/public-blid-lookup",
     method: ["POST"],
     types: {} as unknown,
   },

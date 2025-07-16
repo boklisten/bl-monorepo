@@ -1,6 +1,5 @@
 import { CustomerItemGenerateReportOperation } from "#services/collections/customer-item/customer-item-generate-report.operation";
 import { CustomerItemPostHook } from "#services/collections/customer-item/hooks/customer-item-post.hook";
-import { PublicBlidLookupOperation } from "#services/collections/customer-item/public-blid-lookup.operation";
 import { BlStorage } from "#services/storage/bl-storage";
 import { BlCollection } from "#services/types/bl-collection";
 
@@ -33,13 +32,6 @@ export const CustomerItemCollection: BlCollection = {
           operation: new CustomerItemGenerateReportOperation(),
           restriction: {
             permission: "admin",
-          },
-        },
-        {
-          name: "public-blid-lookup",
-          operation: new PublicBlidLookupOperation(),
-          restriction: {
-            permission: "customer",
           },
         },
       ],

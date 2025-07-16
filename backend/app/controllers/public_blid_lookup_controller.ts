@@ -1,22 +1,16 @@
-import vine from "@vinejs/vine";
+import { HttpContext } from "@adonisjs/core/http";
 
+import { PermissionService } from "#services/auth/permission.service";
 import { BlStorage } from "#services/storage/bl-storage";
-import { BlApiRequest } from "#services/types/bl-api-request";
-import { Operation } from "#services/types/operation";
-import { BlapiResponse } from "#shared/blapi-response/blapi-response";
+import { PublicBlidLookupResult } from "#shared/public_blid_lookup/public_blid_lookup";
 
-const publicBlidLookupValidator = vine.object({
-  blid: vine.string(),
-});
+export default class PublicBlidLookupController {
+  async lookup(ctx: HttpContext) {
+    PermissionService.authenticate(ctx);
 
-export class PublicBlidLookupOperation implements Operation {
-  async run(blApiRequest: BlApiRequest): Promise<BlapiResponse> {
-    const { blid } = await vine.validate({
-      schema: publicBlidLookupValidator,
-      data: blApiRequest.data,
-    });
+    const blid = ctx.request.param("blid");
 
-    const customerItemInfo = await BlStorage.CustomerItems.aggregate([
+    return (await BlStorage.CustomerItems.aggregate([
       {
         $match: {
           returned: false,
@@ -62,8 +56,6 @@ export class PublicBlidLookupOperation implements Operation {
           phone: { $first: "$customerInfo.phone" },
         },
       },
-    ]);
-
-    return new BlapiResponse(customerItemInfo);
+    ])) as PublicBlidLookupResult[];
   }
 }

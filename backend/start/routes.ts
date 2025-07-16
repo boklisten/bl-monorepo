@@ -24,6 +24,8 @@ const QuestionsAndAnswersController = () =>
   import("#controllers/questions_and_answers_controller");
 const EmailValidationsController = () =>
   import("#controllers/email_validations_controller");
+const PublicBlidLookupController = () =>
+  import("#controllers/public_blid_lookup_controller");
 
 /**
  * auth token
@@ -178,7 +180,18 @@ router
 /**
  * email validations
  */
-router.post("/email_validations", [EmailValidationsController, "create"]);
-router.get("/email_validations/:id", [EmailValidationsController, "confirm"]);
+router
+  .post("/email_validations", [EmailValidationsController, "create"])
+  .as("email_validations.create");
+router
+  .get("/email_validations/:id", [EmailValidationsController, "confirm"])
+  .as("email_validations.confirm");
+
+/**
+ * public blid lookup
+ */
+router
+  .get("/public_blid_lookup/:blid", [PublicBlidLookupController, "lookup"])
+  .as("blid.lookup");
 
 CollectionEndpointCreator.generateEndpoints();

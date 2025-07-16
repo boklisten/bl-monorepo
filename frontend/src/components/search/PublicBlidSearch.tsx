@@ -1,4 +1,5 @@
 "use client";
+import { PublicBlidLookupResult } from "@boklisten/backend/shared/public_blid_lookup/public_blid_lookup";
 import { Phone } from "@mui/icons-material";
 import EmailIcon from "@mui/icons-material/Email";
 import QrCodeScannerIcon from "@mui/icons-material/QrCodeScanner";
@@ -15,20 +16,8 @@ import TextField from "@mui/material/TextField";
 import moment from "moment";
 import { useState } from "react";
 
-import BlFetcher from "@/api/blFetcher";
 import ScannerModal from "@/components/scanner/ScannerModal";
 import useApiClient from "@/utils/api/useApiClient";
-
-interface PublicBlidLookupResult {
-  handoutBranch: string;
-  handoutTime: string;
-  deadline: string;
-  title: string;
-  isbn: number;
-  name: string;
-  email: string;
-  phone: string;
-}
 
 export default function PublicBlidSearch() {
   const client = useApiClient();
@@ -47,16 +36,12 @@ export default function PublicBlidSearch() {
       return;
     }
     try {
-      const result = await BlFetcher.post<[PublicBlidLookupResult] | []>(
-        client.$url(
-          "collection.customeritems.operation.public-blid-lookup.post",
-        ),
-        {
-          blid,
-        },
-      );
-      if (result.length === 1) {
-        setSearchResult(result[0]);
+      const [result] = await client
+        .public_blid_lookup({ blid })
+        .$get()
+        .unwrap();
+      if (result) {
+        setSearchResult(result);
       } else {
         setSearchResult("inactive");
       }

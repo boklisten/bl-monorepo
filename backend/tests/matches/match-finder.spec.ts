@@ -1,16 +1,16 @@
 import { test } from "@japa/runner";
 
-import { MatchFinder } from "#services/collections/user-match/helpers/match-finder/match-finder";
+import { MatchFinder } from "#controllers/matches/helpers/match-finder/match-finder";
 import {
   createFakeMatchableUser,
   createFakeStandMatch,
   createFakeUserMatch,
+  createMatchableUsersWithIdSuffix,
   createUserGroup,
   seededRandom,
   shuffler,
-  createMatchableUsersWithIdSuffix,
-} from "#services/collections/user-match/helpers/match-finder/match-testing-utils";
-import { MatchableUser } from "#services/collections/user-match/helpers/match-finder/match-types";
+} from "#controllers/matches/helpers/match-finder/match-testing-utils";
+import { MatchableUser } from "#controllers/matches/helpers/match-finder/match-types";
 import otto_treider_test_users_year_0 from "backend/tests/matches/test-data/test_users_year_0.json" with { type: "json" };
 import otto_treider_test_users_year_1 from "backend/tests/matches/test-data/test_users_year_1.json" with { type: "json" };
 import otto_treider_test_users_year_2 from "backend/tests/matches/test-data/test_users_year_2.json" with { type: "json" };

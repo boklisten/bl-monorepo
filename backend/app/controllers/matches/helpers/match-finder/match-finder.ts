@@ -1,6 +1,6 @@
 import logger from "@adonisjs/core/services/logger";
 
-import { MatchableUser } from "#services/collections/user-match/helpers/match-finder/match-types";
+import { MatchableUser } from "#controllers/matches/helpers/match-finder/match-types";
 import {
   calculateItemImbalances,
   calculateUnmatchableItems,
@@ -13,7 +13,7 @@ import {
   tryFindPartialMatch,
   tryFindTwoWayMatch,
   updateItemImbalances,
-} from "#services/collections/user-match/helpers/match-finder/match-utils";
+} from "#controllers/matches/helpers/match-finder/match-utils";
 import { BlError } from "#shared/bl-error/bl-error";
 import { CandidateStandMatch } from "#shared/match/stand-match";
 import { CandidateUserMatch } from "#shared/match/user-match";

@@ -3,7 +3,6 @@ import QrCodeScannerIcon from "@mui/icons-material/QrCodeScanner";
 import { Alert, AlertTitle, Box, Button, Typography } from "@mui/material";
 import { useState } from "react";
 
-import BlFetcher from "@/api/blFetcher";
 import CountdownToRedirect from "@/components/CountdownToRedirect";
 import {
   calculateUserMatchStatus,
@@ -188,14 +187,12 @@ const UserMatchDetail = ({
       )}
       <ScannerModal
         allowManualRegistration
-        onScan={(blid) =>
-          BlFetcher.post(
-            client.$url("collection.user_matches.operation.transfer-item.post"),
-            {
-              blid,
-            },
-          )
-        }
+        onScan={async (blid) => {
+          const response = await client.matches.transfer_item
+            .$post({ blid })
+            .unwrap();
+          return [{ feedback: response.feedback ?? "" }];
+        }}
         open={scanModalOpen}
         handleSuccessfulScan={handleItemTransferred}
         handleClose={() => {

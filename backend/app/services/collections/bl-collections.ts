@@ -10,10 +10,8 @@ import { OpeningHourCollection } from "#services/collections/opening-hour/openin
 import { OrderCollection } from "#services/collections/order/order.collection";
 import { PaymentCollection } from "#services/collections/payment/payment.collection";
 import { SignatureCollection } from "#services/collections/signature/signature.collection";
-import { StandMatchCollection } from "#services/collections/stand-match/stand-match.collection";
 import { UniqueItemCollection } from "#services/collections/unique-item/unique-item.collection";
 import { UserDetailCollection } from "#services/collections/user-detail/user-detail.collection";
-import { UserMatchCollection } from "#services/collections/user-match/user-match.collection";
 
 const BlCollections = [
   BranchCollection,
@@ -26,8 +24,6 @@ const BlCollections = [
   PaymentCollection,
   UserDetailCollection,
   MessageCollection,
-  StandMatchCollection,
-  UserMatchCollection,
   InvoiceCollection,
   CompanyCollection,
   UniqueItemCollection,

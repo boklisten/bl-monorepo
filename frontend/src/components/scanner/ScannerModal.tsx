@@ -7,7 +7,7 @@ import BlidScanner, {
 } from "@/components/scanner/BlidScanner";
 import ManualBlidSearchModal from "@/components/scanner/ManualBlidSearchModal";
 import ScannerFeedback from "@/components/scanner/ScannerFeedback";
-import { assertBlApiError, TextType } from "@/utils/types";
+import { TextType } from "@/utils/types";
 
 interface Feedback {
   text: string;
@@ -68,19 +68,17 @@ const ScannerModal = ({
         // Some browsers or devices may not have implemented the vibrate function
       }
       setFeedback({
-        text: feedback ?? "Boken har blitt registrert!",
+        text: feedback || "Boken har blitt registrert!",
         severity: feedback ? "info" : "success",
         visible: true,
       });
       handleSuccessfulScan?.();
-    } catch (error) {
-      if (assertBlApiError(error) && error.msg) {
-        setFeedback({
-          text: error.msg,
-          severity: "error",
-          visible: true,
-        });
-      }
+    } catch {
+      setFeedback({
+        text: "Noe gikk galt, vennligst prøv igjen eller ta kontakt med stand for hjelp hvis problemet vedvarer",
+        severity: "error",
+        visible: true,
+      });
     }
   };
 

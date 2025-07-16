@@ -317,6 +317,57 @@ type PublicblidlookupIdGetHead = {
     false
   >;
 };
+type MatchesGeneratePost = {
+  request: MakeTuyauRequest<
+    InferInput<
+      (typeof import("../app/validators/matches.ts"))["matchGenerateValidator"]
+    >
+  >;
+  response: MakeNonSerializedTuyauResponse<
+    import("../app/controllers/matches/matches_controller.ts").default["generate"],
+    true
+  >;
+};
+type MatchesNotifyPost = {
+  request: MakeTuyauRequest<
+    InferInput<
+      (typeof import("../app/validators/matches.ts"))["matchNotifyValidator"]
+    >
+  >;
+  response: MakeNonSerializedTuyauResponse<
+    import("../app/controllers/matches/matches_controller.ts").default["notify"],
+    true
+  >;
+};
+type UsermatchesLockPost = {
+  request: MakeTuyauRequest<
+    InferInput<
+      (typeof import("../app/validators/matches.ts"))["matchLockValidator"]
+    >
+  >;
+  response: MakeNonSerializedTuyauResponse<
+    import("../app/controllers/matches/matches_controller.ts").default["lock"],
+    true
+  >;
+};
+type MatchesMeGetHead = {
+  request: unknown;
+  response: MakeNonSerializedTuyauResponse<
+    import("../app/controllers/matches/matches_controller.ts").default["getMyMatches"],
+    false
+  >;
+};
+type MatchesTransferitemPost = {
+  request: MakeTuyauRequest<
+    InferInput<
+      (typeof import("../app/validators/matches.ts"))["matchTransferValidator"]
+    >
+  >;
+  response: MakeNonSerializedTuyauResponse<
+    import("../app/controllers/matches/matches_controller.ts").default["transferItem"],
+    true
+  >;
+};
 export interface ApiDefinition {
   token: {
     $url: {};
@@ -462,6 +513,31 @@ export interface ApiDefinition {
       $url: {};
       $get: PublicblidlookupIdGetHead;
       $head: PublicblidlookupIdGetHead;
+    };
+  };
+  matches: {
+    generate: {
+      $url: {};
+      $post: MatchesGeneratePost;
+    };
+    notify: {
+      $url: {};
+      $post: MatchesNotifyPost;
+    };
+    me: {
+      $url: {};
+      $get: MatchesMeGetHead;
+      $head: MatchesMeGetHead;
+    };
+    transfer_item: {
+      $url: {};
+      $post: MatchesTransferitemPost;
+    };
+  };
+  user_matches: {
+    lock: {
+      $url: {};
+      $post: UsermatchesLockPost;
     };
   };
 }
@@ -696,6 +772,41 @@ const routes = [
     path: "/public_blid_lookup/:blid",
     method: ["GET", "HEAD"],
     types: {} as PublicblidlookupIdGetHead,
+  },
+  {
+    params: [],
+    name: "matches.generate",
+    path: "/matches/generate",
+    method: ["POST"],
+    types: {} as MatchesGeneratePost,
+  },
+  {
+    params: [],
+    name: "matches.notify",
+    path: "/matches/notify",
+    method: ["POST"],
+    types: {} as MatchesNotifyPost,
+  },
+  {
+    params: [],
+    name: "matches.lock",
+    path: "/user_matches/lock",
+    method: ["POST"],
+    types: {} as UsermatchesLockPost,
+  },
+  {
+    params: [],
+    name: "matches.me",
+    path: "/matches/me",
+    method: ["GET", "HEAD"],
+    types: {} as MatchesMeGetHead,
+  },
+  {
+    params: [],
+    name: "matches.transfer_item",
+    path: "/matches/transfer_item",
+    method: ["POST"],
+    types: {} as MatchesTransferitemPost,
   },
   {
     params: ["id"],
@@ -1101,69 +1212,6 @@ const routes = [
     name: "collection.messages.delete",
     path: "/messages/:id",
     method: ["DELETE"],
-    types: {} as unknown,
-  },
-  {
-    params: [],
-    name: "collection.stand_matches.getAll",
-    path: "/stand_matches",
-    method: ["GET", "HEAD"],
-    types: {} as unknown,
-  },
-  {
-    params: [],
-    name: "collection.stand_matches.operation.me.getAll",
-    path: "/stand_matches/me",
-    method: ["GET", "HEAD"],
-    types: {} as unknown,
-  },
-  {
-    params: [],
-    name: "collection.user_matches.post",
-    path: "/user_matches",
-    method: ["POST"],
-    types: {} as unknown,
-  },
-  {
-    params: [],
-    name: "collection.user_matches.operation.generate.post",
-    path: "/user_matches/generate",
-    method: ["POST"],
-    types: {} as unknown,
-  },
-  {
-    params: [],
-    name: "collection.user_matches.operation.notify.post",
-    path: "/user_matches/notify",
-    method: ["POST"],
-    types: {} as unknown,
-  },
-  {
-    params: [],
-    name: "collection.user_matches.operation.transfer-item.post",
-    path: "/user_matches/transfer-item",
-    method: ["POST"],
-    types: {} as unknown,
-  },
-  {
-    params: [],
-    name: "collection.user_matches.operation.lock.post",
-    path: "/user_matches/lock",
-    method: ["POST"],
-    types: {} as unknown,
-  },
-  {
-    params: [],
-    name: "collection.user_matches.getAll",
-    path: "/user_matches",
-    method: ["GET", "HEAD"],
-    types: {} as unknown,
-  },
-  {
-    params: [],
-    name: "collection.user_matches.operation.me.getAll",
-    path: "/user_matches/me",
-    method: ["GET", "HEAD"],
     types: {} as unknown,
   },
   {

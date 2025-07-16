@@ -1,4 +1,4 @@
-import { MatchableUser } from "#services/collections/user-match/helpers/match-finder/match-types";
+import { MatchableUser } from "#controllers/matches/helpers/match-finder/match-types";
 import { CandidateStandMatch } from "#shared/match/stand-match";
 import { CandidateUserMatch } from "#shared/match/user-match";
 

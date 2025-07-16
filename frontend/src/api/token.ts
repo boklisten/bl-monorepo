@@ -7,10 +7,6 @@ import BL_CONFIG from "@/utils/bl-config";
 const accessTokenName = BL_CONFIG.token.accessToken;
 const refreshTokenName = BL_CONFIG.token.refreshToken;
 
-export const haveAccessToken = (): boolean => {
-  return get(accessTokenName) !== null;
-};
-
 export const addAccessToken = (value: string): void => {
   if (!value || value.length <= 0) {
     throw new Error("provided value is empty or undefined");

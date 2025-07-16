@@ -1,3 +1,5 @@
+import { ObjectId } from "mongodb";
+
 import { SEDbQuery } from "#services/query/se.db-query";
 import { BlStorage } from "#services/storage/bl-storage";
 import { BlError } from "#shared/bl-error/bl-error";
@@ -5,8 +7,10 @@ import { Item } from "#shared/item/item";
 import {
   MatchRelevantItemDetails,
   MatchRelevantUserDetails,
+  StandMatchWithDetails,
   UserMatchWithDetails,
 } from "#shared/match/match-dtos";
+import { StandMatch } from "#shared/match/stand-match";
 import { UserMatch } from "#shared/match/user-match";
 import { UserDetail } from "#shared/user/user-detail/user-detail";
 
@@ -34,7 +38,7 @@ function mapBlIdsToItemIds(
   );
 }
 
-export function mapItemIdsToItemDetails(
+function mapItemIdsToItemDetails(
   itemIds: string[],
   itemsMap: Map<string, Item>,
 ): Record<string, MatchRelevantItemDetails> {
@@ -87,7 +91,7 @@ function addDetailsToMatch(
   };
 }
 
-export async function addDetailsToUserMatches(
+async function addDetailsToUserMatches(
   userMatches: UserMatch[],
 ): Promise<UserMatchWithDetails[]> {
   const customers = Array.from(
@@ -151,4 +155,59 @@ export async function addDetailsToUserMatches(
   return userMatches.map((userMatch) =>
     addDetailsToMatch(userMatch, userDetailsMap, blIdsToItemIdMap, itemsMap),
   );
+}
+
+async function addDetailsToStandMatch(
+  standMatch: StandMatch,
+): Promise<StandMatchWithDetails> {
+  const items = Array.from(
+    new Set(
+      [
+        standMatch.expectedHandoffItems,
+        standMatch.expectedPickupItems,
+        standMatch.deliveredItems,
+        standMatch.receivedItems,
+      ].flat(),
+    ),
+  );
+
+  const itemsMap = new Map(
+    (await BlStorage.Items.getMany(items)).map((item) => [item.id, item]),
+  );
+  return {
+    ...standMatch,
+    itemDetails: mapItemIdsToItemDetails(items, itemsMap),
+  };
+}
+
+export async function getMyMatches(detailsId: string) {
+  const userMatches = (await BlStorage.UserMatches.aggregate([
+    {
+      $match: {
+        $or: [
+          { customerA: new ObjectId(detailsId) },
+          { customerB: new ObjectId(detailsId) },
+        ],
+      },
+    },
+  ])) as UserMatch[];
+
+  const userMatchesWithDetails = await addDetailsToUserMatches(userMatches);
+
+  const standMatches = (await BlStorage.StandMatches.aggregate([
+    {
+      $match: {
+        customer: new ObjectId(detailsId),
+      },
+    },
+  ])) as StandMatch[];
+
+  const standMatch = standMatches[0];
+  const standMatchWithDetails =
+    standMatch && (await addDetailsToStandMatch(standMatch));
+
+  return {
+    userMatches: userMatchesWithDetails,
+    standMatch: standMatchWithDetails,
+  };
 }

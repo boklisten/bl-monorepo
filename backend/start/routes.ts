@@ -26,6 +26,8 @@ const EmailValidationsController = () =>
   import("#controllers/email_validations_controller");
 const PublicBlidLookupController = () =>
   import("#controllers/public_blid_lookup_controller");
+const MatchesController = () =>
+  import("#controllers/matches/matches_controller");
 
 /**
  * auth token
@@ -193,5 +195,22 @@ router
 router
   .get("/public_blid_lookup/:blid", [PublicBlidLookupController, "lookup"])
   .as("blid.lookup");
+
+/**
+ * matches
+ */
+router
+  .post("/matches/generate", [MatchesController, "generate"])
+  .as("matches.generate");
+router
+  .post("/matches/notify", [MatchesController, "notify"])
+  .as("matches.notify");
+router
+  .post("/user_matches/lock", [MatchesController, "lock"])
+  .as("matches.lock");
+router.get("/matches/me", [MatchesController, "getMyMatches"]).as("matches.me");
+router
+  .post("/matches/transfer_item", [MatchesController, "transferItem"])
+  .as("matches.transfer_item");
 
 CollectionEndpointCreator.generateEndpoints();

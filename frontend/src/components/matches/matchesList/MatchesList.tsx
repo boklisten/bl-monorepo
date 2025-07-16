@@ -1,13 +1,8 @@
 "use client";
-import {
-  StandMatchWithDetails,
-  UserMatchWithDetails,
-} from "@boklisten/backend/shared/match/match-dtos";
 import { Alert, Skeleton } from "@mui/material";
 import { useQuery } from "@tanstack/react-query";
 import { FC } from "react";
 
-import BlFetcher from "@/api/blFetcher";
 import { getAccessTokenBody } from "@/api/token";
 import {
   calculateUserMatchStatus,
@@ -24,29 +19,20 @@ export const MatchesList: FC = () => {
     queryFn: () => getAccessTokenBody(),
   });
   const customer = accessToken?.details;
-
-  const { data: userMatches, error: userMatchesError } = useQuery({
-    queryKey: [client.$url("collection.user_matches.operation.me.getAll")],
-    queryFn: ({ queryKey }) =>
-      BlFetcher.get<UserMatchWithDetails[]>(queryKey[0] ?? ""),
+  const { data: matches, error: matchesError } = useQuery({
+    queryKey: [client.matches.me.$url()],
+    queryFn: () => client.matches.me.$get().unwrap(),
     staleTime: 5000,
   });
 
-  const { data: standMatches, error: standMatchesError } = useQuery({
-    queryKey: [client.$url("collection.stand_matches.operation.me.getAll")],
-    queryFn: ({ queryKey }) =>
-      BlFetcher.get<StandMatchWithDetails[]>(queryKey[0] ?? ""),
-    staleTime: 5000,
-  });
-
-  if (!customer || tokenError || userMatchesError || standMatchesError) {
+  if (!customer || tokenError || matchesError) {
     return <Alert severity="error">En feil har oppstått.</Alert>;
   }
 
-  if (userMatches === undefined || standMatches === undefined) {
+  if (matches === undefined) {
     return <Skeleton />;
   }
-  const sortedUserMatches = userMatches.sort((a, b) => {
+  const sortedUserMatches = matches.userMatches.sort((a, b) => {
     if (!a.meetingInfo.date) {
       return b.meetingInfo.date ? 1 : 0;
     } else if (!b.meetingInfo.date) {
@@ -76,7 +62,7 @@ export const MatchesList: FC = () => {
     return currentUserActualItemCount >= currentUserExpectedItemCount;
   });
 
-  if (userMatches.length === 0 && standMatches.length === 0) {
+  if (matches.userMatches.length === 0 && matches.standMatch === undefined) {
     return (
       <Alert severity="info">
         Du har ingen overleveringer :)
@@ -89,7 +75,7 @@ export const MatchesList: FC = () => {
     );
   }
 
-  const standMatch = standMatches[0];
+  const standMatch = matches.standMatch;
   const showMatchList =
     unfulfilledUserMatches.length > 0 || standMatch !== undefined;
 
@@ -100,14 +86,14 @@ export const MatchesList: FC = () => {
           (100 *
             (fulfilledUserMatches.length +
               (isStandMatchFulfilled(standMatch) ? 1 : 0))) /
-          (userMatches.length + (standMatch !== undefined ? 1 : 0))
+          (matches.userMatches.length + (standMatch !== undefined ? 1 : 0))
         }
         subtitle={
           <span>
             Fullført{" "}
             {fulfilledUserMatches.length +
               (isStandMatchFulfilled(standMatch) ? 1 : 0)}{" "}
-            av {userMatches.length + (standMatch !== undefined ? 1 : 0)}{" "}
+            av {matches.userMatches.length + (standMatch !== undefined ? 1 : 0)}{" "}
             overleveringer
           </span>
         }

@@ -1,13 +1,8 @@
 "use client";
-import {
-  StandMatchWithDetails,
-  UserMatchWithDetails,
-} from "@boklisten/backend/shared/match/match-dtos";
 import { ArrowBack } from "@mui/icons-material";
 import { Alert, Button, Card, Container, Skeleton } from "@mui/material";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 
-import BlFetcher from "@/api/blFetcher";
 import { getAccessTokenBody } from "@/api/token";
 import DynamicLink from "@/components/DynamicLink";
 import StandMatchDetail from "@/components/matches/StandMatchDetail";
@@ -30,21 +25,13 @@ const MatchDetail = ({
   });
   const userId = accessToken?.details;
 
-  const { data: userMatches, error: userMatchesError } = useQuery({
-    queryKey: [client.$url("collection.user_matches.operation.me.getAll")],
-    queryFn: ({ queryKey }) =>
-      BlFetcher.get<UserMatchWithDetails[]>(queryKey[0] ?? ""),
+  const { data: matches, error: matchesError } = useQuery({
+    queryKey: [client.matches.me.$url()],
+    queryFn: () => client.matches.me.$get().unwrap(),
     staleTime: 5000,
   });
 
-  const { data: standMatches, error: standMatchesError } = useQuery({
-    queryKey: [client.$url("collection.stand_matches.operation.me.getAll")],
-    queryFn: ({ queryKey }) =>
-      BlFetcher.get<StandMatchWithDetails[]>(queryKey[0] ?? ""),
-    staleTime: 5000,
-  });
-
-  if (tokenError || userMatchesError || standMatchesError) {
+  if (tokenError || matchesError) {
     return (
       <Alert severity="error">
         En feil har oppstått. Ta kontakt med info@boklisten.no dersom problemet
@@ -53,20 +40,18 @@ const MatchDetail = ({
     );
   }
 
-  const userMatch = userMatches?.find(
+  const userMatch = matches?.userMatches.find(
     (userMatch) => userMatch.id === userMatchId,
   );
-  if (userMatches && userMatchId && !userMatch) {
+  if (matches?.userMatches && userMatchId && !userMatch) {
     return (
       <Alert severity="error">
         Kunne ikke finne en elevoverlevering med ID {userMatchId}.
       </Alert>
     );
   }
-  const standMatch = standMatches?.find(
-    (standMatch) => standMatch.id === standMatchId,
-  );
-  if (standMatches && standMatchId && !standMatch) {
+  const standMatch = standMatchId ? matches?.standMatch : undefined;
+  if (standMatchId && !standMatch) {
     return (
       <Alert severity="error">
         Kunne ikke finne en standoverlevering med ID {standMatchId}.
@@ -95,9 +80,7 @@ const MatchDetail = ({
             currentUserId={userId}
             handleItemTransferred={() =>
               queryClient.invalidateQueries({
-                queryKey: [
-                  client.$url("collection.user_matches.operation.me.getAll"),
-                ],
+                queryKey: [client.matches.me.$url()],
               })
             }
           />

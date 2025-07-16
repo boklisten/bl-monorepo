@@ -22,6 +22,8 @@ const EditableTextsController = () =>
   import("#controllers/editable_texts_controller");
 const QuestionsAndAnswersController = () =>
   import("#controllers/questions_and_answers_controller");
+const EmailValidationsController = () =>
+  import("#controllers/email_validations_controller");
 
 /**
  * auth token
@@ -172,5 +174,11 @@ router
     "destroy",
   ])
   .as("questions_and_answers.destroy");
+
+/**
+ * email validations
+ */
+router.post("/email_validations", [EmailValidationsController, "create"]);
+router.get("/email_validations/:id", [EmailValidationsController, "confirm"]);
 
 CollectionEndpointCreator.generateEndpoints();

@@ -1,17 +1,15 @@
 import { Schema } from "mongoose";
 
-import { EmailValidation } from "#services/collections/email-validation/email-validation";
 import { BlSchemaName } from "#services/storage/bl-schema-names";
 import { BlSchema } from "#services/storage/bl-storage";
+import { BlDocument } from "#shared/bl-document/bl-document";
+
+interface EmailValidation extends BlDocument {
+  userDetailId: string;
+}
 
 export const EmailValidationSchema: BlSchema<EmailValidation> = new Schema({
-  email: {
-    type: String,
-    trim: true,
-    lowercase: true,
-    required: true,
-  },
-  userDetail: {
+  userDetailId: {
     type: Schema.Types.ObjectId,
     ref: BlSchemaName.UserDetails,
   },

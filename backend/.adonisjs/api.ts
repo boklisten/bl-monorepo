@@ -296,6 +296,20 @@ type QuestionsandanswersIdDelete = {
     false
   >;
 };
+type EmailValidationsPost = {
+  request: unknown;
+  response: MakeNonSerializedTuyauResponse<
+    import("../app/controllers/email_validations_controller.ts").default["create"],
+    false
+  >;
+};
+type EmailvalidationsIdGetHead = {
+  request: unknown;
+  response: MakeNonSerializedTuyauResponse<
+    import("../app/controllers/email_validations_controller.ts").default["confirm"],
+    false
+  >;
+};
 export interface ApiDefinition {
   token: {
     $url: {};
@@ -425,6 +439,15 @@ export interface ApiDefinition {
       $url: {};
       $patch: QuestionsandanswersIdPatch;
       $delete: QuestionsandanswersIdDelete;
+    };
+  };
+  email_validations: {
+    $url: {};
+    $post: EmailValidationsPost;
+    ":id": {
+      $url: {};
+      $get: EmailvalidationsIdGetHead;
+      $head: EmailvalidationsIdGetHead;
     };
   };
 }
@@ -1008,27 +1031,6 @@ const routes = [
     name: "collection.userdetails.getAll",
     path: "/userdetails",
     method: ["GET", "HEAD"],
-    types: {} as unknown,
-  },
-  {
-    params: [],
-    name: "collection.email_validations.post",
-    path: "/email_validations",
-    method: ["POST"],
-    types: {} as unknown,
-  },
-  {
-    params: ["id"],
-    name: "collection.email_validations.patch",
-    path: "/email_validations/:id",
-    method: ["PATCH"],
-    types: {} as unknown,
-  },
-  {
-    params: ["id"],
-    name: "collection.email_validations.operation.confirm.patch",
-    path: "/email_validations/:id/confirm",
-    method: ["PATCH"],
     types: {} as unknown,
   },
   {

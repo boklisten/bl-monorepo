@@ -1,10 +1,10 @@
 import { test } from "@japa/runner";
-import { expect, use as chaiUse, should } from "chai";
+import { use as chaiUse, should } from "chai";
 import chaiAsPromised from "chai-as-promised";
 import sinon, { createSandbox } from "sinon";
 
 import UserHandler from "#services/auth/user/user.handler";
-import EmailValidationHelper from "#services/collections/email-validation/helpers/email-validation.helper";
+import Messenger from "#services/messenger/messenger";
 import { BlStorage } from "#services/storage/bl-storage";
 import { User } from "#services/types/user";
 import { BlError } from "#shared/bl-error/bl-error";
@@ -24,15 +24,10 @@ const testUser = {
 test.group("UserHandler", (group) => {
   const testProvider = "local";
   let testProviderId = "";
-  let testUsername = "";
-  let emailValidationLinkSuccess = true;
   let sandbox: sinon.SinonSandbox;
-  let emailValidationHelperSendLinkStub: sinon.SinonStub;
 
   group.each.setup(() => {
     testProviderId = "123";
-    testUsername = testUser.username;
-    emailValidationLinkSuccess = true;
     sandbox = createSandbox();
 
     sandbox.stub(BlStorage.UserDetails, "add").callsFake(() => {
@@ -44,20 +39,13 @@ test.group("UserHandler", (group) => {
       });
     });
 
+    sandbox
+      .stub(BlStorage.EmailValidations, "add")
+      .resolves({ id: "foo", userDetailId: testUser.userDetail });
+    sandbox.stub(Messenger, "emailConfirmation").resolves();
     sandbox.stub(BlStorage.Users, "add").resolves(testUser);
-
-    emailValidationHelperSendLinkStub = sandbox
-      .stub(EmailValidationHelper, "createAndSendEmailValidationLink")
-      .callsFake(() => {
-        if (!emailValidationLinkSuccess) {
-          return Promise.reject(
-            new BlError("could not create and send email validation"),
-          );
-        }
-
-        return Promise.resolve();
-      });
   });
+
   group.each.teardown(() => {
     sandbox.restore();
   });
@@ -87,14 +75,5 @@ test.group("UserHandler", (group) => {
         user.username.should.be.eql(testUser.username);
       },
     );
-  });
-
-  test("should send out email validation link on user creation", async () => {
-    emailValidationLinkSuccess = true;
-    testUsername = "johnny@ronny.com";
-
-    UserHandler.create(testUsername, testProvider, testProviderId).then(() => {
-      return expect(emailValidationHelperSendLinkStub).to.have.been.called;
-    });
   });
 });

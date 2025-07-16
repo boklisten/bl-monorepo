@@ -3,37 +3,31 @@
 import { Alert, CircularProgress, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
 
-import BlFetcher from "@/api/blFetcher";
 import CountdownToRedirect from "@/components/CountdownToRedirect";
 import DynamicLink from "@/components/DynamicLink";
-import useApiClient from "@/utils/api/useApiClient";
+import { publicApiClient } from "@/utils/api/publicApiClient";
 
 export default function EmailConfirmer({
   confirmationId,
 }: {
   confirmationId: string;
 }) {
-  const client = useApiClient();
   const [status, setStatus] = useState<"WAIT" | "SUCCESS" | "ERROR">("WAIT");
 
   useEffect(() => {
-    function validateEmail(confirmationId: string) {
-      return BlFetcher.patch<[{ confirmed: boolean }]>(
-        client.$url("collection.email_validations.operation.confirm.patch", {
-          params: { id: confirmationId },
-        }),
-        {},
-      );
-    }
-    validateEmail(confirmationId)
-      .then(([{ confirmed }]) => {
-        return setStatus(confirmed ? "SUCCESS" : "ERROR");
-      })
-      .catch((error) => {
-        console.error(error);
+    async function validateEmail(confirmationId: string) {
+      try {
+        await publicApiClient
+          .email_validations({ id: confirmationId })
+          .$get()
+          .unwrap();
+        setStatus("SUCCESS");
+      } catch {
         setStatus("ERROR");
-      });
-  }, [client, confirmationId]);
+      }
+    }
+    void validateEmail(confirmationId);
+  }, [confirmationId]);
 
   return (
     <>

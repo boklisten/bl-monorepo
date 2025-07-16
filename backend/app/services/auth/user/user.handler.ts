@@ -1,5 +1,5 @@
 import Blid from "#services/auth/blid";
-import EmailValidationHelper from "#services/collections/email-validation/helpers/email-validation.helper";
+import Messenger from "#services/messenger/messenger";
 import { SEDbQuery } from "#services/query/se.db-query";
 import { BlStorage } from "#services/storage/bl-storage";
 import { User } from "#services/types/user";
@@ -80,10 +80,10 @@ async function create(
   );
 
   if (!addedUserDetail.emailConfirmed) {
-    await EmailValidationHelper.createAndSendEmailValidationLink(
-      addedUserDetail.email,
-      addedUserDetail.id,
-    );
+    const emailValidation = await BlStorage.EmailValidations.add({
+      userDetailId: addedUserDetail.id,
+    });
+    await Messenger.emailConfirmation(username, emailValidation.id);
   }
 
   const login: Partial<Record<"google" | "facebook", { userId: string }>> = {};

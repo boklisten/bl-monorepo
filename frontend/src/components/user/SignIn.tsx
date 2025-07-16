@@ -48,11 +48,17 @@ export default function SignIn() {
       addAccessToken(data.accessToken);
       addRefreshToken(data.refreshToken);
       redirectToCaller();
+    } else if (status === 404) {
+      setApiError(
+        "Brukernavnet du har oppgitt er ikke tilknyttet noen bruker. Du kan forsøke et annet brukernavn, eller lage en ny bruker ved å trykke på 'registrer deg'",
+      );
+    } else if (status === 401) {
+      setApiError(
+        "Passordet du har oppgitt stemmer ikke. Du kan prøve et annet passord, eller et lage et nytt ved å trykke på 'glemt passord'",
+      );
     } else {
       setApiError(
-        status === 401
-          ? "Feil brukernavn eller passord"
-          : "Noe gikk galt! Prøv igjen eller ta kontakt dersom problemet vedvarer.",
+        "Noe gikk galt! Prøv igjen eller ta kontakt dersom problemet vedvarer.",
       );
     }
     setLoading(false);

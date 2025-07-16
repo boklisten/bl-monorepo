@@ -42,15 +42,17 @@ async function getLocalLogin(username: string) {
 }
 
 export default class LocalController {
-  async login({ request }: HttpContext) {
+  async login({ request, response }: HttpContext) {
     const { username, password } =
       await request.validateUsing(localAuthValidator);
     const normalizedUsername = await normalizeUsername(username);
 
     const localLogin = await getLocalLogin(normalizedUsername);
 
-    if (!localLogin)
-      throw new UnauthorizedException("Feil brukernavn eller passord");
+    if (!localLogin) {
+      response.status(404);
+      return;
+    }
 
     const candidate = await BlCrypto.hash(password, localLogin.salt);
 

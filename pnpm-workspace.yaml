@@ -9,4 +9,8 @@ onlyBuiltDependencies:
   - '@sentry-internal/node-cpu-profiler'
   - '@sentry/cli'
   - '@swc/core'
+  - argon2
+  - canvas
+  - esbuild
+  - puppeteer
   - sharp

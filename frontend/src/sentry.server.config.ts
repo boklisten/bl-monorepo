@@ -9,5 +9,4 @@ Sentry.init({
   sendDefaultPii: true,
   tracesSampleRate: 1,
   debug: false,
-  enabled: process.env["NEXT_PUBLIC_APP_ENV"] === "production",
 });

@@ -17,7 +17,7 @@ import DynamicLink from "@/components/DynamicLink";
 
 export interface LinkTabProps {
   label: string;
-  href: string;
+  href: `/${string}`;
 }
 
 function MobileTabSelect({

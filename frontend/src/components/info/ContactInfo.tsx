@@ -4,7 +4,7 @@ import PhoneIphoneIcon from "@mui/icons-material/PhoneIphone";
 import { Typography, Box } from "@mui/material";
 
 import DynamicLink from "@/components/DynamicLink";
-import { contactInfo } from "@/utils/constants";
+import { CONTACT_INFO } from "@/utils/constants";
 
 const ContactInfo = () => {
   return (
@@ -19,8 +19,8 @@ const ContactInfo = () => {
         <PhoneIphoneIcon />
         <Box sx={{ display: "flex", flexDirection: "column", ml: 1 }}>
           <Typography variant="body1">Ring oss</Typography>
-          <DynamicLink href={`tel:${contactInfo.phone}`}>
-            {contactInfo.phone}
+          <DynamicLink href={`tel:${CONTACT_INFO.phone}`}>
+            {CONTACT_INFO.phone}
           </DynamicLink>
         </Box>
       </Box>
@@ -29,8 +29,8 @@ const ContactInfo = () => {
         <EmailIcon />
         <Box sx={{ display: "flex", flexDirection: "column", ml: 1 }}>
           <Typography variant="body1">Send oss en e-post</Typography>
-          <DynamicLink href={`mailto:${contactInfo.email}`}>
-            {contactInfo.email}
+          <DynamicLink href={`mailto:${CONTACT_INFO.email}`}>
+            {CONTACT_INFO.email}
           </DynamicLink>
         </Box>
       </Box>
@@ -39,7 +39,7 @@ const ContactInfo = () => {
         <LocationOnIcon />
         <Box sx={{ display: "flex", flexDirection: "column", ml: 1 }}>
           <Typography variant="body1">Vår adresse</Typography>
-          {contactInfo.address}
+          {CONTACT_INFO.address}
         </Box>
       </Box>
     </Box>

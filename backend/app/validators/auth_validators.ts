@@ -26,6 +26,13 @@ export const forgotPasswordValidator = vine.compile(
   }),
 );
 
+export const passwordResetValidValidator = vine.compile(
+  vine.object({
+    resetToken: vine.string(),
+    resetId: vine.string(),
+  }),
+);
+
 export const passwordResetValidator = vine.compile(
   vine.object({
     resetToken: vine.string(),

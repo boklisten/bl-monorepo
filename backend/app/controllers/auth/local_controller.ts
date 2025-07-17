@@ -1,8 +1,6 @@
 import { HttpContext } from "@adonisjs/core/http";
 import validator from "validator";
 
-import UnauthorizedException from "#exceptions/unauthorized_exception";
-import HashedPasswordGenerator from "#services/auth/local/hashed-password-generator";
 import TokenHandler from "#services/auth/token/token.handler";
 import UserHandler from "#services/auth/user/user.handler";
 import BlCrypto from "#services/config/bl-crypto";
@@ -29,52 +27,51 @@ async function normalizeUsername(username: string) {
   }
 }
 
-async function getLocalLogin(username: string) {
-  try {
-    const databaseQuery = new SEDbQuery();
-    databaseQuery.stringFilters = [{ fieldName: "username", value: username }];
-
-    const [localLogin] = await BlStorage.LocalLogins.getByQuery(databaseQuery);
-    return localLogin ?? null;
-  } catch {
-    return null;
-  }
-}
-
 export default class LocalController {
-  async login({ request, response }: HttpContext) {
+  async login({ request }: HttpContext) {
     const { username, password } =
       await request.validateUsing(localAuthValidator);
     const normalizedUsername = await normalizeUsername(username);
 
-    const localLogin = await getLocalLogin(normalizedUsername);
+    const user = await UserHandler.getOrNull(normalizedUsername);
 
-    if (!localLogin) {
-      response.status(404);
-      return;
+    if (!user) {
+      return {
+        message:
+          "Brukernavnet du har oppgitt er ikke tilknyttet noen bruker. Du kan forsøke et annet brukernavn, eller lage en ny bruker ved å trykke på 'registrer deg'",
+      };
     }
 
-    const candidate = await BlCrypto.hash(password, localLogin.salt);
+    if (!user.login.local) {
+      return {
+        message:
+          "Brukeren du forsøker å logge inn med har ikke satt opp passord-innlogging. Du kan forsøke å logge inn med Google eller Facebook, eller et lage et nytt passord ved å trykke på 'glemt passord'",
+      };
+    }
 
-    if (!BlCrypto.timingSafeEqual(candidate, localLogin.hashedPassword))
-      throw new UnauthorizedException("Feil brukernavn eller passord");
+    const candidate = await BlCrypto.hash(password, user.login.local.salt);
 
-    return await TokenHandler.createTokens(normalizedUsername);
+    if (!BlCrypto.timingSafeEqual(candidate, user.login.local.hashedPassword)) {
+      return {
+        message:
+          "Passordet du har oppgitt stemmer ikke. Du kan prøve et annet passord, eller et lage et nytt ved å trykke på 'glemt passord'",
+      };
+    }
+
+    return {
+      tokens: await TokenHandler.createTokens(normalizedUsername),
+    };
   }
 
   async register({ request }: HttpContext) {
     const { email, password } = await request.validateUsing(registerValidator);
 
-    await UserHandler.create(email, "local", BlCrypto.random());
-
-    const { hashedPassword, salt } =
-      await HashedPasswordGenerator.generate(password);
-    await BlStorage.LocalLogins.add({
+    await UserHandler.create({
       username: email,
-      hashedPassword,
-      salt,
+      password,
+      provider: "local",
+      providerId: BlCrypto.random(),
     });
-
     return await TokenHandler.createTokens(email);
   }
 }

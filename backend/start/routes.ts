@@ -59,11 +59,20 @@ router
  * password reset
  */
 router
-  .post("/forgot-password", [AuthPasswordResetController, "forgotPasswordSend"])
-  .as("auth.password.forgot.send");
+  .post("/forgot_password", [
+    AuthPasswordResetController,
+    "requestPasswordReset",
+  ])
+  .as("auth.password.forgot");
 router
-  .post("/reset-password", [AuthPasswordResetController, "resetPasswordStore"])
-  .as("auth.password.reset.store");
+  .post("/reset_password/validate", [
+    AuthPasswordResetController,
+    "validatePasswordReset",
+  ])
+  .as("auth.password.reset.validate");
+router
+  .post("/reset_password", [AuthPasswordResetController, "resetPassword"])
+  .as("auth.password.reset");
 
 router
   .get("/waiting_list_entries", [

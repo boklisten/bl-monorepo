@@ -1,8 +1,9 @@
 import Blid from "#services/auth/blid";
+import HashedPasswordGenerator from "#services/auth/local/hashed-password-generator";
 import Messenger from "#services/messenger/messenger";
 import { SEDbQuery } from "#services/query/se.db-query";
 import { BlStorage } from "#services/storage/bl-storage";
-import { User } from "#services/types/user";
+import { Login, User } from "#services/types/user";
 import { BlError } from "#shared/bl-error/bl-error";
 import { UserDetail } from "#shared/user/user-detail/user-detail";
 
@@ -62,11 +63,17 @@ async function connectProviderToUser(
   }
 }
 
-async function create(
-  username: string,
-  provider: "facebook" | "google" | "local",
-  providerId: string,
-) {
+async function create({
+  username,
+  password,
+  provider,
+  providerId,
+}: {
+  username: string;
+  password?: string;
+  provider: "facebook" | "google" | "local";
+  providerId: string;
+}) {
   const blid = await Blid.createUserBlid(provider, providerId);
 
   const addedUserDetail = await BlStorage.UserDetails.add(
@@ -86,12 +93,26 @@ async function create(
     await Messenger.emailConfirmation(username, emailValidation.id);
   }
 
-  const login: Partial<Record<"google" | "facebook", { userId: string }>> = {};
+  let login: Login;
 
-  if (provider === "google") {
-    login.google = { userId: providerId };
-  } else if (provider === "facebook") {
-    login.facebook = { userId: providerId };
+  switch (provider) {
+    case "google":
+      login = { google: { userId: providerId } };
+      break;
+    case "facebook":
+      login = { facebook: { userId: providerId } };
+      break;
+    case "local": {
+      if (!password) {
+        throw new Error("'password' is required for local logins");
+      }
+      const { hashedPassword, salt } =
+        await HashedPasswordGenerator.generate(password);
+      login = { local: { hashedPassword, salt } };
+      break;
+    }
+    default:
+      throw new Error(`Unsupported provider “${provider}”`);
   }
 
   return await BlStorage.Users.add({

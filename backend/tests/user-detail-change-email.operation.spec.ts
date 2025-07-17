@@ -6,7 +6,6 @@ import sinon, { createSandbox } from "sinon";
 import UserHandler from "#services/auth/user/user.handler";
 import { UserDetailChangeEmailOperation } from "#services/collections/user-detail/operations/change-email/user-detail-change-email.operation";
 import { BlStorage } from "#services/storage/bl-storage";
-import { LocalLogin } from "#services/types/local-login";
 import { User } from "#services/types/user";
 import { BlError } from "#shared/bl-error/bl-error";
 import { UserDetail } from "#shared/user/user-detail/user-detail";
@@ -21,8 +20,6 @@ test.group("UserDetailChangeEmailOperation", (group) => {
   let userAggregateStub: sinon.SinonStub;
   let userUpdateStub: sinon.SinonStub;
   let userHandlerGetByUsernameStub: sinon.SinonStub;
-  let localLoginAggregateStub: sinon.SinonStub;
-  let localLoginUpdateStub: sinon.SinonStub;
   let sandbox: sinon.SinonSandbox;
 
   group.each.setup(() => {
@@ -32,8 +29,6 @@ test.group("UserDetailChangeEmailOperation", (group) => {
     userAggregateStub = sandbox.stub(BlStorage.Users, "aggregate");
     userUpdateStub = sandbox.stub(BlStorage.Users, "update");
     userHandlerGetByUsernameStub = sandbox.stub(UserHandler, "getByUsername");
-    localLoginAggregateStub = sandbox.stub(BlStorage.LocalLogins, "aggregate");
-    localLoginUpdateStub = sandbox.stub(BlStorage.LocalLogins, "update");
   });
   group.each.teardown(() => {
     sandbox.restore();
@@ -90,9 +85,6 @@ test.group("UserDetailChangeEmailOperation", (group) => {
         userAggregateStub.resolves([
           { username: "email@email.com", permission: higherPermission } as User,
         ]);
-        localLoginAggregateStub.resolves([
-          { username: "email@email.com" } as LocalLogin,
-        ]);
 
         return expect(
           userDetailChangeEmailOperation.run({
@@ -108,29 +100,6 @@ test.group("UserDetailChangeEmailOperation", (group) => {
     higherPermissions.shift();
   }
 
-  test("should reject if local login is not found", async () => {
-    userDetailGetStub.resolves({
-      blid: "blid1",
-      email: "email@email.com",
-    } as UserDetail);
-    userAggregateStub.resolves([
-      {
-        blid: "blid1",
-        username: "email@email.com",
-        permission: "customer",
-      } as User,
-    ]);
-    localLoginAggregateStub.rejects(new BlError("local login not found"));
-
-    return expect(
-      userDetailChangeEmailOperation.run({
-        documentId: "userDetail1",
-        data: { email: "change@email.com" },
-        user: { id: "admin1", permission: "admin", details: "" },
-      }),
-    ).to.eventually.be.rejectedWith(BlError, /local login not found/);
-  });
-
   test("should reject if the email is already in database", async () => {
     userDetailGetStub.resolves({
       blid: "blid1",
@@ -142,9 +111,6 @@ test.group("UserDetailChangeEmailOperation", (group) => {
         username: "email@email.com",
         permission: "customer",
       } as User,
-    ]);
-    localLoginAggregateStub.resolves([
-      { username: "email@email.com" } as LocalLogin,
     ]);
     userHandlerGetByUsernameStub.resolves({
       username: "alreadyAdded@email.com",
@@ -174,9 +140,6 @@ test.group("UserDetailChangeEmailOperation", (group) => {
         permission: "customer",
       } as User,
     ]);
-    localLoginAggregateStub.resolves([
-      { username: "email@email.com" } as LocalLogin,
-    ]);
     userHandlerGetByUsernameStub.rejects(new BlError("not found"));
     userDetailUpdateStub.rejects(new BlError("could not update user detail"));
 
@@ -201,9 +164,6 @@ test.group("UserDetailChangeEmailOperation", (group) => {
         permission: "customer",
       } as User,
     ]);
-    localLoginAggregateStub.resolves([
-      { username: "email@email.com" } as LocalLogin,
-    ]);
     userHandlerGetByUsernameStub.rejects(new BlError("not found"));
     userDetailUpdateStub.resolves({} as UserDetail);
     userUpdateStub.rejects(new BlError("could not update user"));
@@ -215,35 +175,6 @@ test.group("UserDetailChangeEmailOperation", (group) => {
         user: { id: "admin1", permission: "admin", details: "" },
       }),
     ).to.eventually.be.rejectedWith(BlError, /could not update user/);
-  });
-
-  test("should reject if user.update rejects", async () => {
-    userDetailGetStub.resolves({
-      blid: "blid1",
-      email: "email@email.com",
-    } as UserDetail);
-    userAggregateStub.resolves([
-      {
-        blid: "blid1",
-        username: "email@email.com",
-        permission: "customer",
-      } as User,
-    ]);
-    localLoginAggregateStub.resolves([
-      { username: "email@email.com" } as LocalLogin,
-    ]);
-    userHandlerGetByUsernameStub.rejects(new BlError("not found"));
-    userDetailUpdateStub.resolves({} as UserDetail);
-    userUpdateStub.resolves({} as User);
-    localLoginUpdateStub.rejects(new BlError("could not update local login"));
-
-    return expect(
-      userDetailChangeEmailOperation.run({
-        documentId: "userDetail1",
-        data: { email: "change@email.com" },
-        user: { id: "admin1", permission: "admin", details: "" },
-      }),
-    ).to.eventually.be.rejectedWith(BlError, /could not update local login/);
   });
 
   test("should resolve", async ({ assert }) => {
@@ -258,13 +189,9 @@ test.group("UserDetailChangeEmailOperation", (group) => {
         permission: "customer",
       } as User,
     ]);
-    localLoginAggregateStub.resolves([
-      { username: "email@email.com" } as LocalLogin,
-    ]);
     userHandlerGetByUsernameStub.rejects(new BlError("not found"));
     userDetailUpdateStub.resolves({} as UserDetail);
     userUpdateStub.resolves({} as User);
-    localLoginUpdateStub.resolves({} as LocalLogin);
 
     return assert.doesNotReject(() =>
       userDetailChangeEmailOperation.run({

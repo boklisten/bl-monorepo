@@ -15,10 +15,6 @@ export const PendingPasswordResetSchema: BlSchema<PendingPasswordReset> =
       type: Schema.Types.String,
       required: true,
     },
-    salt: {
-      type: Schema.Types.String,
-      required: true,
-    },
     creationTime: {
       type: Date,
       index: {

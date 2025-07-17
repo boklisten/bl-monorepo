@@ -20,7 +20,11 @@ async function handleCallback(ctx: HttpContext) {
   if (existingUser) {
     await UserHandler.connectProviderToUser(existingUser, provider, user.id);
   } else {
-    await UserHandler.create(user.email, provider, user.id);
+    await UserHandler.create({
+      username: user.email,
+      provider,
+      providerId: user.id,
+    });
   }
 
   const { accessToken, refreshToken } = await TokenHandler.createTokens(

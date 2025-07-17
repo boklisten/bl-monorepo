@@ -12,20 +12,6 @@ export class DeleteUserService {
     const users = await BlStorage.Users.getByQuery(databaseQuery);
     for (const user of users) {
       await BlStorage.Users.remove(user.id);
-      await this.removeLocalLogin(user.username);
-    }
-  }
-
-  private async removeLocalLogin(username: string): Promise<void> {
-    const localLoginDatabaseQuery = this.queryBuilder.getDbQuery(
-      { username: username },
-      [{ fieldName: "username", type: "string" }],
-    );
-    const localLogins = await BlStorage.LocalLogins.getByQuery(
-      localLoginDatabaseQuery,
-    );
-    for (const localLogin of localLogins) {
-      await BlStorage.LocalLogins.remove(localLogin.id);
     }
   }
 

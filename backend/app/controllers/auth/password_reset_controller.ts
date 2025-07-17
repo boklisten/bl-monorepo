@@ -1,102 +1,124 @@
 import { HttpContext } from "@adonisjs/core/http";
 import hash from "@adonisjs/core/services/hash";
-import logger from "@adonisjs/core/services/logger";
 
 import HashedPasswordGenerator from "#services/auth/local/hashed-password-generator";
 import UserHandler from "#services/auth/user/user.handler";
 import BlCrypto from "#services/config/bl-crypto";
 import { sendMail } from "#services/messenger/email/email_service";
 import { EMAIL_TEMPLATES } from "#services/messenger/email/email_templates";
-import { SEDbQuery } from "#services/query/se.db-query";
 import { BlStorage } from "#services/storage/bl-storage";
+import { PendingPasswordReset } from "#shared/password-reset/pending-password-reset";
 import env from "#start/env";
 import {
   forgotPasswordValidator,
   passwordResetValidator,
+  passwordResetValidValidator,
 } from "#validators/auth_validators";
 
-async function getLocalLoginOrNull(username: string) {
-  const databaseQuery = new SEDbQuery();
-  databaseQuery.stringFilters = [{ fieldName: "username", value: username }];
+async function getPasswordReset({
+  resetId,
+  resetToken,
+}: {
+  resetId: string;
+  resetToken: string;
+}) {
+  let pendingPasswordReset: PendingPasswordReset;
+  try {
+    pendingPasswordReset = await BlStorage.PendingPasswordResets.get(resetId);
+  } catch {
+    return {
+      message: `Lenken har utløpt. Du kan be om å få tilsendt en ny lenke på 'glemt passord'-siden`,
+    };
+  }
 
   try {
-    const [localLogin] = await BlStorage.LocalLogins.getByQuery(databaseQuery);
-    return localLogin ?? null;
+    await hash.assertEquals(pendingPasswordReset.tokenHash, resetToken);
   } catch {
-    return null;
+    return {
+      message: `Lenken er ugyldig. Du kan be om å få tilsendt en ny lenke på 'glemt passord'-siden`,
+    };
   }
+
+  const user = await UserHandler.getOrNull(pendingPasswordReset.email);
+  if (!user) {
+    throw new Error("Brukeren finnes ikke");
+  }
+  return { user, pendingPasswordReset };
 }
 
 export default class PasswordResetController {
-  async forgotPasswordSend({ request }: HttpContext) {
+  async requestPasswordReset({ request }: HttpContext) {
     const { email } = await request.validateUsing(forgotPasswordValidator);
     const token = BlCrypto.random();
-    const salt = BlCrypto.random();
-    const tokenHash = await hash.make(token + salt);
+    const tokenHash = await hash.make(token);
 
     const existingUser = await UserHandler.getOrNull(email);
-    if (!existingUser) return;
-
-    try {
-      const passwordReset = await BlStorage.PendingPasswordResets.add({
-        email,
-        tokenHash,
-        salt,
-      });
-      await sendMail({
-        template: EMAIL_TEMPLATES.passwordReset,
-        recipients: [
-          {
-            to: email,
-            dynamicTemplateData: {
-              passwordResetUri: `${env.get("CLIENT_URI")}auth/reset/${passwordReset.id}?resetToken=${token}`,
-            },
-          },
-        ],
-      });
-    } catch (error) {
-      logger.error(
-        `Failed to send password reset email to ${email}, error: ${error}`,
-      );
+    if (!existingUser) {
+      return {
+        message:
+          "E-posten du har oppgitt er ikke tilknyttet noen bruker. Du kan forsøke et annet brukernavn, eller lage en ny bruker ved å trykke på 'registrer deg'",
+      };
     }
+
+    const passwordReset = await BlStorage.PendingPasswordResets.add({
+      email,
+      tokenHash,
+    });
+
+    const mailStatus = await sendMail({
+      template: EMAIL_TEMPLATES.passwordReset,
+      recipients: [
+        {
+          to: email,
+          dynamicTemplateData: {
+            passwordResetUri: `${env.get("CLIENT_URI")}auth/reset/${passwordReset.id}?resetToken=${token}`,
+          },
+        },
+      ],
+    });
+    if (!mailStatus.success) {
+      throw new Error("Klarte ikke sende glemt passord-lenke.");
+    }
+    return {};
   }
 
-  async resetPasswordStore({ request, response }: HttpContext) {
+  async resetPassword({ request }: HttpContext) {
     const { resetId, resetToken, newPassword } = await request.validateUsing(
       passwordResetValidator,
     );
+    const result = await getPasswordReset({
+      resetId,
+      resetToken,
+    });
 
-    try {
-      const pendingPasswordReset =
-        await BlStorage.PendingPasswordResets.get(resetId);
-
-      await hash.assertEquals(
-        pendingPasswordReset.tokenHash,
-        resetToken + pendingPasswordReset.salt,
-      );
-
-      const { hashedPassword, salt } =
-        await HashedPasswordGenerator.generate(newPassword);
-
-      const localLogin = await getLocalLoginOrNull(pendingPasswordReset.email);
-      if (localLogin) {
-        await BlStorage.LocalLogins.update(localLogin.id, {
-          hashedPassword: hashedPassword,
-          salt: salt,
-        });
-      } else {
-        await BlStorage.LocalLogins.add({
-          username: pendingPasswordReset.email,
-          hashedPassword: hashedPassword,
-          salt: salt,
-        });
-      }
-      await BlStorage.PendingPasswordResets.remove(pendingPasswordReset.id);
-    } catch (error) {
-      logger.info(`Rejected password reset request, reason: ${error}`);
-      return response.forbidden();
+    if (!result.pendingPasswordReset) {
+      return { message: `Klarte ikke sette nytt passord. ${result.message}` };
     }
 
-    return newPassword;
+    const { hashedPassword, salt } =
+      await HashedPasswordGenerator.generate(newPassword);
+    await BlStorage.Users.update(result.user.id, {
+      login: {
+        local: {
+          hashedPassword,
+          salt,
+        },
+      },
+    });
+    await BlStorage.PendingPasswordResets.remove(
+      result.pendingPasswordReset.id,
+    );
+    return {};
+  }
+
+  async validatePasswordReset({ request }: HttpContext) {
+    const { resetId, resetToken } = await request.validateUsing(
+      passwordResetValidValidator,
+    );
+    const result = await getPasswordReset({ resetId, resetToken });
+    if (!result.pendingPasswordReset) {
+      return { message: result.message };
+    }
+    return {};
   }
 }

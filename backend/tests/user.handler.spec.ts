@@ -68,12 +68,15 @@ test.group("UserHandler", (group) => {
     });
   });
 
-  test("should resolve with a user when username, provider and providerId is valid", async () => {
-    UserHandler.create("jesus@christ.com", testProvider, testProviderId).then(
-      (user: User) => {
-        // @ts-expect-error fixme: auto ignored bad test types
-        user.username.should.be.eql(testUser.username);
-      },
-    );
+  test("should resolve with a user when username, provider and providerId is valid", async ({
+    assert,
+  }) => {
+    const user = await UserHandler.create({
+      username: "jesus@christ.com",
+      password: "superstar",
+      provider: testProvider,
+      providerId: testProviderId,
+    });
+    assert.equal(user.username, testUser.username);
   });
 });

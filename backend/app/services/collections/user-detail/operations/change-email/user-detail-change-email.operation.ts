@@ -5,7 +5,6 @@ import UserHandler from "#services/auth/user/user.handler";
 import { isNotNullish, isNullish } from "#services/helper/typescript-helpers";
 import { BlStorage } from "#services/storage/bl-storage";
 import { BlApiRequest } from "#services/types/bl-api-request";
-import { LocalLogin } from "#services/types/local-login";
 import { Operation } from "#services/types/operation";
 import { User } from "#services/types/user";
 import { BlError } from "#shared/bl-error/bl-error";
@@ -21,7 +20,6 @@ export class UserDetailChangeEmailOperation implements Operation {
     const userDetail = await BlStorage.UserDetails.get(blApiRequest.documentId);
 
     const user = await this.getUser(userDetail.email, userDetail.blid);
-    const localLogin = await this.getLocalLogin(userDetail.email);
 
     // @ts-expect-error fixme: auto ignored
     this.validatePermission(blApiRequest.user.permission, user.permission);
@@ -37,14 +35,6 @@ export class UserDetailChangeEmailOperation implements Operation {
 
     await BlStorage.Users.update(
       user.id,
-      { username: emailChange },
-
-      // @ts-expect-error fixme: auto ignored
-      blApiRequest.user,
-    );
-
-    await BlStorage.LocalLogins.update(
-      localLogin.id,
       { username: emailChange },
 
       // @ts-expect-error fixme: auto ignored
@@ -94,15 +84,6 @@ export class UserDetailChangeEmailOperation implements Operation {
 
     // @ts-expect-error fixme: auto ignored
     return users[0];
-  }
-
-  private async getLocalLogin(username: string): Promise<LocalLogin> {
-    const localLogins = await BlStorage.LocalLogins.aggregate([
-      { $match: { username: username } },
-    ]);
-
-    // @ts-expect-error fixme: auto ignored
-    return localLogins[0];
   }
 
   private validateEmail(email: string) {

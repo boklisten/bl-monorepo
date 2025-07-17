@@ -11,9 +11,10 @@ import {
 import Button from "@mui/material/Button";
 import Grid from "@mui/material/Grid";
 import TextField from "@mui/material/TextField";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { useSearchParams } from "next/navigation";
 import React, { useState } from "react";
-import { SubmitHandler, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 
 import DynamicLink from "@/components/DynamicLink";
 import { publicApiClient } from "@/utils/api/publicApiClient";
@@ -25,39 +26,64 @@ interface PasswordResetFields {
 export default function PasswordReset({ resetId }: { resetId: string }) {
   const searchParams = useSearchParams();
   const [showPassword, setShowPassword] = useState(false);
-  const [apiError, setApiError] = useState("");
-  const [success, setSuccess] = useState(false);
+  const [apiError, setApiError] = useState<string | null>(null);
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<PasswordResetFields>({ mode: "onTouched" });
-  const onSubmit: SubmitHandler<PasswordResetFields> = async (data) => {
-    setApiError("");
-    try {
-      await publicApiClient["reset-password"]
+  } = useForm<PasswordResetFields>();
+
+  const resetValidation = useQuery({
+    queryKey: [publicApiClient.reset_password.validate.$url(), resetId],
+    queryFn: () =>
+      publicApiClient.reset_password.validate.$post({
+        resetId,
+        resetToken: searchParams.get("resetToken") ?? "",
+      }),
+  });
+
+  const resetPasswordMutation = useMutation({
+    mutationFn: async ({ password }: PasswordResetFields) => {
+      setApiError(null);
+      const { message } = await publicApiClient.reset_password
         .$post({
           resetId,
           resetToken: searchParams.get("resetToken") ?? "",
-          newPassword: data.password,
+          newPassword: password,
         })
         .unwrap();
-
-      setSuccess(true);
-    } catch {
+      setApiError(message ?? null);
+    },
+    onError: () => {
       setApiError(
-        "Klarte ikke sette nytt passord. Lenken kan være utløpt. Prøv igjen eller ta kontakt dersom problemet vedvarer.",
+        "Noe gikk galt! Vennligst prøv igjen eller ta kontakt hvis problemet vedvarer.",
       );
-      setSuccess(false);
-    }
-  };
+    },
+  });
+
+  const message = resetValidation.data?.data?.message;
+  const isExpired = message || resetValidation.isError;
+  if (isExpired) {
+    return (
+      <>
+        <Alert severity="error" sx={{ my: 1 }}>
+          {message ??
+            "Lenken har utløpt. Du kan be om å få tilsendt en ny lenke på 'glemt passord'-siden foo"}
+        </Alert>
+        <DynamicLink href={"/auth/forgot"} underline={"none"}>
+          Gå til glemt passord
+        </DynamicLink>
+      </>
+    );
+  }
+
   return (
     <Box
       component="form"
-      onSubmit={handleSubmit(onSubmit)}
+      onSubmit={handleSubmit((data) => resetPasswordMutation.mutate(data))}
       sx={{ width: "100%" }}
     >
-      {success ? (
+      {resetPasswordMutation.isSuccess && !apiError ? (
         <Stack
           sx={{
             alignItems: "center",

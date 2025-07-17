@@ -5,8 +5,9 @@ import Button from "@mui/material/Button";
 import Container from "@mui/material/Container";
 import Divider from "@mui/material/Divider";
 import TextField from "@mui/material/TextField";
+import { useMutation } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
-import { SubmitHandler, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import validator from "validator";
 
 import { addAccessToken, addRefreshToken } from "@/api/token";
@@ -24,8 +25,7 @@ interface SignInFields {
 }
 
 export default function SignIn() {
-  const [apiError, setApiError] = useState("");
-  const [loading, setLoading] = useState(false);
+  const [apiError, setApiError] = useState<string | null>(null);
   const { isLoggedIn } = useAuth();
   const { redirectToCaller } = useAuthLinker();
   const {
@@ -34,35 +34,27 @@ export default function SignIn() {
     formState: { errors },
   } = useForm<SignInFields>({ mode: "onTouched" });
 
-  const onSubmit: SubmitHandler<SignInFields> = async ({
-    username,
-    password,
-  }) => {
-    setLoading(true);
-    setApiError("");
-    const { data, status } = await publicApiClient.auth.local.login.$post({
-      username,
-      password,
-    });
-    if (status === 200 && data) {
-      addAccessToken(data.accessToken);
-      addRefreshToken(data.refreshToken);
-      redirectToCaller();
-    } else if (status === 404) {
-      setApiError(
-        "Brukernavnet du har oppgitt er ikke tilknyttet noen bruker. Du kan forsøke et annet brukernavn, eller lage en ny bruker ved å trykke på 'registrer deg'",
-      );
-    } else if (status === 401) {
-      setApiError(
-        "Passordet du har oppgitt stemmer ikke. Du kan prøve et annet passord, eller et lage et nytt ved å trykke på 'glemt passord'",
-      );
-    } else {
+  const signInMutation = useMutation({
+    mutationFn: async ({ username, password }: SignInFields) => {
+      setApiError(null);
+      const { message, tokens } = await publicApiClient.auth.local.login
+        .$post({
+          username,
+          password,
+        })
+        .unwrap();
+      setApiError(message ?? null);
+      if (tokens) {
+        addAccessToken(tokens.accessToken);
+        addRefreshToken(tokens.refreshToken);
+        redirectToCaller();
+      }
+    },
+    onError: () =>
       setApiError(
         "Noe gikk galt! Prøv igjen eller ta kontakt dersom problemet vedvarer.",
-      );
-    }
-    setLoading(false);
-  };
+      ),
+  });
 
   useEffect(() => {
     // Next might have valid tokens, even though bl-web and bl-admin might not. If so, the user is redirected automatically
@@ -95,7 +87,7 @@ export default function SignIn() {
         <Divider sx={{ width: "100%", my: 3 }}>eller</Divider>
         <Box
           component="form"
-          onSubmit={handleSubmit(onSubmit)}
+          onSubmit={handleSubmit((data) => signInMutation.mutate(data))}
           sx={{ width: "100%" }}
         >
           {apiError && (
@@ -126,7 +118,7 @@ export default function SignIn() {
             {...register("password")}
           />
           <Button
-            loading={loading}
+            loading={signInMutation.isPending}
             type="submit"
             fullWidth
             variant="contained"

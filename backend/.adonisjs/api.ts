@@ -75,7 +75,18 @@ type ForgotPasswordPost = {
     >
   >;
   response: MakeNonSerializedTuyauResponse<
-    import("../app/controllers/auth/password_reset_controller.ts").default["forgotPasswordSend"],
+    import("../app/controllers/auth/password_reset_controller.ts").default["requestPasswordReset"],
+    true
+  >;
+};
+type ResetpasswordValidatePost = {
+  request: MakeTuyauRequest<
+    InferInput<
+      (typeof import("../app/validators/auth_validators.ts"))["passwordResetValidValidator"]
+    >
+  >;
+  response: MakeNonSerializedTuyauResponse<
+    import("../app/controllers/auth/password_reset_controller.ts").default["validatePasswordReset"],
     true
   >;
 };
@@ -86,7 +97,7 @@ type ResetPasswordPost = {
     >
   >;
   response: MakeNonSerializedTuyauResponse<
-    import("../app/controllers/auth/password_reset_controller.ts").default["resetPasswordStore"],
+    import("../app/controllers/auth/password_reset_controller.ts").default["resetPassword"],
     true
   >;
 };
@@ -436,11 +447,15 @@ export interface ApiDefinition {
       };
     };
   };
-  "forgot-password": {
+  forgot_password: {
     $url: {};
     $post: ForgotPasswordPost;
   };
-  "reset-password": {
+  reset_password: {
+    validate: {
+      $url: {};
+      $post: ResetpasswordValidatePost;
+    };
     $url: {};
     $post: ResetPasswordPost;
   };
@@ -586,15 +601,22 @@ const routes = [
   },
   {
     params: [],
-    name: "auth.password.forgot.send",
-    path: "/forgot-password",
+    name: "auth.password.forgot",
+    path: "/forgot_password",
     method: ["POST"],
     types: {} as ForgotPasswordPost,
   },
   {
     params: [],
-    name: "auth.password.reset.store",
-    path: "/reset-password",
+    name: "auth.password.reset.validate",
+    path: "/reset_password/validate",
+    method: ["POST"],
+    types: {} as ResetpasswordValidatePost,
+  },
+  {
+    params: [],
+    name: "auth.password.reset",
+    path: "/reset_password",
     method: ["POST"],
     types: {} as ResetPasswordPost,
   },

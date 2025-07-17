@@ -9,7 +9,6 @@ import { EditableTextSchema } from "#models/editable-text.schema";
 import { EmailValidationSchema } from "#models/email-validation.schema";
 import { InvoiceSchema } from "#models/invoice.schema";
 import { ItemSchema } from "#models/item.schema";
-import { LocalLoginSchema } from "#models/local-login.schema";
 import { MessageSchema } from "#models/message.schema";
 import { OpeningHourSchema } from "#models/opening-hour.schema";
 import { OrderSchema } from "#models/order.schema";
@@ -48,7 +47,6 @@ export const BlStorage = {
   ),
   Invoices: new MongodbHandler(InvoiceSchema, BlSchemaName.Invoices),
   Items: new MongodbHandler(ItemSchema, BlSchemaName.Items),
-  LocalLogins: new MongodbHandler(LocalLoginSchema, BlSchemaName.LocalLogins),
   Messages: new MongodbHandler(MessageSchema, BlSchemaName.Messages),
   OpeningHours: new MongodbHandler(
     OpeningHourSchema,

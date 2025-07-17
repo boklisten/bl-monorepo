@@ -2,9 +2,9 @@ import { Schema } from "mongoose";
 
 import { BlSchemaName } from "#services/storage/bl-schema-names";
 import { BlSchema } from "#services/storage/bl-storage";
-import { User } from "#services/types/user";
+import { Login, User } from "#services/types/user";
 
-const LoginSchema = new Schema(
+const LoginSchema = new Schema<Login>(
   {
     google: {
       type: { userId: { type: String, required: true } },
@@ -16,17 +16,14 @@ const LoginSchema = new Schema(
       required: false,
       _id: false,
     },
-    /**
-     * fixme: add this when we migrate the local login table to users
     local: {
       type: {
         hashedPassword: { type: String, required: true },
         salt: { type: String, required: true },
       },
       required: false,
-     _id: false,
+      _id: false,
     },
-    */
   },
   { _id: false },
 );

@@ -1,23 +1,26 @@
 import { BlDocument } from "#shared/bl-document/bl-document";
 import { UserPermission } from "#shared/permission/user-permission";
 
+interface SocialLogin {
+  userId: string;
+}
+
+interface LocalLogin {
+  hashedPassword: string;
+  salt: string;
+}
+
+export interface Login {
+  google?: SocialLogin;
+  facebook?: SocialLogin;
+  local?: LocalLogin;
+}
+
 export interface User extends BlDocument {
   id: string;
   userDetail: string;
   permission: UserPermission;
-  login: {
-    google?: { userId: string };
-    facebook?: {
-      userId: string;
-    };
-    /**
-     * fixme: add this when we migrate the local login table to users
-    local?: {
-      hashedPassword: string;
-      salt: string;
-    };
-    */
-  };
+  login: Login;
   blid: string;
   username: string;
   user?: {

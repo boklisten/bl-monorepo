@@ -35,12 +35,9 @@ export class PaymentDibsConfirmer {
     }
 
     try {
-      await BlStorage.Payments.update(
-        payment.id,
-
-        // @ts-expect-error fixme: auto ignored
-        { info: dibsEasyPaymentDetails },
-      );
+      await BlStorage.Payments.update(payment.id, {
+        info: dibsEasyPaymentDetails,
+      });
     } catch (error) {
       throw new BlError(
         "payment could not be updated with dibs information:" + error,

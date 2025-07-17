@@ -174,7 +174,7 @@ export class MongodbHandler<T extends BlDocument> {
     return insertedDocs.map((document_) => document_.toObject());
   }
 
-  public async update(id: string, data: Partial<T>) {
+  public async update(id: string, data: UpdateQuery<T>) {
     const newData = { ...data, lastUpdated: new Date() };
     // Don't update the user of a document after creation
     delete newData["user"];

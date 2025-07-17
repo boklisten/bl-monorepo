@@ -365,7 +365,6 @@ export default class BranchesController {
     const storedBranch = await BlStorage.Branches.get(branchId);
     const updatedBranch = await BlStorage.Branches.update(
       ctx.params["id"],
-      // @ts-expect-error fixme: exactOptionalPropertyTypes
       { ...branchData, parentBranch: branchData.parentBranch || null }, // since parentBranch might be "" from the client, we need to convert it to null so that the database accepts the value (ObjectID or nullish)
     );
 

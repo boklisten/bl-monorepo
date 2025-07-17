@@ -9,12 +9,8 @@ export const PasswordService = {
   },
   async setPassword(userId: string, password: string) {
     await BlStorage.Users.update(userId, {
-      login: {
-        local: {
-          hashedPassword: await this.hash(password),
-          salt: undefined, // fixme: Legacy, only used for the old sha256 hashing, remove when most of our hashes have been converted to argon2
-        },
-      },
+      "login.local.hashedPassword": await this.hash(password),
+      "login.local.salt": undefined, // fixme: Legacy, only used for the old sha256 hashing, remove when most of our hashes have been converted to argon2
     });
   },
   async verifyPassword({

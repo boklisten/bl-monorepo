@@ -53,16 +53,11 @@ export class CustomerItemHandler {
     });
 
     customerItemOrders.push(orderId);
-    return await BlStorage.CustomerItems.update(
-      customerItemId,
-
-      // @ts-expect-error fixme: auto ignored
-      {
-        deadline: orderItem.info["to"],
-        periodExtends: periodExtends,
-        orders: customerItemOrders,
-      },
-    );
+    return await BlStorage.CustomerItems.update(customerItemId, {
+      deadline: orderItem.info["to"],
+      periodExtends: periodExtends,
+      orders: customerItemOrders,
+    });
   }
 
   /**

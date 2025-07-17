@@ -30,6 +30,7 @@ export default await Env.create(new URL("../", import.meta.url), {
   SESSION_SECRET: Env.schema.string(),
   BL_API_URI: Env.schema.string(),
   CLIENT_URI: Env.schema.string(),
+  NEXT_CLIENT_URI: Env.schema.string(),
   MONGODB_URI: Env.schema.string(),
   DIBS_SECRET_KEY: Env.schema.string(),
   DIBS_URI: Env.schema.string(),

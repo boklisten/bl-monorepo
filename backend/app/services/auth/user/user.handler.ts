@@ -68,11 +68,13 @@ async function create({
   password,
   provider,
   providerId,
+  emailConfirmed = false,
 }: {
   username: string;
   password?: string;
   provider: "facebook" | "google" | "local";
   providerId: string;
+  emailConfirmed?: boolean;
 }) {
   const blid = await Blid.createUserBlid(provider, providerId);
 
@@ -80,7 +82,7 @@ async function create({
     {
       email: username,
       blid: blid,
-      emailConfirmed: isThirdPartyProvider(provider), // email is only valid on creation if using Google or Facebook
+      emailConfirmed,
       // fixme: it is janky to just add this without all the details
     } as UserDetail,
     { id: blid, permission: "customer" },
@@ -122,10 +124,6 @@ async function create({
     username: username,
     login,
   });
-}
-
-function isThirdPartyProvider(provider: string): boolean {
-  return provider === "google" || provider === "facebook";
 }
 
 function valid(username: string): Promise<void> {

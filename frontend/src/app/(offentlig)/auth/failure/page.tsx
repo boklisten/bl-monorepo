@@ -1,6 +1,7 @@
-import { Alert, AlertTitle, Card, Container, Box } from "@mui/material";
+import { Card, Container, Box, Typography } from "@mui/material";
 import { Metadata } from "next";
 
+import AuthFailureReasonAlert from "@/components/auth/AuthFailureReasonAlert";
 import DynamicLink from "@/components/DynamicLink";
 
 export const metadata: Metadata = {
@@ -15,16 +16,13 @@ export default function AuthFailurePage() {
       <Container component="main" maxWidth="xs">
         <Box
           sx={{
-            marginTop: 8,
             display: "flex",
             flexDirection: "column",
             alignItems: "center",
           }}
         >
-          <Alert severity={"error"} sx={{ my: 2 }}>
-            <AlertTitle>Vi klarte ikke å logge deg inn</AlertTitle>
-            Vennligst prøv på nytt eller ta kontakt hvis problemet vedvarer.
-          </Alert>
+          <Typography variant="h1">Vi klarte ikke logge deg inn</Typography>
+          <AuthFailureReasonAlert />
           <DynamicLink href={"/auth/login"}>
             Tilbake til innloggingssiden
           </DynamicLink>

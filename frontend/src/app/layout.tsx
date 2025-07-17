@@ -2,7 +2,7 @@ import { ThemeProvider } from "@mui/material";
 import CssBaseline from "@mui/material/CssBaseline";
 import { AppRouterCacheProvider } from "@mui/material-nextjs/v15-appRouter";
 import { Metadata } from "next";
-import { ReactNode } from "react";
+import { ReactNode, Suspense } from "react";
 
 import AuthLinker from "@/components/AuthLinker";
 import DynamicHeightProvider from "@/components/DynamicHeightProvider";
@@ -25,23 +25,26 @@ export const metadata: Metadata = {
 };
 
 export default function RootLayout({ children }: { children: ReactNode }) {
+  // fixme: we probably should not have a Suspend here
   return (
     <html lang="no">
       <body>
-        <AppRouterCacheProvider>
-          <ThemeProvider theme={theme}>
-            <CssBaseline />
-            <ReactQueryClientProvider>
-              <DynamicHeightProvider>
-                <CustomLocalizationProvider>
-                  <ToolpadProvider>
-                    <AuthLinker>{children}</AuthLinker>
-                  </ToolpadProvider>
-                </CustomLocalizationProvider>
-              </DynamicHeightProvider>
-            </ReactQueryClientProvider>
-          </ThemeProvider>
-        </AppRouterCacheProvider>
+        <Suspense>
+          <AppRouterCacheProvider>
+            <ThemeProvider theme={theme}>
+              <CssBaseline />
+              <ReactQueryClientProvider>
+                <DynamicHeightProvider>
+                  <CustomLocalizationProvider>
+                    <ToolpadProvider>
+                      <AuthLinker>{children}</AuthLinker>
+                    </ToolpadProvider>
+                  </CustomLocalizationProvider>
+                </DynamicHeightProvider>
+              </ReactQueryClientProvider>
+            </ThemeProvider>
+          </AppRouterCacheProvider>
+        </Suspense>
       </body>
     </html>
   );

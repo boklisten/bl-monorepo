@@ -7,7 +7,7 @@ interface SocialLogin {
 
 interface LocalLogin {
   hashedPassword: string;
-  salt: string;
+  salt?: string | undefined; // fixme: Legacy, only used for the old sha256 hashing, remove when most of our hashes have been converted to argon2
 }
 
 export interface Login {

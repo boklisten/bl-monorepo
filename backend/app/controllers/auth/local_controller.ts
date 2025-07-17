@@ -4,6 +4,7 @@ import validator from "validator";
 import TokenHandler from "#services/auth/token/token.handler";
 import UserHandler from "#services/auth/user/user.handler";
 import BlCrypto from "#services/config/bl-crypto";
+import { PasswordService } from "#services/password_service";
 import { SEDbQuery } from "#services/query/se.db-query";
 import { BlStorage } from "#services/storage/bl-storage";
 import {
@@ -48,10 +49,14 @@ export default class LocalController {
           "Brukeren du forsøker å logge inn med har ikke satt opp passord-innlogging. Du kan forsøke å logge inn med Google eller Facebook, eller et lage et nytt passord ved å trykke på 'glemt passord'",
       };
     }
+    const isCorrectPassword = await PasswordService.verifyPassword({
+      userId: user.id,
+      password,
+      hashedPassword: user.login.local.hashedPassword,
+      salt: user.login.local.salt,
+    });
 
-    const candidate = await BlCrypto.hash(password, user.login.local.salt);
-
-    if (!BlCrypto.timingSafeEqual(candidate, user.login.local.hashedPassword)) {
+    if (!isCorrectPassword) {
       return {
         message:
           "Passordet du har oppgitt stemmer ikke. Du kan prøve et annet passord, eller et lage et nytt ved å trykke på 'glemt passord'",

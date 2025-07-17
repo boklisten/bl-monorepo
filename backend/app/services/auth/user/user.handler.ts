@@ -1,6 +1,6 @@
 import Blid from "#services/auth/blid";
-import HashedPasswordGenerator from "#services/auth/local/hashed-password-generator";
 import Messenger from "#services/messenger/messenger";
+import { PasswordService } from "#services/password_service";
 import { SEDbQuery } from "#services/query/se.db-query";
 import { BlStorage } from "#services/storage/bl-storage";
 import { Login, User } from "#services/types/user";
@@ -53,7 +53,7 @@ async function connectProviderToUser(
   provider: "google" | "facebook",
   providerId: string,
 ) {
-  if (!user.login[provider]?.userId) {
+  if (user.login[provider]?.userId !== providerId) {
     await BlStorage.Users.update(user.id, {
       login: {
         ...user.login,
@@ -95,11 +95,6 @@ async function create({
 
   let login: Login;
 
-  // TODO: refactor this, it is kind of janky
-  // TODO: migrate the database from LocalLogins BEFORE we push to production, check with staging before doing anything reckless
-  // TODO: improve password hashing with checks for old and new hashing
-  // TODO: only set email confirmed for social login if the social provider says their email is confirmed on their end
-  // TODO: display better error if social login fails, maybe display the raw error from social providers?
   switch (provider) {
     case "google":
       login = { google: { userId: providerId } };
@@ -111,9 +106,9 @@ async function create({
       if (!password) {
         throw new Error("'password' is required for local logins");
       }
-      const { hashedPassword, salt } =
-        await HashedPasswordGenerator.generate(password);
-      login = { local: { hashedPassword, salt } };
+      login = {
+        local: { hashedPassword: await PasswordService.hash(password) },
+      };
       break;
     }
     default:

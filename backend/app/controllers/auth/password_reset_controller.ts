@@ -1,11 +1,11 @@
 import { HttpContext } from "@adonisjs/core/http";
 import hash from "@adonisjs/core/services/hash";
 
-import HashedPasswordGenerator from "#services/auth/local/hashed-password-generator";
 import UserHandler from "#services/auth/user/user.handler";
 import BlCrypto from "#services/config/bl-crypto";
 import { sendMail } from "#services/messenger/email/email_service";
 import { EMAIL_TEMPLATES } from "#services/messenger/email/email_templates";
+import { PasswordService } from "#services/password_service";
 import { BlStorage } from "#services/storage/bl-storage";
 import { PendingPasswordReset } from "#shared/password-reset/pending-password-reset";
 import env from "#start/env";
@@ -95,16 +95,8 @@ export default class PasswordResetController {
       return { message: `Klarte ikke sette nytt passord. ${result.message}` };
     }
 
-    const { hashedPassword, salt } =
-      await HashedPasswordGenerator.generate(newPassword);
-    await BlStorage.Users.update(result.user.id, {
-      login: {
-        local: {
-          hashedPassword,
-          salt,
-        },
-      },
-    });
+    await PasswordService.setPassword(result.user.id, newPassword);
+
     await BlStorage.PendingPasswordResets.remove(
       result.pendingPasswordReset.id,
     );

@@ -11,11 +11,7 @@ import {
   UseFormSetError,
 } from "react-hook-form";
 
-import {
-  addAccessToken,
-  addRefreshToken,
-  getAccessTokenBody,
-} from "@/api/token";
+import { addAccessToken, addRefreshToken } from "@/api/token";
 import {
   PostalCityState,
   usePostalCity,
@@ -154,32 +150,52 @@ export function useUserDetailEditorForm(
     formData: UserEditorFields,
     postalCity: string,
   ) {
-    try {
-      await client
-        .$route("collection.userdetails.patch", {
-          id: getAccessTokenBody().details,
-        })
-        .$patch({
-          name: formData.name,
-          email: formData.email,
-          phone: formData.phoneNumber,
-          address: formData.address,
-          postCode: formData.postalCode,
-          postCity: postalCity,
-          dob: formData.birthday?.format("YYYY-MM-DD") ?? "",
-          branchMembership: formData.branchMembership,
-          guardian: {
-            name: formData?.guardianName,
-            email: formData?.guardianEmail,
-            phone: formData?.guardianPhoneNumber,
-          },
-        });
-      setIsJustSaved(true);
-    } catch {
+    const { error } = await client.v2.user_details.$post({
+      name: formData.name,
+      phoneNumber: formData.phoneNumber,
+      address: formData.address,
+      postalCode: formData.postalCode,
+      postalCity: postalCity,
+      dob: formData.birthday?.format("YYYY-MM-DD") ?? "",
+      branchMembership: formData.branchMembership ?? "",
+      guardian:
+        formData.guardianName !== undefined &&
+        formData.guardianEmail !== undefined &&
+        formData.guardianPhoneNumber !== undefined
+          ? {
+              name: formData.guardianName,
+              email: formData.guardianEmail,
+              phone: formData.guardianPhoneNumber,
+            }
+          : undefined,
+    });
+
+    if (error) {
+      if (error.status === 422) {
+        for (const validationError of error.value.errors) {
+          const { field } = validationError;
+          // fixme: we should properly handle all types of field errors from the API
+          if (field === "email" || field === "phoneNumber") {
+            setError(field, {
+              message: validationError.message,
+            });
+          } else {
+            setError("email", {
+              message: validationError.message,
+            });
+          }
+        }
+        return;
+      }
+
+      // fixme: unknown errors should not be on the email field
       setError("email", {
         message: UNKNOWN_ERROR_TEXT,
       });
+      return;
     }
+
+    setIsJustSaved(true);
   }
 
   const onSubmitValid: SubmitHandler<UserEditorFields> = async (data) => {

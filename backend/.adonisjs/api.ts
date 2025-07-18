@@ -368,6 +368,17 @@ type MatchesTransferitemPost = {
     true
   >;
 };
+type V2UserdetailsPost = {
+  request: MakeTuyauRequest<
+    InferInput<
+      (typeof import("../app/validators/user_detail.ts"))["customerUpdateUserDetailsValidator"]
+    >
+  >;
+  response: MakeNonSerializedTuyauResponse<
+    import("../app/controllers/user_detail_controller.ts").default["updateAsCustomer"],
+    true
+  >;
+};
 export interface ApiDefinition {
   token: {
     $url: {};
@@ -404,6 +415,10 @@ export interface ApiDefinition {
         $url: {};
         $post: V2OrdersCancelorderitemPost;
       };
+    };
+    user_details: {
+      $url: {};
+      $post: V2UserdetailsPost;
     };
   };
   auth: {
@@ -805,6 +820,13 @@ const routes = [
     path: "/matches/transfer_item",
     method: ["POST"],
     types: {} as MatchesTransferitemPost,
+  },
+  {
+    params: [],
+    name: "user_detail.updateAsCustomer",
+    path: "/v2/user_details",
+    method: ["POST"],
+    types: {} as V2UserdetailsPost,
   },
   {
     params: ["id"],

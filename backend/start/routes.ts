@@ -26,6 +26,8 @@ const PublicBlidLookupController = () =>
   import("#controllers/public_blid_lookup_controller");
 const MatchesController = () =>
   import("#controllers/matches/matches_controller");
+const UserDetailController = () =>
+  import("#controllers/user_detail_controller");
 
 /**
  * auth token
@@ -209,5 +211,12 @@ router.get("/matches/me", [MatchesController, "getMyMatches"]).as("matches.me");
 router
   .post("/matches/transfer_item", [MatchesController, "transferItem"])
   .as("matches.transfer_item");
+
+/**
+ * user detail
+ */
+router
+  .post("/v2/user_details", [UserDetailController, "updateAsCustomer"])
+  .as("user_detail.updateAsCustomer");
 
 CollectionEndpointCreator.generateEndpoints();

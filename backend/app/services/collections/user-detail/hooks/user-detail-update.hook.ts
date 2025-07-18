@@ -3,35 +3,9 @@ import { SEDbQuery } from "#services/query/se.db-query";
 import { BlStorage } from "#services/storage/bl-storage";
 import { BlError } from "#shared/bl-error/bl-error";
 import { AccessToken } from "#shared/token/access-token";
-import { UserDetail } from "#shared/user/user-detail/user-detail";
 import { userDetailPatchValidator } from "#validators/user_detail";
 
 export class UserDetailUpdateHook extends Hook {
-  private cleanUserInput = (dirtyText: string): string => {
-    const withCoalescedSpaces = dirtyText.replaceAll(/\s+/gu, " ").trim();
-    const separators = withCoalescedSpaces.match(/[ -]/g);
-    const caseCorrectedWordParts = withCoalescedSpaces
-      .split(/[ -]/g)
-
-      // @ts-expect-error fixme: auto ignored
-      .map((word) => word[0].toUpperCase() + word.slice(1).toLowerCase());
-    return caseCorrectedWordParts
-      .map((part, index) => part + (separators?.[index] ?? ""))
-      .join("");
-  };
-
-  private cleanGuardianInfo(
-    guardian: UserDetail["guardian"],
-  ): UserDetail["guardian"] {
-    return (
-      guardian && {
-        ...guardian,
-        name: this.cleanUserInput(guardian.name),
-        email: guardian.email.toLowerCase(),
-      }
-    );
-  }
-
   public override async before(body: unknown, accessToken: AccessToken) {
     const [error, data] = await userDetailPatchValidator.tryValidate(body);
     if (error || !data) {
@@ -73,20 +47,15 @@ export class UserDetailUpdateHook extends Hook {
     // In an update call, a value of 'undefined' will remove a key, so the key
     // needs to be completely missing if it shouldn't be updated.
     return {
-      ...(name !== undefined && { name: this.cleanUserInput(name) }),
-      ...(address !== undefined && { address: this.cleanUserInput(address) }),
-      ...(postCity !== undefined && {
-        postCity: this.cleanUserInput(postCity),
-      }),
+      ...(name !== undefined && { name }),
+      ...(address !== undefined && { address }),
+      ...(postCity !== undefined && { postCity }),
       ...(dob !== undefined && { dob }),
       ...(postCode !== undefined && { postCode }),
       ...(phone !== undefined && { phone }),
       ...(emailConfirmed !== undefined && { emailConfirmed }),
       ...(branchMembership !== undefined && { branchMembership }),
-      ...(guardian?.name &&
-        guardian?.email && {
-          guardian: this.cleanGuardianInfo(guardian) ?? guardian,
-        }),
+      ...(guardian?.name && guardian?.email && { guardian }),
     };
   }
 }

@@ -29,7 +29,7 @@ export default class UserDetailsController {
       postCity: postalCity,
       dob,
       branchMembership,
-      ...(guardian && { guardian }),
+      guardian,
     });
   }
 }

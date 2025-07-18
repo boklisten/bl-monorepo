@@ -63,7 +63,7 @@ async function handleCallback(ctx: HttpContext) {
 
   return ctx.response.redirect(
     `${
-      retrieveRefererPath(ctx.request.headers()) ?? env.get("CLIENT_URI")
+      retrieveRefererPath(ctx.request.headers()) ?? env.get("NEXT_CLIENT_URI")
     }auth/token?access_token=${accessToken}&refresh_token=${refreshToken}`,
   );
 }

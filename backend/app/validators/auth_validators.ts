@@ -7,6 +7,7 @@ import {
   postalCodeField,
 } from "#validators/common/fields";
 import { uniqueEmail, uniquePhoneNumber } from "#validators/common/rules";
+import { cleanUserInput } from "#validators/common/transformers";
 
 export const forgotPasswordValidator = vine.compile(
   vine.object({
@@ -34,17 +35,20 @@ export const registerSchema = vine.object({
   phoneNumber: phoneField.clone().use(uniquePhoneNumber()),
   password: passwordField.clone(),
 
-  name: vine.string(),
-  address: vine.string(),
+  name: vine.string().transform((value) => cleanUserInput(value)),
+  address: vine.string().transform((value) => cleanUserInput(value)),
   postalCode: postalCodeField.clone(),
   postalCity: vine.string(),
   dob: vine.date().before("today"),
   branchMembership: vine.string(),
   guardian: vine
     .object({
-      name: vine.string(),
-      email: emailField.clone(),
-      phone: phoneField.clone(),
+      name: vine
+        .string()
+        .optional()
+        .transform((value) => cleanUserInput(value)),
+      email: emailField.clone().optional(),
+      phone: phoneField.clone().optional(),
     })
     .optional(),
 });

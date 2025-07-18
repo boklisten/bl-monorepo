@@ -104,16 +104,11 @@ export function useUserDetailEditorForm(
       postalCity: postalCity,
       dob: formData.birthday?.format("YYYY-MM-DD") ?? "",
       branchMembership: formData.branchMembership ?? "",
-      guardian:
-        formData.guardianName !== undefined &&
-        formData.guardianEmail !== undefined &&
-        formData.guardianPhoneNumber !== undefined
-          ? {
-              name: formData.guardianName,
-              email: formData.guardianEmail,
-              phone: formData.guardianPhoneNumber,
-            }
-          : undefined,
+      guardian: {
+        name: formData.guardianName,
+        email: formData.guardianEmail,
+        phone: formData.guardianPhoneNumber,
+      },
     });
 
     if (error) {
@@ -158,16 +153,11 @@ export function useUserDetailEditorForm(
       postalCity: postalCity,
       dob: formData.birthday?.format("YYYY-MM-DD") ?? "",
       branchMembership: formData.branchMembership ?? "",
-      guardian:
-        formData.guardianName !== undefined &&
-        formData.guardianEmail !== undefined &&
-        formData.guardianPhoneNumber !== undefined
-          ? {
-              name: formData.guardianName,
-              email: formData.guardianEmail,
-              phone: formData.guardianPhoneNumber,
-            }
-          : undefined,
+      guardian: {
+        name: formData.guardianName,
+        email: formData.guardianEmail,
+        phone: formData.guardianPhoneNumber,
+      },
     });
 
     if (error) {

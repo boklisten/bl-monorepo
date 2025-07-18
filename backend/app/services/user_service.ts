@@ -89,7 +89,11 @@ export const UserService = {
         postCity: postalCity,
         dob,
         branchMembership,
-        ...(guardian && { guardian }),
+        guardian: {
+          name: guardian?.name ?? "",
+          email: guardian?.email ?? "",
+          phone: guardian?.phone ?? "",
+        },
         blid,
         signatures: [],
       },

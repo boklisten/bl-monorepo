@@ -6,17 +6,7 @@ import {
   postalCodeField,
 } from "#validators/common/fields";
 import { uniquePhoneNumber } from "#validators/common/rules";
-
-function cleanUserInput(dirtyText: string) {
-  const withCoalescedSpaces = dirtyText.replaceAll(/\s+/gu, " ").trim();
-  const separators = withCoalescedSpaces.match(/[ -]/g);
-  const caseCorrectedWordParts = withCoalescedSpaces
-    .split(/[ -]/g)
-    .map((word) => word[0]?.toUpperCase() + word.slice(1).toLowerCase());
-  return caseCorrectedWordParts
-    .map((part, index) => part + (separators?.[index] ?? ""))
-    .join("");
-}
+import { cleanUserInput } from "#validators/common/transformers";
 
 // Legacy for bl-admin user detail patching
 export const userDetailPatchValidator = vine.compile(
@@ -53,9 +43,12 @@ const customerUpdateUserDetailsSchema = vine.object({
   branchMembership: vine.string(),
   guardian: vine
     .object({
-      name: vine.string().transform((value) => cleanUserInput(value)),
-      email: emailField.clone(),
-      phone: phoneField.clone(),
+      name: vine
+        .string()
+        .optional()
+        .transform((value) => cleanUserInput(value)),
+      email: emailField.clone().optional(),
+      phone: phoneField.clone().optional(),
     })
     .optional(),
 });

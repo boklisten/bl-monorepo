@@ -29,7 +29,6 @@ export interface UserEditorFields {
   password: string;
   name: string;
   phoneNumber: string;
-  signUpPhoneNumber: string | undefined; // unused, only for validator
   address: string;
   postalCode: string;
   birthday: Moment | null;
@@ -97,93 +96,114 @@ export function useUserDetailEditorForm(
 
   const UNKNOWN_ERROR_TEXT =
     "Noe gikk galt under registreringen! Prøv igjen, eller ta kontakt dersom problemet vedvarer!";
-  async function registerUser(user: { email: string; password: string }) {
-    const { data, error } =
-      await publicApiClient.auth.local.register.$post(user);
+  async function registerUser(formData: UserEditorFields, postalCity: string) {
+    const { data, error } = await publicApiClient.auth.local.register.$post({
+      email: formData.email,
+      phoneNumber: formData.phoneNumber,
+      password: formData.password,
+
+      name: formData.name,
+      address: formData.address,
+      postalCode: formData.postalCode,
+      postalCity: postalCity,
+      dob: formData.birthday?.format("YYYY-MM-DD") ?? "",
+      branchMembership: formData.branchMembership ?? "",
+      guardian:
+        formData.guardianName !== undefined &&
+        formData.guardianEmail !== undefined &&
+        formData.guardianPhoneNumber !== undefined
+          ? {
+              name: formData.guardianName,
+              email: formData.guardianEmail,
+              phone: formData.guardianPhoneNumber,
+            }
+          : undefined,
+    });
 
     if (error) {
       if (error.status === 422) {
-        const emailUniqueError = error.value.errors.find(
-          (e) => e.rule === "unique_email",
-        );
-        if (emailUniqueError !== undefined) {
-          setError("email", {
-            message: emailUniqueError.message,
-          });
-          return { success: false };
+        for (const validationError of error.value.errors) {
+          const { field } = validationError;
+          // fixme: we should properly handle all types of field errors from the API
+          if (field === "email" || field === "phoneNumber") {
+            setError(field, {
+              message: validationError.message,
+            });
+          } else {
+            setError("email", {
+              message: validationError.message,
+            });
+          }
         }
+        return;
       }
 
       // fixme: unknown errors should not be on the email field
       setError("email", {
         message: UNKNOWN_ERROR_TEXT,
       });
-      return { success: false };
+      return;
     }
 
     addAccessToken(data.accessToken);
     addRefreshToken(data.refreshToken);
-    return { success: true };
+    redirectToCaller();
   }
 
-  const onSubmitValid: SubmitHandler<UserEditorFields> = async (data) => {
-    setIsSubmitting(true);
-    if (isSignUp) {
-      const { success } = await registerUser({
-        email: data.email,
-        password: data.password,
-      });
-      if (!success) {
-        setIsSubmitting(false);
-        return;
-      }
-    }
-
+  async function updateUserDetails(
+    formData: UserEditorFields,
+    postalCity: string,
+  ) {
     try {
-      const postalCityStatus = await settlePostalCity;
-      switch (postalCityStatus.state) {
-        case "error": {
-          setError("postalCode", {
-            message:
-              "Noe gikk galt under sjekk av postnummer! Prøv igjen," +
-              " eller ta kontakt dersom problemet vedvarer!",
-          });
-          return;
-        }
-        case "invalid": {
-          setError("postalCode", { message: "Ugyldig postnummer" });
-          return;
-        }
-      }
       await client
         .$route("collection.userdetails.patch", {
           id: getAccessTokenBody().details,
         })
         .$patch({
-          name: data.name,
-          email: data.email,
-          phone: data.phoneNumber,
-          address: data.address,
-          postCode: data.postalCode,
-          postCity: postalCityStatus.city,
-          dob: data.birthday?.toString(),
-          branchMembership: data.branchMembership,
+          name: formData.name,
+          email: formData.email,
+          phone: formData.phoneNumber,
+          address: formData.address,
+          postCode: formData.postalCode,
+          postCity: postalCity,
+          dob: formData.birthday?.format("YYYY-MM-DD") ?? "",
+          branchMembership: formData.branchMembership,
           guardian: {
-            name: data?.guardianName,
-            email: data?.guardianEmail,
-            phone: data?.guardianPhoneNumber,
+            name: formData?.guardianName,
+            email: formData?.guardianEmail,
+            phone: formData?.guardianPhoneNumber,
           },
         });
+      setIsJustSaved(true);
     } catch {
       setError("email", {
         message: UNKNOWN_ERROR_TEXT,
       });
     }
+  }
+
+  const onSubmitValid: SubmitHandler<UserEditorFields> = async (data) => {
+    setIsSubmitting(true);
+    const postalCityStatus = await settlePostalCity;
+    switch (postalCityStatus.state) {
+      case "error": {
+        setError("postalCode", {
+          message:
+            "Noe gikk galt under sjekk av postnummer! Prøv igjen," +
+            " eller ta kontakt dersom problemet vedvarer!",
+        });
+        return;
+      }
+      case "invalid": {
+        setError("postalCode", { message: "Ugyldig postnummer" });
+        return;
+      }
+    }
 
     if (isSignUp) {
-      redirectToCaller();
+      await registerUser(data, postalCityStatus.city);
     } else {
-      setIsJustSaved(true);
+      await updateUserDetails(data, postalCityStatus.city);
     }
 
     setIsSubmitting(false);

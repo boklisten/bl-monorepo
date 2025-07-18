@@ -45,7 +45,6 @@ test.group("CustomerItemPostHook", (group) => {
       postCode: "1234",
       postCity: "Boston",
       phone: "21212121",
-      country: "USA",
       emailConfirmed: true,
       dob: new Date(1755, 1, 11),
       active: true,

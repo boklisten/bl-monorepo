@@ -7,9 +7,7 @@ export interface UserDetail extends BlDocument {
   address: string;
   postCode: string;
   postCity: string;
-  country: string;
   dob: Date;
-  branch: string;
   emailConfirmed?: boolean;
   guardian?: {
     name: string;

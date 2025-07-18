@@ -1,3 +1,5 @@
+import { Infer } from "@vinejs/vine/types";
+
 import Blid from "#services/auth/blid";
 import BlCrypto from "#services/config/bl-crypto";
 import Messenger from "#services/messenger/messenger";
@@ -6,34 +8,30 @@ import { SEDbQuery } from "#services/query/se.db-query";
 import { BlStorage } from "#services/storage/bl-storage";
 import { Login, User } from "#services/types/user";
 import { UserDetail } from "#shared/user/user-detail/user-detail";
+import { registerSchema } from "#validators/auth_validators";
 
 async function createUser({
   username,
   login,
   blid,
+  userDetailId,
   emailConfirmed,
 }: {
   username: string;
   login: Login;
   blid: string;
+  userDetailId: string;
   emailConfirmed: boolean;
 }) {
-  const addedUserDetail = await BlStorage.UserDetails.add({
-    email: username,
-    blid,
-    emailConfirmed,
-    // fixme: it is janky to just add this without all the details
-  } as UserDetail);
-
-  if (!addedUserDetail.emailConfirmed) {
+  if (!emailConfirmed) {
     const emailValidation = await BlStorage.EmailValidations.add({
-      userDetailId: addedUserDetail.id,
+      userDetailId,
     });
     await Messenger.emailConfirmation(username, emailValidation.id);
   }
 
   return await BlStorage.Users.add({
-    userDetail: addedUserDetail.id,
+    userDetail: userDetailId,
     permission: "customer",
     blid,
     username,
@@ -42,7 +40,7 @@ async function createUser({
 }
 
 export const UserService = {
-  async getOrNull(username: string): Promise<User | null> {
+  async getByUsername(username: string): Promise<User | null> {
     try {
       const databaseQuery = new SEDbQuery();
       databaseQuery.stringFilters = [
@@ -69,37 +67,73 @@ export const UserService = {
     }
   },
   async createLocalUser({
-    username,
+    email,
+    phoneNumber,
     password,
-  }: {
-    username: string;
-    password: string;
-  }) {
+    name,
+    address,
+    postalCode,
+    postalCity,
+    dob,
+    branchMembership,
+    guardian,
+  }: Infer<typeof registerSchema>) {
+    const blid = await Blid.createUserBlid("local", BlCrypto.random());
+    const addedUserDetail = await BlStorage.UserDetails.add(
+      {
+        email,
+        phone: phoneNumber,
+        name,
+        address,
+        postCode: postalCode,
+        postCity: postalCity,
+        dob,
+        branchMembership,
+        ...(guardian && { guardian }),
+        blid,
+        signatures: [],
+      },
+      { id: blid, permission: "customer" },
+    );
+
     return createUser({
-      username,
+      username: email,
       login: {
         local: { hashedPassword: await PasswordService.hash(password) },
       },
       emailConfirmed: false,
-      blid: await Blid.createUserBlid("local", BlCrypto.random()),
+      blid,
+      userDetailId: addedUserDetail.id,
     });
   },
   async createSocialUser({
-    username,
     provider,
     providerId,
+    email,
     emailConfirmed,
   }: {
-    username: string;
     provider: "facebook" | "google";
     providerId: string;
+    email: string;
     emailConfirmed: boolean;
   }) {
+    const blid = await Blid.createUserBlid(provider, providerId);
+    const addedUserDetail = await BlStorage.UserDetails.add(
+      {
+        email,
+        blid,
+        emailConfirmed,
+        // fixme: it is janky to just add this without all the details
+      } as UserDetail,
+      { id: blid, permission: "customer" },
+    );
+
     return createUser({
-      username,
+      username: email,
       login: { [provider]: { userId: providerId } },
       emailConfirmed,
-      blid: await Blid.createUserBlid(provider, providerId),
+      blid,
+      userDetailId: addedUserDetail.id,
     });
   },
 };

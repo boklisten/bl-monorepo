@@ -23,7 +23,6 @@ test.group("OrderToCustomerItemGenerator", (group) => {
     postCode: "1234",
     postCity: "oslo",
     dob: new Date(),
-    branch: "branch1",
     blid: "userBlid1",
     guardian: {
       name: "Lathans Hansen",

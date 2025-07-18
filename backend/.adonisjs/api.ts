@@ -221,17 +221,6 @@ type V2OrdersCancelorderitemPost = {
     true
   >;
 };
-type V2UserdetailsCheckphonenumberalreadyregisteredPost = {
-  request: MakeTuyauRequest<
-    InferInput<
-      (typeof import("../app/validators/check_phone_number.ts"))["checkPhoneNumberValidator"]
-    >
-  >;
-  response: MakeNonSerializedTuyauResponse<
-    import("../app/controllers/user_details_controller.ts").default["checkPhoneNumberAlreadyRegistered"],
-    true
-  >;
-};
 type EditableTextsGetHead = {
   request: unknown;
   response: MakeNonSerializedTuyauResponse<
@@ -414,12 +403,6 @@ export interface ApiDefinition {
       cancel_order_item: {
         $url: {};
         $post: V2OrdersCancelorderitemPost;
-      };
-    };
-    userdetails: {
-      check_phone_number_already_registered: {
-        $url: {};
-        $post: V2UserdetailsCheckphonenumberalreadyregisteredPost;
       };
     };
   };
@@ -703,13 +686,6 @@ const routes = [
     path: "/v2/orders/cancel_order_item",
     method: ["POST"],
     types: {} as V2OrdersCancelorderitemPost,
-  },
-  {
-    params: [],
-    name: "userdetails.checkPhoneNumberAlreadyRegistered",
-    path: "/v2/userdetails/check_phone_number_already_registered",
-    method: ["POST"],
-    types: {} as V2UserdetailsCheckphonenumberalreadyregisteredPost,
   },
   {
     params: [],

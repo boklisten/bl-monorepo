@@ -168,10 +168,8 @@ test.group("OrderPlacedHandler", (group) => {
       address: "",
       postCode: "",
       postCity: "",
-      country: "",
       dob: new Date(),
       emailConfirmed: true,
-      branch: "branch1",
       signatures: [],
       blid: "",
     };

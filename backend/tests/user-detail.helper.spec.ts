@@ -53,9 +53,7 @@ test.group("UserDetailHelper", (group) => {
       address: "",
       postCode: "",
       postCity: "",
-      country: "",
       dob: new Date(),
-      branch: "branch1",
       signatures: [],
       blid: "",
     };

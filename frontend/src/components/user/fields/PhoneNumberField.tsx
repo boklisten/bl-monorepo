@@ -8,7 +8,7 @@ const PhoneNumberField = forwardRef(
       required
       fullWidth
       label="Telefonnummer"
-      id="phoneNumber"
+      id="phone"
       autoComplete="tel-national"
       inputRef={ref}
       {...props}

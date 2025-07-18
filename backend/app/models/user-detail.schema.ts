@@ -40,20 +40,12 @@ export const UserDetailSchema: BlSchema<UserDetail> = new Schema({
     type: String,
     trim: true,
   },
-  country: {
-    type: String,
-    trim: true,
-  },
   emailConfirmed: {
     type: Boolean,
     default: false,
   },
   dob: {
     type: Date,
-  },
-  branch: {
-    type: Schema.Types.ObjectId,
-    ref: BlSchemaName.Branches,
   },
   guardian: {
     name: {

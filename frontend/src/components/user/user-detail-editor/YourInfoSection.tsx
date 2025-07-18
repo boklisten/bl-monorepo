@@ -20,7 +20,6 @@ import { fieldValidators } from "@/components/user/user-detail-editor/fieldValid
 import { UserEditorFields } from "@/components/user/user-detail-editor/useUserDetailEditorForm";
 
 interface YourInfoSectionProps {
-  signUp: boolean | undefined;
   errors: FieldErrors<UserEditorFields>;
   postCity: PostalCityState;
   updatePostalCity: (newPostalCode: string) => void;
@@ -30,7 +29,6 @@ interface YourInfoSectionProps {
 }
 
 const YourInfoSection = ({
-  signUp,
   register,
   errors,
   postCity,
@@ -67,12 +65,7 @@ const YourInfoSection = ({
       <Grid size={{ xs: 12 }}>
         <PhoneNumberField
           error={!!errors.phoneNumber}
-          {...register(
-            "phoneNumber",
-            signUp
-              ? fieldValidators.signUpPhoneNumber
-              : fieldValidators.phoneNumber,
-          )}
+          {...register("phoneNumber", fieldValidators.phoneNumber)}
         />
         <FieldErrorAlert error={errors.phoneNumber} />
       </Grid>

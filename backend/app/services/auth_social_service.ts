@@ -45,14 +45,14 @@ async function handleCallback(ctx: HttpContext) {
     return;
   }
 
-  const existingUser = await UserService.getOrNull(user.email);
+  const existingUser = await UserService.getByUsername(user.email);
   if (existingUser) {
     await UserService.connectProviderToUser(existingUser, provider, user.id);
   } else {
     await UserService.createSocialUser({
-      username: user.email,
       provider,
       providerId: user.id,
+      email: user.email,
       emailConfirmed: user.emailVerificationState === "verified",
     });
   }

@@ -16,8 +16,6 @@ const BranchesController = () => import("#controllers/branches_controller");
 const MailTemplateSenderController = () =>
   import("#controllers/mail_template_sender_controller");
 const OrdersController = () => import("#controllers/orders_controller");
-const UserDetailsController = () =>
-  import("#controllers/user_details_controller");
 const EditableTextsController = () =>
   import("#controllers/editable_texts_controller");
 const QuestionsAndAnswersController = () =>
@@ -136,16 +134,6 @@ router
 router
   .post("/v2/orders/cancel_order_item", [OrdersController, "cancelOrderItem"])
   .as("open_orders.cancel");
-
-/**
- * user details
- */
-router
-  .post("/v2/userdetails/check_phone_number_already_registered", [
-    UserDetailsController,
-    "checkPhoneNumberAlreadyRegistered",
-  ])
-  .as("userdetails.checkPhoneNumberAlreadyRegistered");
 
 /**
  * editable texts

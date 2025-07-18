@@ -39,7 +39,7 @@ async function getPasswordReset({
     };
   }
 
-  const user = await UserService.getOrNull(pendingPasswordReset.email);
+  const user = await UserService.getByUsername(pendingPasswordReset.email);
   if (!user) {
     throw new Error("Brukeren finnes ikke");
   }
@@ -52,7 +52,7 @@ export default class PasswordResetController {
     const token = BlCrypto.random();
     const tokenHash = await hash.make(token);
 
-    const existingUser = await UserService.getOrNull(email);
+    const existingUser = await UserService.getByUsername(email);
     if (!existingUser) {
       return {
         message:

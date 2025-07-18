@@ -33,7 +33,7 @@ export default class LocalController {
       await request.validateUsing(localAuthValidator);
     const normalizedUsername = await normalizeUsername(username);
 
-    const user = await UserService.getOrNull(normalizedUsername);
+    const user = await UserService.getByUsername(normalizedUsername);
 
     if (!user) {
       return {
@@ -68,8 +68,8 @@ export default class LocalController {
   }
 
   async register({ request }: HttpContext) {
-    const { email, password } = await request.validateUsing(registerValidator);
-    await UserService.createLocalUser({ username: email, password });
-    return await TokenHandler.createTokens(email);
+    const registerData = await request.validateUsing(registerValidator);
+    await UserService.createLocalUser(registerData);
+    return await TokenHandler.createTokens(registerData.email);
   }
 }

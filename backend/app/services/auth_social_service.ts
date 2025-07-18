@@ -3,6 +3,8 @@ import { HttpContext } from "@adonisjs/core/http";
 
 import TokenHandler from "#services/auth/token/token.handler";
 import { retrieveRefererPath } from "#services/config/api-path";
+import { BlStorage } from "#services/storage/bl-storage";
+import { UserDetailService } from "#services/user_detail_service";
 import { UserService } from "#services/user_service";
 import {
   AUTH_SOCIAL_ERROR,
@@ -45,16 +47,26 @@ async function handleCallback(ctx: HttpContext) {
     return;
   }
 
+  const socialUser = {
+    provider,
+    providerId: user.id,
+    email: user.email,
+    emailConfirmed: user.emailVerificationState === "verified",
+  };
+
   const existingUser = await UserService.getByUsername(user.email);
   if (existingUser) {
     await UserService.connectProviderToUser(existingUser, provider, user.id);
+    const existingUserDetail = await UserDetailService.getByEmail(user.email);
+    if (!existingUserDetail) {
+      const addedUserDetail =
+        await UserDetailService.createSocialUserDetail(socialUser);
+      await BlStorage.Users.update(existingUser.id, {
+        userDetail: addedUserDetail.id,
+      });
+    }
   } else {
-    await UserService.createSocialUser({
-      provider,
-      providerId: user.id,
-      email: user.email,
-      emailConfirmed: user.emailVerificationState === "verified",
-    });
+    await UserService.createSocialUser(socialUser);
   }
 
   const { accessToken, refreshToken } = await TokenHandler.createTokens(

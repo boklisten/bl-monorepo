@@ -77,21 +77,4 @@ export class BlError extends Error {
     if (!this._code) return 0;
     return this._code;
   }
-
-  public printStack() {
-    console.log("");
-    console.log("BlError stack:");
-    this.printErrorStack(this);
-    console.log("");
-  }
-
-  private printErrorStack(blError: BlError) {
-    console.log("\t>BlError[" + blError.getCode() + "]: " + blError.getMsg());
-
-    if (blError.errorStack && blError.errorStack.length > 0) {
-      for (const error of blError.errorStack) {
-        this.printErrorStack(error);
-      }
-    }
-  }
 }

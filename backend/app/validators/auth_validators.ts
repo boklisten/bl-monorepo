@@ -1,12 +1,12 @@
 import vine from "@vinejs/vine";
 
-import UserHandler from "#services/auth/user/user.handler";
+import { UserService } from "#services/user_service";
 
 const uniqueEmail = vine.createRule(async (value, options, field) => {
   if (typeof value !== "string") {
     return;
   }
-  const foundUser = await UserHandler.getOrNull(value);
+  const foundUser = await UserService.getOrNull(value);
 
   if (foundUser) {
     field.report(

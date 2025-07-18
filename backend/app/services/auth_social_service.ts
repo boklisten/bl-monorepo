@@ -2,8 +2,8 @@ import { SocialProviders } from "@adonisjs/ally/types";
 import { HttpContext } from "@adonisjs/core/http";
 
 import TokenHandler from "#services/auth/token/token.handler";
-import UserHandler from "#services/auth/user/user.handler";
 import { retrieveRefererPath } from "#services/config/api-path";
+import { UserService } from "#services/user_service";
 import {
   AUTH_SOCIAL_ERROR,
   AuthSocialError,
@@ -45,11 +45,11 @@ async function handleCallback(ctx: HttpContext) {
     return;
   }
 
-  const existingUser = await UserHandler.getOrNull(user.email);
+  const existingUser = await UserService.getOrNull(user.email);
   if (existingUser) {
-    await UserHandler.connectProviderToUser(existingUser, provider, user.id);
+    await UserService.connectProviderToUser(existingUser, provider, user.id);
   } else {
-    await UserHandler.create({
+    await UserService.createSocialUser({
       username: user.email,
       provider,
       providerId: user.id,

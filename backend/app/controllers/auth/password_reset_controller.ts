@@ -1,12 +1,12 @@
 import { HttpContext } from "@adonisjs/core/http";
 import hash from "@adonisjs/core/services/hash";
 
-import UserHandler from "#services/auth/user/user.handler";
 import BlCrypto from "#services/config/bl-crypto";
 import { sendMail } from "#services/messenger/email/email_service";
 import { EMAIL_TEMPLATES } from "#services/messenger/email/email_templates";
 import { PasswordService } from "#services/password_service";
 import { BlStorage } from "#services/storage/bl-storage";
+import { UserService } from "#services/user_service";
 import { PendingPasswordReset } from "#shared/password-reset/pending-password-reset";
 import env from "#start/env";
 import {
@@ -39,7 +39,7 @@ async function getPasswordReset({
     };
   }
 
-  const user = await UserHandler.getOrNull(pendingPasswordReset.email);
+  const user = await UserService.getOrNull(pendingPasswordReset.email);
   if (!user) {
     throw new Error("Brukeren finnes ikke");
   }
@@ -52,7 +52,7 @@ export default class PasswordResetController {
     const token = BlCrypto.random();
     const tokenHash = await hash.make(token);
 
-    const existingUser = await UserHandler.getOrNull(email);
+    const existingUser = await UserService.getOrNull(email);
     if (!existingUser) {
       return {
         message:

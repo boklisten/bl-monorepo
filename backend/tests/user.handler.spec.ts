@@ -22,12 +22,9 @@ const testUser = {
 } as User;
 
 test.group("UserHandler", (group) => {
-  const testProvider = "local";
-  let testProviderId = "";
   let sandbox: sinon.SinonSandbox;
 
   group.each.setup(() => {
-    testProviderId = "123";
     sandbox = createSandbox();
 
     sandbox.stub(BlStorage.UserDetails, "add").callsFake(() => {
@@ -66,17 +63,5 @@ test.group("UserHandler", (group) => {
       // @ts-expect-error fixme: auto ignored bad test types
       error.getCode().should.be.eq(702);
     });
-  });
-
-  test("should resolve with a user when username, provider and providerId is valid", async ({
-    assert,
-  }) => {
-    const user = await UserHandler.create({
-      username: "jesus@christ.com",
-      password: "superstar",
-      provider: testProvider,
-      providerId: testProviderId,
-    });
-    assert.equal(user.username, testUser.username);
   });
 });

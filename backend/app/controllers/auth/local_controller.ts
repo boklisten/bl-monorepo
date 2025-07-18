@@ -2,11 +2,10 @@ import { HttpContext } from "@adonisjs/core/http";
 import validator from "validator";
 
 import TokenHandler from "#services/auth/token/token.handler";
-import UserHandler from "#services/auth/user/user.handler";
-import BlCrypto from "#services/config/bl-crypto";
 import { PasswordService } from "#services/password_service";
 import { SEDbQuery } from "#services/query/se.db-query";
 import { BlStorage } from "#services/storage/bl-storage";
+import { UserService } from "#services/user_service";
 import {
   localAuthValidator,
   registerValidator,
@@ -34,7 +33,7 @@ export default class LocalController {
       await request.validateUsing(localAuthValidator);
     const normalizedUsername = await normalizeUsername(username);
 
-    const user = await UserHandler.getOrNull(normalizedUsername);
+    const user = await UserService.getOrNull(normalizedUsername);
 
     if (!user) {
       return {
@@ -70,13 +69,7 @@ export default class LocalController {
 
   async register({ request }: HttpContext) {
     const { email, password } = await request.validateUsing(registerValidator);
-
-    await UserHandler.create({
-      username: email,
-      password,
-      provider: "local",
-      providerId: BlCrypto.random(),
-    });
+    await UserService.createLocalUser({ username: email, password });
     return await TokenHandler.createTokens(email);
   }
 }

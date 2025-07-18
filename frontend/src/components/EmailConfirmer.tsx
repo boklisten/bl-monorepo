@@ -1,7 +1,8 @@
 "use client";
 
 import { Alert, CircularProgress, Typography } from "@mui/material";
-import { useEffect, useState } from "react";
+import { useMutation } from "@tanstack/react-query";
+import { useEffect } from "react";
 
 import CountdownToRedirect from "@/components/CountdownToRedirect";
 import DynamicLink from "@/components/DynamicLink";
@@ -12,32 +13,24 @@ export default function EmailConfirmer({
 }: {
   confirmationId: string;
 }) {
-  const [status, setStatus] = useState<"WAIT" | "SUCCESS" | "ERROR">("WAIT");
+  const { mutateAsync, isPending, isError, isSuccess } = useMutation({
+    mutationFn: () =>
+      publicApiClient.email_validations({ id: confirmationId }).$get().unwrap(),
+  });
 
   useEffect(() => {
-    async function validateEmail(confirmationId: string) {
-      try {
-        await publicApiClient
-          .email_validations({ id: confirmationId })
-          .$get()
-          .unwrap();
-        setStatus("SUCCESS");
-      } catch {
-        setStatus("ERROR");
-      }
-    }
-    void validateEmail(confirmationId);
-  }, [confirmationId]);
+    void mutateAsync();
+  }, [mutateAsync]);
 
   return (
     <>
-      {status === "WAIT" && (
+      {isPending && (
         <>
           <Typography variant="h1">Verifiserer e-post...</Typography>
           <CircularProgress />
         </>
       )}
-      {status === "ERROR" && (
+      {isError && (
         <>
           <Alert severity={"error"} sx={{ my: 1 }}>
             Kunne ikke bekrefte e-post. Lenken kan være utløpt. Du kan prøve å
@@ -48,7 +41,7 @@ export default function EmailConfirmer({
           </DynamicLink>
         </>
       )}
-      {status === "SUCCESS" && (
+      {isSuccess && (
         <>
           <Alert sx={{ my: 1 }}>E-postadressen ble bekreftet!</Alert>
           <CountdownToRedirect path={"/"} seconds={5} />

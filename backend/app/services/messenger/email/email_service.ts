@@ -121,7 +121,7 @@ export class EmailService {
         {
           to: email,
           dynamicTemplateData: {
-            emailVerificationUri: `${env.get("CLIENT_URI")}auth/email/confirm/${confirmationCode}`,
+            emailVerificationUri: `${env.get("NEXT_CLIENT_URI")}auth/email/confirm/${confirmationCode}`,
           },
         },
       ],

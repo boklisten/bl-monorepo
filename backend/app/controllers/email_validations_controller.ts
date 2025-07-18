@@ -16,11 +16,15 @@ export default class EmailValidationsController {
     await Messenger.emailConfirmation(userDetail.email, emailValidation.id);
   }
 
-  async confirm({ request }: HttpContext) {
+  async confirm({ request, response }: HttpContext) {
     const id = request.param("id");
-    const emailValidation = await BlStorage.EmailValidations.get(id);
-    await BlStorage.UserDetails.update(emailValidation.userDetailId, {
-      emailConfirmed: true,
-    });
+    try {
+      const emailValidation = await BlStorage.EmailValidations.get(id);
+      await BlStorage.UserDetails.update(emailValidation.userDetailId, {
+        emailConfirmed: true,
+      });
+    } catch {
+      response.status(404);
+    }
   }
 }

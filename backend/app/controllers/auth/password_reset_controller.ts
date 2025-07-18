@@ -71,7 +71,7 @@ export default class PasswordResetController {
         {
           to: email,
           dynamicTemplateData: {
-            passwordResetUri: `${env.get("CLIENT_URI")}auth/reset/${passwordReset.id}?resetToken=${token}`,
+            passwordResetUri: `${env.get("NEXT_CLIENT_URI")}auth/reset/${passwordReset.id}?resetToken=${token}`,
           },
         },
       ],

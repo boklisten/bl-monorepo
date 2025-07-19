@@ -16,6 +16,11 @@ const LoginSchema = new Schema<Login>(
       required: false,
       _id: false,
     },
+    vipps: {
+      type: { userId: { type: String, required: true } },
+      required: false,
+      _id: false,
+    },
     local: {
       type: {
         hashedPassword: { type: String, required: true },

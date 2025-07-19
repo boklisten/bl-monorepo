@@ -5,7 +5,7 @@ import SocialLoginButton from "@/components/user/SocialLoginButton";
 const FacebookButton = ({ label }: { label: string }) => (
   <SocialLoginButton
     label={label}
-    brandName={"facebook"}
+    provider={"facebook"}
     brandIcon={<FacebookRoundedIcon />}
     brandColor={"#1877F2"}
   />

@@ -5,7 +5,7 @@ import SocialLoginButton from "@/components/user/SocialLoginButton";
 const GoogleButton = ({ label }: { label: string }) => (
   <SocialLoginButton
     label={label}
-    brandName={"google"}
+    provider={"google"}
     brandIcon={<GoogleIcon />}
     brandColor={"#ea4335"}
   />

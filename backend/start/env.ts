@@ -38,6 +38,8 @@ export default await Env.create(new URL("../", import.meta.url), {
   FACEBOOK_SECRET: Env.schema.string(),
   GOOGLE_CLIENT_ID: Env.schema.string(),
   GOOGLE_SECRET: Env.schema.string(),
+  VIPPS_CLIENT_ID: Env.schema.string(),
+  VIPPS_SECRET: Env.schema.string(),
   SENDGRID_API_KEY: Env.schema.string(),
   TWILIO_SMS_AUTH_TOKEN: Env.schema.string(),
   TWILIO_SMS_SID: Env.schema.string(),

@@ -10,9 +10,12 @@ interface LocalLogin {
   salt?: string | undefined; // fixme: Legacy, only used for the old sha256 hashing, remove when most of our hashes have been converted to argon2
 }
 
+export type SocialProvider = "google" | "facebook" | "vipps";
+
 export interface Login {
   google?: SocialLogin;
   facebook?: SocialLogin;
+  vipps?: SocialLogin;
   local?: LocalLogin;
 }
 

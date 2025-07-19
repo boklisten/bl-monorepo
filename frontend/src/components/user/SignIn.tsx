@@ -15,6 +15,7 @@ import DynamicLink from "@/components/DynamicLink";
 import FacebookButton from "@/components/user/FacebookButton";
 import PasswordField from "@/components/user/fields/PasswordField";
 import GoogleButton from "@/components/user/GoogleButton";
+import VippsButton from "@/components/user/VippsButton";
 import { publicApiClient } from "@/utils/api/publicApiClient";
 import useAuth from "@/utils/useAuth";
 import useAuthLinker from "@/utils/useAuthLinker";
@@ -81,8 +82,11 @@ export default function SignIn() {
         >
           Logg inn
         </Typography>
-        <FacebookButton label={"Logg inn med Facebook"} />
-        <GoogleButton label={"Logg inn med Google"} />
+        <Stack gap={2} sx={{ width: "100%", alignItems: "center" }}>
+          <VippsButton verb={"login"} />
+          <FacebookButton label={"Logg inn med Facebook"} />
+          <GoogleButton label={"Logg inn med Google"} />
+        </Stack>
 
         <Divider sx={{ width: "100%", my: 3 }}>eller</Divider>
         <Box

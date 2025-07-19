@@ -18,6 +18,7 @@ import LoginInfoSection from "@/components/user/user-detail-editor/LoginInfoSect
 import TermsAndConditionsDisclaimer from "@/components/user/user-detail-editor/TermsAndConditionsDisclaimer";
 import { useUserDetailEditorForm } from "@/components/user/user-detail-editor/useUserDetailEditorForm";
 import YourInfoSection from "@/components/user/user-detail-editor/YourInfoSection";
+import VippsButton from "@/components/user/VippsButton";
 
 const UserDetailEditor = ({
   isSignUp,
@@ -59,8 +60,11 @@ const UserDetailEditor = ({
         </Typography>
         {isSignUp && (
           <>
-            <FacebookButton label={"Registrer deg med Facebook"} />
-            <GoogleButton label={"Registrer deg med Google"} />
+            <Stack gap={2} sx={{ width: "100%", alignItems: "center" }}>
+              <VippsButton verb={"register"} />
+              <FacebookButton label={"Registrer deg med Facebook"} />
+              <GoogleButton label={"Registrer deg med Google"} />
+            </Stack>
             <Divider sx={{ width: "100%", my: 3 }}>
               Eller, registrer deg med e-post
             </Divider>

@@ -1,49 +1,32 @@
 "use client";
+import { SocialProvider } from "@boklisten/backend/app/services/types/user";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
-import { useRouter, useSearchParams } from "next/navigation";
 import { ReactNode } from "react";
 
-import { add } from "@/api/storage";
-import useApiClient from "@/utils/api/useApiClient";
-import BL_CONFIG from "@/utils/bl-config";
+import useSocialLogin from "@/utils/useSocialLogin";
 
 interface SocialLoginProps {
   label: string;
-  brandName: "facebook" | "google";
+  provider: SocialProvider;
   brandIcon: ReactNode;
   brandColor: string;
 }
 
 const SocialLoginButton = ({
   label,
-  brandName,
+  provider,
   brandIcon,
   brandColor,
 }: SocialLoginProps) => {
-  const client = useApiClient();
-  const router = useRouter();
-  const searchParams = useSearchParams();
-
-  const caller = searchParams.get("caller");
-  const redirect = searchParams.get("redirect");
+  const { redirectToLogin } = useSocialLogin();
   return (
     <Button
-      onClick={() => {
-        if (caller) {
-          add(BL_CONFIG.login.localStorageKeys.caller, caller);
-        }
-        if (redirect) {
-          add(BL_CONFIG.login.localStorageKeys.redirect, redirect);
-        }
-        router.push(client.auth({ provider: brandName }).redirect.$url());
-      }}
-      data-testid={`${brandName}-button`}
+      onClick={() => redirectToLogin(provider)}
       fullWidth
       variant="contained"
       sx={{
-        mt: 1,
         padding: 2,
         background: brandColor,
         display: "flex",

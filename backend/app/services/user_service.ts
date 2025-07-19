@@ -4,7 +4,7 @@ import Messenger from "#services/messenger/messenger";
 import { PasswordService } from "#services/password_service";
 import { SEDbQuery } from "#services/query/se.db-query";
 import { BlStorage } from "#services/storage/bl-storage";
-import { Login, User } from "#services/types/user";
+import { Login, SocialProvider, User } from "#services/types/user";
 import { UserDetailService } from "#services/user_detail_service";
 import { registerSchema } from "#validators/auth_validators";
 
@@ -52,7 +52,7 @@ export const UserService = {
   },
   async connectProviderToUser(
     user: User,
-    provider: "google" | "facebook",
+    provider: SocialProvider,
     providerId: string,
   ) {
     if (user.login[provider]?.userId !== providerId) {
@@ -82,7 +82,7 @@ export const UserService = {
     });
   },
   async createSocialUser(socialUser: {
-    provider: "facebook" | "google";
+    provider: SocialProvider;
     providerId: string;
     email: string;
     emailConfirmed: boolean;

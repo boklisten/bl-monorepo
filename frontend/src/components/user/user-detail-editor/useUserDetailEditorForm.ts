@@ -9,6 +9,7 @@ import {
   UseFormHandleSubmit,
   UseFormRegister,
   UseFormSetError,
+  UseFormWatch,
 } from "react-hook-form";
 
 import { addAccessToken, addRefreshToken } from "@/api/token";
@@ -42,6 +43,7 @@ interface UseUserDetailEditorFormReturn {
   register: UseFormRegister<UserEditorFields>;
   onSubmit: ReturnType<UseFormHandleSubmit<UserEditorFields>>;
   control: Control<UserEditorFields>;
+  watch: UseFormWatch<UserEditorFields>;
   setError: UseFormSetError<UserEditorFields>;
   errors: FieldErrors<UserEditorFields>;
   updatePostalCity: (newPostalCode: string) => void;
@@ -249,6 +251,7 @@ export function useUserDetailEditorForm(
     isSubmitting,
     register,
     control,
+    watch,
     setError,
     errors,
     updatePostalCity,

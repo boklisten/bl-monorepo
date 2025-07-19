@@ -33,6 +33,7 @@ const UserDetailEditor = ({
     isSubmitting,
     register,
     control,
+    watch,
     setError,
     errors,
     updatePostalCity,
@@ -75,6 +76,7 @@ const UserDetailEditor = ({
             <LoginInfoSection
               signUp={isSignUp}
               emailConfirmed={userDetails.emailConfirmed}
+              watch={watch}
               errors={errors}
               setError={setError}
               userDetails={userDetails}

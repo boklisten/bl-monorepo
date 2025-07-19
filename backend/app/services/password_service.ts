@@ -1,6 +1,7 @@
+import { createHash, timingSafeEqual } from "node:crypto";
+
 import hash from "@adonisjs/core/services/hash";
 
-import BlCrypto from "#services/config/bl-crypto";
 import { BlStorage } from "#services/storage/bl-storage";
 
 export const PasswordService = {
@@ -30,8 +31,11 @@ export const PasswordService = {
   }) {
     // fixme: Legacy code to convert old sha256 hashes to argon2. Remove this logic when most of our hashes have been converted to argon2
     if (!hash.isValidHash(hashedPassword)) {
-      const candidate = await BlCrypto.hash(password, salt ?? "");
-      if (!BlCrypto.timingSafeEqual(candidate, hashedPassword)) return false;
+      const candidateHash = createHash("sha256")
+        .update(password + salt)
+        .digest();
+      const storedHash = Buffer.from(hashedPassword, "hex");
+      if (!timingSafeEqual(candidateHash, storedHash)) return false;
       await this.setPassword(userId, password);
       return true;
     }

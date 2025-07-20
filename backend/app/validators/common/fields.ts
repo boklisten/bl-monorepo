@@ -5,7 +5,7 @@ export const phoneField = vine
   .string()
   .trim()
   .mobile({ locale: ["nb-NO"] });
-export const passwordField = vine.string().minLength(10);
+export const passwordField = vine.string().minLength(10).maxLength(256);
 export const postalCodeField = vine
   .string()
   .postalCode({ countryCode: ["NO"] });

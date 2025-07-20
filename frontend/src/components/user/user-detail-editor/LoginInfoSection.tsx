@@ -3,13 +3,7 @@ import { QrCode } from "@mui/icons-material";
 import { Button, Dialog, Stack } from "@mui/material";
 import Grid from "@mui/material/Grid";
 import { useState } from "react";
-import {
-  FieldErrors,
-  UseFormRegister,
-  UseFormSetError,
-  UseFormWatch,
-} from "react-hook-form";
-import PasswordStrengthBar from "react-password-strength-bar";
+import { FieldErrors, UseFormRegister, UseFormSetError } from "react-hook-form";
 import QRCode from "react-qr-code";
 
 import EmailConfirmationStatus from "@/components/user/fields/EmailConfirmationStatus";
@@ -26,7 +20,6 @@ interface LoginInfoSectionProps {
   userDetails: UserDetail;
   register: UseFormRegister<UserEditorFields>;
   setError: UseFormSetError<UserEditorFields>;
-  watch: UseFormWatch<UserEditorFields>;
 }
 
 const LoginInfoSection = ({
@@ -36,10 +29,8 @@ const LoginInfoSection = ({
   userDetails,
   register,
   setError,
-  watch,
 }: LoginInfoSectionProps) => {
   const [customerIdDialogOpen, setCustomerIdDialogOpen] = useState(false);
-  const passwordValue = watch("password");
   return (
     <>
       <Grid size={{ xs: 12 }}>
@@ -84,13 +75,7 @@ const LoginInfoSection = ({
             autoComplete="new-password"
             error={!!errors.password}
             {...register("password", fieldValidators.password)}
-            margin="none"
-          />
-          <PasswordStrengthBar
-            password={passwordValue}
-            minLength={10}
-            shortScoreWord={"for kort"}
-            scoreWords={["svakt", "svakt", "ok", "stekt", "veldig sterkt"]}
+            margin={"none"}
           />
           <FieldErrorAlert error={errors.password} />
         </Grid>

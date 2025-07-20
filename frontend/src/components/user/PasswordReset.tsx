@@ -1,22 +1,15 @@
 "use client";
-import { Visibility, VisibilityOff } from "@mui/icons-material";
-import {
-  Alert,
-  IconButton,
-  InputAdornment,
-  Stack,
-  Tooltip,
-  Box,
-} from "@mui/material";
+import { Alert, Stack, Box } from "@mui/material";
 import Button from "@mui/material/Button";
 import Grid from "@mui/material/Grid";
-import TextField from "@mui/material/TextField";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { useSearchParams } from "next/navigation";
-import React, { useState } from "react";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 
 import DynamicLink from "@/components/DynamicLink";
+import PasswordField from "@/components/user/fields/PasswordField";
+import { fieldValidators } from "@/components/user/user-detail-editor/fieldValidators";
 import { publicApiClient } from "@/utils/api/publicApiClient";
 
 interface PasswordResetFields {
@@ -25,7 +18,6 @@ interface PasswordResetFields {
 
 export default function PasswordReset({ resetId }: { resetId: string }) {
   const searchParams = useSearchParams();
-  const [showPassword, setShowPassword] = useState(false);
   const [apiError, setApiError] = useState<string | null>(null);
   const {
     register,
@@ -106,51 +98,17 @@ export default function PasswordReset({ resetId }: { resetId: string }) {
             </Alert>
           )}
           {Object.entries(errors).map(([type, message]) => (
-            <Alert key={type} severity="error" sx={{ mt: 1 }}>
+            <Alert key={type} severity="error" sx={{ my: 2 }}>
               {message.message}
             </Alert>
           ))}
-          <Box
-            sx={{
-              display: "flex",
-              justifyContent: "end",
-              alignItems: "center",
-            }}
-          >
-            <TextField
-              required
-              margin="normal"
-              fullWidth
-              label="Nytt passord"
-              type={showPassword ? "text" : "password"}
-              id="password"
-              autoComplete="new-password"
-              error={!!errors.password}
-              {...register("password", {
-                required: "Du må fylle inn nytt passord",
-                minLength: {
-                  value: 10,
-                  message: "Passordet må minst ha 10 tegn",
-                },
-              })}
-            />
-            <InputAdornment
-              position="end"
-              sx={{ position: "absolute", mr: 1, mt: 1 }}
-            >
-              <Tooltip title={showPassword ? "Skjul passord" : "Vis passord"}>
-                <IconButton
-                  aria-label="toggle password visibility"
-                  onClick={() => setShowPassword(!showPassword)}
-                  onMouseDown={(event: React.MouseEvent<HTMLButtonElement>) => {
-                    event.preventDefault();
-                  }}
-                >
-                  {showPassword ? <VisibilityOff /> : <Visibility />}
-                </IconButton>
-              </Tooltip>
-            </InputAdornment>
-          </Box>
+          <PasswordField
+            label="Nytt passord"
+            autoComplete="new-password"
+            error={!!errors.password}
+            {...register("password", fieldValidators.password)}
+            margin={"none"}
+          />
           <Button
             type="submit"
             fullWidth

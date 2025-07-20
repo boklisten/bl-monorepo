@@ -8,9 +8,7 @@ import { UserEditorFields } from "@/components/user/user-detail-editor/useUserDe
 import unpack from "@/utils/api/bl-api-request";
 import { publicApiClient } from "@/utils/api/publicApiClient";
 
-export const fieldValidators: {
-  [K in keyof UserEditorFields]: RegisterOptions<UserEditorFields>;
-} = {
+export const fieldValidators = {
   email: {
     required: "Du må fylle inn e-post",
     validate: (v) =>
@@ -127,4 +125,6 @@ export const fieldValidators: {
   branchMembership: {
     required: "Du må velge din skole",
   },
+} as const satisfies {
+  [K in keyof UserEditorFields]: RegisterOptions<UserEditorFields>;
 };

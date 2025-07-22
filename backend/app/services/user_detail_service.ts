@@ -4,7 +4,7 @@ import Blid from "#services/auth/blid";
 import BlCrypto from "#services/config/bl-crypto";
 import { SEDbQuery } from "#services/query/se.db-query";
 import { BlStorage } from "#services/storage/bl-storage";
-import { SocialProvider } from "#services/types/user";
+import { SocialProvider, VippsUser } from "#services/types/user";
 import { UserDetail } from "#shared/user/user-detail/user-detail";
 import { registerSchema } from "#validators/auth_validators";
 
@@ -48,6 +48,23 @@ export const UserDetailService = {
         email,
         blid,
         emailConfirmed,
+        // fixme: it is janky to just add this without all the details
+      } as UserDetail,
+      { id: blid, permission: "customer" },
+    );
+  },
+  async createVippsUserDetail(vippsUser: VippsUser) {
+    const blid = await Blid.createUserBlid("vipps", vippsUser.id);
+    return await BlStorage.UserDetails.add(
+      {
+        email: vippsUser.email,
+        blid,
+        emailConfirmed: vippsUser.emailVerified,
+        phone: vippsUser.phoneNumber,
+        name: vippsUser.name,
+        address: vippsUser.address,
+        postCode: vippsUser.postalCode,
+        postCity: vippsUser.postalCity,
         // fixme: it is janky to just add this without all the details
       } as UserDetail,
       { id: blid, permission: "customer" },

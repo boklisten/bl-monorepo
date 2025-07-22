@@ -12,6 +12,18 @@ interface LocalLogin {
 
 export type SocialProvider = "google" | "facebook" | "vipps";
 
+export interface VippsUser {
+  id: string;
+  name: string;
+  email: string;
+  emailVerified: boolean;
+  phoneNumber: string;
+  phoneNumberVerified: boolean;
+  address: string;
+  postalCode: string;
+  postalCity: string;
+}
+
 export interface Login {
   google?: SocialLogin;
   facebook?: SocialLogin;

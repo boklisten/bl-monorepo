@@ -20,7 +20,7 @@ const allyConfig = defineConfig({
       : "test",
     clientId: env.get("VIPPS_CLIENT_ID"),
     clientSecret: env.get("VIPPS_SECRET"),
-    callbackUrl: env.get("BL_API_URI") + "/auth/vipps/callback",
+    callbackUrl: env.get("BL_API_URI") + "/v2/auth/vipps/callback",
     scopes: ["openid", "email", "phoneNumber", "address", "name"],
   }),
 });

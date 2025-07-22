@@ -6,6 +6,7 @@ const AuthTokensController = () =>
   import("#controllers/auth/tokens_controller");
 const AuthSocialController = () =>
   import("#controllers/auth/social_controller");
+const AuthVippsController = () => import("#controllers/auth/vipps_controller");
 const AuthLocalController = () => import("#controllers/auth/local_controller");
 const AuthPasswordResetController = () =>
   import("#controllers/auth/password_reset_controller");
@@ -44,6 +45,13 @@ router
 router
   .get("/auth/:provider/callback", [AuthSocialController, "callback"])
   .as("auth.social.callback");
+
+/**
+ * auth vipps
+ */
+router
+  .get("/v2/auth/vipps/callback", [AuthVippsController, "callback"])
+  .as("auth.vipps.callback");
 
 /**
  * auth local

@@ -4,7 +4,7 @@ import Messenger from "#services/messenger/messenger";
 import { PasswordService } from "#services/password_service";
 import { SEDbQuery } from "#services/query/se.db-query";
 import { BlStorage } from "#services/storage/bl-storage";
-import { Login, SocialProvider, User } from "#services/types/user";
+import { Login, SocialProvider, User, VippsUser } from "#services/types/user";
 import { UserDetailService } from "#services/user_detail_service";
 import { registerSchema } from "#validators/auth_validators";
 
@@ -94,6 +94,18 @@ export const UserService = {
       username: socialUser.email,
       login: { [socialUser.provider]: { userId: socialUser.providerId } },
       emailConfirmed: socialUser.emailConfirmed,
+      blid: addedUserDetail.blid,
+      userDetailId: addedUserDetail.id,
+    });
+  },
+  async createVippsUser(vippsUser: VippsUser) {
+    const addedUserDetail =
+      await UserDetailService.createVippsUserDetail(vippsUser);
+
+    return createUser({
+      username: vippsUser.email,
+      login: { vipps: { userId: vippsUser.id } },
+      emailConfirmed: vippsUser.emailVerified,
       blid: addedUserDetail.blid,
       userDetailId: addedUserDetail.id,
     });

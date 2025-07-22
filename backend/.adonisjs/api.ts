@@ -46,6 +46,13 @@ type AuthIdCallbackGetHead = {
     false
   >;
 };
+type V2AuthVippsCallbackGetHead = {
+  request: unknown;
+  response: MakeNonSerializedTuyauResponse<
+    import("../app/controllers/auth/vipps_controller.ts").default["callback"],
+    false
+  >;
+};
 type AuthLocalLoginPost = {
   request: MakeTuyauRequest<
     InferInput<
@@ -389,6 +396,15 @@ export interface ApiDefinition {
       $url: {};
       $post: V2TokenPost;
     };
+    auth: {
+      vipps: {
+        callback: {
+          $url: {};
+          $get: V2AuthVippsCallbackGetHead;
+          $head: V2AuthVippsCallbackGetHead;
+        };
+      };
+    };
     branches: {
       $url: {};
       $post: V2BranchesPost;
@@ -582,6 +598,13 @@ const routes = [
     path: "/auth/:provider/callback",
     method: ["GET", "HEAD"],
     types: {} as AuthIdCallbackGetHead,
+  },
+  {
+    params: [],
+    name: "auth.vipps.callback",
+    path: "/v2/auth/vipps/callback",
+    method: ["GET", "HEAD"],
+    types: {} as V2AuthVippsCallbackGetHead,
   },
   {
     params: [],

@@ -7,6 +7,8 @@ import type {
 } from "@adonisjs/ally/types";
 import type { HttpContext } from "@adonisjs/core/http";
 
+import { VippsUser } from "#services/types/user";
+
 interface VippsDriverAccessToken {
   token: string;
   type: "bearer";
@@ -111,15 +113,20 @@ class VippsDriver extends Oauth2Driver<
     const body = await request.get();
     return {
       id: body.sub,
-      nickName: body.name,
       name: body.name,
       email: body.email,
-      avatarUrl: body.picture,
-      emailVerificationState: body.email_verified
-        ? ("verified" as const)
-        : ("unverified" as const),
+      emailVerified: body.email_verified,
+      phoneNumber: body.phone_number.slice(-8),
+      phoneNumberVerified: body.phone_number_verified,
+      address: body.address.street_address,
+      postalCode: body.address.postal_code,
+      postalCity: body.address.region,
+
+      nickName: body.given_name,
+      emailVerificationState: body.email_verified ? "verified" : "unverified",
+      avatarUrl: "",
       original: body,
-    };
+    } as const;
   }
 
   accessDenied() {
@@ -128,25 +135,25 @@ class VippsDriver extends Oauth2Driver<
 
   async user(
     callback?: (request: ApiRequestContract) => void,
-  ): Promise<AllyUserContract<VippsDriverAccessToken>> {
+  ): Promise<AllyUserContract<VippsDriverAccessToken> & VippsUser> {
     const token = await this.accessToken(callback);
     const user = await this.getUserInfo(token.token, callback);
 
     return {
       ...user,
       token: token,
-    };
+    } as const;
   }
 
   async userFromToken(
     token: string,
     callback?: (request: ApiRequestContract) => void,
-  ) {
+  ): Promise<AllyUserContract<VippsDriverAccessToken> & VippsUser> {
     const user = await this.getUserInfo(token, callback);
     return {
       ...user,
-      token: { token, type: "bearer" as const },
-    };
+      token: { token, type: "bearer" },
+    } as const;
   }
 }
 

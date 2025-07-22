@@ -41,9 +41,8 @@ export const AuthVippsService = {
     const existingUserDetail = await UserDetailService.getByPhoneNumber(
       user.phoneNumber,
     );
-    const existingUser = await UserService.getByUsername(
-      existingUserDetail?.email ?? user.email,
-    );
+    const email = existingUserDetail?.email ?? user.email;
+    const existingUser = await UserService.getByUsername(email);
     if (existingUser) {
       await UserService.connectProviderToUser(existingUser, "vipps", user.id);
       if (!existingUserDetail) {
@@ -57,9 +56,8 @@ export const AuthVippsService = {
       await UserService.createVippsUser(user);
     }
 
-    const { accessToken, refreshToken } = await TokenHandler.createTokens(
-      user.email,
-    );
+    const { accessToken, refreshToken } =
+      await TokenHandler.createTokens(email);
 
     return ctx.response.redirect(
       `${env.get(

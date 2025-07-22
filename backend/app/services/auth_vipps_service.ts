@@ -38,10 +38,14 @@ export const AuthVippsService = {
 
     const user = await social.user();
 
-    const existingUser = await UserService.getByUsername(user.email);
+    const existingUserDetail = await UserDetailService.getByPhoneNumber(
+      user.phoneNumber,
+    );
+    const existingUser = await UserService.getByUsername(
+      existingUserDetail?.email ?? user.email,
+    );
     if (existingUser) {
       await UserService.connectProviderToUser(existingUser, "vipps", user.id);
-      const existingUserDetail = await UserDetailService.getByEmail(user.email);
       if (!existingUserDetail) {
         const addedUserDetail =
           await UserDetailService.createVippsUserDetail(user);

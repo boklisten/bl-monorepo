@@ -14,7 +14,7 @@ export default function AuthFailureReasonAlert() {
   let description: string | null = null;
   switch (reason) {
     case AUTH_SOCIAL_ERROR.ACCESS_DENIED: {
-      text = "Du har avbytt innloggingsprosessen";
+      text = "Du har avbrutt innloggingsprosessen";
       break;
     }
     case AUTH_SOCIAL_ERROR.EXPIRED: {

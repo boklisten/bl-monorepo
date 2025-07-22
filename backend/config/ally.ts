@@ -15,7 +15,9 @@ const allyConfig = defineConfig({
     callbackUrl: env.get("BL_API_URI") + "/auth/google/callback",
   }),
   vipps: VippsDriverService({
-    environment: ["production", "staging"].includes(env.get("API_ENV")) ? "production" : "test",
+    environment: ["production", "staging"].includes(env.get("API_ENV"))
+      ? "production"
+      : "test",
     clientId: env.get("VIPPS_CLIENT_ID"),
     clientSecret: env.get("VIPPS_SECRET"),
     callbackUrl: env.get("BL_API_URI") + "/auth/vipps/callback",

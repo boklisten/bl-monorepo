@@ -79,6 +79,18 @@ class VippsDriver extends Oauth2Driver<
     request.param("response_type", "code");
   }
 
+  protected override configureAccessTokenRequest(request: ApiRequestContract) {
+    const credentials = Buffer.from(
+      `${this.config.clientId}:${this.config.clientSecret}`,
+      "utf-8",
+    ).toString("base64");
+    request.header("Authorization", `Basic ${credentials}`);
+
+    request.field("grant_type", "authorization_code");
+    request.field("code", this.ctx.request.input(this.codeParamName));
+    request.field("redirect_uri", this.config.callbackUrl);
+  }
+
   protected getAuthenticatedRequest(url: string, token: string) {
     const request = this.httpClient(url);
     request.header("Authorization", `Bearer ${token}`);

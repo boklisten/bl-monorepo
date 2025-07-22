@@ -27,15 +27,12 @@ async function handleCallback(ctx: HttpContext) {
 
   if (social.accessDenied()) {
     error = ACCESS_DENIED;
-  }
-
-  if (social.stateMisMatch()) {
+  } else if (social.stateMisMatch()) {
     error = EXPIRED;
-  }
-
-  if (social.hasError()) {
+  } else if (social.hasError()) {
     error = ERROR;
   }
+
   if (error) {
     redirectToAuthFailedPage(ctx, error);
     return;

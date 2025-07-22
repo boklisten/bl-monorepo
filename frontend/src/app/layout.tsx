@@ -2,6 +2,7 @@ import { ThemeProvider } from "@mui/material";
 import CssBaseline from "@mui/material/CssBaseline";
 import { AppRouterCacheProvider } from "@mui/material-nextjs/v15-appRouter";
 import { Metadata } from "next";
+import Script from "next/script";
 import { ReactNode, Suspense } from "react";
 
 import AuthLinker from "@/components/AuthLinker";
@@ -29,6 +30,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html lang="no">
       <body>
+        <Script src="https://checkout.vipps.no/checkout-button/v1/vipps-checkout-button.js" />
         <Suspense>
           <AppRouterCacheProvider>
             <ThemeProvider theme={theme}>

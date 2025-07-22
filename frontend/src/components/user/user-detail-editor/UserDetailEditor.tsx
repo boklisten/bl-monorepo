@@ -1,6 +1,6 @@
 "use client";
 import { UserDetail } from "@boklisten/backend/shared/user/user-detail/user-detail";
-import { Alert, Button, Divider, Stack, Typography } from "@mui/material";
+import { Button, Divider, Stack, Typography } from "@mui/material";
 import Box from "@mui/material/Box";
 import Checkbox from "@mui/material/Checkbox";
 import Container from "@mui/material/Container";
@@ -28,8 +28,6 @@ const UserDetailEditor = ({
   userDetails?: UserDetail;
 }) => {
   const {
-    isJustSaved,
-    setIsJustSaved,
     isSubmitting,
     register,
     control,
@@ -114,15 +112,6 @@ const UserDetailEditor = ({
             )}
           </Grid>
           <ErrorSummary errors={errors} />
-          {isJustSaved && (
-            <Alert
-              sx={{ mt: 2 }}
-              onClose={() => setIsJustSaved(false)}
-              severity="success"
-            >
-              Brukerinnstillingene ble oppdatert
-            </Alert>
-          )}
           <Button
             loading={isSubmitting}
             type="submit"

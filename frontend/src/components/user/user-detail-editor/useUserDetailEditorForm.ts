@@ -1,6 +1,7 @@
 import { UserDetail } from "@boklisten/backend/shared/user/user-detail/user-detail";
+import { useNotifications } from "@toolpad/core";
 import moment, { Moment } from "moment/moment";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import {
   Control,
   FieldErrors,
@@ -18,6 +19,7 @@ import {
 } from "@/components/user/fields/PostalCodeField";
 import { publicApiClient } from "@/utils/api/publicApiClient";
 import useApiClient from "@/utils/api/useApiClient";
+import { SUCCESS_NOTIFICATION } from "@/utils/notifications";
 import useAuthLinker from "@/utils/useAuthLinker";
 
 export interface UserEditorFields {
@@ -36,8 +38,6 @@ export interface UserEditorFields {
 }
 
 interface UseUserDetailEditorFormReturn {
-  isJustSaved: boolean;
-  setIsJustSaved: (isJustSaved: boolean) => void;
   isSubmitting: boolean;
   register: UseFormRegister<UserEditorFields>;
   onSubmit: ReturnType<UseFormHandleSubmit<UserEditorFields>>;
@@ -54,10 +54,10 @@ export function useUserDetailEditorForm(
   userDetails: UserDetail,
   isSignUp?: boolean,
 ): UseUserDetailEditorFormReturn {
-  const [isJustSaved, setIsJustSaved] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const { redirectToCaller } = useAuthLinker();
   const client = useApiClient();
+  const notifications = useNotifications();
 
   const defaultValues = {
     email: userDetails.email,
@@ -80,9 +80,7 @@ export function useUserDetailEditorForm(
     clearErrors,
     setError,
     watch,
-    formState: { errors, isDirty, submitCount },
-    reset,
-    getValues,
+    formState: { errors },
   } = useForm<UserEditorFields>({ mode: "onTouched", defaultValues });
 
   const { updatePostalCity, settlePostalCity, postalCity } = usePostalCity(
@@ -185,7 +183,10 @@ export function useUserDetailEditorForm(
       return;
     }
 
-    setIsJustSaved(true);
+    notifications.show(
+      "Brukerinnstillingene ble lagret!",
+      SUCCESS_NOTIFICATION,
+    );
   }
 
   const onSubmitValid: SubmitHandler<UserEditorFields> = async (data) => {
@@ -215,21 +216,6 @@ export function useUserDetailEditorForm(
     setIsSubmitting(false);
   };
 
-  // Hide the "Just saved"-banner when the form is dirtied again, and clean on submit
-  const values = getValues();
-  useEffect(() => {
-    if (submitCount > 0 && isJustSaved) {
-      reset(values, {
-        keepValues: true,
-        keepErrors: true,
-        keepIsValid: true,
-        keepIsValidating: true,
-      });
-    } else if (isDirty) {
-      setIsJustSaved(false);
-    }
-  }, [isDirty, reset, submitCount, isJustSaved, values]);
-
   const birthdayFieldValue = watch("birthday");
 
   const onIsUnderageChange = (isUnderage: boolean | null) => {
@@ -244,8 +230,6 @@ export function useUserDetailEditorForm(
   const isUnderage = birthdayFieldValue ? isUnder18(birthdayFieldValue) : null;
 
   return {
-    isJustSaved,
-    setIsJustSaved,
     isSubmitting,
     register,
     control,

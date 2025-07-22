@@ -31,18 +31,22 @@ export const UserDetailService = {
       return null;
     }
   },
-  async createSocialUserDetail({
-    provider,
-    providerId,
-    email,
-    emailConfirmed,
-  }: {
-    provider: SocialProvider;
-    providerId: string;
-    email: string;
-    emailConfirmed: boolean;
-  }) {
-    const blid = await Blid.createUserBlid(provider, providerId);
+  async createSocialUserDetail(
+    {
+      provider,
+      providerId,
+      email,
+      emailConfirmed,
+    }: {
+      provider: SocialProvider;
+      providerId: string;
+      email: string;
+      emailConfirmed: boolean;
+    },
+    existingBlid?: string,
+  ) {
+    const blid =
+      existingBlid ?? (await Blid.createUserBlid(provider, providerId));
     return await BlStorage.UserDetails.add(
       {
         email,
@@ -53,8 +57,9 @@ export const UserDetailService = {
       { id: blid, permission: "customer" },
     );
   },
-  async createVippsUserDetail(vippsUser: VippsUser) {
-    const blid = await Blid.createUserBlid("vipps", vippsUser.id);
+  async createVippsUserDetail(vippsUser: VippsUser, existingBlid?: string) {
+    const blid =
+      existingBlid ?? (await Blid.createUserBlid("vipps", vippsUser.id));
     return await BlStorage.UserDetails.add(
       {
         email: vippsUser.email,

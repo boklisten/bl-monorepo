@@ -46,8 +46,10 @@ export const AuthVippsService = {
     if (existingUser) {
       await UserService.connectProviderToUser(existingUser, "vipps", user.id);
       if (!existingUserDetail) {
-        const addedUserDetail =
-          await UserDetailService.createVippsUserDetail(user);
+        const addedUserDetail = await UserDetailService.createVippsUserDetail(
+          user,
+          existingUser.blid,
+        );
         await BlStorage.Users.update(existingUser.id, {
           userDetail: addedUserDetail.id,
         });

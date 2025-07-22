@@ -56,8 +56,10 @@ async function handleCallback(ctx: HttpContext) {
     await UserService.connectProviderToUser(existingUser, provider, user.id);
     const existingUserDetail = await UserDetailService.getByEmail(user.email);
     if (!existingUserDetail) {
-      const addedUserDetail =
-        await UserDetailService.createSocialUserDetail(socialUser);
+      const addedUserDetail = await UserDetailService.createSocialUserDetail(
+        socialUser,
+        existingUser.blid,
+      );
       await BlStorage.Users.update(existingUser.id, {
         userDetail: addedUserDetail.id,
       });

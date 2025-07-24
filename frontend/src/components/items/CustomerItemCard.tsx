@@ -117,7 +117,7 @@ export default function CustomerItemCard({
                   onClick={() => {
                     redirectTo(
                       "bl-web",
-                      `cart/receive?cart_actions=${JSON.stringify([{ customerItemId: actionableCustomerItem.id, action: action.type }])}`,
+                      `cart/receive?caller=items&cart_actions=${JSON.stringify([{ customerItemId: actionableCustomerItem.id, action: action.type }])}`,
                     );
                   }}
                 >

@@ -12,7 +12,7 @@ import {
 } from "@mui/material";
 import TableCell from "@mui/material/TableCell";
 import TableRow from "@mui/material/TableRow";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useDialogs, useNotifications } from "@toolpad/core";
 import moment from "moment";
 import { useRouter } from "next/navigation";
@@ -23,23 +23,21 @@ import {
   SUCCESS_NOTIFICATION,
 } from "@/utils/notifications";
 
-export default function OpenOrdersList() {
+export default function OpenOrdersList({
+  openOrderItems,
+}: {
+  openOrderItems: {
+    orderId: string;
+    itemId: string;
+    deadline: string;
+    title: string;
+  }[];
+}) {
   const dialogs = useDialogs();
   const notifications = useNotifications();
   const queryClient = useQueryClient();
   const router = useRouter();
   const client = useApiClient();
-
-  const { data: openOrderItems } = useQuery({
-    queryKey: [client.v2.orders.open_orders.$url()],
-    queryFn: async () =>
-      (await client.v2.orders.open_orders.$get().unwrap()) as {
-        orderId: string;
-        itemId: string;
-        deadline: string;
-        title: string;
-      }[],
-  });
 
   const cancelOrderItemMutation = useMutation({
     mutationFn: ({ orderId, itemId }: { orderId: string; itemId: string }) =>
@@ -49,12 +47,9 @@ export default function OpenOrdersList() {
         queryKey: [client.v2.orders.open_orders.$url()],
       }),
     onSuccess: () =>
-      notifications.show("Bestilling ble oppdatert!", SUCCESS_NOTIFICATION),
+      notifications.show("Avbestilling var vellykket!", SUCCESS_NOTIFICATION),
     onError: () =>
-      notifications.show(
-        "Klarte ikke fjerne bok fra bestilling!",
-        ERROR_NOTIFICATION,
-      ),
+      notifications.show("Klarte ikke avbestille bok!", ERROR_NOTIFICATION),
   });
 
   return (
@@ -83,10 +78,10 @@ export default function OpenOrdersList() {
                       onClick={async () => {
                         if (
                           await dialogs.confirm(
-                            `Du er nå i ferd med å fjerne ${orderItem.title} fra dine bestillinger. Dette kan ikke angres!`,
+                            `Du er nå i ferd med å avbestille ${orderItem.title}. Dersom du har betalt for boka og har rett på refusjon ber vi deg ta kontakt slik at vi kan ordne med dette.`,
                             {
-                              title: `Bekreft fjerning`,
-                              okText: "Fjern",
+                              title: `Bekreft avbestilling`,
+                              okText: "Avbestill",
                               cancelText: "Avbryt",
                             },
                           )
@@ -98,7 +93,7 @@ export default function OpenOrdersList() {
                         }
                       }}
                     >
-                      Fjern
+                      Avbestill
                     </Button>
                   </TableCell>
                 </TableRow>

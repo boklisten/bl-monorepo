@@ -386,6 +386,13 @@ type V2UserdetailsPost = {
     true
   >;
 };
+type V2CustomeritemsGetHead = {
+  request: unknown;
+  response: MakeNonSerializedTuyauResponse<
+    import("../app/controllers/customer_items_controller.ts").default["getCustomerItems"],
+    false
+  >;
+};
 export interface ApiDefinition {
   token: {
     $url: {};
@@ -435,6 +442,11 @@ export interface ApiDefinition {
     user_details: {
       $url: {};
       $post: V2UserdetailsPost;
+    };
+    customer_items: {
+      $url: {};
+      $get: V2CustomeritemsGetHead;
+      $head: V2CustomeritemsGetHead;
     };
   };
   auth: {
@@ -850,6 +862,13 @@ const routes = [
     path: "/v2/user_details",
     method: ["POST"],
     types: {} as V2UserdetailsPost,
+  },
+  {
+    params: [],
+    name: "customer_items.get",
+    path: "/v2/customer_items",
+    method: ["GET", "HEAD"],
+    types: {} as V2CustomeritemsGetHead,
   },
   {
     params: ["id"],

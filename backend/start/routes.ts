@@ -29,6 +29,8 @@ const MatchesController = () =>
   import("#controllers/matches/matches_controller");
 const UserDetailController = () =>
   import("#controllers/user_detail_controller");
+const CustomerItemsController = () =>
+  import("#controllers/customer_items_controller");
 
 /**
  * auth token
@@ -226,5 +228,12 @@ router
 router
   .post("/v2/user_details", [UserDetailController, "updateAsCustomer"])
   .as("user_detail.updateAsCustomer");
+
+/**
+ * customer items
+ */
+router
+  .get("/v2/customer_items", [CustomerItemsController, "getCustomerItems"])
+  .as("customer_items.get");
 
 CollectionEndpointCreator.generateEndpoints();

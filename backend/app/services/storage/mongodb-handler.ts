@@ -50,6 +50,14 @@ export class MongodbHandler<T extends BlDocument> {
     return document_;
   }
 
+  public async getOrNull(id: string | undefined): Promise<T | null> {
+    try {
+      return await this.get(id);
+    } catch {
+      return null;
+    }
+  }
+
   public async getByQuery(
     databaseQuery: SEDbQuery,
     allowedNestedDocuments?: NestedDocument[],

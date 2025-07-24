@@ -1,7 +1,7 @@
 import { HttpContext } from "@adonisjs/core/http";
 import { ObjectId } from "mongodb";
 
-import CollectionEndpointAuth from "#services/collection-endpoint/collection-endpoint-auth";
+import { PermissionService } from "#services/auth/permission.service";
 import { OrderItemMovedFromOrderHandler } from "#services/collections/order/helpers/order-item-moved-from-order-handler/order-item-moved-from-order-handler";
 import { BlStorage } from "#services/storage/bl-storage";
 import { OrderItem } from "#shared/order/order-item/order-item";
@@ -9,24 +9,12 @@ import { cancelOrderItemValidator } from "#validators/cancel_order_item_validato
 
 export default class OrdersController {
   async getOpenOrders(ctx: HttpContext) {
-    let details: string;
-    try {
-      const accessToken = await CollectionEndpointAuth.authenticate(
-        undefined,
-        ctx,
-      );
-      if (!accessToken) {
-        return ctx.response.unauthorized();
-      }
-      details = accessToken["details"];
-    } catch {
-      return ctx.response.unauthorized();
-    }
+    const { detailsId } = PermissionService.authenticate(ctx);
 
     return await BlStorage.Orders.aggregate([
       {
         $match: {
-          customer: new ObjectId(details),
+          customer: new ObjectId(detailsId),
           placed: true,
           amount: 0,
           byCustomer: true,

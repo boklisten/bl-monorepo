@@ -2,7 +2,6 @@ import { HttpContext } from "@adonisjs/core/http";
 import { ObjectId } from "mongodb";
 
 import { PermissionService } from "#services/auth/permission.service";
-import CollectionEndpointAuth from "#services/collection-endpoint/collection-endpoint-auth";
 import { isNullish } from "#services/helper/typescript-helpers";
 import { SEDbQuery } from "#services/query/se.db-query";
 import { BlSchemaName } from "#services/storage/bl-schema-names";
@@ -13,24 +12,6 @@ import { UserDetail } from "#shared/user/user-detail/user-detail";
 import { branchValidator } from "#validators/branch";
 import { branchMembershipValidator } from "#validators/branch_membership";
 import { subjectChoicesValidator } from "#validators/subject_choices";
-
-async function canAccess(ctx: HttpContext) {
-  try {
-    const accessToken = await CollectionEndpointAuth.authenticate(
-      { permission: "admin" },
-      ctx,
-    );
-    return !!(
-      accessToken &&
-      PermissionService.isPermissionEqualOrOver(
-        accessToken?.["permission"],
-        "admin",
-      )
-    );
-  } catch {
-    return false;
-  }
-}
 
 // Updates the relationship references in other branch entities
 async function updateBranchRelationships({
@@ -316,9 +297,8 @@ async function applySubjectChoices(
 
 export default class BranchesController {
   async add(ctx: HttpContext) {
-    if (!(await canAccess(ctx))) {
-      return ctx.response.unauthorized();
-    }
+    PermissionService.adminOrFail(ctx);
+
     const branchData = await ctx.request.validateUsing(branchValidator);
 
     try {
@@ -346,9 +326,8 @@ export default class BranchesController {
   }
 
   async update(ctx: HttpContext) {
-    if (!(await canAccess(ctx))) {
-      return ctx.response.unauthorized();
-    }
+    PermissionService.adminOrFail(ctx);
+
     const branchData = await ctx.request.validateUsing(branchValidator);
     const branchId = ctx.params["id"];
 
@@ -380,9 +359,8 @@ export default class BranchesController {
   }
 
   async uploadMemberships(ctx: HttpContext) {
-    if (!(await canAccess(ctx))) {
-      return ctx.response.unauthorized();
-    }
+    PermissionService.adminOrFail(ctx);
+
     const { branchId, membershipData } = await ctx.request.validateUsing(
       branchMembershipValidator,
     );
@@ -390,9 +368,8 @@ export default class BranchesController {
   }
 
   async uploadSubjectChoices(ctx: HttpContext) {
-    if (!(await canAccess(ctx))) {
-      return ctx.response.unauthorized();
-    }
+    PermissionService.adminOrFail(ctx);
+
     const { branchId, subjectChoices } = await ctx.request.validateUsing(
       subjectChoicesValidator,
     );

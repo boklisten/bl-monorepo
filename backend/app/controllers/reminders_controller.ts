@@ -3,7 +3,6 @@ import moment from "moment-timezone";
 import { ObjectId } from "mongodb";
 
 import { PermissionService } from "#services/auth/permission.service";
-import CollectionEndpointAuth from "#services/collection-endpoint/collection-endpoint-auth";
 import { sendMail } from "#services/messenger/email/email_service";
 import { EMAIL_SENDER } from "#services/messenger/email/email_templates";
 import { massSendSMS } from "#services/messenger/sms/sms-service";
@@ -13,24 +12,6 @@ import {
   assertSendGridTemplateId,
   SendGridTemplateId,
 } from "#validators/send_grid_template_id_validator";
-
-async function canAccess(ctx: HttpContext) {
-  try {
-    const accessToken = await CollectionEndpointAuth.authenticate(
-      { permission: "admin" },
-      ctx,
-    );
-    return !!(
-      accessToken &&
-      PermissionService.isPermissionEqualOrOver(
-        accessToken?.["permission"],
-        "admin",
-      )
-    );
-  } catch {
-    return false;
-  }
-}
 
 interface ReminderCustomer {
   name: string;
@@ -170,9 +151,8 @@ async function sendReminderEmail(
 
 export default class RemindersController {
   async countRecipients(ctx: HttpContext) {
-    if (!(await canAccess(ctx))) {
-      return ctx.response.unauthorized();
-    }
+    PermissionService.adminOrFail(ctx);
+
     const { deadlineISO, customerItemType, branchIDs } =
       await ctx.request.validateUsing(reminderValidator);
     const customers = await aggregateCustomersToRemind(
@@ -184,9 +164,7 @@ export default class RemindersController {
   }
 
   async remind(ctx: HttpContext) {
-    if (!(await canAccess(ctx))) {
-      return ctx.response.unauthorized();
-    }
+    PermissionService.adminOrFail(ctx);
 
     const {
       deadlineISO,

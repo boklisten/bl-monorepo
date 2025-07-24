@@ -9,7 +9,11 @@ export default function useAuthLinker() {
   const searchParams = useSearchParams();
   const { isLoading, isLoggedIn } = useAuth();
 
-  function redirectTo(target: "bl-admin" | "bl-web", path: string) {
+  function redirectTo(
+    target: "bl-admin" | "bl-web",
+    path: string,
+    retainHistory?: boolean,
+  ) {
     if (isLoading) return;
 
     const url = new URL(
@@ -24,7 +28,11 @@ export default function useAuthLinker() {
         url.searchParams.append("access_token", accessToken);
       }
     }
-    router.replace(url.toString());
+    if (retainHistory) {
+      router.push(url.toString());
+    } else {
+      router.replace(url.toString());
+    }
   }
 
   function redirectToCaller() {

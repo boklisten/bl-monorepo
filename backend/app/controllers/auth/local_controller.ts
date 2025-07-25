@@ -1,39 +1,30 @@
 import { HttpContext } from "@adonisjs/core/http";
-import validator from "validator";
+import vine from "@vinejs/vine";
 
 import TokenHandler from "#services/auth/token/token.handler";
 import { PasswordService } from "#services/password_service";
-import { SEDbQuery } from "#services/query/se.db-query";
-import { BlStorage } from "#services/storage/bl-storage";
+import { User } from "#services/types/user";
+import { UserDetailService } from "#services/user_detail_service";
 import { UserService } from "#services/user_service";
 import {
   localAuthValidator,
   registerValidator,
 } from "#validators/auth_validators";
 
-async function normalizeUsername(username: string) {
-  if (!validator.isMobilePhone(username)) {
-    return username;
-  }
-  const databaseQuery = new SEDbQuery();
-  databaseQuery.stringFilters = [
-    { fieldName: "phone", value: username.slice(-8) },
-  ];
-  try {
-    const [details] = await BlStorage.UserDetails.getByQuery(databaseQuery);
-    return details?.email ?? "";
-  } catch {
-    return "unknwon@example.org";
-  }
-}
-
 export default class LocalController {
   async login({ request }: HttpContext) {
     const { username, password } =
       await request.validateUsing(localAuthValidator);
-    const normalizedUsername = await normalizeUsername(username);
 
-    const user = await UserService.getByUsername(normalizedUsername);
+    let user: User | null = null;
+    if (vine.helpers.isEmail(username)) {
+      user = await UserService.getByUsername(username);
+    } else {
+      const userDetail = await UserDetailService.getByPhoneNumber(username);
+      if (userDetail) {
+        user = await UserService.getByUsername(userDetail.email);
+      }
+    }
 
     if (!user) {
       return {
@@ -63,7 +54,7 @@ export default class LocalController {
     }
 
     return {
-      tokens: await TokenHandler.createTokens(normalizedUsername),
+      tokens: await TokenHandler.createTokens(user.username),
     };
   }
 

@@ -10,7 +10,7 @@ import { useMutation } from "@tanstack/react-query";
 import { useNotifications } from "@toolpad/core";
 import { InferErrorType } from "@tuyau/client";
 import moment, { Moment } from "moment";
-import { useForm } from "react-hook-form";
+import { FormProvider, useForm } from "react-hook-form";
 
 import { addAccessToken, addRefreshToken } from "@/api/token";
 import DynamicLink from "@/components/DynamicLink";
@@ -49,13 +49,13 @@ const isUnder18 = (birthday: moment.Moment): boolean => {
   return moment().diff(birthday, "years") < 18;
 };
 
-const UserDetailEditor = ({
+export default function UserDetailEditor({
   isSignUp,
   userDetails = {} as UserDetail,
 }: {
   isSignUp?: boolean;
   userDetails?: UserDetail;
-}) => {
+}) {
   const { redirectToCaller } = useAuthLinker();
   const client = useApiClient();
   const notifications = useNotifications();
@@ -74,15 +74,18 @@ const UserDetailEditor = ({
     branchMembership: userDetails?.branchMembership,
   };
 
+  const methods = useForm<UserEditorFields>({
+    mode: "onTouched",
+    defaultValues,
+  });
   const {
     register,
     handleSubmit,
-    control,
     clearErrors,
     setError,
     watch,
     formState: { errors },
-  } = useForm<UserEditorFields>({ mode: "onTouched", defaultValues });
+  } = methods;
 
   const { updatePostalCity, settlePostalCity, postalCity } = usePostalCity(
     userDetails.postCity,
@@ -219,95 +222,87 @@ const UserDetailEditor = ({
   const isUnderage = birthdayFieldValue ? isUnder18(birthdayFieldValue) : null;
 
   return (
-    <Container component="main" maxWidth="xs">
-      <Stack
-        sx={{
-          alignItems: "center",
-          mt: 4,
-        }}
-      >
-        <Typography
-          variant="h1"
+    <FormProvider {...methods}>
+      <Container component="main" maxWidth="xs">
+        <Stack
           sx={{
-            mb: 2,
+            alignItems: "center",
+            mt: 4,
           }}
         >
-          {isSignUp ? "Registrer deg" : "Brukerinnstillinger"}
-        </Typography>
-        {isSignUp && (
-          <>
-            <Stack gap={2} sx={{ width: "100%", alignItems: "center" }}>
-              <VippsButton verb={"register"} />
-              <FacebookButton label={"Registrer deg med Facebook"} />
-              <GoogleButton label={"Registrer deg med Google"} />
-            </Stack>
-            <Divider sx={{ width: "100%", my: 3 }}>
-              Eller, registrer deg med e-post
-            </Divider>
-          </>
-        )}
-        <Box component="form" onSubmit={onSubmit}>
-          <Grid container spacing={2}>
-            <LoginInfoSection
-              signUp={isSignUp}
-              emailConfirmed={userDetails.emailConfirmed}
-              errors={errors}
-              setError={setError}
-              userDetails={userDetails}
-              register={register}
-            />
-            <YourInfoSection
-              errors={errors}
-              postCity={postalCity}
-              updatePostalCity={updatePostalCity}
-              onIsUnderageChange={onIsUnderageChange}
-              control={control}
-              register={register}
-            />
-            {isUnderage && (
-              <GuardianInfoSection errors={errors} register={register} />
-            )}
-            {isSignUp && (
-              <Grid size={{ xs: 12 }}>
-                <FormControlLabel
-                  control={
-                    <Checkbox
-                      sx={{
-                        color: errors.agreeToTermsAndConditions
-                          ? "red"
-                          : "inherit",
-                      }}
-                      {...register(
-                        "agreeToTermsAndConditions",
-                        fieldValidators.agreeToTermsAndConditions,
-                      )}
-                    />
-                  }
-                  label={<TermsAndConditionsDisclaimer />}
-                />
-                <FieldErrorAlert error={errors.agreeToTermsAndConditions} />
-              </Grid>
-            )}
-          </Grid>
-          <ErrorSummary errors={errors} />
-          <Button
-            loading={updateDetailsMutation.isPending}
-            type="submit"
-            fullWidth
-            variant="contained"
-            sx={{ mt: 3, mb: 2 }}
+          <Typography
+            variant="h1"
+            sx={{
+              mb: 2,
+            }}
           >
-            {isSignUp ? "Registrer deg" : "Lagre"}
-          </Button>
+            {isSignUp ? "Registrer deg" : "Brukerinnstillinger"}
+          </Typography>
           {isSignUp && (
-            <DynamicLink href={"/auth/login"}>
-              Har du allerede en konto? Logg inn
-            </DynamicLink>
+            <>
+              <Stack gap={2} sx={{ width: "100%", alignItems: "center" }}>
+                <VippsButton verb={"register"} />
+                <FacebookButton label={"Registrer deg med Facebook"} />
+                <GoogleButton label={"Registrer deg med Google"} />
+              </Stack>
+              <Divider sx={{ width: "100%", my: 3 }}>
+                Eller, registrer deg med e-post
+              </Divider>
+            </>
           )}
-        </Box>
-      </Stack>
-    </Container>
+          <Box component="form" onSubmit={onSubmit}>
+            <Grid container spacing={2}>
+              <LoginInfoSection
+                signUp={isSignUp}
+                emailConfirmed={userDetails.emailConfirmed}
+                userDetails={userDetails}
+              />
+              <YourInfoSection
+                postCity={postalCity}
+                updatePostalCity={updatePostalCity}
+                onIsUnderageChange={onIsUnderageChange}
+              />
+              {isUnderage && <GuardianInfoSection />}
+              {isSignUp && (
+                <Grid size={{ xs: 12 }}>
+                  <FormControlLabel
+                    control={
+                      <Checkbox
+                        sx={{
+                          color: errors.agreeToTermsAndConditions
+                            ? "red"
+                            : "inherit",
+                        }}
+                        {...register(
+                          "agreeToTermsAndConditions",
+                          fieldValidators.agreeToTermsAndConditions,
+                        )}
+                      />
+                    }
+                    label={<TermsAndConditionsDisclaimer />}
+                  />
+                  <FieldErrorAlert field={"agreeToTermsAndConditions"} />
+                </Grid>
+              )}
+            </Grid>
+            <ErrorSummary />
+            <Button
+              loading={updateDetailsMutation.isPending}
+              type="submit"
+              fullWidth
+              variant="contained"
+              sx={{ mt: 3, mb: 2 }}
+            >
+              {isSignUp ? "Registrer deg" : "Lagre"}
+            </Button>
+            {isSignUp && (
+              <DynamicLink href={"/auth/login"}>
+                Har du allerede en konto? Logg inn
+              </DynamicLink>
+            )}
+          </Box>
+        </Stack>
+      </Container>
+    </FormProvider>
   );
-};
-
-export default UserDetailEditor;
+}

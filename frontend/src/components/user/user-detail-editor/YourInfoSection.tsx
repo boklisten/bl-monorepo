@@ -1,13 +1,7 @@
 import { Divider, Typography } from "@mui/material";
 import Grid from "@mui/material/Grid";
 import TextField from "@mui/material/TextField";
-import {
-  Control,
-  Controller,
-  FieldError,
-  FieldErrors,
-  UseFormRegister,
-} from "react-hook-form";
+import { Controller, useFormContext } from "react-hook-form";
 
 import ClassMembershipSelect from "@/components/ClassMembershipSelect";
 import DatePickerField from "@/components/user/fields/DatePickerField";
@@ -19,23 +13,21 @@ import PostalCodeField, {
 import { fieldValidators } from "@/components/user/user-detail-editor/fieldValidators";
 import { UserEditorFields } from "@/components/user/user-detail-editor/UserDetailEditor";
 
-interface YourInfoSectionProps {
-  errors: FieldErrors<UserEditorFields>;
-  postCity: PostalCityState;
-  updatePostalCity: (newPostalCode: string) => void;
-  onIsUnderageChange: (isUnderage: boolean | null) => void;
-  control: Control<UserEditorFields>;
-  register: UseFormRegister<UserEditorFields>;
-}
-
-const YourInfoSection = ({
-  register,
-  errors,
+export default function YourInfoSection({
   postCity,
   updatePostalCity,
   onIsUnderageChange,
-  control,
-}: YourInfoSectionProps) => {
+}: {
+  postCity: PostalCityState;
+  updatePostalCity: (newPostalCode: string) => void;
+  onIsUnderageChange: (isUnderage: boolean | null) => void;
+}) {
+  const {
+    register,
+    control,
+    formState: { errors },
+  } = useFormContext<UserEditorFields>();
+
   return (
     <>
       <Grid
@@ -60,14 +52,14 @@ const YourInfoSection = ({
           error={!!errors.name}
           {...register("name", fieldValidators.name)}
         />
-        <FieldErrorAlert error={errors.name} />
+        <FieldErrorAlert field={"name"} />
       </Grid>
       <Grid size={{ xs: 12 }}>
         <PhoneNumberField
           error={!!errors.phoneNumber}
           {...register("phoneNumber", fieldValidators.phoneNumber)}
         />
-        <FieldErrorAlert error={errors.phoneNumber} />
+        <FieldErrorAlert field={"phoneNumber"} />
       </Grid>
       <Grid size={{ xs: 12 }}>
         <TextField
@@ -79,7 +71,7 @@ const YourInfoSection = ({
           error={!!errors.address}
           {...register("address", fieldValidators.address)}
         />
-        <FieldErrorAlert error={errors.address} />
+        <FieldErrorAlert field={"address"} />
       </Grid>
       <Grid size={{ xs: 12 }}>
         <PostalCodeField
@@ -90,7 +82,7 @@ const YourInfoSection = ({
             ...fieldValidators.postalCode,
           })}
         />
-        <FieldErrorAlert error={errors.postalCode} />
+        <FieldErrorAlert field={"postalCode"} />
       </Grid>
       <Grid size={{ xs: 12 }}>
         <DatePickerField
@@ -98,7 +90,7 @@ const YourInfoSection = ({
           control={control}
           {...register("birthday", fieldValidators.birthday)}
         />
-        <FieldErrorAlert error={errors.birthday as FieldError} />
+        <FieldErrorAlert field={"birthday"} />
       </Grid>
       <Grid size={{ xs: 12 }}>
         <Controller
@@ -112,10 +104,8 @@ const YourInfoSection = ({
           )}
           name={"branchMembership"}
         />
-        <FieldErrorAlert error={errors.branchMembership as FieldError} />
+        <FieldErrorAlert field={"branchMembership"} />
       </Grid>
     </>
   );
-};
-
-export default YourInfoSection;
+}

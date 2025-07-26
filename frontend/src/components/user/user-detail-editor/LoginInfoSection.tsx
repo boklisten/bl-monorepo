@@ -3,7 +3,7 @@ import { QrCode } from "@mui/icons-material";
 import { Button, Dialog, Stack } from "@mui/material";
 import Grid from "@mui/material/Grid";
 import { useState } from "react";
-import { FieldErrors, UseFormRegister, UseFormSetError } from "react-hook-form";
+import { useFormContext } from "react-hook-form";
 import QRCode from "react-qr-code";
 
 import EmailConfirmationStatus from "@/components/user/fields/EmailConfirmationStatus";
@@ -13,23 +13,21 @@ import PasswordField from "@/components/user/fields/PasswordField";
 import { fieldValidators } from "@/components/user/user-detail-editor/fieldValidators";
 import { UserEditorFields } from "@/components/user/user-detail-editor/UserDetailEditor";
 
-interface LoginInfoSectionProps {
-  signUp: boolean | undefined;
-  emailConfirmed: boolean | undefined;
-  errors: FieldErrors<UserEditorFields>;
-  userDetails: UserDetail;
-  register: UseFormRegister<UserEditorFields>;
-  setError: UseFormSetError<UserEditorFields>;
-}
-
-const LoginInfoSection = ({
-  errors,
+export default function LoginInfoSection({
   signUp,
   emailConfirmed,
   userDetails,
-  register,
-  setError,
-}: LoginInfoSectionProps) => {
+}: {
+  signUp: boolean | undefined;
+  emailConfirmed: boolean | undefined;
+  userDetails: UserDetail;
+}) {
+  const {
+    register,
+    setError,
+    formState: { errors },
+  } = useFormContext<UserEditorFields>();
+
   const [customerIdDialogOpen, setCustomerIdDialogOpen] = useState(false);
   return (
     <>
@@ -45,7 +43,7 @@ const LoginInfoSection = ({
           userDetails={userDetails}
           isSignUp={signUp}
         />
-        <FieldErrorAlert error={errors.email} />
+        <FieldErrorAlert field={"email"} />
       </Grid>
       {!signUp && (
         <>
@@ -77,11 +75,9 @@ const LoginInfoSection = ({
             {...register("password", fieldValidators.password)}
             margin={"none"}
           />
-          <FieldErrorAlert error={errors.password} />
+          <FieldErrorAlert field={"password"} />
         </Grid>
       )}
     </>
   );
-};
-
-export default LoginInfoSection;
+}

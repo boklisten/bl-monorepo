@@ -2,7 +2,7 @@ import { Card } from "@mui/material";
 import { Metadata } from "next";
 import { Suspense } from "react";
 
-import UserDetailEditor from "@/components/user/user-detail-editor/UserDetailEditor";
+import PersonalUserDetailEditor from "@/components/user/user-detail-editor/PersonalUserDetailEditor";
 
 export const metadata: Metadata = {
   title: "Ny bruker",
@@ -14,7 +14,7 @@ const RegisterPage = () => {
     <>
       <Card sx={{ paddingBottom: 4 }}>
         <Suspense>
-          <UserDetailEditor isSignUp />
+          <PersonalUserDetailEditor isSignUp />
         </Suspense>
       </Card>
     </>

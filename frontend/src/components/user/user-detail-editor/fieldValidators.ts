@@ -4,7 +4,7 @@ import validator from "validator";
 import isMobilePhone from "validator/lib/isMobilePhone";
 import isPostalCode from "validator/lib/isPostalCode";
 
-import { UserEditorFields } from "@/components/user/user-detail-editor/UserDetailEditor";
+import { UserEditorFields } from "@/components/user/user-detail-editor/PersonalUserDetailEditor";
 import unpack from "@/utils/api/bl-api-request";
 import { publicApiClient } from "@/utils/api/publicApiClient";
 

@@ -1,7 +1,7 @@
 import { Alert } from "@mui/material";
 import { useFormContext } from "react-hook-form";
 
-import { UserEditorFields } from "@/components/user/user-detail-editor/UserDetailEditor";
+import { UserEditorFields } from "@/components/user/user-detail-editor/PersonalUserDetailEditor";
 
 export default function FieldErrorAlert({
   field,

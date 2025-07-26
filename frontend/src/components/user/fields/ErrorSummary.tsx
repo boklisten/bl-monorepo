@@ -2,7 +2,7 @@ import { Alert, AlertTitle, ListItem } from "@mui/material";
 import List from "@mui/material/List";
 import { useFormContext } from "react-hook-form";
 
-import { UserEditorFields } from "@/components/user/user-detail-editor/UserDetailEditor";
+import { UserEditorFields } from "@/components/user/user-detail-editor/PersonalUserDetailEditor";
 
 export default function ErrorSummary() {
   const {

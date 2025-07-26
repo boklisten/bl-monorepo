@@ -5,7 +5,7 @@ import { useQuery } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 
 import { getAccessTokenBody } from "@/api/token";
-import UserDetailEditor from "@/components/user/user-detail-editor/UserDetailEditor";
+import PersonalUserDetailEditor from "@/components/user/user-detail-editor/PersonalUserDetailEditor";
 import UserDetailEditorSkeleton from "@/components/user/user-detail-editor/UserDetailEditorSkeleton";
 import unpack from "@/utils/api/bl-api-request";
 import useApiClient from "@/utils/api/useApiClient";
@@ -33,7 +33,7 @@ const UserSettings = () => {
   return (
     <Card sx={{ paddingBottom: 4 }}>
       {userDetails ? (
-        <UserDetailEditor userDetails={userDetails[0]} />
+        <PersonalUserDetailEditor userDetails={userDetails[0]} />
       ) : (
         <UserDetailEditorSkeleton />
       )}

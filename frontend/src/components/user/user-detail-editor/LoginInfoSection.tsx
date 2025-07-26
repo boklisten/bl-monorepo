@@ -11,7 +11,7 @@ import FieldErrorAlert from "@/components/user/fields/FieldErrorAlert";
 import MaybeConfirmedEmailField from "@/components/user/fields/MaybeConfirmedEmailField";
 import PasswordField from "@/components/user/fields/PasswordField";
 import { fieldValidators } from "@/components/user/user-detail-editor/fieldValidators";
-import { UserEditorFields } from "@/components/user/user-detail-editor/UserDetailEditor";
+import { UserEditorFields } from "@/components/user/user-detail-editor/PersonalUserDetailEditor";
 
 export default function LoginInfoSection({
   signUp,

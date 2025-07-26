@@ -45,7 +45,7 @@ const isUnder18 = (birthday: moment.Moment): boolean => {
   return moment().diff(birthday, "years") < 18;
 };
 
-export default function UserDetailEditor({
+export default function PersonalUserDetailEditor({
   isSignUp,
   userDetails = {} as UserDetail,
 }: {

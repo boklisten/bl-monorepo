@@ -2,9 +2,7 @@
 import { UserDetail } from "@boklisten/backend/shared/user/user-detail/user-detail";
 import { Button, Divider, Stack, Typography } from "@mui/material";
 import Box from "@mui/material/Box";
-import Checkbox from "@mui/material/Checkbox";
 import Container from "@mui/material/Container";
-import FormControlLabel from "@mui/material/FormControlLabel";
 import Grid from "@mui/material/Grid";
 import { useMutation } from "@tanstack/react-query";
 import { useNotifications } from "@toolpad/core";
@@ -16,13 +14,11 @@ import { addAccessToken, addRefreshToken } from "@/api/token";
 import DynamicLink from "@/components/DynamicLink";
 import FacebookButton from "@/components/user/FacebookButton";
 import ErrorSummary from "@/components/user/fields/ErrorSummary";
-import FieldErrorAlert from "@/components/user/fields/FieldErrorAlert";
 import { usePostalCity } from "@/components/user/fields/PostalCodeField";
 import GoogleButton from "@/components/user/GoogleButton";
-import { fieldValidators } from "@/components/user/user-detail-editor/fieldValidators";
 import GuardianInfoSection from "@/components/user/user-detail-editor/GuardianInfoSection";
 import LoginInfoSection from "@/components/user/user-detail-editor/LoginInfoSection";
-import TermsAndConditionsDisclaimer from "@/components/user/user-detail-editor/TermsAndConditionsDisclaimer";
+import TermsAndConditionsSection from "@/components/user/user-detail-editor/TermsAndConditionsSection";
 import YourInfoSection from "@/components/user/user-detail-editor/YourInfoSection";
 import VippsButton from "@/components/user/VippsButton";
 import { publicApiClient } from "@/utils/api/publicApiClient";
@@ -78,14 +74,7 @@ export default function UserDetailEditor({
     mode: "onTouched",
     defaultValues,
   });
-  const {
-    register,
-    handleSubmit,
-    clearErrors,
-    setError,
-    watch,
-    formState: { errors },
-  } = methods;
+  const { handleSubmit, clearErrors, setError, watch } = methods;
 
   const { updatePostalCity, settlePostalCity, postalCity } = usePostalCity(
     userDetails.postCity,
@@ -224,18 +213,8 @@ export default function UserDetailEditor({
   return (
     <FormProvider {...methods}>
       <Container component="main" maxWidth="xs">
-        <Stack
-          sx={{
-            alignItems: "center",
-            mt: 4,
-          }}
-        >
-          <Typography
-            variant="h1"
-            sx={{
-              mb: 2,
-            }}
-          >
+        <Stack alignItems="center" mt={4}>
+          <Typography variant="h1" mb={2}>
             {isSignUp ? "Registrer deg" : "Brukerinnstillinger"}
           </Typography>
           {isSignUp && (
@@ -263,27 +242,7 @@ export default function UserDetailEditor({
                 onIsUnderageChange={onIsUnderageChange}
               />
               {isUnderage && <GuardianInfoSection />}
-              {isSignUp && (
-                <Grid size={{ xs: 12 }}>
-                  <FormControlLabel
-                    control={
-                      <Checkbox
-                        sx={{
-                          color: errors.agreeToTermsAndConditions
-                            ? "red"
-                            : "inherit",
-                        }}
-                        {...register(
-                          "agreeToTermsAndConditions",
-                          fieldValidators.agreeToTermsAndConditions,
-                        )}
-                      />
-                    }
-                    label={<TermsAndConditionsDisclaimer />}
-                  />
-                  <FieldErrorAlert field={"agreeToTermsAndConditions"} />
-                </Grid>
-              )}
+              {isSignUp && <TermsAndConditionsSection />}
             </Grid>
             <ErrorSummary />
             <Button

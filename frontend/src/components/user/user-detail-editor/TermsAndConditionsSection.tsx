@@ -7,7 +7,7 @@ import { useFormContext } from "react-hook-form";
 import DynamicLink from "@/components/DynamicLink";
 import FieldErrorAlert from "@/components/user/fields/FieldErrorAlert";
 import { fieldValidators } from "@/components/user/user-detail-editor/fieldValidators";
-import { UserEditorFields } from "@/components/user/user-detail-editor/PersonalUserDetailEditor";
+import { UserEditorFields } from "@/components/user/user-detail-editor/UserDetailsEditor";
 
 export default function TermsAndConditionsSection() {
   const {

@@ -11,7 +11,7 @@ import PostalCodeField, {
   PostalCityState,
 } from "@/components/user/fields/PostalCodeField";
 import { fieldValidators } from "@/components/user/user-detail-editor/fieldValidators";
-import { UserEditorFields } from "@/components/user/user-detail-editor/PersonalUserDetailEditor";
+import { UserEditorFields } from "@/components/user/user-detail-editor/UserDetailsEditor";
 
 export default function YourInfoSection({
   postCity,

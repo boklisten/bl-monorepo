@@ -17,7 +17,7 @@ import PostalCodeField, {
   PostalCityState,
 } from "@/components/user/fields/PostalCodeField";
 import { fieldValidators } from "@/components/user/user-detail-editor/fieldValidators";
-import { UserEditorFields } from "@/components/user/user-detail-editor/useUserDetailEditorForm";
+import { UserEditorFields } from "@/components/user/user-detail-editor/UserDetailEditor";
 
 interface YourInfoSectionProps {
   errors: FieldErrors<UserEditorFields>;

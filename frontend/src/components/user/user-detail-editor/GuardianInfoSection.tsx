@@ -7,7 +7,7 @@ import EmailField from "@/components/user/fields/EmailField";
 import FieldErrorAlert from "@/components/user/fields/FieldErrorAlert";
 import PhoneNumberField from "@/components/user/fields/PhoneNumberField";
 import { fieldValidators } from "@/components/user/user-detail-editor/fieldValidators";
-import { UserEditorFields } from "@/components/user/user-detail-editor/useUserDetailEditorForm";
+import { UserEditorFields } from "@/components/user/user-detail-editor/UserDetailEditor";
 
 const GuardianInfoSection = ({
   errors,

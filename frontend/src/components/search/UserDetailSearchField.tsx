@@ -1,12 +1,6 @@
 import { UserDetail } from "@boklisten/backend/shared/user/user-detail/user-detail";
 import QrCodeScannerIcon from "@mui/icons-material/QrCodeScanner";
-import {
-  Autocomplete,
-  Box,
-  IconButton,
-  TextField,
-  Typography,
-} from "@mui/material";
+import { Autocomplete, IconButton, TextField, Typography } from "@mui/material";
 import { useState } from "react";
 
 import ScannerModal from "@/components/scanner/ScannerModal";
@@ -24,7 +18,7 @@ export default function UserDetailSearchField({
   const [searchResults, setSearchResults] = useState<UserDetail[]>([]);
   const [scannerOpen, setScannerOpen] = useState(false);
   return (
-    <Box sx={{ width: "100%" }}>
+    <>
       <Typography sx={{ mt: 2, mb: 1, textAlign: "center" }}>
         Søk etter en kunde for å starte utdeling
       </Typography>
@@ -36,7 +30,9 @@ export default function UserDetailSearchField({
         getOptionLabel={(option) => option.name ?? option.email}
         getOptionKey={(option) => option.id}
         filterOptions={(x) => x}
-        noOptionsText={null}
+        noOptionsText={
+          "Skriv inn telefonnumer, e-post eller navn for å finne en kunde"
+        }
         onInputChange={async (event, newInputValue) => {
           if (event === null) return;
           if (newInputValue.length < 3) {
@@ -70,7 +66,7 @@ export default function UserDetailSearchField({
           />
         )}
         renderInput={(params) => (
-          // @ts-expect-error Using example from https://mui.com/material-ui/react-autocomplete/#system-FreeSolo.tsx
+          // @ts-expect-error Using example from https://mui.com/material-ui/react-autocomplete
           <TextField
             {...params}
             label="Søk etter kunde"
@@ -103,6 +99,6 @@ export default function UserDetailSearchField({
         handleClose={() => setScannerOpen(false)}
         disableTypeChecks
       />
-    </Box>
+    </>
   );
 }

@@ -13,7 +13,6 @@ import { FormProvider, useForm } from "react-hook-form";
 import { addAccessToken, addRefreshToken } from "@/api/token";
 import DynamicLink from "@/components/DynamicLink";
 import ErrorSummary from "@/components/user/fields/ErrorSummary";
-import { usePostalCity } from "@/components/user/fields/PostalCodeField";
 import GuardianInfoSection from "@/components/user/user-detail-editor/GuardianInfoSection";
 import LoginInfoSection from "@/components/user/user-detail-editor/LoginInfoSection";
 import TermsAndConditionsSection from "@/components/user/user-detail-editor/TermsAndConditionsSection";
@@ -30,6 +29,7 @@ export interface UserEditorFields {
   phoneNumber: string;
   address: string;
   postalCode: string;
+  postalCity: string;
   birthday: Moment | null;
   guardianName: string | undefined;
   guardianEmail: string | undefined;
@@ -73,11 +73,6 @@ export default function UserDetailsEditor({
   });
   const { handleSubmit, clearErrors, setError, watch } = methods;
 
-  const { updatePostalCity, settlePostalCity, postalCity } = usePostalCity(
-    userDetails.postCity,
-    userDetails.postCode,
-  );
-
   function handleSubmitError(
     error: InferErrorType<
       | typeof client.auth.local.register.$post
@@ -109,7 +104,7 @@ export default function UserDetailsEditor({
     });
   }
 
-  async function registerUser(formData: UserEditorFields, postalCity: string) {
+  async function registerUser(formData: UserEditorFields) {
     const { data, error } = await publicApiClient.auth.local.register.$post({
       email: formData.email,
       phoneNumber: formData.phoneNumber,
@@ -118,7 +113,7 @@ export default function UserDetailsEditor({
       name: formData.name,
       address: formData.address,
       postalCode: formData.postalCode,
-      postalCity: postalCity,
+      postalCity: formData.postalCity,
       dob: formData.birthday?.format("YYYY-MM-DD") ?? "",
       branchMembership: formData.branchMembership ?? "",
       guardian: {
@@ -138,16 +133,13 @@ export default function UserDetailsEditor({
     redirectToCaller();
   }
 
-  async function updateUserDetails(
-    formData: UserEditorFields,
-    postalCity: string,
-  ) {
+  async function updateUserDetails(formData: UserEditorFields) {
     const { error } = await client.v2.user_details.$post({
       name: formData.name,
       phoneNumber: formData.phoneNumber,
       address: formData.address,
       postalCode: formData.postalCode,
-      postalCity: postalCity,
+      postalCity: formData.postalCity,
       dob: formData.birthday?.format("YYYY-MM-DD") ?? "",
       branchMembership: formData.branchMembership ?? "",
       guardian: {
@@ -168,28 +160,12 @@ export default function UserDetailsEditor({
     );
   }
 
-  const updateDetailsMutation = useMutation({
+  const userDetailsMutation = useMutation({
     mutationFn: async (data: UserEditorFields) => {
-      const postalCityStatus = await settlePostalCity;
-      switch (postalCityStatus.state) {
-        case "error": {
-          setError("postalCode", {
-            message:
-              "Noe gikk galt under sjekk av postnummer! Prøv igjen," +
-              " eller ta kontakt dersom problemet vedvarer!",
-          });
-          return;
-        }
-        case "invalid": {
-          setError("postalCode", { message: "Ugyldig postnummer" });
-          return;
-        }
-      }
-
       if (isSignUp) {
-        await registerUser(data, postalCityStatus.city);
+        await registerUser(data);
       } else {
-        await updateUserDetails(data, postalCityStatus.city);
+        await updateUserDetails(data);
       }
     },
   });
@@ -203,29 +179,29 @@ export default function UserDetailsEditor({
     }
   };
 
-  const onSubmit = handleSubmit((data) => updateDetailsMutation.mutate(data));
   const isUnderage = birthdayFieldValue ? isUnder18(birthdayFieldValue) : null;
 
   return (
     <FormProvider {...methods}>
-      <Box component="form" onSubmit={onSubmit}>
+      <Box
+        component="form"
+        onSubmit={handleSubmit((data) => {
+          userDetailsMutation.mutate(data);
+        })}
+      >
         <Grid container spacing={2}>
           <LoginInfoSection
             signUp={isSignUp}
             emailConfirmed={userDetails.emailConfirmed}
             userDetails={userDetails}
           />
-          <YourInfoSection
-            postCity={postalCity}
-            updatePostalCity={updatePostalCity}
-            onIsUnderageChange={onIsUnderageChange}
-          />
+          <YourInfoSection onIsUnderageChange={onIsUnderageChange} />
           {isUnderage && <GuardianInfoSection />}
           {isSignUp && <TermsAndConditionsSection />}
         </Grid>
         <ErrorSummary />
         <Button
-          loading={updateDetailsMutation.isPending}
+          loading={userDetailsMutation.isPending}
           type="submit"
           fullWidth
           variant="contained"

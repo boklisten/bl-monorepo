@@ -7,19 +7,13 @@ import ClassMembershipSelect from "@/components/ClassMembershipSelect";
 import DatePickerField from "@/components/user/fields/DatePickerField";
 import FieldErrorAlert from "@/components/user/fields/FieldErrorAlert";
 import PhoneNumberField from "@/components/user/fields/PhoneNumberField";
-import PostalCodeField, {
-  PostalCityState,
-} from "@/components/user/fields/PostalCodeField";
+import PostalCodeField from "@/components/user/fields/PostalCodeField";
 import { fieldValidators } from "@/components/user/user-detail-editor/fieldValidators";
 import { UserEditorFields } from "@/components/user/user-detail-editor/UserDetailsEditor";
 
 export default function YourInfoSection({
-  postCity,
-  updatePostalCity,
   onIsUnderageChange,
 }: {
-  postCity: PostalCityState;
-  updatePostalCity: (newPostalCode: string) => void;
   onIsUnderageChange: (isUnderage: boolean | null) => void;
 }) {
   const {
@@ -74,14 +68,7 @@ export default function YourInfoSection({
         <FieldErrorAlert field={"address"} />
       </Grid>
       <Grid size={{ xs: 12 }}>
-        <PostalCodeField
-          error={!!errors.postalCode}
-          postCity={postCity}
-          updatePostalCity={updatePostalCity}
-          {...register("postalCode", {
-            ...fieldValidators.postalCode,
-          })}
-        />
+        <PostalCodeField />
         <FieldErrorAlert field={"postalCode"} />
       </Grid>
       <Grid size={{ xs: 12 }}>

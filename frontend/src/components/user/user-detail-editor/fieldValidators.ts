@@ -74,6 +74,9 @@ export const fieldValidators = {
       return true;
     },
   },
+  postalCity: {
+    required: "Du må oppgi et gyldig norsk postnummer",
+  },
   birthday: {
     required: "Du må fylle inn fødselsdato",
     valueAsDate: true,

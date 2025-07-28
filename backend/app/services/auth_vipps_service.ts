@@ -54,6 +54,12 @@ export const AuthVippsService = {
           userDetail: addedUserDetail.id,
         });
       }
+      await BlStorage.Users.update(existingUser.id, {
+        $set: {
+          [`login.vipps.lastLogin`]: new Date(),
+          "login.lastTokenIssuedAt": new Date(),
+        },
+      });
     } else {
       await UserService.createVippsUser(user);
     }
@@ -61,12 +67,6 @@ export const AuthVippsService = {
     const { accessToken, refreshToken } =
       await TokenHandler.createTokens(email);
 
-    await BlStorage.Users.update(user.id, {
-      $set: {
-        [`login.vipps.lastLogin`]: new Date(),
-        "login.lastTokenIssuedAt": new Date(),
-      },
-    });
     return ctx.response.redirect(
       `${env.get(
         "NEXT_CLIENT_URI",

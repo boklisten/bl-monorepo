@@ -64,6 +64,12 @@ async function handleCallback(ctx: HttpContext) {
         userDetail: addedUserDetail.id,
       });
     }
+    await BlStorage.Users.update(existingUser.id, {
+      $set: {
+        [`login.${provider}.lastLogin`]: new Date(),
+        "login.lastTokenIssuedAt": new Date(),
+      },
+    });
   } else {
     await UserService.createSocialUser(socialUser);
   }

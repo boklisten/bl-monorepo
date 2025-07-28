@@ -7,17 +7,26 @@ import { Login, User } from "#services/types/user";
 const LoginSchema = new Schema<Login>(
   {
     google: {
-      type: { userId: { type: String, required: true } },
+      type: {
+        userId: { type: String, required: true },
+        lastLogin: Date,
+      },
       required: false,
       _id: false,
     },
     facebook: {
-      type: { userId: { type: String, required: true } },
+      type: {
+        userId: { type: String, required: true },
+        lastLogin: Date,
+      },
       required: false,
       _id: false,
     },
     vipps: {
-      type: { userId: { type: String, required: true } },
+      type: {
+        userId: { type: String, required: true },
+        lastLogin: Date,
+      },
       required: false,
       _id: false,
     },
@@ -25,10 +34,12 @@ const LoginSchema = new Schema<Login>(
       type: {
         hashedPassword: { type: String, required: true },
         salt: { type: String }, // fixme: Legacy, only used for the old sha256 hashing, remove when most of our hashes have been converted to argon2
+        lastLogin: Date,
       },
       required: false,
       _id: false,
     },
+    lastTokenIssuedAt: Date,
   },
   { _id: false },
 );

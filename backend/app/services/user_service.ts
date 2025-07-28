@@ -92,7 +92,12 @@ export const UserService = {
 
     return createUser({
       username: socialUser.email,
-      login: { [socialUser.provider]: { userId: socialUser.providerId } },
+      login: {
+        [socialUser.provider]: {
+          userId: socialUser.providerId,
+          lastLogin: new Date(),
+        },
+      },
       emailConfirmed: socialUser.emailConfirmed,
       blid: addedUserDetail.blid,
       userDetailId: addedUserDetail.id,
@@ -104,7 +109,7 @@ export const UserService = {
 
     return createUser({
       username: vippsUser.email,
-      login: { vipps: { userId: vippsUser.id } },
+      login: { vipps: { userId: vippsUser.id, lastLogin: new Date() } },
       emailConfirmed: vippsUser.emailVerified,
       blid: addedUserDetail.blid,
       userDetailId: addedUserDetail.id,

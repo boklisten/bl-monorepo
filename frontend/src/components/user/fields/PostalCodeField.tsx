@@ -3,7 +3,7 @@ import ErrorIcon from "@mui/icons-material/Error";
 import { CircularProgress, InputAdornment } from "@mui/material";
 import TextField from "@mui/material/TextField";
 import { useEffect, useState } from "react";
-import { useFormContext } from "react-hook-form";
+import { useFormContext, useWatch } from "react-hook-form";
 import isPostalCode from "validator/lib/isPostalCode";
 
 import { fieldValidators } from "@/components/user/user-detail-editor/fieldValidators";
@@ -12,22 +12,18 @@ import unpack from "@/utils/api/bl-api-request";
 import { publicApiClient } from "@/utils/api/publicApiClient";
 
 type PostalCityState =
-  | PostalCityStateSettled
   | {
-      state: "loading";
-    };
-
-type PostalCityStateSettled =
-  | {
-      state: "ok";
       city: string;
     }
-  | { state: "error" | "invalid" };
+  | { status: "empty" | "loading" | "error" | "invalid" };
 
 async function lookupPostalCode(
   newPostalCode: string,
-): Promise<PostalCityStateSettled> {
-  if (!isPostalCode(newPostalCode, "NO")) return { state: "invalid" };
+): Promise<PostalCityState> {
+  if (!newPostalCode || !isPostalCode(newPostalCode, "NO")) {
+    return { status: "invalid" };
+  }
+
   try {
     const [{ postalCity: newPostalCity }] = await publicApiClient
       .$route("collection.deliveries.operation.postal-code-lookup.post")
@@ -43,13 +39,13 @@ async function lookupPostalCode(
       );
 
     if (!newPostalCity) {
-      return { state: "invalid" };
+      return { status: "invalid" };
     }
 
-    return { state: "ok", city: newPostalCity };
+    return { city: newPostalCity };
   } catch (error) {
     console.error("Failed to get postal city for code", newPostalCode, error);
-    return { state: "error" };
+    return { status: "error" };
   }
 }
 
@@ -85,49 +81,49 @@ const PostalCodeField = () => {
 };
 
 const PostalCityStateStatusDisplay = () => {
-  const { watch, setError, setValue, clearErrors } =
-    useFormContext<UserEditorFields>();
-  const postalCode = watch("postalCode");
-  const [postalCityStatus, setPostalCityStatus] = useState<PostalCityState>({
-    state: "loading",
+  const {
+    setValue,
+    control,
+    formState: { isSubmitted, touchedFields },
+  } = useFormContext<UserEditorFields>();
+  const postalCode = useWatch({ control, name: "postalCode" });
+  const [postalCity, setPostalCity] = useState<PostalCityState>({
+    status: "empty",
   });
+
+  const shouldUpdate = touchedFields.postalCode || isSubmitted;
 
   useEffect(() => {
     async function updatePostalCity() {
-      const lookupResult = await lookupPostalCode(postalCode);
-      setPostalCityStatus(lookupResult);
+      if (!postalCode && !shouldUpdate) {
+        setPostalCity({ status: "empty" });
+        return;
+      }
 
-      if (lookupResult.state === "ok") {
+      setPostalCity({ status: "loading" });
+      const lookupResult = await lookupPostalCode(postalCode);
+      setPostalCity(lookupResult);
+
+      if ("city" in lookupResult) {
         setValue("postalCity", lookupResult.city);
-        clearErrors("postalCode");
-      } else if (lookupResult.state === "invalid") {
-        setError("postalCode", {
-          message: "Du må oppgi et gyldig norsk postnummer",
-        });
-      } else {
-        setError("postalCode", {
-          message:
-            "Noe gikk galt under sjekk av postnummer! Prøv igjen," +
-            " eller ta kontakt dersom problemet vedvarer!",
-        });
       }
     }
     updatePostalCity();
-  }, [clearErrors, postalCode, setError, setValue]);
+  }, [postalCode, setValue, shouldUpdate]);
 
-  switch (postalCityStatus.state) {
-    case "ok": {
-      return postalCityStatus.city;
-    }
-    case "loading": {
+  if ("city" in postalCity) {
+    return postalCity.city;
+  }
+
+  switch (postalCity.status) {
+    case "empty":
+      return "";
+    case "loading":
       return <CircularProgress size="1.5rem" />;
-    }
-    case "error": {
+    case "error":
       return <ErrorIcon />;
-    }
-    case "invalid": {
+    case "invalid":
       return <LocationOff />;
-    }
   }
 };
 

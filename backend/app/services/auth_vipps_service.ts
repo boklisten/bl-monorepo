@@ -56,8 +56,7 @@ export const AuthVippsService = {
       }
       await BlStorage.Users.update(existingUser.id, {
         $set: {
-          [`login.vipps.lastLogin`]: new Date(),
-          "login.lastTokenIssuedAt": new Date(),
+          "login.vipps.lastLogin": new Date(),
         },
       });
     } else {

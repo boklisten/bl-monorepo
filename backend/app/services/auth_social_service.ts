@@ -67,7 +67,6 @@ async function handleCallback(ctx: HttpContext) {
     await BlStorage.Users.update(existingUser.id, {
       $set: {
         [`login.${provider}.lastLogin`]: new Date(),
-        "login.lastTokenIssuedAt": new Date(),
       },
     });
   } else {

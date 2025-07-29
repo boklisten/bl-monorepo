@@ -56,7 +56,6 @@ export default class LocalController {
     await BlStorage.Users.update(user.id, {
       $set: {
         "login.local.lastLogin": new Date(),
-        "login.lastTokenIssuedAt": new Date(),
       },
     });
 

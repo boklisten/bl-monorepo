@@ -17,7 +17,7 @@ type TokenPost = {
     >
   >;
   response: MakeNonSerializedTuyauResponse<
-    import("../app/controllers/auth/tokens_controller.ts").default["token"],
+    import("../app/controllers/auth/tokens_controller.ts").default["legacyToken"],
     true
   >;
 };
@@ -28,7 +28,7 @@ type V2TokenPost = {
     >
   >;
   response: MakeNonSerializedTuyauResponse<
-    import("../app/controllers/auth/tokens_controller.ts").default["tokenV2"],
+    import("../app/controllers/auth/tokens_controller.ts").default["token"],
     true
   >;
 };
@@ -585,7 +585,7 @@ export interface ApiDefinition {
 const routes = [
   {
     params: [],
-    name: "auth.token",
+    name: "auth.legacyToken",
     path: "/token",
     method: ["POST"],
     types: {} as TokenPost,

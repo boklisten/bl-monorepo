@@ -1,7 +1,7 @@
-import { PermissionService } from "#services/auth/permission.service";
 import { OrderPlacedHandler } from "#services/collections/order/helpers/order-placed-handler/order-placed-handler";
 import { OrderValidator } from "#services/collections/order/helpers/order-validator/order-validator";
 import { Hook } from "#services/hook/hook";
+import { PermissionService } from "#services/permission_service";
 import { BlStorage } from "#services/storage/bl-storage";
 import { BlError } from "#shared/bl-error/bl-error";
 import { Order } from "#shared/order/order";

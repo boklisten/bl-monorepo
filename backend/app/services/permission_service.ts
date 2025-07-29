@@ -91,7 +91,7 @@ function verifyAccessToken(token: string) {
 }
 
 /**
- * @deprecated use PermissionService.authenticate() instead
+ * @deprecated use Permission_service.authenticate() instead
  *
  */
 function authenticateLegacy({ request }: HttpContext) {

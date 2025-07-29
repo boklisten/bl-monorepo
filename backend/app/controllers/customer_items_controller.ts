@@ -1,7 +1,7 @@
 import type { HttpContext } from "@adonisjs/core/http";
 import moment from "moment-timezone";
 
-import { PermissionService } from "#services/auth/permission.service";
+import { PermissionService } from "#services/permission_service";
 import { SEDbQuery } from "#services/query/se.db-query";
 import { BlStorage } from "#services/storage/bl-storage";
 import { Branch } from "#shared/branch/branch";

@@ -67,6 +67,9 @@ export default function useApiClient() {
                 refreshToken,
               })
               .unwrap();
+            if (!newTokens) {
+              return redirectToLogin();
+            }
             addAccessToken(newTokens.accessToken);
             addRefreshToken(newTokens.refreshToken);
 

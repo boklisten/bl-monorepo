@@ -1,8 +1,8 @@
-import { PermissionService } from "#services/auth/permission.service";
 import { OrderToCustomerItemGenerator } from "#services/collections/customer-item/helpers/order-to-customer-item-generator";
 import { OrderPlacedHandler } from "#services/collections/order/helpers/order-placed-handler/order-placed-handler";
 import { OrderValidator } from "#services/collections/order/helpers/order-validator/order-validator";
 import { isNotNullish } from "#services/helper/typescript-helpers";
+import { PermissionService } from "#services/permission_service";
 import { SEDbQueryBuilder } from "#services/query/se.db-query-builder";
 import { BlStorage } from "#services/storage/bl-storage";
 import { BlApiRequest } from "#services/types/bl-api-request";

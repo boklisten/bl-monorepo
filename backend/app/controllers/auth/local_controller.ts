@@ -1,9 +1,9 @@
 import { HttpContext } from "@adonisjs/core/http";
 import vine from "@vinejs/vine";
 
-import TokenHandler from "#services/auth/token/token.handler";
 import { PasswordService } from "#services/password_service";
 import { BlStorage } from "#services/storage/bl-storage";
+import TokenService from "#services/token_service";
 import { User } from "#services/types/user";
 import { UserDetailService } from "#services/user_detail_service";
 import { UserService } from "#services/user_service";
@@ -58,15 +58,21 @@ export default class LocalController {
         "login.local.lastLogin": new Date(),
       },
     });
+    const tokens = await TokenService.createTokens(user.username);
+    if (!tokens)
+      return {
+        message:
+          "Klarte ikke logge deg inn. Vennligst prøv igjen eller ta kontakt dersom problemet vedvarer",
+      };
 
     return {
-      tokens: await TokenHandler.createTokens(user.username),
+      tokens,
     };
   }
 
   async register({ request }: HttpContext) {
     const registerData = await request.validateUsing(registerValidator);
     await UserService.createLocalUser(registerData);
-    return await TokenHandler.createTokens(registerData.email);
+    return await TokenService.createTokens(registerData.email);
   }
 }

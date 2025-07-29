@@ -1,7 +1,7 @@
 import { HttpContext } from "@adonisjs/core/http";
 
-import TokenHandler from "#services/auth/token/token.handler";
 import { BlStorage } from "#services/storage/bl-storage";
+import TokenService from "#services/token_service";
 import { UserDetailService } from "#services/user_detail_service";
 import { UserService } from "#services/user_service";
 import {
@@ -63,13 +63,17 @@ export const AuthVippsService = {
       await UserService.createVippsUser(user);
     }
 
-    const { accessToken, refreshToken } =
-      await TokenHandler.createTokens(email);
+    const tokens = await TokenService.createTokens(user.email);
+
+    if (!tokens) {
+      redirectToAuthFailedPage(ctx, ERROR);
+      return;
+    }
 
     return ctx.response.redirect(
       `${env.get(
         "NEXT_CLIENT_URI",
-      )}auth/token?access_token=${accessToken}&refresh_token=${refreshToken}`,
+      )}auth/token?access_token=${tokens.accessToken}&refresh_token=${tokens.refreshToken}`,
     );
   },
 };

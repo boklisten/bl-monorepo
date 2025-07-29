@@ -1,4 +1,4 @@
-import { PermissionService } from "#services/auth/permission.service";
+import { PermissionService } from "#services/permission_service";
 import { SEDbQueryBuilder } from "#services/query/se.db-query-builder";
 import { BlStorage } from "#services/storage/bl-storage";
 import { AccessToken } from "#shared/token/access-token";

@@ -1,8 +1,8 @@
 import type { HttpContext } from "@adonisjs/core/http";
 
-import { PermissionService } from "#services/auth/permission.service";
 import { sendMail } from "#services/messenger/email/email_service";
 import { EMAIL_SENDER } from "#services/messenger/email/email_templates";
+import { PermissionService } from "#services/permission_service";
 import { emailTemplateSenderValidator } from "#validators/mail_template_sender";
 import { assertSendGridTemplateId } from "#validators/send_grid_template_id_validator";
 

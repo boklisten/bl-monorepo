@@ -1,9 +1,9 @@
 import { SocialProviders } from "@adonisjs/ally/types";
 import { HttpContext } from "@adonisjs/core/http";
 
-import TokenHandler from "#services/auth/token/token.handler";
 import { retrieveRefererPath } from "#services/config/api-path";
 import { BlStorage } from "#services/storage/bl-storage";
+import TokenService from "#services/token_service";
 import { UserDetailService } from "#services/user_detail_service";
 import { UserService } from "#services/user_service";
 import {
@@ -73,14 +73,17 @@ async function handleCallback(ctx: HttpContext) {
     await UserService.createSocialUser(socialUser);
   }
 
-  const { accessToken, refreshToken } = await TokenHandler.createTokens(
-    user.email,
-  );
+  const tokens = await TokenService.createTokens(user.email);
+
+  if (!tokens) {
+    redirectToAuthFailedPage(ctx, ERROR);
+    return;
+  }
 
   return ctx.response.redirect(
     `${
       retrieveRefererPath(ctx.request.headers()) ?? env.get("NEXT_CLIENT_URI")
-    }auth/token?access_token=${accessToken}&refresh_token=${refreshToken}`,
+    }auth/token?access_token=${tokens.accessToken}&refresh_token=${tokens.refreshToken}`,
   );
 }
 

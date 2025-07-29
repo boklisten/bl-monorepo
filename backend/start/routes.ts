@@ -35,8 +35,10 @@ const CustomerItemsController = () =>
 /**
  * auth token
  */
-router.post("/token", [AuthTokensController, "token"]).as("auth.token");
-router.post("/v2/token", [AuthTokensController, "tokenV2"]).as("v2.auth.token");
+router
+  .post("/token", [AuthTokensController, "legacyToken"])
+  .as("auth.legacyToken");
+router.post("/v2/token", [AuthTokensController, "token"]).as("v2.auth.token");
 
 /**
  * auth social

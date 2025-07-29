@@ -2,7 +2,7 @@ import { test } from "@japa/runner";
 import { expect, use as chaiUse, should } from "chai";
 import chaiAsPromised from "chai-as-promised";
 
-import { PermissionService } from "#services/auth/permission.service";
+import { PermissionService } from "#services/permission_service";
 import { BlDocument } from "#shared/bl-document/bl-document";
 
 chaiUse(chaiAsPromised);

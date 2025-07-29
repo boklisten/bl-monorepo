@@ -1,26 +1,39 @@
 import { HttpContext } from "@adonisjs/core/http";
+import jwt from "jsonwebtoken";
 
-import RefreshTokenValidator from "#services/auth/token/refresh/refresh-token.validator";
-import TokenHandler from "#services/auth/token/token.handler";
 import BlResponseHandler from "#services/response/bl-response.handler";
+import TokenService from "#services/token_service";
 import { BlError } from "#shared/bl-error/bl-error";
 import { BlapiResponse } from "#shared/blapi-response/blapi-response";
+import env from "#start/env";
 import { tokenValidator } from "#validators/auth_validators";
 
 export default class TokensController {
-  // @deprecated Only used for bl-web and bl-admin, use tokenV2 for new adoptions
-  async token(ctx: HttpContext) {
+  // @deprecated Only used for bl-web and bl-admin, use token for new adoptions
+  async legacyToken(ctx: HttpContext) {
     const { refreshToken } = await ctx.request.validateUsing(tokenValidator);
-    const validatedRefreshToken =
-      await RefreshTokenValidator.validate(refreshToken);
     try {
+      const verifiedRefreshToken = jwt.verify(
+        refreshToken,
+        env.get("REFRESH_TOKEN_SECRET"),
+      );
+
+      if (typeof verifiedRefreshToken === "string") {
+        throw new Error("Invalid refresh token");
+      }
+
       try {
-        const jwTokens = await TokenHandler.createTokens(
-          validatedRefreshToken["username"],
+        const tokens = await TokenService.createTokens(
+          verifiedRefreshToken["username"],
         );
+
+        if (!tokens) {
+          throw new Error("Could not create tokens");
+        }
+
         return new BlapiResponse([
-          { accessToken: jwTokens.accessToken },
-          { refreshToken: jwTokens.refreshToken },
+          { accessToken: tokens.accessToken },
+          { refreshToken: tokens.refreshToken },
         ]);
       } catch (error) {
         return BlResponseHandler.createErrorResponse(
@@ -38,10 +51,33 @@ export default class TokensController {
       );
     }
   }
-  async tokenV2(ctx: HttpContext) {
+
+  async token(ctx: HttpContext) {
     const { refreshToken } = await ctx.request.validateUsing(tokenValidator);
-    const validatedRefreshToken =
-      await RefreshTokenValidator.validate(refreshToken);
-    return await TokenHandler.createTokens(validatedRefreshToken["username"]);
+    try {
+      const verifiedRefreshToken = jwt.verify(
+        refreshToken,
+        env.get("REFRESH_TOKEN_SECRET"),
+      );
+
+      if (typeof verifiedRefreshToken === "string") {
+        ctx.response.unauthorized();
+        return;
+      }
+
+      const tokens = await TokenService.createTokens(
+        verifiedRefreshToken["username"],
+      );
+
+      if (!tokens) {
+        ctx.response.unauthorized();
+        return;
+      }
+
+      return tokens;
+    } catch {
+      ctx.response.unauthorized();
+      return;
+    }
   }
 }

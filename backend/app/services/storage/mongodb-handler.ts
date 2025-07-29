@@ -9,7 +9,7 @@ import {
   UpdateWriteOpResult,
 } from "mongoose";
 
-import { PermissionService } from "#services/auth/permission.service";
+import { PermissionService } from "#services/permission_service";
 import { ExpandFilter } from "#services/query/db-query-expand-filter";
 import { SEDbQuery } from "#services/query/se.db-query";
 import { BlSchema } from "#services/storage/bl-storage";

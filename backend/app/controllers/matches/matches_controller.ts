@@ -5,7 +5,7 @@ import { getMyMatches } from "#controllers/matches/helpers/get_my_matches";
 import { lock } from "#controllers/matches/helpers/lock";
 import { notify } from "#controllers/matches/helpers/notify";
 import { transfer } from "#controllers/matches/helpers/transfer";
-import { PermissionService } from "#services/auth/permission.service";
+import { PermissionService } from "#services/permission_service";
 import { USER_PERMISSION } from "#shared/permission/user-permission";
 import {
   matchGenerateValidator,

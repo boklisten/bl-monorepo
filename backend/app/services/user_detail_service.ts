@@ -1,7 +1,7 @@
 import { Infer } from "@vinejs/vine/types";
 
-import Blid from "#services/auth/blid";
-import BlCrypto from "#services/config/bl-crypto";
+import BlidService from "#services/blid_service";
+import CryptoService from "#services/crypto_service";
 import { SEDbQuery } from "#services/query/se.db-query";
 import { BlStorage } from "#services/storage/bl-storage";
 import { SocialProvider, VippsUser } from "#services/types/user";
@@ -46,7 +46,7 @@ export const UserDetailService = {
     existingBlid?: string,
   ) {
     const blid =
-      existingBlid ?? (await Blid.createUserBlid(provider, providerId));
+      existingBlid ?? BlidService.createUserBlid(provider, providerId);
     return await BlStorage.UserDetails.add(
       {
         email,
@@ -59,7 +59,7 @@ export const UserDetailService = {
   },
   async createVippsUserDetail(vippsUser: VippsUser, existingBlid?: string) {
     const blid =
-      existingBlid ?? (await Blid.createUserBlid("vipps", vippsUser.id));
+      existingBlid ?? BlidService.createUserBlid("vipps", vippsUser.id);
     return await BlStorage.UserDetails.add(
       {
         email: vippsUser.email,
@@ -86,7 +86,7 @@ export const UserDetailService = {
     branchMembership,
     guardian,
   }: Infer<typeof registerSchema>) {
-    const blid = await Blid.createUserBlid("local", BlCrypto.random());
+    const blid = BlidService.createUserBlid("local", CryptoService.random());
     return await BlStorage.UserDetails.add(
       {
         email,

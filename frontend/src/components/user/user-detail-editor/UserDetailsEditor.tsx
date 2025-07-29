@@ -127,6 +127,13 @@ export default function UserDetailsEditor({
       handleSubmitError(error);
       return;
     }
+    if (!data) {
+      setError("email", {
+        message:
+          "Noe gikk galt! Prøv igjen, eller ta kontakt dersom problemet vedvarer!",
+      });
+      return;
+    }
 
     addAccessToken(data.accessToken);
     addRefreshToken(data.refreshToken);

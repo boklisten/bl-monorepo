@@ -1,7 +1,7 @@
 import { HttpContext } from "@adonisjs/core/http";
 import hash from "@adonisjs/core/services/hash";
 
-import BlCrypto from "#services/config/bl-crypto";
+import CryptoService from "#services/crypto_service";
 import { sendMail } from "#services/messenger/email/email_service";
 import { EMAIL_TEMPLATES } from "#services/messenger/email/email_templates";
 import { PasswordService } from "#services/password_service";
@@ -49,7 +49,7 @@ async function getPasswordReset({
 export default class PasswordResetController {
   async requestPasswordReset({ request }: HttpContext) {
     const { email } = await request.validateUsing(forgotPasswordValidator);
-    const token = BlCrypto.random();
+    const token = CryptoService.random();
     const tokenHash = await hash.make(token);
 
     const existingUser = await UserService.getByUsername(email);

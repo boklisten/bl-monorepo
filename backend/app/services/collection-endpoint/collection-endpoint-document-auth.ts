@@ -1,5 +1,5 @@
-import { PermissionService } from "#services/auth/permission.service";
 import { isNullish } from "#services/helper/typescript-helpers";
+import { PermissionService } from "#services/permission_service";
 import { BlStorageData } from "#services/storage/bl-storage";
 import { BlApiRequest } from "#services/types/bl-api-request";
 import {

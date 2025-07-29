@@ -1,6 +1,6 @@
 import vine from "@vinejs/vine";
 
-import { PermissionService } from "#services/auth/permission.service";
+import { PermissionService } from "#services/permission_service";
 import { BlStorage } from "#services/storage/bl-storage";
 import { BlApiRequest } from "#services/types/bl-api-request";
 import { Operation } from "#services/types/operation";

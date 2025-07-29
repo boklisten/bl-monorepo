@@ -3,10 +3,10 @@ import { expect, use as chaiUse, should } from "chai";
 import chaiAsPromised from "chai-as-promised";
 import sinon, { createSandbox } from "sinon";
 
-import UserHandler from "#services/auth/user/user.handler";
 import { UserDetailChangeEmailOperation } from "#services/collections/user-detail/operations/change-email/user-detail-change-email.operation";
 import { BlStorage } from "#services/storage/bl-storage";
 import { User } from "#services/types/user";
+import { UserService } from "#services/user_service";
 import { BlError } from "#shared/bl-error/bl-error";
 import { UserDetail } from "#shared/user/user-detail/user-detail";
 chaiUse(chaiAsPromised);
@@ -17,18 +17,16 @@ test.group("UserDetailChangeEmailOperation", (group) => {
 
   let userDetailGetStub: sinon.SinonStub;
   let userDetailUpdateStub: sinon.SinonStub;
-  let userAggregateStub: sinon.SinonStub;
   let userUpdateStub: sinon.SinonStub;
-  let userHandlerGetByUsernameStub: sinon.SinonStub;
+  let userServiceGetByUsernameStub: sinon.SinonStub;
   let sandbox: sinon.SinonSandbox;
 
   group.each.setup(() => {
     sandbox = createSandbox();
     userDetailGetStub = sandbox.stub(BlStorage.UserDetails, "get");
     userDetailUpdateStub = sandbox.stub(BlStorage.UserDetails, "update");
-    userAggregateStub = sandbox.stub(BlStorage.Users, "aggregate");
     userUpdateStub = sandbox.stub(BlStorage.Users, "update");
-    userHandlerGetByUsernameStub = sandbox.stub(UserHandler, "getByUsername");
+    userServiceGetByUsernameStub = sandbox.stub(UserService, "getByUsername");
   });
   group.each.teardown(() => {
     sandbox.restore();
@@ -62,7 +60,7 @@ test.group("UserDetailChangeEmailOperation", (group) => {
       blid: "blid1",
       email: "email@email.com",
     } as UserDetail);
-    userAggregateStub.rejects(new BlError("no user found"));
+    userServiceGetByUsernameStub.rejects(new BlError("no user found"));
 
     return expect(
       userDetailChangeEmailOperation.run({
@@ -82,9 +80,10 @@ test.group("UserDetailChangeEmailOperation", (group) => {
           blid: "blid1",
           email: "email@email.com",
         } as UserDetail);
-        userAggregateStub.resolves([
-          { username: "email@email.com", permission: higherPermission } as User,
-        ]);
+        userServiceGetByUsernameStub.resolves({
+          username: "email@email.com",
+          permission: higherPermission,
+        } as User);
 
         return expect(
           userDetailChangeEmailOperation.run({
@@ -105,14 +104,12 @@ test.group("UserDetailChangeEmailOperation", (group) => {
       blid: "blid1",
       email: "email@email.com",
     } as UserDetail);
-    userAggregateStub.resolves([
-      {
-        blid: "blid1",
-        username: "email@email.com",
-        permission: "customer",
-      } as User,
-    ]);
-    userHandlerGetByUsernameStub.resolves({
+    userServiceGetByUsernameStub.withArgs("email@email.com").resolves({
+      blid: "blid1",
+      username: "email@email.com",
+      permission: "customer",
+    } as User);
+    userServiceGetByUsernameStub.withArgs("alreadyAdded@email.com").resolves({
       username: "alreadyAdded@email.com",
     } as User);
 
@@ -133,14 +130,12 @@ test.group("UserDetailChangeEmailOperation", (group) => {
       blid: "blid1",
       email: "email@email.com",
     } as UserDetail);
-    userAggregateStub.resolves([
-      {
-        blid: "blid1",
-        username: "email@email.com",
-        permission: "customer",
-      } as User,
-    ]);
-    userHandlerGetByUsernameStub.rejects(new BlError("not found"));
+    userServiceGetByUsernameStub.withArgs("email@email.com").resolves({
+      blid: "blid1",
+      username: "email@email.com",
+      permission: "customer",
+    } as User);
+    userServiceGetByUsernameStub.withArgs("change@email.com").resolves(null);
     userDetailUpdateStub.rejects(new BlError("could not update user detail"));
 
     return expect(
@@ -157,14 +152,12 @@ test.group("UserDetailChangeEmailOperation", (group) => {
       blid: "blid1",
       email: "email@email.com",
     } as UserDetail);
-    userAggregateStub.resolves([
-      {
-        blid: "blid1",
-        username: "email@email.com",
-        permission: "customer",
-      } as User,
-    ]);
-    userHandlerGetByUsernameStub.rejects(new BlError("not found"));
+    userServiceGetByUsernameStub.withArgs("email@email.com").resolves({
+      blid: "blid1",
+      username: "email@email.com",
+      permission: "customer",
+    } as User);
+    userServiceGetByUsernameStub.withArgs("change@email.com").resolves(null);
     userDetailUpdateStub.resolves({} as UserDetail);
     userUpdateStub.rejects(new BlError("could not update user"));
 
@@ -182,14 +175,12 @@ test.group("UserDetailChangeEmailOperation", (group) => {
       blid: "blid1",
       email: "email@email.com",
     } as UserDetail);
-    userAggregateStub.resolves([
-      {
-        blid: "blid1",
-        username: "email@email.com",
-        permission: "customer",
-      } as User,
-    ]);
-    userHandlerGetByUsernameStub.rejects(new BlError("not found"));
+    userServiceGetByUsernameStub.withArgs("email@email.com").resolves({
+      blid: "blid1",
+      username: "email@email.com",
+      permission: "customer",
+    } as User);
+    userServiceGetByUsernameStub.withArgs("change@email.com").resolves(null);
     userDetailUpdateStub.resolves({} as UserDetail);
     userUpdateStub.resolves({} as User);
 

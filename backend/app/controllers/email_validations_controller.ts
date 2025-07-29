@@ -1,7 +1,7 @@
 import { HttpContext } from "@adonisjs/core/http";
 
-import { PermissionService } from "#services/auth/permission.service";
 import Messenger from "#services/messenger/messenger";
+import { PermissionService } from "#services/permission_service";
 import { BlStorage } from "#services/storage/bl-storage";
 
 export default class EmailValidationsController {

@@ -1,5 +1,5 @@
-import { PermissionService } from "#services/auth/permission.service";
 import { Hook } from "#services/hook/hook";
+import { PermissionService } from "#services/permission_service";
 import { Branch } from "#shared/branch/branch";
 import { AccessToken } from "#shared/token/access-token";
 

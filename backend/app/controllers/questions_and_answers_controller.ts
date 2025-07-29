@@ -1,6 +1,6 @@
 import { HttpContext } from "@adonisjs/core/http";
 
-import { PermissionService } from "#services/auth/permission.service";
+import { PermissionService } from "#services/permission_service";
 import { BlStorage } from "#services/storage/bl-storage";
 import { questionsAndAnswersValidator } from "#validators/questions_and_answers_validator";
 

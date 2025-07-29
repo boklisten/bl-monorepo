@@ -1,7 +1,7 @@
 import { HttpContext } from "@adonisjs/core/http";
 import { JwtPayload } from "jsonwebtoken";
 
-import { PermissionService } from "#services/auth/permission.service";
+import { PermissionService } from "#services/permission_service";
 import { BlEndpointRestriction } from "#services/types/bl-collection";
 import { BlError } from "#shared/bl-error/bl-error";
 

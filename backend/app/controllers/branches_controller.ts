@@ -1,8 +1,8 @@
 import { HttpContext } from "@adonisjs/core/http";
 import { ObjectId } from "mongodb";
 
-import { PermissionService } from "#services/auth/permission.service";
 import { isNullish } from "#services/helper/typescript-helpers";
+import { PermissionService } from "#services/permission_service";
 import { SEDbQuery } from "#services/query/se.db-query";
 import { BlSchemaName } from "#services/storage/bl-schema-names";
 import { BlStorage } from "#services/storage/bl-storage";

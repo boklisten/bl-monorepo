@@ -37,7 +37,7 @@ export default class LocalController {
     if (!user.login.local) {
       return {
         message:
-          "Brukeren du forsøker å logge inn med har ikke satt opp passord-innlogging. Du kan forsøke å logge inn med Google eller Facebook, eller et lage et nytt passord ved å trykke på 'glemt passord'",
+          "Brukeren du forsøker å logge inn med har ikke satt opp passord-innlogging. Du kan forsøke å logge inn med Vipps, eller et lage et nytt passord ved å trykke på 'glemt passord'",
       };
     }
     const isCorrectPassword = await PasswordService.verifyPassword({

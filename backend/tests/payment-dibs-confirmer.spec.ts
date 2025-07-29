@@ -3,7 +3,7 @@ import { expect, use as chaiUse, should } from "chai";
 import chaiAsPromised from "chai-as-promised";
 import sinon, { createSandbox } from "sinon";
 
-import { PaymentDibsConfirmer } from "#services/collections/payment/helpers/dibs/payment-dibs-confirmer";
+import { PaymentDibsConfirmer } from "#services/legacy/collections/payment/helpers/dibs/payment-dibs-confirmer";
 import { DibsEasyPayment } from "#services/payment/dibs/dibs-easy-payment/dibs-easy-payment";
 import { DibsPaymentService } from "#services/payment/dibs/dibs-payment.service";
 import { BlStorage } from "#services/storage/bl-storage";

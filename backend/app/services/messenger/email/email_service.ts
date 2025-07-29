@@ -1,7 +1,7 @@
 import logger from "@adonisjs/core/services/logger";
 import sgMail from "@sendgrid/mail";
 
-import { DateService } from "#services/blc/date.service";
+import { DateService } from "#services/legacy/date.service";
 import {
   EMAIL_TEMPLATES,
   EmailTemplate,

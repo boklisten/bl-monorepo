@@ -1,7 +1,7 @@
 import { HttpContext } from "@adonisjs/core/http";
 import jwt from "jsonwebtoken";
 
-import BlResponseHandler from "#services/response/bl-response.handler";
+import BlResponseHandler from "#services/legacy/bl-response.handler";
 import TokenService from "#services/token_service";
 import { BlError } from "#shared/bl-error/bl-error";
 import { BlapiResponse } from "#shared/blapi-response/blapi-response";

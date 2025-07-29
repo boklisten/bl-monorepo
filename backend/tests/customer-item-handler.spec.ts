@@ -4,7 +4,7 @@ import chaiAsPromised from "chai-as-promised";
 import mongoose from "mongoose";
 import sinon, { createSandbox } from "sinon";
 
-import { CustomerItemHandler } from "#services/collections/customer-item/helpers/customer-item-handler";
+import { CustomerItemHandler } from "#services/legacy/collections/customer-item/helpers/customer-item-handler";
 import { SEDbQuery } from "#services/query/se.db-query";
 import { BlStorage } from "#services/storage/bl-storage";
 import { BlError } from "#shared/bl-error/bl-error";

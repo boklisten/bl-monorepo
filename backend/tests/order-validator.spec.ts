@@ -3,11 +3,11 @@ import { expect, use as chaiUse, should } from "chai";
 import chaiAsPromised from "chai-as-promised";
 import sinon, { createSandbox } from "sinon";
 
-import { OrderFieldValidator } from "#services/collections/order/helpers/order-validator/order-field-validator/order-field-validator";
-import { OrderItemValidator } from "#services/collections/order/helpers/order-validator/order-item-validator/order-item-validator";
-import { OrderPlacedValidator } from "#services/collections/order/helpers/order-validator/order-placed-validator/order-placed-validator";
-import { OrderUserDetailValidator } from "#services/collections/order/helpers/order-validator/order-user-detail-validator/order-user-detail-validator";
-import { OrderValidator } from "#services/collections/order/helpers/order-validator/order-validator";
+import { OrderFieldValidator } from "#services/legacy/collections/order/helpers/order-validator/order-field-validator/order-field-validator";
+import { OrderItemValidator } from "#services/legacy/collections/order/helpers/order-validator/order-item-validator/order-item-validator";
+import { OrderPlacedValidator } from "#services/legacy/collections/order/helpers/order-validator/order-placed-validator/order-placed-validator";
+import { OrderUserDetailValidator } from "#services/legacy/collections/order/helpers/order-validator/order-user-detail-validator/order-user-detail-validator";
+import { OrderValidator } from "#services/legacy/collections/order/helpers/order-validator/order-validator";
 import { BlStorage } from "#services/storage/bl-storage";
 import { BlError } from "#shared/bl-error/bl-error";
 import { Branch } from "#shared/branch/branch";

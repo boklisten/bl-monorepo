@@ -2,7 +2,7 @@ import { test } from "@japa/runner";
 import { expect, use as chaiUse, should } from "chai";
 import chaiAsPromised from "chai-as-promised";
 
-import CollectionEndpointDocumentAuth from "#services/collection-endpoint/collection-endpoint-document-auth";
+import CollectionEndpointDocumentAuth from "#services/legacy/collection-endpoint/collection-endpoint-document-auth";
 import { BlStorageData } from "#services/storage/bl-storage";
 import { BlApiRequest } from "#services/types/bl-api-request";
 import {

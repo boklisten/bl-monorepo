@@ -3,9 +3,9 @@ import { expect, use as chaiUse, should } from "chai";
 import chaiAsPromised from "chai-as-promised";
 import sinon, { createSandbox } from "sinon";
 
-import { OrderPlacedHandler } from "#services/collections/order/helpers/order-placed-handler/order-placed-handler";
-import { OrderValidator } from "#services/collections/order/helpers/order-validator/order-validator";
-import { OrderPatchHook } from "#services/collections/order/hooks/order.patch.hook";
+import { OrderPlacedHandler } from "#services/legacy/collections/order/helpers/order-placed-handler/order-placed-handler";
+import { OrderValidator } from "#services/legacy/collections/order/helpers/order-validator/order-validator";
+import { OrderPatchHook } from "#services/legacy/collections/order/hooks/order.patch.hook";
 import { BlStorage } from "#services/storage/bl-storage";
 import { BlError } from "#shared/bl-error/bl-error";
 import { Order } from "#shared/order/order";

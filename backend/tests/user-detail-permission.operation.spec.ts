@@ -3,7 +3,7 @@ import { expect, use as chaiUse, should } from "chai";
 import chaiAsPromised from "chai-as-promised";
 import sinon, { createSandbox } from "sinon";
 
-import { UserDetailPermissionOperation } from "#services/collections/user-detail/operations/permission/user-detail-permission.operation";
+import { UserDetailPermissionOperation } from "#services/legacy/collections/user-detail/operations/permission/user-detail-permission.operation";
 import { BlStorage } from "#services/storage/bl-storage";
 import { User } from "#services/types/user";
 import { BlError } from "#shared/bl-error/bl-error";

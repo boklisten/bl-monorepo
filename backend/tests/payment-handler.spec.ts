@@ -3,8 +3,8 @@ import { expect, use as chaiUse, should } from "chai";
 import chaiAsPromised from "chai-as-promised";
 import sinon, { createSandbox } from "sinon";
 
-import { PaymentDibsConfirmer } from "#services/collections/payment/helpers/dibs/payment-dibs-confirmer";
-import { PaymentHandler } from "#services/collections/payment/helpers/payment-handler";
+import { PaymentDibsConfirmer } from "#services/legacy/collections/payment/helpers/dibs/payment-dibs-confirmer";
+import { PaymentHandler } from "#services/legacy/collections/payment/helpers/payment-handler";
 import { DibsPaymentService } from "#services/payment/dibs/dibs-payment.service";
 import { BlStorage } from "#services/storage/bl-storage";
 import { BlError } from "#shared/bl-error/bl-error";

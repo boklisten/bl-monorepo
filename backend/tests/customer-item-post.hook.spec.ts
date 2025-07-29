@@ -4,8 +4,8 @@ import chaiAsPromised from "chai-as-promised";
 import sinon, { createSandbox } from "sinon";
 import sinonChai from "sinon-chai";
 
-import { CustomerItemPostHook } from "#services/collections/customer-item/hooks/customer-item-post.hook";
-import { CustomerItemValidator } from "#services/collections/customer-item/validators/customer-item-validator";
+import { CustomerItemPostHook } from "#services/legacy/collections/customer-item/hooks/customer-item-post.hook";
+import { CustomerItemValidator } from "#services/legacy/collections/customer-item/validators/customer-item-validator";
 import { BlStorage } from "#services/storage/bl-storage";
 import { BlError } from "#shared/bl-error/bl-error";
 import { CustomerItem } from "#shared/customer-item/customer-item";

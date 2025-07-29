@@ -4,7 +4,7 @@ import chaiAsPromised from "chai-as-promised";
 import sinon, { createSandbox } from "sinon";
 import sinonChai from "sinon-chai";
 
-import { MessageHelper } from "#services/collections/message/helper/message-helper";
+import { MessageHelper } from "#services/legacy/collections/message/helper/message-helper";
 import { BlStorage } from "#services/storage/bl-storage";
 import { BlError } from "#shared/bl-error/bl-error";
 import { Message } from "#shared/message/message";

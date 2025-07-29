@@ -3,7 +3,7 @@ import { expect, use as chaiUse, should } from "chai";
 import chaiAsPromised from "chai-as-promised";
 import sinon, { createSandbox } from "sinon";
 
-import { CustomerItemActiveBlid } from "#services/collections/customer-item/helpers/customer-item-active-blid";
+import { CustomerItemActiveBlid } from "#services/legacy/collections/customer-item/helpers/customer-item-active-blid";
 import { BlStorage } from "#services/storage/bl-storage";
 
 chaiUse(chaiAsPromised);

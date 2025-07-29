@@ -2,7 +2,7 @@ import { test } from "@japa/runner";
 import { expect, use as chaiUse, should } from "chai";
 import chaiAsPromised from "chai-as-promised";
 
-import { CustomerItemValidator } from "#services/collections/customer-item/validators/customer-item-validator";
+import { CustomerItemValidator } from "#services/legacy/collections/customer-item/validators/customer-item-validator";
 import { BlError } from "#shared/bl-error/bl-error";
 
 chaiUse(chaiAsPromised);

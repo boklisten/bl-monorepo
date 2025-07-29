@@ -3,7 +3,7 @@ import { assert, use as chaiUse, should } from "chai";
 import chaiAsPromised from "chai-as-promised";
 import { createSandbox } from "sinon";
 
-import { UserDetailUpdateHook } from "#services/collections/user-detail/hooks/user-detail-update.hook";
+import { UserDetailUpdateHook } from "#services/legacy/collections/user-detail/hooks/user-detail-update.hook";
 import { BlStorage } from "#services/storage/bl-storage";
 import { AccessToken } from "#shared/token/access-token";
 

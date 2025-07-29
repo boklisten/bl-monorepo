@@ -3,9 +3,9 @@ import { expect, use as chaiUse, should } from "chai";
 import chaiAsPromised from "chai-as-promised";
 import sinon, { createSandbox } from "sinon";
 
-import { DeliveryBranchHandler } from "#services/collections/delivery/helpers/deliveryBranch/delivery-branch-handler";
-import { DeliveryBringHandler } from "#services/collections/delivery/helpers/deliveryBring/delivery-bring-handler";
-import { DeliveryValidator } from "#services/collections/delivery/helpers/deliveryValidator/delivery-validator";
+import { DeliveryBranchHandler } from "#services/legacy/collections/delivery/helpers/deliveryBranch/delivery-branch-handler";
+import { DeliveryBringHandler } from "#services/legacy/collections/delivery/helpers/deliveryBring/delivery-bring-handler";
+import { DeliveryValidator } from "#services/legacy/collections/delivery/helpers/deliveryValidator/delivery-validator";
 import { BlStorage } from "#services/storage/bl-storage";
 import { BlError } from "#shared/bl-error/bl-error";
 import { Delivery } from "#shared/delivery/delivery";

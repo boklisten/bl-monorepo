@@ -3,7 +3,7 @@ import { expect, use as chaiUse, should } from "chai";
 import chaiAsPromised from "chai-as-promised";
 import sinon, { createSandbox } from "sinon";
 
-import { OrderActive } from "#services/collections/order/helpers/order-active/order-active";
+import { OrderActive } from "#services/legacy/collections/order/helpers/order-active/order-active";
 import { BlStorage } from "#services/storage/bl-storage";
 import { BlError } from "#shared/bl-error/bl-error";
 import { Order } from "#shared/order/order";

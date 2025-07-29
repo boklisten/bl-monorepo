@@ -3,7 +3,7 @@ import { expect, use as chaiUse, should } from "chai";
 import chaiAsPromised from "chai-as-promised";
 import moment from "moment-timezone";
 
-import { DateService } from "#services/blc/date.service";
+import { DateService } from "#services/legacy/date.service";
 
 chaiUse(chaiAsPromised);
 should();

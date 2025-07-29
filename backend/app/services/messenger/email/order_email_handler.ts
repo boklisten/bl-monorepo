@@ -1,7 +1,7 @@
 import moment from "moment-timezone";
 
-import { DateService } from "#services/blc/date.service";
-import { userHasValidSignature } from "#services/collections/signature/helpers/signature.helper";
+import { userHasValidSignature } from "#services/legacy/collections/signature/helpers/signature.helper";
+import { DateService } from "#services/legacy/date.service";
 import { sendMail } from "#services/messenger/email/email_service";
 import { EMAIL_TEMPLATES } from "#services/messenger/email/email_templates";
 import { sendSMS } from "#services/messenger/sms/sms-service";

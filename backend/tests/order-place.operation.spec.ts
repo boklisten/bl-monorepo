@@ -5,10 +5,10 @@ import moment from "moment-timezone";
 import sinon, { createSandbox } from "sinon";
 
 import { Signature } from "#models/signature.schema";
-import { OrderToCustomerItemGenerator } from "#services/collections/customer-item/helpers/order-to-customer-item-generator";
-import { OrderPlacedHandler } from "#services/collections/order/helpers/order-placed-handler/order-placed-handler";
-import { OrderValidator } from "#services/collections/order/helpers/order-validator/order-validator";
-import { OrderPlaceOperation } from "#services/collections/order/operations/place/order-place.operation";
+import { OrderToCustomerItemGenerator } from "#services/legacy/collections/customer-item/helpers/order-to-customer-item-generator";
+import { OrderPlacedHandler } from "#services/legacy/collections/order/helpers/order-placed-handler/order-placed-handler";
+import { OrderValidator } from "#services/legacy/collections/order/helpers/order-validator/order-validator";
+import { OrderPlaceOperation } from "#services/legacy/collections/order/operations/place/order-place.operation";
 import { BlStorage } from "#services/storage/bl-storage";
 import { BlError } from "#shared/bl-error/bl-error";
 import { BlapiResponse } from "#shared/blapi-response/blapi-response";

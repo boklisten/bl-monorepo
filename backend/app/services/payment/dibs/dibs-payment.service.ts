@@ -1,5 +1,5 @@
-import { UserDetailHelper } from "#services/collections/user-detail/helpers/user-detail.helper";
 import { APP_CONFIG } from "#services/config/application-config";
+import { UserDetailHelper } from "#services/legacy/collections/user-detail/helpers/user-detail.helper";
 import { DibsEasyOrder } from "#services/payment/dibs/dibs-easy-order";
 import { DibsEasyPayment } from "#services/payment/dibs/dibs-easy-payment/dibs-easy-payment";
 import { DibsEasyItem } from "#services/types/dibs-easy-item";

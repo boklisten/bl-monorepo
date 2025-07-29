@@ -1,12 +1,12 @@
 import { Infer } from "@vinejs/vine/types";
 import { ObjectId } from "mongodb";
 
-import { CustomerItemActiveBlid } from "#services/collections/customer-item/helpers/customer-item-active-blid";
-import { OrderToCustomerItemGenerator } from "#services/collections/customer-item/helpers/order-to-customer-item-generator";
-import { OrderActive } from "#services/collections/order/helpers/order-active/order-active";
-import { OrderItemMovedFromOrderHandler } from "#services/collections/order/helpers/order-item-moved-from-order-handler/order-item-moved-from-order-handler";
-import { OrderValidator } from "#services/collections/order/helpers/order-validator/order-validator";
 import { isNullish } from "#services/helper/typescript-helpers";
+import { CustomerItemActiveBlid } from "#services/legacy/collections/customer-item/helpers/customer-item-active-blid";
+import { OrderToCustomerItemGenerator } from "#services/legacy/collections/customer-item/helpers/order-to-customer-item-generator";
+import { OrderActive } from "#services/legacy/collections/order/helpers/order-active/order-active";
+import { OrderItemMovedFromOrderHandler } from "#services/legacy/collections/order/helpers/order-item-moved-from-order-handler/order-item-moved-from-order-handler";
+import { OrderValidator } from "#services/legacy/collections/order/helpers/order-validator/order-validator";
 import { SEDbQuery } from "#services/query/se.db-query";
 import { BlStorage } from "#services/storage/bl-storage";
 import { BlError } from "#shared/bl-error/bl-error";

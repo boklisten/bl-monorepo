@@ -1,7 +1,7 @@
 import { test } from "@japa/runner";
 import { expect } from "chai";
 
-import { CustomerItemActive } from "#services/collections/customer-item/helpers/customer-item-active";
+import { CustomerItemActive } from "#services/legacy/collections/customer-item/helpers/customer-item-active";
 import { CustomerItem } from "#shared/customer-item/customer-item";
 
 test.group("CustomerItemActive", async () => {

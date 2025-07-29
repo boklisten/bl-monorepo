@@ -3,8 +3,8 @@ import { use as chaiUse, should } from "chai";
 import chaiAsPromised from "chai-as-promised";
 import sinon from "sinon";
 
-import { CustomerItemActiveBlid } from "#services/collections/customer-item/helpers/customer-item-active-blid";
-import { UniqueItemActiveOperation } from "#services/collections/unique-item/operations/unique-item-active.operation";
+import { CustomerItemActiveBlid } from "#services/legacy/collections/customer-item/helpers/customer-item-active-blid";
+import { UniqueItemActiveOperation } from "#services/legacy/collections/unique-item/operations/unique-item-active.operation";
 import { BlStorage } from "#services/storage/bl-storage";
 import { UniqueItem } from "#shared/unique-item/unique-item";
 

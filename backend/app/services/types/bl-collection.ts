@@ -1,4 +1,4 @@
-import { Hook } from "#services/hook/hook";
+import { Hook } from "#services/legacy/hook";
 import { ValidParameter } from "#services/query/db-query-valid-params";
 import { BlStorageHandler } from "#services/storage/bl-storage";
 import { NestedDocument } from "#services/types/nested-document";

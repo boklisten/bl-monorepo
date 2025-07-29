@@ -3,7 +3,7 @@ import { expect, use as chaiUse, should } from "chai";
 import chaiAsPromised from "chai-as-promised";
 import sinon, { createSandbox } from "sinon";
 
-import { DeleteUserService } from "#services/collections/user-detail/helpers/delete-user-service";
+import { DeleteUserService } from "#services/legacy/collections/user-detail/helpers/delete-user-service";
 import { BlStorage } from "#services/storage/bl-storage";
 import { User } from "#services/types/user";
 chaiUse(chaiAsPromised);

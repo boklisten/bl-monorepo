@@ -5,7 +5,7 @@ import moment from "moment-timezone";
 import sinon, { createSandbox } from "sinon";
 import sinonChai from "sinon-chai";
 
-import { OpeningHourHelper } from "#services/collections/opening-hour/helpers/opening-hour-helper";
+import { OpeningHourHelper } from "#services/legacy/collections/opening-hour/helpers/opening-hour-helper";
 import { BlStorage } from "#services/storage/bl-storage";
 import { BlError } from "#shared/bl-error/bl-error";
 import { Branch } from "#shared/branch/branch";

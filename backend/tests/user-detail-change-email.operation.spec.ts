@@ -3,7 +3,7 @@ import { expect, use as chaiUse, should } from "chai";
 import chaiAsPromised from "chai-as-promised";
 import sinon, { createSandbox } from "sinon";
 
-import { UserDetailChangeEmailOperation } from "#services/collections/user-detail/operations/change-email/user-detail-change-email.operation";
+import { UserDetailChangeEmailOperation } from "#services/legacy/collections/user-detail/operations/change-email/user-detail-change-email.operation";
 import { BlStorage } from "#services/storage/bl-storage";
 import { User } from "#services/types/user";
 import { UserService } from "#services/user_service";

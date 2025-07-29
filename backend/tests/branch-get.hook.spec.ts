@@ -1,6 +1,6 @@
 import { test } from "@japa/runner";
 
-import { BranchGetHook } from "#services/collections/branch/hook/branch-get.hook";
+import { BranchGetHook } from "#services/legacy/collections/branch/hook/branch-get.hook";
 import { AccessToken } from "#shared/token/access-token";
 
 const branchGetHook = new BranchGetHook();

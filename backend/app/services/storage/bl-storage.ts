@@ -1,3 +1,4 @@
+import { ObjectId } from "mongodb";
 import { Schema } from "mongoose";
 
 import { BranchItemSchema } from "#models/branch-item.schema";
@@ -22,7 +23,6 @@ import { UserDetailSchema } from "#models/user-detail.schema";
 import { UserMatchSchema } from "#models/user-match.schema";
 import { UserSchema } from "#models/user.schema";
 import { WaitingListEntriesSchema } from "#models/waiting-list-entries.schema";
-import { ToSchema } from "#services/helper/typescript-helpers";
 import { BlSchemaName } from "#services/storage/bl-schema-names";
 import { MongodbHandler } from "#services/storage/mongodb-handler";
 
@@ -93,3 +93,16 @@ export type BlStorageData =
         : never;
     }[keyof typeof BlStorage]
   | BlModelTypes[];
+
+// Re-format BlDocument type to one fitting for mongoose schemas
+// Recursively union string-fields with ObjectId (e.g. {b: string} => {b: string | ObjectId}), except if the field is
+// named "type" (because that's reserved and errors)
+type ToSchema<T> = {
+  [key in keyof T]: T[key] extends string
+    ? key extends "type"
+      ? T[key]
+      : T[key] | ObjectId
+    : T[key] extends "boolean" | "number"
+      ? T[key]
+      : ToSchema<T[key]>;
+};

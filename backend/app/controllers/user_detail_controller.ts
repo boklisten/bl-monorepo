@@ -2,7 +2,10 @@ import { HttpContext } from "@adonisjs/core/http";
 
 import { PermissionService } from "#services/permission_service";
 import { BlStorage } from "#services/storage/bl-storage";
-import { customerUpdateUserDetailsValidator } from "#validators/user_detail";
+import {
+  customerUpdateUserDetailsValidator,
+  employeeUpdateUserDetailsValidator,
+} from "#validators/user_detail";
 
 export default class UserDetailsController {
   async updateAsCustomer(ctx: HttpContext) {
@@ -22,6 +25,39 @@ export default class UserDetailsController {
       },
     });
     await BlStorage.UserDetails.update(detailsId, {
+      phone: phoneNumber,
+      name,
+      address,
+      postCode: postalCode,
+      postCity: postalCity,
+      dob,
+      branchMembership,
+      guardian,
+    });
+  }
+
+  async updateAsEmployee(ctx: HttpContext) {
+    PermissionService.employeeOrFail(ctx);
+    const targetUserDetailsId = ctx.request.param("detailsId");
+    const {
+      emailVerified,
+      email,
+      phoneNumber,
+      name,
+      address,
+      postalCode,
+      postalCity,
+      dob,
+      branchMembership,
+      guardian,
+    } = await ctx.request.validateUsing(employeeUpdateUserDetailsValidator, {
+      meta: {
+        detailsId: targetUserDetailsId,
+      },
+    });
+    await BlStorage.UserDetails.update(targetUserDetailsId, {
+      emailConfirmed: emailVerified,
+      email,
       phone: phoneNumber,
       name,
       address,

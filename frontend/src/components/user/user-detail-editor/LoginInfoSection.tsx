@@ -11,14 +11,17 @@ import FieldErrorAlert from "@/components/user/fields/FieldErrorAlert";
 import MaybeConfirmedEmailField from "@/components/user/fields/MaybeConfirmedEmailField";
 import PasswordField from "@/components/user/fields/PasswordField";
 import { fieldValidators } from "@/components/user/user-detail-editor/fieldValidators";
-import { UserEditorFields } from "@/components/user/user-detail-editor/UserDetailsEditor";
+import {
+  UserDetailsEditorVariant,
+  UserEditorFields,
+} from "@/components/user/user-detail-editor/UserDetailsEditor";
 
 export default function LoginInfoSection({
-  signUp,
+  variant,
   emailConfirmed,
   userDetails,
 }: {
-  signUp: boolean | undefined;
+  variant: UserDetailsEditorVariant;
   emailConfirmed: boolean | undefined;
   userDetails: UserDetail;
 }) {
@@ -33,19 +36,17 @@ export default function LoginInfoSection({
     <>
       <Grid size={{ xs: 12 }}>
         <MaybeConfirmedEmailField
-          isSignUp={signUp}
+          variant={variant}
           isEmailConfirmed={emailConfirmed}
-          error={!!errors.email}
-          {...register("email", fieldValidators.email)}
         />
         <EmailConfirmationStatus
           onError={(message) => setError("email", { message })}
           userDetails={userDetails}
-          isSignUp={signUp}
+          variant={variant}
         />
         <FieldErrorAlert field={"email"} />
       </Grid>
-      {!signUp && (
+      {variant === "personal" && (
         <>
           <Stack
             alignItems={"center"}
@@ -67,7 +68,7 @@ export default function LoginInfoSection({
           </Dialog>
         </>
       )}
-      {signUp && (
+      {variant === "signup" && (
         <Grid size={{ xs: 12 }}>
           <PasswordField
             autoComplete="new-password"

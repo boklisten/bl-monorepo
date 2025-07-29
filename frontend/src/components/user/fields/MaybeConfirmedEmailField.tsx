@@ -1,24 +1,31 @@
 import { Check, Info } from "@mui/icons-material";
-import { InputAdornment, TextFieldProps, Tooltip } from "@mui/material";
-import { forwardRef, Ref } from "react";
+import { InputAdornment, Tooltip } from "@mui/material";
+import { useFormContext } from "react-hook-form";
 
 import EmailField from "@/components/user/fields/EmailField";
+import { fieldValidators } from "@/components/user/user-detail-editor/fieldValidators";
+import {
+  UserDetailsEditorVariant,
+  UserEditorFields,
+} from "@/components/user/user-detail-editor/UserDetailsEditor";
 
-type EmailFieldProps = Omit<TextFieldProps, "ref"> & {
-  isSignUp: boolean | undefined;
+export default function MaybeConfirmedEmailField({
+  variant,
+  isEmailConfirmed,
+}: {
+  variant: UserDetailsEditorVariant;
   isEmailConfirmed: boolean | undefined;
-};
-
-const MaybeConfirmedEmailField = forwardRef(
-  (
-    { isSignUp, isEmailConfirmed, ...props }: EmailFieldProps,
-    ref: Ref<HTMLInputElement>,
-  ) => (
+}) {
+  const {
+    register,
+    formState: { errors },
+  } = useFormContext<UserEditorFields>();
+  return (
     <EmailField
       InputProps={{
         endAdornment: (
           <>
-            {!isSignUp && (
+            {variant !== "signup" && (
               <InputAdornment position={"end"}>
                 <Tooltip
                   title={isEmailConfirmed ? "Bekreftet" : "Ikke bekreftet"}
@@ -34,15 +41,14 @@ const MaybeConfirmedEmailField = forwardRef(
           </>
         ),
       }}
-      ref={ref}
-      disabled={!isSignUp}
+      disabled={variant === "personal" || variant === "administrate"} // fixme: enable in administrate but note that we also need to update the users table
       helperText={
-        isSignUp ? "" : "Ta kontakt dersom du ønsker å endre e-postadresse"
+        variant === "personal"
+          ? "Ta kontakt dersom du ønsker å endre e-postadresse"
+          : ""
       }
-      {...props}
+      error={!!errors.email}
+      {...register("email", fieldValidators.email)}
     />
-  ),
-);
-MaybeConfirmedEmailField.displayName = "MaybeConfirmedEmailField";
-
-export default MaybeConfirmedEmailField;
+  );
+}

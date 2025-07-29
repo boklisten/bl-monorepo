@@ -9,12 +9,17 @@ import FieldErrorAlert from "@/components/user/fields/FieldErrorAlert";
 import PhoneNumberField from "@/components/user/fields/PhoneNumberField";
 import PostalCodeField from "@/components/user/fields/PostalCodeField";
 import { fieldValidators } from "@/components/user/user-detail-editor/fieldValidators";
-import { UserEditorFields } from "@/components/user/user-detail-editor/UserDetailsEditor";
+import {
+  UserDetailsEditorVariant,
+  UserEditorFields,
+} from "@/components/user/user-detail-editor/UserDetailsEditor";
 
 export default function YourInfoSection({
   onIsUnderageChange,
+  variant,
 }: {
   onIsUnderageChange: (isUnderage: boolean | null) => void;
+  variant: UserDetailsEditorVariant;
 }) {
   const {
     register,
@@ -33,7 +38,9 @@ export default function YourInfoSection({
           mt: 1,
         }}
       >
-        <Typography variant="body1">Din informasjon</Typography>
+        <Typography variant="body1">
+          {variant === "administrate" ? "Kundens" : "Din"} informasjon
+        </Typography>
         <Divider />
       </Grid>
       <Grid size={{ xs: 12 }}>

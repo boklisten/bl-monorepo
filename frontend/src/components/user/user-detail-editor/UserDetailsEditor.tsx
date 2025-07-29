@@ -4,7 +4,7 @@ import { UserDetail } from "@boklisten/backend/shared/user-detail";
 import { Button } from "@mui/material";
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useNotifications } from "@toolpad/core";
 import { InferErrorType } from "@tuyau/client";
 import moment, { Moment } from "moment";
@@ -42,13 +42,16 @@ const isUnder18 = (birthday: moment.Moment): boolean => {
   return moment().diff(birthday, "years") < 18;
 };
 
+export type UserDetailsEditorVariant = "signup" | "personal" | "administrate";
+
 export default function UserDetailsEditor({
-  isSignUp,
+  variant,
   userDetails = {} as UserDetail,
 }: {
-  isSignUp?: boolean;
+  variant: UserDetailsEditorVariant;
   userDetails?: UserDetail;
 }) {
+  const queryClient = useQueryClient();
   const { redirectToCaller } = useAuthLinker();
   const client = useApiClient();
   const notifications = useNotifications();
@@ -167,13 +170,51 @@ export default function UserDetailsEditor({
     );
   }
 
+  async function updateUserDetailsAsEmployee(formData: UserEditorFields) {
+    const { error } = await client.v2.employee
+      .user_details({ detailsId: userDetails.id })
+      .$post({
+        emailVerified: userDetails.emailConfirmed ?? false, // fixme: add this to the form as a switch
+        email: formData.email,
+        name: formData.name,
+        phoneNumber: formData.phoneNumber,
+        address: formData.address,
+        postalCode: formData.postalCode,
+        postalCity: formData.postalCity,
+        dob: formData.birthday?.format("YYYY-MM-DD") ?? "",
+        branchMembership: formData.branchMembership ?? "",
+        guardian: {
+          name: formData.guardianName,
+          email: formData.guardianEmail,
+          phone: formData.guardianPhoneNumber,
+        },
+      });
+
+    if (error) {
+      handleSubmitError(error);
+      return;
+    }
+
+    notifications.show(
+      "Brukerinnstillingene ble lagret!",
+      SUCCESS_NOTIFICATION,
+    );
+  }
+
   const userDetailsMutation = useMutation({
     mutationFn: async (data: UserEditorFields) => {
-      if (isSignUp) {
+      if (variant === "signup") {
         await registerUser(data);
-      } else {
+      }
+      if (variant === "personal") {
         await updateUserDetails(data);
       }
+      if (variant === "administrate") {
+        await updateUserDetailsAsEmployee(data);
+      }
+      await queryClient.invalidateQueries({
+        queryKey: ["userDetails", userDetails?.id],
+      });
     },
   });
   const birthdayFieldValue = watch("birthday");
@@ -198,13 +239,16 @@ export default function UserDetailsEditor({
       >
         <Grid container spacing={2}>
           <LoginInfoSection
-            signUp={isSignUp}
+            variant={variant}
             emailConfirmed={userDetails.emailConfirmed}
             userDetails={userDetails}
           />
-          <YourInfoSection onIsUnderageChange={onIsUnderageChange} />
-          {isUnderage && <GuardianInfoSection />}
-          {isSignUp && <TermsAndConditionsSection />}
+          <YourInfoSection
+            variant={variant}
+            onIsUnderageChange={onIsUnderageChange}
+          />
+          {isUnderage && <GuardianInfoSection variant={variant} />}
+          {variant === "signup" && <TermsAndConditionsSection />}
         </Grid>
         <ErrorSummary />
         <Button
@@ -214,9 +258,9 @@ export default function UserDetailsEditor({
           variant="contained"
           sx={{ mt: 3, mb: 2 }}
         >
-          {isSignUp ? "Registrer deg" : "Lagre"}
+          {variant === "signup" ? "Registrer deg" : "Lagre"}
         </Button>
-        {isSignUp && (
+        {variant === "signup" && (
           <DynamicLink href={"/auth/login"}>
             Har du allerede en konto? Logg inn
           </DynamicLink>

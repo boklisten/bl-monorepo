@@ -35,7 +35,7 @@ export default function PersonalUserDetailEditor({
         )}
         <UserDetailsEditor
           userDetails={userDetails}
-          isSignUp={isSignUp ?? false}
+          variant={isSignUp ? "signup" : "personal"}
         />
       </Stack>
     </Container>

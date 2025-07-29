@@ -48,7 +48,7 @@ export default function UserDetailSearchField({
                 query: { s: newInputValue },
               })
               .then(unpack<UserDetail[]>);
-            setSearchResults(result);
+            setSearchResults(result ?? []);
           } catch {
             setSearchResults([]);
           }

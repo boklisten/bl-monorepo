@@ -386,6 +386,17 @@ type V2UserdetailsPost = {
     true
   >;
 };
+type V2EmployeeUserdetailsIdPost = {
+  request: MakeTuyauRequest<
+    InferInput<
+      (typeof import("../app/validators/user_detail.ts"))["employeeUpdateUserDetailsValidator"]
+    >
+  >;
+  response: MakeNonSerializedTuyauResponse<
+    import("../app/controllers/user_detail_controller.ts").default["updateAsEmployee"],
+    true
+  >;
+};
 type V2CustomeritemsGetHead = {
   request: unknown;
   response: MakeNonSerializedTuyauResponse<
@@ -442,6 +453,14 @@ export interface ApiDefinition {
     user_details: {
       $url: {};
       $post: V2UserdetailsPost;
+    };
+    employee: {
+      user_details: {
+        ":detailsId": {
+          $url: {};
+          $post: V2EmployeeUserdetailsIdPost;
+        };
+      };
     };
     customer_items: {
       $url: {};
@@ -862,6 +881,13 @@ const routes = [
     path: "/v2/user_details",
     method: ["POST"],
     types: {} as V2UserdetailsPost,
+  },
+  {
+    params: ["detailsId"],
+    name: "user_detail.updateAsEmployee",
+    path: "/v2/employee/user_details/:detailsId",
+    method: ["POST"],
+    types: {} as V2EmployeeUserdetailsIdPost,
   },
   {
     params: [],

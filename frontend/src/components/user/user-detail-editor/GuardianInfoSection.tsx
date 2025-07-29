@@ -7,9 +7,16 @@ import EmailField from "@/components/user/fields/EmailField";
 import FieldErrorAlert from "@/components/user/fields/FieldErrorAlert";
 import PhoneNumberField from "@/components/user/fields/PhoneNumberField";
 import { fieldValidators } from "@/components/user/user-detail-editor/fieldValidators";
-import { UserEditorFields } from "@/components/user/user-detail-editor/UserDetailsEditor";
+import {
+  UserDetailsEditorVariant,
+  UserEditorFields,
+} from "@/components/user/user-detail-editor/UserDetailsEditor";
 
-export default function GuardianInfoSection() {
+export default function GuardianInfoSection({
+  variant,
+}: {
+  variant: UserDetailsEditorVariant;
+}) {
   const {
     register,
     formState: { errors },
@@ -26,7 +33,9 @@ export default function GuardianInfoSection() {
         }}
       >
         <Typography variant="body1">
-          Siden du er under 18, trenger vi informasjon om en av dine foresatte.
+          Siden {variant === "administrate" ? "kunden" : "du"} er under 18,
+          trenger vi informasjon om en av{" "}
+          {variant === "administrate" ? "kundens" : "dine"} foresatte.
         </Typography>
         <Divider />
       </Grid>

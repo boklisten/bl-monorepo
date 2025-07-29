@@ -231,6 +231,12 @@ router
 router
   .post("/v2/user_details", [UserDetailController, "updateAsCustomer"])
   .as("user_detail.updateAsCustomer");
+router
+  .post("/v2/employee/user_details/:detailsId", [
+    UserDetailController,
+    "updateAsEmployee",
+  ])
+  .as("user_detail.updateAsEmployee");
 
 /**
  * customer items

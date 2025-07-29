@@ -56,3 +56,14 @@ const customerUpdateUserDetailsSchema = vine.object({
 export const customerUpdateUserDetailsValidator = vine
   .withMetaData<{ detailsId: string }>()
   .compile(customerUpdateUserDetailsSchema);
+
+// Fields that employees are allowed to adjust
+const employeeUpdateUserDetailsSchema = vine.object({
+  ...customerUpdateUserDetailsSchema.getProperties(),
+  email: emailField.clone(),
+  emailVerified: vine.boolean(),
+});
+
+export const employeeUpdateUserDetailsValidator = vine
+  .withMetaData<{ detailsId: string }>()
+  .compile(employeeUpdateUserDetailsSchema);

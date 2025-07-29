@@ -4,16 +4,17 @@ import { Alert } from "@mui/material";
 import Button from "@mui/material/Button";
 import { useMutation } from "@tanstack/react-query";
 
+import { UserDetailsEditorVariant } from "@/components/user/user-detail-editor/UserDetailsEditor";
 import useApiClient from "@/utils/api/useApiClient";
 
 interface EmailConfirmationStatusProps {
-  isSignUp: boolean | undefined;
+  variant: UserDetailsEditorVariant;
   userDetails: UserDetail;
   onError: (message: string) => void;
 }
 
 const EmailConfirmationStatus = ({
-  isSignUp,
+  variant,
   userDetails,
   onError,
 }: EmailConfirmationStatusProps) => {
@@ -28,20 +29,21 @@ const EmailConfirmationStatus = ({
   });
 
   return (
-    !isSignUp &&
+    variant !== "signup" &&
     !userDetails.emailConfirmed && (
       <>
         {createEmailConfirmation.isSuccess ? (
           <Alert severity={"info"} sx={{ mt: 1 }} icon={<Email />}>
-            Bekreftelseslenke er sendt til din e-postadresse! Sjekk søppelpost
-            om den ikke dukker opp i inbox.
+            Bekreftelseslenke er sendt til
+            {variant === "personal" ? "din" : "kundens"} e-postadresse! Sjekk
+            søppelpost om den ikke dukker opp i inbox.
           </Alert>
         ) : (
           <>
             <Alert severity={"warning"} icon={<Info color={"warning"} />}>
-              E-postadressen din er ikke bekreftet. En bekreftelseslenke har
-              blitt sendt til {userDetails.email}. Trykk på knappen nedenfor for
-              å sende en ny lenke.
+              E-postadressen er ikke bekreftet. En bekreftelseslenke har blitt
+              sendt til {userDetails.email}. Trykk på knappen nedenfor for å
+              sende en ny lenke.
             </Alert>
             <Button onClick={() => createEmailConfirmation.mutate()}>
               Send bekreftelseslenke på nytt

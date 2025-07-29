@@ -1,7 +1,7 @@
 import { PriceService } from "#services/price/price.service";
 import { BlStorage } from "#services/storage/bl-storage";
-import { BlError } from "#shared/bl-error/bl-error";
-import { Item } from "#shared/item/item";
+import { BlError } from "#shared/bl-error";
+import { Item } from "#shared/item";
 import { Order } from "#shared/order/order";
 import { OrderItem } from "#shared/order/order-item/order-item";
 

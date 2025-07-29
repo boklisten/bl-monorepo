@@ -1,4 +1,4 @@
-import { Branch } from "@boklisten/backend/shared/branch/branch";
+import { Branch } from "@boklisten/backend/shared/branch";
 import { Stack, Typography } from "@mui/material";
 import { TreeItem } from "@mui/x-tree-view";
 import { SimpleTreeView } from "@mui/x-tree-view/SimpleTreeView";

@@ -5,8 +5,8 @@ import sinon, { createSandbox } from "sinon";
 
 import { OrderItemRentPeriodValidator } from "#services/legacy/collections/order/helpers/order-validator/order-item-validator/order-item-rent-validator/order-item-rent-period-validator/order-item-rent-period-validator";
 import { BlStorage } from "#services/storage/bl-storage";
-import { BlError } from "#shared/bl-error/bl-error";
-import { BranchPaymentInfo } from "#shared/branch/branch-payment-info";
+import { BlError } from "#shared/bl-error";
+import { BranchPaymentInfo } from "#shared/branch-payment-info";
 import { OrderItem } from "#shared/order/order-item/order-item";
 
 chaiUse(chaiAsPromised);

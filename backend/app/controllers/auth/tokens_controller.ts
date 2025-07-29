@@ -3,8 +3,8 @@ import jwt from "jsonwebtoken";
 
 import BlResponseHandler from "#services/legacy/bl-response.handler";
 import TokenService from "#services/token_service";
-import { BlError } from "#shared/bl-error/bl-error";
-import { BlapiResponse } from "#shared/blapi-response/blapi-response";
+import { BlError } from "#shared/bl-error";
+import { BlapiResponse } from "#shared/blapi-response";
 import env from "#start/env";
 import { tokenValidator } from "#validators/auth_validators";
 

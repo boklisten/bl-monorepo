@@ -9,8 +9,8 @@ import { OrderActive } from "#services/legacy/collections/order/helpers/order-ac
 import { DeleteUserService } from "#services/legacy/collections/user-detail/helpers/delete-user-service";
 import { UserCanDeleteUserDetail } from "#services/legacy/collections/user-detail/helpers/user-can-delete-user-detail";
 import { UserDetailDeleteHook } from "#services/legacy/collections/user-detail/hooks/user-detail-delete.hook";
-import { BlError } from "#shared/bl-error/bl-error";
-import { AccessToken } from "#shared/token/access-token";
+import { AccessToken } from "#shared/access-token";
+import { BlError } from "#shared/bl-error";
 
 chaiUse(chaiAsPromised);
 should();

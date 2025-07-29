@@ -1,4 +1,4 @@
-import { Branch } from "@boklisten/backend/shared/branch/branch";
+import { Branch } from "@boklisten/backend/shared/branch";
 
 import BranchLocationInfo from "@/components/info/BranchLocationInfo";
 import unpack from "@/utils/api/bl-api-request";

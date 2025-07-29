@@ -1,7 +1,7 @@
 import { Hook } from "#services/legacy/hook";
 import { PermissionService } from "#services/permission_service";
-import { Branch } from "#shared/branch/branch";
-import { AccessToken } from "#shared/token/access-token";
+import { AccessToken } from "#shared/access-token";
+import { Branch } from "#shared/branch";
 
 export class BranchGetHook extends Hook {
   public override after(

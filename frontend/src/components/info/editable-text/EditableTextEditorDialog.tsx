@@ -1,5 +1,5 @@
 "use client";
-import { EditableText } from "@boklisten/backend/shared/editable-text/editable-text";
+import { EditableText } from "@boklisten/backend/shared/editable-text";
 import {
   Button,
   Dialog,

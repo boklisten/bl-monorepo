@@ -1,5 +1,5 @@
 import { isNullish } from "#services/helper/typescript-helpers";
-import { BlError } from "#shared/bl-error/bl-error";
+import { BlError } from "#shared/bl-error";
 import { CustomerItem } from "#shared/customer-item/customer-item";
 
 export class CustomerItemValidator {

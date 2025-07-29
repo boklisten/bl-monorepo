@@ -7,11 +7,11 @@ import sinonChai from "sinon-chai";
 import { CustomerItemPostHook } from "#services/legacy/collections/customer-item/hooks/customer-item-post.hook";
 import { CustomerItemValidator } from "#services/legacy/collections/customer-item/validators/customer-item-validator";
 import { BlStorage } from "#services/storage/bl-storage";
-import { BlError } from "#shared/bl-error/bl-error";
+import { AccessToken } from "#shared/access-token";
+import { BlError } from "#shared/bl-error";
 import { CustomerItem } from "#shared/customer-item/customer-item";
 import { Order } from "#shared/order/order";
-import { AccessToken } from "#shared/token/access-token";
-import { UserDetail } from "#shared/user/user-detail/user-detail";
+import { UserDetail } from "#shared/user-detail";
 
 chaiUse(chaiAsPromised);
 should();

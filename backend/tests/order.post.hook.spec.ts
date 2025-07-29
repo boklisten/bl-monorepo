@@ -8,9 +8,9 @@ import { OrderHookBefore } from "#services/legacy/collections/order/hooks/order-
 import { OrderPostHook } from "#services/legacy/collections/order/hooks/order.post.hook";
 import { UserDetailHelper } from "#services/legacy/collections/user-detail/helpers/user-detail.helper";
 import { BlStorage } from "#services/storage/bl-storage";
-import { BlError } from "#shared/bl-error/bl-error";
+import { AccessToken } from "#shared/access-token";
+import { BlError } from "#shared/bl-error";
 import { Order } from "#shared/order/order";
-import { AccessToken } from "#shared/token/access-token";
 
 chaiUse(chaiAsPromised);
 should();

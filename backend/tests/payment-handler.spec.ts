@@ -7,7 +7,7 @@ import { PaymentDibsConfirmer } from "#services/legacy/collections/payment/helpe
 import { PaymentHandler } from "#services/legacy/collections/payment/helpers/payment-handler";
 import { DibsPaymentService } from "#services/payment/dibs/dibs-payment.service";
 import { BlStorage } from "#services/storage/bl-storage";
-import { BlError } from "#shared/bl-error/bl-error";
+import { BlError } from "#shared/bl-error";
 import { Delivery } from "#shared/delivery/delivery";
 import { Order } from "#shared/order/order";
 import { Payment } from "#shared/payment/payment";

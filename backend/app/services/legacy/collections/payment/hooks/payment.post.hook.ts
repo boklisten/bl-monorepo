@@ -2,7 +2,7 @@ import { PaymentDibsHandler } from "#services/legacy/collections/payment/helpers
 import { PaymentValidator } from "#services/legacy/collections/payment/helpers/payment.validator";
 import { Hook } from "#services/legacy/hook";
 import { BlStorage } from "#services/storage/bl-storage";
-import { BlError } from "#shared/bl-error/bl-error";
+import { BlError } from "#shared/bl-error";
 import { Order } from "#shared/order/order";
 import { Payment } from "#shared/payment/payment";
 

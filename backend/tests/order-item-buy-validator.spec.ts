@@ -4,9 +4,9 @@ import chaiAsPromised from "chai-as-promised";
 
 import { OrderItemBuyValidator } from "#services/legacy/collections/order/helpers/order-validator/order-item-validator/order-item-buy-validator/order-item-buy-validator";
 import { PriceService } from "#services/price/price.service";
-import { BlError } from "#shared/bl-error/bl-error";
-import { Branch } from "#shared/branch/branch";
-import { Item } from "#shared/item/item";
+import { BlError } from "#shared/bl-error";
+import { Branch } from "#shared/branch";
+import { Item } from "#shared/item";
 import { Order } from "#shared/order/order";
 
 chaiUse(chaiAsPromised);

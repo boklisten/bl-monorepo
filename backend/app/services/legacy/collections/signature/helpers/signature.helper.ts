@@ -3,13 +3,13 @@ import { Transformer } from "@napi-rs/image";
 
 import { Signature } from "#models/signature.schema";
 import { BlStorage } from "#services/storage/bl-storage";
-import { BlError } from "#shared/bl-error/bl-error";
+import { BlError } from "#shared/bl-error";
 import {
   SerializedSignature,
   SIGNATURE_NUM_MONTHS_VALID,
   SignatureMetadata,
-} from "#shared/signature/serialized-signature";
-import { UserDetail } from "#shared/user/user-detail/user-detail";
+} from "#shared/serialized-signature";
+import { UserDetail } from "#shared/user-detail";
 
 const qualityFactor = 10;
 

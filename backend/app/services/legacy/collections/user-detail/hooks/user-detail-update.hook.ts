@@ -1,8 +1,8 @@
 import { Hook } from "#services/legacy/hook";
 import { SEDbQuery } from "#services/query/se.db-query";
 import { BlStorage } from "#services/storage/bl-storage";
-import { BlError } from "#shared/bl-error/bl-error";
-import { AccessToken } from "#shared/token/access-token";
+import { AccessToken } from "#shared/access-token";
+import { BlError } from "#shared/bl-error";
 import { userDetailPatchValidator } from "#validators/user_detail";
 
 export class UserDetailUpdateHook extends Hook {

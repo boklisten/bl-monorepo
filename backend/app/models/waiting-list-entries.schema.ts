@@ -2,7 +2,7 @@ import { Schema } from "mongoose";
 
 import { BlSchemaName } from "#services/storage/bl-schema-names";
 import { BlSchema } from "#services/storage/bl-storage";
-import { WaitingListEntry } from "#shared/waiting-list/waiting-list-entry";
+import { WaitingListEntry } from "#shared/waiting-list-entry";
 
 export const WaitingListEntriesSchema: BlSchema<WaitingListEntry> = new Schema({
   customerName: {

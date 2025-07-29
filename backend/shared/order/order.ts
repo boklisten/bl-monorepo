@@ -1,4 +1,4 @@
-import { BlDocument } from "#shared/bl-document/bl-document";
+import { BlDocument } from "#shared/bl-document";
 import { OrderItem } from "#shared/order/order-item/order-item";
 
 export interface Order extends BlDocument {

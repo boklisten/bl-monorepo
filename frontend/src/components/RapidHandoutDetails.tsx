@@ -1,6 +1,6 @@
 import { Order } from "@boklisten/backend/shared/order/order";
 import { OrderItem } from "@boklisten/backend/shared/order/order-item/order-item";
-import { UserDetail } from "@boklisten/backend/shared/user/user-detail/user-detail";
+import { UserDetail } from "@boklisten/backend/shared/user-detail";
 import QrCodeScannerIcon from "@mui/icons-material/QrCodeScanner";
 import { Alert, Button, Typography } from "@mui/material";
 import { useQuery, useQueryClient } from "@tanstack/react-query";

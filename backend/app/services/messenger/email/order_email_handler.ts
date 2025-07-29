@@ -8,13 +8,13 @@ import { sendSMS } from "#services/messenger/sms/sms-service";
 import { DibsEasyPayment } from "#services/payment/dibs/dibs-easy-payment/dibs-easy-payment";
 import { BlStorage } from "#services/storage/bl-storage";
 import { EmailOrder, EmailUser } from "#services/types/email";
-import { BlError } from "#shared/bl-error/bl-error";
+import { BlError } from "#shared/bl-error";
 import { Delivery } from "#shared/delivery/delivery";
 import { Order } from "#shared/order/order";
 import { OrderItem } from "#shared/order/order-item/order-item";
 import { OrderItemType } from "#shared/order/order-item/order-item-type";
 import { Payment } from "#shared/payment/payment";
-import { UserDetail } from "#shared/user/user-detail/user-detail";
+import { UserDetail } from "#shared/user-detail";
 import env from "#start/env";
 
 export class OrderEmailHandler {

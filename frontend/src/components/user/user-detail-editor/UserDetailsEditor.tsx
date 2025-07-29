@@ -1,6 +1,6 @@
 "use client";
 
-import { UserDetail } from "@boklisten/backend/shared/user/user-detail/user-detail";
+import { UserDetail } from "@boklisten/backend/shared/user-detail";
 import { Button } from "@mui/material";
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";

@@ -10,7 +10,7 @@ import { OrderEmailHandler } from "#services/messenger/email/order_email_handler
 import { EmailOrder, EmailUser } from "#services/types/email";
 import { Delivery } from "#shared/delivery/delivery";
 import { Order } from "#shared/order/order";
-import { UserDetail } from "#shared/user/user-detail/user-detail";
+import { UserDetail } from "#shared/user-detail";
 import env from "#start/env";
 
 export class EmailService {

@@ -9,11 +9,11 @@ import { SEDbQuery } from "#services/query/se.db-query";
 import { BlStorage } from "#services/storage/bl-storage";
 import { BlApiRequest } from "#services/types/bl-api-request";
 import { Operation } from "#services/types/operation";
-import { BlError } from "#shared/bl-error/bl-error";
-import { BlapiResponse } from "#shared/blapi-response/blapi-response";
+import { BlError } from "#shared/bl-error";
+import { BlapiResponse } from "#shared/blapi-response";
 import { Order } from "#shared/order/order";
 import { OrderItem } from "#shared/order/order-item/order-item";
-import { UniqueItem } from "#shared/unique-item/unique-item";
+import { UniqueItem } from "#shared/unique-item";
 
 const blidNotActiveFeedback =
   "Denne bliden er ikke tilknyttet noen bok. Registrer den i bl-admin for å dele den ut.";

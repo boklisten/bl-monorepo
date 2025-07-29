@@ -4,9 +4,9 @@ import { stringify } from "qs";
 import { APP_CONFIG } from "#services/config/application-config";
 import { isNullish } from "#services/helper/typescript-helpers";
 import { BringDelivery } from "#services/legacy/collections/delivery/helpers/deliveryBring/bringDelivery";
-import { BlError } from "#shared/bl-error/bl-error";
+import { BlError } from "#shared/bl-error";
 import { DeliveryInfoBring } from "#shared/delivery/delivery-info/delivery-info-bring";
-import { Item } from "#shared/item/item";
+import { Item } from "#shared/item";
 import env from "#start/env";
 
 interface ShipmentAddress {

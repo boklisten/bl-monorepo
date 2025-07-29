@@ -1,7 +1,7 @@
 import { PaymentDibsHandler } from "#services/legacy/collections/payment/helpers/dibs/payment-dibs-handler";
 import { PaymentValidator } from "#services/legacy/collections/payment/helpers/payment.validator";
 import { Hook } from "#services/legacy/hook";
-import { BlError } from "#shared/bl-error/bl-error";
+import { BlError } from "#shared/bl-error";
 import { Payment } from "#shared/payment/payment";
 
 export class PaymentPatchHook extends Hook {

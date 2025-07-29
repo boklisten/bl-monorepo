@@ -3,7 +3,7 @@ import { expect, use as chaiUse, should } from "chai";
 import chaiAsPromised from "chai-as-promised";
 
 import { OrderHookBefore } from "#services/legacy/collections/order/hooks/order-hook-before";
-import { BlError } from "#shared/bl-error/bl-error";
+import { BlError } from "#shared/bl-error";
 
 chaiUse(chaiAsPromised);
 should();

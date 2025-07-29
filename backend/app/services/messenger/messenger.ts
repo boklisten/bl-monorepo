@@ -4,7 +4,7 @@ import { EmailService } from "#services/messenger/email/email_service";
 import { PdfService } from "#services/messenger/pdf/pdf-service";
 import { BlStorage } from "#services/storage/bl-storage";
 import { Order } from "#shared/order/order";
-import { UserDetail } from "#shared/user/user-detail/user-detail";
+import { UserDetail } from "#shared/user-detail";
 
 const emailService = new EmailService();
 const pdfService = new PdfService();

@@ -1,4 +1,4 @@
-import { UserDetail } from "@boklisten/backend/shared/user/user-detail/user-detail";
+import { UserDetail } from "@boklisten/backend/shared/user-detail";
 import { Email, Person, Phone } from "@mui/icons-material";
 import { ListItemButton, Stack, Typography } from "@mui/material";
 

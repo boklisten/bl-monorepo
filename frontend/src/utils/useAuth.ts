@@ -1,10 +1,10 @@
 "use client";
 
+import { AccessToken } from "@boklisten/backend/shared/access-token";
 import {
   PERMISSION_LEVELS,
   UserPermission,
-} from "@boklisten/backend/shared/permission/user-permission";
-import { AccessToken } from "@boklisten/backend/shared/token/access-token";
+} from "@boklisten/backend/shared/user-permission";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import { decodeToken } from "react-jwt";

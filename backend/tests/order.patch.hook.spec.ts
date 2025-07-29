@@ -7,10 +7,10 @@ import { OrderPlacedHandler } from "#services/legacy/collections/order/helpers/o
 import { OrderValidator } from "#services/legacy/collections/order/helpers/order-validator/order-validator";
 import { OrderPatchHook } from "#services/legacy/collections/order/hooks/order.patch.hook";
 import { BlStorage } from "#services/storage/bl-storage";
-import { BlError } from "#shared/bl-error/bl-error";
+import { AccessToken } from "#shared/access-token";
+import { BlError } from "#shared/bl-error";
 import { Order } from "#shared/order/order";
-import { AccessToken } from "#shared/token/access-token";
-import { UserDetail } from "#shared/user/user-detail/user-detail";
+import { UserDetail } from "#shared/user-detail";
 
 chaiUse(chaiAsPromised);
 should();

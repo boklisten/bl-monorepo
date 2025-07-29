@@ -1,4 +1,4 @@
-import { BlDocument } from "#shared/bl-document/bl-document";
+import { BlDocument } from "#shared/bl-document";
 
 export interface QuestionAndAnswer extends BlDocument {
   question: string;

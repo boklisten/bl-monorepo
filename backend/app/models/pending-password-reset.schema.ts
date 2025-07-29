@@ -1,7 +1,7 @@
 import { Schema } from "mongoose";
 
 import { BlSchema } from "#services/storage/bl-storage";
-import { PendingPasswordReset } from "#shared/password-reset/pending-password-reset";
+import { PendingPasswordReset } from "#shared/pending-password-reset";
 
 export const PendingPasswordResetSchema: BlSchema<PendingPasswordReset> =
   new Schema({

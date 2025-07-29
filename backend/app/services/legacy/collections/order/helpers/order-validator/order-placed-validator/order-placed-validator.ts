@@ -1,6 +1,6 @@
 import { isNullish } from "#services/helper/typescript-helpers";
 import { BlStorage } from "#services/storage/bl-storage";
-import { BlError } from "#shared/bl-error/bl-error";
+import { BlError } from "#shared/bl-error";
 import { Delivery } from "#shared/delivery/delivery";
 import { Order } from "#shared/order/order";
 import { Payment } from "#shared/payment/payment";

@@ -2,7 +2,7 @@ import { Schema } from "mongoose";
 
 import { BlSchemaName } from "#services/storage/bl-schema-names";
 import { BlSchema } from "#services/storage/bl-storage";
-import { Invoice } from "#shared/invoice/invoice";
+import { Invoice } from "#shared/invoice";
 
 export const InvoiceSchema: BlSchema<Invoice> = new Schema({
   duedate: {

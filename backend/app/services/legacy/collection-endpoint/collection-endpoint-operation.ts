@@ -7,7 +7,7 @@ import {
   BlEndpointMethod,
   BlEndpointOperation,
 } from "#services/types/bl-collection";
-import { UserPermission } from "#shared/permission/user-permission";
+import { UserPermission } from "#shared/user-permission";
 
 function createUri(
   collectionUri: string,

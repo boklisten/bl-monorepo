@@ -1,7 +1,7 @@
-import { Item } from "#shared/item/item";
+import { Item } from "#shared/item";
 import { StandMatch } from "#shared/match/stand-match";
 import { UserMatch } from "#shared/match/user-match";
-import { UserDetail } from "#shared/user/user-detail/user-detail";
+import { UserDetail } from "#shared/user-detail";
 
 export type MatchRelevantUserDetails = Pick<UserDetail, "name" | "phone">;
 

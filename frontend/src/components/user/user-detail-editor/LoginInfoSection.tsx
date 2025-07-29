@@ -1,4 +1,4 @@
-import { UserDetail } from "@boklisten/backend/shared/user/user-detail/user-detail";
+import { UserDetail } from "@boklisten/backend/shared/user-detail";
 import { QrCode } from "@mui/icons-material";
 import { Button, Dialog, Stack } from "@mui/material";
 import Grid from "@mui/material/Grid";

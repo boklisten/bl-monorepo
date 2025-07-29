@@ -1,5 +1,5 @@
 import { Operation } from "#services/types/operation";
-import { BlapiResponse } from "#shared/blapi-response/blapi-response";
+import { BlapiResponse } from "#shared/blapi-response";
 
 export class GenerateUniqueIdsOperation implements Operation {
   async run() {

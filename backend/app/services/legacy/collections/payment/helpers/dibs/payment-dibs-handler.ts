@@ -4,7 +4,7 @@ import { BlStorage } from "#services/storage/bl-storage";
 import { Delivery } from "#shared/delivery/delivery";
 import { Order } from "#shared/order/order";
 import { Payment } from "#shared/payment/payment";
-import { UserDetail } from "#shared/user/user-detail/user-detail";
+import { UserDetail } from "#shared/user-detail";
 
 export class PaymentDibsHandler {
   private dibsPaymentService: DibsPaymentService;

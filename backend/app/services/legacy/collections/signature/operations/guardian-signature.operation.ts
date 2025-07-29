@@ -9,9 +9,9 @@ import {
 import { BlStorage } from "#services/storage/bl-storage";
 import { BlApiRequest } from "#services/types/bl-api-request";
 import { Operation } from "#services/types/operation";
-import { BlError } from "#shared/bl-error/bl-error";
-import { BlapiResponse } from "#shared/blapi-response/blapi-response";
-import { SerializedGuardianSignature } from "#shared/signature/serialized-signature";
+import { BlError } from "#shared/bl-error";
+import { BlapiResponse } from "#shared/blapi-response";
+import { SerializedGuardianSignature } from "#shared/serialized-signature";
 
 export class GuardianSignatureOperation implements Operation {
   async run(blApiRequest: BlApiRequest): Promise<BlapiResponse> {

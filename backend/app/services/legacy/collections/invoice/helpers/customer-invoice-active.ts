@@ -1,8 +1,8 @@
 import { InvoiceActive } from "#services/legacy/collections/invoice/helpers/invoice-active";
 import { SEDbQueryBuilder } from "#services/query/se.db-query-builder";
 import { BlStorage } from "#services/storage/bl-storage";
-import { BlError } from "#shared/bl-error/bl-error";
-import { Invoice } from "#shared/invoice/invoice";
+import { BlError } from "#shared/bl-error";
+import { Invoice } from "#shared/invoice";
 
 export class CustomerInvoiceActive {
   private queryBuilder = new SEDbQueryBuilder();

@@ -1,4 +1,4 @@
-import { BlError } from "#shared/bl-error/bl-error";
+import { BlError } from "#shared/bl-error";
 import { Delivery } from "#shared/delivery/delivery";
 
 export class DeliveryBranchHandler {

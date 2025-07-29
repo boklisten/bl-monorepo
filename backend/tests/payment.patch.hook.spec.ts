@@ -7,7 +7,7 @@ import { PaymentDibsHandler } from "#services/legacy/collections/payment/helpers
 import { PaymentValidator } from "#services/legacy/collections/payment/helpers/payment.validator";
 import { PaymentPatchHook } from "#services/legacy/collections/payment/hooks/payment.patch.hook";
 import { BlStorage } from "#services/storage/bl-storage";
-import { BlError } from "#shared/bl-error/bl-error";
+import { BlError } from "#shared/bl-error";
 import { Payment } from "#shared/payment/payment";
 
 chaiUse(chaiAsPromised);

@@ -5,7 +5,7 @@ import sinon, { createSandbox } from "sinon";
 
 import { DibsEasyOrder } from "#services/payment/dibs/dibs-easy-order";
 import { DibsPaymentService } from "#services/payment/dibs/dibs-payment.service";
-import { BlError } from "#shared/bl-error/bl-error";
+import { BlError } from "#shared/bl-error";
 import { Order } from "#shared/order/order";
 
 chaiUse(chaiAsPromised);

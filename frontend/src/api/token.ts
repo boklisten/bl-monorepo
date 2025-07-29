@@ -1,4 +1,4 @@
-import { AccessToken } from "@boklisten/backend/shared/token/access-token";
+import { AccessToken } from "@boklisten/backend/shared/access-token";
 import { decodeToken } from "react-jwt";
 
 import { add, get } from "@/api/storage";

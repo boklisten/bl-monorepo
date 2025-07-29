@@ -1,5 +1,5 @@
-import { BlDocument } from "#shared/bl-document/bl-document";
-import { Comment } from "#shared/comment/comment";
+import { BlDocument } from "#shared/bl-document";
+import { Comment } from "#shared/comment";
 import { CustomerItemType } from "#shared/customer-item/customer-item-type";
 
 export interface Invoice extends BlDocument {

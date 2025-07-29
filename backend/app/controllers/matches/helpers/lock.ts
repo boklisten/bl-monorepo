@@ -2,8 +2,8 @@ import { Infer } from "@vinejs/vine/types";
 import { ObjectId } from "mongodb";
 
 import { BlStorage } from "#services/storage/bl-storage";
-import { BlError } from "#shared/bl-error/bl-error";
-import { BlapiResponse } from "#shared/blapi-response/blapi-response";
+import { BlError } from "#shared/bl-error";
+import { BlapiResponse } from "#shared/blapi-response";
 import { UserMatch } from "#shared/match/user-match";
 import { matchLockSchema } from "#validators/matches";
 

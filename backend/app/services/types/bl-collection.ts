@@ -3,7 +3,7 @@ import { ValidParameter } from "#services/query/db-query-valid-params";
 import { BlStorageHandler } from "#services/storage/bl-storage";
 import { NestedDocument } from "#services/types/nested-document";
 import { Operation } from "#services/types/operation";
-import { UserPermission } from "#shared/permission/user-permission";
+import { UserPermission } from "#shared/user-permission";
 
 export interface BlCollection {
   storage: BlStorageHandler;

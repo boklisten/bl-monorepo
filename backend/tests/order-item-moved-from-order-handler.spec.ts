@@ -5,7 +5,7 @@ import sinon, { createSandbox } from "sinon";
 
 import { OrderItemMovedFromOrderHandler } from "#services/legacy/collections/order/helpers/order-item-moved-from-order-handler/order-item-moved-from-order-handler";
 import { BlStorage } from "#services/storage/bl-storage";
-import { BlError } from "#shared/bl-error/bl-error";
+import { BlError } from "#shared/bl-error";
 import { Order } from "#shared/order/order";
 
 chaiUse(chaiAsPromised);

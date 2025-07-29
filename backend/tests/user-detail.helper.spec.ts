@@ -6,8 +6,8 @@ import { createSandbox, SinonSandbox } from "sinon";
 import { UserDetailHelper } from "#services/legacy/collections/user-detail/helpers/user-detail.helper";
 import { DibsEasyPayment } from "#services/payment/dibs/dibs-easy-payment/dibs-easy-payment";
 import { BlStorage } from "#services/storage/bl-storage";
-import { BlError } from "#shared/bl-error/bl-error";
-import { UserDetail } from "#shared/user/user-detail/user-detail";
+import { BlError } from "#shared/bl-error";
+import { UserDetail } from "#shared/user-detail";
 
 chaiUse(chaiAsPromised);
 should();

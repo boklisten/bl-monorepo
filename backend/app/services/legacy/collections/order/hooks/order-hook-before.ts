@@ -1,5 +1,5 @@
 import { isNullish } from "#services/helper/typescript-helpers";
-import { BlError } from "#shared/bl-error/bl-error";
+import { BlError } from "#shared/bl-error";
 
 export class OrderHookBefore {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any

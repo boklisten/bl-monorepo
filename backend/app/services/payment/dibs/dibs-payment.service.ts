@@ -3,11 +3,11 @@ import { UserDetailHelper } from "#services/legacy/collections/user-detail/helpe
 import { DibsEasyOrder } from "#services/payment/dibs/dibs-easy-order";
 import { DibsEasyPayment } from "#services/payment/dibs/dibs-easy-payment/dibs-easy-payment";
 import { DibsEasyItem } from "#services/types/dibs-easy-item";
-import { BlError } from "#shared/bl-error/bl-error";
+import { BlError } from "#shared/bl-error";
 import { Delivery } from "#shared/delivery/delivery";
 import { Order } from "#shared/order/order";
 import { OrderItem } from "#shared/order/order-item/order-item";
-import { UserDetail } from "#shared/user/user-detail/user-detail";
+import { UserDetail } from "#shared/user-detail";
 import env from "#start/env";
 
 export class DibsPaymentService {

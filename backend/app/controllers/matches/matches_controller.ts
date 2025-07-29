@@ -6,7 +6,7 @@ import { lock } from "#controllers/matches/helpers/lock";
 import { notify } from "#controllers/matches/helpers/notify";
 import { transfer } from "#controllers/matches/helpers/transfer";
 import { PermissionService } from "#services/permission_service";
-import { USER_PERMISSION } from "#shared/permission/user-permission";
+import { USER_PERMISSION } from "#shared/user-permission";
 import {
   matchGenerateValidator,
   matchLockValidator,

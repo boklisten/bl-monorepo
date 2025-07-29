@@ -9,8 +9,8 @@ import { OrderPlacedValidator } from "#services/legacy/collections/order/helpers
 import { OrderUserDetailValidator } from "#services/legacy/collections/order/helpers/order-validator/order-user-detail-validator/order-user-detail-validator";
 import { OrderValidator } from "#services/legacy/collections/order/helpers/order-validator/order-validator";
 import { BlStorage } from "#services/storage/bl-storage";
-import { BlError } from "#shared/bl-error/bl-error";
-import { Branch } from "#shared/branch/branch";
+import { BlError } from "#shared/bl-error";
+import { Branch } from "#shared/branch";
 import { Order } from "#shared/order/order";
 
 chaiUse(chaiAsPromised);

@@ -3,7 +3,7 @@ import { expect, use as chaiUse, should } from "chai";
 import chaiAsPromised from "chai-as-promised";
 
 import { CustomerItemValidator } from "#services/legacy/collections/customer-item/validators/customer-item-validator";
-import { BlError } from "#shared/bl-error/bl-error";
+import { BlError } from "#shared/bl-error";
 
 chaiUse(chaiAsPromised);
 should();

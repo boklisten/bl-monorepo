@@ -5,8 +5,8 @@ import sinon, { createSandbox } from "sinon";
 
 import { CustomerInvoiceActive } from "#services/legacy/collections/invoice/helpers/customer-invoice-active";
 import { BlStorage } from "#services/storage/bl-storage";
-import { BlError } from "#shared/bl-error/bl-error";
-import { Invoice } from "#shared/invoice/invoice";
+import { BlError } from "#shared/bl-error";
+import { Invoice } from "#shared/invoice";
 
 chaiUse(chaiAsPromised);
 should();

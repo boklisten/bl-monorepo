@@ -3,8 +3,8 @@ import logger from "@adonisjs/core/services/logger";
 import { BlStorage } from "#services/storage/bl-storage";
 import { BlApiRequest } from "#services/types/bl-api-request";
 import { Operation } from "#services/types/operation";
-import { BlError } from "#shared/bl-error/bl-error";
-import { BlapiResponse } from "#shared/blapi-response/blapi-response";
+import { BlError } from "#shared/bl-error";
+import { BlapiResponse } from "#shared/blapi-response";
 import { Message } from "#shared/message/message";
 
 export class TwilioSmsEventOperation implements Operation {

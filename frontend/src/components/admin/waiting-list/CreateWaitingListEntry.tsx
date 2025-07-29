@@ -1,4 +1,4 @@
-import { Item } from "@boklisten/backend/shared/item/item";
+import { Item } from "@boklisten/backend/shared/item";
 import {
   Alert,
   AlertTitle,

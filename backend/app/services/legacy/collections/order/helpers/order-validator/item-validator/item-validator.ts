@@ -1,5 +1,5 @@
-import { BlError } from "#shared/bl-error/bl-error";
-import { Item } from "#shared/item/item";
+import { BlError } from "#shared/bl-error";
+import { Item } from "#shared/item";
 import { OrderItem } from "#shared/order/order-item/order-item";
 
 export class ItemValidator {

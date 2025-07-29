@@ -1,6 +1,6 @@
 import { isNullish } from "#services/helper/typescript-helpers";
-import { BlError } from "#shared/bl-error/bl-error";
-import { Branch } from "#shared/branch/branch";
+import { BlError } from "#shared/bl-error";
+import { Branch } from "#shared/branch";
 import { OrderItem } from "#shared/order/order-item/order-item";
 
 export class OrderItemPartlyPaymentValidator {

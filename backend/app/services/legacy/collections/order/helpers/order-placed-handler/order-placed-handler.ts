@@ -6,12 +6,12 @@ import { PaymentHandler } from "#services/legacy/collections/payment/helpers/pay
 import { userHasValidSignature } from "#services/legacy/collections/signature/helpers/signature.helper";
 import Messenger from "#services/messenger/messenger";
 import { BlStorage } from "#services/storage/bl-storage";
-import { BlError } from "#shared/bl-error/bl-error";
+import { AccessToken } from "#shared/access-token";
+import { BlError } from "#shared/bl-error";
 import { Order } from "#shared/order/order";
 import { OrderItem } from "#shared/order/order-item/order-item";
 import { OrderItemType } from "#shared/order/order-item/order-item-type";
-import { AccessToken } from "#shared/token/access-token";
-import { UserDetail } from "#shared/user/user-detail/user-detail";
+import { UserDetail } from "#shared/user-detail";
 
 export class OrderPlacedHandler {
   private paymentHandler: PaymentHandler;

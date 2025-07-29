@@ -2,7 +2,7 @@ import { Schema } from "mongoose";
 
 import { BlSchemaName } from "#services/storage/bl-schema-names";
 import { BlSchema } from "#services/storage/bl-storage";
-import { UniqueItem } from "#shared/unique-item/unique-item";
+import { UniqueItem } from "#shared/unique-item";
 
 export const UniqueItemSchema: BlSchema<UniqueItem> = new Schema({
   blid: {

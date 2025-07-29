@@ -1,4 +1,4 @@
-import { Item } from "@boklisten/backend/shared/item/item";
+import { Item } from "@boklisten/backend/shared/item";
 import { Metadata } from "next";
 
 import BuybackList from "@/components/info/BuybackList";

@@ -2,7 +2,7 @@ import { Schema } from "mongoose";
 
 import { BlSchemaName } from "#services/storage/bl-schema-names";
 import { BlSchema } from "#services/storage/bl-storage";
-import { BranchItem } from "#shared/branch-item/branch-item";
+import { BranchItem } from "#shared/branch-item";
 
 export const BranchItemSchema: BlSchema<BranchItem> = new Schema({
   branch: {

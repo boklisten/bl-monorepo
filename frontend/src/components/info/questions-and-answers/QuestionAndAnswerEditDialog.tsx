@@ -1,5 +1,5 @@
 "use client";
-import { QuestionAndAnswer } from "@boklisten/backend/shared/questions-and-answers/question-and-answer";
+import { QuestionAndAnswer } from "@boklisten/backend/shared/question-and-answer";
 import {
   Box,
   Button,

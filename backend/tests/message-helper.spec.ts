@@ -6,7 +6,7 @@ import sinonChai from "sinon-chai";
 
 import { MessageHelper } from "#services/legacy/collections/message/helper/message-helper";
 import { BlStorage } from "#services/storage/bl-storage";
-import { BlError } from "#shared/bl-error/bl-error";
+import { BlError } from "#shared/bl-error";
 import { Message } from "#shared/message/message";
 import { MessageMethod } from "#shared/message/message-method/message-method";
 

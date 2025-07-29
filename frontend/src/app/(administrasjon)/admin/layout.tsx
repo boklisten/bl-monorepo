@@ -1,5 +1,5 @@
 "use client";
-import { USER_PERMISSION } from "@boklisten/backend/shared/permission/user-permission";
+import { USER_PERMISSION } from "@boklisten/backend/shared/user-permission";
 import { Typography } from "@mui/material";
 import { DashboardLayout, Navigation, PageContainer } from "@toolpad/core";
 import { NextAppProvider } from "@toolpad/core/nextjs";

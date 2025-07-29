@@ -1,4 +1,4 @@
-import { BlDocument } from "#shared/bl-document/bl-document";
+import { BlDocument } from "#shared/bl-document";
 import { DeliveryInfoBranch } from "#shared/delivery/delivery-info/delivery-info-branch";
 import { DeliveryInfoBring } from "#shared/delivery/delivery-info/delivery-info-bring";
 import { DeliveryMethod } from "#shared/delivery/delivery-method/delivery-method";

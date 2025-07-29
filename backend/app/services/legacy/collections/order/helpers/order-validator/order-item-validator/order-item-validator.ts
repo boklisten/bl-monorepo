@@ -6,9 +6,9 @@ import { OrderItemPartlyPaymentValidator } from "#services/legacy/collections/or
 import { OrderItemRentValidator } from "#services/legacy/collections/order/helpers/order-validator/order-item-validator/order-item-rent-validator/order-item-rent-validator";
 import { PriceService } from "#services/price/price.service";
 import { BlStorage } from "#services/storage/bl-storage";
-import { BlError } from "#shared/bl-error/bl-error";
-import { Branch } from "#shared/branch/branch";
-import { Item } from "#shared/item/item";
+import { BlError } from "#shared/bl-error";
+import { Branch } from "#shared/branch";
+import { Item } from "#shared/item";
 import { Order } from "#shared/order/order";
 import { OrderItem } from "#shared/order/order-item/order-item";
 

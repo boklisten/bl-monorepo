@@ -1,6 +1,6 @@
 "use client";
 
-import { Branch } from "@boklisten/backend/shared/branch/branch";
+import { Branch } from "@boklisten/backend/shared/branch";
 import { AddBusiness } from "@mui/icons-material";
 import { Box, Button, Divider, Stack, Typography } from "@mui/material";
 import { useQuery } from "@tanstack/react-query";

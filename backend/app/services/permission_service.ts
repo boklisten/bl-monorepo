@@ -5,11 +5,8 @@ import NotAllowedException from "#exceptions/not_allowed_exception";
 import UnauthorizedException from "#exceptions/unauthorized_exception";
 import { APP_CONFIG } from "#services/config/application-config";
 import { BlDocumentPermission } from "#services/types/bl-collection";
-import { BlDocument } from "#shared/bl-document/bl-document";
-import {
-  USER_PERMISSION,
-  UserPermission,
-} from "#shared/permission/user-permission";
+import { BlDocument } from "#shared/bl-document";
+import { USER_PERMISSION, UserPermission } from "#shared/user-permission";
 import env from "#start/env";
 
 function isAdmin(userPermission: UserPermission | null) {

@@ -1,9 +1,9 @@
 import moment from "moment-timezone";
 
 import { BlStorage } from "#services/storage/bl-storage";
-import { BlError } from "#shared/bl-error/bl-error";
-import { Branch } from "#shared/branch/branch";
-import { OpeningHour } from "#shared/opening-hour/opening-hour";
+import { BlError } from "#shared/bl-error";
+import { Branch } from "#shared/branch";
+import { OpeningHour } from "#shared/opening-hour";
 
 export class OpeningHourHelper {
   public async getNextAvailableOpeningHour(

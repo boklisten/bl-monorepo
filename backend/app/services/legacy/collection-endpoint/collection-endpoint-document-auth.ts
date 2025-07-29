@@ -6,7 +6,7 @@ import {
   BlDocumentPermission,
   BlEndpointRestriction,
 } from "#services/types/bl-collection";
-import { BlError } from "#shared/bl-error/bl-error";
+import { BlError } from "#shared/bl-error";
 
 function validate(
   restriction: BlEndpointRestriction | undefined,

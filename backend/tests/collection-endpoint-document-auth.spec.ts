@@ -9,8 +9,8 @@ import {
   BlDocumentPermission,
   BlEndpointRestriction,
 } from "#services/types/bl-collection";
-import { BlError } from "#shared/bl-error/bl-error";
-import { Branch } from "#shared/branch/branch";
+import { BlError } from "#shared/bl-error";
+import { Branch } from "#shared/branch";
 
 chaiUse(chaiAsPromised);
 should();

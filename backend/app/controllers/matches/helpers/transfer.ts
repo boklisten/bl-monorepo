@@ -9,7 +9,7 @@ import { OrderItemMovedFromOrderHandler } from "#services/legacy/collections/ord
 import { OrderValidator } from "#services/legacy/collections/order/helpers/order-validator/order-validator";
 import { SEDbQuery } from "#services/query/se.db-query";
 import { BlStorage } from "#services/storage/bl-storage";
-import { BlError } from "#shared/bl-error/bl-error";
+import { BlError } from "#shared/bl-error";
 import { CustomerItem } from "#shared/customer-item/customer-item";
 import { StandMatch } from "#shared/match/stand-match";
 import { UserMatch } from "#shared/match/user-match";

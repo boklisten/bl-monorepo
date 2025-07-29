@@ -7,8 +7,8 @@ import sinon, { createSandbox } from "sinon";
 import { CustomerItemHandler } from "#services/legacy/collections/customer-item/helpers/customer-item-handler";
 import { SEDbQuery } from "#services/query/se.db-query";
 import { BlStorage } from "#services/storage/bl-storage";
-import { BlError } from "#shared/bl-error/bl-error";
-import { Branch } from "#shared/branch/branch";
+import { BlError } from "#shared/bl-error";
+import { Branch } from "#shared/branch";
 import { CustomerItem } from "#shared/customer-item/customer-item";
 import { OrderItem } from "#shared/order/order-item/order-item";
 

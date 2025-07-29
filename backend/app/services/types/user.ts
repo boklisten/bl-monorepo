@@ -1,5 +1,5 @@
-import { BlDocument } from "#shared/bl-document/bl-document";
-import { UserPermission } from "#shared/permission/user-permission";
+import { BlDocument } from "#shared/bl-document";
+import { UserPermission } from "#shared/user-permission";
 
 interface SocialLogin {
   userId: string;

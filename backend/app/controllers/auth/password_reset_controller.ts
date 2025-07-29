@@ -7,7 +7,7 @@ import { EMAIL_TEMPLATES } from "#services/messenger/email/email_templates";
 import { PasswordService } from "#services/password_service";
 import { BlStorage } from "#services/storage/bl-storage";
 import { UserService } from "#services/user_service";
-import { PendingPasswordReset } from "#shared/password-reset/pending-password-reset";
+import { PendingPasswordReset } from "#shared/pending-password-reset";
 import env from "#start/env";
 import {
   forgotPasswordValidator,

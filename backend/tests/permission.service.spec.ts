@@ -3,7 +3,7 @@ import { expect, use as chaiUse, should } from "chai";
 import chaiAsPromised from "chai-as-promised";
 
 import { PermissionService } from "#services/permission_service";
-import { BlDocument } from "#shared/bl-document/bl-document";
+import { BlDocument } from "#shared/bl-document";
 
 chaiUse(chaiAsPromised);
 should();

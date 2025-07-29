@@ -15,9 +15,9 @@ import { SEDbQuery } from "#services/query/se.db-query";
 import { BlSchema } from "#services/storage/bl-storage";
 import { MongooseModelCreator } from "#services/storage/mongoose-schema-creator";
 import { NestedDocument } from "#services/types/nested-document";
-import { BlDocument } from "#shared/bl-document/bl-document";
-import { BlError } from "#shared/bl-error/bl-error";
-import { UserPermission } from "#shared/permission/user-permission";
+import { BlDocument } from "#shared/bl-document";
+import { BlError } from "#shared/bl-error";
+import { UserPermission } from "#shared/user-permission";
 
 export class MongodbHandler<T extends BlDocument> {
   private readonly mongooseModel: Model<T>;

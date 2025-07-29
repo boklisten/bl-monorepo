@@ -1,5 +1,5 @@
-import { BlDocument } from "#shared/bl-document/bl-document";
-import { BranchPaymentInfo } from "#shared/branch/branch-payment-info";
+import { BlDocument } from "#shared/bl-document";
+import { BranchPaymentInfo } from "#shared/branch-payment-info";
 
 export interface Branch extends BlDocument {
   name: string; // the fully qualified name of the branch e.g. Ullern Oslo VG1

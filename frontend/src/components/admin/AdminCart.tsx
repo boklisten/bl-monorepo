@@ -1,5 +1,5 @@
 "use client";
-import { UserDetail } from "@boklisten/backend/shared/user/user-detail/user-detail";
+import { UserDetail } from "@boklisten/backend/shared/user-detail";
 import { Stack } from "@mui/material";
 import { useState } from "react";
 

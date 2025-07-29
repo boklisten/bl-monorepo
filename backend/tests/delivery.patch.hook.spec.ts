@@ -6,10 +6,10 @@ import sinon, { createSandbox } from "sinon";
 import { DeliveryValidator } from "#services/legacy/collections/delivery/helpers/deliveryValidator/delivery-validator";
 import { DeliveryPatchHook } from "#services/legacy/collections/delivery/hooks/delivery.patch.hook";
 import { BlStorage } from "#services/storage/bl-storage";
-import { BlError } from "#shared/bl-error/bl-error";
+import { AccessToken } from "#shared/access-token";
+import { BlError } from "#shared/bl-error";
 import { Delivery } from "#shared/delivery/delivery";
 import { Order } from "#shared/order/order";
-import { AccessToken } from "#shared/token/access-token";
 
 chaiUse(chaiAsPromised);
 should();

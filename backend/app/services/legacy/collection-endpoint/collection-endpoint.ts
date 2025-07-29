@@ -8,8 +8,8 @@ import CollectionEndpointOperation from "#services/legacy/collection-endpoint/co
 import { BlStorageData } from "#services/storage/bl-storage";
 import { BlApiRequest } from "#services/types/bl-api-request";
 import { BlCollection, BlEndpoint } from "#services/types/bl-collection";
-import { BlError } from "#shared/bl-error/bl-error";
-import { BlapiResponse } from "#shared/blapi-response/blapi-response";
+import { BlError } from "#shared/bl-error";
+import { BlapiResponse } from "#shared/blapi-response";
 
 function createRequestHandler(
   endpoint: BlEndpoint,

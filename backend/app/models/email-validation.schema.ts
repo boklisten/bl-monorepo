@@ -2,7 +2,7 @@ import { Schema } from "mongoose";
 
 import { BlSchemaName } from "#services/storage/bl-schema-names";
 import { BlSchema } from "#services/storage/bl-storage";
-import { BlDocument } from "#shared/bl-document/bl-document";
+import { BlDocument } from "#shared/bl-document";
 
 interface EmailValidation extends BlDocument {
   userDetailId: string;

@@ -2,7 +2,7 @@
 import {
   AUTH_SOCIAL_ERROR,
   AuthSocialError,
-} from "@boklisten/backend/shared/auth_social/auth_social_error";
+} from "@boklisten/backend/shared/auth_social_error";
 import { Alert, AlertTitle } from "@mui/material";
 import { useSearchParams } from "next/navigation";
 

@@ -1,6 +1,6 @@
 "use client";
 
-import { Branch } from "@boklisten/backend/shared/branch/branch";
+import { Branch } from "@boklisten/backend/shared/branch";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import {
   Accordion,

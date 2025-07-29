@@ -7,11 +7,11 @@ import { DeliveryHandler } from "#services/legacy/collections/delivery/helpers/d
 import { DeliveryValidator } from "#services/legacy/collections/delivery/helpers/deliveryValidator/delivery-validator";
 import { DeliveryPostHook } from "#services/legacy/collections/delivery/hooks/delivery.post.hook";
 import { BlStorage } from "#services/storage/bl-storage";
-import { BlError } from "#shared/bl-error/bl-error";
+import { AccessToken } from "#shared/access-token";
+import { BlError } from "#shared/bl-error";
 import { Delivery } from "#shared/delivery/delivery";
-import { Item } from "#shared/item/item";
+import { Item } from "#shared/item";
 import { Order } from "#shared/order/order";
-import { AccessToken } from "#shared/token/access-token";
 
 chaiUse(chaiAsPromised);
 should();

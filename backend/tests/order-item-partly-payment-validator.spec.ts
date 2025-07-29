@@ -3,9 +3,9 @@ import { expect, use as chaiUse, should } from "chai";
 import chaiAsPromised from "chai-as-promised";
 
 import { OrderItemPartlyPaymentValidator } from "#services/legacy/collections/order/helpers/order-validator/order-item-validator/order-item-partly-payment-validator/order-item-partly-payment-validator";
-import { BlError } from "#shared/bl-error/bl-error";
-import { Branch } from "#shared/branch/branch";
-import { Item } from "#shared/item/item";
+import { BlError } from "#shared/bl-error";
+import { Branch } from "#shared/branch";
+import { Item } from "#shared/item";
 import { OrderItem } from "#shared/order/order-item/order-item";
 
 chaiUse(chaiAsPromised);

@@ -1,7 +1,7 @@
 "use client";
 
-import { Branch } from "@boklisten/backend/shared/branch/branch";
-import { Item } from "@boklisten/backend/shared/item/item";
+import { Branch } from "@boklisten/backend/shared/branch";
+import { Item } from "@boklisten/backend/shared/item";
 import { Alert, AlertTitle } from "@mui/material";
 import { useQuery } from "@tanstack/react-query";
 

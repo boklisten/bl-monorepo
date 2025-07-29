@@ -1,11 +1,11 @@
-import { BlDocument } from "#shared/bl-document/bl-document";
+import { BlDocument } from "#shared/bl-document";
 import { MessageReceiptInfo } from "#shared/message/message-info/message-receipt-info";
 import { MessageReminderInfo } from "#shared/message/message-info/message-reminder-info";
 import { MessageMethod } from "#shared/message/message-method/message-method";
 import { SendgridEvent } from "#shared/message/message-sendgrid-event/message-sendgrid-event";
 import { MessageSubtype } from "#shared/message/message-subtype/message-subtype";
 import { MessageType } from "#shared/message/message-type/message-type";
-import { TextBlock } from "#shared/text-block/text-block";
+import { TextBlock } from "#shared/text-block";
 
 /*
  * A message is something that is sent to a customer

@@ -5,7 +5,7 @@ import { isNotNullish } from "#services/helper/typescript-helpers";
 import { OrderEmailHandler } from "#services/messenger/email/order_email_handler";
 import { EmailOrder, EmailSetting, EmailUser } from "#services/types/email";
 import { Order } from "#shared/order/order";
-import { UserDetail } from "#shared/user/user-detail/user-detail";
+import { UserDetail } from "#shared/user-detail";
 
 export class PdfService {
   private pdfHandler: PdfHandler;

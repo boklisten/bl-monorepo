@@ -5,7 +5,7 @@ import sinon, { createSandbox } from "sinon";
 
 import { CustomerHaveActiveCustomerItems } from "#services/legacy/collections/customer-item/helpers/customer-have-active-customer-items";
 import { BlStorage } from "#services/storage/bl-storage";
-import { BlError } from "#shared/bl-error/bl-error";
+import { BlError } from "#shared/bl-error";
 import { CustomerItem } from "#shared/customer-item/customer-item";
 
 chaiUse(chaiAsPromised);

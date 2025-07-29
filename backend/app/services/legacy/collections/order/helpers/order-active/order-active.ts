@@ -1,6 +1,6 @@
 import { SEDbQueryBuilder } from "#services/query/se.db-query-builder";
 import { BlStorage } from "#services/storage/bl-storage";
-import { BlError } from "#shared/bl-error/bl-error";
+import { BlError } from "#shared/bl-error";
 import { Order } from "#shared/order/order";
 import { OrderItem } from "#shared/order/order-item/order-item";
 

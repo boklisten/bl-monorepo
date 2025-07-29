@@ -2,7 +2,7 @@ import { BlStorage } from "#services/storage/bl-storage";
 import { CustomerItem } from "#shared/customer-item/customer-item";
 import { Order } from "#shared/order/order";
 import { OrderItem } from "#shared/order/order-item/order-item";
-import { UserDetail } from "#shared/user/user-detail/user-detail";
+import { UserDetail } from "#shared/user-detail";
 
 export class OrderToCustomerItemGenerator {
   public async generate(order: Order): Promise<CustomerItem[]> {

@@ -7,9 +7,9 @@ import sinonChai from "sinon-chai";
 
 import { OpeningHourHelper } from "#services/legacy/collections/opening-hour/helpers/opening-hour-helper";
 import { BlStorage } from "#services/storage/bl-storage";
-import { BlError } from "#shared/bl-error/bl-error";
-import { Branch } from "#shared/branch/branch";
-import { OpeningHour } from "#shared/opening-hour/opening-hour";
+import { BlError } from "#shared/bl-error";
+import { Branch } from "#shared/branch";
+import { OpeningHour } from "#shared/opening-hour";
 
 chaiUse(chaiAsPromised);
 should();

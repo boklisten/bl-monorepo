@@ -1,10 +1,10 @@
 import { BringDeliveryService } from "#services/legacy/collections/delivery/helpers/deliveryBring/bringDelivery.service";
 import { BlStorage } from "#services/storage/bl-storage";
-import { BlError } from "#shared/bl-error/bl-error";
-import { Branch } from "#shared/branch/branch";
+import { BlError } from "#shared/bl-error";
+import { Branch } from "#shared/branch";
 import { Delivery } from "#shared/delivery/delivery";
 import { DeliveryInfoBring } from "#shared/delivery/delivery-info/delivery-info-bring";
-import { Item } from "#shared/item/item";
+import { Item } from "#shared/item";
 import { Order } from "#shared/order/order";
 
 export class DeliveryHandler {

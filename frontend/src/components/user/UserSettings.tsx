@@ -1,5 +1,5 @@
 "use client";
-import { UserDetail } from "@boklisten/backend/shared/user/user-detail/user-detail";
+import { UserDetail } from "@boklisten/backend/shared/user-detail";
 import { Card } from "@mui/material";
 import { useQuery } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";

@@ -7,15 +7,15 @@ import { SEDbQueryBuilder } from "#services/query/se.db-query-builder";
 import { BlStorage } from "#services/storage/bl-storage";
 import { BlApiRequest } from "#services/types/bl-api-request";
 import { Operation } from "#services/types/operation";
-import { BlError } from "#shared/bl-error/bl-error";
-import { BlapiResponse } from "#shared/blapi-response/blapi-response";
+import { BlError } from "#shared/bl-error";
+import { BlapiResponse } from "#shared/blapi-response";
 import { CustomerItem } from "#shared/customer-item/customer-item";
 import { StandMatch } from "#shared/match/stand-match";
 import { UserMatch } from "#shared/match/user-match";
 import { Order } from "#shared/order/order";
 import { OrderItem } from "#shared/order/order-item/order-item";
 import { OrderItemType } from "#shared/order/order-item/order-item-type";
-import { UserPermission } from "#shared/permission/user-permission";
+import { UserPermission } from "#shared/user-permission";
 
 export class OrderPlaceOperation implements Operation {
   private queryBuilder = new SEDbQueryBuilder();

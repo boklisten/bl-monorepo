@@ -3,8 +3,8 @@ import { expect, use as chaiUse, should } from "chai";
 import chaiAsPromised from "chai-as-promised";
 
 import { ItemValidator } from "#services/legacy/collections/order/helpers/order-validator/item-validator/item-validator";
-import { BlError } from "#shared/bl-error/bl-error";
-import { Item } from "#shared/item/item";
+import { BlError } from "#shared/bl-error";
+import { Item } from "#shared/item";
 import { OrderItem } from "#shared/order/order-item/order-item";
 
 chaiUse(chaiAsPromised);

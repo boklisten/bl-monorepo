@@ -1,4 +1,4 @@
-import { Period } from "#shared/period/period";
+import { Period } from "#shared/period";
 
 export interface OrderItemPartlyPaymentInfo {
   from?: Date;

@@ -1,4 +1,4 @@
-import { BlDocument } from "#shared/bl-document/bl-document";
+import { BlDocument } from "#shared/bl-document";
 import { PaymentDiscount } from "#shared/payment/payment-discount/payment-discount";
 import { PaymentInfo } from "#shared/payment/payment-info/payment-info";
 import { PaymentMethod } from "#shared/payment/payment-method/payment-method";

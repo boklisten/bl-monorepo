@@ -2,11 +2,11 @@ import { APP_CONFIG } from "#services/config/application-config";
 import { isNotNullish } from "#services/helper/typescript-helpers";
 import { PriceService } from "#services/price/price.service";
 import { BlStorage } from "#services/storage/bl-storage";
-import { BlError } from "#shared/bl-error/bl-error";
-import { BranchPaymentInfo } from "#shared/branch/branch-payment-info";
+import { BlError } from "#shared/bl-error";
+import { BranchPaymentInfo } from "#shared/branch-payment-info";
 import { Order } from "#shared/order/order";
 import { OrderItem } from "#shared/order/order-item/order-item";
-import { Period } from "#shared/period/period";
+import { Period } from "#shared/period";
 
 interface BranchPaymentPeriod {
   type: Period;

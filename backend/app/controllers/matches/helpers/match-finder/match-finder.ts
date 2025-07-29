@@ -14,7 +14,7 @@ import {
   tryFindTwoWayMatch,
   updateItemImbalances,
 } from "#controllers/matches/helpers/match-finder/match-utils";
-import { BlError } from "#shared/bl-error/bl-error";
+import { BlError } from "#shared/bl-error";
 import { CandidateStandMatch } from "#shared/match/stand-match";
 import { CandidateUserMatch } from "#shared/match/user-match";
 

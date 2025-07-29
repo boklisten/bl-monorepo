@@ -7,9 +7,9 @@ import {
 } from "#services/legacy/collections/signature/helpers/signature.helper";
 import { Hook } from "#services/legacy/hook";
 import { BlStorage } from "#services/storage/bl-storage";
-import { BlError } from "#shared/bl-error/bl-error";
-import { SerializedSignature } from "#shared/signature/serialized-signature";
-import { AccessToken } from "#shared/token/access-token";
+import { AccessToken } from "#shared/access-token";
+import { BlError } from "#shared/bl-error";
+import { SerializedSignature } from "#shared/serialized-signature";
 
 export class SignaturePostHook extends Hook {
   override async before(

@@ -1,6 +1,6 @@
-import { Branch } from "@boklisten/backend/shared/branch/branch";
-import { Item } from "@boklisten/backend/shared/item/item";
-import { WaitingListEntry } from "@boklisten/backend/shared/waiting-list/waiting-list-entry";
+import { Branch } from "@boklisten/backend/shared/branch";
+import { Item } from "@boklisten/backend/shared/item";
+import { WaitingListEntry } from "@boklisten/backend/shared/waiting-list-entry";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { Tooltip } from "@mui/material";
 import { DataGrid, GridActionsCellItem, GridColDef } from "@mui/x-data-grid";

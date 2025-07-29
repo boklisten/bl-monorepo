@@ -1,4 +1,4 @@
-import { UserDetail } from "@boklisten/backend/shared/user/user-detail/user-detail";
+import { UserDetail } from "@boklisten/backend/shared/user-detail";
 import QrCodeScannerIcon from "@mui/icons-material/QrCodeScanner";
 import { Autocomplete, IconButton, TextField, Typography } from "@mui/material";
 import { useState } from "react";

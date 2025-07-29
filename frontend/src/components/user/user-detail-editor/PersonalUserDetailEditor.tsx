@@ -1,5 +1,5 @@
 "use client";
-import { UserDetail } from "@boklisten/backend/shared/user/user-detail/user-detail";
+import { UserDetail } from "@boklisten/backend/shared/user-detail";
 import { Divider, Stack, Typography } from "@mui/material";
 import Container from "@mui/material/Container";
 

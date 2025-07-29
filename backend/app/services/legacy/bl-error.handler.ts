@@ -1,7 +1,7 @@
 import logger from "@adonisjs/core/services/logger";
 
-import { BlError } from "#shared/bl-error/bl-error";
-import { BlapiErrorResponse } from "#shared/blapi-response/blapi-error-response";
+import { BlError } from "#shared/bl-error";
+import { BlapiErrorResponse } from "#shared/blapi-error-response";
 
 function createBlapiErrorResponse(error: unknown): BlapiErrorResponse {
   const blError =

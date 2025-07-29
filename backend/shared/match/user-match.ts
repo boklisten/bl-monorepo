@@ -1,4 +1,4 @@
-import { BlDocument } from "#shared/bl-document/bl-document";
+import { BlDocument } from "#shared/bl-document";
 import { MatchMeetingInfo } from "#shared/match/match";
 
 export interface CandidateUserMatch {

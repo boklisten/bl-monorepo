@@ -1,4 +1,4 @@
-import { BlDocument } from "#shared/bl-document/bl-document";
+import { BlDocument } from "#shared/bl-document";
 
 export const SIGNATURE_NUM_MONTHS_VALID = 4 * 12;
 

@@ -1,6 +1,7 @@
 import router from "@adonisjs/core/services/router";
 
-import CollectionEndpointCreator from "#services/legacy/collection-endpoint/collection-endpoint-creator";
+import CollectionEndpoint from "#services/legacy/collection-endpoint/collection-endpoint";
+import BlCollections from "#services/legacy/collections/bl-collections";
 
 const AuthTokensController = () =>
   import("#controllers/auth/tokens_controller");
@@ -238,4 +239,11 @@ router
   .get("/v2/customer_items", [CustomerItemsController, "getCustomerItems"])
   .as("customer_items.get");
 
-CollectionEndpointCreator.generateEndpoints();
+/**
+ * Generate legacy bl-collection endpoints
+ */
+for (const collection of BlCollections) {
+  for (const endpoint of collection.endpoints) {
+    CollectionEndpoint.create(endpoint, collection);
+  }
+}

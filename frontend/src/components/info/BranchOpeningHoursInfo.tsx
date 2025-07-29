@@ -1,6 +1,6 @@
 "use client";
-import { Branch } from "@boklisten/backend/shared/branch/branch";
-import { OpeningHour } from "@boklisten/backend/shared/opening-hour/opening-hour";
+import { Branch } from "@boklisten/backend/shared/branch";
+import { OpeningHour } from "@boklisten/backend/shared/opening-hour";
 import { Alert } from "@mui/material";
 import TableCell from "@mui/material/TableCell";
 import TableRow from "@mui/material/TableRow";

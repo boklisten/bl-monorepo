@@ -2,7 +2,7 @@ import { Schema } from "mongoose";
 
 import { BlSchemaName } from "#services/storage/bl-schema-names";
 import { BlSchema } from "#services/storage/bl-storage";
-import { OpeningHour } from "#shared/opening-hour/opening-hour";
+import { OpeningHour } from "#shared/opening-hour";
 
 export const OpeningHourSchema: BlSchema<OpeningHour> = new Schema({
   from: {

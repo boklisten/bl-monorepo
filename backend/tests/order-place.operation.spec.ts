@@ -10,11 +10,11 @@ import { OrderPlacedHandler } from "#services/legacy/collections/order/helpers/o
 import { OrderValidator } from "#services/legacy/collections/order/helpers/order-validator/order-validator";
 import { OrderPlaceOperation } from "#services/legacy/collections/order/operations/place/order-place.operation";
 import { BlStorage } from "#services/storage/bl-storage";
-import { BlError } from "#shared/bl-error/bl-error";
-import { BlapiResponse } from "#shared/blapi-response/blapi-response";
+import { BlError } from "#shared/bl-error";
+import { BlapiResponse } from "#shared/blapi-response";
 import { Order } from "#shared/order/order";
-import { SIGNATURE_NUM_MONTHS_VALID } from "#shared/signature/serialized-signature";
-import { UserDetail } from "#shared/user/user-detail/user-detail";
+import { SIGNATURE_NUM_MONTHS_VALID } from "#shared/serialized-signature";
+import { UserDetail } from "#shared/user-detail";
 
 chaiUse(chaiAsPromised);
 should();

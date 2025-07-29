@@ -5,7 +5,7 @@ import { createSandbox } from "sinon";
 
 import { UserDetailUpdateHook } from "#services/legacy/collections/user-detail/hooks/user-detail-update.hook";
 import { BlStorage } from "#services/storage/bl-storage";
-import { AccessToken } from "#shared/token/access-token";
+import { AccessToken } from "#shared/access-token";
 
 chaiUse(chaiAsPromised);
 should();

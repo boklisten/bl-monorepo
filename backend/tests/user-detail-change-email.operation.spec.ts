@@ -7,8 +7,8 @@ import { UserDetailChangeEmailOperation } from "#services/legacy/collections/use
 import { BlStorage } from "#services/storage/bl-storage";
 import { User } from "#services/types/user";
 import { UserService } from "#services/user_service";
-import { BlError } from "#shared/bl-error/bl-error";
-import { UserDetail } from "#shared/user/user-detail/user-detail";
+import { BlError } from "#shared/bl-error";
+import { UserDetail } from "#shared/user-detail";
 chaiUse(chaiAsPromised);
 should();
 

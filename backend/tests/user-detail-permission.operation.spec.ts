@@ -6,8 +6,8 @@ import sinon, { createSandbox } from "sinon";
 import { UserDetailPermissionOperation } from "#services/legacy/collections/user-detail/operations/permission/user-detail-permission.operation";
 import { BlStorage } from "#services/storage/bl-storage";
 import { User } from "#services/types/user";
-import { BlError } from "#shared/bl-error/bl-error";
-import { UserDetail } from "#shared/user/user-detail/user-detail";
+import { BlError } from "#shared/bl-error";
+import { UserDetail } from "#shared/user-detail";
 chaiUse(chaiAsPromised);
 should();
 

@@ -1,5 +1,5 @@
-import { BranchItem } from "@boklisten/backend/shared/branch-item/branch-item";
-import { Item } from "@boklisten/backend/shared/item/item";
+import { BranchItem } from "@boklisten/backend/shared/branch-item";
+import { Item } from "@boklisten/backend/shared/item";
 import {
   Switch,
   Table,

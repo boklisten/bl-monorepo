@@ -4,10 +4,7 @@ import { BlStorage } from "#services/storage/bl-storage";
 import TokenService from "#services/token_service";
 import { UserDetailService } from "#services/user_detail_service";
 import { UserService } from "#services/user_service";
-import {
-  AUTH_SOCIAL_ERROR,
-  AuthSocialError,
-} from "#shared/auth_social/auth_social_error";
+import { AUTH_SOCIAL_ERROR, AuthSocialError } from "#shared/auth_social_error";
 import env from "#start/env";
 
 function redirectToAuthFailedPage(ctx: HttpContext, reason: string) {

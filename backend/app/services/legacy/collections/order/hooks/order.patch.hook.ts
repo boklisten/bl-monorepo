@@ -3,9 +3,9 @@ import { OrderValidator } from "#services/legacy/collections/order/helpers/order
 import { Hook } from "#services/legacy/hook";
 import { PermissionService } from "#services/permission_service";
 import { BlStorage } from "#services/storage/bl-storage";
-import { BlError } from "#shared/bl-error/bl-error";
+import { AccessToken } from "#shared/access-token";
+import { BlError } from "#shared/bl-error";
 import { Order } from "#shared/order/order";
-import { AccessToken } from "#shared/token/access-token";
 
 export class OrderPatchHook extends Hook {
   private orderValidator: OrderValidator;

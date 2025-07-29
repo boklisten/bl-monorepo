@@ -1,4 +1,4 @@
-import { Branch } from "@boklisten/backend/shared/branch/branch";
+import { Branch } from "@boklisten/backend/shared/branch";
 import { Autocomplete } from "@mui/material";
 import TextField from "@mui/material/TextField";
 import { useQuery } from "@tanstack/react-query";

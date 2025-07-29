@@ -4,7 +4,7 @@ import { ObjectId } from "mongodb";
 import { BlStorage } from "#services/storage/bl-storage";
 import { BlApiRequest } from "#services/types/bl-api-request";
 import { Operation } from "#services/types/operation";
-import { BlapiResponse } from "#shared/blapi-response/blapi-response";
+import { BlapiResponse } from "#shared/blapi-response";
 
 const customerItemGenerateReportValidator = vine.object({
   branchFilter: vine.array(vine.string()).optional(),

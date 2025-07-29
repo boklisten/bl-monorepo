@@ -2,8 +2,8 @@ import { ObjectId } from "mongodb";
 
 import { SEDbQuery } from "#services/query/se.db-query";
 import { BlStorage } from "#services/storage/bl-storage";
-import { BlError } from "#shared/bl-error/bl-error";
-import { Item } from "#shared/item/item";
+import { BlError } from "#shared/bl-error";
+import { Item } from "#shared/item";
 import {
   MatchRelevantItemDetails,
   MatchRelevantUserDetails,
@@ -12,7 +12,7 @@ import {
 } from "#shared/match/match-dtos";
 import { StandMatch } from "#shared/match/stand-match";
 import { UserMatch } from "#shared/match/user-match";
-import { UserDetail } from "#shared/user/user-detail/user-detail";
+import { UserDetail } from "#shared/user-detail";
 
 function selectMatchRelevantUserDetails(
   userDetail?: UserDetail,

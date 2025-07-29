@@ -1,5 +1,5 @@
 "use client";
-import { PublicBlidLookupResult } from "@boklisten/backend/shared/public_blid_lookup/public_blid_lookup";
+import { PublicBlidLookupResult } from "@boklisten/backend/shared/public_blid_lookup";
 import { Phone } from "@mui/icons-material";
 import EmailIcon from "@mui/icons-material/Email";
 import QrCodeScannerIcon from "@mui/icons-material/QrCodeScanner";

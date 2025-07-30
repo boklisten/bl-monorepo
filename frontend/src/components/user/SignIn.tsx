@@ -17,6 +17,7 @@ import PasswordField from "@/components/user/fields/PasswordField";
 import GoogleButton from "@/components/user/GoogleButton";
 import VippsButton from "@/components/user/VippsButton";
 import { publicApiClient } from "@/utils/api/publicApiClient";
+import { isProduction } from "@/utils/env";
 import useAuth from "@/utils/useAuth";
 import useAuthLinker from "@/utils/useAuthLinker";
 
@@ -84,8 +85,12 @@ export default function SignIn() {
         </Typography>
         <Stack gap={2} sx={{ width: "100%", alignItems: "center" }}>
           <VippsButton verb={"login"} />
-          <FacebookButton label={"Logg inn med Facebook"} />
-          <GoogleButton label={"Logg inn med Google"} />
+          {isProduction() && ( // fixme: remove once Google and Facebook logins are approved for removal
+            <>
+              <FacebookButton label={"Logg inn med Facebook"} />
+              <GoogleButton label={"Logg inn med Google"} />
+            </>
+          )}
         </Stack>
 
         <Divider sx={{ width: "100%", my: 3 }}>eller</Divider>

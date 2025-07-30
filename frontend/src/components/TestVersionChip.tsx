@@ -1,12 +1,13 @@
 import { Tooltip } from "@mui/material";
 import Chip from "@mui/material/Chip";
 
+import { getEnv, isProduction } from "@/utils/env";
+
 const capitalize = (s: string) =>
   s.length > 0 && s[0]?.toUpperCase() + s.slice(1);
 
 export default function TestVersionChip() {
-  const env = process.env["NEXT_PUBLIC_APP_ENV"];
-  if (!env || env === "production") return;
+  if (isProduction()) return;
   return (
     <Tooltip
       title={
@@ -17,7 +18,7 @@ export default function TestVersionChip() {
         sx={{ mt: 0.25, ml: 1, fontWeight: "bold" }}
         size={"medium"}
         color={"warning"}
-        label={capitalize(env)}
+        label={capitalize(getEnv())}
       />
     </Tooltip>
   );

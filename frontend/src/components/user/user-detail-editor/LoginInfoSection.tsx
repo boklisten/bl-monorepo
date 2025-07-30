@@ -10,7 +10,6 @@ import EmailConfirmationStatus from "@/components/user/fields/EmailConfirmationS
 import FieldErrorAlert from "@/components/user/fields/FieldErrorAlert";
 import MaybeConfirmedEmailField from "@/components/user/fields/MaybeConfirmedEmailField";
 import PasswordField from "@/components/user/fields/PasswordField";
-import { fieldValidators } from "@/components/user/user-detail-editor/fieldValidators";
 import {
   UserDetailsEditorVariant,
   UserEditorFields,
@@ -25,11 +24,7 @@ export default function LoginInfoSection({
   emailConfirmed: boolean | undefined;
   userDetails: UserDetail;
 }) {
-  const {
-    register,
-    setError,
-    formState: { errors },
-  } = useFormContext<UserEditorFields>();
+  const { setError } = useFormContext<UserEditorFields>();
 
   const [customerIdDialogOpen, setCustomerIdDialogOpen] = useState(false);
   return (
@@ -70,12 +65,7 @@ export default function LoginInfoSection({
       )}
       {variant === "signup" && (
         <Grid size={{ xs: 12 }}>
-          <PasswordField
-            autoComplete="new-password"
-            error={!!errors.password}
-            {...register("password", fieldValidators.password)}
-            margin={"none"}
-          />
+          <PasswordField label={"Passord"} autoComplete="new-password" />
           <FieldErrorAlert field={"password"} />
         </Grid>
       )}

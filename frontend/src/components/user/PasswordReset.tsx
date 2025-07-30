@@ -5,11 +5,10 @@ import Grid from "@mui/material/Grid";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { useSearchParams } from "next/navigation";
 import { useState } from "react";
-import { useForm } from "react-hook-form";
+import { FormProvider, useForm } from "react-hook-form";
 
 import DynamicLink from "@/components/DynamicLink";
 import PasswordField from "@/components/user/fields/PasswordField";
-import { fieldValidators } from "@/components/user/user-detail-editor/fieldValidators";
 import { publicApiClient } from "@/utils/api/publicApiClient";
 
 interface PasswordResetFields {
@@ -19,11 +18,11 @@ interface PasswordResetFields {
 export default function PasswordReset({ resetId }: { resetId: string }) {
   const searchParams = useSearchParams();
   const [apiError, setApiError] = useState<string | null>(null);
+  const methods = useForm<PasswordResetFields>();
   const {
-    register,
     handleSubmit,
     formState: { errors },
-  } = useForm<PasswordResetFields>();
+  } = methods;
 
   const resetValidation = useQuery({
     queryKey: [publicApiClient.reset_password.validate.$url(), resetId],
@@ -102,13 +101,12 @@ export default function PasswordReset({ resetId }: { resetId: string }) {
               {message.message}
             </Alert>
           ))}
-          <PasswordField
-            label="Nytt passord"
-            autoComplete="new-password"
-            error={!!errors.password}
-            {...register("password", fieldValidators.password)}
-            margin={"none"}
-          />
+          <FormProvider {...methods}>
+            <PasswordField
+              label={"Nytt passord"}
+              autoComplete={"new-password"}
+            />
+          </FormProvider>
           <Button
             type="submit"
             fullWidth

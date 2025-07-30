@@ -7,7 +7,7 @@ import Divider from "@mui/material/Divider";
 import TextField from "@mui/material/TextField";
 import { useMutation } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
-import { useForm } from "react-hook-form";
+import { FormProvider, useForm } from "react-hook-form";
 import validator from "validator";
 
 import { addAccessToken, addRefreshToken } from "@/api/token";
@@ -30,11 +30,12 @@ export default function SignIn() {
   const [apiError, setApiError] = useState<string | null>(null);
   const { isLoggedIn } = useAuth();
   const { redirectToCaller } = useAuthLinker();
+  const methods = useForm<SignInFields>({ mode: "onTouched" });
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<SignInFields>({ mode: "onTouched" });
+  } = methods;
 
   const signInMutation = useMutation({
     mutationFn: async ({ username, password }: SignInFields) => {
@@ -109,23 +110,22 @@ export default function SignIn() {
               {message.message}
             </Alert>
           ))}
-          <TextField
-            required
-            fullWidth
-            id="username"
-            label="E-post eller telefonnummer"
-            autoComplete="username"
-            {...register("username", {
-              validate: (v) =>
-                !v || validator.isEmail(v) || validator.isMobilePhone(v)
-                  ? true
-                  : "Du må fylle inn gyldig e-post eller telefonnummer",
-            })}
-          />
-          <PasswordField
-            autoComplete="current-password"
-            {...register("password")}
-          />
+          <FormProvider {...methods}>
+            <TextField
+              required
+              fullWidth
+              id="username"
+              label="E-post eller telefonnummer"
+              autoComplete="username"
+              {...register("username", {
+                validate: (v) =>
+                  !v || validator.isEmail(v) || validator.isMobilePhone(v)
+                    ? true
+                    : "Du må fylle inn gyldig e-post eller telefonnummer",
+              })}
+            />
+            <PasswordField label={"Passord"} autoComplete="current-password" />
+          </FormProvider>
           <Button
             loading={signInMutation.isPending}
             type="submit"

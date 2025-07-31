@@ -10,15 +10,12 @@ import { registerSchema } from "#validators/auth_validators";
 
 export const UserDetailService = {
   async getByPhoneNumber(phone: string): Promise<UserDetail | null> {
-    try {
-      const databaseQuery = new SEDbQuery();
-      databaseQuery.stringFilters = [{ fieldName: "phone", value: phone }];
-      const [userDetail] =
-        await BlStorage.UserDetails.getByQuery(databaseQuery);
-      return userDetail ?? null;
-    } catch {
-      return null;
-    }
+    const databaseQuery = new SEDbQuery();
+    databaseQuery.stringFilters = [{ fieldName: "phone", value: phone }];
+    const userDetails =
+      await BlStorage.UserDetails.getByQueryOrNull(databaseQuery);
+
+    return userDetails?.[0] ?? null;
   },
   async getByEmail(email: string): Promise<UserDetail | null> {
     try {

@@ -60,7 +60,7 @@ export const AuthVippsService = {
       await UserService.createVippsUser(user);
     }
 
-    const tokens = await TokenService.createTokens(user.email);
+    const tokens = await TokenService.createTokens(email);
 
     if (!tokens) {
       redirectToAuthFailedPage(ctx, ERROR);

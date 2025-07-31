@@ -35,7 +35,7 @@ function isHandedOutWithinTheLastTwoWeeks(customerItem: CustomerItem) {
 
 function isDeadlineWithGracePeriodExpired(customerItem: CustomerItem) {
   return (
-    customerItem.deadline.getTime() <
+    new Date().getTime() >
     new Date(
       calculateDeadlineDateWithGracePeriod(customerItem.deadline),
     ).getTime()

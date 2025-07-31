@@ -30,6 +30,7 @@ const UserDetailController = () =>
   import("#controllers/user_detail_controller");
 const CustomerItemsController = () =>
   import("#controllers/customer_items_controller");
+const SignaturesController = () => import("#controllers/signatures_controller");
 
 /**
  * auth token
@@ -235,6 +236,16 @@ router
 router
   .get("/v2/customer_items", [CustomerItemsController, "getCustomerItems"])
   .as("customer_items.get");
+
+/**
+ * signatures
+ */
+router
+  .post("/signatures/send/:detailsId", [
+    SignaturesController,
+    "sendSignatureLink",
+  ])
+  .as("signatures.send.link");
 
 /**
  * Generate legacy bl-collection endpoints

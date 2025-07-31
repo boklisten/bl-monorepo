@@ -82,7 +82,7 @@ export class OrderEmailHandler {
   /**
    * sends out SMS and email to the guardian of a customer with a signature link if they are under 18
    */
-  private async requestGuardianSignature(
+  public async requestGuardianSignature(
     customerDetail: UserDetail,
     branchName: string,
   ) {

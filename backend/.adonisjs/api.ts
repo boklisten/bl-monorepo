@@ -397,6 +397,13 @@ type V2CustomeritemsGetHead = {
     false
   >;
 };
+type SignaturesSendIdPost = {
+  request: unknown;
+  response: MakeNonSerializedTuyauResponse<
+    import("../app/controllers/signatures_controller.ts").default["sendSignatureLink"],
+    false
+  >;
+};
 export interface ApiDefinition {
   token: {
     $url: {};
@@ -582,6 +589,14 @@ export interface ApiDefinition {
     lock: {
       $url: {};
       $post: UsermatchesLockPost;
+    };
+  };
+  signatures: {
+    send: {
+      ":detailsId": {
+        $url: {};
+        $post: SignaturesSendIdPost;
+      };
     };
   };
 }
@@ -872,6 +887,13 @@ const routes = [
     path: "/v2/customer_items",
     method: ["GET", "HEAD"],
     types: {} as V2CustomeritemsGetHead,
+  },
+  {
+    params: ["detailsId"],
+    name: "signatures.send.link",
+    path: "/signatures/send/:detailsId",
+    method: ["POST"],
+    types: {} as SignaturesSendIdPost,
   },
   {
     params: ["id"],

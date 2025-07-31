@@ -97,6 +97,17 @@ export class MongodbHandler<T extends BlDocument> {
       : docs;
   }
 
+  public async getByQueryOrNull(
+    databaseQuery: SEDbQuery,
+    allowedNestedDocuments?: NestedDocument[],
+  ) {
+    try {
+      return await this.getByQuery(databaseQuery, allowedNestedDocuments);
+    } catch {
+      return null;
+    }
+  }
+
   public async getMany(ids: string[], userPermission?: UserPermission) {
     try {
       const idArray = ids.map((id) => new Types.ObjectId(id));

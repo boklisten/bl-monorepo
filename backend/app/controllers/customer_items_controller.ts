@@ -118,7 +118,9 @@ export default class CustomerItemsController {
     databaseQuery.stringFilters = [{ fieldName: "customer", value: detailsId }];
     databaseQuery.sortFilters = [{ fieldName: "lastUpdated", direction: -1 }];
     const customerItems =
-      await BlStorage.CustomerItems.getByQuery(databaseQuery);
+      await BlStorage.CustomerItems.getByQueryOrNull(databaseQuery);
+    if (!customerItems) return [];
+
     return await Promise.all(
       customerItems.map(async (customerItem) => {
         const item = await BlStorage.Items.getOrNull(customerItem.item);

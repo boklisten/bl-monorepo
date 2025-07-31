@@ -4,7 +4,7 @@ import Messenger from "#services/messenger/messenger";
 import { PasswordService } from "#services/password_service";
 import { SEDbQuery } from "#services/query/se.db-query";
 import { BlStorage } from "#services/storage/bl-storage";
-import { Login, SocialProvider, User, VippsUser } from "#services/types/user";
+import { Login, User, VippsUser } from "#services/types/user";
 import { UserDetailService } from "#services/user_detail_service";
 import { registerSchema } from "#validators/auth_validators";
 
@@ -50,21 +50,6 @@ export const UserService = {
       return null;
     }
   },
-  async connectProviderToUser(
-    user: User,
-    provider: SocialProvider,
-    providerId: string,
-  ) {
-    if (user.login[provider]?.userId !== providerId) {
-      await BlStorage.Users.update(user.id, {
-        login: {
-          ...user.login,
-          [provider]: { userId: providerId },
-        },
-      });
-    }
-  },
-
   async createLocalUser(localUser: Infer<typeof registerSchema>) {
     const addedUserDetail =
       await UserDetailService.createLocalUserDetail(localUser);
@@ -77,28 +62,6 @@ export const UserService = {
         },
       },
       emailConfirmed: false,
-      blid: addedUserDetail.blid,
-      userDetailId: addedUserDetail.id,
-    });
-  },
-  async createSocialUser(socialUser: {
-    provider: SocialProvider;
-    providerId: string;
-    email: string;
-    emailConfirmed: boolean;
-  }) {
-    const addedUserDetail =
-      await UserDetailService.createSocialUserDetail(socialUser);
-
-    return createUser({
-      username: socialUser.email,
-      login: {
-        [socialUser.provider]: {
-          userId: socialUser.providerId,
-          lastLogin: new Date(),
-        },
-      },
-      emailConfirmed: socialUser.emailConfirmed,
       blid: addedUserDetail.blid,
       userDetailId: addedUserDetail.id,
     });

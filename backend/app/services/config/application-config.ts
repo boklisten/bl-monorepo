@@ -9,7 +9,6 @@ export const APP_CONFIG = {
       },
       auth: {
         failure: "auth/authentication/failure",
-        socialLoginFailure: "auth/social/failure",
       },
     },
     dibs: {
@@ -63,12 +62,6 @@ export const APP_CONFIG = {
   },
   test: true,
   login: {
-    google: {
-      name: "google",
-    },
-    facebook: {
-      name: "facebook",
-    },
     local: {
       name: "local",
     },

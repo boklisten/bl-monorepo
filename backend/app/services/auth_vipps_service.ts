@@ -4,7 +4,7 @@ import { BlStorage } from "#services/storage/bl-storage";
 import TokenService from "#services/token_service";
 import { UserDetailService } from "#services/user_detail_service";
 import { UserService } from "#services/user_service";
-import { AUTH_SOCIAL_ERROR, AuthSocialError } from "#shared/auth_social_error";
+import { AUTH_VIPPS_ERROR, AuthVippsError } from "#shared/auth_vipps_error";
 import env from "#start/env";
 
 function redirectToAuthFailedPage(ctx: HttpContext, reason: string) {
@@ -15,16 +15,16 @@ function redirectToAuthFailedPage(ctx: HttpContext, reason: string) {
 
 export const AuthVippsService = {
   async handleCallback(ctx: HttpContext) {
-    const social = ctx.ally.use("vipps");
+    const vipps = ctx.ally.use("vipps");
 
-    let error: AuthSocialError | null = null;
-    const { ACCESS_DENIED, EXPIRED, ERROR } = AUTH_SOCIAL_ERROR;
+    let error: AuthVippsError | null = null;
+    const { ACCESS_DENIED, EXPIRED, ERROR } = AUTH_VIPPS_ERROR;
 
-    if (social.accessDenied()) {
+    if (vipps.accessDenied()) {
       error = ACCESS_DENIED;
-    } else if (social.stateMisMatch()) {
+    } else if (vipps.stateMisMatch()) {
       error = EXPIRED;
-    } else if (social.hasError()) {
+    } else if (vipps.hasError()) {
       error = ERROR;
     }
 
@@ -33,31 +33,31 @@ export const AuthVippsService = {
       return;
     }
 
-    const user = await social.user();
+    const vippsUser = await vipps.user();
 
-    const existingUserDetail = await UserDetailService.getByPhoneNumber(
-      user.phoneNumber,
+    const userDetail = await UserDetailService.getByPhoneNumber(
+      vippsUser.phoneNumber,
     );
-    const email = existingUserDetail?.email ?? user.email;
-    const existingUser = await UserService.getByUsername(email);
-    if (existingUser) {
-      await UserService.connectProviderToUser(existingUser, "vipps", user.id);
-      if (!existingUserDetail) {
+    const email = userDetail?.email ?? vippsUser.email;
+    const user = await UserService.getByUsername(email);
+    if (user) {
+      if (!userDetail) {
         const addedUserDetail = await UserDetailService.createVippsUserDetail(
-          user,
-          existingUser.blid,
+          vippsUser,
+          user.blid,
         );
-        await BlStorage.Users.update(existingUser.id, {
+        await BlStorage.Users.update(user.id, {
           userDetail: addedUserDetail.id,
         });
       }
-      await BlStorage.Users.update(existingUser.id, {
+      await BlStorage.Users.update(user.id, {
         $set: {
+          "login.vipps.userId": vippsUser.id,
           "login.vipps.lastLogin": new Date(),
         },
       });
     } else {
-      await UserService.createVippsUser(user);
+      await UserService.createVippsUser(vippsUser);
     }
 
     const tokens = await TokenService.createTokens(email);

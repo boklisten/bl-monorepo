@@ -5,8 +5,6 @@ import BlCollections from "#services/legacy/collections/bl-collections";
 
 const AuthTokensController = () =>
   import("#controllers/auth/tokens_controller");
-const AuthSocialController = () =>
-  import("#controllers/auth/social_controller");
 const AuthVippsController = () => import("#controllers/auth/vipps_controller");
 const AuthLocalController = () => import("#controllers/auth/local_controller");
 const AuthPasswordResetController = () =>
@@ -42,20 +40,13 @@ router
 router.post("/v2/token", [AuthTokensController, "token"]).as("v2.auth.token");
 
 /**
- * auth social
- */
-router
-  .get("/auth/:provider/redirect", [AuthSocialController, "redirect"])
-  .as("auth.social.redirect");
-router
-  .get("/auth/:provider/callback", [AuthSocialController, "callback"])
-  .as("auth.social.callback");
-
-/**
  * auth vipps
  */
 router
-  .get("/v2/auth/vipps/callback", [AuthVippsController, "callback"])
+  .get("/auth/vipps/redirect", [AuthVippsController, "redirect"])
+  .as("auth.vipps.redirect");
+router
+  .get("/auth/vipps/callback", [AuthVippsController, "callback"])
   .as("auth.vipps.callback");
 
 /**

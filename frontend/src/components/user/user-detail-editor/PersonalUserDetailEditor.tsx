@@ -3,11 +3,8 @@ import { UserDetail } from "@boklisten/backend/shared/user-detail";
 import { Divider, Stack, Typography } from "@mui/material";
 import Container from "@mui/material/Container";
 
-import FacebookButton from "@/components/user/FacebookButton";
-import GoogleButton from "@/components/user/GoogleButton";
 import UserDetailsEditor from "@/components/user/user-detail-editor/UserDetailsEditor";
 import VippsButton from "@/components/user/VippsButton";
-import { isProduction } from "@/utils/env";
 
 export default function PersonalUserDetailEditor({
   isSignUp,
@@ -24,16 +21,8 @@ export default function PersonalUserDetailEditor({
         </Typography>
         {isSignUp && (
           <>
-            <Stack gap={2} sx={{ width: "100%", alignItems: "center" }}>
-              <VippsButton verb={"register"} />
-              {isProduction() && ( // fixme: remove once Google and Facebook logins are approved for removal
-                <>
-                  <FacebookButton label={"Registrer deg med Facebook"} />
-                  <GoogleButton label={"Registrer deg med Google"} />
-                </>
-              )}
-            </Stack>
-            <Divider sx={{ width: "100%", my: 3 }}>
+            <VippsButton verb={"register"} />
+            <Divider sx={{ width: "100%", my: 2 }}>
               Eller, registrer deg med e-post
             </Divider>
           </>

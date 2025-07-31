@@ -1,12 +1,28 @@
 import { Box } from "@mui/material";
+import { useRouter, useSearchParams } from "next/navigation";
 
-import useSocialLogin from "@/utils/useSocialLogin";
+import { add } from "@/api/storage";
+import { publicApiClient } from "@/utils/api/publicApiClient";
+import BL_CONFIG from "@/utils/bl-config";
 
 export default function VippsButton({ verb }: { verb: "login" | "register" }) {
-  const { redirectToLogin } = useSocialLogin();
+  const router = useRouter();
+  const searchParams = useSearchParams();
 
   return (
-    <Box onClick={() => redirectToLogin("vipps")}>
+    <Box
+      onClick={() => {
+        const caller = searchParams.get("caller");
+        const redirect = searchParams.get("redirect");
+        if (caller) {
+          add(BL_CONFIG.login.localStorageKeys.caller, caller);
+        }
+        if (redirect) {
+          add(BL_CONFIG.login.localStorageKeys.redirect, redirect);
+        }
+        router.replace(publicApiClient.auth.vipps.redirect.$url());
+      }}
+    >
       {/* @ts-expect-error official Vipps button */}
       <vipps-mobilepay-button rounded="true" branded="true" verb={verb} />
     </Box>

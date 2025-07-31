@@ -32,21 +32,14 @@ type V2TokenPost = {
     true
   >;
 };
-type AuthIdRedirectGetHead = {
+type AuthVippsRedirectGetHead = {
   request: unknown;
   response: MakeNonSerializedTuyauResponse<
-    import("../app/controllers/auth/social_controller.ts").default["redirect"],
+    import("../app/controllers/auth/vipps_controller.ts").default["redirect"],
     false
   >;
 };
-type AuthIdCallbackGetHead = {
-  request: unknown;
-  response: MakeNonSerializedTuyauResponse<
-    import("../app/controllers/auth/social_controller.ts").default["callback"],
-    false
-  >;
-};
-type V2AuthVippsCallbackGetHead = {
+type AuthVippsCallbackGetHead = {
   request: unknown;
   response: MakeNonSerializedTuyauResponse<
     import("../app/controllers/auth/vipps_controller.ts").default["callback"],
@@ -414,15 +407,6 @@ export interface ApiDefinition {
       $url: {};
       $post: V2TokenPost;
     };
-    auth: {
-      vipps: {
-        callback: {
-          $url: {};
-          $get: V2AuthVippsCallbackGetHead;
-          $head: V2AuthVippsCallbackGetHead;
-        };
-      };
-    };
     branches: {
       $url: {};
       $post: V2BranchesPost;
@@ -469,16 +453,16 @@ export interface ApiDefinition {
     };
   };
   auth: {
-    ":provider": {
+    vipps: {
       redirect: {
         $url: {};
-        $get: AuthIdRedirectGetHead;
-        $head: AuthIdRedirectGetHead;
+        $get: AuthVippsRedirectGetHead;
+        $head: AuthVippsRedirectGetHead;
       };
       callback: {
         $url: {};
-        $get: AuthIdCallbackGetHead;
-        $head: AuthIdCallbackGetHead;
+        $get: AuthVippsCallbackGetHead;
+        $head: AuthVippsCallbackGetHead;
       };
     };
     local: {
@@ -617,25 +601,18 @@ const routes = [
     types: {} as V2TokenPost,
   },
   {
-    params: ["provider"],
-    name: "auth.social.redirect",
-    path: "/auth/:provider/redirect",
+    params: [],
+    name: "auth.vipps.redirect",
+    path: "/auth/vipps/redirect",
     method: ["GET", "HEAD"],
-    types: {} as AuthIdRedirectGetHead,
-  },
-  {
-    params: ["provider"],
-    name: "auth.social.callback",
-    path: "/auth/:provider/callback",
-    method: ["GET", "HEAD"],
-    types: {} as AuthIdCallbackGetHead,
+    types: {} as AuthVippsRedirectGetHead,
   },
   {
     params: [],
     name: "auth.vipps.callback",
-    path: "/v2/auth/vipps/callback",
+    path: "/auth/vipps/callback",
     method: ["GET", "HEAD"],
-    types: {} as V2AuthVippsCallbackGetHead,
+    types: {} as AuthVippsCallbackGetHead,
   },
   {
     params: [],

@@ -6,22 +6,6 @@ import { Login, User } from "#services/types/user";
 
 const LoginSchema = new Schema<Login>(
   {
-    google: {
-      type: {
-        userId: { type: String, required: true },
-        lastLogin: Date,
-      },
-      required: false,
-      _id: false,
-    },
-    facebook: {
-      type: {
-        userId: { type: String, required: true },
-        lastLogin: Date,
-      },
-      required: false,
-      _id: false,
-    },
     vipps: {
       type: {
         userId: { type: String, required: true },

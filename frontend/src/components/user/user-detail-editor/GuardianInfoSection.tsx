@@ -52,11 +52,7 @@ export default function GuardianInfoSection({
         <FieldErrorAlert field={"guardianName"} />
       </Grid>
       <Grid size={{ xs: 12 }}>
-        <EmailField
-          label="Foresatt sin e-post"
-          error={!!errors.guardianEmail}
-          {...register("guardianEmail", fieldValidators.guardianEmail)}
-        />
+        <EmailField label="Foresatt sin e-post" field={"guardianEmail"} />
         <FieldErrorAlert field={"guardianEmail"} />
       </Grid>
       <Grid size={{ xs: 12 }}>

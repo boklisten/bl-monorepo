@@ -240,7 +240,7 @@ export default function UserDetailsEditor({
         <Grid container spacing={2}>
           <LoginInfoSection
             variant={variant}
-            emailConfirmed={userDetails.emailConfirmed}
+            emailVerified={userDetails.emailConfirmed}
             userDetails={userDetails}
           />
           <YourInfoSection

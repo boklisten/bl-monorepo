@@ -2,66 +2,68 @@ import { UserDetail } from "@boklisten/backend/shared/user-detail";
 import { QrCode } from "@mui/icons-material";
 import { Button, Dialog, Stack } from "@mui/material";
 import Grid from "@mui/material/Grid";
-import { useState } from "react";
-import { useFormContext } from "react-hook-form";
+import { DialogProps, useDialogs } from "@toolpad/core";
 import QRCode from "react-qr-code";
 
 import EmailConfirmationStatus from "@/components/user/fields/EmailConfirmationStatus";
+import EmailField from "@/components/user/fields/EmailField";
 import FieldErrorAlert from "@/components/user/fields/FieldErrorAlert";
-import MaybeConfirmedEmailField from "@/components/user/fields/MaybeConfirmedEmailField";
 import PasswordField from "@/components/user/fields/PasswordField";
-import {
-  UserDetailsEditorVariant,
-  UserEditorFields,
-} from "@/components/user/user-detail-editor/UserDetailsEditor";
+import { UserDetailsEditorVariant } from "@/components/user/user-detail-editor/UserDetailsEditor";
+
+function CustomerIdDialog({
+  open,
+  onClose,
+  payload: { detailsId },
+}: DialogProps<{ detailsId: string }>) {
+  return (
+    <Dialog open={open} onClose={() => onClose()}>
+      <QRCode value={detailsId} />
+    </Dialog>
+  );
+}
 
 export default function LoginInfoSection({
   variant,
-  emailConfirmed,
+  emailVerified,
   userDetails,
 }: {
   variant: UserDetailsEditorVariant;
-  emailConfirmed: boolean | undefined;
+  emailVerified: boolean | undefined;
   userDetails: UserDetail;
 }) {
-  const { setError } = useFormContext<UserEditorFields>();
+  const dialogs = useDialogs();
 
-  const [customerIdDialogOpen, setCustomerIdDialogOpen] = useState(false);
   return (
     <>
       <Grid size={{ xs: 12 }}>
-        <MaybeConfirmedEmailField
-          variant={variant}
-          isEmailConfirmed={emailConfirmed}
+        <EmailField
+          disabled={variant === "personal" || variant === "administrate"} // fixme: enable in administrate but note that we also need to update the users table
+          helperText={
+            variant === "personal"
+              ? "Ta kontakt dersom du ønsker å endre e-postadresse"
+              : ""
+          }
+          isEmailVerified={emailVerified}
         />
-        <EmailConfirmationStatus
-          onError={(message) => setError("email", { message })}
-          userDetails={userDetails}
-          variant={variant}
-        />
+        <EmailConfirmationStatus userDetails={userDetails} variant={variant} />
         <FieldErrorAlert field={"email"} />
       </Grid>
       {variant === "personal" && (
-        <>
-          <Stack
-            alignItems={"center"}
-            sx={{ width: "100%", textTransform: "none" }}
+        <Stack
+          alignItems={"center"}
+          sx={{ width: "100%", textTransform: "none" }}
+        >
+          <Button
+            variant={"contained"}
+            startIcon={<QrCode />}
+            onClick={() =>
+              dialogs.open(CustomerIdDialog, { detailsId: userDetails.id })
+            }
           >
-            <Button
-              variant={"contained"}
-              startIcon={<QrCode />}
-              onClick={() => setCustomerIdDialogOpen(true)}
-            >
-              Vis kunde-ID
-            </Button>
-          </Stack>
-          <Dialog
-            open={customerIdDialogOpen}
-            onClose={() => setCustomerIdDialogOpen(false)}
-          >
-            <QRCode value={userDetails.id} />
-          </Dialog>
-        </>
+            Vis kunde-ID
+          </Button>
+        </Stack>
       )}
       {variant === "signup" && (
         <Grid size={{ xs: 12 }}>

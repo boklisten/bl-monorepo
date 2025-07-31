@@ -3,29 +3,33 @@ import { Email, Info } from "@mui/icons-material";
 import { Alert } from "@mui/material";
 import Button from "@mui/material/Button";
 import { useMutation } from "@tanstack/react-query";
+import { useFormContext } from "react-hook-form";
 
-import { UserDetailsEditorVariant } from "@/components/user/user-detail-editor/UserDetailsEditor";
+import {
+  UserDetailsEditorVariant,
+  UserEditorFields,
+} from "@/components/user/user-detail-editor/UserDetailsEditor";
 import useApiClient from "@/utils/api/useApiClient";
 
 interface EmailConfirmationStatusProps {
   variant: UserDetailsEditorVariant;
   userDetails: UserDetail;
-  onError: (message: string) => void;
 }
 
 const EmailConfirmationStatus = ({
   variant,
   userDetails,
-  onError,
 }: EmailConfirmationStatusProps) => {
+  const { setError } = useFormContext<UserEditorFields>();
   const client = useApiClient();
 
   const createEmailConfirmation = useMutation({
     mutationFn: () => client.email_validations.$post().unwrap(),
     onError: () =>
-      onError(
-        "Klarte ikke sende ny bekreftelseslenke. Vennligst prøv igjen, eller ta kontakt hvis problemet vedvarer.",
-      ),
+      setError("email", {
+        message:
+          "Klarte ikke sende ny bekreftelseslenke. Vennligst prøv igjen, eller ta kontakt hvis problemet vedvarer.",
+      }),
   });
 
   return (

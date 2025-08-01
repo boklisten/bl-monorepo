@@ -3,7 +3,7 @@ import { UserPermission } from "#shared/user-permission";
 
 interface VippsLogin {
   userId: string;
-  lastLogin?: Date;
+  lastLogin: Date;
 }
 
 interface LocalLogin {

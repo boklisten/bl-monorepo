@@ -9,7 +9,7 @@ const LoginSchema = new Schema<Login>(
     vipps: {
       type: {
         userId: { type: String, required: true },
-        lastLogin: Date,
+        lastLogin: { type: Date, required: true },
       },
       required: false,
       _id: false,

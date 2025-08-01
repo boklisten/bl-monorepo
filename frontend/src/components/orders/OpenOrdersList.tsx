@@ -9,6 +9,7 @@ import {
   TableBody,
   TableContainer,
   TableHead,
+  Tooltip,
 } from "@mui/material";
 import TableCell from "@mui/material/TableCell";
 import TableRow from "@mui/material/TableRow";
@@ -31,6 +32,7 @@ export default function OpenOrdersList({
     itemId: string;
     deadline: string;
     title: string;
+    cancelable: boolean;
   }[];
 }) {
   const dialogs = useDialogs();
@@ -71,31 +73,41 @@ export default function OpenOrdersList({
                   <TableCell>
                     {moment(orderItem.deadline).format("DD/MM/YYYY")}
                   </TableCell>
-                  <TableCell>
-                    <Button
-                      color={"error"}
-                      loading={cancelOrderItemMutation.isPending}
-                      onClick={async () => {
-                        if (
-                          await dialogs.confirm(
-                            `Du er nå i ferd med å avbestille ${orderItem.title}. Dersom du har betalt for boka og har rett på refusjon ber vi deg ta kontakt slik at vi kan ordne med dette.`,
-                            {
-                              title: `Bekreft avbestilling`,
-                              okText: "Avbestill",
-                              cancelText: "Avbryt",
-                            },
-                          )
-                        ) {
-                          cancelOrderItemMutation.mutate({
-                            orderId: orderItem.orderId,
-                            itemId: orderItem.itemId,
-                          });
-                        }
-                      }}
-                    >
-                      Avbestill
-                    </Button>
-                  </TableCell>
+                  <Tooltip
+                    title={
+                      orderItem.cancelable
+                        ? ""
+                        : "Ikke tilgjenglig for øyeblikket. Ta kontakt dersom du ønsker å avbestille"
+                    }
+                  >
+                    <TableCell>
+                      <Button
+                        disabled={!orderItem.cancelable}
+                        color={"error"}
+                        loading={cancelOrderItemMutation.isPending}
+                        onClick={async () => {
+                          if (
+                            await dialogs.confirm(
+                              `Du er nå i ferd med å avbestille ${orderItem.title}. Dette kan ikke angres.`,
+                              {
+                                title: `Bekreft avbestilling`,
+                                okText: "Avbestill",
+                                cancelText: "Avbryt",
+                                severity: "error",
+                              },
+                            )
+                          ) {
+                            cancelOrderItemMutation.mutate({
+                              orderId: orderItem.orderId,
+                              itemId: orderItem.itemId,
+                            });
+                          }
+                        }}
+                      >
+                        Avbestill
+                      </Button>
+                    </TableCell>
+                  </Tooltip>
                 </TableRow>
               ))}
             </TableBody>

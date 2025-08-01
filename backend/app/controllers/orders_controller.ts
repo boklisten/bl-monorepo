@@ -11,12 +11,11 @@ export default class OrdersController {
   async getOpenOrders(ctx: HttpContext) {
     const { detailsId } = PermissionService.authenticate(ctx);
 
-    return await BlStorage.Orders.aggregate([
+    return (await BlStorage.Orders.aggregate([
       {
         $match: {
           customer: new ObjectId(detailsId),
           placed: true,
-          amount: 0,
           byCustomer: true,
         },
       },
@@ -27,10 +26,9 @@ export default class OrdersController {
       },
       {
         $match: {
-          "orderItems.type": "rent",
+          "orderItems.type": { $in: ["rent", "partly-payment"] },
           "orderItems.movedToOrder": null,
           "orderItems.movedFromOrder": null,
-          "orderItems.delivered": false,
         },
       },
       {
@@ -52,9 +50,16 @@ export default class OrdersController {
           itemId: "$orderItems.item",
           title: "$item.title",
           deadline: "$orderItems.info.to",
+          cancelable: { $eq: ["$amount", 0] },
         },
       },
-    ]);
+    ])) as {
+      orderId: string;
+      itemId: string;
+      title: string;
+      deadline: string;
+      cancelable: boolean;
+    }[];
   }
 
   async cancelOrderItem(ctx: HttpContext) {

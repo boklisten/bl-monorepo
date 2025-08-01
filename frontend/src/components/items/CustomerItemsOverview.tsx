@@ -61,13 +61,7 @@ export default function CustomerItemsOverview() {
     isError: isErrorOpenOrderItems,
   } = useQuery({
     queryKey: [client.v2.orders.open_orders.$url()],
-    queryFn: async () =>
-      (await client.v2.orders.open_orders.$get().unwrap()) as {
-        orderId: string;
-        itemId: string;
-        deadline: string;
-        title: string;
-      }[],
+    queryFn: () => client.v2.orders.open_orders.$get().unwrap(),
   });
 
   if (isLoading || isLoadingOpenOrderItems) {

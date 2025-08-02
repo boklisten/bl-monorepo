@@ -4,8 +4,9 @@ import Messenger from "#services/messenger/messenger";
 import { PasswordService } from "#services/password_service";
 import { SEDbQuery } from "#services/query/se.db-query";
 import { BlStorage } from "#services/storage/bl-storage";
-import { Login, User, VippsUser } from "#services/types/user";
+import { Login, User } from "#services/types/user";
 import { UserDetailService } from "#services/user_detail_service";
+import { UserDetail } from "#shared/user-detail";
 import { registerSchema } from "#validators/auth_validators";
 
 async function createUser({
@@ -38,11 +39,25 @@ async function createUser({
 }
 
 export const UserService = {
-  async getByUsername(username: string): Promise<User | null> {
+  async getByUsername(username: string | undefined): Promise<User | null> {
     try {
       const databaseQuery = new SEDbQuery();
       databaseQuery.stringFilters = [
-        { fieldName: "username", value: username },
+        { fieldName: "username", value: username ?? "" },
+      ];
+      const [user] = await BlStorage.Users.getByQuery(databaseQuery);
+      return user ?? null;
+    } catch {
+      return null;
+    }
+  },
+  async getByUserDetailsId(
+    detailsId: string | undefined,
+  ): Promise<User | null> {
+    try {
+      const databaseQuery = new SEDbQuery();
+      databaseQuery.stringFilters = [
+        { fieldName: "userDetail", value: detailsId ?? "" },
       ];
       const [user] = await BlStorage.Users.getByQuery(databaseQuery);
       return user ?? null;
@@ -66,16 +81,13 @@ export const UserService = {
       userDetailId: addedUserDetail.id,
     });
   },
-  async createVippsUser(vippsUser: VippsUser) {
-    const addedUserDetail =
-      await UserDetailService.createVippsUserDetail(vippsUser);
-
+  async createVippsUser(userDetail: UserDetail, vippsUserId: string) {
     return createUser({
-      username: vippsUser.email,
-      login: { vipps: { userId: vippsUser.id, lastLogin: new Date() } },
-      emailConfirmed: vippsUser.emailVerified,
-      blid: addedUserDetail.blid,
-      userDetailId: addedUserDetail.id,
+      username: userDetail.email,
+      login: { vipps: { userId: vippsUserId, lastLogin: new Date() } },
+      emailConfirmed: userDetail.emailConfirmed ?? false,
+      blid: userDetail.blid,
+      userDetailId: userDetail.id,
     });
   },
 };

@@ -181,6 +181,7 @@ export class MongodbHandler<T extends BlDocument> {
       const newDocument = new this.mongooseModel(document_);
       return (await newDocument.save()).toObject();
     } catch (error) {
+      logger.error(error);
       throw this.handleError(
         new BlError("error when trying to add document").data(document_),
         error,

@@ -1,5 +1,7 @@
 import { HttpContext } from "@adonisjs/core/http";
+import logger from "@adonisjs/core/services/logger";
 
+import BlidService from "#services/blid_service";
 import { BlStorage } from "#services/storage/bl-storage";
 import TokenService from "#services/token_service";
 import { UserDetailService } from "#services/user_detail_service";
@@ -35,42 +37,77 @@ export const AuthVippsService = {
 
     const vippsUser = await vipps.user();
 
-    const userDetail = await UserDetailService.getByPhoneNumber(
-      vippsUser.phoneNumber,
-    );
-    const email = userDetail?.email ?? vippsUser.email;
-    const user = await UserService.getByUsername(email);
-    if (user) {
+    // Try to find any matching user in any way possible
+    let userDetail =
+      (await UserDetailService.getByPhoneNumber(vippsUser.phoneNumber)) ??
+      (await UserDetailService.getByEmail(vippsUser.email));
+
+    let user =
+      (await UserService.getByUsername(userDetail?.email)) ??
+      (await UserService.getByUserDetailsId(userDetail?.id)) ??
+      (await UserService.getByUsername(vippsUser.email));
+
+    userDetail ??=
+      (await BlStorage.UserDetails.getOrNull(user?.userDetail)) ??
+      (await UserDetailService.getByEmail(user?.username ?? ""));
+
+    const blid =
+      user?.blid ??
+      userDetail?.blid ??
+      BlidService.createUserBlid("vipps", vippsUser.id);
+
+    try {
       if (!userDetail) {
-        const addedUserDetail = await UserDetailService.createVippsUserDetail(
+        userDetail = await UserDetailService.createVippsUserDetail(
           vippsUser,
-          user.blid,
+          blid,
         );
-        await BlStorage.Users.update(user.id, {
-          userDetail: addedUserDetail.id,
-        });
       }
+
+      if (
+        user &&
+        (user.username !== userDetail.email ||
+          user.userDetail !== userDetail.id ||
+          user.blid !== userDetail.blid)
+      ) {
+        // user and userDetail are not in sync, so we set the user to match the userDetail
+        await BlStorage.Users.remove(user.id);
+
+        user = await UserService.getByUserDetailsId(userDetail.id);
+        if (user) await BlStorage.Users.remove(user.id);
+
+        user = await UserService.getByUsername(userDetail.email);
+        if (user) await BlStorage.Users.remove(user.id);
+
+        user = null;
+      }
+
+      if (!user) {
+        user = await UserService.createVippsUser(userDetail, vippsUser.id);
+      }
+
       await BlStorage.Users.update(user.id, {
         $set: {
           "login.vipps.userId": vippsUser.id,
           "login.vipps.lastLogin": new Date(),
         },
       });
-    } else {
-      await UserService.createVippsUser(vippsUser);
-    }
 
-    const tokens = await TokenService.createTokens(email);
+      const tokens = await TokenService.createTokens(user.username);
 
-    if (!tokens) {
+      if (!tokens) {
+        redirectToAuthFailedPage(ctx, ERROR);
+        return;
+      }
+
+      ctx.response.redirect(
+        `${env.get(
+          "NEXT_CLIENT_URI",
+        )}auth/token?access_token=${tokens.accessToken}&refresh_token=${tokens.refreshToken}`,
+      );
+    } catch (error) {
+      logger.error(error);
       redirectToAuthFailedPage(ctx, ERROR);
-      return;
     }
-
-    return ctx.response.redirect(
-      `${env.get(
-        "NEXT_CLIENT_URI",
-      )}auth/token?access_token=${tokens.accessToken}&refresh_token=${tokens.refreshToken}`,
-    );
   },
 };

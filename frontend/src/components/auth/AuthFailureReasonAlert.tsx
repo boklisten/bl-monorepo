@@ -1,10 +1,13 @@
 "use client";
 import { Alert, AlertTitle } from "@mui/material";
-import {
-  AUTH_VIPPS_ERROR,
-  AuthVippsError,
-} from "backend/shared/auth_vipps_error";
+import { AuthVippsError } from "backend/shared/auth_vipps_error";
 import { useSearchParams } from "next/navigation";
+
+const AUTH_VIPPS_ERROR = {
+  ACCESS_DENIED: "access_denied",
+  EXPIRED: "expired",
+  ERROR: "error",
+} as const satisfies Record<Uppercase<AuthVippsError>, AuthVippsError>;
 
 export default function AuthFailureReasonAlert() {
   const searchParams = useSearchParams();

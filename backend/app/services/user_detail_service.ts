@@ -17,9 +17,15 @@ export const UserDetailService = {
 
     return userDetails?.[0] ?? null;
   },
-  async createVippsUserDetail(vippsUser: VippsUser, existingBlid?: string) {
-    const blid =
-      existingBlid ?? BlidService.createUserBlid("vipps", vippsUser.id);
+  async getByEmail(email: string): Promise<UserDetail | null> {
+    const databaseQuery = new SEDbQuery();
+    databaseQuery.stringFilters = [{ fieldName: "email", value: email }];
+    const userDetails =
+      await BlStorage.UserDetails.getByQueryOrNull(databaseQuery);
+
+    return userDetails?.[0] ?? null;
+  },
+  async createVippsUserDetail(vippsUser: VippsUser, blid: string) {
     return await BlStorage.UserDetails.add(
       {
         email: vippsUser.email,

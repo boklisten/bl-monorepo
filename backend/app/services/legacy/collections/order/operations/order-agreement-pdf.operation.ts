@@ -1,4 +1,4 @@
-import Messenger from "#services/messenger/messenger";
+import DispatchService from "#services/dispatch_service";
 import { BlStorage } from "#services/storage/bl-storage";
 import { BlApiRequest } from "#services/types/bl-api-request";
 import { Operation } from "#services/types/operation";
@@ -9,7 +9,7 @@ export class OrderAgreementPdfOperation implements Operation {
     const order = await BlStorage.Orders.get(blApiRequest.documentId);
     const customerDetail = await BlStorage.UserDetails.get(order.customer);
 
-    const orderReceiptPdf = await Messenger.getOrderAgreementPdf(
+    const orderReceiptPdf = await DispatchService.getOrderAgreementPdf(
       customerDetail,
       order,
     );

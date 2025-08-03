@@ -1,6 +1,6 @@
 import { HttpContext } from "@adonisjs/core/http";
 
-import Messenger from "#services/messenger/messenger";
+import DispatchService from "#services/dispatch_service";
 import { PermissionService } from "#services/permission_service";
 import { BlStorage } from "#services/storage/bl-storage";
 
@@ -13,7 +13,10 @@ export default class EmailValidationsController {
     const emailValidation = await BlStorage.EmailValidations.add({
       userDetailId: detailsId,
     });
-    await Messenger.emailConfirmation(userDetail.email, emailValidation.id);
+    await DispatchService.emailConfirmation(
+      userDetail.email,
+      emailValidation.id,
+    );
   }
 
   async confirm({ request, response }: HttpContext) {

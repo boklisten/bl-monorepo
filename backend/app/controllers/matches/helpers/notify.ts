@@ -1,8 +1,8 @@
 import { Infer } from "@vinejs/vine/types";
 
+import DispatchService from "#services/dispatch_service";
 import { sendMail } from "#services/messenger/email/email_service";
 import { EMAIL_TEMPLATES } from "#services/messenger/email/email_templates";
-import { sendSMS } from "#services/messenger/sms/sms-service";
 import { BlStorage } from "#services/storage/bl-storage";
 import { matchNotifySchema } from "#validators/matches";
 
@@ -57,14 +57,11 @@ export async function notify({
       },
     })),
   });
-  const smsStatus = await Promise.all(
-    targetCustomers.map((customer) =>
-      sendSMS(
-        customer.phone,
-        `Hei, ${customer.name.split(" ")[0]}. ${message} Mvh Boklisten`,
-      ),
-    ),
+  const smsStatus = await DispatchService.sendSMS(
+    targetCustomers.map((customer) => ({
+      to: customer.phone,
+      body: `Hei, ${customer.name.split(" ")[0]}. ${message} Mvh Boklisten`,
+    })),
   );
-  const smsSuccessCount = smsStatus.filter((sms) => sms.success).length;
-  return `Emails sent successfully? ${mailStatus.success} | SMS sent successfully? ${smsSuccessCount}/${smsStatus.length}`;
+  return `Emails sent successfully? ${mailStatus.success} | SMS: ${smsStatus.successCount} successful, failed to send to ${smsStatus.failed.join(", ")}`;
 }

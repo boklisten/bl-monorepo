@@ -1,10 +1,10 @@
 import moment from "moment-timezone";
 
+import DispatchService from "#services/dispatch_service";
 import { userHasValidSignature } from "#services/legacy/collections/signature/helpers/signature.helper";
 import { DateService } from "#services/legacy/date.service";
 import { sendMail } from "#services/messenger/email/email_service";
 import { EMAIL_TEMPLATES } from "#services/messenger/email/email_templates";
-import { sendSMS } from "#services/messenger/sms/sms-service";
 import { DibsEasyPayment } from "#services/payment/dibs/dibs-easy-payment/dibs-easy-payment";
 import { BlStorage } from "#services/storage/bl-storage";
 import { EmailOrder, EmailUser } from "#services/types/email";
@@ -110,10 +110,10 @@ export class OrderEmailHandler {
           },
         ],
       });
-      await sendSMS(
-        customerDetail.guardian.phone,
-        `Hei. ${customerDetail.name} har nylig bestilt bøker fra ${branchName} gjennom Boklisten.no. Siden ${customerDetail.name} er under 18 år, krever vi at du som foresatt signerer låneavtalen. Vi har derfor sendt en e-post til ${customerDetail.guardian.email} med lenke til signering. Ta kontakt på info@boklisten.no om du har spørsmål. Mvh. Boklisten`,
-      );
+      await DispatchService.sendSMS({
+        to: customerDetail.guardian.phone,
+        body: `Hei. ${customerDetail.name} har nylig bestilt bøker fra ${branchName} gjennom Boklisten.no. Siden ${customerDetail.name} er under 18 år, krever vi at du som foresatt signerer låneavtalen. Vi har derfor sendt en e-post til ${customerDetail.guardian.email} med lenke til signering. Ta kontakt på info@boklisten.no om du har spørsmål. Mvh. Boklisten`,
+      });
     }
   }
 

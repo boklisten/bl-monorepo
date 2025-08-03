@@ -1,6 +1,6 @@
 import { Infer } from "@vinejs/vine/types";
 
-import Messenger from "#services/messenger/messenger";
+import DispatchService from "#services/dispatch_service";
 import { PasswordService } from "#services/password_service";
 import { SEDbQuery } from "#services/query/se.db-query";
 import { BlStorage } from "#services/storage/bl-storage";
@@ -26,7 +26,7 @@ async function createUser({
     const emailValidation = await BlStorage.EmailValidations.add({
       userDetailId,
     });
-    await Messenger.emailConfirmation(username, emailValidation.id);
+    await DispatchService.emailConfirmation(username, emailValidation.id);
   }
 
   return await BlStorage.Users.add({

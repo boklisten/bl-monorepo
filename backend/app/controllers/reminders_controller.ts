@@ -2,9 +2,9 @@ import type { HttpContext } from "@adonisjs/core/http";
 import moment from "moment-timezone";
 import { ObjectId } from "mongodb";
 
+import DispatchService from "#services/dispatch_service";
 import { sendMail } from "#services/messenger/email/email_service";
 import { EMAIL_SENDER } from "#services/messenger/email/email_templates";
-import { massSendSMS } from "#services/messenger/sms/sms-service";
 import { PermissionService } from "#services/permission_service";
 import { BlStorage } from "#services/storage/bl-storage";
 import { reminderValidator } from "#validators/reminder";
@@ -203,19 +203,19 @@ export default class RemindersController {
     }
 
     if (smsText) {
-      await massSendSMS(
+      await DispatchService.sendSMS(
         customers.map((customer) => ({
-          phone: customer.phone,
-          message: smsText,
+          to: customer.phone,
+          body: smsText,
         })),
       );
       if (customerItemType === "rent") {
-        await massSendSMS(
+        await DispatchService.sendSMS(
           customers
             .filter((customer) => (customer.guardian.phone?.length ?? 0) > 0)
             .map((customer) => ({
-              phone: customer.guardian.phone ?? "",
-              message: smsText,
+              to: customer.guardian.phone ?? "",
+              body: smsText,
             })),
         );
       }

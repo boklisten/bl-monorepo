@@ -3,11 +3,11 @@ import { expect, use as chaiUse, should } from "chai";
 import chaiAsPromised from "chai-as-promised";
 import sinon, { createSandbox } from "sinon";
 
+import DispatchService from "#services/dispatch_service";
 import { CustomerItemHandler } from "#services/legacy/collections/customer-item/helpers/customer-item-handler";
 import { OrderItemMovedFromOrderHandler } from "#services/legacy/collections/order/helpers/order-item-moved-from-order-handler/order-item-moved-from-order-handler";
 import { OrderPlacedHandler } from "#services/legacy/collections/order/helpers/order-placed-handler/order-placed-handler";
 import { PaymentHandler } from "#services/legacy/collections/payment/helpers/payment-handler";
-import Messenger from "#services/messenger/messenger";
 import { BlStorage } from "#services/storage/bl-storage";
 import { AccessToken } from "#shared/access-token";
 import { BlError } from "#shared/bl-error";
@@ -101,7 +101,7 @@ test.group("OrderPlacedHandler", (group) => {
     };
     sandbox.stub(BlStorage, "Orders").value(ordersStub);
 
-    sandbox.stub(Messenger, "orderPlaced").resolves();
+    sandbox.stub(DispatchService, "orderPlaced").resolves();
 
     paymentsConfirmed = true;
     orderUpdate = true;

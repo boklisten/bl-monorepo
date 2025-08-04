@@ -4,7 +4,7 @@ import chaiAsPromised from "chai-as-promised";
 import sinon, { createSandbox } from "sinon";
 
 import { OrderToCustomerItemGenerator } from "#services/legacy/collections/customer-item/helpers/order-to-customer-item-generator";
-import { BlStorage } from "#services/storage/bl-storage";
+import { StorageService } from "#services/storage_service";
 import { BlError } from "#shared/bl-error";
 import { Order } from "#shared/order/order";
 import { OrderItem } from "#shared/order/order-item/order-item";
@@ -34,7 +34,7 @@ test.group("OrderToCustomerItemGenerator", (group) => {
 
   group.each.setup(() => {
     sandbox = createSandbox();
-    sandbox.stub(BlStorage.UserDetails, "get").callsFake((id) => {
+    sandbox.stub(StorageService.UserDetails, "get").callsFake((id) => {
       if (id === userDetail.id) {
         return new Promise((resolve) => resolve(userDetail));
       } else {

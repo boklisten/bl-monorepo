@@ -5,7 +5,7 @@ import sinon, { createSandbox } from "sinon";
 
 import { OrderPlacedHandler } from "#services/legacy/collections/order/helpers/order-placed-handler/order-placed-handler";
 import { OrderConfirmOperation } from "#services/legacy/collections/order/operations/confirm/order-confirm.operation";
-import { BlStorage } from "#services/storage/bl-storage";
+import { StorageService } from "#services/storage_service";
 import { BlError } from "#shared/bl-error";
 chaiUse(chaiAsPromised);
 should();
@@ -20,7 +20,7 @@ test.group("OrderConfirmOperation", (group) => {
 
   group.each.setup(() => {
     sandbox = createSandbox();
-    orderGetStub = sandbox.stub(BlStorage.Orders, "get");
+    orderGetStub = sandbox.stub(StorageService.Orders, "get");
     sandbox.stub(orderPlacedHandler, "placeOrder");
   });
   group.each.teardown(() => {

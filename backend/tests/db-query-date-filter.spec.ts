@@ -3,7 +3,7 @@ import { expect, should, use as chaiUse } from "chai";
 import chaiAsPromised from "chai-as-promised";
 import moment from "moment";
 
-import { DbQueryDateFilter } from "#services/query/db-query-date-filter";
+import { DbQueryDateFilter } from "#services/legacy/query/db-query-date-filter";
 
 chaiUse(chaiAsPromised);
 should();

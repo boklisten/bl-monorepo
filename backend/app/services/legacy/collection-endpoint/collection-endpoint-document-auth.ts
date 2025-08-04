@@ -1,6 +1,6 @@
-import { isNullish } from "#services/helper/typescript-helpers";
+import { isNullish } from "#services/legacy/typescript-helpers";
 import { PermissionService } from "#services/permission_service";
-import { BlStorageData } from "#services/storage/bl-storage";
+import { BlStorageData } from "#services/storage_service";
 import { BlError } from "#shared/bl-error";
 import { BlApiRequest } from "#types/bl-api-request";
 import {

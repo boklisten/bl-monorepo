@@ -4,7 +4,7 @@ import chaiAsPromised from "chai-as-promised";
 import sinon, { createSandbox } from "sinon";
 
 import { UserDetailValidOperation } from "#services/legacy/collections/user-detail/operations/user-detail-valid.operation";
-import { BlStorage } from "#services/storage/bl-storage";
+import { StorageService } from "#services/storage_service";
 import { BlError } from "#shared/bl-error";
 import { BlapiResponse } from "#shared/blapi-response";
 import { UserDetail } from "#shared/user-detail";
@@ -21,7 +21,7 @@ test.group("UserDetailValidOperation", (group) => {
 
   group.each.setup(() => {
     sandbox = createSandbox();
-    sandbox.stub(BlStorage.UserDetails, "get").callsFake((id) => {
+    sandbox.stub(StorageService.UserDetails, "get").callsFake((id) => {
       if (id !== testUserDetail.id) {
         return Promise.reject(new BlError(`userDetail "${id}" not found`));
       }

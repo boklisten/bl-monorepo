@@ -1,5 +1,5 @@
 import { PaymentDibsConfirmer } from "#services/legacy/collections/payment/helpers/dibs/payment-dibs-confirmer";
-import { BlStorage } from "#services/storage/bl-storage";
+import { StorageService } from "#services/storage_service";
 import { BlError } from "#shared/bl-error";
 import { Order } from "#shared/order/order";
 import { Payment } from "#shared/payment/payment";
@@ -20,7 +20,7 @@ export class PaymentHandler {
     let payments: Payment[];
 
     try {
-      payments = await BlStorage.Payments.getMany(order.payments);
+      payments = await StorageService.Payments.getMany(order.payments);
     } catch {
       throw new BlError("one or more payments was not found");
     }
@@ -41,7 +41,7 @@ export class PaymentHandler {
       }
 
       await this.confirmPayment(order, payment);
-      await BlStorage.Payments.update(payment.id, { confirmed: true });
+      await StorageService.Payments.update(payment.id, { confirmed: true });
     }
     return payments;
   }
@@ -89,7 +89,7 @@ export class PaymentHandler {
     let orderTotal = order.amount;
 
     if (order.delivery) {
-      const delivery = await BlStorage.Deliveries.get(order.delivery);
+      const delivery = await StorageService.Deliveries.get(order.delivery);
       orderTotal += delivery.amount;
     }
 

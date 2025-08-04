@@ -1,5 +1,5 @@
 import { UserDetailHelper } from "#services/legacy/collections/user-detail/helpers/user-detail.helper";
-import { BlStorage } from "#services/storage/bl-storage";
+import { StorageService } from "#services/storage_service";
 import { BlError } from "#shared/bl-error";
 import { BlapiResponse } from "#shared/blapi-response";
 import { BlApiRequest } from "#types/bl-api-request";
@@ -10,7 +10,7 @@ export class UserDetailValidOperation implements Operation {
 
   async run(blApiRequest: BlApiRequest) {
     try {
-      const userDetail = await BlStorage.UserDetails.get(
+      const userDetail = await StorageService.UserDetails.get(
         blApiRequest.documentId,
       );
 

@@ -4,7 +4,7 @@ import chaiAsPromised from "chai-as-promised";
 import sinon, { createSandbox } from "sinon";
 
 import { UserDetailPermissionOperation } from "#services/legacy/collections/user-detail/operations/permission/user-detail-permission.operation";
-import { BlStorage } from "#services/storage/bl-storage";
+import { StorageService } from "#services/storage_service";
 import { BlError } from "#shared/bl-error";
 import { UserDetail } from "#shared/user-detail";
 import { User } from "#types/user";
@@ -21,9 +21,9 @@ test.group("UserDetailPermissionOperation", (group) => {
 
   group.each.setup(() => {
     sandbox = createSandbox();
-    userAggregateStub = sandbox.stub(BlStorage.Users, "aggregate");
-    userDetailGetStub = sandbox.stub(BlStorage.UserDetails, "get");
-    userUpdateStub = sandbox.stub(BlStorage.Users, "update");
+    userAggregateStub = sandbox.stub(StorageService.Users, "aggregate");
+    userDetailGetStub = sandbox.stub(StorageService.UserDetails, "get");
+    userUpdateStub = sandbox.stub(StorageService.Users, "update");
   });
   group.each.teardown(() => {
     sandbox.restore();

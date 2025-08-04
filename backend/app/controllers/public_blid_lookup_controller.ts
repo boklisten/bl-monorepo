@@ -1,7 +1,7 @@
 import { HttpContext } from "@adonisjs/core/http";
 
 import { PermissionService } from "#services/permission_service";
-import { BlStorage } from "#services/storage/bl-storage";
+import { StorageService } from "#services/storage_service";
 import { PublicBlidLookupResult } from "#shared/public_blid_lookup";
 
 export default class PublicBlidLookupController {
@@ -10,7 +10,7 @@ export default class PublicBlidLookupController {
 
     const blid = ctx.request.param("blid");
 
-    return (await BlStorage.CustomerItems.aggregate([
+    return (await StorageService.CustomerItems.aggregate([
       {
         $match: {
           returned: false,

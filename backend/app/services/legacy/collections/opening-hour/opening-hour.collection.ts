@@ -1,8 +1,8 @@
-import { BlStorage } from "#services/storage/bl-storage";
+import { StorageService } from "#services/storage_service";
 import { BlCollection } from "#types/bl-collection";
 
 export const OpeningHourCollection: BlCollection = {
-  storage: BlStorage.OpeningHours,
+  storage: StorageService.OpeningHours,
   endpoints: [
     {
       method: "getId",

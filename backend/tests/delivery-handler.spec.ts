@@ -4,7 +4,7 @@ import chaiAsPromised from "chai-as-promised";
 import sinon, { createSandbox } from "sinon";
 
 import { DeliveryHandler } from "#services/legacy/collections/delivery/helpers/deliveryHandler/delivery-handler";
-import { BlStorage } from "#services/storage/bl-storage";
+import { StorageService } from "#services/storage_service";
 import { BlError } from "#shared/bl-error";
 import { Delivery } from "#shared/delivery/delivery";
 import { Order } from "#shared/order/order";
@@ -45,7 +45,7 @@ test.group("DeliveryHandler", (group) => {
       },
     };
     sandbox = createSandbox();
-    sandbox.stub(BlStorage.Orders, "update").callsFake(() => {
+    sandbox.stub(StorageService.Orders, "update").callsFake(() => {
       if (!canUpdateOrder) {
         return Promise.reject(new BlError("could not update"));
       }

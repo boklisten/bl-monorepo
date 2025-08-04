@@ -4,9 +4,9 @@ import chaiAsPromised from "chai-as-promised";
 import sinon, { createSandbox } from "sinon";
 
 import { PaymentDibsConfirmer } from "#services/legacy/collections/payment/helpers/dibs/payment-dibs-confirmer";
-import { DibsEasyPayment } from "#services/payment/dibs/dibs-easy-payment/dibs-easy-payment";
-import { DibsPaymentService } from "#services/payment/dibs/dibs-payment.service";
-import { BlStorage } from "#services/storage/bl-storage";
+import { DibsEasyPayment } from "#services/legacy/dibs/dibs-easy-payment/dibs-easy-payment";
+import { DibsPaymentService } from "#services/legacy/dibs/dibs-payment.service";
+import { StorageService } from "#services/storage_service";
 import { BlError } from "#shared/bl-error";
 import { Order } from "#shared/order/order";
 import { Payment } from "#shared/payment/payment";
@@ -26,7 +26,7 @@ test.group("PaymentDibsConfirmer", (group) => {
       dibsPaymentService,
       "fetchDibsPaymentData",
     );
-    updatePaymentStub = sandbox.stub(BlStorage.Payments, "update");
+    updatePaymentStub = sandbox.stub(StorageService.Payments, "update");
   });
   group.each.teardown(() => {
     sandbox.restore();

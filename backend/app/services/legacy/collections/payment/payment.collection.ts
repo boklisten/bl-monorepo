@@ -1,11 +1,11 @@
 import { PaymentGetAllHook } from "#services/legacy/collections/payment/hooks/payment.get-all.hook";
 import { PaymentPatchHook } from "#services/legacy/collections/payment/hooks/payment.patch.hook";
 import { PaymentPostHook } from "#services/legacy/collections/payment/hooks/payment.post.hook";
-import { BlStorage } from "#services/storage/bl-storage";
+import { StorageService } from "#services/storage_service";
 import { BlCollection } from "#types/bl-collection";
 
 export const PaymentCollection: BlCollection = {
-  storage: BlStorage.Payments,
+  storage: StorageService.Payments,
   documentPermission: {
     viewableForPermission: "employee",
   },

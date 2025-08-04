@@ -4,7 +4,7 @@ import chaiAsPromised from "chai-as-promised";
 import sinon, { createSandbox } from "sinon";
 
 import { CustomerHaveActiveCustomerItems } from "#services/legacy/collections/customer-item/helpers/customer-have-active-customer-items";
-import { BlStorage } from "#services/storage/bl-storage";
+import { StorageService } from "#services/storage_service";
 import { BlError } from "#shared/bl-error";
 import { CustomerItem } from "#shared/customer-item/customer-item";
 
@@ -21,7 +21,7 @@ test.group("CustomerHaveActiveCustomerItems", (group) => {
   group.each.setup(() => {
     sandbox = createSandbox();
     customerItemByQueryStub = sandbox.stub(
-      BlStorage.CustomerItems,
+      StorageService.CustomerItems,
       "getByQuery",
     );
   });

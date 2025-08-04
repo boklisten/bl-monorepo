@@ -1,9 +1,9 @@
 import { Infer } from "@vinejs/vine/types";
 
 import DispatchService from "#services/dispatch_service";
+import { SEDbQuery } from "#services/legacy/query/se.db-query";
 import { PasswordService } from "#services/password_service";
-import { SEDbQuery } from "#services/query/se.db-query";
-import { BlStorage } from "#services/storage/bl-storage";
+import { StorageService } from "#services/storage_service";
 import { UserDetailService } from "#services/user_detail_service";
 import { UserDetail } from "#shared/user-detail";
 import { Login, User } from "#types/user";
@@ -23,13 +23,13 @@ async function createUser({
   emailConfirmed: boolean;
 }) {
   if (!emailConfirmed) {
-    const emailValidation = await BlStorage.EmailValidations.add({
+    const emailValidation = await StorageService.EmailValidations.add({
       userDetailId,
     });
     await DispatchService.sendEmailConfirmation(username, emailValidation.id);
   }
 
-  return await BlStorage.Users.add({
+  return await StorageService.Users.add({
     userDetail: userDetailId,
     permission: "customer",
     blid,
@@ -45,7 +45,7 @@ export const UserService = {
       databaseQuery.stringFilters = [
         { fieldName: "username", value: username ?? "" },
       ];
-      const [user] = await BlStorage.Users.getByQuery(databaseQuery);
+      const [user] = await StorageService.Users.getByQuery(databaseQuery);
       return user ?? null;
     } catch {
       return null;
@@ -59,7 +59,7 @@ export const UserService = {
       databaseQuery.stringFilters = [
         { fieldName: "userDetail", value: detailsId ?? "" },
       ];
-      const [user] = await BlStorage.Users.getByQuery(databaseQuery);
+      const [user] = await StorageService.Users.getByQuery(databaseQuery);
       return user ?? null;
     } catch {
       return null;

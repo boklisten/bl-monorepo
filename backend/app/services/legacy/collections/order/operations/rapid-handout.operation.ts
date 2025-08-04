@@ -5,8 +5,8 @@ import { OrderToCustomerItemGenerator } from "#services/legacy/collections/custo
 import { OrderActive } from "#services/legacy/collections/order/helpers/order-active/order-active";
 import { OrderItemMovedFromOrderHandler } from "#services/legacy/collections/order/helpers/order-item-moved-from-order-handler/order-item-moved-from-order-handler";
 import { OrderValidator } from "#services/legacy/collections/order/helpers/order-validator/order-validator";
-import { SEDbQuery } from "#services/query/se.db-query";
-import { BlStorage } from "#services/storage/bl-storage";
+import { SEDbQuery } from "#services/legacy/query/se.db-query";
+import { StorageService } from "#services/storage_service";
 import { BlError } from "#shared/bl-error";
 import { BlapiResponse } from "#shared/blapi-response";
 import { Order } from "#shared/order/order";
@@ -56,11 +56,11 @@ export class RapidHandoutOperation implements Operation {
       throw new BlError("Failed to create new customer items");
     }
 
-    const addedCustomerItem = await BlStorage.CustomerItems.add(
+    const addedCustomerItem = await StorageService.CustomerItems.add(
       generatedReceiverCustomerItem,
     );
 
-    await BlStorage.Orders.update(placedReceiverOrder.id, {
+    await StorageService.Orders.update(placedReceiverOrder.id, {
       orderItems: placedReceiverOrder.orderItems.map((orderItem) => ({
         ...orderItem,
         customerItem: addedCustomerItem.id,
@@ -73,7 +73,7 @@ export class RapidHandoutOperation implements Operation {
     itemId: string,
     customerId: string,
   ): Promise<Order> {
-    const item = await BlStorage.Items.get(itemId);
+    const item = await StorageService.Items.get(itemId);
     if (!item) {
       throw new BlError("Failed to get item");
     }
@@ -102,7 +102,9 @@ export class RapidHandoutOperation implements Operation {
     if (!customerOrder) {
       throw new BlError("No customer order for rapid handout item").code(805);
     }
-    const branch = await BlStorage.Branches.get(customerOrder.order.branch);
+    const branch = await StorageService.Branches.get(
+      customerOrder.order.branch,
+    );
 
     const movedFromOrder = customerOrder.order.id;
 
@@ -120,7 +122,7 @@ export class RapidHandoutOperation implements Operation {
     // It might be solved in the future by Zod or some other strict parser/validation.
     deadline = new Date(deadline);
 
-    const placedHandoutOrder = await BlStorage.Orders.add({
+    const placedHandoutOrder = await StorageService.Orders.add({
       placed: true,
       payments: [],
       amount: 0,
@@ -184,7 +186,7 @@ export class RapidHandoutOperation implements Operation {
     uniqueItemQuery.stringFilters = [{ fieldName: "blid", value: blid }];
     try {
       const uniqueItems =
-        await BlStorage.UniqueItems.getByQuery(uniqueItemQuery);
+        await StorageService.UniqueItems.getByQuery(uniqueItemQuery);
       if (uniqueItems.length === 0) return blidNotActiveFeedback;
       return uniqueItems[0] ?? "";
     } catch {

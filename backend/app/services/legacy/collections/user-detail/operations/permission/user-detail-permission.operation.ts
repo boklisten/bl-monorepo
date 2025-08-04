@@ -1,7 +1,7 @@
 import vine from "@vinejs/vine";
 
 import { PermissionService } from "#services/permission_service";
-import { BlStorage } from "#services/storage/bl-storage";
+import { StorageService } from "#services/storage_service";
 import { BlError } from "#shared/bl-error";
 import { BlapiResponse } from "#shared/blapi-response";
 import { BlApiRequest } from "#types/bl-api-request";
@@ -31,9 +31,9 @@ export class UserDetailPermissionOperation implements Operation {
       throw new BlError("user can not change own permission");
     }
 
-    const userDetail = await BlStorage.UserDetails.get(documentId);
+    const userDetail = await StorageService.UserDetails.get(documentId);
 
-    const foundUsers = await BlStorage.Users.aggregate([
+    const foundUsers = await StorageService.Users.aggregate([
       { $match: { blid: userDetail.blid } },
     ]);
     const targetUser = await vine.validate({
@@ -55,7 +55,7 @@ export class UserDetailPermissionOperation implements Operation {
       throw new BlError("no access to change permission").code(904);
     }
 
-    await BlStorage.Users.update(targetUser.id, {
+    await StorageService.Users.update(targetUser.id, {
       permission: permissionChange,
     });
 

@@ -5,7 +5,7 @@ import { CustomerItemHandler } from "#services/legacy/collections/customer-item/
 import { OrderItemMovedFromOrderHandler } from "#services/legacy/collections/order/helpers/order-item-moved-from-order-handler/order-item-moved-from-order-handler";
 import { PaymentHandler } from "#services/legacy/collections/payment/helpers/payment-handler";
 import { userHasValidSignature } from "#services/legacy/collections/signature/helpers/signature.helper";
-import { BlStorage } from "#services/storage/bl-storage";
+import { StorageService } from "#services/storage_service";
 import { AccessToken } from "#shared/access-token";
 import { BlError } from "#shared/bl-error";
 import { Order } from "#shared/order/order";
@@ -42,7 +42,7 @@ export class OrderPlacedHandler {
 
       const paymentIds = payments.map((payment) => payment.id);
 
-      const placedOrder = await BlStorage.Orders.update(order.id, {
+      const placedOrder = await StorageService.Orders.update(order.id, {
         placed: true,
         payments: paymentIds,
         pendingSignature,
@@ -147,7 +147,7 @@ export class OrderPlacedHandler {
       return Promise.resolve(true);
     }
     return new Promise((resolve, reject) => {
-      BlStorage.UserDetails.get(order.customer)
+      StorageService.UserDetails.get(order.customer)
         .then((userDetail: UserDetail) => {
           const orders = userDetail.orders ?? [];
 
@@ -156,7 +156,7 @@ export class OrderPlacedHandler {
           } else {
             orders.push(order.id);
 
-            BlStorage.UserDetails.update(order.customer, { orders })
+            StorageService.UserDetails.update(order.customer, { orders })
               .then(() => {
                 resolve(true);
               })
@@ -181,7 +181,7 @@ export class OrderPlacedHandler {
     if (order.notification && !order.notification.email) {
       return;
     }
-    const customerDetail = await BlStorage.UserDetails.get(order.customer);
+    const customerDetail = await StorageService.UserDetails.get(order.customer);
     await (order.handoutByDelivery
       ? DispatchService.sendDeliveryInformation(customerDetail, order)
       : DispatchService.orderPlaced(customerDetail, order));
@@ -194,7 +194,7 @@ export class OrderPlacedHandler {
    * have a signature currently and the original order for the item is pending signature.
    */
   public async isSignaturePending(order: Order): Promise<boolean> {
-    const userDetail = await BlStorage.UserDetails.get(order.customer);
+    const userDetail = await StorageService.UserDetails.get(order.customer);
 
     const hasValidSignature = await userHasValidSignature(userDetail);
     if (hasValidSignature) {
@@ -204,7 +204,7 @@ export class OrderPlacedHandler {
     for (const orderItem of this.orderItemsWhichRequireSignature(order)) {
       if (orderItem.handout) {
         if (orderItem.movedFromOrder) {
-          const originalOrder = await BlStorage.Orders.get(
+          const originalOrder = await StorageService.Orders.get(
             orderItem.movedFromOrder,
           );
           if (!originalOrder.pendingSignature) continue;

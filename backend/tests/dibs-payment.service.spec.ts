@@ -3,8 +3,8 @@ import { expect, use as chaiUse, should } from "chai";
 import chaiAsPromised from "chai-as-promised";
 import sinon, { createSandbox } from "sinon";
 
-import { DibsEasyOrder } from "#services/payment/dibs/dibs-easy-order";
-import { DibsPaymentService } from "#services/payment/dibs/dibs-payment.service";
+import { DibsEasyOrder } from "#services/legacy/dibs/dibs-easy-order";
+import { DibsPaymentService } from "#services/legacy/dibs/dibs-payment.service";
 import { BlError } from "#shared/bl-error";
 import { Order } from "#shared/order/order";
 

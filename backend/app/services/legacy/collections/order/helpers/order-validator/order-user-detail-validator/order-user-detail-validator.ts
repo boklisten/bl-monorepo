@@ -1,4 +1,4 @@
-import { BlStorage } from "#services/storage/bl-storage";
+import { StorageService } from "#services/storage_service";
 import { BlError } from "#shared/bl-error";
 import { Order } from "#shared/order/order";
 import { UserDetail } from "#shared/user-detail";
@@ -6,7 +6,7 @@ import { UserDetail } from "#shared/user-detail";
 export class OrderUserDetailValidator {
   public validate(order: Order): Promise<boolean> {
     return (
-      BlStorage.UserDetails.get(order.customer)
+      StorageService.UserDetails.get(order.customer)
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
         .then((userDetail: UserDetail) => {
           /*

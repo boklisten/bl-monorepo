@@ -6,7 +6,7 @@ import sinon, { createSandbox } from "sinon";
 import { PaymentDibsHandler } from "#services/legacy/collections/payment/helpers/dibs/payment-dibs-handler";
 import { PaymentValidator } from "#services/legacy/collections/payment/helpers/payment.validator";
 import { PaymentPostHook } from "#services/legacy/collections/payment/hooks/payment.post.hook";
-import { BlStorage } from "#services/storage/bl-storage";
+import { StorageService } from "#services/storage_service";
 import { BlError } from "#shared/bl-error";
 import { Order } from "#shared/order/order";
 import { Payment } from "#shared/payment/payment";
@@ -61,14 +61,14 @@ test.group("PaymentPostHook", (group) => {
     handleDibsPaymentValid = true;
     sandbox = createSandbox();
 
-    sandbox.stub(BlStorage.Payments, "get").callsFake((id) => {
+    sandbox.stub(StorageService.Payments, "get").callsFake((id) => {
       if (id !== testPayment.id) {
         return Promise.reject(new BlError("not found").code(702));
       }
 
       return Promise.resolve(testPayment);
     });
-    sandbox.stub(BlStorage.Payments, "update").callsFake(() => {
+    sandbox.stub(StorageService.Payments, "update").callsFake(() => {
       return Promise.resolve(testPayment);
     });
 
@@ -79,7 +79,7 @@ test.group("PaymentPostHook", (group) => {
       return Promise.resolve(testPayment);
     });
 
-    sandbox.stub(BlStorage.Orders, "get").callsFake((id) => {
+    sandbox.stub(StorageService.Orders, "get").callsFake((id) => {
       if (id !== testOrder.id) {
         return Promise.reject(new BlError("not found").code(702));
       }
@@ -87,7 +87,7 @@ test.group("PaymentPostHook", (group) => {
       return Promise.resolve(testOrder);
     });
 
-    sandbox.stub(BlStorage.Orders, "update").callsFake(() => {
+    sandbox.stub(StorageService.Orders, "update").callsFake(() => {
       return Promise.resolve(testOrder);
     });
 

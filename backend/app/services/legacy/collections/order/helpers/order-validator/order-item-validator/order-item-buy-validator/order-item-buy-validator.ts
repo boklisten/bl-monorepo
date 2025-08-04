@@ -1,5 +1,5 @@
-import { PriceService } from "#services/price/price.service";
-import { BlStorage } from "#services/storage/bl-storage";
+import { PriceService } from "#services/legacy/price.service";
+import { StorageService } from "#services/storage_service";
 import { BlError } from "#shared/bl-error";
 import { Item } from "#shared/item";
 import { Order } from "#shared/order/order";
@@ -64,7 +64,7 @@ export class OrderItemBuyValidator {
       return true;
     }
 
-    await BlStorage.Orders.get(orderItem.movedFromOrder)
+    await StorageService.Orders.get(orderItem.movedFromOrder)
       .then((order: Order) => {
         if (
           (!order.payments || order.payments.length <= 0) &&

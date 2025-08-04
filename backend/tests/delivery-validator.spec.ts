@@ -6,7 +6,7 @@ import sinon, { createSandbox } from "sinon";
 import { DeliveryBranchHandler } from "#services/legacy/collections/delivery/helpers/deliveryBranch/delivery-branch-handler";
 import { DeliveryBringHandler } from "#services/legacy/collections/delivery/helpers/deliveryBring/delivery-bring-handler";
 import { DeliveryValidator } from "#services/legacy/collections/delivery/helpers/deliveryValidator/delivery-validator";
-import { BlStorage } from "#services/storage/bl-storage";
+import { StorageService } from "#services/storage_service";
 import { BlError } from "#shared/bl-error";
 import { Delivery } from "#shared/delivery/delivery";
 import { Order } from "#shared/order/order";
@@ -29,7 +29,7 @@ test.group("DeliveryValidator", (group) => {
   let sandbox: sinon.SinonSandbox;
   group.each.setup(() => {
     sandbox = createSandbox();
-    sandbox.stub(BlStorage.Orders, "get").callsFake((id) => {
+    sandbox.stub(StorageService.Orders, "get").callsFake((id) => {
       if (id !== testOrder.id) {
         return Promise.reject(new BlError("not found").code(702));
       }

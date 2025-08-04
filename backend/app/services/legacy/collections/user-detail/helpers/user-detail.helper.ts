@@ -1,6 +1,6 @@
-import { isNullish } from "#services/helper/typescript-helpers";
-import { DibsEasyPayment } from "#services/payment/dibs/dibs-easy-payment/dibs-easy-payment";
-import { BlStorage } from "#services/storage/bl-storage";
+import { DibsEasyPayment } from "#services/legacy/dibs/dibs-easy-payment/dibs-easy-payment";
+import { isNullish } from "#services/legacy/typescript-helpers";
+import { StorageService } from "#services/storage_service";
 import { BlError } from "#shared/bl-error";
 import { UserDetail } from "#shared/user-detail";
 
@@ -10,14 +10,14 @@ export class UserDetailHelper {
     dibsEasyPayment: DibsEasyPayment,
   ): Promise<UserDetail> {
     return new Promise((resolve, reject) => {
-      BlStorage.UserDetails.get(userDetailId)
+      StorageService.UserDetails.get(userDetailId)
         .then((userDetail: UserDetail) => {
           const updateObject = this.getUserDetailUpdateObject(
             dibsEasyPayment,
             userDetail,
           );
 
-          BlStorage.UserDetails.update(userDetailId, updateObject)
+          StorageService.UserDetails.update(userDetailId, updateObject)
             .then((updatedUserDetail: UserDetail) => {
               resolve(updatedUserDetail);
             })

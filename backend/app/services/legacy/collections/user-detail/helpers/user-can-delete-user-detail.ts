@@ -1,6 +1,6 @@
+import { SEDbQueryBuilder } from "#services/legacy/query/se.db-query-builder";
 import { PermissionService } from "#services/permission_service";
-import { SEDbQueryBuilder } from "#services/query/se.db-query-builder";
-import { BlStorage } from "#services/storage/bl-storage";
+import { StorageService } from "#services/storage_service";
 import { AccessToken } from "#shared/access-token";
 
 export class UserCanDeleteUserDetail {
@@ -10,7 +10,8 @@ export class UserCanDeleteUserDetail {
     userIdToDelete: string,
     accessToken: AccessToken,
   ): Promise<boolean> {
-    const userDetailToDelete = await BlStorage.UserDetails.get(userIdToDelete);
+    const userDetailToDelete =
+      await StorageService.UserDetails.get(userIdToDelete);
 
     if (userDetailToDelete.id === accessToken.details) {
       return true;
@@ -25,7 +26,7 @@ export class UserCanDeleteUserDetail {
       [{ fieldName: "username", type: "string" }],
     );
 
-    const users = await BlStorage.Users.getByQuery(databaseQuery);
+    const users = await StorageService.Users.getByQuery(databaseQuery);
     const userToDelete = users[0];
 
     return !(

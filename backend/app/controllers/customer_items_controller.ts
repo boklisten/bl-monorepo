@@ -1,9 +1,9 @@
 import type { HttpContext } from "@adonisjs/core/http";
 import moment from "moment-timezone";
 
+import { SEDbQuery } from "#services/legacy/query/se.db-query";
 import { PermissionService } from "#services/permission_service";
-import { SEDbQuery } from "#services/query/se.db-query";
-import { BlStorage } from "#services/storage/bl-storage";
+import { StorageService } from "#services/storage_service";
 import { Branch } from "#shared/branch";
 import {
   ActionableCustomerItem,
@@ -118,13 +118,13 @@ export default class CustomerItemsController {
     databaseQuery.stringFilters = [{ fieldName: "customer", value: detailsId }];
     databaseQuery.sortFilters = [{ fieldName: "lastUpdated", direction: -1 }];
     const customerItems =
-      await BlStorage.CustomerItems.getByQueryOrNull(databaseQuery);
+      await StorageService.CustomerItems.getByQueryOrNull(databaseQuery);
     if (!customerItems) return [];
 
     return await Promise.all(
       customerItems.map(async (customerItem) => {
-        const item = await BlStorage.Items.getOrNull(customerItem.item);
-        const branch = await BlStorage.Branches.getOrNull(
+        const item = await StorageService.Items.getOrNull(customerItem.item);
+        const branch = await StorageService.Branches.getOrNull(
           customerItem.handoutInfo?.handoutById,
         );
         const extensionStatus = calculateExtensionStatus(customerItem, branch);

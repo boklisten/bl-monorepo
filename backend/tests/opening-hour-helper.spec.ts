@@ -6,7 +6,7 @@ import sinon, { createSandbox } from "sinon";
 import sinonChai from "sinon-chai";
 
 import { OpeningHourHelper } from "#services/legacy/collections/opening-hour/helpers/opening-hour-helper";
-import { BlStorage } from "#services/storage/bl-storage";
+import { StorageService } from "#services/storage_service";
 import { BlError } from "#shared/bl-error";
 import { Branch } from "#shared/branch";
 import { OpeningHour } from "#shared/opening-hour";
@@ -22,7 +22,10 @@ test.group("getNextAvailableOpeningHour()", (group) => {
   let sandbox: sinon.SinonSandbox;
   group.each.setup(() => {
     sandbox = createSandbox();
-    openingHourStorageGetMany = sandbox.stub(BlStorage.OpeningHours, "getMany");
+    openingHourStorageGetMany = sandbox.stub(
+      StorageService.OpeningHours,
+      "getMany",
+    );
   });
   group.each.teardown(() => {
     sandbox.restore();

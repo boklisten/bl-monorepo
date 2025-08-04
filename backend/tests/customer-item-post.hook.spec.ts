@@ -6,7 +6,7 @@ import sinonChai from "sinon-chai";
 
 import { CustomerItemPostHook } from "#services/legacy/collections/customer-item/hooks/customer-item-post.hook";
 import { CustomerItemValidator } from "#services/legacy/collections/customer-item/validators/customer-item-validator";
-import { BlStorage } from "#services/storage/bl-storage";
+import { StorageService } from "#services/storage_service";
 import { AccessToken } from "#shared/access-token";
 import { BlError } from "#shared/bl-error";
 import { CustomerItem } from "#shared/customer-item/customer-item";
@@ -99,16 +99,18 @@ test.group("CustomerItemPostHook", (group) => {
 
     validateCustomerItem = true;
 
-    sandbox.stub(BlStorage.Orders, "get").callsFake((id) => {
+    sandbox.stub(StorageService.Orders, "get").callsFake((id) => {
       if (id !== testOrder.id) {
         return Promise.reject(new BlError("order not found"));
       }
       return Promise.resolve(testOrder);
     });
 
-    orderUpdateStub = sandbox.stub(BlStorage.Orders, "update").callsFake(() => {
-      return Promise.resolve(testOrder);
-    });
+    orderUpdateStub = sandbox
+      .stub(StorageService.Orders, "update")
+      .callsFake(() => {
+        return Promise.resolve(testOrder);
+      });
 
     sandbox.stub(customerItemValidator, "validate").callsFake(() => {
       if (!validateCustomerItem) {
@@ -117,14 +119,14 @@ test.group("CustomerItemPostHook", (group) => {
       return Promise.resolve(true);
     });
 
-    sandbox.stub(BlStorage.CustomerItems, "get").callsFake((id) => {
+    sandbox.stub(StorageService.CustomerItems, "get").callsFake((id) => {
       if (id !== testCustomerItem.id) {
         return Promise.reject(new BlError("customerItem not found"));
       }
       return Promise.resolve(testCustomerItem);
     });
 
-    sandbox.stub(BlStorage.UserDetails, "get").callsFake((id) => {
+    sandbox.stub(StorageService.UserDetails, "get").callsFake((id) => {
       if (id !== testUserDetail.id) {
         return Promise.reject(new BlError("userDetail not found"));
       }
@@ -133,7 +135,7 @@ test.group("CustomerItemPostHook", (group) => {
     });
 
     userDetailStub = sandbox
-      .stub(BlStorage.UserDetails, "update")
+      .stub(StorageService.UserDetails, "update")
       .callsFake(() => {
         return Promise.resolve(testUserDetail);
       });

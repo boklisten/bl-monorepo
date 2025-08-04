@@ -4,7 +4,7 @@ import chaiAsPromised from "chai-as-promised";
 import sinon, { createSandbox } from "sinon";
 
 import { OrderUserDetailValidator } from "#services/legacy/collections/order/helpers/order-validator/order-user-detail-validator/order-user-detail-validator";
-import { BlStorage } from "#services/storage/bl-storage";
+import { StorageService } from "#services/storage_service";
 import { BlError } from "#shared/bl-error";
 import { Order } from "#shared/order/order";
 import { UserDetail } from "#shared/user-detail";
@@ -29,7 +29,7 @@ test.group("OrderUserDetailValidator", (group) => {
       emailConfirmed: true,
     } as UserDetail;
     sandbox = createSandbox();
-    sandbox.stub(BlStorage.UserDetails, "get").callsFake((id) => {
+    sandbox.stub(StorageService.UserDetails, "get").callsFake((id) => {
       if (id !== testUserDetail.id) {
         return Promise.reject(new BlError("could not get userDetail"));
       }

@@ -1,14 +1,14 @@
 import { Infer } from "@vinejs/vine/types";
 import { ObjectId } from "mongodb";
 
-import { isNullish } from "#services/helper/typescript-helpers";
 import { CustomerItemActiveBlid } from "#services/legacy/collections/customer-item/helpers/customer-item-active-blid";
 import { OrderToCustomerItemGenerator } from "#services/legacy/collections/customer-item/helpers/order-to-customer-item-generator";
 import { OrderActive } from "#services/legacy/collections/order/helpers/order-active/order-active";
 import { OrderItemMovedFromOrderHandler } from "#services/legacy/collections/order/helpers/order-item-moved-from-order-handler/order-item-moved-from-order-handler";
 import { OrderValidator } from "#services/legacy/collections/order/helpers/order-validator/order-validator";
-import { SEDbQuery } from "#services/query/se.db-query";
-import { BlStorage } from "#services/storage/bl-storage";
+import { SEDbQuery } from "#services/legacy/query/se.db-query";
+import { isNullish } from "#services/legacy/typescript-helpers";
+import { StorageService } from "#services/storage_service";
 import { BlError } from "#shared/bl-error";
 import { CustomerItem } from "#shared/customer-item/customer-item";
 import { StandMatch } from "#shared/match/stand-match";
@@ -21,7 +21,7 @@ async function createMatchReceiveOrder(
   customerItem: CustomerItem,
   userDetailId: string,
 ): Promise<Omit<Order, "id">> {
-  const item = await BlStorage.Items.get(customerItem.item);
+  const item = await StorageService.Items.get(customerItem.item);
 
   if (!item) {
     throw new BlError("Failed to get item");
@@ -50,7 +50,7 @@ async function createMatchReceiveOrder(
   if (!originalReceiverOrderInfo) {
     throw new BlError("No receiver order for match transfer item").code(200);
   }
-  const branch = await BlStorage.Branches.get(
+  const branch = await StorageService.Branches.get(
     originalReceiverOrderInfo.order.branch,
   );
 
@@ -105,7 +105,7 @@ async function createMatchDeliverOrder(
   customerItem: CustomerItem,
   userDetailId: string,
 ): Promise<Omit<Order, "id">> {
-  const item = await BlStorage.Items.get(customerItem.item);
+  const item = await StorageService.Items.get(customerItem.item);
 
   if (!item) {
     throw new BlError("Failed to get item");
@@ -114,7 +114,7 @@ async function createMatchDeliverOrder(
   if (isNullish(customerItem.handoutInfo)) {
     throw new BlError("No handout-info for customerItem").code(200);
   }
-  const branch = await BlStorage.Branches.get(
+  const branch = await StorageService.Branches.get(
     customerItem.handoutInfo.handoutById,
   );
 
@@ -231,7 +231,7 @@ async function updateSenderMatches(
         ],
       };
     }
-    await BlStorage.UserMatches.update(senderUserMatch.id, update);
+    await StorageService.UserMatches.update(senderUserMatch.id, update);
     return;
   }
 
@@ -239,7 +239,7 @@ async function updateSenderMatches(
     return;
   }
 
-  await BlStorage.StandMatches.update(senderStandMatch.id, {
+  await StorageService.StandMatches.update(senderStandMatch.id, {
     deliveredItems: [...senderStandMatch.deliveredItems, customerItem.item],
   });
 }
@@ -282,7 +282,8 @@ async function findReceiverUserMatch(
     receivedBlIds.map(async (blId) => {
       const uniqueItemQuery = new SEDbQuery();
       uniqueItemQuery.stringFilters = [{ fieldName: "blid", value: blId }];
-      return (await BlStorage.UniqueItems.getByQuery(uniqueItemQuery))[0]?.item;
+      return (await StorageService.UniqueItems.getByQuery(uniqueItemQuery))[0]
+        ?.item;
     }),
   );
 
@@ -326,7 +327,7 @@ async function placeReceiverOrder(
     receiverUserDetailId,
   );
 
-  const placedReceiverOrder = await BlStorage.Orders.add(receiverOrder);
+  const placedReceiverOrder = await StorageService.Orders.add(receiverOrder);
 
   await new OrderValidator().validate(placedReceiverOrder, false);
 
@@ -345,11 +346,11 @@ async function recordReceiverCustomerItem(
     throw new BlError("Failed to create new customer items");
   }
 
-  const addedCustomerItem = await BlStorage.CustomerItems.add(
+  const addedCustomerItem = await StorageService.CustomerItems.add(
     generatedReceiverCustomerItem,
   );
 
-  await BlStorage.Orders.update(placedReceiverOrder.id, {
+  await StorageService.Orders.update(placedReceiverOrder.id, {
     orderItems: placedReceiverOrder.orderItems.map((orderItem) => ({
       ...orderItem,
       customerItem: addedCustomerItem.id,
@@ -365,10 +366,10 @@ async function returnSenderCustomerItem(
     customerItem.customer,
   );
 
-  const placedSenderOrder = await BlStorage.Orders.add(senderOrder);
+  const placedSenderOrder = await StorageService.Orders.add(senderOrder);
   await new OrderValidator().validate(placedSenderOrder, false);
 
-  await BlStorage.CustomerItems.update(customerItem.id, {
+  await StorageService.CustomerItems.update(customerItem.id, {
     returned: true,
   });
 }
@@ -376,7 +377,7 @@ async function returnSenderCustomerItem(
 async function getUserMatchesForCustomer(
   customer: string,
 ): Promise<UserMatch[]> {
-  return (await BlStorage.UserMatches.aggregate([
+  return (await StorageService.UserMatches.aggregate([
     {
       $match: {
         $or: [
@@ -391,7 +392,7 @@ async function getUserMatchesForCustomer(
 async function getStandMatchForCustomer(
   customer: string,
 ): Promise<StandMatch | undefined> {
-  const standMatches = (await BlStorage.StandMatches.aggregate([
+  const standMatches = (await StorageService.StandMatches.aggregate([
     {
       $match: {
         customer: new ObjectId(customer),
@@ -425,5 +426,5 @@ async function updateReceiverUserMatch(
       ],
     };
   }
-  await BlStorage.UserMatches.update(receiverUserMatch.id, update);
+  await StorageService.UserMatches.update(receiverUserMatch.id, update);
 }

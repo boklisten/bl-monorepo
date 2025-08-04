@@ -3,7 +3,7 @@ import { expect, use as chaiUse, should } from "chai";
 import chaiAsPromised from "chai-as-promised";
 
 import CollectionEndpointDocumentAuth from "#services/legacy/collection-endpoint/collection-endpoint-document-auth";
-import { BlStorageData } from "#services/storage/bl-storage";
+import { BlStorageData } from "#services/storage_service";
 import { BlError } from "#shared/bl-error";
 import { Branch } from "#shared/branch";
 import { BlApiRequest } from "#types/bl-api-request";

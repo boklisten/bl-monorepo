@@ -2,8 +2,8 @@ import { Infer } from "@vinejs/vine/types";
 
 import BlidService from "#services/blid_service";
 import CryptoService from "#services/crypto_service";
-import { SEDbQuery } from "#services/query/se.db-query";
-import { BlStorage } from "#services/storage/bl-storage";
+import { SEDbQuery } from "#services/legacy/query/se.db-query";
+import { StorageService } from "#services/storage_service";
 import { UserDetail } from "#shared/user-detail";
 import { VippsUser } from "#types/user";
 import { registerSchema } from "#validators/auth_validators";
@@ -13,7 +13,7 @@ export const UserDetailService = {
     const databaseQuery = new SEDbQuery();
     databaseQuery.stringFilters = [{ fieldName: "phone", value: phone }];
     const userDetails =
-      await BlStorage.UserDetails.getByQueryOrNull(databaseQuery);
+      await StorageService.UserDetails.getByQueryOrNull(databaseQuery);
 
     return userDetails?.[0] ?? null;
   },
@@ -21,12 +21,12 @@ export const UserDetailService = {
     const databaseQuery = new SEDbQuery();
     databaseQuery.stringFilters = [{ fieldName: "email", value: email }];
     const userDetails =
-      await BlStorage.UserDetails.getByQueryOrNull(databaseQuery);
+      await StorageService.UserDetails.getByQueryOrNull(databaseQuery);
 
     return userDetails?.[0] ?? null;
   },
   async createVippsUserDetail(vippsUser: VippsUser, blid: string) {
-    return await BlStorage.UserDetails.add(
+    return await StorageService.UserDetails.add(
       {
         email: vippsUser.email,
         blid,
@@ -53,7 +53,7 @@ export const UserDetailService = {
     guardian,
   }: Infer<typeof registerSchema>) {
     const blid = BlidService.createUserBlid("local", CryptoService.random());
-    return await BlStorage.UserDetails.add(
+    return await StorageService.UserDetails.add(
       {
         email,
         phone: phoneNumber,

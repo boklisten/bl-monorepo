@@ -9,11 +9,11 @@ import {
   UpdateWriteOpResult,
 } from "mongoose";
 
+import { ExpandFilter } from "#services/legacy/query/db-query-expand-filter";
+import { SEDbQuery } from "#services/legacy/query/se.db-query";
 import { PermissionService } from "#services/permission_service";
-import { ExpandFilter } from "#services/query/db-query-expand-filter";
-import { SEDbQuery } from "#services/query/se.db-query";
-import { BlSchema } from "#services/storage/bl-storage";
 import { MongooseModelCreator } from "#services/storage/mongoose-schema-creator";
+import { BlSchema } from "#services/storage_service";
 import { BlDocument } from "#shared/bl-document";
 import { BlError } from "#shared/bl-error";
 import { UserPermission } from "#shared/user-permission";

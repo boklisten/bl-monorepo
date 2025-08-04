@@ -1,7 +1,7 @@
 import { Infer } from "@vinejs/vine/types";
 
 import DispatchService from "#services/dispatch_service";
-import { BlStorage } from "#services/storage/bl-storage";
+import { StorageService } from "#services/storage_service";
 import { EMAIL_TEMPLATES } from "#types/email_templates";
 import { matchNotifySchema } from "#validators/matches";
 
@@ -9,8 +9,8 @@ export async function notify({
   target,
   message,
 }: Infer<typeof matchNotifySchema>) {
-  const userMatches = await BlStorage.UserMatches.getAll();
-  const standMatches = await BlStorage.StandMatches.getAll();
+  const userMatches = await StorageService.UserMatches.getAll();
+  const standMatches = await StorageService.StandMatches.getAll();
   if (userMatches.length === 0 && standMatches.length === 0) {
     return "Could not find any matches!";
   }
@@ -42,7 +42,7 @@ export async function notify({
       break;
     }
   }
-  const targetCustomers = await BlStorage.UserDetails.getMany([
+  const targetCustomers = await StorageService.UserDetails.getMany([
     ...targetCustomerIds,
   ]);
 

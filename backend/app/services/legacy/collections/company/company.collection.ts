@@ -1,8 +1,8 @@
-import { BlStorage } from "#services/storage/bl-storage";
+import { StorageService } from "#services/storage_service";
 import { BlCollection } from "#types/bl-collection";
 
 export const CompanyCollection: BlCollection = {
-  storage: BlStorage.Companies,
+  storage: StorageService.Companies,
   endpoints: [
     {
       method: "getAll",

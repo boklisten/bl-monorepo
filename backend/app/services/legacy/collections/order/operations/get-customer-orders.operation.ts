@@ -1,13 +1,13 @@
 import { ObjectId } from "mongodb";
 
-import { BlStorage } from "#services/storage/bl-storage";
+import { StorageService } from "#services/storage_service";
 import { BlapiResponse } from "#shared/blapi-response";
 import { BlApiRequest } from "#types/bl-api-request";
 import { Operation } from "#types/operation";
 
 export class GetCustomerOrdersOperation implements Operation {
   async run(blApiRequest: BlApiRequest) {
-    const customerOrders = await BlStorage.Orders.aggregate([
+    const customerOrders = await StorageService.Orders.aggregate([
       {
         $match: {
           customer: new ObjectId(blApiRequest.documentId),

@@ -4,7 +4,7 @@ import chaiAsPromised from "chai-as-promised";
 import sinon, { createSandbox } from "sinon";
 
 import { CustomerInvoiceActive } from "#services/legacy/collections/invoice/helpers/customer-invoice-active";
-import { BlStorage } from "#services/storage/bl-storage";
+import { StorageService } from "#services/storage_service";
 import { BlError } from "#shared/bl-error";
 import { Invoice } from "#shared/invoice";
 
@@ -19,7 +19,10 @@ test.group("CustomerInvoiceActive", (group) => {
 
   group.each.setup(() => {
     sandbox = createSandbox();
-    getInvoicesByQueryStub = sandbox.stub(BlStorage.Invoices, "getByQuery");
+    getInvoicesByQueryStub = sandbox.stub(
+      StorageService.Invoices,
+      "getByQuery",
+    );
   });
   group.each.teardown(() => {
     sandbox.restore();

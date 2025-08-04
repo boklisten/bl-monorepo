@@ -1,6 +1,6 @@
 import { InvoiceActive } from "#services/legacy/collections/invoice/helpers/invoice-active";
-import { SEDbQueryBuilder } from "#services/query/se.db-query-builder";
-import { BlStorage } from "#services/storage/bl-storage";
+import { SEDbQueryBuilder } from "#services/legacy/query/se.db-query-builder";
+import { StorageService } from "#services/storage_service";
 import { BlError } from "#shared/bl-error";
 import { Invoice } from "#shared/invoice";
 
@@ -15,7 +15,7 @@ export class CustomerInvoiceActive {
     );
     let invoices: Invoice[];
     try {
-      invoices = await BlStorage.Invoices.getByQuery(databaseQuery);
+      invoices = await StorageService.Invoices.getByQuery(databaseQuery);
     } catch (error) {
       if (error instanceof BlError && error.getCode() == 702) {
         return false;

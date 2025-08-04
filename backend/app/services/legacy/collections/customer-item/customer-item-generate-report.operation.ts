@@ -1,7 +1,7 @@
 import vine from "@vinejs/vine";
 import { ObjectId } from "mongodb";
 
-import { BlStorage } from "#services/storage/bl-storage";
+import { StorageService } from "#services/storage_service";
 import { BlapiResponse } from "#shared/blapi-response";
 import { BlApiRequest } from "#types/bl-api-request";
 import { Operation } from "#types/operation";
@@ -42,7 +42,7 @@ export class CustomerItemGenerateReportOperation implements Operation {
         ? { creationTime: creationTimeLimiter }
         : {};
 
-    const reportData = await BlStorage.CustomerItems.aggregate([
+    const reportData = await StorageService.CustomerItems.aggregate([
       {
         $match: {
           returned: returned,

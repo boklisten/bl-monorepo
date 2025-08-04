@@ -1,9 +1,9 @@
 import { BranchGetHook } from "#services/legacy/collections/branch/hook/branch-get.hook";
-import { BlStorage } from "#services/storage/bl-storage";
+import { StorageService } from "#services/storage_service";
 import { BlCollection } from "#types/bl-collection";
 
 export const BranchCollection: BlCollection = {
-  storage: BlStorage.Branches,
+  storage: StorageService.Branches,
   endpoints: [
     {
       method: "getId",

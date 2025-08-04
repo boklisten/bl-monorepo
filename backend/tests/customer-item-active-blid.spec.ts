@@ -4,7 +4,7 @@ import chaiAsPromised from "chai-as-promised";
 import sinon, { createSandbox } from "sinon";
 
 import { CustomerItemActiveBlid } from "#services/legacy/collections/customer-item/helpers/customer-item-active-blid";
-import { BlStorage } from "#services/storage/bl-storage";
+import { StorageService } from "#services/storage_service";
 
 chaiUse(chaiAsPromised);
 should();
@@ -18,7 +18,7 @@ test.group("CustomerItemActiveBlid", (group) => {
     const customerItemsStub = {
       getByQuery: sandbox.stub(),
     };
-    sandbox.stub(BlStorage, "CustomerItems").value(customerItemsStub);
+    sandbox.stub(StorageService, "CustomerItems").value(customerItemsStub);
     customerItemActiveBlid = new CustomerItemActiveBlid();
   });
 
@@ -48,7 +48,7 @@ test.group("CustomerItemActiveBlid", (group) => {
     };
 
     // Grab our stub and define the return value for THIS test
-    const getByQueryStub = BlStorage.CustomerItems
+    const getByQueryStub = StorageService.CustomerItems
       .getByQuery as sinon.SinonStub;
     getByQueryStub.resolves([customerItem1, customerItem2]);
 
@@ -69,7 +69,7 @@ test.group("CustomerItemActiveBlid", (group) => {
     };
 
     // For this test, the same stub returns a different result
-    const getByQueryStub = BlStorage.CustomerItems
+    const getByQueryStub = StorageService.CustomerItems
       .getByQuery as sinon.SinonStub;
     getByQueryStub.resolves([customerItem]);
 

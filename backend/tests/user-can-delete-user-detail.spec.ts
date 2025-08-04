@@ -4,7 +4,7 @@ import chaiAsPromised from "chai-as-promised";
 import sinon, { createSandbox } from "sinon";
 
 import { UserCanDeleteUserDetail } from "#services/legacy/collections/user-detail/helpers/user-can-delete-user-detail";
-import { BlStorage } from "#services/storage/bl-storage";
+import { StorageService } from "#services/storage_service";
 import { AccessToken } from "#shared/access-token";
 import { UserDetail } from "#shared/user-detail";
 import { User } from "#types/user";
@@ -20,8 +20,8 @@ test.group("UserCanDeleteUserDetail", (group) => {
 
   group.each.setup(() => {
     sandbox = createSandbox();
-    userDetailGetIdStub = sandbox.stub(BlStorage.UserDetails, "get");
-    userGetByQueryStub = sandbox.stub(BlStorage.Users, "getByQuery");
+    userDetailGetIdStub = sandbox.stub(StorageService.UserDetails, "get");
+    userGetByQueryStub = sandbox.stub(StorageService.Users, "getByQuery");
   });
   group.each.teardown(() => {
     sandbox.restore();

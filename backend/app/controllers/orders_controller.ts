@@ -3,7 +3,7 @@ import { ObjectId } from "mongodb";
 
 import { OrderItemMovedFromOrderHandler } from "#services/legacy/collections/order/helpers/order-item-moved-from-order-handler/order-item-moved-from-order-handler";
 import { PermissionService } from "#services/permission_service";
-import { BlStorage } from "#services/storage/bl-storage";
+import { StorageService } from "#services/storage_service";
 import { OrderItem } from "#shared/order/order-item/order-item";
 import { cancelOrderItemValidator } from "#validators/cancel_order_item_validator";
 
@@ -11,7 +11,7 @@ export default class OrdersController {
   async getOpenOrders(ctx: HttpContext) {
     const { detailsId } = PermissionService.authenticate(ctx);
 
-    return (await BlStorage.Orders.aggregate([
+    return (await StorageService.Orders.aggregate([
       {
         $match: {
           customer: new ObjectId(detailsId),
@@ -66,7 +66,7 @@ export default class OrdersController {
     const { orderId, itemId } = await ctx.request.validateUsing(
       cancelOrderItemValidator,
     );
-    const order = await BlStorage.Orders.get(orderId);
+    const order = await StorageService.Orders.get(orderId);
     if (!order) {
       return ctx.response.notFound();
     }
@@ -78,7 +78,7 @@ export default class OrdersController {
       return ctx.response.notFound();
     }
 
-    const cancelOrder = await BlStorage.Orders.add({
+    const cancelOrder = await StorageService.Orders.add({
       placed: true,
       payments: [],
       amount: 0,

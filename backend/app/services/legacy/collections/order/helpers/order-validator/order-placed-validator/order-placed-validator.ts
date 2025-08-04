@@ -1,5 +1,5 @@
-import { isNullish } from "#services/helper/typescript-helpers";
-import { BlStorage } from "#services/storage/bl-storage";
+import { isNullish } from "#services/legacy/typescript-helpers";
+import { StorageService } from "#services/storage_service";
 import { BlError } from "#shared/bl-error";
 import { Delivery } from "#shared/delivery/delivery";
 import { Order } from "#shared/order/order";
@@ -29,7 +29,7 @@ export class OrderPlacedValidator {
         return this.validatePayments(order);
       } else {
         // when delivery is attached
-        BlStorage.Deliveries.get(order.delivery)
+        StorageService.Deliveries.get(order.delivery)
           .then((delivery: Delivery) => {
             this.validatePayments(order, delivery)
               .then(() => {
@@ -67,7 +67,7 @@ export class OrderPlacedValidator {
     return new Promise((resolve, reject) => {
       const totalOrderAmount = order.amount + (delivery ? delivery.amount : 0);
 
-      BlStorage.Payments.getMany(order.payments as string[])
+      StorageService.Payments.getMany(order.payments as string[])
         .then((payments: Payment[]) => {
           let paymentTotal = 0;
 

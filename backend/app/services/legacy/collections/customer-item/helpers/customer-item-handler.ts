@@ -1,7 +1,7 @@
 import moment from "moment-timezone";
 
-import { SEDbQueryBuilder } from "#services/query/se.db-query-builder";
-import { BlStorage } from "#services/storage/bl-storage";
+import { SEDbQueryBuilder } from "#services/legacy/query/se.db-query-builder";
+import { StorageService } from "#services/storage_service";
 import { BlError } from "#shared/bl-error";
 import { Branch } from "#shared/branch";
 import { CustomerItem } from "#shared/customer-item/customer-item";
@@ -20,7 +20,7 @@ export class CustomerItemHandler {
     branchId: string,
     orderId: string,
   ): Promise<CustomerItem> {
-    const customerItem = await BlStorage.CustomerItems.get(customerItemId);
+    const customerItem = await StorageService.CustomerItems.get(customerItemId);
 
     if (customerItem.returned) {
       throw new BlError("can not extend when returned is true");
@@ -34,7 +34,7 @@ export class CustomerItemHandler {
       throw new BlError('orderItem info is not present when type is "extend"');
     }
 
-    const branch = await BlStorage.Branches.get(branchId);
+    const branch = await StorageService.Branches.get(branchId);
 
     this.getExtendPeriod(branch, orderItem.info["periodType"]);
 
@@ -53,7 +53,7 @@ export class CustomerItemHandler {
     });
 
     customerItemOrders.push(orderId);
-    return await BlStorage.CustomerItems.update(customerItemId, {
+    return await StorageService.CustomerItems.update(customerItemId, {
       deadline: orderItem.info["to"],
       periodExtends: periodExtends,
       orders: customerItemOrders,
@@ -75,12 +75,12 @@ export class CustomerItemHandler {
       throw `orderItem.type is not "buyout"`;
     }
 
-    const customerItem = await BlStorage.CustomerItems.get(customerItemId);
+    const customerItem = await StorageService.CustomerItems.get(customerItemId);
     const customerItemOrders = customerItem.orders ?? [];
 
     customerItemOrders.push(orderId);
 
-    return await BlStorage.CustomerItems.update(customerItemId, {
+    return await StorageService.CustomerItems.update(customerItemId, {
       buyout: true,
       orders: customerItemOrders,
       buyoutInfo: {
@@ -107,13 +107,13 @@ export class CustomerItemHandler {
       throw `orderItem.type is not "return"`;
     }
 
-    const customerItem = await BlStorage.CustomerItems.get(customerItemId);
+    const customerItem = await StorageService.CustomerItems.get(customerItemId);
 
     const customerItemOrders = customerItem.orders ?? [];
 
     customerItemOrders.push(orderId);
 
-    return await BlStorage.CustomerItems.update(customerItemId, {
+    return await StorageService.CustomerItems.update(customerItemId, {
       returned: true,
       orders: customerItemOrders,
       returnInfo: {
@@ -140,13 +140,13 @@ export class CustomerItemHandler {
       throw `orderItem.type is not "cancel"`;
     }
 
-    const customerItem = await BlStorage.CustomerItems.get(customerItemId);
+    const customerItem = await StorageService.CustomerItems.get(customerItemId);
 
     const customerItemOrders = customerItem.orders ?? [];
 
     customerItemOrders.push(orderId);
 
-    return await BlStorage.CustomerItems.update(customerItemId, {
+    return await StorageService.CustomerItems.update(customerItemId, {
       returned: true,
       orders: customerItemOrders,
       cancel: true,
@@ -172,12 +172,12 @@ export class CustomerItemHandler {
       throw `orderItem.type is not "buyback"`;
     }
 
-    const customerItem = await BlStorage.CustomerItems.get(customerItemId);
+    const customerItem = await StorageService.CustomerItems.get(customerItemId);
     const customerItemOrders = customerItem.orders ?? [];
 
     customerItemOrders.push(orderId);
 
-    return await BlStorage.CustomerItems.update(customerItemId, {
+    return await StorageService.CustomerItems.update(customerItemId, {
       returned: true,
       orders: customerItemOrders,
       buyback: true,
@@ -257,7 +257,7 @@ export class CustomerItemHandler {
       ]);
     }
 
-    return await BlStorage.CustomerItems.getByQuery(databaseQuery);
+    return await StorageService.CustomerItems.getByQuery(databaseQuery);
   }
 
   private getExtendPeriod(

@@ -7,7 +7,7 @@ import { OrderValidator } from "#services/legacy/collections/order/helpers/order
 import { OrderHookBefore } from "#services/legacy/collections/order/hooks/order-hook-before";
 import { OrderPostHook } from "#services/legacy/collections/order/hooks/order.post.hook";
 import { UserDetailHelper } from "#services/legacy/collections/user-detail/helpers/user-detail.helper";
-import { BlStorage } from "#services/storage/bl-storage";
+import { StorageService } from "#services/storage_service";
 import { AccessToken } from "#shared/access-token";
 import { BlError } from "#shared/bl-error";
 import { Order } from "#shared/order/order";
@@ -90,7 +90,7 @@ test.group("OrderPostHook", (group) => {
       throw new BlError("not a valid order");
     });
 
-    sandbox.stub(BlStorage.Orders, "get").callsFake((orderId) => {
+    sandbox.stub(StorageService.Orders, "get").callsFake((orderId) => {
       if (orderId !== "order1" && orderId !== "orderValid") {
         return Promise.reject(new BlError("not found").code(702));
       }

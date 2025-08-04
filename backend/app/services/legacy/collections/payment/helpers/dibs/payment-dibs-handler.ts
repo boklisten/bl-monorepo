@@ -1,6 +1,6 @@
-import { DibsEasyOrder } from "#services/payment/dibs/dibs-easy-order";
-import { DibsPaymentService } from "#services/payment/dibs/dibs-payment.service";
-import { BlStorage } from "#services/storage/bl-storage";
+import { DibsEasyOrder } from "#services/legacy/dibs/dibs-easy-order";
+import { DibsPaymentService } from "#services/legacy/dibs/dibs-payment.service";
+import { StorageService } from "#services/storage_service";
 import { Delivery } from "#shared/delivery/delivery";
 import { Order } from "#shared/order/order";
 import { Payment } from "#shared/payment/payment";
@@ -16,14 +16,14 @@ export class PaymentDibsHandler {
   }
 
   public async handleDibsPayment(payment: Payment): Promise<Payment> {
-    const order = await BlStorage.Orders.get(payment.order);
-    const userDetail = await BlStorage.UserDetails.get(payment.customer);
+    const order = await StorageService.Orders.get(payment.order);
+    const userDetail = await StorageService.UserDetails.get(payment.customer);
     const dibsEasyOrder: DibsEasyOrder = await this.getDibsEasyOrder(
       userDetail,
       order,
     );
     const paymentId = await this.dibsPaymentService.getPaymentId(dibsEasyOrder);
-    return await BlStorage.Payments.update(payment.id, {
+    return await StorageService.Payments.update(payment.id, {
       info: { paymentId: paymentId },
     });
   }
@@ -33,7 +33,7 @@ export class PaymentDibsHandler {
     order: Order,
   ): Promise<DibsEasyOrder> {
     if (order.delivery) {
-      return BlStorage.Deliveries.get(order.delivery).then(
+      return StorageService.Deliveries.get(order.delivery).then(
         (delivery: Delivery) => {
           return this.dibsPaymentService.orderToDibsEasyOrder(
             userDetail,

@@ -5,7 +5,7 @@ import {
   isGuardianSignatureRequired,
   isUnderage,
 } from "#services/legacy/collections/signature/helpers/signature.helper";
-import { BlStorage } from "#services/storage/bl-storage";
+import { StorageService } from "#services/storage_service";
 import { BlError } from "#shared/bl-error";
 import { BlapiResponse } from "#shared/blapi-response";
 import { CheckGuardianSignatureSpec } from "#shared/serialized-signature";
@@ -18,7 +18,7 @@ export class CheckGuardianSignatureOperation implements Operation {
     if (!validateSerializedGuardianSignature(serializedGuardianSignature))
       throw new BlError("Bad serialized guardian signature").code(701);
 
-    const userDetail = await BlStorage.UserDetails.get(
+    const userDetail = await StorageService.UserDetails.get(
       serializedGuardianSignature.customerId,
     );
 

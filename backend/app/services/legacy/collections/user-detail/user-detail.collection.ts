@@ -4,11 +4,11 @@ import { UserDetailChangeEmailOperation } from "#services/legacy/collections/use
 import { UserDetailPermissionOperation } from "#services/legacy/collections/user-detail/operations/permission/user-detail-permission.operation";
 import { UserDetailReadPermissionOperation } from "#services/legacy/collections/user-detail/operations/read-permission/user-detail-read-permission.operation";
 import { UserDetailValidOperation } from "#services/legacy/collections/user-detail/operations/user-detail-valid.operation";
-import { BlStorage } from "#services/storage/bl-storage";
+import { StorageService } from "#services/storage_service";
 import { BlCollection } from "#types/bl-collection";
 
 export const UserDetailCollection: BlCollection = {
-  storage: BlStorage.UserDetails,
+  storage: StorageService.UserDetails,
   documentPermission: {
     viewableForPermission: "employee",
   },

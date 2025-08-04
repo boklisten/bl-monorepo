@@ -2,7 +2,7 @@ import { OrderFieldValidator } from "#services/legacy/collections/order/helpers/
 import { OrderItemValidator } from "#services/legacy/collections/order/helpers/order-validator/order-item-validator/order-item-validator";
 import { OrderPlacedValidator } from "#services/legacy/collections/order/helpers/order-validator/order-placed-validator/order-placed-validator";
 import { OrderUserDetailValidator } from "#services/legacy/collections/order/helpers/order-validator/order-user-detail-validator/order-user-detail-validator";
-import { BlStorage } from "#services/storage/bl-storage";
+import { StorageService } from "#services/storage_service";
 import { BlError } from "#shared/bl-error";
 import { Order } from "#shared/order/order";
 
@@ -36,7 +36,7 @@ export class OrderValidator {
       }
 
       await this.orderFieldValidator.validate(order);
-      const branch = await BlStorage.Branches.get(order.branch);
+      const branch = await StorageService.Branches.get(order.branch);
 
       await this.orderItemValidator.validate(branch, order, isAdmin);
       await this.orderPlacedValidator.validate(order);

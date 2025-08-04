@@ -1,13 +1,13 @@
 import { PdfService } from "#services/pdf_service";
-import { BlStorage } from "#services/storage/bl-storage";
+import { StorageService } from "#services/storage_service";
 import { BlapiResponse } from "#shared/blapi-response";
 import { BlApiRequest } from "#types/bl-api-request";
 import { Operation } from "#types/operation";
 
 export class OrderReceiptPdfOperation implements Operation {
   async run(blApiRequest: BlApiRequest) {
-    const order = await BlStorage.Orders.get(blApiRequest.documentId);
-    const customerDetail = await BlStorage.UserDetails.get(order.customer);
+    const order = await StorageService.Orders.get(blApiRequest.documentId);
+    const customerDetail = await StorageService.UserDetails.get(order.customer);
 
     const orderReceiptPdf = await PdfService.getOrderReceiptPdf(
       customerDetail,

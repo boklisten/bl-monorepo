@@ -2,14 +2,14 @@ import { createHash, timingSafeEqual } from "node:crypto";
 
 import hash from "@adonisjs/core/services/hash";
 
-import { BlStorage } from "#services/storage/bl-storage";
+import { StorageService } from "#services/storage_service";
 
 export const PasswordService = {
   async hash(text: string) {
     return await hash.make(text);
   },
   async setPassword(userId: string, password: string) {
-    await BlStorage.Users.update(userId, {
+    await StorageService.Users.update(userId, {
       $set: {
         "login.local.hashedPassword": await this.hash(password),
       },

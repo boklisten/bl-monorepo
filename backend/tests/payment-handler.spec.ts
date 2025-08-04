@@ -5,8 +5,8 @@ import sinon, { createSandbox } from "sinon";
 
 import { PaymentDibsConfirmer } from "#services/legacy/collections/payment/helpers/dibs/payment-dibs-confirmer";
 import { PaymentHandler } from "#services/legacy/collections/payment/helpers/payment-handler";
-import { DibsPaymentService } from "#services/payment/dibs/dibs-payment.service";
-import { BlStorage } from "#services/storage/bl-storage";
+import { DibsPaymentService } from "#services/legacy/dibs/dibs-payment.service";
+import { StorageService } from "#services/storage_service";
 import { BlError } from "#shared/bl-error";
 import { Delivery } from "#shared/delivery/delivery";
 import { Order } from "#shared/order/order";
@@ -45,9 +45,12 @@ test.group("PaymentHandler", (group) => {
   group.each.setup(() => {
     sandbox = createSandbox();
     paymentDibsConfirmStub = sandbox.stub(paymentDibsConfirmer, "confirm");
-    paymentStorageGetManyStub = sandbox.stub(BlStorage.Payments, "getMany");
-    deliveryGetStub = sandbox.stub(BlStorage.Deliveries, "get");
-    sandbox.stub(BlStorage.Payments, "update");
+    paymentStorageGetManyStub = sandbox.stub(
+      StorageService.Payments,
+      "getMany",
+    );
+    deliveryGetStub = sandbox.stub(StorageService.Deliveries, "get");
+    sandbox.stub(StorageService.Payments, "update");
   });
   group.each.teardown(() => {
     sandbox.restore();

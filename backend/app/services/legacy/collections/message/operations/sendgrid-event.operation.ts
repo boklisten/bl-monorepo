@@ -1,6 +1,6 @@
 import logger from "@adonisjs/core/services/logger";
 
-import { BlStorage } from "#services/storage/bl-storage";
+import { StorageService } from "#services/storage_service";
 import { BlError } from "#shared/bl-error";
 import { BlapiResponse } from "#shared/blapi-response";
 import { Message } from "#shared/message/message";
@@ -44,7 +44,7 @@ export class SendgridEventOperation implements Operation {
     }
 
     try {
-      const message = await BlStorage.Messages.get(blMessageId);
+      const message = await StorageService.Messages.get(blMessageId);
       await this.updateMessageWithSendgridEvent(message, sendgridEvent);
     } catch (error) {
       logger.warn(`could not update sendgrid event ${error}`);
@@ -64,7 +64,7 @@ export class SendgridEventOperation implements Operation {
 
     newSendgridEvents.push(sendgridEvent);
 
-    await BlStorage.Messages.update(message.id, {
+    await StorageService.Messages.update(message.id, {
       events: newSendgridEvents,
     });
 

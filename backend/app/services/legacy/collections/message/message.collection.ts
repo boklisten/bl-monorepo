@@ -1,10 +1,10 @@
 import { SendgridEventOperation } from "#services/legacy/collections/message/operations/sendgrid-event.operation";
 import { TwilioSmsEventOperation } from "#services/legacy/collections/message/operations/twillio-sms-event.operation";
-import { BlStorage } from "#services/storage/bl-storage";
+import { StorageService } from "#services/storage_service";
 import { BlCollection } from "#types/bl-collection";
 
 export const MessageCollection: BlCollection = {
-  storage: BlStorage.Messages,
+  storage: StorageService.Messages,
   endpoints: [
     {
       method: "post",

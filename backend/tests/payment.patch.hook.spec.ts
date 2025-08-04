@@ -6,7 +6,7 @@ import sinon, { createSandbox } from "sinon";
 import { PaymentDibsHandler } from "#services/legacy/collections/payment/helpers/dibs/payment-dibs-handler";
 import { PaymentValidator } from "#services/legacy/collections/payment/helpers/payment.validator";
 import { PaymentPatchHook } from "#services/legacy/collections/payment/hooks/payment.patch.hook";
-import { BlStorage } from "#services/storage/bl-storage";
+import { StorageService } from "#services/storage_service";
 import { BlError } from "#shared/bl-error";
 import { Payment } from "#shared/payment/payment";
 
@@ -41,7 +41,7 @@ test.group("PaymentPatchHook", (group) => {
     dibsPaymentCreated = true;
 
     sandbox = createSandbox();
-    sandbox.stub(BlStorage.Payments, "get").callsFake((id) => {
+    sandbox.stub(StorageService.Payments, "get").callsFake((id) => {
       return id === testPayment.id
         ? Promise.resolve(testPayment)
         : Promise.reject(new BlError("not found"));

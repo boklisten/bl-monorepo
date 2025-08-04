@@ -2,7 +2,7 @@ import { test } from "@japa/runner";
 import { expect, use as chaiUse, should } from "chai";
 import chaiAsPromised from "chai-as-promised";
 
-import { PriceService } from "#services/price/price.service";
+import { PriceService } from "#services/legacy/price.service";
 
 chaiUse(chaiAsPromised);
 should();

@@ -1,6 +1,6 @@
 import { Schema } from "mongoose";
 
-import { BlSchema } from "#services/storage/bl-storage";
+import { BlSchema } from "#services/storage_service";
 import { Company } from "#shared/company";
 
 export const CompanySchema: BlSchema<Company> = new Schema({

@@ -1,5 +1,5 @@
-import { SEDbQueryBuilder } from "#services/query/se.db-query-builder";
-import { BlStorage } from "#services/storage/bl-storage";
+import { SEDbQueryBuilder } from "#services/legacy/query/se.db-query-builder";
+import { StorageService } from "#services/storage_service";
 import { BlError } from "#shared/bl-error";
 import { Message } from "#shared/message/message";
 
@@ -27,7 +27,7 @@ export class MessageHelper {
     );
 
     try {
-      const docs = await BlStorage.Messages.getByQuery(databaseQuery);
+      const docs = await StorageService.Messages.getByQuery(databaseQuery);
       if (docs) {
         for (const document_ of docs) {
           if (

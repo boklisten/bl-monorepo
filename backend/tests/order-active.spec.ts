@@ -4,7 +4,7 @@ import chaiAsPromised from "chai-as-promised";
 import sinon, { createSandbox } from "sinon";
 
 import { OrderActive } from "#services/legacy/collections/order/helpers/order-active/order-active";
-import { BlStorage } from "#services/storage/bl-storage";
+import { StorageService } from "#services/storage_service";
 import { BlError } from "#shared/bl-error";
 import { Order } from "#shared/order/order";
 
@@ -19,7 +19,7 @@ test.group("OrderActive", (group) => {
 
   group.each.setup(() => {
     sandbox = createSandbox();
-    getOrderByQueryStub = sandbox.stub(BlStorage.Orders, "getByQuery");
+    getOrderByQueryStub = sandbox.stub(StorageService.Orders, "getByQuery");
   });
   group.each.teardown(() => {
     sandbox.restore();

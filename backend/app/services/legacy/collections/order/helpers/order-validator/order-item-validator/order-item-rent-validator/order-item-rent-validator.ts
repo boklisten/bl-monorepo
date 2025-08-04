@@ -1,5 +1,5 @@
-import { isNullish } from "#services/helper/typescript-helpers";
 import { OrderItemRentPeriodValidator } from "#services/legacy/collections/order/helpers/order-validator/order-item-validator/order-item-rent-validator/order-item-rent-period-validator/order-item-rent-period-validator";
+import { isNullish } from "#services/legacy/typescript-helpers";
 import { BlError } from "#shared/bl-error";
 import { Branch } from "#shared/branch";
 import { Item } from "#shared/item";

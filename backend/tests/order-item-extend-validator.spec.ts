@@ -4,7 +4,7 @@ import chaiAsPromised from "chai-as-promised";
 import sinon, { createSandbox } from "sinon";
 
 import { OrderItemExtendValidator } from "#services/legacy/collections/order/helpers/order-validator/order-item-validator/order-item-extend-validator/order-item-extend-validator";
-import { BlStorage } from "#services/storage/bl-storage";
+import { StorageService } from "#services/storage_service";
 import { BlError } from "#shared/bl-error";
 import { Branch } from "#shared/branch";
 import { CustomerItem } from "#shared/customer-item/customer-item";
@@ -24,7 +24,7 @@ test.group("OrderItemExtendValidator", (group) => {
 
   group.each.setup(() => {
     sandbox = createSandbox();
-    sandbox.stub(BlStorage.CustomerItems, "get").callsFake((id) => {
+    sandbox.stub(StorageService.CustomerItems, "get").callsFake((id) => {
       if (id !== testCustomerItem.id) {
         return Promise.reject(new BlError("not found").code(702));
       }

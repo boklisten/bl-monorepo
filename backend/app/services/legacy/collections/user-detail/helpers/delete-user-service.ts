@@ -1,5 +1,5 @@
-import { SEDbQueryBuilder } from "#services/query/se.db-query-builder";
-import { BlStorage } from "#services/storage/bl-storage";
+import { SEDbQueryBuilder } from "#services/legacy/query/se.db-query-builder";
+import { StorageService } from "#services/storage_service";
 
 export class DeleteUserService {
   private queryBuilder = new SEDbQueryBuilder();
@@ -9,16 +9,16 @@ export class DeleteUserService {
       { userDetail: userDetailId },
       [{ fieldName: "userDetail", type: "object-id" }],
     );
-    const users = await BlStorage.Users.getByQuery(databaseQuery);
+    const users = await StorageService.Users.getByQuery(databaseQuery);
     for (const user of users) {
-      await BlStorage.Users.remove(user.id);
+      await StorageService.Users.remove(user.id);
     }
   }
 
   async mergeIntoOtherUser(fromUser: string, toUser: string): Promise<void> {
     const [fromUserDetails, toUserDetails] = await Promise.all([
-      BlStorage.UserDetails.get(fromUser),
-      BlStorage.UserDetails.get(toUser),
+      StorageService.UserDetails.get(fromUser),
+      StorageService.UserDetails.get(toUser),
     ]);
     const newOrderRefs = [
       ...(fromUserDetails.orders ?? []),
@@ -34,16 +34,16 @@ export class DeleteUserService {
     ];
 
     await Promise.all([
-      BlStorage.UserDetails.update(toUser, {
+      StorageService.UserDetails.update(toUser, {
         orders: newOrderRefs,
         customerItems: newCustomerItemRefs,
         signatures: newSignatureRefs,
       }),
-      BlStorage.CustomerItems.updateMany(
+      StorageService.CustomerItems.updateMany(
         { customer: fromUser },
         { customer: toUser },
       ),
-      BlStorage.Invoices.updateMany(
+      StorageService.Invoices.updateMany(
         {
           customerInfo: {
             userDetail: fromUser,
@@ -55,30 +55,30 @@ export class DeleteUserService {
           },
         },
       ),
-      BlStorage.Orders.updateMany(
+      StorageService.Orders.updateMany(
         {
           placed: true,
           customer: fromUser,
         },
         { customer: toUser },
       ),
-      BlStorage.Payments.updateMany(
+      StorageService.Payments.updateMany(
         {
           customer: fromUser,
         },
         { customer: toUser },
       ),
-      BlStorage.StandMatches.updateMany(
+      StorageService.StandMatches.updateMany(
         { customer: fromUser },
         { customer: toUser },
       ),
-      BlStorage.UserMatches.updateMany(
+      StorageService.UserMatches.updateMany(
         {
           customerA: fromUser,
         },
         { customerA: toUser },
       ),
-      BlStorage.UserMatches.updateMany(
+      StorageService.UserMatches.updateMany(
         {
           customerB: fromUser,
         },

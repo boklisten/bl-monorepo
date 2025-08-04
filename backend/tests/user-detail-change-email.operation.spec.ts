@@ -4,7 +4,7 @@ import chaiAsPromised from "chai-as-promised";
 import sinon, { createSandbox } from "sinon";
 
 import { UserDetailChangeEmailOperation } from "#services/legacy/collections/user-detail/operations/change-email/user-detail-change-email.operation";
-import { BlStorage } from "#services/storage/bl-storage";
+import { StorageService } from "#services/storage_service";
 import { UserService } from "#services/user_service";
 import { BlError } from "#shared/bl-error";
 import { UserDetail } from "#shared/user-detail";
@@ -23,9 +23,9 @@ test.group("UserDetailChangeEmailOperation", (group) => {
 
   group.each.setup(() => {
     sandbox = createSandbox();
-    userDetailGetStub = sandbox.stub(BlStorage.UserDetails, "get");
-    userDetailUpdateStub = sandbox.stub(BlStorage.UserDetails, "update");
-    userUpdateStub = sandbox.stub(BlStorage.Users, "update");
+    userDetailGetStub = sandbox.stub(StorageService.UserDetails, "get");
+    userDetailUpdateStub = sandbox.stub(StorageService.UserDetails, "update");
+    userUpdateStub = sandbox.stub(StorageService.Users, "update");
     userServiceGetByUsernameStub = sandbox.stub(UserService, "getByUsername");
   });
   group.each.teardown(() => {

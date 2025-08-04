@@ -3,8 +3,8 @@ import moment from "moment-timezone";
 import DispatchService from "#services/dispatch_service";
 import { userHasValidSignature } from "#services/legacy/collections/signature/helpers/signature.helper";
 import { DateService } from "#services/legacy/date.service";
-import { DibsEasyPayment } from "#services/payment/dibs/dibs-easy-payment/dibs-easy-payment";
-import { BlStorage } from "#services/storage/bl-storage";
+import { DibsEasyPayment } from "#services/legacy/dibs/dibs-easy-payment/dibs-easy-payment";
+import { StorageService } from "#services/storage_service";
 import { BlError } from "#shared/bl-error";
 import { Delivery } from "#shared/delivery/delivery";
 import { Order } from "#shared/order/order";
@@ -46,7 +46,7 @@ export class OrderEmailHandler {
     };
 
     if (withAgreement) {
-      const branch = await BlStorage.Branches.get(branchId);
+      const branch = await StorageService.Branches.get(branchId);
       await this.requestGuardianSignature(customerDetail, branch?.name ?? "");
     }
 
@@ -174,7 +174,7 @@ export class OrderEmailHandler {
     }
 
     const paymentPromises: Promise<Payment>[] = order.payments.map((payment) =>
-      BlStorage.Payments.get(payment),
+      StorageService.Payments.get(payment),
     );
 
     return Promise.all(paymentPromises)
@@ -218,7 +218,7 @@ export class OrderEmailHandler {
       return Promise.resolve({ delivery: null, showDelivery: false });
     }
 
-    return BlStorage.Deliveries.get(deliveryId)
+    return StorageService.Deliveries.get(deliveryId)
       .then((delivery: Delivery) => {
         return delivery.method === "bring"
           ? {
@@ -403,7 +403,7 @@ export class OrderEmailHandler {
   }
 
   private async isBranchResponsible(branchId: string): Promise<boolean> {
-    const branch = await BlStorage.Branches.get(branchId);
+    const branch = await StorageService.Branches.get(branchId);
     return branch.paymentInfo?.responsible ?? false;
   }
 }

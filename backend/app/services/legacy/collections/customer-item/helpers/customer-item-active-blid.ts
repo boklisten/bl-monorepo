@@ -1,6 +1,6 @@
 import { CustomerItemActive } from "#services/legacy/collections/customer-item/helpers/customer-item-active";
-import { SEDbQueryBuilder } from "#services/query/se.db-query-builder";
-import { BlStorage } from "#services/storage/bl-storage";
+import { SEDbQueryBuilder } from "#services/legacy/query/se.db-query-builder";
+import { StorageService } from "#services/storage_service";
 import { CustomerItem } from "#shared/customer-item/customer-item";
 
 export class CustomerItemActiveBlid {
@@ -21,7 +21,7 @@ export class CustomerItemActiveBlid {
     ]);
 
     const customerItems =
-      await BlStorage.CustomerItems.getByQuery(databaseQuery);
+      await StorageService.CustomerItems.getByQuery(databaseQuery);
 
     const activeCustomerItems = customerItems.filter((customerItem) =>
       this.customerItemActive.isActive(customerItem),

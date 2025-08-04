@@ -2,7 +2,7 @@ import { HttpContext } from "@adonisjs/core/http";
 import logger from "@adonisjs/core/services/logger";
 
 import BlidService from "#services/blid_service";
-import { BlStorage } from "#services/storage/bl-storage";
+import { StorageService } from "#services/storage_service";
 import TokenService from "#services/token_service";
 import { UserDetailService } from "#services/user_detail_service";
 import { UserService } from "#services/user_service";
@@ -48,7 +48,7 @@ export const AuthVippsService = {
       (await UserService.getByUsername(vippsUser.email));
 
     userDetail ??=
-      (await BlStorage.UserDetails.getOrNull(user?.userDetail)) ??
+      (await StorageService.UserDetails.getOrNull(user?.userDetail)) ??
       (await UserDetailService.getByEmail(user?.username ?? ""));
 
     const blid =
@@ -71,13 +71,13 @@ export const AuthVippsService = {
           user.blid !== userDetail.blid)
       ) {
         // user and userDetail are not in sync, so we set the user to match the userDetail
-        await BlStorage.Users.remove(user.id);
+        await StorageService.Users.remove(user.id);
 
         user = await UserService.getByUserDetailsId(userDetail.id);
-        if (user) await BlStorage.Users.remove(user.id);
+        if (user) await StorageService.Users.remove(user.id);
 
         user = await UserService.getByUsername(userDetail.email);
-        if (user) await BlStorage.Users.remove(user.id);
+        if (user) await StorageService.Users.remove(user.id);
 
         user = null;
       }
@@ -86,7 +86,7 @@ export const AuthVippsService = {
         user = await UserService.createVippsUser(userDetail, vippsUser.id);
       }
 
-      await BlStorage.Users.update(user.id, {
+      await StorageService.Users.update(user.id, {
         $set: {
           "login.vipps.userId": vippsUser.id,
           "login.vipps.lastLogin": new Date(),

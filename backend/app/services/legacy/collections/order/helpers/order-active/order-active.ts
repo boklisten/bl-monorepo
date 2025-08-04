@@ -1,5 +1,5 @@
-import { SEDbQueryBuilder } from "#services/query/se.db-query-builder";
-import { BlStorage } from "#services/storage/bl-storage";
+import { SEDbQueryBuilder } from "#services/legacy/query/se.db-query-builder";
+import { StorageService } from "#services/storage_service";
 import { BlError } from "#shared/bl-error";
 import { Order } from "#shared/order/order";
 import { OrderItem } from "#shared/order/order-item/order-item";
@@ -15,7 +15,7 @@ export class OrderActive {
     let orders: Order[];
 
     try {
-      orders = await BlStorage.Orders.getByQuery(databaseQuery);
+      orders = await StorageService.Orders.getByQuery(databaseQuery);
     } catch (error) {
       if (error instanceof BlError && error.getCode() === 702) {
         return [];

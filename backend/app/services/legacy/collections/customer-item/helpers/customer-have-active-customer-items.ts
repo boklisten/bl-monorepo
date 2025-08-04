@@ -1,6 +1,6 @@
 import { CustomerItemActive } from "#services/legacy/collections/customer-item/helpers/customer-item-active";
-import { SEDbQueryBuilder } from "#services/query/se.db-query-builder";
-import { BlStorage } from "#services/storage/bl-storage";
+import { SEDbQueryBuilder } from "#services/legacy/query/se.db-query-builder";
+import { StorageService } from "#services/storage_service";
 import { BlError } from "#shared/bl-error";
 import { CustomerItem } from "#shared/customer-item/customer-item";
 
@@ -15,7 +15,8 @@ export class CustomerHaveActiveCustomerItems {
     let customerItems: CustomerItem[];
 
     try {
-      customerItems = await BlStorage.CustomerItems.getByQuery(databaseQuery);
+      customerItems =
+        await StorageService.CustomerItems.getByQuery(databaseQuery);
     } catch (error) {
       if (error instanceof BlError && error.getCode() == 702) {
         return false;

@@ -1,4 +1,4 @@
-import { BlStorage } from "#services/storage/bl-storage";
+import { StorageService } from "#services/storage_service";
 import { BlError } from "#shared/bl-error";
 import { Branch } from "#shared/branch";
 import { CustomerItem } from "#shared/customer-item/customer-item";
@@ -49,7 +49,7 @@ export class OrderItemExtendValidator {
   ): Promise<boolean> {
     // @ts-expect-error fixme: auto ignored
     return (
-      BlStorage.CustomerItems
+      StorageService.CustomerItems
         // @ts-expect-error fixme: auto ignored
         .get(orderItem.info.customerItem)
         .then((customerItem: CustomerItem) => {

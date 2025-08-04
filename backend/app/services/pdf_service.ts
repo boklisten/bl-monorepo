@@ -1,8 +1,8 @@
 import { EmailAttachment, EmailHandler, PdfHandler } from "@boklisten/bl-email";
 import moment from "moment";
 
-import { isNotNullish } from "#services/helper/typescript-helpers";
-import { OrderEmailHandler } from "#services/messenger/email/order_email_handler";
+import { OrderEmailHandler } from "#services/legacy/order_email_handler";
+import { isNotNullish } from "#services/legacy/typescript-helpers";
 import { Order } from "#shared/order/order";
 import { UserDetail } from "#shared/user-detail";
 import { EmailSetting, EmailUser } from "#types/email";

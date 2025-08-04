@@ -2,7 +2,7 @@ import { HttpContext } from "@adonisjs/core/http";
 import vine from "@vinejs/vine";
 
 import { PasswordService } from "#services/password_service";
-import { BlStorage } from "#services/storage/bl-storage";
+import { StorageService } from "#services/storage_service";
 import TokenService from "#services/token_service";
 import { UserDetailService } from "#services/user_detail_service";
 import { UserService } from "#services/user_service";
@@ -53,7 +53,7 @@ export default class LocalController {
           "Passordet du har oppgitt stemmer ikke. Du kan prøve et annet passord, eller et lage et nytt ved å trykke på 'glemt passord'",
       };
     }
-    await BlStorage.Users.update(user.id, {
+    await StorageService.Users.update(user.id, {
       $set: {
         "login.local.lastLogin": new Date(),
       },

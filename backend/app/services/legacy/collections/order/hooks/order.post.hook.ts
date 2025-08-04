@@ -3,7 +3,7 @@ import { OrderHookBefore } from "#services/legacy/collections/order/hooks/order-
 import { UserDetailHelper } from "#services/legacy/collections/user-detail/helpers/user-detail.helper";
 import { Hook } from "#services/legacy/hook";
 import { PermissionService } from "#services/permission_service";
-import { BlStorage } from "#services/storage/bl-storage";
+import { StorageService } from "#services/storage_service";
 import { AccessToken } from "#shared/access-token";
 import { BlError } from "#shared/bl-error";
 import { Order } from "#shared/order/order";
@@ -32,7 +32,7 @@ export class OrderPostHook extends Hook {
     accessToken: AccessToken,
   ): Promise<boolean> {
     const [validUserDetails, validRequestBody] = await Promise.all([
-      BlStorage.UserDetails.get(accessToken.details).then((userDetail) =>
+      StorageService.UserDetails.get(accessToken.details).then((userDetail) =>
         this.userDetailHelper.isValid(userDetail),
       ),
       this.orderHookBefore.validate(requestBody),

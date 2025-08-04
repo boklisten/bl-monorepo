@@ -1,6 +1,6 @@
 import { test } from "@japa/runner";
 
-import { SEDbQuery } from "#services/query/se.db-query";
+import { SEDbQuery } from "#services/legacy/query/se.db-query";
 
 test.group("SEDbQuery", async () => {
   const dbQuery: SEDbQuery = new SEDbQuery();

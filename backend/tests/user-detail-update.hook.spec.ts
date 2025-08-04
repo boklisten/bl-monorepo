@@ -4,7 +4,7 @@ import chaiAsPromised from "chai-as-promised";
 import { createSandbox } from "sinon";
 
 import { UserDetailUpdateHook } from "#services/legacy/collections/user-detail/hooks/user-detail-update.hook";
-import { BlStorage } from "#services/storage/bl-storage";
+import { StorageService } from "#services/storage_service";
 import { AccessToken } from "#shared/access-token";
 
 chaiUse(chaiAsPromised);
@@ -19,7 +19,7 @@ test.group("UserDetailUpdateHook", async (group) => {
   let sandbox: sinon.SinonSandbox;
   group.each.setup(() => {
     sandbox = createSandbox();
-    sandbox.stub(BlStorage.UserDetails, "getByQuery").callsFake(() => {
+    sandbox.stub(StorageService.UserDetails, "getByQuery").callsFake(() => {
       return Promise.resolve([]);
     });
   });

@@ -1,11 +1,11 @@
 import { HttpContext } from "@adonisjs/core/http";
 import { ObjectId } from "mongodb";
 
-import { isNullish } from "#services/helper/typescript-helpers";
+import { SEDbQuery } from "#services/legacy/query/se.db-query";
+import { isNullish } from "#services/legacy/typescript-helpers";
 import { PermissionService } from "#services/permission_service";
-import { SEDbQuery } from "#services/query/se.db-query";
 import { BlSchemaName } from "#services/storage/bl-schema-names";
-import { BlStorage } from "#services/storage/bl-storage";
+import { StorageService } from "#services/storage_service";
 import { BranchItem } from "#shared/branch-item";
 import { Item } from "#shared/item";
 import { UserDetail } from "#shared/user-detail";
@@ -29,8 +29,8 @@ async function updateBranchRelationships({
 }) {
   // Get the old parent and remove this branch as a child
   if (oldParentId !== null) {
-    const oldParent = await BlStorage.Branches.get(oldParentId);
-    await BlStorage.Branches.update(oldParentId, {
+    const oldParent = await StorageService.Branches.get(oldParentId);
+    await StorageService.Branches.update(oldParentId, {
       childBranches: oldParent.childBranches?.filter(
         (childId) => childId !== branchId,
       ),
@@ -39,15 +39,15 @@ async function updateBranchRelationships({
 
   // Get the new parent and add this branch as a child
   if (newParentId !== null) {
-    const newParent = await BlStorage.Branches.get(newParentId);
-    await BlStorage.Branches.update(newParentId, {
+    const newParent = await StorageService.Branches.get(newParentId);
+    await StorageService.Branches.update(newParentId, {
       childBranches: [...(newParent.childBranches ?? []), branchId],
     });
   }
 
   // For each old child, remove their parent
   if (oldChildrenIds !== null) {
-    await BlStorage.Branches.updateMany(
+    await StorageService.Branches.updateMany(
       {
         _id: { $in: oldChildrenIds },
       },
@@ -59,22 +59,22 @@ async function updateBranchRelationships({
   if (newChildrenIds !== null) {
     // Remove the previous parent's childBranch reference for all new children
     const previousChildParentIds = (
-      await BlStorage.Branches.getMany(newChildrenIds)
+      await StorageService.Branches.getMany(newChildrenIds)
     )
       .map((c) => c.parentBranch ?? "")
       .filter((id) => id.length > 0);
-    const previousChildParents = await BlStorage.Branches.getMany(
+    const previousChildParents = await StorageService.Branches.getMany(
       previousChildParentIds,
     );
     for (const previousChildParent of previousChildParents) {
-      await BlStorage.Branches.update(previousChildParent.id, {
+      await StorageService.Branches.update(previousChildParent.id, {
         childBranches: previousChildParent.childBranches?.filter(
           (childId) => !newChildrenIds.includes(childId),
         ),
       });
     }
     // Set the children's parent references
-    await BlStorage.Branches.updateMany(
+    await StorageService.Branches.updateMany(
       {
         _id: { $in: newChildrenIds },
       },
@@ -100,7 +100,8 @@ async function assertValidBranchUpdate(
     }
     visited.add(currentId);
 
-    currentId = (await BlStorage.Branches.get(currentId)).parentBranch ?? null;
+    currentId =
+      (await StorageService.Branches.get(currentId)).parentBranch ?? null;
   }
 }
 
@@ -117,7 +118,7 @@ async function applyMembershipData(
   branchId: string,
   membershipData: { branch: string; phone: string }[],
 ) {
-  const childBranches = (await BlStorage.Branches.aggregate([
+  const childBranches = (await StorageService.Branches.aggregate([
     {
       $match: {
         _id: new ObjectId(branchId),
@@ -162,7 +163,7 @@ async function applyMembershipData(
       status.unknownBranches.add(membership.branch);
       return;
     }
-    const result = await BlStorage.UserDetails.updateMany(
+    const result = await StorageService.UserDetails.updateMany(
       { phone: normalizedPhone },
       {
         branchMembership: branch.id,
@@ -197,9 +198,10 @@ async function applySubjectChoices(
   const databaseQuery = new SEDbQuery();
   databaseQuery.objectIdFilters = [{ fieldName: "branch", value: branchId }];
   databaseQuery.expandFilters = [{ fieldName: "item" }];
-  const branchItems = (await BlStorage.BranchItems.getByQuery(databaseQuery, [
-    { field: "item", storage: BlStorage.Items },
-  ])) as unknown as BranchItemWithRealItem[];
+  const branchItems = (await StorageService.BranchItems.getByQuery(
+    databaseQuery,
+    [{ field: "item", storage: StorageService.Items }],
+  )) as unknown as BranchItemWithRealItem[];
   const knownSubjects = Array.from(
     new Set<string>(
       branchItems.flatMap((branchItem) => branchItem.categories ?? []),
@@ -226,7 +228,7 @@ async function applySubjectChoices(
     ];
     let userDetail: UserDetail;
     try {
-      const [foundDetail] = await BlStorage.UserDetails.getByQuery(
+      const [foundDetail] = await StorageService.UserDetails.getByQuery(
         userDetailDatabaseQuery,
       );
       if (isNullish(foundDetail)) {
@@ -252,7 +254,7 @@ async function applySubjectChoices(
       ),
     );
 
-    await BlStorage.Orders.add({
+    await StorageService.Orders.add({
       amount: 0,
       orderItems: requestedBranchItems.map((branchItem) => ({
         type: "rent",
@@ -312,7 +314,7 @@ export default class BranchesController {
     }
 
     // @ts-expect-error fixme: exactOptionalPropertyTypes
-    const newBranch = await BlStorage.Branches.add(branchData);
+    const newBranch = await StorageService.Branches.add(branchData);
 
     await updateBranchRelationships({
       branchId: newBranch.id,
@@ -341,8 +343,8 @@ export default class BranchesController {
       return ctx.response.conflict(error);
     }
 
-    const storedBranch = await BlStorage.Branches.get(branchId);
-    const updatedBranch = await BlStorage.Branches.update(
+    const storedBranch = await StorageService.Branches.get(branchId);
+    const updatedBranch = await StorageService.Branches.update(
       ctx.params["id"],
       { ...branchData, parentBranch: branchData.parentBranch || null }, // since parentBranch might be "" from the client, we need to convert it to null so that the database accepts the value (ObjectID or nullish)
     );

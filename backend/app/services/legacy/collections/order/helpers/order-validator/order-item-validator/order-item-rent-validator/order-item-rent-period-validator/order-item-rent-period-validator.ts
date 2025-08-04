@@ -1,7 +1,7 @@
-import { APP_CONFIG } from "#services/config/application-config";
-import { isNotNullish } from "#services/helper/typescript-helpers";
-import { PriceService } from "#services/price/price.service";
-import { BlStorage } from "#services/storage/bl-storage";
+import { APP_CONFIG } from "#services/legacy/application-config";
+import { PriceService } from "#services/legacy/price.service";
+import { isNotNullish } from "#services/legacy/typescript-helpers";
+import { StorageService } from "#services/storage_service";
 import { BlError } from "#shared/bl-error";
 import { BranchPaymentInfo } from "#shared/branch-payment-info";
 import { Order } from "#shared/order/order";
@@ -109,7 +109,7 @@ export class OrderItemRentPeriodValidator {
       return true;
     }
 
-    return BlStorage.Orders.get(orderItem.movedFromOrder)
+    return StorageService.Orders.get(orderItem.movedFromOrder)
       .then((order: Order) => {
         if (
           (!order.payments || order.payments.length <= 0) &&

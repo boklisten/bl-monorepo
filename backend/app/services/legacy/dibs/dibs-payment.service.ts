@@ -1,7 +1,7 @@
-import { APP_CONFIG } from "#services/config/application-config";
+import { APP_CONFIG } from "#services/legacy/application-config";
 import { UserDetailHelper } from "#services/legacy/collections/user-detail/helpers/user-detail.helper";
-import { DibsEasyOrder } from "#services/payment/dibs/dibs-easy-order";
-import { DibsEasyPayment } from "#services/payment/dibs/dibs-easy-payment/dibs-easy-payment";
+import { DibsEasyOrder } from "#services/legacy/dibs/dibs-easy-order";
+import { DibsEasyPayment } from "#services/legacy/dibs/dibs-easy-payment/dibs-easy-payment";
 import { BlError } from "#shared/bl-error";
 import { Delivery } from "#shared/delivery/delivery";
 import { Order } from "#shared/order/order";

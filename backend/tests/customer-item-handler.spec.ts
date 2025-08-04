@@ -5,8 +5,8 @@ import mongoose from "mongoose";
 import sinon, { createSandbox } from "sinon";
 
 import { CustomerItemHandler } from "#services/legacy/collections/customer-item/helpers/customer-item-handler";
-import { SEDbQuery } from "#services/query/se.db-query";
-import { BlStorage } from "#services/storage/bl-storage";
+import { SEDbQuery } from "#services/legacy/query/se.db-query";
+import { StorageService } from "#services/storage_service";
 import { BlError } from "#shared/bl-error";
 import { Branch } from "#shared/branch";
 import { CustomerItem } from "#shared/customer-item/customer-item";
@@ -33,8 +33,8 @@ test.group("CustomerItemHandler", (group) => {
       get: sandbox.stub(),
     };
 
-    sandbox.stub(BlStorage, "CustomerItems").value(customerItemsStub);
-    sandbox.stub(BlStorage, "Branches").value(branchesStub);
+    sandbox.stub(StorageService, "CustomerItems").value(customerItemsStub);
+    sandbox.stub(StorageService, "Branches").value(branchesStub);
 
     getCustomerItemStub = customerItemsStub.get;
     getByQueryCustomerItemStub = customerItemsStub.getByQuery;

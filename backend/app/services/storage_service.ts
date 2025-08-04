@@ -28,7 +28,7 @@ import { MongodbHandler } from "#services/storage/mongodb-handler";
 
 export type BlSchema<T> = Schema<ToSchema<T>>;
 
-export const BlStorage = {
+export const StorageService = {
   Branches: new MongodbHandler(BranchSchema, BlSchemaName.Branches),
   BranchItems: new MongodbHandler(BranchItemSchema, BlSchemaName.BranchItems),
   Companies: new MongodbHandler(CompanySchema, BlSchemaName.Companies),
@@ -74,24 +74,25 @@ export const BlStorage = {
   ),
 } as const;
 
-export type BlStorageHandler = (typeof BlStorage)[keyof typeof BlStorage];
+export type BlStorageHandler =
+  (typeof StorageService)[keyof typeof StorageService];
 
 type BlModelTypes = {
-  [K in keyof typeof BlStorage]: (typeof BlStorage)[K] extends MongodbHandler<
+  [K in keyof typeof StorageService]: (typeof StorageService)[K] extends MongodbHandler<
     infer T
   >
     ? T
     : never;
-}[keyof typeof BlStorage];
+}[keyof typeof StorageService];
 
 export type BlStorageData =
   | {
-      [K in keyof typeof BlStorage]: (typeof BlStorage)[K] extends MongodbHandler<
+      [K in keyof typeof StorageService]: (typeof StorageService)[K] extends MongodbHandler<
         infer T
       >
         ? T[]
         : never;
-    }[keyof typeof BlStorage]
+    }[keyof typeof StorageService]
   | BlModelTypes[];
 
 // Re-format BlDocument type to one fitting for mongoose schemas

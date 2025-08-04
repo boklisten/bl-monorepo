@@ -5,7 +5,7 @@ import sinon, { createSandbox } from "sinon";
 
 import { DeliveryValidator } from "#services/legacy/collections/delivery/helpers/deliveryValidator/delivery-validator";
 import { DeliveryPatchHook } from "#services/legacy/collections/delivery/hooks/delivery.patch.hook";
-import { BlStorage } from "#services/storage/bl-storage";
+import { StorageService } from "#services/storage_service";
 import { AccessToken } from "#shared/access-token";
 import { BlError } from "#shared/bl-error";
 import { Delivery } from "#shared/delivery/delivery";
@@ -72,14 +72,14 @@ test.group("DeliveryPatchHook", (group) => {
     };
 
     sandbox = createSandbox();
-    sandbox.stub(BlStorage.Deliveries, "get").callsFake((id) => {
+    sandbox.stub(StorageService.Deliveries, "get").callsFake((id) => {
       if (id !== testDelivery.id) {
         return Promise.reject(new BlError("not found").code(702));
       }
       return Promise.resolve(testDelivery);
     });
 
-    sandbox.stub(BlStorage.Orders, "get").callsFake((id) => {
+    sandbox.stub(StorageService.Orders, "get").callsFake((id) => {
       if (id !== testOrder.id) {
         return Promise.reject(new BlError("not found").code(702));
       }

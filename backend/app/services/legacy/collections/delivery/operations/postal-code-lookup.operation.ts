@@ -1,6 +1,6 @@
 import vine from "@vinejs/vine";
 
-import { isNullish } from "#services/helper/typescript-helpers";
+import { isNullish } from "#services/legacy/typescript-helpers";
 import { BlError } from "#shared/bl-error";
 import { BlapiResponse } from "#shared/blapi-response";
 import env from "#start/env";

@@ -2,9 +2,9 @@ import { test } from "@japa/runner";
 import { expect, use as chaiUse, should } from "chai";
 import chaiAsPromised from "chai-as-promised";
 
-import { ValidParameter } from "#services/query/db-query-valid-params";
-import { SEDbQuery } from "#services/query/se.db-query";
-import { SEDbQueryBuilder } from "#services/query/se.db-query-builder";
+import { ValidParameter } from "#services/legacy/query/db-query-valid-params";
+import { SEDbQuery } from "#services/legacy/query/se.db-query";
+import { SEDbQueryBuilder } from "#services/legacy/query/se.db-query-builder";
 
 chaiUse(chaiAsPromised);
 should();

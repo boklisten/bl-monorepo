@@ -1,21 +1,21 @@
 import { ParsedQs } from "qs";
 
-import { DbQueryBooleanFilter } from "#services/query/db-query-boolean-filter";
-import { DbQueryDateFilter } from "#services/query/db-query-date-filter";
-import { DbQueryExpandFilter } from "#services/query/db-query-expand-filter";
-import { DbQueryLimitFilter } from "#services/query/db-query-limit-filter";
-import { DbQueryNumberFilter } from "#services/query/db-query-number-filter";
-import { DbQueryObjectIdFilter } from "#services/query/db-query-object-id-filter";
-import { DbQueryOnlyGetFilter } from "#services/query/db-query-only-get-filter";
-import { DbQueryRegexFilter } from "#services/query/db-query-regex-filter";
-import { DbQuerySkipFilter } from "#services/query/db-query-skip-filter";
-import { DbQuerySortFilter } from "#services/query/db-query-sort-filter";
-import { DbQueryStringFilter } from "#services/query/db-query-string-filter";
+import { DbQueryBooleanFilter } from "#services/legacy/query/db-query-boolean-filter";
+import { DbQueryDateFilter } from "#services/legacy/query/db-query-date-filter";
+import { DbQueryExpandFilter } from "#services/legacy/query/db-query-expand-filter";
+import { DbQueryLimitFilter } from "#services/legacy/query/db-query-limit-filter";
+import { DbQueryNumberFilter } from "#services/legacy/query/db-query-number-filter";
+import { DbQueryObjectIdFilter } from "#services/legacy/query/db-query-object-id-filter";
+import { DbQueryOnlyGetFilter } from "#services/legacy/query/db-query-only-get-filter";
+import { DbQueryRegexFilter } from "#services/legacy/query/db-query-regex-filter";
+import { DbQuerySkipFilter } from "#services/legacy/query/db-query-skip-filter";
+import { DbQuerySortFilter } from "#services/legacy/query/db-query-sort-filter";
+import { DbQueryStringFilter } from "#services/legacy/query/db-query-string-filter";
 import {
   DbQueryValidParams,
   ValidParameter,
-} from "#services/query/db-query-valid-params";
-import { SEDbQuery } from "#services/query/se.db-query";
+} from "#services/legacy/query/db-query-valid-params";
+import { SEDbQuery } from "#services/legacy/query/se.db-query";
 
 export class SEDbQueryBuilder {
   private dbQueryBooleanFilter: DbQueryBooleanFilter;

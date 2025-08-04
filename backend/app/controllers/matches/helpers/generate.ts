@@ -3,7 +3,7 @@ import { ObjectId } from "mongodb";
 
 import { MatchFinder } from "#controllers/matches/helpers/match-finder/match-finder";
 import { MatchableUser } from "#controllers/matches/helpers/match-finder/match-types";
-import { BlStorage } from "#services/storage/bl-storage";
+import { StorageService } from "#services/storage_service";
 import { StandMatch } from "#shared/match/stand-match";
 import { UserMatch } from "#shared/match/user-match";
 import { matchGenerateSchema } from "#validators/matches";
@@ -43,7 +43,7 @@ async function getMatchableUsers(
   }
   return await Promise.all(
     matchableUsers.map(async (user) => {
-      const userDetails = await BlStorage.UserDetails.get(user.id);
+      const userDetails = await StorageService.UserDetails.get(user.id);
       if (userDetails.branchMembership) {
         user.groupMembership = userDetails.branchMembership;
       } else {
@@ -74,7 +74,7 @@ async function getMatchableSender(
     },
   };
 
-  let aggregatedSenders = (await BlStorage.CustomerItems.aggregate([
+  let aggregatedSenders = (await StorageService.CustomerItems.aggregate([
     {
       $match: {
         returned: false,
@@ -92,7 +92,7 @@ async function getMatchableSender(
   ])) as { id: string; items: string[] }[];
 
   if (includeSenderItemsFromOtherBranches) {
-    aggregatedSenders = (await BlStorage.CustomerItems.aggregate([
+    aggregatedSenders = (await StorageService.CustomerItems.aggregate([
       {
         $match: {
           customer: {
@@ -125,7 +125,7 @@ async function getMatchableSender(
 async function getMatchableReceivers(
   branchIds: string[],
 ): Promise<MatchableUser[]> {
-  const aggregatedReceivers = (await BlStorage.Orders.aggregate([
+  const aggregatedReceivers = (await StorageService.Orders.aggregate([
     {
       $match: {
         placed: true,
@@ -269,8 +269,10 @@ export async function generateMatches({
     return "No matches generated";
   }
 
-  const addedUserMatches = await BlStorage.UserMatches.addMany(userMatches);
-  const addedStandMatches = await BlStorage.StandMatches.addMany(standMatches);
+  const addedUserMatches =
+    await StorageService.UserMatches.addMany(userMatches);
+  const addedStandMatches =
+    await StorageService.StandMatches.addMany(standMatches);
 
   return `Created ${addedUserMatches.length} user matches and ${addedStandMatches.length} stand matches`;
 }

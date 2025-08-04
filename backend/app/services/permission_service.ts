@@ -3,7 +3,7 @@ import jwt from "jsonwebtoken";
 
 import NotAllowedException from "#exceptions/not_allowed_exception";
 import UnauthorizedException from "#exceptions/unauthorized_exception";
-import { APP_CONFIG } from "#services/config/application-config";
+import { APP_CONFIG } from "#services/legacy/application-config";
 import { BlDocument } from "#shared/bl-document";
 import { USER_PERMISSION, UserPermission } from "#shared/user-permission";
 import env from "#start/env";

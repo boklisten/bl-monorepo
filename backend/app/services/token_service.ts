@@ -1,7 +1,7 @@
 import jwt, { JwtPayload } from "jsonwebtoken";
 
-import { APP_CONFIG } from "#services/config/application-config";
-import { BlStorage } from "#services/storage/bl-storage";
+import { APP_CONFIG } from "#services/legacy/application-config";
+import { StorageService } from "#services/storage_service";
 import { UserService } from "#services/user_service";
 import env from "#start/env";
 
@@ -10,7 +10,7 @@ const TokenService = {
     const user = await UserService.getByUsername(username);
     if (!user) return null;
 
-    await BlStorage.Users.update(user.id, {
+    await StorageService.Users.update(user.id, {
       $set: {
         "login.lastTokenIssuedAt": new Date(),
       },

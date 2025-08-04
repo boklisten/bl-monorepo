@@ -1,10 +1,10 @@
 import { CustomerItemGenerateReportOperation } from "#services/legacy/collections/customer-item/customer-item-generate-report.operation";
 import { CustomerItemPostHook } from "#services/legacy/collections/customer-item/hooks/customer-item-post.hook";
-import { BlStorage } from "#services/storage/bl-storage";
+import { StorageService } from "#services/storage_service";
 import { BlCollection } from "#types/bl-collection";
 
 export const CustomerItemCollection: BlCollection = {
-  storage: BlStorage.CustomerItems,
+  storage: StorageService.CustomerItems,
   documentPermission: {
     viewableForPermission: "employee",
   },
@@ -47,11 +47,11 @@ export const CustomerItemCollection: BlCollection = {
       nestedDocuments: [
         {
           field: "customer",
-          storage: BlStorage.UserDetails,
+          storage: StorageService.UserDetails,
         },
         {
           field: "item",
-          storage: BlStorage.Items,
+          storage: StorageService.Items,
         },
       ],
       validQueryParams: [

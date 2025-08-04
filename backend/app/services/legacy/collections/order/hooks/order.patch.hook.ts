@@ -2,7 +2,7 @@ import { OrderPlacedHandler } from "#services/legacy/collections/order/helpers/o
 import { OrderValidator } from "#services/legacy/collections/order/helpers/order-validator/order-validator";
 import { Hook } from "#services/legacy/hook";
 import { PermissionService } from "#services/permission_service";
-import { BlStorage } from "#services/storage/bl-storage";
+import { StorageService } from "#services/storage_service";
 import { AccessToken } from "#shared/access-token";
 import { BlError } from "#shared/bl-error";
 import { Order } from "#shared/order/order";
@@ -78,7 +78,7 @@ export class OrderPatchHook extends Hook {
           })
           .catch((validationError: BlError) => {
             if (order?.placed) {
-              BlStorage.Orders.update(order.id, { placed: false })
+              StorageService.Orders.update(order.id, { placed: false })
                 .then(() => {
                   return reject(
                     new BlError(

@@ -1,4 +1,4 @@
-import { BlStorageHandler } from "#services/storage/bl-storage";
+import { BlStorageHandler } from "#services/storage_service";
 
 export interface NestedDocument {
   field: string;

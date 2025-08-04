@@ -1,8 +1,8 @@
 import { HttpContext } from "@adonisjs/core/http";
 
+import { SEDbQuery } from "#services/legacy/query/se.db-query";
 import { PermissionService } from "#services/permission_service";
-import { SEDbQuery } from "#services/query/se.db-query";
-import { BlStorage } from "#services/storage/bl-storage";
+import { StorageService } from "#services/storage_service";
 import { editableTextsValidator } from "#validators/editable_texts_validator";
 
 export default class EditableTextsController {
@@ -11,7 +11,7 @@ export default class EditableTextsController {
     const databaseQuery = new SEDbQuery();
     databaseQuery.stringFilters = [{ fieldName: "key", value: key }];
     const [editableText] =
-      await BlStorage.EditableTexts.getByQuery(databaseQuery);
+      await StorageService.EditableTexts.getByQuery(databaseQuery);
     if (!editableText) {
       throw new Error(`No editable text found for key ${key}`);
     }
@@ -21,7 +21,7 @@ export default class EditableTextsController {
   async getAll(ctx: HttpContext) {
     PermissionService.adminOrFail(ctx);
 
-    return await BlStorage.EditableTexts.getAll();
+    return await StorageService.EditableTexts.getAll();
   }
 
   async store(ctx: HttpContext) {
@@ -30,7 +30,7 @@ export default class EditableTextsController {
     const validatedData = await ctx.request.validateUsing(
       editableTextsValidator,
     );
-    return await BlStorage.EditableTexts.add(validatedData);
+    return await StorageService.EditableTexts.add(validatedData);
   }
 
   async update(ctx: HttpContext) {
@@ -38,13 +38,13 @@ export default class EditableTextsController {
 
     const id = ctx.request.param("id");
     const { text } = ctx.request.only(["text"]);
-    return await BlStorage.EditableTexts.update(id, { text });
+    return await StorageService.EditableTexts.update(id, { text });
   }
 
   async destroy(ctx: HttpContext) {
     PermissionService.adminOrFail(ctx);
 
     const id = ctx.request.param("id");
-    return await BlStorage.EditableTexts.remove(id);
+    return await StorageService.EditableTexts.remove(id);
   }
 }

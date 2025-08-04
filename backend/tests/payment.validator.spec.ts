@@ -4,7 +4,7 @@ import chaiAsPromised from "chai-as-promised";
 import sinon, { createSandbox } from "sinon";
 
 import { PaymentValidator } from "#services/legacy/collections/payment/helpers/payment.validator";
-import { BlStorage } from "#services/storage/bl-storage";
+import { StorageService } from "#services/storage_service";
 import { BlError } from "#shared/bl-error";
 import { Delivery } from "#shared/delivery/delivery";
 import { Order } from "#shared/order/order";
@@ -56,14 +56,14 @@ test.group("PaymentValidator", (group) => {
     };
 
     sandbox = createSandbox();
-    sandbox.stub(BlStorage.Orders, "get").callsFake((id) => {
+    sandbox.stub(StorageService.Orders, "get").callsFake((id) => {
       if (id !== testOrder.id) {
         return Promise.reject(new BlError("order not found").code(702));
       }
       return Promise.resolve(testOrder);
     });
 
-    sandbox.stub(BlStorage.Deliveries, "get").callsFake((id) => {
+    sandbox.stub(StorageService.Deliveries, "get").callsFake((id) => {
       return id === testDelivery.id
         ? Promise.resolve(testDelivery)
         : Promise.reject(new BlError("delivery not found"));

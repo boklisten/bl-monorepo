@@ -1,10 +1,10 @@
-import { isNotNullish } from "#services/helper/typescript-helpers";
 import { OrderToCustomerItemGenerator } from "#services/legacy/collections/customer-item/helpers/order-to-customer-item-generator";
 import { OrderPlacedHandler } from "#services/legacy/collections/order/helpers/order-placed-handler/order-placed-handler";
 import { OrderValidator } from "#services/legacy/collections/order/helpers/order-validator/order-validator";
+import { SEDbQueryBuilder } from "#services/legacy/query/se.db-query-builder";
+import { isNotNullish } from "#services/legacy/typescript-helpers";
 import { PermissionService } from "#services/permission_service";
-import { SEDbQueryBuilder } from "#services/query/se.db-query-builder";
-import { BlStorage } from "#services/storage/bl-storage";
+import { StorageService } from "#services/storage_service";
 import { BlError } from "#shared/bl-error";
 import { BlapiResponse } from "#shared/blapi-response";
 import { CustomerItem } from "#shared/customer-item/customer-item";
@@ -77,7 +77,8 @@ export class OrderPlaceOperation implements Operation {
     );
 
     try {
-      const existingOrders = await BlStorage.Orders.getByQuery(databaseQuery);
+      const existingOrders =
+        await StorageService.Orders.getByQuery(databaseQuery);
       const alreadyOrderedItems =
         this.filterOrdersByAlreadyOrdered(existingOrders);
 
@@ -127,7 +128,7 @@ export class OrderPlaceOperation implements Operation {
     try {
       // Use an aggregation because the query builder does not support checking against a list of blids,
       // and we would otherwise have to send a query for every single order item.
-      const unreturnedItems = await BlStorage.CustomerItems.aggregate([
+      const unreturnedItems = await StorageService.CustomerItems.aggregate([
         {
           $match: {
             blid: {
@@ -229,13 +230,13 @@ export class OrderPlaceOperation implements Operation {
       return;
     }
 
-    const returnCustomerItems = await BlStorage.CustomerItems.getMany(
+    const returnCustomerItems = await StorageService.CustomerItems.getMany(
       returnOrderItems
         .map((orderItem) => orderItem.customerItem)
         .filter(isNotNullish),
     );
 
-    const handoutCustomerItems = await BlStorage.CustomerItems.getMany(
+    const handoutCustomerItems = await StorageService.CustomerItems.getMany(
       handoutOrderItems
         .map((orderItem) => orderItem.customerItem)
         .filter(isNotNullish),
@@ -268,7 +269,7 @@ export class OrderPlaceOperation implements Operation {
       standMatchId,
       deliveredItems,
     ] of matchToDeliveredItemsMap.entries()) {
-      await BlStorage.StandMatches.update(standMatchId, {
+      await StorageService.StandMatches.update(standMatchId, {
         deliveredItems: Array.from(deliveredItems),
       });
     }
@@ -295,7 +296,7 @@ export class OrderPlaceOperation implements Operation {
       standMatchId,
       receivedItems,
     ] of matchToReceivedItemsMap.entries()) {
-      await BlStorage.StandMatches.update(standMatchId, {
+      await StorageService.StandMatches.update(standMatchId, {
         receivedItems: Array.from(receivedItems),
       });
     }
@@ -341,7 +342,7 @@ export class OrderPlaceOperation implements Operation {
           ],
         };
       }
-      await BlStorage.UserMatches.update(receiverUserMatch.id, update);
+      await StorageService.UserMatches.update(receiverUserMatch.id, update);
     }
   }
 
@@ -385,7 +386,7 @@ export class OrderPlaceOperation implements Operation {
           ],
         };
       }
-      await BlStorage.UserMatches.update(senderUserMatch.id, update);
+      await StorageService.UserMatches.update(senderUserMatch.id, update);
     }
   }
 
@@ -418,7 +419,7 @@ export class OrderPlaceOperation implements Operation {
     let order: Order;
 
     try {
-      order = await BlStorage.Orders.get(blApiRequest.documentId);
+      order = await StorageService.Orders.get(blApiRequest.documentId);
     } catch {
       throw new ReferenceError(`order "${blApiRequest.documentId}" not found`);
     }
@@ -451,7 +452,7 @@ export class OrderPlaceOperation implements Operation {
       (orderItem) => orderItem.handout && orderItem.type === "rent",
     );
 
-    const userMatches = await BlStorage.UserMatches.getAll();
+    const userMatches = await StorageService.UserMatches.getAll();
 
     if (!order.byCustomer) {
       await this.verifyCompatibilityWithUserMatches(
@@ -472,7 +473,7 @@ export class OrderPlaceOperation implements Operation {
       );
       order = this.addCustomerItemIdToOrderItems(order, customerItems);
 
-      await BlStorage.Orders.update(
+      await StorageService.Orders.update(
         order.id,
         {
           orderItems: order.orderItems,
@@ -483,7 +484,7 @@ export class OrderPlaceOperation implements Operation {
       );
     }
 
-    const standMatches = await BlStorage.StandMatches.getAll();
+    const standMatches = await StorageService.StandMatches.getAll();
     if (!order.byCustomer) {
       await this.updateMatchesIfPresent(
         userMatches,
@@ -540,7 +541,7 @@ export class OrderPlaceOperation implements Operation {
     userMatches: UserMatch[],
     customerId: string,
   ) {
-    const returnCustomerItems = await BlStorage.CustomerItems.getMany(
+    const returnCustomerItems = await StorageService.CustomerItems.getMany(
       returnOrderItems
         .map((orderItem) => orderItem.customerItem)
         .filter(isNotNullish),
@@ -559,7 +560,7 @@ export class OrderPlaceOperation implements Operation {
   ): Promise<CustomerItem[]> {
     const addedCustomerItems = [];
     for (const customerItem of customerItems) {
-      const ci = await BlStorage.CustomerItems.add(customerItem, user);
+      const ci = await StorageService.CustomerItems.add(customerItem, user);
       addedCustomerItems.push(ci);
     }
 
@@ -574,14 +575,14 @@ export class OrderPlaceOperation implements Operation {
       return ci.id.toString();
     });
 
-    const userDetail = await BlStorage.UserDetails.get(customerId);
+    const userDetail = await StorageService.UserDetails.get(customerId);
 
     let userDetailCustomerItemsIds = userDetail.customerItems ?? [];
 
     userDetailCustomerItemsIds =
       userDetailCustomerItemsIds.concat(customerItemIds);
 
-    await BlStorage.UserDetails.update(customerId, {
+    await StorageService.UserDetails.update(customerId, {
       customerItems: userDetailCustomerItemsIds,
     });
 

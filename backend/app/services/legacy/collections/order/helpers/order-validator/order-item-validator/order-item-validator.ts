@@ -1,11 +1,11 @@
-import { isNotNullish } from "#services/helper/typescript-helpers";
 import { OrderFieldValidator } from "#services/legacy/collections/order/helpers/order-validator/order-field-validator/order-field-validator";
 import { OrderItemBuyValidator } from "#services/legacy/collections/order/helpers/order-validator/order-item-validator/order-item-buy-validator/order-item-buy-validator";
 import { OrderItemExtendValidator } from "#services/legacy/collections/order/helpers/order-validator/order-item-validator/order-item-extend-validator/order-item-extend-validator";
 import { OrderItemPartlyPaymentValidator } from "#services/legacy/collections/order/helpers/order-validator/order-item-validator/order-item-partly-payment-validator/order-item-partly-payment-validator";
 import { OrderItemRentValidator } from "#services/legacy/collections/order/helpers/order-validator/order-item-validator/order-item-rent-validator/order-item-rent-validator";
-import { PriceService } from "#services/price/price.service";
-import { BlStorage } from "#services/storage/bl-storage";
+import { PriceService } from "#services/legacy/price.service";
+import { isNotNullish } from "#services/legacy/typescript-helpers";
+import { StorageService } from "#services/storage_service";
 import { BlError } from "#shared/bl-error";
 import { Branch } from "#shared/branch";
 import { Item } from "#shared/item";
@@ -54,7 +54,7 @@ export class OrderItemValidator {
       this.validateAmount(order);
 
       for (const orderItem of order.orderItems) {
-        const item = await BlStorage.Items.get(orderItem.item);
+        const item = await StorageService.Items.get(orderItem.item);
         await this.validateOrderItemBasedOnType(branch, item, orderItem);
         this.validateOrderItemAmounts(orderItem);
       }

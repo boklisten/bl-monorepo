@@ -1,8 +1,8 @@
 import validator from "validator";
 
-import { isNullish } from "#services/helper/typescript-helpers";
+import { isNullish } from "#services/legacy/typescript-helpers";
 import { PermissionService } from "#services/permission_service";
-import { BlStorage } from "#services/storage/bl-storage";
+import { StorageService } from "#services/storage_service";
 import { UserService } from "#services/user_service";
 import { BlError } from "#shared/bl-error";
 import { BlapiResponse } from "#shared/blapi-response";
@@ -17,7 +17,9 @@ export class UserDetailChangeEmailOperation implements Operation {
     if (isNullish(emailChange) || !validator.isEmail(emailChange))
       throw new BlError("email is not valid").code(701);
 
-    const userDetail = await BlStorage.UserDetails.get(blApiRequest.documentId);
+    const userDetail = await StorageService.UserDetails.get(
+      blApiRequest.documentId,
+    );
 
     const user = await UserService.getByUsername(userDetail.email);
     if (!user) throw new BlError("no user found").code(701);
@@ -33,14 +35,14 @@ export class UserDetailChangeEmailOperation implements Operation {
     if (await UserService.getByUsername(emailChange))
       throw new BlError("email is already present in database").code(701);
 
-    await BlStorage.UserDetails.update(
+    await StorageService.UserDetails.update(
       userDetail.id,
       { email: emailChange },
       // @ts-expect-error fixme: auto ignored
       blApiRequest.user,
     );
 
-    await BlStorage.Users.update(
+    await StorageService.Users.update(
       user.id,
       { username: emailChange },
 

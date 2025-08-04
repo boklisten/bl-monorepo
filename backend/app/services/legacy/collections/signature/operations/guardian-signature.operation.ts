@@ -6,7 +6,7 @@ import {
   serializeSignature,
   signOrders,
 } from "#services/legacy/collections/signature/helpers/signature.helper";
-import { BlStorage } from "#services/storage/bl-storage";
+import { StorageService } from "#services/storage_service";
 import { BlError } from "#shared/bl-error";
 import { BlapiResponse } from "#shared/blapi-response";
 import { SerializedGuardianSignature } from "#shared/serialized-signature";
@@ -19,7 +19,7 @@ export class GuardianSignatureOperation implements Operation {
     if (!validateSerializedGuardianSignature(serializedGuardianSignature))
       throw new BlError("Bad serialized guardian signature").code(701);
 
-    const userDetail = await BlStorage.UserDetails.get(
+    const userDetail = await StorageService.UserDetails.get(
       serializedGuardianSignature.customerId,
     );
 
@@ -33,7 +33,7 @@ export class GuardianSignatureOperation implements Operation {
       serializedGuardianSignature.base64EncodedImage,
     );
 
-    const writtenSignature = await BlStorage.Signatures.add({
+    const writtenSignature = await StorageService.Signatures.add({
       // @ts-expect-error id will be auto-generated
       id: null,
       image: signatureImage,
@@ -41,7 +41,7 @@ export class GuardianSignatureOperation implements Operation {
       signingName: serializedGuardianSignature.signingName,
     });
 
-    await BlStorage.UserDetails.update(userDetail.id, {
+    await StorageService.UserDetails.update(userDetail.id, {
       signatures: [...userDetail.signatures, writtenSignature.id],
     });
 

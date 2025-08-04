@@ -1,12 +1,12 @@
 import { JwtPayload } from "jsonwebtoken";
 import { ParsedQs } from "qs";
 
-import { isBoolean, isNotNullish } from "#services/helper/typescript-helpers";
 import CollectionEndpointDocumentAuth from "#services/legacy/collection-endpoint/collection-endpoint-document-auth";
 import { Hook } from "#services/legacy/hook";
-import { SEDbQuery } from "#services/query/se.db-query";
-import { SEDbQueryBuilder } from "#services/query/se.db-query-builder";
-import { BlStorageData, BlStorageHandler } from "#services/storage/bl-storage";
+import { SEDbQuery } from "#services/legacy/query/se.db-query";
+import { SEDbQueryBuilder } from "#services/legacy/query/se.db-query-builder";
+import { isBoolean, isNotNullish } from "#services/legacy/typescript-helpers";
+import { BlStorageData, BlStorageHandler } from "#services/storage_service";
 import { BlDocument } from "#shared/bl-document";
 import { BlError } from "#shared/bl-error";
 import { UserPermission } from "#shared/user-permission";

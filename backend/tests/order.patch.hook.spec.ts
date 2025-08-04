@@ -6,7 +6,7 @@ import sinon, { createSandbox } from "sinon";
 import { OrderPlacedHandler } from "#services/legacy/collections/order/helpers/order-placed-handler/order-placed-handler";
 import { OrderValidator } from "#services/legacy/collections/order/helpers/order-validator/order-validator";
 import { OrderPatchHook } from "#services/legacy/collections/order/hooks/order.patch.hook";
-import { BlStorage } from "#services/storage/bl-storage";
+import { StorageService } from "#services/storage_service";
 import { AccessToken } from "#shared/access-token";
 import { BlError } from "#shared/bl-error";
 import { Order } from "#shared/order/order";
@@ -78,7 +78,7 @@ test.group("OrderPatchHook", (group) => {
     };
 
     sandbox = createSandbox();
-    sandbox.stub(BlStorage.Orders, "get").callsFake((id) => {
+    sandbox.stub(StorageService.Orders, "get").callsFake((id) => {
       if (id !== testOrder.id) {
         return Promise.reject(new BlError("not found").code(702));
       }
@@ -92,7 +92,7 @@ test.group("OrderPatchHook", (group) => {
       return Promise.resolve({} as Order);
     });
 
-    sandbox.stub(BlStorage.UserDetails, "update").callsFake((id, data) => {
+    sandbox.stub(StorageService.UserDetails, "update").callsFake((id, data) => {
       if (!userDetailUpdated) {
         return Promise.reject(new BlError("could not update"));
       }
@@ -104,14 +104,14 @@ test.group("OrderPatchHook", (group) => {
       return Promise.resolve({} as UserDetail);
     });
 
-    sandbox.stub(BlStorage.UserDetails, "get").callsFake((id) => {
+    sandbox.stub(StorageService.UserDetails, "get").callsFake((id) => {
       if (id !== testUserDetail.id) {
         return Promise.reject(new BlError("not found").code(702));
       }
       return Promise.resolve(testUserDetail);
     });
 
-    sandbox.stub(BlStorage.Orders, "update").callsFake(() => {
+    sandbox.stub(StorageService.Orders, "update").callsFake(() => {
       if (!orderUpdated) {
         return Promise.reject("could not update");
       }

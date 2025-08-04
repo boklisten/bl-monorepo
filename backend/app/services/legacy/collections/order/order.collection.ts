@@ -6,11 +6,11 @@ import { OrderAgreementPdfOperation } from "#services/legacy/collections/order/o
 import { OrderReceiptPdfOperation } from "#services/legacy/collections/order/operations/order-receipt-pdf.operation";
 import { OrderPlaceOperation } from "#services/legacy/collections/order/operations/place/order-place.operation";
 import { RapidHandoutOperation } from "#services/legacy/collections/order/operations/rapid-handout.operation";
-import { BlStorage } from "#services/storage/bl-storage";
+import { StorageService } from "#services/storage_service";
 import { BlCollection } from "#types/bl-collection";
 
 export const OrderCollection: BlCollection = {
-  storage: BlStorage.Orders,
+  storage: StorageService.Orders,
   documentPermission: {
     viewableForPermission: "employee",
   },
@@ -69,7 +69,7 @@ export const OrderCollection: BlCollection = {
       nestedDocuments: [
         {
           field: "customer",
-          storage: BlStorage.UserDetails,
+          storage: StorageService.UserDetails,
         },
       ],
       restriction: {
@@ -111,7 +111,7 @@ export const OrderCollection: BlCollection = {
       nestedDocuments: [
         {
           field: "customer",
-          storage: BlStorage.UserDetails,
+          storage: StorageService.UserDetails,
         },
       ],
       validQueryParams: [

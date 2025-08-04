@@ -1,7 +1,7 @@
 import { PaymentDibsHandler } from "#services/legacy/collections/payment/helpers/dibs/payment-dibs-handler";
 import { PaymentValidator } from "#services/legacy/collections/payment/helpers/payment.validator";
 import { Hook } from "#services/legacy/hook";
-import { BlStorage } from "#services/storage/bl-storage";
+import { StorageService } from "#services/storage_service";
 import { BlError } from "#shared/bl-error";
 import { Order } from "#shared/order/order";
 import { Payment } from "#shared/payment/payment";
@@ -87,7 +87,7 @@ export class PaymentPostHook extends Hook {
 
   private updateOrderWithPayment(payment: Payment): Promise<Payment> {
     return new Promise((resolve, reject) => {
-      BlStorage.Orders.get(payment.order)
+      StorageService.Orders.get(payment.order)
         .then((order: Order) => {
           const paymentIds = order.payments ?? [];
 
@@ -100,7 +100,9 @@ export class PaymentPostHook extends Hook {
           } else {
             paymentIds.push(payment.id);
           }
-          return BlStorage.Orders.update(order.id, { payments: paymentIds })
+          return StorageService.Orders.update(order.id, {
+            payments: paymentIds,
+          })
             .then(() => {
               resolve(payment);
             })

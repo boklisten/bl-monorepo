@@ -1,12 +1,12 @@
 import { HttpContext } from "@adonisjs/core/http";
 
 import { PermissionService } from "#services/permission_service";
-import { BlStorage } from "#services/storage/bl-storage";
+import { StorageService } from "#services/storage_service";
 import { questionsAndAnswersValidator } from "#validators/questions_and_answers_validator";
 
 export default class QuestionsAndAnswersController {
   async getAll() {
-    return await BlStorage.QuestionsAndAnswers.getAll();
+    return await StorageService.QuestionsAndAnswers.getAll();
   }
 
   async store(ctx: HttpContext) {
@@ -15,7 +15,7 @@ export default class QuestionsAndAnswersController {
     const validatedData = await ctx.request.validateUsing(
       questionsAndAnswersValidator,
     );
-    return await BlStorage.QuestionsAndAnswers.add(validatedData);
+    return await StorageService.QuestionsAndAnswers.add(validatedData);
   }
 
   async update(ctx: HttpContext) {
@@ -26,13 +26,13 @@ export default class QuestionsAndAnswersController {
     );
 
     const id = ctx.request.param("id");
-    return await BlStorage.QuestionsAndAnswers.update(id, validatedData);
+    return await StorageService.QuestionsAndAnswers.update(id, validatedData);
   }
 
   async destroy(ctx: HttpContext) {
     PermissionService.adminOrFail(ctx);
 
     const id = ctx.request.param("id");
-    return await BlStorage.QuestionsAndAnswers.remove(id);
+    return await StorageService.QuestionsAndAnswers.remove(id);
   }
 }

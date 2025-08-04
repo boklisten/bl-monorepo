@@ -4,9 +4,9 @@ import chaiAsPromised from "chai-as-promised";
 import sinon, { createSandbox } from "sinon";
 
 import { PaymentDibsHandler } from "#services/legacy/collections/payment/helpers/dibs/payment-dibs-handler";
-import { DibsEasyOrder } from "#services/payment/dibs/dibs-easy-order";
-import { DibsPaymentService } from "#services/payment/dibs/dibs-payment.service";
-import { BlStorage } from "#services/storage/bl-storage";
+import { DibsEasyOrder } from "#services/legacy/dibs/dibs-easy-order";
+import { DibsPaymentService } from "#services/legacy/dibs/dibs-payment.service";
+import { StorageService } from "#services/storage_service";
 import { BlError } from "#shared/bl-error";
 import { Order } from "#shared/order/order";
 import { Payment } from "#shared/payment/payment";
@@ -92,7 +92,7 @@ test.group("PaymentDibsHandler", (group) => {
       throw new BlError("could not create dibs easy order");
     });
 
-    sandbox.stub(BlStorage.UserDetails, "get").callsFake(() => {
+    sandbox.stub(StorageService.UserDetails, "get").callsFake(() => {
       return Promise.resolve({
         id: "customer1",
         name: "Billy Bob",
@@ -106,7 +106,7 @@ test.group("PaymentDibsHandler", (group) => {
         : Promise.reject(new BlError("could not create paymentId"));
     });
 
-    sandbox.stub(BlStorage.Payments, "update").callsFake((id, data) => {
+    sandbox.stub(StorageService.Payments, "update").callsFake((id, data) => {
       if (!paymentUpdated) {
         return Promise.reject(new BlError("could not update payment"));
       }
@@ -116,13 +116,13 @@ test.group("PaymentDibsHandler", (group) => {
       return Promise.resolve(testPayment);
     });
 
-    sandbox.stub(BlStorage.Orders, "get").callsFake((id) => {
+    sandbox.stub(StorageService.Orders, "get").callsFake((id) => {
       return id === testOrder.id
         ? Promise.resolve(testOrder)
         : Promise.reject(new BlError("order not found"));
     });
 
-    sandbox.stub(BlStorage.Orders, "update").callsFake((id, data) => {
+    sandbox.stub(StorageService.Orders, "update").callsFake((id, data) => {
       if (!orderUpdated) {
         return Promise.reject(new BlError("could not update"));
       }

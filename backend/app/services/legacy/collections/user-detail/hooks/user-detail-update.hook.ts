@@ -1,6 +1,6 @@
 import { Hook } from "#services/legacy/hook";
-import { SEDbQuery } from "#services/query/se.db-query";
-import { BlStorage } from "#services/storage/bl-storage";
+import { SEDbQuery } from "#services/legacy/query/se.db-query";
+import { StorageService } from "#services/storage_service";
 import { AccessToken } from "#shared/access-token";
 import { BlError } from "#shared/bl-error";
 import { userDetailPatchValidator } from "#validators/user_detail";
@@ -33,7 +33,7 @@ export class UserDetailUpdateHook extends Hook {
     let existingUsers = [];
     try {
       existingUsers = (
-        await BlStorage.UserDetails.getByQuery(databaseQuery)
+        await StorageService.UserDetails.getByQuery(databaseQuery)
       ).filter((user) => user.id !== accessToken.details);
     } catch {
       // Not found

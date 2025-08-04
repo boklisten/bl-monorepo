@@ -4,7 +4,7 @@ import chaiAsPromised from "chai-as-promised";
 import sinon, { createSandbox } from "sinon";
 
 import { OrderItemMovedFromOrderHandler } from "#services/legacy/collections/order/helpers/order-item-moved-from-order-handler/order-item-moved-from-order-handler";
-import { BlStorage } from "#services/storage/bl-storage";
+import { StorageService } from "#services/storage_service";
 import { BlError } from "#shared/bl-error";
 import { Order } from "#shared/order/order";
 
@@ -24,7 +24,7 @@ test.group("OrderItemMovedFromOrderHandler", (group) => {
       update: sandbox.stub(),
     };
 
-    sandbox.stub(BlStorage, "Orders").value(orderStub);
+    sandbox.stub(StorageService, "Orders").value(orderStub);
     getOrderStub = orderStub.get;
     updateOrderStub = orderStub.update;
     getOrderStub.withArgs(testMovedFromOrderId).resolves(testMovedFromOrder);

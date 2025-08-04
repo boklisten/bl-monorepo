@@ -4,8 +4,8 @@ import chaiAsPromised from "chai-as-promised";
 import { createSandbox, SinonSandbox } from "sinon";
 
 import { UserDetailHelper } from "#services/legacy/collections/user-detail/helpers/user-detail.helper";
-import { DibsEasyPayment } from "#services/payment/dibs/dibs-easy-payment/dibs-easy-payment";
-import { BlStorage } from "#services/storage/bl-storage";
+import { DibsEasyPayment } from "#services/legacy/dibs/dibs-easy-payment/dibs-easy-payment";
+import { StorageService } from "#services/storage_service";
 import { BlError } from "#shared/bl-error";
 import { UserDetail } from "#shared/user-detail";
 
@@ -60,7 +60,7 @@ test.group("UserDetailHelper", (group) => {
 
     userDetailStorageUpdateSuccess = true;
 
-    sandbox.stub(BlStorage.UserDetails, "update").callsFake((id, data) => {
+    sandbox.stub(StorageService.UserDetails, "update").callsFake((id, data) => {
       if (!userDetailStorageUpdateSuccess) {
         return Promise.reject(new BlError("could not update"));
       }
@@ -68,7 +68,7 @@ test.group("UserDetailHelper", (group) => {
       return Promise.resolve(returnObj);
     });
 
-    sandbox.stub(BlStorage.UserDetails, "get").callsFake((id) => {
+    sandbox.stub(StorageService.UserDetails, "get").callsFake((id) => {
       if (id !== testUserDetail.id) {
         return Promise.reject(new BlError("not found"));
       }

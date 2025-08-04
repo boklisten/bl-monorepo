@@ -2,7 +2,7 @@ import logger from "@adonisjs/core/services/logger";
 import { Transformer } from "@napi-rs/image";
 
 import { Signature } from "#models/signature.schema";
-import { BlStorage } from "#services/storage/bl-storage";
+import { StorageService } from "#services/storage_service";
 import { BlError } from "#shared/bl-error";
 import {
   SerializedSignature,
@@ -48,7 +48,7 @@ export async function getValidUserSignature(
   const newestSignatureId = userDetail.signatures.at(-1);
   if (newestSignatureId == undefined) return null;
 
-  const signature = await BlStorage.Signatures.get(newestSignatureId);
+  const signature = await StorageService.Signatures.get(newestSignatureId);
   if (!signatureIsValidForUser(userDetail, signature)) {
     return null;
   }
@@ -103,12 +103,12 @@ export async function signOrders(userDetail: UserDetail) {
   if (!(userDetail.orders && userDetail.orders.length > 0)) {
     return;
   }
-  const orders = await BlStorage.Orders.getMany(userDetail.orders);
+  const orders = await StorageService.Orders.getMany(userDetail.orders);
   await Promise.all(
     orders
       .filter((order) => order.pendingSignature)
       .map(async (order) => {
-        return await BlStorage.Orders.update(order.id, {
+        return await StorageService.Orders.update(order.id, {
           pendingSignature: false,
         }).catch((error) =>
           logger.error(

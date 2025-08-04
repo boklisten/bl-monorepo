@@ -8,7 +8,7 @@ import { OrderItemValidator } from "#services/legacy/collections/order/helpers/o
 import { OrderPlacedValidator } from "#services/legacy/collections/order/helpers/order-validator/order-placed-validator/order-placed-validator";
 import { OrderUserDetailValidator } from "#services/legacy/collections/order/helpers/order-validator/order-user-detail-validator/order-user-detail-validator";
 import { OrderValidator } from "#services/legacy/collections/order/helpers/order-validator/order-validator";
-import { BlStorage } from "#services/storage/bl-storage";
+import { StorageService } from "#services/storage_service";
 import { BlError } from "#shared/bl-error";
 import { Branch } from "#shared/branch";
 import { Order } from "#shared/order/order";
@@ -43,7 +43,7 @@ test.group("OrderValidator", (group) => {
   let sandbox: sinon.SinonSandbox;
   group.each.setup(() => {
     sandbox = createSandbox();
-    sandbox.stub(BlStorage.Branches, "get").callsFake((id) => {
+    sandbox.stub(StorageService.Branches, "get").callsFake((id) => {
       if (id !== testBranch.id) {
         return Promise.reject(new BlError("not found").code(702));
       }

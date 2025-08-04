@@ -1,6 +1,6 @@
 import moment from "moment-timezone";
 
-import { BlStorage } from "#services/storage/bl-storage";
+import { StorageService } from "#services/storage_service";
 import { BlError } from "#shared/bl-error";
 import { Branch } from "#shared/branch";
 import { OpeningHour } from "#shared/opening-hour";
@@ -13,7 +13,7 @@ export class OpeningHourHelper {
     if (!branch.openingHours || branch.openingHours.length <= 0) {
       throw new BlError("no opening hours found at branch");
     }
-    const openingHours = await BlStorage.OpeningHours.getMany(
+    const openingHours = await StorageService.OpeningHours.getMany(
       branch.openingHours,
     );
 

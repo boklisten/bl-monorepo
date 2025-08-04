@@ -9,7 +9,7 @@ import { OrderToCustomerItemGenerator } from "#services/legacy/collections/custo
 import { OrderPlacedHandler } from "#services/legacy/collections/order/helpers/order-placed-handler/order-placed-handler";
 import { OrderValidator } from "#services/legacy/collections/order/helpers/order-validator/order-validator";
 import { OrderPlaceOperation } from "#services/legacy/collections/order/operations/place/order-place.operation";
-import { BlStorage } from "#services/storage/bl-storage";
+import { StorageService } from "#services/storage_service";
 import { BlError } from "#shared/bl-error";
 import { BlapiResponse } from "#shared/blapi-response";
 import { Order } from "#shared/order/order";
@@ -45,22 +45,28 @@ test.group("OrderPlaceOperation", (group) => {
   group.each.setup(() => {
     sandbox = createSandbox();
     placeOrderStub = sandbox.stub(orderPlacedHandler, "placeOrder");
-    getOrderStub = sandbox.stub(BlStorage.Orders, "get");
-    sandbox.stub(BlStorage.CustomerItems, "get");
+    getOrderStub = sandbox.stub(StorageService.Orders, "get");
+    sandbox.stub(StorageService.CustomerItems, "get");
     aggregateCustomerItemsStub = sandbox.stub(
-      BlStorage.CustomerItems,
+      StorageService.CustomerItems,
       "aggregate",
     );
-    getManyCustomerItemsStub = sandbox.stub(BlStorage.CustomerItems, "getMany");
+    getManyCustomerItemsStub = sandbox.stub(
+      StorageService.CustomerItems,
+      "getMany",
+    );
     generateCustomerItemStub = sandbox.stub(
       orderToCustomerItemGenerator,
       "generate",
     );
     validateOrderStub = sandbox.stub(orderValidator, "validate");
-    getAllUserMatchesStub = sandbox.stub(BlStorage.UserMatches, "getAll");
-    getAllStandMatchesStub = sandbox.stub(BlStorage.StandMatches, "getAll");
-    getUserDetailStub = sandbox.stub(BlStorage.UserDetails, "get");
-    getSignatureStub = sandbox.stub(BlStorage.Signatures, "get");
+    getAllUserMatchesStub = sandbox.stub(StorageService.UserMatches, "getAll");
+    getAllStandMatchesStub = sandbox.stub(
+      StorageService.StandMatches,
+      "getAll",
+    );
+    getUserDetailStub = sandbox.stub(StorageService.UserDetails, "get");
+    getSignatureStub = sandbox.stub(StorageService.Signatures, "get");
   });
   group.each.teardown(() => {
     sandbox.restore();

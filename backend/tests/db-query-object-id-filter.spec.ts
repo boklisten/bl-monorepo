@@ -3,7 +3,7 @@ import { expect, use as chaiUse, should } from "chai";
 import chaiAsPromised from "chai-as-promised";
 import mongoose from "mongoose";
 
-import { DbQueryObjectIdFilter } from "#services/query/db-query-object-id-filter";
+import { DbQueryObjectIdFilter } from "#services/legacy/query/db-query-object-id-filter";
 
 chaiUse(chaiAsPromised);
 should();

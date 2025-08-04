@@ -2,11 +2,11 @@ import { SignatureGetIdHook } from "#services/legacy/collections/signature/hooks
 import { SignaturePostHook } from "#services/legacy/collections/signature/hooks/signature.post.hook";
 import { CheckGuardianSignatureOperation } from "#services/legacy/collections/signature/operations/check-guardian-signature.operation";
 import { GuardianSignatureOperation } from "#services/legacy/collections/signature/operations/guardian-signature.operation";
-import { BlStorage } from "#services/storage/bl-storage";
+import { StorageService } from "#services/storage_service";
 import { BlCollection } from "#types/bl-collection";
 
 export const SignatureCollection: BlCollection = {
-  storage: BlStorage.Signatures,
+  storage: StorageService.Signatures,
   documentPermission: {
     viewableForPermission: "employee",
   },

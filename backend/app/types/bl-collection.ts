@@ -1,6 +1,6 @@
 import { Hook } from "#services/legacy/hook";
-import { ValidParameter } from "#services/query/db-query-valid-params";
-import { BlStorageHandler } from "#services/storage/bl-storage";
+import { ValidParameter } from "#services/legacy/query/db-query-valid-params";
+import { BlStorageHandler } from "#services/storage_service";
 import { UserPermission } from "#shared/user-permission";
 import { NestedDocument } from "#types/nested-document";
 import { Operation } from "#types/operation";

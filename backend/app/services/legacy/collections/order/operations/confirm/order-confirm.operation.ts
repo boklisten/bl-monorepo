@@ -1,6 +1,6 @@
 import { OrderPlacedHandler } from "#services/legacy/collections/order/helpers/order-placed-handler/order-placed-handler";
-import { SEDbQueryBuilder } from "#services/query/se.db-query-builder";
-import { BlStorage } from "#services/storage/bl-storage";
+import { SEDbQueryBuilder } from "#services/legacy/query/se.db-query-builder";
+import { StorageService } from "#services/storage_service";
 import { AccessToken } from "#shared/access-token";
 import { BlError } from "#shared/bl-error";
 import { BlapiResponse } from "#shared/blapi-response";
@@ -57,7 +57,8 @@ export class OrderConfirmOperation implements Operation {
     );
 
     try {
-      const existingOrders = await BlStorage.Orders.getByQuery(databaseQuery);
+      const existingOrders =
+        await StorageService.Orders.getByQuery(databaseQuery);
       const alreadyOrderedItems =
         this.filterOrdersByAlreadyOrdered(existingOrders);
 
@@ -90,7 +91,7 @@ export class OrderConfirmOperation implements Operation {
     let order;
 
     try {
-      order = await BlStorage.Orders.get(blApiRequest.documentId);
+      order = await StorageService.Orders.get(blApiRequest.documentId);
     } catch {
       throw new BlError(`order "${blApiRequest.documentId}" not found`);
     }

@@ -1,5 +1,5 @@
-import { isNullish } from "#services/helper/typescript-helpers";
-import { BlStorage } from "#services/storage/bl-storage";
+import { isNullish } from "#services/legacy/typescript-helpers";
+import { StorageService } from "#services/storage_service";
 import { BlError } from "#shared/bl-error";
 import { Order } from "#shared/order/order";
 
@@ -39,7 +39,7 @@ export class OrderItemMovedFromOrderHandler {
   private async updateOrderItem(
     orderItemToUpdate: OrderItemToUpdate,
   ): Promise<boolean> {
-    const originalOrder = await BlStorage.Orders.get(
+    const originalOrder = await StorageService.Orders.get(
       orderItemToUpdate.originalOrderId,
     );
 
@@ -53,7 +53,7 @@ export class OrderItemMovedFromOrderHandler {
       }
     }
 
-    await BlStorage.Orders.update(orderItemToUpdate.originalOrderId, {
+    await StorageService.Orders.update(orderItemToUpdate.originalOrderId, {
       orderItems: originalOrder.orderItems,
     });
     return true;

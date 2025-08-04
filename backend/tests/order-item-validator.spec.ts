@@ -8,7 +8,7 @@ import { OrderItemBuyValidator } from "#services/legacy/collections/order/helper
 import { OrderItemExtendValidator } from "#services/legacy/collections/order/helpers/order-validator/order-item-validator/order-item-extend-validator/order-item-extend-validator";
 import { OrderItemRentValidator } from "#services/legacy/collections/order/helpers/order-validator/order-item-validator/order-item-rent-validator/order-item-rent-validator";
 import { OrderItemValidator } from "#services/legacy/collections/order/helpers/order-validator/order-item-validator/order-item-validator";
-import { BlStorage } from "#services/storage/bl-storage";
+import { StorageService } from "#services/storage_service";
 import { BlError } from "#shared/bl-error";
 import { Branch } from "#shared/branch";
 import { Item } from "#shared/item";
@@ -107,14 +107,14 @@ test.group("OrderItemValidator", (group) => {
       return Promise.resolve(true);
     });
 
-    sandbox.stub(BlStorage.Branches, "get").callsFake((id) => {
+    sandbox.stub(StorageService.Branches, "get").callsFake((id) => {
       if (id !== "branch1") {
         return Promise.reject(new BlError("not found").code(702));
       }
       return Promise.resolve(testBranch);
     });
 
-    sandbox.stub(BlStorage.Items, "get").callsFake(() => {
+    sandbox.stub(StorageService.Items, "get").callsFake(() => {
       return Promise.resolve({} as Item);
     });
   });

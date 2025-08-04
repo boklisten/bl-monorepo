@@ -8,7 +8,7 @@ import { CustomerItemHandler } from "#services/legacy/collections/customer-item/
 import { OrderItemMovedFromOrderHandler } from "#services/legacy/collections/order/helpers/order-item-moved-from-order-handler/order-item-moved-from-order-handler";
 import { OrderPlacedHandler } from "#services/legacy/collections/order/helpers/order-placed-handler/order-placed-handler";
 import { PaymentHandler } from "#services/legacy/collections/payment/helpers/payment-handler";
-import { BlStorage } from "#services/storage/bl-storage";
+import { StorageService } from "#services/storage_service";
 import { AccessToken } from "#shared/access-token";
 import { BlError } from "#shared/bl-error";
 import { Order } from "#shared/order/order";
@@ -57,7 +57,7 @@ test.group("OrderPlacedHandler", (group) => {
         }
       }),
     };
-    sandbox.stub(BlStorage, "CustomerItems").value(customerItemsStub);
+    sandbox.stub(StorageService, "CustomerItems").value(customerItemsStub);
 
     const userDetailsStub = {
       get: sandbox.stub().callsFake((id: string) => {
@@ -76,7 +76,7 @@ test.group("OrderPlacedHandler", (group) => {
         return Promise.reject(new BlError("could not update user detail"));
       }),
     };
-    sandbox.stub(BlStorage, "UserDetails").value(userDetailsStub);
+    sandbox.stub(StorageService, "UserDetails").value(userDetailsStub);
 
     sandbox.stub(paymentHandler, "confirmPayments").callsFake(() => {
       if (!paymentsConfirmed) {
@@ -99,7 +99,7 @@ test.group("OrderPlacedHandler", (group) => {
         return Promise.resolve(testOrder); // or whatever you need
       }),
     };
-    sandbox.stub(BlStorage, "Orders").value(ordersStub);
+    sandbox.stub(StorageService, "Orders").value(ordersStub);
 
     sandbox.stub(DispatchService, "orderPlaced").resolves();
 

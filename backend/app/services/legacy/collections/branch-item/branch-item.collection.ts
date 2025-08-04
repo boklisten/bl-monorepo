@@ -1,8 +1,8 @@
-import { BlStorage } from "#services/storage/bl-storage";
+import { StorageService } from "#services/storage_service";
 import { BlCollection } from "#types/bl-collection";
 
 export const BranchItemCollection: BlCollection = {
-  storage: BlStorage.BranchItems,
+  storage: StorageService.BranchItems,
   endpoints: [
     {
       method: "getId",
@@ -28,7 +28,7 @@ export const BranchItemCollection: BlCollection = {
       nestedDocuments: [
         {
           field: "item",
-          storage: BlStorage.Items,
+          storage: StorageService.Items,
         },
       ],
     },

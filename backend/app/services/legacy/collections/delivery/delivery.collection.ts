@@ -1,11 +1,11 @@
 import { DeliveryPatchHook } from "#services/legacy/collections/delivery/hooks/delivery.patch.hook";
 import { DeliveryPostHook } from "#services/legacy/collections/delivery/hooks/delivery.post.hook";
 import { PostalCodeLookupOperation } from "#services/legacy/collections/delivery/operations/postal-code-lookup.operation";
-import { BlStorage } from "#services/storage/bl-storage";
+import { StorageService } from "#services/storage_service";
 import { BlCollection } from "#types/bl-collection";
 
 export const DeliveryCollection: BlCollection = {
-  storage: BlStorage.Deliveries,
+  storage: StorageService.Deliveries,
   endpoints: [
     {
       method: "post",

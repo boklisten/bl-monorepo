@@ -1,7 +1,7 @@
 import { ObjectId } from "mongodb";
 
-import { SEDbQuery } from "#services/query/se.db-query";
-import { BlStorage } from "#services/storage/bl-storage";
+import { SEDbQuery } from "#services/legacy/query/se.db-query";
+import { StorageService } from "#services/storage_service";
 import { BlError } from "#shared/bl-error";
 import { Item } from "#shared/item";
 import {
@@ -105,10 +105,9 @@ async function addDetailsToUserMatches(
   const userDetailsMap = new Map(
     await Promise.all(
       customers.map((id) =>
-        BlStorage.UserDetails.get(id).then((detail): [string, UserDetail] => [
-          id,
-          detail,
-        ]),
+        StorageService.UserDetails.get(id).then(
+          (detail): [string, UserDetail] => [id, detail],
+        ),
       ),
     ),
   );
@@ -139,7 +138,7 @@ async function addDetailsToUserMatches(
       blIds.map((blId) => {
         const uniqueItemQuery = new SEDbQuery();
         uniqueItemQuery.stringFilters = [{ fieldName: "blid", value: blId }];
-        return BlStorage.UniqueItems.getByQuery(uniqueItemQuery).then(
+        return StorageService.UniqueItems.getByQuery(uniqueItemQuery).then(
           (uniqueItems): [string, string] => [blId, uniqueItems[0]?.item ?? ""],
         );
       }),
@@ -149,7 +148,10 @@ async function addDetailsToUserMatches(
     new Set([...items, ...blIdsToItemIdMap.values()]),
   );
   const itemsMap = new Map(
-    (await BlStorage.Items.getMany(allItems)).map((item) => [item.id, item]),
+    (await StorageService.Items.getMany(allItems)).map((item) => [
+      item.id,
+      item,
+    ]),
   );
 
   return userMatches.map((userMatch) =>
@@ -172,7 +174,7 @@ async function addDetailsToStandMatch(
   );
 
   const itemsMap = new Map(
-    (await BlStorage.Items.getMany(items)).map((item) => [item.id, item]),
+    (await StorageService.Items.getMany(items)).map((item) => [item.id, item]),
   );
   return {
     ...standMatch,
@@ -181,7 +183,7 @@ async function addDetailsToStandMatch(
 }
 
 export async function getMyMatches(detailsId: string) {
-  const userMatches = (await BlStorage.UserMatches.aggregate([
+  const userMatches = (await StorageService.UserMatches.aggregate([
     {
       $match: {
         $or: [
@@ -194,7 +196,7 @@ export async function getMyMatches(detailsId: string) {
 
   const userMatchesWithDetails = await addDetailsToUserMatches(userMatches);
 
-  const standMatches = (await BlStorage.StandMatches.aggregate([
+  const standMatches = (await StorageService.StandMatches.aggregate([
     {
       $match: {
         customer: new ObjectId(detailsId),

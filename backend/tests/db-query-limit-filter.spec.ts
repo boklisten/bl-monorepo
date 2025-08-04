@@ -2,7 +2,7 @@ import { test } from "@japa/runner";
 import { expect, use as chaiUse, should } from "chai";
 import chaiAsPromised from "chai-as-promised";
 
-import { DbQueryLimitFilter } from "#services/query/db-query-limit-filter";
+import { DbQueryLimitFilter } from "#services/legacy/query/db-query-limit-filter";
 
 chaiUse(chaiAsPromised);
 should();

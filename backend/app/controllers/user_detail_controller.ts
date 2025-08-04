@@ -1,7 +1,7 @@
 import { HttpContext } from "@adonisjs/core/http";
 
 import { PermissionService } from "#services/permission_service";
-import { BlStorage } from "#services/storage/bl-storage";
+import { StorageService } from "#services/storage_service";
 import {
   customerUpdateUserDetailsValidator,
   employeeUpdateUserDetailsValidator,
@@ -24,7 +24,7 @@ export default class UserDetailsController {
         detailsId,
       },
     });
-    await BlStorage.UserDetails.update(detailsId, {
+    await StorageService.UserDetails.update(detailsId, {
       phone: phoneNumber,
       name,
       address,
@@ -55,7 +55,7 @@ export default class UserDetailsController {
         detailsId: targetUserDetailsId,
       },
     });
-    await BlStorage.UserDetails.update(targetUserDetailsId, {
+    await StorageService.UserDetails.update(targetUserDetailsId, {
       emailConfirmed: emailVerified,
       email,
       phone: phoneNumber,

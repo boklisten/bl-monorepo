@@ -1,7 +1,7 @@
-import { isNullish } from "#services/helper/typescript-helpers";
-import { DibsEasyPayment } from "#services/payment/dibs/dibs-easy-payment/dibs-easy-payment";
-import { DibsPaymentService } from "#services/payment/dibs/dibs-payment.service";
-import { BlStorage } from "#services/storage/bl-storage";
+import { DibsEasyPayment } from "#services/legacy/dibs/dibs-easy-payment/dibs-easy-payment";
+import { DibsPaymentService } from "#services/legacy/dibs/dibs-payment.service";
+import { isNullish } from "#services/legacy/typescript-helpers";
+import { StorageService } from "#services/storage_service";
 import { BlError } from "#shared/bl-error";
 import { Order } from "#shared/order/order";
 import { Payment } from "#shared/payment/payment";
@@ -35,7 +35,7 @@ export class PaymentDibsConfirmer {
     }
 
     try {
-      await BlStorage.Payments.update(payment.id, {
+      await StorageService.Payments.update(payment.id, {
         info: dibsEasyPaymentDetails,
       });
     } catch (error) {

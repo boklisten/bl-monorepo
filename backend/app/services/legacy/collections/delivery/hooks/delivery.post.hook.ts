@@ -1,7 +1,7 @@
 import { DeliveryHandler } from "#services/legacy/collections/delivery/helpers/deliveryHandler/delivery-handler";
 import { DeliveryValidator } from "#services/legacy/collections/delivery/helpers/deliveryValidator/delivery-validator";
 import { Hook } from "#services/legacy/hook";
-import { BlStorage } from "#services/storage/bl-storage";
+import { StorageService } from "#services/storage_service";
 import { AccessToken } from "#shared/access-token";
 import { BlError } from "#shared/bl-error";
 import { Delivery } from "#shared/delivery/delivery";
@@ -34,7 +34,7 @@ export class DeliveryPostHook extends Hook {
 
     const delivery = deliveries[0];
     return new Promise((resolve, reject) => {
-      BlStorage.Orders
+      StorageService.Orders
 
         // @ts-expect-error fixme: auto ignored
         .get(delivery.order)

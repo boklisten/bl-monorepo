@@ -2,7 +2,7 @@ import { test } from "@japa/runner";
 import { expect, use as chaiUse, should } from "chai";
 import chaiAsPromised from "chai-as-promised";
 
-import { DbQueryExpandFilter } from "#services/query/db-query-expand-filter";
+import { DbQueryExpandFilter } from "#services/legacy/query/db-query-expand-filter";
 
 chaiUse(chaiAsPromised);
 should();

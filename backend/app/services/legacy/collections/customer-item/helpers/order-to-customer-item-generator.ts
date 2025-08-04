@@ -1,4 +1,4 @@
-import { BlStorage } from "#services/storage/bl-storage";
+import { StorageService } from "#services/storage_service";
 import { CustomerItem } from "#shared/customer-item/customer-item";
 import { Order } from "#shared/order/order";
 import { OrderItem } from "#shared/order/order-item/order-item";
@@ -12,7 +12,7 @@ export class OrderToCustomerItemGenerator {
       return [];
     }
 
-    const customerDetail = await BlStorage.UserDetails.get(order.customer);
+    const customerDetail = await StorageService.UserDetails.get(order.customer);
 
     for (const orderItem of order.orderItems) {
       if (this.shouldCreateCustomerItem(orderItem)) {

@@ -3,8 +3,8 @@ import sgMail from "@sendgrid/mail";
 import twilio from "twilio";
 
 import { DateService } from "#services/legacy/date.service";
-import { OrderEmailHandler } from "#services/messenger/email/order_email_handler";
-import { BlStorage } from "#services/storage/bl-storage";
+import { OrderEmailHandler } from "#services/legacy/order_email_handler";
+import { StorageService } from "#services/storage_service";
 import { Order } from "#shared/order/order";
 import { UserDetail } from "#shared/user-detail";
 import env from "#start/env";
@@ -116,7 +116,7 @@ const DispatchService = {
     order: Order,
   ): Promise<void> {
     const deliveryId = typeof order.delivery === "string" ? order.delivery : "";
-    const delivery = await BlStorage.Deliveries.get(deliveryId);
+    const delivery = await StorageService.Deliveries.get(deliveryId);
     const emailUser: EmailUser = {
       id: customerDetail.id,
       name: customerDetail.name,

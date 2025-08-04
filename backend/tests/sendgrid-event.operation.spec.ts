@@ -4,7 +4,7 @@ import chaiAsPromised from "chai-as-promised";
 import sinon, { createSandbox } from "sinon";
 
 import { SendgridEventOperation } from "#services/legacy/collections/message/operations/sendgrid-event.operation";
-import { BlStorage } from "#services/storage/bl-storage";
+import { StorageService } from "#services/storage_service";
 import { Message } from "#shared/message/message";
 
 chaiUse(chaiAsPromised);
@@ -22,7 +22,7 @@ test.group("SendgridEventOperation", (group) => {
       get: sandbox.stub(),
       update: sandbox.stub(),
     };
-    sandbox.stub(BlStorage, "Messages").value(messagesStub);
+    sandbox.stub(StorageService, "Messages").value(messagesStub);
 
     messageStorageGetIdStub = messagesStub.get;
     messageStorageUpdateStub = messagesStub.update;

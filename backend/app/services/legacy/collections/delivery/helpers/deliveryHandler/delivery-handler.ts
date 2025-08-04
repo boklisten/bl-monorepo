@@ -1,5 +1,5 @@
 import { BringDeliveryService } from "#services/legacy/collections/delivery/helpers/deliveryBring/bringDelivery.service";
-import { BlStorage } from "#services/storage/bl-storage";
+import { StorageService } from "#services/storage_service";
 import { BlError } from "#shared/bl-error";
 import { Branch } from "#shared/branch";
 import { Delivery } from "#shared/delivery/delivery";
@@ -72,7 +72,7 @@ export class DeliveryHandler {
   private updateOrder(order: Order, delivery: Delivery): Promise<boolean> {
     const orderUpdateData = { delivery: delivery.id };
 
-    return BlStorage.Orders.update(order.id, orderUpdateData)
+    return StorageService.Orders.update(order.id, orderUpdateData)
       .then(() => {
         return true;
       })
@@ -87,7 +87,7 @@ export class DeliveryHandler {
         (orderItem) => orderItem.item,
       );
 
-      BlStorage.Items.getMany(itemIds)
+      StorageService.Items.getMany(itemIds)
         .then((items: Item[]) => {
           resolve(items);
         })
@@ -103,7 +103,7 @@ export class DeliveryHandler {
     items: Item[],
   ): Promise<Delivery> {
     return new Promise((resolve, reject) => {
-      BlStorage.Branches.get(order.branch)
+      StorageService.Branches.get(order.branch)
         .then((branch: Branch) => {
           const freeDelivery =
             (branch.paymentInfo && branch.paymentInfo.responsibleForDelivery) ||
@@ -129,7 +129,7 @@ export class DeliveryHandler {
                   delivery.info["trackingNumber"];
               }
 
-              BlStorage.Deliveries.update(delivery.id, {
+              StorageService.Deliveries.update(delivery.id, {
                 amount: deliveryInfoBring.amount,
                 info: deliveryInfoBring,
               })

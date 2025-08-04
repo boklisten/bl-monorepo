@@ -1,6 +1,6 @@
 import mongoose, { Model, Schema } from "mongoose";
 
-import { BlSchema } from "#services/storage/bl-storage";
+import { BlSchema } from "#services/storage_service";
 
 export class MongooseModelCreator<T> {
   constructor(

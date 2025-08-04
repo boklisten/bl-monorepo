@@ -5,7 +5,7 @@ import sinon from "sinon";
 
 import { CustomerItemActiveBlid } from "#services/legacy/collections/customer-item/helpers/customer-item-active-blid";
 import { UniqueItemActiveOperation } from "#services/legacy/collections/unique-item/operations/unique-item-active.operation";
-import { BlStorage } from "#services/storage/bl-storage";
+import { StorageService } from "#services/storage_service";
 import { UniqueItem } from "#shared/unique-item";
 
 chaiUse(chaiAsPromised);
@@ -29,7 +29,7 @@ test.group("UniqueItemActiveOperation", (group) => {
       "getActiveCustomerItems",
     );
 
-    getUniqueItemStub = sandbox.stub(BlStorage.UniqueItems, "get");
+    getUniqueItemStub = sandbox.stub(StorageService.UniqueItems, "get");
   });
   group.each.teardown(() => {
     sandbox.restore();

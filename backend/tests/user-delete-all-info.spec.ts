@@ -4,7 +4,7 @@ import chaiAsPromised from "chai-as-promised";
 import sinon, { createSandbox } from "sinon";
 
 import { DeleteUserService } from "#services/legacy/collections/user-detail/helpers/delete-user-service";
-import { BlStorage } from "#services/storage/bl-storage";
+import { StorageService } from "#services/storage_service";
 import { User } from "#types/user";
 chaiUse(chaiAsPromised);
 should();
@@ -17,8 +17,8 @@ test.group("UserDeleteAllInfo", (group) => {
 
   group.each.setup(() => {
     sandbox = createSandbox();
-    userRemoveStub = sandbox.stub(BlStorage.Users, "remove");
-    userGetByQueryStub = sandbox.stub(BlStorage.Users, "getByQuery");
+    userRemoveStub = sandbox.stub(StorageService.Users, "remove");
+    userGetByQueryStub = sandbox.stub(StorageService.Users, "getByQuery");
   });
   group.each.teardown(() => {
     sandbox.restore();

@@ -6,7 +6,7 @@ import sinon, { createSandbox } from "sinon";
 import { DeliveryHandler } from "#services/legacy/collections/delivery/helpers/deliveryHandler/delivery-handler";
 import { DeliveryValidator } from "#services/legacy/collections/delivery/helpers/deliveryValidator/delivery-validator";
 import { DeliveryPostHook } from "#services/legacy/collections/delivery/hooks/delivery.post.hook";
-import { BlStorage } from "#services/storage/bl-storage";
+import { StorageService } from "#services/storage_service";
 import { AccessToken } from "#shared/access-token";
 import { BlError } from "#shared/bl-error";
 import { Delivery } from "#shared/delivery/delivery";
@@ -109,7 +109,7 @@ test.group("DeliveryPostHook", (group) => {
       return Promise.reject(new BlError("order could not be updated"));
     });
 
-    sandbox.stub(BlStorage.Deliveries, "get").callsFake((id) => {
+    sandbox.stub(StorageService.Deliveries, "get").callsFake((id) => {
       return new Promise((resolve, reject) => {
         if (id === "delivery1") {
           return resolve(testDelivery);
@@ -118,7 +118,7 @@ test.group("DeliveryPostHook", (group) => {
       });
     });
 
-    sandbox.stub(BlStorage.Orders, "get").callsFake((id) => {
+    sandbox.stub(StorageService.Orders, "get").callsFake((id) => {
       return new Promise((resolve, reject) => {
         if (id === "order1") {
           return resolve(testOrder);
@@ -127,7 +127,7 @@ test.group("DeliveryPostHook", (group) => {
       });
     });
 
-    sandbox.stub(BlStorage.Items, "getMany").callsFake((ids: string[]) => {
+    sandbox.stub(StorageService.Items, "getMany").callsFake((ids: string[]) => {
       return new Promise((resolve, reject) => {
         if (ids[0] === "item1") {
           return resolve([testItem]);

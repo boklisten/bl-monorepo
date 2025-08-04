@@ -1,7 +1,7 @@
 import { CustomerItemValidator } from "#services/legacy/collections/customer-item/validators/customer-item-validator";
 import { UserDetailHelper } from "#services/legacy/collections/user-detail/helpers/user-detail.helper";
 import { Hook } from "#services/legacy/hook";
-import { BlStorage } from "#services/storage/bl-storage";
+import { StorageService } from "#services/storage_service";
 import { AccessToken } from "#shared/access-token";
 import { BlError } from "#shared/bl-error";
 import { CustomerItem } from "#shared/customer-item/customer-item";
@@ -29,7 +29,7 @@ export class CustomerItemPostHook extends Hook {
       return Promise.reject(new BlError("customerItem is undefined"));
     }
 
-    return BlStorage.UserDetails.get(customerItem.customer)
+    return StorageService.UserDetails.get(customerItem.customer)
       .then((userDetail: UserDetail) => {
         if (!this.userDetailHelper.isValid(userDetail)) {
           throw new BlError(`userDetail "${customerItem.customer}" not valid`);
@@ -82,7 +82,7 @@ export class CustomerItemPostHook extends Hook {
       );
     }
 
-    return BlStorage.Orders.get(customerItem.orders[0] ?? "")
+    return StorageService.Orders.get(customerItem.orders[0] ?? "")
       .then((order: Order) => {
         //update the corresponding orderItem with customerItem
         for (const orderItem of order.orderItems) {
@@ -94,12 +94,12 @@ export class CustomerItemPostHook extends Hook {
             break;
           }
         }
-        return BlStorage.Orders.update(order.id, {
+        return StorageService.Orders.update(order.id, {
           orderItems: order.orderItems,
         });
       })
       .then(() => {
-        return BlStorage.UserDetails.get(customerItem.customer);
+        return StorageService.UserDetails.get(customerItem.customer);
       })
       .then((userDetail: UserDetail) => {
         // @ts-expect-error fixme: auto ignored
@@ -118,7 +118,7 @@ export class CustomerItemPostHook extends Hook {
           newCustomerItems.push(customerItem.id);
         }
 
-        return BlStorage.UserDetails.update(
+        return StorageService.UserDetails.update(
           userDetail.id,
           // @ts-expect-error fixme: auto ignored
           { customerItems: newCustomerItems },

@@ -4,7 +4,7 @@ import { ObjectId } from "mongodb";
 
 import DispatchService from "#services/dispatch_service";
 import { PermissionService } from "#services/permission_service";
-import { BlStorage } from "#services/storage/bl-storage";
+import { StorageService } from "#services/storage_service";
 import { EMAIL_SENDER } from "#types/email_templates";
 import { reminderValidator } from "#validators/reminder";
 import {
@@ -30,7 +30,7 @@ async function aggregateCustomersToRemind(
   branchIDs: string[],
   deadlineISO: string,
 ) {
-  return (await BlStorage.CustomerItems.aggregate([
+  return (await StorageService.CustomerItems.aggregate([
     {
       $match: {
         returned: false,

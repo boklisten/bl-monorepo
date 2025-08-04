@@ -4,7 +4,7 @@ import chaiAsPromised from "chai-as-promised";
 import sinon, { createSandbox } from "sinon";
 
 import { OrderItemRentPeriodValidator } from "#services/legacy/collections/order/helpers/order-validator/order-item-validator/order-item-rent-validator/order-item-rent-period-validator/order-item-rent-period-validator";
-import { BlStorage } from "#services/storage/bl-storage";
+import { StorageService } from "#services/storage_service";
 import { BlError } from "#shared/bl-error";
 import { BranchPaymentInfo } from "#shared/branch-payment-info";
 import { OrderItem } from "#shared/order/order-item/order-item";
@@ -48,7 +48,7 @@ test.group("OrderItemRentPeriodValidator", (group) => {
       responsible: true,
     };
     sandbox = createSandbox();
-    orderStorageGetStub = sandbox.stub(BlStorage.Orders, "get");
+    orderStorageGetStub = sandbox.stub(StorageService.Orders, "get");
   });
   group.each.teardown(() => {
     sandbox.restore();

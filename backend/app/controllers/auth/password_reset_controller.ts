@@ -4,7 +4,7 @@ import hash from "@adonisjs/core/services/hash";
 import CryptoService from "#services/crypto_service";
 import DispatchService from "#services/dispatch_service";
 import { PasswordService } from "#services/password_service";
-import { BlStorage } from "#services/storage/bl-storage";
+import { StorageService } from "#services/storage_service";
 import { UserService } from "#services/user_service";
 import { PendingPasswordReset } from "#shared/pending-password-reset";
 import env from "#start/env";
@@ -24,7 +24,8 @@ async function getPasswordReset({
 }) {
   let pendingPasswordReset: PendingPasswordReset;
   try {
-    pendingPasswordReset = await BlStorage.PendingPasswordResets.get(resetId);
+    pendingPasswordReset =
+      await StorageService.PendingPasswordResets.get(resetId);
   } catch {
     return {
       message: `Lenken har utløpt. Du kan be om å få tilsendt en ny lenke på 'glemt passord'-siden`,
@@ -60,7 +61,7 @@ export default class PasswordResetController {
       };
     }
 
-    const passwordReset = await BlStorage.PendingPasswordResets.add({
+    const passwordReset = await StorageService.PendingPasswordResets.add({
       email,
       tokenHash,
     });
@@ -97,7 +98,7 @@ export default class PasswordResetController {
 
     await PasswordService.setPassword(result.user.id, newPassword);
 
-    await BlStorage.PendingPasswordResets.remove(
+    await StorageService.PendingPasswordResets.remove(
       result.pendingPasswordReset.id,
     );
     return {};

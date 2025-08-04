@@ -1,7 +1,7 @@
 import { Infer } from "@vinejs/vine/types";
 import { ObjectId } from "mongodb";
 
-import { BlStorage } from "#services/storage/bl-storage";
+import { StorageService } from "#services/storage_service";
 import { BlError } from "#shared/bl-error";
 import { BlapiResponse } from "#shared/blapi-response";
 import { UserMatch } from "#shared/match/user-match";
@@ -12,7 +12,7 @@ export async function lock({
   customerId,
   userMatchesLocked,
 }: Infer<typeof matchLockSchema>) {
-  const userMatches = (await BlStorage.UserMatches.aggregate([
+  const userMatches = (await StorageService.UserMatches.aggregate([
     {
       $match: {
         $or: [
@@ -27,7 +27,7 @@ export async function lock({
     throw new BlError("User does not have any user matches");
   }
 
-  const res = await BlStorage.UserMatches.updateMany(
+  const res = await StorageService.UserMatches.updateMany(
     {
       _id: { $in: userMatches.map((match) => match.id) },
     },

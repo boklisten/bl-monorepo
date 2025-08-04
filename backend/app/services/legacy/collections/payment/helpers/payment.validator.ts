@@ -1,4 +1,4 @@
-import { BlStorage } from "#services/storage/bl-storage";
+import { StorageService } from "#services/storage_service";
 import { BlError } from "#shared/bl-error";
 import { Delivery } from "#shared/delivery/delivery";
 import { Order } from "#shared/order/order";
@@ -12,7 +12,7 @@ export class PaymentValidator {
 
     let order: Order;
 
-    return BlStorage.Orders.get(payment.order)
+    return StorageService.Orders.get(payment.order)
       .then((orderInStorage: Order) => {
         order = orderInStorage;
         return this.validateIfOrderHasDelivery(payment, order);
@@ -39,7 +39,7 @@ export class PaymentValidator {
       return Promise.resolve(true);
     }
 
-    return BlStorage.Deliveries.get(order.delivery).then(
+    return StorageService.Deliveries.get(order.delivery).then(
       (delivery: Delivery) => {
         const expectedAmount = order.amount + delivery.amount;
 

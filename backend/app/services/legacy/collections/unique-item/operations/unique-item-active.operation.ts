@@ -1,5 +1,5 @@
 import { CustomerItemActiveBlid } from "#services/legacy/collections/customer-item/helpers/customer-item-active-blid";
-import { BlStorage } from "#services/storage/bl-storage";
+import { StorageService } from "#services/storage_service";
 import { BlError } from "#shared/bl-error";
 import { BlapiResponse } from "#shared/blapi-response";
 import { UniqueItem } from "#shared/unique-item";
@@ -17,7 +17,9 @@ export class UniqueItemActiveOperation implements Operation {
   async run(blApiRequest: BlApiRequest) {
     let uniqueItem: UniqueItem;
     try {
-      uniqueItem = await BlStorage.UniqueItems.get(blApiRequest.documentId);
+      uniqueItem = await StorageService.UniqueItems.get(
+        blApiRequest.documentId,
+      );
     } catch {
       throw new BlError("not found").code(702);
     }

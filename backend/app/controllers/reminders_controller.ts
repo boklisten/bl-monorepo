@@ -5,7 +5,6 @@ import { ObjectId } from "mongodb";
 import DispatchService from "#services/dispatch_service";
 import { PermissionService } from "#services/permission_service";
 import { StorageService } from "#services/storage_service";
-import { EMAIL_SENDER } from "#types/email_templates";
 import { reminderValidator } from "#validators/reminder";
 import {
   assertSendGridTemplateId,
@@ -115,38 +114,22 @@ async function sendReminderEmail(
   if (filteredCustomers.length === 0) {
     return { success: true };
   }
-  const personalizations = filteredCustomers.map((customer) => ({
-    to: target === "primary" ? customer.email : (customer.guardian.email ?? ""),
-    dynamicTemplateData: {
-      name: customer.name?.split(" ")?.[0] ?? "",
-      items: customer.customerItems.map((customerItem) => ({
-        ...customerItem,
-        deadline: moment(customerItem.deadline)
-          .add(1, "day") // fixme: we need to add one day to get the correct date due to a time zone issue
-          .format("DD/MM/YYYY"),
-      })),
-    },
-  }));
-
-  // fixme: move this logic to EmailService.sendEmail()
-  // SendGrid allows a maximum of 1000 personalizations per request
-  const batches: (typeof personalizations)[] = [];
-  for (let i = 0; i < personalizations.length; i += 1000) {
-    batches.push(personalizations.slice(i, i + 1000));
-  }
-  const results = await Promise.all(
-    batches.map((batch) =>
-      DispatchService.sendEmail({
-        template: {
-          sender: EMAIL_SENDER.INFO,
-          templateId: emailTemplateId ?? "",
-        },
-        recipients: batch,
-      }),
-    ),
-  );
-
-  return { success: results.every((r) => r.success) };
+  return await DispatchService.sendUserProvidedEmailTemplate({
+    maybeEmailTemplateId: emailTemplateId,
+    recipients: filteredCustomers.map((customer) => ({
+      to:
+        target === "primary" ? customer.email : (customer.guardian.email ?? ""),
+      dynamicTemplateData: {
+        name: customer.name?.split(" ")?.[0] ?? "",
+        items: customer.customerItems.map((customerItem) => ({
+          ...customerItem,
+          deadline: moment(customerItem.deadline)
+            .add(1, "day") // fixme: we need to add one day to get the correct date due to a time zone issue
+            .format("DD/MM/YYYY"),
+        })),
+      },
+    })),
+  });
 }
 
 export default class RemindersController {

@@ -13,7 +13,7 @@ export default class MailTemplateSenderController {
       emailTemplateSenderValidator,
     );
     return await DispatchService.sendUserProvidedEmailTemplate({
-      emailTemplateId: assertSendGridTemplateId(emailTemplateId),
+      maybeEmailTemplateId: assertSendGridTemplateId(emailTemplateId),
       recipients: emails.map((email) => ({
         to: email,
       })),

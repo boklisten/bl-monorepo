@@ -59,6 +59,8 @@ const SmsService = {
   },
 };
 
+// SendGrid allows a maximum of 1000 personalizations per request
+const SENDGRID_BATCH_SIZE = 1000;
 const EmailService = {
   async sendEmail({
     template,
@@ -71,25 +73,32 @@ const EmailService = {
       ? recipients
       : [recipients];
 
-    try {
-      const [sendGridResponse] = await sgMail.send({
-        from: template.sender,
-        templateId: template.templateId,
-        personalizations,
-      });
-      if (sendGridResponse.statusCode === 202) {
-        logger.info(
-          `Successfully sent email to ${personalizations.map((p) => p.to).join(", ")}`,
-        );
-        return { success: true };
-      }
-      logger.error(
-        `Failed to send emails, error: ${sendGridResponse.toString()}`,
-      );
-    } catch (error) {
-      logger.error(`Failed to send emails, error: ${error}`);
+    const batches: EmailRecipient[][] = [];
+    for (let i = 0; i < personalizations.length; i += SENDGRID_BATCH_SIZE) {
+      batches.push(personalizations.slice(i, i + SENDGRID_BATCH_SIZE));
     }
-    return { success: false };
+
+    for (const batch of batches) {
+      try {
+        const [sendGridResponse] = await sgMail.send({
+          from: template.sender,
+          templateId: template.templateId,
+          personalizations: batch,
+        });
+
+        if (sendGridResponse.statusCode !== 202) {
+          logger.error(
+            `SendGrid batch failed with status ${sendGridResponse.statusCode}`,
+          );
+          return { success: false };
+        }
+      } catch (error) {
+        logger.error(`SendGrid send error: ${String(error)}`);
+        return { success: false };
+      }
+    }
+
+    return { success: true };
   },
 };
 
@@ -231,18 +240,44 @@ const DispatchService = {
       ],
     });
   },
-
+  async sendMatchInformation({
+    customers,
+    smsBody,
+  }: {
+    customers: UserDetail[];
+    smsBody: string;
+  }) {
+    const [mailStatus, smsStatus] = await Promise.all([
+      EmailService.sendEmail({
+        template: EMAIL_TEMPLATES.matchNotify,
+        recipients: customers.map((customer) => ({
+          to: customer.email,
+          dynamicTemplateData: {
+            name: customer.name.split(" ")[0] ?? customer.name,
+            username: customer.email,
+          },
+        })),
+      }),
+      SmsService.sendMany(
+        customers.map((customer) => ({
+          to: customer.phone,
+          body: `Hei, ${customer.name.split(" ")[0]}. ${smsBody} Mvh Boklisten`,
+        })),
+      ),
+    ]);
+    return { mailStatus, smsStatus };
+  },
   async sendUserProvidedEmailTemplate({
-    emailTemplateId,
+    maybeEmailTemplateId,
     recipients,
   }: {
-    emailTemplateId: string;
+    maybeEmailTemplateId: string;
     recipients: EmailRecipient[];
   }) {
     return await EmailService.sendEmail({
       template: {
         sender: EMAIL_SENDER.INFO,
-        templateId: assertSendGridTemplateId(emailTemplateId),
+        templateId: assertSendGridTemplateId(maybeEmailTemplateId),
       },
       recipients,
     });

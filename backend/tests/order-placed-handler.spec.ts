@@ -134,6 +134,7 @@ test.group("OrderPlacedHandler", (group) => {
       payments: [],
       delivery: "delivery1",
       pendingSignature: false,
+      notification: { email: false },
     };
 
     testPayment = {

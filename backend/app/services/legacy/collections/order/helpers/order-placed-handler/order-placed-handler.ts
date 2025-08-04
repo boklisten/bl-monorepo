@@ -1,5 +1,3 @@
-import logger from "@adonisjs/core/services/logger";
-
 import DispatchService from "#services/dispatch_service";
 import { CustomerItemHandler } from "#services/legacy/collections/customer-item/helpers/customer-item-handler";
 import { OrderItemMovedFromOrderHandler } from "#services/legacy/collections/order/helpers/order-item-moved-from-order-handler/order-item-moved-from-order-handler";
@@ -52,10 +50,7 @@ export class OrderPlacedHandler {
       await this.updateCustomerItemsIfPresent(placedOrder, accessToken);
       await this.orderItemMovedFromOrderHandler.updateOrderItems(placedOrder);
       await this.updateUserDetailWithPlacedOrder(placedOrder);
-      // Don't await to improve performance
-      this.sendOrderConfirmationMail(placedOrder).catch((error) =>
-        logger.warn(`could not send order confirmation mail: ${error}`),
-      );
+      await this.sendOrderConfirmationMail(placedOrder);
 
       return placedOrder;
     } catch (error) {
@@ -179,13 +174,24 @@ export class OrderPlacedHandler {
   }
 
   private async sendOrderConfirmationMail(order: Order): Promise<void> {
+    // makes it possible for admins to disable order alerts to customers in bl-admin
     if (order.notification && !order.notification.email) {
       return;
     }
     const customerDetail = await StorageService.UserDetails.get(order.customer);
-    await (order.handoutByDelivery
-      ? DispatchService.sendDeliveryInformation(customerDetail, order)
-      : OrderEmailHandler.sendOrderReceipt(customerDetail, order));
+    const delivery =
+      typeof order.delivery === "string"
+        ? await StorageService.Deliveries.get(order.delivery)
+        : null;
+    if (delivery?.info && "trackingNumber" in delivery.info) {
+      await DispatchService.sendDeliveryInformation(
+        customerDetail,
+        order,
+        delivery.info,
+      );
+    } else {
+      await OrderEmailHandler.sendOrderReceipt(customerDetail, order);
+    }
   }
 
   /**

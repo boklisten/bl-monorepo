@@ -34,7 +34,7 @@ export const EMAIL_TEMPLATES = {
   },
   deliveryInformation: {
     sender: EMAIL_SENDER.NO_REPLY,
-    templateId: "d-dc8ab3365a0f4fd8a69b6a38e6eb83f9",
+    templateId: "d-6112c8e2a3214f058dae6a3b2bf0775e",
   },
   matchNotify: {
     sender: EMAIL_SENDER.INFO,

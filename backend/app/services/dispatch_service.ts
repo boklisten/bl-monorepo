@@ -1,9 +1,10 @@
 import logger from "@adonisjs/core/services/logger";
 import sgMail from "@sendgrid/mail";
+import moment from "moment-timezone";
 import twilio from "twilio";
 
-import { DateService } from "#services/legacy/date.service";
-import { StorageService } from "#services/storage_service";
+import { OrderEmailHandler } from "#services/legacy/order_email_handler";
+import { DeliveryInfoBring } from "#shared/delivery/delivery-info/delivery-info-bring";
 import { Order } from "#shared/order/order";
 import { UserDetail } from "#shared/user-detail";
 import env from "#start/env";
@@ -157,79 +158,32 @@ const DispatchService = {
     });
   },
 
-  async sendDeliveryInformation(customerDetail: UserDetail, order: Order) {
-    const deliveryId = typeof order.delivery === "string" ? order.delivery : "";
-    const delivery = await StorageService.Deliveries.get(deliveryId);
-    const emailUser: EmailUser = {
-      id: customerDetail.id,
-      name: customerDetail.name,
-      dob:
-        customerDetail.dob !== undefined && customerDetail.dob !== null
-          ? DateService.format(customerDetail.dob, "Europe/Oslo", "DD.MM.YYYY")
-          : "",
-      email: customerDetail.email,
-      address: customerDetail.address,
-    };
-
-    let deliveryAddress = "";
-
-    // @ts-expect-error fixme: auto ignored
-    if (delivery.info["shipmentAddress"]) {
-      // @ts-expect-error fixme: auto ignored
-      deliveryAddress = delivery.info["shipmentAddress"].name;
-      // @ts-expect-error fixme: auto ignored
-      deliveryAddress += ", " + delivery.info["shipmentAddress"].address;
-      // @ts-expect-error fixme: auto ignored
-      deliveryAddress += ", " + delivery.info["shipmentAddress"].postalCode;
-      // @ts-expect-error fixme: auto ignored
-      deliveryAddress += " " + delivery.info["shipmentAddress"].postalCity;
-    }
-
-    const emailOrder: EmailOrder = {
-      id: order.id,
-      showDeadline: false,
-      showPrice: false,
-      showStatus: true,
-      // @ts-expect-error fixme: auto ignored
-      currency: null,
-      // @ts-expect-error fixme: auto ignored
-      itemAmount: null,
-      // @ts-expect-error fixme: auto ignored
-      payment: null,
-      showPayment: false,
-      // @ts-expect-error fixme: auto ignored
-      totalAmount: null,
-      items: order.orderItems.map((orderItem) => ({
-        title: orderItem.title,
-        status: "utlevering via Bring",
-      })),
-      showDelivery: true,
-      delivery: {
-        method: "bring",
-        // @ts-expect-error fixme: auto ignored
-        trackingNumber: delivery.info["trackingNumber"],
-        estimatedDeliveryDate: null,
-        address: deliveryAddress,
-        amount: null,
-        currency: null,
-      },
-    };
-
+  async sendDeliveryInformation(
+    customerDetail: UserDetail,
+    order: Order,
+    bringDeliveryInfo: DeliveryInfoBring,
+  ) {
     await EmailService.sendEmail({
       template: EMAIL_TEMPLATES.deliveryInformation,
       recipients: [
         {
           to: customerDetail.email,
           dynamicTemplateData: {
-            subject: "Dine bøker er på vei",
-            emailTemplateInput: {
-              user: emailUser,
-              order: emailOrder,
-              userFullName: emailUser.name,
-            },
-            // fixme: this text is not displayed, make a separate email for deliveries
-            textBlock:
-              "Dine bøker er nå på vei! De vil bli levert til deg ved hjelp av Bring. Vi anser nå disse bøkene som utlevert. Du er ansvarlig for bøkene fra du henter dem på postkontoret til innlevering er gjennomført. Om noe skulle skje med leveringen er det bare å ta kontakt. Fraktkostnader refunderes ikke for pakker som ikke blir hentet innen fristen.",
+            firstName: customerDetail.name.split(" ")[0],
+            orderId: order.id,
+            orderItems: order.orderItems.map((orderItem) => ({
+              title: orderItem.title,
+              type: OrderEmailHandler.translateOrderItemType(orderItem.type),
+              deadline: orderItem.info?.to
+                ? moment(orderItem.info.to)
+                    .add(1, "day") // fixme: we need to add one day to get the correct date due to a time zone issue
+                    .format("DD/MM/YYYY")
+                : "",
+            })),
+            expectedDeliveryDate: bringDeliveryInfo.estimatedDelivery
+              ? moment(bringDeliveryInfo.estimatedDelivery).format("DD/MM/YYYY")
+              : "Ukjent",
+            trackingNumber: bringDeliveryInfo.trackingNumber,
           },
         },
       ],

@@ -3,7 +3,7 @@ import { expect, use as chaiUse, should } from "chai";
 import chaiAsPromised from "chai-as-promised";
 import { ObjectId } from "mongodb";
 
-import { MongooseModelCreator } from "#services/storage/mongoose-schema-creator";
+import { MongooseModelCreator } from "#models/storage/mongoose-schema-creator";
 
 chaiUse(chaiAsPromised);
 should();

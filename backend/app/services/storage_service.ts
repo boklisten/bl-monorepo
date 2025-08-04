@@ -18,13 +18,13 @@ import { PendingPasswordResetSchema } from "#models/pending-password-reset.schem
 import { QuestionsAndAnswersSchema } from "#models/questions-and-answers.schema";
 import { SignatureSchema } from "#models/signature.schema";
 import { StandMatchSchema } from "#models/stand-match.schema";
+import { BlSchemaName } from "#models/storage/bl-schema-names";
+import { MongodbHandler } from "#models/storage/mongodb-handler";
 import { UniqueItemSchema } from "#models/unique-item.schema";
 import { UserDetailSchema } from "#models/user-detail.schema";
 import { UserMatchSchema } from "#models/user-match.schema";
 import { UserSchema } from "#models/user.schema";
 import { WaitingListEntriesSchema } from "#models/waiting-list-entries.schema";
-import { BlSchemaName } from "#services/storage/bl-schema-names";
-import { MongodbHandler } from "#services/storage/mongodb-handler";
 
 export type BlSchema<T> = Schema<ToSchema<T>>;
 

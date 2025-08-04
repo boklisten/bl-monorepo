@@ -1,6 +1,16 @@
 "use client";
 
-import { Alert, Box, Skeleton, Stack, Typography } from "@mui/material";
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import {
+  Accordion,
+  AccordionDetails,
+  AccordionSummary,
+  Alert,
+  Box,
+  Skeleton,
+  Stack,
+  Typography,
+} from "@mui/material";
 import { useQuery } from "@tanstack/react-query";
 import { ReactNode } from "react";
 
@@ -32,17 +42,16 @@ function CustomerItemsOverviewWrapper({
         </Typography>
       </Stack>
       {activeItemsSlot}
-      <Stack>
-        <Typography variant={"h2"}>Tidligere bøker</Typography>
-        <Typography
-          variant={"subtitle2"}
-          sx={{ fontWeight: "light", fontStyle: "italic" }}
-        >
-          Dette er bøker som du har returnert eller kjøpt ut. Du trenger ikke
-          bekymre deg for dem lenger.
-        </Typography>
-      </Stack>
-      {inactiveItemsSlot}
+      <Accordion sx={{ mt: 1 }}>
+        <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+          <Typography variant={"h2"} sx={{ m: 0 }}>
+            Tidligere bøker
+          </Typography>
+        </AccordionSummary>
+        <AccordionDetails>
+          <Stack gap={1}>{inactiveItemsSlot}</Stack>
+        </AccordionDetails>
+      </Accordion>
     </Stack>
   );
 }

@@ -2,8 +2,8 @@ import { HttpContext } from "@adonisjs/core/http";
 import { JwtPayload } from "jsonwebtoken";
 
 import { PermissionService } from "#services/permission_service";
-import { BlEndpointRestriction } from "#services/types/bl-collection";
 import { BlError } from "#shared/bl-error";
+import { BlEndpointRestriction } from "#types/bl-collection";
 
 function validateAuth(
   restriction: BlEndpointRestriction | undefined,

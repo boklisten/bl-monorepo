@@ -5,8 +5,6 @@ import { OrderValidator } from "#services/legacy/collections/order/helpers/order
 import { PermissionService } from "#services/permission_service";
 import { SEDbQueryBuilder } from "#services/query/se.db-query-builder";
 import { BlStorage } from "#services/storage/bl-storage";
-import { BlApiRequest } from "#services/types/bl-api-request";
-import { Operation } from "#services/types/operation";
 import { BlError } from "#shared/bl-error";
 import { BlapiResponse } from "#shared/blapi-response";
 import { CustomerItem } from "#shared/customer-item/customer-item";
@@ -16,6 +14,8 @@ import { Order } from "#shared/order/order";
 import { OrderItem } from "#shared/order/order-item/order-item";
 import { OrderItemType } from "#shared/order/order-item/order-item-type";
 import { UserPermission } from "#shared/user-permission";
+import { BlApiRequest } from "#types/bl-api-request";
+import { Operation } from "#types/operation";
 
 export class OrderPlaceOperation implements Operation {
   private queryBuilder = new SEDbQueryBuilder();
@@ -467,7 +467,7 @@ export class OrderPlaceOperation implements Operation {
     if (customerItems && customerItems.length > 0) {
       customerItems = await this.addCustomerItems(
         customerItems,
-        // @ts-expect-error // fixme: bad types
+        // @ts-expect-error // fixme: bad enums
         blApiRequest.user,
       );
       order = this.addCustomerItemIdToOrderItems(order, customerItems);
@@ -478,7 +478,7 @@ export class OrderPlaceOperation implements Operation {
           orderItems: order.orderItems,
           pendingSignature,
         },
-        // @ts-expect-error // fixme: bad types
+        // @ts-expect-error // fixme: bad enums
         blApiRequest.user,
       );
     }
@@ -494,9 +494,9 @@ export class OrderPlaceOperation implements Operation {
     }
 
     await this.orderPlacedHandler.placeOrder(order, {
-      // @ts-expect-error // fixme: bad types
+      // @ts-expect-error // fixme: bad enums
       sub: blApiRequest.user,
-      // @ts-expect-error // fixme: bad types
+      // @ts-expect-error // fixme: bad enums
       permission: blApiRequest.user.permission,
     });
 
@@ -515,7 +515,7 @@ export class OrderPlaceOperation implements Operation {
         await this.addCustomerItemsToCustomer(
           customerItems,
           order.customer,
-          // @ts-expect-error // fixme: bad types
+          // @ts-expect-error // fixme: bad enums
           blApiRequest.user,
         );
         // fixme: probably not a good idea to ignore this error...

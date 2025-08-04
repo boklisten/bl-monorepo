@@ -7,7 +7,7 @@ import type {
 } from "@adonisjs/ally/types";
 import type { HttpContext } from "@adonisjs/core/http";
 
-import { VippsUser } from "#services/types/user";
+import { VippsUser } from "#types/user";
 
 interface VippsDriverAccessToken {
   token: string;

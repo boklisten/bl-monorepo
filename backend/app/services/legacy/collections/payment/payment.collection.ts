@@ -2,7 +2,7 @@ import { PaymentGetAllHook } from "#services/legacy/collections/payment/hooks/pa
 import { PaymentPatchHook } from "#services/legacy/collections/payment/hooks/payment.patch.hook";
 import { PaymentPostHook } from "#services/legacy/collections/payment/hooks/payment.post.hook";
 import { BlStorage } from "#services/storage/bl-storage";
-import { BlCollection } from "#services/types/bl-collection";
+import { BlCollection } from "#types/bl-collection";
 
 export const PaymentCollection: BlCollection = {
   storage: BlStorage.Payments,

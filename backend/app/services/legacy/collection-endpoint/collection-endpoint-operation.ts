@@ -3,11 +3,8 @@ import router from "@adonisjs/core/services/router";
 
 import BlResponseHandler from "#services/legacy/bl-response.handler";
 import CollectionEndpointAuth from "#services/legacy/collection-endpoint/collection-endpoint-auth";
-import {
-  BlEndpointMethod,
-  BlEndpointOperation,
-} from "#services/types/bl-collection";
 import { UserPermission } from "#shared/user-permission";
+import { BlEndpointMethod, BlEndpointOperation } from "#types/bl-collection";
 
 function createUri(
   collectionUri: string,

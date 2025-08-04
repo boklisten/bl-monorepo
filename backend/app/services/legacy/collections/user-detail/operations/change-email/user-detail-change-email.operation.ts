@@ -3,11 +3,11 @@ import validator from "validator";
 import { isNullish } from "#services/helper/typescript-helpers";
 import { PermissionService } from "#services/permission_service";
 import { BlStorage } from "#services/storage/bl-storage";
-import { BlApiRequest } from "#services/types/bl-api-request";
-import { Operation } from "#services/types/operation";
 import { UserService } from "#services/user_service";
 import { BlError } from "#shared/bl-error";
 import { BlapiResponse } from "#shared/blapi-response";
+import { BlApiRequest } from "#types/bl-api-request";
+import { Operation } from "#types/operation";
 
 export class UserDetailChangeEmailOperation implements Operation {
   async run(blApiRequest: BlApiRequest) {

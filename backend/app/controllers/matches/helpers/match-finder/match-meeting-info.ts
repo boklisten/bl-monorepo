@@ -2,7 +2,7 @@
 /* eslint-disable import-x/no-unused-modules */
 
 /* fixme: rewrite
-import { MatchLocation } from "#services/collections/user-match/helpers/match-finder/match-types";
+import { MatchLocation } from "#services/collections/user-match/helpers/match-finder/match-enums";
 import { logger } from "#services/logger/logger";
 import { BlError } from "#shared/bl-error/bl-error";
 import { CandidateStandMatch, StandMatch } from "#shared/match/stand-match";

@@ -5,7 +5,7 @@ import { UserDetailPermissionOperation } from "#services/legacy/collections/user
 import { UserDetailReadPermissionOperation } from "#services/legacy/collections/user-detail/operations/read-permission/user-detail-read-permission.operation";
 import { UserDetailValidOperation } from "#services/legacy/collections/user-detail/operations/user-detail-valid.operation";
 import { BlStorage } from "#services/storage/bl-storage";
-import { BlCollection } from "#services/types/bl-collection";
+import { BlCollection } from "#types/bl-collection";
 
 export const UserDetailCollection: BlCollection = {
   storage: BlStorage.UserDetails,

@@ -4,9 +4,9 @@ import DispatchService from "#services/dispatch_service";
 import { PasswordService } from "#services/password_service";
 import { SEDbQuery } from "#services/query/se.db-query";
 import { BlStorage } from "#services/storage/bl-storage";
-import { Login, User } from "#services/types/user";
 import { UserDetailService } from "#services/user_detail_service";
 import { UserDetail } from "#shared/user-detail";
+import { Login, User } from "#types/user";
 import { registerSchema } from "#validators/auth_validators";
 
 async function createUser({
@@ -26,7 +26,7 @@ async function createUser({
     const emailValidation = await BlStorage.EmailValidations.add({
       userDetailId,
     });
-    await DispatchService.emailConfirmation(username, emailValidation.id);
+    await DispatchService.sendEmailConfirmation(username, emailValidation.id);
   }
 
   return await BlStorage.Users.add({

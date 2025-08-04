@@ -1,7 +1,7 @@
 import { GenerateUniqueIdsOperation } from "#services/legacy/collections/unique-item/operations/generate-unique-ids-operation";
 import { UniqueItemActiveOperation } from "#services/legacy/collections/unique-item/operations/unique-item-active.operation";
 import { BlStorage } from "#services/storage/bl-storage";
-import { BlCollection } from "#services/types/bl-collection";
+import { BlCollection } from "#types/bl-collection";
 
 export const UniqueItemCollection: BlCollection = {
   storage: BlStorage.UniqueItems,

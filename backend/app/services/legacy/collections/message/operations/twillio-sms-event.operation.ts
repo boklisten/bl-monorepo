@@ -1,11 +1,11 @@
 import logger from "@adonisjs/core/services/logger";
 
 import { BlStorage } from "#services/storage/bl-storage";
-import { BlApiRequest } from "#services/types/bl-api-request";
-import { Operation } from "#services/types/operation";
 import { BlError } from "#shared/bl-error";
 import { BlapiResponse } from "#shared/blapi-response";
 import { Message } from "#shared/message/message";
+import { BlApiRequest } from "#types/bl-api-request";
+import { Operation } from "#types/operation";
 
 export class TwilioSmsEventOperation implements Operation {
   public async run(blApiRequest: BlApiRequest): Promise<BlapiResponse> {
@@ -69,7 +69,7 @@ export class TwilioSmsEventOperation implements Operation {
     await BlStorage.Messages.update(message.id, { smsEvents: newSmsEvents });
 
     logger.trace(
-      // @ts-expect-error fixme bad types
+      // @ts-expect-error fixme bad enums
       `updated message "${message.id}" with sms event: "${smsEvent["status"]}"`,
     );
 

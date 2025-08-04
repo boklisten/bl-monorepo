@@ -2,13 +2,13 @@ import { APP_CONFIG } from "#services/config/application-config";
 import { UserDetailHelper } from "#services/legacy/collections/user-detail/helpers/user-detail.helper";
 import { DibsEasyOrder } from "#services/payment/dibs/dibs-easy-order";
 import { DibsEasyPayment } from "#services/payment/dibs/dibs-easy-payment/dibs-easy-payment";
-import { DibsEasyItem } from "#services/types/dibs-easy-item";
 import { BlError } from "#shared/bl-error";
 import { Delivery } from "#shared/delivery/delivery";
 import { Order } from "#shared/order/order";
 import { OrderItem } from "#shared/order/order-item/order-item";
 import { UserDetail } from "#shared/user-detail";
 import env from "#start/env";
+import { DibsEasyItem } from "#types/dibs-easy-item";
 
 export class DibsPaymentService {
   private userDetailHelper = new UserDetailHelper();

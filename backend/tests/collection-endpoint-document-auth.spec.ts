@@ -4,13 +4,13 @@ import chaiAsPromised from "chai-as-promised";
 
 import CollectionEndpointDocumentAuth from "#services/legacy/collection-endpoint/collection-endpoint-document-auth";
 import { BlStorageData } from "#services/storage/bl-storage";
-import { BlApiRequest } from "#services/types/bl-api-request";
+import { BlError } from "#shared/bl-error";
+import { Branch } from "#shared/branch";
+import { BlApiRequest } from "#types/bl-api-request";
 import {
   BlDocumentPermission,
   BlEndpointRestriction,
-} from "#services/types/bl-collection";
-import { BlError } from "#shared/bl-error";
-import { Branch } from "#shared/branch";
+} from "#types/bl-collection";
 
 chaiUse(chaiAsPromised);
 should();

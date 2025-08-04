@@ -3,11 +3,8 @@ import moment from "moment-timezone";
 import DispatchService from "#services/dispatch_service";
 import { userHasValidSignature } from "#services/legacy/collections/signature/helpers/signature.helper";
 import { DateService } from "#services/legacy/date.service";
-import { sendMail } from "#services/messenger/email/email_service";
-import { EMAIL_TEMPLATES } from "#services/messenger/email/email_templates";
 import { DibsEasyPayment } from "#services/payment/dibs/dibs-easy-payment/dibs-easy-payment";
 import { BlStorage } from "#services/storage/bl-storage";
-import { EmailOrder, EmailUser } from "#services/types/email";
 import { BlError } from "#shared/bl-error";
 import { Delivery } from "#shared/delivery/delivery";
 import { Order } from "#shared/order/order";
@@ -16,6 +13,8 @@ import { OrderItemType } from "#shared/order/order-item/order-item-type";
 import { Payment } from "#shared/payment/payment";
 import { UserDetail } from "#shared/user-detail";
 import env from "#start/env";
+import { EmailOrder, EmailUser } from "#types/email";
+import { EMAIL_TEMPLATES } from "#types/email_templates";
 
 export class OrderEmailHandler {
   private defaultCurrency = "NOK";
@@ -51,7 +50,7 @@ export class OrderEmailHandler {
       await this.requestGuardianSignature(customerDetail, branch?.name ?? "");
     }
 
-    await sendMail({
+    await DispatchService.sendEmail({
       template: EMAIL_TEMPLATES.receipt,
       recipients: [
         {
@@ -96,7 +95,7 @@ export class OrderEmailHandler {
       if (await userHasValidSignature(customerDetail)) {
         return;
       }
-      await sendMail({
+      await DispatchService.sendEmail({
         template: EMAIL_TEMPLATES.guardianSignature,
         recipients: [
           {

@@ -1,10 +1,10 @@
 import { CustomerItemActiveBlid } from "#services/legacy/collections/customer-item/helpers/customer-item-active-blid";
 import { BlStorage } from "#services/storage/bl-storage";
-import { BlApiRequest } from "#services/types/bl-api-request";
-import { Operation } from "#services/types/operation";
 import { BlError } from "#shared/bl-error";
 import { BlapiResponse } from "#shared/blapi-response";
 import { UniqueItem } from "#shared/unique-item";
+import { BlApiRequest } from "#types/bl-api-request";
+import { Operation } from "#types/operation";
 
 export class UniqueItemActiveOperation implements Operation {
   private customerItemActiveBlid: CustomerItemActiveBlid;

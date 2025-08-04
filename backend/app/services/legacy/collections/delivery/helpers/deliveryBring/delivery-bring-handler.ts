@@ -8,12 +8,12 @@ export class DeliveryBringHandler {
       return Promise.reject(new BlError("delivery.info not defined"));
     }
 
-    // @ts-expect-error fixme bad types
+    // @ts-expect-error fixme bad enums
     if (isNullish(delivery.info["from"])) {
       return Promise.reject(new BlError("delivery.info.from not defined"));
     }
 
-    // @ts-expect-error fixme bad types
+    // @ts-expect-error fixme bad enums
     if (isNullish(delivery.info["to"])) {
       return Promise.reject(new BlError("delivery.info.to not defined"));
     }

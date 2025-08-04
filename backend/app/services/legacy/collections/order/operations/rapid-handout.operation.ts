@@ -7,13 +7,13 @@ import { OrderItemMovedFromOrderHandler } from "#services/legacy/collections/ord
 import { OrderValidator } from "#services/legacy/collections/order/helpers/order-validator/order-validator";
 import { SEDbQuery } from "#services/query/se.db-query";
 import { BlStorage } from "#services/storage/bl-storage";
-import { BlApiRequest } from "#services/types/bl-api-request";
-import { Operation } from "#services/types/operation";
 import { BlError } from "#shared/bl-error";
 import { BlapiResponse } from "#shared/blapi-response";
 import { Order } from "#shared/order/order";
 import { OrderItem } from "#shared/order/order-item/order-item";
 import { UniqueItem } from "#shared/unique-item";
+import { BlApiRequest } from "#types/bl-api-request";
+import { Operation } from "#types/operation";
 
 const blidNotActiveFeedback =
   "Denne bliden er ikke tilknyttet noen bok. Registrer den i bl-admin for å dele den ut.";

@@ -1,11 +1,11 @@
 import vine from "@vinejs/vine";
 
 import { isNullish } from "#services/helper/typescript-helpers";
-import { BlApiRequest } from "#services/types/bl-api-request";
-import { Operation } from "#services/types/operation";
 import { BlError } from "#shared/bl-error";
 import { BlapiResponse } from "#shared/blapi-response";
 import env from "#start/env";
+import { BlApiRequest } from "#types/bl-api-request";
+import { Operation } from "#types/operation";
 
 interface SimplifiedBringPostalCodeResponse {
   postal_codes?:

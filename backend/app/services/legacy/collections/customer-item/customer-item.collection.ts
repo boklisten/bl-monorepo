@@ -1,7 +1,7 @@
 import { CustomerItemGenerateReportOperation } from "#services/legacy/collections/customer-item/customer-item-generate-report.operation";
 import { CustomerItemPostHook } from "#services/legacy/collections/customer-item/hooks/customer-item-post.hook";
 import { BlStorage } from "#services/storage/bl-storage";
-import { BlCollection } from "#services/types/bl-collection";
+import { BlCollection } from "#types/bl-collection";
 
 export const CustomerItemCollection: BlCollection = {
   storage: BlStorage.CustomerItems,

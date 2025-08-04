@@ -6,11 +6,11 @@ import {
   isUnderage,
 } from "#services/legacy/collections/signature/helpers/signature.helper";
 import { BlStorage } from "#services/storage/bl-storage";
-import { BlApiRequest } from "#services/types/bl-api-request";
-import { Operation } from "#services/types/operation";
 import { BlError } from "#shared/bl-error";
 import { BlapiResponse } from "#shared/blapi-response";
 import { CheckGuardianSignatureSpec } from "#shared/serialized-signature";
+import { BlApiRequest } from "#types/bl-api-request";
+import { Operation } from "#types/operation";
 
 export class CheckGuardianSignatureOperation implements Operation {
   async run(blApiRequest: BlApiRequest): Promise<BlapiResponse> {

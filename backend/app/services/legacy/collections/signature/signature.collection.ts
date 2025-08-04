@@ -3,7 +3,7 @@ import { SignaturePostHook } from "#services/legacy/collections/signature/hooks/
 import { CheckGuardianSignatureOperation } from "#services/legacy/collections/signature/operations/check-guardian-signature.operation";
 import { GuardianSignatureOperation } from "#services/legacy/collections/signature/operations/guardian-signature.operation";
 import { BlStorage } from "#services/storage/bl-storage";
-import { BlCollection } from "#services/types/bl-collection";
+import { BlCollection } from "#types/bl-collection";
 
 export const SignatureCollection: BlCollection = {
   storage: BlStorage.Signatures,

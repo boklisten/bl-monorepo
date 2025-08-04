@@ -5,9 +5,9 @@ import sinon, { createSandbox } from "sinon";
 
 import { UserCanDeleteUserDetail } from "#services/legacy/collections/user-detail/helpers/user-can-delete-user-detail";
 import { BlStorage } from "#services/storage/bl-storage";
-import { User } from "#services/types/user";
 import { AccessToken } from "#shared/access-token";
 import { UserDetail } from "#shared/user-detail";
+import { User } from "#types/user";
 
 chaiUse(chaiAsPromised);
 should();

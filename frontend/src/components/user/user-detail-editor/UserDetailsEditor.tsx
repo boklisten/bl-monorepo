@@ -86,7 +86,7 @@ export default function UserDetailsEditor({
     if (error.status === 422) {
       for (const validationError of error.value.errors) {
         const { field } = validationError;
-        // fixme: we should properly handle all types of field errors from the API
+        // fixme: we should properly handle all enums of field errors from the API
         if (field === "email" || field === "phoneNumber") {
           setError(field, {
             message: validationError.message,

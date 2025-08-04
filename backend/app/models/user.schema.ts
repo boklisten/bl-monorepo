@@ -2,7 +2,7 @@ import { Schema } from "mongoose";
 
 import { BlSchemaName } from "#services/storage/bl-schema-names";
 import { BlSchema } from "#services/storage/bl-storage";
-import { Login, User } from "#services/types/user";
+import { Login, User } from "#types/user";
 
 const LoginSchema = new Schema<Login>(
   {

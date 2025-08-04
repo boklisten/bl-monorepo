@@ -6,10 +6,10 @@ import CollectionEndpointAuth from "#services/legacy/collection-endpoint/collect
 import CollectionEndpointHandler from "#services/legacy/collection-endpoint/collection-endpoint-handler";
 import CollectionEndpointOperation from "#services/legacy/collection-endpoint/collection-endpoint-operation";
 import { BlStorageData } from "#services/storage/bl-storage";
-import { BlApiRequest } from "#services/types/bl-api-request";
-import { BlCollection, BlEndpoint } from "#services/types/bl-collection";
 import { BlError } from "#shared/bl-error";
 import { BlapiResponse } from "#shared/blapi-response";
+import { BlApiRequest } from "#types/bl-api-request";
+import { BlCollection, BlEndpoint } from "#types/bl-collection";
 
 function createRequestHandler(
   endpoint: BlEndpoint,

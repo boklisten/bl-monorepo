@@ -3,10 +3,9 @@ import moment from "moment-timezone";
 import { ObjectId } from "mongodb";
 
 import DispatchService from "#services/dispatch_service";
-import { sendMail } from "#services/messenger/email/email_service";
-import { EMAIL_SENDER } from "#services/messenger/email/email_templates";
 import { PermissionService } from "#services/permission_service";
 import { BlStorage } from "#services/storage/bl-storage";
+import { EMAIL_SENDER } from "#types/email_templates";
 import { reminderValidator } from "#validators/reminder";
 import {
   assertSendGridTemplateId,
@@ -129,6 +128,7 @@ async function sendReminderEmail(
     },
   }));
 
+  // fixme: move this logic to EmailService.sendEmail()
   // SendGrid allows a maximum of 1000 personalizations per request
   const batches: (typeof personalizations)[] = [];
   for (let i = 0; i < personalizations.length; i += 1000) {
@@ -136,7 +136,7 @@ async function sendReminderEmail(
   }
   const results = await Promise.all(
     batches.map((batch) =>
-      sendMail({
+      DispatchService.sendEmail({
         template: {
           sender: EMAIL_SENDER.INFO,
           templateId: emailTemplateId ?? "",

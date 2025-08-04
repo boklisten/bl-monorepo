@@ -203,7 +203,7 @@ test.group("CustomerItemPostHook", (group) => {
   test("should add the new id to the old userDetail.customerItem array", async () => {
     testUserDetail.customerItems = ["customerItem2"];
     customerItemPostHook.after([testCustomerItem], testAccessToken).then(() => {
-      // @ts-expect-error fixme: auto ignored bad test types
+      // @ts-expect-error fixme: auto ignored bad test enums
       userDetailStub.should.have.been.calledWith("userDetail1", {
         customerItems: ["customerItem2", "customerItem1"],
       });
@@ -260,7 +260,7 @@ test.group("CustomerItemPostHook", (group) => {
     ];
 
     customerItemPostHook.after([testCustomerItem], testAccessToken).then(() => {
-      // @ts-expect-error fixme: auto ignored bad test types
+      // @ts-expect-error fixme: auto ignored bad test enums
       orderUpdateStub.should.have.been.calledWith("order1", {
         orderItems: expectedOrderUpdateParameter,
       });

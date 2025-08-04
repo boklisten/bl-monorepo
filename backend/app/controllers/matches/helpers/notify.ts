@@ -1,9 +1,8 @@
 import { Infer } from "@vinejs/vine/types";
 
 import DispatchService from "#services/dispatch_service";
-import { sendMail } from "#services/messenger/email/email_service";
-import { EMAIL_TEMPLATES } from "#services/messenger/email/email_templates";
 import { BlStorage } from "#services/storage/bl-storage";
+import { EMAIL_TEMPLATES } from "#types/email_templates";
 import { matchNotifySchema } from "#validators/matches";
 
 export async function notify({
@@ -47,7 +46,7 @@ export async function notify({
     ...targetCustomerIds,
   ]);
 
-  const mailStatus = await sendMail({
+  const mailStatus = await DispatchService.sendEmail({
     template: EMAIL_TEMPLATES.matchNotify,
     recipients: targetCustomers.map((customer) => ({
       to: customer.email,

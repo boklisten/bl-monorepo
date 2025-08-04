@@ -618,7 +618,7 @@ test.group("OrderToCustomerItemGenerator", (group) => {
     return expect(result).to.eventually.be.eql(expectedResult);
   });
 
-  test('should return multiple customer-items with types "loan", "rent" and "partly-payment"', async () => {
+  test('should return multiple customer-items with enums "loan", "rent" and "partly-payment"', async () => {
     const deadline = new Date(2100, 1, 1);
     const today = new Date();
 

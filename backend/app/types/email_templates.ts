@@ -41,3 +41,8 @@ export const EMAIL_TEMPLATES = {
     templateId: "d-b6d2e8bcf3bc4e6e9aef3f8eb49f1c64",
   },
 } as const satisfies Record<string, EmailTemplate>;
+
+export interface EmailRecipient {
+  to: string;
+  dynamicTemplateData?: Record<string, unknown>;
+}

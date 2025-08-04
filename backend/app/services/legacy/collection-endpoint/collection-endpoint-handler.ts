@@ -7,11 +7,11 @@ import { Hook } from "#services/legacy/hook";
 import { SEDbQuery } from "#services/query/se.db-query";
 import { SEDbQueryBuilder } from "#services/query/se.db-query-builder";
 import { BlStorageData, BlStorageHandler } from "#services/storage/bl-storage";
-import { BlApiRequest } from "#services/types/bl-api-request";
-import { BlCollection, BlEndpoint } from "#services/types/bl-collection";
 import { BlDocument } from "#shared/bl-document";
 import { BlError } from "#shared/bl-error";
 import { UserPermission } from "#shared/user-permission";
+import { BlApiRequest } from "#types/bl-api-request";
+import { BlCollection, BlEndpoint } from "#types/bl-collection";
 
 function onGetAll(collection: BlCollection, endpoint: BlEndpoint) {
   return async function onRequest(blApiRequest: BlApiRequest) {

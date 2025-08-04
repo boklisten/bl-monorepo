@@ -2,13 +2,13 @@ import { HttpContext } from "@adonisjs/core/http";
 import hash from "@adonisjs/core/services/hash";
 
 import CryptoService from "#services/crypto_service";
-import { sendMail } from "#services/messenger/email/email_service";
-import { EMAIL_TEMPLATES } from "#services/messenger/email/email_templates";
+import DispatchService from "#services/dispatch_service";
 import { PasswordService } from "#services/password_service";
 import { BlStorage } from "#services/storage/bl-storage";
 import { UserService } from "#services/user_service";
 import { PendingPasswordReset } from "#shared/pending-password-reset";
 import env from "#start/env";
+import { EMAIL_TEMPLATES } from "#types/email_templates";
 import {
   forgotPasswordValidator,
   passwordResetValidator,
@@ -65,7 +65,7 @@ export default class PasswordResetController {
       tokenHash,
     });
 
-    const mailStatus = await sendMail({
+    const mailStatus = await DispatchService.sendEmail({
       template: EMAIL_TEMPLATES.passwordReset,
       recipients: [
         {

@@ -14,10 +14,10 @@ import { ExpandFilter } from "#services/query/db-query-expand-filter";
 import { SEDbQuery } from "#services/query/se.db-query";
 import { BlSchema } from "#services/storage/bl-storage";
 import { MongooseModelCreator } from "#services/storage/mongoose-schema-creator";
-import { NestedDocument } from "#services/types/nested-document";
 import { BlDocument } from "#shared/bl-document";
 import { BlError } from "#shared/bl-error";
 import { UserPermission } from "#shared/user-permission";
+import { NestedDocument } from "#types/nested-document";
 
 export class MongodbHandler<T extends BlDocument> {
   private readonly mongooseModel: Model<T>;

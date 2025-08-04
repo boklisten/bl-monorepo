@@ -4,9 +4,9 @@ import vine from "@vinejs/vine";
 import { PasswordService } from "#services/password_service";
 import { BlStorage } from "#services/storage/bl-storage";
 import TokenService from "#services/token_service";
-import { User } from "#services/types/user";
 import { UserDetailService } from "#services/user_detail_service";
 import { UserService } from "#services/user_service";
+import { User } from "#types/user";
 import {
   localAuthValidator,
   registerValidator,

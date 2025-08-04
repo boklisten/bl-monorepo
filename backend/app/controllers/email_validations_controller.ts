@@ -13,7 +13,7 @@ export default class EmailValidationsController {
     const emailValidation = await BlStorage.EmailValidations.add({
       userDetailId: detailsId,
     });
-    await DispatchService.emailConfirmation(
+    await DispatchService.sendEmailConfirmation(
       userDetail.email,
       emailValidation.id,
     );

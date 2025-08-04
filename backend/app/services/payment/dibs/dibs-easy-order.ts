@@ -1,4 +1,4 @@
-import { DibsEasyItem } from "#services/types/dibs-easy-item";
+import { DibsEasyItem } from "#types/dibs-easy-item";
 
 export class DibsEasyOrder {
   order: {

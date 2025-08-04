@@ -2,10 +2,10 @@ import vine from "@vinejs/vine";
 
 import { PermissionService } from "#services/permission_service";
 import { BlStorage } from "#services/storage/bl-storage";
-import { BlApiRequest } from "#services/types/bl-api-request";
-import { Operation } from "#services/types/operation";
 import { BlError } from "#shared/bl-error";
 import { BlapiResponse } from "#shared/blapi-response";
+import { BlApiRequest } from "#types/bl-api-request";
+import { Operation } from "#types/operation";
 import { userPermissionValidator } from "#validators/user_permission_validator";
 
 const userDetailPermissionValidator = vine.object({

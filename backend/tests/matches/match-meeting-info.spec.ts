@@ -13,7 +13,7 @@ import {
   CandidateMatchVariant,
   MatchableUser,
   MatchWithMeetingInfo,
-} from "#services/collections/user-match/helpers/match-finder/match-types";
+} from "#services/collections/user-match/helpers/match-finder/match-enums";
 import otto_treider_test_users_year_0 from "#services/collections/user-match/helpers/match-finder/test-data/test_users_year_0.json";
 import otto_treider_test_users_year_1 from "#services/collections/user-match/helpers/match-finder/test-data/test_users_year_1.json";
 import { expect, use as chaiUse, should } from "chai";

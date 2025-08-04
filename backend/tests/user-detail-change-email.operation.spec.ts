@@ -5,10 +5,10 @@ import sinon, { createSandbox } from "sinon";
 
 import { UserDetailChangeEmailOperation } from "#services/legacy/collections/user-detail/operations/change-email/user-detail-change-email.operation";
 import { BlStorage } from "#services/storage/bl-storage";
-import { User } from "#services/types/user";
 import { UserService } from "#services/user_service";
 import { BlError } from "#shared/bl-error";
 import { UserDetail } from "#shared/user-detail";
+import { User } from "#types/user";
 chaiUse(chaiAsPromised);
 should();
 

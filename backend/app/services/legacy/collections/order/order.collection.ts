@@ -7,7 +7,7 @@ import { OrderReceiptPdfOperation } from "#services/legacy/collections/order/ope
 import { OrderPlaceOperation } from "#services/legacy/collections/order/operations/place/order-place.operation";
 import { RapidHandoutOperation } from "#services/legacy/collections/order/operations/rapid-handout.operation";
 import { BlStorage } from "#services/storage/bl-storage";
-import { BlCollection } from "#services/types/bl-collection";
+import { BlCollection } from "#types/bl-collection";
 
 export const OrderCollection: BlCollection = {
   storage: BlStorage.Orders,

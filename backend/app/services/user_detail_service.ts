@@ -4,8 +4,8 @@ import BlidService from "#services/blid_service";
 import CryptoService from "#services/crypto_service";
 import { SEDbQuery } from "#services/query/se.db-query";
 import { BlStorage } from "#services/storage/bl-storage";
-import { VippsUser } from "#services/types/user";
 import { UserDetail } from "#shared/user-detail";
+import { VippsUser } from "#types/user";
 import { registerSchema } from "#validators/auth_validators";
 
 export const UserDetailService = {

@@ -5,7 +5,7 @@ import sinon, { createSandbox } from "sinon";
 
 import { DeleteUserService } from "#services/legacy/collections/user-detail/helpers/delete-user-service";
 import { BlStorage } from "#services/storage/bl-storage";
-import { User } from "#services/types/user";
+import { User } from "#types/user";
 chaiUse(chaiAsPromised);
 should();
 

@@ -118,7 +118,7 @@ test.group("OrderPlacedValidator", (group) => {
 
     orderPlacedValidator
       .validate(testOrder)
-      // @ts-expect-error fixme: auto ignored bad test types
+      // @ts-expect-error fixme: auto ignored bad test enums
       .should.be.rejectedWith(BlError, /delivery "notFoundDelivery" not found/);
   });
 
@@ -127,7 +127,7 @@ test.group("OrderPlacedValidator", (group) => {
 
     orderPlacedValidator
       .validate(testOrder)
-      // @ts-expect-error fixme: auto ignored bad test types
+      // @ts-expect-error fixme: auto ignored bad test enums
       .should.be.rejectedWith(BlError, /order.payments is not found/);
   });
 
@@ -136,7 +136,7 @@ test.group("OrderPlacedValidator", (group) => {
 
     orderPlacedValidator
       .validate(testOrder)
-      // @ts-expect-error fixme: auto ignored bad test types
+      // @ts-expect-error fixme: auto ignored bad test enums
       .should.be.rejectedWith(BlError, /payment is not confirmed/);
   });
 
@@ -147,7 +147,7 @@ test.group("OrderPlacedValidator", (group) => {
 
     orderPlacedValidator
       .validate(testOrder)
-      // @ts-expect-error fixme: auto ignored bad test types
+      // @ts-expect-error fixme: auto ignored bad test enums
       .should.be.rejectedWith(
         BlError,
         /total amount of payments is not equal to total of order.amount \+ delivery.amount/,
@@ -163,7 +163,7 @@ test.group("OrderPlacedValidator", (group) => {
 
     orderPlacedValidator
       .validate(testOrder)
-      // @ts-expect-error fixme: auto ignored bad test types
+      // @ts-expect-error fixme: auto ignored bad test enums
       .should.be.rejectedWith(
         BlError,
         /total of order.orderItems amount is not equal to order.amount/,

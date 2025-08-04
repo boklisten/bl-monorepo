@@ -184,7 +184,7 @@ export class OrderPlacedHandler {
     const customerDetail = await StorageService.UserDetails.get(order.customer);
     await (order.handoutByDelivery
       ? DispatchService.sendDeliveryInformation(customerDetail, order)
-      : DispatchService.orderPlaced(customerDetail, order));
+      : DispatchService.sendOrderReceipt(customerDetail, order));
   }
 
   /**

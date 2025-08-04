@@ -7,8 +7,6 @@ import { PasswordService } from "#services/password_service";
 import { StorageService } from "#services/storage_service";
 import { UserService } from "#services/user_service";
 import { PendingPasswordReset } from "#shared/pending-password-reset";
-import env from "#start/env";
-import { EMAIL_TEMPLATES } from "#types/email_templates";
 import {
   forgotPasswordValidator,
   passwordResetValidator,
@@ -66,16 +64,10 @@ export default class PasswordResetController {
       tokenHash,
     });
 
-    const mailStatus = await DispatchService.sendEmail({
-      template: EMAIL_TEMPLATES.passwordReset,
-      recipients: [
-        {
-          to: email,
-          dynamicTemplateData: {
-            passwordResetUri: `${env.get("NEXT_CLIENT_URI")}auth/reset/${passwordReset.id}?resetToken=${token}`,
-          },
-        },
-      ],
+    const mailStatus = await DispatchService.sendPasswordReset({
+      email,
+      resetId: passwordReset.id,
+      token,
     });
     if (!mailStatus.success) {
       throw new Error("Klarte ikke sende glemt passord-lenke.");

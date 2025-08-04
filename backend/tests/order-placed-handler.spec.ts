@@ -101,7 +101,7 @@ test.group("OrderPlacedHandler", (group) => {
     };
     sandbox.stub(StorageService, "Orders").value(ordersStub);
 
-    sandbox.stub(DispatchService, "orderPlaced").resolves();
+    sandbox.stub(DispatchService, "sendOrderReceipt").resolves();
 
     paymentsConfirmed = true;
     orderUpdate = true;

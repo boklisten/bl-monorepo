@@ -10,10 +10,12 @@ import { UserDetail } from "#shared/user-detail";
 import env from "#start/env";
 import { EmailOrder, EmailUser } from "#types/email";
 import {
+  EMAIL_SENDER,
   EMAIL_TEMPLATES,
   EmailRecipient,
   EmailTemplate,
 } from "#types/email_templates";
+import { assertSendGridTemplateId } from "#validators/send_grid_template_id_validator";
 
 const twilioClient = twilio(
   env.get("TWILIO_SMS_SID"),
@@ -58,10 +60,13 @@ const SmsService = {
 };
 
 const EmailService = {
-  async sendEmail(
-    template: EmailTemplate,
-    recipients: EmailRecipient | EmailRecipient[],
-  ) {
+  async sendEmail({
+    template,
+    recipients,
+  }: {
+    template: EmailTemplate;
+    recipients: EmailRecipient | EmailRecipient[];
+  }) {
     const personalizations = Array.isArray(recipients)
       ? recipients
       : [recipients];
@@ -104,17 +109,14 @@ const DispatchService = {
     template: EmailTemplate;
     recipients: EmailRecipient | EmailRecipient[];
   }) {
-    return await EmailService.sendEmail(template, recipients);
+    return await EmailService.sendEmail({ template, recipients });
   },
 
-  async orderPlaced(customerDetail: UserDetail, order: Order): Promise<void> {
+  async sendOrderReceipt(customerDetail: UserDetail, order: Order) {
     await new OrderEmailHandler().sendOrderReceipt(customerDetail, order);
   },
 
-  async sendDeliveryInformation(
-    customerDetail: UserDetail,
-    order: Order,
-  ): Promise<void> {
+  async sendDeliveryInformation(customerDetail: UserDetail, order: Order) {
     const deliveryId = typeof order.delivery === "string" ? order.delivery : "";
     const delivery = await StorageService.Deliveries.get(deliveryId);
     const emailUser: EmailUser = {
@@ -172,7 +174,7 @@ const DispatchService = {
       },
     };
 
-    await DispatchService.sendEmail({
+    await EmailService.sendEmail({
       template: EMAIL_TEMPLATES.deliveryInformation,
       recipients: [
         {
@@ -193,12 +195,31 @@ const DispatchService = {
     });
   },
 
+  async sendPasswordReset({
+    email,
+    resetId,
+    token,
+  }: {
+    email: string;
+    resetId: string;
+    token: string;
+  }) {
+    return await EmailService.sendEmail({
+      template: EMAIL_TEMPLATES.passwordReset,
+      recipients: [
+        {
+          to: email,
+          dynamicTemplateData: {
+            passwordResetUri: `${env.get("NEXT_CLIENT_URI")}auth/reset/${resetId}?resetToken=${token}`,
+          },
+        },
+      ],
+    });
+  },
+
   // fixme: rename confirmation to verification everywhere
-  async sendEmailConfirmation(
-    email: string,
-    confirmationCode: string,
-  ): Promise<void> {
-    await DispatchService.sendEmail({
+  async sendEmailConfirmation(email: string, confirmationCode: string) {
+    await EmailService.sendEmail({
       template: EMAIL_TEMPLATES.emailConfirmation,
       recipients: [
         {
@@ -208,6 +229,22 @@ const DispatchService = {
           },
         },
       ],
+    });
+  },
+
+  async sendUserProvidedEmailTemplate({
+    emailTemplateId,
+    recipients,
+  }: {
+    emailTemplateId: string;
+    recipients: EmailRecipient[];
+  }) {
+    return await EmailService.sendEmail({
+      template: {
+        sender: EMAIL_SENDER.INFO,
+        templateId: assertSendGridTemplateId(emailTemplateId),
+      },
+      recipients,
     });
   },
 };

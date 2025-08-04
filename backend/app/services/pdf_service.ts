@@ -8,7 +8,6 @@ import { UserDetail } from "#shared/user-detail";
 import { EmailSetting, EmailUser } from "#types/email";
 
 const pdfHandler = new PdfHandler(new EmailHandler({ locale: "nb" }));
-const orderEmailHandler = new OrderEmailHandler();
 const standardDayFormat = "DD.MM.YYYY";
 const utcOffset = 120;
 
@@ -29,7 +28,7 @@ export const PdfService = {
       address: customerDetail.address,
     } as const satisfies EmailUser;
 
-    const emailOrder = await orderEmailHandler.orderToEmailOrder(order);
+    const emailOrder = await OrderEmailHandler.orderToEmailOrder(order);
 
     return await pdfHandler.getOrderReceipt(
       {} as EmailSetting,
@@ -53,7 +52,7 @@ export const PdfService = {
       address: customerDetail.address,
     } as const satisfies EmailUser;
 
-    const emailOrder = await orderEmailHandler.orderToEmailOrder(order);
+    const emailOrder = await OrderEmailHandler.orderToEmailOrder(order);
     return await pdfHandler.getRentAgreement(
       {} as EmailSetting,
       emailOrder,

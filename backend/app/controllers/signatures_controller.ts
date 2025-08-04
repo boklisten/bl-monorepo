@@ -14,7 +14,7 @@ export default class SignaturesController {
       userDetail?.branchMembership,
     );
     if (userDetail) {
-      await new OrderEmailHandler().requestGuardianSignature(
+      await OrderEmailHandler.requestGuardianSignature(
         userDetail,
         branch?.name ?? "en filial",
       );

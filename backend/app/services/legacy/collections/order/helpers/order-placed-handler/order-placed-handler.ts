@@ -5,6 +5,7 @@ import { CustomerItemHandler } from "#services/legacy/collections/customer-item/
 import { OrderItemMovedFromOrderHandler } from "#services/legacy/collections/order/helpers/order-item-moved-from-order-handler/order-item-moved-from-order-handler";
 import { PaymentHandler } from "#services/legacy/collections/payment/helpers/payment-handler";
 import { userHasValidSignature } from "#services/legacy/collections/signature/helpers/signature.helper";
+import { OrderEmailHandler } from "#services/legacy/order_email_handler";
 import { StorageService } from "#services/storage_service";
 import { AccessToken } from "#shared/access-token";
 import { BlError } from "#shared/bl-error";
@@ -184,7 +185,7 @@ export class OrderPlacedHandler {
     const customerDetail = await StorageService.UserDetails.get(order.customer);
     await (order.handoutByDelivery
       ? DispatchService.sendDeliveryInformation(customerDetail, order)
-      : DispatchService.sendOrderReceipt(customerDetail, order));
+      : OrderEmailHandler.sendOrderReceipt(customerDetail, order));
   }
 
   /**

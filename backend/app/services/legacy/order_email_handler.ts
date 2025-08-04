@@ -12,18 +12,10 @@ import { OrderItem } from "#shared/order/order-item/order-item";
 import { OrderItemType } from "#shared/order/order-item/order-item-type";
 import { Payment } from "#shared/payment/payment";
 import { UserDetail } from "#shared/user-detail";
-import env from "#start/env";
 import { EmailOrder, EmailUser } from "#types/email";
-import { EMAIL_TEMPLATES } from "#types/email_templates";
 
-export class OrderEmailHandler {
-  private defaultCurrency = "NOK";
-  private standardTimeFormat = "DD.MM.YYYY HH.mm.ss";
-
-  public async sendOrderReceipt(
-    customerDetail: UserDetail,
-    order: Order,
-  ): Promise<void> {
+export const OrderEmailHandler = {
+  async sendOrderReceipt(customerDetail: UserDetail, order: Order) {
     const branchId = order.branch;
 
     const withAgreement: boolean = await this.shouldSendAgreement(
@@ -50,38 +42,22 @@ export class OrderEmailHandler {
       await this.requestGuardianSignature(customerDetail, branch?.name ?? "");
     }
 
-    await DispatchService.sendEmail({
-      template: EMAIL_TEMPLATES.receipt,
-      recipients: [
-        {
-          to: customerDetail.email,
-          dynamicTemplateData: {
-            subject: "Din kvittering fra Boklisten.no #" + order.id,
-            emailTemplateInput: {
-              user: emailUser,
-              order: emailOrder,
-              userFullName: emailUser.name,
-              // fixme: this is not visible since the sendout does not currently show textblocks
-            },
-            textBlock: this.paymentNeeded(order)
-              ? "Dette er kun en reservasjon, du har ikke betalt enda. Du betaler først når du kommer til oss på stand."
-              : undefined,
-          },
-        },
-      ],
-    });
-  }
-
-  private paymentNeeded(order: Order): boolean {
+    await DispatchService.sendOrderReceipt(
+      emailUser,
+      emailOrder,
+      this.paymentNeeded(order),
+    );
+  },
+  paymentNeeded(order: Order) {
     return (
       order.amount > 0 &&
       (!Array.isArray(order.payments) || order.payments.length === 0)
     );
-  }
+  },
   /**
    * sends out SMS and email to the guardian of a customer with a signature link if they are under 18
    */
-  public async requestGuardianSignature(
+  async requestGuardianSignature(
     customerDetail: UserDetail,
     branchName: string,
   ) {
@@ -95,34 +71,20 @@ export class OrderEmailHandler {
       if (await userHasValidSignature(customerDetail)) {
         return;
       }
-      await DispatchService.sendEmail({
-        template: EMAIL_TEMPLATES.guardianSignature,
-        recipients: [
-          {
-            to: customerDetail.guardian.email,
-            dynamicTemplateData: {
-              guardianSignatureUri: `${env.get("CLIENT_URI")}signering/${customerDetail.id}`,
-              customerName: customerDetail.name,
-              guardianName: customerDetail.guardian.name,
-              branchName: branchName,
-            },
-          },
-        ],
-      });
-      await DispatchService.sendSMS({
-        to: customerDetail.guardian.phone,
-        body: `Hei. ${customerDetail.name} har nylig bestilt bøker fra ${branchName} gjennom Boklisten.no. Siden ${customerDetail.name} er under 18 år, krever vi at du som foresatt signerer låneavtalen. Vi har derfor sendt en e-post til ${customerDetail.guardian.email} med lenke til signering. Ta kontakt på info@boklisten.no om du har spørsmål. Mvh. Boklisten`,
-      });
+      await DispatchService.sendGuardianSignatureLink(
+        customerDetail,
+        branchName,
+      );
     }
-  }
+  },
 
-  public async orderToEmailOrder(order: Order): Promise<EmailOrder> {
+  async orderToEmailOrder(order: Order) {
     const emailOrder: EmailOrder = {
       id: order.id,
       showDeadline: this.shouldShowDeadline(order),
       showPrice: order.amount !== 0,
       showStatus: true,
-      currency: this.defaultCurrency,
+      currency: "NOK",
       itemAmount: order.amount.toString(),
       totalAmount: order.amount.toString(), // should include the totalAmount including the delivery amount
       items: this.orderItemsToEmailItems(order.orderItems),
@@ -158,15 +120,15 @@ export class OrderEmailHandler {
     emailOrder.payment = emailOrderPayment.payment;
 
     return emailOrder;
-  }
+  },
 
-  private shouldShowDeadline(order: Order) {
+  shouldShowDeadline(order: Order) {
     return order.orderItems.some(
       (orderItem) => orderItem.type === "rent" || orderItem.type === "extend",
     );
-  }
+  },
 
-  private extractEmailOrderPaymentFromOrder(
+  extractEmailOrderPaymentFromOrder(
     order: Order,
   ): Promise<{ payment: unknown; showPayment: boolean }> {
     if (!Array.isArray(order.payments) || order.payments.length === 0) {
@@ -184,7 +146,7 @@ export class OrderEmailHandler {
             (subTotal, payment) => subTotal + payment.amount,
             0,
           ),
-          currency: this.defaultCurrency,
+          currency: "NOK",
           taxAmount: 0,
           payments: payments.map((payment) =>
             this.paymentToEmailPayment(payment),
@@ -208,31 +170,23 @@ export class OrderEmailHandler {
       .catch((getPaymentsError) => {
         throw getPaymentsError;
       });
-  }
+  },
 
-  private extractEmailOrderDeliveryFromOrder(
-    order: Order,
-  ): Promise<{ delivery: unknown; showDelivery: boolean }> {
+  async extractEmailOrderDeliveryFromOrder(order: Order) {
     const deliveryId = order.delivery;
     if (!deliveryId?.length) {
       return Promise.resolve({ delivery: null, showDelivery: false });
     }
+    const delivery = await StorageService.Deliveries.get(deliveryId);
+    return delivery.method === "bring"
+      ? {
+          delivery: this.deliveryToEmailDelivery(delivery),
+          showDelivery: true,
+        }
+      : { delivery: null, showDelivery: false };
+  },
 
-    return StorageService.Deliveries.get(deliveryId)
-      .then((delivery: Delivery) => {
-        return delivery.method === "bring"
-          ? {
-              delivery: this.deliveryToEmailDelivery(delivery),
-              showDelivery: true,
-            }
-          : { delivery: null, showDelivery: false };
-      })
-      .catch((getDeliveryError: BlError) => {
-        throw getDeliveryError;
-      });
-  }
-
-  private paymentToEmailPayment(payment: Payment) {
+  paymentToEmailPayment(payment: Payment) {
     if (!payment) {
       return null;
     }
@@ -251,7 +205,7 @@ export class OrderEmailHandler {
         ? DateService.format(
             payment.creationTime,
             "Europe/Oslo",
-            this.standardTimeFormat,
+            "DD.MM.YYYY HH.mm.ss",
           )
         : null,
     };
@@ -302,12 +256,12 @@ export class OrderEmailHandler {
     }
 
     return paymentObject;
-  }
+  },
 
-  private deliveryToEmailDelivery(delivery: Delivery) {
+  deliveryToEmailDelivery(delivery: Delivery) {
     return {
       method: delivery.method,
-      currency: this.defaultCurrency,
+      currency: "NOK",
       amount: delivery.amount,
 
       // @ts-expect-error fixme: auto ignored
@@ -328,9 +282,9 @@ export class OrderEmailHandler {
           )
         : "",
     };
-  }
+  },
 
-  private orderItemsToEmailItems(orderItems: OrderItem[]): {
+  orderItemsToEmailItems(orderItems: OrderItem[]): {
     title: string;
     status: string;
     deadline: string | null;
@@ -348,9 +302,9 @@ export class OrderEmailHandler {
           ? orderItem.amount.toString()
           : null,
     }));
-  }
+  },
 
-  private translateOrderItemType(
+  translateOrderItemType(
     orderItemType: OrderItemType,
     handout?: boolean,
   ): string {
@@ -369,9 +323,9 @@ export class OrderEmailHandler {
     return `${translations[orderItemType] ?? orderItemType}${
       handout && orderItemType !== "return" ? " - utlevert" : ""
     }`;
-  }
+  },
 
-  private async shouldSendAgreement(
+  async shouldSendAgreement(
     order: Order,
     customerDetail: UserDetail,
     branchId: string,
@@ -400,10 +354,10 @@ export class OrderEmailHandler {
     }
 
     return await this.isBranchResponsible(branchId);
-  }
+  },
 
-  private async isBranchResponsible(branchId: string): Promise<boolean> {
+  async isBranchResponsible(branchId: string): Promise<boolean> {
     const branch = await StorageService.Branches.get(branchId);
     return branch.paymentInfo?.responsible ?? false;
-  }
-}
+  },
+};

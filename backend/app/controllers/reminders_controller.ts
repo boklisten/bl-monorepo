@@ -186,20 +186,16 @@ export default class RemindersController {
     }
 
     if (smsText) {
-      await DispatchService.sendSMS(
-        customers.map((customer) => ({
-          to: customer.phone,
-          body: smsText,
-        })),
+      await DispatchService.sendReminderSms(
+        customers.map((customer) => customer.phone),
+        smsText,
       );
       if (customerItemType === "rent") {
-        await DispatchService.sendSMS(
+        await DispatchService.sendReminderSms(
           customers
             .filter((customer) => (customer.guardian.phone?.length ?? 0) > 0)
-            .map((customer) => ({
-              to: customer.guardian.phone ?? "",
-              body: smsText,
-            })),
+            .map((customer) => customer.guardian.phone ?? ""),
+          smsText,
         );
       }
     }

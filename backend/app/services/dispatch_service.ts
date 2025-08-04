@@ -3,7 +3,6 @@ import sgMail from "@sendgrid/mail";
 import twilio from "twilio";
 
 import { DateService } from "#services/legacy/date.service";
-import { OrderEmailHandler } from "#services/legacy/order_email_handler";
 import { StorageService } from "#services/storage_service";
 import { Order } from "#shared/order/order";
 import { UserDetail } from "#shared/user-detail";
@@ -103,26 +102,59 @@ const EmailService = {
 };
 
 const DispatchService = {
-  // fixme: maybe not expose this
-  async sendSMS(message: SmsMessage | SmsMessage[]) {
-    if (Array.isArray(message)) {
-      return await SmsService.sendMany(message);
-    }
-    return await SmsService.sendOne(message);
+  async sendReminderSms(phoneNumbers: string[], body: string) {
+    return await SmsService.sendMany(phoneNumbers.map((to) => ({ to, body })));
   },
-  // fixme: maybe not expose this
-  async sendEmail({
-    template,
-    recipients,
-  }: {
-    template: EmailTemplate;
-    recipients: EmailRecipient | EmailRecipient[];
-  }) {
-    return await EmailService.sendEmail({ template, recipients });
+  async sendOrderReceipt(
+    emailUser: EmailUser,
+    emailOrder: EmailOrder,
+    paymentNeeded: boolean,
+  ) {
+    await EmailService.sendEmail({
+      template: EMAIL_TEMPLATES.receipt,
+      recipients: [
+        {
+          to: emailUser.email,
+          dynamicTemplateData: {
+            subject: "Din kvittering fra Boklisten.no #" + emailOrder.id,
+            emailTemplateInput: {
+              user: emailUser,
+              order: emailOrder,
+              userFullName: emailUser.name,
+              // fixme: this is not visible since the sendout does not currently show textblocks
+            },
+            textBlock: paymentNeeded
+              ? "Dette er kun en reservasjon, du har ikke betalt enda. Du betaler først når du kommer til oss på stand."
+              : undefined,
+          },
+        },
+      ],
+    });
   },
+  async sendGuardianSignatureLink(
+    customerDetail: UserDetail,
+    branchName: string,
+  ) {
+    if (!customerDetail.guardian) return;
+    await EmailService.sendEmail({
+      template: EMAIL_TEMPLATES.guardianSignature,
+      recipients: [
+        {
+          to: customerDetail?.guardian.email,
+          dynamicTemplateData: {
+            guardianSignatureUri: `${env.get("CLIENT_URI")}signering/${customerDetail.id}`,
+            customerName: customerDetail.name,
+            guardianName: customerDetail.guardian.name,
+            branchName: branchName,
+          },
+        },
+      ],
+    });
 
-  async sendOrderReceipt(customerDetail: UserDetail, order: Order) {
-    await new OrderEmailHandler().sendOrderReceipt(customerDetail, order);
+    await SmsService.sendOne({
+      to: customerDetail.guardian.phone,
+      body: `Hei. ${customerDetail.name} har nylig bestilt bøker fra ${branchName} gjennom Boklisten.no. Siden ${customerDetail.name} er under 18 år, krever vi at du som foresatt signerer låneavtalen. Vi har derfor sendt en e-post til ${customerDetail.guardian.email} med lenke til signering. Ta kontakt på info@boklisten.no om du har spørsmål. Mvh. Boklisten`,
+    });
   },
 
   async sendDeliveryInformation(customerDetail: UserDetail, order: Order) {

@@ -3,7 +3,6 @@ import {
   CustomerItemStatus,
 } from "@boklisten/backend/shared/customer-item/actionable_customer_item";
 import {
-  ArrowRight,
   Event,
   HourglassTop,
   LocalLibrary,

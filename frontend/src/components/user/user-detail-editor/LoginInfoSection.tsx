@@ -25,11 +25,9 @@ function CustomerIdDialog({
 
 export default function LoginInfoSection({
   variant,
-  emailVerified,
   userDetails,
 }: {
   variant: UserDetailsEditorVariant;
-  emailVerified: boolean | undefined;
   userDetails: UserDetail;
 }) {
   const dialogs = useDialogs();
@@ -38,13 +36,12 @@ export default function LoginInfoSection({
     <>
       <Grid size={{ xs: 12 }}>
         <EmailField
-          disabled={variant === "personal" || variant === "administrate"} // fixme: enable in administrate but note that we also need to update the users table
+          disabled={variant === "personal"}
           helperText={
             variant === "personal"
               ? "Ta kontakt dersom du ønsker å endre e-postadresse"
               : ""
           }
-          isEmailVerified={emailVerified}
         />
         <EmailConfirmationStatus userDetails={userDetails} variant={variant} />
         <FieldErrorAlert field={"email"} />

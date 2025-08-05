@@ -24,6 +24,7 @@ import useAuthLinker from "@/utils/useAuthLinker";
 
 export interface UserEditorFields {
   email: string;
+  emailVerified: boolean | undefined;
   password: string;
   name: string;
   phoneNumber: string;
@@ -58,6 +59,7 @@ export default function UserDetailsEditor({
 
   const defaultValues = {
     email: userDetails.email,
+    emailVerified: userDetails.emailConfirmed,
     name: userDetails.name,
     phoneNumber: userDetails.phone,
     address: userDetails.address,
@@ -174,8 +176,8 @@ export default function UserDetailsEditor({
     const { error } = await client.v2.employee
       .user_details({ detailsId: userDetails.id })
       .$post({
-        emailVerified: userDetails.emailConfirmed ?? false, // fixme: add this to the form as a switch
         email: formData.email,
+        emailVerified: formData.emailVerified ?? false,
         name: formData.name,
         phoneNumber: formData.phoneNumber,
         address: formData.address,
@@ -238,11 +240,7 @@ export default function UserDetailsEditor({
         })}
       >
         <Grid container spacing={2}>
-          <LoginInfoSection
-            variant={variant}
-            emailVerified={userDetails.emailConfirmed}
-            userDetails={userDetails}
-          />
+          <LoginInfoSection variant={variant} userDetails={userDetails} />
           <YourInfoSection
             variant={variant}
             onIsUnderageChange={onIsUnderageChange}

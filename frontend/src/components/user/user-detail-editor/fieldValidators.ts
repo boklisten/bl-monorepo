@@ -14,6 +14,7 @@ export const fieldValidators = {
     validate: (v) =>
       validator.isEmail(v) ? true : "Du må fylle inn en gyldig e-post",
   },
+  emailVerified: {},
   password: {
     required: "Du må fylle inn passord",
     minLength: {

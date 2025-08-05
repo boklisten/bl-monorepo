@@ -1,9 +1,9 @@
 import { UserDetail } from "@boklisten/backend/shared/user-detail";
 import { Email, Info } from "@mui/icons-material";
-import { Alert } from "@mui/material";
+import { Alert, Stack, Switch } from "@mui/material";
 import Button from "@mui/material/Button";
 import { useMutation } from "@tanstack/react-query";
-import { useFormContext } from "react-hook-form";
+import { Controller, useFormContext } from "react-hook-form";
 
 import {
   UserDetailsEditorVariant,
@@ -20,7 +20,7 @@ const EmailConfirmationStatus = ({
   variant,
   userDetails,
 }: EmailConfirmationStatusProps) => {
-  const { setError } = useFormContext<UserEditorFields>();
+  const { setError, control } = useFormContext<UserEditorFields>();
   const client = useApiClient();
 
   const createEmailConfirmation = useMutation({
@@ -31,6 +31,32 @@ const EmailConfirmationStatus = ({
           "Klarte ikke sende ny bekreftelseslenke. Vennligst prøv igjen, eller ta kontakt hvis problemet vedvarer.",
       }),
   });
+
+  if (variant === "administrate") {
+    return (
+      <Stack
+        direction={"row"}
+        sx={{
+          mt: 1,
+          ml: 0.2,
+          justifyContent: "space-between",
+          alignItems: "center",
+        }}
+      >
+        E-post bekreftet
+        <Controller
+          name={"emailVerified"}
+          control={control}
+          render={({ field }) => (
+            <Switch
+              checked={field.value ?? false}
+              onChange={(_, newValue) => field.onChange(newValue)}
+            />
+          )}
+        />
+      </Stack>
+    );
+  }
 
   return (
     variant !== "signup" &&

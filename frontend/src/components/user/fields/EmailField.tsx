@@ -1,7 +1,7 @@
 import { Check, Info } from "@mui/icons-material";
 import { InputAdornment, Tooltip } from "@mui/material";
 import TextField from "@mui/material/TextField";
-import { useFormContext } from "react-hook-form";
+import { useFormContext, useWatch } from "react-hook-form";
 
 import { fieldValidators } from "@/components/user/user-detail-editor/fieldValidators";
 import { UserEditorFields } from "@/components/user/user-detail-editor/UserDetailsEditor";
@@ -10,11 +10,9 @@ export default function EmailField({
   label = "E-post",
   disabled = false,
   helperText = "",
-  isEmailVerified = undefined,
   field = "email",
 }: {
   label?: string;
-  isEmailVerified?: boolean | undefined;
   disabled?: boolean;
   helperText?: string;
   field?: "email" | "guardianEmail";
@@ -22,7 +20,9 @@ export default function EmailField({
   const {
     register,
     formState: { errors },
+    control,
   } = useFormContext<UserEditorFields>();
+  const isEmailVerified = useWatch({ control, name: "emailVerified" });
   return (
     <TextField
       label={label}

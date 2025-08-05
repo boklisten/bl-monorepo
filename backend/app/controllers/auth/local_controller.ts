@@ -6,7 +6,6 @@ import { StorageService } from "#services/storage_service";
 import TokenService from "#services/token_service";
 import { UserDetailService } from "#services/user_detail_service";
 import { UserService } from "#services/user_service";
-import { User } from "#types/user";
 import {
   localAuthValidator,
   registerValidator,
@@ -17,24 +16,19 @@ export default class LocalController {
     const { username, password } =
       await request.validateUsing(localAuthValidator);
 
-    let user: User | null = null;
-    if (vine.helpers.isEmail(username)) {
-      user = await UserService.getByUsername(username);
-    } else {
-      const userDetail = await UserDetailService.getByPhoneNumber(username);
-      if (userDetail) {
-        user = await UserService.getByUsername(userDetail.email);
-      }
-    }
+    const userDetail = vine.helpers.isEmail(username)
+      ? await UserDetailService.getByEmail(username)
+      : await UserDetailService.getByPhoneNumber(username);
+    const user = await UserService.getByUserDetailsId(userDetail?.id);
 
-    if (!user) {
+    if (!userDetail) {
       return {
         message:
           "Brukernavnet du har oppgitt er ikke tilknyttet noen bruker. Du kan forsøke et annet brukernavn, eller lage en ny bruker ved å trykke på 'registrer deg'",
       };
     }
 
-    if (!user.login.local) {
+    if (!user?.login.local) {
       return {
         message:
           "Brukeren du forsøker å logge inn med har ikke satt opp passord-innlogging. Du kan forsøke å logge inn med Vipps, eller et lage et nytt passord ved å trykke på 'glemt passord'",
@@ -58,7 +52,7 @@ export default class LocalController {
         "login.local.lastLogin": new Date(),
       },
     });
-    const tokens = await TokenService.createTokens(user.username);
+    const tokens = await TokenService.createTokens(user);
     if (!tokens)
       return {
         message:
@@ -72,7 +66,12 @@ export default class LocalController {
 
   async register({ request }: HttpContext) {
     const registerData = await request.validateUsing(registerValidator);
-    await UserService.createLocalUser(registerData);
-    return await TokenService.createTokens(registerData.email);
+    const userDetail =
+      await UserDetailService.createLocalUserDetail(registerData);
+    const user = await UserService.createLocalUser(
+      userDetail.id,
+      registerData.password,
+    );
+    return await TokenService.createTokens(user);
   }
 }

@@ -5,6 +5,7 @@ import CryptoService from "#services/crypto_service";
 import DispatchService from "#services/dispatch_service";
 import { PasswordService } from "#services/password_service";
 import { StorageService } from "#services/storage_service";
+import { UserDetailService } from "#services/user_detail_service";
 import { UserService } from "#services/user_service";
 import { PendingPasswordReset } from "#shared/pending-password-reset";
 import {
@@ -38,10 +39,21 @@ async function getPasswordReset({
     };
   }
 
-  const user = await UserService.getByUsername(pendingPasswordReset.email);
-  if (!user) {
+  const userDetail = await UserDetailService.getByEmail(
+    pendingPasswordReset.email,
+  );
+  if (!userDetail) {
     throw new Error("Brukeren finnes ikke");
   }
+
+  let user = await UserService.getByUserDetailsId(userDetail.id);
+  if (!user) {
+    user = await UserService.createLocalUser(
+      userDetail.id,
+      CryptoService.random(),
+    );
+  }
+
   return { user, pendingPasswordReset };
 }
 
@@ -51,8 +63,8 @@ export default class PasswordResetController {
     const token = CryptoService.random();
     const tokenHash = await hash.make(token);
 
-    const existingUser = await UserService.getByUsername(email);
-    if (!existingUser) {
+    const userDetail = await UserDetailService.getByEmail(email);
+    if (!userDetail) {
       return {
         message:
           "E-posten du har oppgitt er ikke tilknyttet noen bruker. Du kan forsøke et annet brukernavn, eller lage en ny bruker ved å trykke på 'registrer deg'",

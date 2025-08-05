@@ -30,9 +30,7 @@ test.group("UserDeleteAllInfo", (group) => {
 
     userRemoveStub.resolves({} as User);
 
-    userGetByQueryStub.resolves([
-      { id: userIdToRemove, username: "user@1234.com" } as User,
-    ]);
+    userGetByQueryStub.resolves([{ id: userIdToRemove } as User]);
 
     await userDeleteAllInfo.deleteUser(userDetailIdToRemove);
 
@@ -46,9 +44,7 @@ test.group("UserDeleteAllInfo", (group) => {
 
     userRemoveStub.resolves({} as User);
 
-    userGetByQueryStub.resolves([
-      { id: userIdToRemove, username: "user@1234.com" } as User,
-    ]);
+    userGetByQueryStub.resolves([{ id: userIdToRemove } as User]);
 
     return expect(userDeleteAllInfo.deleteUser(userDetailIdToRemove)).to
       .eventually.be.fulfilled;

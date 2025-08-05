@@ -45,18 +45,4 @@ export const UserSchema: BlSchema<User> = new Schema({
     required: true,
   },
   login: { type: LoginSchema, required: true },
-  blid: {
-    type: String,
-    required: true,
-  },
-  username: {
-    type: String,
-    trim: true,
-    lowercase: true,
-    required: true,
-    index: {
-      unique: true,
-      name: "username_unique",
-    },
-  },
 });

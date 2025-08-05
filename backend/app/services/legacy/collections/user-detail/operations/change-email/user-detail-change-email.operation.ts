@@ -3,6 +3,7 @@ import validator from "validator";
 import { isNullish } from "#services/legacy/typescript-helpers";
 import { PermissionService } from "#services/permission_service";
 import { StorageService } from "#services/storage_service";
+import { UserDetailService } from "#services/user_detail_service";
 import { UserService } from "#services/user_service";
 import { BlError } from "#shared/bl-error";
 import { BlapiResponse } from "#shared/blapi-response";
@@ -21,7 +22,7 @@ export class UserDetailChangeEmailOperation implements Operation {
       blApiRequest.documentId,
     );
 
-    const user = await UserService.getByUsername(userDetail.email);
+    const user = await UserService.getByUserDetailsId(userDetail.id);
     if (!user) throw new BlError("no user found").code(701);
 
     if (
@@ -32,7 +33,7 @@ export class UserDetailChangeEmailOperation implements Operation {
     )
       throw new BlError("no access to change email");
 
-    if (await UserService.getByUsername(emailChange))
+    if (await UserDetailService.getByEmail(emailChange))
       throw new BlError("email is already present in database").code(701);
 
     await StorageService.UserDetails.update(

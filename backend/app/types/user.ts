@@ -31,14 +31,7 @@ export interface Login {
 }
 
 export interface User extends BlDocument {
-  id: string;
   userDetail: string;
   permission: UserPermission;
   login: Login;
-  blid: string;
-  username: string;
-  user?: {
-    id: string;
-    permission: UserPermission;
-  };
 }

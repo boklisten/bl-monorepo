@@ -92,7 +92,7 @@ export default function PasswordReset({ resetId }: { resetId: string }) {
       ) : (
         <>
           {apiError && (
-            <Alert severity="error" sx={{ mt: 1 }}>
+            <Alert severity="error" sx={{ my: 2 }}>
               {apiError}
             </Alert>
           )}

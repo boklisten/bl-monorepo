@@ -1,7 +1,6 @@
 import { HttpContext } from "@adonisjs/core/http";
 import logger from "@adonisjs/core/services/logger";
 
-import BlidService from "#services/blid_service";
 import { StorageService } from "#services/storage_service";
 import TokenService from "#services/token_service";
 import { UserDetailService } from "#services/user_detail_service";
@@ -37,53 +36,17 @@ export const AuthVippsService = {
 
     const vippsUser = await vipps.user();
 
-    // Try to find any matching user in any way possible
     let userDetail =
       (await UserDetailService.getByPhoneNumber(vippsUser.phoneNumber)) ??
       (await UserDetailService.getByEmail(vippsUser.email));
-
-    let user =
-      (await UserService.getByUsername(userDetail?.email)) ??
-      (await UserService.getByUserDetailsId(userDetail?.id)) ??
-      (await UserService.getByUsername(vippsUser.email));
-
-    userDetail ??=
-      (await StorageService.UserDetails.getOrNull(user?.userDetail)) ??
-      (await UserDetailService.getByEmail(user?.username ?? ""));
-
-    const blid =
-      user?.blid ??
-      userDetail?.blid ??
-      BlidService.createUserBlid("vipps", vippsUser.id);
+    let user = await UserService.getByUserDetailsId(userDetail?.id);
 
     try {
       if (!userDetail) {
-        userDetail = await UserDetailService.createVippsUserDetail(
-          vippsUser,
-          blid,
-        );
+        userDetail = await UserDetailService.createVippsUserDetail(vippsUser);
       }
-
-      if (
-        user &&
-        (user.username !== userDetail.email ||
-          user.userDetail !== userDetail.id ||
-          user.blid !== userDetail.blid)
-      ) {
-        // user and userDetail are not in sync, so we set the user to match the userDetail
-        await StorageService.Users.remove(user.id);
-
-        user = await UserService.getByUserDetailsId(userDetail.id);
-        if (user) await StorageService.Users.remove(user.id);
-
-        user = await UserService.getByUsername(userDetail.email);
-        if (user) await StorageService.Users.remove(user.id);
-
-        user = null;
-      }
-
       if (!user) {
-        user = await UserService.createVippsUser(userDetail, vippsUser.id);
+        user = await UserService.createVippsUser(userDetail.id, vippsUser.id);
       }
 
       await StorageService.Users.update(user.id, {
@@ -93,7 +56,7 @@ export const AuthVippsService = {
         },
       });
 
-      const tokens = await TokenService.createTokens(user.username);
+      const tokens = await TokenService.createTokens(user);
 
       if (!tokens) {
         redirectToAuthFailedPage(ctx, ERROR);

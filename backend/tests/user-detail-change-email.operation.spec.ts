@@ -5,6 +5,7 @@ import sinon, { createSandbox } from "sinon";
 
 import { UserDetailChangeEmailOperation } from "#services/legacy/collections/user-detail/operations/change-email/user-detail-change-email.operation";
 import { StorageService } from "#services/storage_service";
+import { UserDetailService } from "#services/user_detail_service";
 import { UserService } from "#services/user_service";
 import { BlError } from "#shared/bl-error";
 import { UserDetail } from "#shared/user-detail";
@@ -18,7 +19,8 @@ test.group("UserDetailChangeEmailOperation", (group) => {
   let userDetailGetStub: sinon.SinonStub;
   let userDetailUpdateStub: sinon.SinonStub;
   let userUpdateStub: sinon.SinonStub;
-  let userServiceGetByUsernameStub: sinon.SinonStub;
+  let userServiceGetByUserDetailIdStub: sinon.SinonStub;
+  let userDetailServiceGetByEmailStub: sinon.SinonStub;
   let sandbox: sinon.SinonSandbox;
 
   group.each.setup(() => {
@@ -26,7 +28,14 @@ test.group("UserDetailChangeEmailOperation", (group) => {
     userDetailGetStub = sandbox.stub(StorageService.UserDetails, "get");
     userDetailUpdateStub = sandbox.stub(StorageService.UserDetails, "update");
     userUpdateStub = sandbox.stub(StorageService.Users, "update");
-    userServiceGetByUsernameStub = sandbox.stub(UserService, "getByUsername");
+    userDetailServiceGetByEmailStub = sandbox.stub(
+      UserDetailService,
+      "getByEmail",
+    );
+    userServiceGetByUserDetailIdStub = sandbox.stub(
+      UserService,
+      "getByUserDetailsId",
+    );
   });
   group.each.teardown(() => {
     sandbox.restore();
@@ -60,7 +69,7 @@ test.group("UserDetailChangeEmailOperation", (group) => {
       blid: "blid1",
       email: "email@email.com",
     } as UserDetail);
-    userServiceGetByUsernameStub.rejects(new BlError("no user found"));
+    userServiceGetByUserDetailIdStub.rejects(new BlError("no user found"));
 
     return expect(
       userDetailChangeEmailOperation.run({
@@ -80,8 +89,7 @@ test.group("UserDetailChangeEmailOperation", (group) => {
           blid: "blid1",
           email: "email@email.com",
         } as UserDetail);
-        userServiceGetByUsernameStub.resolves({
-          username: "email@email.com",
+        userServiceGetByUserDetailIdStub.resolves({
           permission: higherPermission,
         } as User);
 
@@ -101,17 +109,16 @@ test.group("UserDetailChangeEmailOperation", (group) => {
 
   test("should reject if the email is already in database", async () => {
     userDetailGetStub.resolves({
+      id: "exists",
       blid: "blid1",
       email: "email@email.com",
     } as UserDetail);
-    userServiceGetByUsernameStub.withArgs("email@email.com").resolves({
-      blid: "blid1",
-      username: "email@email.com",
+    userServiceGetByUserDetailIdStub.withArgs("exists").resolves({
       permission: "customer",
     } as User);
-    userServiceGetByUsernameStub.withArgs("alreadyAdded@email.com").resolves({
-      username: "alreadyAdded@email.com",
-    } as User);
+    userDetailServiceGetByEmailStub
+      .withArgs("alreadyAdded@email.com")
+      .resolves({} as User);
 
     return expect(
       userDetailChangeEmailOperation.run({
@@ -127,15 +134,14 @@ test.group("UserDetailChangeEmailOperation", (group) => {
 
   test("should reject if userDetailStorage.update rejects", async () => {
     userDetailGetStub.resolves({
+      id: "exists",
       blid: "blid1",
       email: "email@email.com",
     } as UserDetail);
-    userServiceGetByUsernameStub.withArgs("email@email.com").resolves({
-      blid: "blid1",
-      username: "email@email.com",
+    userServiceGetByUserDetailIdStub.withArgs("exists").resolves({
       permission: "customer",
     } as User);
-    userServiceGetByUsernameStub.withArgs("change@email.com").resolves(null);
+    userDetailServiceGetByEmailStub.withArgs("change@email.com").resolves(null);
     userDetailUpdateStub.rejects(new BlError("could not update user detail"));
 
     return expect(
@@ -149,15 +155,14 @@ test.group("UserDetailChangeEmailOperation", (group) => {
 
   test("should reject if user.update rejects", async () => {
     userDetailGetStub.resolves({
+      id: "exists",
       blid: "blid1",
       email: "email@email.com",
     } as UserDetail);
-    userServiceGetByUsernameStub.withArgs("email@email.com").resolves({
-      blid: "blid1",
-      username: "email@email.com",
+    userServiceGetByUserDetailIdStub.withArgs("exists").resolves({
       permission: "customer",
     } as User);
-    userServiceGetByUsernameStub.withArgs("change@email.com").resolves(null);
+    userDetailServiceGetByEmailStub.withArgs("change@email.com").resolves(null);
     userDetailUpdateStub.resolves({} as UserDetail);
     userUpdateStub.rejects(new BlError("could not update user"));
 
@@ -172,15 +177,14 @@ test.group("UserDetailChangeEmailOperation", (group) => {
 
   test("should resolve", async ({ assert }) => {
     userDetailGetStub.resolves({
+      id: "exists",
       blid: "blid1",
       email: "email@email.com",
     } as UserDetail);
-    userServiceGetByUsernameStub.withArgs("email@email.com").resolves({
-      blid: "blid1",
-      username: "email@email.com",
+    userServiceGetByUserDetailIdStub.withArgs("exists").resolves({
       permission: "customer",
     } as User);
-    userServiceGetByUsernameStub.withArgs("change@email.com").resolves(null);
+    userDetailServiceGetByEmailStub.withArgs("change@email.com").resolves(null);
     userDetailUpdateStub.resolves({} as UserDetail);
     userUpdateStub.resolves({} as User);
 

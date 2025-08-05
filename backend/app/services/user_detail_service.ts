@@ -2,6 +2,7 @@ import { Infer } from "@vinejs/vine/types";
 
 import BlidService from "#services/blid_service";
 import CryptoService from "#services/crypto_service";
+import DispatchService from "#services/dispatch_service";
 import { SEDbQuery } from "#services/legacy/query/se.db-query";
 import { StorageService } from "#services/storage_service";
 import { UserDetail } from "#shared/user-detail";
@@ -25,7 +26,8 @@ export const UserDetailService = {
 
     return userDetails?.[0] ?? null;
   },
-  async createVippsUserDetail(vippsUser: VippsUser, blid: string) {
+  async createVippsUserDetail(vippsUser: VippsUser) {
+    const blid = BlidService.createUserBlid("vipps", vippsUser.id);
     return await StorageService.UserDetails.add(
       {
         email: vippsUser.email,
@@ -53,7 +55,7 @@ export const UserDetailService = {
     guardian,
   }: Infer<typeof registerSchema>) {
     const blid = BlidService.createUserBlid("local", CryptoService.random());
-    return await StorageService.UserDetails.add(
+    const userDetail = await StorageService.UserDetails.add(
       {
         email,
         phone: phoneNumber,
@@ -73,5 +75,11 @@ export const UserDetailService = {
       },
       { id: blid, permission: "customer" },
     );
+    const emailValidation = await StorageService.EmailValidations.add({
+      userDetailId: userDetail.id,
+    });
+    await DispatchService.sendEmailConfirmation(email, emailValidation.id);
+
+    return userDetail;
   },
 };

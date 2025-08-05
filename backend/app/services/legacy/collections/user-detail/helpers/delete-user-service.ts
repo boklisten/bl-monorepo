@@ -1,18 +1,11 @@
-import { SEDbQueryBuilder } from "#services/legacy/query/se.db-query-builder";
 import { StorageService } from "#services/storage_service";
+import { UserService } from "#services/user_service";
 
 export class DeleteUserService {
-  private queryBuilder = new SEDbQueryBuilder();
-
   public async deleteUser(userDetailId: string): Promise<void> {
-    const databaseQuery = this.queryBuilder.getDbQuery(
-      { userDetail: userDetailId },
-      [{ fieldName: "userDetail", type: "object-id" }],
-    );
-    const users = await StorageService.Users.getByQuery(databaseQuery);
-    for (const user of users) {
-      await StorageService.Users.remove(user.id);
-    }
+    const user = await UserService.getByUserDetailsId(userDetailId);
+    if (!user) return;
+    await StorageService.Users.remove(user.id);
   }
 
   async mergeIntoOtherUser(fromUser: string, toUser: string): Promise<void> {

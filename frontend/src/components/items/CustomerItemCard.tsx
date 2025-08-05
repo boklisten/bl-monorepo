@@ -3,6 +3,7 @@ import {
   CustomerItemStatus,
 } from "@boklisten/backend/shared/customer-item/actionable_customer_item";
 import {
+  ArrowRight,
   Event,
   HourglassTop,
   LocalLibrary,
@@ -16,6 +17,7 @@ import {
   Card,
   CardActions,
   CardContent,
+  Divider,
   Stack,
   Tooltip,
   Typography,
@@ -96,11 +98,14 @@ export default function CustomerItemCard({
             startIcon={<HourglassTop />}
             text={moment(actionableCustomerItem.handoutAt).format("DD/MM/YYYY")}
           />
-          <InfoEntry
-            label={"Frist for innlevering"}
-            startIcon={<Event />}
-            text={moment(actionableCustomerItem.deadline).format("DD/MM/YYYY")}
-          />
+          <Divider />
+          <Stack direction={"row"} gap={1} sx={{ alignItems: "center" }}>
+            <Event />
+            <Typography>Frist: </Typography>
+            <Typography fontWeight={"bold"}>
+              {moment(actionableCustomerItem.deadline).format("DD/MM/YYYY")}
+            </Typography>
+          </Stack>
         </Stack>
       </CardContent>
       {["active", "overdue"].includes(actionableCustomerItem.status.type) && (

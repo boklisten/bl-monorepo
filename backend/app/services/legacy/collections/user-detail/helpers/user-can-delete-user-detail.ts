@@ -1,11 +1,9 @@
-import { SEDbQueryBuilder } from "#services/legacy/query/se.db-query-builder";
 import { PermissionService } from "#services/permission_service";
 import { StorageService } from "#services/storage_service";
+import { UserService } from "#services/user_service";
 import { AccessToken } from "#shared/access-token";
 
 export class UserCanDeleteUserDetail {
-  private queryBuilder = new SEDbQueryBuilder();
-
   public async canDelete(
     userIdToDelete: string,
     accessToken: AccessToken,
@@ -20,24 +18,16 @@ export class UserCanDeleteUserDetail {
     if (!PermissionService.isAdmin(accessToken.permission)) {
       return false;
     }
-
-    const databaseQuery = this.queryBuilder.getDbQuery(
-      { username: userDetailToDelete.email },
-      [{ fieldName: "username", type: "string" }],
+    const userToDelete = await UserService.getByUserDetailsId(
+      userDetailToDelete.id,
     );
 
-    const users = await StorageService.Users.getByQuery(databaseQuery);
-    const userToDelete = users[0];
-
-    return !(
-      !PermissionService.isPermissionEqualOrOver(
+    return (
+      userToDelete !== null &&
+      PermissionService.isPermissionOver(
         accessToken.permission,
-
-        // @ts-expect-error fixme: auto ignored
         userToDelete.permission,
-
-        // @ts-expect-error fixme: auto ignored
-      ) || accessToken.permission === userToDelete.permission
+      )
     );
   }
 }

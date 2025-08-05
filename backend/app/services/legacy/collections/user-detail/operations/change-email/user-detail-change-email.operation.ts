@@ -43,14 +43,6 @@ export class UserDetailChangeEmailOperation implements Operation {
       blApiRequest.user,
     );
 
-    await StorageService.Users.update(
-      user.id,
-      { username: emailChange },
-
-      // @ts-expect-error fixme: auto ignored
-      blApiRequest.user,
-    );
-
     return new BlapiResponse([{ success: true }]);
   }
 }

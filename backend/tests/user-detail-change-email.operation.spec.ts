@@ -153,28 +153,6 @@ test.group("UserDetailChangeEmailOperation", (group) => {
     ).to.eventually.be.rejectedWith(BlError, /could not update user detail/);
   });
 
-  test("should reject if user.update rejects", async () => {
-    userDetailGetStub.resolves({
-      id: "exists",
-      blid: "blid1",
-      email: "email@email.com",
-    } as UserDetail);
-    userServiceGetByUserDetailIdStub.withArgs("exists").resolves({
-      permission: "customer",
-    } as User);
-    userDetailServiceGetByEmailStub.withArgs("change@email.com").resolves(null);
-    userDetailUpdateStub.resolves({} as UserDetail);
-    userUpdateStub.rejects(new BlError("could not update user"));
-
-    return expect(
-      userDetailChangeEmailOperation.run({
-        documentId: "userDetail1",
-        data: { email: "change@email.com" },
-        user: { id: "admin1", permission: "admin", details: "" },
-      }),
-    ).to.eventually.be.rejectedWith(BlError, /could not update user/);
-  });
-
   test("should resolve", async ({ assert }) => {
     userDetailGetStub.resolves({
       id: "exists",

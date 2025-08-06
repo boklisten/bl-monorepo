@@ -16,6 +16,41 @@ import { SIGNATURE_NUM_MONTHS_VALID } from "#shared/serialized-signature";
 import { signValidator } from "#validators/signature";
 
 export default class SignaturesController {
+  async getSignature(ctx: HttpContext) {
+    PermissionService.employeeOrFail(ctx);
+
+    const detailsId = ctx.request.param("detailsId");
+    const userDetail = await StorageService.UserDetails.getOrNull(detailsId);
+    if (!userDetail) return null;
+
+    const validSignature = await getValidUserSignature(userDetail);
+    if (validSignature) {
+      return {
+        image: validSignature.image,
+        isSignatureValid: true,
+        signedByGuardian: validSignature.signedByGuardian,
+        signingName: validSignature.signingName,
+        signedAtText:
+          validSignature.creationTime &&
+          DateService.format(
+            validSignature.creationTime,
+            "Europe/Oslo",
+            "DD/MM/YYYY",
+          ),
+        expiresAtText: DateService.format(
+          moment(validSignature.creationTime)
+            .add(SIGNATURE_NUM_MONTHS_VALID, "months")
+            .toDate(),
+          "Europe/Oslo",
+          "DD/MM/YYYY",
+        ),
+      };
+    }
+
+    return {
+      isSignatureValid: false,
+    };
+  }
   async sendSignatureLink(ctx: HttpContext) {
     PermissionService.adminOrFail(ctx);
     const detailsId = ctx.request.param("detailsId");

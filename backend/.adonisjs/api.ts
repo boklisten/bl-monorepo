@@ -411,6 +411,13 @@ type SignaturesValidIdGetHead = {
     false
   >;
 };
+type SignaturesGetIdGetHead = {
+  request: unknown;
+  response: MakeNonSerializedTuyauResponse<
+    import("../app/controllers/signatures_controller.ts").default["getSignature"],
+    false
+  >;
+};
 type SignaturesSignIdPost = {
   request: MakeTuyauRequest<
     InferInput<
@@ -621,6 +628,13 @@ export interface ApiDefinition {
         $url: {};
         $get: SignaturesValidIdGetHead;
         $head: SignaturesValidIdGetHead;
+      };
+    };
+    get: {
+      ":detailsId": {
+        $url: {};
+        $get: SignaturesGetIdGetHead;
+        $head: SignaturesGetIdGetHead;
       };
     };
     sign: {
@@ -932,6 +946,13 @@ const routes = [
     path: "/signatures/valid/:detailsId",
     method: ["GET", "HEAD"],
     types: {} as SignaturesValidIdGetHead,
+  },
+  {
+    params: ["detailsId"],
+    name: "signatures.get",
+    path: "/signatures/get/:detailsId",
+    method: ["GET", "HEAD"],
+    types: {} as SignaturesGetIdGetHead,
   },
   {
     params: ["detailsId"],

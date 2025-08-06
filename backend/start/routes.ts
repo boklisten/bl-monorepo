@@ -253,6 +253,9 @@ router
   ])
   .as("signatures.valid");
 router
+  .get("/signatures/get/:detailsId", [SignaturesController, "getSignature"])
+  .as("signatures.get");
+router
   .post("/signatures/sign/:detailsId", [SignaturesController, "sign"])
   .as("signatures.sign");
 

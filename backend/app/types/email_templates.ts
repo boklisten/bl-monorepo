@@ -32,6 +32,10 @@ export const EMAIL_TEMPLATES = {
     sender: EMAIL_SENDER.NO_REPLY,
     templateId: "d-e0eaab765bae483c95f76a178853de74",
   },
+  signature: {
+    sender: EMAIL_SENDER.NO_REPLY,
+    templateId: "d-2459a4845ea046dea33127449a5b7633",
+  },
   deliveryInformation: {
     sender: EMAIL_SENDER.NO_REPLY,
     templateId: "d-6112c8e2a3214f058dae6a3b2bf0775e",

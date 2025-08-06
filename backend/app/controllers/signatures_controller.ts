@@ -2,6 +2,7 @@ import { HttpContext } from "@adonisjs/core/http";
 import { Transformer } from "@napi-rs/image";
 import moment from "moment-timezone";
 
+import DispatchService from "#services/dispatch_service";
 import {
   getValidUserSignature,
   isUnderage,
@@ -9,14 +10,12 @@ import {
   userHasValidSignature,
 } from "#services/legacy/collections/signature/helpers/signature.helper";
 import { DateService } from "#services/legacy/date.service";
-import { OrderEmailHandler } from "#services/legacy/order_email_handler";
 import { PermissionService } from "#services/permission_service";
 import { StorageService } from "#services/storage_service";
 import { SIGNATURE_NUM_MONTHS_VALID } from "#shared/serialized-signature";
 import { signValidator } from "#validators/signature";
 
 export default class SignaturesController {
-  // fixme: improve error handling here, and make it possible to send for people over 18
   async sendSignatureLink(ctx: HttpContext) {
     PermissionService.adminOrFail(ctx);
     const detailsId = ctx.request.param("detailsId");
@@ -25,7 +24,7 @@ export default class SignaturesController {
       userDetail?.branchMembership,
     );
     if (userDetail) {
-      await OrderEmailHandler.requestGuardianSignature(
+      await DispatchService.sendSignatureLink(
         userDetail,
         branch?.name ?? "en filial",
       );

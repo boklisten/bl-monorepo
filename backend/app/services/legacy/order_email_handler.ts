@@ -1,7 +1,6 @@
 import moment from "moment-timezone";
 
 import DispatchService from "#services/dispatch_service";
-import { userHasValidSignature } from "#services/legacy/collections/signature/helpers/signature.helper";
 import { DateService } from "#services/legacy/date.service";
 import { DibsEasyPayment } from "#services/legacy/dibs/dibs-easy-payment/dibs-easy-payment";
 import { StorageService } from "#services/storage_service";
@@ -39,7 +38,10 @@ export const OrderEmailHandler = {
 
     if (withAgreement) {
       const branch = await StorageService.Branches.get(branchId);
-      await this.requestGuardianSignature(customerDetail, branch?.name ?? "");
+      await DispatchService.sendSignatureLink(
+        customerDetail,
+        branch?.name ?? "en filial",
+      );
     }
 
     await DispatchService.sendOrderReceipt(
@@ -54,30 +56,6 @@ export const OrderEmailHandler = {
       (!Array.isArray(order.payments) || order.payments.length === 0)
     );
   },
-  /**
-   * sends out SMS and email to the guardian of a customer with a signature link if they are under 18
-   */
-  async requestGuardianSignature(
-    customerDetail: UserDetail,
-    branchName: string,
-  ) {
-    if (
-      moment(customerDetail.dob).isValid() &&
-      moment(customerDetail.dob).isAfter(
-        moment(new Date()).subtract(18, "years"),
-      ) &&
-      customerDetail?.guardian?.email
-    ) {
-      if (await userHasValidSignature(customerDetail)) {
-        return;
-      }
-      await DispatchService.sendGuardianSignatureLink(
-        customerDetail,
-        branchName,
-      );
-    }
-  },
-
   async orderToEmailOrder(order: Order) {
     const emailOrder: EmailOrder = {
       id: order.id,

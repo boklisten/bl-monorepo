@@ -3,6 +3,10 @@ import sgMail from "@sendgrid/mail";
 import moment from "moment-timezone";
 import twilio from "twilio";
 
+import {
+  isUnderage,
+  userHasValidSignature,
+} from "#services/legacy/collections/signature/helpers/signature.helper";
 import { OrderEmailHandler } from "#services/legacy/order_email_handler";
 import { DeliveryInfoBring } from "#shared/delivery/delivery-info/delivery-info-bring";
 import { Order } from "#shared/order/order";
@@ -132,30 +136,45 @@ const DispatchService = {
       ],
     });
   },
-  async sendGuardianSignatureLink(
-    customerDetail: UserDetail,
-    branchName: string,
-  ) {
-    if (!customerDetail.guardian) return;
-    await EmailService.sendEmail({
-      template: EMAIL_TEMPLATES.guardianSignature,
-      recipients: [
-        {
-          to: customerDetail?.guardian.email,
+  async sendSignatureLink(customerDetail: UserDetail, branchName: string) {
+    if (await userHasValidSignature(customerDetail)) return;
+
+    if (isUnderage(customerDetail) && customerDetail.guardian) {
+      await EmailService.sendEmail({
+        template: EMAIL_TEMPLATES.guardianSignature,
+        recipients: {
+          to: customerDetail.guardian.email,
           dynamicTemplateData: {
-            guardianSignatureUri: `${env.get("CLIENT_URI")}signering/${customerDetail.id}`,
+            guardianSignatureUri: `${env.get("NEXT_CLIENT_URI")}signering/${customerDetail.id}`,
             customerName: customerDetail.name,
             guardianName: customerDetail.guardian.name,
             branchName: branchName,
           },
         },
-      ],
-    });
+      });
 
-    await SmsService.sendOne({
-      to: customerDetail.guardian.phone,
-      body: `Hei. ${customerDetail.name} har nylig bestilt bøker fra ${branchName} gjennom Boklisten.no. Siden ${customerDetail.name} er under 18 år, krever vi at du som foresatt signerer låneavtalen. Vi har derfor sendt en e-post til ${customerDetail.guardian.email} med lenke til signering. Ta kontakt på info@boklisten.no om du har spørsmål. Mvh. Boklisten`,
-    });
+      await SmsService.sendOne({
+        to: customerDetail.guardian.phone,
+        body: `Hei. ${customerDetail.name} har nylig bestilt bøker fra ${branchName} på Boklisten.no. Siden ${customerDetail.name} er under 18 år, krever vi at du som foresatt signerer låneavtalen. Vi har derfor sendt en e-post til ${customerDetail.guardian.email} med lenke til signering. Ta kontakt på info@boklisten.no om du har spørsmål. Mvh. Boklisten`,
+      });
+    } else {
+      await EmailService.sendEmail({
+        template: EMAIL_TEMPLATES.signature,
+        recipients: {
+          to: customerDetail.email,
+          dynamicTemplateData: {
+            signatureUri: `${env.get("NEXT_CLIENT_URI")}signering/${customerDetail.id}`,
+            name: customerDetail.name,
+            branchName: branchName,
+          },
+        },
+      });
+
+      await SmsService.sendOne({
+        to: customerDetail.phone,
+        body: `Hei. Du har nylig bestilt bøker fra ${branchName} på Boklisten.no. Før du kan motta bøkene må du signere vår låneavtale. Vi har derfor sendt en e-post til ${customerDetail.email} med lenke til signering. Ta kontakt på info@boklisten.no om du har spørsmål. Mvh. Boklisten`,
+      });
+    }
   },
 
   async sendDeliveryInformation(

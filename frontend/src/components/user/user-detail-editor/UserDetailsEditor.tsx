@@ -39,7 +39,7 @@ export interface UserEditorFields {
   agreeToTermsAndConditions: boolean;
 }
 
-export const isUnder18 = (birthday: moment.Moment): boolean => {
+const isUnder18 = (birthday: moment.Moment): boolean => {
   return moment().diff(birthday, "years") < 18;
 };
 

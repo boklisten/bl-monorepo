@@ -9,16 +9,13 @@ import {
   DialogContent,
   DialogTitle,
   Stack,
-  Tooltip,
 } from "@mui/material";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { DialogProps, useNotifications } from "@toolpad/core";
-import moment from "moment";
 
-import UserDetailsEditor, {
-  isUnder18,
-} from "@/components/user/user-detail-editor/UserDetailsEditor";
+import UserDetailsEditor from "@/components/user/user-detail-editor/UserDetailsEditor";
 import unpack from "@/utils/api/bl-api-request";
+import { publicApiClient } from "@/utils/api/publicApiClient";
 import useApiClient from "@/utils/api/useApiClient";
 import {
   ERROR_NOTIFICATION,
@@ -46,21 +43,31 @@ export default function UserDetailEditorDialog({
   });
   const userDetail = updatedUserDetails?.[0] ?? payload.initialUserDetails;
 
-  const requestGuardianSignatureMutation = useMutation({
+  const { data: signatureResponse } = useQuery({
+    queryKey: [
+      publicApiClient.signatures.valid({ detailsId: userDetail.id }).$url(),
+      userDetail.id,
+    ],
+    queryFn: () =>
+      publicApiClient.signatures
+        .valid({ detailsId: userDetail.id })
+        .$get()
+        .unwrap(),
+  });
+  const requestSignatureMutation = useMutation({
     mutationFn: () =>
       client.signatures.send({ detailsId: userDetail.id }).$post().unwrap(),
     onSuccess: () =>
       notifications.show(
-        "Foresatt-signatur har blitt sendt!",
+        "Signaturforespørsel har blitt sendt!",
         SUCCESS_NOTIFICATION,
       ),
     onError: () =>
       notifications.show(
-        "Klarte ikke sende foresatt-signatur",
+        "Klarte ikke sende signaturforespørsel",
         ERROR_NOTIFICATION,
       ),
   });
-  const isUnderage = isUnder18(moment(new Date(userDetail.dob)));
 
   return (
     <Dialog fullWidth open={open} onClose={() => onClose()}>
@@ -71,27 +78,17 @@ export default function UserDetailEditorDialog({
             variant={"administrate"}
             userDetails={userDetail}
           />
-          {userDetail.signatures.length === 0 ? (
-            // fixme: improve this check to check for guardian signatures etc, make new endpoint in signatures controller
+          {!signatureResponse?.isSignatureValid ? (
             <Alert severity={"warning"}>
-              <Tooltip
-                title={
-                  isUnderage
-                    ? ""
-                    : "Denne kunder er over 18 år og trenger derfor ikke signatur fra foresatt. Kunder kan signere ved å gå gjennom bestillingsrutinen"
-                }
-              >
-                <Stack gap={1}>
-                  <AlertTitle>Denne kunden har ikke gyldig signatur</AlertTitle>
-                  <Button
-                    loading={requestGuardianSignatureMutation.isPending}
-                    disabled={!isUnderage}
-                    onClick={() => requestGuardianSignatureMutation.mutate()}
-                  >
-                    Send signeringslenke til foresatt på nytt
-                  </Button>
-                </Stack>
-              </Tooltip>
+              <Stack gap={1}>
+                <AlertTitle>Denne kunden har ikke gyldig signatur</AlertTitle>
+                <Button
+                  loading={requestSignatureMutation.isPending}
+                  onClick={() => requestSignatureMutation.mutate()}
+                >
+                  Send signeringslenke på nytt
+                </Button>
+              </Stack>
             </Alert>
           ) : (
             <Alert severity={"success"}>Denne kunden har gyldig signatur</Alert>

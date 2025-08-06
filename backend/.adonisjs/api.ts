@@ -404,6 +404,24 @@ type SignaturesSendIdPost = {
     false
   >;
 };
+type SignaturesValidIdGetHead = {
+  request: unknown;
+  response: MakeNonSerializedTuyauResponse<
+    import("../app/controllers/signatures_controller.ts").default["hasValidSignature"],
+    false
+  >;
+};
+type SignaturesSignIdPost = {
+  request: MakeTuyauRequest<
+    InferInput<
+      (typeof import("../app/validators/signature.ts"))["signValidator"]
+    >
+  >;
+  response: MakeNonSerializedTuyauResponse<
+    import("../app/controllers/signatures_controller.ts").default["sign"],
+    true
+  >;
+};
 export interface ApiDefinition {
   token: {
     $url: {};
@@ -596,6 +614,19 @@ export interface ApiDefinition {
       ":detailsId": {
         $url: {};
         $post: SignaturesSendIdPost;
+      };
+    };
+    valid: {
+      ":detailsId": {
+        $url: {};
+        $get: SignaturesValidIdGetHead;
+        $head: SignaturesValidIdGetHead;
+      };
+    };
+    sign: {
+      ":detailsId": {
+        $url: {};
+        $post: SignaturesSignIdPost;
       };
     };
   };
@@ -894,6 +925,20 @@ const routes = [
     path: "/signatures/send/:detailsId",
     method: ["POST"],
     types: {} as SignaturesSendIdPost,
+  },
+  {
+    params: ["detailsId"],
+    name: "signatures.valid",
+    path: "/signatures/valid/:detailsId",
+    method: ["GET", "HEAD"],
+    types: {} as SignaturesValidIdGetHead,
+  },
+  {
+    params: ["detailsId"],
+    name: "signatures.sign",
+    path: "/signatures/sign/:detailsId",
+    method: ["POST"],
+    types: {} as SignaturesSignIdPost,
   },
   {
     params: ["id"],

@@ -246,6 +246,15 @@ router
     "sendSignatureLink",
   ])
   .as("signatures.send.link");
+router
+  .get("/signatures/valid/:detailsId", [
+    SignaturesController,
+    "hasValidSignature",
+  ])
+  .as("signatures.valid");
+router
+  .post("/signatures/sign/:detailsId", [SignaturesController, "sign"])
+  .as("signatures.sign");
 
 /**
  * Generate legacy bl-collection endpoints

@@ -10,7 +10,7 @@ export default function EditableTextReadOnly({
   cachedText,
 }: {
   dataKey: string;
-  cachedText?: string;
+  cachedText?: string | undefined;
 }) {
   const client = useApiClient();
 

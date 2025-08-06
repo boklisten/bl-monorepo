@@ -1,0 +1,198 @@
+"use client";
+import { DoneOutline } from "@mui/icons-material";
+import {
+  Alert,
+  AlertTitle,
+  Button,
+  Skeleton,
+  Stack,
+  TextField,
+  Typography,
+} from "@mui/material";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useNotifications } from "@toolpad/core";
+import { Controller, useForm } from "react-hook-form";
+
+import ExpandableEditableTextReadOnly from "@/components/info/editable-text/ExpandableEditableTextReadOnly";
+import SignaturePad from "@/components/SignaturePad";
+import { publicApiClient } from "@/utils/api/publicApiClient";
+import { ERROR_NOTIFICATION } from "@/utils/notifications";
+
+interface SignaturePayload {
+  signingName: string;
+  base64EncodedImage: string;
+}
+
+export default function SignAgreement({
+  userDetailId,
+  cachedAgreementText,
+}: {
+  userDetailId: string;
+  cachedAgreementText: string;
+}) {
+  const queryClient = useQueryClient();
+  const { data, isLoading, isError } = useQuery({
+    queryKey: [
+      publicApiClient.signatures.valid({ detailsId: userDetailId }).$url(),
+      userDetailId,
+    ],
+    queryFn: async () => {
+      const signatureStatus = await publicApiClient.signatures
+        .valid({ detailsId: userDetailId })
+        .$get()
+        .unwrap();
+      if (!signatureStatus.isUnderage && "name" in signatureStatus)
+        setValue("signingName", signatureStatus.name);
+      return signatureStatus;
+    },
+  });
+
+  const notifications = useNotifications();
+  const {
+    register,
+    setValue,
+    handleSubmit,
+    formState: { errors },
+    control,
+  } = useForm<SignaturePayload>({
+    defaultValues: { signingName: "", base64EncodedImage: "" },
+  });
+  const signMutation = useMutation({
+    mutationFn: (payload: SignaturePayload) =>
+      publicApiClient.signatures
+        .sign({ detailsId: userDetailId })
+        .$post(payload)
+        .unwrap(),
+    onError: () =>
+      notifications.show(
+        "Noe gikk galt under signering. Vennligst prøv igjen eller ta kontakt dersom problemet vedvarer",
+        ERROR_NOTIFICATION,
+      ),
+    onSettled: () =>
+      queryClient.invalidateQueries({
+        queryKey: [
+          publicApiClient.signatures.valid({ detailsId: userDetailId }).$url(),
+          userDetailId,
+        ],
+      }),
+  });
+  const hasValidResponse = !isError && !isLoading && !!data;
+  return (
+    <Stack alignItems={"center"}>
+      <Stack
+        alignItems={"center"}
+        gap={1}
+        component={"form"}
+        onSubmit={handleSubmit((data) => signMutation.mutate(data))}
+      >
+        <ExpandableEditableTextReadOnly
+          dataKey={"betingelser"}
+          cachedText={cachedAgreementText}
+        />
+        {!isLoading && (isError || !data) && (
+          <Alert severity={"error"}>
+            Noe gikk galt under lasting av signaturstatus. Vennligst prøv igjen
+            eller ta kontakt hvis problemet vedvarer.
+          </Alert>
+        )}
+        {isLoading && (
+          <Stack alignItems={"center"} sx={{ width: "100%", maxWidth: 750 }}>
+            <Skeleton height={40} width={"100%"} />
+            <Skeleton height={200} width={"100%"} />
+            <Skeleton height={50} width={"100%"} />
+            <Skeleton height={50} width={100} />
+          </Stack>
+        )}
+        {hasValidResponse && "message" in data && (
+          <Alert severity={"error"}>{data.message}</Alert>
+        )}
+        {hasValidResponse &&
+          !("message" in data) &&
+          data.isSignatureValid == false && (
+            <Stack gap={1} maxWidth={750} width={"100%"}>
+              <Typography>
+                Signer her på at du er {data.isUnderage && "foresatt til "}
+                {data.name} og godkjenner kontrakten
+                {data.isUnderage && " på hans eller hennes vegne"}:
+              </Typography>
+              <Controller
+                rules={{
+                  required: `Du må fylle inn ${data.isUnderage ? "foresatt sin" : "din"} signatur`,
+                }}
+                name={"base64EncodedImage"}
+                control={control}
+                render={({ field }) => (
+                  <SignaturePad onChange={field.onChange} />
+                )}
+              />
+              {errors.base64EncodedImage && (
+                <Alert severity="error">
+                  {errors.base64EncodedImage.message}
+                </Alert>
+              )}
+              <TextField
+                required
+                sx={{ mt: 1 }}
+                label={`Fullt navn ${data.isUnderage ? "(foresatt)" : ""}`}
+                slotProps={{
+                  input: { readOnly: !data.isUnderage },
+                }}
+                helperText={
+                  data.isUnderage
+                    ? ""
+                    : "Du kan endre navnet ditt i brukerinnstillinger"
+                }
+                {...register("signingName", {
+                  required: "Du må fylle inn foresatt sitt fulle navn",
+                  validate: (value) => {
+                    if (data.isUnderage && data.name === value) {
+                      return "Foresattes navn må være forskjellig fra elevens navn";
+                    }
+                    return true;
+                  },
+                })}
+              />
+              {errors.signingName && (
+                <Alert severity="error">{errors.signingName.message}</Alert>
+              )}
+              <Stack alignItems={"center"} mt={1}>
+                <Button
+                  type={"submit"}
+                  loading={signMutation.isPending}
+                  startIcon={<DoneOutline />}
+                  variant={"outlined"}
+                  color={"success"}
+                >
+                  Signer
+                </Button>
+              </Stack>
+            </Stack>
+          )}
+        {hasValidResponse && data.isSignatureValid && (
+          <Alert>
+            <AlertTitle>Kontrakten er signert</AlertTitle>
+            <Stack gap={1}>
+              <Typography variant={"body2"}>
+                {data.signedByGuardian
+                  ? `${data.signingName} (foresatt) har signert kontrakten på vegne av ${data.name} (elev).`
+                  : `${data.name} (elev) har signert kontrakten.`}
+              </Typography>
+              <Stack direction={"row"} gap={1}>
+                <Typography variant={"body2"}>Signert:</Typography>
+                <Typography variant={"body2"} fontWeight={"bold"}>
+                  {data.signedAtText}
+                </Typography>
+              </Stack>
+              <Stack direction={"row"} gap={1}>
+                <Typography variant={"body2"}>Gyldig til:</Typography>
+                <Typography variant={"body2"} fontWeight={"bold"}>
+                  {data.expiresAtText}
+                </Typography>
+              </Stack>
+            </Stack>
+          </Alert>
+        )}
+      </Stack>
+    </Stack>
+  );
+}

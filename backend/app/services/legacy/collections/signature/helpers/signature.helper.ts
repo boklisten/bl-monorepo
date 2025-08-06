@@ -91,6 +91,7 @@ function isSignatureExpired(signature: SignatureMetadata): boolean {
     now.getDate(),
   );
 
+  // @ts-expect-error creationTime is required by bl-document, thus is always present
   return signature.creationTime < oldestAllowedSignatureTime;
 }
 

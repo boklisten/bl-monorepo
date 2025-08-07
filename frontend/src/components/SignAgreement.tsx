@@ -2,7 +2,6 @@
 import { DoneOutline } from "@mui/icons-material";
 import {
   Alert,
-  AlertTitle,
   Button,
   Skeleton,
   Stack,
@@ -15,6 +14,7 @@ import { Controller, useForm } from "react-hook-form";
 
 import ExpandableEditableTextReadOnly from "@/components/info/editable-text/ExpandableEditableTextReadOnly";
 import SignaturePad from "@/components/SignaturePad";
+import SignedContractDetails from "@/components/SignedContractDetails";
 import { publicApiClient } from "@/utils/api/publicApiClient";
 import { ERROR_NOTIFICATION } from "@/utils/notifications";
 
@@ -169,28 +169,13 @@ export default function SignAgreement({
             </Stack>
           )}
         {hasValidResponse && data.isSignatureValid && (
-          <Alert>
-            <AlertTitle>Kontrakten er signert</AlertTitle>
-            <Stack gap={1}>
-              <Typography variant={"body2"}>
-                {data.signedByGuardian
-                  ? `${data.signingName} (foresatt) har signert kontrakten på vegne av ${data.name} (elev).`
-                  : `${data.name} (elev) har signert kontrakten.`}
-              </Typography>
-              <Stack direction={"row"} gap={1}>
-                <Typography variant={"body2"}>Signert:</Typography>
-                <Typography variant={"body2"} fontWeight={"bold"}>
-                  {data.signedAtText}
-                </Typography>
-              </Stack>
-              <Stack direction={"row"} gap={1}>
-                <Typography variant={"body2"}>Gyldig til:</Typography>
-                <Typography variant={"body2"} fontWeight={"bold"}>
-                  {data.expiresAtText}
-                </Typography>
-              </Stack>
-            </Stack>
-          </Alert>
+          <SignedContractDetails
+            signedByGuardian={data.signedByGuardian ?? false}
+            signingName={data.signingName ?? ""}
+            name={data.name ?? ""}
+            signedAtText={data.signedAtText ?? ""}
+            expiresAtText={data.expiresAtText ?? ""}
+          />
         )}
       </Stack>
     </Stack>

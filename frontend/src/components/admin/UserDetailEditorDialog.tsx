@@ -44,7 +44,7 @@ export default function UserDetailEditorDialog({
             variant={"administrate"}
             userDetails={userDetail}
           />
-          <AdministrateUserSignatures detailsId={userDetail.id} />
+          <AdministrateUserSignatures userDetail={userDetail} />
         </Box>
       </DialogContent>
       <DialogActions>

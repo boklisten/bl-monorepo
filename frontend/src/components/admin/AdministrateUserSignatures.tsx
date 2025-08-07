@@ -1,4 +1,5 @@
 "use client";
+import { UserDetail } from "@boklisten/backend/shared/user-detail";
 import {
   Alert,
   AlertTitle,
@@ -12,6 +13,7 @@ import { useMutation, useQuery } from "@tanstack/react-query";
 import { useNotifications } from "@toolpad/core";
 import Image from "next/image";
 
+import SignedContractDetails from "@/components/SignedContractDetails";
 import useApiClient from "@/utils/api/useApiClient";
 import {
   ERROR_NOTIFICATION,
@@ -19,18 +21,23 @@ import {
 } from "@/utils/notifications";
 
 export default function AdministrateUserSignatures({
-  detailsId,
+  userDetail,
 }: {
-  detailsId: string;
+  userDetail: UserDetail;
 }) {
   const notifications = useNotifications();
   const client = useApiClient();
   const { data, isLoading, isError } = useQuery({
-    queryKey: [client.signatures.get({ detailsId }).$url(), detailsId],
-    queryFn: () => client.signatures.get({ detailsId }).$get().unwrap(),
+    queryKey: [
+      client.signatures.get({ detailsId: userDetail.id }).$url(),
+      userDetail.id,
+    ],
+    queryFn: () =>
+      client.signatures.get({ detailsId: userDetail.id }).$get().unwrap(),
   });
   const requestSignatureMutation = useMutation({
-    mutationFn: () => client.signatures.send({ detailsId }).$post().unwrap(),
+    mutationFn: () =>
+      client.signatures.send({ detailsId: userDetail.id }).$post().unwrap(),
     onSuccess: () =>
       notifications.show(
         "Signaturforespørsel har blitt sendt!",
@@ -61,6 +68,13 @@ export default function AdministrateUserSignatures({
             height={100}
           />
         </Box>
+        <SignedContractDetails
+          signedByGuardian={data.signedByGuardian ?? false}
+          signingName={data.signingName ?? ""}
+          name={userDetail.name}
+          signedAtText={data.signedAtText ?? ""}
+          expiresAtText={data.expiresAtText ?? ""}
+        />
       </Stack>
     );
   }

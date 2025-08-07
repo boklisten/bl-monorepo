@@ -22,7 +22,9 @@ export default function EmailField({
     formState: { errors },
     control,
   } = useFormContext<UserEditorFields>();
-  const isEmailVerified = useWatch({ control, name: "emailVerified" });
+  const emailVerified = useWatch({ control, name: "emailVerified" });
+  const isEmailVerified = field === "email" ? emailVerified : undefined;
+
   return (
     <TextField
       label={label}

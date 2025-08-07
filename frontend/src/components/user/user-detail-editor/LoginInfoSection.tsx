@@ -1,15 +1,19 @@
 import { UserDetail } from "@boklisten/backend/shared/user-detail";
 import { QrCode } from "@mui/icons-material";
-import { Button, Dialog, Stack } from "@mui/material";
+import { Alert, Button, Dialog, Stack } from "@mui/material";
 import Grid from "@mui/material/Grid";
 import { DialogProps, useDialogs } from "@toolpad/core";
+import { useFormContext, useWatch } from "react-hook-form";
 import QRCode from "react-qr-code";
 
 import EmailConfirmationStatus from "@/components/user/fields/EmailConfirmationStatus";
 import EmailField from "@/components/user/fields/EmailField";
 import FieldErrorAlert from "@/components/user/fields/FieldErrorAlert";
 import PasswordField from "@/components/user/fields/PasswordField";
-import { UserDetailsEditorVariant } from "@/components/user/user-detail-editor/UserDetailsEditor";
+import {
+  UserDetailsEditorVariant,
+  UserEditorFields,
+} from "@/components/user/user-detail-editor/UserDetailsEditor";
 
 function CustomerIdDialog({
   open,
@@ -31,10 +35,29 @@ export default function LoginInfoSection({
   userDetails: UserDetail;
 }) {
   const dialogs = useDialogs();
+  const { control } = useFormContext<UserEditorFields>();
+  const email = useWatch({ control, name: "email" });
+  const isSchoolEmail =
+    email &&
+    [
+      "osloskolen.no",
+      "sonans.no",
+      "wangelev.no",
+      "edu.nki.no",
+      "stud.akademiet.no",
+      "elev.ottotreider.no",
+    ].some((domain) => email.includes(domain));
 
   return (
     <>
       <Grid size={{ xs: 12 }}>
+        {variant === "signup" && isSchoolEmail && (
+          <Alert severity={"warning"} sx={{ mb: 1 }}>
+            Vi anbefaler at du bruker din personlige e-postadresse i stedet for
+            skolekontoen. Da beholder tilgangen etter endt utdanning og kan
+            motta viktige varsler om eventuelle manglende bokinnleveringer.
+          </Alert>
+        )}
         <EmailField
           disabled={variant === "personal"}
           helperText={

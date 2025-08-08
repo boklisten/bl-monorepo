@@ -20,5 +20,5 @@ export interface UserDetail extends BlDocument {
   customerItems?: string[];
   signatures: string[];
   blid: string;
-  branchMembership?: string; // The branch the customer belongs to
+  branchMembership?: string | undefined; // The branch the customer belongs to
 }

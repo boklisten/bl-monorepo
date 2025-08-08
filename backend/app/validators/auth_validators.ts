@@ -40,7 +40,7 @@ export const registerSchema = vine.object({
   postalCode: postalCodeField.clone(),
   postalCity: vine.string(),
   dob: vine.date().before("today"),
-  branchMembership: vine.string(),
+  branchMembership: vine.string().optional(),
   guardian: vine
     .object({
       name: vine

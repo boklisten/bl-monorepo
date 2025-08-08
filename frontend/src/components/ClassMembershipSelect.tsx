@@ -153,7 +153,6 @@ function ClassMembershipSelect({
     <>
       <TextField
         error={error}
-        required
         label={"Velg skole"}
         fullWidth
         select

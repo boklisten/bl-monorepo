@@ -120,7 +120,7 @@ export default function UserDetailsEditor({
       postalCode: formData.postalCode,
       postalCity: formData.postalCity,
       dob: formData.birthday?.format("YYYY-MM-DD") ?? "",
-      branchMembership: formData.branchMembership ?? "",
+      branchMembership: formData.branchMembership,
       guardian: {
         name: formData.guardianName,
         email: formData.guardianEmail,
@@ -153,7 +153,7 @@ export default function UserDetailsEditor({
       postalCode: formData.postalCode,
       postalCity: formData.postalCity,
       dob: formData.birthday?.format("YYYY-MM-DD") ?? "",
-      branchMembership: formData.branchMembership ?? "",
+      branchMembership: formData.branchMembership,
       guardian: {
         name: formData.guardianName,
         email: formData.guardianEmail,
@@ -184,7 +184,7 @@ export default function UserDetailsEditor({
         postalCode: formData.postalCode,
         postalCity: formData.postalCity,
         dob: formData.birthday?.format("YYYY-MM-DD") ?? "",
-        branchMembership: formData.branchMembership ?? "",
+        branchMembership: formData.branchMembership,
         guardian: {
           name: formData.guardianName,
           email: formData.guardianEmail,

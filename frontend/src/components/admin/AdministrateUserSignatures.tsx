@@ -1,5 +1,6 @@
 "use client";
 import { UserDetail } from "@boklisten/backend/shared/user-detail";
+import { ContentCopy, Send } from "@mui/icons-material";
 import {
   Alert,
   AlertTitle,
@@ -86,10 +87,31 @@ export default function AdministrateUserSignatures({
         <Stack gap={1}>
           <AlertTitle>Denne kunden har ikke gyldig signatur</AlertTitle>
           <Button
+            startIcon={<ContentCopy />}
+            onClick={async () => {
+              const link = `${window.location.origin}/signering/${userDetail.id}`;
+              try {
+                await navigator.clipboard.writeText(link);
+                notifications.show(
+                  "Signeringslenke ble kopiert!",
+                  SUCCESS_NOTIFICATION,
+                );
+              } catch {
+                notifications.show(
+                  "Klarte ikke kopiere signeringslenke",
+                  ERROR_NOTIFICATION,
+                );
+              }
+            }}
+          >
+            Kopier signeringslenke
+          </Button>
+          <Button
+            startIcon={<Send />}
             loading={requestSignatureMutation.isPending}
             onClick={() => requestSignatureMutation.mutate()}
           >
-            Send signeringslenke på nytt
+            Send signeringslenke
           </Button>
         </Stack>
       </Alert>

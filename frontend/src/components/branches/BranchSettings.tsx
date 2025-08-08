@@ -62,6 +62,13 @@ function branchToDefaultValues(branch: Branch | null) {
     childLabel: branch?.childLabel ?? "",
   };
 }
+export interface BranchCreateForm {
+  name: string;
+  localName: string;
+  parentBranch: string;
+  childBranches: string[];
+  childLabel: string;
+}
 
 export default function BranchSettings({
   existingBranch,
@@ -107,11 +114,11 @@ export default function BranchSettings({
       notifications.show("Klarte ikke oppdatere filial!", ERROR_NOTIFICATION),
   });
 
-  const methods = useForm({
+  const methods = useForm<BranchCreateForm>({
     defaultValues: branchToDefaultValues(existingBranch),
   });
 
-  const { reset, getValues, setValue } = methods;
+  const { reset, handleSubmit, setValue } = methods;
   useEffect(() => {
     reset(branchToDefaultValues(existingBranch));
   }, [existingBranch, reset, setValue]);
@@ -144,11 +151,11 @@ export default function BranchSettings({
           sx={{ bottom: 0, right: 10, position: "absolute" }}
           variant={"contained"}
           color={"success"}
-          onClick={() =>
+          onClick={handleSubmit((data) =>
             existingBranch === null
-              ? addBranchMutation.mutate(getValues())
-              : updateBranchMutation.mutate(getValues())
-          }
+              ? addBranchMutation.mutate(data)
+              : updateBranchMutation.mutate(data),
+          )}
           loading={
             addBranchMutation.isPending || updateBranchMutation.isPending
           }

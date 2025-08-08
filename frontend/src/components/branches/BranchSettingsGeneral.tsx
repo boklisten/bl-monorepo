@@ -4,6 +4,7 @@ import TextField from "@mui/material/TextField";
 import { useQuery } from "@tanstack/react-query";
 import { Controller, useFormContext } from "react-hook-form";
 
+import { BranchCreateForm } from "@/components/branches/BranchSettings";
 import unpack from "@/utils/api/bl-api-request";
 import useApiClient from "@/utils/api/useApiClient";
 
@@ -25,7 +26,11 @@ export default function BranchSettingsGeneral({
         .then(unpack<Branch[]>),
   });
 
-  const { register, control } = useFormContext();
+  const {
+    register,
+    control,
+    formState: { errors },
+  } = useFormContext<BranchCreateForm>();
 
   const branchOptions =
     branches
@@ -40,11 +45,13 @@ export default function BranchSettingsGeneral({
       <TextField
         label={"Fullt navn"}
         required
+        error={!!errors.name}
         {...register("name", { required: true })}
       />
       <TextField
         label={"Lokalt navn"}
         required
+        error={!!errors.localName}
         {...register("localName", { required: true })}
       />
       <Controller
@@ -64,6 +71,7 @@ export default function BranchSettingsGeneral({
       />
       <TextField
         label={"Delt inn i"}
+        error={!!errors.childLabel}
         {...register("childLabel")}
         helperText={"f.eks. årskull, klasse, parallell"}
       ></TextField>

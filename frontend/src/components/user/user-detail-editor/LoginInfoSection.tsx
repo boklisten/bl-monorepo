@@ -54,7 +54,7 @@ export default function LoginInfoSection({
         {variant === "signup" && isSchoolEmail && (
           <Alert severity={"warning"} sx={{ mb: 1 }}>
             Vi anbefaler at du bruker din personlige e-postadresse i stedet for
-            skolekontoen. Da beholder tilgangen etter endt utdanning og kan
+            skolekontoen. Da beholder du tilgangen etter endt utdanning og kan
             motta viktige varsler om eventuelle manglende bokinnleveringer.
           </Alert>
         )}

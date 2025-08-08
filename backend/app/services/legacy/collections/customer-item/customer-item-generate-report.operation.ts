@@ -8,8 +8,8 @@ import { Operation } from "#types/operation";
 
 const customerItemGenerateReportValidator = vine.object({
   branchFilter: vine.array(vine.string()).optional(),
-  createdAfter: vine.date().optional(),
-  createdBefore: vine.date().optional(),
+  createdAfter: vine.string().optional(),
+  createdBefore: vine.string().optional(),
   returned: vine.boolean(),
   buyout: vine.boolean(),
 });

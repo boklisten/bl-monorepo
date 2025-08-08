@@ -26,11 +26,7 @@ export default function BranchSettingsGeneral({
         .then(unpack<Branch[]>),
   });
 
-  const {
-    register,
-    control,
-    formState: { errors },
-  } = useFormContext<BranchCreateForm>();
+  const { control } = useFormContext<BranchCreateForm>();
 
   const branchOptions =
     branches
@@ -42,19 +38,34 @@ export default function BranchSettingsGeneral({
 
   return (
     <>
-      <TextField
-        label={"Fullt navn"}
-        required
-        error={!!errors.name}
-        {...register("name", { required: true })}
-      />
-      <TextField
-        label={"Lokalt navn"}
-        required
-        error={!!errors.localName}
-        {...register("localName", { required: true })}
+      <Controller
+        name={"name"}
+        control={control}
+        render={({ field }) => (
+          <TextField
+            required
+            label={"Fullt navn"}
+            value={field.value}
+            onChange={field.onChange}
+            onBlur={field.onBlur}
+          />
+        )}
       />
       <Controller
+        name={"localName"}
+        control={control}
+        render={({ field }) => (
+          <TextField
+            required
+            label={"Lokalt navn"}
+            value={field.value}
+            onChange={field.onChange}
+            onBlur={field.onBlur}
+          />
+        )}
+      />
+      <Controller
+        name={"parentBranch"}
         control={control}
         render={({ field }) => (
           <Autocomplete
@@ -67,14 +78,21 @@ export default function BranchSettingsGeneral({
             )}
           />
         )}
-        name={"parentBranch"}
       />
-      <TextField
-        label={"Delt inn i"}
-        error={!!errors.childLabel}
-        {...register("childLabel")}
-        helperText={"f.eks. årskull, klasse, parallell"}
-      ></TextField>
+      <Controller
+        name={"childLabel"}
+        control={control}
+        render={({ field }) => (
+          <TextField
+            required
+            label={"Delt inn i"}
+            helperText={"f.eks. årskull, klasse, parallell"}
+            value={field.value}
+            onChange={field.onChange}
+            onBlur={field.onBlur}
+          />
+        )}
+      />
       <Controller
         name="childBranches"
         control={control}

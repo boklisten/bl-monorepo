@@ -11,11 +11,8 @@ export default function DatabaseUniqueIdPage() {
       </Typography>
       <Box>
         <Button
-          onClick={() =>
-            window.location.assign(
-              publicApiClient.unique_ids.download_pdf.$url(),
-            )
-          }
+          component={"a"}
+          href={publicApiClient.unique_ids.download_pdf.$url()}
           variant={"contained"}
           startIcon={<PictureAsPdf />}
         >

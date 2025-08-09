@@ -429,6 +429,13 @@ type SignaturesSignIdPost = {
     true
   >;
 };
+type UniqueidsDownloadpdfGetHead = {
+  request: unknown;
+  response: MakeNonSerializedTuyauResponse<
+    import("../app/controllers/unique_ids_controller.ts").default["downloadUniqueIdPdf"],
+    false
+  >;
+};
 export interface ApiDefinition {
   token: {
     $url: {};
@@ -642,6 +649,13 @@ export interface ApiDefinition {
         $url: {};
         $post: SignaturesSignIdPost;
       };
+    };
+  };
+  unique_ids: {
+    download_pdf: {
+      $url: {};
+      $get: UniqueidsDownloadpdfGetHead;
+      $head: UniqueidsDownloadpdfGetHead;
     };
   };
 }
@@ -960,6 +974,13 @@ const routes = [
     path: "/signatures/sign/:detailsId",
     method: ["POST"],
     types: {} as SignaturesSignIdPost,
+  },
+  {
+    params: [],
+    name: "unique_ids.download.pdf",
+    path: "/unique_ids/download_pdf",
+    method: ["GET", "HEAD"],
+    types: {} as UniqueidsDownloadpdfGetHead,
   },
   {
     params: ["id"],
@@ -1434,13 +1455,6 @@ const routes = [
     params: [],
     name: "collection.uniqueitems.post",
     path: "/uniqueitems",
-    method: ["POST"],
-    types: {} as unknown,
-  },
-  {
-    params: [],
-    name: "collection.uniqueitems.operation.generate.post",
-    path: "/uniqueitems/generate",
     method: ["POST"],
     types: {} as unknown,
   },

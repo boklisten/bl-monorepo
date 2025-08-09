@@ -12,5 +12,6 @@ onlyBuiltDependencies:
   - argon2
   - canvas
   - esbuild
+  - inotify
   - puppeteer
   - sharp

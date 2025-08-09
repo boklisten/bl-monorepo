@@ -1,4 +1,3 @@
-import { GenerateUniqueIdsOperation } from "#services/legacy/collections/unique-item/operations/generate-unique-ids-operation";
 import { UniqueItemActiveOperation } from "#services/legacy/collections/unique-item/operations/unique-item-active.operation";
 import { StorageService } from "#services/storage_service";
 import { BlCollection } from "#types/bl-collection";
@@ -14,13 +13,6 @@ export const UniqueItemCollection: BlCollection = {
       restriction: {
         permission: "employee",
       },
-      operations: [
-        {
-          name: "generate",
-          operation: new GenerateUniqueIdsOperation(),
-          restriction: { permission: "admin" },
-        },
-      ],
     },
     {
       method: "getId",

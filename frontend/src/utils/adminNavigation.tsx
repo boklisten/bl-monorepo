@@ -121,6 +121,11 @@ const ADMIN_LINKS: Navigation = [
         icon: <EditDocument />,
         segment: "dynamisk_innhold",
       },
+      {
+        title: "Unike IDer",
+        icon: <QrCode />,
+        segment: "unik_id",
+      },
     ],
   },
 ];

@@ -3,7 +3,7 @@ import JsBarcode from "jsbarcode";
 import PDFDocument from "pdfkit";
 import { toCanvas } from "qrcode";
 
-const BL_ID_LENGTH = 12;
+const UNIQUE_ID_LENGTH = 12;
 const VALID_BL_ID_CHARACTERS =
   "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
 
@@ -32,10 +32,10 @@ const PRINTER_DIMENSIONS = {
   },
 };
 
-function generateBlIds(numberOfIds: number): string[] {
+function generateUniqueIds(numberOfIds: number) {
   return Array.from({ length: numberOfIds }, () =>
     Array.from(
-      { length: BL_ID_LENGTH },
+      { length: UNIQUE_ID_LENGTH },
       () =>
         VALID_BL_ID_CHARACTERS[
           Math.floor(Math.random() * VALID_BL_ID_CHARACTERS.length)
@@ -44,7 +44,7 @@ function generateBlIds(numberOfIds: number): string[] {
   );
 }
 
-function createBarcodeCanvas(id: string): Canvas {
+function createBarcodeCanvas(id: string) {
   const canvas = new Canvas(
     PRINTER_DIMENSIONS.barcode.width,
     PRINTER_DIMENSIONS.barcode.height,
@@ -60,7 +60,7 @@ function createBarcodeCanvas(id: string): Canvas {
   return canvas;
 }
 
-function createQRCodeCanvas(id: string): Canvas {
+function createQRCodeCanvas(id: string) {
   const canvas = new Canvas(
     PRINTER_DIMENSIONS.qrcode.width,
     PRINTER_DIMENSIONS.qrcode.height,
@@ -82,15 +82,15 @@ function createQRCodeCanvas(id: string): Canvas {
   return canvas;
 }
 
-function createBlIdCanvas(id: string): Canvas {
+function createUniqueIdCanvas(id: string) {
   const barcodeCanvas = createBarcodeCanvas(id);
   const qrcodeCanvas = createQRCodeCanvas(id);
   const totalHeight = PRINTER_DIMENSIONS.label.height;
   const totalWidth = PRINTER_DIMENSIONS.label.width;
 
-  const blIdCanvas = new Canvas(totalWidth, totalHeight);
+  const uniqueIdCanvas = new Canvas(totalWidth, totalHeight);
 
-  const printContext = blIdCanvas.getContext("2d");
+  const printContext = uniqueIdCanvas.getContext("2d");
   printContext.fillStyle = "white";
   printContext.fillRect(0, 0, totalWidth, totalHeight);
 
@@ -101,50 +101,36 @@ function createBlIdCanvas(id: string): Canvas {
     0,
   );
 
-  return blIdCanvas;
+  return uniqueIdCanvas;
 }
 
-async function addIdPagesToDocument(
-  id: string,
-  document_: PDFKit.PDFDocument,
-): Promise<void> {
-  const canvas = createBlIdCanvas(id);
-  const pngBuffers: Buffer[] = [];
-  const stream = canvas.createPNGStream();
-
-  for await (const chunk of stream) {
-    pngBuffers.push(chunk);
-  }
-
-  const pngBuffer = Buffer.concat(pngBuffers);
-
-  for (let index = 0; index < 2; index++) {
-    document_.addPage({
-      size: [canvas.width, canvas.height],
+const UniqueIdGeneratorService = {
+  async generateUniqueIdPdf(): Promise<Buffer> {
+    const ids = generateUniqueIds(400);
+    const doc = new PDFDocument({
+      autoFirstPage: false,
     });
-    document_.image(pngBuffer, 0, 0, { width: canvas.width });
-  }
-}
 
-async function generateBlIdPDF(): Promise<Buffer> {
-  const ids = generateBlIds(400);
-  const document_ = new PDFDocument({ autoFirstPage: false });
+    for (const id of ids) {
+      const canvas = createUniqueIdCanvas(id);
+      const pngBuffer = canvas.toBuffer("image/png");
 
-  for (const id of ids) {
-    await addIdPagesToDocument(id, document_);
-  }
+      for (let i = 0; i < 2; i++) {
+        doc.addPage({ size: [canvas.width, canvas.height] });
+        doc.image(pngBuffer, 0, 0, { width: canvas.width });
+      }
+    }
 
-  document_.end();
+    doc.end();
 
-  const buffers: Buffer[] = [];
+    const buffers: Buffer[] = [];
 
-  for await (const chunk of document_) {
-    buffers.push(chunk as Buffer);
-  }
+    for await (const chunk of doc) {
+      buffers.push(chunk as Buffer);
+    }
 
-  return Buffer.concat(buffers);
-}
+    return Buffer.concat(buffers);
+  },
+};
 
-// fixme: actually use this
-// eslint-disable-next-line import-x/no-unused-modules
-export default generateBlIdPDF;
+export default UniqueIdGeneratorService;

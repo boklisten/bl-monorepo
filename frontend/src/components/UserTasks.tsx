@@ -122,16 +122,50 @@ export default function UserTasks() {
               {isUnder18(moment(data.dob)) ? (
                 <Stack gap={2}>
                   <Alert severity={"info"}>
-                    <AlertTitle>Send signatur til foresatt</AlertTitle>
+                    <AlertTitle>
+                      Send signaturforespørsel til foresatt
+                    </AlertTitle>
                     Siden du er under 18 år krever vi signatur fra en av dine
-                    foresatte
+                    foresatte.
+                    <Stack gap={1} mt={2}>
+                      <Typography variant={"body1"}>
+                        Oppgitt foresatt
+                      </Typography>
+                      <Stack direction={"row"} gap={1}>
+                        <Typography variant={"body2"}>Navn</Typography>
+                        <Typography variant={"body2"} fontWeight={"bold"}>
+                          {data.guardian?.name}
+                        </Typography>
+                      </Stack>
+                      <Stack direction={"row"} gap={1}>
+                        <Typography variant={"body2"}>
+                          Telefonnummer:
+                        </Typography>
+                        <Typography variant={"body2"} fontWeight={"bold"}>
+                          {data.guardian?.phone}
+                        </Typography>
+                      </Stack>
+                      <Stack direction={"row"} gap={1}>
+                        <Typography variant={"body2"}>E-post:</Typography>
+                        <Typography variant={"body2"} fontWeight={"bold"}>
+                          {data.guardian?.email}
+                        </Typography>
+                      </Stack>
+                      <Typography
+                        fontStyle={"italic"}
+                        fontSize={"small"}
+                        mt={2}
+                      >
+                        Du kan endre foresatt-opplysninger i brukerinnstillinger
+                      </Typography>
+                    </Stack>
                   </Alert>
                   <Button
                     startIcon={<Send />}
                     loading={requestSignatureMutation.isPending}
                     onClick={() => requestSignatureMutation.mutate()}
                   >
-                    Send signeringslenke
+                    Send signeringsforespørsel
                     {data.guardian?.name && ` til ${data.guardian?.name}`}
                   </Button>
                 </Stack>

@@ -287,6 +287,31 @@ const DispatchService = {
       recipients,
     });
   },
+  async sendOnboardingMessage({
+    userDetail,
+    branchName,
+  }: {
+    userDetail: UserDetail;
+    branchName: string;
+  }) {
+    const firstName = userDetail.name.split(" ")[0];
+    const emailStatus = await EmailService.sendEmail({
+      template: EMAIL_TEMPLATES.onboarding,
+      recipients: {
+        to: userDetail.email,
+        dynamicTemplateData: {
+          firstName,
+          branchName,
+          loginUri: `${env.get("NEXT_CLIENT_URI")}auth/login`,
+        },
+      },
+    });
+    const smsStatus = await SmsService.sendOne({
+      to: userDetail.phone,
+      body: `Hei ${firstName}, velkommen til ${branchName}! Vi i Boklisten administrerer utlån av bøkene du skal bruke, og før du kan få dem trenger vi at du bekrefter informasjonen din og signerer vår låneavtale på Boklisten.no. Er du under 18 år, må en foresatt signere. Vi har opprettet en konto til deg, og du kan logge inn med Vipps eller opprette et passord for å komme i gang. Mvh. Boklisten.no`,
+    });
+    return { emailStatus, smsStatus };
+  },
 };
 
 export default DispatchService;

@@ -81,4 +81,8 @@ export const UserDetailSchema: BlSchema<UserDetail> = new Schema({
     type: Schema.Types.ObjectId,
     ref: BlSchemaName.Branches,
   },
+  tasks: {
+    confirmDetails: Boolean,
+    signAgreement: Boolean,
+  },
 });

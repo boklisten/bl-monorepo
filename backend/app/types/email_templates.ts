@@ -44,6 +44,10 @@ export const EMAIL_TEMPLATES = {
     sender: EMAIL_SENDER.INFO,
     templateId: "d-b6d2e8bcf3bc4e6e9aef3f8eb49f1c64",
   },
+  onboarding: {
+    sender: EMAIL_SENDER.INFO,
+    templateId: "d-a0edd89f0af34e318cb4aa476f07d186",
+  },
 } as const satisfies Record<string, EmailTemplate>;
 
 export interface EmailRecipient {

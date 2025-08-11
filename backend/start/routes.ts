@@ -32,6 +32,8 @@ const CustomerItemsController = () =>
   import("#controllers/customer_items_controller");
 const SignaturesController = () => import("#controllers/signatures_controller");
 const UniqueIdsController = () => import("#controllers/unique_ids_controller");
+const UserProvisioningController = () =>
+  import("#controllers/user_provisioning_controller");
 
 /**
  * auth token
@@ -266,6 +268,13 @@ router
 router
   .get("/unique_ids/download_pdf", [UniqueIdsController, "downloadUniqueIdPdf"])
   .as("unique_ids.download.pdf");
+
+/**
+ * User Provisioning
+ */
+router
+  .post("/users/create", [UserProvisioningController, "createUsers"])
+  .as("users.create");
 
 /**
  * Generate legacy bl-collection endpoints

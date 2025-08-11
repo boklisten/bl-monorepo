@@ -99,7 +99,7 @@ export default function UploadClassMemberships({
     <UploadCSVFile
       loading={uploadClassMembershipMutation.isPending}
       label={"Last opp klassevalg"}
-      allowedHeaders={["phone", "branch"] as const}
+      requiredHeaders={["phone", "branch"] as const}
       onUpload={uploadClassMembershipMutation.mutate}
     />
   );

@@ -436,6 +436,17 @@ type UniqueidsDownloadpdfGetHead = {
     false
   >;
 };
+type UsersCreatePost = {
+  request: MakeTuyauRequest<
+    InferInput<
+      (typeof import("../app/validators/user_provisioning.ts"))["userProvisioningValidator"]
+    >
+  >;
+  response: MakeNonSerializedTuyauResponse<
+    import("../app/controllers/user_provisioning_controller.ts").default["createUsers"],
+    true
+  >;
+};
 export interface ApiDefinition {
   token: {
     $url: {};
@@ -656,6 +667,12 @@ export interface ApiDefinition {
       $url: {};
       $get: UniqueidsDownloadpdfGetHead;
       $head: UniqueidsDownloadpdfGetHead;
+    };
+  };
+  users: {
+    create: {
+      $url: {};
+      $post: UsersCreatePost;
     };
   };
 }
@@ -981,6 +998,13 @@ const routes = [
     path: "/unique_ids/download_pdf",
     method: ["GET", "HEAD"],
     types: {} as UniqueidsDownloadpdfGetHead,
+  },
+  {
+    params: [],
+    name: "users.create",
+    path: "/users/create",
+    method: ["POST"],
+    types: {} as UsersCreatePost,
   },
   {
     params: ["id"],

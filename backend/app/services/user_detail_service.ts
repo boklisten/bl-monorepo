@@ -1,6 +1,7 @@
 import { Infer } from "@vinejs/vine/types";
 
 import BlidService from "#services/blid_service";
+import { BranchService } from "#services/branch_service";
 import CryptoService from "#services/crypto_service";
 import DispatchService from "#services/dispatch_service";
 import { SEDbQuery } from "#services/legacy/query/se.db-query";
@@ -8,6 +9,7 @@ import { StorageService } from "#services/storage_service";
 import { UserDetail } from "#shared/user-detail";
 import { VippsUser } from "#types/user";
 import { registerSchema } from "#validators/auth_validators";
+import { userProvisioningValidator } from "#validators/user_provisioning";
 
 export const UserDetailService = {
   async getByPhoneNumber(phone: string): Promise<UserDetail | null> {
@@ -81,5 +83,38 @@ export const UserDetailService = {
     await DispatchService.sendEmailConfirmation(email, emailValidation.id);
 
     return userDetail;
+  },
+  async createProvisionedUserDetail({
+    name,
+    phone,
+    email,
+    address,
+    postalCity,
+    postalCode,
+    dob,
+    branchName,
+  }: Infer<typeof userProvisioningValidator>["userCandidates"][number]) {
+    const blid = BlidService.createUserBlid("local", CryptoService.random());
+    const branch = await BranchService.getByName(branchName);
+    return await StorageService.UserDetails.add(
+      {
+        blid,
+        name,
+        phone,
+        email,
+        address,
+        dob,
+        postCode: postalCode,
+        postCity: postalCity,
+        emailConfirmed: true,
+        branchMembership: branch?.id,
+        tasks: {
+          confirmDetails: true,
+          signAgreement: true,
+        },
+        // fixme: it is janky to just add this without all the details
+      } as UserDetail,
+      { id: blid, permission: "customer" },
+    );
   },
 };

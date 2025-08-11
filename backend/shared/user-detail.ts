@@ -21,4 +21,8 @@ export interface UserDetail extends BlDocument {
   signatures: string[];
   blid: string;
   branchMembership?: string | undefined; // The branch the customer belongs to
+  tasks?: {
+    confirmDetails?: boolean;
+    signAgreement?: boolean;
+  };
 }

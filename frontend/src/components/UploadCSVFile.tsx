@@ -5,25 +5,31 @@ import Papa from "papaparse";
 import FileUploadButton from "@/components/FileUploadButton";
 import { ERROR_NOTIFICATION } from "@/utils/notifications";
 
-type ParsedRow<Headers extends string[]> = Record<
-  Headers[number],
-  string | string[]
->;
+type ParsedRow<
+  Req extends readonly string[],
+  Opt extends readonly string[] = [],
+> = Record<Req[number], string | string[]> &
+  Partial<Record<Opt[number], string | string[]>>;
 
-export default function UploadCSVFile<Headers extends string[]>({
+export default function UploadCSVFile<
+  Req extends readonly string[],
+  Opt extends readonly string[] = [],
+>({
   label,
-  allowedHeaders,
+  requiredHeaders,
+  optionalHeaders,
   onUpload,
   loading = false,
 }: {
   label: string;
-  allowedHeaders: Headers;
-  onUpload: (data: ParsedRow<Headers>[]) => void;
+  requiredHeaders: Req;
+  optionalHeaders?: Opt;
+  onUpload: (data: ParsedRow<Req, Opt>[]) => void;
   loading?: boolean;
 }) {
   const notifications = useNotifications();
 
-  function parseRows(rows: string[][]): ParsedRow<string[]>[] | null {
+  function parseRows(rows: string[][]): ParsedRow<Req, Opt>[] | null {
     if (rows.length < 2) {
       notifications.show(
         "Opplasting feilet! Filen har ingen data",
@@ -33,9 +39,14 @@ export default function UploadCSVFile<Headers extends string[]>({
     }
 
     const headerRow = rows[0]?.map((h) => h.trim()) ?? [];
+    const allHeaders = [
+      ...requiredHeaders,
+      ...(optionalHeaders ?? []),
+    ] as readonly string[];
+
     const headerIndexMap: Record<string, number[]> = {};
     headerRow.forEach((headerName, i) => {
-      if (allowedHeaders.includes(headerName)) {
+      if (allHeaders.includes(headerName)) {
         if (!headerIndexMap[headerName]) {
           headerIndexMap[headerName] = [];
         }
@@ -43,7 +54,7 @@ export default function UploadCSVFile<Headers extends string[]>({
       }
     });
 
-    for (const header of allowedHeaders) {
+    for (const header of requiredHeaders) {
       if (!headerIndexMap[header] || headerIndexMap[header].length === 0) {
         notifications.show(
           `Opplasting feilet! Mangler kolonne: ${header}`,
@@ -53,13 +64,13 @@ export default function UploadCSVFile<Headers extends string[]>({
       }
     }
 
-    const parsedRows: ParsedRow<string[]>[] = [];
+    const parsedRows: ParsedRow<Req, Opt>[] = [];
 
     for (let rowIndex = 1; rowIndex < rows.length; rowIndex++) {
       const row = rows[rowIndex] ?? [];
-      const parsedRow: Record<string, string | string[]> = {};
+      const parsedRow: Partial<Record<string, string | string[]>> = {};
 
-      for (const header of allowedHeaders) {
+      for (const header of requiredHeaders) {
         const indices = headerIndexMap[header] ?? [];
         const values = indices
           .map((i) => (row[i] ?? "").trim())
@@ -77,7 +88,21 @@ export default function UploadCSVFile<Headers extends string[]>({
         parsedRow[header] = values.length === 1 ? values[0]! : values;
       }
 
-      parsedRows.push(parsedRow as ParsedRow<string[]>);
+      for (const header of optionalHeaders ?? []) {
+        const indices = headerIndexMap[header] ?? [];
+        if (indices.length === 0) continue;
+
+        const values = indices
+          .map((i) => (row[i] ?? "").trim())
+          .filter((v) => v !== "");
+
+        if (values.length > 0) {
+          // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+          parsedRow[header] = values.length === 1 ? values[0]! : values;
+        }
+      }
+
+      parsedRows.push(parsedRow as ParsedRow<Req, Opt>);
     }
 
     return parsedRows;

@@ -104,7 +104,7 @@ export default function UploadSubjectChoices({
     <UploadCSVFile
       loading={uploadSubjectChoicesMutation.isPending}
       label={"Last opp fagvalg"}
-      allowedHeaders={["phone", "subjects"] as const}
+      requiredHeaders={["phone", "subjects"] as const}
       onUpload={uploadSubjectChoicesMutation.mutate}
     />
   );

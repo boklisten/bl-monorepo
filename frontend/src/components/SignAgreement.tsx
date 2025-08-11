@@ -28,7 +28,7 @@ export default function SignAgreement({
   cachedAgreementText,
 }: {
   userDetailId: string;
-  cachedAgreementText: string;
+  cachedAgreementText?: string;
 }) {
   const queryClient = useQueryClient();
   const { data, isLoading, isError } = useQuery({
@@ -68,13 +68,17 @@ export default function SignAgreement({
         "Noe gikk galt under signering. Vennligst prøv igjen eller ta kontakt dersom problemet vedvarer",
         ERROR_NOTIFICATION,
       ),
-    onSettled: () =>
-      queryClient.invalidateQueries({
+    onSettled: () => {
+      void queryClient.invalidateQueries({
         queryKey: [
           publicApiClient.signatures.valid({ detailsId: userDetailId }).$url(),
           userDetailId,
         ],
-      }),
+      });
+      void queryClient.invalidateQueries({
+        queryKey: [publicApiClient.v2.user_details.$url()],
+      });
+    },
   });
   const hasValidResponse = !isError && !isLoading && !!data;
   return (

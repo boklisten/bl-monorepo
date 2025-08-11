@@ -224,6 +224,9 @@ router
  * user detail
  */
 router
+  .get("/v2/user_details/:detailsId", [UserDetailController, "get"])
+  .as("user_detail.get");
+router
   .post("/v2/user_details", [UserDetailController, "updateAsCustomer"])
   .as("user_detail.updateAsCustomer");
 router

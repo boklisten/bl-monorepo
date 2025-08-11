@@ -11,7 +11,7 @@ export default function ExpandableEditableTextReadOnly({
   collapsedSize = 150,
 }: {
   dataKey: string;
-  cachedText?: string;
+  cachedText?: string | undefined;
   collapsedSize?: number;
 }) {
   const [expanded, setExpanded] = useState(false);

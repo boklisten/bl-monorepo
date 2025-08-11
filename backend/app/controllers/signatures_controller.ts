@@ -52,9 +52,13 @@ export default class SignaturesController {
     };
   }
   async sendSignatureLink(ctx: HttpContext) {
-    PermissionService.adminOrFail(ctx);
-    const detailsId = ctx.request.param("detailsId");
-    const userDetail = await StorageService.UserDetails.getOrNull(detailsId);
+    const targetDetailsId = ctx.request.param("detailsId");
+    const { detailsId } = PermissionService.authenticate(ctx);
+
+    if (targetDetailsId !== detailsId) PermissionService.employeeOrFail(ctx);
+
+    const userDetail =
+      await StorageService.UserDetails.getOrNull(targetDetailsId);
     const branch = await StorageService.Branches.getOrNull(
       userDetail?.branchMembership,
     );
@@ -128,6 +132,7 @@ export default class SignaturesController {
     });
     await StorageService.UserDetails.update(userDetail.id, {
       signatures: [...userDetail.signatures, writtenSignature.id],
+      "tasks.signAgreement": false,
     });
     await signOrders(userDetail);
   }

@@ -368,6 +368,13 @@ type MatchesTransferitemPost = {
     true
   >;
 };
+type V2UserdetailsIdGetHead = {
+  request: unknown;
+  response: MakeNonSerializedTuyauResponse<
+    import("../app/controllers/user_detail_controller.ts").default["get"],
+    false
+  >;
+};
 type V2UserdetailsPost = {
   request: MakeTuyauRequest<
     InferInput<
@@ -485,6 +492,11 @@ export interface ApiDefinition {
       };
     };
     user_details: {
+      ":detailsId": {
+        $url: {};
+        $get: V2UserdetailsIdGetHead;
+        $head: V2UserdetailsIdGetHead;
+      };
       $url: {};
       $post: V2UserdetailsPost;
     };
@@ -942,6 +954,13 @@ const routes = [
     path: "/matches/transfer_item",
     method: ["POST"],
     types: {} as MatchesTransferitemPost,
+  },
+  {
+    params: ["detailsId"],
+    name: "user_detail.get",
+    path: "/v2/user_details/:detailsId",
+    method: ["GET", "HEAD"],
+    types: {} as V2UserdetailsIdGetHead,
   },
   {
     params: [],

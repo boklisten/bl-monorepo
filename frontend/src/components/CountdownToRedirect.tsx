@@ -3,15 +3,20 @@ import { LinearProgress, Box, Typography } from "@mui/material";
 import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 
+import useAuthLinker from "@/utils/useAuthLinker";
+
 const CountdownToRedirect = ({
-  path,
   seconds,
+  path,
   shouldReplaceInHistory,
+  shouldRedirectToCaller,
 }: {
-  path: string;
   seconds: number;
+  path?: string;
   shouldReplaceInHistory?: boolean;
+  shouldRedirectToCaller?: boolean;
 }) => {
+  const { redirectToCaller } = useAuthLinker();
   const [progress, setProgress] = useState(100);
   const router = useRouter();
   const elementRef = useRef<HTMLElement>(null);
@@ -42,13 +47,23 @@ const CountdownToRedirect = ({
 
   useEffect(() => {
     if (progress <= 0) {
-      if (shouldReplaceInHistory) {
-        router.replace(path);
-      } else {
-        router.push(path);
+      if (shouldRedirectToCaller) return redirectToCaller();
+      if (path) {
+        if (shouldReplaceInHistory) {
+          router.replace(path);
+        } else {
+          router.push(path);
+        }
       }
     }
-  }, [progress, shouldReplaceInHistory, router, path]);
+  }, [
+    progress,
+    shouldReplaceInHistory,
+    router,
+    path,
+    shouldRedirectToCaller,
+    redirectToCaller,
+  ]);
 
   return (
     <Box sx={{ width: "100%", mt: 1 }} ref={elementRef}>

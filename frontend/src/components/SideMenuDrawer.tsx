@@ -1,5 +1,10 @@
 "use client";
-import { AdminPanelSettings, Handshake, Search } from "@mui/icons-material";
+import {
+  AdminPanelSettings,
+  Handshake,
+  PendingActions,
+  Search,
+} from "@mui/icons-material";
 import AccessTimeIcon from "@mui/icons-material/AccessTime";
 import BookIcon from "@mui/icons-material/Book";
 import EmailIcon from "@mui/icons-material/Email";
@@ -11,30 +16,35 @@ import MenuBookIcon from "@mui/icons-material/MenuBook";
 import PersonAddIcon from "@mui/icons-material/PersonAdd";
 import ReceiptIcon from "@mui/icons-material/Receipt";
 import SettingsIcon from "@mui/icons-material/Settings";
-import { IconButton, ListItemButton } from "@mui/material";
+import { Badge, IconButton, ListItemButton } from "@mui/material";
 import Box from "@mui/material/Box";
 import Divider from "@mui/material/Divider";
 import List from "@mui/material/List";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 import SwipeableDrawer from "@mui/material/SwipeableDrawer";
+import { useQuery } from "@tanstack/react-query";
 import { useState, KeyboardEvent, MouseEvent, ReactNode } from "react";
 
+import { getAccessTokenBody } from "@/api/token";
 import DynamicLink from "@/components/DynamicLink";
+import useApiClient from "@/utils/api/useApiClient";
 import useAuth from "@/utils/useAuth";
 
 interface DrawerLinkProps {
   title: string;
   href: string;
   icon: ReactNode;
+  badge?: ReactNode;
   onClick?: () => void;
 }
 
-const DrawerLink = ({ title, href, icon, onClick }: DrawerLinkProps) => (
+const DrawerLink = ({ title, href, icon, onClick, badge }: DrawerLinkProps) => (
   <DynamicLink href={href} underline={"none"} style={{ color: "inherit" }}>
     <ListItemButton onClick={onClick}>
       <ListItemIcon>{icon}</ListItemIcon>
       <ListItemText primary={title} />
+      {badge}
     </ListItemButton>
   </DynamicLink>
 );
@@ -42,6 +52,20 @@ const DrawerLink = ({ title, href, icon, onClick }: DrawerLinkProps) => (
 export default function SideMenuDrawer() {
   const [open, setOpen] = useState(false);
   const { isLoggedIn, isEmployee } = useAuth();
+  const client = useApiClient();
+
+  const {
+    data: userDetail,
+    isLoading: isLoadingUserDetail,
+    isError: isErrorUserDetail,
+  } = useQuery({
+    queryKey: [client.v2.user_details.$url()],
+    queryFn: () => {
+      const { details } = getAccessTokenBody();
+      if (!details) return null;
+      return client.v2.user_details({ detailsId: details }).$get().unwrap();
+    },
+  });
 
   const toggleDrawer =
     (open: boolean) => (event: KeyboardEvent | MouseEvent) => {
@@ -56,11 +80,21 @@ export default function SideMenuDrawer() {
 
       setOpen(open);
     };
-
+  const taskCount =
+    isLoadingUserDetail || isErrorUserDetail || !userDetail?.tasks
+      ? 0
+      : (userDetail.tasks.confirmDetails ? 1 : 0) +
+        (userDetail.tasks.signAgreement ? 1 : 0);
   return (
     <>
       <IconButton sx={{ color: "white" }} onClick={toggleDrawer(true)}>
-        <MenuIcon />
+        <Badge
+          badgeContent={taskCount}
+          color={"error"}
+          invisible={taskCount === 0}
+        >
+          <MenuIcon />
+        </Badge>
       </IconButton>
       <SwipeableDrawer
         anchor="right"
@@ -75,6 +109,23 @@ export default function SideMenuDrawer() {
           onKeyDown={toggleDrawer(false)}
         >
           <List>
+            {taskCount > 0 && (
+              <>
+                <DrawerLink
+                  title={"Dine oppgaver"}
+                  href={"/oppgaver"}
+                  icon={<PendingActions />}
+                  badge={
+                    <Badge
+                      sx={{ right: 40 }}
+                      badgeContent={taskCount}
+                      color={"error"}
+                    />
+                  }
+                />
+                <Divider />
+              </>
+            )}
             <DrawerLink
               title={"Bestill bøker"}
               href={"/order"}

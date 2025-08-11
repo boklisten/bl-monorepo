@@ -1,5 +1,7 @@
 import { HttpContext } from "@adonisjs/core/http";
 
+import { userHasValidSignature } from "#services/legacy/collections/signature/helpers/signature.helper";
+import { UserDetailHelper } from "#services/legacy/collections/user-detail/helpers/user-detail.helper";
 import { PermissionService } from "#services/permission_service";
 import { StorageService } from "#services/storage_service";
 import {
@@ -8,6 +10,26 @@ import {
 } from "#validators/user_detail";
 
 export default class UserDetailsController {
+  async get(ctx: HttpContext) {
+    const paramDetailsId = ctx.request.param("detailsId");
+    const { detailsId } = PermissionService.authenticate(ctx);
+    if (detailsId !== paramDetailsId) {
+      PermissionService.employeeOrFail(ctx);
+    }
+    let userDetail = await StorageService.UserDetails.getOrNull(paramDetailsId);
+    if (!userDetail) return null;
+    if (!new UserDetailHelper().isValid(userDetail)) {
+      userDetail = await StorageService.UserDetails.update(detailsId, {
+        "tasks.confirmDetails": true,
+      });
+    }
+    if (await userHasValidSignature(userDetail)) {
+      userDetail = await StorageService.UserDetails.update(detailsId, {
+        "tasks.signAgreement": false,
+      });
+    }
+    return userDetail;
+  }
   async updateAsCustomer(ctx: HttpContext) {
     const { detailsId } = PermissionService.authenticate(ctx);
     const {
@@ -33,6 +55,7 @@ export default class UserDetailsController {
       dob,
       branchMembership,
       guardian,
+      "tasks.confirmDetails": false,
     });
   }
 
@@ -66,6 +89,7 @@ export default class UserDetailsController {
       dob,
       branchMembership,
       guardian,
+      "tasks.confirmDetails": false,
     });
   }
 }

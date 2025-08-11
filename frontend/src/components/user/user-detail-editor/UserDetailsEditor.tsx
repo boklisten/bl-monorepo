@@ -39,7 +39,7 @@ export interface UserEditorFields {
   agreeToTermsAndConditions: boolean;
 }
 
-const isUnder18 = (birthday: moment.Moment): boolean => {
+export const isUnder18 = (birthday: moment.Moment): boolean => {
   return moment().diff(birthday, "years") < 18;
 };
 
@@ -218,6 +218,10 @@ export default function UserDetailsEditor({
         queryKey: ["userDetails", userDetails?.id],
       });
     },
+    onSettled: () =>
+      queryClient.invalidateQueries({
+        queryKey: [client.v2.user_details.$url()],
+      }),
   });
   const birthdayFieldValue = watch("birthday");
 
@@ -235,6 +239,7 @@ export default function UserDetailsEditor({
     <FormProvider {...methods}>
       <Box
         component="form"
+        noValidate
         onSubmit={handleSubmit((data) => {
           userDetailsMutation.mutate(data);
         })}

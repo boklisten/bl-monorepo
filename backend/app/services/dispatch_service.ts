@@ -8,6 +8,7 @@ import {
   userHasValidSignature,
 } from "#services/legacy/collections/signature/helpers/signature.helper";
 import { OrderEmailHandler } from "#services/legacy/order_email_handler";
+import { StorageService } from "#services/storage_service";
 import { DeliveryInfoBring } from "#shared/delivery/delivery-info/delivery-info-bring";
 import { Order } from "#shared/order/order";
 import { UserDetail } from "#shared/user-detail";
@@ -138,6 +139,9 @@ const DispatchService = {
   },
   async sendSignatureLink(customerDetail: UserDetail, branchName: string) {
     if (await userHasValidSignature(customerDetail)) return;
+    await StorageService.UserDetails.update(customerDetail.id, {
+      "tasks.signAgreement": true,
+    });
 
     if (isUnderage(customerDetail) && customerDetail.guardian) {
       await EmailService.sendEmail({

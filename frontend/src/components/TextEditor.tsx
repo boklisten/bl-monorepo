@@ -1,6 +1,5 @@
-import { Link } from "@tiptap/extension-link";
 import { Extensions } from "@tiptap/react";
-import StarterKit from "@tiptap/starter-kit";
+import { StarterKit } from "@tiptap/starter-kit";
 import {
   LinkBubbleMenu,
   LinkBubbleMenuHandler,
@@ -19,7 +18,6 @@ import { Ref } from "react";
 
 const richTextEditorExtensions = [
   StarterKit,
-  Link,
   LinkBubbleMenuHandler,
 ] as const satisfies Extensions;
 
@@ -33,11 +31,13 @@ type TextEditorProps =
 export function TextEditor(props: TextEditorProps) {
   return props.readOnly ? (
     <RichTextReadOnly
+      immediatelyRender={false}
       content={props.content}
       extensions={richTextEditorExtensions}
     />
   ) : (
     <RichTextEditor
+      immediatelyRender={false}
       ref={props.rteRef}
       extensions={richTextEditorExtensions}
       content={props.content}

@@ -24,7 +24,8 @@ export default function SignaturePad({
         onChange("");
       }
     };
-    resize();
+    // Ensure everything is rendered properly before resize is called
+    setTimeout(resize, 10);
     window.addEventListener("resize", resize);
     return () => window.removeEventListener("resize", resize);
   }, [onChange]);

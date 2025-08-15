@@ -52,7 +52,8 @@ export default function AuthGuard({
 
     const pathName = pathname.slice(1);
     if (
-      pathName !== "oppgaver" &&
+      !pathName.includes("oppgaver") &&
+      !pathName.includes("user-settings") &&
       !isLoadingUserDetail &&
       !isErrorUserDetail &&
       (userDetail?.tasks?.confirmDetails || userDetail?.tasks?.signAgreement)

@@ -82,6 +82,10 @@ export class RapidHandoutOperation implements Operation {
       order: Order;
       relevantOrderItem: OrderItem | undefined;
     }
+    const tempEquivalentItemIds = [
+      "5b6441c6d2e733002fae89eb",
+      "5b6441c1d2e733002fae8960",
+    ];
     const orderActive = new OrderActive();
     const customerOrder: OriginalOrderInfo | undefined = (
       await orderActive.getActiveOrders(customerId)
@@ -93,7 +97,9 @@ export class RapidHandoutOperation implements Operation {
             !orderItem.handout &&
             !orderItem.delivered &&
             !orderItem.movedToOrder &&
-            orderItem.item === itemId &&
+            (tempEquivalentItemIds.includes(orderItem.item)
+              ? true
+              : orderItem.item === itemId) &&
             (orderItem.type === "rent" || orderItem.type === "partly-payment"),
         ),
       }))
@@ -134,7 +140,7 @@ export class RapidHandoutOperation implements Operation {
         {
           movedFromOrder,
           handout: true,
-          item: itemId,
+          item: customerOrder.relevantOrderItem?.item ?? itemId,
           title: item.title,
           blid,
           type: customerOrder.relevantOrderItem?.type ?? "rent",

@@ -34,6 +34,8 @@ const SignaturesController = () => import("#controllers/signatures_controller");
 const UniqueIdsController = () => import("#controllers/unique_ids_controller");
 const UserProvisioningController = () =>
   import("#controllers/user_provisioning_controller");
+const UniqueItemsController = () =>
+  import("#controllers/unique_items_controller");
 
 /**
  * auth token
@@ -278,6 +280,13 @@ router
 router
   .post("/users/create", [UserProvisioningController, "createUsers"])
   .as("users.create");
+
+/**
+ * Unique Items
+ */
+router
+  .post("/unique_items/add", [UniqueItemsController, "add"])
+  .as("unique_items.add");
 
 /**
  * Generate legacy bl-collection endpoints

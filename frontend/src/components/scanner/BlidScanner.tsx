@@ -48,6 +48,7 @@ export default function BlidScanner({
       formats={["qr_code", "code_128", "ean_8", "ean_13"]}
       components={{ torch: true }}
       onScan={handleCodeDetection}
+      scanDelay={500}
     />
   );
 }

@@ -454,6 +454,17 @@ type UsersCreatePost = {
     true
   >;
 };
+type UniqueitemsAddPost = {
+  request: MakeTuyauRequest<
+    InferInput<
+      (typeof import("../app/validators/unique_item.ts"))["uniqueItemsValidator"]
+    >
+  >;
+  response: MakeNonSerializedTuyauResponse<
+    import("../app/controllers/unique_items_controller.ts").default["add"],
+    true
+  >;
+};
 export interface ApiDefinition {
   token: {
     $url: {};
@@ -685,6 +696,12 @@ export interface ApiDefinition {
     create: {
       $url: {};
       $post: UsersCreatePost;
+    };
+  };
+  unique_items: {
+    add: {
+      $url: {};
+      $post: UniqueitemsAddPost;
     };
   };
 }
@@ -1024,6 +1041,13 @@ const routes = [
     path: "/users/create",
     method: ["POST"],
     types: {} as UsersCreatePost,
+  },
+  {
+    params: [],
+    name: "unique_items.add",
+    path: "/unique_items/add",
+    method: ["POST"],
+    types: {} as UniqueitemsAddPost,
   },
   {
     params: ["id"],

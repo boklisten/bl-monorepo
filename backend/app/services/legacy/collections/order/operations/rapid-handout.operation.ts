@@ -36,7 +36,9 @@ export class RapidHandoutOperation implements Operation {
 
     const uniqueItemOrFeedback = await this.verifyUniqueItemPresent(blid);
     if (typeof uniqueItemOrFeedback === "string")
-      return new BlapiResponse([{ feedback: uniqueItemOrFeedback }]);
+      return new BlapiResponse([
+        { feedback: uniqueItemOrFeedback, connectBlid: true },
+      ]);
 
     const placedRentOrder = await this.placeRentOrder(
       blid,
@@ -97,8 +99,8 @@ export class RapidHandoutOperation implements Operation {
             !orderItem.handout &&
             !orderItem.delivered &&
             !orderItem.movedToOrder &&
-            (tempEquivalentItemIds.includes(orderItem.item)
-              ? true
+            (tempEquivalentItemIds.includes(itemId)
+              ? tempEquivalentItemIds.includes(orderItem.item)
               : orderItem.item === itemId) &&
             (orderItem.type === "rent" || orderItem.type === "partly-payment"),
         ),

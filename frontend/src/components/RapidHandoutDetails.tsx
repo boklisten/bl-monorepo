@@ -4,14 +4,16 @@ import { UserDetail } from "@boklisten/backend/shared/user-detail";
 import QrCodeScannerIcon from "@mui/icons-material/QrCodeScanner";
 import { Alert, Button, Typography } from "@mui/material";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 import { ItemStatus } from "@/components/matches/matches-helper";
 import MatchItemTable from "@/components/matches/MatchItemTable";
 import MatchScannerContent from "@/components/matches/MatchScannerContent";
+import { determineScannedTextType } from "@/components/scanner/BlidScanner";
 import ScannerModal from "@/components/scanner/ScannerModal";
 import unpack from "@/utils/api/bl-api-request";
 import useApiClient from "@/utils/api/useApiClient";
+import { TextType } from "@/utils/types";
 
 function calculateUnfulfilledOrderItems(orders: Order[]): OrderItem[] {
   return orders
@@ -63,7 +65,10 @@ export default function RapidHandoutDetails({
   });
   const [itemStatuses, setItemStatuses] = useState<ItemStatus[]>([]);
   const [scanModalOpen, setScanModalOpen] = useState(false);
-  useState(false);
+  const tempBlidRef = useRef<string | null>(null);
+  const setTempBlid = (v: string | null) => {
+    tempBlidRef.current = v;
+  };
 
   useEffect(() => {
     client
@@ -124,15 +129,51 @@ export default function RapidHandoutDetails({
       </Button>
       <MatchItemTable itemStatuses={itemStatuses} isSender={true} />
       <ScannerModal
-        onScan={async (blid) => {
+        disableTypeChecks={true}
+        onScan={async (scannedText) => {
+          const scannedType = determineScannedTextType(scannedText);
+          const tempBlid = tempBlidRef.current;
+
+          if (tempBlid) {
+            if (scannedType !== TextType.ISBN) {
+              return [
+                {
+                  feedback: `Du må skanne ISBN til ${scannedText}`,
+                },
+              ];
+            }
+            await client.unique_items.add.$post({
+              blid: tempBlid,
+              isbn: scannedText,
+            });
+            setTempBlid(null);
+          } else if (scannedType !== TextType.BLID) {
+            return [
+              {
+                feedback: "Feil strekkode. Vennligst skann bokas unike ID",
+              },
+            ];
+          }
           const response = await client
             .$route("collection.orders.operation.rapid-handout.post")
             .$post({
-              blid,
+              blid: tempBlid ?? scannedText,
               customerId: customer.id,
             });
 
-          return unpack<[{ feedback: string }]>(response);
+          const res =
+            unpack<[{ feedback: string; connectBlid?: boolean }]>(response);
+
+          if (res[0].connectBlid) {
+            setTempBlid(scannedText);
+            return [
+              {
+                feedback:
+                  "Denne boken er ikke knyttet til noen unik ID. Skann bokas ISBN",
+              },
+            ];
+          }
+          return res;
         }}
         open={scanModalOpen}
         handleSuccessfulScan={async () => {

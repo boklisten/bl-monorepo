@@ -182,7 +182,7 @@ async function addDetailsToStandMatch(
   };
 }
 
-export async function getMyMatches(detailsId: string) {
+export async function getMatches(detailsId: string) {
   const userMatches = (await StorageService.UserMatches.aggregate([
     {
       $match: {

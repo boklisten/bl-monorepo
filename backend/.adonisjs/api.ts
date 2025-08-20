@@ -350,10 +350,10 @@ type UsermatchesLockPost = {
     true
   >;
 };
-type MatchesMeGetHead = {
+type MatchesGetIdGetHead = {
   request: unknown;
   response: MakeNonSerializedTuyauResponse<
-    import("../app/controllers/matches/matches_controller.ts").default["getMyMatches"],
+    import("../app/controllers/matches/matches_controller.ts").default["getMatches"],
     false
   >;
 };
@@ -641,10 +641,12 @@ export interface ApiDefinition {
       $url: {};
       $post: MatchesNotifyPost;
     };
-    me: {
-      $url: {};
-      $get: MatchesMeGetHead;
-      $head: MatchesMeGetHead;
+    get: {
+      ":detailsId": {
+        $url: {};
+        $get: MatchesGetIdGetHead;
+        $head: MatchesGetIdGetHead;
+      };
     };
     transfer_item: {
       $url: {};
@@ -959,11 +961,11 @@ const routes = [
     types: {} as UsermatchesLockPost,
   },
   {
-    params: [],
-    name: "matches.me",
-    path: "/matches/me",
+    params: ["detailsId"],
+    name: "matches.get",
+    path: "/matches/get/:detailsId",
     method: ["GET", "HEAD"],
-    types: {} as MatchesMeGetHead,
+    types: {} as MatchesGetIdGetHead,
   },
   {
     params: [],

@@ -217,7 +217,9 @@ router
 router
   .post("/user_matches/lock", [MatchesController, "lock"])
   .as("matches.lock");
-router.get("/matches/me", [MatchesController, "getMyMatches"]).as("matches.me");
+router
+  .get("/matches/get/:detailsId", [MatchesController, "getMatches"])
+  .as("matches.get");
 router
   .post("/matches/transfer_item", [MatchesController, "transferItem"])
   .as("matches.transfer_item");

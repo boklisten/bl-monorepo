@@ -165,6 +165,22 @@ export class RapidHandoutOperation implements Operation {
     const orderMovedToHandler = new OrderItemMovedFromOrderHandler();
     await orderMovedToHandler.updateOrderItems(placedHandoutOrder);
 
+    const databaseQuery = new SEDbQuery();
+    databaseQuery.objectIdFilters = [
+      { fieldName: "customer", value: customerId },
+    ];
+    const standMatches =
+      await StorageService.StandMatches.getByQueryOrNull(databaseQuery);
+    const standMatch = standMatches?.[0] ?? null;
+    if (standMatch) {
+      await StorageService.StandMatches.update(standMatch.id, {
+        receivedItems: [
+          ...standMatch.receivedItems,
+          customerOrder.relevantOrderItem?.item ?? itemId,
+        ],
+      });
+    }
+
     return placedHandoutOrder;
   }
 

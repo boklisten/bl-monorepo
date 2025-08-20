@@ -20,8 +20,14 @@ export const MatchesList: FC = () => {
   });
   const customer = accessToken?.details;
   const { data: matches, error: matchesError } = useQuery({
-    queryKey: [client.matches.me.$url()],
-    queryFn: () => client.matches.me.$get().unwrap(),
+    queryKey: [
+      client.matches.get({ detailsId: getAccessTokenBody().details }).$url(),
+    ],
+    queryFn: () =>
+      client.matches
+        .get({ detailsId: getAccessTokenBody().details })
+        .$get()
+        .unwrap(),
     staleTime: 5000,
   });
 

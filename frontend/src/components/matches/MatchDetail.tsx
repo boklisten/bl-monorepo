@@ -26,8 +26,14 @@ const MatchDetail = ({
   const userId = accessToken?.details;
 
   const { data: matches, error: matchesError } = useQuery({
-    queryKey: [client.matches.me.$url()],
-    queryFn: () => client.matches.me.$get().unwrap(),
+    queryKey: [
+      client.matches.get({ detailsId: getAccessTokenBody().details }).$url(),
+    ],
+    queryFn: () =>
+      client.matches
+        .get({ detailsId: getAccessTokenBody().details })
+        .$get()
+        .unwrap(),
     staleTime: 5000,
   });
 
@@ -80,7 +86,11 @@ const MatchDetail = ({
             currentUserId={userId}
             handleItemTransferred={() =>
               queryClient.invalidateQueries({
-                queryKey: [client.matches.me.$url()],
+                queryKey: [
+                  client.matches
+                    .get({ detailsId: getAccessTokenBody().details })
+                    .$url(),
+                ],
               })
             }
           />

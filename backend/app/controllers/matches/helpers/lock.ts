@@ -3,11 +3,9 @@ import { ObjectId } from "mongodb";
 
 import { StorageService } from "#services/storage_service";
 import { BlError } from "#shared/bl-error";
-import { BlapiResponse } from "#shared/blapi-response";
 import { UserMatch } from "#shared/match/user-match";
 import { matchLockSchema } from "#validators/matches";
 
-// This is still used by bl-admin, hence the Blapiresponses
 export async function lock({
   customerId,
   userMatchesLocked,
@@ -27,12 +25,11 @@ export async function lock({
     throw new BlError("User does not have any user matches");
   }
 
-  const res = await StorageService.UserMatches.updateMany(
+  await StorageService.UserMatches.updateMany(
     {
       _id: { $in: userMatches.map((match) => match.id) },
     },
     { itemsLockedToMatch: userMatchesLocked },
   );
-
-  return new BlapiResponse([res]);
+  return { userMatchesLocked };
 }

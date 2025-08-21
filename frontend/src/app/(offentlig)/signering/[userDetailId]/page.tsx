@@ -10,9 +10,7 @@ export const metadata: Metadata = {
 };
 export default async function SignaturePage({
   params,
-}: {
-  params: Promise<{ userDetailId: string }>;
-}) {
+}: PageProps<"/signering/[userDetailId]">) {
   const { userDetailId } = await params;
   const dataKey = "betingelser";
   const cachedAgreement = await publicApiClient.editable_texts

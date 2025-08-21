@@ -3,11 +3,14 @@ import { Link as MuiLink, LinkProps as MuiLinkProps } from "@mui/material";
 import NextLink, { LinkProps as NextLinkProps } from "next/link";
 import { ForwardedRef, forwardRef } from "react";
 
+// @ts-expect-error fixme: bad routing types
 type CustomNextLinkProps = Omit<NextLinkProps, "href"> & {
+  // @ts-expect-error fixme: bad routing types
   _href: NextLinkProps["href"];
 };
 
 const CustomNextLink = forwardRef(
+  // @ts-expect-error fixme: bad routing types
   (
     { _href, ...props }: CustomNextLinkProps,
     ref: ForwardedRef<HTMLAnchorElement>,
@@ -19,6 +22,7 @@ CustomNextLink.displayName = "CustomNextLink";
 // remove both href properties
 // and define a new href property using NextLinkProps
 type DynamicLinkProps = Omit<MuiLinkProps<typeof NextLink>, "href"> & {
+  // @ts-expect-error fixme: bad routing types
   href: NextLinkProps["href"];
   testID?: string;
 };

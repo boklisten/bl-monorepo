@@ -8,10 +8,10 @@ export const metadata: Metadata = {
   description: "Lag et nytt passord, slik at du får tilgang på kontoen din.",
 };
 
-export default async function PasswordResetPage(props: {
-  params: Promise<{ resetId: string }>;
-}) {
-  const params = await props.params;
+export default async function PasswordResetPage({
+  params,
+}: PageProps<"/auth/reset/[resetId]">) {
+  const { resetId } = await params;
   return (
     <Card sx={{ paddingBottom: 4 }}>
       <Container component="main" maxWidth="xs">
@@ -24,7 +24,7 @@ export default async function PasswordResetPage(props: {
           }}
         >
           <Typography variant="h1">Lag nytt passord</Typography>
-          <PasswordReset resetId={params.resetId} />
+          <PasswordReset resetId={resetId} />
         </Box>
       </Container>
     </Card>

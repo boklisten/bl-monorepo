@@ -6,9 +6,7 @@ import { publicApiClient } from "@/utils/api/publicApiClient";
 
 export default async function BranchLocationSlot({
   params,
-}: {
-  params: Promise<{ branchId: string }>;
-}) {
+}: PageProps<"/info/branch/[branchId]">) {
   const { branchId } = await params;
 
   return (

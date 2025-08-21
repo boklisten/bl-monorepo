@@ -1,15 +1,10 @@
 import { Box } from "@mui/material";
-import { ReactNode } from "react";
 
 export default function BranchPageLayout({
   children,
   location,
   openingHours,
-}: {
-  children: ReactNode;
-  location: ReactNode;
-  openingHours: ReactNode;
-}) {
+}: LayoutProps<"/info/branch/[branchId]">) {
   return (
     <Box
       sx={{ display: "flex", flexDirection: "column", alignItems: "center" }}

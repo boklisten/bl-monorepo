@@ -50,8 +50,10 @@ const CountdownToRedirect = ({
       if (shouldRedirectToCaller) return redirectToCaller();
       if (path) {
         if (shouldReplaceInHistory) {
+          // @ts-expect-error fixme: bad routing types
           router.replace(path);
         } else {
+          // @ts-expect-error fixme: bad routing types
           router.push(path);
         }
       }

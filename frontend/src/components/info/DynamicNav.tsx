@@ -35,6 +35,7 @@ function MobileTabSelect({
         label={"Velg side"}
         value={tabs[activeTabIndex]?.href ?? ""}
         onChange={(event) => {
+          // @ts-expect-error fixme: bad routing types
           router.push(event.target.value);
         }}
       >

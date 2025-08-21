@@ -11,6 +11,7 @@ export default function LogoutPage() {
 
   useEffect(() => {
     logout();
+    // @ts-expect-error fixme: bad routing types
     router.replace(`${BL_CONFIG.blWeb.basePath}logout`);
   }, [logout, router]);
 

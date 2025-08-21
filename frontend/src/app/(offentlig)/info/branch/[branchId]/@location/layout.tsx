@@ -1,12 +1,9 @@
 import LocationOnIcon from "@mui/icons-material/LocationOn";
 import { Box } from "@mui/material";
-import { ReactNode } from "react";
 
 export default function BranchLocationLayout({
   children,
-}: {
-  children: ReactNode;
-}) {
+}: LayoutProps<"/info/branch/[branchId]">) {
   return (
     <Box sx={{ display: "flex", marginBottom: 2 }}>
       <LocationOnIcon />

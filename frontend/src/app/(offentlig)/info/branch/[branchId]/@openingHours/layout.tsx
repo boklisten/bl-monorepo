@@ -1,13 +1,10 @@
 import { Table, TableBody, TableContainer, TableHead } from "@mui/material";
 import TableCell from "@mui/material/TableCell";
 import TableRow from "@mui/material/TableRow";
-import { ReactNode } from "react";
 
 export default function OpeningHoursLayout({
   children,
-}: {
-  children: ReactNode;
-}) {
+}: LayoutProps<"/info/branch/[branchId]">) {
   return (
     <TableContainer>
       <Table aria-label="tabell over åpningstider">

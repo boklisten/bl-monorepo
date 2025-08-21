@@ -47,6 +47,7 @@ const DynamicSubNavInner = ({
           }}
         >
           <NextLink
+            // @ts-expect-error fixme: bad routing types
             href={href}
             role="tab"
             style={{

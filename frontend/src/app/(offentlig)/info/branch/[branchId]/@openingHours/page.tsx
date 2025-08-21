@@ -8,9 +8,7 @@ import { publicApiClient } from "@/utils/api/publicApiClient";
 
 export default async function OpeningHoursSlot({
   params,
-}: {
-  params: Promise<{ branchId: string }>;
-}) {
+}: PageProps<"/info/branch/[branchId]">) {
   const { branchId } = await params;
   const now = moment().startOf("day").format("DDMMYYYYHHmm");
 

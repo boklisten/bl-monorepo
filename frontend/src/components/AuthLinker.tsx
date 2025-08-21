@@ -21,6 +21,7 @@ export default function AuthLinker({ children }: { children: ReactNode }) {
       const params = new URLSearchParams(searchParameters.toString());
       params.delete("refresh_token");
       params.delete("access_token");
+      // @ts-expect-error fixme: bad routing types
       router.replace(pathname + "?" + params);
     }
     setAuthProcessed(true);

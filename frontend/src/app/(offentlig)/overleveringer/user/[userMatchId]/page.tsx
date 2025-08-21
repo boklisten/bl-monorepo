@@ -7,11 +7,11 @@ export const metadata: Metadata = {
   description: "Overlevering av bøker",
 };
 
-const MatchDetailPage = async (props: {
-  params: Promise<{ userMatchId: string }>;
-}) => {
-  const params = await props.params;
-  return <MatchDetail userMatchId={params.userMatchId} />;
+const MatchDetailPage = async ({
+  params,
+}: PageProps<"/overleveringer/user/[userMatchId]">) => {
+  const { userMatchId } = await params;
+  return <MatchDetail userMatchId={userMatchId} />;
 };
 
 export default MatchDetailPage;

@@ -2,6 +2,7 @@ import { SentryBuildOptions, withSentryConfig } from "@sentry/nextjs";
 import type { NextConfig } from "next";
 
 const NEXT_CONFIG = {
+  typedRoutes: true,
   experimental: {
     reactCompiler: true,
   },

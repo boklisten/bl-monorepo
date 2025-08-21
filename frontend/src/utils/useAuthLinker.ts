@@ -29,8 +29,10 @@ export default function useAuthLinker() {
       }
     }
     if (retainHistory) {
+      // @ts-expect-error fixme: bad routing types
       router.push(url.toString());
     } else {
+      // @ts-expect-error fixme: bad routing types
       router.replace(url.toString());
     }
   }
@@ -51,6 +53,7 @@ export default function useAuthLinker() {
     localStorage.removeItem(localStorageKeys.redirect);
 
     if (caller === null) {
+      // @ts-expect-error fixme: bad routing types
       router.replace(`/${redirect}`);
       return;
     }

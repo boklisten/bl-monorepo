@@ -9,10 +9,10 @@ export const metadata: Metadata = {
     "Bekreft din e-postadresse, slik at du får viktig informasjon fra oss.",
 };
 
-export default async function TokenPage(props: {
-  params: Promise<{ confirmationId: string }>;
-}) {
-  const params = await props.params;
+export default async function TokenPage({
+  params,
+}: PageProps<"/auth/email/confirm/[confirmationId]">) {
+  const { confirmationId } = await params;
   return (
     <Card sx={{ paddingBottom: 4 }}>
       <Container component="main" maxWidth="xs">
@@ -24,7 +24,7 @@ export default async function TokenPage(props: {
             alignItems: "center",
           }}
         >
-          <EmailConfirmer confirmationId={params.confirmationId} />
+          <EmailConfirmer confirmationId={confirmationId} />
         </Box>
       </Container>
     </Card>

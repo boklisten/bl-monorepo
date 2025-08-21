@@ -40,7 +40,7 @@ export default function useApiClient() {
         async (request, options, response) => {
           function redirectToLogin() {
             localStorage.clear();
-            router.push("/auth/login?redirect=" + pathname.slice(1));
+            router.push(`/auth/login?redirect=${pathname.slice(1)}`);
             return new Response();
           }
 

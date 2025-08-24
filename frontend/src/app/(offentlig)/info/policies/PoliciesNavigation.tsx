@@ -1,7 +1,6 @@
 "use client";
 import { SegmentedControl } from "@mantine/core";
 import { usePathname, useRouter } from "next/navigation";
-import stringSimilarity from "string-similarity";
 
 const tabs = [
   {
@@ -22,17 +21,9 @@ export default function PoliciesNavigation() {
   const router = useRouter();
   const pathname = usePathname();
 
-  const selectedValue =
-    tabs[
-      stringSimilarity.findBestMatch(
-        pathname,
-        tabs.map((tab) => tab.value),
-      ).bestMatchIndex
-    ]?.value ?? null;
-
   return (
     <SegmentedControl
-      value={selectedValue ?? ""}
+      value={pathname}
       data={tabs}
       // @ts-expect-error fixme: bad routing types
       onChange={(value) => router.push(value)}

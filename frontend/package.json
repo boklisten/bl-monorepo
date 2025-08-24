@@ -51,7 +51,6 @@
     "react-qr-code": "^2.0.18",
     "react-signature-canvas": "1.1.0-alpha.2",
     "sharp": "^0.34.3",
-    "string-similarity": "^4.0.4",
     "tailwind-preset-mantine": "^2.1.0",
     "validator": "^13.15.15",
     "zustand": "^5.0.8"
@@ -62,7 +61,6 @@
     "@tsconfig/next": "^2.0.3",
     "@types/papaparse": "^5.3.16",
     "@types/react": "19.1.10",
-    "@types/string-similarity": "^4.0.2",
     "@types/validator": "^13.15.2",
     "postcss": "^8.5.6",
     "tailwindcss": "^4.1.12"

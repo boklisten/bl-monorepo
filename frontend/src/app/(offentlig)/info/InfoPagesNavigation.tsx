@@ -1,7 +1,6 @@
 "use client";
 import { Center, Tabs, TabsList, TabsTab, Select, Box } from "@mantine/core";
 import { usePathname, useRouter } from "next/navigation";
-import stringSimilarity from "string-similarity";
 
 import DynamicLink from "@/components/DynamicLink";
 
@@ -35,16 +34,16 @@ function LinkTab({ label, value }: LinkTab) {
 
 const InfoPagesNavigation = () => {
   const router = useRouter();
-  const pathName = usePathname();
-  const activeTabIndex = stringSimilarity.findBestMatch(
-    pathName,
-    tabs.map((tab) => tab.value),
-  ).bestMatchIndex;
+  const pathname = usePathname();
 
   return (
     <Center>
       <Box className="hidden sm:flex">
-        <Tabs defaultValue={tabs[activeTabIndex]?.value ?? ""}>
+        <Tabs
+          defaultValue={
+            tabs.find((tab) => pathname.includes(tab.value))?.value ?? pathname
+          }
+        >
           <TabsList>
             {tabs.slice(0, 4).map((tab) => (
               <LinkTab key={tab.value} label={tab.label} value={tab.value} />
@@ -59,15 +58,14 @@ const InfoPagesNavigation = () => {
       </Box>
       <Box className="flex sm:hidden">
         <Select
-          aria-autocomplete={"none"}
           data={tabs}
           label={"Velg side"}
-          value={tabs[activeTabIndex]?.value ?? ""}
+          value={pathname}
           onChange={(href) => {
             // @ts-expect-error fixme: bad routing types
             router.push(href);
           }}
-        ></Select>
+        />
       </Box>
     </Center>
   );

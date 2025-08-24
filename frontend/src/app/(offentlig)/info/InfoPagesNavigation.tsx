@@ -59,6 +59,7 @@ const InfoPagesNavigation = () => {
       </Box>
       <Box className="flex sm:hidden">
         <Select
+          aria-autocomplete={"none"}
           data={tabs}
           label={"Velg side"}
           value={tabs[activeTabIndex]?.value ?? ""}

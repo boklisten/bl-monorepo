@@ -1,35 +1,21 @@
-import { Container, Box, Grid } from "@mui/material";
-import { ReactNode } from "react";
+import { AppShell, AppShellMain } from "@mantine/core";
 
 import Footer from "@/components/Footer";
-import NavBar from "@/components/NavBar";
+import PublicAppHeader from "@/components/PublicAppHeader";
 
-export default function PublicPageLayout({
-  children,
-}: {
-  children: ReactNode;
-}) {
+export default function PublicPageLayout({ children }: LayoutProps<"/">) {
   return (
     <>
-      <Grid
-        container
-        sx={{
-          minHeight: "100vh",
-          flexDirection: "column",
-        }}
-      >
-        <NavBar />
-        <Container
-          sx={{
-            display: "flex",
-            flexGrow: 1,
-            alignItems: "stretch",
-            paddingX: 0,
+      <AppShell header={{ height: 65 }} p={"md"}>
+        <PublicAppHeader />
+        <AppShellMain
+          style={{
+            minHeight: "calc(100dvh - var(--app-shell-header-height))",
           }}
         >
-          <Box sx={{ width: "100%" }}>{children}</Box>
-        </Container>
-      </Grid>
+          {children}
+        </AppShellMain>
+      </AppShell>
       <Footer />
     </>
   );

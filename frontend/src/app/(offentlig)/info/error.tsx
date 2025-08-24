@@ -7,5 +7,5 @@ export default function InfoPagesErrorBoundary({
 }: {
   error: Error & { digest?: string };
 }) {
-  return <ErrorBoundary error={error} />;
+  return <ErrorBoundary error={error} href={"/"} />;
 }

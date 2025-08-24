@@ -1,14 +1,15 @@
-import { Card } from "@mui/material";
+import { Container, Stack } from "@mantine/core";
 import { ReactNode } from "react";
 
-import DynamicNav from "@/components/info/DynamicNav";
-import { INFO_PAGE_TABS } from "@/utils/constants";
+import InfoPagesNavigation from "@/app/(offentlig)/info/InfoPagesNavigation";
 
 export default function InfoPageLayout({ children }: { children: ReactNode }) {
   return (
-    <Card sx={{ pb: 3 }}>
-      <DynamicNav tabs={INFO_PAGE_TABS} twoRows />
-      {children}
-    </Card>
+    <Container>
+      <Stack>
+        <InfoPagesNavigation />
+        {children}
+      </Stack>
+    </Container>
   );
 }

@@ -1,22 +1,21 @@
+import { ColorSchemeScript, mantineHtmlProps } from "@mantine/core";
 import { ThemeProvider } from "@mui/material";
-import CssBaseline from "@mui/material/CssBaseline";
 import { AppRouterCacheProvider } from "@mui/material-nextjs/v15-appRouter";
 import { Metadata } from "next";
+import Head from "next/head";
 import Script from "next/script";
-import { ReactNode, Suspense } from "react";
+import { Suspense } from "react";
 
-import AuthLinker from "@/components/AuthLinker";
-import DynamicHeightProvider from "@/components/DynamicHeightProvider";
-import CustomLocalizationProvider from "@/components/LocalizationProvider";
-import ReactQueryClientProvider from "@/components/ReactQueryClientProvider";
-import theme from "@/utils/theme";
-import ToolpadProvider from "@/utils/ToolpadProvider";
+import ClientProviders from "@/components/ClientProviders";
+import muiTheme from "@/utils/muiTheme";
 
 import "@fontsource/roboto/300.css";
 import "@fontsource/roboto/400.css";
 import "@fontsource/roboto/500.css";
 import "@fontsource/roboto/700.css";
-import "@/globals.css";
+
+import "@/app/globals.css";
+import "dayjs/locale/nb";
 
 export const metadata: Metadata = {
   title: {
@@ -25,25 +24,19 @@ export const metadata: Metadata = {
   },
 };
 
-export default function RootLayout({ children }: { children: ReactNode }) {
+export default function RootLayout({ children }: LayoutProps<"/">) {
   // fixme: we probably should not have a Suspend here
   return (
-    <html lang="no">
+    <html lang="no" {...mantineHtmlProps}>
+      <Head key={"mantine"}>
+        <ColorSchemeScript />
+      </Head>
       <body>
         <Script src="https://checkout.vipps.no/checkout-button/v1/vipps-checkout-button.js" />
         <Suspense>
           <AppRouterCacheProvider>
-            <ThemeProvider theme={theme}>
-              <CssBaseline />
-              <ReactQueryClientProvider>
-                <DynamicHeightProvider>
-                  <CustomLocalizationProvider>
-                    <ToolpadProvider>
-                      <AuthLinker>{children}</AuthLinker>
-                    </ToolpadProvider>
-                  </CustomLocalizationProvider>
-                </DynamicHeightProvider>
-              </ReactQueryClientProvider>
+            <ThemeProvider theme={muiTheme}>
+              <ClientProviders>{children}</ClientProviders>
             </ThemeProvider>
           </AppRouterCacheProvider>
         </Suspense>

@@ -28,7 +28,7 @@ export default function SignAgreement({
   cachedAgreementText,
 }: {
   userDetailId: string;
-  cachedAgreementText?: string;
+  cachedAgreementText: string;
 }) {
   const queryClient = useQueryClient();
   const { data, isLoading, isError } = useQuery({

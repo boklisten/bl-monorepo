@@ -4,8 +4,9 @@
   "license": "UNLICENSED",
   "type": "module",
   "scripts": {
+    "theme": "pnpm dlx tailwind-preset-mantine src/app/theme.ts -o src/app/theme.css",
     "dev": "next dev --turbopack",
-    "typecheck": "pnpm exec tsc --noEmit",
+    "typecheck": "next typegen && pnpm exec tsc --noEmit",
     "build": "next build --turbopack",
     "serve": "next start"
   },
@@ -16,6 +17,10 @@
     "@emotion/react": "^11.14.0",
     "@emotion/styled": "^11.14.1",
     "@fontsource/roboto": "^5.2.6",
+    "@mantine/core": "^8.2.7",
+    "@mantine/dates": "^8.2.7",
+    "@mantine/form": "^8.2.7",
+    "@mantine/hooks": "^8.2.7",
     "@mui/icons-material": "^7.3.1",
     "@mui/lab": "7.0.0-beta.16",
     "@mui/material": "^7.3.1",
@@ -24,6 +29,7 @@
     "@mui/x-date-pickers": "^8.10.2",
     "@mui/x-tree-view": "^8.10.2",
     "@sentry/nextjs": "^10.5.0",
+    "@tabler/icons-react": "^3.34.1",
     "@tanstack/react-query": "^5.85.5",
     "@tiptap/react": "^3.2.1",
     "@tiptap/starter-kit": "^3.2.1",
@@ -32,6 +38,7 @@
     "@tuyau/superjson": "^0.1.2",
     "@yudiel/react-qr-scanner": "^2.3.1",
     "babel-plugin-react-compiler": "19.1.0-rc.2",
+    "dayjs": "^1.11.13",
     "moment": "^2.30.1",
     "mui-tiptap": "^1.23.0",
     "next": "15.5.0",
@@ -45,16 +52,20 @@
     "react-signature-canvas": "1.1.0-alpha.2",
     "sharp": "^0.34.3",
     "string-similarity": "^4.0.4",
+    "tailwind-preset-mantine": "^2.1.0",
     "validator": "^13.15.15",
     "zustand": "^5.0.8"
   },
   "devDependencies": {
+    "@tailwindcss/postcss": "^4.1.12",
     "@tanstack/react-query-devtools": "^5.85.5",
     "@tsconfig/next": "^2.0.3",
     "@types/papaparse": "^5.3.16",
     "@types/react": "19.1.10",
     "@types/string-similarity": "^4.0.2",
-    "@types/validator": "^13.15.2"
+    "@types/validator": "^13.15.2",
+    "postcss": "^8.5.6",
+    "tailwindcss": "^4.1.12"
   },
   "browserslist": [
     "defaults",

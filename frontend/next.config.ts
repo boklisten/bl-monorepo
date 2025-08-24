@@ -4,6 +4,7 @@ import type { NextConfig } from "next";
 const NEXT_CONFIG = {
   typedRoutes: true,
   experimental: {
+    optimizePackageImports: ["@mantine/core", "@mantine/hooks"],
     reactCompiler: true,
   },
   transpilePackages: ["@boklisten/backend"],

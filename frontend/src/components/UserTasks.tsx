@@ -29,7 +29,11 @@ import {
   SUCCESS_NOTIFICATION,
 } from "@/utils/notifications";
 
-export default function UserTasks() {
+export default function UserTasks({
+  cachedAgreementText,
+}: {
+  cachedAgreementText: string;
+}) {
   const client = useApiClient();
   const notifications = useNotifications();
   const { data, isLoading, isError } = useQuery({
@@ -170,7 +174,10 @@ export default function UserTasks() {
                   </Button>
                 </Stack>
               ) : (
-                <SignAgreement userDetailId={data.id} />
+                <SignAgreement
+                  userDetailId={data.id}
+                  cachedAgreementText={cachedAgreementText}
+                />
               )}
             </StepContent>
           </Step>

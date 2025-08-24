@@ -2,7 +2,7 @@ import { CheckCircle } from "@mui/icons-material";
 import { Box, LinearProgress, linearProgressClasses } from "@mui/material";
 import { FC, ReactElement } from "react";
 
-import theme from "@/utils/theme";
+import muiTheme from "@/utils/muiTheme";
 
 const ProgressBar: FC<{
   percentComplete: number;
@@ -38,13 +38,13 @@ const ProgressBar: FC<{
               borderRadius: "0.8rem",
               [`&.${linearProgressClasses.colorPrimary}`]: {
                 backgroundColor:
-                  theme.palette.grey[
-                    theme.palette.mode === "light" ? 300 : 700
+                  muiTheme.palette.grey[
+                    muiTheme.palette.mode === "light" ? 300 : 700
                   ],
               },
               [`& .${linearProgressClasses.bar}`]: {
                 borderRadius: 5,
-                backgroundColor: theme.palette.success.main,
+                backgroundColor: muiTheme.palette.success.main,
               },
             }}
           />

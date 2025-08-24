@@ -9,7 +9,7 @@ import { ReactNode, useEffect, useState } from "react";
 import AuthGuard from "@/components/common/AuthGuard";
 import TestVersionChip from "@/components/TestVersionChip";
 import { getAdminPagesNavigationLinks } from "@/utils/adminNavigation";
-import theme from "@/utils/theme";
+import muiTheme from "@/utils/muiTheme";
 import useAuth from "@/utils/useAuth";
 
 export default function AdminLayout({ children }: { children: ReactNode }) {
@@ -24,7 +24,7 @@ export default function AdminLayout({ children }: { children: ReactNode }) {
     <AuthGuard requiredPermission={USER_PERMISSION.EMPLOYEE}>
       <NextAppProvider
         navigation={navLinks}
-        theme={theme}
+        theme={muiTheme}
         branding={{
           title: "",
           logo: (

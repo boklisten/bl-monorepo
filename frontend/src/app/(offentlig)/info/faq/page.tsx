@@ -1,4 +1,4 @@
-import { Container, Typography } from "@mui/material";
+import { Title, Stack } from "@mantine/core";
 import { Metadata } from "next";
 
 import QuestionsAndAnswersReadOnly from "@/components/info/questions-and-answers/QuestionsAndAnswersReadOnly";
@@ -18,11 +18,9 @@ export default async function FaqPage() {
     .unwrap();
 
   return (
-    <Container>
-      <Typography variant="h4" sx={{ textAlign: "center", marginBottom: 2 }}>
-        Spørsmål og svar
-      </Typography>
+    <Stack>
+      <Title ta={"center"}>Spørsmål og svar</Title>
       <QuestionsAndAnswersReadOnly cachedData={cachedData} />
-    </Container>
+    </Stack>
   );
 }

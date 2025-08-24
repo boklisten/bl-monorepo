@@ -17,7 +17,7 @@ const roboto = Roboto({
  *
  * See typographyVariants.ts for TypeScript definitions for custom typography variants.
  */
-const theme = responsiveFontSizes(
+const muiTheme = responsiveFontSizes(
   createTheme(
     {
       palette: {
@@ -87,4 +87,4 @@ const theme = responsiveFontSizes(
   ),
 );
 
-export default theme;
+export default muiTheme;

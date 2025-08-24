@@ -1,4 +1,3 @@
-import { Card } from "@mui/material";
 import { Metadata } from "next";
 
 import SignIn from "@/components/user/SignIn";
@@ -10,11 +9,7 @@ export const metadata: Metadata = {
 };
 
 const LoginPage = () => {
-  return (
-    <Card sx={{ paddingBottom: 4 }}>
-      <SignIn />
-    </Card>
-  );
+  return <SignIn />;
 };
 
 export default LoginPage;

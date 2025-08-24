@@ -1,0 +1,3 @@
+@import "tailwind-preset-mantine";
+@import "@mantine/dates/styles.css";
+@import "./theme.css";

@@ -8,7 +8,7 @@ import DynamicLink from "@/components/DynamicLink";
 import StandMatchDetail from "@/components/matches/StandMatchDetail";
 import UserMatchDetail from "@/components/matches/UserMatchDetail";
 import useApiClient from "@/utils/api/useApiClient";
-import theme from "@/utils/theme";
+import muiTheme from "@/utils/muiTheme";
 
 const MatchDetail = ({
   userMatchId,
@@ -70,7 +70,7 @@ const MatchDetail = ({
   }
 
   return (
-    <Card sx={{ padding: theme.spacing(2, 0, 4, 0) }}>
+    <Card sx={{ padding: muiTheme.spacing(2, 0, 4, 0) }}>
       <Container>
         <DynamicLink
           href={`/overleveringer`}

@@ -9,6 +9,7 @@ onlyBuiltDependencies:
   - '@sentry-internal/node-cpu-profiler'
   - '@sentry/cli'
   - '@swc/core'
+  - '@tailwindcss/oxide'
   - argon2
   - canvas
   - esbuild

@@ -1,7 +1,7 @@
+"use client";
+import { AppShellHeader, Group, useMantineTheme } from "@mantine/core";
 import { Button } from "@mui/material";
-import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
-import Toolbar from "@mui/material/Toolbar";
 
 import DynamicLink from "@/components/DynamicLink";
 import Logo from "@/components/Logo";
@@ -45,28 +45,26 @@ const TAB_LINKS: TabLinkProps[] = [
   },
 ];
 
-export default function NavBar() {
+export default function PublicAppHeader() {
+  const theme = useMantineTheme();
   return (
-    <Box>
-      <AppBar position="fixed">
-        <Toolbar sx={{ paddingY: "10px" }}>
-          <Logo variant={"white"} />
+    <AppShellHeader bg={theme.primaryColor}>
+      <Group h={"100%"} align={"center"} px={"md"}>
+        <Logo variant={"white"} />
 
-          <Box sx={{ flexGrow: 1 }} />
+        <Box sx={{ flexGrow: 1 }} />
 
-          {TAB_LINKS.map((tabLink) => (
-            <TabLink
-              key={tabLink.href}
-              title={tabLink.title}
-              href={tabLink.href}
-              testID={tabLink.testID}
-            />
-          ))}
+        {TAB_LINKS.map((tabLink) => (
+          <TabLink
+            key={tabLink.href}
+            title={tabLink.title}
+            href={tabLink.href}
+            testID={tabLink.testID}
+          />
+        ))}
 
-          <DropDownMenu />
-        </Toolbar>
-      </AppBar>
-      <Toolbar sx={{ display: "inline-block" }} />
-    </Box>
+        <DropDownMenu />
+      </Group>
+    </AppShellHeader>
   );
 }

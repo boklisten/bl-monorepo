@@ -3,7 +3,7 @@ import { KeyboardDoubleArrowRight, SwapHoriz } from "@mui/icons-material";
 import { SxProps, Typography, Box } from "@mui/material";
 
 import { UserMatchStatus } from "@/components/matches/matches-helper";
-import theme from "@/utils/theme";
+import muiTheme from "@/utils/muiTheme";
 
 export function formatActionsString(handoffItems: number, pickupItems: number) {
   const hasHandoffItems = handoffItems > 0;
@@ -51,7 +51,9 @@ export const FormattedDatetime = ({ date }: { date: Date }) => {
   return (
     <>
       <Typography>{timeString}</Typography>
-      <Typography color={theme.palette.grey["600"]}>, {dateString}</Typography>
+      <Typography color={muiTheme.palette.grey["600"]}>
+        , {dateString}
+      </Typography>
     </>
   );
 };

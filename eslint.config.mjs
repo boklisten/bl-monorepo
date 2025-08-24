@@ -74,6 +74,7 @@ export default tseslint.config(
             "**/*{page,error,loading,layout,spec,config,next-env.d,instrumentation,instrumentation-client,adonisrc,robots}.{ts,tsx}",
             "backend/{start,config,bin}/*",
             "backend/ace.js",
+            "frontend/postcss.config.mjs",
             "eslint.config.mjs",
           ],
         },

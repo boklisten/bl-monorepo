@@ -1,15 +1,13 @@
 "use client";
 import { QuestionAndAnswer } from "@boklisten/backend/shared/question-and-answer";
-import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import {
   Accordion,
-  AccordionDetails,
-  AccordionSummary,
+  AccordionControl,
+  AccordionItem,
+  AccordionPanel,
   Alert,
-  AlertTitle,
-  Container,
   Skeleton,
-} from "@mui/material";
+} from "@mantine/core";
 import { useQuery } from "@tanstack/react-query";
 
 import { TextEditor } from "@/components/TextEditor";
@@ -46,31 +44,33 @@ export default function QuestionsAndAnswersReadOnly({
   }
   if (isError || data === undefined) {
     return (
-      <Container>
-        <Alert severity="error">
-          <AlertTitle>Klarte ikke laste inn spørsmål og svar</AlertTitle>
-          Du kan prøve å laste inn siden på nytt, eller ta kontakt dersom
-          problemet vedvarer.
-        </Alert>
-      </Container>
+      <Alert color={"red"} title={"Klarte ikke laste inn spørsmål og svar"}>
+        Du kan prøve å laste inn siden på nytt, eller ta kontakt dersom
+        problemet vedvarer.
+      </Alert>
     );
   }
 
   return (
     <>
       {data.length === 0 && (
-        <Alert severity="info">Ingen spørsmål og svar er publisert enda</Alert>
+        <Alert color={"blue"}>Ingen spørsmål og svar er publisert enda</Alert>
       )}
-      {data.map((questionAndAnswer) => (
-        <Accordion key={questionAndAnswer.id}>
-          <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-            <TextEditor readOnly content={questionAndAnswer.question} />
-          </AccordionSummary>
-          <AccordionDetails>
-            <TextEditor readOnly content={questionAndAnswer.answer} />
-          </AccordionDetails>
-        </Accordion>
-      ))}
+      <Accordion>
+        {data.map((questionAndAnswer) => (
+          <AccordionItem
+            key={questionAndAnswer.id}
+            value={questionAndAnswer.id}
+          >
+            <AccordionControl>
+              <TextEditor readOnly content={questionAndAnswer.question} />
+            </AccordionControl>
+            <AccordionPanel>
+              <TextEditor readOnly content={questionAndAnswer.answer} />
+            </AccordionPanel>
+          </AccordionItem>
+        ))}
+      </Accordion>
     </>
   );
 }

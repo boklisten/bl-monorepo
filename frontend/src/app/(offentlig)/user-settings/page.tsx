@@ -1,4 +1,4 @@
-import { Container } from "@mantine/core";
+import { Container, Stack, Title } from "@mantine/core";
 import { Metadata } from "next";
 
 import AuthGuard from "@/components/common/AuthGuard";
@@ -12,9 +12,12 @@ export const metadata: Metadata = {
 const SettingsPage = () => {
   return (
     <Container size={"xs"}>
-      <AuthGuard>
-        <UserSettings />
-      </AuthGuard>
+      <Stack>
+        <Title ta={"center"}>Brukerinnstillinger</Title>
+        <AuthGuard>
+          <UserSettings />
+        </AuthGuard>
+      </Stack>
     </Container>
   );
 };

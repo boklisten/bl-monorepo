@@ -10,6 +10,7 @@ export default function PublicPageLayout({ children }: LayoutProps<"/">) {
         <PublicAppHeader />
         <AppShellMain
           style={{
+            // Keep the footer below the fold
             minHeight: "calc(100dvh - var(--app-shell-header-height))",
           }}
         >

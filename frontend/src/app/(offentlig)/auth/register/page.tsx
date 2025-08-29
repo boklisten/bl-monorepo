@@ -1,7 +1,8 @@
-import { Container } from "@mantine/core";
+import { Container, Divider, Stack, Title } from "@mantine/core";
 import { Metadata } from "next";
 
-import PersonalUserDetailEditor from "@/components/user/user-detail-editor/PersonalUserDetailEditor";
+import UserDetailsEditor from "@/components/user/user-detail-editor/UserDetailsEditor";
+import VippsButton from "@/components/user/VippsButton";
 
 export const metadata: Metadata = {
   title: "Ny bruker",
@@ -12,7 +13,12 @@ const RegisterPage = () => {
   return (
     <>
       <Container size={"xs"}>
-        <PersonalUserDetailEditor isSignUp />
+        <Stack>
+          <Title ta={"center"}>Registrer deg</Title>
+          <VippsButton verb={"register"} />
+          <Divider label={"Eller, registrer deg med e-post"} />
+          <UserDetailsEditor variant={"signup"} />
+        </Stack>
       </Container>
     </>
   );

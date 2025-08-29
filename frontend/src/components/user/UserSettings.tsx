@@ -1,11 +1,11 @@
 "use client";
 import { UserDetail } from "@boklisten/backend/shared/user-detail";
+import { Skeleton, Stack } from "@mantine/core";
 import { useQuery } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 
 import { getAccessTokenBody } from "@/api/token";
-import PersonalUserDetailEditor from "@/components/user/user-detail-editor/PersonalUserDetailEditor";
-import UserDetailEditorSkeleton from "@/components/user/user-detail-editor/UserDetailEditorSkeleton";
+import UserDetailsEditor from "@/components/user/user-detail-editor/UserDetailsEditor";
 import unpack from "@/utils/api/bl-api-request";
 import useApiClient from "@/utils/api/useApiClient";
 
@@ -28,9 +28,20 @@ const UserSettings = () => {
     router.push("/auth/login?redirect=user-settings");
     return null;
   }
-  if (!userDetails) return <UserDetailEditorSkeleton />;
+  if (!userDetails) {
+    return (
+      <Stack>
+        <Skeleton height={60} />
+        {Array.from({ length: 6 }).map((_, index) => (
+          <Skeleton height={60} key={`s-${index}`} />
+        ))}
+      </Stack>
+    );
+  }
 
-  return <PersonalUserDetailEditor userDetails={userDetails[0]} />;
+  return (
+    <UserDetailsEditor userDetails={userDetails[0]} variant={"personal"} />
+  );
 };
 
 export default UserSettings;

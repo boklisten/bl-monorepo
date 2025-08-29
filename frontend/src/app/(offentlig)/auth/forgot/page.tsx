@@ -1,4 +1,4 @@
-import { Box, Card, Container, Typography } from "@mui/material";
+import { Container, Stack, Text, Title } from "@mantine/core";
 import { Metadata } from "next";
 
 import ForgotPasswordForm from "@/components/auth/ForgotPasswordForm";
@@ -10,25 +10,16 @@ export const metadata: Metadata = {
 
 const ForgotPage = () => {
   return (
-    <Card sx={{ paddingBottom: 4 }}>
-      <Container component="main" maxWidth="xs">
-        <Box
-          sx={{
-            marginTop: 8,
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-          }}
-        >
-          <Typography variant="h1">Glemt passord</Typography>
-          <Typography sx={{ mt: 1 }}>
-            Skriv inn din e-postadresse, så sender vi deg en lenke slik at du
-            kan nullstille passordet ditt.
-          </Typography>
-          <ForgotPasswordForm />
-        </Box>
-      </Container>
-    </Card>
+    <Container size={"xs"}>
+      <Stack align={"center"}>
+        <Title variant="h1">Glemt passord</Title>
+        <Text ta={"center"}>
+          Skriv inn din e-postadresse, så sender vi deg en lenke slik at du kan
+          nullstille passordet ditt.
+        </Text>
+        <ForgotPasswordForm />
+      </Stack>
+    </Container>
   );
 };
 

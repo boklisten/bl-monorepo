@@ -26,8 +26,10 @@ export default class EmailValidationsController {
       await StorageService.UserDetails.update(emailValidation.userDetailId, {
         emailConfirmed: true,
       });
+      return { confirmed: true };
     } catch {
       response.status(404);
     }
+    return { confirmed: false };
   }
 }

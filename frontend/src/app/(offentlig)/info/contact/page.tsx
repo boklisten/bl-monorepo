@@ -1,4 +1,4 @@
-import { Typography } from "@mui/material";
+import { Title } from "@mantine/core";
 import { Metadata } from "next";
 
 import ContactInfo from "@/components/info/ContactInfo";
@@ -12,9 +12,9 @@ export const metadata: Metadata = {
 export default function ContactPage() {
   return (
     <>
-      <Typography variant="h4" sx={{ textAlign: "center", marginBottom: 2 }}>
+      <Title ta={"center"} order={2}>
         Kontakt oss
-      </Typography>
+      </Title>
       <ContactInfo />
     </>
   );

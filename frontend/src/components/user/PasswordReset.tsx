@@ -1,8 +1,10 @@
 "use client";
+import { Anchor } from "@mantine/core";
 import { Alert, Stack, Box } from "@mui/material";
 import Button from "@mui/material/Button";
 import Grid from "@mui/material/Grid";
 import { useMutation, useQuery } from "@tanstack/react-query";
+import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { useState } from "react";
 import { FormProvider, useForm } from "react-hook-form";
@@ -59,11 +61,11 @@ export default function PasswordReset({ resetId }: { resetId: string }) {
       <>
         <Alert severity="error" sx={{ my: 1 }}>
           {message ??
-            "Lenken har utløpt. Du kan be om å få tilsendt en ny lenke på 'glemt passord'-siden foo"}
+            "Lenken har utløpt. Du kan be om å få tilsendt en ny lenke på 'glemt passord'-siden"}
         </Alert>
-        <DynamicLink href={"/auth/forgot"} underline={"none"}>
+        <Anchor component={Link} href={"/auth/forgot"}>
           Gå til glemt passord
-        </DynamicLink>
+        </Anchor>
       </>
     );
   }
@@ -117,9 +119,9 @@ export default function PasswordReset({ resetId }: { resetId: string }) {
           </Button>
           <Grid container>
             <Grid>
-              <DynamicLink href={"/auth/login"}>
+              <Anchor component={Link} href={"/auth/login"}>
                 Tilbake til innloggingssiden
-              </DynamicLink>
+              </Anchor>
             </Grid>
           </Grid>
         </>

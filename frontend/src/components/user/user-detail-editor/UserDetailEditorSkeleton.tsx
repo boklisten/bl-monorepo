@@ -1,4 +1,4 @@
-import { Container, Skeleton, Stack, Typography, Box } from "@mui/material";
+import { Skeleton, Stack, Title } from "@mantine/core";
 
 export default function UserDetailEditorSkeleton({
   isSignUp,
@@ -6,32 +6,14 @@ export default function UserDetailEditorSkeleton({
   isSignUp?: boolean;
 }) {
   return (
-    <Container component="main" maxWidth="xs">
-      <Stack
-        sx={{
-          alignItems: "center",
-          mt: 4,
-        }}
-      >
-        <Typography variant="h1">
-          {isSignUp ? "Registrer deg" : "Brukerinnstillinger"}
-        </Typography>
-        <Box
-          sx={{
-            width: "100%",
-          }}
-        >
-          <Skeleton width={"100%"} height={80} sx={{ mb: 10 }} />
-          {Array.from({ length: 6 }).map((_, index) => (
-            <Skeleton
-              width={"100%"}
-              height={80}
-              key={`s-${index}`}
-              sx={{ my: -2 }}
-            />
-          ))}
-        </Box>
-      </Stack>
-    </Container>
+    <Stack>
+      <Title ta={"center"}>
+        {isSignUp ? "Registrer deg" : "Brukerinnstillinger"}
+      </Title>
+      <Skeleton height={60} />
+      {Array.from({ length: 6 }).map((_, index) => (
+        <Skeleton height={60} key={`s-${index}`} />
+      ))}
+    </Stack>
   );
 }

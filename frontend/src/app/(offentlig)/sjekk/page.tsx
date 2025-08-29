@@ -1,4 +1,4 @@
-import { Card, Container, Stack, Typography, Box } from "@mui/material";
+import { Container, Stack, Title } from "@mantine/core";
 import { Metadata } from "next";
 
 import AuthGuard from "@/components/common/AuthGuard";
@@ -11,26 +11,13 @@ export const metadata: Metadata = {
 
 export default function PublicBlidSearchPage() {
   return (
-    <Card sx={{ paddingBottom: 4 }}>
-      <Container component="main" maxWidth="xs">
-        <Stack
-          sx={{
-            alignItems: "center",
-            mt: 4,
-          }}
-        >
-          <Typography variant="h1">Boksøk</Typography>
-          <Box
-            sx={{
-              width: "100%",
-            }}
-          >
-            <AuthGuard>
-              <PublicBlidSearch />
-            </AuthGuard>
-          </Box>
-        </Stack>
-      </Container>
-    </Card>
+    <Container size={"sm"}>
+      <Stack>
+        <Title>Boksøk</Title>
+        <AuthGuard>
+          <PublicBlidSearch />
+        </AuthGuard>
+      </Stack>
+    </Container>
   );
 }

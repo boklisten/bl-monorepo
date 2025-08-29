@@ -1,4 +1,4 @@
-import { Box, Typography } from "@mui/material";
+import { Container, Title } from "@mantine/core";
 import { Metadata } from "next";
 
 import AuthGuard from "@/components/common/AuthGuard";
@@ -11,18 +11,11 @@ export const metadata: Metadata = {
 
 export default function YourItemsPage() {
   return (
-    <Box sx={{ padding: 2 }}>
-      <Typography
-        variant="h1"
-        sx={{
-          mb: 2,
-        }}
-      >
-        Dine bøker
-      </Typography>
+    <Container size={"md"}>
+      <Title>Dine bøker</Title>
       <AuthGuard>
         <CustomerItemsOverview />
       </AuthGuard>
-    </Box>
+    </Container>
   );
 }

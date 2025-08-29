@@ -1,8 +1,8 @@
-import { Card, Container, Box, Typography } from "@mui/material";
+import { Anchor, Container, Stack, Title } from "@mantine/core";
 import { Metadata } from "next";
+import Link from "next/link";
 
 import AuthFailureReasonAlert from "@/components/auth/AuthFailureReasonAlert";
-import DynamicLink from "@/components/DynamicLink";
 
 export const metadata: Metadata = {
   title: "Klarte ikke logge inn",
@@ -12,22 +12,14 @@ export const metadata: Metadata = {
 
 export default function AuthFailurePage() {
   return (
-    <Card sx={{ paddingBottom: 4 }}>
-      <Container component="main" maxWidth="xs">
-        <Box
-          sx={{
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-          }}
-        >
-          <Typography variant="h1">Vi klarte ikke logge deg inn</Typography>
-          <AuthFailureReasonAlert />
-          <DynamicLink href={"/auth/login"}>
-            Tilbake til innloggingssiden
-          </DynamicLink>
-        </Box>
-      </Container>
-    </Card>
+    <Container>
+      <Stack align={"center"}>
+        <Title>Vi klarte ikke logge deg inn</Title>
+        <AuthFailureReasonAlert />
+        <Anchor component={Link} href={"/auth/login"}>
+          Tilbake til innloggingssiden
+        </Anchor>
+      </Stack>
+    </Container>
   );
 }

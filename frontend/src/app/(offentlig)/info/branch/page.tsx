@@ -1,4 +1,4 @@
-import { Box, Typography } from "@mui/material";
+import { Stack, Title } from "@mantine/core";
 import { Metadata } from "next";
 
 import BranchSelect from "@/components/BranchSelect";
@@ -11,18 +11,9 @@ export const metadata: Metadata = {
 
 export default function BranchPage() {
   return (
-    <Box
-      sx={{
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-        marginBottom: 2,
-      }}
-    >
-      <Typography variant="h4" sx={{ textAlign: "center", marginBottom: 2 }}>
-        Velg din skole
-      </Typography>
+    <Stack align={"center"}>
+      <Title order={2}>Velg din skole</Title>
       <BranchSelect />
-    </Box>
+    </Stack>
   );
 }

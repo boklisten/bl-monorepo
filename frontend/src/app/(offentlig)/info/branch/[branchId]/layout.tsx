@@ -1,4 +1,4 @@
-import { Box } from "@mui/material";
+import { Stack } from "@mantine/core";
 
 export default function BranchPageLayout({
   children,
@@ -6,12 +6,10 @@ export default function BranchPageLayout({
   openingHours,
 }: LayoutProps<"/info/branch/[branchId]">) {
   return (
-    <Box
-      sx={{ display: "flex", flexDirection: "column", alignItems: "center" }}
-    >
+    <Stack align={"center"} gap={"xl"}>
       {children}
       {location}
       {openingHours}
-    </Box>
+    </Stack>
   );
 }

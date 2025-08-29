@@ -1,4 +1,5 @@
-import { Box } from "@mui/material";
+"use client";
+import { Center } from "@mantine/core";
 import { useRouter, useSearchParams } from "next/navigation";
 
 import { add } from "@/api/storage";
@@ -10,7 +11,7 @@ export default function VippsButton({ verb }: { verb: "login" | "register" }) {
   const searchParams = useSearchParams();
 
   return (
-    <Box
+    <Center
       onClick={() => {
         const caller = searchParams.get("caller");
         const redirect = searchParams.get("redirect");
@@ -26,6 +27,6 @@ export default function VippsButton({ verb }: { verb: "login" | "register" }) {
     >
       {/* @ts-expect-error official Vipps button */}
       <vipps-mobilepay-button rounded="true" branded="true" verb={verb} />
-    </Box>
+    </Center>
   );
 }

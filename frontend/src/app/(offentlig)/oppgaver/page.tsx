@@ -1,4 +1,4 @@
-import { Container, Stack, Typography } from "@mui/material";
+import { Container, Stack, Title } from "@mantine/core";
 
 import AuthGuard from "@/components/common/AuthGuard";
 import UserTasks from "@/components/UserTasks";
@@ -11,13 +11,13 @@ export default async function TasksPage() {
     .$get()
     .unwrap();
   return (
-    <AuthGuard>
-      <Container>
-        <Stack alignItems={"center"} gap={1}>
-          <Typography variant="h1">Dine oppgaver</Typography>
+    <Container>
+      <Stack align={"center"}>
+        <Title>Dine oppgaver</Title>
+        <AuthGuard>
           <UserTasks cachedAgreementText={cachedAgreement.text} />
-        </Stack>
-      </Container>
-    </AuthGuard>
+        </AuthGuard>
+      </Stack>
+    </Container>
   );
 }

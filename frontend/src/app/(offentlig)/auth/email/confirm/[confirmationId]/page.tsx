@@ -1,4 +1,4 @@
-import { Box, Card, Container } from "@mui/material";
+import { Container, Stack, Title } from "@mantine/core";
 import { Metadata } from "next";
 
 import EmailConfirmer from "@/components/EmailConfirmer";
@@ -14,19 +14,11 @@ export default async function TokenPage({
 }: PageProps<"/auth/email/confirm/[confirmationId]">) {
   const { confirmationId } = await params;
   return (
-    <Card sx={{ paddingBottom: 4 }}>
-      <Container component="main" maxWidth="xs">
-        <Box
-          sx={{
-            marginTop: 4,
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-          }}
-        >
-          <EmailConfirmer confirmationId={confirmationId} />
-        </Box>
-      </Container>
-    </Card>
+    <Container>
+      <Stack>
+        <Title>Bekreft e-post</Title>
+        <EmailConfirmer confirmationId={confirmationId} />
+      </Stack>
+    </Container>
   );
 }

@@ -1,4 +1,4 @@
-import { Card, Container, Typography, Box } from "@mui/material";
+import { Container, Stack, Title } from "@mantine/core";
 import { Metadata } from "next";
 
 import PasswordReset from "@/components/user/PasswordReset";
@@ -13,20 +13,11 @@ export default async function PasswordResetPage({
 }: PageProps<"/auth/reset/[resetId]">) {
   const { resetId } = await params;
   return (
-    <Card sx={{ paddingBottom: 4 }}>
-      <Container component="main" maxWidth="xs">
-        <Box
-          sx={{
-            marginTop: 4,
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-          }}
-        >
-          <Typography variant="h1">Lag nytt passord</Typography>
-          <PasswordReset resetId={resetId} />
-        </Box>
-      </Container>
-    </Card>
+    <Container size={"xs"}>
+      <Stack>
+        <Title>Lag nytt passord</Title>
+        <PasswordReset resetId={resetId} />
+      </Stack>
+    </Container>
   );
 }

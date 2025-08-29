@@ -1,5 +1,5 @@
 "use client";
-import { Alert, AlertTitle } from "@mui/material";
+import { Alert } from "@mantine/core";
 import { AuthVippsError } from "backend/shared/auth_vipps_error";
 import { useSearchParams } from "next/navigation";
 
@@ -31,8 +31,7 @@ export default function AuthFailureReasonAlert() {
   }
 
   return (
-    <Alert severity={"error"} sx={{ my: 2 }}>
-      <AlertTitle>{text}</AlertTitle>
+    <Alert color={"red"} title={text}>
       Vennligst prøv på nytt eller ta kontakt hvis problemet vedvarer.
     </Alert>
   );

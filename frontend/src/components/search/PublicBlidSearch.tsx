@@ -1,5 +1,6 @@
 "use client";
 import { PublicBlidLookupResult } from "@boklisten/backend/shared/public_blid_lookup";
+import { Stack, Text } from "@mantine/core";
 import { Phone } from "@mui/icons-material";
 import EmailIcon from "@mui/icons-material/Email";
 import QrCodeScannerIcon from "@mui/icons-material/QrCodeScanner";
@@ -52,159 +53,145 @@ export default function PublicBlidSearch() {
   }
 
   return (
-    <Box
-      component={"section"}
-      sx={{
-        display: "flex",
-        flexDirection: "column",
-        gap: 2,
-        marginTop: 2,
-      }}
-    >
-      <Typography
-        variant="body2"
-        sx={{
-          textAlign: "center",
-          color: "gray",
-          fontSize: 14,
-          mb: 1,
-        }}
-      >
+    <>
+      <Text>
         Skriv inn en bok sin unike ID (8 eller 12 siffer) for å se hvem den
         tilhører. Du kan også trykke på{" "}
         <QrCodeScannerIcon fontSize={"small"} sx={{ my: -0.7 }} /> for å scanne
         bokas unike ID med kamera.
-      </Typography>
-      <TextField
-        label={"Unik ID"}
-        value={blidSearch}
-        onChange={(event) => onBlidSearch(event.target.value)}
-        slotProps={{
-          input: {
-            endAdornment: (
-              <Button onClick={() => setScannerModalOpen(true)}>
-                <QrCodeScannerIcon />
-              </Button>
-            ),
-          },
-        }}
-      />
-      <Typography
-        variant="body2"
-        sx={{
-          textAlign: "center",
-          color: "gray",
-          fontSize: 14,
-          mb: 1,
-        }}
-      >
-        {searchResult === "inactive" &&
-          "Denne boken er ikke registrert som utdelt."}
-        {((searchResult === null &&
-          blidSearch.length !== 8 &&
-          blidSearch.length !== 12) ||
-          blidSearch.length === 0) &&
-          "Venter på unik ID"}
-      </Typography>
-      {searchResult !== "inactive" && searchResult !== null && (
-        <>
-          <Typography
-            variant={"h5"}
-            sx={{
-              textAlign: "center",
-              mt: 0,
-            }}
-          >
-            Denne boken tilhører
-          </Typography>
-          <Box
-            sx={{
-              padding: 2,
-              border: "1px solid #ddd",
-              borderRadius: 2,
-              maxWidth: 500,
-              margin: "0 auto",
-            }}
-          >
+      </Text>
+      <Stack>
+        <TextField
+          label={"Unik ID"}
+          value={blidSearch}
+          onChange={(event) => onBlidSearch(event.target.value)}
+          slotProps={{
+            input: {
+              endAdornment: (
+                <Button onClick={() => setScannerModalOpen(true)}>
+                  <QrCodeScannerIcon />
+                </Button>
+              ),
+            },
+          }}
+        />
+        <Typography
+          variant="body2"
+          sx={{
+            textAlign: "center",
+            color: "gray",
+            fontSize: 14,
+            mb: 1,
+          }}
+        >
+          {searchResult === "inactive" &&
+            "Denne boken er ikke registrert som utdelt."}
+          {((searchResult === null &&
+            blidSearch.length !== 8 &&
+            blidSearch.length !== 12) ||
+            blidSearch.length === 0) &&
+            "Venter på unik ID"}
+        </Typography>
+        {searchResult !== "inactive" && searchResult !== null && (
+          <>
             <Typography
-              variant="h5"
-              gutterBottom
+              variant={"h5"}
               sx={{
                 textAlign: "center",
+                mt: 0,
               }}
             >
-              {searchResult.name}
+              Denne boken tilhører
             </Typography>
-
             <Box
               sx={{
-                display: "flex",
-                flexDirection: "column",
-                alignItems: "center",
-                gap: 1,
-                mt: 2,
-                px: 5,
+                padding: 2,
+                border: "1px solid #ddd",
+                borderRadius: 2,
+                maxWidth: 500,
+                margin: "0 auto",
               }}
             >
-              <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
-                <Phone fontSize="small" sx={{ color: "primary.main" }} />
-                <Typography variant="body1">{searchResult.phone}</Typography>
-              </Box>
-              <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
-                <EmailIcon fontSize="small" sx={{ color: "primary.main" }} />
-                <Typography variant="body1">{searchResult.email}</Typography>
-              </Box>
-            </Box>
+              <Typography
+                variant="h5"
+                gutterBottom
+                sx={{
+                  textAlign: "center",
+                }}
+              >
+                {searchResult.name}
+              </Typography>
 
-            <Table sx={{ mt: 2 }}>
-              <TableBody>
-                <TableRow>
-                  <TableCell>
-                    <b>Tittel</b>
-                  </TableCell>
-                  <TableCell>{searchResult.title}</TableCell>
-                </TableRow>
-                <TableRow>
-                  <TableCell>
-                    <b>ISBN</b>
-                  </TableCell>
-                  <TableCell>{searchResult.isbn}</TableCell>
-                </TableRow>
-                <TableRow>
-                  <TableCell>
-                    <b>Utdelt hos</b>
-                  </TableCell>
-                  <TableCell>{searchResult.handoutBranch}</TableCell>
-                </TableRow>
-                <TableRow>
-                  <TableCell>
-                    <b>Utdelt den</b>
-                  </TableCell>
-                  <TableCell>
-                    {moment(searchResult.handoutTime).format("DD/MM/YYYY")}
-                  </TableCell>
-                </TableRow>
-                <TableRow>
-                  <TableCell>
-                    <b>Frist</b>
-                  </TableCell>
-                  <TableCell>
-                    {moment(searchResult.deadline).format("DD/MM/YYYY")}
-                  </TableCell>
-                </TableRow>
-              </TableBody>
-            </Table>
-          </Box>
-        </>
-      )}
-      <ScannerModal
-        onScan={async (blid) => {
-          onBlidSearch(blid);
-          return [{ feedback: "" }] as [{ feedback: string }];
-        }}
-        open={scannerModalOpen}
-        handleClose={() => setScannerModalOpen(false)}
-      />
-    </Box>
+              <Box
+                sx={{
+                  display: "flex",
+                  flexDirection: "column",
+                  alignItems: "center",
+                  gap: 1,
+                  mt: 2,
+                  px: 5,
+                }}
+              >
+                <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+                  <Phone fontSize="small" sx={{ color: "primary.main" }} />
+                  <Typography variant="body1">{searchResult.phone}</Typography>
+                </Box>
+                <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+                  <EmailIcon fontSize="small" sx={{ color: "primary.main" }} />
+                  <Typography variant="body1">{searchResult.email}</Typography>
+                </Box>
+              </Box>
+
+              <Table sx={{ mt: 2 }}>
+                <TableBody>
+                  <TableRow>
+                    <TableCell>
+                      <b>Tittel</b>
+                    </TableCell>
+                    <TableCell>{searchResult.title}</TableCell>
+                  </TableRow>
+                  <TableRow>
+                    <TableCell>
+                      <b>ISBN</b>
+                    </TableCell>
+                    <TableCell>{searchResult.isbn}</TableCell>
+                  </TableRow>
+                  <TableRow>
+                    <TableCell>
+                      <b>Utdelt hos</b>
+                    </TableCell>
+                    <TableCell>{searchResult.handoutBranch}</TableCell>
+                  </TableRow>
+                  <TableRow>
+                    <TableCell>
+                      <b>Utdelt den</b>
+                    </TableCell>
+                    <TableCell>
+                      {moment(searchResult.handoutTime).format("DD/MM/YYYY")}
+                    </TableCell>
+                  </TableRow>
+                  <TableRow>
+                    <TableCell>
+                      <b>Frist</b>
+                    </TableCell>
+                    <TableCell>
+                      {moment(searchResult.deadline).format("DD/MM/YYYY")}
+                    </TableCell>
+                  </TableRow>
+                </TableBody>
+              </Table>
+            </Box>
+          </>
+        )}
+        <ScannerModal
+          onScan={async (blid) => {
+            onBlidSearch(blid);
+            return [{ feedback: "" }] as [{ feedback: string }];
+          }}
+          open={scannerModalOpen}
+          handleClose={() => setScannerModalOpen(false)}
+        />
+      </Stack>
+    </>
   );
 }

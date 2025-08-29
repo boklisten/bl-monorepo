@@ -1,8 +1,8 @@
-import { Alert, AlertTitle, Box, Card, Container } from "@mui/material";
+import { Alert, Anchor, Container, Stack, Title } from "@mantine/core";
 import { Metadata } from "next";
+import Link from "next/link";
 
 import AuthLogoutComponent from "@/components/AuthLogoutComponent";
-import DynamicLink from "@/components/DynamicLink";
 
 export const metadata: Metadata = {
   title: "Tilgang avslått",
@@ -12,29 +12,21 @@ export const metadata: Metadata = {
 
 export default function PermissionDeniedPage() {
   return (
-    <Card sx={{ paddingBottom: 4 }}>
-      <Container component="main" maxWidth="xs">
-        <Box
-          sx={{
-            marginTop: 8,
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-          }}
+    <Container size={"xs"}>
+      <Stack>
+        <Title>Tilgang avslått</Title>
+        <Alert
+          color={"red"}
+          title={"Du har ikke tilgang til å se dette innholdet"}
         >
-          <Alert severity={"error"} sx={{ my: 2 }}>
-            <AlertTitle>
-              Du har ikke tilgang til å se dette innholdet
-            </AlertTitle>
-            Du forsøke å logge inn med en annen bruker eller ta kontakt med
-            administrator for spørsmål.
-          </Alert>
-          <AuthLogoutComponent />
-          <DynamicLink href={"/auth/login"}>
-            Tilbake til innloggingssiden
-          </DynamicLink>
-        </Box>
-      </Container>
-    </Card>
+          Du forsøke å logge inn med en annen bruker eller ta kontakt med
+          administrator for spørsmål.
+        </Alert>
+        <AuthLogoutComponent />
+        <Anchor component={Link} href={"/auth/login"}>
+          Tilbake til innloggingssiden
+        </Anchor>
+      </Stack>
+    </Container>
   );
 }

@@ -1,11 +1,9 @@
 "use client";
 import { UserDetail } from "@boklisten/backend/shared/user-detail";
-import { Card } from "@mui/material";
 import { useQuery } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 
 import { getAccessTokenBody } from "@/api/token";
-import AuthGuard from "@/components/common/AuthGuard";
 import PersonalUserDetailEditor from "@/components/user/user-detail-editor/PersonalUserDetailEditor";
 import UserDetailEditorSkeleton from "@/components/user/user-detail-editor/UserDetailEditorSkeleton";
 import unpack from "@/utils/api/bl-api-request";
@@ -30,18 +28,9 @@ const UserSettings = () => {
     router.push("/auth/login?redirect=user-settings");
     return null;
   }
+  if (!userDetails) return <UserDetailEditorSkeleton />;
 
-  return (
-    <AuthGuard>
-      <Card sx={{ paddingBottom: 4 }}>
-        {userDetails ? (
-          <PersonalUserDetailEditor userDetails={userDetails[0]} />
-        ) : (
-          <UserDetailEditorSkeleton />
-        )}
-      </Card>
-    </AuthGuard>
-  );
+  return <PersonalUserDetailEditor userDetails={userDetails[0]} />;
 };
 
 export default UserSettings;

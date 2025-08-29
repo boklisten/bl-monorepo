@@ -1,6 +1,5 @@
-import { Card } from "@mui/material";
+import { Container } from "@mantine/core";
 import { Metadata } from "next";
-import { Suspense } from "react";
 
 import PersonalUserDetailEditor from "@/components/user/user-detail-editor/PersonalUserDetailEditor";
 
@@ -12,11 +11,9 @@ export const metadata: Metadata = {
 const RegisterPage = () => {
   return (
     <>
-      <Card sx={{ paddingBottom: 4 }}>
-        <Suspense>
-          <PersonalUserDetailEditor isSignUp />
-        </Suspense>
-      </Card>
+      <Container size={"xs"}>
+        <PersonalUserDetailEditor isSignUp />
+      </Container>
     </>
   );
 };

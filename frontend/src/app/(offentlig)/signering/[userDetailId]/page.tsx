@@ -1,4 +1,4 @@
-import { Container, Stack, Typography } from "@mui/material";
+import { Container, Stack, Title } from "@mantine/core";
 import { Metadata } from "next";
 
 import SignAgreement from "@/components/SignAgreement";
@@ -20,15 +20,8 @@ export default async function SignaturePage({
 
   return (
     <Container>
-      <Stack sx={{ alignItems: "center" }}>
-        <Typography
-          variant="h1"
-          sx={{
-            mb: 3,
-          }}
-        >
-          Signering
-        </Typography>
+      <Stack align={"center"}>
+        <Title>Signering</Title>
         <SignAgreement
           userDetailId={userDetailId}
           cachedAgreementText={cachedAgreement.text}

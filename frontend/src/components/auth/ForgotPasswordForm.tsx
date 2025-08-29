@@ -46,7 +46,7 @@ export default function ForgotPasswordForm() {
       )}
       sx={{ width: "100%" }}
     >
-      <Stack mt={1} gap={1}>
+      <Stack gap={1}>
         {Object.entries(formErrors).map(([type, message]) => (
           <Alert key={type} severity="error">
             {message.message}

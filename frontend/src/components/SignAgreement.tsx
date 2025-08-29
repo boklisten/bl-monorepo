@@ -116,7 +116,7 @@ export default function SignAgreement({
             <Stack gap={1} maxWidth={750} width={"100%"}>
               <Typography>
                 Signer her på at du er {data.isUnderage && "foresatt til "}
-                {data.name} og godkjenner kontrakten
+                {data.name} og godkjenner betingelsene
                 {data.isUnderage && " på hans eller hennes vegne"}:
               </Typography>
               <Controller

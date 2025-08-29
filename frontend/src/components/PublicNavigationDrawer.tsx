@@ -31,7 +31,7 @@ import { getAccessTokenBody } from "@/api/token";
 import useApiClient from "@/utils/api/useApiClient";
 import useAuth from "@/utils/useAuth";
 
-export default function SideMenuDrawer() {
+export default function PublicNavigationDrawer() {
   const pathname = usePathname();
   const [opened, { toggle, close }] = useDisclosure();
   const { isLoggedIn, isEmployee } = useAuth();

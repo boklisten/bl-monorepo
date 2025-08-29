@@ -15,7 +15,10 @@ const tabs = [
     value: "/info/policies/privacy",
     label: "Personvernavtale",
   },
-];
+] as const satisfies {
+  label: string;
+  value: `/${string}`;
+}[];
 
 export default function PoliciesNavigation() {
   const router = useRouter();

@@ -1,48 +1,44 @@
-import EmailIcon from "@mui/icons-material/Email";
-import LocationOnIcon from "@mui/icons-material/LocationOn";
-import PhoneIphoneIcon from "@mui/icons-material/PhoneIphone";
-import { Typography, Box } from "@mui/material";
+import { Anchor, Center, Group, Stack, Text } from "@mantine/core";
+import { IconLocation, IconMail, IconPhone } from "@tabler/icons-react";
+import Link from "next/link";
 
-import DynamicLink from "@/components/DynamicLink";
 import { CONTACT_INFO } from "@/utils/constants";
 
 const ContactInfo = () => {
   return (
-    <Box
-      sx={{
-        display: "flex",
-        justifyContent: "center",
-        flexWrap: "wrap",
-      }}
-    >
-      <Box sx={{ display: "flex", alignItems: "center", padding: 1 }}>
-        <PhoneIphoneIcon />
-        <Box sx={{ display: "flex", flexDirection: "column", ml: 1 }}>
-          <Typography variant="body1">Ring oss</Typography>
-          <DynamicLink href={`tel:${CONTACT_INFO.phone}`}>
-            {CONTACT_INFO.phone}
-          </DynamicLink>
-        </Box>
-      </Box>
+    <Center>
+      <Group gap={"xl"}>
+        <Group>
+          <IconPhone />
+          <Stack gap={2}>
+            <Text>Ring oss</Text>
+            <Anchor component={Link} href={`tel:${CONTACT_INFO.phone}`}>
+              {CONTACT_INFO.phone}
+            </Anchor>
+          </Stack>
+        </Group>
 
-      <Box sx={{ display: "flex", alignItems: "center", padding: 1 }}>
-        <EmailIcon />
-        <Box sx={{ display: "flex", flexDirection: "column", ml: 1 }}>
-          <Typography variant="body1">Send oss en e-post</Typography>
-          <DynamicLink href={`mailto:${CONTACT_INFO.email}`}>
-            {CONTACT_INFO.email}
-          </DynamicLink>
-        </Box>
-      </Box>
+        <Group>
+          <IconMail />
+          <Stack gap={2}>
+            <Text>Send oss en e-post</Text>
+            <Anchor component={Link} href={`mailto:${CONTACT_INFO.email}`}>
+              {CONTACT_INFO.email}
+            </Anchor>
+          </Stack>
+        </Group>
 
-      <Box sx={{ display: "flex", alignItems: "center", padding: 1 }}>
-        <LocationOnIcon />
-        <Box sx={{ display: "flex", flexDirection: "column", ml: 1 }}>
-          <Typography variant="body1">Vår adresse</Typography>
-          {CONTACT_INFO.address}
-        </Box>
-      </Box>
-    </Box>
+        <Group>
+          <IconLocation />
+          <Stack gap={2}>
+            <Text>Vår adresse</Text>
+            <Group>
+              <Text fs={"italic"}>{CONTACT_INFO.address}</Text>
+            </Group>
+          </Stack>
+        </Group>
+      </Group>
+    </Center>
   );
 };
 

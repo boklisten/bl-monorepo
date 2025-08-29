@@ -1,13 +1,7 @@
 "use client";
 import { Center, Tabs, TabsList, TabsTab, Select, Box } from "@mantine/core";
+import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-
-import DynamicLink from "@/components/DynamicLink";
-
-interface LinkTab {
-  label: string;
-  value: `/${string}`;
-}
 
 const tabs = [
   { label: "Generell informasjon", value: "/info/general" },
@@ -22,15 +16,10 @@ const tabs = [
   { label: "For skolekunder", value: "/info/companies" },
   { label: "Innkjøpsliste", value: "/info/buyback" },
   { label: "Kontakt oss", value: "/info/contact" },
-] as const satisfies LinkTab[];
-
-function LinkTab({ label, value }: LinkTab) {
-  return (
-    <DynamicLink href={value} style={{ color: "inherit" }} underline="none">
-      <TabsTab value={value}>{label}</TabsTab>
-    </DynamicLink>
-  );
-}
+] as const satisfies {
+  label: string;
+  value: `/${string}`;
+}[];
 
 const InfoPagesNavigation = () => {
   const router = useRouter();
@@ -40,18 +29,22 @@ const InfoPagesNavigation = () => {
     <Center>
       <Box className="hidden sm:flex">
         <Tabs
-          defaultValue={
+          value={
             tabs.find((tab) => pathname.includes(tab.value))?.value ?? pathname
           }
         >
           <TabsList>
             {tabs.slice(0, 4).map((tab) => (
-              <LinkTab key={tab.value} label={tab.label} value={tab.value} />
+              <Link key={tab.value} href={tab.value}>
+                <TabsTab value={tab.value}>{tab.label}</TabsTab>
+              </Link>
             ))}
           </TabsList>
           <TabsList>
             {tabs.slice(4).map((tab) => (
-              <LinkTab key={tab.value} label={tab.label} value={tab.value} />
+              <Link key={tab.value} href={tab.value}>
+                <TabsTab value={tab.value}>{tab.label}</TabsTab>
+              </Link>
             ))}
           </TabsList>
         </Tabs>

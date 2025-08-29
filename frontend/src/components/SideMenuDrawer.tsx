@@ -1,56 +1,39 @@
 "use client";
 import {
-  AdminPanelSettings,
-  Handshake,
-  PendingActions,
-  Search,
-} from "@mui/icons-material";
-import AccessTimeIcon from "@mui/icons-material/AccessTime";
-import BookIcon from "@mui/icons-material/Book";
-import EmailIcon from "@mui/icons-material/Email";
-import InfoIcon from "@mui/icons-material/Info";
-import LoginIcon from "@mui/icons-material/Login";
-import LogoutIcon from "@mui/icons-material/Logout";
-import MenuIcon from "@mui/icons-material/Menu";
-import MenuBookIcon from "@mui/icons-material/MenuBook";
-import PersonAddIcon from "@mui/icons-material/PersonAdd";
-import ReceiptIcon from "@mui/icons-material/Receipt";
-import SettingsIcon from "@mui/icons-material/Settings";
-import { Badge, IconButton, ListItemButton } from "@mui/material";
-import Box from "@mui/material/Box";
-import Divider from "@mui/material/Divider";
-import List from "@mui/material/List";
-import ListItemIcon from "@mui/material/ListItemIcon";
-import ListItemText from "@mui/material/ListItemText";
-import SwipeableDrawer from "@mui/material/SwipeableDrawer";
+  Badge,
+  Burger,
+  Divider,
+  Drawer,
+  Indicator,
+  NavLink,
+  Stack,
+} from "@mantine/core";
+import { useDisclosure } from "@mantine/hooks";
+import {
+  IconBook,
+  IconClock,
+  IconHeartHandshake,
+  IconIdBadge,
+  IconLogin,
+  IconLogout,
+  IconMail,
+  IconReceipt,
+  IconSearch,
+  IconShoppingCart,
+  IconUserEdit,
+  IconUserPlus,
+} from "@tabler/icons-react";
 import { useQuery } from "@tanstack/react-query";
-import { useState, KeyboardEvent, MouseEvent, ReactNode } from "react";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
 
 import { getAccessTokenBody } from "@/api/token";
-import DynamicLink from "@/components/DynamicLink";
 import useApiClient from "@/utils/api/useApiClient";
 import useAuth from "@/utils/useAuth";
 
-interface DrawerLinkProps {
-  title: string;
-  href: string;
-  icon: ReactNode;
-  badge?: ReactNode;
-  onClick?: () => void;
-}
-
-const DrawerLink = ({ title, href, icon, onClick, badge }: DrawerLinkProps) => (
-  <DynamicLink href={href} underline={"none"} style={{ color: "inherit" }}>
-    <ListItemButton onClick={onClick}>
-      <ListItemIcon>{icon}</ListItemIcon>
-      <ListItemText primary={title} />
-      {badge}
-    </ListItemButton>
-  </DynamicLink>
-);
-
 export default function SideMenuDrawer() {
-  const [open, setOpen] = useState(false);
+  const pathname = usePathname();
+  const [opened, { toggle, close }] = useDisclosure();
   const { isLoggedIn, isEmployee } = useAuth();
   const client = useApiClient();
 
@@ -67,19 +50,6 @@ export default function SideMenuDrawer() {
     },
   });
 
-  const toggleDrawer =
-    (open: boolean) => (event: KeyboardEvent | MouseEvent) => {
-      if (
-        event &&
-        event.type === "keydown" &&
-        ((event as KeyboardEvent).key === "Tab" ||
-          (event as KeyboardEvent).key === "Shift")
-      ) {
-        return;
-      }
-
-      setOpen(open);
-    };
   const taskCount =
     isLoadingUserDetail || isErrorUserDetail || !userDetail?.tasks
       ? 0
@@ -87,137 +57,158 @@ export default function SideMenuDrawer() {
         (userDetail.tasks.signAgreement ? 1 : 0);
   return (
     <>
-      <IconButton sx={{ color: "white" }} onClick={toggleDrawer(true)}>
-        <Badge
-          badgeContent={taskCount}
-          color={"error"}
-          invisible={taskCount === 0}
-        >
-          <MenuIcon />
-        </Badge>
-      </IconButton>
-      <SwipeableDrawer
-        anchor="right"
-        open={open}
-        onClose={toggleDrawer(false)}
-        onOpen={toggleDrawer(true)}
+      <Indicator color={"red"} disabled={taskCount === 0}>
+        <Burger color={"white"} opened={opened} onClick={toggle} />
+      </Indicator>
+      <Drawer
+        opened={opened}
+        onClose={close}
+        onClick={close}
+        position={"right"}
+        title={"Velg side"}
       >
-        <Box
-          sx={{ width: 250 }}
-          role="presentation"
-          onClick={toggleDrawer(false)}
-          onKeyDown={toggleDrawer(false)}
-        >
-          <List>
-            {taskCount > 0 && (
-              <>
-                <DrawerLink
-                  title={"Dine oppgaver"}
-                  href={"/oppgaver"}
-                  icon={<PendingActions />}
-                  badge={
-                    <Badge
-                      sx={{ right: 40 }}
-                      badgeContent={taskCount}
-                      color={"error"}
-                    />
+        <Stack gap={5}>
+          {taskCount > 0 && (
+            <NavLink
+              label={"Oppgaver"}
+              description={`Du har ${taskCount} ${taskCount === 1 ? "oppgave" : "oppgaver"} som må fullføres.`}
+              href={"/oppgaver"}
+              leftSection={
+                <Badge color={"red"} circle>
+                  {taskCount}
+                </Badge>
+              }
+              component={Link}
+              color={"red"}
+              active
+              variant={"subtle"}
+            />
+          )}
+
+          <NavLink
+            label={"Bestill bøker"}
+            href={"/order"}
+            active={pathname.includes("/order")}
+            variant={"subtle"}
+            leftSection={<IconShoppingCart />}
+            component={Link}
+          />
+
+          {isLoggedIn && (
+            <>
+              <NavLink
+                label={"Dine bøker"}
+                href={"/items"}
+                active={pathname.includes("/items")}
+                variant={"subtle"}
+                leftSection={<IconBook />}
+                component={Link}
+              />
+              <NavLink
+                label={"Ordrehistorikk"}
+                href={"/order-history"}
+                active={pathname.includes("/order-history")}
+                variant={"subtle"}
+                leftSection={<IconReceipt />}
+                component={Link}
+              />
+              <NavLink
+                label={"Overleveringer"}
+                href={"/overleveringer"}
+                active={pathname.includes("/overleveringer")}
+                variant={"subtle"}
+                leftSection={<IconHeartHandshake />}
+                component={Link}
+              />
+              <NavLink
+                label={"Boksøk"}
+                description={
+                  "Søk opp en bok sin unike ID for å finne ut hvem som er ansvarlig for den"
+                }
+                href={"/sjekk"}
+                active={pathname.includes("/sjekk")}
+                variant={"subtle"}
+                leftSection={<IconSearch />}
+                component={Link}
+              />
+            </>
+          )}
+          <Divider label={"Informasjon"} />
+
+          <NavLink
+            label={"Åpningstider"}
+            href={"/info/branch"}
+            active={pathname.includes("/info/branch")}
+            variant={"subtle"}
+            leftSection={<IconClock />}
+            component={Link}
+          />
+          <NavLink
+            label={"Kontaktinformasjon"}
+            href={"/info/contact"}
+            active={pathname.includes("/info/contact")}
+            variant={"subtle"}
+            leftSection={<IconMail />}
+            component={Link}
+          />
+
+          <Divider label={"Bruker"} />
+
+          {isLoggedIn && (
+            <>
+              <NavLink
+                label={"Brukerinnstillinger"}
+                href={"/user-settings"}
+                active={pathname.includes("/user-settings")}
+                variant={"subtle"}
+                leftSection={<IconUserEdit />}
+                component={Link}
+              />
+              {isEmployee && (
+                <NavLink
+                  label={"Ansattområde"}
+                  description={
+                    "Her kan du søke opp kunder, samle inn og dele ut bøker."
                   }
+                  href={"/admin"}
+                  leftSection={<IconIdBadge />}
+                  component={Link}
+                  active
+                  color={"indigo"}
                 />
-                <Divider />
-              </>
-            )}
-            <DrawerLink
-              title={"Bestill bøker"}
-              href={"/order"}
-              icon={<BookIcon />}
-            />
+              )}
+              <NavLink
+                label={"Logg ut"}
+                href={"/auth/logout"}
+                leftSection={<IconLogout />}
+                component={Link}
+                active
+                variant={"subtle"}
+                color={"red"}
+              />
+            </>
+          )}
 
-            {isLoggedIn && (
-              <>
-                <DrawerLink
-                  title={"Dine bøker"}
-                  href={"/items"}
-                  icon={<MenuBookIcon />}
-                />
-                <DrawerLink
-                  title={"Ordrehistorikk"}
-                  href={"/order-history"}
-                  icon={<ReceiptIcon />}
-                />
-                <DrawerLink
-                  title={"Dine overleveringer"}
-                  href={"/overleveringer"}
-                  icon={<Handshake />}
-                />
-                <DrawerLink
-                  title={"Boksøk"}
-                  href={"/sjekk"}
-                  icon={<Search />}
-                />
-              </>
-            )}
-            <Divider />
-
-            <DrawerLink
-              title={"Åpningstider"}
-              href={"/info/branch"}
-              icon={<AccessTimeIcon />}
-            />
-            <DrawerLink
-              title={"Generell informasjon"}
-              href={"/info/general"}
-              icon={<InfoIcon />}
-            />
-            <DrawerLink
-              title={"Kontaktinformasjon"}
-              href={"/info/contact"}
-              icon={<EmailIcon />}
-            />
-
-            <Divider />
-
-            {isLoggedIn && (
-              <>
-                <DrawerLink
-                  title={"Brukerinnstillinger"}
-                  href={"/user-settings"}
-                  icon={<SettingsIcon />}
-                />
-                <DrawerLink
-                  title={"Logg ut"}
-                  href={"/auth/logout"}
-                  icon={<LogoutIcon />}
-                />
-                {isEmployee && (
-                  <>
-                    <Divider />
-                    <DrawerLink
-                      title={"Gå til bl-admin"}
-                      href={"/admin"}
-                      icon={<AdminPanelSettings color={"primary"} />}
-                    />
-                  </>
-                )}
-              </>
-            )}
-
-            {!isLoggedIn && (
-              <>
-                <DrawerLink
-                  title={"Registrer"}
-                  href={"/auth/register"}
-                  icon={<PersonAddIcon />}
-                />
-                <DrawerLink
-                  title={"Logg inn"}
-                  href={"/auth/login"}
-                  icon={<LoginIcon />}
-                />
-              </>
-            )}
-          </List>
-        </Box>
-      </SwipeableDrawer>
+          {!isLoggedIn && (
+            <>
+              <NavLink
+                label={"Registrer"}
+                href={"/auth/register"}
+                active={pathname.includes("/auth/register")}
+                variant={"subtle"}
+                leftSection={<IconUserPlus />}
+              />
+              <NavLink
+                label={"Logg inn"}
+                href={"/auth/login"}
+                active={pathname.includes("/auth/login")}
+                variant={"subtle"}
+                leftSection={<IconLogin />}
+              />
+            </>
+          )}
+        </Stack>
+      </Drawer>
     </>
   );
 }

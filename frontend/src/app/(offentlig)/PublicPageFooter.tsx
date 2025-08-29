@@ -6,7 +6,7 @@ import Link from "next/link";
 
 import ContactInfo from "@/components/info/ContactInfo";
 
-export default function Footer() {
+export default function PublicPageFooter() {
   return (
     <Stack
       bg={"#1e2e2c"}

@@ -12,8 +12,8 @@ import { useDisclosure } from "@mantine/hooks";
 import {
   IconBook,
   IconClock,
+  IconExternalLink,
   IconHeartHandshake,
-  IconIdBadge,
   IconLogin,
   IconLogout,
   IconMail,
@@ -166,15 +166,15 @@ export default function PublicNavigationDrawer() {
               />
               {isEmployee && (
                 <NavLink
-                  label={"Ansattområde"}
+                  label={"Gå til /admin"}
                   description={
                     "Her kan du søke opp kunder, samle inn og dele ut bøker."
                   }
                   href={"/admin"}
-                  leftSection={<IconIdBadge />}
+                  leftSection={<IconExternalLink />}
                   component={Link}
                   active
-                  color={"indigo"}
+                  color={"orange"}
                 />
               )}
               <NavLink

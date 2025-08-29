@@ -1,63 +1,32 @@
 "use client";
 import { USER_PERMISSION } from "@boklisten/backend/shared/user-permission";
-import { Typography } from "@mui/material";
-import { DashboardLayout, Navigation, PageContainer } from "@toolpad/core";
-import { NextAppProvider } from "@toolpad/core/nextjs";
-import Image from "next/image";
-import { ReactNode, useEffect, useState } from "react";
+import {
+  AppShell,
+  AppShellHeader,
+  AppShellMain,
+  AppShellNavbar,
+} from "@mantine/core";
 
+import AdminPageHeader from "@/app/(administrasjon)/admin/AdminPageHeader";
+import AdminPageNavigation from "@/app/(administrasjon)/admin/AdminPageNavigation";
 import AuthGuard from "@/components/common/AuthGuard";
-import TestVersionChip from "@/components/TestVersionChip";
-import { getAdminPagesNavigationLinks } from "@/utils/adminNavigation";
-import muiTheme from "@/utils/muiTheme";
-import useAuth from "@/utils/useAuth";
 
-export default function AdminLayout({ children }: { children: ReactNode }) {
-  const [navLinks, setNavLinks] = useState<Navigation>([]);
-  const { isAdmin } = useAuth();
-
-  useEffect(() => {
-    setNavLinks(getAdminPagesNavigationLinks(isAdmin));
-  }, [isAdmin]);
-
+export default function AdminPageLayout({ children }: LayoutProps<"/admin">) {
   return (
     <AuthGuard requiredPermission={USER_PERMISSION.EMPLOYEE}>
-      <NextAppProvider
-        navigation={navLinks}
-        theme={muiTheme}
-        branding={{
-          title: "",
-          logo: (
-            <>
-              <Image
-                src="/boklisten_logo_white.png"
-                width={40}
-                height={40}
-                alt="logo"
-              />
-              <Typography
-                variant="h5"
-                component="div"
-                noWrap
-                sx={{
-                  fontWeight: "bold",
-                  display: { xs: "none", md: "flex" },
-                  flexGrow: 1,
-                  marginLeft: 1,
-                }}
-              >
-                bl-admin
-              </Typography>
-              <TestVersionChip />
-            </>
-          ),
-          homeUrl: "/admin",
-        }}
+      <AppShell
+        header={{ height: 65 }}
+        navbar={{ breakpoint: "xs", width: 200, collapsed: { mobile: true } }}
+        padding={"md"}
       >
-        <DashboardLayout>
-          <PageContainer>{children}</PageContainer>
-        </DashboardLayout>
-      </NextAppProvider>
+        <AppShellHeader bg={"brand"}>
+          <AdminPageHeader />
+        </AppShellHeader>
+        <AppShellNavbar>
+          <AdminPageNavigation />
+        </AppShellNavbar>
+        <AppShellMain>{children}</AppShellMain>
+      </AppShell>
     </AuthGuard>
   );
 }

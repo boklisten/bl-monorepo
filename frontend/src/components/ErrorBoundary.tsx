@@ -18,7 +18,7 @@ export default function ErrorBoundary({
   }, [error]);
 
   return (
-    <Stack>
+    <Stack align={"center"}>
       {withLogo && <Logo variant={"blue"} />}
       <Alert color={"red"} title={"Oisann! Her gikk noe veldig galt!"}>
         Du kan prøve å laste inn siden på nytt, eller gå tilbake til forsiden.

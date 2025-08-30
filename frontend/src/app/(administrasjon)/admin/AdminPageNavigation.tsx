@@ -26,7 +26,13 @@ import { usePathname } from "next/navigation";
 
 import useAuth from "@/utils/useAuth";
 
-export default function AdminPageNavigation() {
+export default function AdminPageNavigation({
+  onNavigate = () => {
+    return;
+  },
+}: {
+  onNavigate?: () => void;
+}) {
   const pathname = usePathname();
   const { isAdmin } = useAuth();
   return (
@@ -40,6 +46,7 @@ export default function AdminPageNavigation() {
             leftSection={<IconSearch />}
             variant={"subtle"}
             component={Link}
+            onClick={onNavigate}
           />
           <NavLink
             label={"Handlekurv"}
@@ -48,6 +55,7 @@ export default function AdminPageNavigation() {
             leftSection={<IconShoppingCart />}
             variant={"subtle"}
             component={Link}
+            onClick={onNavigate}
           />
           <NavLink
             label={"Hurtiginnsamling"}
@@ -56,6 +64,7 @@ export default function AdminPageNavigation() {
             leftSection={<IconQrcode />}
             variant={"subtle"}
             component={Link}
+            onClick={onNavigate}
           />
           <NavLink
             label={"Hurtigutdeling"}
@@ -64,6 +73,7 @@ export default function AdminPageNavigation() {
             leftSection={<IconChecklist />}
             variant={"subtle"}
             component={Link}
+            onClick={onNavigate}
           />
           <NavLink
             label={"Ordreoversikt"}
@@ -72,6 +82,7 @@ export default function AdminPageNavigation() {
             leftSection={<IconReceipt />}
             variant={"subtle"}
             component={Link}
+            onClick={onNavigate}
           />
           <NavLink
             label={"Venteliste"}
@@ -80,6 +91,7 @@ export default function AdminPageNavigation() {
             leftSection={<IconHourglassLow />}
             variant={"subtle"}
             component={Link}
+            onClick={onNavigate}
           />
           <NavLink
             label={"Scanner"}
@@ -88,6 +100,7 @@ export default function AdminPageNavigation() {
             leftSection={<IconBarcode />}
             variant={"subtle"}
             component={Link}
+            onClick={onNavigate}
           />
           {isAdmin && (
             <>
@@ -99,6 +112,7 @@ export default function AdminPageNavigation() {
                 leftSection={<IconFileDollar />}
                 variant={"subtle"}
                 component={Link}
+                onClick={onNavigate}
               />
               <NavLink
                 label={"Påminnelser"}
@@ -107,6 +121,7 @@ export default function AdminPageNavigation() {
                 leftSection={<IconBell />}
                 variant={"subtle"}
                 component={Link}
+                onClick={onNavigate}
               />
               <NavLink
                 label={"Databaseverktøy"}
@@ -121,6 +136,7 @@ export default function AdminPageNavigation() {
                   leftSection={<IconChartBar />}
                   variant={"subtle"}
                   component={Link}
+                  onClick={onNavigate}
                 />
                 <NavLink
                   label={"Bøker"}
@@ -129,6 +145,7 @@ export default function AdminPageNavigation() {
                   leftSection={<IconBooks />}
                   variant={"subtle"}
                   component={Link}
+                  onClick={onNavigate}
                 />
                 <NavLink
                   label={"Filialer"}
@@ -137,6 +154,7 @@ export default function AdminPageNavigation() {
                   leftSection={<IconBuildingStore />}
                   variant={"subtle"}
                   component={Link}
+                  onClick={onNavigate}
                 />
                 <NavLink
                   label={"Selskap"}
@@ -145,6 +163,7 @@ export default function AdminPageNavigation() {
                   leftSection={<IconBuildings />}
                   variant={"subtle"}
                   component={Link}
+                  onClick={onNavigate}
                 />
                 <NavLink
                   label={"Dynamisk innhold"}
@@ -153,6 +172,7 @@ export default function AdminPageNavigation() {
                   leftSection={<IconEdit />}
                   variant={"subtle"}
                   component={Link}
+                  onClick={onNavigate}
                 />
                 <NavLink
                   label={"Unike IDer"}
@@ -161,6 +181,7 @@ export default function AdminPageNavigation() {
                   leftSection={<IconQrcode />}
                   variant={"subtle"}
                   component={Link}
+                  onClick={onNavigate}
                 />
                 <NavLink
                   label={"Lag brukere"}
@@ -169,6 +190,7 @@ export default function AdminPageNavigation() {
                   leftSection={<IconUserPlus />}
                   variant={"subtle"}
                   component={Link}
+                  onClick={onNavigate}
                 />
               </NavLink>
             </>
@@ -185,6 +207,7 @@ export default function AdminPageNavigation() {
           leftSection={<IconUserEdit />}
           variant={"subtle"}
           component={Link}
+          onClick={onNavigate}
         />
         <NavLink
           label={"Gå til kundeside"}
@@ -193,6 +216,7 @@ export default function AdminPageNavigation() {
           leftSection={<IconExternalLink />}
           component={Link}
           active
+          onClick={onNavigate}
         />
         <NavLink
           label={"Logg ut"}
@@ -202,6 +226,7 @@ export default function AdminPageNavigation() {
           component={Link}
           active
           color={"red"}
+          onClick={onNavigate}
         />
       </Stack>
     </Stack>

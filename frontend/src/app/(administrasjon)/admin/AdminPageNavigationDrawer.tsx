@@ -15,11 +15,10 @@ export default function AdminPageNavigationDrawer() {
       <Drawer
         opened={opened}
         onClose={close}
-        onClick={close}
         position={"right"}
         title={"Velg side"}
       >
-        <AdminPageNavigation />
+        <AdminPageNavigation onNavigate={close} />
       </Drawer>
     </Box>
   );

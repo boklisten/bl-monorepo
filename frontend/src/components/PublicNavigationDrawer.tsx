@@ -63,7 +63,6 @@ export default function PublicNavigationDrawer() {
       <Drawer
         opened={opened}
         onClose={close}
-        onClick={close}
         position={"right"}
         title={"Velg side"}
       >
@@ -82,6 +81,7 @@ export default function PublicNavigationDrawer() {
               color={"red"}
               active
               variant={"subtle"}
+              onClick={close}
             />
           )}
 
@@ -92,6 +92,7 @@ export default function PublicNavigationDrawer() {
             variant={"subtle"}
             leftSection={<IconShoppingCart />}
             component={Link}
+            onClick={close}
           />
 
           {isLoggedIn && (
@@ -103,6 +104,7 @@ export default function PublicNavigationDrawer() {
                 variant={"subtle"}
                 leftSection={<IconBook />}
                 component={Link}
+                onClick={close}
               />
               <NavLink
                 label={"Ordrehistorikk"}
@@ -111,6 +113,7 @@ export default function PublicNavigationDrawer() {
                 variant={"subtle"}
                 leftSection={<IconReceipt />}
                 component={Link}
+                onClick={close}
               />
               <NavLink
                 label={"Overleveringer"}
@@ -119,6 +122,7 @@ export default function PublicNavigationDrawer() {
                 variant={"subtle"}
                 leftSection={<IconHeartHandshake />}
                 component={Link}
+                onClick={close}
               />
               <NavLink
                 label={"Boksøk"}
@@ -130,6 +134,7 @@ export default function PublicNavigationDrawer() {
                 variant={"subtle"}
                 leftSection={<IconSearch />}
                 component={Link}
+                onClick={close}
               />
             </>
           )}
@@ -142,6 +147,7 @@ export default function PublicNavigationDrawer() {
             variant={"subtle"}
             leftSection={<IconClock />}
             component={Link}
+            onClick={close}
           />
           <NavLink
             label={"Kontaktinformasjon"}
@@ -150,6 +156,7 @@ export default function PublicNavigationDrawer() {
             variant={"subtle"}
             leftSection={<IconMail />}
             component={Link}
+            onClick={close}
           />
 
           <Divider label={"Bruker"} />
@@ -163,6 +170,7 @@ export default function PublicNavigationDrawer() {
                 variant={"subtle"}
                 leftSection={<IconUserEdit />}
                 component={Link}
+                onClick={close}
               />
               {isEmployee && (
                 <NavLink
@@ -175,6 +183,7 @@ export default function PublicNavigationDrawer() {
                   component={Link}
                   active
                   color={"orange"}
+                  onClick={close}
                 />
               )}
               <NavLink
@@ -185,6 +194,7 @@ export default function PublicNavigationDrawer() {
                 active
                 variant={"subtle"}
                 color={"red"}
+                onClick={close}
               />
             </>
           )}
@@ -197,6 +207,7 @@ export default function PublicNavigationDrawer() {
                 active={pathname.includes("/auth/register")}
                 variant={"subtle"}
                 leftSection={<IconUserPlus />}
+                onClick={close}
               />
               <NavLink
                 label={"Logg inn"}
@@ -204,6 +215,7 @@ export default function PublicNavigationDrawer() {
                 active={pathname.includes("/auth/login")}
                 variant={"subtle"}
                 leftSection={<IconLogin />}
+                onClick={close}
               />
             </>
           )}

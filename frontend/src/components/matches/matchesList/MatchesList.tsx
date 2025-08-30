@@ -1,5 +1,6 @@
 "use client";
 import { Alert, Skeleton, Stack, Text } from "@mantine/core";
+import { IconExclamationCircle } from "@tabler/icons-react";
 import { useQuery } from "@tanstack/react-query";
 import { FC } from "react";
 
@@ -32,11 +33,19 @@ export const MatchesList: FC = () => {
   });
 
   if (!customer || tokenError || matchesError) {
-    return <Alert color="red" title={"En feil har oppstått"} />;
+    return (
+      <Alert
+        icon={<IconExclamationCircle />}
+        color="red"
+        title={"Klarte ikke laste inn dine overleveringer"}
+      >
+        Vennligst prøv igjen, eller ta kontakt hvis problemet vedvarer
+      </Alert>
+    );
   }
 
   if (matches === undefined) {
-    return <Skeleton />;
+    return <Skeleton height={110} />;
   }
   const sortedUserMatches = matches.userMatches.sort((a, b) => {
     if (!a.meetingInfo.date) {

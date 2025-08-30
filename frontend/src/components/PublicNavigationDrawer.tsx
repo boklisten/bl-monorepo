@@ -14,6 +14,7 @@ import {
   IconClock,
   IconExternalLink,
   IconHeartHandshake,
+  IconInfoCircle,
   IconLogin,
   IconLogout,
   IconMail,
@@ -139,7 +140,15 @@ export default function PublicNavigationDrawer() {
             </>
           )}
           <Divider label={"Informasjon"} />
-
+          <NavLink
+            label={"Generell informasjon"}
+            href={"/info/general"}
+            active={pathname.includes("/info/general")}
+            variant={"subtle"}
+            leftSection={<IconInfoCircle />}
+            component={Link}
+            onClick={close}
+          />
           <NavLink
             label={"Åpningstider"}
             href={"/info/branch"}

@@ -3,25 +3,25 @@ import {
   CustomerItemStatus,
 } from "@boklisten/backend/shared/customer-item/actionable_customer_item";
 import {
-  Event,
-  HourglassTop,
-  LocalLibrary,
-  LocationPin,
-  MoreTime,
-  QrCodeScanner,
-  ShoppingCart,
-} from "@mui/icons-material";
-import {
+  Badge,
   Button,
   Card,
-  CardActions,
-  CardContent,
   Divider,
+  Group,
   Stack,
+  Text,
+  Title,
   Tooltip,
-  Typography,
-} from "@mui/material";
-import Chip from "@mui/material/Chip";
+} from "@mantine/core";
+import {
+  IconBook2,
+  IconCalendarEvent,
+  IconClockPlus,
+  IconHourglassHigh,
+  IconQrcode,
+  IconSchool,
+  IconShoppingCart,
+} from "@tabler/icons-react";
 import moment from "moment";
 import { ReactNode } from "react";
 
@@ -37,29 +37,28 @@ function InfoEntry({
   text: string;
 }) {
   return (
-    <Stack gap={0.5} direction={"row"} alignItems={"center"}>
+    <Group gap={"xs"}>
       {startIcon}
-      <Tooltip title={label}>
-        <Typography sx={{ color: "text.secondary" }}>{text}</Typography>
+      <Tooltip label={label}>
+        <Text>{text}</Text>
       </Tooltip>
-    </Stack>
+    </Group>
   );
 }
 
 function StatusChip({ status }: { status: CustomerItemStatus }) {
   return (
-    <Chip
-      sx={{ ml: 1 }}
-      label={status.text}
+    <Badge
       color={
         ["returned", "buyout"].includes(status.type)
-          ? "default"
+          ? "gray"
           : status.type === "overdue"
-            ? "error"
-            : "success"
+            ? "red"
+            : "green"
       }
-      size="small"
-    />
+    >
+      {status.text}
+    </Badge>
   );
 }
 
@@ -70,54 +69,57 @@ export default function CustomerItemCard({
 }) {
   const { redirectTo } = useAuthLinker();
   return (
-    <Card>
-      <CardContent>
-        <Typography variant="h5" component="div" mb={2}>
-          {actionableCustomerItem.item.title}
-          <StatusChip status={actionableCustomerItem.status} />
-        </Typography>
-        <Stack gap={1}>
-          <InfoEntry
-            startIcon={<QrCodeScanner />}
-            label={"Unik ID"}
-            text={actionableCustomerItem.blid ?? ""}
-          />
-          <InfoEntry
-            label={"ISBN"}
-            startIcon={<LocalLibrary />}
-            text={actionableCustomerItem.item.isbn}
-          />
-          <InfoEntry
-            label={"Ansvarlig filial"}
-            startIcon={<LocationPin />}
-            text={actionableCustomerItem.branchName}
-          />
-          <InfoEntry
-            label={"Utdelingstidspunkt"}
-            startIcon={<HourglassTop />}
-            text={moment(actionableCustomerItem.handoutAt).format("DD/MM/YYYY")}
-          />
-          <Divider />
-          <Stack direction={"row"} gap={1} sx={{ alignItems: "center" }}>
-            <Event />
-            <Typography>Frist: </Typography>
-            <Typography fontWeight={"bold"}>
-              {moment(actionableCustomerItem.deadline).format("DD/MM/YYYY")}
-            </Typography>
-          </Stack>
-        </Stack>
-      </CardContent>
-      {["active", "overdue"].includes(actionableCustomerItem.status.type) && (
-        <CardActions>
-          {actionableCustomerItem.actions.map((action) => (
-            <Tooltip key={action.type} title={action.tooltip}>
-              <span>
+    <Card shadow={"md"} withBorder>
+      <Group gap={"xs"} mb={"md"}>
+        <Title order={3}>{actionableCustomerItem.item.title}</Title>
+        <StatusChip status={actionableCustomerItem.status} />
+      </Group>
+      <Stack>
+        <InfoEntry
+          startIcon={<IconQrcode />}
+          label={"Unik ID"}
+          text={actionableCustomerItem.blid ?? ""}
+        />
+        <InfoEntry
+          label={"ISBN"}
+          startIcon={<IconBook2 />}
+          text={actionableCustomerItem.item.isbn}
+        />
+        <InfoEntry
+          label={"Ansvarlig filial"}
+          startIcon={<IconSchool />}
+          text={actionableCustomerItem.branchName}
+        />
+        <InfoEntry
+          label={"Utdelingstidspunkt"}
+          startIcon={<IconHourglassHigh />}
+          text={moment(actionableCustomerItem.handoutAt).format("DD/MM/YYYY")}
+        />
+        <Divider />
+        <Group>
+          <IconCalendarEvent />
+          <Text>Frist: </Text>
+          <Text fw={"bold"}>
+            {moment(actionableCustomerItem.deadline).format("DD/MM/YYYY")}
+          </Text>
+        </Group>
+        {["active", "overdue"].includes(actionableCustomerItem.status.type) && (
+          <Group>
+            {actionableCustomerItem.actions.map((action) => (
+              <Tooltip
+                key={action.type}
+                label={action.tooltip}
+                disabled={!action.tooltip}
+              >
                 <Button
-                  startIcon={
-                    action.type === "extend" ? <MoreTime /> : <ShoppingCart />
+                  leftSection={
+                    action.type === "extend" ? (
+                      <IconClockPlus />
+                    ) : (
+                      <IconShoppingCart />
+                    )
                   }
                   disabled={!action.available}
-                  size="small"
                   onClick={() => {
                     redirectTo(
                       "bl-web",
@@ -128,11 +130,11 @@ export default function CustomerItemCard({
                 >
                   {action.buttonText}
                 </Button>
-              </span>
-            </Tooltip>
-          ))}
-        </CardActions>
-      )}
+              </Tooltip>
+            ))}
+          </Group>
+        )}
+      </Stack>
     </Card>
   );
 }

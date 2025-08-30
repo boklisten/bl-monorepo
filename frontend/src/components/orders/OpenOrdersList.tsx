@@ -1,18 +1,6 @@
 "use client";
-import { Book } from "@mui/icons-material";
-import {
-  Alert,
-  Box,
-  Button,
-  Stack,
-  Table,
-  TableBody,
-  TableContainer,
-  TableHead,
-  Tooltip,
-} from "@mui/material";
-import TableCell from "@mui/material/TableCell";
-import TableRow from "@mui/material/TableRow";
+import { Alert, Box, Button, Table, Tooltip } from "@mantine/core";
+import { IconInfoCircle, IconShoppingCart } from "@tabler/icons-react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useDialogs, useNotifications } from "@toolpad/core";
 import moment from "moment";
@@ -55,76 +43,74 @@ export default function OpenOrdersList({
   });
 
   return (
-    <Stack>
+    <>
       {(openOrderItems?.length ?? 0) > 0 ? (
-        <TableContainer>
-          <Table>
-            <TableHead>
-              <TableRow>
-                <TableCell>Tittel</TableCell>
-                <TableCell>Frist</TableCell>
-                <TableCell>Handling</TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {openOrderItems?.map((orderItem) => (
-                <TableRow key={orderItem.orderId + orderItem.itemId}>
-                  <TableCell>{orderItem.title}</TableCell>
-                  <TableCell>
-                    {moment(orderItem.deadline).format("DD/MM/YYYY")}
-                  </TableCell>
+        <Table>
+          <Table.Thead>
+            <Table.Tr>
+              <Table.Th>Tittel</Table.Th>
+              <Table.Th>Frist</Table.Th>
+              <Table.Th>Handling</Table.Th>
+            </Table.Tr>
+          </Table.Thead>
+          <Table.Tbody>
+            {openOrderItems?.map((orderItem) => (
+              <Table.Tr key={orderItem.orderId + orderItem.itemId}>
+                <Table.Td>{orderItem.title}</Table.Td>
+                <Table.Td>
+                  {moment(orderItem.deadline).format("DD/MM/YYYY")}
+                </Table.Td>
+                <Table.Td>
                   <Tooltip
-                    title={
-                      orderItem.cancelable
-                        ? ""
-                        : "Ikke tilgjenglig for øyeblikket. Ta kontakt dersom du ønsker å avbestille"
+                    disabled={orderItem.cancelable}
+                    label={
+                      "Ikke tilgjenglig for øyeblikket. Ta kontakt dersom du ønsker å avbestille"
                     }
                   >
-                    <TableCell>
-                      <Button
-                        disabled={!orderItem.cancelable}
-                        color={"error"}
-                        loading={cancelOrderItemMutation.isPending}
-                        onClick={async () => {
-                          if (
-                            await dialogs.confirm(
-                              `Du er nå i ferd med å avbestille ${orderItem.title}. Dette kan ikke angres.`,
-                              {
-                                title: `Bekreft avbestilling`,
-                                okText: "Avbestill",
-                                cancelText: "Avbryt",
-                                severity: "error",
-                              },
-                            )
-                          ) {
-                            cancelOrderItemMutation.mutate({
-                              orderId: orderItem.orderId,
-                              itemId: orderItem.itemId,
-                            });
-                          }
-                        }}
-                      >
-                        Avbestill
-                      </Button>
-                    </TableCell>
+                    <Button
+                      variant={"subtle"}
+                      disabled={!orderItem.cancelable}
+                      color={"red"}
+                      loading={cancelOrderItemMutation.isPending}
+                      onClick={async () => {
+                        if (
+                          await dialogs.confirm(
+                            `Du er nå i ferd med å avbestille ${orderItem.title}. Dette kan ikke angres.`,
+                            {
+                              title: `Bekreft avbestilling`,
+                              okText: "Avbestill",
+                              cancelText: "Avbryt",
+                              severity: "error",
+                            },
+                          )
+                        ) {
+                          cancelOrderItemMutation.mutate({
+                            orderId: orderItem.orderId,
+                            itemId: orderItem.itemId,
+                          });
+                        }
+                      }}
+                    >
+                      Avbestill
+                    </Button>
                   </Tooltip>
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </TableContainer>
+                </Table.Td>
+              </Table.Tr>
+            ))}
+          </Table.Tbody>
+        </Table>
       ) : (
-        <Alert severity={"info"}>
-          {
+        <Alert
+          icon={<IconInfoCircle />}
+          color={"blue"}
+          title={
             "Du har ingen aktive bestillinger. Trykk på 'bestill bøker' for å bestille noen."
           }
-        </Alert>
+        />
       )}
       <Box>
         <Button
-          sx={{ mt: 2 }}
-          startIcon={<Book />}
-          variant="contained"
+          leftSection={<IconShoppingCart />}
           onClick={async () => {
             router.push("/order");
           }}
@@ -134,6 +120,6 @@ export default function OpenOrdersList({
             : "Bestill bøker"}
         </Button>
       </Box>
-    </Stack>
+    </>
   );
 }

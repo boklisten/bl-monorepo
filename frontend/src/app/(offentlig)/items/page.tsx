@@ -1,4 +1,4 @@
-import { Container, Title } from "@mantine/core";
+import { Container, Stack, Title } from "@mantine/core";
 import { Metadata } from "next";
 
 import AuthGuard from "@/components/common/AuthGuard";
@@ -14,7 +14,9 @@ export default function YourItemsPage() {
     <Container size={"md"}>
       <Title>Dine bøker</Title>
       <AuthGuard>
-        <CustomerItemsOverview />
+        <Stack gap={"xl"}>
+          <CustomerItemsOverview />
+        </Stack>
       </AuthGuard>
     </Container>
   );

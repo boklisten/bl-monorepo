@@ -54,6 +54,7 @@ export default function PublicBlidSearch() {
   return (
     <>
       <TextInput
+        placeholder={"12345678"}
         label={"Unik ID"}
         onChange={(event) => onBlidSearch(event.target.value)}
         rightSection={

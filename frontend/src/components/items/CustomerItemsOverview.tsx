@@ -1,16 +1,6 @@
 "use client";
 
-import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import {
-  Accordion,
-  AccordionDetails,
-  AccordionSummary,
-  Alert,
-  Box,
-  Skeleton,
-  Stack,
-  Typography,
-} from "@mui/material";
+import { Accordion, Alert, Skeleton, Stack, Text, Title } from "@mantine/core";
 import { useQuery } from "@tanstack/react-query";
 import { ReactNode } from "react";
 
@@ -28,31 +18,34 @@ function CustomerItemsOverviewWrapper({
   inactiveItemsSlot: ReactNode;
 }) {
   return (
-    <Stack gap={1}>
-      <Typography variant={"h2"}>Bestilte bøker</Typography>
-      {orderedItemsSlot}
-      <Stack>
-        <Typography variant={"h2"}>Aktive bøker</Typography>
-        <Typography
-          variant={"subtitle2"}
-          sx={{ fontWeight: "light", fontStyle: "italic" }}
-        >
+    <>
+      <Stack gap={"xs"}>
+        <Title order={2} mt={"md"}>
+          Bestilte bøker
+        </Title>
+        {orderedItemsSlot}
+      </Stack>
+
+      <Stack gap={"xs"}>
+        <Title order={2}>Aktive bøker</Title>
+        <Text fw={"light"} fs={"italic"}>
           Dette er bøkene du for øyeblikket er ansvarlig for. Du får beskjed om
           hvordan de skal leveres når fristen nærmer seg.
-        </Typography>
+        </Text>
+        {activeItemsSlot}
       </Stack>
-      {activeItemsSlot}
-      <Accordion sx={{ mt: 1 }}>
-        <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-          <Typography variant={"h2"} sx={{ m: 0 }}>
-            Tidligere bøker
-          </Typography>
-        </AccordionSummary>
-        <AccordionDetails>
-          <Stack gap={1}>{inactiveItemsSlot}</Stack>
-        </AccordionDetails>
+
+      <Accordion>
+        <Accordion.Item value={"prev-items"}>
+          <Accordion.Control>
+            <Title order={2}>Tidligere bøker</Title>
+          </Accordion.Control>
+          <Accordion.Panel>
+            <Stack>{inactiveItemsSlot}</Stack>
+          </Accordion.Panel>
+        </Accordion.Item>
       </Accordion>
-    </Stack>
+    </>
   );
 }
 
@@ -77,23 +70,24 @@ export default function CustomerItemsOverview() {
     return (
       <CustomerItemsOverviewWrapper
         orderedItemsSlot={
-          <Box>
-            <Skeleton height={60} />
-          </Box>
+          <>
+            <Skeleton height={50} />
+            <Skeleton height={50} width={150} />
+          </>
         }
         activeItemsSlot={
-          <Stack>
-            <Skeleton height={200} />
-            <Skeleton height={200} />
-            <Skeleton height={200} />
-          </Stack>
+          <>
+            <Skeleton height={250} />
+            <Skeleton height={250} />
+            <Skeleton height={250} />
+          </>
         }
         inactiveItemsSlot={
-          <Stack>
-            <Skeleton height={200} />
-            <Skeleton height={200} />
-            <Skeleton height={200} />
-          </Stack>
+          <>
+            <Skeleton height={250} />
+            <Skeleton height={250} />
+            <Skeleton height={250} />
+          </>
         }
       />
     );
@@ -101,10 +95,12 @@ export default function CustomerItemsOverview() {
 
   if (!data || isError || !openOrderItems || isErrorOpenOrderItems) {
     return (
-      <Alert severity={"error"}>
-        Dette skjedde noe galt under innlastingen av dine bøker. Vennligst prøv
-        igjen eller ta kontakt hvis problemet vedvarer
-      </Alert>
+      <Alert
+        color={"red"}
+        title={
+          "Dette skjedde noe galt under innlastingen av dine bøker. Vennligst prøv igjen eller ta kontakt hvis problemet vedvarer"
+        }
+      />
     );
   }
 
@@ -128,9 +124,10 @@ export default function CustomerItemsOverview() {
               />
             ))
           ) : (
-            <Alert severity={"info"}>
-              Du har for øyeblikket ingen aktive bøker.
-            </Alert>
+            <Alert
+              color={"blue"}
+              title={"Du har for øyeblikket ingen aktive bøker."}
+            />
           )}
         </>
       }
@@ -144,9 +141,10 @@ export default function CustomerItemsOverview() {
               />
             ))
           ) : (
-            <Alert severity={"info"}>
-              Du har ikke levert inn eller kjøpt ut noen bøker enda.
-            </Alert>
+            <Alert
+              color={"blue"}
+              title={"Du har ikke levert inn eller kjøpt ut noen bøker enda."}
+            />
           )}
         </>
       }

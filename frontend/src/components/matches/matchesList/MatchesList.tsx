@@ -1,5 +1,5 @@
 "use client";
-import { Alert, Skeleton } from "@mui/material";
+import { Alert, Skeleton, Stack, Text } from "@mantine/core";
 import { useQuery } from "@tanstack/react-query";
 import { FC } from "react";
 
@@ -32,7 +32,7 @@ export const MatchesList: FC = () => {
   });
 
   if (!customer || tokenError || matchesError) {
-    return <Alert severity="error">En feil har oppstått.</Alert>;
+    return <Alert color="red" title={"En feil har oppstått"} />;
   }
 
   if (matches === undefined) {
@@ -70,13 +70,16 @@ export const MatchesList: FC = () => {
 
   if (matches.userMatches.length === 0 && matches.standMatch === undefined) {
     return (
-      <Alert severity="info">
-        Du har ingen overleveringer :)
-        <p>
-          Har du fått melding om overleveringer? Sjekk om du er logget inn med
-          riktig konto.
-        </p>
-        <p>Ta kontakt med info@boklisten.no om du har spørsmål.</p>
+      <Alert color={"blue"} title={"Du har ingen overleveringer :)"}>
+        <Stack gap={"xs"}>
+          <Text size={"sm"}>
+            Har du fått melding om overleveringer? Sjekk om du er logget inn med
+            riktig konto.
+          </Text>
+          <Text size={"sm"}>
+            Ta kontakt med info@boklisten.no om du har spørsmål.
+          </Text>
+        </Stack>
       </Alert>
     );
   }

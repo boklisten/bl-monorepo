@@ -103,10 +103,10 @@ export default function OpenOrdersList({
         <Alert
           icon={<IconInfoCircle />}
           color={"blue"}
-          title={
-            "Du har ingen aktive bestillinger. Trykk på 'bestill bøker' for å bestille noen."
-          }
-        />
+          title={"Du har ingen aktive bestillinger"}
+        >
+          Trykk på {"'bestill bøker'"} for å bestille noen.
+        </Alert>
       )}
       <Box>
         <Button

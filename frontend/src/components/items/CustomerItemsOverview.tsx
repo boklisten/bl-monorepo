@@ -1,6 +1,7 @@
 "use client";
 
 import { Accordion, Alert, Skeleton, Stack, Text, Title } from "@mantine/core";
+import { IconInfoCircle } from "@tabler/icons-react";
 import { useQuery } from "@tanstack/react-query";
 import { ReactNode } from "react";
 
@@ -125,6 +126,7 @@ export default function CustomerItemsOverview() {
             ))
           ) : (
             <Alert
+              icon={<IconInfoCircle />}
               color={"blue"}
               title={"Du har for øyeblikket ingen aktive bøker."}
             />
@@ -142,6 +144,7 @@ export default function CustomerItemsOverview() {
             ))
           ) : (
             <Alert
+              icon={<IconInfoCircle />}
               color={"blue"}
               title={"Du har ikke levert inn eller kjøpt ut noen bøker enda."}
             />

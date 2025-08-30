@@ -8,6 +8,7 @@ export default function TestVersionChip() {
 
   return (
     <Tooltip
+      multiline
       label={
         "Dette er en test-versjon av Boklisten.no, koblet til en test-database, som tilbakestilles hver natt. Endringer og ordre er derfor IKKE permanente her."
       }

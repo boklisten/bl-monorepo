@@ -33,15 +33,8 @@ const InfoPagesNavigation = () => {
             tabs.find((tab) => pathname.includes(tab.value))?.value ?? pathname
           }
         >
-          <TabsList>
-            {tabs.slice(0, 4).map((tab) => (
-              <Link key={tab.value} href={tab.value}>
-                <TabsTab value={tab.value}>{tab.label}</TabsTab>
-              </Link>
-            ))}
-          </TabsList>
-          <TabsList>
-            {tabs.slice(4).map((tab) => (
+          <TabsList className={"justify-center"}>
+            {tabs.map((tab) => (
               <Link key={tab.value} href={tab.value}>
                 <TabsTab value={tab.value}>{tab.label}</TabsTab>
               </Link>

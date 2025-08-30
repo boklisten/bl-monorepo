@@ -1,4 +1,4 @@
-import { Stack, Title } from "@mantine/core";
+import { Title } from "@mantine/core";
 import { Metadata } from "next";
 
 import BranchSelect from "@/components/BranchSelect";
@@ -11,9 +11,9 @@ export const metadata: Metadata = {
 
 export default function BranchPage() {
   return (
-    <Stack align={"center"}>
-      <Title order={2}>Velg din skole</Title>
+    <>
+      <Title>Velg din skole</Title>
       <BranchSelect />
-    </Stack>
+    </>
   );
 }

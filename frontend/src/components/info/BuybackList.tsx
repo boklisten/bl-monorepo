@@ -1,17 +1,6 @@
 "use client";
 import { Item } from "@boklisten/backend/shared/item";
-import {
-  Alert,
-  Paper,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
-  Typography,
-  Box,
-} from "@mui/material";
+import { Alert, Table, Text, Title } from "@mantine/core";
 import { useQuery } from "@tanstack/react-query";
 
 import unpack from "@/utils/api/bl-api-request";
@@ -40,53 +29,39 @@ const BuybackList = ({
   });
   const items = data ?? cachedBuybackItems;
   return (
-    <Box
-      sx={{ display: "flex", flexDirection: "column", alignItems: "center" }}
-    >
-      <Typography variant="h4" sx={{ textAlign: "center", marginBottom: 2 }}>
-        Innkjøpsliste
-      </Typography>
-      <Typography sx={{ marginX: 2 }}>
+    <>
+      <Title>Innkjøpsliste</Title>
+      <Text>
         Dette er listen over bøkene vi kjøper inn. Vær oppmerksom på at denne
         listen kan endre seg fortløpende. Vi tar forbehold for eventuelle feil i
         innkjøpslisten!
-      </Typography>
-      <TableContainer component={Paper}>
-        <Table aria-label="tabell over innkjøpsliste">
-          <TableHead>
-            <TableRow>
-              <TableCell>Tittel</TableCell>
-              <TableCell>ISBN</TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {!error &&
-              items.map((item) => (
-                <TableRow
-                  key={item.info.isbn}
-                  sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
-                >
-                  <TableCell component="th" scope="row">
-                    {item.title}
-                  </TableCell>
-                  <TableCell>{item.info.isbn}</TableCell>
-                </TableRow>
-              ))}
-          </TableBody>
-        </Table>
-        {!error && items.length === 0 && (
-          <Alert severity="info">
-            Ingen bøker i listen. Kom tilbake senere for å se en oppdatert
-            liste.
-          </Alert>
-        )}
-        {error && (
-          <Alert severity="error">
-            Noe gikk galt! Vennligst prøv igjen senere.
-          </Alert>
-        )}
-      </TableContainer>
-    </Box>
+      </Text>
+      <Table>
+        <Table.Thead>
+          <Table.Tr>
+            <Table.Th>Tittel</Table.Th>
+            <Table.Th>ISBN</Table.Th>
+          </Table.Tr>
+        </Table.Thead>
+        <Table.Tbody>
+          {!error &&
+            items.map((item) => (
+              <Table.Tr key={item.info.isbn}>
+                <Table.Td>{item.title}</Table.Td>
+                <Table.Td>{item.info.isbn}</Table.Td>
+              </Table.Tr>
+            ))}
+        </Table.Tbody>
+      </Table>
+      {!error && items.length === 0 && (
+        <Alert color={"blue"}>
+          Ingen bøker i listen. Kom tilbake senere for å se en oppdatert liste.
+        </Alert>
+      )}
+      {error && (
+        <Alert color={"red"}>Noe gikk galt! Vennligst prøv igjen senere.</Alert>
+      )}
+    </>
   );
 };
 

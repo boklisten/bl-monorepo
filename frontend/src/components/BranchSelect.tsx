@@ -1,13 +1,6 @@
 "use client";
 import { Branch } from "@boklisten/backend/shared/branch";
-import {
-  Box,
-  FormControl,
-  InputLabel,
-  MenuItem,
-  Select,
-  SelectChangeEvent,
-} from "@mui/material";
+import { Select } from "@mantine/core";
 import { useQuery } from "@tanstack/react-query";
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect } from "react";
@@ -16,7 +9,7 @@ import unpack from "@/utils/api/bl-api-request";
 import useApiClient from "@/utils/api/useApiClient";
 import { useGlobalState } from "@/utils/useGlobalState";
 
-const BranchSelect = ({ isNav }: { isNav?: boolean }) => {
+const BranchSelect = () => {
   const client = useApiClient();
   const branchQuery = {
     query: { active: true, "isBranchItemsLive.online": true, sort: "name" },
@@ -35,11 +28,6 @@ const BranchSelect = ({ isNav }: { isNav?: boolean }) => {
   const router = useRouter();
   const pathName = usePathname();
 
-  const handleChange = (event: SelectChangeEvent) => {
-    const branchId = event.target.value;
-    selectBranch(branchId);
-  };
-
   useEffect(() => {
     if (selectedBranchId && pathName.includes("info/branch")) {
       router.replace(`/info/branch/${selectedBranchId}`);
@@ -47,28 +35,16 @@ const BranchSelect = ({ isNav }: { isNav?: boolean }) => {
   }, [pathName, router, selectedBranchId]);
 
   return (
-    <Box sx={{ minWidth: 120 }}>
-      <FormControl fullWidth>
-        <InputLabel
-          id="demo-simple-select-label"
-          sx={{ color: isNav ? "white" : "inherit" }}
-        >
-          {selectedBranchId ? "Valgt skole" : "Velg skole"}
-        </InputLabel>
-        <Select
-          sx={{ color: isNav ? "white" : "inherit" }}
-          value={selectedBranchId ?? ""}
-          label="Valgt skole"
-          onChange={handleChange}
-        >
-          {branches?.map((branch) => (
-            <MenuItem value={branch.id} key={branch.id}>
-              {branch.name}
-            </MenuItem>
-          ))}
-        </Select>
-      </FormControl>
-    </Box>
+    <Select
+      value={selectedBranchId ?? ""}
+      label="Valgt skole"
+      placeholder={"Din skole"}
+      onChange={(value) => value && selectBranch(value)}
+      data={(branches ?? []).map((branch) => ({
+        value: branch.id,
+        label: branch.name,
+      }))}
+    ></Select>
   );
 };
 

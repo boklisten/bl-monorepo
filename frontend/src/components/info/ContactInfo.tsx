@@ -7,7 +7,7 @@ import { CONTACT_INFO } from "@/utils/constants";
 const ContactInfo = () => {
   return (
     <Center>
-      <Group gap={"xl"}>
+      <Group gap={"xl"} justify={"center"}>
         <Group>
           <IconPhone />
           <Stack gap={2}>

@@ -1,4 +1,5 @@
 import { Item } from "@boklisten/backend/shared/item";
+import { useLocalStorage } from "@mantine/hooks";
 import {
   Alert,
   AlertTitle,
@@ -16,7 +17,6 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import BranchSelect from "@/components/BranchSelect";
 import PhoneNumberField from "@/components/user/fields/PhoneNumberField";
 import useApiClient from "@/utils/api/useApiClient";
-import { useGlobalState } from "@/utils/useGlobalState";
 
 interface WaitingListEntryFormFields {
   name: string;
@@ -26,7 +26,7 @@ interface WaitingListEntryFormFields {
 export default function CreateWaitingListEntry({ items }: { items: Item[] }) {
   const client = useApiClient();
   const queryClient = useQueryClient();
-  const { selectedBranchId } = useGlobalState();
+  const [selectedBranchId] = useLocalStorage({ key: "selectedBranchId" });
   const [selectedItems, setSelectedItems] = useState<
     { label: string; id: string }[]
   >([]);

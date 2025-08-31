@@ -1,13 +1,13 @@
 "use client";
 import { Branch } from "@boklisten/backend/shared/branch";
 import { Select } from "@mantine/core";
+import { useLocalStorage } from "@mantine/hooks";
 import { useQuery } from "@tanstack/react-query";
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect } from "react";
 
 import unpack from "@/utils/api/bl-api-request";
 import useApiClient from "@/utils/api/useApiClient";
-import { useGlobalState } from "@/utils/useGlobalState";
 
 const BranchSelect = () => {
   const client = useApiClient();
@@ -23,7 +23,9 @@ const BranchSelect = () => {
         .then(unpack<Branch[]>),
   });
 
-  const { selectedBranchId, selectBranch } = useGlobalState();
+  const [selectedBranchId, setSelectedBranchId] = useLocalStorage({
+    key: "selectedBranchId",
+  });
 
   const router = useRouter();
   const pathName = usePathname();
@@ -39,7 +41,7 @@ const BranchSelect = () => {
       value={selectedBranchId ?? ""}
       label="Valgt skole"
       placeholder={"Din skole"}
-      onChange={(value) => value && selectBranch(value)}
+      onChange={(value) => value && setSelectedBranchId(value)}
       data={(branches ?? []).map((branch) => ({
         value: branch.id,
         label: branch.name,

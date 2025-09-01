@@ -1,8 +1,8 @@
 "use client";
 
 import { Branch } from "@boklisten/backend/shared/branch";
-import { AddBusiness } from "@mui/icons-material";
-import { Box, Button, Divider, Stack, Typography } from "@mui/material";
+import { Box, Button, Divider, Grid, Stack, Title } from "@mantine/core";
+import { IconPlus } from "@tabler/icons-react";
 import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
 
@@ -29,47 +29,37 @@ export default function DatabaseBranchesPage() {
   const [selectedBranch, setSelectedBranch] = useState<Branch | null>(null);
   const [isCreateOpen, setCreateOpen] = useState(false);
   return (
-    <Box>
-      <Stack direction={"row"} gap={1} sx={{ mb: 1, ml: 3 }}>
-        <Button
-          startIcon={<AddBusiness />}
-          color={"primary"}
-          onClick={() => setCreateOpen(true)}
-        >
+    <Stack>
+      <Box>
+        <Button leftSection={<IconPlus />} onClick={() => setCreateOpen(true)}>
           Opprett filial
         </Button>
-      </Stack>
-      <Divider sx={{ mb: 2 }} />
-      <Stack
-        direction={"row"}
-        sx={{
-          display: "flex",
-          flexWrap: "wrap",
-          justifyContent: "space-between",
-          gap: 5,
-        }}
-      >
-        <SelectBranchTreeView
-          branches={branches ?? []}
-          onSelect={(branchId) => {
-            setSelectedBranch(
-              branches?.find((branch) => branch.id === branchId) ?? null,
-            );
-          }}
-        />
-        {selectedBranch && (
-          <Box sx={{ flexGrow: 1 }}>
-            <Typography variant={"h1"} sx={{ ml: 2 }}>
-              Rediger filial
-            </Typography>
-            <BranchSettings existingBranch={selectedBranch} />
-          </Box>
-        )}
-      </Stack>
+      </Box>
+      <Divider />
+      <Grid>
+        <Grid.Col span={{ base: 12, md: 3 }}>
+          <SelectBranchTreeView
+            branches={branches ?? []}
+            onSelect={(branchId) => {
+              setSelectedBranch(
+                branches?.find((branch) => branch.id === branchId) ?? null,
+              );
+            }}
+          />
+        </Grid.Col>
+        <Grid.Col span={{ base: 12, md: 9 }}>
+          {selectedBranch && (
+            <Stack>
+              <Title ta={"center"}>Rediger filial</Title>
+              <BranchSettings existingBranch={selectedBranch} />
+            </Stack>
+          )}
+        </Grid.Col>
+      </Grid>
       <CreateBranchDialog
         open={isCreateOpen}
         onClose={() => setCreateOpen(false)}
       />
-    </Box>
+    </Stack>
   );
 }

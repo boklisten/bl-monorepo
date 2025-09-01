@@ -1,39 +1,29 @@
 import { Branch } from "@boklisten/backend/shared/branch";
-import { Stack, Typography } from "@mui/material";
-import { TreeItem } from "@mui/x-tree-view";
-import { SimpleTreeView } from "@mui/x-tree-view/SimpleTreeView";
-import { ReactNode } from "react";
+import { NavLink, Stack, Title, Tree, TreeNodeData } from "@mantine/core";
+import { IconChevronRight } from "@tabler/icons-react";
+import { useState } from "react";
 
-function renderBranchTreeItem(branchId: string, branches: Branch[]): ReactNode {
-  const branch = branches.find((branch) => branch.id === branchId);
-  if (!branch) return null;
+function toTreeNodeData(branches: Branch[]) {
+  const branchById = new Map(branches.map((b) => [b.id, b]));
 
-  if ((branch.childBranches?.length ?? 0) === 0) {
-    return (
-      <TreeItem
-        key={branchId}
-        itemId={branchId}
-        label={branch.localName ?? branch.name}
-      />
-    );
+  const toNode = (branch: Branch) => ({
+    value: branch.id,
+    label: branch.localName ?? branch.name,
+    children: createChildren(branch),
+  });
+
+  function createChildren(branch: Branch): TreeNodeData[] {
+    return (branch.childBranches ?? [])
+      .map((childBranchId) => branchById.get(childBranchId))
+      .filter((childBranch) => childBranch !== undefined)
+      .map(toNode)
+      .sort((a, b) => a.label.localeCompare(b.label));
   }
 
-  return (
-    <TreeItem
-      key={branchId}
-      itemId={branchId}
-      label={branch.localName ?? branch.name}
-    >
-      {branch.childBranches
-        ?.sort((a, b) => {
-          const aName = branches.find((branch) => branch.id === a)?.name;
-          const bName = branches.find((branch) => branch.id === b)?.name;
-          if (!aName || !bName) return 0;
-          return aName.localeCompare(bName);
-        })
-        .map((childBranchId) => renderBranchTreeItem(childBranchId, branches))}
-    </TreeItem>
-  );
+  return branches
+    .filter((branch) => !branch.parentBranch)
+    .map(toNode)
+    .sort((a, b) => a.label.localeCompare(b.label));
 }
 
 export default function SelectBranchTreeView({
@@ -43,21 +33,37 @@ export default function SelectBranchTreeView({
   branches: Branch[];
   onSelect: (branchId: string) => void;
 }) {
+  const [selected, setSelected] = useState<string | null>(null);
   return (
     <Stack>
-      <Typography sx={{ ml: 4, mb: 1 }} variant={"h3"} fontWeight={"bolder"}>
-        Velg filial
-      </Typography>
-      <SimpleTreeView
-        onItemSelectionToggle={(_, branchId, isSelected) => {
-          if (isSelected) onSelect(branchId);
-        }}
-      >
-        {branches
-          ?.filter((branch) => !branch.parentBranch)
-          .sort((a, b) => a.name.localeCompare(b.name))
-          .map((branch) => renderBranchTreeItem(branch.id, branches))}
-      </SimpleTreeView>
+      <Title order={3}>Velg filial</Title>
+      <Tree
+        data={toTreeNodeData(branches)}
+        renderNode={({ node, expanded, hasChildren, elementProps }) => (
+          <NavLink
+            {...elementProps}
+            label={node.label}
+            onClick={(event) => {
+              onSelect(node.value);
+              setSelected(node.value);
+              elementProps.onClick(event);
+            }}
+            leftSection={
+              hasChildren ? (
+                <IconChevronRight
+                  size={18}
+                  style={{
+                    transform: expanded ? "rotate(90deg)" : "rotate(0deg)",
+                  }}
+                />
+              ) : (
+                <></>
+              )
+            }
+            active={selected === node.value}
+          />
+        )}
+      />
     </Stack>
   );
 }

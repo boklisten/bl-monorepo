@@ -1,4 +1,4 @@
-import { Anchor, Group, Text, Title } from "@mantine/core";
+import { Anchor, Group, Title } from "@mantine/core";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -25,17 +25,7 @@ export default function Logo({
           order={2}
           c={variant === "white" ? "#fff" : "#26768f"}
         >
-          Boklisten.no
-          {admin && (
-            <Text
-              span
-              inherit
-              variant={"gradient"}
-              gradient={{ from: "yellow", to: "orange" }}
-            >
-              /admin
-            </Text>
-          )}
+          {admin ? "bl-admin" : "Boklisten.no"}
         </Title>
         <TestVersionChip />
       </Group>

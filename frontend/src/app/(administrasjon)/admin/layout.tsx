@@ -13,8 +13,8 @@ import AuthGuard from "@/components/common/AuthGuard";
 
 export const metadata: Metadata = {
   title: {
-    template: "%s | Boklisten.no/admin",
-    default: "Boklisten.no/admin",
+    template: "%s | bl-admin",
+    default: "bl-admin",
   },
 };
 

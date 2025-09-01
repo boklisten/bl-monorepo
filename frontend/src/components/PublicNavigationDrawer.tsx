@@ -183,7 +183,7 @@ export default function PublicNavigationDrawer() {
               />
               {isEmployee && (
                 <NavLink
-                  label={"Gå til /admin"}
+                  label={"Gå til bl-admin"}
                   description={
                     "Her kan du søke opp kunder, samle inn og dele ut bøker."
                   }

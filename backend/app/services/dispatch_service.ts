@@ -8,7 +8,10 @@ import {
   userHasValidSignature,
 } from "#services/legacy/collections/signature/helpers/signature.helper";
 import { OrderEmailHandler } from "#services/legacy/order_email_handler";
+import { PermissionService } from "#services/permission_service";
 import { StorageService } from "#services/storage_service";
+import { UserDetailService } from "#services/user_detail_service";
+import { UserService } from "#services/user_service";
 import { DeliveryInfoBring } from "#shared/delivery/delivery-info/delivery-info-bring";
 import { Order } from "#shared/order/order";
 import { UserDetail } from "#shared/user-detail";
@@ -38,6 +41,21 @@ interface SmsMessage {
 
 const SmsService = {
   async sendOne(message: SmsMessage) {
+    if (env.get("API_ENV") !== "production") {
+      logger.info(
+        "Since API_ENV !== production, SMS will only be sent to users with permission 'employee' or above",
+      );
+      const userDetail = await UserDetailService.getByPhoneNumber(message.to);
+      if (!userDetail) return { successCount: 1, failed: [] };
+      const user = await UserService.getByUserDetailsId(userDetail.id);
+
+      if (
+        !user ||
+        !PermissionService.isPermissionEqualOrOver(user.permission, "employee")
+      )
+        return { successCount: 1, failed: [] };
+    }
+
     try {
       await twilioClient.messages.create({
         body: message.body,
@@ -74,9 +92,33 @@ const EmailService = {
     template: EmailTemplate;
     recipients: EmailRecipient | EmailRecipient[];
   }) {
-    const personalizations = Array.isArray(recipients)
+    const _personalizations = Array.isArray(recipients)
       ? recipients
       : [recipients];
+
+    let personalizations = _personalizations;
+    if (env.get("API_ENV") !== "production") {
+      logger.info(
+        "Since API_ENV !== production, emails will only be sent to users with permission 'employee' or above",
+      );
+      personalizations = [];
+      for (const personalization of _personalizations) {
+        const userDetail = await UserDetailService.getByEmail(
+          personalization.to,
+        );
+        if (!userDetail) continue;
+        const user = await UserService.getByUserDetailsId(userDetail.id);
+        if (
+          !user ||
+          !PermissionService.isPermissionEqualOrOver(
+            user.permission,
+            "employee",
+          )
+        )
+          continue;
+        personalizations.push(personalization);
+      }
+    }
 
     const batches: EmailRecipient[][] = [];
     for (let i = 0; i < personalizations.length; i += SENDGRID_BATCH_SIZE) {

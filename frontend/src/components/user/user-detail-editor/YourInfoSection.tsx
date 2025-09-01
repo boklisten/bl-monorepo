@@ -1,10 +1,11 @@
 import { Divider, Typography } from "@mui/material";
 import Grid from "@mui/material/Grid";
 import TextField from "@mui/material/TextField";
+import { DatePicker } from "@mui/x-date-pickers";
+import moment from "moment";
 import { Controller, useFormContext } from "react-hook-form";
 
 import ClassMembershipSelect from "@/components/ClassMembershipSelect";
-import DatePickerField from "@/components/user/fields/DatePickerField";
 import FieldErrorAlert from "@/components/user/fields/FieldErrorAlert";
 import PhoneNumberField from "@/components/user/fields/PhoneNumberField";
 import PostalCodeField from "@/components/user/fields/PostalCodeField";
@@ -15,10 +16,8 @@ import {
 } from "@/components/user/user-detail-editor/UserDetailsEditor";
 
 export default function YourInfoSection({
-  onIsUnderageChange,
   variant,
 }: {
-  onIsUnderageChange: (isUnderage: boolean | null) => void;
   variant: UserDetailsEditorVariant;
 }) {
   const {
@@ -79,10 +78,27 @@ export default function YourInfoSection({
         <FieldErrorAlert field={"postalCode"} />
       </Grid>
       <Grid size={{ xs: 12 }}>
-        <DatePickerField
-          handleChange={onIsUnderageChange}
+        <Controller
+          name={"birthday"}
           control={control}
-          {...register("birthday", fieldValidators.birthday)}
+          rules={fieldValidators.birthday}
+          render={({ field, fieldState: { error } }) => (
+            <DatePicker
+              {...field}
+              sx={{ width: "100%" }}
+              label="Fødselsdato *"
+              format="DD/MM/YYYY"
+              minDate={moment().subtract(100, "years")}
+              maxDate={moment().subtract(10, "years")}
+              openTo="year"
+              views={["year", "month", "day"]}
+              slotProps={{
+                textField: {
+                  error: !!error,
+                },
+              }}
+            />
+          )}
         />
         <FieldErrorAlert field={"birthday"} />
       </Grid>

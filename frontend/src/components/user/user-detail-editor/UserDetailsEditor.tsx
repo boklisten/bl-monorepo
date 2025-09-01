@@ -8,7 +8,8 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useNotifications } from "@toolpad/core";
 import { InferErrorType } from "@tuyau/client";
 import moment, { Moment } from "moment";
-import { FormProvider, useForm } from "react-hook-form";
+import { useEffect } from "react";
+import { FormProvider, useForm, useWatch } from "react-hook-form";
 
 import { addAccessToken, addRefreshToken } from "@/api/token";
 import DynamicLink from "@/components/DynamicLink";
@@ -76,7 +77,7 @@ export default function UserDetailsEditor({
     mode: "onTouched",
     defaultValues,
   });
-  const { handleSubmit, clearErrors, setError, watch } = methods;
+  const { handleSubmit, clearErrors, setError, control } = methods;
 
   function handleSubmitError(
     error: InferErrorType<
@@ -223,17 +224,18 @@ export default function UserDetailsEditor({
         queryKey: [client.v2.user_details.$url()],
       }),
   });
-  const birthdayFieldValue = watch("birthday");
 
-  const onIsUnderageChange = (isUnderage: boolean | null) => {
-    if (isUnderage === null || isUnderage) {
-      clearErrors("guardianName");
-      clearErrors("guardianEmail");
-      clearErrors("guardianPhoneNumber");
+  const isUnderage = useWatch({
+    control,
+    name: "birthday",
+    compute: (value) => (value ? isUnder18(value) : false),
+  });
+
+  useEffect(() => {
+    if (!isUnderage) {
+      clearErrors(["guardianName", "guardianEmail", "guardianPhoneNumber"]);
     }
-  };
-
-  const isUnderage = birthdayFieldValue ? isUnder18(birthdayFieldValue) : null;
+  }, [isUnderage, clearErrors]);
 
   return (
     <FormProvider {...methods}>
@@ -246,10 +248,7 @@ export default function UserDetailsEditor({
       >
         <Grid container spacing={2}>
           <LoginInfoSection variant={variant} userDetails={userDetails} />
-          <YourInfoSection
-            variant={variant}
-            onIsUnderageChange={onIsUnderageChange}
-          />
+          <YourInfoSection variant={variant} />
           {isUnderage && <GuardianInfoSection variant={variant} />}
           {variant === "signup" && <TermsAndConditionsSection />}
         </Grid>

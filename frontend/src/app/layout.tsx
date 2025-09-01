@@ -1,7 +1,6 @@
 import { ColorSchemeScript, mantineHtmlProps } from "@mantine/core";
 import { ThemeProvider } from "@mui/material";
 import { AppRouterCacheProvider } from "@mui/material-nextjs/v15-appRouter";
-import { Metadata } from "next";
 import Head from "next/head";
 import Script from "next/script";
 import { Suspense } from "react";
@@ -16,13 +15,6 @@ import "@fontsource/roboto/700.css";
 
 import "@/app/globals.css";
 import "dayjs/locale/nb";
-
-export const metadata: Metadata = {
-  title: {
-    template: "%s | Boklisten.no",
-    default: "Boklisten.no",
-  },
-};
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   // fixme: we probably should not have a Suspend here

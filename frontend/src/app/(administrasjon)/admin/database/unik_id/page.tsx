@@ -1,7 +1,12 @@
 import { PictureAsPdf } from "@mui/icons-material";
 import { Box, Button, Stack, Typography } from "@mui/material";
+import { Metadata } from "next";
 
 import { publicApiClient } from "@/utils/api/publicApiClient";
+
+export const metadata: Metadata = {
+  title: "Unike IDer",
+};
 
 export default function DatabaseUniqueIdPage() {
   return (

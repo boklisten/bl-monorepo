@@ -1,4 +1,3 @@
-"use client";
 import { USER_PERMISSION } from "@boklisten/backend/shared/user-permission";
 import {
   AppShell,
@@ -6,10 +5,18 @@ import {
   AppShellMain,
   AppShellNavbar,
 } from "@mantine/core";
+import { Metadata } from "next";
 
 import AdminPageHeader from "@/app/(administrasjon)/admin/AdminPageHeader";
 import AdminPageNavigation from "@/app/(administrasjon)/admin/AdminPageNavigation";
 import AuthGuard from "@/components/common/AuthGuard";
+
+export const metadata: Metadata = {
+  title: {
+    template: "%s | Boklisten.no/admin",
+    default: "Boklisten.no/admin",
+  },
+};
 
 export default function AdminPageLayout({ children }: LayoutProps<"/admin">) {
   return (

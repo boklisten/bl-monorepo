@@ -6,7 +6,7 @@ import { useDialogs, useNotifications } from "@toolpad/core";
 import moment from "moment";
 import { useRouter } from "next/navigation";
 
-import useApiClient from "@/utils/api/useApiClient";
+import useApiClient from "@/hooks/useApiClient";
 import {
   ERROR_NOTIFICATION,
   SUCCESS_NOTIFICATION,

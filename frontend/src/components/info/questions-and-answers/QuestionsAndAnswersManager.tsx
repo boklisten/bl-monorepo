@@ -17,7 +17,7 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useDialogs, useNotifications } from "@toolpad/core";
 
 import QuestionAndAnswerEditDialog from "@/components/info/questions-and-answers/QuestionAndAnswerEditDialog";
-import useApiClient from "@/utils/api/useApiClient";
+import useApiClient from "@/hooks/useApiClient";
 import {
   ERROR_NOTIFICATION,
   SUCCESS_NOTIFICATION,

@@ -5,7 +5,7 @@ import { useQuery } from "@tanstack/react-query";
 import Link from "next/link";
 
 import CountdownToRedirect from "@/components/CountdownToRedirect";
-import { publicApiClient } from "@/utils/api/publicApiClient";
+import { publicApiClient } from "@/utils/publicApiClient";
 
 export default function EmailConfirmer({
   confirmationId,

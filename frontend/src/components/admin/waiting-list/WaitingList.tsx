@@ -7,8 +7,8 @@ import { useQuery } from "@tanstack/react-query";
 
 import CreateWaitingListEntry from "@/components/admin/waiting-list/CreateWaitingListEntry";
 import WaitingListTable from "@/components/admin/waiting-list/WaitingListTable";
-import unpack from "@/utils/api/bl-api-request";
-import useApiClient from "@/utils/api/useApiClient";
+import useApiClient from "@/hooks/useApiClient";
+import unpack from "@/utils/bl-api-request";
 
 export default function WaitingList() {
   const client = useApiClient();

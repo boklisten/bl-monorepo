@@ -6,8 +6,8 @@ import { useQuery } from "@tanstack/react-query";
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect } from "react";
 
-import unpack from "@/utils/api/bl-api-request";
-import useApiClient from "@/utils/api/useApiClient";
+import useApiClient from "@/hooks/useApiClient";
+import unpack from "@/utils/bl-api-request";
 
 const BranchSelect = () => {
   const client = useApiClient();

@@ -5,8 +5,8 @@ import { useState } from "react";
 
 import ScannerModal from "@/components/scanner/ScannerModal";
 import UserDetailSearchResult from "@/components/search/UserDetailSearchResult";
-import unpack from "@/utils/api/bl-api-request";
-import useApiClient from "@/utils/api/useApiClient";
+import useApiClient from "@/hooks/useApiClient";
+import unpack from "@/utils/bl-api-request";
 
 export default function UserDetailSearchField({
   onSelectedResult,

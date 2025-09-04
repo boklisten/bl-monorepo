@@ -2,8 +2,8 @@
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 
+import useAuth from "@/hooks/useAuth";
 import BL_CONFIG from "@/utils/bl-config";
-import useAuth from "@/utils/useAuth";
 
 export default function LogoutPage() {
   const router = useRouter();

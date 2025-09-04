@@ -2,8 +2,8 @@ import { Item } from "@boklisten/backend/shared/item";
 import { Metadata } from "next";
 
 import BuybackList from "@/components/info/BuybackList";
-import unpack from "@/utils/api/bl-api-request";
-import { publicApiClient } from "@/utils/api/publicApiClient";
+import unpack from "@/utils/bl-api-request";
+import { publicApiClient } from "@/utils/publicApiClient";
 
 export const revalidate = 60;
 

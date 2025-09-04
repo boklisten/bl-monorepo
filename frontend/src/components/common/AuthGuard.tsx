@@ -5,8 +5,8 @@ import { usePathname, useRouter } from "next/navigation";
 import { ReactNode, useEffect } from "react";
 
 import { getAccessTokenBody } from "@/api/token";
-import useApiClient from "@/utils/api/useApiClient";
-import useAuth from "@/utils/useAuth";
+import useApiClient from "@/hooks/useApiClient";
+import useAuth from "@/hooks/useAuth";
 
 /**
  *

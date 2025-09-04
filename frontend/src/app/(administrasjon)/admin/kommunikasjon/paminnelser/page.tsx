@@ -1,3 +1,4 @@
+import { Container, Stack, Title } from "@mantine/core";
 import { Metadata } from "next";
 
 import Reminders from "@/components/admin/Reminders";
@@ -7,5 +8,12 @@ export const metadata: Metadata = {
 };
 
 export default function RemindersPage() {
-  return <Reminders />;
+  return (
+    <Container size={"xs"}>
+      <Stack>
+        <Title>Påminnelser</Title>
+        <Reminders />
+      </Stack>
+    </Container>
+  );
 }

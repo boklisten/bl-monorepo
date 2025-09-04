@@ -16,7 +16,7 @@ import { SubmitHandler, useForm } from "react-hook-form";
 
 import BranchSelect from "@/components/BranchSelect";
 import PhoneNumberField from "@/components/user/fields/PhoneNumberField";
-import useApiClient from "@/utils/api/useApiClient";
+import useApiClient from "@/hooks/useApiClient";
 
 interface WaitingListEntryFormFields {
   name: string;

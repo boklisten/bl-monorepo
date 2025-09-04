@@ -5,8 +5,8 @@ import { Alert, Group, Skeleton } from "@mantine/core";
 import { IconMapPin } from "@tabler/icons-react";
 import { useQuery } from "@tanstack/react-query";
 
-import unpack from "@/utils/api/bl-api-request";
-import { publicApiClient } from "@/utils/api/publicApiClient";
+import unpack from "@/utils/bl-api-request";
+import { publicApiClient } from "@/utils/publicApiClient";
 
 export default function BranchLocationInfo({ branchId }: { branchId: string }) {
   const {

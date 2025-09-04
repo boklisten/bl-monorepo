@@ -1,6 +1,6 @@
 "use client";
 
-import useAuthLinker from "@/utils/useAuthLinker";
+import useAuthLinker from "@/hooks/useAuthLinker";
 
 export default function OrdersPage() {
   const { redirectTo } = useAuthLinker();

@@ -15,7 +15,7 @@ import { useNotifications } from "@toolpad/core";
 import Image from "next/image";
 
 import SignedContractDetails from "@/components/SignedContractDetails";
-import useApiClient from "@/utils/api/useApiClient";
+import useApiClient from "@/hooks/useApiClient";
 import {
   ERROR_NOTIFICATION,
   SUCCESS_NOTIFICATION,

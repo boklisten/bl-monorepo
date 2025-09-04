@@ -1,87 +1,252 @@
 "use client";
+import { Branch } from "@boklisten/backend/shared/branch";
 import { CustomerItemType } from "@boklisten/backend/shared/customer-item/customer-item-type";
 import { MessageMethod } from "@boklisten/backend/shared/message/message-method/message-method";
-import { Grid } from "@mui/material";
-import { useState } from "react";
+import { Button, Grid, Text } from "@mantine/core";
+import { modals } from "@mantine/modals";
+import { IconSend } from "@tabler/icons-react";
+import { useMutation, useQuery } from "@tanstack/react-query";
 
-import CustomerItemTypePicker from "@/components/admin/communication/CustomerItemTypePicker";
-import DeadlinePicker from "@/components/admin/communication/DeadlinePicker";
-import EmailTemplatePicker from "@/components/admin/communication/EmailTemplatePicker";
-import MessageMethodPicker from "@/components/admin/communication/MessageMethodPicker";
-import MultiBranchPicker from "@/components/admin/communication/MultiBranchPicker";
-import SendButton from "@/components/admin/communication/SendButton";
-import SMSTextPicker from "@/components/admin/communication/SMSTextPicker";
+import { calculateDeadlineOptions } from "@/components/form/fields/SegmentedDeadlineField";
+import { useAppForm } from "@/hooks/form";
+import useApiClient from "@/hooks/useApiClient";
+import unpack from "@/utils/bl-api-request";
+import {
+  showErrorNotification,
+  showInfoNotification,
+  showSuccessNotification,
+} from "@/utils/notifications";
+import { calculateSmsSegmentFeedback } from "@/utils/sms";
+
+const SENDGRID_TEMPLATE_ID_REGEX = /^d-[0-9a-f]{32}$/;
+
+interface RemindersFormData {
+  branchIds: string[];
+  deadline: Date | null;
+  customerItemType: CustomerItemType;
+  messageMethod: MessageMethod;
+  emailTemplateId: string | null;
+  smsText: string | null;
+}
+
+const defaultValues: RemindersFormData = {
+  branchIds: [],
+  deadline: new Date(calculateDeadlineOptions()[0].value),
+  customerItemType: "rent",
+  messageMethod: MessageMethod.SMS,
+  emailTemplateId: "",
+  smsText: "",
+};
 
 export default function Reminders() {
-  const [deadline, setDeadline] = useState<Date | null>(null);
-  const [customerItemType, setCustomerItemType] =
-    useState<CustomerItemType | null>(null);
-  const [branchIDs, setBranchIDs] = useState<string[]>([]);
-  const [messageMethod, setMessageMethod] = useState<MessageMethod | null>(
-    null,
-  );
-  const [emailTemplateId, setEmailTemplateId] = useState<string | null>(null);
-  const [smsText, setSmsText] = useState<string | null>(null);
+  const client = useApiClient();
 
-  const hasValidConfiguration =
-    deadline !== null &&
-    customerItemType !== null &&
-    branchIDs.length > 0 &&
-    messageMethod !== null;
+  const { data: branches } = useQuery({
+    queryKey: [
+      client.$url("collection.branches.getAll", {
+        query: { active: true, sort: "name" },
+      }),
+    ],
+    queryFn: () =>
+      client
+        .$route("collection.branches.getAll")
+        .$get({
+          query: { active: true, sort: "name" },
+        })
+        .then(unpack<Branch[]>),
+  });
+
+  const countRecipientsMutation = useMutation({
+    mutationFn: (formData: RemindersFormData) =>
+      client.reminders.count_recipients
+        .$post({
+          deadlineISO: formData.deadline?.toISOString() ?? "",
+          customerItemType: formData.customerItemType,
+          branchIDs: formData.branchIds,
+          emailTemplateId: formData.emailTemplateId,
+          smsText: formData.smsText,
+        })
+        .unwrap(),
+    onError: () =>
+      showErrorNotification({
+        message: "Klarte ikke beregne antall mottakere",
+      }),
+  });
+
+  const sendReminderMutation = useMutation({
+    mutationFn: (formData: RemindersFormData) =>
+      client.reminders.send
+        .$post({
+          deadlineISO: formData.deadline?.toISOString() ?? "",
+          customerItemType: formData.customerItemType,
+          branchIDs: formData.branchIds,
+          emailTemplateId: formData.emailTemplateId,
+          smsText: formData.smsText,
+        })
+        .unwrap(),
+    onError: () =>
+      showErrorNotification({
+        message: "Klarte ikke sende påminnelse",
+      }),
+    onSuccess: () =>
+      showSuccessNotification({
+        title: "Påminnelsen ble sendt!",
+        message: `Husk å sjekke status hos Twilio / SendGrid for å bekrefte at påminnelsen har kommet frem`,
+      }),
+  });
+
+  const form = useAppForm({
+    defaultValues,
+    onSubmit: async ({ value }) => {
+      const { recipientCount } = await countRecipientsMutation.mutateAsync(
+        form.state.values,
+      );
+      if (recipientCount === 0) {
+        showInfoNotification({
+          title: "Fant ingen kunder med valgte innstillinger",
+        });
+        return;
+      }
+      modals.openConfirmModal({
+        title: "Bekreft utsending av påminnelse",
+        children: (
+          <Text size="sm">
+            Du er nå i ferd med å sende en påminnelse på{" "}
+            {value.messageMethod === "sms" ? "sms" : "e-post"} til{" "}
+            {recipientCount} kunder.
+          </Text>
+        ),
+        labels: { confirm: "Send", cancel: "Avbryt" },
+        confirmProps: { leftSection: <IconSend /> },
+        onConfirm: () => sendReminderMutation.mutate(value),
+      });
+    },
+  });
 
   return (
-    <Grid container spacing={2} direction="column" width={318}>
-      <MultiBranchPicker
-        onChange={(newBranchIDs) => {
-          setBranchIDs(newBranchIDs);
+    <form.AppForm>
+      <form.AppField
+        name={"branchIds"}
+        validators={{
+          onChange: ({ value }) =>
+            value.length === 0 ? "Du må velge minst en filial" : null,
         }}
-      />
-      <DeadlinePicker
-        onChange={(newDeadline) => {
-          setDeadline(newDeadline);
+      >
+        {(field) => (
+          <field.MultiSelectField
+            label={"Filialer"}
+            placeholder={"Velg filialer"}
+            data={(branches ?? []).map((branch) => ({
+              value: branch.id,
+              label: branch.name,
+            }))}
+            clearable
+            searchable
+          />
+        )}
+      </form.AppField>
+      <form.AppField
+        name={"deadline"}
+        validators={{
+          onSubmit: ({ value }) => {
+            return value === null ? "Du må velge en frist" : null;
+          },
         }}
-      />
-      <Grid container sx={{ justifyContent: "space-between" }}>
-        <CustomerItemTypePicker
-          onChange={(newCustomerItemType) => {
-            setCustomerItemType(newCustomerItemType);
-          }}
-        />
-        <MessageMethodPicker
-          onChange={(newMessageMethod) => {
-            setMessageMethod(newMessageMethod);
-            if (newMessageMethod === MessageMethod.SMS) {
-              setEmailTemplateId(null);
-            } else {
-              setSmsText(null);
-            }
-          }}
-        />
+      >
+        {(field) => <field.SegmentedDeadlineField />}
+      </form.AppField>
+      <Grid>
+        <Grid.Col span={{ base: 12, xs: 6 }}>
+          <form.AppField name={"customerItemType"}>
+            {(field) => (
+              <field.SegmentedControlField
+                label={"Kundetype"}
+                data={[
+                  { value: "rent", label: "VGS" },
+                  { value: "partly-payment", label: "Privatist" },
+                ]}
+              />
+            )}
+          </form.AppField>
+        </Grid.Col>
+        <Grid.Col span={{ base: 12, xs: 6 }}>
+          <form.AppField name={"messageMethod"}>
+            {(field) => (
+              <field.SegmentedControlField
+                label={"Meldingstype"}
+                data={[
+                  { value: MessageMethod.SMS, label: "SMS" },
+                  { value: MessageMethod.EMAIL, label: "E-post" },
+                ]}
+              />
+            )}
+          </form.AppField>
+        </Grid.Col>
       </Grid>
-      {hasValidConfiguration &&
-        (messageMethod === MessageMethod.SMS ? (
-          <SMSTextPicker
-            onChange={(newSmsText) => {
-              setSmsText(newSmsText);
-            }}
-          />
-        ) : (
-          <EmailTemplatePicker
-            onChange={(newEmailTemplateId) => {
-              setEmailTemplateId(newEmailTemplateId);
-            }}
-          />
-        ))}
-      {hasValidConfiguration && (
-        <SendButton
-          deadline={deadline}
-          customerItemType={customerItemType}
-          branchIDs={branchIDs}
-          messageMethod={messageMethod}
-          emailTemplateId={emailTemplateId}
-          smsText={smsText}
-        />
-      )}
-    </Grid>
+      <form.Subscribe selector={(state) => state.values.messageMethod}>
+        {(messageMethod) =>
+          messageMethod === MessageMethod.SMS ? (
+            <form.AppField
+              name={"smsText"}
+              validators={{
+                onChangeListenTo: ["messageMethod"],
+                onChange: ({ value }) =>
+                  form.state.values.messageMethod === "sms" &&
+                  (!value || value.length === 0)
+                    ? "Du må fylle inn melding"
+                    : null,
+              }}
+            >
+              {(field) => (
+                <field.TextAreaField
+                  label={"Melding"}
+                  description={calculateSmsSegmentFeedback(
+                    field.state.value ?? "",
+                  )}
+                  placeholder={"Hei! [...] Mvh, Boklisten.no"}
+                  autosize
+                  minRows={2}
+                  maxRows={10}
+                />
+              )}
+            </form.AppField>
+          ) : (
+            <form.AppField
+              name={"emailTemplateId"}
+              validators={{
+                onChangeListenTo: ["messageMethod"],
+                onChange: ({ value }) => {
+                  if (form.state.values.messageMethod !== "email") return null;
+
+                  if (!value || value.length === 0)
+                    return "Du må fylle inn template ID";
+
+                  if (!SENDGRID_TEMPLATE_ID_REGEX.test(value))
+                    return "Du må fylle inn en gyldig SendGrid Template ID";
+
+                  return null;
+                },
+              }}
+            >
+              {(field) => (
+                <field.TextField
+                  label={"Template ID"}
+                  placeholder={"d-123456789"}
+                />
+              )}
+            </form.AppField>
+          )
+        }
+      </form.Subscribe>
+      <Button
+        leftSection={<IconSend />}
+        onClick={form.handleSubmit}
+        loading={
+          countRecipientsMutation.isPending || sendReminderMutation.isPending
+        }
+      >
+        Send
+      </Button>
+    </form.AppForm>
   );
 }

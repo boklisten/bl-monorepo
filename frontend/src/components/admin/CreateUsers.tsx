@@ -4,7 +4,7 @@ import { useNotifications } from "@toolpad/core";
 
 import AuthGuard from "@/components/common/AuthGuard";
 import UploadCSVFile from "@/components/UploadCSVFile";
-import useApiClient from "@/utils/api/useApiClient";
+import useApiClient from "@/hooks/useApiClient";
 import {
   ERROR_NOTIFICATION,
   SUCCESS_NOTIFICATION,

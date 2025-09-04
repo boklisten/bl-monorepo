@@ -14,7 +14,7 @@ import { useMutation } from "@tanstack/react-query";
 import { useDialogs, DialogProps } from "@toolpad/core";
 
 import UploadCSVFile from "@/components/UploadCSVFile";
-import useApiClient from "@/utils/api/useApiClient";
+import useApiClient from "@/hooks/useApiClient";
 
 function SuccessfulUploadDialog({
   payload,

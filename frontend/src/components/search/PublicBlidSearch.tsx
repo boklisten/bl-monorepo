@@ -17,7 +17,7 @@ import moment from "moment";
 import { useState } from "react";
 
 import ScannerModal from "@/components/scanner/ScannerModal";
-import useApiClient from "@/utils/api/useApiClient";
+import useApiClient from "@/hooks/useApiClient";
 
 export default function PublicBlidSearch() {
   const client = useApiClient();

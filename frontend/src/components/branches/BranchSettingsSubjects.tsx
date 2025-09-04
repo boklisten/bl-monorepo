@@ -12,8 +12,8 @@ import TableRow from "@mui/material/TableRow";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useNotifications } from "@toolpad/core";
 
-import unpack from "@/utils/api/bl-api-request";
-import useApiClient from "@/utils/api/useApiClient";
+import useApiClient from "@/hooks/useApiClient";
+import unpack from "@/utils/bl-api-request";
 import {
   ERROR_NOTIFICATION,
   SUCCESS_NOTIFICATION,

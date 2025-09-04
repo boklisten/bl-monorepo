@@ -4,9 +4,9 @@ import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 
 import { getAccessTokenBody } from "@/api/token";
-import useApiClient from "@/utils/api/useApiClient";
-import useAuth from "@/utils/useAuth";
-import useAuthLinker from "@/utils/useAuthLinker";
+import useApiClient from "@/hooks/useApiClient";
+import useAuth from "@/hooks/useAuth";
+import useAuthLinker from "@/hooks/useAuthLinker";
 
 export default function AuthVerifier() {
   const client = useApiClient();

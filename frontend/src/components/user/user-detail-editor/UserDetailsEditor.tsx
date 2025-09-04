@@ -18,10 +18,10 @@ import GuardianInfoSection from "@/components/user/user-detail-editor/GuardianIn
 import LoginInfoSection from "@/components/user/user-detail-editor/LoginInfoSection";
 import TermsAndConditionsSection from "@/components/user/user-detail-editor/TermsAndConditionsSection";
 import YourInfoSection from "@/components/user/user-detail-editor/YourInfoSection";
-import { publicApiClient } from "@/utils/api/publicApiClient";
-import useApiClient from "@/utils/api/useApiClient";
+import useApiClient from "@/hooks/useApiClient";
+import useAuthLinker from "@/hooks/useAuthLinker";
 import { SUCCESS_NOTIFICATION } from "@/utils/notifications";
-import useAuthLinker from "@/utils/useAuthLinker";
+import { publicApiClient } from "@/utils/publicApiClient";
 
 export interface UserEditorFields {
   email: string;

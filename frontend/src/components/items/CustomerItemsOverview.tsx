@@ -7,7 +7,7 @@ import { ReactNode } from "react";
 
 import CustomerItemCard from "@/components/items/CustomerItemCard";
 import OpenOrdersList from "@/components/orders/OpenOrdersList";
-import useApiClient from "@/utils/api/useApiClient";
+import useApiClient from "@/hooks/useApiClient";
 
 function CustomerItemsOverviewWrapper({
   orderedItemsSlot,

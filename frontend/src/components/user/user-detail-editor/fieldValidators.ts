@@ -5,8 +5,8 @@ import isMobilePhone from "validator/lib/isMobilePhone";
 import isPostalCode from "validator/lib/isPostalCode";
 
 import { UserEditorFields } from "@/components/user/user-detail-editor/UserDetailsEditor";
-import unpack from "@/utils/api/bl-api-request";
-import { publicApiClient } from "@/utils/api/publicApiClient";
+import unpack from "@/utils/bl-api-request";
+import { publicApiClient } from "@/utils/publicApiClient";
 
 export const fieldValidators = {
   email: {

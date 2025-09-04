@@ -8,8 +8,8 @@ import isPostalCode from "validator/lib/isPostalCode";
 
 import { fieldValidators } from "@/components/user/user-detail-editor/fieldValidators";
 import { UserEditorFields } from "@/components/user/user-detail-editor/UserDetailsEditor";
-import unpack from "@/utils/api/bl-api-request";
-import { publicApiClient } from "@/utils/api/publicApiClient";
+import unpack from "@/utils/bl-api-request";
+import { publicApiClient } from "@/utils/publicApiClient";
 
 type PostalCityState =
   | {

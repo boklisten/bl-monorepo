@@ -1,8 +1,8 @@
 "use client";
 import { useRouter, useSearchParams } from "next/navigation";
 
+import useAuth from "@/hooks/useAuth";
 import BL_CONFIG from "@/utils/bl-config";
-import useAuth from "@/utils/useAuth";
 
 export default function useAuthLinker() {
   const router = useRouter();

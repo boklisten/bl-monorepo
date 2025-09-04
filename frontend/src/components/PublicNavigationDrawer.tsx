@@ -29,8 +29,8 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 
 import { getAccessTokenBody } from "@/api/token";
-import useApiClient from "@/utils/api/useApiClient";
-import useAuth from "@/utils/useAuth";
+import useApiClient from "@/hooks/useApiClient";
+import useAuth from "@/hooks/useAuth";
 
 export default function PublicNavigationDrawer() {
   const pathname = usePathname();

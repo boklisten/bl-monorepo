@@ -9,8 +9,8 @@ import { useState } from "react";
 import BranchSettings from "@/components/branches/BranchSettings";
 import CreateBranchDialog from "@/components/branches/CreateBranchDialog";
 import SelectBranchTreeView from "@/components/branches/SelectBranchTreeView";
-import unpack from "@/utils/api/bl-api-request";
-import useApiClient from "@/utils/api/useApiClient";
+import useApiClient from "@/hooks/useApiClient";
+import unpack from "@/utils/bl-api-request";
 
 export default function Branches() {
   const client = useApiClient();

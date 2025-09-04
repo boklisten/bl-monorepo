@@ -5,8 +5,8 @@ import { useQuery } from "@tanstack/react-query";
 import { Controller, useFormContext } from "react-hook-form";
 
 import { BranchCreateForm } from "@/components/branches/BranchSettings";
-import unpack from "@/utils/api/bl-api-request";
-import useApiClient from "@/utils/api/useApiClient";
+import useApiClient from "@/hooks/useApiClient";
+import unpack from "@/utils/bl-api-request";
 
 export default function BranchSettingsGeneral({
   currentBranchId,

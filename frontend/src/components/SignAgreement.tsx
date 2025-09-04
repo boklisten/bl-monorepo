@@ -15,8 +15,8 @@ import { Controller, useForm } from "react-hook-form";
 import ExpandableEditableTextReadOnly from "@/components/info/editable-text/ExpandableEditableTextReadOnly";
 import SignaturePad from "@/components/SignaturePad";
 import SignedContractDetails from "@/components/SignedContractDetails";
-import { publicApiClient } from "@/utils/api/publicApiClient";
 import { ERROR_NOTIFICATION } from "@/utils/notifications";
+import { publicApiClient } from "@/utils/publicApiClient";
 
 interface SignaturePayload {
   signingName: string;

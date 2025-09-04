@@ -24,7 +24,7 @@ import {
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
-import useAuth from "@/utils/useAuth";
+import useAuth from "@/hooks/useAuth";
 
 export default function AdminPageNavigation({
   onNavigate = () => {

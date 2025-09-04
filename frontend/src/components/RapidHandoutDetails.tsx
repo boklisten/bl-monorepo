@@ -11,8 +11,8 @@ import MatchItemTable from "@/components/matches/MatchItemTable";
 import MatchScannerContent from "@/components/matches/MatchScannerContent";
 import { determineScannedTextType } from "@/components/scanner/BlidScanner";
 import ScannerModal from "@/components/scanner/ScannerModal";
-import unpack from "@/utils/api/bl-api-request";
-import useApiClient from "@/utils/api/useApiClient";
+import useApiClient from "@/hooks/useApiClient";
+import unpack from "@/utils/bl-api-request";
 import { TextType } from "@/utils/types";
 
 function calculateUnfulfilledOrderItems(orders: Order[]): OrderItem[] {

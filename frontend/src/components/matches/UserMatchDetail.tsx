@@ -18,7 +18,7 @@ import MeetingInfo from "@/components/matches/MeetingInfo";
 import OtherPersonContact from "@/components/matches/OtherPersonContact";
 import ScannerModal from "@/components/scanner/ScannerModal";
 import ScannerTutorial from "@/components/scanner/ScannerTutorial";
-import useApiClient from "@/utils/api/useApiClient";
+import useApiClient from "@/hooks/useApiClient";
 
 const UserMatchDetail = ({
   userMatch,

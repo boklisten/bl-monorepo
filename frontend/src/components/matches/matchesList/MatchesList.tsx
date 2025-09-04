@@ -11,7 +11,7 @@ import {
 } from "@/components/matches/matches-helper";
 import { MatchListItemGroups } from "@/components/matches/matchesList/MatchListItemGroups";
 import ProgressBar from "@/components/matches/matchesList/ProgressBar";
-import useApiClient from "@/utils/api/useApiClient";
+import useApiClient from "@/hooks/useApiClient";
 
 export const MatchesList: FC = () => {
   const client = useApiClient();

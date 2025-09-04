@@ -3,7 +3,7 @@ import { Alert } from "@mantine/core";
 import { useQuery } from "@tanstack/react-query";
 
 import { TextEditor } from "@/components/TextEditor";
-import useApiClient from "@/utils/api/useApiClient";
+import useApiClient from "@/hooks/useApiClient";
 
 export default function EditableTextReadOnly({
   dataKey,

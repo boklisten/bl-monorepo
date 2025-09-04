@@ -11,9 +11,9 @@ import validator from "validator";
 import { addAccessToken, addRefreshToken } from "@/api/token";
 import DynamicLink from "@/components/DynamicLink";
 import PasswordField from "@/components/user/fields/PasswordField";
-import { publicApiClient } from "@/utils/api/publicApiClient";
-import useAuth from "@/utils/useAuth";
-import useAuthLinker from "@/utils/useAuthLinker";
+import useAuth from "@/hooks/useAuth";
+import useAuthLinker from "@/hooks/useAuthLinker";
+import { publicApiClient } from "@/utils/publicApiClient";
 
 interface SignInFields {
   username: string;

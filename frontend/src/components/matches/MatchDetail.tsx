@@ -7,7 +7,7 @@ import { getAccessTokenBody } from "@/api/token";
 import DynamicLink from "@/components/DynamicLink";
 import StandMatchDetail from "@/components/matches/StandMatchDetail";
 import UserMatchDetail from "@/components/matches/UserMatchDetail";
-import useApiClient from "@/utils/api/useApiClient";
+import useApiClient from "@/hooks/useApiClient";
 import muiTheme from "@/utils/muiTheme";
 
 const MatchDetail = ({

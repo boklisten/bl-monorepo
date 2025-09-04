@@ -25,7 +25,7 @@ import {
 import moment from "moment";
 import { ReactNode } from "react";
 
-import useAuthLinker from "@/utils/useAuthLinker";
+import useAuthLinker from "@/hooks/useAuthLinker";
 
 function InfoEntry({
   startIcon,

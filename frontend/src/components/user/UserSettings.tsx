@@ -6,8 +6,8 @@ import { useRouter } from "next/navigation";
 
 import { getAccessTokenBody } from "@/api/token";
 import UserDetailsEditor from "@/components/user/user-detail-editor/UserDetailsEditor";
-import unpack from "@/utils/api/bl-api-request";
-import useApiClient from "@/utils/api/useApiClient";
+import useApiClient from "@/hooks/useApiClient";
+import unpack from "@/utils/bl-api-request";
 
 const UserSettings = () => {
   const client = useApiClient();

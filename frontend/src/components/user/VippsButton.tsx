@@ -3,8 +3,8 @@ import { Center } from "@mantine/core";
 import { useRouter, useSearchParams } from "next/navigation";
 
 import { add } from "@/api/storage";
-import { publicApiClient } from "@/utils/api/publicApiClient";
 import BL_CONFIG from "@/utils/bl-config";
+import { publicApiClient } from "@/utils/publicApiClient";
 
 export default function VippsButton({ verb }: { verb: "login" | "register" }) {
   const router = useRouter();

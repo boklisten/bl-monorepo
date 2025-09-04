@@ -9,7 +9,7 @@ import {
   UserDetailsEditorVariant,
   UserEditorFields,
 } from "@/components/user/user-detail-editor/UserDetailsEditor";
-import useApiClient from "@/utils/api/useApiClient";
+import useApiClient from "@/hooks/useApiClient";
 
 interface EmailConfirmationStatusProps {
   variant: UserDetailsEditorVariant;

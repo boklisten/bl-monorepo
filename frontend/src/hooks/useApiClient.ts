@@ -1,8 +1,8 @@
 /* eslint-disable @typescript-eslint/triple-slash-reference */
 
 // Type references
-/// <reference path="../../../../backend/config/ally.ts" />
-/// <reference path="../../../../backend/adonisrc.ts" />
+/// <reference path="../../../backend/config/ally.ts" />
+/// <reference path="../../../backend/adonisrc.ts" />
 
 import { api } from "@boklisten/backend/.adonisjs";
 import { createTuyau } from "@tuyau/client";
@@ -15,8 +15,8 @@ import {
   getAccessToken,
   getRefreshToken,
 } from "@/api/token";
-import { publicApiClient } from "@/utils/api/publicApiClient";
 import BL_CONFIG from "@/utils/bl-config";
+import { publicApiClient } from "@/utils/publicApiClient";
 
 export default function useApiClient() {
   const router = useRouter();

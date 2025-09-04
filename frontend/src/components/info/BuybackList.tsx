@@ -3,8 +3,8 @@ import { Item } from "@boklisten/backend/shared/item";
 import { Alert, Table, Text, Title } from "@mantine/core";
 import { useQuery } from "@tanstack/react-query";
 
-import unpack from "@/utils/api/bl-api-request";
-import useApiClient from "@/utils/api/useApiClient";
+import useApiClient from "@/hooks/useApiClient";
+import unpack from "@/utils/bl-api-request";
 
 const BuybackList = ({
   cachedBuybackItems,

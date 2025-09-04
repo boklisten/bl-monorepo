@@ -7,7 +7,7 @@ import { useForm } from "react-hook-form";
 import validator from "validator";
 
 import DynamicLink from "@/components/DynamicLink";
-import { publicApiClient } from "@/utils/api/publicApiClient";
+import { publicApiClient } from "@/utils/publicApiClient";
 
 interface ForgotFields {
   email: string;

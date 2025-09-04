@@ -23,7 +23,7 @@ import SignAgreement from "@/components/SignAgreement";
 import UserDetailsEditor, {
   isUnder18,
 } from "@/components/user/user-detail-editor/UserDetailsEditor";
-import useApiClient from "@/utils/api/useApiClient";
+import useApiClient from "@/hooks/useApiClient";
 import {
   ERROR_NOTIFICATION,
   SUCCESS_NOTIFICATION,

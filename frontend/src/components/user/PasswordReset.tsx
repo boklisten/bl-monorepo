@@ -11,7 +11,7 @@ import { FormProvider, useForm } from "react-hook-form";
 
 import DynamicLink from "@/components/DynamicLink";
 import PasswordField from "@/components/user/fields/PasswordField";
-import { publicApiClient } from "@/utils/api/publicApiClient";
+import { publicApiClient } from "@/utils/publicApiClient";
 
 interface PasswordResetFields {
   password: string;

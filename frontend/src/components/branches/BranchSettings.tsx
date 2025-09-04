@@ -20,7 +20,7 @@ import BranchSettingsGeneral from "@/components/branches/BranchSettingsGeneral";
 import BranchSettingsSubjects from "@/components/branches/BranchSettingsSubjects";
 import UploadClassMemberships from "@/components/branches/UploadClassMemberships";
 import UploadSubjectChoices from "@/components/branches/UploadSubjectChoices";
-import useApiClient from "@/utils/api/useApiClient";
+import useApiClient from "@/hooks/useApiClient";
 import {
   ERROR_NOTIFICATION,
   SUCCESS_NOTIFICATION,

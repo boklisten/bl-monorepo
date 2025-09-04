@@ -6,8 +6,8 @@ import { useQuery } from "@tanstack/react-query";
 import moment from "moment";
 
 import ContactInfo from "@/components/info/ContactInfo";
-import unpack from "@/utils/api/bl-api-request";
-import { publicApiClient } from "@/utils/api/publicApiClient";
+import unpack from "@/utils/bl-api-request";
+import { publicApiClient } from "@/utils/publicApiClient";
 import "moment/locale/nb";
 
 const compareOpeningHours = (a: OpeningHour, b: OpeningHour): number => {

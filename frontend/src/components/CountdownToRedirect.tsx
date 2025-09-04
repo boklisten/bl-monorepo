@@ -3,7 +3,7 @@ import { LinearProgress, Box, Typography } from "@mui/material";
 import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 
-import useAuthLinker from "@/utils/useAuthLinker";
+import useAuthLinker from "@/hooks/useAuthLinker";
 
 const CountdownToRedirect = ({
   seconds,

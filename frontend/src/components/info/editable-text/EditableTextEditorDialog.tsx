@@ -15,7 +15,7 @@ import { RichTextEditorRef } from "mui-tiptap";
 import { useRef, useState } from "react";
 
 import { TextEditor } from "@/components/TextEditor";
-import useApiClient from "@/utils/api/useApiClient";
+import useApiClient from "@/hooks/useApiClient";
 import {
   ERROR_NOTIFICATION,
   SUCCESS_NOTIFICATION,

@@ -24,6 +24,7 @@ export default function Logo({
           style={{ fontFamily: "serif" }}
           order={2}
           c={variant === "white" ? "#fff" : "#26768f"}
+          textWrap={"nowrap"}
         >
           {admin ? "bl-admin" : "Boklisten.no"}
         </Title>

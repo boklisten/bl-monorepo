@@ -3,6 +3,7 @@ import { createFormHookContexts, createFormHook } from "@tanstack/react-form";
 import ErrorSummary from "@/components/form/ErrorSummary";
 import DateInputField from "@/components/form/fields/DateInputField";
 import MultiSelectField from "@/components/form/fields/MultiSelectField";
+import NewPasswordInputField from "@/components/form/fields/NewPasswordInputField";
 import PasswordInputField from "@/components/form/fields/PasswordInputField";
 import SegmentedControlField from "@/components/form/fields/SegmentedControlField";
 import SegmentedDeadlineField from "@/components/form/fields/SegmentedDeadlineField";
@@ -16,6 +17,7 @@ const { useAppForm } = createFormHook({
   fieldComponents: {
     DateInputField,
     MultiSelectField,
+    NewPasswordInputField,
     PasswordInputField,
     SegmentedControlField,
     SegmentedDeadlineField,

@@ -1,30 +1,22 @@
 "use client";
-import { Anchor } from "@mantine/core";
-import { Alert, Stack, Box } from "@mui/material";
-import Button from "@mui/material/Button";
-import Grid from "@mui/material/Grid";
+import { Alert, Anchor, Button } from "@mantine/core";
+import { IconCircleCheck } from "@tabler/icons-react";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { useState } from "react";
-import { FormProvider, useForm } from "react-hook-form";
 
-import DynamicLink from "@/components/DynamicLink";
-import PasswordField from "@/components/user/fields/PasswordField";
+import ErrorAlert from "@/components/ui/ErrorAlert";
+import { useAppForm } from "@/hooks/form";
 import { publicApiClient } from "@/utils/publicApiClient";
 
 interface PasswordResetFields {
-  password: string;
+  newPassword: string;
 }
 
 export default function PasswordReset({ resetId }: { resetId: string }) {
   const searchParams = useSearchParams();
   const [apiError, setApiError] = useState<string | null>(null);
-  const methods = useForm<PasswordResetFields>();
-  const {
-    handleSubmit,
-    formState: { errors },
-  } = methods;
 
   const resetValidation = useQuery({
     queryKey: [publicApiClient.reset_password.validate.$url(), resetId],
@@ -36,13 +28,13 @@ export default function PasswordReset({ resetId }: { resetId: string }) {
   });
 
   const resetPasswordMutation = useMutation({
-    mutationFn: async ({ password }: PasswordResetFields) => {
+    mutationFn: async ({ newPassword }: PasswordResetFields) => {
       setApiError(null);
       const { message } = await publicApiClient.reset_password
         .$post({
           resetId,
           resetToken: searchParams.get("resetToken") ?? "",
-          newPassword: password,
+          newPassword,
         })
         .unwrap();
       setApiError(message ?? null);
@@ -54,15 +46,24 @@ export default function PasswordReset({ resetId }: { resetId: string }) {
     },
   });
 
+  const form = useAppForm({
+    defaultValues: {
+      newPassword: "",
+    },
+    onSubmit: async ({ value }) => resetPasswordMutation.mutate(value),
+  });
+
   const message = resetValidation.data?.data?.message;
   const isExpired = message || resetValidation.isError;
   if (isExpired) {
     return (
       <>
-        <Alert severity="error" sx={{ my: 1 }}>
-          {message ??
-            "Lenken har utløpt. Du kan be om å få tilsendt en ny lenke på 'glemt passord'-siden"}
-        </Alert>
+        <ErrorAlert
+          message={
+            message ??
+            "Lenken har utløpt. Du kan be om å få tilsendt en ny lenke på 'glemt passord'-siden"
+          }
+        ></ErrorAlert>
         <Anchor component={Link} href={"/auth/forgot"}>
           Gå til glemt passord
         </Anchor>
@@ -71,61 +72,34 @@ export default function PasswordReset({ resetId }: { resetId: string }) {
   }
 
   return (
-    <Box
-      component="form"
-      onSubmit={handleSubmit((data) => resetPasswordMutation.mutate(data))}
-      sx={{ width: "100%" }}
-    >
+    <form.AppForm>
       {resetPasswordMutation.isSuccess && !apiError ? (
-        <Stack
-          sx={{
-            alignItems: "center",
-            gap: 2,
-            mt: 1,
-          }}
-        >
-          <Alert severity="success">
+        <>
+          <Alert icon={<IconCircleCheck />} color={"green"}>
             Passordet ble oppdatert! Du kan nå logge inn.
           </Alert>
-          <DynamicLink href={"/auth/login"}>
-            <Button variant="contained">Logg inn</Button>
-          </DynamicLink>
-        </Stack>
+          <Anchor component={Link} href={"/auth/login"}>
+            <Button>Logg inn</Button>
+          </Anchor>
+        </>
       ) : (
         <>
-          {apiError && (
-            <Alert severity="error" sx={{ my: 2 }}>
-              {apiError}
-            </Alert>
-          )}
-          {Object.entries(errors).map(([type, message]) => (
-            <Alert key={type} severity="error" sx={{ my: 2 }}>
-              {message.message}
-            </Alert>
-          ))}
-          <FormProvider {...methods}>
-            <PasswordField
-              label={"Nytt passord"}
-              autoComplete={"new-password"}
-            />
-          </FormProvider>
-          <Button
-            type="submit"
-            fullWidth
-            variant="contained"
-            sx={{ mt: 3, mb: 2, textTransform: "none" }}
+          {apiError && <ErrorAlert message={apiError} />}
+          <form.AppField
+            name={"newPassword"}
+            validators={{
+              onBlur: ({ value }) =>
+                value.length < 10 ? "Passordet må ha minst 10 tegn" : null,
+            }}
           >
-            Lag nytt passord
-          </Button>
-          <Grid container>
-            <Grid>
-              <Anchor component={Link} href={"/auth/login"}>
-                Tilbake til innloggingssiden
-              </Anchor>
-            </Grid>
-          </Grid>
+            {(field) => <field.NewPasswordInputField label={"Nytt passord"} />}
+          </form.AppField>
+          <Button onClick={form.handleSubmit}>Lag nytt passord</Button>
+          <Anchor component={Link} href={"/auth/login"}>
+            Tilbake til innloggingssiden
+          </Anchor>
         </>
       )}
-    </Box>
+    </form.AppForm>
   );
 }

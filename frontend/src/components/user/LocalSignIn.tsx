@@ -1,16 +1,13 @@
 "use client";
-import { Alert, Stack } from "@mui/material";
-import Box from "@mui/material/Box";
-import Button from "@mui/material/Button";
-import TextField from "@mui/material/TextField";
+import { Anchor, Button, Group } from "@mantine/core";
 import { useMutation } from "@tanstack/react-query";
+import Link from "next/link";
 import { useEffect, useState } from "react";
-import { FormProvider, useForm } from "react-hook-form";
 import validator from "validator";
 
 import { addAccessToken, addRefreshToken } from "@/api/token";
-import DynamicLink from "@/components/DynamicLink";
-import PasswordField from "@/components/user/fields/PasswordField";
+import ErrorAlert from "@/components/ui/ErrorAlert";
+import { useAppForm } from "@/hooks/form";
 import useAuth from "@/hooks/useAuth";
 import useAuthLinker from "@/hooks/useAuthLinker";
 import { publicApiClient } from "@/utils/publicApiClient";
@@ -24,12 +21,6 @@ export default function LocalSignIn() {
   const [apiError, setApiError] = useState<string | null>(null);
   const { isLoggedIn } = useAuth();
   const { redirectToCaller } = useAuthLinker();
-  const methods = useForm<SignInFields>({ mode: "onTouched" });
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = methods;
 
   const signInMutation = useMutation({
     mutationFn: async ({ username, password }: SignInFields) => {
@@ -53,6 +44,14 @@ export default function LocalSignIn() {
       ),
   });
 
+  const form = useAppForm({
+    defaultValues: {
+      username: "",
+      password: "",
+    },
+    onSubmit: ({ value }) => signInMutation.mutate(value),
+  });
+
   useEffect(() => {
     // Next might have valid tokens, even though bl-web and bl-admin might not. If so, the user is redirected automatically
     if (isLoggedIn) {
@@ -61,54 +60,56 @@ export default function LocalSignIn() {
   }, [redirectToCaller, isLoggedIn]);
 
   return (
-    <>
-      <Box
-        component="form"
-        onSubmit={handleSubmit((data) => signInMutation.mutate(data))}
-        sx={{ width: "100%" }}
+    <form.AppForm>
+      {apiError && <ErrorAlert title={apiError} />}
+      <form.AppField
+        name={"username"}
+        validators={{
+          onBlur: ({ value }) => {
+            return (!validator.isEmail(value) &&
+              !validator.isMobilePhone(value, "nb-NO")) ||
+              value.includes("+47")
+              ? "Du må fylle inn gyldig e-post eller telefonnummer (uten +47)"
+              : null;
+          },
+        }}
       >
-        {apiError && (
-          <Alert severity="error" sx={{ mt: 1, mb: 2 }}>
-            {apiError}
-          </Alert>
-        )}
-        {Object.entries(errors).map(([type, message]) => (
-          <Alert key={type} severity="error" sx={{ mt: 1, mb: 2 }}>
-            {message.message}
-          </Alert>
-        ))}
-        <FormProvider {...methods}>
-          <TextField
+        {(field) => (
+          <field.TextField
             required
-            fullWidth
-            id="username"
-            label="E-post eller telefonnummer"
-            autoComplete="username"
-            {...register("username", {
-              validate: (v) =>
-                !v || validator.isEmail(v) || validator.isMobilePhone(v)
-                  ? true
-                  : "Du må fylle inn gyldig e-post eller telefonnummer",
-            })}
+            label={"Brukernavn"}
+            placeholder={"E-post eller telefonnummer"}
+            autoComplete={"username"}
           />
-          <PasswordField label={"Passord"} autoComplete="current-password" />
-        </FormProvider>
-        <Button
-          loading={signInMutation.isPending}
-          type="submit"
-          fullWidth
-          variant="contained"
-          sx={{ mt: 3, mb: 2 }}
-        >
-          Logg inn
-        </Button>
-        <Stack justifyContent={"space-between"} direction={"row"}>
-          <DynamicLink href={"/auth/forgot"}>Glemt passord?</DynamicLink>
-          <DynamicLink href={"/auth/register"}>
-            Har du ikke konto? Registrer deg
-          </DynamicLink>
-        </Stack>
-      </Box>
-    </>
+        )}
+      </form.AppField>
+      <form.AppField
+        name={"password"}
+        validators={{
+          onBlur: ({ value }) =>
+            value.length === 0 ? "Du må fylle inn passord" : null,
+        }}
+      >
+        {(field) => (
+          <field.PasswordInputField
+            required
+            label={"Passord"}
+            placeholder={"Ditt passord"}
+            autoComplete={"current-password"}
+          />
+        )}
+      </form.AppField>
+      <Button onClick={form.handleSubmit} loading={signInMutation.isPending}>
+        Logg inn
+      </Button>
+      <Group justify={"space-between"}>
+        <Anchor component={Link} href={"/auth/forgot"}>
+          Glemt passord?
+        </Anchor>
+        <Anchor component={Link} href={"/auth/register"}>
+          Har du ikke konto? Registrer deg
+        </Anchor>
+      </Group>
+    </form.AppForm>
   );
 }

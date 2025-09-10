@@ -238,15 +238,20 @@ export default function Reminders() {
           )
         }
       </form.Subscribe>
-      <Button
-        leftSection={<IconSend />}
-        onClick={form.handleSubmit}
-        loading={
-          countRecipientsMutation.isPending || sendReminderMutation.isPending
+      <form.SubmitButton
+        buttonSlot={
+          <Button
+            leftSection={<IconSend />}
+            onClick={form.handleSubmit}
+            loading={
+              countRecipientsMutation.isPending ||
+              sendReminderMutation.isPending
+            }
+          >
+            Send
+          </Button>
         }
-      >
-        Send
-      </Button>
+      />
     </form.AppForm>
   );
 }

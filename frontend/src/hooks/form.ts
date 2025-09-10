@@ -6,8 +6,10 @@ import SegmentedControlField from "@/components/form/fields/SegmentedControlFiel
 import SegmentedDeadlineField from "@/components/form/fields/SegmentedDeadlineField";
 import TextAreaField from "@/components/form/fields/TextAreaField";
 import TextField from "@/components/form/fields/TextField";
+import SubmitButton from "@/components/form/SubmitButton";
 
-const { fieldContext, formContext, useFieldContext } = createFormHookContexts();
+const { fieldContext, formContext, useFieldContext, useFormContext } =
+  createFormHookContexts();
 
 const { useAppForm } = createFormHook({
   fieldComponents: {
@@ -18,9 +20,11 @@ const { useAppForm } = createFormHook({
     TextAreaField,
     TextField,
   },
-  formComponents: {},
+  formComponents: {
+    SubmitButton,
+  },
   fieldContext,
   formContext,
 });
 
-export { useAppForm, useFieldContext };
+export { useAppForm, useFieldContext, useFormContext };

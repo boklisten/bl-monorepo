@@ -1,12 +1,14 @@
 "use client";
 
-import { Alert, Box, Button, Grid, Stack, TextField } from "@mui/material";
+import { Alert, Anchor, Button, Stack } from "@mantine/core";
+import { IconMailFast } from "@tabler/icons-react";
 import { useMutation } from "@tanstack/react-query";
+import Link from "next/link";
 import { useState } from "react";
-import { useForm } from "react-hook-form";
 import validator from "validator";
 
-import DynamicLink from "@/components/DynamicLink";
+import ErrorAlert from "@/components/ui/ErrorAlert";
+import { useAppForm } from "@/hooks/form";
 import { publicApiClient } from "@/utils/publicApiClient";
 
 interface ForgotFields {
@@ -14,12 +16,6 @@ interface ForgotFields {
 }
 
 export default function ForgotPasswordForm() {
-  const {
-    register,
-    handleSubmit,
-    formState: { errors: formErrors },
-  } = useForm<ForgotFields>({ mode: "onTouched" });
-
   const [apiError, setApiError] = useState<string | null>(null);
 
   const requestPasswordResetMutation = useMutation({
@@ -38,60 +34,52 @@ export default function ForgotPasswordForm() {
       ),
   });
 
+  const form = useAppForm({
+    defaultValues: {
+      email: "",
+    },
+    onSubmit: ({ value }) => requestPasswordResetMutation.mutate(value),
+  });
+
   return (
-    <Box
-      component="form"
-      onSubmit={handleSubmit((data) =>
-        requestPasswordResetMutation.mutate(data),
-      )}
-      sx={{ width: "100%" }}
-    >
-      <Stack gap={1}>
-        {Object.entries(formErrors).map(([type, message]) => (
-          <Alert key={type} severity="error">
-            {message.message}
-          </Alert>
-        ))}
-        {apiError && <Alert severity="error">{apiError}</Alert>}
+    <form.AppForm>
+      <Stack>
+        {apiError && <ErrorAlert message={apiError} />}
         {requestPasswordResetMutation.isSuccess && !apiError && (
-          <Alert severity="success" sx={{ mt: 1 }}>
+          <Alert icon={<IconMailFast />} color={"green"}>
             Vi har sendt en e-post med instruksjoner for hvordan du kan endre
             passordet ditt. Hvis e-posten ikke dukker opp innen noen få minutter
             anbefaler vi å sjekke søppelpost.
           </Alert>
         )}
       </Stack>
-      <TextField
-        required
-        margin="normal"
-        fullWidth
-        id="email"
-        label="E-post"
-        autoComplete="email"
-        error={!!formErrors.email}
-        {...register("email", {
-          required: "Du må fylle inn e-post",
-          validate: (v) =>
-            validator.isEmail(v) ? true : "Du må fylle inn en gyldig e-post",
-        })}
-      />
+      <form.AppField
+        name={"email"}
+        validators={{
+          onBlur: ({ value }) =>
+            !validator.isEmail(value)
+              ? "Du må fylle inn en gyldig e-post"
+              : null,
+        }}
+      >
+        {(field) => (
+          <field.TextField
+            required
+            label={"E-post"}
+            placeholder={"Din e-post"}
+            autoComplete={"email"}
+          />
+        )}
+      </form.AppField>
       <Button
         loading={requestPasswordResetMutation.isPending}
-        type="submit"
-        fullWidth
-        variant="contained"
-        sx={{ mt: 3, mb: 2 }}
-        disabled={Object.entries(formErrors).length > 0}
+        onClick={form.handleSubmit}
       >
         Reset passord
       </Button>
-      <Grid container>
-        <Grid>
-          <DynamicLink href={"/auth/login"}>
-            Tilbake til innloggingssiden
-          </DynamicLink>
-        </Grid>
-      </Grid>
-    </Box>
+      <Anchor component={Link} href={"/auth/login"}>
+        Tilbake til innloggingssiden
+      </Anchor>
+    </form.AppForm>
   );
 }

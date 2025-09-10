@@ -4,7 +4,7 @@ import { IconExclamationCircle } from "@tabler/icons-react";
 export default function ErrorAlert(
   props:
     | {
-        title: string;
+        title?: string;
         message?: string;
       }
     | { generic: true },

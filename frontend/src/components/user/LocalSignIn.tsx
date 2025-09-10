@@ -61,7 +61,7 @@ export default function LocalSignIn() {
 
   return (
     <form.AppForm>
-      {apiError && <ErrorAlert title={apiError} />}
+      {apiError && <ErrorAlert message={apiError} />}
       <form.AppField
         name={"username"}
         validators={{

@@ -11,8 +11,10 @@ export const metadata: Metadata = {
 const ForgotPage = () => {
   return (
     <Container size={"xs"}>
-      <Stack align={"center"}>
-        <Title variant="h1">Glemt passord</Title>
+      <Stack>
+        <Title ta={"center"} variant="h1">
+          Glemt passord
+        </Title>
         <Text ta={"center"}>
           Skriv inn din e-postadresse, så sender vi deg en lenke slik at du kan
           nullstille passordet ditt.

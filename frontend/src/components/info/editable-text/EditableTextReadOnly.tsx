@@ -1,8 +1,9 @@
 "use client";
-import { Alert } from "@mantine/core";
+import { no } from "@blocknote/core/locales";
+import { BlockNoteView } from "@blocknote/mantine";
+import { useCreateBlockNote } from "@blocknote/react";
 import { useQuery } from "@tanstack/react-query";
 
-import { TextEditor } from "@/components/TextEditor";
 import useApiClient from "@/hooks/useApiClient";
 
 export default function EditableTextReadOnly({
@@ -14,21 +15,15 @@ export default function EditableTextReadOnly({
 }) {
   const client = useApiClient();
 
-  const { data, isError } = useQuery({
+  const { data } = useQuery({
     queryKey: [client.editable_texts.key({ key: dataKey }).$url(), dataKey],
     queryFn: () => client.editable_texts.key({ key: dataKey }).$get().unwrap(),
   });
 
-  const content = data?.text ?? cachedText;
+  const editor = useCreateBlockNote({
+    dictionary: no,
+    initialContent: JSON.parse(data?.text ?? cachedText),
+  });
 
-  if (isError || content === undefined) {
-    return (
-      <Alert color="red" title={"Klarte ikke laste inn dynamisk innhold"}>
-        Du kan prøve å laste inn siden på nytt, eller ta kontakt dersom
-        problemet vedvarer.
-      </Alert>
-    );
-  }
-
-  return <TextEditor readOnly content={content} />;
+  return <BlockNoteView editor={editor} editable={false} theme={"light"} />;
 }

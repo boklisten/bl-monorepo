@@ -10,7 +10,6 @@ import { ReactNode } from "react";
 import theme from "@/app/theme";
 import AuthLinker from "@/components/AuthLinker";
 import EditableTextEditorDialog from "@/components/info/editable-text/EditableTextEditorDialog";
-import QuestionAndAnswerEditDialog from "@/components/info/questions-and-answers/QuestionAndAnswerEditDialog";
 import CustomLocalizationProvider from "@/components/LocalizationProvider";
 import ReactQueryClientProvider from "@/components/ReactQueryClientProvider";
 
@@ -29,7 +28,6 @@ export default function ClientProviders({ children }: { children: ReactNode }) {
               <Notifications />
               <ModalsProvider
                 modals={{
-                  questionAndAnswerEdit: QuestionAndAnswerEditDialog,
                   editableTextEditor: EditableTextEditorDialog,
                 }}
               >

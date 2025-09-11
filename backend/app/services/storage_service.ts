@@ -15,7 +15,6 @@ import { OpeningHourSchema } from "#models/opening-hour.schema";
 import { OrderSchema } from "#models/order.schema";
 import { PaymentSchema } from "#models/payment.schema";
 import { PendingPasswordResetSchema } from "#models/pending-password-reset.schema";
-import { QuestionsAndAnswersSchema } from "#models/questions-and-answers.schema";
 import { SignatureSchema } from "#models/signature.schema";
 import { StandMatchSchema } from "#models/stand-match.schema";
 import { BlSchemaName } from "#models/storage/bl-schema-names";
@@ -57,10 +56,6 @@ export const StorageService = {
   PendingPasswordResets: new MongodbHandler(
     PendingPasswordResetSchema,
     BlSchemaName.PendingPasswordResets,
-  ),
-  QuestionsAndAnswers: new MongodbHandler(
-    QuestionsAndAnswersSchema,
-    BlSchemaName.QuestionsAndAnswers,
   ),
   Signatures: new MongodbHandler(SignatureSchema, BlSchemaName.Signatures),
   StandMatches: new MongodbHandler(StandMatchSchema, BlSchemaName.StandMatches),

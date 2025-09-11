@@ -1,12 +1,13 @@
 "use client";
+import { no } from "@blocknote/core/locales";
+import { BlockNoteView } from "@blocknote/mantine";
+import { useCreateBlockNote } from "@blocknote/react";
 import { EditableText } from "@boklisten/backend/shared/editable-text";
+import { Button, Group, Stack } from "@mantine/core";
 import { ContextModalProps } from "@mantine/modals";
-import { Button, Stack, TextField } from "@mui/material";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { RichTextEditorRef } from "mui-tiptap";
-import { useRef, useState } from "react";
 
-import { TextEditor } from "@/components/TextEditor";
+import { useAppForm } from "@/hooks/form";
 import useApiClient from "@/hooks/useApiClient";
 import {
   showErrorNotification,
@@ -20,8 +21,29 @@ export default function EditableTextEditorDialog({
 }: ContextModalProps<{
   editableText?: EditableText | undefined;
 }>) {
-  const [key, setKey] = useState(editableText?.key ?? "");
-  const rteRef = useRef<RichTextEditorRef>(null);
+  const form = useAppForm({
+    defaultValues: {
+      key: editableText?.key ?? "",
+    },
+    onSubmit: ({ value }) => {
+      if (editableText === undefined) {
+        addEditableTextMutation.mutate({
+          key: value.key,
+          text: JSON.stringify(editor.document),
+        });
+      } else {
+        updateEditableTextMutation.mutate({
+          id: editableText.id,
+          text: JSON.stringify(editor.document),
+        });
+      }
+    },
+  });
+
+  const editor = useCreateBlockNote({
+    dictionary: no,
+    initialContent: editableText ? JSON.parse(editableText?.text) : null,
+  });
 
   const queryClient = useQueryClient();
   const client = useApiClient();
@@ -63,43 +85,41 @@ export default function EditableTextEditorDialog({
       showErrorNotification("Klarte ikke oppdatere dynamisk innhold!"),
   });
 
-  async function handleSubmit() {
-    if (editableText === undefined) {
-      addEditableTextMutation.mutate({
-        text: rteRef.current?.editor?.getHTML() ?? "",
-        key: key ?? "",
-      });
-    } else {
-      updateEditableTextMutation.mutate({
-        id: editableText.id,
-        text: rteRef.current?.editor?.getHTML() ?? "",
-      });
-    }
-  }
-
   return (
-    <>
-      <Stack gap={2} mt={1}>
-        <TextField
-          label={"Unik nøkkel"}
-          placeholder={"min_nye_nokkel"}
-          value={key}
-          onChange={(e) => setKey(e.target.value)}
-          disabled={editableText !== undefined}
-          helperText={"Unik nøkkel kan ikke endres etter opprettelse"}
-        />
-        <TextEditor content={editableText?.text ?? ""} rteRef={rteRef} />
+    <form.AppForm>
+      <Stack>
+        <form.AppField
+          name={"key"}
+          validators={{
+            onChange: ({ value }) =>
+              value.length === 0 ? "Du fylle inn unik nøkkel" : null,
+          }}
+        >
+          {(field) => (
+            <field.TextField
+              label={"Unik nøkkel"}
+              description={"Unik nøkkel kan ikke endres etter opprettelse"}
+              placeholder={"min_nye_nokkel"}
+              disabled={editableText !== undefined}
+            />
+          )}
+        </form.AppField>
+        <BlockNoteView editor={editor} theme={"light"} />
+        <Group>
+          <Button variant={"subtle"} onClick={() => context.closeModal(id)}>
+            Avbryt
+          </Button>
+          <Button
+            loading={
+              addEditableTextMutation.isPending ||
+              updateEditableTextMutation.isPending
+            }
+            onClick={form.handleSubmit}
+          >
+            {editableText === undefined ? "Opprett" : "Lagre"}
+          </Button>
+        </Group>
       </Stack>
-      <Button onClick={() => context.closeModal(id)}>Avbryt</Button>
-      <Button
-        loading={
-          addEditableTextMutation.isPending ||
-          updateEditableTextMutation.isPending
-        }
-        onClick={handleSubmit}
-      >
-        {editableText === undefined ? "Opprett" : "Lagre"}
-      </Button>
-    </>
+    </form.AppForm>
   );
 }

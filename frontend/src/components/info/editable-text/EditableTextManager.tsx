@@ -75,6 +75,7 @@ export default function EditableTextManager() {
               label="Rediger"
               onClick={() =>
                 modals.openContextModal({
+                  size: "xl",
                   title: "Rediger innhold",
                   modal: "editableTextEditor",
                   innerProps: {
@@ -132,6 +133,7 @@ export default function EditableTextManager() {
           startIcon={<NoteAdd />}
           onClick={() =>
             modals.openContextModal({
+              size: "xl",
               title: "Opprett innhold",
               modal: "editableTextEditor",
               innerProps: {},

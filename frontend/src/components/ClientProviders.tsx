@@ -9,9 +9,10 @@ import { ReactNode } from "react";
 
 import theme from "@/app/theme";
 import AuthLinker from "@/components/AuthLinker";
+import EditableTextEditorDialog from "@/components/info/editable-text/EditableTextEditorDialog";
+import QuestionAndAnswerEditDialog from "@/components/info/questions-and-answers/QuestionAndAnswerEditDialog";
 import CustomLocalizationProvider from "@/components/LocalizationProvider";
 import ReactQueryClientProvider from "@/components/ReactQueryClientProvider";
-import ToolpadProvider from "@/utils/ToolpadProvider";
 
 import "dayjs/locale/nb";
 
@@ -22,16 +23,21 @@ export default function ClientProviders({ children }: { children: ReactNode }) {
   return (
     <ReactQueryClientProvider>
       <CustomLocalizationProvider>
-        <ToolpadProvider>
-          <DatesProvider settings={{ locale: "nb" }}>
-            <AuthLinker>
-              <MantineProvider theme={theme}>
-                <Notifications />
-                <ModalsProvider>{children}</ModalsProvider>
-              </MantineProvider>
-            </AuthLinker>
-          </DatesProvider>
-        </ToolpadProvider>
+        <DatesProvider settings={{ locale: "nb" }}>
+          <AuthLinker>
+            <MantineProvider theme={theme}>
+              <Notifications />
+              <ModalsProvider
+                modals={{
+                  questionAndAnswerEdit: QuestionAndAnswerEditDialog,
+                  editableTextEditor: EditableTextEditorDialog,
+                }}
+              >
+                {children}
+              </ModalsProvider>
+            </MantineProvider>
+          </AuthLinker>
+        </DatesProvider>
       </CustomLocalizationProvider>
     </ReactQueryClientProvider>
   );

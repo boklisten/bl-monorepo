@@ -1,8 +1,8 @@
 "use client";
 import { Alert, Box, Button, Table, Tooltip } from "@mantine/core";
+import { modals } from "@mantine/modals";
 import { IconInfoCircle, IconShoppingCart } from "@tabler/icons-react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { useDialogs } from "@toolpad/core";
 import moment from "moment";
 import { useRouter } from "next/navigation";
 
@@ -23,7 +23,6 @@ export default function OpenOrdersList({
     cancelable: boolean;
   }[];
 }) {
-  const dialogs = useDialogs();
   const queryClient = useQueryClient();
   const router = useRouter();
   const client = useApiClient();
@@ -70,22 +69,17 @@ export default function OpenOrdersList({
                       color={"red"}
                       loading={cancelOrderItemMutation.isPending}
                       onClick={async () => {
-                        if (
-                          await dialogs.confirm(
-                            `Du er nå i ferd med å avbestille ${orderItem.title}. Dette kan ikke angres.`,
-                            {
-                              title: `Bekreft avbestilling`,
-                              okText: "Avbestill",
-                              cancelText: "Avbryt",
-                              severity: "error",
-                            },
-                          )
-                        ) {
-                          cancelOrderItemMutation.mutate({
-                            orderId: orderItem.orderId,
-                            itemId: orderItem.itemId,
-                          });
-                        }
+                        modals.openConfirmModal({
+                          title: `Bekreft avbestilling`,
+                          children: `Du er nå i ferd med å avbestille ${orderItem.title}. Dette kan ikke angres.`,
+                          confirmProps: { color: "red" },
+                          labels: { cancel: "Avbryt", confirm: "Avbestill" },
+                          onConfirm: () =>
+                            cancelOrderItemMutation.mutate({
+                              orderId: orderItem.orderId,
+                              itemId: orderItem.itemId,
+                            }),
+                        });
                       }}
                     >
                       Avbestill

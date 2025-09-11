@@ -1,72 +1,48 @@
-import {
-  Dialog,
-  DialogActions,
-  DialogTitle,
-  DialogContent,
-  Button,
-  Typography,
-  Stack,
-  ListItem,
-  List,
-} from "@mui/material";
-import ListItemText from "@mui/material/ListItemText";
+import { List, Stack, Text } from "@mantine/core";
+import { modals } from "@mantine/modals";
 import { useMutation } from "@tanstack/react-query";
-import { useDialogs, DialogProps } from "@toolpad/core";
 
 import UploadCSVFile from "@/components/UploadCSVFile";
 import useApiClient from "@/hooks/useApiClient";
+import { showErrorNotification } from "@/utils/notifications";
 
 function SuccessfulUploadDialog({
-  payload,
-  open,
-  onClose,
-}: DialogProps<{
+  unknownSubjects,
+  unknownUsers,
+  successfulOrders,
+}: {
   unknownSubjects: string[];
   unknownUsers: { subjects: string[]; phone: string }[];
   successfulOrders: number;
-}>) {
+}) {
   return (
-    <Dialog fullWidth open={open} onClose={() => onClose()}>
-      <DialogTitle>Opplasting av fagvalg var vellykket</DialogTitle>
-      <DialogContent>
-        <Stack>
-          <Typography variant={"h5"} sx={{ mb: 5 }}>
-            {`${payload.successfulOrders} har fått bestillinger for fagvalgene sine!`}
-          </Typography>
-          {payload.unknownSubjects.length > 0 && (
-            <>
-              <Typography
-                variant={"h6"}
-              >{`${payload.unknownSubjects.length} fag ble ikke funnet:`}</Typography>
-              <List>
-                {payload.unknownSubjects.map((subject) => (
-                  <ListItem key={subject}>
-                    <ListItemText>{subject}</ListItemText>
-                  </ListItem>
-                ))}
-              </List>
-            </>
-          )}
-          {payload.unknownUsers.length > 0 && (
-            <>
-              <Typography
-                variant={"h6"}
-              >{`${payload.unknownUsers.length} brukere ble ikke funnet:`}</Typography>
-              <List>
-                {payload.unknownUsers.map(({ subjects, phone }) => (
-                  <ListItem key={phone}>
-                    <ListItemText>{`${phone} - ${subjects.join(", ")}`}</ListItemText>
-                  </ListItem>
-                ))}
-              </List>
-            </>
-          )}
-        </Stack>
-      </DialogContent>
-      <DialogActions>
-        <Button onClick={() => onClose()}>Lukk</Button>
-      </DialogActions>
-    </Dialog>
+    <Stack>
+      <Text>
+        {`${successfulOrders} har fått bestillinger for fagvalgene sine!`}
+      </Text>
+      {unknownSubjects.length > 0 && (
+        <>
+          <Text>{`${unknownSubjects.length} fag ble ikke funnet:`}</Text>
+          <List>
+            {unknownSubjects.map((subject) => (
+              <List.Item key={subject}>{subject}</List.Item>
+            ))}
+          </List>
+        </>
+      )}
+      {unknownUsers.length > 0 && (
+        <>
+          <Text>{`${unknownUsers.length} brukere ble ikke funnet:`}</Text>
+          <List>
+            {unknownUsers.map(({ subjects, phone }) => (
+              <List.Item key={phone}>
+                {`${phone} - ${subjects.join(", ")}`}
+              </List.Item>
+            ))}
+          </List>
+        </>
+      )}
+    </Stack>
   );
 }
 
@@ -76,7 +52,6 @@ export default function UploadSubjectChoices({
   branchId: string;
 }) {
   const client = useApiClient();
-  const dialogs = useDialogs();
 
   const uploadSubjectChoicesMutation = useMutation({
     mutationFn: (
@@ -94,11 +69,18 @@ export default function UploadSubjectChoices({
           branchId,
         })
         .unwrap(),
-    onSuccess: (data) => dialogs.open(SuccessfulUploadDialog, data),
-    onError: () =>
-      dialogs.alert("Opplasting av fagvalg feilet!", {
-        title: "Feilmelding",
+    onSuccess: (data) =>
+      modals.open({
+        title: "Opplasting av fagvalg var vellykket",
+        children: (
+          <SuccessfulUploadDialog
+            unknownSubjects={data.unknownSubjects}
+            unknownUsers={data.unknownUsers}
+            successfulOrders={data.successfulOrders}
+          />
+        ),
       }),
+    onError: () => showErrorNotification("Opplasting av fagvalg feilet!"),
   });
   return (
     <UploadCSVFile

@@ -1,5 +1,6 @@
 "use client";
 
+import { modals } from "@mantine/modals";
 import { NoteAdd } from "@mui/icons-material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
@@ -14,9 +15,7 @@ import {
 } from "@mui/material";
 import { DataGrid, GridActionsCellItem, GridColDef } from "@mui/x-data-grid";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { useDialogs } from "@toolpad/core";
 
-import EditableTextEditorDialog from "@/components/info/editable-text/EditableTextEditorDialog";
 import useApiClient from "@/hooks/useApiClient";
 import {
   showErrorNotification,
@@ -25,7 +24,6 @@ import {
 
 export default function EditableTextManager() {
   const client = useApiClient();
-  const dialogs = useDialogs();
   const queryClient = useQueryClient();
 
   const destroyEditableTextMutation = useMutation({
@@ -76,10 +74,15 @@ export default function EditableTextManager() {
               icon={<EditIcon />}
               label="Rediger"
               onClick={() =>
-                dialogs.open(
-                  EditableTextEditorDialog,
-                  editableTexts?.find((editableText) => editableText.id === id),
-                )
+                modals.openContextModal({
+                  title: "Rediger innhold",
+                  modal: "editableTextEditor",
+                  innerProps: {
+                    editableText: editableTexts?.find(
+                      (editableText) => editableText.id === id,
+                    ),
+                  },
+                })
               }
             />
           </Tooltip>,
@@ -88,19 +91,15 @@ export default function EditableTextManager() {
               icon={<DeleteIcon />}
               label="Slett"
               onClick={async () => {
-                if (
-                  await dialogs.confirm(
+                modals.openConfirmModal({
+                  title: "Bekreft sletting av dynamisk innhold",
+                  children:
                     "Hvis du sletter dette innholdet, vil sider som bruker denne teksten slutte å fungere. Sjekk at ingen sider er avhengige av denne nøkkelen før du fortsetter.",
-                    {
-                      severity: "error",
-                      title: "Bekreft sletting av dynamisk innhold",
-                      okText: "Slett",
-                      cancelText: "Avbryt",
-                    },
-                  )
-                ) {
-                  destroyEditableTextMutation.mutate(id as string);
-                }
+                  confirmProps: { color: "red" },
+                  labels: { cancel: "Avbryt", confirm: "Slett" },
+                  onConfirm: () =>
+                    destroyEditableTextMutation.mutate(id as string),
+                });
               }}
             />
           </Tooltip>,
@@ -131,9 +130,13 @@ export default function EditableTextManager() {
         <Button
           variant="contained"
           startIcon={<NoteAdd />}
-          onClick={async () => {
-            await dialogs.open(EditableTextEditorDialog);
-          }}
+          onClick={() =>
+            modals.openContextModal({
+              title: "Opprett innhold",
+              modal: "editableTextEditor",
+              innerProps: {},
+            })
+          }
         >
           Legg til
         </Button>

@@ -1,15 +1,7 @@
 import { UserDetail } from "@boklisten/backend/shared/user-detail";
-import { LockOpen } from "@mui/icons-material";
-import {
-  Box,
-  Button,
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogTitle,
-} from "@mui/material";
+import { Button, Stack } from "@mantine/core";
+import { IconLockOpen } from "@tabler/icons-react";
 import { useMutation, useQuery } from "@tanstack/react-query";
-import { DialogProps } from "@toolpad/core";
 
 import AdministrateUserSignatures from "@/components/admin/AdministrateUserSignatures";
 import UserDetailsEditor from "@/components/user/user-detail-editor/UserDetailsEditor";
@@ -21,24 +13,22 @@ import {
 } from "@/utils/notifications";
 
 export default function UserDetailEditorDialog({
-  payload,
-  open,
-  onClose,
-}: DialogProps<{
+  initialUserDetails,
+}: {
   initialUserDetails: UserDetail;
-}>) {
+}) {
   const client = useApiClient();
   const { data: updatedUserDetails } = useQuery({
-    queryKey: ["userDetails", payload.initialUserDetails.id],
+    queryKey: ["userDetails", initialUserDetails.id],
     queryFn: () =>
       client
         .$route("collection.userdetails.getId", {
-          id: payload.initialUserDetails.id,
+          id: initialUserDetails.id,
         })
         .$get()
         .then(unpack<[UserDetail]>),
   });
-  const userDetail = updatedUserDetails?.[0] ?? payload.initialUserDetails;
+  const userDetail = updatedUserDetails?.[0] ?? initialUserDetails;
 
   const unlockUserMatchesMutation = useMutation({
     mutationFn: () =>
@@ -52,29 +42,16 @@ export default function UserDetailEditorDialog({
   });
 
   return (
-    <Dialog fullWidth open={open} onClose={() => onClose()}>
-      <DialogTitle>Rediger brukerdetaljer</DialogTitle>
-      <DialogContent>
-        <Box mt={1}>
-          <Button
-            sx={{ mb: 3 }}
-            startIcon={<LockOpen />}
-            variant="contained"
-            onClick={() => unlockUserMatchesMutation.mutate()}
-            loading={unlockUserMatchesMutation.isPending}
-          >
-            Lås opp overleveringer
-          </Button>
-          <UserDetailsEditor
-            variant={"administrate"}
-            userDetails={userDetail}
-          />
-          <AdministrateUserSignatures userDetail={userDetail} />
-        </Box>
-      </DialogContent>
-      <DialogActions>
-        <Button onClick={() => onClose()}>Lukk</Button>
-      </DialogActions>
-    </Dialog>
+    <Stack>
+      <Button
+        leftSection={<IconLockOpen />}
+        onClick={() => unlockUserMatchesMutation.mutate()}
+        loading={unlockUserMatchesMutation.isPending}
+      >
+        Lås opp overleveringer
+      </Button>
+      <UserDetailsEditor variant={"administrate"} userDetails={userDetail} />
+      <AdministrateUserSignatures userDetail={userDetail} />
+    </Stack>
   );
 }

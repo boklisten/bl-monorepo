@@ -1,8 +1,9 @@
 import { UserDetail } from "@boklisten/backend/shared/user-detail";
-import { QrCode } from "@mui/icons-material";
-import { Alert, Button, Dialog, Stack } from "@mui/material";
+import { Button, Stack } from "@mantine/core";
+import { modals } from "@mantine/modals";
+import { Alert } from "@mui/material";
 import Grid from "@mui/material/Grid";
-import { DialogProps, useDialogs } from "@toolpad/core";
+import { IconQrcode } from "@tabler/icons-react";
 import { useFormContext, useWatch } from "react-hook-form";
 import QRCode from "react-qr-code";
 
@@ -15,18 +16,6 @@ import {
   UserEditorFields,
 } from "@/components/user/user-detail-editor/UserDetailsEditor";
 
-function CustomerIdDialog({
-  open,
-  onClose,
-  payload: { detailsId },
-}: DialogProps<{ detailsId: string }>) {
-  return (
-    <Dialog open={open} onClose={() => onClose()}>
-      <QRCode value={detailsId} />
-    </Dialog>
-  );
-}
-
 export default function LoginInfoSection({
   variant,
   userDetails,
@@ -34,7 +23,6 @@ export default function LoginInfoSection({
   variant: UserDetailsEditorVariant;
   userDetails: UserDetail;
 }) {
-  const dialogs = useDialogs();
   const { control } = useFormContext<UserEditorFields>();
   const email = useWatch({ control, name: "email" });
   const isSchoolEmail =
@@ -70,15 +58,18 @@ export default function LoginInfoSection({
         <FieldErrorAlert field={"email"} />
       </Grid>
       {variant === "personal" && (
-        <Stack
-          alignItems={"center"}
-          sx={{ width: "100%", textTransform: "none" }}
-        >
+        <Stack align={"center"} w={"100%"}>
           <Button
-            variant={"contained"}
-            startIcon={<QrCode />}
+            leftSection={<IconQrcode />}
             onClick={() =>
-              dialogs.open(CustomerIdDialog, { detailsId: userDetails.id })
+              modals.open({
+                title: `Kunde-ID for ${userDetails.name}`,
+                children: (
+                  <Stack align={"center"} w={"100%"}>
+                    <QRCode value={userDetails.id} />
+                  </Stack>
+                ),
+              })
             }
           >
             Vis kunde-ID

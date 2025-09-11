@@ -1,17 +1,8 @@
 "use client";
 import { QuestionAndAnswer } from "@boklisten/backend/shared/question-and-answer";
-import {
-  Box,
-  Button,
-  Dialog,
-  DialogActions,
-  DialogContent,
-  Stack,
-  Typography,
-} from "@mui/material";
-import DialogTitle from "@mui/material/DialogTitle";
+import { ContextModalProps } from "@mantine/modals";
+import { Box, Button, Stack, Typography } from "@mui/material";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { DialogProps } from "@toolpad/core";
 import { RichTextEditorRef } from "mui-tiptap";
 import { useRef } from "react";
 
@@ -23,10 +14,12 @@ import {
 } from "@/utils/notifications";
 
 export default function QuestionAndAnswerEditDialog({
-  payload,
-  open,
-  onClose,
-}: DialogProps<QuestionAndAnswer | undefined>) {
+  context,
+  id,
+  innerProps: { questionAndAnswer },
+}: ContextModalProps<{
+  questionAndAnswer?: QuestionAndAnswer | undefined;
+}>) {
   const questionRteRef = useRef<RichTextEditorRef>(null);
   const answerRteRef = useRef<RichTextEditorRef>(null);
 
@@ -42,7 +35,7 @@ export default function QuestionAndAnswerEditDialog({
       }),
     onSuccess: () => {
       showSuccessNotification("Spørsmål og svar ble opprettet!");
-      onClose();
+      context.closeModal(id);
     },
     onError: () =>
       showErrorNotification("Klarte ikke opprette spørsmål og svar!"),
@@ -60,21 +53,21 @@ export default function QuestionAndAnswerEditDialog({
       }),
     onSuccess: () => {
       showSuccessNotification("Dynamisk innhold ble oppdatert!");
-      onClose();
+      context.closeModal(id);
     },
     onError: () =>
       showErrorNotification("Klarte ikke oppdatere dynamisk innhold!"),
   });
 
   async function handleSubmit() {
-    if (payload === undefined) {
+    if (questionAndAnswer === undefined) {
       addQuestionAndAnswerMutation.mutate({
         question: questionRteRef.current?.editor?.getHTML() ?? "",
         answer: answerRteRef.current?.editor?.getHTML() ?? "",
       });
     } else {
       updateQuestionAndAnswerMutation.mutate({
-        id: payload.id,
+        id: questionAndAnswer.id,
         question: questionRteRef.current?.editor?.getHTML() ?? "",
         answer: answerRteRef.current?.editor?.getHTML() ?? "",
       });
@@ -82,52 +75,37 @@ export default function QuestionAndAnswerEditDialog({
   }
 
   return (
-    <Dialog
-      open={open}
-      onClose={() => onClose()}
-      slotProps={{
-        paper: {
-          sx: {
-            width: 800,
-            maxWidth: "90%",
-          },
-        },
-      }}
-    >
-      <DialogTitle>
-        {payload === undefined ? "Opprett" : "Rediger"} spørsmål og svar
-      </DialogTitle>
-      <DialogContent>
-        <Stack gap={2} mt={1}>
-          <Box>
-            <Typography variant={"h2"} mb={2}>
-              Spørsmål
-            </Typography>
-            <TextEditor
-              content={payload?.question ?? ""}
-              rteRef={questionRteRef}
-            />
-          </Box>
-          <Box>
-            <Typography variant={"h2"} mb={2}>
-              Svar
-            </Typography>
-            <TextEditor content={payload?.answer ?? ""} rteRef={answerRteRef} />
-          </Box>
-        </Stack>
-      </DialogContent>
-      <DialogActions>
-        <Button onClick={() => onClose()}>Avbryt</Button>
-        <Button
-          loading={
-            addQuestionAndAnswerMutation.isPending ||
-            updateQuestionAndAnswerMutation.isPending
-          }
-          onClick={handleSubmit}
-        >
-          {payload === undefined ? "Opprett" : "Lagre"}
-        </Button>
-      </DialogActions>
-    </Dialog>
+    <>
+      <Stack gap={2} mt={1}>
+        <Box>
+          <Typography variant={"h2"} mb={2}>
+            Spørsmål
+          </Typography>
+          <TextEditor
+            content={questionAndAnswer?.question ?? ""}
+            rteRef={questionRteRef}
+          />
+        </Box>
+        <Box>
+          <Typography variant={"h2"} mb={2}>
+            Svar
+          </Typography>
+          <TextEditor
+            content={questionAndAnswer?.answer ?? ""}
+            rteRef={answerRteRef}
+          />
+        </Box>
+      </Stack>
+      <Button onClick={() => context.closeModal(id)}>Avbryt</Button>
+      <Button
+        loading={
+          addQuestionAndAnswerMutation.isPending ||
+          updateQuestionAndAnswerMutation.isPending
+        }
+        onClick={handleSubmit}
+      >
+        {questionAndAnswer === undefined ? "Opprett" : "Lagre"}
+      </Button>
+    </>
   );
 }

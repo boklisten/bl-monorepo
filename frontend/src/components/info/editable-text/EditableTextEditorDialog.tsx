@@ -1,16 +1,8 @@
 "use client";
 import { EditableText } from "@boklisten/backend/shared/editable-text";
-import {
-  Button,
-  Dialog,
-  DialogActions,
-  DialogContent,
-  Stack,
-  TextField,
-} from "@mui/material";
-import DialogTitle from "@mui/material/DialogTitle";
+import { ContextModalProps } from "@mantine/modals";
+import { Button, Stack, TextField } from "@mui/material";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { DialogProps } from "@toolpad/core";
 import { RichTextEditorRef } from "mui-tiptap";
 import { useRef, useState } from "react";
 
@@ -22,11 +14,13 @@ import {
 } from "@/utils/notifications";
 
 export default function EditableTextEditorDialog({
-  payload,
-  open,
-  onClose,
-}: DialogProps<EditableText | undefined>) {
-  const [key, setKey] = useState(payload?.key ?? "");
+  context,
+  id,
+  innerProps: { editableText },
+}: ContextModalProps<{
+  editableText?: EditableText | undefined;
+}>) {
+  const [key, setKey] = useState(editableText?.key ?? "");
   const rteRef = useRef<RichTextEditorRef>(null);
 
   const queryClient = useQueryClient();
@@ -41,7 +35,7 @@ export default function EditableTextEditorDialog({
       }),
     onSuccess: () => {
       showSuccessNotification("Dynamisk innhold ble opprettet!");
-      onClose();
+      context.closeModal(id);
     },
     onError: () =>
       showErrorNotification({
@@ -63,67 +57,49 @@ export default function EditableTextEditorDialog({
       }),
     onSuccess: () => {
       showSuccessNotification("Dynamisk innhold ble oppdatert!");
-      onClose();
+      context.closeModal(id);
     },
     onError: () =>
       showErrorNotification("Klarte ikke oppdatere dynamisk innhold!"),
   });
 
   async function handleSubmit() {
-    if (payload === undefined) {
+    if (editableText === undefined) {
       addEditableTextMutation.mutate({
         text: rteRef.current?.editor?.getHTML() ?? "",
         key: key ?? "",
       });
     } else {
       updateEditableTextMutation.mutate({
-        id: payload.id,
+        id: editableText.id,
         text: rteRef.current?.editor?.getHTML() ?? "",
       });
     }
   }
 
   return (
-    <Dialog
-      open={open}
-      onClose={() => onClose()}
-      slotProps={{
-        paper: {
-          sx: {
-            width: 800,
-            maxWidth: "90%",
-          },
-        },
-      }}
-    >
-      <DialogTitle>
-        {payload === undefined ? "Opprett" : "Rediger"} innhold
-      </DialogTitle>
-      <DialogContent>
-        <Stack gap={2} mt={1}>
-          <TextField
-            label={"Unik nøkkel"}
-            placeholder={"min_nye_nokkel"}
-            value={key}
-            onChange={(e) => setKey(e.target.value)}
-            disabled={payload !== undefined}
-            helperText={"Unik nøkkel kan ikke endres etter opprettelse"}
-          />
-          <TextEditor content={payload?.text ?? ""} rteRef={rteRef} />
-        </Stack>
-      </DialogContent>
-      <DialogActions>
-        <Button onClick={() => onClose()}>Avbryt</Button>
-        <Button
-          loading={
-            addEditableTextMutation.isPending ||
-            updateEditableTextMutation.isPending
-          }
-          onClick={handleSubmit}
-        >
-          {payload === undefined ? "Opprett" : "Lagre"}
-        </Button>
-      </DialogActions>
-    </Dialog>
+    <>
+      <Stack gap={2} mt={1}>
+        <TextField
+          label={"Unik nøkkel"}
+          placeholder={"min_nye_nokkel"}
+          value={key}
+          onChange={(e) => setKey(e.target.value)}
+          disabled={editableText !== undefined}
+          helperText={"Unik nøkkel kan ikke endres etter opprettelse"}
+        />
+        <TextEditor content={editableText?.text ?? ""} rteRef={rteRef} />
+      </Stack>
+      <Button onClick={() => context.closeModal(id)}>Avbryt</Button>
+      <Button
+        loading={
+          addEditableTextMutation.isPending ||
+          updateEditableTextMutation.isPending
+        }
+        onClick={handleSubmit}
+      >
+        {editableText === undefined ? "Opprett" : "Lagre"}
+      </Button>
+    </>
   );
 }

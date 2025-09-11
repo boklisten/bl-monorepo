@@ -1,5 +1,6 @@
 "use client";
 
+import { modals } from "@mantine/modals";
 import { NoteAdd } from "@mui/icons-material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
@@ -14,9 +15,7 @@ import {
 } from "@mui/material";
 import { DataGrid, GridActionsCellItem, GridColDef } from "@mui/x-data-grid";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { useDialogs } from "@toolpad/core";
 
-import QuestionAndAnswerEditDialog from "@/components/info/questions-and-answers/QuestionAndAnswerEditDialog";
 import useApiClient from "@/hooks/useApiClient";
 import {
   showErrorNotification,
@@ -25,7 +24,6 @@ import {
 
 export default function QuestionsAndAnswersManager() {
   const client = useApiClient();
-  const dialogs = useDialogs();
   const queryClient = useQueryClient();
 
   const destroyQuestionAndAnswerMutation = useMutation({
@@ -81,10 +79,15 @@ export default function QuestionsAndAnswersManager() {
               icon={<EditIcon />}
               label="Rediger"
               onClick={() =>
-                dialogs.open(
-                  QuestionAndAnswerEditDialog,
-                  questionsAndAnswers?.find((entry) => entry.id === id),
-                )
+                modals.openContextModal({
+                  title: "Rediger spørsmål og svar",
+                  innerProps: {
+                    questionAndAnswer: questionsAndAnswers?.find(
+                      (entry) => entry.id === id,
+                    ),
+                  },
+                  modal: "questionAndAnswerEdit",
+                })
               }
             />
           </Tooltip>,
@@ -93,16 +96,15 @@ export default function QuestionsAndAnswersManager() {
               icon={<DeleteIcon />}
               label="Slett"
               onClick={async () => {
-                if (
-                  await dialogs.confirm("Dette kan ikke angres.", {
-                    severity: "error",
-                    title: "Bekreft sletting av spørsmål og svar",
-                    okText: "Slett",
-                    cancelText: "Avbryt",
-                  })
-                ) {
-                  destroyQuestionAndAnswerMutation.mutate(id as string);
-                }
+                modals.openConfirmModal({
+                  // TODO: severity: "error",
+                  title: "Bekreft sletting av spørsmål og svar",
+                  children: "Dette kan ikke angres.",
+                  confirmProps: { color: "red" },
+                  labels: { cancel: "Avbryt", confirm: "Slett" },
+                  onConfirm: () =>
+                    destroyQuestionAndAnswerMutation.mutate(id as string),
+                });
               }}
             />
           </Tooltip>,
@@ -133,9 +135,13 @@ export default function QuestionsAndAnswersManager() {
         <Button
           variant="contained"
           startIcon={<NoteAdd />}
-          onClick={async () => {
-            await dialogs.open(QuestionAndAnswerEditDialog);
-          }}
+          onClick={() =>
+            modals.openContextModal({
+              title: "Opprett spørsmål og svar",
+              modal: "questionAndAnswerEdit",
+              innerProps: {},
+            })
+          }
         >
           Legg til
         </Button>

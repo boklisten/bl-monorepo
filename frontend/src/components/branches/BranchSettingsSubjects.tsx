@@ -10,13 +10,12 @@ import {
 import TableCell from "@mui/material/TableCell";
 import TableRow from "@mui/material/TableRow";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { useNotifications } from "@toolpad/core";
 
 import useApiClient from "@/hooks/useApiClient";
 import unpack from "@/utils/bl-api-request";
 import {
-  ERROR_NOTIFICATION,
-  SUCCESS_NOTIFICATION,
+  showErrorNotification,
+  showSuccessNotification,
 } from "@/utils/notifications";
 
 type BranchItemWithRealItem = Omit<BranchItem, "item"> & { item: Item };
@@ -28,7 +27,6 @@ export default function BranchSettingsSubjects({
 }) {
   const client = useApiClient();
   const queryClient = useQueryClient();
-  const notifications = useNotifications();
   const branchItemsQuery = {
     query: { branch: branchId, expand: "item" },
   };
@@ -60,15 +58,10 @@ export default function BranchSettingsSubjects({
         ],
       });
     },
-    onSuccess: async () => {
-      notifications.show("Innstilling ble oppdatert!", SUCCESS_NOTIFICATION);
-    },
-    onError: async () => {
-      notifications.show(
-        "Klarte ikke oppdatere innstilling!",
-        ERROR_NOTIFICATION,
-      );
-    },
+    onSuccess: async () =>
+      showSuccessNotification("Innstilling ble oppdatert!"),
+    onError: async () =>
+      showErrorNotification("Klarte ikke oppdatere innstilling!"),
   });
 
   return (

@@ -4,7 +4,7 @@ import { CustomerItemType } from "@boklisten/backend/shared/customer-item/custom
 import { MessageMethod } from "@boklisten/backend/shared/message/message-method/message-method";
 import { Button, Grid, Text } from "@mantine/core";
 import { modals } from "@mantine/modals";
-import { IconSend } from "@tabler/icons-react";
+import { IconMailFast, IconSend } from "@tabler/icons-react";
 import { useMutation, useQuery } from "@tanstack/react-query";
 
 import { calculateDeadlineOptions } from "@/components/form/fields/SegmentedDeadlineField";
@@ -68,9 +68,7 @@ export default function Reminders() {
         })
         .unwrap(),
     onError: () =>
-      showErrorNotification({
-        message: "Klarte ikke beregne antall mottakere",
-      }),
+      showErrorNotification("Klarte ikke beregne antall mottakere"),
   });
 
   const sendReminderMutation = useMutation({
@@ -84,13 +82,11 @@ export default function Reminders() {
           smsText: formData.smsText,
         })
         .unwrap(),
-    onError: () =>
-      showErrorNotification({
-        message: "Klarte ikke sende påminnelse",
-      }),
+    onError: () => showErrorNotification("Klarte ikke sende påminnelse"),
     onSuccess: () =>
       showSuccessNotification({
-        title: "Påminnelsen ble sendt!",
+        icon: <IconMailFast />,
+        title: "Påminnelse ble sendt!",
         message: `Husk å sjekke status hos Twilio / SendGrid for å bekrefte at påminnelsen har kommet frem`,
       }),
   });
@@ -102,9 +98,7 @@ export default function Reminders() {
         form.state.values,
       );
       if (recipientCount === 0) {
-        showInfoNotification({
-          title: "Fant ingen kunder med valgte innstillinger",
-        });
+        showInfoNotification("Fant ingen kunder med valgte innstillinger");
         return;
       }
       modals.openConfirmModal({

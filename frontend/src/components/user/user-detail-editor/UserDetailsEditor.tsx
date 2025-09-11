@@ -5,7 +5,6 @@ import { Button } from "@mui/material";
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { useNotifications } from "@toolpad/core";
 import { InferErrorType } from "@tuyau/client";
 import moment, { Moment } from "moment";
 import { useEffect } from "react";
@@ -20,7 +19,7 @@ import TermsAndConditionsSection from "@/components/user/user-detail-editor/Term
 import YourInfoSection from "@/components/user/user-detail-editor/YourInfoSection";
 import useApiClient from "@/hooks/useApiClient";
 import useAuthLinker from "@/hooks/useAuthLinker";
-import { SUCCESS_NOTIFICATION } from "@/utils/notifications";
+import { showSuccessNotification } from "@/utils/notifications";
 import { publicApiClient } from "@/utils/publicApiClient";
 
 export interface UserEditorFields {
@@ -56,7 +55,6 @@ export default function UserDetailsEditor({
   const queryClient = useQueryClient();
   const { redirectToCaller } = useAuthLinker();
   const client = useApiClient();
-  const notifications = useNotifications();
 
   const defaultValues = {
     email: userDetails.email,
@@ -167,10 +165,7 @@ export default function UserDetailsEditor({
       return;
     }
 
-    notifications.show(
-      "Brukerinnstillingene ble lagret!",
-      SUCCESS_NOTIFICATION,
-    );
+    showSuccessNotification("Brukerinnstillingene ble lagret!");
   }
 
   async function updateUserDetailsAsEmployee(formData: UserEditorFields) {
@@ -198,10 +193,7 @@ export default function UserDetailsEditor({
       return;
     }
 
-    notifications.show(
-      "Brukerinnstillingene ble lagret!",
-      SUCCESS_NOTIFICATION,
-    );
+    showSuccessNotification("Brukerinnstillingene ble lagret!");
   }
 
   const userDetailsMutation = useMutation({

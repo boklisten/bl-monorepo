@@ -5,12 +5,11 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import { Tooltip } from "@mui/material";
 import { DataGrid, GridActionsCellItem, GridColDef } from "@mui/x-data-grid";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { useNotifications } from "@toolpad/core";
 
 import useApiClient from "@/hooks/useApiClient";
 import {
-  ERROR_NOTIFICATION,
-  SUCCESS_NOTIFICATION,
+  showErrorNotification,
+  showSuccessNotification,
 } from "@/utils/notifications";
 
 export default function WaitingListTable({
@@ -26,7 +25,6 @@ export default function WaitingListTable({
 }) {
   const client = useApiClient();
   const queryClient = useQueryClient();
-  const notifications = useNotifications();
 
   const destroyWaitingListEntryMutation = useMutation({
     mutationFn: (id: string) =>
@@ -36,15 +34,9 @@ export default function WaitingListTable({
         queryKey: [client.waiting_list_entries.$url()],
       }),
     onSuccess: () =>
-      notifications.show(
-        "Ventelisteoppføring ble slettet!",
-        SUCCESS_NOTIFICATION,
-      ),
+      showSuccessNotification("Ventelisteoppføring ble slettet!"),
     onError: async () =>
-      notifications.show(
-        "Klarte ikke slette ventelisteoppføring!",
-        ERROR_NOTIFICATION,
-      ),
+      showErrorNotification("Klarte ikke slette ventelisteoppføring!"),
   });
 
   const columns: GridColDef[] = [

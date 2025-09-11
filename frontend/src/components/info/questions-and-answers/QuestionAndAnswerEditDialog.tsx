@@ -11,15 +11,15 @@ import {
 } from "@mui/material";
 import DialogTitle from "@mui/material/DialogTitle";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { DialogProps, useNotifications } from "@toolpad/core";
+import { DialogProps } from "@toolpad/core";
 import { RichTextEditorRef } from "mui-tiptap";
 import { useRef } from "react";
 
 import { TextEditor } from "@/components/TextEditor";
 import useApiClient from "@/hooks/useApiClient";
 import {
-  ERROR_NOTIFICATION,
-  SUCCESS_NOTIFICATION,
+  showErrorNotification,
+  showSuccessNotification,
 } from "@/utils/notifications";
 
 export default function QuestionAndAnswerEditDialog({
@@ -29,7 +29,6 @@ export default function QuestionAndAnswerEditDialog({
 }: DialogProps<QuestionAndAnswer | undefined>) {
   const questionRteRef = useRef<RichTextEditorRef>(null);
   const answerRteRef = useRef<RichTextEditorRef>(null);
-  const notifications = useNotifications();
 
   const queryClient = useQueryClient();
   const client = useApiClient();
@@ -42,17 +41,11 @@ export default function QuestionAndAnswerEditDialog({
         queryKey: [client.questions_and_answers.$url()],
       }),
     onSuccess: () => {
-      notifications.show(
-        "Spørsmål og svar ble opprettet!",
-        SUCCESS_NOTIFICATION,
-      );
+      showSuccessNotification("Spørsmål og svar ble opprettet!");
       onClose();
     },
     onError: () =>
-      notifications.show(
-        `Klarte ikke opprette spørsmål og svar!`,
-        ERROR_NOTIFICATION,
-      ),
+      showErrorNotification("Klarte ikke opprette spørsmål og svar!"),
   });
 
   const updateQuestionAndAnswerMutation = useMutation({
@@ -66,17 +59,11 @@ export default function QuestionAndAnswerEditDialog({
         queryKey: [client.questions_and_answers.$url()],
       }),
     onSuccess: () => {
-      notifications.show(
-        "Dynamisk innhold ble oppdatert!",
-        SUCCESS_NOTIFICATION,
-      );
+      showSuccessNotification("Dynamisk innhold ble oppdatert!");
       onClose();
     },
     onError: () =>
-      notifications.show(
-        "Klarte ikke oppdatere dynamisk innhold!",
-        ERROR_NOTIFICATION,
-      ),
+      showErrorNotification("Klarte ikke oppdatere dynamisk innhold!"),
   });
 
   async function handleSubmit() {

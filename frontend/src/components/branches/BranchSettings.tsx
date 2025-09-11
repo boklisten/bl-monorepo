@@ -12,7 +12,6 @@ import {
   Stack,
 } from "@mui/material";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { useNotifications } from "@toolpad/core";
 import { ReactNode, useEffect } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 
@@ -22,8 +21,8 @@ import UploadClassMemberships from "@/components/branches/UploadClassMemberships
 import UploadSubjectChoices from "@/components/branches/UploadSubjectChoices";
 import useApiClient from "@/hooks/useApiClient";
 import {
-  ERROR_NOTIFICATION,
-  SUCCESS_NOTIFICATION,
+  showErrorNotification,
+  showSuccessNotification,
 } from "@/utils/notifications";
 
 function BranchEditSection({
@@ -77,7 +76,6 @@ export default function BranchSettings({
   existingBranch: Branch | null;
   afterSubmit?: () => void;
 }) {
-  const notifications = useNotifications();
   const queryClient = useQueryClient();
   const branchQuery = {
     query: { sort: "name" },
@@ -91,11 +89,10 @@ export default function BranchSettings({
         queryKey: [client.$url("collection.branches.getAll", branchQuery)],
       }),
     onSuccess: () => {
-      notifications.show("Filial ble opprettet!", SUCCESS_NOTIFICATION);
+      showSuccessNotification("Filial ble opprettet!");
       afterSubmit();
     },
-    onError: () =>
-      notifications.show("Klarte ikke opprette filial!", ERROR_NOTIFICATION),
+    onError: () => showErrorNotification("Klarte ikke opprette filial!"),
   });
 
   const updateBranchMutation = useMutation({
@@ -108,10 +105,8 @@ export default function BranchSettings({
       queryClient.invalidateQueries({
         queryKey: [client.$url("collection.branches.getAll", branchQuery)],
       }),
-    onSuccess: () =>
-      notifications.show("Filial ble oppdatert!", SUCCESS_NOTIFICATION),
-    onError: () =>
-      notifications.show("Klarte ikke oppdatere filial!", ERROR_NOTIFICATION),
+    onSuccess: () => showSuccessNotification("Filial ble oppdatert!"),
+    onError: () => showErrorNotification("Klarte ikke oppdatere filial!"),
   });
 
   const methods = useForm<BranchCreateForm>({

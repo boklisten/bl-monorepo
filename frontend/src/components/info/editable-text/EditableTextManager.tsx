@@ -14,19 +14,18 @@ import {
 } from "@mui/material";
 import { DataGrid, GridActionsCellItem, GridColDef } from "@mui/x-data-grid";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { useDialogs, useNotifications } from "@toolpad/core";
+import { useDialogs } from "@toolpad/core";
 
 import EditableTextEditorDialog from "@/components/info/editable-text/EditableTextEditorDialog";
 import useApiClient from "@/hooks/useApiClient";
 import {
-  ERROR_NOTIFICATION,
-  SUCCESS_NOTIFICATION,
+  showErrorNotification,
+  showSuccessNotification,
 } from "@/utils/notifications";
 
 export default function EditableTextManager() {
   const client = useApiClient();
   const dialogs = useDialogs();
-  const notifications = useNotifications();
   const queryClient = useQueryClient();
 
   const destroyEditableTextMutation = useMutation({
@@ -36,13 +35,9 @@ export default function EditableTextManager() {
       queryClient.invalidateQueries({
         queryKey: [client.editable_texts.$url()],
       }),
-    onSuccess: () =>
-      notifications.show("Dynamisk innhold ble slettet!", SUCCESS_NOTIFICATION),
+    onSuccess: () => showSuccessNotification("Dynamisk innhold ble slettet!"),
     onError: () =>
-      notifications.show(
-        "Klarte ikke slette dynamisk innhold!",
-        ERROR_NOTIFICATION,
-      ),
+      showErrorNotification("Klarte ikke slette dynamisk innhold!"),
   });
 
   const {

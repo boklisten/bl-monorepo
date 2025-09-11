@@ -9,13 +9,12 @@ import {
   Typography,
 } from "@mui/material";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { useNotifications } from "@toolpad/core";
 import { Controller, useForm } from "react-hook-form";
 
 import ExpandableEditableTextReadOnly from "@/components/info/editable-text/ExpandableEditableTextReadOnly";
 import SignaturePad from "@/components/SignaturePad";
 import SignedContractDetails from "@/components/SignedContractDetails";
-import { ERROR_NOTIFICATION } from "@/utils/notifications";
+import { showErrorNotification } from "@/utils/notifications";
 import { publicApiClient } from "@/utils/publicApiClient";
 
 interface SignaturePayload {
@@ -47,7 +46,6 @@ export default function SignAgreement({
     },
   });
 
-  const notifications = useNotifications();
   const {
     register,
     setValue,
@@ -64,10 +62,11 @@ export default function SignAgreement({
         .$post(payload)
         .unwrap(),
     onError: () =>
-      notifications.show(
-        "Noe gikk galt under signering. Vennligst prøv igjen eller ta kontakt dersom problemet vedvarer",
-        ERROR_NOTIFICATION,
-      ),
+      showErrorNotification({
+        title: "Noe gikk galt under signering",
+        message:
+          "Vennligst prøv igjen eller ta kontakt dersom problemet vedvarer",
+      }),
     onSettled: () => {
       void queryClient.invalidateQueries({
         queryKey: [

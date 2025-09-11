@@ -9,15 +9,15 @@ import {
   DialogTitle,
 } from "@mui/material";
 import { useMutation, useQuery } from "@tanstack/react-query";
-import { DialogProps, useNotifications } from "@toolpad/core";
+import { DialogProps } from "@toolpad/core";
 
 import AdministrateUserSignatures from "@/components/admin/AdministrateUserSignatures";
 import UserDetailsEditor from "@/components/user/user-detail-editor/UserDetailsEditor";
 import useApiClient from "@/hooks/useApiClient";
 import unpack from "@/utils/bl-api-request";
 import {
-  ERROR_NOTIFICATION,
-  SUCCESS_NOTIFICATION,
+  showErrorNotification,
+  showSuccessNotification,
 } from "@/utils/notifications";
 
 export default function UserDetailEditorDialog({
@@ -27,7 +27,6 @@ export default function UserDetailEditorDialog({
 }: DialogProps<{
   initialUserDetails: UserDetail;
 }>) {
-  const notifications = useNotifications();
   const client = useApiClient();
   const { data: updatedUserDetails } = useQuery({
     queryKey: ["userDetails", payload.initialUserDetails.id],
@@ -47,13 +46,9 @@ export default function UserDetailEditorDialog({
         customerId: userDetail.id,
         userMatchesLocked: false,
       }),
-    onSuccess: () =>
-      notifications.show("Overleveringene ble låst opp!", SUCCESS_NOTIFICATION),
+    onSuccess: () => showSuccessNotification("Overleveringene ble låst opp!"),
     onError: () =>
-      notifications.show(
-        "Klarte ikke låse opp overleveringene",
-        ERROR_NOTIFICATION,
-      ),
+      showErrorNotification("Klarte ikke låse opp overleveringene"),
   });
 
   return (

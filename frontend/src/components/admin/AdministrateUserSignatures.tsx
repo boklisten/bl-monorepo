@@ -11,14 +11,13 @@ import {
   Typography,
 } from "@mui/material";
 import { useMutation, useQuery } from "@tanstack/react-query";
-import { useNotifications } from "@toolpad/core";
 import Image from "next/image";
 
 import SignedContractDetails from "@/components/SignedContractDetails";
 import useApiClient from "@/hooks/useApiClient";
 import {
-  ERROR_NOTIFICATION,
-  SUCCESS_NOTIFICATION,
+  showErrorNotification,
+  showSuccessNotification,
 } from "@/utils/notifications";
 
 export default function AdministrateUserSignatures({
@@ -26,7 +25,6 @@ export default function AdministrateUserSignatures({
 }: {
   userDetail: UserDetail;
 }) {
-  const notifications = useNotifications();
   const client = useApiClient();
   const { data, isLoading, isError } = useQuery({
     queryKey: [
@@ -40,15 +38,9 @@ export default function AdministrateUserSignatures({
     mutationFn: () =>
       client.signatures.send({ detailsId: userDetail.id }).$post().unwrap(),
     onSuccess: () =>
-      notifications.show(
-        "Signaturforespørsel har blitt sendt!",
-        SUCCESS_NOTIFICATION,
-      ),
+      showSuccessNotification("Signaturforespørsel har blitt sendt!"),
     onError: () =>
-      notifications.show(
-        "Klarte ikke sende signaturforespørsel",
-        ERROR_NOTIFICATION,
-      ),
+      showErrorNotification("Klarte ikke sende signaturforespørsel"),
   });
   if (isLoading) {
     return <Skeleton />;
@@ -92,15 +84,9 @@ export default function AdministrateUserSignatures({
               const link = `${window.location.origin}/signering/${userDetail.id}`;
               try {
                 await navigator.clipboard.writeText(link);
-                notifications.show(
-                  "Signeringslenke ble kopiert!",
-                  SUCCESS_NOTIFICATION,
-                );
+                showSuccessNotification("Signeringslenke ble kopiert!");
               } catch {
-                notifications.show(
-                  "Klarte ikke kopiere signeringslenke",
-                  ERROR_NOTIFICATION,
-                );
+                showErrorNotification("Klarte ikke kopiere signeringslenke");
               }
             }}
           >

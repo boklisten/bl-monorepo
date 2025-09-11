@@ -1,50 +1,46 @@
-import { notifications } from "@mantine/notifications";
-import { ShowNotificationOptions } from "@toolpad/core";
+import { MantineColor } from "@mantine/core";
+import { NotificationData, notifications } from "@mantine/notifications";
 
-export const SUCCESS_NOTIFICATION = {
-  severity: "success",
-  autoHideDuration: 3000,
-} as const satisfies ShowNotificationOptions;
-
-export const ERROR_NOTIFICATION = {
-  severity: "error",
-  autoHideDuration: 5000,
-} as const satisfies ShowNotificationOptions;
-
-export function showErrorNotification({ message }: { message: string }) {
-  notifications.show({
-    title: "Noe gikk galt!",
-    message,
-    color: "red",
-    autoClose: true,
-  });
+function showNotification(
+  data: string | NotificationData,
+  color: MantineColor,
+) {
+  if (typeof data === "string") {
+    notifications.show({
+      message: data,
+      color,
+      autoClose: true,
+    });
+  } else {
+    notifications.show({
+      color,
+      autoClose: true,
+      ...data,
+    });
+  }
 }
 
-export function showInfoNotification({
-  title,
-  message,
-}: {
-  title: string;
-  message?: string;
-}) {
-  notifications.show({
-    title,
-    message,
-    autoClose: true,
-  });
+export function showErrorNotification(data: string | NotificationData) {
+  if (typeof data === "string") {
+    notifications.show({
+      title: data,
+      message: "Vennligst prøv igjen eller ta kontakt hvis problemet vedvarer!",
+      color: "red",
+      autoClose: 6000,
+    });
+  } else {
+    notifications.show({
+      color: "red",
+      autoClose: 6000,
+      ...data,
+    });
+  }
 }
 
-export function showSuccessNotification({
-  title,
-  message,
-}: {
-  title: string;
-  message?: string;
-}) {
-  notifications.show({
-    title,
-    message,
-    color: "green",
-    autoClose: true,
-  });
+export function showInfoNotification(data: string | NotificationData) {
+  showNotification(data, "blue");
+}
+
+export function showSuccessNotification(data: string | NotificationData) {
+  showNotification(data, "green");
 }

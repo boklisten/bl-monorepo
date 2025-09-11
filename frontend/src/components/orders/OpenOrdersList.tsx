@@ -2,14 +2,14 @@
 import { Alert, Box, Button, Table, Tooltip } from "@mantine/core";
 import { IconInfoCircle, IconShoppingCart } from "@tabler/icons-react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { useDialogs, useNotifications } from "@toolpad/core";
+import { useDialogs } from "@toolpad/core";
 import moment from "moment";
 import { useRouter } from "next/navigation";
 
 import useApiClient from "@/hooks/useApiClient";
 import {
-  ERROR_NOTIFICATION,
-  SUCCESS_NOTIFICATION,
+  showErrorNotification,
+  showSuccessNotification,
 } from "@/utils/notifications";
 
 export default function OpenOrdersList({
@@ -24,7 +24,6 @@ export default function OpenOrdersList({
   }[];
 }) {
   const dialogs = useDialogs();
-  const notifications = useNotifications();
   const queryClient = useQueryClient();
   const router = useRouter();
   const client = useApiClient();
@@ -36,10 +35,8 @@ export default function OpenOrdersList({
       queryClient.invalidateQueries({
         queryKey: [client.v2.orders.open_orders.$url()],
       }),
-    onSuccess: () =>
-      notifications.show("Avbestilling var vellykket!", SUCCESS_NOTIFICATION),
-    onError: () =>
-      notifications.show("Klarte ikke avbestille bok!", ERROR_NOTIFICATION),
+    onSuccess: () => showSuccessNotification("Avbestillingen var vellykket!"),
+    onError: () => showErrorNotification("Klarte ikke avbestille bok!"),
   });
 
   return (

@@ -14,19 +14,18 @@ import {
 } from "@mui/material";
 import { DataGrid, GridActionsCellItem, GridColDef } from "@mui/x-data-grid";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { useDialogs, useNotifications } from "@toolpad/core";
+import { useDialogs } from "@toolpad/core";
 
 import QuestionAndAnswerEditDialog from "@/components/info/questions-and-answers/QuestionAndAnswerEditDialog";
 import useApiClient from "@/hooks/useApiClient";
 import {
-  ERROR_NOTIFICATION,
-  SUCCESS_NOTIFICATION,
+  showErrorNotification,
+  showSuccessNotification,
 } from "@/utils/notifications";
 
 export default function QuestionsAndAnswersManager() {
   const client = useApiClient();
   const dialogs = useDialogs();
-  const notifications = useNotifications();
   const queryClient = useQueryClient();
 
   const destroyQuestionAndAnswerMutation = useMutation({
@@ -36,13 +35,9 @@ export default function QuestionsAndAnswersManager() {
       queryClient.invalidateQueries({
         queryKey: [client.questions_and_answers.$url()],
       }),
-    onSuccess: () =>
-      notifications.show("Spørsmål og svar ble slettet!", SUCCESS_NOTIFICATION),
+    onSuccess: () => showSuccessNotification("Spørsmål og svar ble slettet!"),
     onError: () =>
-      notifications.show(
-        "Klarte ikke slette spørsmål og svar!",
-        ERROR_NOTIFICATION,
-      ),
+      showErrorNotification("Klarte ikke slette spørsmål og svar!"),
   });
 
   const {

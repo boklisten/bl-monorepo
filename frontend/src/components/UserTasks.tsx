@@ -14,7 +14,6 @@ import {
   Typography,
 } from "@mui/material";
 import { useMutation, useQuery } from "@tanstack/react-query";
-import { useNotifications } from "@toolpad/core";
 import moment from "moment";
 
 import { getAccessTokenBody } from "@/api/token";
@@ -25,8 +24,8 @@ import UserDetailsEditor, {
 } from "@/components/user/user-detail-editor/UserDetailsEditor";
 import useApiClient from "@/hooks/useApiClient";
 import {
-  ERROR_NOTIFICATION,
-  SUCCESS_NOTIFICATION,
+  showErrorNotification,
+  showSuccessNotification,
 } from "@/utils/notifications";
 
 export default function UserTasks({
@@ -35,7 +34,6 @@ export default function UserTasks({
   cachedAgreementText: string;
 }) {
   const client = useApiClient();
-  const notifications = useNotifications();
   const { data, isLoading, isError } = useQuery({
     queryKey: [client.v2.user_details.$url()],
     queryFn: () => {
@@ -52,15 +50,9 @@ export default function UserTasks({
         .$post()
         .unwrap(),
     onSuccess: () =>
-      notifications.show(
-        "Signaturforespørsel har blitt sendt!",
-        SUCCESS_NOTIFICATION,
-      ),
+      showSuccessNotification("Signaturforespørsel har blitt sendt!"),
     onError: () =>
-      notifications.show(
-        "Klarte ikke sende signaturforespørsel",
-        ERROR_NOTIFICATION,
-      ),
+      showErrorNotification("Klarte ikke sende signaturforespørsel"),
   });
 
   if (isLoading) {

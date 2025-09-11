@@ -10,15 +10,15 @@ import {
 } from "@mui/material";
 import DialogTitle from "@mui/material/DialogTitle";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { DialogProps, useNotifications } from "@toolpad/core";
+import { DialogProps } from "@toolpad/core";
 import { RichTextEditorRef } from "mui-tiptap";
 import { useRef, useState } from "react";
 
 import { TextEditor } from "@/components/TextEditor";
 import useApiClient from "@/hooks/useApiClient";
 import {
-  ERROR_NOTIFICATION,
-  SUCCESS_NOTIFICATION,
+  showErrorNotification,
+  showSuccessNotification,
 } from "@/utils/notifications";
 
 export default function EditableTextEditorDialog({
@@ -28,7 +28,6 @@ export default function EditableTextEditorDialog({
 }: DialogProps<EditableText | undefined>) {
   const [key, setKey] = useState(payload?.key ?? "");
   const rteRef = useRef<RichTextEditorRef>(null);
-  const notifications = useNotifications();
 
   const queryClient = useQueryClient();
   const client = useApiClient();
@@ -41,17 +40,15 @@ export default function EditableTextEditorDialog({
         queryKey: [client.editable_texts.$url()],
       }),
     onSuccess: () => {
-      notifications.show(
-        "Dynamisk innhold ble opprettet!",
-        SUCCESS_NOTIFICATION,
-      );
+      showSuccessNotification("Dynamisk innhold ble opprettet!");
       onClose();
     },
     onError: () =>
-      notifications.show(
-        `Klarte ikke opprette dynamisk innhold! Vennligst sjekk at unik nøkkel er formattert riktig. [a-z] og "_" for mellomrom.`,
-        ERROR_NOTIFICATION,
-      ),
+      showErrorNotification({
+        title: "Klarte ikke opprette dynamisk innhold!",
+        message:
+          'Vennligst sjekk at unik nøkkel er formattert riktig. [a-z] og "_" for mellomrom.',
+      }),
   });
 
   const updateEditableTextMutation = useMutation({
@@ -65,17 +62,11 @@ export default function EditableTextEditorDialog({
         queryKey: [client.editable_texts.$url()],
       }),
     onSuccess: () => {
-      notifications.show(
-        "Dynamisk innhold ble oppdatert!",
-        SUCCESS_NOTIFICATION,
-      );
+      showSuccessNotification("Dynamisk innhold ble oppdatert!");
       onClose();
     },
     onError: () =>
-      notifications.show(
-        "Klarte ikke oppdatere dynamisk innhold!",
-        ERROR_NOTIFICATION,
-      ),
+      showErrorNotification("Klarte ikke oppdatere dynamisk innhold!"),
   });
 
   async function handleSubmit() {

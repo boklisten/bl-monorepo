@@ -1,13 +1,12 @@
 "use client";
 import { useMutation } from "@tanstack/react-query";
-import { useNotifications } from "@toolpad/core";
 
 import AuthGuard from "@/components/common/AuthGuard";
 import UploadCSVFile from "@/components/UploadCSVFile";
 import useApiClient from "@/hooks/useApiClient";
 import {
-  ERROR_NOTIFICATION,
-  SUCCESS_NOTIFICATION,
+  showErrorNotification,
+  showSuccessNotification,
 } from "@/utils/notifications";
 
 interface UserCandidate {
@@ -22,15 +21,12 @@ interface UserCandidate {
 }
 
 export default function CreateUsers() {
-  const notifications = useNotifications();
   const client = useApiClient();
   const createUsersMutation = useMutation({
     mutationFn: (userCandidates: UserCandidate[]) =>
       client.users.create.$post({ userCandidates }).unwrap(),
-    onSuccess: () =>
-      notifications.show("Brukerne ble lastet opp!", SUCCESS_NOTIFICATION),
-    onError: () =>
-      notifications.show("Klarte ikke laste opp brukere!", ERROR_NOTIFICATION),
+    onSuccess: () => showSuccessNotification("Brukerne ble lastet opp!"),
+    onError: () => showErrorNotification("Klarte ikke laste opp brukere!"),
   });
 
   return (

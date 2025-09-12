@@ -1,9 +1,9 @@
 import { Branch } from "@boklisten/backend/shared/branch";
 import { Item } from "@boklisten/backend/shared/item";
 import { WaitingListEntry } from "@boklisten/backend/shared/waiting-list-entry";
-import DeleteIcon from "@mui/icons-material/Delete";
-import { Tooltip } from "@mui/material";
+import { Tooltip } from "@mantine/core";
 import { DataGrid, GridActionsCellItem, GridColDef } from "@mui/x-data-grid";
+import { IconTrash } from "@tabler/icons-react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 import useApiClient from "@/hooks/useApiClient";
@@ -77,9 +77,9 @@ export default function WaitingListTable({
       width: 100,
       getActions: ({ id }) => {
         return [
-          <Tooltip key={`delete-${id}`} title={"Slett"}>
+          <Tooltip key={`delete-${id}`} label={"Slett"}>
             <GridActionsCellItem
-              icon={<DeleteIcon />}
+              icon={<IconTrash />}
               label="Delete"
               onClick={() =>
                 destroyWaitingListEntryMutation.mutate(id as string)

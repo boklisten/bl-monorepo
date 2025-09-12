@@ -1,20 +1,15 @@
 "use client";
 import { UserDetail } from "@boklisten/backend/shared/user-detail";
 import { ContentCopy, Send } from "@mui/icons-material";
-import {
-  Alert,
-  AlertTitle,
-  Box,
-  Button,
-  Skeleton,
-  Stack,
-  Typography,
-} from "@mui/material";
+import { Box, Button, Skeleton, Stack, Typography } from "@mui/material";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import Image from "next/image";
 
 import SignedContractDetails from "@/components/SignedContractDetails";
+import ErrorAlert from "@/components/ui/alerts/ErrorAlert";
+import WarningAlert from "@/components/ui/alerts/WarningAlert";
 import useApiClient from "@/hooks/useApiClient";
+import { PLEASE_TRY_AGAIN_TEXT } from "@/utils/constants";
 import {
   showErrorNotification,
   showSuccessNotification,
@@ -46,7 +41,11 @@ export default function AdministrateUserSignatures({
     return <Skeleton />;
   }
   if (!data || isError) {
-    return <Alert severity="error">Klarte ikke laste signatur</Alert>;
+    return (
+      <ErrorAlert title={"Klarte ikke laste signatur"}>
+        {PLEASE_TRY_AGAIN_TEXT}
+      </ErrorAlert>
+    );
   }
 
   if (data.isSignatureValid) {
@@ -75,9 +74,8 @@ export default function AdministrateUserSignatures({
   return (
     <Stack gap={1} alignItems="center">
       <Typography variant={"h2"}>Signatur</Typography>
-      <Alert severity={"warning"}>
+      <WarningAlert title={"Denne kunden har ikke gyldig signatur"}>
         <Stack gap={1}>
-          <AlertTitle>Denne kunden har ikke gyldig signatur</AlertTitle>
           <Button
             startIcon={<ContentCopy />}
             onClick={async () => {
@@ -100,7 +98,7 @@ export default function AdministrateUserSignatures({
             Send signeringslenke
           </Button>
         </Stack>
-      </Alert>
+      </WarningAlert>
     </Stack>
   );
 }

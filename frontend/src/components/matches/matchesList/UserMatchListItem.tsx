@@ -1,20 +1,22 @@
 import { UserMatchWithDetails } from "@boklisten/backend/shared/match/match-dtos";
-import { Box, Typography } from "@mui/material";
-import { FC } from "react";
+import { Text, Title } from "@mantine/core";
 
 import { calculateUserMatchStatus } from "@/components/matches/matches-helper";
 import {
   formatActionsString,
   UserMatchTitle,
 } from "@/components/matches/matchesList/helper";
-import MatchListItemBox from "@/components/matches/matchesList/MatchListItemBox";
+import MatchListItemCard from "@/components/matches/matchesList/MatchListItemCard";
 import ProgressBar from "@/components/matches/matchesList/ProgressBar";
 import MeetingInfo from "@/components/matches/MeetingInfo";
 
-const UserMatchListItem: FC<{
+export default function UserMatchListItem({
+  userMatch,
+  currentUserId,
+}: {
   userMatch: UserMatchWithDetails;
   currentUserId: string;
-}> = ({ userMatch, currentUserId }) => {
+}) {
   const userMatchStatus = calculateUserMatchStatus(userMatch, currentUserId);
   const { currentUser, otherUser } = userMatchStatus;
 
@@ -38,14 +40,14 @@ const UserMatchListItem: FC<{
   const isCurrentUserFulfilled =
     currentUserActualItemCount >= currentUserExpectedItemCount;
   return (
-    <MatchListItemBox
+    <MatchListItemCard
       finished={isCurrentUserFulfilled}
       matchId={userMatch.id}
       matchType={"user"}
     >
-      <Typography variant="h3">
+      <Title order={4}>
         <UserMatchTitle userMatchStatus={userMatchStatus} />
-      </Typography>
+      </Title>
 
       {isCurrentUserStarted && (
         <>
@@ -54,23 +56,21 @@ const UserMatchListItem: FC<{
               (currentUserActualItemCount * 100) / currentUserExpectedItemCount
             }
             subtitle={
-              <Box>
+              <Text size={"sm"}>
                 {statusText} {currentUserActualItemCount} av{" "}
                 {currentUserExpectedItemCount} bøker
-              </Box>
+              </Text>
             }
           />
         </>
       )}
       {!isCurrentUserStarted && !isCurrentUserFulfilled && (
-        <>
-          <Box>
-            {formatActionsString(
-              currentUser.items.length,
-              currentUser.wantedItems.length,
-            )}
-          </Box>
-        </>
+        <Text>
+          {formatActionsString(
+            currentUser.items.length,
+            currentUser.wantedItems.length,
+          )}
+        </Text>
       )}
       {!isCurrentUserFulfilled && (
         <MeetingInfo
@@ -78,8 +78,6 @@ const UserMatchListItem: FC<{
           meetingTime={userMatch.meetingInfo.date}
         />
       )}
-    </MatchListItemBox>
+    </MatchListItemCard>
   );
-};
-
-export default UserMatchListItem;
+}

@@ -1,13 +1,15 @@
 "use client";
 import { ArrowBack } from "@mui/icons-material";
-import { Alert, Button, Card, Container, Skeleton } from "@mui/material";
+import { Button, Card, Container, Skeleton } from "@mui/material";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 
 import { getAccessTokenBody } from "@/api/token";
 import DynamicLink from "@/components/DynamicLink";
 import StandMatchDetail from "@/components/matches/StandMatchDetail";
 import UserMatchDetail from "@/components/matches/UserMatchDetail";
+import ErrorAlert from "@/components/ui/alerts/ErrorAlert";
 import useApiClient from "@/hooks/useApiClient";
+import { GENERIC_ERROR_TEXT, PLEASE_TRY_AGAIN_TEXT } from "@/utils/constants";
 import muiTheme from "@/utils/muiTheme";
 
 const MatchDetail = ({
@@ -39,10 +41,9 @@ const MatchDetail = ({
 
   if (tokenError || matchesError) {
     return (
-      <Alert severity="error">
-        En feil har oppstått. Ta kontakt med info@boklisten.no dersom problemet
-        vedvarer.
-      </Alert>
+      <ErrorAlert title={GENERIC_ERROR_TEXT}>
+        {PLEASE_TRY_AGAIN_TEXT}
+      </ErrorAlert>
     );
   }
 
@@ -51,17 +52,17 @@ const MatchDetail = ({
   );
   if (matches?.userMatches && userMatchId && !userMatch) {
     return (
-      <Alert severity="error">
+      <ErrorAlert>
         Kunne ikke finne en elevoverlevering med ID {userMatchId}.
-      </Alert>
+      </ErrorAlert>
     );
   }
   const standMatch = standMatchId ? matches?.standMatch : undefined;
   if (standMatchId && !standMatch) {
     return (
-      <Alert severity="error">
+      <ErrorAlert>
         Kunne ikke finne en standoverlevering med ID {standMatchId}.
-      </Alert>
+      </ErrorAlert>
     );
   }
 

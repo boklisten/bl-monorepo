@@ -1,19 +1,14 @@
 "use client";
 import { DoneOutline } from "@mui/icons-material";
-import {
-  Alert,
-  Button,
-  Skeleton,
-  Stack,
-  TextField,
-  Typography,
-} from "@mui/material";
+import { Button, Skeleton, Stack, TextField, Typography } from "@mui/material";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { Controller, useForm } from "react-hook-form";
 
 import ExpandableEditableTextReadOnly from "@/components/info/editable-text/ExpandableEditableTextReadOnly";
 import SignaturePad from "@/components/SignaturePad";
 import SignedContractDetails from "@/components/SignedContractDetails";
+import ErrorAlert from "@/components/ui/alerts/ErrorAlert";
+import { PLEASE_TRY_AGAIN_TEXT } from "@/utils/constants";
 import { showErrorNotification } from "@/utils/notifications";
 import { publicApiClient } from "@/utils/publicApiClient";
 
@@ -61,12 +56,7 @@ export default function SignAgreement({
         .sign({ detailsId: userDetailId })
         .$post(payload)
         .unwrap(),
-    onError: () =>
-      showErrorNotification({
-        title: "Noe gikk galt under signering",
-        message:
-          "Vennligst prøv igjen eller ta kontakt dersom problemet vedvarer",
-      }),
+    onError: () => showErrorNotification("Noe gikk galt under signering"),
     onSettled: () => {
       void queryClient.invalidateQueries({
         queryKey: [
@@ -93,10 +83,9 @@ export default function SignAgreement({
           cachedText={cachedAgreementText}
         />
         {!isLoading && (isError || !data) && (
-          <Alert severity={"error"}>
-            Noe gikk galt under lasting av signaturstatus. Vennligst prøv igjen
-            eller ta kontakt hvis problemet vedvarer.
-          </Alert>
+          <ErrorAlert title={"Noe gikk galt under lasting av signaturstatus"}>
+            {PLEASE_TRY_AGAIN_TEXT}
+          </ErrorAlert>
         )}
         {isLoading && (
           <Stack alignItems={"center"} sx={{ width: "100%", maxWidth: 750 }}>
@@ -107,7 +96,7 @@ export default function SignAgreement({
           </Stack>
         )}
         {hasValidResponse && "message" in data && (
-          <Alert severity={"error"}>{data.message}</Alert>
+          <ErrorAlert>{data.message}</ErrorAlert>
         )}
         {hasValidResponse &&
           !("message" in data) &&
@@ -129,9 +118,7 @@ export default function SignAgreement({
                 )}
               />
               {errors.base64EncodedImage && (
-                <Alert severity="error">
-                  {errors.base64EncodedImage.message}
-                </Alert>
+                <ErrorAlert>{errors.base64EncodedImage.message}</ErrorAlert>
               )}
               <TextField
                 required
@@ -156,7 +143,7 @@ export default function SignAgreement({
                 })}
               />
               {errors.signingName && (
-                <Alert severity="error">{errors.signingName.message}</Alert>
+                <ErrorAlert>{errors.signingName.message}</ErrorAlert>
               )}
               <Stack alignItems={"center"} mt={1}>
                 <Button

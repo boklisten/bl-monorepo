@@ -1,13 +1,14 @@
 "use client";
-import { Alert, Anchor, Button } from "@mantine/core";
-import { IconCircleCheck } from "@tabler/icons-react";
+import { Anchor, Button } from "@mantine/core";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { useState } from "react";
 
-import ErrorAlert from "@/components/ui/ErrorAlert";
+import ErrorAlert from "@/components/ui/alerts/ErrorAlert";
+import SuccessAlert from "@/components/ui/alerts/SuccessAlert";
 import { useAppForm } from "@/hooks/form";
+import { GENERIC_ERROR_TEXT, PLEASE_TRY_AGAIN_TEXT } from "@/utils/constants";
 import { publicApiClient } from "@/utils/publicApiClient";
 
 interface PasswordResetFields {
@@ -40,9 +41,7 @@ export default function PasswordReset({ resetId }: { resetId: string }) {
       setApiError(message ?? null);
     },
     onError: () => {
-      setApiError(
-        "Noe gikk galt! Vennligst prøv igjen eller ta kontakt hvis problemet vedvarer.",
-      );
+      setApiError(PLEASE_TRY_AGAIN_TEXT);
     },
   });
 
@@ -58,12 +57,10 @@ export default function PasswordReset({ resetId }: { resetId: string }) {
   if (isExpired) {
     return (
       <>
-        <ErrorAlert
-          message={
-            message ??
-            "Lenken har utløpt. Du kan be om å få tilsendt en ny lenke på 'glemt passord'-siden"
-          }
-        ></ErrorAlert>
+        <ErrorAlert>
+          {message ??
+            "Lenken har utløpt. Du kan be om å få tilsendt en ny lenke på 'glemt passord'-siden"}
+        </ErrorAlert>
         <Anchor component={Link} href={"/auth/forgot"}>
           Gå til glemt passord
         </Anchor>
@@ -75,16 +72,18 @@ export default function PasswordReset({ resetId }: { resetId: string }) {
     <form.AppForm>
       {resetPasswordMutation.isSuccess && !apiError ? (
         <>
-          <Alert icon={<IconCircleCheck />} color={"green"}>
+          <SuccessAlert>
             Passordet ble oppdatert! Du kan nå logge inn.
-          </Alert>
+          </SuccessAlert>
           <Anchor component={Link} href={"/auth/login"}>
             <Button>Logg inn</Button>
           </Anchor>
         </>
       ) : (
         <>
-          {apiError && <ErrorAlert message={apiError} />}
+          {apiError && (
+            <ErrorAlert title={GENERIC_ERROR_TEXT}>{apiError}</ErrorAlert>
+          )}
           <form.AppField
             name={"newPassword"}
             validators={{

@@ -1,9 +1,12 @@
 import { StandMatchWithDetails } from "@boklisten/backend/shared/match/match-dtos";
-import { KeyboardDoubleArrowRight, SwapHoriz } from "@mui/icons-material";
-import { SxProps, Typography, Box } from "@mui/material";
+import { Group, Text } from "@mantine/core";
+import {
+  IconChevronsLeft,
+  IconChevronsRight,
+  IconSwitchHorizontal,
+} from "@tabler/icons-react";
 
 import { UserMatchStatus } from "@/components/matches/matches-helper";
-import muiTheme from "@/utils/muiTheme";
 
 export function formatActionsString(handoffItems: number, pickupItems: number) {
   const hasHandoffItems = handoffItems > 0;
@@ -50,15 +53,11 @@ export const FormattedDatetime = ({ date }: { date: Date }) => {
   });
   return (
     <>
-      <Typography>{timeString}</Typography>
-      <Typography color={muiTheme.palette.grey["600"]}>
-        , {dateString}
-      </Typography>
+      <Text>{timeString}</Text>
+      <Text c={"dimmed"}>, {dateString}</Text>
     </>
   );
 };
-
-const me = <span style={{ color: "#757575", fontWeight: 400 }}>Meg</span>;
 
 export const UserMatchTitle = ({
   userMatchStatus,
@@ -66,18 +65,13 @@ export const UserMatchTitle = ({
   userMatchStatus: UserMatchStatus;
 }) => {
   const { currentUser, otherUser } = userMatchStatus;
-  const arrowSize = "1.18em";
   if (currentUser.items.length > 0 && otherUser.items.length === 0) {
     return (
-      <>
-        {me}{" "}
-        <KeyboardDoubleArrowRight
-          sx={{ verticalAlign: "text-bottom", fontSize: arrowSize }}
-        />{" "}
-        <Box component="span" fontWeight="bold">
-          {otherUser.name}
-        </Box>
-      </>
+      <Group gap={2}>
+        <Text c={"dimmed"}>Meg</Text>
+        <IconChevronsRight />
+        <Text fw={"bold"}>{otherUser.name}</Text>
+      </Group>
     );
   }
   if (
@@ -85,63 +79,56 @@ export const UserMatchTitle = ({
     otherUser.wantedItems.length === 0
   ) {
     return (
-      <>
-        <Box component="span" fontWeight="bold">
-          {otherUser.name}
-        </Box>{" "}
-        <KeyboardDoubleArrowRight
-          sx={{ verticalAlign: "text-bottom", fontSize: arrowSize }}
-        />{" "}
-        {me}
-      </>
+      <Group gap={2}>
+        <Text fw={"bold"}>{otherUser.name}</Text>
+        <IconChevronsRight />
+        <Text c={"dimmed"}>Meg</Text>
+      </Group>
     );
   }
   return (
-    <>
-      {me}{" "}
-      <SwapHoriz sx={{ verticalAlign: "text-bottom", fontSize: arrowSize }} />{" "}
-      <Box component="span" fontWeight="bold">
-        {otherUser.name}
-      </Box>
-    </>
+    <Group gap={2}>
+      <Text c={"dimmed"}>Meg</Text>
+      <IconSwitchHorizontal size={20} />
+      <Text fw={"bold"}>{otherUser.name}</Text>
+    </Group>
   );
 };
 
-interface StandMatchTitleProps {
+export const StandMatchTitle = ({
+  standMatch,
+}: {
   standMatch: StandMatchWithDetails;
-}
-
-export const StandMatchTitle = ({ standMatch }: StandMatchTitleProps) => {
+}) => {
   const hasHandoffItems = standMatch.expectedHandoffItems.length > 0;
   const hasPickupItems = standMatch.expectedPickupItems.length > 0;
 
-  const stand = (
-    <Box component="span" fontWeight="bold">
-      Stand
-    </Box>
-  );
-
   const isMeFirst = hasPickupItems ? hasHandoffItems : true;
 
-  const iconStyle: SxProps = {
-    verticalAlign: "text-bottom",
-    fontSize: "1.18em",
-  };
-
-  const left = isMeFirst ? me : stand;
-  const right = isMeFirst ? stand : me;
+  const left = isMeFirst ? (
+    <Text c={"dimmed"}>Meg</Text>
+  ) : (
+    <Text fw={"bold"}>Stand</Text>
+  );
+  const right = isMeFirst ? (
+    <Text fw={"bold"}>Stand</Text>
+  ) : (
+    <Text c={"dimmed"}>Meg</Text>
+  );
   const arrow = hasHandoffItems ? (
     hasPickupItems ? (
-      <SwapHoriz sx={iconStyle} />
+      <IconSwitchHorizontal size={20} />
     ) : (
-      <KeyboardDoubleArrowRight sx={iconStyle} />
+      <IconChevronsLeft />
     )
   ) : (
-    <KeyboardDoubleArrowRight sx={iconStyle} />
+    <IconChevronsRight />
   );
   return (
-    <>
-      {left} {arrow} {right}
-    </>
+    <Group gap={2}>
+      {left}
+      {arrow}
+      {right}
+    </Group>
   );
 };

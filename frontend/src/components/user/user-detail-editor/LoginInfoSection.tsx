@@ -1,12 +1,12 @@
 import { UserDetail } from "@boklisten/backend/shared/user-detail";
 import { Button, Stack } from "@mantine/core";
 import { modals } from "@mantine/modals";
-import { Alert } from "@mui/material";
 import Grid from "@mui/material/Grid";
 import { IconQrcode } from "@tabler/icons-react";
 import { useFormContext, useWatch } from "react-hook-form";
 import QRCode from "react-qr-code";
 
+import WarningAlert from "@/components/ui/alerts/WarningAlert";
 import EmailConfirmationStatus from "@/components/user/fields/EmailConfirmationStatus";
 import EmailField from "@/components/user/fields/EmailField";
 import FieldErrorAlert from "@/components/user/fields/FieldErrorAlert";
@@ -40,11 +40,11 @@ export default function LoginInfoSection({
     <>
       <Grid size={{ xs: 12 }}>
         {variant === "signup" && isSchoolEmail && (
-          <Alert severity={"warning"} sx={{ mb: 1 }}>
+          <WarningAlert>
             Vi anbefaler at du bruker din personlige e-postadresse i stedet for
             skolekontoen. Da beholder du tilgangen etter endt utdanning og kan
             motta viktige varsler om eventuelle manglende bokinnleveringer.
-          </Alert>
+          </WarningAlert>
         )}
         <EmailField
           disabled={variant === "personal"}

@@ -4,19 +4,13 @@ import { modals } from "@mantine/modals";
 import { NoteAdd } from "@mui/icons-material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
-import {
-  Alert,
-  AlertTitle,
-  Box,
-  Button,
-  Stack,
-  Tooltip,
-  Typography,
-} from "@mui/material";
+import { Box, Button, Stack, Tooltip, Typography } from "@mui/material";
 import { DataGrid, GridActionsCellItem, GridColDef } from "@mui/x-data-grid";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
+import ErrorAlert from "@/components/ui/alerts/ErrorAlert";
 import useApiClient from "@/hooks/useApiClient";
+import { PLEASE_TRY_AGAIN_TEXT } from "@/utils/constants";
 import {
   showErrorNotification,
   showSuccessNotification,
@@ -49,10 +43,9 @@ export default function EditableTextManager() {
 
   if (error) {
     return (
-      <Alert severity="error">
-        <AlertTitle>Klarte ikke laste inn dynamisk innhold</AlertTitle>
-        Du kan prøve igjen, eller ta kontakt dersom problemet vedvarer.
-      </Alert>
+      <ErrorAlert title={"Klarte ikke laste inn dynamisk innhold"}>
+        {PLEASE_TRY_AGAIN_TEXT}
+      </ErrorAlert>
     );
   }
 

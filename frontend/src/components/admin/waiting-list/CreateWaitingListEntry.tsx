@@ -1,8 +1,6 @@
 import { Item } from "@boklisten/backend/shared/item";
 import { useLocalStorage } from "@mantine/hooks";
 import {
-  Alert,
-  AlertTitle,
   Autocomplete,
   Button,
   Collapse,
@@ -15,8 +13,11 @@ import { useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 
 import BranchSelect from "@/components/BranchSelect";
+import ErrorAlert from "@/components/ui/alerts/ErrorAlert";
+import SuccessAlert from "@/components/ui/alerts/SuccessAlert";
 import PhoneNumberField from "@/components/user/fields/PhoneNumberField";
 import useApiClient from "@/hooks/useApiClient";
+import { PLEASE_TRY_AGAIN_TEXT } from "@/utils/constants";
 
 interface WaitingListEntryFormFields {
   name: string;
@@ -116,13 +117,12 @@ export default function CreateWaitingListEntry({ items }: { items: Item[] }) {
       <Collapse in={status !== undefined}>
         <>
           {status === "error" && (
-            <Alert severity="error">
-              <AlertTitle>Klarte ikke legge til kunde i venteliste</AlertTitle>
-              Du kan prøve igjen, eller ta kontakt dersom problemet vedvarer
-            </Alert>
+            <ErrorAlert title={"Klarte ikke legge til kunde i venteliste"}>
+              {PLEASE_TRY_AGAIN_TEXT}
+            </ErrorAlert>
           )}
           {status === "success" && (
-            <Alert>Kunden har blitt lagt til i ventelisten</Alert>
+            <SuccessAlert>Kunden har blitt lagt til i ventelisten</SuccessAlert>
           )}
         </>
       </Collapse>

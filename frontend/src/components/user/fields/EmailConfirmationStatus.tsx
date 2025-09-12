@@ -1,15 +1,18 @@
 import { UserDetail } from "@boklisten/backend/shared/user-detail";
-import { Email, Info } from "@mui/icons-material";
-import { Alert, Stack, Switch } from "@mui/material";
+import { Stack, Switch } from "@mui/material";
 import Button from "@mui/material/Button";
+import { IconMailFast } from "@tabler/icons-react";
 import { useMutation } from "@tanstack/react-query";
 import { Controller, useFormContext } from "react-hook-form";
 
+import InfoAlert from "@/components/ui/alerts/InfoAlert";
+import WarningAlert from "@/components/ui/alerts/WarningAlert";
 import {
   UserDetailsEditorVariant,
   UserEditorFields,
 } from "@/components/user/user-detail-editor/UserDetailsEditor";
 import useApiClient from "@/hooks/useApiClient";
+import { PLEASE_TRY_AGAIN_TEXT } from "@/utils/constants";
 
 interface EmailConfirmationStatusProps {
   variant: UserDetailsEditorVariant;
@@ -27,8 +30,7 @@ const EmailConfirmationStatus = ({
     mutationFn: () => client.email_validations.$post().unwrap(),
     onError: () =>
       setError("email", {
-        message:
-          "Klarte ikke sende ny bekreftelseslenke. Vennligst prøv igjen, eller ta kontakt hvis problemet vedvarer.",
+        message: `Klarte ikke sende ny bekreftelseslenke. ${PLEASE_TRY_AGAIN_TEXT}`,
       }),
   });
 
@@ -63,18 +65,17 @@ const EmailConfirmationStatus = ({
     !userDetails.emailConfirmed && (
       <>
         {createEmailConfirmation.isSuccess ? (
-          <Alert severity={"info"} sx={{ mt: 1 }} icon={<Email />}>
+          <InfoAlert icon={<IconMailFast />}>
             Bekreftelseslenke er sendt til
             {variant === "personal" ? "din" : "kundens"} e-postadresse! Sjekk
             søppelpost om den ikke dukker opp i inbox.
-          </Alert>
+          </InfoAlert>
         ) : (
           <>
-            <Alert severity={"warning"} icon={<Info color={"warning"} />}>
-              E-postadressen er ikke bekreftet. En bekreftelseslenke har blitt
-              sendt til {userDetails.email}. Trykk på knappen nedenfor for å
-              sende en ny lenke.
-            </Alert>
+            <WarningAlert title={"E-postadressen er ikke bekreftet"}>
+              En bekreftelseslenke har blitt sendt til {userDetails.email}.
+              Trykk på knappen nedenfor for å sende en ny lenke.
+            </WarningAlert>
             <Button onClick={() => createEmailConfirmation.mutate()}>
               Send bekreftelseslenke på nytt
             </Button>

@@ -1,10 +1,13 @@
 "use client";
 import { Item } from "@boklisten/backend/shared/item";
-import { Alert, Table, Text, Title } from "@mantine/core";
+import { Table, Text, Title } from "@mantine/core";
 import { useQuery } from "@tanstack/react-query";
 
+import ErrorAlert from "@/components/ui/alerts/ErrorAlert";
+import InfoAlert from "@/components/ui/alerts/InfoAlert";
 import useApiClient from "@/hooks/useApiClient";
 import unpack from "@/utils/bl-api-request";
+import { GENERIC_ERROR_TEXT, PLEASE_TRY_AGAIN_TEXT } from "@/utils/constants";
 
 const BuybackList = ({
   cachedBuybackItems,
@@ -54,12 +57,14 @@ const BuybackList = ({
         </Table.Tbody>
       </Table>
       {!error && items.length === 0 && (
-        <Alert color={"blue"}>
+        <InfoAlert>
           Ingen bøker i listen. Kom tilbake senere for å se en oppdatert liste.
-        </Alert>
+        </InfoAlert>
       )}
       {error && (
-        <Alert color={"red"}>Noe gikk galt! Vennligst prøv igjen senere.</Alert>
+        <ErrorAlert title={GENERIC_ERROR_TEXT}>
+          {PLEASE_TRY_AGAIN_TEXT}
+        </ErrorAlert>
       )}
     </>
   );

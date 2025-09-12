@@ -2,7 +2,7 @@ import { Container, Stack, Title } from "@mantine/core";
 import { Metadata } from "next";
 
 import AuthGuard from "@/components/common/AuthGuard";
-import { MatchesList } from "@/components/matches/matchesList/MatchesList";
+import MatchList from "@/components/matches/matchesList/MatchList";
 
 export const metadata: Metadata = {
   title: "Mine overleveringer",
@@ -15,7 +15,7 @@ export default function MatchesPage() {
       <Stack>
         <Title>Mine overleveringer</Title>
         <AuthGuard>
-          <MatchesList />
+          <MatchList />
         </AuthGuard>
       </Stack>
     </Container>

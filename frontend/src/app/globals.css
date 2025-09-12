@@ -1,5 +1,4 @@
 @import "tailwind-preset-mantine";
 @import "@mantine/dates/styles.css";
 @import "@mantine/notifications/styles.css";
-@import "@blocknote/mantine/style.css";
 @import "./theme.css";

@@ -1,19 +1,19 @@
 "use client";
-import { Alert, Skeleton, Stack, Text } from "@mantine/core";
-import { IconExclamationCircle } from "@tabler/icons-react";
+import { Skeleton, Stack, Text } from "@mantine/core";
 import { useQuery } from "@tanstack/react-query";
-import { FC } from "react";
 
 import { getAccessTokenBody } from "@/api/token";
 import {
   calculateUserMatchStatus,
   isStandMatchFulfilled,
 } from "@/components/matches/matches-helper";
-import { MatchListItemGroups } from "@/components/matches/matchesList/MatchListItemGroups";
+import MatchListItemGroups from "@/components/matches/matchesList/MatchListItemGroups";
 import ProgressBar from "@/components/matches/matchesList/ProgressBar";
+import ErrorAlert from "@/components/ui/alerts/ErrorAlert";
+import InfoAlert from "@/components/ui/alerts/InfoAlert";
 import useApiClient from "@/hooks/useApiClient";
 
-export const MatchesList: FC = () => {
+export default function MatchList() {
   const client = useApiClient();
   const { data: accessToken, error: tokenError } = useQuery({
     queryKey: ["userId"],
@@ -34,19 +34,16 @@ export const MatchesList: FC = () => {
 
   if (!customer || tokenError || matchesError) {
     return (
-      <Alert
-        icon={<IconExclamationCircle />}
-        color="red"
+      <ErrorAlert
         title={"Klarte ikke laste inn dine overleveringer"}
-      >
-        Vennligst prøv igjen, eller ta kontakt hvis problemet vedvarer
-      </Alert>
+      ></ErrorAlert>
     );
   }
 
   if (matches === undefined) {
     return <Skeleton height={110} />;
   }
+
   const sortedUserMatches = matches.userMatches.sort((a, b) => {
     if (!a.meetingInfo.date) {
       return b.meetingInfo.date ? 1 : 0;
@@ -79,7 +76,7 @@ export const MatchesList: FC = () => {
 
   if (matches.userMatches.length === 0 && matches.standMatch === undefined) {
     return (
-      <Alert color={"blue"} title={"Du har ingen overleveringer :)"}>
+      <InfoAlert title={"Du har ingen overleveringer :)"}>
         <Stack gap={"xs"}>
           <Text size={"sm"}>
             Har du fått melding om overleveringer? Sjekk om du er logget inn med
@@ -89,7 +86,7 @@ export const MatchesList: FC = () => {
             Ta kontakt med info@boklisten.no om du har spørsmål.
           </Text>
         </Stack>
-      </Alert>
+      </InfoAlert>
     );
   }
 
@@ -98,7 +95,7 @@ export const MatchesList: FC = () => {
     unfulfilledUserMatches.length > 0 || standMatch !== undefined;
 
   return (
-    <>
+    <Stack gap={"xl"}>
       <ProgressBar
         percentComplete={
           (100 *
@@ -131,6 +128,6 @@ export const MatchesList: FC = () => {
           heading="Fullførte overleveringer"
         />
       )}
-    </>
+    </Stack>
   );
-};
+}

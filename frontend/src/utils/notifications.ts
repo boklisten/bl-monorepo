@@ -1,6 +1,8 @@
 import { MantineColor } from "@mantine/core";
 import { NotificationData, notifications } from "@mantine/notifications";
 
+import { PLEASE_TRY_AGAIN_TEXT } from "@/utils/constants";
+
 function showNotification(
   data: string | NotificationData,
   color: MantineColor,
@@ -24,7 +26,7 @@ export function showErrorNotification(data: string | NotificationData) {
   if (typeof data === "string") {
     notifications.show({
       title: data,
-      message: "Vennligst prøv igjen eller ta kontakt hvis problemet vedvarer!",
+      message: PLEASE_TRY_AGAIN_TEXT,
       color: "red",
       autoClose: 6000,
     });

@@ -1,14 +1,16 @@
 "use client";
 
-import { Alert, Anchor, Button, Stack } from "@mantine/core";
+import { Anchor, Button, Stack } from "@mantine/core";
 import { IconMailFast } from "@tabler/icons-react";
 import { useMutation } from "@tanstack/react-query";
 import Link from "next/link";
 import { useState } from "react";
 import validator from "validator";
 
-import ErrorAlert from "@/components/ui/ErrorAlert";
+import ErrorAlert from "@/components/ui/alerts/ErrorAlert";
+import SuccessAlert from "@/components/ui/alerts/SuccessAlert";
 import { useAppForm } from "@/hooks/form";
+import { GENERIC_ERROR_TEXT, PLEASE_TRY_AGAIN_TEXT } from "@/utils/constants";
 import { publicApiClient } from "@/utils/publicApiClient";
 
 interface ForgotFields {
@@ -28,10 +30,7 @@ export default function ForgotPasswordForm() {
         .unwrap();
       setApiError(message ?? null);
     },
-    onError: () =>
-      setApiError(
-        "Noe gikk galt! Vennligst prøv igjen eller ta kontakt hvis problemet vedvarer.",
-      ),
+    onError: () => setApiError(PLEASE_TRY_AGAIN_TEXT),
   });
 
   const form = useAppForm({
@@ -44,13 +43,15 @@ export default function ForgotPasswordForm() {
   return (
     <form.AppForm>
       <Stack>
-        {apiError && <ErrorAlert message={apiError} />}
+        {apiError && (
+          <ErrorAlert title={GENERIC_ERROR_TEXT}>{apiError}</ErrorAlert>
+        )}
         {requestPasswordResetMutation.isSuccess && !apiError && (
-          <Alert icon={<IconMailFast />} color={"green"}>
+          <SuccessAlert icon={<IconMailFast />}>
             Vi har sendt en e-post med instruksjoner for hvordan du kan endre
             passordet ditt. Hvis e-posten ikke dukker opp innen noen få minutter
             anbefaler vi å sjekke søppelpost.
-          </Alert>
+          </SuccessAlert>
         )}
       </Stack>
       <form.AppField

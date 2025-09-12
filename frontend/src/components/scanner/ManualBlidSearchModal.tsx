@@ -1,6 +1,5 @@
 import { Close, InputRounded } from "@mui/icons-material";
 import {
-  Alert,
   Button,
   Dialog,
   DialogActions,
@@ -11,6 +10,8 @@ import {
   Typography,
 } from "@mui/material";
 import { useState } from "react";
+
+import InfoAlert from "@/components/ui/alerts/InfoAlert";
 
 const ManualBlidSearchModal = ({
   open,
@@ -28,9 +29,9 @@ const ManualBlidSearchModal = ({
       <DialogContent>
         <Stack>
           <Typography variant="h4">Manuell registrering</Typography>
-          <Alert severity="info" sx={{ mt: 1 }}>
+          <InfoAlert>
             Skal kun brukes dersom bokas unike ID ikke lar seg skanne
-          </Alert>
+          </InfoAlert>
           <InputLabel sx={{ mt: 2, mb: 0.8 }}>
             Skriv inn bokas unike ID
           </InputLabel>

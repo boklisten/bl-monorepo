@@ -1,12 +1,15 @@
 "use client";
 import { Branch } from "@boklisten/backend/shared/branch";
 import { OpeningHour } from "@boklisten/backend/shared/opening-hour";
-import { Alert, Skeleton, Stack, Table } from "@mantine/core";
+import { Skeleton, Stack, Table } from "@mantine/core";
 import { useQuery } from "@tanstack/react-query";
 import moment from "moment";
 
 import ContactInfo from "@/components/info/ContactInfo";
+import ErrorAlert from "@/components/ui/alerts/ErrorAlert";
+import InfoAlert from "@/components/ui/alerts/InfoAlert";
 import unpack from "@/utils/bl-api-request";
+import { PLEASE_TRY_AGAIN_TEXT } from "@/utils/constants";
 import { publicApiClient } from "@/utils/publicApiClient";
 import "moment/locale/nb";
 
@@ -103,7 +106,11 @@ export default function BranchOpeningHours({ branchId }: { branchId: string }) {
   }
 
   if (isErrorBranch || isErrorOpeningHours) {
-    return <Alert color={"red"} title={"Klarte ikke laste inn åpningstider"} />;
+    return (
+      <ErrorAlert title={"Klarte ikke laste inn åpningstider"}>
+        {PLEASE_TRY_AGAIN_TEXT}
+      </ErrorAlert>
+    );
   }
 
   const processedOpeningHours =
@@ -114,10 +121,11 @@ export default function BranchOpeningHours({ branchId }: { branchId: string }) {
   if (processedOpeningHours.length === 0) {
     return (
       <>
-        <Alert color={"blue"}>
-          Sesongen er over – eller åpningstidene er ikke klare enda. Du kan
-          bestille bøker i Posten, eller kontakte oss for spørsmål.
-        </Alert>
+        <InfoAlert
+          title={"Sesongen er over – eller åpningstidene er ikke klare enda"}
+        >
+          Du kan bestille bøker i Posten, eller kontakte oss for spørsmål.
+        </InfoAlert>
         <ContactInfo />
       </>
     );

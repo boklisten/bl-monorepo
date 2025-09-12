@@ -1,7 +1,9 @@
 "use client";
-import { Alert } from "@mantine/core";
 import { AuthVippsError } from "backend/shared/auth_vipps_error";
 import { useSearchParams } from "next/navigation";
+
+import ErrorAlert from "@/components/ui/alerts/ErrorAlert";
+import { PLEASE_TRY_AGAIN_TEXT } from "@/utils/constants";
 
 const AUTH_VIPPS_ERROR = {
   ACCESS_DENIED: "access_denied",
@@ -30,9 +32,5 @@ export default function AuthFailureReasonAlert() {
     }
   }
 
-  return (
-    <Alert color={"red"} title={text}>
-      Vennligst prøv på nytt eller ta kontakt hvis problemet vedvarer.
-    </Alert>
-  );
+  return <ErrorAlert title={text}>{PLEASE_TRY_AGAIN_TEXT}</ErrorAlert>;
 }

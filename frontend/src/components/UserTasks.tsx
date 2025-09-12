@@ -1,8 +1,6 @@
 "use client";
 import { Send } from "@mui/icons-material";
 import {
-  Alert,
-  AlertTitle,
   Box,
   Button,
   Skeleton,
@@ -19,10 +17,14 @@ import moment from "moment";
 import { getAccessTokenBody } from "@/api/token";
 import CountdownToRedirect from "@/components/CountdownToRedirect";
 import SignAgreement from "@/components/SignAgreement";
+import ErrorAlert from "@/components/ui/alerts/ErrorAlert";
+import InfoAlert from "@/components/ui/alerts/InfoAlert";
+import SuccessAlert from "@/components/ui/alerts/SuccessAlert";
 import UserDetailsEditor, {
   isUnder18,
 } from "@/components/user/user-detail-editor/UserDetailsEditor";
 import useApiClient from "@/hooks/useApiClient";
+import { PLEASE_TRY_AGAIN_TEXT } from "@/utils/constants";
 import {
   showErrorNotification,
   showSuccessNotification,
@@ -66,10 +68,9 @@ export default function UserTasks({
   }
   if (!data || isError) {
     return (
-      <Alert severity="error">
-        Noe gikk galt under lasting av dine oppgaver. Vennligst prøv igjen eller
-        ta kontakt hvis problemet vedvarer
-      </Alert>
+      <ErrorAlert title={"Noe gikk galt under lasting av dine oppgaver"}>
+        {PLEASE_TRY_AGAIN_TEXT}
+      </ErrorAlert>
     );
   }
   const hasTasks =
@@ -78,9 +79,7 @@ export default function UserTasks({
   if (!hasTasks) {
     return (
       <Stack gap={1}>
-        <Alert severity={"success"}>
-          Du har fullført alle utestående oppgaver
-        </Alert>
+        <SuccessAlert>Du har fullført alle utestående oppgaver</SuccessAlert>
         <CountdownToRedirect shouldRedirectToCaller={true} seconds={5} />
       </Stack>
     );
@@ -117,10 +116,7 @@ export default function UserTasks({
               <Box mt={1} />
               {isUnder18(moment(data.dob)) ? (
                 <Stack gap={2}>
-                  <Alert severity={"info"}>
-                    <AlertTitle>
-                      Send signaturforespørsel til foresatt
-                    </AlertTitle>
+                  <InfoAlert title={"Send signaturforespørsel til foresatt"}>
                     Siden du er under 18 år krever vi signatur fra en av dine
                     foresatte.
                     <Stack gap={1} mt={2}>
@@ -155,7 +151,7 @@ export default function UserTasks({
                         Du kan endre foresatt-opplysninger i brukerinnstillinger
                       </Typography>
                     </Stack>
-                  </Alert>
+                  </InfoAlert>
                   <Button
                     startIcon={<Send />}
                     loading={requestSignatureMutation.isPending}

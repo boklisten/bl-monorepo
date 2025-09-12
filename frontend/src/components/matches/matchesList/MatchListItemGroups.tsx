@@ -2,29 +2,25 @@ import {
   StandMatchWithDetails,
   UserMatchWithDetails,
 } from "@boklisten/backend/shared/match/match-dtos";
-import { Typography, Box } from "@mui/material";
-import { FC } from "react";
+import { Stack, Title } from "@mantine/core";
 
 import StandMatchListItem from "@/components/matches/matchesList/StandMatchListItem";
 import UserMatchListItem from "@/components/matches/matchesList/UserMatchListItem";
 
-export const MatchListItemGroups: FC<{
+export default function MatchListItemGroups({
+  userMatches,
+  standMatch,
+  userId,
+  heading,
+}: {
   userMatches: UserMatchWithDetails[];
   standMatch?: StandMatchWithDetails | undefined;
   userId: string;
   heading?: string;
-}> = ({ userMatches, standMatch, userId, heading }) => {
+}) {
   return (
-    <Box
-      component={"section"}
-      sx={{
-        display: "flex",
-        flexDirection: "column",
-        gap: 2,
-        marginTop: 2,
-      }}
-    >
-      {heading && <Typography variant="h2">{heading}</Typography>}
+    <Stack>
+      {heading && <Title order={2}>{heading}</Title>}
       {userMatches.map((match) => (
         <UserMatchListItem
           key={match.id}
@@ -32,9 +28,7 @@ export const MatchListItemGroups: FC<{
           currentUserId={userId}
         />
       ))}
-      {standMatch && (
-        <StandMatchListItem standMatch={standMatch} currentUserId={userId} />
-      )}
-    </Box>
+      {standMatch && <StandMatchListItem standMatch={standMatch} />}
+    </Stack>
   );
-};
+}

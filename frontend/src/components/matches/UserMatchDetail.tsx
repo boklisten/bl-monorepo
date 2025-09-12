@@ -1,6 +1,7 @@
 import { UserMatchWithDetails } from "@boklisten/backend/shared/match/match-dtos";
+import { Text } from "@mantine/core";
 import QrCodeScannerIcon from "@mui/icons-material/QrCodeScanner";
-import { Alert, AlertTitle, Box, Button, Typography } from "@mui/material";
+import { Box, Button, Typography } from "@mui/material";
 import { useState } from "react";
 
 import CountdownToRedirect from "@/components/CountdownToRedirect";
@@ -18,7 +19,11 @@ import MeetingInfo from "@/components/matches/MeetingInfo";
 import OtherPersonContact from "@/components/matches/OtherPersonContact";
 import ScannerModal from "@/components/scanner/ScannerModal";
 import ScannerTutorial from "@/components/scanner/ScannerTutorial";
+import ErrorAlert from "@/components/ui/alerts/ErrorAlert";
+import SuccessAlert from "@/components/ui/alerts/SuccessAlert";
+import WarningAlert from "@/components/ui/alerts/WarningAlert";
 import useApiClient from "@/hooks/useApiClient";
+import { GENERIC_ERROR_TEXT } from "@/utils/constants";
 
 const UserMatchDetail = ({
   userMatch,
@@ -64,7 +69,7 @@ const UserMatchDetail = ({
     );
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } catch (error: any) {
-    return <Alert severity="error">En feil oppstod: {error?.message}</Alert>;
+    return <ErrorAlert title={GENERIC_ERROR_TEXT}>{error?.message}</ErrorAlert>;
   }
 
   return (
@@ -78,9 +83,9 @@ const UserMatchDetail = ({
             my: 2,
           }}
         >
-          <Alert>
+          <SuccessAlert>
             Du har {statusText} alle bøkene for denne overleveringen.
-          </Alert>
+          </SuccessAlert>
           {redirectCountdownStarted && (
             <CountdownToRedirect path={"/overleveringer"} seconds={5} />
           )}
@@ -100,19 +105,20 @@ const UserMatchDetail = ({
       {otherUser.receivedItems.some(
         (item) => !currentUser.deliveredItems.includes(item),
       ) && (
-        <Alert severity="warning" sx={{ my: 2 }}>
-          <AlertTitle>{`${otherUser.name} har fått bøker som tilhørte noen andre enn deg`}</AlertTitle>
-          <Typography paragraph>
+        <WarningAlert
+          title={`${otherUser.name} har fått bøker som tilhørte noen andre enn deg`}
+        >
+          <Text>
             Hvis det var du som ga dem bøkene, betyr det at noen andre har bøker
             som opprinnelig tilhørte deg. Du er fortsatt ansvarlig for at de
             blir levert, men hvis noen andre leverer dem for deg vil de bli
             markert som levert.
-          </Typography>
-          <Typography>
+          </Text>
+          <Text>
             Hvis du ikke har gitt bort bøkene du har, betyr det at de har fått
             bøker av noen andre, og du må levere på stand i stedet.
-          </Typography>
-        </Alert>
+          </Text>
+        </WarningAlert>
       )}
       {!isCurrentUserFulfilled && (
         <>

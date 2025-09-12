@@ -1,15 +1,16 @@
 "use client";
-import { Anchor, Button, Group } from "@mantine/core";
+import { Anchor, Button, Group, Progress } from "@mantine/core";
 import { useMutation } from "@tanstack/react-query";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import validator from "validator";
 
 import { addAccessToken, addRefreshToken } from "@/api/token";
-import ErrorAlert from "@/components/ui/ErrorAlert";
+import ErrorAlert from "@/components/ui/alerts/ErrorAlert";
 import { useAppForm } from "@/hooks/form";
 import useAuth from "@/hooks/useAuth";
 import useAuthLinker from "@/hooks/useAuthLinker";
+import { GENERIC_ERROR_TEXT, PLEASE_TRY_AGAIN_TEXT } from "@/utils/constants";
 import { publicApiClient } from "@/utils/publicApiClient";
 
 interface SignInFields {
@@ -38,10 +39,7 @@ export default function LocalSignIn() {
         redirectToCaller();
       }
     },
-    onError: () =>
-      setApiError(
-        "Noe gikk galt! Prøv igjen eller ta kontakt dersom problemet vedvarer.",
-      ),
+    onError: () => setApiError(PLEASE_TRY_AGAIN_TEXT),
   });
 
   const form = useAppForm({
@@ -61,7 +59,9 @@ export default function LocalSignIn() {
 
   return (
     <form.AppForm>
-      {apiError && <ErrorAlert message={apiError} />}
+      {apiError && (
+        <ErrorAlert title={GENERIC_ERROR_TEXT}>{apiError}</ErrorAlert>
+      )}
       <form.AppField
         name={"username"}
         validators={{
@@ -110,6 +110,7 @@ export default function LocalSignIn() {
           Har du ikke konto? Registrer deg
         </Anchor>
       </Group>
+      <Progress value={40} />
     </form.AppForm>
   );
 }

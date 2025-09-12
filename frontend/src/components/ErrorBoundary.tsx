@@ -1,8 +1,9 @@
-import { Alert, Center, Stack } from "@mantine/core";
+import { Anchor, Center, Stack } from "@mantine/core";
+import Link from "next/link";
 import { useEffect } from "react";
 
-import DynamicLink from "@/components/DynamicLink";
 import Logo from "@/components/Logo";
+import ErrorAlert from "@/components/ui/alerts/ErrorAlert";
 
 export default function ErrorBoundary({
   error,
@@ -20,12 +21,17 @@ export default function ErrorBoundary({
   return (
     <Stack align={"center"}>
       {withLogo && <Logo variant={"blue"} />}
-      <Alert color={"red"} title={"Oisann! Her gikk noe veldig galt!"}>
+      <ErrorAlert title={"Oisann! Her gikk noe veldig galt!"}>
         Du kan prøve å laste inn siden på nytt, eller gå tilbake til forsiden.
         Ta kontakt på teknisk@boklisten.no dersom problemet vedvarer!
-      </Alert>
+      </ErrorAlert>
       <Center>
-        {href && <DynamicLink href={href}>Gå til forsiden</DynamicLink>}
+        {href && (
+          // @ts-expect-error fixme: bad link types
+          <Anchor component={Link} href={href}>
+            Gå til forsiden
+          </Anchor>
+        )}
       </Center>
     </Stack>
   );

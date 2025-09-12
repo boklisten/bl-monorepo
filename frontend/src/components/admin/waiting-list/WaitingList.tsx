@@ -2,13 +2,14 @@
 
 import { Branch } from "@boklisten/backend/shared/branch";
 import { Item } from "@boklisten/backend/shared/item";
-import { Alert, AlertTitle } from "@mui/material";
 import { useQuery } from "@tanstack/react-query";
 
 import CreateWaitingListEntry from "@/components/admin/waiting-list/CreateWaitingListEntry";
 import WaitingListTable from "@/components/admin/waiting-list/WaitingListTable";
+import ErrorAlert from "@/components/ui/alerts/ErrorAlert";
 import useApiClient from "@/hooks/useApiClient";
 import unpack from "@/utils/bl-api-request";
+import { PLEASE_TRY_AGAIN_TEXT } from "@/utils/constants";
 
 export default function WaitingList() {
   const client = useApiClient();
@@ -56,10 +57,9 @@ export default function WaitingList() {
 
   if (itemsError || branchesError || waitingListError) {
     return (
-      <Alert severity="error">
-        <AlertTitle>Klarte ikke laste inn venteliste</AlertTitle>
-        Du kan prøve igjen, eller ta kontakt dersom problemet vedvarer.
-      </Alert>
+      <ErrorAlert title={"Klarte ikke laste inn venteliste"}>
+        {PLEASE_TRY_AGAIN_TEXT}
+      </ErrorAlert>
     );
   }
 

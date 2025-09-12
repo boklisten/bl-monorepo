@@ -1,4 +1,6 @@
-import { Alert, AlertTitle, Stack, Typography } from "@mui/material";
+import { Stack, Typography } from "@mui/material";
+
+import SuccessAlert from "@/components/ui/alerts/SuccessAlert";
 
 export default function SignedContractDetails({
   signedByGuardian,
@@ -14,8 +16,7 @@ export default function SignedContractDetails({
   expiresAtText: string;
 }) {
   return (
-    <Alert>
-      <AlertTitle>Kontrakten er signert</AlertTitle>
+    <SuccessAlert title={"Kontrakten er signert"}>
       <Stack gap={1}>
         <Typography variant={"body2"}>
           {signedByGuardian
@@ -35,6 +36,6 @@ export default function SignedContractDetails({
           </Typography>
         </Stack>
       </Stack>
-    </Alert>
+    </SuccessAlert>
   );
 }

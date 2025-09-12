@@ -12,13 +12,13 @@ import { FormProvider, useForm, useWatch } from "react-hook-form";
 
 import { addAccessToken, addRefreshToken } from "@/api/token";
 import DynamicLink from "@/components/DynamicLink";
-import ErrorSummary from "@/components/user/fields/ErrorSummary";
 import GuardianInfoSection from "@/components/user/user-detail-editor/GuardianInfoSection";
 import LoginInfoSection from "@/components/user/user-detail-editor/LoginInfoSection";
 import TermsAndConditionsSection from "@/components/user/user-detail-editor/TermsAndConditionsSection";
 import YourInfoSection from "@/components/user/user-detail-editor/YourInfoSection";
 import useApiClient from "@/hooks/useApiClient";
 import useAuthLinker from "@/hooks/useAuthLinker";
+import { GENERIC_ERROR_TEXT, PLEASE_TRY_AGAIN_TEXT } from "@/utils/constants";
 import { showSuccessNotification } from "@/utils/notifications";
 import { publicApiClient } from "@/utils/publicApiClient";
 
@@ -103,8 +103,7 @@ export default function UserDetailsEditor({
 
     // fixme: unknown errors should not be on the email field
     setError("email", {
-      message:
-        "Noe gikk galt! Prøv igjen, eller ta kontakt dersom problemet vedvarer!",
+      message: `${GENERIC_ERROR_TEXT} ${PLEASE_TRY_AGAIN_TEXT}`,
     });
   }
 
@@ -133,8 +132,7 @@ export default function UserDetailsEditor({
     }
     if (!data) {
       setError("email", {
-        message:
-          "Noe gikk galt! Prøv igjen, eller ta kontakt dersom problemet vedvarer!",
+        message: `${GENERIC_ERROR_TEXT} ${PLEASE_TRY_AGAIN_TEXT}`,
       });
       return;
     }
@@ -229,6 +227,7 @@ export default function UserDetailsEditor({
     }
   }, [isUnderage, clearErrors]);
 
+  // fixme: add error summary when switched out with TanStack Form
   return (
     <FormProvider {...methods}>
       <Box
@@ -244,7 +243,6 @@ export default function UserDetailsEditor({
           {isUnderage && <GuardianInfoSection variant={variant} />}
           {variant === "signup" && <TermsAndConditionsSection />}
         </Grid>
-        <ErrorSummary />
         <Button
           loading={userDetailsMutation.isPending}
           type="submit"

@@ -1,59 +1,49 @@
-import { CheckCircle } from "@mui/icons-material";
-import { Box, LinearProgress, linearProgressClasses } from "@mui/material";
-import { FC, ReactElement } from "react";
+import { Group, Stack } from "@mantine/core";
+import { LinearProgress, linearProgressClasses } from "@mui/material";
+import { IconCircleCheckFilled } from "@tabler/icons-react";
+import { ReactNode } from "react";
 
 import muiTheme from "@/utils/muiTheme";
 
-const ProgressBar: FC<{
+export default function ProgressBar({
+  percentComplete,
+  subtitle,
+}: {
   percentComplete: number;
-  subtitle?: ReactElement;
-}> = ({ percentComplete, subtitle }) => {
+  subtitle?: ReactNode;
+}) {
   const finished = percentComplete >= 100;
-  return (
-    <Box
-      sx={
-        finished
-          ? {
-              display: "flex",
-              flexDirection: "row",
-              placeItems: "center",
-              gap: "0.2rem",
-              marginBottom: 1,
-            }
-          : {
-              marginBottom: 1,
-            }
-      }
-    >
-      {finished && <CheckCircle color="success" sx={{ height: "1.5em" }} />}
-      {!finished && (
-        <>
-          <LinearProgress
-            value={percentComplete}
-            variant="determinate"
-            sx={{
-              marginBottom: 0.8,
-              marginTop: 1.6,
-              height: "0.5rem",
-              borderRadius: "0.8rem",
-              [`&.${linearProgressClasses.colorPrimary}`]: {
-                backgroundColor:
-                  muiTheme.palette.grey[
-                    muiTheme.palette.mode === "light" ? 300 : 700
-                  ],
-              },
-              [`& .${linearProgressClasses.bar}`]: {
-                borderRadius: 5,
-                backgroundColor: muiTheme.palette.success.main,
-              },
-            }}
-          />
-          {subtitle}
-        </>
-      )}
-      {subtitle && finished && <Box>{subtitle}</Box>}
-    </Box>
-  );
-};
 
-export default ProgressBar;
+  if (finished) {
+    return (
+      <Group gap={5}>
+        <IconCircleCheckFilled color="green" />
+        {subtitle}
+      </Group>
+    );
+  }
+
+  return (
+    <Stack gap={5}>
+      <LinearProgress
+        value={percentComplete}
+        variant="determinate"
+        sx={{
+          height: "0.5rem",
+          borderRadius: "0.8rem",
+          [`&.${linearProgressClasses.colorPrimary}`]: {
+            backgroundColor:
+              muiTheme.palette.grey[
+                muiTheme.palette.mode === "light" ? 300 : 700
+              ],
+          },
+          [`& .${linearProgressClasses.bar}`]: {
+            borderRadius: 5,
+            backgroundColor: muiTheme.palette.success.main,
+          },
+        }}
+      />
+      {subtitle}
+    </Stack>
+  );
+}

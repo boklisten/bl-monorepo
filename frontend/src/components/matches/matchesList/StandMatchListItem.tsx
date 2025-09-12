@@ -1,6 +1,5 @@
 import { StandMatchWithDetails } from "@boklisten/backend/shared/match/match-dtos";
-import { Box, Typography } from "@mui/material";
-import { FC } from "react";
+import { Text, Title } from "@mantine/core";
 
 import {
   calculateFulfilledStandMatchItems,
@@ -11,14 +10,15 @@ import {
   formatActionsString,
   StandMatchTitle,
 } from "@/components/matches/matchesList/helper";
-import MatchListItemBox from "@/components/matches/matchesList/MatchListItemBox";
+import MatchListItemCard from "@/components/matches/matchesList/MatchListItemCard";
 import ProgressBar from "@/components/matches/matchesList/ProgressBar";
 import MeetingInfo from "@/components/matches/MeetingInfo";
 
-const StandMatchListItem: FC<{
+export default function StandMatchListItem({
+  standMatch,
+}: {
   standMatch: StandMatchWithDetails;
-  currentUserId: string;
-}> = ({ standMatch }) => {
+}) {
   const numberHandoffItems = standMatch.expectedHandoffItems.length;
   const numberPickupItems = standMatch.expectedPickupItems.length;
   const hasHandoffItems = numberHandoffItems > 0;
@@ -28,14 +28,14 @@ const StandMatchListItem: FC<{
   const isBegun = isStandMatchBegun(standMatch);
   const isFulfilled = isStandMatchFulfilled(standMatch);
   return (
-    <MatchListItemBox
+    <MatchListItemCard
       finished={isFulfilled}
       matchId={standMatch.id}
       matchType={"stand"}
     >
-      <Typography variant="h3">
+      <Title order={4}>
         <StandMatchTitle standMatch={standMatch} />
-      </Typography>
+      </Title>
       {isBegun && (
         <>
           {hasHandoffItems && hasPickupItems ? (
@@ -45,10 +45,10 @@ const StandMatchListItem: FC<{
                   (fulfilledHandoffItems.length * 100) / numberHandoffItems
                 }
                 subtitle={
-                  <Box>
+                  <Text size={"sm"}>
                     Utvekslet {fulfilledHandoffItems.length} av{" "}
                     {numberHandoffItems} bøker
-                  </Box>
+                  </Text>
                 }
               />
             </>
@@ -62,10 +62,10 @@ const StandMatchListItem: FC<{
                   (fulfilledHandoffItems.length * 100) / numberHandoffItems
                 }
                 subtitle={
-                  <Box>
+                  <Text size={"sm"}>
                     Levert {fulfilledHandoffItems.length} av{" "}
                     {numberHandoffItems} bøker
-                  </Box>
+                  </Text>
                 }
               />
             </>
@@ -79,10 +79,10 @@ const StandMatchListItem: FC<{
                   (fulfilledPickupItems.length * 100) / numberPickupItems
                 }
                 subtitle={
-                  <Box>
+                  <Text size={"sm"}>
                     Mottatt {fulfilledPickupItems.length} av {numberPickupItems}{" "}
                     bøker
-                  </Box>
+                  </Text>
                 }
               />
             </>
@@ -92,11 +92,9 @@ const StandMatchListItem: FC<{
         </>
       )}
       {!isBegun && !isFulfilled && (
-        <>
-          <Box>
-            {formatActionsString(numberHandoffItems, numberPickupItems)}
-          </Box>
-        </>
+        <Text>
+          {formatActionsString(numberHandoffItems, numberPickupItems)}
+        </Text>
       )}
       {!isFulfilled && (
         <MeetingInfo
@@ -104,8 +102,6 @@ const StandMatchListItem: FC<{
           meetingLocation={standMatch.meetingInfo.location}
         />
       )}
-    </MatchListItemBox>
+    </MatchListItemCard>
   );
-};
-
-export default StandMatchListItem;
+}

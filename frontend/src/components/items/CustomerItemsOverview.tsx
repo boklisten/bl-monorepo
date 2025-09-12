@@ -1,13 +1,15 @@
 "use client";
 
-import { Accordion, Alert, Skeleton, Stack, Text, Title } from "@mantine/core";
-import { IconInfoCircle } from "@tabler/icons-react";
+import { Accordion, Skeleton, Stack, Text, Title } from "@mantine/core";
 import { useQuery } from "@tanstack/react-query";
 import { ReactNode } from "react";
 
 import CustomerItemCard from "@/components/items/CustomerItemCard";
 import OpenOrdersList from "@/components/orders/OpenOrdersList";
+import ErrorAlert from "@/components/ui/alerts/ErrorAlert";
+import InfoAlert from "@/components/ui/alerts/InfoAlert";
 import useApiClient from "@/hooks/useApiClient";
+import { PLEASE_TRY_AGAIN_TEXT } from "@/utils/constants";
 
 function CustomerItemsOverviewWrapper({
   orderedItemsSlot,
@@ -96,12 +98,11 @@ export default function CustomerItemsOverview() {
 
   if (!data || isError || !openOrderItems || isErrorOpenOrderItems) {
     return (
-      <Alert
-        color={"red"}
-        title={
-          "Dette skjedde noe galt under innlastingen av dine bøker. Vennligst prøv igjen eller ta kontakt hvis problemet vedvarer"
-        }
-      />
+      <ErrorAlert
+        title={"Dette skjedde noe galt under innlastingen av dine bøker"}
+      >
+        {PLEASE_TRY_AGAIN_TEXT}
+      </ErrorAlert>
     );
   }
 
@@ -125,11 +126,7 @@ export default function CustomerItemsOverview() {
               />
             ))
           ) : (
-            <Alert
-              icon={<IconInfoCircle />}
-              color={"blue"}
-              title={"Du har for øyeblikket ingen aktive bøker."}
-            />
+            <InfoAlert title={"Du har for øyeblikket ingen aktive bøker."} />
           )}
         </>
       }
@@ -143,9 +140,7 @@ export default function CustomerItemsOverview() {
               />
             ))
           ) : (
-            <Alert
-              icon={<IconInfoCircle />}
-              color={"blue"}
+            <InfoAlert
               title={"Du har ikke levert inn eller kjøpt ut noen bøker enda."}
             />
           )}

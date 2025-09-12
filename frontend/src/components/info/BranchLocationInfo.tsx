@@ -1,10 +1,11 @@
 "use client";
 
 import { Branch } from "@boklisten/backend/shared/branch";
-import { Alert, Group, Skeleton } from "@mantine/core";
+import { Group, Skeleton } from "@mantine/core";
 import { IconMapPin } from "@tabler/icons-react";
 import { useQuery } from "@tanstack/react-query";
 
+import ErrorAlert from "@/components/ui/alerts/ErrorAlert";
 import unpack from "@/utils/bl-api-request";
 import { publicApiClient } from "@/utils/publicApiClient";
 
@@ -32,7 +33,7 @@ export default function BranchLocationInfo({ branchId }: { branchId: string }) {
     return <Skeleton width={250} height={25} />;
   }
   if (isError) {
-    return <Alert color={"red"} title={"Klarte ikke laste inn addresse"} />;
+    return <ErrorAlert title={"Klarte ikke laste inn addresse"} />;
   }
 
   return (

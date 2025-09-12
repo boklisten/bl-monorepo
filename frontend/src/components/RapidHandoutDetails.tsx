@@ -2,7 +2,7 @@ import { Order } from "@boklisten/backend/shared/order/order";
 import { OrderItem } from "@boklisten/backend/shared/order/order-item/order-item";
 import { UserDetail } from "@boklisten/backend/shared/user-detail";
 import QrCodeScannerIcon from "@mui/icons-material/QrCodeScanner";
-import { Alert, Button, Typography } from "@mui/material";
+import { Button, Typography } from "@mui/material";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useEffect, useRef, useState } from "react";
 
@@ -11,6 +11,7 @@ import MatchItemTable from "@/components/matches/MatchItemTable";
 import MatchScannerContent from "@/components/matches/MatchScannerContent";
 import { determineScannedTextType } from "@/components/scanner/BlidScanner";
 import ScannerModal from "@/components/scanner/ScannerModal";
+import InfoAlert from "@/components/ui/alerts/InfoAlert";
 import useApiClient from "@/hooks/useApiClient";
 import unpack from "@/utils/bl-api-request";
 import { TextType } from "@/utils/types";
@@ -104,9 +105,7 @@ export default function RapidHandoutDetails({
   }, [orders]);
 
   return itemStatuses.length === 0 ? (
-    <Alert severity={"info"} sx={{ mt: 2 }}>
-      Denne kunden har for øyeblikket ingen bestilte bøker
-    </Alert>
+    <InfoAlert>Denne kunden har for øyeblikket ingen bestilte bøker</InfoAlert>
   ) : (
     <>
       <Typography

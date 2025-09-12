@@ -1,4 +1,4 @@
-import ErrorAlert from "@/components/ui/ErrorAlert";
+import ErrorAlert from "@/components/ui/alerts/ErrorAlert";
 import { useFormContext } from "@/hooks/form";
 
 export default function ErrorSummary({
@@ -14,12 +14,10 @@ export default function ErrorSummary({
         canSubmit ? (
           <></>
         ) : (
-          <ErrorAlert
-            title={
-              invalidText ??
-              "Du må rette opp feilene ovenfor før du kan gå videre"
-            }
-          />
+          <ErrorAlert>
+            {invalidText ??
+              "Du må rette opp feilene ovenfor før du kan gå videre"}
+          </ErrorAlert>
         )
       }
     </form.Subscribe>

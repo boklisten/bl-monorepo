@@ -1,8 +1,6 @@
 import { StandMatchWithDetails } from "@boklisten/backend/shared/match/match-dtos";
 import { QrCode } from "@mui/icons-material";
 import {
-  Alert,
-  AlertTitle,
   Button,
   Dialog,
   DialogContent,
@@ -23,6 +21,10 @@ import { StandMatchTitle } from "@/components/matches/matchesList/helper";
 import ProgressBar from "@/components/matches/matchesList/ProgressBar";
 import MatchItemTable from "@/components/matches/MatchItemTable";
 import MeetingInfo from "@/components/matches/MeetingInfo";
+import ErrorAlert from "@/components/ui/alerts/ErrorAlert";
+import InfoAlert from "@/components/ui/alerts/InfoAlert";
+import SuccessAlert from "@/components/ui/alerts/SuccessAlert";
+import { GENERIC_ERROR_TEXT } from "@/utils/constants";
 
 function useMeetingStatus(meetingTime?: string | Date) {
   const [isTooEarly, setIsTooEarly] = useState(() =>
@@ -73,7 +75,7 @@ const StandMatchDetail = ({
     );
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } catch (error: any) {
-    return <Alert severity="error">En feil oppstod: {error?.message}</Alert>;
+    return <ErrorAlert title={GENERIC_ERROR_TEXT}>{error?.message}</ErrorAlert>;
   }
 
   const hasHandoffItems = standMatch.expectedHandoffItems.length > 0;
@@ -86,9 +88,9 @@ const StandMatchDetail = ({
       </Typography>
 
       {isFulfilled && (
-        <Alert sx={{ marginTop: 2, marginBottom: 2 }}>
+        <SuccessAlert>
           Du har mottatt og levert alle bøkene for denne overleveringen.
-        </Alert>
+        </SuccessAlert>
       )}
 
       {hasHandoffItems && (
@@ -144,11 +146,10 @@ const StandMatchDetail = ({
               Oppmøte {moment(standMatch.meetingInfo?.date).format("HH:mm")}
             </Typography>
             {tooEarly && (
-              <Alert severity={"info"}>
-                <AlertTitle>For tidlig ute</AlertTitle>
+              <InfoAlert title={"For tidlig ute"}>
                 Din oppmøtetid har ikke kommet enda. Vent med å stille deg i kø
                 til tidspunktet du har fått tildelt.
-              </Alert>
+              </InfoAlert>
             )}
           </Stack>
         </DialogContent>

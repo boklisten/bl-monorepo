@@ -1,11 +1,12 @@
 "use client";
-import { Alert, Box, Button, Table, Tooltip } from "@mantine/core";
+import { Box, Button, Table, Tooltip } from "@mantine/core";
 import { modals } from "@mantine/modals";
-import { IconInfoCircle, IconShoppingCart } from "@tabler/icons-react";
+import { IconShoppingCart } from "@tabler/icons-react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import moment from "moment";
 import { useRouter } from "next/navigation";
 
+import InfoAlert from "@/components/ui/alerts/InfoAlert";
 import useApiClient from "@/hooks/useApiClient";
 import {
   showErrorNotification,
@@ -91,13 +92,9 @@ export default function OpenOrdersList({
           </Table.Tbody>
         </Table>
       ) : (
-        <Alert
-          icon={<IconInfoCircle />}
-          color={"blue"}
-          title={"Du har ingen aktive bestillinger"}
-        >
+        <InfoAlert title={"Du har ingen aktive bestillinger"}>
           Trykk på {"'bestill bøker'"} for å bestille noen.
-        </Alert>
+        </InfoAlert>
       )}
       <Box>
         <Button

@@ -4,7 +4,7 @@ import { BlockNoteView } from "@blocknote/mantine";
 import { useCreateBlockNote } from "@blocknote/react";
 import { useQuery } from "@tanstack/react-query";
 
-import InfoAlert from "@/components/ui/InfoAlert";
+import InfoAlert from "@/components/ui/alerts/InfoAlert";
 import useApiClient from "@/hooks/useApiClient";
 
 export default function EditableTextReadOnly({
@@ -29,12 +29,10 @@ export default function EditableTextReadOnly({
 
   if (!text) {
     return (
-      <InfoAlert
-        title={"Oisann, her var det tomt..."}
-        message={
-          "Innholdet du ser etter er ikke publisert enda. Ta kontakt dersom du har spørsmål."
-        }
-      />
+      <InfoAlert title={"Oisann, her var det tomt..."}>
+        Innholdet du ser etter er ikke publisert enda. Ta kontakt dersom du har
+        spørsmål.
+      </InfoAlert>
     );
   }
 

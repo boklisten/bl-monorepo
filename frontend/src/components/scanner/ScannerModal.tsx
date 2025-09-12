@@ -7,6 +7,7 @@ import BlidScanner, {
 } from "@/components/scanner/BlidScanner";
 import ManualBlidSearchModal from "@/components/scanner/ManualBlidSearchModal";
 import ScannerFeedback from "@/components/scanner/ScannerFeedback";
+import { GENERIC_ERROR_TEXT, PLEASE_TRY_AGAIN_TEXT } from "@/utils/constants";
 import { TextType } from "@/utils/types";
 
 interface Feedback {
@@ -75,7 +76,7 @@ const ScannerModal = ({
       handleSuccessfulScan?.();
     } catch {
       setFeedback({
-        text: "Noe gikk galt, vennligst prøv igjen eller ta kontakt med stand for hjelp hvis problemet vedvarer",
+        text: `${GENERIC_ERROR_TEXT} ${PLEASE_TRY_AGAIN_TEXT}`,
         severity: "error",
         visible: true,
       });

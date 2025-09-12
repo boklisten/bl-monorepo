@@ -1,7 +1,8 @@
 "use client";
-import { LinearProgress, Box, Typography } from "@mui/material";
+import { Title } from "@mantine/core";
+import { useWindowScroll } from "@mantine/hooks";
 import { useRouter } from "next/navigation";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 
 import useAuthLinker from "@/hooks/useAuthLinker";
 
@@ -19,14 +20,13 @@ const CountdownToRedirect = ({
   const { redirectToCaller } = useAuthLinker();
   const [progress, setProgress] = useState(100);
   const router = useRouter();
-  const elementRef = useRef<HTMLElement>(null);
+
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const [_, scrollTo] = useWindowScroll();
 
   useEffect(() => {
-    elementRef.current?.scrollIntoView({
-      behavior: "smooth",
-      block: "center",
-    });
-  }, []);
+    scrollTo({ y: 0 });
+  }, [scrollTo]);
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -68,18 +68,9 @@ const CountdownToRedirect = ({
   ]);
 
   return (
-    <Box sx={{ width: "100%", mt: 1 }} ref={elementRef}>
-      <Typography variant="h6" sx={{ mb: 2, textAlign: "center" }}>
-        Du blir videresendt om {Math.ceil((progress / 100) * seconds)}{" "}
-        sekunder...
-      </Typography>
-      <LinearProgress
-        color={"success"}
-        variant="determinate"
-        value={progress}
-        sx={{ height: 10, borderRadius: 5 }}
-      />
-    </Box>
+    <Title order={6} ta={"center"}>
+      Du blir videresendt om {Math.ceil((progress / 100) * seconds)} sekunder...
+    </Title>
   );
 };
 

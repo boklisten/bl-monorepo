@@ -1,5 +1,13 @@
 "use client";
-import { Center, Tabs, TabsList, TabsTab, Select, Box } from "@mantine/core";
+import {
+  Center,
+  Tabs,
+  TabsList,
+  TabsTab,
+  Select,
+  Box,
+  Anchor,
+} from "@mantine/core";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 
@@ -35,9 +43,14 @@ const InfoPagesNavigation = () => {
         >
           <TabsList className={"justify-center"}>
             {tabs.map((tab) => (
-              <Link key={tab.value} href={tab.value}>
+              <Anchor
+                component={Link}
+                underline={"never"}
+                key={tab.value}
+                href={tab.value}
+              >
                 <TabsTab value={tab.value}>{tab.label}</TabsTab>
-              </Link>
+              </Anchor>
             ))}
           </TabsList>
         </Tabs>

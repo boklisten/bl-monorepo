@@ -1,17 +1,18 @@
 "use client";
 
 import { UserDetail } from "@boklisten/backend/shared/user-detail";
+import { Anchor } from "@mantine/core";
 import { Button } from "@mui/material";
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { InferErrorType } from "@tuyau/client";
 import moment, { Moment } from "moment";
+import Link from "next/link";
 import { useEffect } from "react";
 import { FormProvider, useForm, useWatch } from "react-hook-form";
 
 import { addAccessToken, addRefreshToken } from "@/api/token";
-import DynamicLink from "@/components/DynamicLink";
 import GuardianInfoSection from "@/components/user/user-detail-editor/GuardianInfoSection";
 import LoginInfoSection from "@/components/user/user-detail-editor/LoginInfoSection";
 import TermsAndConditionsSection from "@/components/user/user-detail-editor/TermsAndConditionsSection";
@@ -253,9 +254,9 @@ export default function UserDetailsEditor({
           {variant === "signup" ? "Registrer deg" : "Lagre"}
         </Button>
         {variant === "signup" && (
-          <DynamicLink href={"/auth/login"}>
+          <Anchor component={Link} href={"/auth/login"}>
             Har du allerede en konto? Logg inn
-          </DynamicLink>
+          </Anchor>
         )}
       </Box>
     </FormProvider>

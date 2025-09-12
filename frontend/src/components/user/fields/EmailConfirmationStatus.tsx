@@ -1,6 +1,5 @@
 import { UserDetail } from "@boklisten/backend/shared/user-detail";
-import { Stack, Switch } from "@mui/material";
-import Button from "@mui/material/Button";
+import { Button, Stack, Switch } from "@mantine/core";
 import { IconMailFast } from "@tabler/icons-react";
 import { useMutation } from "@tanstack/react-query";
 import { Controller, useFormContext } from "react-hook-form";
@@ -36,37 +35,27 @@ const EmailConfirmationStatus = ({
 
   if (variant === "administrate") {
     return (
-      <Stack
-        direction={"row"}
-        sx={{
-          mt: 1,
-          ml: 0.2,
-          justifyContent: "space-between",
-          alignItems: "center",
-        }}
-      >
-        E-post bekreftet
-        <Controller
-          name={"emailVerified"}
-          control={control}
-          render={({ field }) => (
-            <Switch
-              checked={field.value ?? false}
-              onChange={(_, newValue) => field.onChange(newValue)}
-            />
-          )}
-        />
-      </Stack>
+      <Controller
+        name={"emailVerified"}
+        control={control}
+        render={({ field }) => (
+          <Switch
+            label={"E-post bekreftet"}
+            checked={field.value ?? false}
+            onChange={field.onChange}
+          />
+        )}
+      />
     );
   }
 
   return (
     variant !== "signup" &&
     !userDetails.emailConfirmed && (
-      <>
+      <Stack>
         {createEmailConfirmation.isSuccess ? (
           <InfoAlert icon={<IconMailFast />}>
-            Bekreftelseslenke er sendt til
+            Bekreftelseslenke er sendt til{" "}
             {variant === "personal" ? "din" : "kundens"} e-postadresse! Sjekk
             søppelpost om den ikke dukker opp i inbox.
           </InfoAlert>
@@ -76,12 +65,15 @@ const EmailConfirmationStatus = ({
               En bekreftelseslenke har blitt sendt til {userDetails.email}.
               Trykk på knappen nedenfor for å sende en ny lenke.
             </WarningAlert>
-            <Button onClick={() => createEmailConfirmation.mutate()}>
+            <Button
+              leftSection={<IconMailFast />}
+              onClick={() => createEmailConfirmation.mutate()}
+            >
               Send bekreftelseslenke på nytt
             </Button>
           </>
         )}
-      </>
+      </Stack>
     )
   );
 };

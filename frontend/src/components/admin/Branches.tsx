@@ -2,12 +2,12 @@
 
 import { Branch } from "@boklisten/backend/shared/branch";
 import { Box, Button, Divider, Grid, Stack, Title } from "@mantine/core";
+import { modals } from "@mantine/modals";
 import { IconPlus } from "@tabler/icons-react";
 import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
 
 import BranchSettings from "@/components/branches/BranchSettings";
-import CreateBranchDialog from "@/components/branches/CreateBranchDialog";
 import SelectBranchTreeView from "@/components/branches/SelectBranchTreeView";
 import useApiClient from "@/hooks/useApiClient";
 import unpack from "@/utils/bl-api-request";
@@ -27,11 +27,24 @@ export default function Branches() {
   });
 
   const [selectedBranch, setSelectedBranch] = useState<Branch | null>(null);
-  const [isCreateOpen, setCreateOpen] = useState(false);
+
   return (
     <Stack>
       <Box>
-        <Button leftSection={<IconPlus />} onClick={() => setCreateOpen(true)}>
+        <Button
+          leftSection={<IconPlus />}
+          onClick={() =>
+            modals.open({
+              title: "Opprett filial",
+              children: (
+                <BranchSettings
+                  existingBranch={null}
+                  afterSubmit={() => modals.closeAll()}
+                />
+              ),
+            })
+          }
+        >
           Opprett filial
         </Button>
       </Box>
@@ -50,16 +63,12 @@ export default function Branches() {
         <Grid.Col span={{ base: 12, md: 9 }}>
           {selectedBranch && (
             <Stack>
-              <Title ta={"center"}>Rediger filial</Title>
+              <Title>Rediger filial</Title>
               <BranchSettings existingBranch={selectedBranch} />
             </Stack>
           )}
         </Grid.Col>
       </Grid>
-      <CreateBranchDialog
-        open={isCreateOpen}
-        onClose={() => setCreateOpen(false)}
-      />
     </Stack>
   );
 }

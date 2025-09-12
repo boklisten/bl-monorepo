@@ -1,22 +1,12 @@
 "use client";
 
 import { Branch } from "@boklisten/backend/shared/branch";
-import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import {
-  Accordion,
-  AccordionDetails,
-  AccordionSummary,
-  Box,
-  Button,
-  Paper,
-  Stack,
-} from "@mui/material";
+import { Button, Stack, Title } from "@mantine/core";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { ReactNode, useEffect } from "react";
+import { useEffect } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 
 import BranchSettingsGeneral from "@/components/branches/BranchSettingsGeneral";
-import BranchSettingsSubjects from "@/components/branches/BranchSettingsSubjects";
 import UploadClassMemberships from "@/components/branches/UploadClassMemberships";
 import UploadSubjectChoices from "@/components/branches/UploadSubjectChoices";
 import useApiClient from "@/hooks/useApiClient";
@@ -24,33 +14,6 @@ import {
   showErrorNotification,
   showSuccessNotification,
 } from "@/utils/notifications";
-
-function BranchEditSection({
-  title,
-  disabled = false,
-  defaultExpanded = false,
-  children,
-}: {
-  title: string;
-  disabled?: boolean;
-  defaultExpanded?: boolean;
-  children: ReactNode;
-}) {
-  return (
-    <Accordion
-      slots={{ root: Paper }}
-      disabled={disabled}
-      defaultExpanded={defaultExpanded}
-    >
-      <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-        {title}
-      </AccordionSummary>
-      <AccordionDetails>
-        <Stack gap={2}>{children}</Stack>
-      </AccordionDetails>
-    </Accordion>
-  );
-}
 
 function branchToDefaultValues(branch: Branch | null) {
   return {
@@ -120,32 +83,10 @@ export default function BranchSettings({
 
   return (
     <FormProvider key={existingBranch?.id ?? "new"} {...methods}>
-      <Stack sx={{ position: "relative" }}>
-        {existingBranch && (
-          <>
-            <UploadClassMemberships branchId={existingBranch.id} />
-            <UploadSubjectChoices branchId={existingBranch.id} />
-          </>
-        )}
-        <BranchEditSection title={"Generelt"} defaultExpanded>
-          <BranchSettingsGeneral currentBranchId={existingBranch?.id ?? null} />
-        </BranchEditSection>
-        <BranchEditSection disabled title={"Bestillinger"}>
-          lorem ipsum
-        </BranchEditSection>
-        <BranchEditSection disabled title={"Åpningstider"}>
-          lorem ipsum
-        </BranchEditSection>
-        <BranchEditSection disabled={!existingBranch?.id} title={"Fag"}>
-          {existingBranch && (
-            <BranchSettingsSubjects branchId={existingBranch.id} />
-          )}
-        </BranchEditSection>
-        <Box sx={{ height: 50 }} />
+      <Stack>
+        <BranchSettingsGeneral currentBranchId={existingBranch?.id ?? null} />
         <Button
-          sx={{ bottom: 0, right: 10, position: "absolute" }}
-          variant={"contained"}
-          color={"success"}
+          color={"green"}
           onClick={handleSubmit((data) =>
             existingBranch === null
               ? addBranchMutation.mutate(data)
@@ -157,6 +98,13 @@ export default function BranchSettings({
         >
           {existingBranch === null ? "Opprett" : "Lagre"}
         </Button>
+        {existingBranch && (
+          <Stack gap={"xs"}>
+            <Title order={2}>Last opp informasjon</Title>
+            <UploadClassMemberships branchId={existingBranch.id} />
+            <UploadSubjectChoices branchId={existingBranch.id} />
+          </Stack>
+        )}
       </Stack>
     </FormProvider>
   );

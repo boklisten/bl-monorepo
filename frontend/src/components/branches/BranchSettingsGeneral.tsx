@@ -1,4 +1,5 @@
 import { Branch } from "@boklisten/backend/shared/branch";
+import { Stack } from "@mantine/core";
 import { Autocomplete } from "@mui/material";
 import TextField from "@mui/material/TextField";
 import { useQuery } from "@tanstack/react-query";
@@ -37,7 +38,7 @@ export default function BranchSettingsGeneral({
       })) ?? [];
 
   return (
-    <>
+    <Stack>
       <Controller
         name={"name"}
         control={control}
@@ -112,6 +113,6 @@ export default function BranchSettingsGeneral({
           />
         )}
       />
-    </>
+    </Stack>
   );
 }

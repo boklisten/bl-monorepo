@@ -39,23 +39,29 @@ export default function LoginInfoSection({
   return (
     <>
       <Grid size={{ xs: 12 }}>
-        {variant === "signup" && isSchoolEmail && (
-          <WarningAlert>
-            Vi anbefaler at du bruker din personlige e-postadresse i stedet for
-            skolekontoen. Da beholder du tilgangen etter endt utdanning og kan
-            motta viktige varsler om eventuelle manglende bokinnleveringer.
-          </WarningAlert>
-        )}
-        <EmailField
-          disabled={variant === "personal"}
-          helperText={
-            variant === "personal"
-              ? "Ta kontakt dersom du ønsker å endre e-postadresse"
-              : ""
-          }
-        />
-        <EmailConfirmationStatus userDetails={userDetails} variant={variant} />
-        <FieldErrorAlert field={"email"} />
+        <Stack>
+          {variant === "signup" && isSchoolEmail && (
+            <WarningAlert>
+              Vi anbefaler at du bruker din personlige e-postadresse i stedet
+              for skolekontoen. Da beholder du tilgangen etter endt utdanning og
+              kan motta viktige varsler om eventuelle manglende
+              bokinnleveringer.
+            </WarningAlert>
+          )}
+          <EmailField
+            disabled={variant === "personal"}
+            helperText={
+              variant === "personal"
+                ? "Ta kontakt dersom du ønsker å endre e-postadresse"
+                : ""
+            }
+          />
+          <EmailConfirmationStatus
+            userDetails={userDetails}
+            variant={variant}
+          />
+          <FieldErrorAlert field={"email"} />
+        </Stack>
       </Grid>
       {variant === "personal" && (
         <Stack align={"center"} w={"100%"}>

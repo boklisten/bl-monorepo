@@ -1,5 +1,5 @@
-import { Delete } from "@mui/icons-material";
-import { Box, IconButton, Tooltip } from "@mui/material";
+import { ActionIcon, Box, Tooltip } from "@mantine/core";
+import { IconEraser } from "@tabler/icons-react";
 import { useEffect, useRef } from "react";
 // eslint-disable-next-line import-x/no-named-as-default
 import SignatureCanvas from "react-signature-canvas";
@@ -33,7 +33,7 @@ export default function SignaturePad({
   return (
     <Box
       ref={containerRef}
-      sx={{
+      style={{
         border: "2px solid gray",
         borderRadius: 5,
         aspectRatio: 3,
@@ -53,16 +53,20 @@ export default function SignaturePad({
         }}
         ref={sigCanvas}
       />
-      <Tooltip title={"Tøm"}>
-        <IconButton
-          sx={{ position: "absolute", right: 0, bottom: 0 }}
+      <Tooltip label={"Tøm"}>
+        <ActionIcon
+          color={"dark"}
+          variant={"subtle"}
+          pos={"absolute"}
+          right={0}
+          bottom={0}
           onClick={() => {
             sigCanvas.current?.clear();
             onChange("");
           }}
         >
-          <Delete />
-        </IconButton>
+          <IconEraser />
+        </ActionIcon>
       </Tooltip>
     </Box>
   );

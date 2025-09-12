@@ -1,4 +1,4 @@
-import { Stack, Typography } from "@mui/material";
+import { Group, Stack, Text } from "@mantine/core";
 
 import SuccessAlert from "@/components/ui/alerts/SuccessAlert";
 
@@ -17,24 +17,20 @@ export default function SignedContractDetails({
 }) {
   return (
     <SuccessAlert title={"Kontrakten er signert"}>
-      <Stack gap={1}>
-        <Typography variant={"body2"}>
+      <Stack gap={"xs"}>
+        <Text>
           {signedByGuardian
             ? `${signingName} (foresatt) har signert kontrakten på vegne av ${name} (elev).`
             : `${name} (elev) har signert kontrakten.`}
-        </Typography>
-        <Stack direction={"row"} gap={1}>
-          <Typography variant={"body2"}>Signert:</Typography>
-          <Typography variant={"body2"} fontWeight={"bold"}>
-            {signedAtText}
-          </Typography>
-        </Stack>
-        <Stack direction={"row"} gap={1}>
-          <Typography variant={"body2"}>Gyldig til:</Typography>
-          <Typography variant={"body2"} fontWeight={"bold"}>
-            {expiresAtText}
-          </Typography>
-        </Stack>
+        </Text>
+        <Group gap={5}>
+          <Text>Signert:</Text>
+          <Text fw={"bold"}>{signedAtText}</Text>
+        </Group>
+        <Group gap={5}>
+          <Text>Gyldig til:</Text>
+          <Text fw={"bold"}>{expiresAtText}</Text>
+        </Group>
       </Stack>
     </SuccessAlert>
   );

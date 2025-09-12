@@ -19,8 +19,8 @@ export default async function SignaturePage({
     .unwrap();
 
   return (
-    <Container>
-      <Stack align={"center"}>
+    <Container size={"sm"}>
+      <Stack>
         <Title>Signering</Title>
         <SignAgreement
           userDetailId={userDetailId}

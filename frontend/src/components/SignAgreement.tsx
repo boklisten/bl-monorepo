@@ -1,6 +1,7 @@
 "use client";
-import { DoneOutline } from "@mui/icons-material";
-import { Button, Skeleton, Stack, TextField, Typography } from "@mui/material";
+import { Button, Skeleton, Stack, Text } from "@mantine/core";
+import { TextField } from "@mui/material";
+import { IconChecks } from "@tabler/icons-react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { Controller, useForm } from "react-hook-form";
 
@@ -71,103 +72,91 @@ export default function SignAgreement({
   });
   const hasValidResponse = !isError && !isLoading && !!data;
   return (
-    <Stack alignItems={"center"}>
-      <Stack
-        alignItems={"center"}
-        gap={1}
-        component={"form"}
-        onSubmit={handleSubmit((data) => signMutation.mutate(data))}
-      >
-        <ExpandableEditableTextReadOnly
-          dataKey={"betingelser"}
-          cachedText={cachedAgreementText}
-        />
-        {!isLoading && (isError || !data) && (
-          <ErrorAlert title={"Noe gikk galt under lasting av signaturstatus"}>
-            {PLEASE_TRY_AGAIN_TEXT}
-          </ErrorAlert>
-        )}
-        {isLoading && (
-          <Stack alignItems={"center"} sx={{ width: "100%", maxWidth: 750 }}>
-            <Skeleton height={40} width={"100%"} />
-            <Skeleton height={200} width={"100%"} />
-            <Skeleton height={50} width={"100%"} />
-            <Skeleton height={50} width={100} />
+    <Stack>
+      <ExpandableEditableTextReadOnly
+        dataKey={"betingelser"}
+        cachedText={cachedAgreementText}
+      />
+      {!isLoading && (isError || !data) && (
+        <ErrorAlert title={"Noe gikk galt under lasting av signaturstatus"}>
+          {PLEASE_TRY_AGAIN_TEXT}
+        </ErrorAlert>
+      )}
+      {isLoading && (
+        <>
+          <Skeleton height={40} width={"100%"} />
+          <Skeleton height={200} width={"100%"} />
+          <Skeleton height={50} width={"100%"} />
+          <Skeleton height={50} width={100} />
+        </>
+      )}
+      {hasValidResponse && "message" in data && (
+        <ErrorAlert>{data.message}</ErrorAlert>
+      )}
+      {hasValidResponse &&
+        !("message" in data) &&
+        data.isSignatureValid == false && (
+          <Stack gap={"xs"}>
+            <Text>
+              Signer her på at du er {data.isUnderage && "foresatt til "}
+              {data.name} og godkjenner betingelsene
+              {data.isUnderage && " på hans eller hennes vegne"}:
+            </Text>
+            <Controller
+              rules={{
+                required: `Du må fylle inn ${data.isUnderage ? "foresatt sin" : "din"} signatur`,
+              }}
+              name={"base64EncodedImage"}
+              control={control}
+              render={({ field }) => <SignaturePad onChange={field.onChange} />}
+            />
+            {errors.base64EncodedImage && (
+              <ErrorAlert>{errors.base64EncodedImage.message}</ErrorAlert>
+            )}
+            <TextField
+              required
+              sx={{ mt: 1 }}
+              label={`Fullt navn ${data.isUnderage ? "(foresatt)" : ""}`}
+              slotProps={{
+                input: { readOnly: !data.isUnderage },
+              }}
+              helperText={
+                data.isUnderage
+                  ? ""
+                  : "Du kan endre navnet ditt i brukerinnstillinger"
+              }
+              {...register("signingName", {
+                required: "Du må fylle inn foresatt sitt fulle navn",
+                validate: (value) => {
+                  if (data.isUnderage && data.name === value) {
+                    return "Foresattes navn må være forskjellig fra elevens navn";
+                  }
+                  return true;
+                },
+              })}
+            />
+            {errors.signingName && (
+              <ErrorAlert>{errors.signingName.message}</ErrorAlert>
+            )}
+            <Button
+              onClick={handleSubmit((data) => signMutation.mutate(data))}
+              loading={signMutation.isPending}
+              leftSection={<IconChecks />}
+              color={"green"}
+            >
+              Signer
+            </Button>
           </Stack>
         )}
-        {hasValidResponse && "message" in data && (
-          <ErrorAlert>{data.message}</ErrorAlert>
-        )}
-        {hasValidResponse &&
-          !("message" in data) &&
-          data.isSignatureValid == false && (
-            <Stack gap={1} maxWidth={750} width={"100%"}>
-              <Typography>
-                Signer her på at du er {data.isUnderage && "foresatt til "}
-                {data.name} og godkjenner betingelsene
-                {data.isUnderage && " på hans eller hennes vegne"}:
-              </Typography>
-              <Controller
-                rules={{
-                  required: `Du må fylle inn ${data.isUnderage ? "foresatt sin" : "din"} signatur`,
-                }}
-                name={"base64EncodedImage"}
-                control={control}
-                render={({ field }) => (
-                  <SignaturePad onChange={field.onChange} />
-                )}
-              />
-              {errors.base64EncodedImage && (
-                <ErrorAlert>{errors.base64EncodedImage.message}</ErrorAlert>
-              )}
-              <TextField
-                required
-                sx={{ mt: 1 }}
-                label={`Fullt navn ${data.isUnderage ? "(foresatt)" : ""}`}
-                slotProps={{
-                  input: { readOnly: !data.isUnderage },
-                }}
-                helperText={
-                  data.isUnderage
-                    ? ""
-                    : "Du kan endre navnet ditt i brukerinnstillinger"
-                }
-                {...register("signingName", {
-                  required: "Du må fylle inn foresatt sitt fulle navn",
-                  validate: (value) => {
-                    if (data.isUnderage && data.name === value) {
-                      return "Foresattes navn må være forskjellig fra elevens navn";
-                    }
-                    return true;
-                  },
-                })}
-              />
-              {errors.signingName && (
-                <ErrorAlert>{errors.signingName.message}</ErrorAlert>
-              )}
-              <Stack alignItems={"center"} mt={1}>
-                <Button
-                  type={"submit"}
-                  loading={signMutation.isPending}
-                  startIcon={<DoneOutline />}
-                  variant={"outlined"}
-                  color={"success"}
-                >
-                  Signer
-                </Button>
-              </Stack>
-            </Stack>
-          )}
-        {hasValidResponse && data.isSignatureValid && (
-          <SignedContractDetails
-            signedByGuardian={data.signedByGuardian ?? false}
-            signingName={data.signingName ?? ""}
-            name={data.name ?? ""}
-            signedAtText={data.signedAtText ?? ""}
-            expiresAtText={data.expiresAtText ?? ""}
-          />
-        )}
-      </Stack>
+      {hasValidResponse && data.isSignatureValid && (
+        <SignedContractDetails
+          signedByGuardian={data.signedByGuardian ?? false}
+          signingName={data.signingName ?? ""}
+          name={data.name ?? ""}
+          signedAtText={data.signedAtText ?? ""}
+          expiresAtText={data.expiresAtText ?? ""}
+        />
+      )}
     </Stack>
   );
 }

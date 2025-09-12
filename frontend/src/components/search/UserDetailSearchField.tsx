@@ -1,10 +1,22 @@
 import { UserDetail } from "@boklisten/backend/shared/user-detail";
-import QrCodeScannerIcon from "@mui/icons-material/QrCodeScanner";
-import { Autocomplete, IconButton, TextField, Typography } from "@mui/material";
+import {
+  ActionIcon,
+  Autocomplete,
+  ComboboxItem,
+  Group,
+  Stack,
+  Text,
+} from "@mantine/core";
+import { useDisclosure } from "@mantine/hooks";
+import {
+  IconMail,
+  IconObjectScan,
+  IconPhone,
+  IconUser,
+} from "@tabler/icons-react";
 import { useState } from "react";
 
 import ScannerModal from "@/components/scanner/ScannerModal";
-import UserDetailSearchResult from "@/components/search/UserDetailSearchResult";
 import useApiClient from "@/hooks/useApiClient";
 import unpack from "@/utils/bl-api-request";
 
@@ -14,75 +26,92 @@ export default function UserDetailSearchField({
   onSelectedResult: (userDetail: UserDetail | null) => void;
 }) {
   const client = useApiClient();
-  const [searchValue, setSearchValue] = useState<UserDetail | null>(null);
+  const [searchValue, setSearchValue] = useState("");
   const [searchResults, setSearchResults] = useState<UserDetail[]>([]);
-  const [scannerOpen, setScannerOpen] = useState(false);
+  const [opened, { open, close }] = useDisclosure();
+
+  async function handleInputChange(newInputValue: string) {
+    if (newInputValue.length < 3) {
+      onSelectedResult(null);
+      setSearchResults([]);
+      return;
+    }
+    try {
+      const result = await client
+        .$route("collection.userdetails.getAll")
+        .$get({
+          query: { s: newInputValue },
+        })
+        .then(unpack<UserDetail[]>);
+      setSearchResults(result ?? []);
+    } catch {
+      setSearchResults([]);
+    }
+  }
+
   return (
     <>
-      <Typography sx={{ mt: 2, mb: 1, textAlign: "center" }}>
-        Søk etter en kunde for å starte utdeling
-      </Typography>
       <Autocomplete
-        autoComplete
-        value={searchValue}
-        isOptionEqualToValue={(a, b) => a.id === b.id}
-        filterSelectedOptions
-        getOptionLabel={(option) => option.name ?? option.email}
-        getOptionKey={(option) => option.id}
-        filterOptions={(x) => x}
-        noOptionsText={
-          "Skriv inn telefonnumer, e-post eller navn for å finne en kunde"
+        label={"Kundesøk"}
+        description={
+          "Søk opp en kunde eller skann kundeID for å starte utdeling"
         }
-        onInputChange={async (event, newInputValue) => {
-          if (event === null) return;
-          if (newInputValue.length < 3) {
-            onSelectedResult(null);
-            setSearchValue(null);
-            setSearchResults([]);
-            return;
-          }
-          try {
-            const result = await client
-              .$route("collection.userdetails.getAll")
-              .$get({
-                query: { s: newInputValue },
-              })
-              .then(unpack<UserDetail[]>);
-            setSearchResults(result ?? []);
-          } catch {
-            setSearchResults([]);
-          }
+        placeholder={"Søk etter telefonnummer, e-post, navn eller adresse"}
+        value={searchValue}
+        rightSection={
+          <ActionIcon variant={"subtle"} onClick={open}>
+            <IconObjectScan />
+          </ActionIcon>
+        }
+        clearable
+        data={searchResults.map((userDetail) => ({
+          value: userDetail.id,
+          label: userDetail.name,
+        }))}
+        filter={({ options, search }) =>
+          (options as ComboboxItem[]).filter(({ value }) => {
+            const userDetail =
+              searchResults.find((sr) => sr.id === value) ?? null;
+            if (!userDetail) return false;
+
+            return JSON.stringify(userDetail)
+              .trim()
+              .toLowerCase()
+              .includes(search.trim().toLowerCase());
+          })
+        }
+        onChange={async (value) => {
+          setSearchValue(value);
+          await handleInputChange(value);
         }}
-        options={searchResults}
-        renderOption={({ key }, userDetail) => (
-          <UserDetailSearchResult
-            key={key}
-            userDetail={userDetail}
-            onClick={() => {
-              setSearchValue(userDetail);
-              setSearchResults([userDetail]);
-              onSelectedResult(userDetail);
-            }}
-          />
-        )}
-        renderInput={(params) => (
-          // @ts-expect-error Using example from https://mui.com/material-ui/react-autocomplete
-          <TextField
-            {...params}
-            label="Søk etter kunde"
-            slotProps={{
-              input: {
-                ...params.InputProps,
-                endAdornment: (
-                  <IconButton onClick={() => setScannerOpen(true)}>
-                    <QrCodeScannerIcon />
-                  </IconButton>
-                ),
-                type: "search",
-              },
-            }}
-          />
-        )}
+        onOptionSubmit={(value) => {
+          const foundUserDetail =
+            searchResults.find((sr) => sr.id === value) ?? null;
+          onSelectedResult(foundUserDetail);
+        }}
+        renderOption={({ option }) => {
+          const userDetail = searchResults.find((sr) => sr.id === option.value);
+          if (!userDetail) return null;
+
+          return (
+            <Stack gap={"xs"}>
+              <Group gap={5}>
+                <IconUser />
+                <Text>{userDetail.name}</Text>
+              </Group>
+              <Group>
+                <Group gap={5}>
+                  <IconPhone />
+                  <Text>{userDetail.phone}</Text>
+                </Group>
+                <Group gap={5}>
+                  <IconMail />
+                  <Text>{userDetail.email}</Text>
+                </Group>
+              </Group>
+            </Stack>
+          );
+        }}
       />
       <ScannerModal
         onScan={async (scannedText) => {
@@ -90,13 +119,13 @@ export default function UserDetailSearchField({
             .$route("collection.userdetails.getId", { id: scannedText })
             .$get()
             .then(unpack<[UserDetail]>);
-          setScannerOpen(false);
-          setSearchValue(result);
+          close();
+          setSearchValue(result.name);
           onSelectedResult(result);
           return [{ feedback: "" }];
         }}
-        open={scannerOpen}
-        handleClose={() => setScannerOpen(false)}
+        open={opened}
+        handleClose={close}
         disableTypeChecks
       />
     </>

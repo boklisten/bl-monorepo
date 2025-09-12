@@ -1,4 +1,4 @@
-import { Stack, Title } from "@mantine/core";
+import { Container, Stack, Title } from "@mantine/core";
 import { Metadata } from "next";
 
 import AdminCart from "@/components/admin/AdminCart";
@@ -9,9 +9,11 @@ export const metadata: Metadata = {
 
 export default function RapidHandoutPage() {
   return (
-    <Stack>
-      <Title>Hurtigutdeling</Title>
-      <AdminCart />
-    </Stack>
+    <Container>
+      <Stack>
+        <Title>Hurtigutdeling</Title>
+        <AdminCart />
+      </Stack>
+    </Container>
   );
 }

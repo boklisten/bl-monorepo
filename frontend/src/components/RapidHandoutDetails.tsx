@@ -1,8 +1,8 @@
 import { Order } from "@boklisten/backend/shared/order/order";
 import { OrderItem } from "@boklisten/backend/shared/order/order-item/order-item";
 import { UserDetail } from "@boklisten/backend/shared/user-detail";
-import QrCodeScannerIcon from "@mui/icons-material/QrCodeScanner";
-import { Button, Typography } from "@mui/material";
+import { Box, Button, Stack, Title } from "@mantine/core";
+import { IconObjectScan } from "@tabler/icons-react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useEffect, useRef, useState } from "react";
 
@@ -107,26 +107,18 @@ export default function RapidHandoutDetails({
   return itemStatuses.length === 0 ? (
     <InfoAlert>Denne kunden har for øyeblikket ingen bestilte bøker</InfoAlert>
   ) : (
-    <>
-      <Typography
-        variant={"h2"}
-        sx={{
-          textAlign: "center",
-          mt: 6,
-          mb: 2,
-        }}
-      >
-        Plukkliste
-      </Typography>
-      <Button
-        color="success"
-        startIcon={<QrCodeScannerIcon />}
-        variant={"contained"}
-        onClick={() => setScanModalOpen(true)}
-      >
-        Scan bøker
-      </Button>
+    <Stack gap={"xs"}>
+      <Title order={2}>Bestilte bøker</Title>
       <MatchItemTable itemStatuses={itemStatuses} isSender={true} />
+      <Box>
+        <Button
+          color={"green"}
+          leftSection={<IconObjectScan />}
+          onClick={() => setScanModalOpen(true)}
+        >
+          Scan bøker
+        </Button>
+      </Box>
       <ScannerModal
         disableTypeChecks={true}
         onScan={async (scannedText) => {
@@ -194,6 +186,6 @@ export default function RapidHandoutDetails({
             .map((itemStatus) => itemStatus.id)}
         />
       </ScannerModal>
-    </>
+    </Stack>
   );
 }

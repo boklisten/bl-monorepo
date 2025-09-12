@@ -1,8 +1,7 @@
-import PlaceIcon from "@mui/icons-material/Place";
-import ScheduleIcon from "@mui/icons-material/Schedule";
-import { Box, Typography } from "@mui/material";
+import { Anchor, Group, Stack, Text } from "@mantine/core";
+import { IconClock, IconMapPin } from "@tabler/icons-react";
+import Link from "next/link";
 
-import DynamicLink from "@/components/DynamicLink";
 import { FormattedDatetime } from "@/components/matches/matchesList/helper";
 
 const MeetingInfo = ({
@@ -13,33 +12,25 @@ const MeetingInfo = ({
   meetingLocation: string;
 }) => {
   return (
-    <Box
-      sx={{
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "left",
-        my: 0.4,
-        fontSize: "inherit",
-      }}
-    >
-      <Box sx={{ display: "flex", marginTop: 0.4, alignItems: "center" }}>
-        <ScheduleIcon sx={{ marginRight: 0.4 }} />
+    <Stack gap={"xs"}>
+      <Group gap={5}>
+        <IconClock />
         {(meetingTime && (
           <FormattedDatetime date={new Date(meetingTime)} />
         )) || (
-          <Typography>
+          <Text>
             Du kan møte opp når standen vår er åpen.{" "}
-            <DynamicLink variant="body1" href="/info/branch">
+            <Anchor component={Link} href="/info/branch">
               Se åpningstider her
-            </DynamicLink>
-          </Typography>
+            </Anchor>
+          </Text>
         )}
-      </Box>
-      <Box sx={{ display: "flex", marginTop: 0.4, alignItems: "center" }}>
-        <PlaceIcon sx={{ marginRight: 0.4 }} />
-        <Typography>{meetingLocation}</Typography>
-      </Box>
-    </Box>
+      </Group>
+      <Group gap={5}>
+        <IconMapPin />
+        <Text>{meetingLocation}</Text>
+      </Group>
+    </Stack>
   );
 };
 

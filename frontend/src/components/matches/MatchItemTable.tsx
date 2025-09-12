@@ -1,15 +1,8 @@
-import CheckBoxIcon from "@mui/icons-material/CheckBox";
-import ErrorIcon from "@mui/icons-material/Error";
+import { Table, Tooltip } from "@mantine/core";
 import {
-  Box,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
-  Tooltip,
-} from "@mui/material";
+  IconAlertSquareFilled,
+  IconSquareCheckFilled,
+} from "@tabler/icons-react";
 
 import { ItemStatus } from "@/components/matches/matches-helper";
 
@@ -23,42 +16,40 @@ const MatchItemTable = ({
   isSender: boolean;
 }) => {
   return (
-    <TableContainer component={Box}>
-      <Table>
-        <TableHead>
-          <TableRow>
-            <TableCell>Tittel</TableCell>
-            <TableCell sx={{ textAlign: "center" }}>Status</TableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {itemStatuses
-            .filter((is) => itemFilter === null || itemFilter.includes(is.id))
-            .sort((a, b) => Number(a.fulfilled) - Number(b.fulfilled))
-            .map((item) => (
-              <TableRow key={item.id}>
-                <TableCell>{item.title}</TableCell>
-                <Tooltip
-                  title={
-                    (item.fulfilled
-                      ? "Denne boken er registrert som "
-                      : "Denne boken har ikke blitt registrert som ") +
-                    (isSender ? "levert" : "mottatt")
-                  }
-                >
-                  <TableCell sx={{ textAlign: "center" }}>
-                    {item.fulfilled ? (
-                      <CheckBoxIcon sx={{ color: "green" }} />
-                    ) : (
-                      <ErrorIcon sx={{ color: "orange" }} />
-                    )}
-                  </TableCell>
-                </Tooltip>
-              </TableRow>
-            ))}
-        </TableBody>
-      </Table>
-    </TableContainer>
+    <Table>
+      <Table.Thead>
+        <Table.Tr>
+          <Table.Th>Tittel</Table.Th>
+          <Table.Th>Status</Table.Th>
+        </Table.Tr>
+      </Table.Thead>
+      <Table.Tbody>
+        {itemStatuses
+          .filter((is) => itemFilter === null || itemFilter.includes(is.id))
+          .sort((a, b) => Number(a.fulfilled) - Number(b.fulfilled))
+          .map((item) => (
+            <Table.Tr key={item.id}>
+              <Table.Td>{item.title}</Table.Td>
+              <Tooltip
+                label={
+                  (item.fulfilled
+                    ? "Denne boken er registrert som "
+                    : "Denne boken har ikke blitt registrert som ") +
+                  (isSender ? "levert" : "mottatt")
+                }
+              >
+                <Table.Td>
+                  {item.fulfilled ? (
+                    <IconSquareCheckFilled color={"green"} />
+                  ) : (
+                    <IconAlertSquareFilled color={"orange"} />
+                  )}
+                </Table.Td>
+              </Tooltip>
+            </Table.Tr>
+          ))}
+      </Table.Tbody>
+    </Table>
   );
 };
 

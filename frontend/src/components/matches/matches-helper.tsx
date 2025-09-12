@@ -2,7 +2,7 @@ import {
   StandMatchWithDetails,
   UserMatchWithDetails,
 } from "@boklisten/backend/shared/match/match-dtos";
-import { Typography } from "@mui/material";
+import { Title } from "@mantine/core";
 import { ReactNode } from "react";
 
 export interface ItemStatus {
@@ -12,11 +12,7 @@ export interface ItemStatus {
 }
 
 export const MatchHeader = ({ children }: { children: ReactNode }) => {
-  return (
-    <Typography variant="h2" sx={{ marginTop: 4, marginBottom: 2 }}>
-      {children}
-    </Typography>
-  );
+  return <Title order={2}>{children}</Title>;
 };
 
 export function calculateFulfilledStandMatchItems(

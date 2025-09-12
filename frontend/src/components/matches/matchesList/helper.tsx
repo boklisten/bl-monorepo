@@ -52,10 +52,10 @@ export const FormattedDatetime = ({ date }: { date: Date }) => {
     timeStyle: "short",
   });
   return (
-    <>
+    <Group gap={0}>
       <Text>{timeString}</Text>
       <Text c={"dimmed"}>, {dateString}</Text>
-    </>
+    </Group>
   );
 };
 
@@ -68,9 +68,13 @@ export const UserMatchTitle = ({
   if (currentUser.items.length > 0 && otherUser.items.length === 0) {
     return (
       <Group gap={2}>
-        <Text c={"dimmed"}>Meg</Text>
+        <Text c={"dimmed"} fz={"inherit"}>
+          Meg
+        </Text>
         <IconChevronsRight />
-        <Text fw={"bold"}>{otherUser.name}</Text>
+        <Text fw={"bold"} fz={"inherit"}>
+          {otherUser.name}
+        </Text>
       </Group>
     );
   }
@@ -80,17 +84,25 @@ export const UserMatchTitle = ({
   ) {
     return (
       <Group gap={2}>
-        <Text fw={"bold"}>{otherUser.name}</Text>
+        <Text fw={"bold"} fz={"inherit"}>
+          {otherUser.name}
+        </Text>
         <IconChevronsRight />
-        <Text c={"dimmed"}>Meg</Text>
+        <Text c={"dimmed"} fz={"inherit"}>
+          Meg
+        </Text>
       </Group>
     );
   }
   return (
     <Group gap={2}>
-      <Text c={"dimmed"}>Meg</Text>
+      <Text c={"dimmed"} fz={"inherit"}>
+        Meg
+      </Text>
       <IconSwitchHorizontal size={20} />
-      <Text fw={"bold"}>{otherUser.name}</Text>
+      <Text fw={"bold"} fz={"inherit"}>
+        {otherUser.name}
+      </Text>
     </Group>
   );
 };
@@ -106,14 +118,22 @@ export const StandMatchTitle = ({
   const isMeFirst = hasPickupItems ? hasHandoffItems : true;
 
   const left = isMeFirst ? (
-    <Text c={"dimmed"}>Meg</Text>
+    <Text c={"dimmed"} fz={"inherit"}>
+      Meg
+    </Text>
   ) : (
-    <Text fw={"bold"}>Stand</Text>
+    <Text fw={"bold"} fz={"inherit"}>
+      Stand
+    </Text>
   );
   const right = isMeFirst ? (
-    <Text fw={"bold"}>Stand</Text>
+    <Text fw={"bold"} fz={"inherit"}>
+      Stand
+    </Text>
   ) : (
-    <Text c={"dimmed"}>Meg</Text>
+    <Text c={"dimmed"} fz={"inherit"}>
+      Meg
+    </Text>
   );
   const arrow = hasHandoffItems ? (
     hasPickupItems ? (

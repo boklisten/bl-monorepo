@@ -1,4 +1,4 @@
-import { Box, Typography } from "@mui/material";
+import { Stack, Text } from "@mantine/core";
 import { useEffect } from "react";
 
 import { ItemStatus } from "@/components/matches/matches-helper";
@@ -24,38 +24,20 @@ export default function MatchScannerContent({
     }
   }, [expectedItems.length, fulfilledItems.length, handleClose, scannerOpen]);
   return (
-    <>
-      <Box
-        sx={{
-          width: 0.9,
-        }}
-      >
-        <ProgressBar
-          percentComplete={(fulfilledItems.length * 100) / expectedItems.length}
-          subtitle={
-            <Typography
-              sx={{
-                textAlign: "center",
-              }}
-            >
-              {fulfilledItems.length} av {expectedItems.length} bøker mottatt
-            </Typography>
-          }
-        />
-      </Box>
-      <Box
-        sx={{
-          overflowY: "auto",
-          maxHeight: "30rem",
-          mt: 2,
-        }}
-      >
-        <MatchItemTable
-          itemFilter={expectedItems}
-          itemStatuses={itemStatuses}
-          isSender={false}
-        />
-      </Box>
-    </>
+    <Stack mt={"xs"}>
+      <ProgressBar
+        percentComplete={(fulfilledItems.length * 100) / expectedItems.length}
+        subtitle={
+          <Text ta={"center"}>
+            {fulfilledItems.length} av {expectedItems.length} bøker mottatt
+          </Text>
+        }
+      />
+      <MatchItemTable
+        itemFilter={expectedItems}
+        itemStatuses={itemStatuses}
+        isSender={false}
+      />
+    </Stack>
   );
 }

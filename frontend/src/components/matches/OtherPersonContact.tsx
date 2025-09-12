@@ -1,8 +1,7 @@
 import { UserMatchWithDetails } from "@boklisten/backend/shared/match/match-dtos";
-import PhoneIphoneIcon from "@mui/icons-material/PhoneIphone";
-import { Box, Typography } from "@mui/material";
-
-import DynamicLink from "@/components/DynamicLink";
+import { Anchor, Group, Text } from "@mantine/core";
+import { IconPhone } from "@tabler/icons-react";
+import Link from "next/link";
 
 const OtherPersonContact = ({
   userMatch,
@@ -17,21 +16,15 @@ const OtherPersonContact = ({
       : userMatch.customerADetails;
 
   return (
-    <Box
-      key={otherPerson.phone}
-      sx={{ display: "flex", alignItems: "center", justifyContent: "left" }}
-    >
-      <PhoneIphoneIcon sx={{ marginRight: 0.4 }} />
-      <Typography>
+    <Group gap={5}>
+      <IconPhone />
+      <Text>
         {otherPerson.name},{" "}
-        <DynamicLink
-          sx={{ fontSize: "inherit" }}
-          href={`tel:${otherPerson.phone}`}
-        >
+        <Anchor component={Link} href={`tel:${otherPerson.phone}`}>
           {formatPhoneNumber(otherPerson.phone)}
-        </DynamicLink>
-      </Typography>
-    </Box>
+        </Anchor>
+      </Text>
+    </Group>
   );
 };
 

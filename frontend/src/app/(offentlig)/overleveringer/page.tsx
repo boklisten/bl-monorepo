@@ -1,4 +1,4 @@
-import { Container, Stack, Title } from "@mantine/core";
+import { Title } from "@mantine/core";
 import { Metadata } from "next";
 
 import AuthGuard from "@/components/common/AuthGuard";
@@ -11,13 +11,9 @@ export const metadata: Metadata = {
 
 export default function MatchesPage() {
   return (
-    <Container>
-      <Stack>
-        <Title>Mine overleveringer</Title>
-        <AuthGuard>
-          <MatchList />
-        </AuthGuard>
-      </Stack>
-    </Container>
+    <AuthGuard>
+      <Title>Mine overleveringer</Title>
+      <MatchList />
+    </AuthGuard>
   );
 }

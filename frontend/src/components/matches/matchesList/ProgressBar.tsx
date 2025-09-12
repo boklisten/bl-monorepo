@@ -1,9 +1,6 @@
-import { Group, Stack } from "@mantine/core";
-import { LinearProgress, linearProgressClasses } from "@mui/material";
+import { Group, Progress, Stack } from "@mantine/core";
 import { IconCircleCheckFilled } from "@tabler/icons-react";
 import { ReactNode } from "react";
-
-import muiTheme from "@/utils/muiTheme";
 
 export default function ProgressBar({
   percentComplete,
@@ -25,24 +22,7 @@ export default function ProgressBar({
 
   return (
     <Stack gap={5}>
-      <LinearProgress
-        value={percentComplete}
-        variant="determinate"
-        sx={{
-          height: "0.5rem",
-          borderRadius: "0.8rem",
-          [`&.${linearProgressClasses.colorPrimary}`]: {
-            backgroundColor:
-              muiTheme.palette.grey[
-                muiTheme.palette.mode === "light" ? 300 : 700
-              ],
-          },
-          [`& .${linearProgressClasses.bar}`]: {
-            borderRadius: 5,
-            backgroundColor: muiTheme.palette.success.main,
-          },
-        }}
-      />
+      <Progress value={percentComplete} color={"green"} />
       {subtitle}
     </Stack>
   );

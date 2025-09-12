@@ -1,7 +1,6 @@
 import { UserMatchWithDetails } from "@boklisten/backend/shared/match/match-dtos";
-import { Text } from "@mantine/core";
-import QrCodeScannerIcon from "@mui/icons-material/QrCodeScanner";
-import { Box, Button, Typography } from "@mui/material";
+import { Button, Stack, Text, Title } from "@mantine/core";
+import { IconObjectScan } from "@tabler/icons-react";
 import { useState } from "react";
 
 import CountdownToRedirect from "@/components/CountdownToRedirect";
@@ -73,35 +72,34 @@ const UserMatchDetail = ({
   }
 
   return (
-    <>
-      <Typography variant="h1">
-        <UserMatchTitle userMatchStatus={userMatchStatus} />
-      </Typography>
-      {isCurrentUserFulfilled && (
-        <Box
-          sx={{
-            my: 2,
-          }}
-        >
-          <SuccessAlert>
-            Du har {statusText} alle bøkene for denne overleveringen.
-          </SuccessAlert>
-          {redirectCountdownStarted && (
-            <CountdownToRedirect path={"/overleveringer"} seconds={5} />
-          )}
-        </Box>
-      )}
-      <ProgressBar
-        percentComplete={
-          (currentUserActualItemCount * 100) / currentUserExpectedItemCount
-        }
-        subtitle={
+    <Stack gap={"xl"}>
+      <Stack gap={"xs"}>
+        <Title>
+          <UserMatchTitle userMatchStatus={userMatchStatus} />
+        </Title>
+
+        {isCurrentUserFulfilled && (
           <>
-            {currentUserActualItemCount} av {currentUserExpectedItemCount} bøker{" "}
-            {statusText}
+            <SuccessAlert>
+              Du har {statusText} alle bøkene for denne overleveringen.
+            </SuccessAlert>
+            {redirectCountdownStarted && (
+              <CountdownToRedirect path={"/overleveringer"} seconds={5} />
+            )}
           </>
-        }
-      />
+        )}
+        <ProgressBar
+          percentComplete={
+            (currentUserActualItemCount * 100) / currentUserExpectedItemCount
+          }
+          subtitle={
+            <>
+              {currentUserActualItemCount} av {currentUserExpectedItemCount}{" "}
+              bøker {statusText}
+            </>
+          }
+        />
+      </Stack>
       {otherUser.receivedItems.some(
         (item) => !currentUser.deliveredItems.includes(item),
       ) && (
@@ -112,63 +110,53 @@ const UserMatchDetail = ({
             Hvis det var du som ga dem bøkene, betyr det at noen andre har bøker
             som opprinnelig tilhørte deg. Du er fortsatt ansvarlig for at de
             blir levert, men hvis noen andre leverer dem for deg vil de bli
-            markert som levert.
-          </Text>
-          <Text>
-            Hvis du ikke har gitt bort bøkene du har, betyr det at de har fått
-            bøker av noen andre, og du må levere på stand i stedet.
+            markert som levert. Hvis du ikke har gitt bort bøkene du har, betyr
+            det at de har fått bøker av noen andre, og du må levere på stand i
+            stedet.
           </Text>
         </WarningAlert>
       )}
+
       {!isCurrentUserFulfilled && (
         <>
-          <Box sx={{ my: 2 }}>
-            <Typography variant="h2">Hvordan fungerer det?</Typography>
-            <Typography>
+          <Stack gap={"xs"}>
+            <Title order={2}>Hvordan fungerer det?</Title>
+            <Text>
               Du skal møte en annen elev og utveksle bøker. Det er viktig at den
               som mottar bøker scanner hver bok, hvis ikke blir ikke bøkene
               registrert som levert, og avsender kan få faktura. Hvis en bok er
               ødelagt, skal den ikke tas imot.
-            </Typography>
-          </Box>
-          <MatchHeader>Du skal møte</MatchHeader>
-          <OtherPersonContact
-            userMatch={userMatch}
-            currentUserId={currentUserId}
-          />
-          <MeetingInfo
-            meetingLocation={userMatch.meetingInfo.location}
-            meetingTime={userMatch.meetingInfo.date}
-          />
+            </Text>
+          </Stack>
+          <Stack gap={"xs"}>
+            <MatchHeader>Du skal møte</MatchHeader>
+            <OtherPersonContact
+              userMatch={userMatch}
+              currentUserId={currentUserId}
+            />
+            <MeetingInfo
+              meetingLocation={userMatch.meetingInfo.location}
+              meetingTime={userMatch.meetingInfo.date}
+            />
+          </Stack>
         </>
       )}
       {currentUser.wantedItems.length > currentUser.receivedItems.length && (
-        <>
+        <Stack gap={"xs"}>
           <MatchHeader>Når du skal motta bøker</MatchHeader>
-          <Typography sx={{ mb: 1 }}>
-            For å motta bøker må du scanne dem
-          </Typography>
-          <Box
-            sx={{
-              display: "flex",
-              flexDirection: "column",
-              gap: 2,
-            }}
+          <Text>For å motta bøker må du scanne dem</Text>
+          <ScannerTutorial />
+          <Button
+            color={"green"}
+            leftSection={<IconObjectScan />}
+            onClick={() => setScanModalOpen(true)}
           >
-            <ScannerTutorial />
-            <Button
-              color="success"
-              startIcon={<QrCodeScannerIcon />}
-              variant={"contained"}
-              onClick={() => setScanModalOpen(true)}
-            >
-              Scan bøker
-            </Button>
-          </Box>
-        </>
+            Scan bøker
+          </Button>
+        </Stack>
       )}
       {currentUser.wantedItems.length > 0 && (
-        <>
+        <Stack gap={0}>
           {!isCurrentUserFulfilled && (
             <MatchHeader>Du skal motta disse bøkene</MatchHeader>
           )}
@@ -177,10 +165,10 @@ const UserMatchDetail = ({
             itemStatuses={itemStatuses}
             isSender={false}
           />
-        </>
+        </Stack>
       )}
       {currentUser.items.length > 0 && (
-        <>
+        <Stack gap={0}>
           {!isCurrentUserFulfilled && (
             <MatchHeader>Du skal levere disse bøkene</MatchHeader>
           )}
@@ -189,7 +177,7 @@ const UserMatchDetail = ({
             itemStatuses={itemStatuses}
             isSender={true}
           />
-        </>
+        </Stack>
       )}
       <ScannerModal
         allowManualRegistration
@@ -217,7 +205,7 @@ const UserMatchDetail = ({
           fulfilledItems={currentUser.receivedItems}
         />
       </ScannerModal>
-    </>
+    </Stack>
   );
 };
 

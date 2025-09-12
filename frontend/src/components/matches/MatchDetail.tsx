@@ -1,16 +1,15 @@
 "use client";
-import { ArrowBack } from "@mui/icons-material";
-import { Button, Card, Container, Skeleton } from "@mui/material";
+import { Anchor, Box, Button, Skeleton } from "@mantine/core";
+import { IconArrowLeft } from "@tabler/icons-react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
+import Link from "next/link";
 
 import { getAccessTokenBody } from "@/api/token";
-import DynamicLink from "@/components/DynamicLink";
 import StandMatchDetail from "@/components/matches/StandMatchDetail";
 import UserMatchDetail from "@/components/matches/UserMatchDetail";
 import ErrorAlert from "@/components/ui/alerts/ErrorAlert";
 import useApiClient from "@/hooks/useApiClient";
 import { GENERIC_ERROR_TEXT, PLEASE_TRY_AGAIN_TEXT } from "@/utils/constants";
-import muiTheme from "@/utils/muiTheme";
 
 const MatchDetail = ({
   userMatchId,
@@ -67,37 +66,36 @@ const MatchDetail = ({
   }
 
   if (!userId || (userMatchId && !userMatch) || (standMatchId && !standMatch)) {
-    return <Skeleton />;
+    return <Skeleton height={500} />;
   }
 
   return (
-    <Card sx={{ padding: muiTheme.spacing(2, 0, 4, 0) }}>
-      <Container>
-        <DynamicLink
-          href={`/overleveringer`}
-          sx={{ marginBottom: 2, display: "inline-block" }}
-        >
-          <Button startIcon={<ArrowBack />}>Alle overleveringer</Button>
-        </DynamicLink>
+    <>
+      <Box>
+        <Anchor component={Link} href={"/overleveringer"}>
+          <Button variant={"subtle"} leftSection={<IconArrowLeft />}>
+            Alle overleveringer
+          </Button>
+        </Anchor>
+      </Box>
 
-        {standMatch && <StandMatchDetail standMatch={standMatch} />}
-        {userMatch && (
-          <UserMatchDetail
-            userMatch={userMatch}
-            currentUserId={userId}
-            handleItemTransferred={() =>
-              queryClient.invalidateQueries({
-                queryKey: [
-                  client.matches
-                    .get({ detailsId: getAccessTokenBody().details })
-                    .$url(),
-                ],
-              })
-            }
-          />
-        )}
-      </Container>
-    </Card>
+      {standMatch && <StandMatchDetail standMatch={standMatch} />}
+      {userMatch && (
+        <UserMatchDetail
+          userMatch={userMatch}
+          currentUserId={userId}
+          handleItemTransferred={() =>
+            queryClient.invalidateQueries({
+              queryKey: [
+                client.matches
+                  .get({ detailsId: getAccessTokenBody().details })
+                  .$url(),
+              ],
+            })
+          }
+        />
+      )}
+    </>
   );
 };
 

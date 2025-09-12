@@ -10,12 +10,9 @@ export default class EditableTextsController {
     const key = request.param("key");
     const databaseQuery = new SEDbQuery();
     databaseQuery.stringFilters = [{ fieldName: "key", value: key }];
-    const [editableText] =
-      await StorageService.EditableTexts.getByQuery(databaseQuery);
-    if (!editableText) {
-      throw new Error(`No editable text found for key ${key}`);
-    }
-    return editableText;
+    const editableTexts =
+      await StorageService.EditableTexts.getByQueryOrNull(databaseQuery);
+    return editableTexts?.[0] ?? { key, text: "" };
   }
 
   async getAll(ctx: HttpContext) {

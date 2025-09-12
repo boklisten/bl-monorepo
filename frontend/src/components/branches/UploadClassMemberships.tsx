@@ -86,7 +86,6 @@ export default function UploadClassMemberships({
 
   return (
     <UploadCSVFile
-      loading={uploadClassMembershipMutation.isPending}
       label={"Last opp klassevalg"}
       requiredHeaders={["phone", "branch"] as const}
       onUpload={uploadClassMembershipMutation.mutate}

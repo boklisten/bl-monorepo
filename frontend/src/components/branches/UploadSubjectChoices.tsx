@@ -84,7 +84,6 @@ export default function UploadSubjectChoices({
   });
   return (
     <UploadCSVFile
-      loading={uploadSubjectChoicesMutation.isPending}
       label={"Last opp fagvalg"}
       requiredHeaders={["phone", "subjects"] as const}
       onUpload={uploadSubjectChoicesMutation.mutate}

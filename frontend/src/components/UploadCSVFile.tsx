@@ -1,7 +1,7 @@
+import { FileInput } from "@mantine/core";
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 import Papa from "papaparse";
 
-import FileUploadButton from "@/components/FileUploadButton";
 import { showErrorNotification } from "@/utils/notifications";
 
 type ParsedRow<
@@ -18,13 +18,11 @@ export default function UploadCSVFile<
   requiredHeaders,
   optionalHeaders,
   onUpload,
-  loading = false,
 }: {
   label: string;
   requiredHeaders: Req;
   optionalHeaders?: Opt;
   onUpload: (data: ParsedRow<Req, Opt>[]) => void;
-  loading?: boolean;
 }) {
   function parseRows(rows: string[][]): ParsedRow<Req, Opt>[] | null {
     if (rows.length < 2) {
@@ -105,9 +103,8 @@ export default function UploadCSVFile<
     return parsedRows;
   }
 
-  function handleUpload(files: FileList | null) {
-    if (!files || files.length === 0) return;
-    const file = files[0];
+  function handleUpload(file: File | null) {
+    if (!file) return;
 
     const reader = new FileReader();
     reader.onload = () => {
@@ -146,13 +143,13 @@ export default function UploadCSVFile<
   }
 
   return (
-    <FileUploadButton
-      onUpload={handleUpload}
-      accept=".csv,text/csv"
-      multiple={false}
-      startIcon={<CloudUploadIcon />}
+    <FileInput
       label={label}
-      loading={loading}
+      placeholder={"Velg fil (csv)"}
+      leftSection={<CloudUploadIcon />}
+      onChange={handleUpload}
+      accept="csv,text/csv"
+      clearable
     />
   );
 }

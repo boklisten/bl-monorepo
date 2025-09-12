@@ -1,4 +1,7 @@
 "use client";
+// IMPORTANT: keep this outside of global.css to avoid overwriting globals
+import "@blocknote/mantine/style.css";
+
 import { no } from "@blocknote/core/locales";
 import { BlockNoteView } from "@blocknote/mantine";
 import { useCreateBlockNote } from "@blocknote/react";

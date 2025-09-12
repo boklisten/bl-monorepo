@@ -1,5 +1,5 @@
 "use client";
-import { Anchor, Button, Group, Progress } from "@mantine/core";
+import { Anchor, Button, Group } from "@mantine/core";
 import { useMutation } from "@tanstack/react-query";
 import Link from "next/link";
 import { useEffect, useState } from "react";
@@ -110,7 +110,6 @@ export default function LocalSignIn() {
           Har du ikke konto? Registrer deg
         </Anchor>
       </Group>
-      <Progress value={40} />
     </form.AppForm>
   );
 }

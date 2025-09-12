@@ -1,11 +1,11 @@
 "use client";
+// IMPORTANT: keep this outside of global.css to avoid overwriting globals
+import "@blocknote/mantine/style.css";
 
+import { Box, Button, Tooltip } from "@mantine/core";
 import { modals } from "@mantine/modals";
-import { NoteAdd } from "@mui/icons-material";
-import DeleteIcon from "@mui/icons-material/Delete";
-import EditIcon from "@mui/icons-material/Edit";
-import { Box, Button, Stack, Tooltip, Typography } from "@mui/material";
 import { DataGrid, GridActionsCellItem, GridColDef } from "@mui/x-data-grid";
+import { IconEdit, IconPlus, IconTrash } from "@tabler/icons-react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 import ErrorAlert from "@/components/ui/alerts/ErrorAlert";
@@ -62,9 +62,9 @@ export default function EditableTextManager() {
       width: 100,
       getActions: ({ id }) => {
         return [
-          <Tooltip key={`edit-${id}`} title={"Endre"}>
+          <Tooltip key={`edit-${id}`} label={"Endre"}>
             <GridActionsCellItem
-              icon={<EditIcon />}
+              icon={<IconEdit />}
               label="Rediger"
               onClick={() =>
                 modals.openContextModal({
@@ -80,9 +80,9 @@ export default function EditableTextManager() {
               }
             />
           </Tooltip>,
-          <Tooltip key={`delete-${id}`} title={"Slett"}>
+          <Tooltip key={`delete-${id}`} label={"Slett"}>
             <GridActionsCellItem
-              icon={<DeleteIcon />}
+              icon={<IconTrash />}
               label="Slett"
               onClick={async () => {
                 modals.openConfirmModal({
@@ -103,8 +103,7 @@ export default function EditableTextManager() {
   ];
 
   return (
-    <Stack>
-      <Typography variant={"h2"}>Tekst</Typography>
+    <>
       <DataGrid
         initialState={{
           pagination: {
@@ -122,8 +121,7 @@ export default function EditableTextManager() {
       />
       <Box>
         <Button
-          variant="contained"
-          startIcon={<NoteAdd />}
+          leftSection={<IconPlus />}
           onClick={() =>
             modals.openContextModal({
               size: "xl",
@@ -136,6 +134,6 @@ export default function EditableTextManager() {
           Legg til
         </Button>
       </Box>
-    </Stack>
+    </>
   );
 }

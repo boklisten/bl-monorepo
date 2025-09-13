@@ -100,6 +100,12 @@ export default function EditableTextManager() {
         Legg til
       </Button>
     ),
+    mantineCreateRowModalProps: {
+      size: "xl",
+    },
+    mantineEditRowModalProps: {
+      size: "xl",
+    },
     renderCreateRowModalContent: ({ table }) => (
       <EditableTextEditor
         onClose={() => {

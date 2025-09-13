@@ -18,6 +18,8 @@ const MailTemplateSenderController = () =>
 const OrdersController = () => import("#controllers/orders_controller");
 const EditableTextsController = () =>
   import("#controllers/editable_texts_controller");
+const QuestionsAndAnswersController = () =>
+  import("#controllers/questions_and_answers_controller");
 const EmailValidationsController = () =>
   import("#controllers/email_validations_controller");
 const PublicBlidLookupController = () =>
@@ -163,6 +165,28 @@ router
 router
   .delete("/editable_texts/:id", [EditableTextsController, "destroy"])
   .as("editable_texts.destroy");
+
+/**
+ * questions and answers
+ */
+router
+  .get("/questions_and_answers", [QuestionsAndAnswersController, "getAll"])
+  .as("questions_and_answers.getAll");
+router
+  .post("/questions_and_answers", [QuestionsAndAnswersController, "store"])
+  .as("questions_and_answers.store");
+router
+  .patch("/questions_and_answers/:id", [
+    QuestionsAndAnswersController,
+    "update",
+  ])
+  .as("questions_and_answers.update");
+router
+  .delete("/questions_and_answers/:id", [
+    QuestionsAndAnswersController,
+    "destroy",
+  ])
+  .as("questions_and_answers.destroy");
 
 /**
  * email validations

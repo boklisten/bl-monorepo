@@ -96,7 +96,7 @@ export default function EditableTextEditor({
           )}
         </form.AppField>
         <form.AppField name={"text"}>
-          {(field) => <field.RichTextEditorField />}
+          {(field) => <field.RichTextEditorField label={"Tekst"} />}
         </form.AppField>
         <Group>
           <Button variant={"subtle"} onClick={() => onClose()}>

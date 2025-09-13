@@ -1,6 +1,7 @@
+import { Title, Stack } from "@mantine/core";
 import { Metadata } from "next";
 
-import EditableTextReadOnly from "@/components/info/editable-text/EditableTextReadOnly";
+import QuestionsAndAnswersReadOnly from "@/components/info/questions-and-answers/QuestionsAndAnswersReadOnly";
 import { publicApiClient } from "@/utils/publicApiClient";
 
 export const revalidate = 60;
@@ -12,13 +13,14 @@ export const metadata: Metadata = {
 };
 
 export default async function FaqPage() {
-  const dataKey = "sporsmal_og_svar";
-  const cachedData = await publicApiClient.editable_texts
-    .key({ key: dataKey })
+  const cachedData = await publicApiClient.questions_and_answers
     .$get()
     .unwrap();
 
   return (
-    <EditableTextReadOnly dataKey={dataKey} cachedText={cachedData.text} />
+    <Stack>
+      <Title ta={"center"}>Spørsmål og svar</Title>
+      <QuestionsAndAnswersReadOnly cachedData={cachedData} />
+    </Stack>
   );
 }

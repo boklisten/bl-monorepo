@@ -260,6 +260,42 @@ type EditabletextsIdDelete = {
     false
   >;
 };
+type QuestionsAndAnswersGetHead = {
+  request: unknown;
+  response: MakeNonSerializedTuyauResponse<
+    import("../app/controllers/questions_and_answers_controller.ts").default["getAll"],
+    false
+  >;
+};
+type QuestionsAndAnswersPost = {
+  request: MakeTuyauRequest<
+    InferInput<
+      (typeof import("../app/validators/questions_and_answers_validator.ts"))["questionsAndAnswersValidator"]
+    >
+  >;
+  response: MakeNonSerializedTuyauResponse<
+    import("../app/controllers/questions_and_answers_controller.ts").default["store"],
+    true
+  >;
+};
+type QuestionsandanswersIdPatch = {
+  request: MakeTuyauRequest<
+    InferInput<
+      (typeof import("../app/validators/questions_and_answers_validator.ts"))["questionsAndAnswersValidator"]
+    >
+  >;
+  response: MakeNonSerializedTuyauResponse<
+    import("../app/controllers/questions_and_answers_controller.ts").default["update"],
+    true
+  >;
+};
+type QuestionsandanswersIdDelete = {
+  request: unknown;
+  response: MakeNonSerializedTuyauResponse<
+    import("../app/controllers/questions_and_answers_controller.ts").default["destroy"],
+    false
+  >;
+};
 type EmailValidationsPost = {
   request: unknown;
   response: MakeNonSerializedTuyauResponse<
@@ -569,6 +605,17 @@ export interface ApiDefinition {
       $delete: EditabletextsIdDelete;
     };
   };
+  questions_and_answers: {
+    $url: {};
+    $get: QuestionsAndAnswersGetHead;
+    $head: QuestionsAndAnswersGetHead;
+    $post: QuestionsAndAnswersPost;
+    ":id": {
+      $url: {};
+      $patch: QuestionsandanswersIdPatch;
+      $delete: QuestionsandanswersIdDelete;
+    };
+  };
   email_validations: {
     $url: {};
     $post: EmailValidationsPost;
@@ -842,6 +889,34 @@ const routes = [
     path: "/editable_texts/:id",
     method: ["DELETE"],
     types: {} as EditabletextsIdDelete,
+  },
+  {
+    params: [],
+    name: "questions_and_answers.getAll",
+    path: "/questions_and_answers",
+    method: ["GET", "HEAD"],
+    types: {} as QuestionsAndAnswersGetHead,
+  },
+  {
+    params: [],
+    name: "questions_and_answers.store",
+    path: "/questions_and_answers",
+    method: ["POST"],
+    types: {} as QuestionsAndAnswersPost,
+  },
+  {
+    params: ["id"],
+    name: "questions_and_answers.update",
+    path: "/questions_and_answers/:id",
+    method: ["PATCH"],
+    types: {} as QuestionsandanswersIdPatch,
+  },
+  {
+    params: ["id"],
+    name: "questions_and_answers.destroy",
+    path: "/questions_and_answers/:id",
+    method: ["DELETE"],
+    types: {} as QuestionsandanswersIdDelete,
   },
   {
     params: [],

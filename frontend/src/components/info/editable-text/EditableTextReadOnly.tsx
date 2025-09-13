@@ -1,10 +1,8 @@
 "use client";
-import { RichTextEditor } from "@mantine/tiptap";
 import { useQuery } from "@tanstack/react-query";
-import { useEditor } from "@tiptap/react";
-import { StarterKit } from "@tiptap/starter-kit";
 
 import InfoAlert from "@/components/ui/alerts/InfoAlert";
+import RichTextEditorReadOnly from "@/components/ui/RichTextEditorReadOnly";
 import useApiClient from "@/hooks/useApiClient";
 
 export default function EditableTextReadOnly({
@@ -22,13 +20,6 @@ export default function EditableTextReadOnly({
   });
   const text = data?.text ?? cachedText;
 
-  const editor = useEditor({
-    immediatelyRender: false,
-    editable: false,
-    extensions: [StarterKit],
-    content: text,
-  });
-
   if (!text) {
     return (
       <InfoAlert title={"Oisann, her var det tomt..."}>
@@ -38,9 +29,5 @@ export default function EditableTextReadOnly({
     );
   }
 
-  return (
-    <RichTextEditor editor={editor} style={{ border: "none" }}>
-      <RichTextEditor.Content />
-    </RichTextEditor>
-  );
+  return <RichTextEditorReadOnly content={text} />;
 }

@@ -13,6 +13,7 @@ export const BlSchemaName = {
   Orders: "orders",
   Payments: "payments",
   PendingPasswordResets: "pendingpasswordresets",
+  QuestionsAndAnswers: "questions_and_answers",
   Signatures: "signatures",
   StandMatches: "stand_matches",
   UniqueItems: "uniqueitems",

@@ -1,3 +1,6 @@
+// MRT does not support React Compiler yet
+"use no memo";
+
 import { Branch } from "@boklisten/backend/shared/branch";
 import { Item } from "@boklisten/backend/shared/item";
 import { WaitingListEntry } from "@boklisten/backend/shared/waiting-list-entry";
@@ -7,7 +10,6 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { MantineReactTable, useMantineReactTable } from "mantine-react-table";
 // @ts-expect-error MRT has bad types, hopefully they fix this in the future
 import { MRT_Localization_NO } from "mantine-react-table/locales/no";
-import { useEffect, useState } from "react";
 
 import CreateWaitingListEntry from "@/components/admin/waiting-list/CreateWaitingListEntry";
 import useApiClient from "@/hooks/useApiClient";
@@ -29,7 +31,6 @@ export default function WaitingListTable({
 }) {
   const client = useApiClient();
   const queryClient = useQueryClient();
-  const [counter, setCounter] = useState(0);
 
   const destroyWaitingListEntryMutation = useMutation({
     mutationFn: (id: string) =>
@@ -84,36 +85,18 @@ export default function WaitingListTable({
       </Tooltip>
     ),
     renderTopToolbarCustomActions: ({ table }) => (
-      <Button
-        onClick={() => {
-          setCounter((prev) => prev + 1);
-          table.setCreatingRow(true);
-        }}
-      >
+      <Button onClick={() => table.setCreatingRow(true)}>
         Legg til i venteliste
       </Button>
     ),
     renderCreateRowModalContent: ({ table }) => (
       <CreateWaitingListEntry
         items={items}
-        onClose={() => {
-          setCounter((prev) => prev + 1);
-          table.setCreatingRow(null);
-        }}
+        onClose={() => table.setCreatingRow(null)}
       />
     ),
     localization: MRT_Localization_NO,
   });
 
-  useEffect(() => {
-    setCounter((prev) => prev + 1);
-  }, [waitingList, branches, items]);
-
-  return (
-    <MantineReactTable
-      table={table}
-      // Hack to force rerenders, MRT has some issues
-      key={`force-update:${counter}`}
-    />
-  );
+  return <MantineReactTable table={table} />;
 }

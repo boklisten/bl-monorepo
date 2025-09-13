@@ -1,3 +1,5 @@
+// MRT does not support React Compiler yet
+"use no memo";
 "use client";
 
 import { ActionIcon, Button, Tooltip } from "@mantine/core";
@@ -7,7 +9,6 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { MantineReactTable, useMantineReactTable } from "mantine-react-table";
 // @ts-expect-error MRT has bad types, hopefully they fix this in the future
 import { MRT_Localization_NO } from "mantine-react-table/locales/no";
-import { useEffect, useState } from "react";
 
 import EditableTextEditor from "@/components/info/editable-text/EditableTextEditor";
 import ErrorAlert from "@/components/ui/alerts/ErrorAlert";
@@ -18,10 +19,9 @@ import {
   showSuccessNotification,
 } from "@/utils/notifications";
 
-export default function EditableTextManager() {
+export default function EditableTextTable() {
   const client = useApiClient();
   const queryClient = useQueryClient();
-  const [counter, setCounter] = useState(0);
 
   const destroyEditableTextMutation = useMutation({
     mutationFn: (id: string) =>
@@ -62,10 +62,7 @@ export default function EditableTextManager() {
         <Tooltip key={`edit-${row.id}`} label={"Endre"}>
           <ActionIcon
             variant={"subtle"}
-            onClick={() => {
-              setCounter((prev) => prev + 1);
-              table.setEditingRow(row);
-            }}
+            onClick={() => table.setEditingRow(row)}
           >
             <IconEdit />
           </ActionIcon>
@@ -91,14 +88,7 @@ export default function EditableTextManager() {
       </>
     ),
     renderTopToolbarCustomActions: () => (
-      <Button
-        onClick={() => {
-          setCounter((prev) => prev + 1);
-          table.setCreatingRow(true);
-        }}
-      >
-        Legg til
-      </Button>
+      <Button onClick={() => table.setCreatingRow(true)}>Legg til</Button>
     ),
     mantineCreateRowModalProps: {
       size: "xl",
@@ -107,30 +97,18 @@ export default function EditableTextManager() {
       size: "xl",
     },
     renderCreateRowModalContent: ({ table }) => (
-      <EditableTextEditor
-        onClose={() => {
-          setCounter((prev) => prev + 1);
-          table.setCreatingRow(null);
-        }}
-      />
+      <EditableTextEditor onClose={() => table.setCreatingRow(null)} />
     ),
     renderEditRowModalContent: ({ table, row }) => (
       <EditableTextEditor
         editableText={editableTexts?.find(
           (editableText) => editableText.id === row.id,
         )}
-        onClose={() => {
-          setCounter((prev) => prev + 1);
-          table.setEditingRow(null);
-        }}
+        onClose={() => table.setEditingRow(null)}
       />
     ),
     localization: MRT_Localization_NO,
   });
-
-  useEffect(() => {
-    setCounter((prev) => prev + 1);
-  }, [editableTexts, isLoading, error]);
 
   if (error) {
     return (
@@ -140,11 +118,5 @@ export default function EditableTextManager() {
     );
   }
 
-  return (
-    <MantineReactTable
-      // Hack to force rerenders, MRT has some issues
-      key={`force-update:${counter}`}
-      table={table}
-    />
-  );
+  return <MantineReactTable table={table} />;
 }

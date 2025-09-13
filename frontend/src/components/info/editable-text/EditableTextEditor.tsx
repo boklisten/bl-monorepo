@@ -1,6 +1,3 @@
-import { no } from "@blocknote/core/locales";
-import { BlockNoteView } from "@blocknote/mantine";
-import { useCreateBlockNote } from "@blocknote/react";
 import { EditableText } from "@boklisten/backend/shared/editable-text";
 import { Button, Group, Stack } from "@mantine/core";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
@@ -22,25 +19,21 @@ export default function EditableTextEditor({
   const form = useAppForm({
     defaultValues: {
       key: editableText?.key ?? "",
+      text: editableText?.text ?? "",
     },
     onSubmit: ({ value }) => {
       if (editableText === undefined) {
         addEditableTextMutation.mutate({
           key: value.key,
-          text: JSON.stringify(editor.document),
+          text: value.text,
         });
       } else {
         updateEditableTextMutation.mutate({
           id: editableText.id,
-          text: JSON.stringify(editor.document),
+          text: value.text,
         });
       }
     },
-  });
-
-  const editor = useCreateBlockNote({
-    dictionary: no,
-    initialContent: editableText ? JSON.parse(editableText?.text) : null,
   });
 
   const queryClient = useQueryClient();
@@ -102,7 +95,9 @@ export default function EditableTextEditor({
             />
           )}
         </form.AppField>
-        <BlockNoteView editor={editor} theme={"light"} />
+        <form.AppField name={"text"}>
+          {(field) => <field.RichTextEditorField />}
+        </form.AppField>
         <Group>
           <Button variant={"subtle"} onClick={() => onClose()}>
             Avbryt

@@ -1,8 +1,8 @@
 "use client";
-import { no } from "@blocknote/core/locales";
-import { BlockNoteView } from "@blocknote/mantine";
-import { useCreateBlockNote } from "@blocknote/react";
+import { RichTextEditor } from "@mantine/tiptap";
 import { useQuery } from "@tanstack/react-query";
+import { useEditor } from "@tiptap/react";
+import { StarterKit } from "@tiptap/starter-kit";
 
 import InfoAlert from "@/components/ui/alerts/InfoAlert";
 import useApiClient from "@/hooks/useApiClient";
@@ -22,9 +22,11 @@ export default function EditableTextReadOnly({
   });
   const text = data?.text ?? cachedText;
 
-  const editor = useCreateBlockNote({
-    dictionary: no,
-    initialContent: text ? JSON.parse(text) : null,
+  const editor = useEditor({
+    immediatelyRender: false,
+    editable: false,
+    extensions: [StarterKit],
+    content: text,
   });
 
   if (!text) {
@@ -36,5 +38,9 @@ export default function EditableTextReadOnly({
     );
   }
 
-  return <BlockNoteView editor={editor} editable={false} theme={"light"} />;
+  return (
+    <RichTextEditor editor={editor} style={{ border: "none" }}>
+      <RichTextEditor.Content />
+    </RichTextEditor>
+  );
 }

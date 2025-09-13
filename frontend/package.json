@@ -11,9 +11,6 @@
     "serve": "next start"
   },
   "dependencies": {
-    "@blocknote/core": "^0.37.0",
-    "@blocknote/mantine": "^0.37.0",
-    "@blocknote/react": "^0.37.0",
     "@boklisten/backend": "workspace:*",
     "@date-io/moment": "^3.2.0",
     "@emotion/cache": "^11.14.0",
@@ -25,6 +22,7 @@
     "@mantine/hooks": "^8.3.1",
     "@mantine/modals": "^8.3.1",
     "@mantine/notifications": "^8.3.1",
+    "@mantine/tiptap": "^8.3.1",
     "@mui/icons-material": "^7.3.2",
     "@mui/material": "^7.3.2",
     "@mui/material-nextjs": "^7.3.2",
@@ -33,6 +31,8 @@
     "@tabler/icons-react": "^3.34.1",
     "@tanstack/react-form": "^1.19.5",
     "@tanstack/react-query": "^5.87.1",
+    "@tiptap/react": "^3.4.2",
+    "@tiptap/starter-kit": "^3.4.2",
     "@tuyau/client": "^0.2.10",
     "@tuyau/superjson": "^0.1.2",
     "@yudiel/react-qr-scanner": "^2.3.1",

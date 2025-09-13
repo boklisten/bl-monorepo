@@ -1,24 +1,28 @@
+import { Branch } from "@boklisten/backend/shared/branch";
 import { Item } from "@boklisten/backend/shared/item";
-import { Button, Group, Stack, Title } from "@mantine/core";
-import { useLocalStorage } from "@mantine/hooks";
-import { Autocomplete } from "@mui/material";
-import TextField from "@mui/material/TextField";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { useState } from "react";
-import { useForm } from "react-hook-form";
+import { Button, Group, Stack, Text, Title } from "@mantine/core";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
-import BranchSelect from "@/components/BranchSelect";
-import PhoneNumberField from "@/components/user/fields/PhoneNumberField";
+import { useAppForm } from "@/hooks/form";
 import useApiClient from "@/hooks/useApiClient";
+import unpack from "@/utils/bl-api-request";
 import {
   showErrorNotification,
   showSuccessNotification,
 } from "@/utils/notifications";
 
-interface WaitingListEntryFormFields {
+interface WaitingListEntryForm {
   name: string;
   phoneNumber: string;
+  itemIds: string[];
+  branchId: string;
 }
+const defaultValues: WaitingListEntryForm = {
+  name: "",
+  phoneNumber: "",
+  itemIds: [],
+  branchId: "",
+};
 
 export default function CreateWaitingListEntry({
   items,
@@ -29,30 +33,33 @@ export default function CreateWaitingListEntry({
 }) {
   const client = useApiClient();
   const queryClient = useQueryClient();
-  const [selectedBranchId] = useLocalStorage({ key: "selectedBranchId" });
-  const [selectedItems, setSelectedItems] = useState<
-    { label: string; id: string }[]
-  >([]);
-  const { handleSubmit, register, setValue } =
-    useForm<WaitingListEntryFormFields>({ mode: "onTouched" });
+
+  const branchQuery = {
+    query: { active: true, "isBranchItemsLive.online": true, sort: "name" },
+  };
+  const { data: branches } = useQuery({
+    queryKey: [client.$url("collection.branches.getAll", branchQuery)],
+    queryFn: () =>
+      client
+        .$route("collection.branches.getAll")
+        .$get(branchQuery)
+        .then(unpack<Branch[]>),
+  });
 
   const addWaitingListEntryMutation = useMutation({
-    mutationFn: async (data: WaitingListEntryFormFields) => {
-      for (const item of selectedItems) {
+    mutationFn: async (data: WaitingListEntryForm) => {
+      for (const itemId of data.itemIds) {
         await client.waiting_list_entries
           .$post({
             customerName: data.name,
             customerPhone: data.phoneNumber,
-            branchId: selectedBranchId ?? "",
-            itemId: item.id,
+            branchId: data.branchId,
+            itemId,
           })
           .unwrap();
       }
     },
     onSuccess: () => {
-      setValue("name", "");
-      setValue("phoneNumber", "");
-      setSelectedItems([]);
       showSuccessNotification("Kunden har blitt lagt til i ventelisten");
       onClose();
     },
@@ -63,48 +70,86 @@ export default function CreateWaitingListEntry({
         queryKey: [client.waiting_list_entries.$url()],
       }),
   });
+  const form = useAppForm({
+    defaultValues,
+    onSubmit: ({ value }) => addWaitingListEntryMutation.mutate(value),
+  });
 
   return (
     <Stack>
       <Title order={2}>Legg til i venteliste</Title>
-      <TextField
-        id="name"
-        required
-        fullWidth
-        label="Fullt navn"
-        {...register("name")}
-      />
-      <PhoneNumberField {...register("phoneNumber")} />
-      <Autocomplete
-        value={selectedItems}
-        id="itemIds"
-        multiple
-        options={items.map((item: Item) => ({
-          id: item.id,
-          label: item.title,
-        }))}
-        renderInput={(params) => {
-          // @ts-expect-error Mui has bad typings
-          return <TextField {...params} label="Bøker" />;
-        }}
-        onChange={(_, selected) => {
-          setSelectedItems(selected);
-        }}
-      />
-      <BranchSelect />
-      <Group>
-        <Button variant={"subtle"} onClick={() => onClose()}>
-          Avbryt
-        </Button>
-        <Button
-          loading={addWaitingListEntryMutation.isPending}
-          onClick={handleSubmit((data) =>
-            addWaitingListEntryMutation.mutate(data),
-          )}
-        >
-          Legg til
-        </Button>
-      </Group>
+      <Stack gap={"xl"}>
+        <form.AppForm>
+          <Stack gap={"xs"}>
+            <form.AppField name={"name"}>
+              {(field) => (
+                <field.TextField
+                  required
+                  label={"Fullt navn"}
+                  placeholder={"Reodor Felgen"}
+                />
+              )}
+            </form.AppField>
+            <form.AppField name={"phoneNumber"}>
+              {(field) => (
+                <field.TextField
+                  required
+                  label={"Telefonnummer"}
+                  leftSection={
+                    <Text size={"sm"} c={"dimmed"}>
+                      +47
+                    </Text>
+                  }
+                  placeholder={"98765432"}
+                />
+              )}
+            </form.AppField>
+            <form.AppField name={"itemIds"}>
+              {(field) => (
+                <field.MultiSelectField
+                  required
+                  label={"Bøker"}
+                  placeholder={"Velg bøker"}
+                  data={items.map((item) => ({
+                    value: item.id,
+                    label: item.title,
+                  }))}
+                  clearable
+                  searchable
+                />
+              )}
+            </form.AppField>
+            <form.AppField name={"branchId"}>
+              {(field) => (
+                <field.SelectField
+                  required
+                  label={"Filial"}
+                  placeholder={"Velg filial"}
+                  data={
+                    branches?.map((branch) => ({
+                      value: branch.id,
+                      label: branch.name,
+                    })) ?? []
+                  }
+                  clearable
+                  searchable
+                />
+              )}
+            </form.AppField>
+          </Stack>
+        </form.AppForm>
+        <Group>
+          <Button variant={"subtle"} onClick={() => onClose()}>
+            Avbryt
+          </Button>
+          <Button
+            loading={addWaitingListEntryMutation.isPending}
+            onClick={form.handleSubmit}
+          >
+            Legg til
+          </Button>
+        </Group>
+      </Stack>
     </Stack>
   );
 }

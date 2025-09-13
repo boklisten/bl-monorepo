@@ -1,36 +1,16 @@
-"use client";
-
 import { Branch } from "@boklisten/backend/shared/branch";
 import { Button, Stack, Title } from "@mantine/core";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { useEffect } from "react";
-import { FormProvider, useForm } from "react-hook-form";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
-import BranchSettingsGeneral from "@/components/branches/BranchSettingsGeneral";
 import UploadClassMemberships from "@/components/branches/UploadClassMemberships";
 import UploadSubjectChoices from "@/components/branches/UploadSubjectChoices";
+import { useAppForm } from "@/hooks/form";
 import useApiClient from "@/hooks/useApiClient";
+import unpack from "@/utils/bl-api-request";
 import {
   showErrorNotification,
   showSuccessNotification,
 } from "@/utils/notifications";
-
-function branchToDefaultValues(branch: Branch | null) {
-  return {
-    name: branch?.name ?? "",
-    localName: branch?.localName ?? "",
-    parentBranch: branch?.parentBranch ?? "",
-    childBranches: branch?.childBranches ?? [],
-    childLabel: branch?.childLabel ?? "",
-  };
-}
-export interface BranchCreateForm {
-  name: string;
-  localName: string;
-  parentBranch: string;
-  childBranches: string[];
-  childLabel: string;
-}
 
 export default function BranchSettings({
   existingBranch,
@@ -40,10 +20,28 @@ export default function BranchSettings({
   afterSubmit?: () => void;
 }) {
   const queryClient = useQueryClient();
+  const client = useApiClient();
+
   const branchQuery = {
     query: { sort: "name" },
   };
-  const client = useApiClient();
+  const { data: branches } = useQuery({
+    queryKey: [client.$url("collection.branches.getAll", branchQuery)],
+    queryFn: () =>
+      client
+        .$route("collection.branches.getAll")
+        .$get(branchQuery)
+        .then(unpack<Branch[]>),
+  });
+
+  const branchOptions =
+    branches
+      ?.filter((branch) => branch.id !== existingBranch?.id)
+      .map((branch) => ({
+        value: branch.id,
+        label: branch.name,
+      })) ?? [];
+
   const addBranchMutation = useMutation({
     mutationFn: (newBranch: Partial<Branch>) =>
       client.v2.branches.$post(newBranch).unwrap(),
@@ -72,26 +70,95 @@ export default function BranchSettings({
     onError: () => showErrorNotification("Klarte ikke oppdatere filial!"),
   });
 
-  const methods = useForm<BranchCreateForm>({
-    defaultValues: branchToDefaultValues(existingBranch),
+  const form = useAppForm({
+    defaultValues: {
+      name: existingBranch?.name ?? "",
+      localName: existingBranch?.localName ?? "",
+      parentBranch: existingBranch?.parentBranch ?? "",
+      childBranches: existingBranch?.childBranches ?? [],
+      childLabel: existingBranch?.childLabel ?? "",
+    },
+    onSubmit: ({ value }) =>
+      existingBranch === null
+        ? addBranchMutation.mutate(value)
+        : updateBranchMutation.mutate(value),
   });
 
-  const { reset, handleSubmit, setValue } = methods;
-  useEffect(() => {
-    reset(branchToDefaultValues(existingBranch));
-  }, [existingBranch, reset, setValue]);
+  /**
+  <Controller
+    name={"parentBranch"}
+    control={control}
+    render={({ field }) => (
+      <Autocomplete
+        options={branchOptions}
+        value={branchOptions.find((o) => o.id === field.value) ?? null}
+        onChange={(_, option) => field.onChange(option?.id ?? "")}
+        renderInput={(params) => (
+          // @ts-expect-error fixme: exactOptionalPropertyTypes
+          <TextField {...params} label="Tilhører" />
+        )}
+      />
+    )}
+  />
+   */
 
   return (
-    <FormProvider key={existingBranch?.id ?? "new"} {...methods}>
+    <form.AppForm>
       <Stack>
-        <BranchSettingsGeneral currentBranchId={existingBranch?.id ?? null} />
+        <form.AppField name={"name"}>
+          {(field) => (
+            <field.TextField
+              required
+              label={"Fullt navn"}
+              placeholder={"Flåklypa videregående skole"}
+            />
+          )}
+        </form.AppField>
+        <form.AppField name={"localName"}>
+          {(field) => (
+            <field.TextField
+              required
+              label={"Lokalt navn"}
+              placeholder={"Flåklypa"}
+            />
+          )}
+        </form.AppField>
+        <form.AppField name={"parentBranch"}>
+          {(field) => (
+            <field.SelectField
+              required
+              label={"Tilhører"}
+              placeholder={"Velg filial"}
+              data={branchOptions}
+              searchable
+              clearable
+            />
+          )}
+        </form.AppField>
+        <form.AppField name={"childLabel"}>
+          {(field) => (
+            <field.TextField
+              required
+              label={"Delt inn i"}
+              placeholder={"årskull, klasse, parallell"}
+            />
+          )}
+        </form.AppField>
+        <form.AppField name={"childBranches"}>
+          {(field) => (
+            <field.MultiSelectField
+              required
+              label={"Består av"}
+              placeholder={"Velg filialer"}
+              data={branchOptions}
+              searchable
+              clearable
+            />
+          )}
+        </form.AppField>
         <Button
           color={"green"}
-          onClick={handleSubmit((data) =>
-            existingBranch === null
-              ? addBranchMutation.mutate(data)
-              : updateBranchMutation.mutate(data),
-          )}
+          onClick={form.handleSubmit}
           loading={
             addBranchMutation.isPending || updateBranchMutation.isPending
           }
@@ -106,6 +173,6 @@ export default function BranchSettings({
           </Stack>
         )}
       </Stack>
-    </FormProvider>
+    </form.AppForm>
   );
 }

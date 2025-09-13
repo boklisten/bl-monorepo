@@ -7,6 +7,7 @@ import NewPasswordInputField from "@/components/form/fields/NewPasswordInputFiel
 import PasswordInputField from "@/components/form/fields/PasswordInputField";
 import SegmentedControlField from "@/components/form/fields/SegmentedControlField";
 import SegmentedDeadlineField from "@/components/form/fields/SegmentedDeadlineField";
+import SelectField from "@/components/form/fields/SelectField";
 import TextAreaField from "@/components/form/fields/TextAreaField";
 import TextField from "@/components/form/fields/TextField";
 
@@ -21,6 +22,7 @@ const { useAppForm } = createFormHook({
     PasswordInputField,
     SegmentedControlField,
     SegmentedDeadlineField,
+    SelectField,
     TextAreaField,
     TextField,
   },

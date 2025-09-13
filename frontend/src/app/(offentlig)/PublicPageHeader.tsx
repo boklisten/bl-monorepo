@@ -9,7 +9,7 @@ export default function PublicPageHeader() {
     <Group h={"100%"} justify={"space-between"} align={"center"} px={"md"}>
       <Logo variant={"white"} />
       <Group>
-        <Group gap={"xl"} className={"hidden sm:flex"}>
+        <Group gap={"xl"} visibleFrom={"sm"}>
           <Anchor c={"#fff"} component={Link} href={"/info/general"}>
             Info
           </Anchor>

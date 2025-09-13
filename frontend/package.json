@@ -4,7 +4,6 @@
   "license": "UNLICENSED",
   "type": "module",
   "scripts": {
-    "theme": "pnpm dlx tailwind-preset-mantine src/app/theme.ts -o src/app/theme.css",
     "dev": "next dev --turbopack",
     "typecheck": "next typegen && pnpm exec tsc --noEmit",
     "build": "next build --turbopack",
@@ -50,18 +49,17 @@
     "react-qr-code": "^2.0.18",
     "react-signature-canvas": "1.1.0-alpha.2",
     "sharp": "^0.34.3",
-    "tailwind-preset-mantine": "^2.1.0",
     "validator": "^13.15.15"
   },
   "devDependencies": {
-    "@tailwindcss/postcss": "^4.1.13",
     "@tanstack/react-query-devtools": "^5.87.3",
     "@tsconfig/next": "^2.0.3",
     "@types/papaparse": "^5.3.16",
     "@types/react": "19.1.12",
     "@types/validator": "^13.15.3",
     "postcss": "^8.5.6",
-    "tailwindcss": "^4.1.13"
+    "postcss-preset-mantine": "^1.18.0",
+    "postcss-simple-vars": "^7.0.1"
   },
   "browserslist": [
     "defaults",

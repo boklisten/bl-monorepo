@@ -35,13 +35,13 @@ const InfoPagesNavigation = () => {
 
   return (
     <Center>
-      <Box className="hidden sm:flex">
+      <Box visibleFrom={"sm"}>
         <Tabs
           value={
             tabs.find((tab) => pathname.includes(tab.value))?.value ?? pathname
           }
         >
-          <TabsList className={"justify-center"}>
+          <TabsList justify={"center"}>
             {tabs.map((tab) => (
               <Anchor
                 component={Link}
@@ -56,7 +56,7 @@ const InfoPagesNavigation = () => {
           </TabsList>
         </Tabs>
       </Box>
-      <Box className="flex sm:hidden">
+      <Box hiddenFrom={"sm"}>
         <Select
           data={tabs}
           label={"Velg side"}

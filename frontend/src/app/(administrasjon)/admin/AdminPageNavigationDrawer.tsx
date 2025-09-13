@@ -9,7 +9,7 @@ export default function AdminPageNavigationDrawer() {
   const [opened, { toggle, close }] = useDisclosure();
 
   return (
-    <Box className={"flex xs:hidden"}>
+    <Box hiddenFrom={"xs"}>
       <Burger color={"white"} opened={opened} onClick={toggle} />
 
       <Drawer

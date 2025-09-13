@@ -1,14 +1,6 @@
 import { createTheme } from "@mantine/core";
 
-// Run "pnpm --filter frontend theme" to apply changes to the generated css file
 const theme = createTheme({
-  breakpoints: {
-    xs: "36em",
-    sm: "48em",
-    md: "62em",
-    lg: "75em",
-    xl: "88em",
-  },
   colors: {
     brand: [
       "#eff8fb",

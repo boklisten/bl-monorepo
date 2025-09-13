@@ -1,3 +1,14 @@
+import "@mantine/core/styles.css";
+import "@mantine/dates/styles.css";
+import "@mantine/notifications/styles.css";
+import "@mantine/tiptap/styles.css";
+import "mantine-react-table/styles.css";
+import "@fontsource/roboto/300.css";
+import "@fontsource/roboto/400.css";
+import "@fontsource/roboto/500.css";
+import "@fontsource/roboto/700.css";
+import "dayjs/locale/nb";
+
 import { ColorSchemeScript, mantineHtmlProps } from "@mantine/core";
 import { ThemeProvider } from "@mui/material";
 import { AppRouterCacheProvider } from "@mui/material-nextjs/v15-appRouter";
@@ -7,14 +18,6 @@ import { Suspense } from "react";
 
 import ClientProviders from "@/components/ClientProviders";
 import muiTheme from "@/utils/muiTheme";
-
-import "@fontsource/roboto/300.css";
-import "@fontsource/roboto/400.css";
-import "@fontsource/roboto/500.css";
-import "@fontsource/roboto/700.css";
-
-import "@/app/globals.css";
-import "dayjs/locale/nb";
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   // fixme: we probably should not have a Suspend here

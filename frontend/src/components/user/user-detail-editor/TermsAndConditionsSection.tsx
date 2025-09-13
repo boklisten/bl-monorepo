@@ -1,8 +1,6 @@
-import { Anchor } from "@mantine/core";
-import { Typography } from "@mui/material";
+import { Anchor, Text } from "@mantine/core";
 import Checkbox from "@mui/material/Checkbox";
 import FormControlLabel from "@mui/material/FormControlLabel";
-import Grid from "@mui/material/Grid";
 import Link from "next/link";
 import { useFormContext } from "react-hook-form";
 
@@ -16,7 +14,7 @@ export default function TermsAndConditionsSection() {
     formState: { errors },
   } = useFormContext<UserEditorFields>();
   return (
-    <Grid size={{ xs: 12 }}>
+    <>
       <FormControlLabel
         control={
           <Checkbox
@@ -30,7 +28,7 @@ export default function TermsAndConditionsSection() {
           />
         }
         label={
-          <Typography>
+          <Text>
             {"Jeg godtar Boklistens "}
             <Anchor
               component={Link}
@@ -48,10 +46,10 @@ export default function TermsAndConditionsSection() {
               vilkår
             </Anchor>{" "}
             *
-          </Typography>
+          </Text>
         }
       />
       <FieldErrorAlert field={"agreeToTermsAndConditions"} />
-    </Grid>
+    </>
   );
 }

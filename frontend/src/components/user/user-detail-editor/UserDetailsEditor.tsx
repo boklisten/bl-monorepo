@@ -1,10 +1,7 @@
 "use client";
 
 import { UserDetail } from "@boklisten/backend/shared/user-detail";
-import { Anchor } from "@mantine/core";
-import { Button } from "@mui/material";
-import Box from "@mui/material/Box";
-import Grid from "@mui/material/Grid";
+import { Anchor, Button, Stack } from "@mantine/core";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { InferErrorType } from "@tuyau/client";
 import moment, { Moment } from "moment";
@@ -231,25 +228,16 @@ export default function UserDetailsEditor({
   // fixme: add error summary when switched out with TanStack Form
   return (
     <FormProvider {...methods}>
-      <Box
-        component="form"
-        noValidate
-        onSubmit={handleSubmit((data) => {
-          userDetailsMutation.mutate(data);
-        })}
-      >
-        <Grid container spacing={2}>
-          <LoginInfoSection variant={variant} userDetails={userDetails} />
-          <YourInfoSection variant={variant} />
-          {isUnderage && <GuardianInfoSection variant={variant} />}
-          {variant === "signup" && <TermsAndConditionsSection />}
-        </Grid>
+      <Stack>
+        <LoginInfoSection variant={variant} userDetails={userDetails} />
+        <YourInfoSection variant={variant} />
+        {isUnderage && <GuardianInfoSection variant={variant} />}
+        {variant === "signup" && <TermsAndConditionsSection />}
         <Button
           loading={userDetailsMutation.isPending}
-          type="submit"
-          fullWidth
-          variant="contained"
-          sx={{ mt: 3, mb: 2 }}
+          onClick={handleSubmit((data) => {
+            userDetailsMutation.mutate(data);
+          })}
         >
           {variant === "signup" ? "Registrer deg" : "Lagre"}
         </Button>
@@ -258,7 +246,7 @@ export default function UserDetailsEditor({
             Har du allerede en konto? Logg inn
           </Anchor>
         )}
-      </Box>
+      </Stack>
     </FormProvider>
   );
 }

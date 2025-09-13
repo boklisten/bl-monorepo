@@ -1,6 +1,5 @@
+import { List, Stack, Title } from "@mantine/core";
 import { modals } from "@mantine/modals";
-import { Typography, Stack, ListItem, List } from "@mui/material";
-import ListItemText from "@mui/material/ListItemText";
 import { useMutation } from "@tanstack/react-query";
 
 import UploadCSVFile from "@/components/UploadCSVFile";
@@ -18,33 +17,27 @@ function SuccessfulUploadDialog({
 }) {
   return (
     <Stack>
-      <Typography variant={"h5"} sx={{ mb: 5 }}>
-        {`${matchedUsers} brukere ble oppdatert!`}
-      </Typography>
+      <Title order={5}>{`${matchedUsers} brukere ble oppdatert!`}</Title>
       {unknownBranches.length > 0 && (
         <>
-          <Typography
-            variant={"h6"}
-          >{`${unknownBranches.length} filialer ble ikke funnet:`}</Typography>
+          <Title
+            order={6}
+          >{`${unknownBranches.length} filialer ble ikke funnet:`}</Title>
           <List>
             {unknownBranches.map((branchName) => (
-              <ListItem key={branchName}>
-                <ListItemText>{branchName}</ListItemText>
-              </ListItem>
+              <List.Item key={branchName}>{branchName}</List.Item>
             ))}
           </List>
         </>
       )}
       {unknownRecords.length > 0 && (
         <>
-          <Typography
-            variant={"h6"}
-          >{`${unknownRecords.length} brukere ble ikke funnet:`}</Typography>
+          <Title
+            order={6}
+          >{`${unknownRecords.length} brukere ble ikke funnet:`}</Title>
           <List>
             {unknownRecords.map(({ branch, phone }) => (
-              <ListItem key={phone}>
-                <ListItemText>{`${branch} - ${phone}`}</ListItemText>
-              </ListItem>
+              <List.Item key={phone}>{`${branch} - ${phone}`}</List.Item>
             ))}
           </List>
         </>

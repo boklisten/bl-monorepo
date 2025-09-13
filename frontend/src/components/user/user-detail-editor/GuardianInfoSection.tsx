@@ -1,5 +1,4 @@
-import { Divider, Typography } from "@mui/material";
-import Grid from "@mui/material/Grid";
+import { Divider, Stack, Text } from "@mantine/core";
 import TextField from "@mui/material/TextField";
 import { useFormContext } from "react-hook-form";
 
@@ -23,50 +22,36 @@ export default function GuardianInfoSection({
   } = useFormContext<UserEditorFields>();
   return (
     <>
-      <Grid
-        size={{
-          xs: 12,
-          sm: 12,
-        }}
-        sx={{
-          mt: 1,
-        }}
-      >
-        <Typography variant="body1">
+      <Stack gap={"xs"}>
+        <Text>
           Siden {variant === "administrate" ? "kunden" : "du"} er under 18,
           trenger vi informasjon om en av{" "}
           {variant === "administrate" ? "kundens" : "dine"} foresatte.
-        </Typography>
+        </Text>
         <Divider />
-      </Grid>
-      <Grid size={{ xs: 12 }}>
-        <TextField
-          required
-          fullWidth
-          id="lastName"
-          label="Foresatt sitt fulle navn"
-          autoComplete="name"
-          error={!!errors.guardianName}
-          {...register("guardianName", fieldValidators.guardianName)}
-        />
-        <FieldErrorAlert field={"guardianName"} />
-      </Grid>
-      <Grid size={{ xs: 12 }}>
-        <EmailField label="Foresatt sin e-post" field={"guardianEmail"} />
-        <FieldErrorAlert field={"guardianEmail"} />
-      </Grid>
-      <Grid size={{ xs: 12 }}>
-        <PhoneNumberField
-          id="guardianPhoneNumber"
-          label="Foresatt sitt telefonnummer"
-          error={!!errors.guardianPhoneNumber}
-          {...register(
-            "guardianPhoneNumber",
-            fieldValidators.guardianPhoneNumber,
-          )}
-        />
-        <FieldErrorAlert field={"guardianPhoneNumber"} />
-      </Grid>
+      </Stack>
+      <TextField
+        required
+        fullWidth
+        id="lastName"
+        label="Foresatt sitt fulle navn"
+        autoComplete="name"
+        error={!!errors.guardianName}
+        {...register("guardianName", fieldValidators.guardianName)}
+      />
+      <FieldErrorAlert field={"guardianName"} />
+      <EmailField label="Foresatt sin e-post" field={"guardianEmail"} />
+      <FieldErrorAlert field={"guardianEmail"} />
+      <PhoneNumberField
+        id="guardianPhoneNumber"
+        label="Foresatt sitt telefonnummer"
+        error={!!errors.guardianPhoneNumber}
+        {...register(
+          "guardianPhoneNumber",
+          fieldValidators.guardianPhoneNumber,
+        )}
+      />
+      <FieldErrorAlert field={"guardianPhoneNumber"} />
     </>
   );
 }

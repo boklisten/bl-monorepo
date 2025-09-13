@@ -1,7 +1,6 @@
 import { UserDetail } from "@boklisten/backend/shared/user-detail";
 import { Button, Stack } from "@mantine/core";
 import { modals } from "@mantine/modals";
-import Grid from "@mui/material/Grid";
 import { IconQrcode } from "@tabler/icons-react";
 import { useFormContext, useWatch } from "react-hook-form";
 import QRCode from "react-qr-code";
@@ -38,31 +37,23 @@ export default function LoginInfoSection({
 
   return (
     <>
-      <Grid size={{ xs: 12 }}>
-        <Stack>
-          {variant === "signup" && isSchoolEmail && (
-            <WarningAlert>
-              Vi anbefaler at du bruker din personlige e-postadresse i stedet
-              for skolekontoen. Da beholder du tilgangen etter endt utdanning og
-              kan motta viktige varsler om eventuelle manglende
-              bokinnleveringer.
-            </WarningAlert>
-          )}
-          <EmailField
-            disabled={variant === "personal"}
-            helperText={
-              variant === "personal"
-                ? "Ta kontakt dersom du ønsker å endre e-postadresse"
-                : ""
-            }
-          />
-          <EmailConfirmationStatus
-            userDetails={userDetails}
-            variant={variant}
-          />
-          <FieldErrorAlert field={"email"} />
-        </Stack>
-      </Grid>
+      {variant === "signup" && isSchoolEmail && (
+        <WarningAlert>
+          Vi anbefaler at du bruker din personlige e-postadresse i stedet for
+          skolekontoen. Da beholder du tilgangen etter endt utdanning og kan
+          motta viktige varsler om eventuelle manglende bokinnleveringer.
+        </WarningAlert>
+      )}
+      <EmailField
+        disabled={variant === "personal"}
+        helperText={
+          variant === "personal"
+            ? "Ta kontakt dersom du ønsker å endre e-postadresse"
+            : ""
+        }
+      />
+      <EmailConfirmationStatus userDetails={userDetails} variant={variant} />
+      <FieldErrorAlert field={"email"} />
       {variant === "personal" && (
         <Stack align={"center"} w={"100%"}>
           <Button
@@ -83,10 +74,10 @@ export default function LoginInfoSection({
         </Stack>
       )}
       {variant === "signup" && (
-        <Grid size={{ xs: 12 }}>
+        <>
           <PasswordField label={"Passord"} autoComplete="new-password" />
           <FieldErrorAlert field={"password"} />
-        </Grid>
+        </>
       )}
     </>
   );

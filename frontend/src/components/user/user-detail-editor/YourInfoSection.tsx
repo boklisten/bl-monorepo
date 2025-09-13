@@ -1,5 +1,4 @@
-import { Divider, Typography } from "@mui/material";
-import Grid from "@mui/material/Grid";
+import { Divider, Stack, Text } from "@mantine/core";
 import TextField from "@mui/material/TextField";
 import { DatePicker } from "@mui/x-date-pickers";
 import moment from "moment";
@@ -28,94 +27,74 @@ export default function YourInfoSection({
 
   return (
     <>
-      <Grid
-        size={{
-          xs: 12,
-          sm: 12,
-        }}
-        sx={{
-          mt: 1,
-        }}
-      >
-        <Typography variant="body1">
+      <Stack gap={"xs"}>
+        <Text>
           {variant === "administrate" ? "Kundens" : "Din"} informasjon
-        </Typography>
+        </Text>
         <Divider />
-      </Grid>
-      <Grid size={{ xs: 12 }}>
-        <TextField
-          required
-          autoComplete="name"
-          fullWidth
-          id="name"
-          label="Fullt navn"
-          error={!!errors.name}
-          {...register("name", fieldValidators.name)}
-        />
-        <FieldErrorAlert field={"name"} />
-      </Grid>
-      <Grid size={{ xs: 12 }}>
-        <PhoneNumberField
-          error={!!errors.phoneNumber}
-          {...register("phoneNumber", fieldValidators.phoneNumber)}
-        />
-        <FieldErrorAlert field={"phoneNumber"} />
-      </Grid>
-      <Grid size={{ xs: 12 }}>
-        <TextField
-          required
-          fullWidth
-          id="address"
-          label="Adresse"
-          autoComplete="street-address"
-          error={!!errors.address}
-          {...register("address", fieldValidators.address)}
-        />
-        <FieldErrorAlert field={"address"} />
-      </Grid>
-      <Grid size={{ xs: 12 }}>
-        <PostalCodeField />
-        <FieldErrorAlert field={"postalCode"} />
-      </Grid>
-      <Grid size={{ xs: 12 }}>
-        <Controller
-          name={"birthday"}
-          control={control}
-          rules={fieldValidators.birthday}
-          render={({ field, fieldState: { error } }) => (
-            <DatePicker
-              {...field}
-              sx={{ width: "100%" }}
-              label="Fødselsdato *"
-              format="DD/MM/YYYY"
-              minDate={moment().subtract(100, "years")}
-              maxDate={moment().subtract(10, "years")}
-              openTo="year"
-              views={["year", "month", "day"]}
-              slotProps={{
-                textField: {
-                  error: !!error,
-                },
-              }}
-            />
-          )}
-        />
-        <FieldErrorAlert field={"birthday"} />
-      </Grid>
-      <Grid size={{ xs: 12 }}>
-        <Controller
-          control={control}
-          render={({ field }) => (
-            <ClassMembershipSelect
-              error={!!errors.branchMembership}
-              branchMembership={field.value}
-              onChange={(selectedBranchId) => field.onChange(selectedBranchId)}
-            />
-          )}
-          name={"branchMembership"}
-        />
-        <FieldErrorAlert field={"branchMembership"} />
-      </Grid>
+      </Stack>
+      <TextField
+        required
+        autoComplete="name"
+        fullWidth
+        id="name"
+        label="Fullt navn"
+        error={!!errors.name}
+        {...register("name", fieldValidators.name)}
+      />
+      <FieldErrorAlert field={"name"} />
+      <PhoneNumberField
+        error={!!errors.phoneNumber}
+        {...register("phoneNumber", fieldValidators.phoneNumber)}
+      />
+      <FieldErrorAlert field={"phoneNumber"} />
+      <TextField
+        required
+        fullWidth
+        id="address"
+        label="Adresse"
+        autoComplete="street-address"
+        error={!!errors.address}
+        {...register("address", fieldValidators.address)}
+      />
+      <FieldErrorAlert field={"address"} />
+      <PostalCodeField />
+      <FieldErrorAlert field={"postalCode"} />
+      <Controller
+        name={"birthday"}
+        control={control}
+        rules={fieldValidators.birthday}
+        render={({ field, fieldState: { error } }) => (
+          <DatePicker
+            {...field}
+            sx={{ width: "100%" }}
+            label="Fødselsdato *"
+            format="DD/MM/YYYY"
+            minDate={moment().subtract(100, "years")}
+            maxDate={moment().subtract(10, "years")}
+            openTo="year"
+            views={["year", "month", "day"]}
+            slotProps={{
+              textField: {
+                error: !!error,
+              },
+            }}
+          />
+        )}
+      />
+      <FieldErrorAlert field={"birthday"} />
+      <Controller
+        control={control}
+        render={({ field }) => (
+          <ClassMembershipSelect
+            error={!!errors.branchMembership}
+            branchMembership={field.value}
+            onChange={(selectedBranchId) => field.onChange(selectedBranchId)}
+          />
+        )}
+        name={"branchMembership"}
+      />
+      <FieldErrorAlert field={"branchMembership"} />
     </>
   );
 }

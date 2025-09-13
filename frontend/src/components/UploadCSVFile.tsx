@@ -1,5 +1,5 @@
 import { FileInput } from "@mantine/core";
-import CloudUploadIcon from "@mui/icons-material/CloudUpload";
+import { IconFileUpload } from "@tabler/icons-react";
 import Papa from "papaparse";
 
 import { showErrorNotification } from "@/utils/notifications";
@@ -146,7 +146,7 @@ export default function UploadCSVFile<
     <FileInput
       label={label}
       placeholder={"Velg fil (csv)"}
-      leftSection={<CloudUploadIcon />}
+      leftSection={<IconFileUpload />}
       onChange={handleUpload}
       accept="csv,text/csv"
       clearable

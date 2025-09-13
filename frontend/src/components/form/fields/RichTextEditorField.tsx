@@ -1,3 +1,5 @@
+// The toolbar icons are as of writing buggy with React Compiler. Might be possible to remove this in the future
+"use no memo";
 import { Stack, Text } from "@mantine/core";
 import { RichTextEditor } from "@mantine/tiptap";
 import { useEditor } from "@tiptap/react";

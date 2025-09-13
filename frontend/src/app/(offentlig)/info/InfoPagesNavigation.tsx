@@ -46,6 +46,7 @@ const InfoPagesNavigation = () => {
               <Anchor
                 component={Link}
                 underline={"never"}
+                c={"dark"}
                 key={tab.value}
                 href={tab.value}
               >

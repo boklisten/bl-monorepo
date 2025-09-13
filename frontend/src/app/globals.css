@@ -1,5 +1,11 @@
-@import "tailwind-preset-mantine";
+@layer theme, base, mantine, components, utilities;
+@import "tailwindcss/theme.css" layer(theme);
+@import "tailwindcss/utilities.css" layer(utilities);
+@import "./theme.css" layer(theme);
+
+@import "@mantine/core/styles.css";
 @import "@mantine/dates/styles.css";
 @import "@mantine/notifications/styles.css";
-@import "mantine-react-table/styles.css";
-@import "./theme.css";
+
+@import "@blocknote/mantine/style.css" layer(components);
+@import "mantine-react-table/styles.css" layer(components);

@@ -1,10 +1,10 @@
-"use client";
+// IMPORTANT: keep this outside of global.css to avoid overwriting globals
+import "@blocknote/mantine/style.css";
 import { no } from "@blocknote/core/locales";
 import { BlockNoteView } from "@blocknote/mantine";
 import { useCreateBlockNote } from "@blocknote/react";
 import { EditableText } from "@boklisten/backend/shared/editable-text";
 import { Button, Group, Stack } from "@mantine/core";
-import { ContextModalProps } from "@mantine/modals";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 import { useAppForm } from "@/hooks/form";
@@ -14,13 +14,13 @@ import {
   showSuccessNotification,
 } from "@/utils/notifications";
 
-export default function EditableTextEditorDialog({
-  context,
-  id,
-  innerProps: { editableText },
-}: ContextModalProps<{
+export default function EditableTextEditor({
+  editableText,
+  onClose,
+}: {
   editableText?: EditableText | undefined;
-}>) {
+  onClose: () => void;
+}) {
   const form = useAppForm({
     defaultValues: {
       key: editableText?.key ?? "",
@@ -57,7 +57,7 @@ export default function EditableTextEditorDialog({
       }),
     onSuccess: () => {
       showSuccessNotification("Dynamisk innhold ble opprettet!");
-      context.closeModal(id);
+      onClose();
     },
     onError: () =>
       showErrorNotification({
@@ -79,7 +79,7 @@ export default function EditableTextEditorDialog({
       }),
     onSuccess: () => {
       showSuccessNotification("Dynamisk innhold ble oppdatert!");
-      context.closeModal(id);
+      onClose();
     },
     onError: () =>
       showErrorNotification("Klarte ikke oppdatere dynamisk innhold!"),
@@ -106,7 +106,7 @@ export default function EditableTextEditorDialog({
         </form.AppField>
         <BlockNoteView editor={editor} theme={"light"} />
         <Group>
-          <Button variant={"subtle"} onClick={() => context.closeModal(id)}>
+          <Button variant={"subtle"} onClick={() => onClose()}>
             Avbryt
           </Button>
           <Button

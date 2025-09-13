@@ -9,7 +9,6 @@ import { ReactNode } from "react";
 
 import theme from "@/app/theme";
 import AuthLinker from "@/components/AuthLinker";
-import EditableTextEditorDialog from "@/components/info/editable-text/EditableTextEditorDialog";
 import CustomLocalizationProvider from "@/components/LocalizationProvider";
 import ReactQueryClientProvider from "@/components/ReactQueryClientProvider";
 
@@ -26,13 +25,7 @@ export default function ClientProviders({ children }: { children: ReactNode }) {
           <AuthLinker>
             <MantineProvider theme={theme}>
               <Notifications />
-              <ModalsProvider
-                modals={{
-                  editableTextEditor: EditableTextEditorDialog,
-                }}
-              >
-                {children}
-              </ModalsProvider>
+              <ModalsProvider>{children}</ModalsProvider>
             </MantineProvider>
           </AuthLinker>
         </DatesProvider>

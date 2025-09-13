@@ -1,5 +1,5 @@
 import { Item } from "@boklisten/backend/shared/item";
-import { Button, Stack, Title } from "@mantine/core";
+import { Button, Group, Stack, Title } from "@mantine/core";
 import { useLocalStorage } from "@mantine/hooks";
 import { Autocomplete } from "@mui/material";
 import TextField from "@mui/material/TextField";
@@ -20,7 +20,13 @@ interface WaitingListEntryFormFields {
   phoneNumber: string;
 }
 
-export default function CreateWaitingListEntry({ items }: { items: Item[] }) {
+export default function CreateWaitingListEntry({
+  items,
+  onClose,
+}: {
+  items: Item[];
+  onClose: () => void;
+}) {
   const client = useApiClient();
   const queryClient = useQueryClient();
   const [selectedBranchId] = useLocalStorage({ key: "selectedBranchId" });
@@ -48,6 +54,7 @@ export default function CreateWaitingListEntry({ items }: { items: Item[] }) {
       setValue("phoneNumber", "");
       setSelectedItems([]);
       showSuccessNotification("Kunden har blitt lagt til i ventelisten");
+      onClose();
     },
     onError: () =>
       showErrorNotification("Klarte ikke legge til kunde i venteliste"),
@@ -85,14 +92,19 @@ export default function CreateWaitingListEntry({ items }: { items: Item[] }) {
         }}
       />
       <BranchSelect />
-      <Button
-        loading={addWaitingListEntryMutation.isPending}
-        onClick={handleSubmit((data) =>
-          addWaitingListEntryMutation.mutate(data),
-        )}
-      >
-        Legg til
-      </Button>
+      <Group>
+        <Button variant={"subtle"} onClick={() => onClose()}>
+          Avbryt
+        </Button>
+        <Button
+          loading={addWaitingListEntryMutation.isPending}
+          onClick={handleSubmit((data) =>
+            addWaitingListEntryMutation.mutate(data),
+          )}
+        >
+          Legg til
+        </Button>
+      </Group>
     </Stack>
   );
 }

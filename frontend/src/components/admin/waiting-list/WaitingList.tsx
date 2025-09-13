@@ -4,7 +4,6 @@ import { Branch } from "@boklisten/backend/shared/branch";
 import { Item } from "@boklisten/backend/shared/item";
 import { useQuery } from "@tanstack/react-query";
 
-import CreateWaitingListEntry from "@/components/admin/waiting-list/CreateWaitingListEntry";
 import WaitingListTable from "@/components/admin/waiting-list/WaitingListTable";
 import ErrorAlert from "@/components/ui/alerts/ErrorAlert";
 import useApiClient from "@/hooks/useApiClient";
@@ -64,14 +63,11 @@ export default function WaitingList() {
   }
 
   return (
-    <>
-      <WaitingListTable
-        items={items ?? []}
-        branches={branches ?? []}
-        waitingList={waitingList ?? []}
-        loading={isLoadingItems || isLoadingBranches || isLoadingWaitingList}
-      />
-      <CreateWaitingListEntry items={items ?? []} />
-    </>
+    <WaitingListTable
+      items={items ?? []}
+      branches={branches ?? []}
+      waitingList={waitingList ?? []}
+      loading={isLoadingItems || isLoadingBranches || isLoadingWaitingList}
+    />
   );
 }

@@ -2,7 +2,6 @@
 import { createTheme, responsiveFontSizes } from "@mui/material";
 import { grey, orange, red } from "@mui/material/colors";
 import { nbNO } from "@mui/material/locale";
-import { nbNO as dataGridnbNo } from "@mui/x-data-grid/locales";
 import { nbNO as pickersnbNO } from "@mui/x-date-pickers/locales";
 import { Roboto } from "next/font/google";
 
@@ -82,7 +81,6 @@ const muiTheme = responsiveFontSizes(
       },
     },
     nbNO,
-    dataGridnbNo,
     pickersnbNO,
   ),
 );

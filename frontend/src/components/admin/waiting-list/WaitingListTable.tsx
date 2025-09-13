@@ -1,11 +1,15 @@
 import { Branch } from "@boklisten/backend/shared/branch";
 import { Item } from "@boklisten/backend/shared/item";
 import { WaitingListEntry } from "@boklisten/backend/shared/waiting-list-entry";
-import { Tooltip } from "@mantine/core";
-import { DataGrid, GridActionsCellItem, GridColDef } from "@mui/x-data-grid";
+import { ActionIcon, Button, Tooltip } from "@mantine/core";
 import { IconTrash } from "@tabler/icons-react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { MantineReactTable, useMantineReactTable } from "mantine-react-table";
+// @ts-expect-error MRT has bad types, hopefully they fix this in the future
+import { MRT_Localization_NO } from "mantine-react-table/locales/no";
+import { useEffect, useState } from "react";
 
+import CreateWaitingListEntry from "@/components/admin/waiting-list/CreateWaitingListEntry";
 import useApiClient from "@/hooks/useApiClient";
 import {
   showErrorNotification,
@@ -25,6 +29,7 @@ export default function WaitingListTable({
 }) {
   const client = useApiClient();
   const queryClient = useQueryClient();
+  const [counter, setCounter] = useState(0);
 
   const destroyWaitingListEntryMutation = useMutation({
     mutationFn: (id: string) =>
@@ -39,75 +44,76 @@ export default function WaitingListTable({
       showErrorNotification("Klarte ikke slette ventelisteoppføring!"),
   });
 
-  const columns: GridColDef[] = [
-    {
-      field: "customerName",
-      headerName: "Navn",
-      width: 200,
-    },
-    {
-      field: "customerPhone",
-      headerName: "Telefonnummer",
-      width: 150,
-    },
-    {
-      field: "itemId",
-      headerName: "Bok",
-      width: 200,
-      type: "singleSelect",
-      valueOptions: items.map((item) => ({
-        label: item.title,
-        value: item.id,
-      })),
-    },
-    {
-      field: "branchId",
-      headerName: "Filial",
-      width: 150,
-      type: "singleSelect",
-      valueOptions: branches.map((branch) => ({
-        label: branch.name,
-        value: branch.id,
-      })),
-    },
-    {
-      field: "actions",
-      type: "actions",
-      headerName: "Handlinger",
-      width: 100,
-      getActions: ({ id }) => {
-        return [
-          <Tooltip key={`delete-${id}`} label={"Slett"}>
-            <GridActionsCellItem
-              icon={<IconTrash />}
-              label="Delete"
-              onClick={() =>
-                destroyWaitingListEntryMutation.mutate(id as string)
-              }
-              color="inherit"
-            />
-          </Tooltip>,
-        ];
+  const table = useMantineReactTable({
+    columns: [
+      {
+        accessorKey: "customerName",
+        header: "Navn",
       },
+      {
+        accessorKey: "customerPhone",
+        header: "Telefonnummer",
+      },
+      {
+        accessorFn: (waitingListEntry) =>
+          items.find((item) => item.id === waitingListEntry.itemId)?.title,
+        header: "Bok",
+      },
+      {
+        accessorFn: (waitingListEntry) =>
+          branches.find((branch) => branch.id === waitingListEntry.branchId)
+            ?.name,
+        header: "Filial",
+      },
+    ],
+    data: waitingList,
+    enableEditing: true,
+    state: {
+      isLoading: loading || destroyWaitingListEntryMutation.isPending,
     },
-  ];
+    getRowId: (waitingListEntry) => waitingListEntry.id,
+    renderRowActions: ({ row }) => (
+      <Tooltip key={`delete-${row.id}`} label={"Slett"}>
+        <ActionIcon
+          variant={"subtle"}
+          onClick={() => destroyWaitingListEntryMutation.mutate(row.id)}
+          color={"red"}
+        >
+          <IconTrash />
+        </ActionIcon>
+      </Tooltip>
+    ),
+    renderTopToolbarCustomActions: ({ table }) => (
+      <Button
+        onClick={() => {
+          setCounter((prev) => prev + 1);
+          table.setCreatingRow(true);
+        }}
+      >
+        Legg til i venteliste
+      </Button>
+    ),
+    renderCreateRowModalContent: ({ table }) => (
+      <CreateWaitingListEntry
+        items={items}
+        onClose={() => {
+          setCounter((prev) => prev + 1);
+          table.setCreatingRow(null);
+        }}
+      />
+    ),
+    localization: MRT_Localization_NO,
+  });
+
+  useEffect(() => {
+    setCounter((prev) => prev + 1);
+  }, [waitingList, branches, items]);
 
   return (
-    <DataGrid
-      initialState={{
-        pagination: {
-          paginationModel: {
-            pageSize: 5,
-          },
-        },
-      }}
-      pageSizeOptions={[5, 10, 100]}
-      rows={waitingList}
-      loading={loading || destroyWaitingListEntryMutation.isPending}
-      columns={columns}
-      checkboxSelection
-      disableRowSelectionOnClick
-      sx={{ border: 0 }}
+    <MantineReactTable
+      table={table}
+      // Hack to force rerenders, MRT has some issues
+      key={`force-update:${counter}`}
     />
   );
 }

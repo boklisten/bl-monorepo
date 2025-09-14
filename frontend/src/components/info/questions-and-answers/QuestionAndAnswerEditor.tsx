@@ -71,29 +71,27 @@ export default function QuestionAndAnswerEditor({
   });
 
   return (
-    <form.AppForm>
-      <Stack>
-        <form.AppField name={"question"}>
-          {(field) => <field.RichTextEditorField label={"Spørsmål"} />}
-        </form.AppField>
-        <form.AppField name={"answer"}>
-          {(field) => <field.RichTextEditorField label={"Svar"} />}
-        </form.AppField>
-        <Group>
-          <Button variant={"subtle"} onClick={() => onClose()}>
-            Avbryt
-          </Button>
-          <Button
-            loading={
-              addQuestionAndAnswerMutation.isPending ||
-              updateQuestionAndAnswerMutation.isPending
-            }
-            onClick={form.handleSubmit}
-          >
-            {questionAndAnswer === undefined ? "Opprett" : "Lagre"}
-          </Button>
-        </Group>
-      </Stack>
-    </form.AppForm>
+    <Stack>
+      <form.AppField name={"question"}>
+        {(field) => <field.RichTextEditorField label={"Spørsmål"} />}
+      </form.AppField>
+      <form.AppField name={"answer"}>
+        {(field) => <field.RichTextEditorField label={"Svar"} />}
+      </form.AppField>
+      <Group>
+        <Button variant={"subtle"} onClick={() => onClose()}>
+          Avbryt
+        </Button>
+        <Button
+          loading={
+            addQuestionAndAnswerMutation.isPending ||
+            updateQuestionAndAnswerMutation.isPending
+          }
+          onClick={form.handleSubmit}
+        >
+          {questionAndAnswer === undefined ? "Opprett" : "Lagre"}
+        </Button>
+      </Group>
+    </Stack>
   );
 }

@@ -85,76 +85,72 @@ export default function BranchSettings({
       })) ?? [];
 
   return (
-    <form.AppForm>
-      <Stack>
-        <form.AppField name={"name"}>
-          {(field) => (
-            <field.TextField
-              required
-              label={"Fullt navn"}
-              placeholder={"Flåklypa videregående skole"}
-            />
-          )}
-        </form.AppField>
-        <form.AppField name={"localName"}>
-          {(field) => (
-            <field.TextField
-              required
-              label={"Lokalt navn"}
-              placeholder={"Flåklypa"}
-            />
-          )}
-        </form.AppField>
-        <form.AppField name={"parentBranch"}>
-          {(field) => (
-            <field.SelectField
-              required
-              label={"Tilhører"}
-              placeholder={"Velg filial"}
-              data={branchOptions}
-              searchable
-              clearable
-            />
-          )}
-        </form.AppField>
-        <form.AppField name={"childLabel"}>
-          {(field) => (
-            <field.TextField
-              required
-              label={"Delt inn i"}
-              placeholder={"årskull, klasse, parallell"}
-            />
-          )}
-        </form.AppField>
-        <form.AppField name={"childBranches"}>
-          {(field) => (
-            <field.MultiSelectField
-              required
-              label={"Består av"}
-              placeholder={"Velg filialer"}
-              data={branchOptions}
-              searchable
-              clearable
-            />
-          )}
-        </form.AppField>
-        <Button
-          color={"green"}
-          onClick={form.handleSubmit}
-          loading={
-            addBranchMutation.isPending || updateBranchMutation.isPending
-          }
-        >
-          {existingBranch === null ? "Opprett" : "Lagre"}
-        </Button>
-        {existingBranch && (
-          <Stack gap={"xs"}>
-            <Title order={2}>Last opp informasjon</Title>
-            <UploadClassMemberships branchId={existingBranch.id} />
-            <UploadSubjectChoices branchId={existingBranch.id} />
-          </Stack>
+    <Stack>
+      <form.AppField name={"name"}>
+        {(field) => (
+          <field.TextField
+            required
+            label={"Fullt navn"}
+            placeholder={"Flåklypa videregående skole"}
+          />
         )}
-      </Stack>
-    </form.AppForm>
+      </form.AppField>
+      <form.AppField name={"localName"}>
+        {(field) => (
+          <field.TextField
+            required
+            label={"Lokalt navn"}
+            placeholder={"Flåklypa"}
+          />
+        )}
+      </form.AppField>
+      <form.AppField name={"parentBranch"}>
+        {(field) => (
+          <field.SelectField
+            required
+            label={"Tilhører"}
+            placeholder={"Velg filial"}
+            data={branchOptions}
+            searchable
+            clearable
+          />
+        )}
+      </form.AppField>
+      <form.AppField name={"childLabel"}>
+        {(field) => (
+          <field.TextField
+            required
+            label={"Delt inn i"}
+            placeholder={"årskull, klasse, parallell"}
+          />
+        )}
+      </form.AppField>
+      <form.AppField name={"childBranches"}>
+        {(field) => (
+          <field.MultiSelectField
+            required
+            label={"Består av"}
+            placeholder={"Velg filialer"}
+            data={branchOptions}
+            searchable
+            clearable
+          />
+        )}
+      </form.AppField>
+      <Button
+        color={"green"}
+        onClick={form.handleSubmit}
+        loading={addBranchMutation.isPending || updateBranchMutation.isPending}
+      >
+        {existingBranch === null ? "Opprett" : "Lagre"}
+      </Button>
+      {existingBranch && (
+        <Stack gap={"xs"}>
+          <Title order={2}>Last opp informasjon</Title>
+          <UploadClassMemberships branchId={existingBranch.id} />
+          <UploadSubjectChoices branchId={existingBranch.id} />
+        </Stack>
+      )}
+    </Stack>
   );
 }

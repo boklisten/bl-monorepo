@@ -105,58 +105,56 @@ export default function SignAgreement({
         dataKey={"betingelser"}
         cachedText={cachedAgreementText}
       />
-      <form.AppForm>
-        <Stack gap={"xs"}>
-          <form.AppField
-            name={"base64EncodedImage"}
-            validators={{
-              onSubmit: ({ value }) =>
-                value.length === 0
-                  ? `Du må fylle inn ${data.isUnderage ? "foresatt sin" : "din"} signatur`
-                  : null,
-            }}
-          >
-            {(field) => (
-              <field.SignatureCanvasField
-                label={`Signer her på at du er${data.isUnderage ? " foresatt til" : ""} ${data.name} og godkjenner betingelsene${data.isUnderage ? " på hans eller hennes vegne" : ""}:`}
-              />
-            )}
-          </form.AppField>
-          <form.AppField
-            name={"signingName"}
-            validators={{
-              onChange: ({ value }) => {
-                if (value.length === 0)
-                  return "Du må fylle inn foresatt sitt fulle navn";
-                if (data.isUnderage && data.name === value)
-                  return "Foresattes navn må være forskjellig fra elevens navn";
-                return null;
-              },
-            }}
-          >
-            {(field) => (
-              <field.TextField
-                required
-                label={`Fullt navn ${data.isUnderage ? "(foresatt)" : ""}`}
-                description={
-                  data.isUnderage
-                    ? ""
-                    : "Du kan endre navnet ditt i brukerinnstillinger"
-                }
-                readOnly={!data.isUnderage}
-              />
-            )}
-          </form.AppField>
-          <Button
-            onClick={form.handleSubmit}
-            loading={signMutation.isPending}
-            leftSection={<IconChecks />}
-            color={"green"}
-          >
-            Signer
-          </Button>
-        </Stack>
-      </form.AppForm>
+      <Stack gap={"xs"}>
+        <form.AppField
+          name={"base64EncodedImage"}
+          validators={{
+            onSubmit: ({ value }) =>
+              value.length === 0
+                ? `Du må fylle inn ${data.isUnderage ? "foresatt sin" : "din"} signatur`
+                : null,
+          }}
+        >
+          {(field) => (
+            <field.SignatureCanvasField
+              label={`Signer her på at du er${data.isUnderage ? " foresatt til" : ""} ${data.name} og godkjenner betingelsene${data.isUnderage ? " på hans eller hennes vegne" : ""}:`}
+            />
+          )}
+        </form.AppField>
+        <form.AppField
+          name={"signingName"}
+          validators={{
+            onChange: ({ value }) => {
+              if (value.length === 0)
+                return "Du må fylle inn foresatt sitt fulle navn";
+              if (data.isUnderage && data.name === value)
+                return "Foresattes navn må være forskjellig fra elevens navn";
+              return null;
+            },
+          }}
+        >
+          {(field) => (
+            <field.TextField
+              required
+              label={`Fullt navn ${data.isUnderage ? "(foresatt)" : ""}`}
+              description={
+                data.isUnderage
+                  ? ""
+                  : "Du kan endre navnet ditt i brukerinnstillinger"
+              }
+              readOnly={!data.isUnderage}
+            />
+          )}
+        </form.AppField>
+        <Button
+          onClick={form.handleSubmit}
+          loading={signMutation.isPending}
+          leftSection={<IconChecks />}
+          color={"green"}
+        >
+          Signer
+        </Button>
+      </Stack>
     </Stack>
   );
 }

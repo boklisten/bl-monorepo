@@ -118,7 +118,7 @@ export default function Reminders() {
   });
 
   return (
-    <form.AppForm>
+    <>
       <form.AppField
         name={"branchIds"}
         validators={{
@@ -232,7 +232,9 @@ export default function Reminders() {
           )
         }
       </form.Subscribe>
-      <form.ErrorSummary />
+      <form.AppForm>
+        <form.ErrorSummary />
+      </form.AppForm>
       <Button
         leftSection={<IconSend />}
         onClick={form.handleSubmit}
@@ -242,6 +244,6 @@ export default function Reminders() {
       >
         Send
       </Button>
-    </form.AppForm>
+    </>
   );
 }

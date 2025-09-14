@@ -68,37 +68,31 @@ export default function PasswordReset({ resetId }: { resetId: string }) {
     );
   }
 
-  return (
-    <form.AppForm>
-      {resetPasswordMutation.isSuccess && !apiError ? (
-        <>
-          <SuccessAlert>
-            Passordet ble oppdatert! Du kan nå logge inn.
-          </SuccessAlert>
-          <Anchor component={Link} href={"/auth/login"}>
-            <Button>Logg inn</Button>
-          </Anchor>
-        </>
-      ) : (
-        <>
-          {apiError && (
-            <ErrorAlert title={GENERIC_ERROR_TEXT}>{apiError}</ErrorAlert>
-          )}
-          <form.AppField
-            name={"newPassword"}
-            validators={{
-              onBlur: ({ value }) =>
-                value.length < 10 ? "Passordet må ha minst 10 tegn" : null,
-            }}
-          >
-            {(field) => <field.NewPasswordInputField label={"Nytt passord"} />}
-          </form.AppField>
-          <Button onClick={form.handleSubmit}>Lag nytt passord</Button>
-          <Anchor component={Link} href={"/auth/login"}>
-            Tilbake til innloggingssiden
-          </Anchor>
-        </>
+  return resetPasswordMutation.isSuccess && !apiError ? (
+    <>
+      <SuccessAlert>Passordet ble oppdatert! Du kan nå logge inn.</SuccessAlert>
+      <Anchor component={Link} href={"/auth/login"}>
+        <Button>Logg inn</Button>
+      </Anchor>
+    </>
+  ) : (
+    <>
+      {apiError && (
+        <ErrorAlert title={GENERIC_ERROR_TEXT}>{apiError}</ErrorAlert>
       )}
-    </form.AppForm>
+      <form.AppField
+        name={"newPassword"}
+        validators={{
+          onBlur: ({ value }) =>
+            value.length < 10 ? "Passordet må ha minst 10 tegn" : null,
+        }}
+      >
+        {(field) => <field.NewPasswordInputField label={"Nytt passord"} />}
+      </form.AppField>
+      <Button onClick={form.handleSubmit}>Lag nytt passord</Button>
+      <Anchor component={Link} href={"/auth/login"}>
+        Tilbake til innloggingssiden
+      </Anchor>
+    </>
   );
 }

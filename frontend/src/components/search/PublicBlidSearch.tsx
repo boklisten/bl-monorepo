@@ -55,46 +55,42 @@ export default function PublicBlidSearch() {
 
   return (
     <>
-      <form.AppForm>
-        <form.AppField
-          name={"seach"}
-          listeners={{
-            onChange: ({ value }) => onBlidSearch(value),
-          }}
-        >
-          {(field) => (
-            <field.TextField
-              label={"Unik ID"}
-              placeholder={"12345678"}
-              rightSection={
-                <Tooltip label={"Åpne scanner"}>
-                  <ActionIcon
-                    variant={"subtle"}
-                    onClick={() => {
-                      modals.open({
-                        title: "Scann unik ID",
-                        children: (
-                          <ScannerModal
-                            onScan={async (blid) => {
-                              field.setValue(blid);
-                              return [{ feedback: "" }] as [
-                                { feedback: string },
-                              ];
-                            }}
-                            onSuccessfulScan={modals.closeAll}
-                          />
-                        ),
-                      });
-                    }}
-                  >
-                    <IconObjectScan />
-                  </ActionIcon>
-                </Tooltip>
-              }
-            />
-          )}
-        </form.AppField>
-      </form.AppForm>
+      <form.AppField
+        name={"seach"}
+        listeners={{
+          onChange: ({ value }) => onBlidSearch(value),
+        }}
+      >
+        {(field) => (
+          <field.TextField
+            label={"Unik ID"}
+            placeholder={"12345678"}
+            rightSection={
+              <Tooltip label={"Åpne scanner"}>
+                <ActionIcon
+                  variant={"subtle"}
+                  onClick={() => {
+                    modals.open({
+                      title: "Scann unik ID",
+                      children: (
+                        <ScannerModal
+                          onScan={async (blid) => {
+                            field.setValue(blid);
+                            return [{ feedback: "" }] as [{ feedback: string }];
+                          }}
+                          onSuccessfulScan={modals.closeAll}
+                        />
+                      ),
+                    });
+                  }}
+                >
+                  <IconObjectScan />
+                </ActionIcon>
+              </Tooltip>
+            }
+          />
+        )}
+      </form.AppField>
       <Text c={"gray"} size={"sm"} ta={"center"}>
         {searchResult === "inactive" &&
           "Denne boken er ikke registrert som utdelt."}

@@ -79,65 +79,63 @@ export default function CreateWaitingListEntry({
     <Stack>
       <Title order={2}>Legg til i venteliste</Title>
       <Stack gap={"xl"}>
-        <form.AppForm>
-          <Stack gap={"xs"}>
-            <form.AppField name={"name"}>
-              {(field) => (
-                <field.TextField
-                  required
-                  label={"Fullt navn"}
-                  placeholder={"Reodor Felgen"}
-                />
-              )}
-            </form.AppField>
-            <form.AppField name={"phoneNumber"}>
-              {(field) => (
-                <field.TextField
-                  required
-                  label={"Telefonnummer"}
-                  leftSection={
-                    <Text size={"sm"} c={"dimmed"}>
-                      +47
-                    </Text>
-                  }
-                  placeholder={"98765432"}
-                />
-              )}
-            </form.AppField>
-            <form.AppField name={"itemIds"}>
-              {(field) => (
-                <field.MultiSelectField
-                  required
-                  label={"Bøker"}
-                  placeholder={"Velg bøker"}
-                  data={items.map((item) => ({
-                    value: item.id,
-                    label: item.title,
-                  }))}
-                  clearable
-                  searchable
-                />
-              )}
-            </form.AppField>
-            <form.AppField name={"branchId"}>
-              {(field) => (
-                <field.SelectField
-                  required
-                  label={"Filial"}
-                  placeholder={"Velg filial"}
-                  data={
-                    branches?.map((branch) => ({
-                      value: branch.id,
-                      label: branch.name,
-                    })) ?? []
-                  }
-                  clearable
-                  searchable
-                />
-              )}
-            </form.AppField>
-          </Stack>
-        </form.AppForm>
+        <Stack gap={"xs"}>
+          <form.AppField name={"name"}>
+            {(field) => (
+              <field.TextField
+                required
+                label={"Fullt navn"}
+                placeholder={"Reodor Felgen"}
+              />
+            )}
+          </form.AppField>
+          <form.AppField name={"phoneNumber"}>
+            {(field) => (
+              <field.TextField
+                required
+                label={"Telefonnummer"}
+                leftSection={
+                  <Text size={"sm"} c={"dimmed"}>
+                    +47
+                  </Text>
+                }
+                placeholder={"98765432"}
+              />
+            )}
+          </form.AppField>
+          <form.AppField name={"itemIds"}>
+            {(field) => (
+              <field.MultiSelectField
+                required
+                label={"Bøker"}
+                placeholder={"Velg bøker"}
+                data={items.map((item) => ({
+                  value: item.id,
+                  label: item.title,
+                }))}
+                clearable
+                searchable
+              />
+            )}
+          </form.AppField>
+          <form.AppField name={"branchId"}>
+            {(field) => (
+              <field.SelectField
+                required
+                label={"Filial"}
+                placeholder={"Velg filial"}
+                data={
+                  branches?.map((branch) => ({
+                    value: branch.id,
+                    label: branch.name,
+                  })) ?? []
+                }
+                clearable
+                searchable
+              />
+            )}
+          </form.AppField>
+        </Stack>
         <Group>
           <Button variant={"subtle"} onClick={() => onClose()}>
             Avbryt

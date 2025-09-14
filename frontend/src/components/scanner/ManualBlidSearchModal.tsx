@@ -19,17 +19,15 @@ export default function ManualBlidSearchModal({
       <InfoAlert>
         Skal kun brukes dersom bokas unike ID ikke lar seg skanne
       </InfoAlert>
-      <form.AppForm>
-        <form.AppField name={"blid"}>
-          {(field) => (
-            <field.TextField
-              required
-              label={"Skriv inn bokas unike ID"}
-              placeholder={"8 eller 12 siffer"}
-            />
-          )}
-        </form.AppField>
-      </form.AppForm>
+      <form.AppField name={"blid"}>
+        {(field) => (
+          <field.TextField
+            required
+            label={"Skriv inn bokas unike ID"}
+            placeholder={"8 eller 12 siffer"}
+          />
+        )}
+      </form.AppField>
       <Button onClick={form.handleSubmit}>Bekreft</Button>
     </Stack>
   );

@@ -58,7 +58,7 @@ export default function LocalSignIn() {
   }, [redirectToCaller, isLoggedIn]);
 
   return (
-    <form.AppForm>
+    <>
       {apiError && (
         <ErrorAlert title={GENERIC_ERROR_TEXT}>{apiError}</ErrorAlert>
       )}
@@ -110,6 +110,6 @@ export default function LocalSignIn() {
           Har du ikke konto? Registrer deg
         </Anchor>
       </Group>
-    </form.AppForm>
+    </>
   );
 }

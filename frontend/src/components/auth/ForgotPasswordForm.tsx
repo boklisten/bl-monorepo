@@ -41,7 +41,7 @@ export default function ForgotPasswordForm() {
   });
 
   return (
-    <form.AppForm>
+    <>
       <Stack>
         {apiError && (
           <ErrorAlert title={GENERIC_ERROR_TEXT}>{apiError}</ErrorAlert>
@@ -81,6 +81,6 @@ export default function ForgotPasswordForm() {
       <Anchor component={Link} href={"/auth/login"}>
         Tilbake til innloggingssiden
       </Anchor>
-    </form.AppForm>
+    </>
   );
 }

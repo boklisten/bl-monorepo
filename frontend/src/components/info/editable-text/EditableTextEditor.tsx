@@ -77,42 +77,40 @@ export default function EditableTextEditor({
   });
 
   return (
-    <form.AppForm>
-      <Stack>
-        <form.AppField
-          name={"key"}
-          validators={{
-            onChange: ({ value }) =>
-              value.length === 0 ? "Du fylle inn unik nøkkel" : null,
-          }}
+    <Stack>
+      <form.AppField
+        name={"key"}
+        validators={{
+          onChange: ({ value }) =>
+            value.length === 0 ? "Du fylle inn unik nøkkel" : null,
+        }}
+      >
+        {(field) => (
+          <field.TextField
+            label={"Unik nøkkel"}
+            description={"Unik nøkkel kan ikke endres etter opprettelse"}
+            placeholder={"min_nye_nokkel"}
+            disabled={editableText !== undefined}
+          />
+        )}
+      </form.AppField>
+      <form.AppField name={"text"}>
+        {(field) => <field.RichTextEditorField label={"Tekst"} />}
+      </form.AppField>
+      <Group>
+        <Button variant={"subtle"} onClick={() => onClose()}>
+          Avbryt
+        </Button>
+        <Button
+          loading={
+            addEditableTextMutation.isPending ||
+            updateEditableTextMutation.isPending
+          }
+          onClick={form.handleSubmit}
         >
-          {(field) => (
-            <field.TextField
-              label={"Unik nøkkel"}
-              description={"Unik nøkkel kan ikke endres etter opprettelse"}
-              placeholder={"min_nye_nokkel"}
-              disabled={editableText !== undefined}
-            />
-          )}
-        </form.AppField>
-        <form.AppField name={"text"}>
-          {(field) => <field.RichTextEditorField label={"Tekst"} />}
-        </form.AppField>
-        <Group>
-          <Button variant={"subtle"} onClick={() => onClose()}>
-            Avbryt
-          </Button>
-          <Button
-            loading={
-              addEditableTextMutation.isPending ||
-              updateEditableTextMutation.isPending
-            }
-            onClick={form.handleSubmit}
-          >
-            {editableText === undefined ? "Opprett" : "Lagre"}
-          </Button>
-        </Group>
-      </Stack>
-    </form.AppForm>
+          {editableText === undefined ? "Opprett" : "Lagre"}
+        </Button>
+      </Group>
+    </Stack>
   );
 }

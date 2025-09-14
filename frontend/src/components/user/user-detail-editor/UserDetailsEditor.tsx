@@ -242,7 +242,7 @@ export default function UserDetailsEditor({
           {variant === "signup" ? "Registrer deg" : "Lagre"}
         </Button>
         {variant === "signup" && (
-          <Anchor component={Link} href={"/auth/login"}>
+          <Anchor size={"sm"} component={Link} href={"/auth/login"}>
             Har du allerede en konto? Logg inn
           </Anchor>
         )}

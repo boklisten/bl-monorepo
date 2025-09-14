@@ -87,7 +87,7 @@ export default function PasswordReset({ resetId }: { resetId: string }) {
             value.length < 10 ? "Passordet må ha minst 10 tegn" : null,
         }}
       >
-        {(field) => <field.NewPasswordInputField label={"Nytt passord"} />}
+        {(field) => <field.NewPasswordField label={"Nytt passord"} />}
       </form.AppField>
       <Button onClick={form.handleSubmit}>Lag nytt passord</Button>
       <Anchor component={Link} href={"/auth/login"}>

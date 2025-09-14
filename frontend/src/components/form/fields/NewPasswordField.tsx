@@ -3,14 +3,17 @@ import PasswordStrengthBar from "react-password-strength-bar";
 
 import { useFieldContext } from "@/hooks/form";
 
-export default function NewPasswordInputField(props: PasswordInputProps) {
+export default function NewPasswordField(props: PasswordInputProps) {
   const field = useFieldContext<string>();
   return (
     <Stack gap={2}>
       <PasswordInput
-        {...props}
         required
+        label={"Passord"}
+        type={"password"}
         autoComplete={"new-password"}
+        placeholder={"correct horse battery staple"}
+        {...props}
         value={field.state.value}
         onChange={(event) => field.handleChange(event.target.value)}
         onBlur={field.handleBlur}

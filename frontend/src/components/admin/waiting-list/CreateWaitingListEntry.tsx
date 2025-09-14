@@ -1,6 +1,6 @@
 import { Branch } from "@boklisten/backend/shared/branch";
 import { Item } from "@boklisten/backend/shared/item";
-import { Button, Group, Stack, Text, Title } from "@mantine/core";
+import { Button, Group, Stack, Title } from "@mantine/core";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 import { useAppForm } from "@/hooks/form";
@@ -81,27 +81,10 @@ export default function CreateWaitingListEntry({
       <Stack gap={"xl"}>
         <Stack gap={"xs"}>
           <form.AppField name={"name"}>
-            {(field) => (
-              <field.TextField
-                required
-                label={"Fullt navn"}
-                placeholder={"Reodor Felgen"}
-              />
-            )}
+            {(field) => <field.NameField autoComplete={"off"} />}
           </form.AppField>
           <form.AppField name={"phoneNumber"}>
-            {(field) => (
-              <field.TextField
-                required
-                label={"Telefonnummer"}
-                leftSection={
-                  <Text size={"sm"} c={"dimmed"}>
-                    +47
-                  </Text>
-                }
-                placeholder={"98765432"}
-              />
-            )}
+            {(field) => <field.PhoneNumberField autoComplete={"off"} />}
           </form.AppField>
           <form.AppField name={"itemIds"}>
             {(field) => (

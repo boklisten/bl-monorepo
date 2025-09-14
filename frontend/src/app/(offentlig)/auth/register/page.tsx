@@ -1,5 +1,6 @@
-import { Container, Divider, Stack, Title } from "@mantine/core";
+import { Anchor, Container, Divider, Stack, Title } from "@mantine/core";
 import { Metadata } from "next";
+import Link from "next/link";
 
 import UserDetailsEditor from "@/components/user/user-detail-editor/UserDetailsEditor";
 import VippsButton from "@/components/user/VippsButton";
@@ -18,6 +19,9 @@ const RegisterPage = () => {
           <VippsButton verb={"register"} />
           <Divider label={"Eller, registrer deg med e-post"} />
           <UserDetailsEditor variant={"signup"} />
+          <Anchor size={"sm"} component={Link} href={"/auth/login"}>
+            Har du allerede en konto? Logg inn
+          </Anchor>
         </Stack>
       </Container>
     </>

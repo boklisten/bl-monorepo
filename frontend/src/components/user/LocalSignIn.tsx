@@ -90,23 +90,16 @@ export default function LocalSignIn() {
             value.length === 0 ? "Du må fylle inn passord" : null,
         }}
       >
-        {(field) => (
-          <field.PasswordInputField
-            required
-            label={"Passord"}
-            placeholder={"Ditt passord"}
-            autoComplete={"current-password"}
-          />
-        )}
+        {(field) => <field.PasswordField />}
       </form.AppField>
       <Button onClick={form.handleSubmit} loading={signInMutation.isPending}>
         Logg inn
       </Button>
       <Group justify={"space-between"}>
-        <Anchor component={Link} href={"/auth/forgot"}>
+        <Anchor size={"sm"} component={Link} href={"/auth/forgot"}>
           Glemt passord?
         </Anchor>
-        <Anchor component={Link} href={"/auth/register"}>
+        <Anchor size={"sm"} component={Link} href={"/auth/register"}>
           Har du ikke konto? Registrer deg
         </Anchor>
       </Group>

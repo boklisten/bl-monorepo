@@ -78,7 +78,7 @@ export default function ForgotPasswordForm() {
       >
         Reset passord
       </Button>
-      <Anchor component={Link} href={"/auth/login"}>
+      <Anchor size={"sm"} component={Link} href={"/auth/login"}>
         Tilbake til innloggingssiden
       </Anchor>
     </>

@@ -1,11 +1,16 @@
-import { PasswordInput, PasswordInputProps } from "@mantine/core";
+import { TextInput, TextInputProps } from "@mantine/core";
 
 import { useFieldContext } from "@/hooks/form";
 
-export default function PasswordInputField(props: PasswordInputProps) {
+export default function AddressField(props: TextInputProps) {
   const field = useFieldContext<string>();
+
   return (
-    <PasswordInput
+    <TextInput
+      required
+      label={"Adresse"}
+      placeholder={"Flåklypatoppen 1"}
+      autoComplete={"street-address"}
       {...props}
       value={field.state.value}
       onChange={(event) => field.handleChange(event.target.value)}

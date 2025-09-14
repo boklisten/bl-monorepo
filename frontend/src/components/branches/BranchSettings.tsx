@@ -34,14 +34,6 @@ export default function BranchSettings({
         .then(unpack<Branch[]>),
   });
 
-  const branchOptions =
-    branches
-      ?.filter((branch) => branch.id !== existingBranch?.id)
-      .map((branch) => ({
-        value: branch.id,
-        label: branch.name,
-      })) ?? [];
-
   const addBranchMutation = useMutation({
     mutationFn: (newBranch: Partial<Branch>) =>
       client.v2.branches.$post(newBranch).unwrap(),
@@ -84,23 +76,13 @@ export default function BranchSettings({
         : updateBranchMutation.mutate(value),
   });
 
-  /**
-  <Controller
-    name={"parentBranch"}
-    control={control}
-    render={({ field }) => (
-      <Autocomplete
-        options={branchOptions}
-        value={branchOptions.find((o) => o.id === field.value) ?? null}
-        onChange={(_, option) => field.onChange(option?.id ?? "")}
-        renderInput={(params) => (
-          // @ts-expect-error fixme: exactOptionalPropertyTypes
-          <TextField {...params} label="Tilhører" />
-        )}
-      />
-    )}
-  />
-   */
+  const branchOptions =
+    branches
+      ?.filter((branch) => branch.id !== existingBranch?.id)
+      .map((branch) => ({
+        value: branch.id,
+        label: branch.name,
+      })) ?? [];
 
   return (
     <form.AppForm>

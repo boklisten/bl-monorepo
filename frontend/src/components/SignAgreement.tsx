@@ -1,19 +1,17 @@
 "use client";
-import { Button, Skeleton, Stack, Text } from "@mantine/core";
-import { TextField } from "@mui/material";
+import { Button, Skeleton, Stack } from "@mantine/core";
 import { IconChecks } from "@tabler/icons-react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { Controller, useForm } from "react-hook-form";
 
 import ExpandableEditableTextReadOnly from "@/components/info/editable-text/ExpandableEditableTextReadOnly";
-import SignaturePad from "@/components/SignaturePad";
 import SignedContractDetails from "@/components/SignedContractDetails";
 import ErrorAlert from "@/components/ui/alerts/ErrorAlert";
+import { useAppForm } from "@/hooks/form";
 import { PLEASE_TRY_AGAIN_TEXT } from "@/utils/constants";
 import { showErrorNotification } from "@/utils/notifications";
 import { publicApiClient } from "@/utils/publicApiClient";
 
-interface SignaturePayload {
+interface SignatureForm {
   signingName: string;
   base64EncodedImage: string;
 }
@@ -31,28 +29,14 @@ export default function SignAgreement({
       publicApiClient.signatures.valid({ detailsId: userDetailId }).$url(),
       userDetailId,
     ],
-    queryFn: async () => {
-      const signatureStatus = await publicApiClient.signatures
+    queryFn: () =>
+      publicApiClient.signatures
         .valid({ detailsId: userDetailId })
         .$get()
-        .unwrap();
-      if (!signatureStatus.isUnderage && "name" in signatureStatus)
-        setValue("signingName", signatureStatus.name);
-      return signatureStatus;
-    },
-  });
-
-  const {
-    register,
-    setValue,
-    handleSubmit,
-    formState: { errors },
-    control,
-  } = useForm<SignaturePayload>({
-    defaultValues: { signingName: "", base64EncodedImage: "" },
+        .unwrap(),
   });
   const signMutation = useMutation({
-    mutationFn: (payload: SignaturePayload) =>
+    mutationFn: (payload: SignatureForm) =>
       publicApiClient.signatures
         .sign({ detailsId: userDetailId })
         .$post(payload)
@@ -70,85 +54,40 @@ export default function SignAgreement({
       });
     },
   });
-  const hasValidResponse = !isError && !isLoading && !!data;
-  return (
-    <Stack>
-      <ExpandableEditableTextReadOnly
-        dataKey={"betingelser"}
-        cachedText={cachedAgreementText}
-      />
-      {!isLoading && (isError || !data) && (
-        <ErrorAlert title={"Noe gikk galt under lasting av signaturstatus"}>
-          {PLEASE_TRY_AGAIN_TEXT}
-        </ErrorAlert>
-      )}
-      {isLoading && (
-        <>
-          <Skeleton height={40} width={"100%"} />
-          <Skeleton height={200} width={"100%"} />
-          <Skeleton height={50} width={"100%"} />
-          <Skeleton height={50} width={100} />
-        </>
-      )}
-      {hasValidResponse && "message" in data && (
-        <ErrorAlert>{data.message}</ErrorAlert>
-      )}
-      {hasValidResponse &&
-        !("message" in data) &&
-        data.isSignatureValid == false && (
-          <Stack gap={"xs"}>
-            <Text>
-              Signer her på at du er {data.isUnderage && "foresatt til "}
-              {data.name} og godkjenner betingelsene
-              {data.isUnderage && " på hans eller hennes vegne"}:
-            </Text>
-            <Controller
-              rules={{
-                required: `Du må fylle inn ${data.isUnderage ? "foresatt sin" : "din"} signatur`,
-              }}
-              name={"base64EncodedImage"}
-              control={control}
-              render={({ field }) => <SignaturePad onChange={field.onChange} />}
-            />
-            {errors.base64EncodedImage && (
-              <ErrorAlert>{errors.base64EncodedImage.message}</ErrorAlert>
-            )}
-            <TextField
-              required
-              sx={{ mt: 1 }}
-              label={`Fullt navn ${data.isUnderage ? "(foresatt)" : ""}`}
-              slotProps={{
-                input: { readOnly: !data.isUnderage },
-              }}
-              helperText={
-                data.isUnderage
-                  ? ""
-                  : "Du kan endre navnet ditt i brukerinnstillinger"
-              }
-              {...register("signingName", {
-                required: "Du må fylle inn foresatt sitt fulle navn",
-                validate: (value) => {
-                  if (data.isUnderage && data.name === value) {
-                    return "Foresattes navn må være forskjellig fra elevens navn";
-                  }
-                  return true;
-                },
-              })}
-            />
-            {errors.signingName && (
-              <ErrorAlert>{errors.signingName.message}</ErrorAlert>
-            )}
-            <Button
-              onClick={handleSubmit((data) => signMutation.mutate(data))}
-              loading={signMutation.isPending}
-              leftSection={<IconChecks />}
-              color={"green"}
-            >
-              Signer
-            </Button>
-          </Stack>
-        )}
-      {hasValidResponse && data.isSignatureValid && (
+  const form = useAppForm({
+    defaultValues: {
+      signingName: data && !data.isUnderage && "name" in data ? data.name : "",
+      base64EncodedImage: "",
+    },
+    onSubmit: ({ value }) => signMutation.mutate(value),
+  });
+
+  if (isLoading) {
+    return (
+      <Stack>
+        <Skeleton height={40} width={"100%"} />
+        <Skeleton height={200} width={"100%"} />
+        <Skeleton height={50} width={"100%"} />
+        <Skeleton height={50} width={100} />
+      </Stack>
+    );
+  }
+
+  if (isError || !data) {
+    return (
+      <ErrorAlert title={"Noe gikk galt under lasting av signaturstatus"}>
+        {PLEASE_TRY_AGAIN_TEXT}
+      </ErrorAlert>
+    );
+  }
+
+  if (data.isSignatureValid) {
+    return (
+      <Stack>
+        <ExpandableEditableTextReadOnly
+          dataKey={"betingelser"}
+          cachedText={cachedAgreementText}
+        />
         <SignedContractDetails
           signedByGuardian={data.signedByGuardian ?? false}
           signingName={data.signingName ?? ""}
@@ -156,7 +95,68 @@ export default function SignAgreement({
           signedAtText={data.signedAtText ?? ""}
           expiresAtText={data.expiresAtText ?? ""}
         />
-      )}
+      </Stack>
+    );
+  }
+
+  return (
+    <Stack>
+      <ExpandableEditableTextReadOnly
+        dataKey={"betingelser"}
+        cachedText={cachedAgreementText}
+      />
+      <form.AppForm>
+        <Stack gap={"xs"}>
+          <form.AppField
+            name={"base64EncodedImage"}
+            validators={{
+              onSubmit: ({ value }) =>
+                value.length === 0
+                  ? `Du må fylle inn ${data.isUnderage ? "foresatt sin" : "din"} signatur`
+                  : null,
+            }}
+          >
+            {(field) => (
+              <field.SignatureCanvasField
+                label={`Signer her på at du er${data.isUnderage ? " foresatt til" : ""} ${data.name} og godkjenner betingelsene${data.isUnderage ? " på hans eller hennes vegne" : ""}:`}
+              />
+            )}
+          </form.AppField>
+          <form.AppField
+            name={"signingName"}
+            validators={{
+              onChange: ({ value }) => {
+                if (value.length === 0)
+                  return "Du må fylle inn foresatt sitt fulle navn";
+                if (data.isUnderage && data.name === value)
+                  return "Foresattes navn må være forskjellig fra elevens navn";
+                return null;
+              },
+            }}
+          >
+            {(field) => (
+              <field.TextField
+                required
+                label={`Fullt navn ${data.isUnderage ? "(foresatt)" : ""}`}
+                description={
+                  data.isUnderage
+                    ? ""
+                    : "Du kan endre navnet ditt i brukerinnstillinger"
+                }
+                readOnly={!data.isUnderage}
+              />
+            )}
+          </form.AppField>
+          <Button
+            onClick={form.handleSubmit}
+            loading={signMutation.isPending}
+            leftSection={<IconChecks />}
+            color={"green"}
+          >
+            Signer
+          </Button>
+        </Stack>
+      </form.AppForm>
     </Stack>
   );
 }

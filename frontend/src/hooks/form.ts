@@ -9,6 +9,7 @@ import RichTextEditorField from "@/components/form/fields/RichTextEditorField";
 import SegmentedControlField from "@/components/form/fields/SegmentedControlField";
 import SegmentedDeadlineField from "@/components/form/fields/SegmentedDeadlineField";
 import SelectField from "@/components/form/fields/SelectField";
+import SignatureCanvasField from "@/components/form/fields/SignatureCanvasField";
 import TextAreaField from "@/components/form/fields/TextAreaField";
 import TextField from "@/components/form/fields/TextField";
 
@@ -25,6 +26,7 @@ const { useAppForm } = createFormHook({
     SegmentedControlField,
     SegmentedDeadlineField,
     SelectField,
+    SignatureCanvasField,
     TextAreaField,
     TextField,
   },

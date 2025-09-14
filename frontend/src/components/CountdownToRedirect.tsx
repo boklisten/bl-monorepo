@@ -1,5 +1,5 @@
 "use client";
-import { Title } from "@mantine/core";
+import { Progress, Stack, Title } from "@mantine/core";
 import { useWindowScroll } from "@mantine/hooks";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -68,9 +68,13 @@ const CountdownToRedirect = ({
   ]);
 
   return (
-    <Title order={6} ta={"center"}>
-      Du blir videresendt om {Math.ceil((progress / 100) * seconds)} sekunder...
-    </Title>
+    <Stack>
+      <Title order={6} ta={"center"}>
+        Du blir videresendt om {Math.ceil((progress / 100) * seconds)}{" "}
+        sekunder...
+      </Title>
+      <Progress value={progress} color={"green"} />
+    </Stack>
   );
 };
 

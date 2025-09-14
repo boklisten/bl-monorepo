@@ -1,5 +1,6 @@
 import { UserMatchWithDetails } from "@boklisten/backend/shared/match/match-dtos";
 import { Button, Stack, Text, Title } from "@mantine/core";
+import { modals } from "@mantine/modals";
 import { IconObjectScan } from "@tabler/icons-react";
 import { useState } from "react";
 
@@ -34,7 +35,6 @@ const UserMatchDetail = ({
   handleItemTransferred?: (() => void) | undefined;
 }) => {
   const client = useApiClient();
-  const [scanModalOpen, setScanModalOpen] = useState(false);
   const [redirectCountdownStarted, setRedirectCountdownStarted] =
     useState(false);
   const userMatchStatus = calculateUserMatchStatus(userMatch, currentUserId);
@@ -149,7 +149,35 @@ const UserMatchDetail = ({
           <Button
             color={"green"}
             leftSection={<IconObjectScan />}
-            onClick={() => setScanModalOpen(true)}
+            onClick={() =>
+              modals.open({
+                title: "Skann bøker",
+                children: (
+                  <ScannerModal
+                    allowManualRegistration
+                    onScan={async (blid) => {
+                      const response = await client.matches.transfer_item
+                        .$post({ blid })
+                        .unwrap();
+                      return [{ feedback: response.feedback ?? "" }];
+                    }}
+                    onSuccessfulScan={() => {
+                      handleItemTransferred?.();
+                      if (isCurrentUserFulfilled) {
+                        setRedirectCountdownStarted(true);
+                        modals.closeAll();
+                      }
+                    }}
+                  >
+                    <MatchScannerContent
+                      itemStatuses={itemStatuses}
+                      expectedItems={currentUser.wantedItems}
+                      fulfilledItems={currentUser.receivedItems}
+                    />
+                  </ScannerModal>
+                ),
+              })
+            }
           >
             Scan bøker
           </Button>
@@ -179,32 +207,6 @@ const UserMatchDetail = ({
           />
         </Stack>
       )}
-      <ScannerModal
-        allowManualRegistration
-        onScan={async (blid) => {
-          const response = await client.matches.transfer_item
-            .$post({ blid })
-            .unwrap();
-          return [{ feedback: response.feedback ?? "" }];
-        }}
-        open={scanModalOpen}
-        handleSuccessfulScan={handleItemTransferred}
-        handleClose={() => {
-          setScanModalOpen(false);
-          setRedirectCountdownStarted(isCurrentUserFulfilled);
-        }}
-      >
-        <MatchScannerContent
-          handleClose={() => {
-            setScanModalOpen(false);
-            setRedirectCountdownStarted(isCurrentUserFulfilled);
-          }}
-          scannerOpen={scanModalOpen}
-          itemStatuses={itemStatuses}
-          expectedItems={currentUser.wantedItems}
-          fulfilledItems={currentUser.receivedItems}
-        />
-      </ScannerModal>
     </Stack>
   );
 };

@@ -7,30 +7,32 @@ import {
   Stack,
   Table,
   Text,
-  TextInput,
   Title,
   Tooltip,
 } from "@mantine/core";
-import { useDisclosure } from "@mantine/hooks";
+import { modals } from "@mantine/modals";
 import { IconMail, IconObjectScan, IconPhone } from "@tabler/icons-react";
 import moment from "moment";
 import { useState } from "react";
 
 import ScannerModal from "@/components/scanner/ScannerModal";
+import { useAppForm } from "@/hooks/form";
 import useApiClient from "@/hooks/useApiClient";
 
 export default function PublicBlidSearch() {
   const client = useApiClient();
-  const [isOpen, { open, close }] = useDisclosure();
-  const [blidSearch, setBlidSearch] = useState("");
   const [searchResult, setSearchResult] = useState<
     PublicBlidLookupResult | "inactive" | null
   >(null);
 
+  const form = useAppForm({
+    defaultValues: {
+      seach: "",
+    },
+  });
+
   async function onBlidSearch(blid: string) {
     setSearchResult(null);
-    close();
-    setBlidSearch(blid);
     if (blid.length !== 8 && blid.length !== 12) {
       // Only lookup for valid blids
       return;
@@ -53,25 +55,53 @@ export default function PublicBlidSearch() {
 
   return (
     <>
-      <TextInput
-        placeholder={"12345678"}
-        label={"Unik ID"}
-        onChange={(event) => onBlidSearch(event.target.value)}
-        rightSection={
-          <Tooltip label={"Åpne scanner"}>
-            <ActionIcon variant={"subtle"} onClick={open}>
-              <IconObjectScan />
-            </ActionIcon>
-          </Tooltip>
-        }
-      />
+      <form.AppForm>
+        <form.AppField
+          name={"seach"}
+          listeners={{
+            onChange: ({ value }) => onBlidSearch(value),
+          }}
+        >
+          {(field) => (
+            <field.TextField
+              label={"Unik ID"}
+              placeholder={"12345678"}
+              rightSection={
+                <Tooltip label={"Åpne scanner"}>
+                  <ActionIcon
+                    variant={"subtle"}
+                    onClick={() => {
+                      modals.open({
+                        title: "Scann unik ID",
+                        children: (
+                          <ScannerModal
+                            onScan={async (blid) => {
+                              field.setValue(blid);
+                              return [{ feedback: "" }] as [
+                                { feedback: string },
+                              ];
+                            }}
+                            onSuccessfulScan={modals.closeAll}
+                          />
+                        ),
+                      });
+                    }}
+                  >
+                    <IconObjectScan />
+                  </ActionIcon>
+                </Tooltip>
+              }
+            />
+          )}
+        </form.AppField>
+      </form.AppForm>
       <Text c={"gray"} size={"sm"} ta={"center"}>
         {searchResult === "inactive" &&
           "Denne boken er ikke registrert som utdelt."}
         {((searchResult === null &&
-          blidSearch.length !== 8 &&
-          blidSearch.length !== 12) ||
-          blidSearch.length === 0) &&
+          form.state.values.seach.length !== 8 &&
+          form.state.values.seach.length !== 12) ||
+          form.state.values.seach.length === 0) &&
           "Venter på unik ID"}
       </Text>
       {searchResult !== "inactive" && searchResult !== null && (
@@ -127,14 +157,6 @@ export default function PublicBlidSearch() {
           </Card>
         </>
       )}
-      <ScannerModal
-        onScan={async (blid) => {
-          onBlidSearch(blid);
-          return [{ feedback: "" }] as [{ feedback: string }];
-        }}
-        open={isOpen}
-        handleClose={close}
-      />
     </>
   );
 }

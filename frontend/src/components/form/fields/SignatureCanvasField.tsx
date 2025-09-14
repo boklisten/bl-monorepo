@@ -10,7 +10,7 @@ import { useFieldContext } from "@/hooks/form";
 export default function SignatureCanvasField(props: { label: string }) {
   const sigCanvas = useRef<SignatureCanvas>(null);
   const containerRef = useRef<HTMLDivElement>(null);
-  const field = useFieldContext<string | null>();
+  const field = useFieldContext<string>();
 
   useEffect(() => {
     const resize = () => {

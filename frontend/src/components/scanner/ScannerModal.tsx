@@ -1,62 +1,45 @@
-import { Close, InputRounded } from "@mui/icons-material";
-import { AlertColor, Box, Button, Card, Modal, Stack } from "@mui/material";
-import { ReactNode, useState } from "react";
+import { Button, Stack } from "@mantine/core";
+import { modals } from "@mantine/modals";
+import { IconForms } from "@tabler/icons-react";
+import { PropsWithChildren } from "react";
 
 import BlidScanner, {
   determineScannedTextType,
 } from "@/components/scanner/BlidScanner";
 import ManualBlidSearchModal from "@/components/scanner/ManualBlidSearchModal";
-import ScannerFeedback from "@/components/scanner/ScannerFeedback";
-import { GENERIC_ERROR_TEXT, PLEASE_TRY_AGAIN_TEXT } from "@/utils/constants";
+import { GENERIC_ERROR_TEXT } from "@/utils/constants";
+import {
+  showErrorNotification,
+  showInfoNotification,
+  showSuccessNotification,
+} from "@/utils/notifications";
 import { TextType } from "@/utils/types";
-
-interface Feedback {
-  text: string;
-  severity: AlertColor;
-  visible: boolean;
-}
 
 const ScannerModal = ({
   onScan,
-  open,
-  handleClose,
-  handleSuccessfulScan,
+  onSuccessfulScan,
   allowManualRegistration,
+  disableValidation,
   children,
-  disableTypeChecks,
-}: {
+}: PropsWithChildren<{
   onScan: (blid: string) => Promise<[{ feedback: string }]>;
-  open: boolean;
-  handleClose: () => void;
-  handleSuccessfulScan?: (() => void) | undefined;
+  onSuccessfulScan?: (() => void) | undefined;
   allowManualRegistration?: boolean;
-  children?: ReactNode;
-  disableTypeChecks?: boolean;
-}) => {
-  const [manualRegistrationModalOpen, setManualRegistrationModalOpen] =
-    useState(false);
-
-  const [feedback, setFeedback] = useState<Feedback>({
-    text: "",
-    severity: "success",
-    visible: false,
-  });
-
+  disableValidation?: boolean;
+}>) => {
   const handleRegistration = async (scannedText: string) => {
     const scannedTextType = determineScannedTextType(scannedText);
-    if (!disableTypeChecks && scannedTextType === TextType.ISBN) {
-      setFeedback({
-        text: "Feil strekkode. Bruk bokas unike ID. Se instruksjoner for hjelp",
-        severity: "error",
-        visible: true,
+    if (!disableValidation && scannedTextType === TextType.ISBN) {
+      showErrorNotification({
+        title: "Feil strekkode",
+        message: "Bruk bokas unike ID. Se instruksjoner for hjelp.",
       });
       return;
     }
-    if (!disableTypeChecks && scannedTextType === TextType.UNKNOWN) {
-      setFeedback({
-        text: "Ugyldig strekkode. Vennligst prøv igjen, eller ta kontakt med stand for hjelp",
-        severity: "error",
-        visible: true,
+    if (!disableValidation && scannedTextType === TextType.UNKNOWN) {
+      showErrorNotification({
+        title: "Ugyldig strekkode",
+        message: "Vennligst prøv igjen, eller ta kontakt med stand for hjelp.",
       });
       return;
     }
@@ -68,96 +51,40 @@ const ScannerModal = ({
       } catch {
         // Some browsers or devices may not have implemented the vibrate function
       }
-      setFeedback({
-        text: feedback || "Boken har blitt registrert!",
-        severity: feedback ? "info" : "success",
-        visible: true,
-      });
-      handleSuccessfulScan?.();
+      if (feedback) {
+        showInfoNotification({
+          title: "Viktig informasjon",
+          message: feedback,
+          color: "yellow",
+        });
+      } else if (!disableValidation) {
+        showSuccessNotification("Boken har blitt registrert!");
+      }
+      onSuccessfulScan?.();
     } catch {
-      setFeedback({
-        text: `${GENERIC_ERROR_TEXT} ${PLEASE_TRY_AGAIN_TEXT}`,
-        severity: "error",
-        visible: true,
-      });
+      showErrorNotification(GENERIC_ERROR_TEXT);
     }
   };
 
   return (
-    <Modal
-      open={open}
-      sx={{ display: "flex", alignItems: "center", justifyContent: "center" }}
-    >
-      <Card
-        sx={{
-          display: "flex",
-          alignItems: "center",
-          flexDirection: "column",
-          flexBasis: "30rem",
-          maxWidth: "50rem",
-          maxHeight: "calc(var(--vh, 1vh) * 100)",
-          paddingBottom: 2,
-          borderRadius: 0,
-          overflowY: "hidden",
-        }}
-      >
-        <Box
-          sx={{
-            maxWidth: "30rem",
-            maxHeight: "100%",
-            flexBasis: 1.2,
-            flexShrink: 0,
-          }}
-        >
-          <BlidScanner onResult={handleRegistration} />
-        </Box>
-        {children}
-        <Stack
-          direction={"row"}
-          sx={{
-            gap: 1,
-            mt: 2,
-          }}
-        >
-          {allowManualRegistration && (
-            <Button
-              color={"info"}
-              variant={"outlined"}
-              startIcon={<InputRounded />}
-              onClick={() => setManualRegistrationModalOpen(true)}
-            >
-              Skriv inn blid manuelt
-            </Button>
-          )}
-          <Button
-            color={"info"}
-            startIcon={<Close />}
-            variant={"contained"}
-            onClick={handleClose}
-          >
-            Lukk
-          </Button>
-        </Stack>
-        <ManualBlidSearchModal
-          open={manualRegistrationModalOpen}
-          handleClose={() => {
-            setManualRegistrationModalOpen(false);
-          }}
-          handleSubmit={(scannedText) => {
-            setManualRegistrationModalOpen(false);
-            handleRegistration(scannedText);
-          }}
-        />
-        <ScannerFeedback
-          open={feedback.visible}
-          severity={feedback.severity}
-          feedback={feedback.text}
-          handleClose={() =>
-            setFeedback((previous) => ({ ...previous, visible: false }))
+    <Stack>
+      <BlidScanner onResult={handleRegistration} />
+      {children}
+      {allowManualRegistration && (
+        <Button
+          variant={"outline"}
+          leftSection={<IconForms />}
+          onClick={() =>
+            modals.open({
+              title: "Manuell registrering",
+              children: <ManualBlidSearchModal onSubmit={handleRegistration} />,
+            })
           }
-        />
-      </Card>
-    </Modal>
+        >
+          Skriv inn blid manuelt
+        </Button>
+      )}
+    </Stack>
   );
 };
 

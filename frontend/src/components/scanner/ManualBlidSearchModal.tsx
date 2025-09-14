@@ -1,73 +1,38 @@
-import { Close, InputRounded } from "@mui/icons-material";
-import {
-  Button,
-  Dialog,
-  DialogActions,
-  DialogContent,
-  InputLabel,
-  Stack,
-  TextField,
-  Typography,
-} from "@mui/material";
-import { useState } from "react";
+import { Button, Stack } from "@mantine/core";
 
 import InfoAlert from "@/components/ui/alerts/InfoAlert";
+import { useAppForm } from "@/hooks/form";
 
-const ManualBlidSearchModal = ({
-  open,
-  handleClose,
-  handleSubmit,
+export default function ManualBlidSearchModal({
+  onSubmit,
 }: {
-  open: boolean;
-  handleClose: () => void;
-
-  handleSubmit: (scannedText: string) => void;
-}) => {
-  const [manualInput, setManualInput] = useState("");
+  onSubmit: (scannedText: string) => void;
+}) {
+  const form = useAppForm({
+    defaultValues: {
+      blid: "",
+    },
+    onSubmit: ({ value }) => {
+      onSubmit(value.blid);
+    },
+  });
   return (
-    <Dialog open={open} onClose={handleClose}>
-      <DialogContent>
-        <Stack>
-          <Typography variant="h4">Manuell registrering</Typography>
-          <InfoAlert>
-            Skal kun brukes dersom bokas unike ID ikke lar seg skanne
-          </InfoAlert>
-          <InputLabel sx={{ mt: 2, mb: 0.8 }}>
-            Skriv inn bokas unike ID
-          </InputLabel>
-          <TextField
-            value={manualInput}
-            label="8 siffer eller 12 bokstaver"
-            sx={{ marginBottom: 2 }}
-            onChange={(event) => setManualInput(event.target.value)}
-          />
-        </Stack>
-      </DialogContent>
-      <DialogActions>
-        <Button
-          color={"info"}
-          variant="outlined"
-          startIcon={<Close />}
-          onClick={() => {
-            setManualInput("");
-            handleClose();
-          }}
-        >
-          Lukk
-        </Button>
-        <Button
-          startIcon={<InputRounded />}
-          color={"success"}
-          variant={"outlined"}
-          onClick={() => {
-            handleSubmit(manualInput);
-          }}
-        >
-          Bekreft
-        </Button>
-      </DialogActions>
-    </Dialog>
+    <Stack>
+      <InfoAlert>
+        Skal kun brukes dersom bokas unike ID ikke lar seg skanne
+      </InfoAlert>
+      <form.AppForm>
+        <form.AppField name={"blid"}>
+          {(field) => (
+            <field.TextField
+              required
+              label={"Skriv inn bokas unike ID"}
+              placeholder={"8 eller 12 siffer"}
+            />
+          )}
+        </form.AppField>
+      </form.AppForm>
+      <Button onClick={form.handleSubmit}>Bekreft</Button>
+    </Stack>
   );
-};
-
-export default ManualBlidSearchModal;
+}

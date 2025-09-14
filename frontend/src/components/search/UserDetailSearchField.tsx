@@ -7,7 +7,7 @@ import {
   Stack,
   Text,
 } from "@mantine/core";
-import { useDisclosure } from "@mantine/hooks";
+import { modals } from "@mantine/modals";
 import {
   IconMail,
   IconObjectScan,
@@ -28,7 +28,6 @@ export default function UserDetailSearchField({
   const client = useApiClient();
   const [searchValue, setSearchValue] = useState("");
   const [searchResults, setSearchResults] = useState<UserDetail[]>([]);
-  const [opened, { open, close }] = useDisclosure();
 
   async function handleInputChange(newInputValue: string) {
     if (newInputValue.length < 3) {
@@ -59,7 +58,31 @@ export default function UserDetailSearchField({
         placeholder={"Søk etter telefonnummer, e-post, navn eller adresse"}
         value={searchValue}
         rightSection={
-          <ActionIcon variant={"subtle"} onClick={open}>
+          <ActionIcon
+            variant={"subtle"}
+            onClick={() => {
+              modals.open({
+                title: "Scann kundeID",
+                children: (
+                  <ScannerModal
+                    onScan={async (scannedText) => {
+                      const [result] = await client
+                        .$route("collection.userdetails.getId", {
+                          id: scannedText,
+                        })
+                        .$get()
+                        .then(unpack<[UserDetail]>);
+                      setSearchValue(result.name);
+                      onSelectedResult(result);
+                      return [{ feedback: "" }];
+                    }}
+                    onSuccessfulScan={modals.closeAll}
+                    disableValidation
+                  />
+                ),
+              });
+            }}
+          >
             <IconObjectScan />
           </ActionIcon>
         }
@@ -112,21 +135,6 @@ export default function UserDetailSearchField({
             </Stack>
           );
         }}
-      />
-      <ScannerModal
-        onScan={async (scannedText) => {
-          const [result] = await client
-            .$route("collection.userdetails.getId", { id: scannedText })
-            .$get()
-            .then(unpack<[UserDetail]>);
-          close();
-          setSearchValue(result.name);
-          onSelectedResult(result);
-          return [{ feedback: "" }];
-        }}
-        open={opened}
-        handleClose={close}
-        disableTypeChecks
       />
     </>
   );

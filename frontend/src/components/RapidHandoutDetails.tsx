@@ -2,6 +2,7 @@ import { Order } from "@boklisten/backend/shared/order/order";
 import { OrderItem } from "@boklisten/backend/shared/order/order-item/order-item";
 import { UserDetail } from "@boklisten/backend/shared/user-detail";
 import { Box, Button, Stack, Title } from "@mantine/core";
+import { modals } from "@mantine/modals";
 import { IconObjectScan } from "@tabler/icons-react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useEffect, useRef, useState } from "react";
@@ -65,7 +66,6 @@ export default function RapidHandoutDetails({
     staleTime: 5000,
   });
   const [itemStatuses, setItemStatuses] = useState<ItemStatus[]>([]);
-  const [scanModalOpen, setScanModalOpen] = useState(false);
   const tempBlidRef = useRef<string | null>(null);
   const setTempBlid = (v: string | null) => {
     tempBlidRef.current = v;
@@ -114,78 +114,82 @@ export default function RapidHandoutDetails({
         <Button
           color={"green"}
           leftSection={<IconObjectScan />}
-          onClick={() => setScanModalOpen(true)}
+          onClick={() =>
+            modals.open({
+              title: "Scann bøker",
+              children: (
+                <ScannerModal
+                  allowManualRegistration
+                  disableValidation={true}
+                  onScan={async (scannedText) => {
+                    const scannedType = determineScannedTextType(scannedText);
+                    const tempBlid = tempBlidRef.current;
+
+                    if (tempBlid) {
+                      if (scannedType !== TextType.ISBN) {
+                        return [
+                          {
+                            feedback: `Du må skanne ISBN til ${scannedText}`,
+                          },
+                        ];
+                      }
+                      await client.unique_items.add.$post({
+                        blid: tempBlid,
+                        isbn: scannedText,
+                      });
+                      setTempBlid(null);
+                    } else if (scannedType !== TextType.BLID) {
+                      return [
+                        {
+                          feedback:
+                            "Feil strekkode. Vennligst skann bokas unike ID",
+                        },
+                      ];
+                    }
+                    const response = await client
+                      .$route("collection.orders.operation.rapid-handout.post")
+                      .$post({
+                        blid: tempBlid ?? scannedText,
+                        customerId: customer.id,
+                      });
+
+                    const res =
+                      unpack<[{ feedback: string; connectBlid?: boolean }]>(
+                        response,
+                      );
+
+                    if (res[0].connectBlid) {
+                      setTempBlid(scannedText);
+                      return [
+                        {
+                          feedback:
+                            "Denne boken er ikke knyttet til noen unik ID. Skann bokas ISBN",
+                        },
+                      ];
+                    }
+                    return res;
+                  }}
+                  onSuccessfulScan={() =>
+                    queryClient.invalidateQueries({ queryKey: [ordersUrl] })
+                  }
+                >
+                  <MatchScannerContent
+                    itemStatuses={itemStatuses}
+                    expectedItems={itemStatuses.map(
+                      (itemStatus) => itemStatus.id,
+                    )}
+                    fulfilledItems={itemStatuses
+                      .filter((itemStatus) => itemStatus.fulfilled)
+                      .map((itemStatus) => itemStatus.id)}
+                  />
+                </ScannerModal>
+              ),
+            })
+          }
         >
           Scan bøker
         </Button>
       </Box>
-      <ScannerModal
-        disableTypeChecks={true}
-        onScan={async (scannedText) => {
-          const scannedType = determineScannedTextType(scannedText);
-          const tempBlid = tempBlidRef.current;
-
-          if (tempBlid) {
-            if (scannedType !== TextType.ISBN) {
-              return [
-                {
-                  feedback: `Du må skanne ISBN til ${scannedText}`,
-                },
-              ];
-            }
-            await client.unique_items.add.$post({
-              blid: tempBlid,
-              isbn: scannedText,
-            });
-            setTempBlid(null);
-          } else if (scannedType !== TextType.BLID) {
-            return [
-              {
-                feedback: "Feil strekkode. Vennligst skann bokas unike ID",
-              },
-            ];
-          }
-          const response = await client
-            .$route("collection.orders.operation.rapid-handout.post")
-            .$post({
-              blid: tempBlid ?? scannedText,
-              customerId: customer.id,
-            });
-
-          const res =
-            unpack<[{ feedback: string; connectBlid?: boolean }]>(response);
-
-          if (res[0].connectBlid) {
-            setTempBlid(scannedText);
-            return [
-              {
-                feedback:
-                  "Denne boken er ikke knyttet til noen unik ID. Skann bokas ISBN",
-              },
-            ];
-          }
-          return res;
-        }}
-        open={scanModalOpen}
-        handleSuccessfulScan={async () => {
-          await queryClient.invalidateQueries({ queryKey: [ordersUrl] });
-        }}
-        handleClose={() => {
-          setScanModalOpen(false);
-        }}
-      >
-        <MatchScannerContent
-          scannerOpen={scanModalOpen}
-          handleClose={() => {
-            setScanModalOpen(false);
-          }}
-          itemStatuses={itemStatuses}
-          expectedItems={itemStatuses.map((itemStatus) => itemStatus.id)}
-          fulfilledItems={itemStatuses
-            .filter((itemStatus) => itemStatus.fulfilled)
-            .map((itemStatus) => itemStatus.id)}
-        />
-      </ScannerModal>
     </Stack>
   );
 }

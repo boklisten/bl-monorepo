@@ -7,14 +7,15 @@ import BlidScanner, {
   determineScannedTextType,
 } from "@/components/scanner/BlidScanner";
 import ManualBlidSearchModal from "@/components/scanner/ManualBlidSearchModal";
+import WarningAlert from "@/components/ui/alerts/WarningAlert";
 import { GENERIC_ERROR_TEXT } from "@/utils/constants";
 import {
   showErrorNotification,
-  showInfoNotification,
   showSuccessNotification,
 } from "@/utils/notifications";
 import { TextType } from "@/utils/types";
 
+const manualModalId = "manual-registration";
 const ScannerModal = ({
   onScan,
   onSuccessfulScan,
@@ -52,15 +53,22 @@ const ScannerModal = ({
         // Some browsers or devices may not have implemented the vibrate function
       }
       if (feedback) {
-        showInfoNotification({
+        const modalId = "feedback";
+        modals.open({
+          modalId,
           title: "Viktig informasjon",
-          message: feedback,
-          color: "yellow",
+          children: (
+            <Stack>
+              <WarningAlert>{feedback}</WarningAlert>
+              <Button onClick={() => modals.close(modalId)}>OK</Button>
+            </Stack>
+          ),
         });
       } else if (!disableValidation) {
         showSuccessNotification("Boken har blitt registrert!");
       }
       onSuccessfulScan?.();
+      modals.close(manualModalId);
     } catch {
       showErrorNotification(GENERIC_ERROR_TEXT);
     }
@@ -76,6 +84,7 @@ const ScannerModal = ({
           leftSection={<IconForms />}
           onClick={() =>
             modals.open({
+              modalId: manualModalId,
               title: "Manuell registrering",
               children: <ManualBlidSearchModal onSubmit={handleRegistration} />,
             })

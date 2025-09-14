@@ -1,17 +1,7 @@
 import { Branch } from "@boklisten/backend/shared/branch";
-import {
-  Box,
-  Button,
-  Dialog,
-  DialogActions,
-  DialogContent,
-  FormControl,
-  InputLabel,
-  MenuItem,
-  Select,
-  Stack,
-} from "@mui/material";
-import DialogTitle from "@mui/material/DialogTitle";
+import { Button, Group, Stack } from "@mantine/core";
+import { modals } from "@mantine/modals";
+import { FormControl, InputLabel, MenuItem, Select } from "@mui/material";
 import TextField from "@mui/material/TextField";
 import { useQuery } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
@@ -124,7 +114,6 @@ function ClassMembershipSelect({
   const [selectedBranchId, setSelectedBranchId] = useState<string | null>(
     branchMembership ?? null,
   );
-  const [branchSelectOpen, setBranchSelectOpen] = useState(false);
 
   function calculateBranchMembershipTree(): string[] | null {
     if (!branchMembership) return null;
@@ -149,56 +138,54 @@ function ClassMembershipSelect({
     (branch) => branch.id === branchMembership,
   )?.name;
 
+  const modalId = "branch-membership";
   return (
-    <>
-      <TextField
-        error={error}
-        label={"Velg skole"}
-        fullWidth
-        select
-        value={selectedBranchId ?? ""}
-        slotProps={{ input: { readOnly: true } }}
-        onClick={() => {
-          setBranchSelectOpen(true);
-        }}
-      >
-        <MenuItem value={selectedBranchId ?? ""}>{selectedBranchName}</MenuItem>
-      </TextField>
-      <Dialog
-        open={branchSelectOpen}
-        onClose={() => setBranchSelectOpen(false)}
-      >
-        <DialogTitle>
-          {branchMembership ? "Endre skole" : "Velg skole"}
-        </DialogTitle>
-        <DialogContent>
-          <Box sx={{ width: 800 }} />
-          <Stack gap={1}>
-            <SelectBranchNested
-              branchMembershipTree={calculateBranchMembershipTree()}
-              allBranches={branches ?? []}
-              filteredBranches={
-                branches?.filter((branch) => !branch.parentBranch) ?? []
-              }
-              childLabel={"Velg skole"}
-              onSelect={(selected) => setSelectedBranchId(selected)}
-            />
-          </Stack>
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={() => setBranchSelectOpen(false)}>Avbryt</Button>
-          <Button
-            disabled={!selectedBranchId}
-            onClick={() => {
-              onChange(selectedBranchId);
-              setBranchSelectOpen(false);
-            }}
-          >
-            Bekreft
-          </Button>
-        </DialogActions>
-      </Dialog>
-    </>
+    <TextField
+      error={error}
+      label={"Velg skole"}
+      fullWidth
+      select
+      value={selectedBranchId ?? ""}
+      slotProps={{ input: { readOnly: true } }}
+      onClick={() => {
+        modals.open({
+          modalId,
+          title: branchMembership ? "Endre skole" : "Velg skole",
+          children: (
+            <Stack>
+              <SelectBranchNested
+                branchMembershipTree={calculateBranchMembershipTree()}
+                allBranches={branches ?? []}
+                filteredBranches={
+                  branches?.filter((branch) => !branch.parentBranch) ?? []
+                }
+                childLabel={"Velg skole"}
+                onSelect={(selected) => setSelectedBranchId(selected)}
+              />
+              <Group>
+                <Button
+                  variant={"subtle"}
+                  onClick={() => modals.close(modalId)}
+                >
+                  Avbryt
+                </Button>
+                <Button
+                  disabled={!selectedBranchId}
+                  onClick={() => {
+                    onChange(selectedBranchId);
+                    modals.close(modalId);
+                  }}
+                >
+                  Bekreft
+                </Button>
+              </Group>
+            </Stack>
+          ),
+        });
+      }}
+    >
+      <MenuItem value={selectedBranchId ?? ""}>{selectedBranchName}</MenuItem>
+    </TextField>
   );
 }
 

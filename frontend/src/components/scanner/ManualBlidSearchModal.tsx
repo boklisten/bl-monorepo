@@ -12,9 +12,7 @@ export default function ManualBlidSearchModal({
     defaultValues: {
       blid: "",
     },
-    onSubmit: ({ value }) => {
-      onSubmit(value.blid);
-    },
+    onSubmit: ({ value }) => onSubmit(value.blid),
   });
   return (
     <Stack>

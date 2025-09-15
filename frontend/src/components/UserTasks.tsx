@@ -12,7 +12,6 @@ import {
   Typography,
 } from "@mui/material";
 import { useMutation, useQuery } from "@tanstack/react-query";
-import moment from "moment";
 
 import { getAccessTokenBody } from "@/api/token";
 import CountdownToRedirect from "@/components/CountdownToRedirect";
@@ -20,9 +19,8 @@ import SignAgreement from "@/components/SignAgreement";
 import ErrorAlert from "@/components/ui/alerts/ErrorAlert";
 import InfoAlert from "@/components/ui/alerts/InfoAlert";
 import SuccessAlert from "@/components/ui/alerts/SuccessAlert";
-import UserDetailsEditor, {
-  isUnder18,
-} from "@/components/user/user-detail-editor/UserDetailsEditor";
+import { isUnder18 } from "@/components/user/UserInfoFields";
+import UserSettingsForm from "@/components/user/UserSettingsForm";
 import useApiClient from "@/hooks/useApiClient";
 import { PLEASE_TRY_AGAIN_TEXT } from "@/utils/constants";
 import {
@@ -105,7 +103,7 @@ export default function UserTasks({
             <StepLabel>Bekreft din informasjon</StepLabel>
             <StepContent>
               <Box mt={1} />
-              <UserDetailsEditor userDetails={data} />
+              <UserSettingsForm userDetail={data} />
             </StepContent>
           </Step>
         )}
@@ -114,7 +112,7 @@ export default function UserTasks({
             <StepLabel>Signer låneavtale</StepLabel>
             <StepContent>
               <Box mt={1} />
-              {isUnder18(moment(data.dob)) ? (
+              {isUnder18(data.dob) ? (
                 <Stack gap={2}>
                   <InfoAlert title={"Send signaturforespørsel til foresatt"}>
                     Siden du er under 18 år krever vi signatur fra en av dine

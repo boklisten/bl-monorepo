@@ -5,7 +5,7 @@ import { useQuery } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 
 import { getAccessTokenBody } from "@/api/token";
-import UserDetailsEditor from "@/components/user/user-detail-editor/UserDetailsEditor";
+import UserSettingsForm from "@/components/user/UserSettingsForm";
 import useApiClient from "@/hooks/useApiClient";
 import unpack from "@/utils/bl-api-request";
 
@@ -39,7 +39,7 @@ const UserSettings = () => {
     );
   }
 
-  return <UserDetailsEditor userDetails={userDetails[0]} />;
+  return <UserSettingsForm userDetail={userDetails[0]} />;
 };
 
 export default UserSettings;

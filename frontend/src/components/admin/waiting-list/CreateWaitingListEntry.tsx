@@ -3,8 +3,8 @@ import { Item } from "@boklisten/backend/shared/item";
 import { Button, Group, Stack, Title } from "@mantine/core";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
-import { nameFieldValidator } from "@/components/form/fields/NameField";
-import { phoneNumberFieldValidator } from "@/components/form/fields/PhoneNumberField";
+import { nameFieldValidator } from "@/components/form/fields/complex/NameField";
+import { phoneNumberFieldValidator } from "@/components/form/fields/complex/PhoneNumberField";
 import { useAppForm } from "@/hooks/form";
 import useApiClient from "@/hooks/useApiClient";
 import unpack from "@/utils/bl-api-request";

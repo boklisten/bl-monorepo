@@ -6,7 +6,7 @@ import { useEffect, useState } from "react";
 import validator from "validator";
 
 import { addAccessToken, addRefreshToken } from "@/api/token";
-import { passwordFieldValidator } from "@/components/form/fields/PasswordField";
+import { passwordFieldValidator } from "@/components/form/fields/complex/PasswordField";
 import ErrorAlert from "@/components/ui/alerts/ErrorAlert";
 import { useAppForm } from "@/hooks/form";
 import useAuth from "@/hooks/useAuth";

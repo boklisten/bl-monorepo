@@ -7,8 +7,8 @@ import Link from "next/link";
 import { useState } from "react";
 
 import { addAccessToken, addRefreshToken } from "@/api/token";
-import { emailFieldValidator } from "@/components/form/fields/EmailField";
-import { newPasswordFieldValidator } from "@/components/form/fields/NewPasswordField";
+import { emailFieldValidator } from "@/components/form/fields/complex/EmailField";
+import { newPasswordFieldValidator } from "@/components/form/fields/complex/NewPasswordField";
 import WarningAlert from "@/components/ui/alerts/WarningAlert";
 import UserInfoFields, {
   userInfoFieldDefaultValues,

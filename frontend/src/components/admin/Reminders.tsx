@@ -7,7 +7,7 @@ import { modals } from "@mantine/modals";
 import { IconMailFast, IconSend } from "@tabler/icons-react";
 import { useMutation, useQuery } from "@tanstack/react-query";
 
-import { calculateDeadlineOptions } from "@/components/form/fields/SegmentedDeadlineField";
+import { calculateDeadlineOptions } from "@/components/form/fields/complex/SegmentedDeadlineField";
 import { useAppForm } from "@/hooks/form";
 import useApiClient from "@/hooks/useApiClient";
 import unpack from "@/utils/bl-api-request";

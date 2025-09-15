@@ -2,6 +2,7 @@ import vine from "@vinejs/vine";
 
 import { PermissionService } from "#services/permission_service";
 import { StorageService } from "#services/storage_service";
+import { UserService } from "#services/user_service";
 import { BlError } from "#shared/bl-error";
 import { BlapiResponse } from "#shared/blapi-response";
 import { BlApiRequest } from "#types/bl-api-request";
@@ -31,18 +32,8 @@ export class UserDetailPermissionOperation implements Operation {
       throw new BlError("user can not change own permission");
     }
 
-    const userDetail = await StorageService.UserDetails.get(documentId);
-
-    const foundUsers = await StorageService.Users.aggregate([
-      { $match: { blid: userDetail.blid } },
-    ]);
-    const targetUser = await vine.validate({
-      schema: vine.object({
-        id: vine.string(),
-        permission: userPermissionValidator,
-      }),
-      data: foundUsers[0],
-    });
+    const targetUser = await UserService.getByUserDetailsId(documentId);
+    if (!targetUser) return new BlapiResponse([{ success: false }]);
 
     if (
       !PermissionService.isAdmin(user.permission) ||

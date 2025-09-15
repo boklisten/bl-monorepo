@@ -1,16 +1,14 @@
 "use client";
-import { Send } from "@mui/icons-material";
 import {
-  Box,
   Button,
+  Group,
   Skeleton,
   Stack,
-  Step,
-  StepContent,
-  StepLabel,
   Stepper,
-  Typography,
-} from "@mui/material";
+  Text,
+  Title,
+} from "@mantine/core";
+import { IconSend } from "@tabler/icons-react";
 import { useMutation, useQuery } from "@tanstack/react-query";
 
 import { getAccessTokenBody } from "@/api/token";
@@ -57,10 +55,10 @@ export default function UserTasks({
 
   if (isLoading) {
     return (
-      <Stack maxWidth={"md"} width={"100%"}>
-        <Skeleton width={"100%"} height={150} />
-        <Skeleton width={"100%"} height={150} />
-        <Skeleton width={"100%"} height={150} />
+      <Stack>
+        <Skeleton height={150} />
+        <Skeleton height={150} />
+        <Skeleton height={150} />
       </Stack>
     );
   }
@@ -76,7 +74,7 @@ export default function UserTasks({
 
   if (!hasTasks) {
     return (
-      <Stack gap={1}>
+      <Stack>
         <SuccessAlert>Du har fullført alle utestående oppgaver</SuccessAlert>
         <CountdownToRedirect shouldRedirectToCaller={true} seconds={5} />
       </Stack>
@@ -86,87 +84,62 @@ export default function UserTasks({
   const signAgreementTask = data?.tasks?.signAgreement;
   return (
     <>
-      <Typography
-        variant={"subtitle2"}
-        sx={{ fontWeight: "light", fontStyle: "italic", mb: 1 }}
-      >
+      <Text fs={"italic"}>
         Vi mangler noen opplysninger fra deg – fullfør oppgavene nedenfor for å
         fortsette.
-      </Typography>
-      <Stepper
-        activeStep={confirmDetailsTask === false ? 1 : 0}
-        orientation={"vertical"}
-        sx={{ maxWidth: "md" }}
-      >
+      </Text>
+      <Stepper active={confirmDetailsTask === false ? 1 : 0}>
         {confirmDetailsTask !== undefined && (
-          <Step completed={!confirmDetailsTask}>
-            <StepLabel>Bekreft din informasjon</StepLabel>
-            <StepContent>
-              <Box mt={1} />
-              <UserSettingsForm userDetail={data} />
-            </StepContent>
-          </Step>
+          <Stepper.Step label={"Bekreft din informasjon"}>
+            <UserSettingsForm userDetail={data} />
+          </Stepper.Step>
         )}
         {signAgreementTask === true && (
-          <Step>
-            <StepLabel>Signer låneavtale</StepLabel>
-            <StepContent>
-              <Box mt={1} />
-              {isUnder18(data.dob) ? (
-                <Stack gap={2}>
-                  <InfoAlert title={"Send signaturforespørsel til foresatt"}>
-                    Siden du er under 18 år krever vi signatur fra en av dine
-                    foresatte.
-                    <Stack gap={1} mt={2}>
-                      <Typography variant={"body1"}>
-                        Oppgitt foresatt
-                      </Typography>
-                      <Stack direction={"row"} gap={1}>
-                        <Typography variant={"body2"}>Navn</Typography>
-                        <Typography variant={"body2"} fontWeight={"bold"}>
-                          {data.guardian?.name}
-                        </Typography>
-                      </Stack>
-                      <Stack direction={"row"} gap={1}>
-                        <Typography variant={"body2"}>
-                          Telefonnummer:
-                        </Typography>
-                        <Typography variant={"body2"} fontWeight={"bold"}>
-                          {data.guardian?.phone}
-                        </Typography>
-                      </Stack>
-                      <Stack direction={"row"} gap={1}>
-                        <Typography variant={"body2"}>E-post:</Typography>
-                        <Typography variant={"body2"} fontWeight={"bold"}>
-                          {data.guardian?.email}
-                        </Typography>
-                      </Stack>
-                      <Typography
-                        fontStyle={"italic"}
-                        fontSize={"small"}
-                        mt={2}
-                      >
-                        Du kan endre foresatt-opplysninger i brukerinnstillinger
-                      </Typography>
-                    </Stack>
-                  </InfoAlert>
-                  <Button
-                    startIcon={<Send />}
-                    loading={requestSignatureMutation.isPending}
-                    onClick={() => requestSignatureMutation.mutate()}
-                  >
-                    Send signeringsforespørsel
-                    {data.guardian?.name && ` til ${data.guardian?.name}`}
-                  </Button>
-                </Stack>
-              ) : (
-                <SignAgreement
-                  userDetailId={data.id}
-                  cachedAgreementText={cachedAgreementText}
-                />
-              )}
-            </StepContent>
-          </Step>
+          <Stepper.Step label={"Signer låneavtale"}>
+            {isUnder18(data.dob) ? (
+              <Stack>
+                <InfoAlert title={"Send signaturforespørsel til foresatt"}>
+                  <Stack gap={5}>
+                    <Text>
+                      Siden du er under 18 år krever vi signatur fra en av dine
+                      foresatte.
+                    </Text>
+                    <Title mt={"xs"} order={4}>
+                      Oppgitt foresatt
+                    </Title>
+                    <Group gap={5}>
+                      <Text>Navn</Text>
+                      <Text fw={"bold"}>{data.guardian?.name}</Text>
+                    </Group>
+                    <Group gap={5}>
+                      <Text>Telefonnummer:</Text>
+                      <Text fw={"bold"}>{data.guardian?.phone}</Text>
+                    </Group>
+                    <Group gap={5}>
+                      <Text>E-post:</Text>
+                      <Text fw={"bold"}>{data.guardian?.email}</Text>
+                    </Group>
+                    <Text fs={"italic"} size={"sm"} mt={"xs"}>
+                      Du kan endre foresatt-opplysninger i brukerinnstillinger
+                    </Text>
+                  </Stack>
+                </InfoAlert>
+                <Button
+                  leftSection={<IconSend />}
+                  loading={requestSignatureMutation.isPending}
+                  onClick={() => requestSignatureMutation.mutate()}
+                >
+                  Send signeringsforespørsel
+                  {data.guardian?.name && ` til ${data.guardian?.name}`}
+                </Button>
+              </Stack>
+            ) : (
+              <SignAgreement
+                userDetailId={data.id}
+                cachedAgreementText={cachedAgreementText}
+              />
+            )}
+          </Stepper.Step>
         )}
       </Stepper>
     </>

@@ -50,8 +50,10 @@ export default function UserDetailEditorDialog({
       >
         Lås opp overleveringer
       </Button>
-      <AdministrateUserForm userDetail={userDetail} />
-      <AdministrateUserSignatures userDetail={userDetail} />
+      <Stack gap={"xl"}>
+        <AdministrateUserForm userDetail={userDetail} />
+        <AdministrateUserSignatures userDetail={userDetail} />
+      </Stack>
     </Stack>
   );
 }

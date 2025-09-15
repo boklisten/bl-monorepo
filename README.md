@@ -2,7 +2,7 @@
 
 ![Uptime Robot ratio (30 days)](https://img.shields.io/uptimerobot/ratio/m790106369-0ed2a627f24343cf93d2bba7)
 
-Library and book management services and administration for upper secondary schools. Built with Next.js with Material UI using an AdonisJS backend. This project is the successor for the bl-web and bl-admin projects, with the aim to unify the administration site with the customer site.
+Library and book management services and administration for upper secondary schools. Built with Next.js with Mantine using an AdonisJS backend. This project is the successor for the bl-web and bl-admin projects, with the aim to unify the administration site with the customer site.
 
 ## Workspaces
 

@@ -11,8 +11,8 @@ export default async function TasksPage() {
     .$get()
     .unwrap();
   return (
-    <Container>
-      <Stack align={"center"}>
+    <Container size={"sm"}>
+      <Stack>
         <Title>Dine oppgaver</Title>
         <AuthGuard>
           <UserTasks cachedAgreementText={cachedAgreement.text} />

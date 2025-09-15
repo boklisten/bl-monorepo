@@ -27,16 +27,20 @@ function toTreeNodeData(branches: Branch[]) {
 }
 
 export default function SelectBranchTreeView({
+  label,
   branches,
   onSelect,
+  onlyLeafs,
 }: {
+  label: string;
   branches: Branch[];
   onSelect: (branchId: string) => void;
+  onlyLeafs?: boolean;
 }) {
   const [selected, setSelected] = useState<string | null>(null);
   return (
     <Stack>
-      <Title order={3}>Velg filial</Title>
+      <Title order={3}>{label}</Title>
       <Tree
         data={toTreeNodeData(branches)}
         renderNode={({ node, expanded, hasChildren, elementProps }) => (
@@ -44,12 +48,14 @@ export default function SelectBranchTreeView({
             {...elementProps}
             label={node.label}
             onClick={(event) => {
-              onSelect(node.value);
-              setSelected(node.value);
               elementProps.onClick(event);
+              if (onlyLeafs && (node.children?.length ?? 0) > 0) return;
+              setSelected(node.value);
+              onSelect(node.value);
             }}
             leftSection={
-              hasChildren ? (
+              (hasChildren && !onlyLeafs) ||
+              (hasChildren && onlyLeafs && expanded) ? (
                 <IconChevronRight
                   size={18}
                   style={{

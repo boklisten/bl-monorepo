@@ -50,7 +50,6 @@ const EmailConfirmationStatus = ({
   }
 
   return (
-    variant !== "signup" &&
     !userDetails.emailConfirmed && (
       <Stack>
         {createEmailConfirmation.isSuccess ? (

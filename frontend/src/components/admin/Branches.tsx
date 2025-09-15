@@ -52,6 +52,7 @@ export default function Branches() {
       <Grid>
         <Grid.Col span={{ base: 12, md: 3 }}>
           <SelectBranchTreeView
+            label={"Velg filial"}
             branches={branches ?? []}
             onSelect={(branchId) => {
               setSelectedBranch(

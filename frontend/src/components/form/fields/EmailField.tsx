@@ -1,6 +1,31 @@
 import { TextInput, TextInputProps } from "@mantine/core";
+import validator from "validator";
 
 import { useFieldContext } from "@/hooks/form";
+
+export function emailFieldValidator(
+  value: string,
+  context: "personal" | "guardian" | "administrate" | string,
+  primaryEmail?: string,
+) {
+  if (!value) {
+    if (context === "personal" || context === "administrate")
+      return "Du må fylle inn din e-post";
+    if (context === "guardian") return "Du må fylle inn foresatt sin e-post";
+  }
+
+  if (!validator.isEmail(value)) {
+    if (context === "personal" || context === "administrate")
+      return "Du må fylle inn en gyldig e-post";
+    if (context === "guardian")
+      return "Du må fylle inn en gyldig e-post for foresatt";
+  }
+
+  if (context === "guardian" && value === primaryEmail)
+    return `Foresatt sin e-post må være forskjellig fra kontoens e-post (${primaryEmail})`;
+
+  return null;
+}
 
 export default function EmailField(props: TextInputProps) {
   const field = useFieldContext<string>();
@@ -9,7 +34,7 @@ export default function EmailField(props: TextInputProps) {
     <TextInput
       required
       label={"E-post"}
-      placeholder={"reodor@felgen.no"}
+      placeholder={"solan.gundersen@outlook.com"}
       autoComplete={"email"}
       inputMode={"email"}
       type={"email"}

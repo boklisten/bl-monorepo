@@ -1,24 +1,19 @@
 "use client";
 
 import { UserDetail } from "@boklisten/backend/shared/user-detail";
-import { Anchor, Button, Stack } from "@mantine/core";
+import { Button, Stack } from "@mantine/core";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { InferErrorType } from "@tuyau/client";
 import moment, { Moment } from "moment";
-import Link from "next/link";
 import { useEffect } from "react";
 import { FormProvider, useForm, useWatch } from "react-hook-form";
 
-import { addAccessToken, addRefreshToken } from "@/api/token";
 import GuardianInfoSection from "@/components/user/user-detail-editor/GuardianInfoSection";
 import LoginInfoSection from "@/components/user/user-detail-editor/LoginInfoSection";
-import TermsAndConditionsSection from "@/components/user/user-detail-editor/TermsAndConditionsSection";
 import YourInfoSection from "@/components/user/user-detail-editor/YourInfoSection";
 import useApiClient from "@/hooks/useApiClient";
-import useAuthLinker from "@/hooks/useAuthLinker";
 import { GENERIC_ERROR_TEXT, PLEASE_TRY_AGAIN_TEXT } from "@/utils/constants";
 import { showSuccessNotification } from "@/utils/notifications";
-import { publicApiClient } from "@/utils/publicApiClient";
 
 export interface UserEditorFields {
   email: string;
@@ -41,17 +36,16 @@ export const isUnder18 = (birthday: moment.Moment): boolean => {
   return moment().diff(birthday, "years") < 18;
 };
 
-export type UserDetailsEditorVariant = "signup" | "personal" | "administrate";
+export type UserDetailsEditorVariant = "personal" | "administrate";
 
 export default function UserDetailsEditor({
   variant,
-  userDetails = {} as UserDetail,
+  userDetails,
 }: {
   variant: UserDetailsEditorVariant;
-  userDetails?: UserDetail;
+  userDetails: UserDetail;
 }) {
   const queryClient = useQueryClient();
-  const { redirectToCaller } = useAuthLinker();
   const client = useApiClient();
 
   const defaultValues = {
@@ -103,41 +97,6 @@ export default function UserDetailsEditor({
     setError("email", {
       message: `${GENERIC_ERROR_TEXT} ${PLEASE_TRY_AGAIN_TEXT}`,
     });
-  }
-
-  async function registerUser(formData: UserEditorFields) {
-    const { data, error } = await publicApiClient.auth.local.register.$post({
-      email: formData.email,
-      phoneNumber: formData.phoneNumber,
-      password: formData.password,
-
-      name: formData.name,
-      address: formData.address,
-      postalCode: formData.postalCode,
-      postalCity: formData.postalCity,
-      dob: formData.birthday?.format("YYYY-MM-DD") ?? "",
-      branchMembership: formData.branchMembership,
-      guardian: {
-        name: formData.guardianName,
-        email: formData.guardianEmail,
-        phone: formData.guardianPhoneNumber,
-      },
-    });
-
-    if (error) {
-      handleSubmitError(error);
-      return;
-    }
-    if (!data) {
-      setError("email", {
-        message: `${GENERIC_ERROR_TEXT} ${PLEASE_TRY_AGAIN_TEXT}`,
-      });
-      return;
-    }
-
-    addAccessToken(data.accessToken);
-    addRefreshToken(data.refreshToken);
-    redirectToCaller();
   }
 
   async function updateUserDetails(formData: UserEditorFields) {
@@ -194,9 +153,6 @@ export default function UserDetailsEditor({
 
   const userDetailsMutation = useMutation({
     mutationFn: async (data: UserEditorFields) => {
-      if (variant === "signup") {
-        await registerUser(data);
-      }
       if (variant === "personal") {
         await updateUserDetails(data);
       }
@@ -225,27 +181,20 @@ export default function UserDetailsEditor({
     }
   }, [isUnderage, clearErrors]);
 
-  // fixme: add error summary when switched out with TanStack Form
   return (
     <FormProvider {...methods}>
       <Stack>
         <LoginInfoSection variant={variant} userDetails={userDetails} />
         <YourInfoSection variant={variant} />
         {isUnderage && <GuardianInfoSection variant={variant} />}
-        {variant === "signup" && <TermsAndConditionsSection />}
         <Button
           loading={userDetailsMutation.isPending}
           onClick={handleSubmit((data) => {
             userDetailsMutation.mutate(data);
           })}
         >
-          {variant === "signup" ? "Registrer deg" : "Lagre"}
+          Lagre
         </Button>
-        {variant === "signup" && (
-          <Anchor size={"sm"} component={Link} href={"/auth/login"}>
-            Har du allerede en konto? Logg inn
-          </Anchor>
-        )}
       </Stack>
     </FormProvider>
   );

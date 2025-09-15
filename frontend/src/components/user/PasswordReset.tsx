@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { useState } from "react";
 
+import { newPasswordFieldValidator } from "@/components/form/fields/NewPasswordField";
 import ErrorAlert from "@/components/ui/alerts/ErrorAlert";
 import SuccessAlert from "@/components/ui/alerts/SuccessAlert";
 import { useAppForm } from "@/hooks/form";
@@ -83,8 +84,7 @@ export default function PasswordReset({ resetId }: { resetId: string }) {
       <form.AppField
         name={"newPassword"}
         validators={{
-          onBlur: ({ value }) =>
-            value.length < 10 ? "Passordet må ha minst 10 tegn" : null,
+          onBlur: ({ value }) => newPasswordFieldValidator(value),
         }}
       >
         {(field) => <field.NewPasswordField label={"Nytt passord"} />}

@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import validator from "validator";
 
 import { addAccessToken, addRefreshToken } from "@/api/token";
+import { passwordFieldValidator } from "@/components/form/fields/PasswordField";
 import ErrorAlert from "@/components/ui/alerts/ErrorAlert";
 import { useAppForm } from "@/hooks/form";
 import useAuth from "@/hooks/useAuth";
@@ -86,8 +87,7 @@ export default function LocalSignIn() {
       <form.AppField
         name={"password"}
         validators={{
-          onBlur: ({ value }) =>
-            value.length === 0 ? "Du må fylle inn passord" : null,
+          onBlur: ({ value }) => passwordFieldValidator(value),
         }}
       >
         {(field) => <field.PasswordField />}

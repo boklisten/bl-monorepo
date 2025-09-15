@@ -1,37 +1,60 @@
-import { Divider, Stack, Title } from "@mantine/core";
+import { Divider, Fieldset, Stack, Title } from "@mantine/core";
+import dayjs from "dayjs";
 
+import { addressFieldValidator } from "@/components/form/fields/AddressField";
+import { emailFieldValidator } from "@/components/form/fields/EmailField";
+import { nameFieldValidator } from "@/components/form/fields/NameField";
+import { phoneNumberFieldValidator } from "@/components/form/fields/PhoneNumberField";
+import { postalCodeFieldValidator } from "@/components/form/fields/PostalCodeField";
 import { withFieldGroup } from "@/hooks/form";
 
 export interface UserInfoFieldValues {
   name: string;
   phoneNumber: string;
   address: string;
-  postalCode: string;
-  postalCity: string;
-  birthday: string;
-  guardian?: {
-    name: string;
-    email: string;
-    phone: string;
+  postal: {
+    code: string;
+    city: string;
   };
-  branchMembership: string | undefined;
+  branchMembership: string;
+  birthday: string;
+  guardianName: string;
+  guardianEmail: string;
+  guardianPhoneNumber: string;
 }
 
 export const userInfoFieldDefaultValues: UserInfoFieldValues = {
   name: "",
   phoneNumber: "",
   address: "",
-  postalCode: "",
-  postalCity: "",
+  postal: {
+    code: "",
+    city: "",
+  },
+  branchMembership: "",
   birthday: "",
-  branchMembership: undefined,
+  guardianName: "",
+  guardianEmail: "",
+  guardianPhoneNumber: "",
 };
+
+function isUnder18(birthday: Date) {
+  return dayjs(birthday).isAfter(dayjs().subtract(18, "year"));
+}
+
 const UserInfoFields = withFieldGroup({
   defaultValues: userInfoFieldDefaultValues,
   props: {
     perspective: "personal",
+    primaryEmail: "",
+    primaryPhoneNumber: "",
   },
-  render: function Render({ group, perspective }) {
+  render: function Render({
+    group,
+    perspective,
+    primaryEmail,
+    primaryPhoneNumber,
+  }) {
     return (
       <>
         <Stack gap={3}>
@@ -40,17 +63,131 @@ const UserInfoFields = withFieldGroup({
           </Title>
           <Divider />
         </Stack>
-        <group.AppField name={"name"}>
+        <group.AppField
+          name={"name"}
+          validators={{
+            onBlur: ({ value }) => nameFieldValidator(value, perspective),
+          }}
+        >
           {(field) => <field.NameField />}
         </group.AppField>
-        <group.AppField name={"phoneNumber"}>
+        <group.AppField
+          name={"phoneNumber"}
+          validators={{
+            onBlur: ({ value }) =>
+              phoneNumberFieldValidator(value, perspective),
+          }}
+        >
           {(field) => <field.PhoneNumberField />}
         </group.AppField>
-        <group.AppField name={"address"}>
+        <group.AppField
+          name={"address"}
+          validators={{
+            onBlur: ({ value }) => addressFieldValidator(value),
+          }}
+        >
           {(field) => <field.AddressField />}
         </group.AppField>
-        <group.AppField name={"postalCode"}>
+        <group.AppField
+          name={"postal"}
+          validators={{
+            onBlurAsync: ({ value }) => postalCodeFieldValidator(value.code),
+          }}
+        >
           {(field) => <field.PostalCodeField />}
+        </group.AppField>
+        <group.AppField
+          name={"birthday"}
+          validators={{
+            onBlur: ({ value }) => {
+              if (!value) return "Du må fylle inn fødselsdato";
+              if (
+                dayjs(value, "YYYY-MM-DD").isBefore(
+                  dayjs().subtract(99, "years"),
+                )
+              )
+                return "Du må fylle inn en gyldig fødselsdato";
+
+              return null;
+            },
+          }}
+        >
+          {(field) => (
+            <field.DateField
+              required
+              clearable
+              label={"Fødselsdato"}
+              autoComplete={"bday"}
+              minDate={dayjs().subtract(100, "years").toDate()}
+              maxDate={dayjs().subtract(10, "years").toDate()}
+              defaultDate={dayjs().subtract(18, "years").toDate()}
+              defaultLevel={"decade"}
+            />
+          )}
+        </group.AppField>
+        <group.Subscribe selector={(state) => state.values.birthday}>
+          {(birthday) => {
+            if (!isUnder18(new Date(birthday))) return <></>;
+            return (
+              <Fieldset
+                legend={`Siden ${perspective === "personal" ? "du" : "kunden"} er under 18, trenger vi informasjon om en av ${perspective === "personal" ? "dine" : "kundens"} foresatte.`}
+              >
+                <Stack gap={"xs"}>
+                  <group.AppField
+                    name={"guardianName"}
+                    validators={{
+                      onBlur: ({ value }) =>
+                        nameFieldValidator(value, "guardian"),
+                    }}
+                  >
+                    {(field) => (
+                      <field.NameField
+                        label={"Foresatt sitt fulle navn"}
+                        placeholder={"Reodor Felgen"}
+                        autoComplete={"section-guardian name"}
+                      />
+                    )}
+                  </group.AppField>
+                  <group.AppField
+                    name={"guardianEmail"}
+                    validators={{
+                      onBlur: ({ value }) =>
+                        emailFieldValidator(value, "guardian", primaryEmail),
+                    }}
+                  >
+                    {(field) => (
+                      <field.EmailField
+                        label={"Foresatt sin e-post"}
+                        placeholder={"reodor.felgen@gmail.com"}
+                        autoComplete={"section-guardian email"}
+                      />
+                    )}
+                  </group.AppField>
+                  <group.AppField
+                    name={"guardianPhoneNumber"}
+                    validators={{
+                      onBlur: ({ value }) =>
+                        phoneNumberFieldValidator(
+                          value,
+                          "guardian",
+                          primaryPhoneNumber,
+                        ),
+                    }}
+                  >
+                    {(field) => (
+                      <field.PhoneNumberField
+                        label={"Foresatt sitt telefonnummer"}
+                        autoComplete={"section-guardian tel-national"}
+                      />
+                    )}
+                  </group.AppField>
+                </Stack>
+              </Fieldset>
+            );
+          }}
+        </group.Subscribe>
+        <group.AppField name={"branchMembership"}>
+          {(field) => <field.SelectBranchField />}
         </group.AppField>
       </>
     );

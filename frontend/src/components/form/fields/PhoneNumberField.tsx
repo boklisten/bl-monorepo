@@ -1,6 +1,32 @@
 import { Text, TextInput, TextInputProps } from "@mantine/core";
+import isMobilePhone from "validator/lib/isMobilePhone";
 
 import { useFieldContext } from "@/hooks/form";
+
+export function phoneNumberFieldValidator(
+  value: string,
+  context: "personal" | "guardian" | "administrate" | string,
+  primaryPhoneNumber?: string,
+) {
+  if (!value) {
+    if (context === "personal" || context === "administrate")
+      return "Du må fylle inn telefonnummer";
+    if (context === "guardian")
+      return "Du må fylle inn foresatt sitt telefonnummer";
+  }
+
+  if (!isMobilePhone(value, "nb-NO")) {
+    if (context === "personal" || context === "administrate")
+      return "Du må fylle inn et gyldig norsk telefonnummer (8 tall uten mellomrom og +47)";
+    if (context === "guardian")
+      return "Du må fylle inn et gyldig norsk telefonnummer for foresatt (8 tall uten mellomrom og +47)";
+  }
+
+  if (context === "guardian" && value === primaryPhoneNumber)
+    return `Foresatt sitt telefonnummer må være forskjellig fra kontoens telefonnummer (${primaryPhoneNumber})`;
+
+  return null;
+}
 
 export default function PhoneNumberField(props: TextInputProps) {
   const field = useFieldContext<string>();

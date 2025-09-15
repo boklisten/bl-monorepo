@@ -2,7 +2,8 @@ import { createFormHookContexts, createFormHook } from "@tanstack/react-form";
 
 import ErrorSummary from "@/components/form/ErrorSummary";
 import AddressField from "@/components/form/fields/AddressField";
-import DateInputField from "@/components/form/fields/DateInputField";
+import CheckboxField from "@/components/form/fields/CheckboxField";
+import DateField from "@/components/form/fields/DateField";
 import EmailField from "@/components/form/fields/EmailField";
 import MultiSelectField from "@/components/form/fields/MultiSelectField";
 import NameField from "@/components/form/fields/NameField";
@@ -13,6 +14,7 @@ import PostalCodeField from "@/components/form/fields/PostalCodeField";
 import RichTextEditorField from "@/components/form/fields/RichTextEditorField";
 import SegmentedControlField from "@/components/form/fields/SegmentedControlField";
 import SegmentedDeadlineField from "@/components/form/fields/SegmentedDeadlineField";
+import SelectBranchField from "@/components/form/fields/SelectBranchField";
 import SelectField from "@/components/form/fields/SelectField";
 import SignatureCanvasField from "@/components/form/fields/SignatureCanvasField";
 import TextAreaField from "@/components/form/fields/TextAreaField";
@@ -26,9 +28,10 @@ const { useAppForm, withFieldGroup } = createFormHook({
     // Builtin
     TextField,
     TextAreaField,
-    DateInputField,
+    DateField,
     SelectField,
     MultiSelectField,
+    CheckboxField,
 
     // Opinionated
     EmailField,
@@ -44,6 +47,7 @@ const { useAppForm, withFieldGroup } = createFormHook({
     SegmentedControlField,
     SegmentedDeadlineField,
     SignatureCanvasField,
+    SelectBranchField,
   },
   formComponents: {
     ErrorSummary,

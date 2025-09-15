@@ -3,6 +3,13 @@ import PasswordStrengthBar from "react-password-strength-bar";
 
 import { useFieldContext } from "@/hooks/form";
 
+export function newPasswordFieldValidator(value: string) {
+  if (!value) return "Du må fylle inn et passord";
+  if (value.length < 10) return "Passordet må ha minst 10 tegn";
+
+  return null;
+}
+
 export default function NewPasswordField(props: PasswordInputProps) {
   const field = useFieldContext<string>();
   return (

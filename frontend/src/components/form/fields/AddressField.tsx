@@ -2,6 +2,11 @@ import { TextInput, TextInputProps } from "@mantine/core";
 
 import { useFieldContext } from "@/hooks/form";
 
+export function addressFieldValidator(value: string) {
+  if (!value) return "Du må fylle inn adresse";
+  return null;
+}
+
 export default function AddressField(props: TextInputProps) {
   const field = useFieldContext<string>();
 

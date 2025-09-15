@@ -2,7 +2,7 @@ import { Anchor, Container, Divider, Stack, Title } from "@mantine/core";
 import { Metadata } from "next";
 import Link from "next/link";
 
-import UserDetailsEditor from "@/components/user/user-detail-editor/UserDetailsEditor";
+import SignupForm from "@/components/user/SignupForm";
 import VippsButton from "@/components/user/VippsButton";
 
 export const metadata: Metadata = {
@@ -18,7 +18,7 @@ const RegisterPage = () => {
           <Title ta={"center"}>Registrer deg</Title>
           <VippsButton verb={"register"} />
           <Divider label={"Eller, registrer deg med e-post"} />
-          <UserDetailsEditor variant={"signup"} />
+          <SignupForm />
           <Anchor size={"sm"} component={Link} href={"/auth/login"}>
             Har du allerede en konto? Logg inn
           </Anchor>

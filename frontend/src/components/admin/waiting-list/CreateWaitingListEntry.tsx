@@ -3,6 +3,8 @@ import { Item } from "@boklisten/backend/shared/item";
 import { Button, Group, Stack, Title } from "@mantine/core";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
+import { nameFieldValidator } from "@/components/form/fields/NameField";
+import { phoneNumberFieldValidator } from "@/components/form/fields/PhoneNumberField";
 import { useAppForm } from "@/hooks/form";
 import useApiClient from "@/hooks/useApiClient";
 import unpack from "@/utils/bl-api-request";
@@ -80,10 +82,21 @@ export default function CreateWaitingListEntry({
       <Title order={2}>Legg til i venteliste</Title>
       <Stack gap={"xl"}>
         <Stack gap={"xs"}>
-          <form.AppField name={"name"}>
+          <form.AppField
+            name={"name"}
+            validators={{
+              onBlur: ({ value }) => nameFieldValidator(value, "administrate"),
+            }}
+          >
             {(field) => <field.NameField autoComplete={"off"} />}
           </form.AppField>
-          <form.AppField name={"phoneNumber"}>
+          <form.AppField
+            name={"phoneNumber"}
+            validators={{
+              onBlur: ({ value }) =>
+                phoneNumberFieldValidator(value, "administrate"),
+            }}
+          >
             {(field) => <field.PhoneNumberField autoComplete={"off"} />}
           </form.AppField>
           <form.AppField name={"itemIds"}>
@@ -118,6 +131,9 @@ export default function CreateWaitingListEntry({
               />
             )}
           </form.AppField>
+          <form.AppForm>
+            <form.ErrorSummary />
+          </form.AppForm>
         </Stack>
         <Group>
           <Button variant={"subtle"} onClick={() => onClose()}>

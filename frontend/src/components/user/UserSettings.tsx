@@ -39,9 +39,7 @@ const UserSettings = () => {
     );
   }
 
-  return (
-    <UserDetailsEditor userDetails={userDetails[0]} variant={"personal"} />
-  );
+  return <UserDetailsEditor userDetails={userDetails[0]} />;
 };
 
 export default UserSettings;

@@ -4,7 +4,7 @@ import { IconLockOpen } from "@tabler/icons-react";
 import { useMutation, useQuery } from "@tanstack/react-query";
 
 import AdministrateUserSignatures from "@/components/admin/AdministrateUserSignatures";
-import UserDetailsEditor from "@/components/user/user-detail-editor/UserDetailsEditor";
+import AdministrateUserForm from "@/components/user/AdministrateUserForm";
 import useApiClient from "@/hooks/useApiClient";
 import unpack from "@/utils/bl-api-request";
 import {
@@ -50,7 +50,7 @@ export default function UserDetailEditorDialog({
       >
         Lås opp overleveringer
       </Button>
-      <UserDetailsEditor variant={"administrate"} userDetails={userDetail} />
+      <AdministrateUserForm userDetail={userDetail} />
       <AdministrateUserSignatures userDetail={userDetail} />
     </Stack>
   );

@@ -105,7 +105,7 @@ export default function UserTasks({
             <StepLabel>Bekreft din informasjon</StepLabel>
             <StepContent>
               <Box mt={1} />
-              <UserDetailsEditor userDetails={data} variant={"personal"} />
+              <UserDetailsEditor userDetails={data} />
             </StepContent>
           </Step>
         )}

@@ -1,28 +1,23 @@
 import { UserDetail } from "@boklisten/backend/shared/user-detail";
-import { Button, Stack, Switch } from "@mantine/core";
+import { Button, Stack } from "@mantine/core";
 import { IconMailFast } from "@tabler/icons-react";
 import { useMutation } from "@tanstack/react-query";
-import { Controller, useFormContext } from "react-hook-form";
+import { useFormContext } from "react-hook-form";
 
 import InfoAlert from "@/components/ui/alerts/InfoAlert";
 import WarningAlert from "@/components/ui/alerts/WarningAlert";
-import {
-  UserDetailsEditorVariant,
-  UserEditorFields,
-} from "@/components/user/user-detail-editor/UserDetailsEditor";
+import { UserEditorFields } from "@/components/user/user-detail-editor/UserDetailsEditor";
 import useApiClient from "@/hooks/useApiClient";
 import { PLEASE_TRY_AGAIN_TEXT } from "@/utils/constants";
 
 interface EmailConfirmationStatusProps {
-  variant: UserDetailsEditorVariant;
   userDetails: UserDetail;
 }
 
 const EmailConfirmationStatus = ({
-  variant,
   userDetails,
 }: EmailConfirmationStatusProps) => {
-  const { setError, control } = useFormContext<UserEditorFields>();
+  const { setError } = useFormContext<UserEditorFields>();
   const client = useApiClient();
 
   const createEmailConfirmation = useMutation({
@@ -33,30 +28,13 @@ const EmailConfirmationStatus = ({
       }),
   });
 
-  if (variant === "administrate") {
-    return (
-      <Controller
-        name={"emailVerified"}
-        control={control}
-        render={({ field }) => (
-          <Switch
-            label={"E-post bekreftet"}
-            checked={field.value ?? false}
-            onChange={field.onChange}
-          />
-        )}
-      />
-    );
-  }
-
   return (
     !userDetails.emailConfirmed && (
       <Stack>
         {createEmailConfirmation.isSuccess ? (
           <InfoAlert icon={<IconMailFast />}>
-            Bekreftelseslenke er sendt til{" "}
-            {variant === "personal" ? "din" : "kundens"} e-postadresse! Sjekk
-            søppelpost om den ikke dukker opp i inbox.
+            Bekreftelseslenke er sendt til din e-postadresse! Sjekk søppelpost
+            om den ikke dukker opp i inbox.
           </InfoAlert>
         ) : (
           <>

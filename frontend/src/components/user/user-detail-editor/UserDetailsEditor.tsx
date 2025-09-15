@@ -36,13 +36,9 @@ export const isUnder18 = (birthday: moment.Moment): boolean => {
   return moment().diff(birthday, "years") < 18;
 };
 
-export type UserDetailsEditorVariant = "personal" | "administrate";
-
 export default function UserDetailsEditor({
-  variant,
   userDetails,
 }: {
-  variant: UserDetailsEditorVariant;
   userDetails: UserDetail;
 }) {
   const queryClient = useQueryClient();
@@ -123,42 +119,9 @@ export default function UserDetailsEditor({
     showSuccessNotification("Brukerinnstillingene ble lagret!");
   }
 
-  async function updateUserDetailsAsEmployee(formData: UserEditorFields) {
-    const { error } = await client.v2.employee
-      .user_details({ detailsId: userDetails.id })
-      .$post({
-        email: formData.email,
-        emailVerified: formData.emailVerified ?? false,
-        name: formData.name,
-        phoneNumber: formData.phoneNumber,
-        address: formData.address,
-        postalCode: formData.postalCode,
-        postalCity: formData.postalCity,
-        dob: formData.birthday?.format("YYYY-MM-DD") ?? "",
-        branchMembership: formData.branchMembership,
-        guardian: {
-          name: formData.guardianName,
-          email: formData.guardianEmail,
-          phone: formData.guardianPhoneNumber,
-        },
-      });
-
-    if (error) {
-      handleSubmitError(error);
-      return;
-    }
-
-    showSuccessNotification("Brukerinnstillingene ble lagret!");
-  }
-
   const userDetailsMutation = useMutation({
     mutationFn: async (data: UserEditorFields) => {
-      if (variant === "personal") {
-        await updateUserDetails(data);
-      }
-      if (variant === "administrate") {
-        await updateUserDetailsAsEmployee(data);
-      }
+      await updateUserDetails(data);
       await queryClient.invalidateQueries({
         queryKey: ["userDetails", userDetails?.id],
       });
@@ -184,9 +147,9 @@ export default function UserDetailsEditor({
   return (
     <FormProvider {...methods}>
       <Stack>
-        <LoginInfoSection variant={variant} userDetails={userDetails} />
-        <YourInfoSection variant={variant} />
-        {isUnderage && <GuardianInfoSection variant={variant} />}
+        <LoginInfoSection userDetails={userDetails} />
+        <YourInfoSection />
+        {isUnderage && <GuardianInfoSection />}
         <Button
           loading={userDetailsMutation.isPending}
           onClick={handleSubmit((data) => {

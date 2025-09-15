@@ -5,7 +5,7 @@ import {
   phoneField,
   postalCodeField,
 } from "#validators/common/fields";
-import { uniquePhoneNumber } from "#validators/common/rules";
+import { uniqueEmail, uniquePhoneNumber } from "#validators/common/rules";
 import { cleanUserInput } from "#validators/common/transformers";
 
 // Legacy for bl-admin user detail patching
@@ -60,7 +60,7 @@ export const customerUpdateUserDetailsValidator = vine
 // Fields that employees are allowed to adjust
 const employeeUpdateUserDetailsSchema = vine.object({
   ...customerUpdateUserDetailsSchema.getProperties(),
-  email: emailField.clone(),
+  email: emailField.clone().use(uniqueEmail()),
   emailVerified: vine.boolean(),
 });
 

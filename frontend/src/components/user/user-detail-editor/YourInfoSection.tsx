@@ -9,16 +9,9 @@ import FieldErrorAlert from "@/components/user/fields/FieldErrorAlert";
 import PhoneNumberField from "@/components/user/fields/PhoneNumberField";
 import PostalCodeField from "@/components/user/fields/PostalCodeField";
 import { fieldValidators } from "@/components/user/user-detail-editor/fieldValidators";
-import {
-  UserDetailsEditorVariant,
-  UserEditorFields,
-} from "@/components/user/user-detail-editor/UserDetailsEditor";
+import { UserEditorFields } from "@/components/user/user-detail-editor/UserDetailsEditor";
 
-export default function YourInfoSection({
-  variant,
-}: {
-  variant: UserDetailsEditorVariant;
-}) {
+export default function YourInfoSection() {
   const {
     register,
     control,
@@ -28,9 +21,7 @@ export default function YourInfoSection({
   return (
     <>
       <Stack gap={"xs"}>
-        <Text>
-          {variant === "administrate" ? "Kundens" : "Din"} informasjon
-        </Text>
+        <Text>Din informasjon</Text>
         <Divider />
       </Stack>
       <TextField

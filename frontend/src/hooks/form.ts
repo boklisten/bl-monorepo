@@ -5,6 +5,7 @@ import CheckboxField from "@/components/form/fields/basic/CheckboxField";
 import DateField from "@/components/form/fields/basic/DateField";
 import MultiSelectField from "@/components/form/fields/basic/MultiSelectField";
 import SelectField from "@/components/form/fields/basic/SelectField";
+import SwitchField from "@/components/form/fields/basic/SwitchField";
 import TextAreaField from "@/components/form/fields/basic/TextAreaField";
 import TextField from "@/components/form/fields/basic/TextField";
 import AddressField from "@/components/form/fields/complex/AddressField";
@@ -32,6 +33,7 @@ const { useAppForm, withFieldGroup } = createFormHook({
     SelectField,
     MultiSelectField,
     CheckboxField,
+    SwitchField,
 
     // Complex
     EmailField,

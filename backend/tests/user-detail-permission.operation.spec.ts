@@ -5,8 +5,8 @@ import sinon, { createSandbox } from "sinon";
 
 import { UserDetailPermissionOperation } from "#services/legacy/collections/user-detail/operations/permission/user-detail-permission.operation";
 import { StorageService } from "#services/storage_service";
+import { UserService } from "#services/user_service";
 import { BlError } from "#shared/bl-error";
-import { UserDetail } from "#shared/user-detail";
 import { User } from "#types/user";
 chaiUse(chaiAsPromised);
 should();
@@ -14,40 +14,21 @@ should();
 test.group("UserDetailPermissionOperation", (group) => {
   const userDetailPermissionOperation = new UserDetailPermissionOperation();
 
-  let userAggregateStub: sinon.SinonStub;
-  let userDetailGetStub: sinon.SinonStub;
+  let getByUserDetailsId: sinon.SinonStub;
   let userUpdateStub: sinon.SinonStub;
   let sandbox: sinon.SinonSandbox;
 
   group.each.setup(() => {
     sandbox = createSandbox();
-    userAggregateStub = sandbox.stub(StorageService.Users, "aggregate");
-    userDetailGetStub = sandbox.stub(StorageService.UserDetails, "get");
+    getByUserDetailsId = sandbox.stub(UserService, "getByUserDetailsId");
     userUpdateStub = sandbox.stub(StorageService.Users, "update");
   });
   group.each.teardown(() => {
     sandbox.restore();
   });
 
-  test("should reject if userDetail is not found", async () => {
-    userDetailGetStub.rejects(new BlError("user-detail not found"));
-
-    return expect(
-      userDetailPermissionOperation.run({
-        user: { id: "userDetail2", permission: "admin", details: "" },
-        data: { permission: "employee" },
-        documentId: "userDetailX",
-      }),
-    ).to.eventually.be.rejectedWith(BlError, /user-detail not found/);
-  });
-
   test("should reject if user is not found", async () => {
-    userDetailGetStub.resolves({
-      id: "userDetail1",
-      blid: "abcdef",
-      email: "abcdef",
-    } as UserDetail);
-    userAggregateStub.rejects(new BlError("user not found"));
+    getByUserDetailsId.rejects(new BlError("user not found"));
 
     return expect(
       userDetailPermissionOperation.run({
@@ -62,14 +43,10 @@ test.group("UserDetailPermissionOperation", (group) => {
 
   for (const permission of permissions) {
     test(`should reject if blApiRequest.user.permission "${permission}" is lower than user.permission "admin"`, async () => {
-      userDetailGetStub.resolves({
+      getByUserDetailsId.resolves({
         id: "userDetail1",
-        blid: "abcdef",
-        email: "abcdef",
-      } as UserDetail);
-      userAggregateStub.resolves([
-        { id: "userDetail1", permission: "admin" } as User,
-      ]);
+        permission: "admin",
+      } as User);
 
       return expect(
         userDetailPermissionOperation.run({
@@ -86,14 +63,10 @@ test.group("UserDetailPermissionOperation", (group) => {
   }
 
   test(`should reject if blApiRequest.user.permission is not "admin" or higher`, async () => {
-    userDetailGetStub.resolves({
+    getByUserDetailsId.resolves({
       id: "userDetail1",
-      blid: "abcdef",
-      email: "abcdef",
-    } as UserDetail);
-    userAggregateStub.resolves([
-      { id: "userDetail1", permission: "employee" } as User,
-    ]);
+      permission: "employee",
+    } as User);
 
     return expect(
       userDetailPermissionOperation.run({
@@ -105,14 +78,10 @@ test.group("UserDetailPermissionOperation", (group) => {
   });
 
   test("should reject if trying to change users own permission", async () => {
-    userDetailGetStub.resolves({
+    getByUserDetailsId.resolves({
       id: "userDetail1",
-      blid: "abcdef",
-      email: "abcdef",
-    } as UserDetail);
-    userAggregateStub.resolves([
-      { id: "userDetail1", permission: "employee" } as User,
-    ]);
+      permission: "employee",
+    } as User);
 
     return expect(
       userDetailPermissionOperation.run({
@@ -137,14 +106,10 @@ test.group("UserDetailPermissionOperation", (group) => {
   });
 
   test("should reject if userStorage.update rejects", async () => {
-    userDetailGetStub.resolves({
+    getByUserDetailsId.resolves({
       id: "userDetail1",
-      blid: "abcdef",
-      email: "abcdef",
-    } as UserDetail);
-    userAggregateStub.resolves([
-      { id: "userDetail1", permission: "customer" } as User,
-    ]);
+      permission: "customer",
+    } as User);
     userUpdateStub.rejects(new BlError("could not update permission"));
 
     return expect(
@@ -157,14 +122,10 @@ test.group("UserDetailPermissionOperation", (group) => {
   });
 
   test("should resolve", async ({ assert }) => {
-    userDetailGetStub.resolves({
+    getByUserDetailsId.resolves({
       id: "userDetail1",
-      blid: "abcdef",
-      email: "abcdef",
-    } as UserDetail);
-    userAggregateStub.resolves([
-      { id: "userDetail1", permission: "customer" } as User,
-    ]);
+      permission: "customer",
+    } as User);
     userUpdateStub.resolves({} as User);
 
     return assert.doesNotReject(() =>

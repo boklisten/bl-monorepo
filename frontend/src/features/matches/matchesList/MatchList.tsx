@@ -8,9 +8,9 @@ import {
 } from "@/features/matches/matches-helper";
 import MatchListItemGroups from "@/features/matches/matchesList/MatchListItemGroups";
 import ProgressBar from "@/features/matches/matchesList/ProgressBar";
-import useApiClient from "@/shared/api/useApiClient";
-import ErrorAlert from "@/shared/ui/components/alerts/ErrorAlert";
-import InfoAlert from "@/shared/ui/components/alerts/InfoAlert";
+import ErrorAlert from "@/shared/components/alerts/ErrorAlert";
+import InfoAlert from "@/shared/components/alerts/InfoAlert";
+import useApiClient from "@/shared/hooks/useApiClient";
 
 export default function MatchList() {
   const client = useApiClient();

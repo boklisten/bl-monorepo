@@ -1,9 +1,9 @@
 "use client";
 import { useQuery } from "@tanstack/react-query";
 
-import useApiClient from "@/shared/api/useApiClient";
-import InfoAlert from "@/shared/ui/components/alerts/InfoAlert";
-import RichTextEditorReadOnly from "@/shared/ui/components/RichTextEditorReadOnly";
+import InfoAlert from "@/shared/components/alerts/InfoAlert";
+import RichTextEditorReadOnly from "@/shared/components/RichTextEditorReadOnly";
+import useApiClient from "@/shared/hooks/useApiClient";
 
 export default function EditableTextReadOnly({
   dataKey,

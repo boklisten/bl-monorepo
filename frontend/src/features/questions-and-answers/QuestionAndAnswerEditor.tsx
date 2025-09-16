@@ -2,12 +2,12 @@ import { QuestionAndAnswer } from "@boklisten/backend/shared/question-and-answer
 import { Button, Group, Stack } from "@mantine/core";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
-import useApiClient from "@/shared/api/useApiClient";
-import { useAppForm } from "@/shared/form/hooks";
+import { useAppForm } from "@/shared/hooks/form";
+import useApiClient from "@/shared/hooks/useApiClient";
 import {
   showErrorNotification,
   showSuccessNotification,
-} from "@/shared/ui/notifications";
+} from "@/shared/utils/notifications";
 
 export default function QuestionAndAnswerEditor({
   questionAndAnswer,

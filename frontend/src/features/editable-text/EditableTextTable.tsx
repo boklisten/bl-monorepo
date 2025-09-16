@@ -11,13 +11,13 @@ import { MantineReactTable, useMantineReactTable } from "mantine-react-table";
 import { MRT_Localization_NO } from "mantine-react-table/locales/no";
 
 import EditableTextEditor from "@/features/editable-text/EditableTextEditor";
-import useApiClient from "@/shared/api/useApiClient";
-import ErrorAlert from "@/shared/ui/components/alerts/ErrorAlert";
+import ErrorAlert from "@/shared/components/alerts/ErrorAlert";
+import useApiClient from "@/shared/hooks/useApiClient";
+import { PLEASE_TRY_AGAIN_TEXT } from "@/shared/utils/constants";
 import {
   showErrorNotification,
   showSuccessNotification,
-} from "@/shared/ui/notifications";
-import { PLEASE_TRY_AGAIN_TEXT } from "@/shared/utils/constants";
+} from "@/shared/utils/notifications";
 
 export default function EditableTextTable() {
   const client = useApiClient();

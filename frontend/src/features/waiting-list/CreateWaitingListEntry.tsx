@@ -3,15 +3,15 @@ import { Item } from "@boklisten/backend/shared/item";
 import { Button, Group, Stack, Title } from "@mantine/core";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
-import unpack from "@/shared/api/bl-api-request";
-import useApiClient from "@/shared/api/useApiClient";
-import { nameFieldValidator } from "@/shared/form/fields/complex/NameField";
-import { phoneNumberFieldValidator } from "@/shared/form/fields/complex/PhoneNumberField";
-import { useAppForm } from "@/shared/form/hooks";
+import { nameFieldValidator } from "@/shared/components/form/fields/complex/NameField";
+import { phoneNumberFieldValidator } from "@/shared/components/form/fields/complex/PhoneNumberField";
+import { useAppForm } from "@/shared/hooks/form";
+import useApiClient from "@/shared/hooks/useApiClient";
+import unpack from "@/shared/utils/bl-api-request";
 import {
   showErrorNotification,
   showSuccessNotification,
-} from "@/shared/ui/notifications";
+} from "@/shared/utils/notifications";
 
 interface WaitingListEntryForm {
   name: string;

@@ -9,10 +9,10 @@ import {
 } from "@mantine/core";
 import { useQuery } from "@tanstack/react-query";
 
-import useApiClient from "@/shared/api/useApiClient";
-import ErrorAlert from "@/shared/ui/components/alerts/ErrorAlert";
-import InfoAlert from "@/shared/ui/components/alerts/InfoAlert";
-import RichTextEditorReadOnly from "@/shared/ui/components/RichTextEditorReadOnly";
+import ErrorAlert from "@/shared/components/alerts/ErrorAlert";
+import InfoAlert from "@/shared/components/alerts/InfoAlert";
+import RichTextEditorReadOnly from "@/shared/components/RichTextEditorReadOnly";
+import useApiClient from "@/shared/hooks/useApiClient";
 import { PLEASE_TRY_AGAIN_TEXT } from "@/shared/utils/constants";
 
 export default function QuestionsAndAnswersReadOnly({

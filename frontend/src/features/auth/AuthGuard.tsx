@@ -4,8 +4,8 @@ import { useQuery } from "@tanstack/react-query";
 import { usePathname, useRouter } from "next/navigation";
 import { ReactNode, useEffect } from "react";
 
-import useAuth from "@/features/auth/useAuth";
-import useApiClient from "@/shared/api/useApiClient";
+import useApiClient from "@/shared/hooks/useApiClient";
+import useAuth from "@/shared/hooks/useAuth";
 
 /**
  *

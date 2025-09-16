@@ -16,9 +16,9 @@ import { StandMatchTitle } from "@/features/matches/matchesList/helper";
 import ProgressBar from "@/features/matches/matchesList/ProgressBar";
 import MatchItemTable from "@/features/matches/MatchItemTable";
 import MeetingInfo from "@/features/matches/MeetingInfo";
-import ErrorAlert from "@/shared/ui/components/alerts/ErrorAlert";
-import InfoAlert from "@/shared/ui/components/alerts/InfoAlert";
-import SuccessAlert from "@/shared/ui/components/alerts/SuccessAlert";
+import ErrorAlert from "@/shared/components/alerts/ErrorAlert";
+import InfoAlert from "@/shared/components/alerts/InfoAlert";
+import SuccessAlert from "@/shared/components/alerts/SuccessAlert";
 import { GENERIC_ERROR_TEXT } from "@/shared/utils/constants";
 
 function useMeetingStatus(meetingTime?: string | Date) {

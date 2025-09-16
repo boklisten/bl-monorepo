@@ -4,7 +4,7 @@ import { useQuery } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 
 import UserSettingsForm from "@/features/user/UserSettingsForm";
-import useApiClient from "@/shared/api/useApiClient";
+import useApiClient from "@/shared/hooks/useApiClient";
 
 const UserSettings = () => {
   const client = useApiClient();

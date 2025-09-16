@@ -3,10 +3,10 @@ import { Item } from "@boklisten/backend/shared/item";
 import { Table, Text, Title } from "@mantine/core";
 import { useQuery } from "@tanstack/react-query";
 
-import unpack from "@/shared/api/bl-api-request";
-import useApiClient from "@/shared/api/useApiClient";
-import ErrorAlert from "@/shared/ui/components/alerts/ErrorAlert";
-import InfoAlert from "@/shared/ui/components/alerts/InfoAlert";
+import ErrorAlert from "@/shared/components/alerts/ErrorAlert";
+import InfoAlert from "@/shared/components/alerts/InfoAlert";
+import useApiClient from "@/shared/hooks/useApiClient";
+import unpack from "@/shared/utils/bl-api-request";
 import {
   GENERIC_ERROR_TEXT,
   PLEASE_TRY_AGAIN_TEXT,

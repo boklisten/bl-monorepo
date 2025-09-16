@@ -1,6 +1,6 @@
 import { Group, Stack, Text } from "@mantine/core";
 
-import SuccessAlert from "@/shared/ui/components/alerts/SuccessAlert";
+import SuccessAlert from "@/shared/components/alerts/SuccessAlert";
 
 export default function SignedContractDetails({
   signedByGuardian,

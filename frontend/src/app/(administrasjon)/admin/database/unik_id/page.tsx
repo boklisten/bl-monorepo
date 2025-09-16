@@ -2,7 +2,7 @@ import { Box, Button, Stack, Title } from "@mantine/core";
 import { IconFileDownload } from "@tabler/icons-react";
 import { Metadata } from "next";
 
-import { publicApiClient } from "@/shared/api/publicApiClient";
+import { publicApiClient } from "@/shared/hooks/publicApiClient";
 
 export const metadata: Metadata = {
   title: "Unike IDer",

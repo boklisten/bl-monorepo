@@ -7,14 +7,18 @@ import { IconObjectScan } from "@tabler/icons-react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useEffect, useRef, useState } from "react";
 
+// fixme: resolve bad feature-feature coupling
+//  eslint-disable-next-line boundaries/element-types
 import { ItemStatus } from "@/features/matches/matches-helper";
+//  eslint-disable-next-line boundaries/element-types
 import MatchItemTable from "@/features/matches/MatchItemTable";
+//  eslint-disable-next-line boundaries/element-types
 import MatchScannerContent from "@/features/matches/MatchScannerContent";
-import { determineScannedTextType } from "@/features/scanner/BlidScanner";
-import ScannerModal from "@/features/scanner/ScannerModal";
-import unpack from "@/shared/api/bl-api-request";
-import useApiClient from "@/shared/api/useApiClient";
-import InfoAlert from "@/shared/ui/components/alerts/InfoAlert";
+import InfoAlert from "@/shared/components/alerts/InfoAlert";
+import { determineScannedTextType } from "@/shared/components/scanner/BlidScanner";
+import ScannerModal from "@/shared/components/scanner/ScannerModal";
+import useApiClient from "@/shared/hooks/useApiClient";
+import unpack from "@/shared/utils/bl-api-request";
 import { TextType } from "@/shared/utils/types";
 
 function calculateUnfulfilledOrderItems(orders: Order[]): OrderItem[] {

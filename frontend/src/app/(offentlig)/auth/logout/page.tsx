@@ -2,7 +2,7 @@
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 
-import useAuth from "@/features/auth/useAuth";
+import useAuth from "@/shared/hooks/useAuth";
 import BL_CONFIG from "@/shared/utils/bl-config";
 
 export default function LogoutPage() {

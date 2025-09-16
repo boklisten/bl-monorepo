@@ -2,9 +2,9 @@ import { List, Stack, Text } from "@mantine/core";
 import { modals } from "@mantine/modals";
 import { useMutation } from "@tanstack/react-query";
 
-import useApiClient from "@/shared/api/useApiClient";
-import { showErrorNotification } from "@/shared/ui/notifications";
-import UploadCSVFile from "@/shared/UploadCSVFile";
+import UploadCSVFile from "@/shared/components/UploadCSVFile";
+import useApiClient from "@/shared/hooks/useApiClient";
+import { showErrorNotification } from "@/shared/utils/notifications";
 
 function SuccessfulUploadDialog({
   unknownSubjects,

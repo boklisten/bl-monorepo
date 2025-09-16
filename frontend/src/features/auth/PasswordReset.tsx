@@ -5,11 +5,11 @@ import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { useState } from "react";
 
-import { publicApiClient } from "@/shared/api/publicApiClient";
-import { newPasswordFieldValidator } from "@/shared/form/fields/complex/NewPasswordField";
-import { useAppForm } from "@/shared/form/hooks";
-import ErrorAlert from "@/shared/ui/components/alerts/ErrorAlert";
-import SuccessAlert from "@/shared/ui/components/alerts/SuccessAlert";
+import ErrorAlert from "@/shared/components/alerts/ErrorAlert";
+import SuccessAlert from "@/shared/components/alerts/SuccessAlert";
+import { newPasswordFieldValidator } from "@/shared/components/form/fields/complex/NewPasswordField";
+import { useAppForm } from "@/shared/hooks/form";
+import { publicApiClient } from "@/shared/hooks/publicApiClient";
 import {
   GENERIC_ERROR_TEXT,
   PLEASE_TRY_AGAIN_TEXT,

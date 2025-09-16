@@ -9,14 +9,14 @@ import { useMutation, useQuery } from "@tanstack/react-query";
 import dayjs from "dayjs";
 
 import { calculateSmsSegmentFeedback } from "@/features/reminders/sms";
-import unpack from "@/shared/api/bl-api-request";
-import useApiClient from "@/shared/api/useApiClient";
-import { useAppForm } from "@/shared/form/hooks";
+import { useAppForm } from "@/shared/hooks/form";
+import useApiClient from "@/shared/hooks/useApiClient";
+import unpack from "@/shared/utils/bl-api-request";
 import {
   showErrorNotification,
   showInfoNotification,
   showSuccessNotification,
-} from "@/shared/ui/notifications";
+} from "@/shared/utils/notifications";
 
 const SENDGRID_TEMPLATE_ID_REGEX = /^d-[0-9a-f]{32}$/;
 

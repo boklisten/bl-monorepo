@@ -16,9 +16,9 @@ import {
 } from "@tabler/icons-react";
 import { useState } from "react";
 
-import ScannerModal from "@/features/scanner/ScannerModal";
-import unpack from "@/shared/api/bl-api-request";
-import useApiClient from "@/shared/api/useApiClient";
+import ScannerModal from "@/shared/components/scanner/ScannerModal";
+import useApiClient from "@/shared/hooks/useApiClient";
+import unpack from "@/shared/utils/bl-api-request";
 
 export default function UserDetailSearchField({
   onSelectedResult,

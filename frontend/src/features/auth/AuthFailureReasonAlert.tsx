@@ -2,7 +2,7 @@
 import { AuthVippsError } from "@boklisten/backend/shared/auth_vipps_error";
 import { useSearchParams } from "next/navigation";
 
-import ErrorAlert from "@/shared/ui/components/alerts/ErrorAlert";
+import ErrorAlert from "@/shared/components/alerts/ErrorAlert";
 import { PLEASE_TRY_AGAIN_TEXT } from "@/shared/utils/constants";
 
 const AUTH_VIPPS_ERROR = {

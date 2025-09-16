@@ -5,7 +5,7 @@ import {
 import { Title } from "@mantine/core";
 import { ReactNode } from "react";
 
-import { getAccessTokenBody } from "@/features/auth/token";
+import { getAccessTokenBody } from "@/shared/utils/token";
 
 export interface ItemStatus {
   id: string;

@@ -3,14 +3,17 @@ import { Button, Stack } from "@mantine/core";
 import { IconLockOpen } from "@tabler/icons-react";
 import { useMutation, useQuery } from "@tanstack/react-query";
 
+// fixme: resolve bad feature-feature coupling
+//  eslint-disable-next-line boundaries/element-types
 import AdministrateUserSignatures from "@/features/signatures/AdministrateUserSignatures";
+//  eslint-disable-next-line boundaries/element-types
 import AdministrateUserForm from "@/features/user/AdministrateUserForm";
-import unpack from "@/shared/api/bl-api-request";
-import useApiClient from "@/shared/api/useApiClient";
+import useApiClient from "@/shared/hooks/useApiClient";
+import unpack from "@/shared/utils/bl-api-request";
 import {
   showErrorNotification,
   showSuccessNotification,
-} from "@/shared/ui/notifications";
+} from "@/shared/utils/notifications";
 
 export default function UserDetailEditorDialog({
   initialUserDetails,

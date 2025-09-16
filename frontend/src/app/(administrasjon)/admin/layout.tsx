@@ -8,8 +8,8 @@ import {
 import { Metadata } from "next";
 
 import AuthGuard from "@/features/auth/AuthGuard";
-import AdminPageHeader from "@/shared/layout/AdminPageHeader";
-import AdminPageNavigation from "@/shared/layout/AdminPageNavigation";
+import AdminPageHeader from "@/shared/components/AdminPageHeader";
+import AdminPageNavigation from "@/shared/components/AdminPageNavigation";
 
 export const metadata: Metadata = {
   title: {

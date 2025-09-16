@@ -15,9 +15,9 @@ import { IconMail, IconObjectScan, IconPhone } from "@tabler/icons-react";
 import dayjs from "dayjs";
 import { useState } from "react";
 
-import ScannerModal from "@/features/scanner/ScannerModal";
-import useApiClient from "@/shared/api/useApiClient";
-import { useAppForm } from "@/shared/form/hooks";
+import ScannerModal from "@/shared/components/scanner/ScannerModal";
+import { useAppForm } from "@/shared/hooks/form";
+import useApiClient from "@/shared/hooks/useApiClient";
 
 export default function PublicBlidSearch() {
   const client = useApiClient();

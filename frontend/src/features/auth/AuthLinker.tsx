@@ -2,7 +2,7 @@
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useEffect } from "react";
 
-import { addAccessToken, addRefreshToken } from "@/features/auth/token";
+import { addAccessToken, addRefreshToken } from "@/shared/utils/token";
 
 export default function AuthLinker() {
   const pathname = usePathname();

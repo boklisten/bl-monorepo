@@ -16,13 +16,13 @@ import MatchItemTable from "@/features/matches/MatchItemTable";
 import MatchScannerContent from "@/features/matches/MatchScannerContent";
 import MeetingInfo from "@/features/matches/MeetingInfo";
 import OtherPersonContact from "@/features/matches/OtherPersonContact";
-import ScannerModal from "@/features/scanner/ScannerModal";
-import ScannerTutorial from "@/features/scanner/ScannerTutorial";
-import useApiClient from "@/shared/api/useApiClient";
-import ErrorAlert from "@/shared/ui/components/alerts/ErrorAlert";
-import SuccessAlert from "@/shared/ui/components/alerts/SuccessAlert";
-import WarningAlert from "@/shared/ui/components/alerts/WarningAlert";
-import CountdownToRedirect from "@/shared/ui/components/CountdownToRedirect";
+import ErrorAlert from "@/shared/components/alerts/ErrorAlert";
+import SuccessAlert from "@/shared/components/alerts/SuccessAlert";
+import WarningAlert from "@/shared/components/alerts/WarningAlert";
+import CountdownToRedirect from "@/shared/components/CountdownToRedirect";
+import ScannerModal from "@/shared/components/scanner/ScannerModal";
+import ScannerTutorial from "@/shared/components/scanner/ScannerTutorial";
+import useApiClient from "@/shared/hooks/useApiClient";
 import { GENERIC_ERROR_TEXT } from "@/shared/utils/constants";
 
 const UserMatchDetail = ({

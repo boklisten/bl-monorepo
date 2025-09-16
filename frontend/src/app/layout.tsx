@@ -17,9 +17,9 @@ import Script from "next/script";
 import { Suspense } from "react";
 
 import AuthLinker from "@/features/auth/AuthLinker";
-import DayJsSetup from "@/shared/layout/DayJsClientSetup";
-import ReactQueryClientProvider from "@/shared/layout/ReactQueryClientProvider";
-import theme from "@/shared/ui/theme";
+import DayJsSetup from "@/shared/components/DayJsClientSetup";
+import ReactQueryClientProvider from "@/shared/components/ReactQueryClientProvider";
+import theme from "@/shared/utils/theme";
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (

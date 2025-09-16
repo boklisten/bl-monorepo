@@ -5,9 +5,9 @@ import { Item } from "@boklisten/backend/shared/item";
 import { useQuery } from "@tanstack/react-query";
 
 import WaitingListTable from "@/features/waiting-list/WaitingListTable";
-import unpack from "@/shared/api/bl-api-request";
-import useApiClient from "@/shared/api/useApiClient";
-import ErrorAlert from "@/shared/ui/components/alerts/ErrorAlert";
+import ErrorAlert from "@/shared/components/alerts/ErrorAlert";
+import useApiClient from "@/shared/hooks/useApiClient";
+import unpack from "@/shared/utils/bl-api-request";
 import { PLEASE_TRY_AGAIN_TEXT } from "@/shared/utils/constants";
 
 export default function WaitingList() {

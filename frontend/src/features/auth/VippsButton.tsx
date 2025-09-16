@@ -2,7 +2,7 @@
 import { Center } from "@mantine/core";
 import { useRouter, useSearchParams } from "next/navigation";
 
-import { publicApiClient } from "@/shared/api/publicApiClient";
+import { publicApiClient } from "@/shared/hooks/publicApiClient";
 import BL_CONFIG from "@/shared/utils/bl-config";
 
 export default function VippsButton({ verb }: { verb: "login" | "register" }) {

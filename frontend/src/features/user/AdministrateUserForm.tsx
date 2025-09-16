@@ -12,15 +12,15 @@ import UserInfoFields, {
   isUnder18,
   UserInfoFieldValues,
 } from "@/features/user/UserInfoFields";
-import useApiClient from "@/shared/api/useApiClient";
-import { emailFieldValidator } from "@/shared/form/fields/complex/EmailField";
-import { nameFieldValidator } from "@/shared/form/fields/complex/NameField";
-import { phoneNumberFieldValidator } from "@/shared/form/fields/complex/PhoneNumberField";
-import { useAppForm } from "@/shared/form/hooks";
+import { emailFieldValidator } from "@/shared/components/form/fields/complex/EmailField";
+import { nameFieldValidator } from "@/shared/components/form/fields/complex/NameField";
+import { phoneNumberFieldValidator } from "@/shared/components/form/fields/complex/PhoneNumberField";
+import { useAppForm } from "@/shared/hooks/form";
+import useApiClient from "@/shared/hooks/useApiClient";
 import {
   showErrorNotification,
   showSuccessNotification,
-} from "@/shared/ui/notifications";
+} from "@/shared/utils/notifications";
 
 type AdministrateUserFormValues = {
   email: string;

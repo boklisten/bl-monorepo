@@ -14,14 +14,14 @@ import { useMutation, useQuery } from "@tanstack/react-query";
 import Image from "next/image";
 
 import SignedContractDetails from "@/features/signatures/SignedContractDetails";
-import useApiClient from "@/shared/api/useApiClient";
-import ErrorAlert from "@/shared/ui/components/alerts/ErrorAlert";
-import WarningAlert from "@/shared/ui/components/alerts/WarningAlert";
+import ErrorAlert from "@/shared/components/alerts/ErrorAlert";
+import WarningAlert from "@/shared/components/alerts/WarningAlert";
+import useApiClient from "@/shared/hooks/useApiClient";
+import { PLEASE_TRY_AGAIN_TEXT } from "@/shared/utils/constants";
 import {
   showErrorNotification,
   showSuccessNotification,
-} from "@/shared/ui/notifications";
-import { PLEASE_TRY_AGAIN_TEXT } from "@/shared/utils/constants";
+} from "@/shared/utils/notifications";
 
 export default function AdministrateUserSignatures({
   userDetail,

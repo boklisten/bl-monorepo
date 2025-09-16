@@ -1,6 +1,6 @@
 "use client";
 
-import useAuthLinker from "@/features/auth/useAuthLinker";
+import useAuthLinker from "@/shared/hooks/useAuthLinker";
 
 export default function RedirectTo(props: {
   target: "bl-admin" | "bl-web";

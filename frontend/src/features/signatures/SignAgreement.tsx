@@ -3,13 +3,15 @@ import { Button, Skeleton, Stack } from "@mantine/core";
 import { IconChecks } from "@tabler/icons-react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
+// fixme: resolve bad feature-feature coupling
+//  eslint-disable-next-line boundaries/element-types
 import ExpandableEditableTextReadOnly from "@/features/editable-text/ExpandableEditableTextReadOnly";
 import SignedContractDetails from "@/features/signatures/SignedContractDetails";
-import { publicApiClient } from "@/shared/api/publicApiClient";
-import { useAppForm } from "@/shared/form/hooks";
-import ErrorAlert from "@/shared/ui/components/alerts/ErrorAlert";
-import { showErrorNotification } from "@/shared/ui/notifications";
+import ErrorAlert from "@/shared/components/alerts/ErrorAlert";
+import { useAppForm } from "@/shared/hooks/form";
+import { publicApiClient } from "@/shared/hooks/publicApiClient";
 import { PLEASE_TRY_AGAIN_TEXT } from "@/shared/utils/constants";
+import { showErrorNotification } from "@/shared/utils/notifications";
 
 interface SignatureForm {
   signingName: string;

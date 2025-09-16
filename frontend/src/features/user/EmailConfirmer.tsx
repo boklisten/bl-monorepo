@@ -5,11 +5,11 @@ import { useQuery } from "@tanstack/react-query";
 import Link from "next/link";
 import { Suspense } from "react";
 
-import { publicApiClient } from "@/shared/api/publicApiClient";
-import ErrorAlert from "@/shared/ui/components/alerts/ErrorAlert";
-import InfoAlert from "@/shared/ui/components/alerts/InfoAlert";
-import SuccessAlert from "@/shared/ui/components/alerts/SuccessAlert";
-import CountdownToRedirect from "@/shared/ui/components/CountdownToRedirect";
+import ErrorAlert from "@/shared/components/alerts/ErrorAlert";
+import InfoAlert from "@/shared/components/alerts/InfoAlert";
+import SuccessAlert from "@/shared/components/alerts/SuccessAlert";
+import CountdownToRedirect from "@/shared/components/CountdownToRedirect";
+import { publicApiClient } from "@/shared/hooks/publicApiClient";
 
 export default function EmailConfirmer({
   confirmationId,

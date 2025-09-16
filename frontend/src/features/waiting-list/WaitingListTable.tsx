@@ -12,11 +12,11 @@ import { MantineReactTable, useMantineReactTable } from "mantine-react-table";
 import { MRT_Localization_NO } from "mantine-react-table/locales/no";
 
 import CreateWaitingListEntry from "@/features/waiting-list/CreateWaitingListEntry";
-import useApiClient from "@/shared/api/useApiClient";
+import useApiClient from "@/shared/hooks/useApiClient";
 import {
   showErrorNotification,
   showSuccessNotification,
-} from "@/shared/ui/notifications";
+} from "@/shared/utils/notifications";
 
 export default function WaitingListTable({
   loading,

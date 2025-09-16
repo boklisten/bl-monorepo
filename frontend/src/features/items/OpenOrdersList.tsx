@@ -6,12 +6,12 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import dayjs from "dayjs";
 import { useRouter } from "next/navigation";
 
-import useApiClient from "@/shared/api/useApiClient";
-import InfoAlert from "@/shared/ui/components/alerts/InfoAlert";
+import InfoAlert from "@/shared/components/alerts/InfoAlert";
+import useApiClient from "@/shared/hooks/useApiClient";
 import {
   showErrorNotification,
   showSuccessNotification,
-} from "@/shared/ui/notifications";
+} from "@/shared/utils/notifications";
 
 export default function OpenOrdersList({
   openOrderItems,

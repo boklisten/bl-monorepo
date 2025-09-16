@@ -25,7 +25,7 @@ import {
 import dayjs from "dayjs";
 import { ReactNode } from "react";
 
-import useAuthLinker from "@/features/auth/useAuthLinker";
+import useAuthLinker from "@/shared/hooks/useAuthLinker";
 
 function InfoEntry({
   startIcon,

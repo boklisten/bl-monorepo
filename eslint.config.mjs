@@ -8,6 +8,7 @@ import pluginQuery from "@tanstack/eslint-plugin-query";
 import tsParser from "@typescript-eslint/parser";
 import eslintConfigPrettier from "eslint-config-prettier";
 import { createTypeScriptImportResolver } from "eslint-import-resolver-typescript";
+import boundaries from "eslint-plugin-boundaries";
 import pluginChaiFriendly from "eslint-plugin-chai-friendly";
 import { importX } from "eslint-plugin-import-x";
 import jsxA11y from "eslint-plugin-jsx-a11y";
@@ -48,6 +49,7 @@ export default tseslint.config(
       },
     },
     plugins: {
+      boundaries,
       "@next/next": nextPlugin,
       "no-relative-import-paths": noRelativeImportPathsPlugin,
       "react-compiler": reactCompiler,
@@ -61,10 +63,39 @@ export default tseslint.config(
           project: PROJECT_PATHS,
         }),
       ],
+      // Needed for boundaries to import aliases
+      "import/resolver": {
+        typescript: { project: PROJECT_PATHS, alwaysTryTypes: true },
+      },
+      "boundaries/elements": [
+        { type: "app", pattern: "frontend/src/app/**" },
+        { type: "shared", pattern: "frontend/src/shared/**" },
+        {
+          type: "feature",
+          pattern: "frontend/src/features/*/**",
+          capture: ["name"],
+        },
+      ],
     },
     rules: {
       ...nextPlugin.configs.recommended.rules,
       ...nextPlugin.configs["core-web-vitals"].rules,
+      "boundaries/element-types": [
+        "error",
+        {
+          default: "disallow",
+          message: "${file.type} is not allowed to import ${dependency.type}",
+          rules: [
+            { from: ["app"], allow: ["shared", "feature"] },
+            { from: ["feature"], allow: ["shared"] },
+            // A feature may import from itself, but not from other features
+            {
+              from: [["feature", { name: "*" }]],
+              allow: [["feature", { name: "${from.name}" }]],
+            },
+          ],
+        },
+      ],
       "import-x/no-unused-modules": [
         1,
         {

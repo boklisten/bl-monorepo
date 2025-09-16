@@ -3,9 +3,9 @@
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 
-import useAuth from "@/features/auth/useAuth";
-import useAuthLinker from "@/features/auth/useAuthLinker";
-import useApiClient from "@/shared/api/useApiClient";
+import useApiClient from "@/shared/hooks/useApiClient";
+import useAuth from "@/shared/hooks/useAuth";
+import useAuthLinker from "@/shared/hooks/useAuthLinker";
 
 export default function AuthVerifier() {
   const client = useApiClient();

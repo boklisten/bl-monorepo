@@ -8,9 +8,9 @@ import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
 
 import BranchSettings from "@/features/branches/BranchSettings";
-import SelectBranchTreeView from "@/features/branches/SelectBranchTreeView";
-import unpack from "@/shared/api/bl-api-request";
-import useApiClient from "@/shared/api/useApiClient";
+import SelectBranchTreeView from "@/shared/components/SelectBranchTreeView";
+import useApiClient from "@/shared/hooks/useApiClient";
+import unpack from "@/shared/utils/bl-api-request";
 
 export default function Branches() {
   const client = useApiClient();

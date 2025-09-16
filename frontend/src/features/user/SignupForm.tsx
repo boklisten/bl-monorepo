@@ -6,21 +6,21 @@ import { useMutation } from "@tanstack/react-query";
 import Link from "next/link";
 import { useState } from "react";
 
-import { addAccessToken, addRefreshToken } from "@/features/auth/token";
-import useAuthLinker from "@/features/auth/useAuthLinker";
 import UserInfoFields, {
   isUnder18,
   userInfoFieldDefaultValues,
   UserInfoFieldValues,
 } from "@/features/user/UserInfoFields";
-import { publicApiClient } from "@/shared/api/publicApiClient";
-import { emailFieldValidator } from "@/shared/form/fields/complex/EmailField";
-import { nameFieldValidator } from "@/shared/form/fields/complex/NameField";
-import { newPasswordFieldValidator } from "@/shared/form/fields/complex/NewPasswordField";
-import { phoneNumberFieldValidator } from "@/shared/form/fields/complex/PhoneNumberField";
-import { useAppForm } from "@/shared/form/hooks";
-import WarningAlert from "@/shared/ui/components/alerts/WarningAlert";
-import { showErrorNotification } from "@/shared/ui/notifications";
+import WarningAlert from "@/shared/components/alerts/WarningAlert";
+import { emailFieldValidator } from "@/shared/components/form/fields/complex/EmailField";
+import { nameFieldValidator } from "@/shared/components/form/fields/complex/NameField";
+import { newPasswordFieldValidator } from "@/shared/components/form/fields/complex/NewPasswordField";
+import { phoneNumberFieldValidator } from "@/shared/components/form/fields/complex/PhoneNumberField";
+import { useAppForm } from "@/shared/hooks/form";
+import { publicApiClient } from "@/shared/hooks/publicApiClient";
+import useAuthLinker from "@/shared/hooks/useAuthLinker";
+import { showErrorNotification } from "@/shared/utils/notifications";
+import { addAccessToken, addRefreshToken } from "@/shared/utils/token";
 
 function isSchoolEmail(email: string) {
   return [

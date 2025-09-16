@@ -6,9 +6,9 @@ import { ReactNode } from "react";
 
 import CustomerItemCard from "@/features/items/CustomerItemCard";
 import OpenOrdersList from "@/features/items/OpenOrdersList";
-import useApiClient from "@/shared/api/useApiClient";
-import ErrorAlert from "@/shared/ui/components/alerts/ErrorAlert";
-import InfoAlert from "@/shared/ui/components/alerts/InfoAlert";
+import ErrorAlert from "@/shared/components/alerts/ErrorAlert";
+import InfoAlert from "@/shared/components/alerts/InfoAlert";
+import useApiClient from "@/shared/hooks/useApiClient";
 import { PLEASE_TRY_AGAIN_TEXT } from "@/shared/utils/constants";
 
 function CustomerItemsOverviewWrapper({

@@ -12,19 +12,23 @@ import { IconSend } from "@tabler/icons-react";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { Suspense } from "react";
 
+// fixme: resolve bad feature-feature coupling
+//  eslint-disable-next-line boundaries/element-types
 import SignAgreement from "@/features/signatures/SignAgreement";
+//  eslint-disable-next-line boundaries/element-types
 import { isUnder18 } from "@/features/user/UserInfoFields";
+//  eslint-disable-next-line boundaries/element-types
 import UserSettingsForm from "@/features/user/UserSettingsForm";
-import useApiClient from "@/shared/api/useApiClient";
-import ErrorAlert from "@/shared/ui/components/alerts/ErrorAlert";
-import InfoAlert from "@/shared/ui/components/alerts/InfoAlert";
-import SuccessAlert from "@/shared/ui/components/alerts/SuccessAlert";
-import CountdownToRedirect from "@/shared/ui/components/CountdownToRedirect";
+import ErrorAlert from "@/shared/components/alerts/ErrorAlert";
+import InfoAlert from "@/shared/components/alerts/InfoAlert";
+import SuccessAlert from "@/shared/components/alerts/SuccessAlert";
+import CountdownToRedirect from "@/shared/components/CountdownToRedirect";
+import useApiClient from "@/shared/hooks/useApiClient";
+import { PLEASE_TRY_AGAIN_TEXT } from "@/shared/utils/constants";
 import {
   showErrorNotification,
   showSuccessNotification,
-} from "@/shared/ui/notifications";
-import { PLEASE_TRY_AGAIN_TEXT } from "@/shared/utils/constants";
+} from "@/shared/utils/notifications";
 
 export default function UserTasks({
   cachedAgreementText,

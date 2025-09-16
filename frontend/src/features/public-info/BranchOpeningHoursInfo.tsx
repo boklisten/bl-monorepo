@@ -5,11 +5,11 @@ import { Skeleton, Stack, Table } from "@mantine/core";
 import { useQuery } from "@tanstack/react-query";
 import dayjs from "dayjs";
 
-import ContactInfo from "@/features/public-info/ContactInfo";
-import unpack from "@/shared/api/bl-api-request";
-import { publicApiClient } from "@/shared/api/publicApiClient";
-import ErrorAlert from "@/shared/ui/components/alerts/ErrorAlert";
-import InfoAlert from "@/shared/ui/components/alerts/InfoAlert";
+import ErrorAlert from "@/shared/components/alerts/ErrorAlert";
+import InfoAlert from "@/shared/components/alerts/InfoAlert";
+import ContactInfo from "@/shared/components/ContactInfo";
+import { publicApiClient } from "@/shared/hooks/publicApiClient";
+import unpack from "@/shared/utils/bl-api-request";
 import { PLEASE_TRY_AGAIN_TEXT } from "@/shared/utils/constants";
 
 const compareOpeningHours = (a: OpeningHour, b: OpeningHour): number => {

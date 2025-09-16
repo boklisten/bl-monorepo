@@ -3,7 +3,7 @@ import { Anchor, Group, Text } from "@mantine/core";
 import { IconPhone } from "@tabler/icons-react";
 import Link from "next/link";
 
-import { getAccessTokenBody } from "@/features/auth/token";
+import { getAccessTokenBody } from "@/shared/utils/token";
 
 const OtherPersonContact = ({
   userMatch,

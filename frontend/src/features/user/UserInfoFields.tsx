@@ -1,11 +1,11 @@
 import { Divider, Fieldset, Stack, Title } from "@mantine/core";
 import dayjs from "dayjs";
 
-import { addressFieldValidator } from "@/shared/form/fields/complex/AddressField";
-import { nameFieldValidator } from "@/shared/form/fields/complex/NameField";
-import { phoneNumberFieldValidator } from "@/shared/form/fields/complex/PhoneNumberField";
-import { postalCodeFieldValidator } from "@/shared/form/fields/complex/PostalCodeField";
-import { withFieldGroup } from "@/shared/form/hooks";
+import { addressFieldValidator } from "@/shared/components/form/fields/complex/AddressField";
+import { nameFieldValidator } from "@/shared/components/form/fields/complex/NameField";
+import { phoneNumberFieldValidator } from "@/shared/components/form/fields/complex/PhoneNumberField";
+import { postalCodeFieldValidator } from "@/shared/components/form/fields/complex/PostalCodeField";
+import { withFieldGroup } from "@/shared/hooks/form";
 
 export interface UserInfoFieldValues {
   name: string;

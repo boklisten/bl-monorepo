@@ -2,7 +2,7 @@
 
 import { useEffect } from "react";
 
-import useAuth from "@/features/auth/useAuth";
+import useAuth from "@/shared/hooks/useAuth";
 
 export default function AuthLogoutComponent() {
   const { logout } = useAuth();

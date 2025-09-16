@@ -6,8 +6,8 @@ import Link from "next/link";
 
 import StandMatchDetail from "@/features/matches/StandMatchDetail";
 import UserMatchDetail from "@/features/matches/UserMatchDetail";
-import useApiClient from "@/shared/api/useApiClient";
-import ErrorAlert from "@/shared/ui/components/alerts/ErrorAlert";
+import ErrorAlert from "@/shared/components/alerts/ErrorAlert";
+import useApiClient from "@/shared/hooks/useApiClient";
 import {
   GENERIC_ERROR_TEXT,
   PLEASE_TRY_AGAIN_TEXT,

@@ -3,7 +3,7 @@ import { Metadata } from "next";
 import Link from "next/link";
 
 import AuthLogoutComponent from "@/features/auth/AuthLogoutComponent";
-import ErrorAlert from "@/shared/ui/components/alerts/ErrorAlert";
+import ErrorAlert from "@/shared/components/alerts/ErrorAlert";
 
 export const metadata: Metadata = {
   title: "Tilgang avslått",

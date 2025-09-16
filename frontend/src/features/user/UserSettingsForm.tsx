@@ -19,17 +19,17 @@ import UserInfoFields, {
   isUnder18,
   UserInfoFieldValues,
 } from "@/features/user/UserInfoFields";
-import useApiClient from "@/shared/api/useApiClient";
-import { emailFieldValidator } from "@/shared/form/fields/complex/EmailField";
-import { nameFieldValidator } from "@/shared/form/fields/complex/NameField";
-import { phoneNumberFieldValidator } from "@/shared/form/fields/complex/PhoneNumberField";
-import { useAppForm } from "@/shared/form/hooks";
-import InfoAlert from "@/shared/ui/components/alerts/InfoAlert";
-import WarningAlert from "@/shared/ui/components/alerts/WarningAlert";
+import InfoAlert from "@/shared/components/alerts/InfoAlert";
+import WarningAlert from "@/shared/components/alerts/WarningAlert";
+import { emailFieldValidator } from "@/shared/components/form/fields/complex/EmailField";
+import { nameFieldValidator } from "@/shared/components/form/fields/complex/NameField";
+import { phoneNumberFieldValidator } from "@/shared/components/form/fields/complex/PhoneNumberField";
+import { useAppForm } from "@/shared/hooks/form";
+import useApiClient from "@/shared/hooks/useApiClient";
 import {
   showErrorNotification,
   showSuccessNotification,
-} from "@/shared/ui/notifications";
+} from "@/shared/utils/notifications";
 
 export default function UserSettingsForm({
   userDetail,

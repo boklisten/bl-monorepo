@@ -2,7 +2,6 @@ import { Divider, Fieldset, Stack, Title } from "@mantine/core";
 import dayjs from "dayjs";
 
 import { addressFieldValidator } from "@/components/form/fields/complex/AddressField";
-import { emailFieldValidator } from "@/components/form/fields/complex/EmailField";
 import { nameFieldValidator } from "@/components/form/fields/complex/NameField";
 import { phoneNumberFieldValidator } from "@/components/form/fields/complex/PhoneNumberField";
 import { postalCodeFieldValidator } from "@/components/form/fields/complex/PostalCodeField";
@@ -46,15 +45,8 @@ const UserInfoFields = withFieldGroup({
   defaultValues: userInfoFieldDefaultValues,
   props: {
     perspective: "personal",
-    primaryEmail: "",
-    primaryPhoneNumber: "",
   },
-  render: function Render({
-    group,
-    perspective,
-    primaryEmail,
-    primaryPhoneNumber,
-  }) {
+  render: function Render({ group, perspective }) {
     return (
       <>
         <Stack gap={3}>
@@ -133,13 +125,7 @@ const UserInfoFields = withFieldGroup({
                 legend={`Siden ${perspective === "personal" ? "du" : "kunden"} er under 18, trenger vi informasjon om en av ${perspective === "personal" ? "dine" : "kundens"} foresatte.`}
               >
                 <Stack gap={"xs"}>
-                  <group.AppField
-                    name={"guardianName"}
-                    validators={{
-                      onBlur: ({ value }) =>
-                        nameFieldValidator(value, "guardian"),
-                    }}
-                  >
+                  <group.AppField name={"guardianName"}>
                     {(field) => (
                       <field.NameField
                         label={"Foresatt sitt fulle navn"}
@@ -148,13 +134,7 @@ const UserInfoFields = withFieldGroup({
                       />
                     )}
                   </group.AppField>
-                  <group.AppField
-                    name={"guardianEmail"}
-                    validators={{
-                      onBlur: ({ value }) =>
-                        emailFieldValidator(value, "guardian", primaryEmail),
-                    }}
-                  >
+                  <group.AppField name={"guardianEmail"}>
                     {(field) => (
                       <field.EmailField
                         label={"Foresatt sin e-post"}
@@ -163,17 +143,7 @@ const UserInfoFields = withFieldGroup({
                       />
                     )}
                   </group.AppField>
-                  <group.AppField
-                    name={"guardianPhoneNumber"}
-                    validators={{
-                      onBlur: ({ value }) =>
-                        phoneNumberFieldValidator(
-                          value,
-                          "guardian",
-                          primaryPhoneNumber,
-                        ),
-                    }}
-                  >
+                  <group.AppField name={"guardianPhoneNumber"}>
                     {(field) => (
                       <field.PhoneNumberField
                         label={"Foresatt sitt telefonnummer"}

@@ -1,16 +1,19 @@
 "use client";
 
 import { Anchor, Button, Group, Space, Stack, Text } from "@mantine/core";
-import { createFieldMap, useStore } from "@tanstack/react-form";
+import { createFieldMap } from "@tanstack/react-form";
 import { useMutation } from "@tanstack/react-query";
 import Link from "next/link";
 import { useState } from "react";
 
 import { addAccessToken, addRefreshToken } from "@/api/token";
 import { emailFieldValidator } from "@/components/form/fields/complex/EmailField";
+import { nameFieldValidator } from "@/components/form/fields/complex/NameField";
 import { newPasswordFieldValidator } from "@/components/form/fields/complex/NewPasswordField";
+import { phoneNumberFieldValidator } from "@/components/form/fields/complex/PhoneNumberField";
 import WarningAlert from "@/components/ui/alerts/WarningAlert";
 import UserInfoFields, {
+  isUnder18,
   userInfoFieldDefaultValues,
   UserInfoFieldValues,
 } from "@/components/user/UserInfoFields";
@@ -48,6 +51,28 @@ export default function SignupForm() {
   const form = useAppForm({
     defaultValues,
     onSubmit: () => registerMutation.mutate(),
+    validators: {
+      onSubmit: ({ value }) => {
+        if (isUnder18(new Date(value.birthday))) {
+          return {
+            fields: {
+              guardianName: nameFieldValidator(value.guardianName, "guardian"),
+              guardianEmail: emailFieldValidator(
+                value.guardianEmail,
+                "guardian",
+                value.email,
+              ),
+              guardianPhoneNumber: phoneNumberFieldValidator(
+                value.guardianPhoneNumber,
+                "guardian",
+                value.phoneNumber,
+              ),
+            },
+          };
+        }
+        return null;
+      },
+    },
   });
   const [serverErrors, setServerErrors] = useState<string[]>([]);
 
@@ -88,11 +113,6 @@ export default function SignupForm() {
       }
     },
   });
-  const primaryEmail = useStore(form.store, (state) => state.values.email);
-  const primaryPhoneNumber = useStore(
-    form.store,
-    (state) => state.values.phoneNumber,
-  );
 
   return (
     <Stack gap={"xs"}>
@@ -126,8 +146,6 @@ export default function SignupForm() {
       </form.AppField>
       <UserInfoFields
         perspective={"personal"}
-        primaryEmail={primaryEmail}
-        primaryPhoneNumber={primaryPhoneNumber}
         fields={createFieldMap(defaultValues)}
         form={form}
       />
@@ -174,7 +192,10 @@ export default function SignupForm() {
       <form.AppForm>
         <form.ErrorSummary serverErrors={serverErrors} />
       </form.AppForm>
-      <Button loading={registerMutation.isPending} onClick={form.handleSubmit}>
+      <Button
+        loading={form.state.isValidating || registerMutation.isPending}
+        onClick={form.handleSubmit}
+      >
         Registrer deg
       </Button>
     </Stack>

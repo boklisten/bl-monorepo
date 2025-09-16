@@ -3,13 +3,16 @@
 import { UserDetail } from "@boklisten/backend/shared/user-detail";
 import { Button, Space, Stack, Tooltip } from "@mantine/core";
 import { IconCheck, IconInfoCircleFilled } from "@tabler/icons-react";
-import { createFieldMap, useStore } from "@tanstack/react-form";
+import { createFieldMap } from "@tanstack/react-form";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import dayjs from "dayjs";
 import { useState } from "react";
 
 import { emailFieldValidator } from "@/components/form/fields/complex/EmailField";
+import { nameFieldValidator } from "@/components/form/fields/complex/NameField";
+import { phoneNumberFieldValidator } from "@/components/form/fields/complex/PhoneNumberField";
 import UserInfoFields, {
+  isUnder18,
   UserInfoFieldValues,
 } from "@/components/user/UserInfoFields";
 import { useAppForm } from "@/hooks/form";
@@ -50,6 +53,28 @@ export default function AdministrateUserForm({
   const form = useAppForm({
     defaultValues,
     onSubmit: () => updateUserDetailsMutation.mutate(),
+    validators: {
+      onSubmit: ({ value }) => {
+        if (isUnder18(new Date(value.birthday))) {
+          return {
+            fields: {
+              guardianName: nameFieldValidator(value.guardianName, "guardian"),
+              guardianEmail: emailFieldValidator(
+                value.guardianEmail,
+                "guardian",
+                value.email,
+              ),
+              guardianPhoneNumber: phoneNumberFieldValidator(
+                value.guardianPhoneNumber,
+                "guardian",
+                value.phoneNumber,
+              ),
+            },
+          };
+        }
+        return null;
+      },
+    },
   });
   const [serverErrors, setServerErrors] = useState<string[]>([]);
 
@@ -91,11 +116,6 @@ export default function AdministrateUserForm({
       }
     },
   });
-  const primaryEmail = useStore(form.store, (state) => state.values.email);
-  const primaryPhoneNumber = useStore(
-    form.store,
-    (state) => state.values.phoneNumber,
-  );
 
   return (
     <Stack gap={"xs"}>
@@ -131,8 +151,6 @@ export default function AdministrateUserForm({
       <Space />
       <UserInfoFields
         perspective={"administrate"}
-        primaryEmail={primaryEmail}
-        primaryPhoneNumber={primaryPhoneNumber}
         fields={createFieldMap(defaultValues)}
         form={form}
       />
@@ -141,7 +159,7 @@ export default function AdministrateUserForm({
       </form.AppForm>
       <Space />
       <Button
-        loading={updateUserDetailsMutation.isPending}
+        loading={form.state.isValidating || updateUserDetailsMutation.isPending}
         onClick={form.handleSubmit}
       >
         Lagre

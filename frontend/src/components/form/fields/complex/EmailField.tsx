@@ -10,7 +10,7 @@ export function emailFieldValidator(
 ) {
   if (!value) {
     if (context === "personal" || context === "administrate")
-      return "Du må fylle inn din e-post";
+      return "Du må fylle inn e-post";
     if (context === "guardian") return "Du må fylle inn foresatt sin e-post";
   }
 

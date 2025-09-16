@@ -15,7 +15,11 @@ export function phoneNumberFieldValidator(
       return "Du må fylle inn foresatt sitt telefonnummer";
   }
 
-  if (!isMobilePhone(value, "nb-NO")) {
+  if (
+    !isMobilePhone(value, "nb-NO") ||
+    value.length !== 8 ||
+    value.includes("+47")
+  ) {
     if (context === "personal" || context === "administrate")
       return "Du må fylle inn et gyldig norsk telefonnummer (8 tall uten mellomrom og +47)";
     if (context === "guardian")

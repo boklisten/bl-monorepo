@@ -22,7 +22,7 @@ const SENDGRID_TEMPLATE_ID_REGEX = /^d-[0-9a-f]{32}$/;
 
 interface RemindersFormData {
   branchIds: string[];
-  deadline: string;
+  deadline: string | null;
   customerItemType: CustomerItemType;
   messageMethod: MessageMethod;
   emailTemplateId: string | null;
@@ -31,7 +31,7 @@ interface RemindersFormData {
 
 const defaultValues: RemindersFormData = {
   branchIds: [],
-  deadline: "",
+  deadline: null,
   customerItemType: "rent",
   messageMethod: MessageMethod.SMS,
   emailTemplateId: "",

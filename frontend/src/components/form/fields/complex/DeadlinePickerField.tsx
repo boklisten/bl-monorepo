@@ -38,7 +38,7 @@ function calculateDeadlineOptions() {
 }
 
 export default function DeadlinePickerField() {
-  const field = useFieldContext<string>();
+  const field = useFieldContext<string | null>();
   return (
     <DatePickerInput
       presets={calculateDeadlineOptions()}
@@ -49,9 +49,7 @@ export default function DeadlinePickerField() {
       minDate={dayjs().subtract(1, "month").toDate()}
       maxDate={dayjs().add(5, "years").toDate()}
       value={field.state.value}
-      onChange={(newValue) => {
-        field.handleChange(newValue ?? "");
-      }}
+      onChange={field.handleChange}
       onBlur={field.handleBlur}
       error={field.state.meta.errors.join(", ")}
     />

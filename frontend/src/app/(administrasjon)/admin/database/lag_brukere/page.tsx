@@ -1,6 +1,6 @@
 import { Metadata } from "next";
 
-import CreateUsers from "@/components/admin/CreateUsers";
+import CreateUsers from "@/features/user/CreateUsers";
 
 export const metadata: Metadata = {
   title: "Lag brukere",

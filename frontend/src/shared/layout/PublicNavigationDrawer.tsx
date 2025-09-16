@@ -1,0 +1,233 @@
+"use client";
+import {
+  Badge,
+  Burger,
+  Divider,
+  Drawer,
+  Indicator,
+  NavLink,
+  Stack,
+} from "@mantine/core";
+import { useDisclosure } from "@mantine/hooks";
+import {
+  IconBook,
+  IconClock,
+  IconExternalLink,
+  IconHeartHandshake,
+  IconInfoCircle,
+  IconLogin,
+  IconLogout,
+  IconMail,
+  IconReceipt,
+  IconSearch,
+  IconShoppingCart,
+  IconUserEdit,
+  IconUserPlus,
+} from "@tabler/icons-react";
+import { useQuery } from "@tanstack/react-query";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+
+import useAuth from "@/features/auth/useAuth";
+import useApiClient from "@/shared/api/useApiClient";
+
+export default function PublicNavigationDrawer() {
+  const pathname = usePathname();
+  const [opened, { toggle, close }] = useDisclosure();
+  const { isLoggedIn, isEmployee } = useAuth();
+  const client = useApiClient();
+
+  const {
+    data: userDetail,
+    isLoading: isLoadingUserDetail,
+    isError: isErrorUserDetail,
+  } = useQuery({
+    queryKey: [client.v2.user_details.$url(), isLoggedIn],
+    queryFn: () => {
+      if (!isLoggedIn) return null;
+      return client.v2.user_details.me.$get().unwrap();
+    },
+  });
+
+  const taskCount =
+    isLoadingUserDetail || isErrorUserDetail || !userDetail?.tasks
+      ? 0
+      : (userDetail.tasks.confirmDetails ? 1 : 0) +
+        (userDetail.tasks.signAgreement ? 1 : 0);
+  return (
+    <>
+      <Indicator color={"red"} disabled={taskCount === 0}>
+        <Burger color={"white"} opened={opened} onClick={toggle} />
+      </Indicator>
+      <Drawer
+        opened={opened}
+        onClose={close}
+        position={"right"}
+        title={"Velg side"}
+      >
+        <Stack gap={5}>
+          {taskCount > 0 && (
+            <NavLink
+              label={"Oppgaver"}
+              description={`Du har ${taskCount} ${taskCount === 1 ? "oppgave" : "oppgaver"} som må fullføres.`}
+              href={"/oppgaver"}
+              leftSection={
+                <Badge color={"red"} circle>
+                  {taskCount}
+                </Badge>
+              }
+              component={Link}
+              color={"red"}
+              active
+              variant={"subtle"}
+              onClick={close}
+            />
+          )}
+
+          <NavLink
+            label={"Bestill bøker"}
+            href={"/order"}
+            active={pathname.includes("/order")}
+            variant={"subtle"}
+            leftSection={<IconShoppingCart />}
+            component={Link}
+            onClick={close}
+          />
+
+          {isLoggedIn && (
+            <>
+              <NavLink
+                label={"Dine bøker"}
+                href={"/items"}
+                active={pathname.includes("/items")}
+                variant={"subtle"}
+                leftSection={<IconBook />}
+                component={Link}
+                onClick={close}
+              />
+              <NavLink
+                label={"Ordrehistorikk"}
+                href={"/order-history"}
+                active={pathname.includes("/order-history")}
+                variant={"subtle"}
+                leftSection={<IconReceipt />}
+                component={Link}
+                onClick={close}
+              />
+              <NavLink
+                label={"Overleveringer"}
+                href={"/overleveringer"}
+                active={pathname.includes("/overleveringer")}
+                variant={"subtle"}
+                leftSection={<IconHeartHandshake />}
+                component={Link}
+                onClick={close}
+              />
+              <NavLink
+                label={"Boksøk"}
+                description={
+                  "Søk opp en bok sin unike ID for å finne ut hvem som er ansvarlig for den"
+                }
+                href={"/sjekk"}
+                active={pathname.includes("/sjekk")}
+                variant={"subtle"}
+                leftSection={<IconSearch />}
+                component={Link}
+                onClick={close}
+              />
+            </>
+          )}
+          <Divider label={"Informasjon"} />
+          <NavLink
+            label={"Generell informasjon"}
+            href={"/info/general"}
+            active={pathname.includes("/info/general")}
+            variant={"subtle"}
+            leftSection={<IconInfoCircle />}
+            component={Link}
+            onClick={close}
+          />
+          <NavLink
+            label={"Åpningstider"}
+            href={"/info/branch"}
+            active={pathname.includes("/info/branch")}
+            variant={"subtle"}
+            leftSection={<IconClock />}
+            component={Link}
+            onClick={close}
+          />
+          <NavLink
+            label={"Kontaktinformasjon"}
+            href={"/info/contact"}
+            active={pathname.includes("/info/contact")}
+            variant={"subtle"}
+            leftSection={<IconMail />}
+            component={Link}
+            onClick={close}
+          />
+
+          <Divider label={"Bruker"} />
+
+          {isLoggedIn && (
+            <>
+              <NavLink
+                label={"Brukerinnstillinger"}
+                href={"/user-settings"}
+                active={pathname.includes("/user-settings")}
+                variant={"subtle"}
+                leftSection={<IconUserEdit />}
+                component={Link}
+                onClick={close}
+              />
+              {isEmployee && (
+                <NavLink
+                  label={"Gå til bl-admin"}
+                  description={
+                    "Her kan du søke opp kunder, samle inn og dele ut bøker."
+                  }
+                  href={"/admin"}
+                  leftSection={<IconExternalLink />}
+                  component={Link}
+                  active
+                  color={"orange"}
+                  onClick={close}
+                />
+              )}
+              <NavLink
+                label={"Logg ut"}
+                href={"/auth/logout"}
+                leftSection={<IconLogout />}
+                component={Link}
+                active
+                variant={"subtle"}
+                color={"red"}
+                onClick={close}
+              />
+            </>
+          )}
+
+          {!isLoggedIn && (
+            <>
+              <NavLink
+                label={"Registrer"}
+                href={"/auth/register"}
+                active={pathname.includes("/auth/register")}
+                variant={"subtle"}
+                leftSection={<IconUserPlus />}
+                onClick={close}
+              />
+              <NavLink
+                label={"Logg inn"}
+                href={"/auth/login"}
+                active={pathname.includes("/auth/login")}
+                variant={"subtle"}
+                leftSection={<IconLogin />}
+                onClick={close}
+              />
+            </>
+          )}
+        </Stack>
+      </Drawer>
+    </>
+  );
+}

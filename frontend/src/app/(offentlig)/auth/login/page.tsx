@@ -2,8 +2,8 @@ import { Center, Container, Divider, Stack, Title } from "@mantine/core";
 import { Metadata } from "next";
 import { Suspense } from "react";
 
-import LocalSignIn from "@/components/user/LocalSignIn";
-import VippsButton from "@/components/user/VippsButton";
+import LocalSignIn from "@/features/auth/LocalSignIn";
+import VippsButton from "@/features/auth/VippsButton";
 
 export const metadata: Metadata = {
   title: "Logg inn",

@@ -1,6 +1,6 @@
 import type { MetadataRoute } from "next";
 
-import { isProduction } from "@/utils/env";
+import { isProduction } from "@/shared/utils/env";
 
 export default function robots(): MetadataRoute.Robots {
   return {

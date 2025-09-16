@@ -1,7 +1,7 @@
 import { Container, Stack, Title } from "@mantine/core";
 import { Metadata } from "next";
 
-import AdminCart from "@/components/admin/AdminCart";
+import AdminCart from "@/features/rapid-handout/AdminCart";
 
 export const metadata: Metadata = {
   title: "Hurtigutdeling",

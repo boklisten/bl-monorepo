@@ -1,7 +1,7 @@
 import { Container, Stack, Title } from "@mantine/core";
 import { Metadata } from "next";
 
-import EmailConfirmer from "@/components/EmailConfirmer";
+import EmailConfirmer from "@/features/user/EmailConfirmer";
 
 export const metadata: Metadata = {
   title: "Bekreft e-post",

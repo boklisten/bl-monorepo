@@ -1,7 +1,7 @@
 import { Title } from "@mantine/core";
 import { Metadata } from "next";
 
-import BranchSelect from "@/components/BranchSelect";
+import BranchSelect from "@/features/branches/BranchSelect";
 
 export const metadata: Metadata = {
   title: "Skoler og åpningstider",

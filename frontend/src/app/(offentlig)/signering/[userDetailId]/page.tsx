@@ -1,8 +1,8 @@
 import { Container, Stack, Title } from "@mantine/core";
 import { Metadata } from "next";
 
-import SignAgreement from "@/components/SignAgreement";
-import { publicApiClient } from "@/utils/publicApiClient";
+import SignAgreement from "@/features/signatures/SignAgreement";
+import { publicApiClient } from "@/shared/api/publicApiClient";
 
 export const metadata: Metadata = {
   title: "Signering",

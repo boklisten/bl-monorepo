@@ -1,6 +1,6 @@
 import { Suspense } from "react";
 
-import RedirectTo from "@/components/RedirectTo";
+import RedirectTo from "@/features/auth/RedirectTo";
 
 export default function DatabaseBooksPage() {
   return (

@@ -1,6 +1,6 @@
 import { Metadata } from "next";
 
-import Branches from "@/components/admin/Branches";
+import Branches from "@/features/branches/Branches";
 
 export const metadata: Metadata = {
   title: "Filialer",

@@ -1,8 +1,8 @@
 import { AppShell, AppShellHeader, AppShellMain } from "@mantine/core";
 import { Metadata } from "next";
 
-import PublicPageFooter from "@/app/(offentlig)/PublicPageFooter";
-import PublicPageHeader from "@/app/(offentlig)/PublicPageHeader";
+import PublicPageFooter from "@/shared/layout/PublicPageFooter";
+import PublicPageHeader from "@/shared/layout/PublicPageHeader";
 
 export const metadata: Metadata = {
   title: {

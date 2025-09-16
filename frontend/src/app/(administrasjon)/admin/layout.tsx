@@ -7,9 +7,9 @@ import {
 } from "@mantine/core";
 import { Metadata } from "next";
 
-import AdminPageHeader from "@/app/(administrasjon)/admin/AdminPageHeader";
-import AdminPageNavigation from "@/app/(administrasjon)/admin/AdminPageNavigation";
-import AuthGuard from "@/components/common/AuthGuard";
+import AuthGuard from "@/features/auth/AuthGuard";
+import AdminPageHeader from "@/shared/layout/AdminPageHeader";
+import AdminPageNavigation from "@/shared/layout/AdminPageNavigation";
 
 export const metadata: Metadata = {
   title: {

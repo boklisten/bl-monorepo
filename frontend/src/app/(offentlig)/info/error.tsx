@@ -1,6 +1,6 @@
 "use client"; // Error boundaries must be Client Components
 
-import ErrorBoundary from "@/components/ErrorBoundary";
+import ErrorBoundary from "@/shared/layout/ErrorBoundary";
 
 export default function InfoPagesErrorBoundary({
   error,

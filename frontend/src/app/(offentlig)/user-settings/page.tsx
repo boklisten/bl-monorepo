@@ -1,8 +1,8 @@
 import { Container, Stack, Title } from "@mantine/core";
 import { Metadata } from "next";
 
-import AuthGuard from "@/components/common/AuthGuard";
-import UserSettings from "@/components/user/UserSettings";
+import AuthGuard from "@/features/auth/AuthGuard";
+import UserSettings from "@/features/user/UserSettings";
 
 export const metadata: Metadata = {
   title: "Brukerinnstillinger",

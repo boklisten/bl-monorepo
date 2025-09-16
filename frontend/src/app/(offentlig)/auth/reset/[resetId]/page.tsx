@@ -2,7 +2,7 @@ import { Container, Stack, Title } from "@mantine/core";
 import { Metadata } from "next";
 import { Suspense } from "react";
 
-import PasswordReset from "@/components/user/PasswordReset";
+import PasswordReset from "@/features/auth/PasswordReset";
 
 export const metadata: Metadata = {
   title: "Lag nytt passord",

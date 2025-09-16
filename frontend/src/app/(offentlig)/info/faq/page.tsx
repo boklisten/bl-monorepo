@@ -1,8 +1,8 @@
 import { Title, Stack } from "@mantine/core";
 import { Metadata } from "next";
 
-import QuestionsAndAnswersReadOnly from "@/components/info/questions-and-answers/QuestionsAndAnswersReadOnly";
-import { publicApiClient } from "@/utils/publicApiClient";
+import QuestionsAndAnswersReadOnly from "@/features/questions-and-answers/QuestionsAndAnswersReadOnly";
+import { publicApiClient } from "@/shared/api/publicApiClient";
 
 export const revalidate = 60;
 

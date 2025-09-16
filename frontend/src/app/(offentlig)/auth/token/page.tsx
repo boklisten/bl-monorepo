@@ -2,7 +2,7 @@ import { Container, Loader, Stack, Title } from "@mantine/core";
 import { Metadata } from "next";
 import { Suspense } from "react";
 
-import AuthVerifier from "@/components/AuthVerifier";
+import AuthVerifier from "@/features/auth/AuthVerifier";
 
 export const metadata: Metadata = {
   title: "Logger inn...",

@@ -1,7 +1,7 @@
 import { Stack, Title } from "@mantine/core";
 import { Metadata } from "next";
 
-import WaitingList from "@/components/admin/waiting-list/WaitingList";
+import WaitingList from "@/features/waiting-list/WaitingList";
 
 export const metadata: Metadata = {
   title: "Venteliste",

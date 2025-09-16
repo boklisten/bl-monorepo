@@ -1,7 +1,7 @@
 import { Title } from "@mantine/core";
 import { Metadata } from "next";
 
-import ContactInfo from "@/components/info/ContactInfo";
+import ContactInfo from "@/features/public-info/ContactInfo";
 
 export const metadata: Metadata = {
   title: "Kontakt oss",

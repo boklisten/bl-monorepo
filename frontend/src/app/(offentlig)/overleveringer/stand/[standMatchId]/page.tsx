@@ -1,6 +1,6 @@
 import { Metadata } from "next";
 
-import MatchDetail from "@/components/matches/MatchDetail";
+import MatchDetail from "@/features/matches/MatchDetail";
 
 export const metadata: Metadata = {
   title: "Overlevering av bøker",

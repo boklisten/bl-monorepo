@@ -3,8 +3,8 @@ import { Metadata } from "next";
 import Link from "next/link";
 import { Suspense } from "react";
 
-import AuthFailureReasonAlert from "@/components/auth/AuthFailureReasonAlert";
-import { PLEASE_TRY_AGAIN_TEXT } from "@/utils/constants";
+import AuthFailureReasonAlert from "@/features/auth/AuthFailureReasonAlert";
+import { PLEASE_TRY_AGAIN_TEXT } from "@/shared/utils/constants";
 
 export const metadata: Metadata = {
   title: "Klarte ikke logge inn",

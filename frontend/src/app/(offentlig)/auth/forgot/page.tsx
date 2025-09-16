@@ -1,7 +1,7 @@
 import { Container, Stack, Text, Title } from "@mantine/core";
 import { Metadata } from "next";
 
-import ForgotPasswordForm from "@/components/auth/ForgotPasswordForm";
+import ForgotPasswordForm from "@/features/auth/ForgotPasswordForm";
 
 export const metadata: Metadata = {
   title: "Glemt passord",

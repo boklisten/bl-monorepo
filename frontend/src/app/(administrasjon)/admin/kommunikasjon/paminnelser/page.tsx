@@ -1,7 +1,7 @@
 import { Container, Stack, Title } from "@mantine/core";
 import { Metadata } from "next";
 
-import Reminders from "@/components/admin/Reminders";
+import Reminders from "@/features/reminders/Reminders";
 
 export const metadata: Metadata = {
   title: "Påminnelser",

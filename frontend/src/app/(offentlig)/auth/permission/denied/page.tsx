@@ -2,8 +2,8 @@ import { Anchor, Container, Stack, Title } from "@mantine/core";
 import { Metadata } from "next";
 import Link from "next/link";
 
-import AuthLogoutComponent from "@/components/AuthLogoutComponent";
-import ErrorAlert from "@/components/ui/alerts/ErrorAlert";
+import AuthLogoutComponent from "@/features/auth/AuthLogoutComponent";
+import ErrorAlert from "@/shared/ui/components/alerts/ErrorAlert";
 
 export const metadata: Metadata = {
   title: "Tilgang avslått",

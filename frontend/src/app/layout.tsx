@@ -16,10 +16,10 @@ import Head from "next/head";
 import Script from "next/script";
 import { Suspense } from "react";
 
-import theme from "@/app/theme";
-import AuthLinker from "@/components/AuthLinker";
-import DayJsSetup from "@/components/DayJsClientSetup";
-import ReactQueryClientProvider from "@/components/ReactQueryClientProvider";
+import AuthLinker from "@/features/auth/AuthLinker";
+import DayJsSetup from "@/shared/layout/DayJsClientSetup";
+import ReactQueryClientProvider from "@/shared/layout/ReactQueryClientProvider";
+import theme from "@/shared/ui/theme";
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (

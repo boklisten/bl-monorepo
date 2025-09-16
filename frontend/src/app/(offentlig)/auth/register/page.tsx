@@ -3,8 +3,8 @@ import { Metadata } from "next";
 import Link from "next/link";
 import { Suspense } from "react";
 
-import SignupForm from "@/components/user/SignupForm";
-import VippsButton from "@/components/user/VippsButton";
+import VippsButton from "@/features/auth/VippsButton";
+import SignupForm from "@/features/user/SignupForm";
 
 export const metadata: Metadata = {
   title: "Ny bruker",

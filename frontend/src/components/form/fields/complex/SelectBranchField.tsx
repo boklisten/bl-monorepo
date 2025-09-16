@@ -17,7 +17,9 @@ import { useFieldContext } from "@/hooks/form";
 import unpack from "@/utils/bl-api-request";
 import { publicApiClient } from "@/utils/publicApiClient";
 
-export default function SelectBranchField(props: SelectProps) {
+export default function SelectBranchField(
+  props: SelectProps & { perspective: "personal" | "administrate" | string },
+) {
   const field = useFieldContext<string | null>();
   const branchQuery = {
     query: { active: true, sort: "name" },
@@ -31,11 +33,12 @@ export default function SelectBranchField(props: SelectProps) {
         .then(unpack<Branch[]>),
   });
 
+  const placeholder = `Velg ${props.perspective === "personal" ? "din" : "kundens"} skole`;
   const modalId = "select-school";
   return (
     <Select
       label={"Skole"}
-      placeholder={"Velg din skole"}
+      placeholder={placeholder}
       clearable
       data={
         branches?.map((branch) => ({
@@ -51,7 +54,7 @@ export default function SelectBranchField(props: SelectProps) {
           children: (
             <Stack>
               <SelectBranchTreeView
-                label={"Velg din skole"}
+                label={placeholder}
                 branches={branches ?? []}
                 onSelect={(childBranchId) => {
                   field.handleChange(childBranchId);
@@ -59,8 +62,10 @@ export default function SelectBranchField(props: SelectProps) {
                 }}
                 onlyLeafs
               />
-              <InfoAlert title={"Finner du ikke din skole eller klasse?"}>
-                Kontakt oss på{" "}
+              <InfoAlert
+                title={`Finner du ikke ${props.perspective === "personal" ? "din" : "kundens"} skole eller klasse?`}
+              >
+                Ta kontakt på{" "}
                 <Anchor
                   component={Link}
                   underline={"never"}
@@ -73,7 +78,9 @@ export default function SelectBranchField(props: SelectProps) {
               </InfoAlert>
               <Divider w={"100%"} label={"eller"} />
               <Button variant={"subtle"} onClick={() => modals.close(modalId)}>
-                Jeg skal ikke ha bøker
+                {props.perspective === "personal"
+                  ? "Jeg skal ikke ha bøker"
+                  : "Kunden skal ikke ha bøker"}
               </Button>
             </Stack>
           ),

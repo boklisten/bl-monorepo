@@ -157,7 +157,7 @@ const UserInfoFields = withFieldGroup({
           }}
         </group.Subscribe>
         <group.AppField name={"branchMembership"}>
-          {(field) => <field.SelectBranchField />}
+          {(field) => <field.SelectBranchField perspective={perspective} />}
         </group.AppField>
       </>
     );

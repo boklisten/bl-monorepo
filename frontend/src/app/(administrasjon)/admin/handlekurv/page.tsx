@@ -1,8 +1,11 @@
-"use client";
+import { Suspense } from "react";
 
-import useAuthLinker from "@/hooks/useAuthLinker";
+import RedirectTo from "@/components/RedirectTo";
 
 export default function CartPage() {
-  const { redirectTo } = useAuthLinker();
-  redirectTo("bl-admin", "cart/customer");
+  return (
+    <Suspense>
+      <RedirectTo target={"bl-admin"} path={"cart/customer"} />
+    </Suspense>
+  );
 }

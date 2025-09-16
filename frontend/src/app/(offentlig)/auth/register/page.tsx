@@ -1,6 +1,7 @@
 import { Anchor, Container, Divider, Stack, Title } from "@mantine/core";
 import { Metadata } from "next";
 import Link from "next/link";
+import { Suspense } from "react";
 
 import SignupForm from "@/components/user/SignupForm";
 import VippsButton from "@/components/user/VippsButton";
@@ -16,9 +17,13 @@ const RegisterPage = () => {
       <Container size={"xs"}>
         <Stack>
           <Title ta={"center"}>Registrer deg</Title>
-          <VippsButton verb={"register"} />
+          <Suspense>
+            <VippsButton verb={"register"} />
+          </Suspense>
           <Divider label={"Eller, registrer deg med e-post"} />
-          <SignupForm />
+          <Suspense>
+            <SignupForm />
+          </Suspense>
           <Anchor size={"sm"} component={Link} href={"/auth/login"}>
             Har du allerede en konto? Logg inn
           </Anchor>

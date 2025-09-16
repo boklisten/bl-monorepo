@@ -2,7 +2,7 @@ import { UserMatchWithDetails } from "@boklisten/backend/shared/match/match-dtos
 import { Button, Stack, Text, Title } from "@mantine/core";
 import { modals } from "@mantine/modals";
 import { IconObjectScan } from "@tabler/icons-react";
-import { useState } from "react";
+import { Suspense, useState } from "react";
 
 import CountdownToRedirect from "@/components/CountdownToRedirect";
 import {
@@ -84,7 +84,9 @@ const UserMatchDetail = ({
               Du har {statusText} alle bøkene for denne overleveringen.
             </SuccessAlert>
             {redirectCountdownStarted && (
-              <CountdownToRedirect path={"/overleveringer"} seconds={5} />
+              <Suspense>
+                <CountdownToRedirect path={"/overleveringer"} seconds={5} />
+              </Suspense>
             )}
           </>
         )}

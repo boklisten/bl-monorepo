@@ -20,20 +20,22 @@ export const metadata: Metadata = {
 
 export default function AdminPageLayout({ children }: LayoutProps<"/admin">) {
   return (
-    <AuthGuard requiredPermission={USER_PERMISSION.EMPLOYEE}>
-      <AppShell
-        header={{ height: 65 }}
-        navbar={{ breakpoint: "xs", width: 200, collapsed: { mobile: true } }}
-        padding={"md"}
-      >
-        <AppShellHeader bg={"brand"}>
-          <AdminPageHeader />
-        </AppShellHeader>
-        <AppShellNavbar>
-          <AdminPageNavigation />
-        </AppShellNavbar>
-        <AppShellMain>{children}</AppShellMain>
-      </AppShell>
-    </AuthGuard>
+    <AppShell
+      header={{ height: 65 }}
+      navbar={{ breakpoint: "xs", width: 200, collapsed: { mobile: true } }}
+      padding={"md"}
+    >
+      <AppShellHeader bg={"brand"}>
+        <AdminPageHeader />
+      </AppShellHeader>
+      <AppShellNavbar>
+        <AdminPageNavigation />
+      </AppShellNavbar>
+      <AppShellMain>
+        <AuthGuard requiredPermission={USER_PERMISSION.EMPLOYEE}>
+          {children}
+        </AuthGuard>
+      </AppShellMain>
+    </AppShell>
   );
 }

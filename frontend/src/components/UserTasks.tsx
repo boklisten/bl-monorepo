@@ -10,6 +10,7 @@ import {
 } from "@mantine/core";
 import { IconSend } from "@tabler/icons-react";
 import { useMutation, useQuery } from "@tanstack/react-query";
+import { Suspense } from "react";
 
 import { getAccessTokenBody } from "@/api/token";
 import CountdownToRedirect from "@/components/CountdownToRedirect";
@@ -76,7 +77,9 @@ export default function UserTasks({
     return (
       <Stack>
         <SuccessAlert>Du har fullført alle utestående oppgaver</SuccessAlert>
-        <CountdownToRedirect shouldRedirectToCaller={true} seconds={5} />
+        <Suspense>
+          <CountdownToRedirect shouldRedirectToCaller={true} seconds={5} />
+        </Suspense>
       </Stack>
     );
   }

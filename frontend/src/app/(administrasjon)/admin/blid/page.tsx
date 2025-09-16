@@ -1,8 +1,11 @@
-"use client";
+import { Suspense } from "react";
 
-import useAuthLinker from "@/hooks/useAuthLinker";
+import RedirectTo from "@/components/RedirectTo";
 
 export default function BlidSearchPage() {
-  const { redirectTo } = useAuthLinker();
-  redirectTo("bl-admin", "blid");
+  return (
+    <Suspense>
+      <RedirectTo target={"bl-admin"} path={"blid"} />
+    </Suspense>
+  );
 }

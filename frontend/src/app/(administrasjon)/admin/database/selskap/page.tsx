@@ -1,8 +1,11 @@
-"use client";
+import { Suspense } from "react";
 
-import useAuthLinker from "@/hooks/useAuthLinker";
+import RedirectTo from "@/components/RedirectTo";
 
 export default function DatabaseCompaniesPage() {
-  const { redirectTo } = useAuthLinker();
-  redirectTo("bl-admin", "database/companies");
+  return (
+    <Suspense>
+      <RedirectTo target={"bl-admin"} path={"database/companies"} />
+    </Suspense>
+  );
 }

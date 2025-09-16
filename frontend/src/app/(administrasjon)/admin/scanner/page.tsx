@@ -1,8 +1,11 @@
-"use client";
+import { Suspense } from "react";
 
-import useAuthLinker from "@/hooks/useAuthLinker";
+import RedirectTo from "@/components/RedirectTo";
 
 export default function ScannerPage() {
-  const { redirectTo } = useAuthLinker();
-  redirectTo("bl-admin", "scanner");
+  return (
+    <Suspense>
+      <RedirectTo target={"bl-admin"} path={"scanner"} />
+    </Suspense>
+  );
 }

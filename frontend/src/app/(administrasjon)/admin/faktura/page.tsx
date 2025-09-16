@@ -1,9 +1,12 @@
-"use client";
+import { Suspense } from "react";
 
-import useAuthLinker from "@/hooks/useAuthLinker";
+import RedirectTo from "@/components/RedirectTo";
 
 export default function InvoicesPage() {
-  const { redirectTo } = useAuthLinker();
-  redirectTo("bl-admin", "invoices");
   // apply auth guard once implemented       <AuthGuard requiredPermission={USER_PERMISSION.ADMIN} />
+  return (
+    <Suspense>
+      <RedirectTo target={"bl-admin"} path={"invoices"} />
+    </Suspense>
+  );
 }

@@ -1,5 +1,6 @@
 import { Container, Stack, Title } from "@mantine/core";
 import { Metadata } from "next";
+import { Suspense } from "react";
 
 import PasswordReset from "@/components/user/PasswordReset";
 
@@ -16,7 +17,9 @@ export default async function PasswordResetPage({
     <Container size={"xs"}>
       <Stack>
         <Title>Lag nytt passord</Title>
-        <PasswordReset resetId={resetId} />
+        <Suspense>
+          <PasswordReset resetId={resetId} />
+        </Suspense>
       </Stack>
     </Container>
   );

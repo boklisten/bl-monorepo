@@ -1,5 +1,6 @@
 import { Container, Loader, Stack, Title } from "@mantine/core";
 import { Metadata } from "next";
+import { Suspense } from "react";
 
 import AuthVerifier from "@/components/AuthVerifier";
 
@@ -14,7 +15,9 @@ export default function TokenPage() {
       <Stack align={"center"}>
         <Title>Du blir nå logget inn...</Title>
         <Loader />
-        <AuthVerifier />
+        <Suspense>
+          <AuthVerifier />
+        </Suspense>
       </Stack>
     </Container>
   );

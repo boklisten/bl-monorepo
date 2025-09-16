@@ -1,8 +1,11 @@
-"use client";
+import { Suspense } from "react";
 
-import useAuthLinker from "@/hooks/useAuthLinker";
+import RedirectTo from "@/components/RedirectTo";
 
 export default function BulkCollectionPage() {
-  const { redirectTo } = useAuthLinker();
-  redirectTo("bl-admin", "bulk");
+  return (
+    <Suspense>
+      <RedirectTo target={"bl-admin"} path={"bulk"} />
+    </Suspense>
+  );
 }

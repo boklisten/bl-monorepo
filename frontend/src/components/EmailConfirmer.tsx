@@ -3,6 +3,7 @@
 import { Anchor, Loader } from "@mantine/core";
 import { useQuery } from "@tanstack/react-query";
 import Link from "next/link";
+import { Suspense } from "react";
 
 import CountdownToRedirect from "@/components/CountdownToRedirect";
 import ErrorAlert from "@/components/ui/alerts/ErrorAlert";
@@ -53,7 +54,9 @@ export default function EmailConfirmer({
   return (
     <>
       <SuccessAlert title={"E-postadressen ble bekreftet!"} />
-      <CountdownToRedirect path={"/"} seconds={5} />
+      <Suspense>
+        <CountdownToRedirect path={"/"} seconds={5} />
+      </Suspense>
     </>
   );
 }

@@ -2,10 +2,10 @@ import { Suspense } from "react";
 
 import RedirectTo from "@/components/RedirectTo";
 
-export default function OrderManagerPage() {
+export default function OrdersPage() {
   return (
     <Suspense>
-      <RedirectTo target={"bl-admin"} path={"scanner"} />
+      <RedirectTo target={"bl-web"} path={"u/order"} />
     </Suspense>
   );
 }

@@ -1,14 +1,13 @@
 "use client";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import { ReactNode, useEffect, useState } from "react";
+import { useEffect } from "react";
 
 import { addAccessToken, addRefreshToken } from "@/api/token";
 
-export default function AuthLinker({ children }: { children: ReactNode }) {
+export default function AuthLinker() {
   const pathname = usePathname();
   const router = useRouter();
   const searchParameters = useSearchParams();
-  const [authProcessed, setAuthProcessed] = useState(false);
 
   useEffect(() => {
     const refresh_token = searchParameters.get("refresh_token");
@@ -24,11 +23,7 @@ export default function AuthLinker({ children }: { children: ReactNode }) {
       // @ts-expect-error fixme: bad routing types
       router.replace(pathname + "?" + params);
     }
-    setAuthProcessed(true);
   }, [pathname, router, searchParameters]);
 
-  if (!authProcessed) {
-    return null;
-  }
-  return <>{children}</>;
+  return null;
 }

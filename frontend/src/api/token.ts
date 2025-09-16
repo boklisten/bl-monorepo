@@ -29,12 +29,9 @@ export const getRefreshToken = (): string | null => {
   return get(refreshTokenName);
 };
 
-export const getAccessTokenBody = (): AccessToken => {
+export const getAccessTokenBody = () => {
   const token = getAccessToken();
-
-  if (!token) {
-    throw new Error("could not get accessToken");
-  }
+  if (!token) return {} as AccessToken;
 
   let decodedToken;
   try {

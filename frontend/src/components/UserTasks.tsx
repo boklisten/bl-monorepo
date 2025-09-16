@@ -12,7 +12,6 @@ import { IconSend } from "@tabler/icons-react";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { Suspense } from "react";
 
-import { getAccessTokenBody } from "@/api/token";
 import CountdownToRedirect from "@/components/CountdownToRedirect";
 import SignAgreement from "@/components/SignAgreement";
 import ErrorAlert from "@/components/ui/alerts/ErrorAlert";
@@ -35,19 +34,11 @@ export default function UserTasks({
   const client = useApiClient();
   const { data, isLoading, isError } = useQuery({
     queryKey: [client.v2.user_details.$url()],
-    queryFn: () => {
-      const { details } = getAccessTokenBody();
-      if (!details) return null;
-      return client.v2.user_details({ detailsId: details }).$get().unwrap();
-    },
+    queryFn: () => client.v2.user_details.me.$get().unwrap(),
     refetchInterval: 5000,
   });
   const requestSignatureMutation = useMutation({
-    mutationFn: () =>
-      client.signatures
-        .send({ detailsId: getAccessTokenBody().details })
-        .$post()
-        .unwrap(),
+    mutationFn: () => client.signatures.me.send.$post().unwrap(),
     onSuccess: () =>
       showSuccessNotification("Signaturforespørsel har blitt sendt!"),
     onError: () =>

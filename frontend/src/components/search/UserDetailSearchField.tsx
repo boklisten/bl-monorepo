@@ -66,14 +66,12 @@ export default function UserDetailSearchField({
                 children: (
                   <ScannerModal
                     onScan={async (scannedText) => {
-                      const [result] = await client
-                        .$route("collection.userdetails.getId", {
-                          id: scannedText,
-                        })
+                      const userDetail = await client.v2.user_details
+                        .id({ detailsId: scannedText })
                         .$get()
-                        .then(unpack<[UserDetail]>);
-                      setSearchValue(result.name);
-                      onSelectedResult(result);
+                        .unwrap();
+                      setSearchValue(userDetail?.name ?? "");
+                      onSelectedResult(userDetail);
                       return [{ feedback: "" }];
                     }}
                     onSuccessfulScan={modals.closeAll}

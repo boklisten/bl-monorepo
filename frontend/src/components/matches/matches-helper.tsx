@@ -5,6 +5,8 @@ import {
 import { Title } from "@mantine/core";
 import { ReactNode } from "react";
 
+import { getAccessTokenBody } from "@/api/token";
+
 export interface ItemStatus {
   id: string;
   title: string;
@@ -49,7 +51,6 @@ export interface UserMatchStatus {
 
 export function calculateUserMatchStatus(
   userMatch: UserMatchWithDetails,
-  currentUserId: string,
 ): UserMatchStatus {
   const customerA = {
     deliveredItems: [] as string[],
@@ -84,7 +85,8 @@ export function calculateUserMatchStatus(
       customerB.receivedItems.push(receivedItem);
     }
   }
-  const currentUserIsCustomerA = userMatch.customerA === currentUserId;
+  const currentUserIsCustomerA =
+    userMatch.customerA === getAccessTokenBody()?.details;
   return {
     currentUser: {
       items: currentUserIsCustomerA

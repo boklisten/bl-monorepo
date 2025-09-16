@@ -350,10 +350,10 @@ type UsermatchesLockPost = {
     true
   >;
 };
-type MatchesGetIdGetHead = {
+type MatchesMeGetHead = {
   request: unknown;
   response: MakeNonSerializedTuyauResponse<
-    import("../app/controllers/matches/matches_controller.ts").default["getMatches"],
+    import("../app/controllers/matches/matches_controller.ts").default["getMyMatches"],
     false
   >;
 };
@@ -368,10 +368,17 @@ type MatchesTransferitemPost = {
     true
   >;
 };
-type V2UserdetailsIdGetHead = {
+type V2UserdetailsIdIdGetHead = {
   request: unknown;
   response: MakeNonSerializedTuyauResponse<
-    import("../app/controllers/user_detail_controller.ts").default["get"],
+    import("../app/controllers/user_detail_controller.ts").default["getById"],
+    false
+  >;
+};
+type V2UserdetailsMeGetHead = {
+  request: unknown;
+  response: MakeNonSerializedTuyauResponse<
+    import("../app/controllers/user_detail_controller.ts").default["getMyDetails"],
     false
   >;
 };
@@ -408,6 +415,13 @@ type SignaturesSendIdPost = {
   request: unknown;
   response: MakeNonSerializedTuyauResponse<
     import("../app/controllers/signatures_controller.ts").default["sendSignatureLink"],
+    false
+  >;
+};
+type SignaturesMeSendPost = {
+  request: unknown;
+  response: MakeNonSerializedTuyauResponse<
+    import("../app/controllers/signatures_controller.ts").default["sendSignatureLinkAsCustomer"],
     false
   >;
 };
@@ -503,10 +517,17 @@ export interface ApiDefinition {
       };
     };
     user_details: {
-      ":detailsId": {
+      id: {
+        ":detailsId": {
+          $url: {};
+          $get: V2UserdetailsIdIdGetHead;
+          $head: V2UserdetailsIdIdGetHead;
+        };
+      };
+      me: {
         $url: {};
-        $get: V2UserdetailsIdGetHead;
-        $head: V2UserdetailsIdGetHead;
+        $get: V2UserdetailsMeGetHead;
+        $head: V2UserdetailsMeGetHead;
       };
       $url: {};
       $post: V2UserdetailsPost;
@@ -641,12 +662,10 @@ export interface ApiDefinition {
       $url: {};
       $post: MatchesNotifyPost;
     };
-    get: {
-      ":detailsId": {
-        $url: {};
-        $get: MatchesGetIdGetHead;
-        $head: MatchesGetIdGetHead;
-      };
+    me: {
+      $url: {};
+      $get: MatchesMeGetHead;
+      $head: MatchesMeGetHead;
     };
     transfer_item: {
       $url: {};
@@ -664,6 +683,12 @@ export interface ApiDefinition {
       ":detailsId": {
         $url: {};
         $post: SignaturesSendIdPost;
+      };
+    };
+    me: {
+      send: {
+        $url: {};
+        $post: SignaturesMeSendPost;
       };
     };
     valid: {
@@ -961,11 +986,11 @@ const routes = [
     types: {} as UsermatchesLockPost,
   },
   {
-    params: ["detailsId"],
-    name: "matches.get",
-    path: "/matches/get/:detailsId",
+    params: [],
+    name: "matches.getMyMatches",
+    path: "/matches/me",
     method: ["GET", "HEAD"],
-    types: {} as MatchesGetIdGetHead,
+    types: {} as MatchesMeGetHead,
   },
   {
     params: [],
@@ -976,10 +1001,17 @@ const routes = [
   },
   {
     params: ["detailsId"],
-    name: "user_detail.get",
-    path: "/v2/user_details/:detailsId",
+    name: "user_detail.getById",
+    path: "/v2/user_details/id/:detailsId",
     method: ["GET", "HEAD"],
-    types: {} as V2UserdetailsIdGetHead,
+    types: {} as V2UserdetailsIdIdGetHead,
+  },
+  {
+    params: [],
+    name: "user_detail.getMyDetails",
+    path: "/v2/user_details/me",
+    method: ["GET", "HEAD"],
+    types: {} as V2UserdetailsMeGetHead,
   },
   {
     params: [],
@@ -1008,6 +1040,13 @@ const routes = [
     path: "/signatures/send/:detailsId",
     method: ["POST"],
     types: {} as SignaturesSendIdPost,
+  },
+  {
+    params: [],
+    name: "signatures.me.send",
+    path: "/signatures/me/send",
+    method: ["POST"],
+    types: {} as SignaturesMeSendPost,
   },
   {
     params: ["detailsId"],

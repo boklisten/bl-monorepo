@@ -10,23 +10,17 @@ import UserMatchListItem from "@/components/matches/matchesList/UserMatchListIte
 export default function MatchListItemGroups({
   userMatches,
   standMatch,
-  userId,
   heading,
 }: {
   userMatches: UserMatchWithDetails[];
   standMatch?: StandMatchWithDetails | undefined;
-  userId: string;
   heading?: string;
 }) {
   return (
     <Stack>
       {heading && <Title order={2}>{heading}</Title>}
       {userMatches.map((match) => (
-        <UserMatchListItem
-          key={match.id}
-          userMatch={match}
-          currentUserId={userId}
-        />
+        <UserMatchListItem key={match.id} userMatch={match} />
       ))}
       {standMatch && <StandMatchListItem standMatch={standMatch} />}
     </Stack>

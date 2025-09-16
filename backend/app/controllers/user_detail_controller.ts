@@ -9,26 +9,31 @@ import {
   employeeUpdateUserDetailsValidator,
 } from "#validators/user_detail";
 
+async function getUserDetail(detailsId: string) {
+  let userDetail = await StorageService.UserDetails.getOrNull(detailsId);
+  if (!userDetail) return null;
+
+  if (!new UserDetailHelper().isValid(userDetail)) {
+    userDetail = await StorageService.UserDetails.update(detailsId, {
+      "tasks.confirmDetails": true,
+    });
+  }
+  if (await userHasValidSignature(userDetail)) {
+    userDetail = await StorageService.UserDetails.update(detailsId, {
+      "tasks.signAgreement": false,
+    });
+  }
+  return userDetail;
+}
+
 export default class UserDetailsController {
-  async get(ctx: HttpContext) {
-    const paramDetailsId = ctx.request.param("detailsId");
+  async getMyDetails(ctx: HttpContext) {
     const { detailsId } = PermissionService.authenticate(ctx);
-    if (detailsId !== paramDetailsId) {
-      PermissionService.employeeOrFail(ctx);
-    }
-    let userDetail = await StorageService.UserDetails.getOrNull(paramDetailsId);
-    if (!userDetail) return null;
-    if (!new UserDetailHelper().isValid(userDetail)) {
-      userDetail = await StorageService.UserDetails.update(detailsId, {
-        "tasks.confirmDetails": true,
-      });
-    }
-    if (await userHasValidSignature(userDetail)) {
-      userDetail = await StorageService.UserDetails.update(detailsId, {
-        "tasks.signAgreement": false,
-      });
-    }
-    return userDetail;
+    return getUserDetail(detailsId);
+  }
+  async getById(ctx: HttpContext) {
+    PermissionService.employeeOrFail(ctx);
+    return getUserDetail(ctx.request.param("detailsId"));
   }
   async updateAsCustomer(ctx: HttpContext) {
     const { detailsId } = PermissionService.authenticate(ctx);

@@ -2,7 +2,6 @@
 import { Skeleton, Stack, Text } from "@mantine/core";
 import { useQuery } from "@tanstack/react-query";
 
-import { getAccessTokenBody } from "@/api/token";
 import {
   calculateUserMatchStatus,
   isStandMatchFulfilled,
@@ -15,24 +14,17 @@ import useApiClient from "@/hooks/useApiClient";
 
 export default function MatchList() {
   const client = useApiClient();
-  const { data: accessToken, error: tokenError } = useQuery({
-    queryKey: ["userId"],
-    queryFn: () => getAccessTokenBody(),
-  });
-  const customer = accessToken?.details;
-  const { data: matches, error: matchesError } = useQuery({
-    queryKey: [
-      client.matches.get({ detailsId: getAccessTokenBody().details }).$url(),
-    ],
-    queryFn: () =>
-      client.matches
-        .get({ detailsId: getAccessTokenBody().details })
-        .$get()
-        .unwrap(),
+  const { data, error, isLoading } = useQuery({
+    queryKey: [client.matches.me.$url()],
+    queryFn: () => client.matches.me.$get().unwrap(),
     staleTime: 5000,
   });
 
-  if (!customer || tokenError || matchesError) {
+  if (isLoading) {
+    return <Skeleton height={110} />;
+  }
+
+  if (error || !data) {
     return (
       <ErrorAlert
         title={"Klarte ikke laste inn dine overleveringer"}
@@ -40,11 +32,7 @@ export default function MatchList() {
     );
   }
 
-  if (matches === undefined) {
-    return <Skeleton height={110} />;
-  }
-
-  const sortedUserMatches = matches.userMatches.sort((a, b) => {
+  const sortedUserMatches = data.userMatches.sort((a, b) => {
     if (!a.meetingInfo.date) {
       return b.meetingInfo.date ? 1 : 0;
     } else if (!b.meetingInfo.date) {
@@ -58,7 +46,7 @@ export default function MatchList() {
   });
 
   const unfulfilledUserMatches = sortedUserMatches.filter((userMatch) => {
-    const { currentUser } = calculateUserMatchStatus(userMatch, customer);
+    const { currentUser } = calculateUserMatchStatus(userMatch);
     const currentUserExpectedItemCount =
       currentUser.items.length + currentUser.wantedItems.length;
     const currentUserActualItemCount =
@@ -66,7 +54,7 @@ export default function MatchList() {
     return currentUserActualItemCount < currentUserExpectedItemCount;
   });
   const fulfilledUserMatches = sortedUserMatches.filter((userMatch) => {
-    const { currentUser } = calculateUserMatchStatus(userMatch, customer);
+    const { currentUser } = calculateUserMatchStatus(userMatch);
     const currentUserExpectedItemCount =
       currentUser.items.length + currentUser.wantedItems.length;
     const currentUserActualItemCount =
@@ -74,7 +62,7 @@ export default function MatchList() {
     return currentUserActualItemCount >= currentUserExpectedItemCount;
   });
 
-  if (matches.userMatches.length === 0 && matches.standMatch === undefined) {
+  if (data.userMatches.length === 0 && data.standMatch === undefined) {
     return (
       <InfoAlert title={"Du har ingen overleveringer :)"}>
         <Stack gap={"xs"}>
@@ -90,7 +78,7 @@ export default function MatchList() {
     );
   }
 
-  const standMatch = matches.standMatch;
+  const standMatch = data.standMatch;
   const showMatchList =
     unfulfilledUserMatches.length > 0 || standMatch !== undefined;
 
@@ -101,14 +89,14 @@ export default function MatchList() {
           (100 *
             (fulfilledUserMatches.length +
               (isStandMatchFulfilled(standMatch) ? 1 : 0))) /
-          (matches.userMatches.length + (standMatch !== undefined ? 1 : 0))
+          (data.userMatches.length + (standMatch !== undefined ? 1 : 0))
         }
         subtitle={
           <span>
             Fullført{" "}
             {fulfilledUserMatches.length +
               (isStandMatchFulfilled(standMatch) ? 1 : 0)}{" "}
-            av {matches.userMatches.length + (standMatch !== undefined ? 1 : 0)}{" "}
+            av {data.userMatches.length + (standMatch !== undefined ? 1 : 0)}{" "}
             overleveringer
           </span>
         }
@@ -118,13 +106,11 @@ export default function MatchList() {
         <MatchListItemGroups
           userMatches={unfulfilledUserMatches}
           standMatch={standMatch}
-          userId={customer}
         />
       )}
       {fulfilledUserMatches.length > 0 && (
         <MatchListItemGroups
           userMatches={fulfilledUserMatches}
-          userId={customer}
           heading="Fullførte overleveringer"
         />
       )}

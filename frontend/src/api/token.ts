@@ -31,7 +31,7 @@ export const getRefreshToken = (): string | null => {
 
 export const getAccessTokenBody = () => {
   const token = getAccessToken();
-  if (!token) return {} as AccessToken;
+  if (!token) return null;
 
   let decodedToken;
   try {

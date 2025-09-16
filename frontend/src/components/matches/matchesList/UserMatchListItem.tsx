@@ -12,12 +12,10 @@ import MeetingInfo from "@/components/matches/MeetingInfo";
 
 export default function UserMatchListItem({
   userMatch,
-  currentUserId,
 }: {
   userMatch: UserMatchWithDetails;
-  currentUserId: string;
 }) {
-  const userMatchStatus = calculateUserMatchStatus(userMatch, currentUserId);
+  const userMatchStatus = calculateUserMatchStatus(userMatch);
   const { currentUser, otherUser } = userMatchStatus;
 
   let statusText = "";

@@ -44,7 +44,7 @@ export default function AdministrateUserForm({
       code: userDetail.postCode,
       city: userDetail.postCity,
     },
-    birthday: dayjs(userDetail.dob).format("YYYY-MM-DD"),
+    birthday: userDetail.dob ? dayjs(userDetail.dob).format("YYYY-MM-DD") : "",
     guardianName: userDetail.guardian?.name ?? "",
     guardianEmail: userDetail.guardian?.email ?? "",
     guardianPhoneNumber: userDetail.guardian?.phone ?? "",

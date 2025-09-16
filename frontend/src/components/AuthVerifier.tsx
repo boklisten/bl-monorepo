@@ -3,7 +3,6 @@
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 
-import { getAccessTokenBody } from "@/api/token";
 import useApiClient from "@/hooks/useApiClient";
 import useAuth from "@/hooks/useAuth";
 import useAuthLinker from "@/hooks/useAuthLinker";
@@ -19,12 +18,8 @@ export default function AuthVerifier() {
 
     if (!isLoggedIn) router.push("/auth/failure");
 
-    const { details } = getAccessTokenBody();
     const checkUserDetailsValid = async () => {
-      const userDetail = await client.v2
-        .user_details({ detailsId: details })
-        .$get()
-        .unwrap();
+      const userDetail = await client.v2.user_details.me.$get().unwrap();
       if (
         userDetail?.tasks?.confirmDetails ||
         userDetail?.tasks?.signAgreement

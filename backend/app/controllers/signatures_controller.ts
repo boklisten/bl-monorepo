@@ -52,13 +52,25 @@ export default class SignaturesController {
     };
   }
   async sendSignatureLink(ctx: HttpContext) {
+    PermissionService.employeeOrFail(ctx);
     const targetDetailsId = ctx.request.param("detailsId");
-    const { detailsId } = PermissionService.authenticate(ctx);
-
-    if (targetDetailsId !== detailsId) PermissionService.employeeOrFail(ctx);
 
     const userDetail =
       await StorageService.UserDetails.getOrNull(targetDetailsId);
+    const branch = await StorageService.Branches.getOrNull(
+      userDetail?.branchMembership,
+    );
+    if (userDetail) {
+      await DispatchService.sendSignatureLink(
+        userDetail,
+        branch?.name ?? "en filial",
+      );
+    }
+  }
+  async sendSignatureLinkAsCustomer(ctx: HttpContext) {
+    const { detailsId } = PermissionService.authenticate(ctx);
+
+    const userDetail = await StorageService.UserDetails.getOrNull(detailsId);
     const branch = await StorageService.Branches.getOrNull(
       userDetail?.branchMembership,
     );

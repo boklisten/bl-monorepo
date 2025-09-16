@@ -4,7 +4,6 @@ import { IconArrowLeft } from "@tabler/icons-react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import Link from "next/link";
 
-import { getAccessTokenBody } from "@/api/token";
 import StandMatchDetail from "@/components/matches/StandMatchDetail";
 import UserMatchDetail from "@/components/matches/UserMatchDetail";
 import ErrorAlert from "@/components/ui/alerts/ErrorAlert";
@@ -20,25 +19,18 @@ const MatchDetail = ({
 }) => {
   const client = useApiClient();
   const queryClient = useQueryClient();
-  const { data: accessToken, error: tokenError } = useQuery({
-    queryKey: ["userId"],
-    queryFn: () => getAccessTokenBody(),
-  });
-  const userId = accessToken?.details;
 
-  const { data: matches, error: matchesError } = useQuery({
-    queryKey: [
-      client.matches.get({ detailsId: getAccessTokenBody().details }).$url(),
-    ],
-    queryFn: () =>
-      client.matches
-        .get({ detailsId: getAccessTokenBody().details })
-        .$get()
-        .unwrap(),
+  const { data, isLoading, isError } = useQuery({
+    queryKey: [client.matches.me.$url()],
+    queryFn: () => client.matches.me.$get().unwrap(),
     staleTime: 5000,
   });
 
-  if (tokenError || matchesError) {
+  if (isLoading) {
+    return <Skeleton height={500} />;
+  }
+
+  if (isError || !data) {
     return (
       <ErrorAlert title={GENERIC_ERROR_TEXT}>
         {PLEASE_TRY_AGAIN_TEXT}
@@ -46,27 +38,23 @@ const MatchDetail = ({
     );
   }
 
-  const userMatch = matches?.userMatches.find(
+  const userMatch = data.userMatches.find(
     (userMatch) => userMatch.id === userMatchId,
   );
-  if (matches?.userMatches && userMatchId && !userMatch) {
+  if (data.userMatches && userMatchId && !userMatch) {
     return (
       <ErrorAlert>
         Kunne ikke finne en elevoverlevering med ID {userMatchId}.
       </ErrorAlert>
     );
   }
-  const standMatch = standMatchId ? matches?.standMatch : undefined;
+  const standMatch = standMatchId ? data.standMatch : undefined;
   if (standMatchId && !standMatch) {
     return (
       <ErrorAlert>
         Kunne ikke finne en standoverlevering med ID {standMatchId}.
       </ErrorAlert>
     );
-  }
-
-  if (!userId || (userMatchId && !userMatch) || (standMatchId && !standMatch)) {
-    return <Skeleton height={500} />;
   }
 
   return (
@@ -83,14 +71,9 @@ const MatchDetail = ({
       {userMatch && (
         <UserMatchDetail
           userMatch={userMatch}
-          currentUserId={userId}
           handleItemTransferred={() =>
             queryClient.invalidateQueries({
-              queryKey: [
-                client.matches
-                  .get({ detailsId: getAccessTokenBody().details })
-                  .$url(),
-              ],
+              queryKey: [client.matches.me.$url()],
             })
           }
         />

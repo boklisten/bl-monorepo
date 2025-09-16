@@ -218,8 +218,8 @@ router
   .post("/user_matches/lock", [MatchesController, "lock"])
   .as("matches.lock");
 router
-  .get("/matches/get/:detailsId", [MatchesController, "getMatches"])
-  .as("matches.get");
+  .get("/matches/me", [MatchesController, "getMyMatches"])
+  .as("matches.getMyMatches");
 router
   .post("/matches/transfer_item", [MatchesController, "transferItem"])
   .as("matches.transfer_item");
@@ -228,8 +228,11 @@ router
  * user detail
  */
 router
-  .get("/v2/user_details/:detailsId", [UserDetailController, "get"])
-  .as("user_detail.get");
+  .get("/v2/user_details/id/:detailsId", [UserDetailController, "getById"])
+  .as("user_detail.getById");
+router
+  .get("/v2/user_details/me", [UserDetailController, "getMyDetails"])
+  .as("user_detail.getMyDetails");
 router
   .post("/v2/user_details", [UserDetailController, "updateAsCustomer"])
   .as("user_detail.updateAsCustomer");
@@ -256,6 +259,12 @@ router
     "sendSignatureLink",
   ])
   .as("signatures.send.link");
+router
+  .post("/signatures/me/send", [
+    SignaturesController,
+    "sendSignatureLinkAsCustomer",
+  ])
+  .as("signatures.me.send");
 router
   .get("/signatures/valid/:detailsId", [
     SignaturesController,

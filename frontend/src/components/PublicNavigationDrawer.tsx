@@ -28,7 +28,6 @@ import { useQuery } from "@tanstack/react-query";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
-import { getAccessTokenBody } from "@/api/token";
 import useApiClient from "@/hooks/useApiClient";
 import useAuth from "@/hooks/useAuth";
 
@@ -43,11 +42,10 @@ export default function PublicNavigationDrawer() {
     isLoading: isLoadingUserDetail,
     isError: isErrorUserDetail,
   } = useQuery({
-    queryKey: [client.v2.user_details.$url()],
+    queryKey: [client.v2.user_details.$url(), isLoggedIn],
     queryFn: () => {
-      const { details } = getAccessTokenBody();
-      if (!details) return null;
-      return client.v2.user_details({ detailsId: details }).$get().unwrap();
+      if (!isLoggedIn) return null;
+      return client.v2.user_details.me.$get().unwrap();
     },
   });
 

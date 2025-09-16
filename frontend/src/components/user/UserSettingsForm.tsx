@@ -46,7 +46,7 @@ export default function UserSettingsForm({
       code: userDetail.postCode,
       city: userDetail.postCity,
     },
-    birthday: dayjs(userDetail.dob).format("YYYY-MM-DD"),
+    birthday: userDetail.dob ? dayjs(userDetail.dob).format("YYYY-MM-DD") : "",
     guardianName: userDetail.guardian?.name ?? "",
     guardianEmail: userDetail.guardian?.email ?? "",
     guardianPhoneNumber: userDetail.guardian?.phone ?? "",
@@ -99,7 +99,7 @@ export default function UserSettingsForm({
       });
 
       await queryClient.invalidateQueries({
-        queryKey: ["userDetails", userDetail.id],
+        queryKey: [client.v2.user_details.me.$url()],
       });
 
       if (error) {

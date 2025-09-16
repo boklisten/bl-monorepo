@@ -27,17 +27,15 @@ import { GENERIC_ERROR_TEXT } from "@/utils/constants";
 
 const UserMatchDetail = ({
   userMatch,
-  currentUserId,
   handleItemTransferred,
 }: {
   userMatch: UserMatchWithDetails;
-  currentUserId: string;
   handleItemTransferred?: (() => void) | undefined;
 }) => {
   const client = useApiClient();
   const [redirectCountdownStarted, setRedirectCountdownStarted] =
     useState(false);
-  const userMatchStatus = calculateUserMatchStatus(userMatch, currentUserId);
+  const userMatchStatus = calculateUserMatchStatus(userMatch);
   const { currentUser, otherUser } = userMatchStatus;
 
   let statusText = "";
@@ -132,10 +130,7 @@ const UserMatchDetail = ({
           </Stack>
           <Stack gap={"xs"}>
             <MatchHeader>Du skal møte</MatchHeader>
-            <OtherPersonContact
-              userMatch={userMatch}
-              currentUserId={currentUserId}
-            />
+            <OtherPersonContact userMatch={userMatch} />
             <MeetingInfo
               meetingLocation={userMatch.meetingInfo.location}
               meetingTime={userMatch.meetingInfo.date}

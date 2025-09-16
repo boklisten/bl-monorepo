@@ -4,7 +4,6 @@ import { useQuery } from "@tanstack/react-query";
 import { usePathname, useRouter } from "next/navigation";
 import { ReactNode, useEffect } from "react";
 
-import { getAccessTokenBody } from "@/api/token";
 import useApiClient from "@/hooks/useApiClient";
 import useAuth from "@/hooks/useAuth";
 
@@ -30,18 +29,15 @@ export default function AuthGuard({
     isError: isErrorUserDetail,
   } = useQuery({
     queryKey: [client.v2.user_details.$url()],
-    queryFn: () => {
-      const { details } = getAccessTokenBody();
-      if (!details) return null;
-      return client.v2.user_details({ detailsId: details }).$get().unwrap();
-    },
+    queryFn: () => client.v2.user_details.me.$get().unwrap(),
   });
 
   useEffect(() => {
     if (isLoading) return;
 
+    const pathName = pathname.slice(1);
     if (!isLoggedIn) {
-      router.replace(`/auth/login?redirect=${pathname.slice(1)}`);
+      router.replace(`/auth/login?redirect=${pathName}`);
       return;
     }
 
@@ -50,7 +46,6 @@ export default function AuthGuard({
       return;
     }
 
-    const pathName = pathname.slice(1);
     if (
       !pathName.includes("oppgaver") &&
       !pathName.includes("user-settings") &&

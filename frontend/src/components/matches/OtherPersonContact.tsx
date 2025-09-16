@@ -3,15 +3,15 @@ import { Anchor, Group, Text } from "@mantine/core";
 import { IconPhone } from "@tabler/icons-react";
 import Link from "next/link";
 
+import { getAccessTokenBody } from "@/api/token";
+
 const OtherPersonContact = ({
   userMatch,
-  currentUserId,
 }: {
   userMatch: UserMatchWithDetails;
-  currentUserId: string;
 }) => {
   const otherPerson =
-    userMatch.customerA === currentUserId
+    userMatch.customerA === getAccessTokenBody()?.details
       ? userMatch.customerBDetails
       : userMatch.customerADetails;
 

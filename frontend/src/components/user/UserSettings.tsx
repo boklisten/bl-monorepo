@@ -1,45 +1,37 @@
 "use client";
-import { UserDetail } from "@boklisten/backend/shared/user-detail";
 import { Skeleton, Stack } from "@mantine/core";
 import { useQuery } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 
-import { getAccessTokenBody } from "@/api/token";
 import UserSettingsForm from "@/components/user/UserSettingsForm";
 import useApiClient from "@/hooks/useApiClient";
-import unpack from "@/utils/bl-api-request";
 
 const UserSettings = () => {
   const client = useApiClient();
   const router = useRouter();
 
-  const { data: userDetails, isError } = useQuery({
-    queryKey: ["userDetails"],
-    queryFn: () =>
-      client
-        .$route("collection.userdetails.getId", {
-          id: getAccessTokenBody().details,
-        })
-        .$get()
-        .then(unpack<[UserDetail]>),
+  const { data, isLoading, isError } = useQuery({
+    queryKey: [client.v2.user_details.me.$url()],
+    queryFn: () => client.v2.user_details.me.$get().unwrap(),
   });
 
-  if (isError) {
-    router.push("/auth/login?redirect=user-settings");
-    return null;
-  }
-  if (!userDetails) {
+  if (isLoading) {
     return (
       <Stack>
         <Skeleton height={60} />
         {Array.from({ length: 6 }).map((_, index) => (
-          <Skeleton height={60} key={`s-${index}`} />
+          <Skeleton height={40} key={`s-${index}`} />
         ))}
       </Stack>
     );
   }
 
-  return <UserSettingsForm userDetail={userDetails[0]} />;
+  if (isError || !data) {
+    router.push("/auth/login?redirect=user-settings");
+    return null;
+  }
+
+  return <UserSettingsForm userDetail={data} />;
 };
 
 export default UserSettings;

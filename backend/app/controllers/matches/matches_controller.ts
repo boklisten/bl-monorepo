@@ -36,12 +36,10 @@ export default class MatchesController {
     return await lock(matchLockData);
   }
 
-  async getMatches(ctx: HttpContext) {
+  async getMyMatches(ctx: HttpContext) {
     const { detailsId } = PermissionService.authenticate(ctx);
-    const targetDetailsId = ctx.request.param("detailsId");
-    if (targetDetailsId !== detailsId) PermissionService.employeeOrFail(ctx);
 
-    return await getMatches(targetDetailsId);
+    return await getMatches(detailsId);
   }
 
   async transferItem(ctx: HttpContext) {

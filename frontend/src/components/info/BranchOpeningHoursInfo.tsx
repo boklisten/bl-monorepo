@@ -3,7 +3,7 @@ import { Branch } from "@boklisten/backend/shared/branch";
 import { OpeningHour } from "@boklisten/backend/shared/opening-hour";
 import { Skeleton, Stack, Table } from "@mantine/core";
 import { useQuery } from "@tanstack/react-query";
-import moment from "moment";
+import dayjs from "dayjs";
 
 import ContactInfo from "@/components/info/ContactInfo";
 import ErrorAlert from "@/components/ui/alerts/ErrorAlert";
@@ -11,7 +11,6 @@ import InfoAlert from "@/components/ui/alerts/InfoAlert";
 import unpack from "@/utils/bl-api-request";
 import { PLEASE_TRY_AGAIN_TEXT } from "@/utils/constants";
 import { publicApiClient } from "@/utils/publicApiClient";
-import "moment/locale/nb";
 
 const compareOpeningHours = (a: OpeningHour, b: OpeningHour): number => {
   if (a.from < b.from) {
@@ -24,8 +23,8 @@ const compareOpeningHours = (a: OpeningHour, b: OpeningHour): number => {
 };
 
 const OpeningHourRow = ({ openingHour }: { openingHour: OpeningHour }) => {
-  const fromDate = moment(openingHour.from).locale("nb");
-  const toDate = moment(openingHour.to).locale("nb");
+  const fromDate = dayjs(openingHour.from).locale("nb");
+  const toDate = dayjs(openingHour.to).locale("nb");
   const weekday = fromDate.format("dddd");
   const date = fromDate.format("DD.MM.YYYY");
   const fromTime = fromDate.format("HH:mm");
@@ -44,7 +43,7 @@ const OpeningHourRow = ({ openingHour }: { openingHour: OpeningHour }) => {
 };
 
 export default function BranchOpeningHours({ branchId }: { branchId: string }) {
-  const now = moment().startOf("day").format("DDMMYYYYHHmm");
+  const now = dayjs().startOf("day").format("DDMMYYYYHHmm");
   const {
     data: branch,
     isLoading: isLoadingBranch,

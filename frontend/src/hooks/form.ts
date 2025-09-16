@@ -9,6 +9,7 @@ import SwitchField from "@/components/form/fields/basic/SwitchField";
 import TextAreaField from "@/components/form/fields/basic/TextAreaField";
 import TextField from "@/components/form/fields/basic/TextField";
 import AddressField from "@/components/form/fields/complex/AddressField";
+import DeadlinePickerField from "@/components/form/fields/complex/DeadlinePickerField";
 import EmailField from "@/components/form/fields/complex/EmailField";
 import NameField from "@/components/form/fields/complex/NameField";
 import NewPasswordField from "@/components/form/fields/complex/NewPasswordField";
@@ -17,7 +18,6 @@ import PhoneNumberField from "@/components/form/fields/complex/PhoneNumberField"
 import PostalCodeField from "@/components/form/fields/complex/PostalCodeField";
 import RichTextEditorField from "@/components/form/fields/complex/RichTextEditorField";
 import SegmentedControlField from "@/components/form/fields/complex/SegmentedControlField";
-import SegmentedDeadlineField from "@/components/form/fields/complex/SegmentedDeadlineField";
 import SelectBranchField from "@/components/form/fields/complex/SelectBranchField";
 import SignatureCanvasField from "@/components/form/fields/complex/SignatureCanvasField";
 
@@ -45,7 +45,7 @@ const { useAppForm, withFieldGroup } = createFormHook({
     NewPasswordField,
     SelectBranchField,
     SegmentedControlField,
-    SegmentedDeadlineField,
+    DeadlinePickerField,
     RichTextEditorField,
     SignatureCanvasField,
   },

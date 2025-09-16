@@ -3,7 +3,7 @@ import { Box, Button, Table, Tooltip } from "@mantine/core";
 import { modals } from "@mantine/modals";
 import { IconShoppingCart } from "@tabler/icons-react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import moment from "moment";
+import dayjs from "dayjs";
 import { useRouter } from "next/navigation";
 
 import InfoAlert from "@/components/ui/alerts/InfoAlert";
@@ -55,7 +55,7 @@ export default function OpenOrdersList({
               <Table.Tr key={orderItem.orderId + orderItem.itemId}>
                 <Table.Td>{orderItem.title}</Table.Td>
                 <Table.Td>
-                  {moment(orderItem.deadline).format("DD/MM/YYYY")}
+                  {dayjs(orderItem.deadline).format("DD/MM/YYYY")}
                 </Table.Td>
                 <Table.Td>
                   <Tooltip

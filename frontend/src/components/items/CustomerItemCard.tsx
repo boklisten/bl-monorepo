@@ -22,7 +22,7 @@ import {
   IconSchool,
   IconShoppingCart,
 } from "@tabler/icons-react";
-import moment from "moment";
+import dayjs from "dayjs";
 import { ReactNode } from "react";
 
 import useAuthLinker from "@/hooks/useAuthLinker";
@@ -93,14 +93,14 @@ export default function CustomerItemCard({
         <InfoEntry
           label={"Utdelingstidspunkt"}
           startIcon={<IconHourglassHigh />}
-          text={moment(actionableCustomerItem.handoutAt).format("DD/MM/YYYY")}
+          text={dayjs(actionableCustomerItem.handoutAt).format("DD/MM/YYYY")}
         />
         <Divider />
         <Group>
           <IconCalendarEvent />
           <Text>Frist: </Text>
           <Text fw={"bold"}>
-            {moment(actionableCustomerItem.deadline).format("DD/MM/YYYY")}
+            {dayjs(actionableCustomerItem.deadline).format("DD/MM/YYYY")}
           </Text>
         </Group>
         {["active", "overdue"].includes(actionableCustomerItem.status.type) && (

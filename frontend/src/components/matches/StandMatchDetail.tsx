@@ -2,7 +2,7 @@ import { StandMatchWithDetails } from "@boklisten/backend/shared/match/match-dto
 import { Button, Stack, Title } from "@mantine/core";
 import { modals } from "@mantine/modals";
 import { IconQrcode } from "@tabler/icons-react";
-import moment from "moment";
+import dayjs from "dayjs";
 import { useEffect, useState } from "react";
 import QRCode from "react-qr-code";
 
@@ -23,14 +23,14 @@ import { GENERIC_ERROR_TEXT } from "@/utils/constants";
 
 function useMeetingStatus(meetingTime?: string | Date) {
   const [isTooEarly, setIsTooEarly] = useState(() =>
-    moment().isBefore(moment(meetingTime)),
+    dayjs().isBefore(dayjs(meetingTime)),
   );
 
   useEffect(() => {
     if (!meetingTime) return;
 
     const checkStatus = () => {
-      setIsTooEarly(moment().isBefore(moment(meetingTime)));
+      setIsTooEarly(dayjs().isBefore(dayjs(meetingTime)));
     };
 
     checkStatus();
@@ -128,7 +128,7 @@ const StandMatchDetail = ({
                   <QRCode value={standMatch.customer} />
                   <Title>
                     Oppmøte{" "}
-                    {moment(standMatch.meetingInfo?.date).format("HH:mm")}
+                    {dayjs(standMatch.meetingInfo?.date).format("HH:mm")}
                   </Title>
                   {tooEarly && (
                     <InfoAlert title={"For tidlig ute"}>

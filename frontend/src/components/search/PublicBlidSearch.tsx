@@ -12,7 +12,7 @@ import {
 } from "@mantine/core";
 import { modals } from "@mantine/modals";
 import { IconMail, IconObjectScan, IconPhone } from "@tabler/icons-react";
-import moment from "moment";
+import dayjs from "dayjs";
 import { useState } from "react";
 
 import ScannerModal from "@/components/scanner/ScannerModal";
@@ -138,13 +138,13 @@ export default function PublicBlidSearch() {
                   <Table.Tr>
                     <Table.Th>Utdelt den</Table.Th>
                     <Table.Td>
-                      {moment(searchResult.handoutTime).format("DD/MM/YYYY")}
+                      {dayjs(searchResult.handoutTime).format("DD/MM/YYYY")}
                     </Table.Td>
                   </Table.Tr>
                   <Table.Tr>
                     <Table.Th>Frist</Table.Th>
                     <Table.Td>
-                      {moment(searchResult.deadline).format("DD/MM/YYYY")}
+                      {dayjs(searchResult.deadline).format("DD/MM/YYYY")}
                     </Table.Td>
                   </Table.Tr>
                 </Table.Tbody>

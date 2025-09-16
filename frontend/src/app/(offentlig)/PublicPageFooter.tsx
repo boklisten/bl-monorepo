@@ -1,6 +1,6 @@
 import { Anchor, Group, Stack, Text } from "@mantine/core";
 import { IconCopyright } from "@tabler/icons-react";
-import moment from "moment";
+import dayjs from "dayjs";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -41,7 +41,7 @@ export default function PublicPageFooter() {
       <Group gap={"xs"}>
         <Text>Boklisten.no AS</Text>
         <IconCopyright />
-        {moment().format("YYYY")}
+        {dayjs().format("YYYY")}
       </Group>
     </Stack>
   );

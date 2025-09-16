@@ -3,7 +3,7 @@ import dayjs from "dayjs";
 
 import { useFieldContext } from "@/hooks/form";
 
-export function calculateDeadlineOptions() {
+function calculateDeadlineOptions() {
   const today = new Date();
   const summerDeadline = new Date(today.getFullYear(), 6, 1);
   const winterDeadline = new Date(today.getFullYear(), 11, 20);
@@ -26,20 +26,19 @@ export function calculateDeadlineOptions() {
     winterDeadline.setFullYear(today.getFullYear() + 1);
   }
 
-  return [
-    {
-      value: winterDeadline.toString(),
-      label: dayjs(winterDeadline).format("DD/MM/YYYY"),
-    },
-    {
-      value: summerDeadline.toString(),
-      label: dayjs(summerDeadline).format("DD/MM/YYYY"),
-    },
-  ] as const satisfies { value: string; label: string }[];
+  let usualDates = [summerDeadline, winterDeadline];
+  if (summerDeadline > winterDeadline) {
+    usualDates = [winterDeadline, summerDeadline];
+  }
+
+  return usualDates.map((option) => ({
+    value: option.toString(),
+    label: dayjs(option).format("DD/MM/YYYY"),
+  }));
 }
 
 export default function DeadlinePickerField() {
-  const field = useFieldContext<Date | null>();
+  const field = useFieldContext<string>();
   return (
     <DatePickerInput
       presets={calculateDeadlineOptions()}
@@ -49,8 +48,9 @@ export default function DeadlinePickerField() {
       placeholder={"DD/MM/YYYY"}
       minDate={dayjs().subtract(1, "month").toDate()}
       maxDate={dayjs().add(5, "years").toDate()}
+      value={field.state.value}
       onChange={(newValue) => {
-        field.handleChange(newValue === null ? null : new Date(newValue));
+        field.handleChange(newValue ?? "");
       }}
       onBlur={field.handleBlur}
       error={field.state.meta.errors.join(", ")}

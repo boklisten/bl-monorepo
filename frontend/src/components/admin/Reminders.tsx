@@ -6,8 +6,8 @@ import { Button, Grid, Text } from "@mantine/core";
 import { modals } from "@mantine/modals";
 import { IconMailFast, IconSend } from "@tabler/icons-react";
 import { useMutation, useQuery } from "@tanstack/react-query";
+import dayjs from "dayjs";
 
-import { calculateDeadlineOptions } from "@/components/form/fields/complex/DeadlinePickerField";
 import { useAppForm } from "@/hooks/form";
 import useApiClient from "@/hooks/useApiClient";
 import unpack from "@/utils/bl-api-request";
@@ -22,7 +22,7 @@ const SENDGRID_TEMPLATE_ID_REGEX = /^d-[0-9a-f]{32}$/;
 
 interface RemindersFormData {
   branchIds: string[];
-  deadline: Date | null;
+  deadline: string;
   customerItemType: CustomerItemType;
   messageMethod: MessageMethod;
   emailTemplateId: string | null;
@@ -31,7 +31,7 @@ interface RemindersFormData {
 
 const defaultValues: RemindersFormData = {
   branchIds: [],
-  deadline: new Date(calculateDeadlineOptions()[0].value),
+  deadline: "",
   customerItemType: "rent",
   messageMethod: MessageMethod.SMS,
   emailTemplateId: "",
@@ -60,7 +60,7 @@ export default function Reminders() {
     mutationFn: (formData: RemindersFormData) =>
       client.reminders.count_recipients
         .$post({
-          deadlineISO: formData.deadline?.toISOString() ?? "",
+          deadlineISO: dayjs(formData.deadline).toISOString(),
           customerItemType: formData.customerItemType,
           branchIDs: formData.branchIds,
           emailTemplateId: formData.emailTemplateId,
@@ -75,7 +75,7 @@ export default function Reminders() {
     mutationFn: (formData: RemindersFormData) =>
       client.reminders.send
         .$post({
-          deadlineISO: formData.deadline?.toISOString() ?? "",
+          deadlineISO: dayjs(formData.deadline).toISOString(),
           customerItemType: formData.customerItemType,
           branchIDs: formData.branchIds,
           emailTemplateId: formData.emailTemplateId,
@@ -143,7 +143,8 @@ export default function Reminders() {
         name={"deadline"}
         validators={{
           onSubmit: ({ value }) => {
-            return value === null ? "Du må velge en frist" : null;
+            if (!value) return "Du må velge en frist";
+            return null;
           },
         }}
       >

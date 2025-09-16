@@ -2,15 +2,18 @@
 
 import { UserDetail } from "@boklisten/backend/shared/user-detail";
 import { Button, Space, Stack, TextInput, Tooltip } from "@mantine/core";
+import { modals } from "@mantine/modals";
 import {
   IconCheck,
   IconInfoCircleFilled,
   IconMailFast,
+  IconQrcode,
 } from "@tabler/icons-react";
 import { createFieldMap } from "@tanstack/react-form";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import dayjs from "dayjs";
 import { useState } from "react";
+import QRCode from "react-qr-code";
 
 import { emailFieldValidator } from "@/components/form/fields/complex/EmailField";
 import { nameFieldValidator } from "@/components/form/fields/complex/NameField";
@@ -159,6 +162,23 @@ export default function UserSettingsForm({
           )}
         </Stack>
       )}
+      <Stack align={"center"} w={"100%"}>
+        <Button
+          leftSection={<IconQrcode />}
+          onClick={() =>
+            modals.open({
+              title: `Kunde-ID for ${userDetail.name}`,
+              children: (
+                <Stack align={"center"}>
+                  <QRCode value={userDetail.id} />
+                </Stack>
+              ),
+            })
+          }
+        >
+          Vis kunde-ID
+        </Button>
+      </Stack>
       <Space />
       <UserInfoFields
         perspective={"personal"}

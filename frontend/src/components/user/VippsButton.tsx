@@ -2,7 +2,6 @@
 import { Center } from "@mantine/core";
 import { useRouter, useSearchParams } from "next/navigation";
 
-import { add } from "@/api/storage";
 import BL_CONFIG from "@/utils/bl-config";
 import { publicApiClient } from "@/utils/publicApiClient";
 
@@ -16,10 +15,13 @@ export default function VippsButton({ verb }: { verb: "login" | "register" }) {
         const caller = searchParams.get("caller");
         const redirect = searchParams.get("redirect");
         if (caller) {
-          add(BL_CONFIG.login.localStorageKeys.caller, caller);
+          localStorage.setItem(BL_CONFIG.login.localStorageKeys.caller, caller);
         }
         if (redirect) {
-          add(BL_CONFIG.login.localStorageKeys.redirect, redirect);
+          localStorage.setItem(
+            BL_CONFIG.login.localStorageKeys.redirect,
+            redirect,
+          );
         }
         // @ts-expect-error fixme: bad routing types
         router.replace(publicApiClient.auth.vipps.redirect.$url());

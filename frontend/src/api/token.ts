@@ -1,7 +1,6 @@
 import { AccessToken } from "@boklisten/backend/shared/access-token";
 import { decodeToken } from "react-jwt";
 
-import { add, get } from "@/api/storage";
 import BL_CONFIG from "@/utils/bl-config";
 
 const accessTokenName = BL_CONFIG.token.accessToken;
@@ -11,22 +10,30 @@ export const addAccessToken = (value: string): void => {
   if (!value || value.length <= 0) {
     throw new Error("provided value is empty or undefined");
   }
-  add(accessTokenName, value);
+  localStorage.setItem(accessTokenName, value);
 };
 
 export const addRefreshToken = (value: string): void => {
   if (!value || value.length <= 0) {
     throw new Error("provided value is empty or undefined");
   }
-  add(refreshTokenName, value);
+  localStorage.setItem(refreshTokenName, value);
 };
 
 export const getAccessToken = (): string | null => {
-  return get(accessTokenName);
+  try {
+    return localStorage.getItem(accessTokenName);
+  } catch {
+    return null;
+  }
 };
 
 export const getRefreshToken = (): string | null => {
-  return get(refreshTokenName);
+  try {
+    return localStorage.getItem(refreshTokenName);
+  } catch {
+    return null;
+  }
 };
 
 export const getAccessTokenBody = () => {

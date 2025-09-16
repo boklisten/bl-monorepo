@@ -85,7 +85,8 @@ export default function CreateWaitingListEntry({
           <form.AppField
             name={"name"}
             validators={{
-              onBlur: ({ value }) => nameFieldValidator(value, "administrate"),
+              onSubmit: ({ value }) =>
+                nameFieldValidator(value, "administrate"),
             }}
           >
             {(field) => <field.NameField autoComplete={"off"} />}
@@ -93,13 +94,19 @@ export default function CreateWaitingListEntry({
           <form.AppField
             name={"phoneNumber"}
             validators={{
-              onBlur: ({ value }) =>
+              onSubmit: ({ value }) =>
                 phoneNumberFieldValidator(value, "administrate"),
             }}
           >
             {(field) => <field.PhoneNumberField autoComplete={"off"} />}
           </form.AppField>
-          <form.AppField name={"itemIds"}>
+          <form.AppField
+            name={"itemIds"}
+            validators={{
+              onSubmit: ({ value }) =>
+                value.length === 0 ? "Du må velge minst en bok" : null,
+            }}
+          >
             {(field) => (
               <field.MultiSelectField
                 required
@@ -114,7 +121,13 @@ export default function CreateWaitingListEntry({
               />
             )}
           </form.AppField>
-          <form.AppField name={"branchId"}>
+          <form.AppField
+            name={"branchId"}
+            validators={{
+              onSubmit: ({ value }) =>
+                value.length === 0 ? "Du må velge en filial" : null,
+            }}
+          >
             {(field) => (
               <field.SelectField
                 required

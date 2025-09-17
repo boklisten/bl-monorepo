@@ -7,14 +7,10 @@ import { IconObjectScan } from "@tabler/icons-react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useEffect, useRef, useState } from "react";
 
-// fixme: resolve bad feature-feature coupling
-//  eslint-disable-next-line boundaries/element-types
-import { ItemStatus } from "@/features/matches/matches-helper";
-//  eslint-disable-next-line boundaries/element-types
-import MatchItemTable from "@/features/matches/MatchItemTable";
-//  eslint-disable-next-line boundaries/element-types
-import MatchScannerContent from "@/features/matches/MatchScannerContent";
 import InfoAlert from "@/shared/components/alerts/InfoAlert";
+import { ItemStatus } from "@/shared/components/matches/matches-helper";
+import MatchItemTable from "@/shared/components/matches/MatchItemTable";
+import MatchScannerContent from "@/shared/components/matches/MatchScannerContent";
 import { determineScannedTextType } from "@/shared/components/scanner/BlidScanner";
 import ScannerModal from "@/shared/components/scanner/ScannerModal";
 import useApiClient from "@/shared/hooks/useApiClient";

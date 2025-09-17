@@ -4,7 +4,7 @@ import {
   IconSquareCheckFilled,
 } from "@tabler/icons-react";
 
-import { ItemStatus } from "@/features/matches/matches-helper";
+import { ItemStatus } from "@/shared/components/matches/matches-helper";
 
 const MatchItemTable = ({
   itemFilter = null,

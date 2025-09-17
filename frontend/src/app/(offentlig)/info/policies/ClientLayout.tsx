@@ -20,7 +20,7 @@ const tabs = [
   value: `/${string}`;
 }[];
 
-export default function PoliciesNavigation() {
+export default function ClientLayout() {
   const router = useRouter();
   const pathname = usePathname();
 

@@ -2,14 +2,14 @@
 import { Skeleton, Stack, Text } from "@mantine/core";
 import { useQuery } from "@tanstack/react-query";
 
+import MatchListItemGroups from "@/features/matches/matchesList/MatchListItemGroups";
+import ErrorAlert from "@/shared/components/alerts/ErrorAlert";
+import InfoAlert from "@/shared/components/alerts/InfoAlert";
 import {
   calculateUserMatchStatus,
   isStandMatchFulfilled,
-} from "@/features/matches/matches-helper";
-import MatchListItemGroups from "@/features/matches/matchesList/MatchListItemGroups";
-import ProgressBar from "@/features/matches/matchesList/ProgressBar";
-import ErrorAlert from "@/shared/components/alerts/ErrorAlert";
-import InfoAlert from "@/shared/components/alerts/InfoAlert";
+} from "@/shared/components/matches/matches-helper";
+import ProgressBar from "@/shared/components/ProgressBar";
 import useApiClient from "@/shared/hooks/useApiClient";
 
 export default function MatchList() {

@@ -68,30 +68,67 @@ export default tseslint.config(
         typescript: { project: PROJECT_PATHS, alwaysTryTypes: true },
       },
       "boundaries/elements": [
-        { type: "app", pattern: "frontend/src/app/**" },
-        { type: "shared", pattern: "frontend/src/shared/**" },
+        { type: "backend-shared", pattern: "backend/shared/**" },
+        { type: "backend", pattern: "backend/**" },
+        { type: "frontend-shared", pattern: "frontend/src/shared/**" },
         {
-          type: "feature",
+          type: "frontend-feature",
           pattern: "frontend/src/features/*/**",
           capture: ["name"],
+        },
+        {
+          type: "frontend-app",
+          mode: "file",
+          basePattern: "frontend/src/app",
+          pattern:
+            "{robots,page,layout,error,loading,template,route,ClientPage,ClientLayout}.{ts,tsx}",
+        },
+        {
+          type: "frontend-other",
+          mode: "file",
+          basePattern: "frontend",
+          pattern: [
+            "global-error.tsx",
+            "instrumentation{,-client}.ts",
+            "*.config.{ts,mjs}",
+          ],
+        },
+        {
+          type: "other",
+          mode: "file",
+          pattern: "*.config.{ts,mjs}",
         },
       ],
     },
     rules: {
       ...nextPlugin.configs.recommended.rules,
       ...nextPlugin.configs["core-web-vitals"].rules,
+      "boundaries/no-unknown-files": "error",
       "boundaries/element-types": [
         "error",
         {
           default: "disallow",
           message: "${file.type} is not allowed to import ${dependency.type}",
           rules: [
-            { from: ["app"], allow: ["shared", "feature"] },
-            { from: ["feature"], allow: ["shared"] },
+            { from: ["backend"], allow: ["backend-shared"] },
+            { from: ["frontend-shared"], allow: ["backend-shared"] },
+            {
+              from: ["frontend-feature"],
+              allow: ["backend-shared", "frontend-shared"],
+            },
+            {
+              from: ["frontend-app"],
+              allow: [
+                "backend-shared",
+                "frontend-shared",
+                "frontend-feature",
+                "frontend-app",
+              ],
+            },
             // A feature may import from itself, but not from other features
             {
-              from: [["feature", { name: "*" }]],
-              allow: [["feature", { name: "${from.name}" }]],
+              from: [["frontend-feature", { name: "*" }]],
+              allow: [["frontend-feature", { name: "${from.name}" }]],
             },
           ],
         },

@@ -2,7 +2,7 @@
 
 import { Spoiler } from "@mantine/core";
 
-import EditableTextReadOnly from "@/features/editable-text/EditableTextReadOnly";
+import EditableTextReadOnly from "@/shared/components/editable-text/EditableTextReadOnly";
 
 export default function ExpandableEditableTextReadOnly({
   dataKey,

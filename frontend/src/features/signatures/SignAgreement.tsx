@@ -3,11 +3,9 @@ import { Button, Skeleton, Stack } from "@mantine/core";
 import { IconChecks } from "@tabler/icons-react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
-// fixme: resolve bad feature-feature coupling
-//  eslint-disable-next-line boundaries/element-types
-import ExpandableEditableTextReadOnly from "@/features/editable-text/ExpandableEditableTextReadOnly";
-import SignedContractDetails from "@/features/signatures/SignedContractDetails";
 import ErrorAlert from "@/shared/components/alerts/ErrorAlert";
+import ExpandableEditableTextReadOnly from "@/shared/components/editable-text/ExpandableEditableTextReadOnly";
+import SignedContractDetails from "@/shared/components/SignedContractDetails";
 import { useAppForm } from "@/shared/hooks/form";
 import { publicApiClient } from "@/shared/hooks/publicApiClient";
 import { PLEASE_TRY_AGAIN_TEXT } from "@/shared/utils/constants";

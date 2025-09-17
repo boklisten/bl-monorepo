@@ -1,7 +1,7 @@
 import { Container, Stack, Title } from "@mantine/core";
 
+import ClientPage from "@/app/(offentlig)/oppgaver/ClientPage";
 import AuthGuard from "@/features/auth/AuthGuard";
-import UserTasks from "@/features/tasks/UserTasks";
 import { publicApiClient } from "@/shared/hooks/publicApiClient";
 
 export default async function TasksPage() {
@@ -15,7 +15,7 @@ export default async function TasksPage() {
       <Stack>
         <Title>Dine oppgaver</Title>
         <AuthGuard>
-          <UserTasks cachedAgreementText={cachedAgreement.text} />
+          <ClientPage cachedAgreementText={cachedAgreement.text} />
         </AuthGuard>
       </Stack>
     </Container>

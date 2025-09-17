@@ -6,19 +6,19 @@ import dayjs from "dayjs";
 import { useEffect, useState } from "react";
 import QRCode from "react-qr-code";
 
+import { StandMatchTitle } from "@/features/matches/matchesList/helper";
+import MeetingInfo from "@/features/matches/MeetingInfo";
+import ErrorAlert from "@/shared/components/alerts/ErrorAlert";
+import InfoAlert from "@/shared/components/alerts/InfoAlert";
+import SuccessAlert from "@/shared/components/alerts/SuccessAlert";
 import {
   calculateFulfilledStandMatchItems,
   calculateItemStatuses,
   ItemStatus,
   MatchHeader,
-} from "@/features/matches/matches-helper";
-import { StandMatchTitle } from "@/features/matches/matchesList/helper";
-import ProgressBar from "@/features/matches/matchesList/ProgressBar";
-import MatchItemTable from "@/features/matches/MatchItemTable";
-import MeetingInfo from "@/features/matches/MeetingInfo";
-import ErrorAlert from "@/shared/components/alerts/ErrorAlert";
-import InfoAlert from "@/shared/components/alerts/InfoAlert";
-import SuccessAlert from "@/shared/components/alerts/SuccessAlert";
+} from "@/shared/components/matches/matches-helper";
+import MatchItemTable from "@/shared/components/matches/MatchItemTable";
+import ProgressBar from "@/shared/components/ProgressBar";
 import { GENERIC_ERROR_TEXT } from "@/shared/utils/constants";
 
 function useMeetingStatus(meetingTime?: string | Date) {

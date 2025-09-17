@@ -2,17 +2,17 @@ import { StandMatchWithDetails } from "@boklisten/backend/shared/match/match-dto
 import { Text, Title } from "@mantine/core";
 
 import {
-  calculateFulfilledStandMatchItems,
-  isStandMatchBegun,
-  isStandMatchFulfilled,
-} from "@/features/matches/matches-helper";
-import {
   formatActionsString,
   StandMatchTitle,
 } from "@/features/matches/matchesList/helper";
 import MatchListItemCard from "@/features/matches/matchesList/MatchListItemCard";
-import ProgressBar from "@/features/matches/matchesList/ProgressBar";
 import MeetingInfo from "@/features/matches/MeetingInfo";
+import {
+  calculateFulfilledStandMatchItems,
+  isStandMatchBegun,
+  isStandMatchFulfilled,
+} from "@/shared/components/matches/matches-helper";
+import ProgressBar from "@/shared/components/ProgressBar";
 
 export default function StandMatchListItem({
   standMatch,

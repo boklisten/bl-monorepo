@@ -13,9 +13,9 @@ import { IconCopy, IconSend } from "@tabler/icons-react";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import Image from "next/image";
 
-import SignedContractDetails from "@/features/signatures/SignedContractDetails";
 import ErrorAlert from "@/shared/components/alerts/ErrorAlert";
 import WarningAlert from "@/shared/components/alerts/WarningAlert";
+import SignedContractDetails from "@/shared/components/SignedContractDetails";
 import useApiClient from "@/shared/hooks/useApiClient";
 import { PLEASE_TRY_AGAIN_TEXT } from "@/shared/utils/constants";
 import {

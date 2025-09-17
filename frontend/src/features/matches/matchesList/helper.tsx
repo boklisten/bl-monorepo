@@ -6,7 +6,7 @@ import {
   IconSwitchHorizontal,
 } from "@tabler/icons-react";
 
-import { UserMatchStatus } from "@/features/matches/matches-helper";
+import { UserMatchStatus } from "@/shared/components/matches/matches-helper";
 
 export function formatActionsString(handoffItems: number, pickupItems: number) {
   const hasHandoffItems = handoffItems > 0;

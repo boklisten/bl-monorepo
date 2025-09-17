@@ -1,14 +1,14 @@
 import { UserMatchWithDetails } from "@boklisten/backend/shared/match/match-dtos";
 import { Text, Title } from "@mantine/core";
 
-import { calculateUserMatchStatus } from "@/features/matches/matches-helper";
 import {
   formatActionsString,
   UserMatchTitle,
 } from "@/features/matches/matchesList/helper";
 import MatchListItemCard from "@/features/matches/matchesList/MatchListItemCard";
-import ProgressBar from "@/features/matches/matchesList/ProgressBar";
 import MeetingInfo from "@/features/matches/MeetingInfo";
+import { calculateUserMatchStatus } from "@/shared/components/matches/matches-helper";
+import ProgressBar from "@/shared/components/ProgressBar";
 
 export default function UserMatchListItem({
   userMatch,

@@ -4,22 +4,22 @@ import { modals } from "@mantine/modals";
 import { IconObjectScan } from "@tabler/icons-react";
 import { Suspense, useState } from "react";
 
-import {
-  calculateUserMatchStatus,
-  calculateItemStatuses,
-  ItemStatus,
-  MatchHeader,
-} from "@/features/matches/matches-helper";
 import { UserMatchTitle } from "@/features/matches/matchesList/helper";
-import ProgressBar from "@/features/matches/matchesList/ProgressBar";
-import MatchItemTable from "@/features/matches/MatchItemTable";
-import MatchScannerContent from "@/features/matches/MatchScannerContent";
 import MeetingInfo from "@/features/matches/MeetingInfo";
 import OtherPersonContact from "@/features/matches/OtherPersonContact";
 import ErrorAlert from "@/shared/components/alerts/ErrorAlert";
 import SuccessAlert from "@/shared/components/alerts/SuccessAlert";
 import WarningAlert from "@/shared/components/alerts/WarningAlert";
 import CountdownToRedirect from "@/shared/components/CountdownToRedirect";
+import {
+  calculateUserMatchStatus,
+  calculateItemStatuses,
+  ItemStatus,
+  MatchHeader,
+} from "@/shared/components/matches/matches-helper";
+import MatchItemTable from "@/shared/components/matches/MatchItemTable";
+import MatchScannerContent from "@/shared/components/matches/MatchScannerContent";
+import ProgressBar from "@/shared/components/ProgressBar";
 import ScannerModal from "@/shared/components/scanner/ScannerModal";
 import ScannerTutorial from "@/shared/components/scanner/ScannerTutorial";
 import useApiClient from "@/shared/hooks/useApiClient";

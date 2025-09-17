@@ -6,6 +6,7 @@ import { nameFieldValidator } from "@/shared/components/form/fields/complex/Name
 import { phoneNumberFieldValidator } from "@/shared/components/form/fields/complex/PhoneNumberField";
 import { postalCodeFieldValidator } from "@/shared/components/form/fields/complex/PostalCodeField";
 import { withFieldGroup } from "@/shared/hooks/form";
+import { isUnder18 } from "@/shared/utils/dates";
 
 export interface UserInfoFieldValues {
   name: string;
@@ -36,10 +37,6 @@ export const userInfoFieldDefaultValues: UserInfoFieldValues = {
   guardianEmail: "",
   guardianPhoneNumber: "",
 };
-
-export function isUnder18(birthday: Date) {
-  return dayjs(birthday).isAfter(dayjs().subtract(18, "year"));
-}
 
 const UserInfoFields = withFieldGroup({
   defaultValues: userInfoFieldDefaultValues,

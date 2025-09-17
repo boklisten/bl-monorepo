@@ -2,9 +2,9 @@ import { Stack, Text } from "@mantine/core";
 import { modals } from "@mantine/modals";
 import { useEffect } from "react";
 
-import { ItemStatus } from "@/features/matches/matches-helper";
-import ProgressBar from "@/features/matches/matchesList/ProgressBar";
-import MatchItemTable from "@/features/matches/MatchItemTable";
+import { ItemStatus } from "@/shared/components/matches/matches-helper";
+import MatchItemTable from "@/shared/components/matches/MatchItemTable";
+import ProgressBar from "@/shared/components/ProgressBar";
 
 export default function MatchScannerContent({
   expectedItems,

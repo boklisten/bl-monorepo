@@ -8,15 +8,15 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import dayjs from "dayjs";
 import { useState } from "react";
 
-import UserInfoFields, {
-  isUnder18,
-  UserInfoFieldValues,
-} from "@/features/user/UserInfoFields";
 import { emailFieldValidator } from "@/shared/components/form/fields/complex/EmailField";
 import { nameFieldValidator } from "@/shared/components/form/fields/complex/NameField";
 import { phoneNumberFieldValidator } from "@/shared/components/form/fields/complex/PhoneNumberField";
+import UserInfoFields, {
+  UserInfoFieldValues,
+} from "@/shared/components/UserInfoFields";
 import { useAppForm } from "@/shared/hooks/form";
 import useApiClient from "@/shared/hooks/useApiClient";
+import { isUnder18 } from "@/shared/utils/dates";
 import {
   showErrorNotification,
   showSuccessNotification,

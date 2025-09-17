@@ -1,6 +1,6 @@
 import { Metadata } from "next";
 
-import EditableTextReadOnly from "@/features/editable-text/EditableTextReadOnly";
+import EditableTextReadOnly from "@/shared/components/editable-text/EditableTextReadOnly";
 import { publicApiClient } from "@/shared/hooks/publicApiClient";
 
 export const revalidate = 60;

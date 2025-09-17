@@ -3,11 +3,8 @@ import { Button, Stack } from "@mantine/core";
 import { IconLockOpen } from "@tabler/icons-react";
 import { useMutation, useQuery } from "@tanstack/react-query";
 
-// fixme: resolve bad feature-feature coupling
-//  eslint-disable-next-line boundaries/element-types
-import AdministrateUserSignatures from "@/features/signatures/AdministrateUserSignatures";
-//  eslint-disable-next-line boundaries/element-types
-import AdministrateUserForm from "@/features/user/AdministrateUserForm";
+import AdministrateUserForm from "@/shared/components/AdministrateUserForm";
+import AdministrateUserSignatures from "@/shared/components/AdministrateUserSignatures";
 import useApiClient from "@/shared/hooks/useApiClient";
 import unpack from "@/shared/utils/bl-api-request";
 import {

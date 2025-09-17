@@ -12,12 +12,7 @@ import { IconSend } from "@tabler/icons-react";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { Suspense } from "react";
 
-// fixme: resolve bad feature-feature coupling
-//  eslint-disable-next-line boundaries/element-types
 import SignAgreement from "@/features/signatures/SignAgreement";
-//  eslint-disable-next-line boundaries/element-types
-import { isUnder18 } from "@/features/user/UserInfoFields";
-//  eslint-disable-next-line boundaries/element-types
 import UserSettingsForm from "@/features/user/UserSettingsForm";
 import ErrorAlert from "@/shared/components/alerts/ErrorAlert";
 import InfoAlert from "@/shared/components/alerts/InfoAlert";
@@ -25,12 +20,13 @@ import SuccessAlert from "@/shared/components/alerts/SuccessAlert";
 import CountdownToRedirect from "@/shared/components/CountdownToRedirect";
 import useApiClient from "@/shared/hooks/useApiClient";
 import { PLEASE_TRY_AGAIN_TEXT } from "@/shared/utils/constants";
+import { isUnder18 } from "@/shared/utils/dates";
 import {
   showErrorNotification,
   showSuccessNotification,
 } from "@/shared/utils/notifications";
 
-export default function UserTasks({
+export default function ClientPage({
   cachedAgreementText,
 }: {
   cachedAgreementText: string;

@@ -15,14 +15,14 @@ import dayjs from "dayjs";
 import { useState } from "react";
 import QRCode from "react-qr-code";
 
+import UserInfoFields, {
+  UserInfoFieldValues,
+} from "@/features/user/UserInfoFields";
 import InfoAlert from "@/shared/components/alerts/InfoAlert";
 import WarningAlert from "@/shared/components/alerts/WarningAlert";
 import { emailFieldValidator } from "@/shared/components/form/fields/complex/EmailField";
 import { nameFieldValidator } from "@/shared/components/form/fields/complex/NameField";
 import { phoneNumberFieldValidator } from "@/shared/components/form/fields/complex/PhoneNumberField";
-import UserInfoFields, {
-  UserInfoFieldValues,
-} from "@/shared/components/UserInfoFields";
 import { useAppForm } from "@/shared/hooks/form";
 import useApiClient from "@/shared/hooks/useApiClient";
 import { isUnder18 } from "@/shared/utils/dates";

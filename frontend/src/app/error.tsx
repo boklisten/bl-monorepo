@@ -1,6 +1,6 @@
 "use client"; // Error boundaries must be Client Components
 
-import ErrorBoundary from "@/shared/components/ErrorBoundary";
+import ErrorBoundary from "@/features/layout/ErrorBoundary";
 
 export default function RootErrorBoundary({
   error,

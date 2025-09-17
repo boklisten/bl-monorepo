@@ -1,8 +1,8 @@
 import { Anchor, Group } from "@mantine/core";
 import Link from "next/link";
 
-import Logo from "@/shared/components/Logo";
-import PublicNavigationDrawer from "@/shared/components/PublicNavigationDrawer";
+import Logo from "@/features/layout/Logo";
+import PublicNavigationDrawer from "@/features/layout/PublicNavigationDrawer";
 
 export default function PublicPageHeader() {
   return (

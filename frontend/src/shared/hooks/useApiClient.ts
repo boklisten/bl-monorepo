@@ -9,8 +9,8 @@ import { createTuyau } from "@tuyau/client";
 import { superjson } from "@tuyau/superjson/plugin";
 import { usePathname, useRouter } from "next/navigation";
 
-import { publicApiClient } from "@/shared/hooks/publicApiClient";
 import BL_CONFIG from "@/shared/utils/bl-config";
+import { publicApiClient } from "@/shared/utils/publicApiClient";
 import {
   addAccessToken,
   addRefreshToken,

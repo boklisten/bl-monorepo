@@ -2,8 +2,8 @@ import { Anchor, Center, Stack } from "@mantine/core";
 import Link from "next/link";
 import { useEffect } from "react";
 
+import Logo from "@/features/layout/Logo";
 import ErrorAlert from "@/shared/components/alerts/ErrorAlert";
-import Logo from "@/shared/components/Logo";
 
 export default function ErrorBoundary({
   error,

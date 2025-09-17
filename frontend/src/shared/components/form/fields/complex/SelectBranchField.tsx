@@ -14,8 +14,8 @@ import Link from "next/link";
 import InfoAlert from "@/shared/components/alerts/InfoAlert";
 import SelectBranchTreeView from "@/shared/components/SelectBranchTreeView";
 import { useFieldContext } from "@/shared/hooks/form";
-import { publicApiClient } from "@/shared/hooks/publicApiClient";
 import unpack from "@/shared/utils/bl-api-request";
+import { publicApiClient } from "@/shared/utils/publicApiClient";
 
 export default function SelectBranchField(
   props: SelectProps & { perspective: "personal" | "administrate" | string },

@@ -1,8 +1,8 @@
 import { Stack, Title } from "@mantine/core";
 import { Metadata } from "next";
 
+import EditableTextTable from "@/features/editable-texts/EditableTextTable";
 import QuestionsAndAnswersTable from "@/features/questions-and-answers/QuestionsAndAnswersTable";
-import EditableTextTable from "@/shared/components/editable-text/EditableTextTable";
 
 export const metadata: Metadata = {
   title: "Dynamisk innhold",

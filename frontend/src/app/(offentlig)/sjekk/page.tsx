@@ -2,7 +2,7 @@ import { Container, Stack, Title, Text } from "@mantine/core";
 import { Metadata } from "next";
 
 import AuthGuard from "@/features/auth/AuthGuard";
-import PublicBlidSearch from "@/features/public-info/PublicBlidSearch";
+import PublicBlidSearch from "@/features/info/PublicBlidSearch";
 
 export const metadata: Metadata = {
   title: "Boksøk",

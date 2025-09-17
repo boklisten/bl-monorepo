@@ -10,11 +10,11 @@ import validator from "validator";
 import ErrorAlert from "@/shared/components/alerts/ErrorAlert";
 import SuccessAlert from "@/shared/components/alerts/SuccessAlert";
 import { useAppForm } from "@/shared/hooks/form";
-import { publicApiClient } from "@/shared/hooks/publicApiClient";
 import {
   GENERIC_ERROR_TEXT,
   PLEASE_TRY_AGAIN_TEXT,
 } from "@/shared/utils/constants";
+import { publicApiClient } from "@/shared/utils/publicApiClient";
 
 interface ForgotFields {
   email: string;

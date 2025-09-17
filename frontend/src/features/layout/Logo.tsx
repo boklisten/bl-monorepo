@@ -2,7 +2,7 @@ import { Anchor, Group, Title } from "@mantine/core";
 import Image from "next/image";
 import Link from "next/link";
 
-import TestVersionChip from "@/shared/components/TestVersionChip";
+import TestVersionChip from "@/features/layout/TestVersionChip";
 
 export default function Logo({
   variant,

@@ -1,15 +1,15 @@
 "use client";
-import { Button, Skeleton, Stack } from "@mantine/core";
+import { Button, Skeleton, Spoiler, Stack } from "@mantine/core";
 import { IconChecks } from "@tabler/icons-react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
+import SignedContractDetails from "@/features/signatures/SignedContractDetails";
 import ErrorAlert from "@/shared/components/alerts/ErrorAlert";
-import ExpandableEditableTextReadOnly from "@/shared/components/editable-text/ExpandableEditableTextReadOnly";
-import SignedContractDetails from "@/shared/components/SignedContractDetails";
+import EditableTextReadOnly from "@/shared/components/EditableTextReadOnly";
 import { useAppForm } from "@/shared/hooks/form";
-import { publicApiClient } from "@/shared/hooks/publicApiClient";
 import { PLEASE_TRY_AGAIN_TEXT } from "@/shared/utils/constants";
 import { showErrorNotification } from "@/shared/utils/notifications";
+import { publicApiClient } from "@/shared/utils/publicApiClient";
 
 interface SignatureForm {
   signingName: string;
@@ -84,10 +84,12 @@ export default function SignAgreement({
   if (data.isSignatureValid) {
     return (
       <Stack>
-        <ExpandableEditableTextReadOnly
-          dataKey={"betingelser"}
-          cachedText={cachedAgreementText}
-        />
+        <Spoiler maxHeight={165} showLabel={"Vis mer"} hideLabel={"Vis mindre"}>
+          <EditableTextReadOnly
+            dataKey={"betingelser"}
+            cachedText={cachedAgreementText}
+          />
+        </Spoiler>
         <SignedContractDetails
           signedByGuardian={data.signedByGuardian ?? false}
           signingName={data.signingName ?? ""}
@@ -101,10 +103,12 @@ export default function SignAgreement({
 
   return (
     <Stack>
-      <ExpandableEditableTextReadOnly
-        dataKey={"betingelser"}
-        cachedText={cachedAgreementText}
-      />
+      <Spoiler maxHeight={165} showLabel={"Vis mer"} hideLabel={"Vis mindre"}>
+        <EditableTextReadOnly
+          dataKey={"betingelser"}
+          cachedText={cachedAgreementText}
+        />
+      </Spoiler>
       <Stack gap={"xs"}>
         <form.AppField
           name={"base64EncodedImage"}

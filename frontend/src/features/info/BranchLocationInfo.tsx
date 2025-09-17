@@ -6,8 +6,8 @@ import { IconMapPin } from "@tabler/icons-react";
 import { useQuery } from "@tanstack/react-query";
 
 import ErrorAlert from "@/shared/components/alerts/ErrorAlert";
-import { publicApiClient } from "@/shared/hooks/publicApiClient";
 import unpack from "@/shared/utils/bl-api-request";
+import { publicApiClient } from "@/shared/utils/publicApiClient";
 
 export default function BranchLocationInfo({ branchId }: { branchId: string }) {
   const {

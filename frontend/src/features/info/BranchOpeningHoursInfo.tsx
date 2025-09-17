@@ -8,9 +8,9 @@ import dayjs from "dayjs";
 import ErrorAlert from "@/shared/components/alerts/ErrorAlert";
 import InfoAlert from "@/shared/components/alerts/InfoAlert";
 import ContactInfo from "@/shared/components/ContactInfo";
-import { publicApiClient } from "@/shared/hooks/publicApiClient";
 import unpack from "@/shared/utils/bl-api-request";
 import { PLEASE_TRY_AGAIN_TEXT } from "@/shared/utils/constants";
+import { publicApiClient } from "@/shared/utils/publicApiClient";
 
 const compareOpeningHours = (a: OpeningHour, b: OpeningHour): number => {
   if (a.from < b.from) {

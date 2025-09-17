@@ -9,7 +9,7 @@ import ErrorAlert from "@/shared/components/alerts/ErrorAlert";
 import InfoAlert from "@/shared/components/alerts/InfoAlert";
 import SuccessAlert from "@/shared/components/alerts/SuccessAlert";
 import CountdownToRedirect from "@/shared/components/CountdownToRedirect";
-import { publicApiClient } from "@/shared/hooks/publicApiClient";
+import { publicApiClient } from "@/shared/utils/publicApiClient";
 
 export default function EmailConfirmer({
   confirmationId,

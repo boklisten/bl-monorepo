@@ -81,7 +81,7 @@ export default tseslint.config(
           mode: "file",
           basePattern: "frontend/src/app",
           pattern:
-            "{robots,page,layout,error,loading,template,route,ClientPage,ClientLayout}.{ts,tsx}",
+            "{page,layout,error,loading,template,route,robots,ClientPage}.{ts,tsx}",
         },
         {
           type: "frontend-other",

@@ -1,7 +1,7 @@
 import { Group } from "@mantine/core";
 
-import AdminPageNavigationDrawer from "@/shared/components/AdminPageNavigationDrawer";
-import Logo from "@/shared/components/Logo";
+import AdminPageNavigationDrawer from "@/features/layout/AdminPageNavigationDrawer";
+import Logo from "@/features/layout/Logo";
 
 export default function AdminPageHeader() {
   return (

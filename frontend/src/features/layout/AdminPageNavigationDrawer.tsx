@@ -3,7 +3,7 @@
 import { Box, Burger, Drawer } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 
-import AdminPageNavigation from "@/shared/components/AdminPageNavigation";
+import AdminPageNavigation from "@/features/layout/AdminPageNavigation";
 
 export default function AdminPageNavigationDrawer() {
   const [opened, { toggle, close }] = useDisclosure();

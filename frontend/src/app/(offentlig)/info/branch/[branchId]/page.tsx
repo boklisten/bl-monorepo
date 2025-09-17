@@ -1,5 +1,5 @@
-import BranchLocationInfo from "@/features/public-info/BranchLocationInfo";
-import BranchOpeningHours from "@/features/public-info/BranchOpeningHoursInfo";
+import BranchLocationInfo from "@/features/info/BranchLocationInfo";
+import BranchOpeningHours from "@/features/info/BranchOpeningHoursInfo";
 
 export default async function BranchPage({
   params,

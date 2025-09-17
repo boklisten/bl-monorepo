@@ -1,7 +1,7 @@
 import { Container, Stack, Title } from "@mantine/core";
 import { Metadata } from "next";
 
-import AdminCart from "@/features/rapid-handout/AdminCart";
+import ClientPage from "@/app/(administrasjon)/admin/hurtigutdeling/ClientPage";
 
 export const metadata: Metadata = {
   title: "Hurtigutdeling",
@@ -12,7 +12,7 @@ export default function RapidHandoutPage() {
     <Container>
       <Stack>
         <Title>Hurtigutdeling</Title>
-        <AdminCart />
+        <ClientPage />
       </Stack>
     </Container>
   );

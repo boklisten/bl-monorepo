@@ -3,9 +3,9 @@ import { useMutation } from "@tanstack/react-query";
 import isPostalCode from "validator/lib/isPostalCode";
 
 import { useFieldContext } from "@/shared/hooks/form";
-import { publicApiClient } from "@/shared/hooks/publicApiClient";
 import unpack from "@/shared/utils/bl-api-request";
 import { showErrorNotification } from "@/shared/utils/notifications";
+import { publicApiClient } from "@/shared/utils/publicApiClient";
 
 export async function postalCodeFieldValidator(value: string) {
   const illegalPostalCodeMessage = "Du må oppgi et gyldig norsk postnummer";

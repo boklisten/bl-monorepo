@@ -2,7 +2,7 @@ import { Container, Stack, Title } from "@mantine/core";
 
 import ClientPage from "@/app/(offentlig)/oppgaver/ClientPage";
 import AuthGuard from "@/features/auth/AuthGuard";
-import { publicApiClient } from "@/shared/hooks/publicApiClient";
+import { publicApiClient } from "@/shared/utils/publicApiClient";
 
 export default async function TasksPage() {
   const dataKey = "betingelser";

@@ -8,13 +8,13 @@ import validator from "validator";
 import ErrorAlert from "@/shared/components/alerts/ErrorAlert";
 import { passwordFieldValidator } from "@/shared/components/form/fields/complex/PasswordField";
 import { useAppForm } from "@/shared/hooks/form";
-import { publicApiClient } from "@/shared/hooks/publicApiClient";
 import useAuth from "@/shared/hooks/useAuth";
 import useAuthLinker from "@/shared/hooks/useAuthLinker";
 import {
   GENERIC_ERROR_TEXT,
   PLEASE_TRY_AGAIN_TEXT,
 } from "@/shared/utils/constants";
+import { publicApiClient } from "@/shared/utils/publicApiClient";
 import { addAccessToken, addRefreshToken } from "@/shared/utils/token";
 
 interface SignInFields {

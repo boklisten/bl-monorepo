@@ -6,20 +6,20 @@ import { useMutation } from "@tanstack/react-query";
 import Link from "next/link";
 import { useState } from "react";
 
+import UserInfoFields, {
+  userInfoFieldDefaultValues,
+  UserInfoFieldValues,
+} from "@/features/user/UserInfoFields";
 import WarningAlert from "@/shared/components/alerts/WarningAlert";
 import { emailFieldValidator } from "@/shared/components/form/fields/complex/EmailField";
 import { nameFieldValidator } from "@/shared/components/form/fields/complex/NameField";
 import { newPasswordFieldValidator } from "@/shared/components/form/fields/complex/NewPasswordField";
 import { phoneNumberFieldValidator } from "@/shared/components/form/fields/complex/PhoneNumberField";
-import UserInfoFields, {
-  userInfoFieldDefaultValues,
-  UserInfoFieldValues,
-} from "@/shared/components/UserInfoFields";
 import { useAppForm } from "@/shared/hooks/form";
-import { publicApiClient } from "@/shared/hooks/publicApiClient";
 import useAuthLinker from "@/shared/hooks/useAuthLinker";
 import { isUnder18 } from "@/shared/utils/dates";
 import { showErrorNotification } from "@/shared/utils/notifications";
+import { publicApiClient } from "@/shared/utils/publicApiClient";
 import { addAccessToken, addRefreshToken } from "@/shared/utils/token";
 
 function isSchoolEmail(email: string) {

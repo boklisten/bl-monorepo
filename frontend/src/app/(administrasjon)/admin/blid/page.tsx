@@ -1,6 +1,6 @@
 import { Suspense } from "react";
 
-import RedirectTo from "@/features/auth/RedirectTo";
+import RedirectTo from "@/features/auth-linker/RedirectTo";
 
 export default function BlidSearchPage() {
   return (

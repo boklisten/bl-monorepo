@@ -10,8 +10,8 @@ import { MantineReactTable, useMantineReactTable } from "mantine-react-table";
 // @ts-expect-error MRT has bad types, hopefully they fix this in the future
 import { MRT_Localization_NO } from "mantine-react-table/locales/no";
 
+import EditableTextEditor from "@/features/editable-texts/EditableTextEditor";
 import ErrorAlert from "@/shared/components/alerts/ErrorAlert";
-import EditableTextEditor from "@/shared/components/editable-text/EditableTextEditor";
 import useApiClient from "@/shared/hooks/useApiClient";
 import { PLEASE_TRY_AGAIN_TEXT } from "@/shared/utils/constants";
 import {

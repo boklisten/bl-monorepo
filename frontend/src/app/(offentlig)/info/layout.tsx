@@ -1,7 +1,7 @@
 import { Container, Stack } from "@mantine/core";
 import { ReactNode } from "react";
 
-import InfoPagesNavigation from "@/features/public-info/InfoPagesNavigation";
+import InfoPagesNavigation from "@/features/info/InfoPagesNavigation";
 
 export default function InfoPageLayout({ children }: { children: ReactNode }) {
   return (

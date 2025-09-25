@@ -40,7 +40,7 @@ const customerUpdateUserDetailsSchema = vine.object({
   postalCode: postalCodeField.clone(),
   postalCity: vine.string(),
   dob: vine.date().before("today"),
-  branchMembership: vine.string().optional(),
+  branchMembership: vine.string().nullable().optional(),
   guardian: vine
     .object({
       name: vine

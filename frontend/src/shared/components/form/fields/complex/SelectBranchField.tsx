@@ -77,7 +77,13 @@ export default function SelectBranchField(
                 , så hjelper vi deg!
               </InfoAlert>
               <Divider w={"100%"} label={"eller"} />
-              <Button variant={"subtle"} onClick={() => modals.close(modalId)}>
+              <Button
+                variant={"subtle"}
+                onClick={() => {
+                  field.handleChange(null);
+                  modals.close(modalId);
+                }}
+              >
                 {props.perspective === "personal"
                   ? "Jeg skal ikke ha bøker"
                   : "Kunden skal ikke ha bøker"}

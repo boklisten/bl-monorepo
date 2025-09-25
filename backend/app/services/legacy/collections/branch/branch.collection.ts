@@ -49,6 +49,10 @@ export const BranchCollection: BlCollection = {
           fieldName: "openingHours",
           type: "expand",
         },
+        {
+          fieldName: "type",
+          type: "string",
+        },
       ],
     },
     {

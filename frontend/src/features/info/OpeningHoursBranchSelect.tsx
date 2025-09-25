@@ -9,10 +9,15 @@ import { useEffect } from "react";
 import useApiClient from "@/shared/hooks/useApiClient";
 import unpack from "@/shared/utils/bl-api-request";
 
-const BranchSelect = () => {
+const OpeningHoursBranchSelect = () => {
   const client = useApiClient();
   const branchQuery = {
-    query: { active: true, "isBranchItemsLive.online": true, sort: "name" },
+    query: {
+      active: true,
+      "isBranchItemsLive.online": true,
+      type: "privatist",
+      sort: "name",
+    },
   };
   const { data: branches } = useQuery({
     queryKey: [client.$url("collection.branches.getAll", branchQuery)],
@@ -50,4 +55,4 @@ const BranchSelect = () => {
   );
 };
 
-export default BranchSelect;
+export default OpeningHoursBranchSelect;

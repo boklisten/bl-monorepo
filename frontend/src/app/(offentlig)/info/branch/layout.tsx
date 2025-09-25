@@ -1,7 +1,7 @@
-import { Title } from "@mantine/core";
+import { Stack, Text, Title } from "@mantine/core";
 import { Metadata } from "next";
 
-import BranchSelect from "@/features/branches/BranchSelect";
+import OpeningHoursBranchSelect from "@/features/info/OpeningHoursBranchSelect";
 
 export const metadata: Metadata = {
   title: "Skoler og åpningstider",
@@ -14,8 +14,14 @@ export default function BranchInfoPageLayout({
 }: LayoutProps<"/info/branch">) {
   return (
     <>
-      <Title>Åpningstider</Title>
-      <BranchSelect />
+      <Stack gap={5}>
+        <Title>Åpningstider</Title>
+        <Text size={"sm"} fs={"italic"}>
+          Her vises åpningstider for privatist-filialer. VGS-elever får beskjed
+          fra skolen om åpningstider.
+        </Text>
+      </Stack>
+      <OpeningHoursBranchSelect />
       {children}
     </>
   );

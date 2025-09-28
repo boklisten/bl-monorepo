@@ -1,4 +1,5 @@
 import { Infer } from "@vinejs/vine/types";
+import moment from "moment-timezone";
 import { ObjectId } from "mongodb";
 
 import { CustomerItemActiveBlid } from "#services/legacy/collections/customer-item/helpers/customer-item-active-blid";
@@ -187,6 +188,13 @@ export async function transfer(
     receiverUserMatch.id !== senderUserMatch.id
   ) {
     userFeedback = wrongSenderFeedback;
+  }
+
+  if (moment(customerItem.deadline).isAfter(moment().add(3, "months"))) {
+    return {
+      feedback:
+        "Boka du har skannet har frist for langt frem i tid. Du skal ikke ta den i mot. Ta kontakt med stand for spørsmål.",
+    };
   }
 
   await returnSenderCustomerItem(customerItem);

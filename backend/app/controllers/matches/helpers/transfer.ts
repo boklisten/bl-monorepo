@@ -197,6 +197,28 @@ export async function transfer(
     };
   }
 
+  const orderActive = new OrderActive();
+  const originalReceiverOrderInfo = (
+    await orderActive.getActiveOrders(detailsId)
+  )
+    .map((order) => ({
+      order,
+      relevantOrderItem: order.orderItems.find(
+        (orderItem) =>
+          orderActive.isOrderItemActive(orderItem) &&
+          orderItem.item === customerItem.item &&
+          orderItem.type === "rent",
+      ),
+    }))
+    .find(({ relevantOrderItem }) => relevantOrderItem !== undefined);
+
+  if (!originalReceiverOrderInfo) {
+    return {
+      feedback:
+        "Du har ingen aktiv bestilling for denne boka. Ta kontakt med stand for spørsmål.",
+    };
+  }
+
   await returnSenderCustomerItem(customerItem);
   const placedReceiverOrder = await placeReceiverOrder(customerItem, detailsId);
   await recordReceiverCustomerItem(placedReceiverOrder);

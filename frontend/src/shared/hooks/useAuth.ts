@@ -24,31 +24,34 @@ export default function useAuth() {
   const pathname = usePathname();
 
   useEffect(() => {
-    setIsLoading(false);
+    function updateAuthStatus() {
+      setIsLoading(false);
 
-    const accessToken = decodeToken(
-      localStorage.getItem(BL_CONFIG.token.accessToken) ?? "",
-    ) as AccessToken | null;
+      const accessToken = decodeToken(
+        localStorage.getItem(BL_CONFIG.token.accessToken) ?? "",
+      ) as AccessToken | null;
 
-    if (!accessToken) {
-      setIsLoggedIn(false);
-      setCanAccess(() => () => false);
-      setIsEmployee(false);
-      setIsManager(false);
-      setIsAdmin(false);
-      return;
+      if (!accessToken) {
+        setIsLoggedIn(false);
+        setCanAccess(() => () => false);
+        setIsEmployee(false);
+        setIsManager(false);
+        setIsAdmin(false);
+        return;
+      }
+      setIsLoggedIn(true);
+      const userPermissionLevel = PERMISSION_LEVELS[accessToken.permission];
+
+      setIsEmployee(userPermissionLevel >= PERMISSION_LEVELS.employee);
+      setIsManager(userPermissionLevel >= PERMISSION_LEVELS.manager);
+      setIsAdmin(userPermissionLevel >= PERMISSION_LEVELS.admin);
+
+      setCanAccess(
+        () => (requiredPermission: UserPermission) =>
+          userPermissionLevel >= PERMISSION_LEVELS[requiredPermission],
+      );
     }
-    setIsLoggedIn(true);
-    const userPermissionLevel = PERMISSION_LEVELS[accessToken.permission];
-
-    setIsEmployee(userPermissionLevel >= PERMISSION_LEVELS.employee);
-    setIsManager(userPermissionLevel >= PERMISSION_LEVELS.manager);
-    setIsAdmin(userPermissionLevel >= PERMISSION_LEVELS.admin);
-
-    setCanAccess(
-      () => (requiredPermission: UserPermission) =>
-        userPermissionLevel >= PERMISSION_LEVELS[requiredPermission],
-    );
+    updateAuthStatus();
   }, [pathname]);
 
   function logout() {

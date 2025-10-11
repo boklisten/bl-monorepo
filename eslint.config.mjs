@@ -15,7 +15,6 @@ import jsxA11y from "eslint-plugin-jsx-a11y";
 import noRelativeImportPathsPlugin from "eslint-plugin-no-relative-import-paths";
 import reactPlugin from "eslint-plugin-react";
 import reactCompiler from "eslint-plugin-react-compiler";
-// eslint-disable-next-line import-x/default
 import reactHooks from "eslint-plugin-react-hooks";
 import tseslint from "typescript-eslint";
 
@@ -33,7 +32,7 @@ export default tseslint.config(
   tseslint.configs.stylistic,
   reactPlugin.configs.flat.recommended,
   reactPlugin.configs.flat["jsx-runtime"],
-  reactHooks.configs["recommended-latest"],
+  reactHooks.configs.flat.recommended,
   jsxA11y.flatConfigs.recommended,
   importX.flatConfigs.recommended,
   importX.flatConfigs.typescript,

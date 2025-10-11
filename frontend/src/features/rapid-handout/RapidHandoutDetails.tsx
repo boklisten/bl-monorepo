@@ -90,18 +90,21 @@ export default function RapidHandoutDetails({
   }, [client, customer.id]);
 
   useEffect(() => {
-    if (!orders) {
-      return;
+    function updateFulfilledOrderItems() {
+      if (!orders) {
+        return;
+      }
+      const unfulfilledOrderItems = calculateUnfulfilledOrderItems(orders);
+      setItemStatuses((previousState) =>
+        previousState.map((itemStatus) => ({
+          ...itemStatus,
+          fulfilled: !unfulfilledOrderItems.some(
+            (orderItem) => orderItem.item === itemStatus.id,
+          ),
+        })),
+      );
     }
-    const unfulfilledOrderItems = calculateUnfulfilledOrderItems(orders);
-    setItemStatuses((previousState) =>
-      previousState.map((itemStatus) => ({
-        ...itemStatus,
-        fulfilled: !unfulfilledOrderItems.some(
-          (orderItem) => orderItem.item === itemStatus.id,
-        ),
-      })),
-    );
+    updateFulfilledOrderItems();
   }, [orders]);
 
   return itemStatuses.length === 0 ? (

@@ -17,7 +17,7 @@ export default function useAuthLinker() {
     if (isLoading) return;
 
     const url = new URL(
-      `${target === "bl-admin" ? BL_CONFIG.blAdmin.basePath : BL_CONFIG.blWeb.basePath}${path}`,
+      `${target === "bl-admin" ? BL_CONFIG.blAdmin.basePath : BL_CONFIG.blWeb.basePath}${path}?${searchParams.toString()}`,
     );
 
     if (isLoggedIn) {

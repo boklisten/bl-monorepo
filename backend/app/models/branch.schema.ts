@@ -112,7 +112,10 @@ export const BranchSchema: BlSchema<Branch> = new Schema({
     { type: Schema.Types.ObjectId, ref: BlSchemaName.OpeningHours },
   ],
   location: {
-    region: { type: String, trim: true },
-    address: { type: String, trim: true },
+    type: {
+      region: { type: String, trim: true, required: true },
+      address: { type: String, trim: true },
+    },
+    required: true,
   },
 });

@@ -76,6 +76,9 @@ test.group("OrderItemBuyValidator", (group) => {
           percentage: 0.5,
         },
       },
+      location: {
+        region: "unknown",
+      },
     };
 
     testItem = {

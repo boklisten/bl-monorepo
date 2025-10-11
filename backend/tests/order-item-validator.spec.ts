@@ -92,6 +92,9 @@ test.group("OrderItemValidator", (group) => {
           percentage: 0.5,
         },
       },
+      location: {
+        region: "unknown",
+      },
     };
 
     sandbox = createSandbox();

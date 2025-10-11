@@ -9,7 +9,7 @@ import { StorageService } from "#services/storage_service";
 import { BranchItem } from "#shared/branch-item";
 import { Item } from "#shared/item";
 import { UserDetail } from "#shared/user-detail";
-import { branchValidator } from "#validators/branch";
+import { branchValidator, updateBranchValidator } from "#validators/branch";
 import { branchMembershipValidator } from "#validators/branch_membership";
 import { subjectChoicesValidator } from "#validators/subject_choices";
 
@@ -313,7 +313,6 @@ export default class BranchesController {
       return ctx.response.conflict(error);
     }
 
-    // @ts-expect-error fixme: exactOptionalPropertyTypes
     const newBranch = await StorageService.Branches.add(branchData);
 
     await updateBranchRelationships({
@@ -330,7 +329,7 @@ export default class BranchesController {
   async update(ctx: HttpContext) {
     PermissionService.adminOrFail(ctx);
 
-    const branchData = await ctx.request.validateUsing(branchValidator);
+    const branchData = await ctx.request.validateUsing(updateBranchValidator);
     const branchId = ctx.params["id"];
 
     try {

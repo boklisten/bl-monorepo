@@ -13,7 +13,7 @@ export default function PublicPageHeader() {
           <Anchor c={"#fff"} component={Link} href={"/info/general"}>
             Info
           </Anchor>
-          <Anchor c={"#fff"} component={Link} href={"/order"}>
+          <Anchor c={"#fff"} component={Link} href={"/bestilling"}>
             Bestill bøker
           </Anchor>
         </Group>

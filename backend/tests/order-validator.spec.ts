@@ -135,6 +135,9 @@ test.group("OrderValidator", (group) => {
           percentage: 0.5,
         },
       },
+      location: {
+        region: "unknown",
+      },
     };
   });
   group.each.teardown(() => {

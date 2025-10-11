@@ -86,8 +86,8 @@ export default function PublicNavigationDrawer() {
 
           <NavLink
             label={"Bestill bøker"}
-            href={"/order"}
-            active={pathname.includes("/order")}
+            href={"/bestilling"}
+            active={pathname.includes("/bestilling")}
             variant={"subtle"}
             leftSection={<IconShoppingCart />}
             component={Link}

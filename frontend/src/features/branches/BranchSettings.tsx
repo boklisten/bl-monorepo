@@ -35,7 +35,7 @@ export default function BranchSettings({
   });
 
   const addBranchMutation = useMutation({
-    mutationFn: (newBranch: Partial<Branch>) =>
+    mutationFn: (newBranch: Omit<Branch, "id">) =>
       client.v2.branches.$post(newBranch).unwrap(),
     onSettled: () =>
       queryClient.invalidateQueries({
@@ -69,6 +69,10 @@ export default function BranchSettings({
       parentBranch: existingBranch?.parentBranch ?? "",
       childBranches: existingBranch?.childBranches ?? [],
       childLabel: existingBranch?.childLabel ?? "",
+      location: existingBranch?.location ?? {
+        region: "",
+        address: "",
+      },
     },
     onSubmit: ({ value }) =>
       existingBranch === null
@@ -134,6 +138,23 @@ export default function BranchSettings({
             data={branchOptions}
             searchable
             clearable
+          />
+        )}
+      </form.AppField>
+      <form.AppField name={"location.region"}>
+        {(field) => (
+          <field.TextField
+            required
+            label={"Region"}
+            placeholder={"Oslo, Trondheim, Ski"}
+          />
+        )}
+      </form.AppField>
+      <form.AppField name={"location.address"}>
+        {(field) => (
+          <field.TextField
+            label={"Adresse"}
+            placeholder={"Postboks 8, 1316 Eiksmarka"}
           />
         )}
       </form.AppField>

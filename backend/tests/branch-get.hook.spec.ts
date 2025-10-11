@@ -18,6 +18,9 @@ test.group("BranchGetHook.after", async () => {
         online: false,
         atBranch: false,
       },
+      location: {
+        region: "unknown",
+      },
     };
 
     const expectedResult = {
@@ -28,6 +31,9 @@ test.group("BranchGetHook.after", async () => {
       isBranchItemsLive: {
         online: false,
         atBranch: false,
+      },
+      location: {
+        region: "unknown",
       },
     };
 
@@ -48,6 +54,9 @@ test.group("BranchGetHook.after", async () => {
         online: true,
         atBranch: true,
       },
+      location: {
+        region: "unknown",
+      },
     };
 
     const expectedResult = {
@@ -58,6 +67,9 @@ test.group("BranchGetHook.after", async () => {
       isBranchItemsLive: {
         online: true,
         atBranch: true,
+      },
+      location: {
+        region: "unknown",
       },
     };
 
@@ -78,6 +90,9 @@ test.group("BranchGetHook.after", async () => {
         online: false,
         atBranch: true,
       },
+      location: {
+        region: "unknown",
+      },
     };
 
     const accessToken = {
@@ -92,6 +107,9 @@ test.group("BranchGetHook.after", async () => {
       isBranchItemsLive: {
         online: false,
         atBranch: true,
+      },
+      location: {
+        region: "unknown",
       },
     };
 
@@ -113,6 +131,9 @@ test.group("BranchGetHook.after", async () => {
         online: false,
         atBranch: false,
       },
+      location: {
+        region: "unknown",
+      },
     };
 
     const accessToken = {
@@ -127,6 +148,9 @@ test.group("BranchGetHook.after", async () => {
       isBranchItemsLive: {
         online: false,
         atBranch: false,
+      },
+      location: {
+        region: "unknown",
       },
     };
 

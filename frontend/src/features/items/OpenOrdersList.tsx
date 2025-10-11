@@ -100,7 +100,7 @@ export default function OpenOrdersList({
         <Button
           leftSection={<IconShoppingCart />}
           onClick={async () => {
-            router.push("/order");
+            router.push("/bestilling");
           }}
         >
           {(openOrderItems?.length ?? 0) > 0

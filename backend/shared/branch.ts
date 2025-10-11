@@ -20,8 +20,8 @@ export interface Branch extends BlDocument {
     atBranch?: boolean; // if the branchItems is live at branch (bladmin)
   };
   branchItems?: string[]; // ids of/or the branchItems for this branch
-  location?: {
-    region?: string;
-    address?: string;
+  location: {
+    region: string;
+    address?: string | undefined;
   };
 }

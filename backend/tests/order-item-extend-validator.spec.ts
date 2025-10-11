@@ -109,6 +109,9 @@ test.group("OrderItemExtendValidator", (group) => {
           percentage: 0.5,
         },
       },
+      location: {
+        region: "unknown",
+      },
     };
   });
   group.each.teardown(() => {

@@ -2,8 +2,6 @@ import { OrderPatchHook } from "#services/legacy/collections/order/hooks/order.p
 import { OrderPostHook } from "#services/legacy/collections/order/hooks/order.post.hook";
 import { OrderConfirmOperation } from "#services/legacy/collections/order/operations/confirm/order-confirm.operation";
 import { GetCustomerOrdersOperation } from "#services/legacy/collections/order/operations/get-customer-orders.operation";
-import { OrderAgreementPdfOperation } from "#services/legacy/collections/order/operations/order-agreement-pdf.operation";
-import { OrderReceiptPdfOperation } from "#services/legacy/collections/order/operations/order-receipt-pdf.operation";
 import { OrderPlaceOperation } from "#services/legacy/collections/order/operations/place/order-place.operation";
 import { RapidHandoutOperation } from "#services/legacy/collections/order/operations/rapid-handout.operation";
 import { StorageService } from "#services/storage_service";
@@ -77,22 +75,6 @@ export const OrderCollection: BlCollection = {
         restricted: true,
       },
       operations: [
-        {
-          name: "receipt",
-          operation: new OrderReceiptPdfOperation(),
-          restriction: {
-            permission: "customer",
-            restricted: true,
-          },
-        },
-        {
-          name: "agreement",
-          operation: new OrderAgreementPdfOperation(),
-          restriction: {
-            permission: "customer",
-            restricted: true,
-          },
-        },
         {
           name: "get_customer_orders",
           operation: new GetCustomerOrdersOperation(),

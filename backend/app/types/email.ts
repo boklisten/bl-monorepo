@@ -43,30 +43,6 @@ export interface EmailOrder {
   };
 }
 
-interface EmailAttachment {
-  content: string;
-  filename: string;
-  type: string;
-  contentId: string;
-}
-
-interface EmailTextBlock {
-  text: string;
-  warning?: boolean;
-  alert?: boolean;
-  regular?: boolean;
-  secondary?: boolean;
-}
-export declare interface EmailSetting {
-  userId: string;
-  toEmail: string;
-  fromEmail: string;
-  subject: string;
-  userFullName?: string;
-  blMessageId?: string;
-  attachments?: EmailAttachment[];
-  textBlocks?: EmailTextBlock[];
-}
 export interface EmailUser {
   id: string;
   dob: string;

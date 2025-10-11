@@ -1358,20 +1358,6 @@ const routes = [
   },
   {
     params: ["id"],
-    name: "collection.orders.operation.receipt.getId",
-    path: "/orders/:id/receipt",
-    method: ["GET", "HEAD"],
-    types: {} as unknown,
-  },
-  {
-    params: ["id"],
-    name: "collection.orders.operation.agreement.getId",
-    path: "/orders/:id/agreement",
-    method: ["GET", "HEAD"],
-    types: {} as unknown,
-  },
-  {
-    params: ["id"],
     name: "collection.orders.operation.get_customer_orders.getId",
     path: "/orders/:id/get_customer_orders",
     method: ["GET", "HEAD"],

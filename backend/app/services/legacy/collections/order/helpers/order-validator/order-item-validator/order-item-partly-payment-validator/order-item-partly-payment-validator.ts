@@ -61,11 +61,7 @@ export class OrderItemPartlyPaymentValidator {
       throw new BlError("orderItem.info.to not specified");
     }
 
-    if (
-      orderItem.info &&
-      // @ts-expect-error fixme: auto ignored
-      isNullish(orderItem.info["amountLeftToPay"])
-    ) {
+    if (orderItem.info && isNullish(orderItem.info.amountLeftToPay)) {
       throw new BlError("orderItem.info.amountLeftToPay not specified");
     }
   }

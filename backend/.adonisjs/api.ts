@@ -479,6 +479,13 @@ type UniqueitemsAddPost = {
     true
   >;
 };
+type OrderhistoryMeGetHead = {
+  request: unknown;
+  response: MakeNonSerializedTuyauResponse<
+    import("../app/controllers/order_history_controller.ts").default["getMyOrders"],
+    false
+  >;
+};
 export interface ApiDefinition {
   token: {
     $url: {};
@@ -729,6 +736,13 @@ export interface ApiDefinition {
     add: {
       $url: {};
       $post: UniqueitemsAddPost;
+    };
+  };
+  order_history: {
+    me: {
+      $url: {};
+      $get: OrderhistoryMeGetHead;
+      $head: OrderhistoryMeGetHead;
     };
   };
 }
@@ -1089,6 +1103,13 @@ const routes = [
     path: "/unique_items/add",
     method: ["POST"],
     types: {} as UniqueitemsAddPost,
+  },
+  {
+    params: [],
+    name: "order_history.get_my_orders",
+    path: "/order_history/me",
+    method: ["GET", "HEAD"],
+    types: {} as OrderhistoryMeGetHead,
   },
   {
     params: ["id"],

@@ -36,6 +36,8 @@ const UserProvisioningController = () =>
   import("#controllers/user_provisioning_controller");
 const UniqueItemsController = () =>
   import("#controllers/unique_items_controller");
+const OrderHistoryController = () =>
+  import("#controllers/order_history_controller");
 
 /**
  * auth token
@@ -298,6 +300,13 @@ router
 router
   .post("/unique_items/add", [UniqueItemsController, "add"])
   .as("unique_items.add");
+
+/**
+ * Order History
+ */
+router
+  .get("/order_history/me", [OrderHistoryController, "getMyOrders"])
+  .as("order_history.get_my_orders");
 
 /**
  * Generate legacy bl-collection endpoints

@@ -4,6 +4,7 @@ import DispatchService from "#services/dispatch_service";
 import { DateService } from "#services/legacy/date.service";
 import { DibsEasyPayment } from "#services/legacy/dibs/dibs-easy-payment/dibs-easy-payment";
 import { StorageService } from "#services/storage_service";
+import { TranslationService } from "#services/translation_service";
 import { BlError } from "#shared/bl-error";
 import { Delivery } from "#shared/delivery/delivery";
 import { Order } from "#shared/order/order";
@@ -286,19 +287,7 @@ export const OrderEmailHandler = {
     orderItemType: OrderItemType,
     handout?: boolean,
   ): string {
-    const translations = {
-      rent: "lån",
-      return: "returnert",
-      extend: "forlenget",
-      cancel: "kansellert",
-      buy: "kjøp",
-      "partly-payment": "delbetaling",
-      buyback: "tilbakekjøp",
-      buyout: "utkjøp",
-    };
-
-    // @ts-expect-error fixme: auto ignored
-    return `${translations[orderItemType] ?? orderItemType}${
+    return `${TranslationService.translateOrderItemType(orderItemType)}${
       handout && orderItemType !== "return" ? " - utlevert" : ""
     }`;
   },

@@ -1,11 +1,23 @@
-import { Suspense } from "react";
+import { Container, Stack, Title } from "@mantine/core";
+import { Metadata } from "next";
 
-import RedirectTo from "@/features/auth-linker/RedirectTo";
+import AuthGuard from "@/features/auth/AuthGuard";
+import OrderHistory from "@/features/order-history/OrderHistory";
+
+export const metadata: Metadata = {
+  title: "Ordrehistorikk",
+  description: "Se historikken over dine ordre",
+};
 
 export default function OrdersPage() {
   return (
-    <Suspense>
-      <RedirectTo target={"bl-web"} path={"u/order"} />
-    </Suspense>
+    <AuthGuard>
+      <Container size={"md"}>
+        <Stack>
+          <Title>Ordrehistorikk</Title>
+          <OrderHistory />
+        </Stack>
+      </Container>
+    </AuthGuard>
   );
 }

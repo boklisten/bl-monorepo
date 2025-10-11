@@ -28,7 +28,7 @@ export default function SelectOrderBranch() {
   if (isLoading) {
     return (
       <>
-        {[0, 1, 2, 3, 4, 5, 6, 7].map((index) => (
+        {[0, 1, 2, 3, 4, 5, 6, 7, 9, 10, 11, 12].map((index) => (
           <Skeleton height={40} key={`skeleton-${index}`} />
         ))}
       </>

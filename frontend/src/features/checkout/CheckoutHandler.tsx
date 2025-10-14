@@ -55,7 +55,7 @@ export default function CheckoutHandler() {
     });
     throw Error("Amounts less than or equal to 0 not implemented yet!");
   }
-  createVippsCheckout();
+  setTimeout(createVippsCheckout, 100);
 
   return null;
 }

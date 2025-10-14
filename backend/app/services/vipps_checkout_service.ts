@@ -12,10 +12,15 @@ export interface VippsOrderLine {
   taxRate: number;
 }
 
+const isProduction = env.get("API_ENV") === "production";
 const client = Client({
-  merchantSerialNumber: env.get("VIPPS_MSN"),
-  subscriptionKey: env.get("VIPPS_SUBSCRIPTION_KEY"),
-  useTestMode: env.get("API_ENV") !== "production",
+  merchantSerialNumber: isProduction
+    ? env.get("VIPPS_MSN")
+    : env.get("VIPPS_MT_MSN"),
+  subscriptionKey: isProduction
+    ? env.get("VIPPS_SUBSCRIPTION_KEY")
+    : env.get("VIPPS_MT_SUBSCRIPTION_KEY"),
+  useTestMode: !isProduction,
   systemName: "boklisten",
   systemVersion: "1.0.0",
   pluginName: env.get("API_ENV").toLowerCase(),
@@ -33,8 +38,8 @@ export const VippsCheckoutService = {
     orderLines: VippsOrderLine[];
   }) {
     const checkout = await client.checkout.create(
-      env.get("VIPPS_CLIENT_ID"),
-      env.get("VIPPS_SECRET"),
+      isProduction ? env.get("VIPPS_CLIENT_ID") : env.get("VIPPS_MT_CLIENT_ID"),
+      isProduction ? env.get("VIPPS_SECRET") : env.get("VIPPS_MT_SECRET"),
       {
         type: "PAYMENT",
         prefillCustomer: userDetail
@@ -74,7 +79,7 @@ export const VippsCheckoutService = {
       },
     );
     if (!checkout.ok) {
-      throw checkout.error;
+      throw new Error(JSON.stringify(checkout.error));
     }
     const { token, checkoutFrontendUrl, pollingUrl } = checkout.data;
     return { token, checkoutFrontendUrl, pollingUrl };

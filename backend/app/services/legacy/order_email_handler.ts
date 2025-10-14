@@ -287,7 +287,7 @@ export const OrderEmailHandler = {
     orderItemType: OrderItemType,
     handout?: boolean,
   ): string {
-    return `${TranslationService.translateOrderItemType(orderItemType)}${
+    return `${TranslationService.translateOrderItemTypePastTense(orderItemType)}${
       handout && orderItemType !== "return" ? " - utlevert" : ""
     }`;
   },

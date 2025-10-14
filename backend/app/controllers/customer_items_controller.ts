@@ -5,10 +5,7 @@ import { SEDbQuery } from "#services/legacy/query/se.db-query";
 import { PermissionService } from "#services/permission_service";
 import { StorageService } from "#services/storage_service";
 import { Branch } from "#shared/branch";
-import {
-  ActionableCustomerItem,
-  CustomerItemStatus,
-} from "#shared/customer-item/actionable_customer_item";
+import { CustomerItemStatus } from "#shared/customer-item/actionable_customer_item";
 import { CustomerItem } from "#shared/customer-item/customer-item";
 
 function calculateDeadlineDateWithGracePeriod(deadline: Date): string {
@@ -61,44 +58,72 @@ function hasBeenExtendedBefore(customerItem: CustomerItem) {
 function calculateExtensionStatus(
   customerItem: CustomerItem,
   branch: Branch | null,
-): { canExtend: boolean; feedback: string } {
+) {
   if (!branch)
     return {
       canExtend: false,
       feedback:
         "Fant ikke filialen som denne boka er utdelt på. Vennligst ta kontakt for hjelp",
-    };
+    } as const;
 
   if (isDeadlineWithGracePeriodExpired(customerItem))
     return {
       canExtend: false,
       feedback: "Fristen for å forlenge har utløpt",
-    };
+    } as const;
 
   if (!branchHasExtensionsInTheFuture(customerItem.deadline, branch))
     return {
       canExtend: false,
       feedback: "Denne filialen tilbyr for øyeblikket ikke forlenging",
-    };
+    } as const;
+
   if (hasBeenExtendedBefore(customerItem))
     return {
       canExtend: false,
       feedback: "Denne bøken har allerede blitt forlenget",
-    };
-  return { canExtend: true, feedback: "" };
+    } as const;
+
+  return {
+    canExtend: true,
+    feedback: "",
+    options: branch.paymentInfo?.extendPeriods.map((extendPeriod) => ({
+      date: extendPeriod.date,
+      price: extendPeriod.price,
+    })),
+  } as const;
 }
 
-function calculateBuyoutStatus(customerItem: CustomerItem) {
+async function calculateBuyoutStatus(
+  customerItem: CustomerItem,
+  branch: Branch | null,
+) {
   if (isDeadlineWithGracePeriodExpired(customerItem))
-    return { canBuyout: false, feedback: "Fristen for å kjøpe ut har utløpt" };
+    return {
+      canBuyout: false,
+      feedback: "Fristen for å kjøpe ut har utløpt",
+    } as const;
 
   if (isHandedOutWithinTheLastTwoWeeks(customerItem))
     return {
       canBuyout: false,
       feedback: "Du må ha ha boken i minst 2 uker før du kan kjøpe den ut",
-    };
+    } as const;
 
-  return { canBuyout: true, feedback: "" };
+  const item = await StorageService.Items.getOrNull(customerItem.item);
+  const branchBuyoutPercentage = branch?.paymentInfo?.buyout?.percentage;
+  if (!item || !branchBuyoutPercentage)
+    return {
+      canBuyout: false,
+      feedback:
+        "Klarte ikke beregne utkjøpspris. Vennligst ta kontakt hvis du vil kjøpe ut boka.",
+    } as const;
+
+  return {
+    canBuyout: true,
+    feedback: "",
+    buyoutPrice: Math.ceil(item.price * branchBuyoutPercentage),
+  } as const;
 }
 
 function calculateStatus(customerItem: CustomerItem): CustomerItemStatus {
@@ -112,7 +137,7 @@ function calculateStatus(customerItem: CustomerItem): CustomerItemStatus {
 }
 
 export default class CustomerItemsController {
-  async getCustomerItems(ctx: HttpContext): Promise<ActionableCustomerItem[]> {
+  async getCustomerItems(ctx: HttpContext) {
     const { detailsId } = PermissionService.authenticate(ctx);
     const databaseQuery = new SEDbQuery();
     databaseQuery.stringFilters = [{ fieldName: "customer", value: detailsId }];
@@ -128,10 +153,11 @@ export default class CustomerItemsController {
           customerItem.handoutInfo?.handoutById,
         );
         const extensionStatus = calculateExtensionStatus(customerItem, branch);
-        const buyoutStatus = calculateBuyoutStatus(customerItem);
+        const buyoutStatus = await calculateBuyoutStatus(customerItem, branch);
         return {
           id: customerItem.id,
           item: {
+            id: item?.id ?? "",
             title: item?.title ?? "Ukjent tittel",
             isbn: item?.info.isbn.toString() ?? "",
           },
@@ -146,15 +172,17 @@ export default class CustomerItemsController {
               available: extensionStatus.canExtend,
               tooltip: extensionStatus.feedback,
               buttonText: "Forleng",
+              extendOptions: extensionStatus.options,
             },
             {
               type: "buyout",
               available: buyoutStatus.canBuyout,
               tooltip: buyoutStatus.feedback,
               buttonText: "Kjøp ut",
+              buyoutPrice: buyoutStatus.buyoutPrice,
             },
           ],
-        };
+        } as const;
       }),
     );
   }

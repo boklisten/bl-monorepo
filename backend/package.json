@@ -46,6 +46,7 @@
     "@tuyau/core": "^0.4.2",
     "@tuyau/superjson": "^0.1.2",
     "@vinejs/vine": "^3.0.1",
+    "@vippsmobilepay/sdk": "^2.4.2",
     "argon2": "^0.43.0",
     "canvas": "^3.2.0",
     "jsbarcode": "^3.12.1",

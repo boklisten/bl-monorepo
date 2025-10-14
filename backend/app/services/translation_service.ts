@@ -2,7 +2,7 @@ import { OrderItemType } from "#shared/order/order-item/order-item-type";
 import { PaymentMethod } from "#shared/payment/payment-method/payment-method";
 
 export const TranslationService = {
-  translateOrderItemType(orderItemType: OrderItemType) {
+  translateOrderItemTypePastTense(orderItemType: OrderItemType) {
     return {
       rent: "lån",
       return: "returnert",
@@ -17,6 +17,23 @@ export const TranslationService = {
       "invoice-paid": "betalt faktura",
       "match-receive": "mottatt fra elev",
       "match-deliver": "overlevert til elev",
+    }[orderItemType];
+  },
+  translateOrderItemTypeImperative(orderItemType: OrderItemType) {
+    return {
+      rent: "lån til",
+      return: "returner",
+      extend: "forleng til",
+      cancel: "kanseller",
+      buy: "kjøp",
+      "partly-payment": "delbetaling til",
+      buyback: "tilbakekjøp",
+      buyout: "kjøp ut",
+      sell: "selg",
+      loan: "lån til",
+      "invoice-paid": "betale faktura",
+      "match-receive": "motta fra elev",
+      "match-deliver": "overlevere til elev",
     }[orderItemType];
   },
   translatePaymentMethod(paymentMethod: PaymentMethod) {

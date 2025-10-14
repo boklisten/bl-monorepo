@@ -1,11 +1,15 @@
-import { Suspense } from "react";
+import { Container, Loader, Stack, Title } from "@mantine/core";
 
-import VippsCheckoutFrame from "@/features/checkout/VippsCheckoutFrame";
+import CheckoutHandler from "@/features/checkout/CheckoutHandler";
 
 export default function CheckoutPage() {
   return (
-    <Suspense>
-      <VippsCheckoutFrame />
-    </Suspense>
+    <Container size={"md"}>
+      <Stack align={"center"}>
+        <Title>Ett øyeblikk...</Title>
+        <Loader />
+        <CheckoutHandler />
+      </Stack>
+    </Container>
   );
 }

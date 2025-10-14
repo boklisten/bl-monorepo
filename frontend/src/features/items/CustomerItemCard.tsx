@@ -1,19 +1,18 @@
-import {
-  ActionableCustomerItem,
-  CustomerItemStatus,
-} from "@boklisten/backend/shared/customer-item/actionable_customer_item";
+import { CustomerItemStatus } from "@boklisten/backend/shared/customer-item/actionable_customer_item";
 import {
   Badge,
   Button,
   Card,
   Divider,
   Group,
+  SegmentedControl,
   Stack,
   Text,
   Title,
   Tooltip,
 } from "@mantine/core";
 import {
+  IconBasketCheck,
   IconBook2,
   IconCalendarEvent,
   IconClockPlus,
@@ -22,10 +21,12 @@ import {
   IconSchool,
   IconShoppingCart,
 } from "@tabler/icons-react";
+import { InferResponseType } from "@tuyau/client";
 import dayjs from "dayjs";
 import { ReactNode } from "react";
 
-import useAuthLinker from "@/shared/hooks/useAuthLinker";
+import useCart from "@/shared/hooks/useCart";
+import { publicApiClient } from "@/shared/utils/publicApiClient";
 
 function InfoEntry({
   startIcon,
@@ -65,9 +66,27 @@ function StatusChip({ status }: { status: CustomerItemStatus }) {
 export default function CustomerItemCard({
   actionableCustomerItem,
 }: {
-  actionableCustomerItem: ActionableCustomerItem;
+  actionableCustomerItem: InferResponseType<
+    typeof publicApiClient.v2.customer_items.$get
+  >[number];
 }) {
-  const { redirectTo } = useAuthLinker();
+  const { findItemInCart, addToCart, removeFromCart } = useCart();
+  const extendCartItem = findItemInCart({
+    item: {
+      id: actionableCustomerItem.item.id,
+    },
+    type: "extend",
+  });
+  const buyoutCartItem = findItemInCart({
+    item: {
+      id: actionableCustomerItem.item.id,
+    },
+    type: "buyout",
+  });
+  const extendOptions =
+    actionableCustomerItem.actions.find((action) => action.type === "extend")
+      ?.extendOptions ?? [];
+
   return (
     <Card shadow={"md"} withBorder>
       <Group gap={"xs"} mb={"md"}>
@@ -114,18 +133,53 @@ export default function CustomerItemCard({
                 <Button
                   leftSection={
                     action.type === "extend" ? (
-                      <IconClockPlus />
+                      extendCartItem ? (
+                        <IconBasketCheck />
+                      ) : (
+                        <IconClockPlus />
+                      )
+                    ) : buyoutCartItem ? (
+                      <IconBasketCheck />
                     ) : (
                       <IconShoppingCart />
                     )
                   }
+                  bg={
+                    (action.type === "extend" && extendCartItem) ||
+                    (action.type === "buyout" && buyoutCartItem)
+                      ? "green"
+                      : ""
+                  }
                   disabled={!action.available}
                   onClick={() => {
-                    redirectTo(
-                      "bl-web",
-                      `cart/receive?caller=items&cart_actions=${JSON.stringify([{ customerItemId: actionableCustomerItem.id, action: action.type }])}`,
-                      true,
-                    );
+                    if (
+                      (action.type === "extend" && extendCartItem) ||
+                      (action.type === "buyout" && buyoutCartItem)
+                    ) {
+                      removeFromCart(actionableCustomerItem.item.id);
+                      return;
+                    }
+                    if (action.type === "extend") {
+                      addToCart({
+                        item: {
+                          id: actionableCustomerItem.item.id,
+                          title: actionableCustomerItem.item.title,
+                        },
+                        type: action.type,
+                        deadline: action.extendOptions?.[0]?.date,
+                        price: action.extendOptions?.[0]?.price,
+                      });
+                    }
+                    if (action.type === "buyout") {
+                      addToCart({
+                        item: {
+                          id: actionableCustomerItem.item.id,
+                          title: actionableCustomerItem.item.title,
+                        },
+                        type: action.type,
+                        price: action.buyoutPrice,
+                      });
+                    }
                   }}
                 >
                   {action.buttonText}
@@ -134,6 +188,48 @@ export default function CustomerItemCard({
             ))}
           </Group>
         )}
+        <Stack gap={5}>
+          {extendCartItem ? (
+            <Group gap={5}>
+              <Text>Forleng til</Text>
+              {extendOptions.length > 1 ? (
+                <SegmentedControl
+                  value={dayjs(extendCartItem.deadline).format("DD/MM/YYYY")}
+                  data={extendOptions.map((extendOption) =>
+                    dayjs(extendOption.date).format("DD/MM/YYYY"),
+                  )}
+                  onChange={(value) => {
+                    const extendOption = extendOptions.find((option) =>
+                      dayjs(option.date).isSame(dayjs(value, "DD/MM/YYYY")),
+                    );
+                    if (!extendOption) return;
+                    addToCart({
+                      ...extendCartItem,
+                      deadline: extendOption.date,
+                      price: extendOption.price,
+                    });
+                  }}
+                />
+              ) : (
+                <Text fw={"bold"}>
+                  {dayjs(extendCartItem.deadline).format("DD/MM/YYYY")}
+                </Text>
+              )}
+            </Group>
+          ) : (
+            <></>
+          )}
+          {extendCartItem || buyoutCartItem ? (
+            <Group gap={5}>
+              <Text>Pris:</Text>
+              <Text fw={"bold"}>
+                {(extendCartItem || buyoutCartItem)?.price} kr
+              </Text>
+            </Group>
+          ) : (
+            <></>
+          )}
+        </Stack>
       </Stack>
     </Card>
   );

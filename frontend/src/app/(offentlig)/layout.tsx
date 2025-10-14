@@ -1,8 +1,17 @@
-import { AppShell, AppShellHeader, AppShellMain } from "@mantine/core";
+import {
+  Anchor,
+  AppShell,
+  AppShellHeader,
+  AppShellMain,
+  Group,
+} from "@mantine/core";
 import { Metadata } from "next";
+import Link from "next/link";
 
+import CartNavbarIndicator from "@/features/cart/CartNavbarIndicator";
+import Logo from "@/features/layout/Logo";
+import PublicNavigationDrawer from "@/features/layout/PublicNavigationDrawer";
 import PublicPageFooter from "@/features/layout/PublicPageFooter";
-import PublicPageHeader from "@/features/layout/PublicPageHeader";
 
 export const metadata: Metadata = {
   title: {
@@ -16,7 +25,26 @@ export default function PublicPageLayout({ children }: LayoutProps<"/">) {
     <>
       <AppShell header={{ height: 65 }} p={"md"}>
         <AppShellHeader bg={"brand"}>
-          <PublicPageHeader />
+          <Group
+            h={"100%"}
+            justify={"space-between"}
+            align={"center"}
+            px={"md"}
+          >
+            <Logo variant={"white"} />
+            <Group>
+              <Group gap={"xl"} visibleFrom={"sm"}>
+                <CartNavbarIndicator />
+                <Anchor c={"#fff"} component={Link} href={"/info/general"}>
+                  Info
+                </Anchor>
+                <Anchor c={"#fff"} component={Link} href={"/bestilling"}>
+                  Bestill bøker
+                </Anchor>
+              </Group>
+              <PublicNavigationDrawer />
+            </Group>
+          </Group>
         </AppShellHeader>
 
         <AppShellMain

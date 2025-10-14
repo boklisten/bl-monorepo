@@ -486,6 +486,24 @@ type OrderhistoryMeGetHead = {
     false
   >;
 };
+type CheckoutPost = {
+  request: MakeTuyauRequest<
+    InferInput<
+      (typeof import("../app/validators/checkout_validators.ts"))["initializeCheckoutValidator"]
+    >
+  >;
+  response: MakeNonSerializedTuyauResponse<
+    import("../app/controllers/checkout_controller.ts").default["initializeCheckout"],
+    true
+  >;
+};
+type CheckoutVippsCallbackPost = {
+  request: unknown;
+  response: MakeNonSerializedTuyauResponse<
+    import("../app/controllers/checkout_controller.ts").default["vippsCallback"],
+    false
+  >;
+};
 export interface ApiDefinition {
   token: {
     $url: {};
@@ -743,6 +761,16 @@ export interface ApiDefinition {
       $url: {};
       $get: OrderhistoryMeGetHead;
       $head: OrderhistoryMeGetHead;
+    };
+  };
+  checkout: {
+    $url: {};
+    $post: CheckoutPost;
+    vipps: {
+      callback: {
+        $url: {};
+        $post: CheckoutVippsCallbackPost;
+      };
     };
   };
 }
@@ -1110,6 +1138,20 @@ const routes = [
     path: "/order_history/me",
     method: ["GET", "HEAD"],
     types: {} as OrderhistoryMeGetHead,
+  },
+  {
+    params: [],
+    name: "checkout.initialize",
+    path: "/checkout",
+    method: ["POST"],
+    types: {} as CheckoutPost,
+  },
+  {
+    params: [],
+    name: "checkout.vipps.callback",
+    path: "/checkout/vipps/callback",
+    method: ["POST"],
+    types: {} as CheckoutVippsCallbackPost,
   },
   {
     params: ["id"],

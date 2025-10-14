@@ -113,6 +113,9 @@ importers:
       '@vinejs/vine':
         specifier: ^3.0.1
         version: 3.0.1
+      '@vippsmobilepay/sdk':
+        specifier: ^2.4.2
+        version: 2.4.2
       argon2:
         specifier: ^0.43.0
         version: 0.43.1
@@ -2586,6 +2589,9 @@ packages:
   '@vinejs/vine@3.0.1':
     resolution: {integrity: sha512-ZtvYkYpZOYdvbws3uaOAvTFuvFXoQGAtmzeiXu+XSMGxi5GVsODpoI9Xu9TplEMuD/5fmAtBbKb9cQHkWkLXDQ==}
     engines: {node: '>=18.16.0'}
+
+  '@vippsmobilepay/sdk@2.4.2':
+    resolution: {integrity: sha512-yYjJpAHTqzznt65zreZ3ztAnZCUCT+bH0jhnmc/ZgfCLCHO2p0cUIMKFqe0SXRb6gzHgp5OB1RX1l9LhC9grGQ==}
 
   '@webassemblyjs/ast@1.14.1':
     resolution: {integrity: sha512-nuBEDgQfm1ccRp/8bCQrx1frohyufl4JlbMMZ4P1wpeOfDhF6FQkxZJ1b/e+PLwr6X1Nhw6OLme5usuBWYBvuQ==}
@@ -8332,6 +8338,8 @@ snapshots:
       dlv: 1.1.3
       normalize-url: 8.1.0
       validator: 13.15.15
+
+  '@vippsmobilepay/sdk@2.4.2': {}
 
   '@webassemblyjs/ast@1.14.1':
     dependencies:

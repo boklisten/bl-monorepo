@@ -38,6 +38,7 @@ const UniqueItemsController = () =>
   import("#controllers/unique_items_controller");
 const OrderHistoryController = () =>
   import("#controllers/order_history_controller");
+const CheckoutController = () => import("#controllers/checkout_controller");
 
 /**
  * auth token
@@ -307,6 +308,16 @@ router
 router
   .get("/order_history/me", [OrderHistoryController, "getMyOrders"])
   .as("order_history.get_my_orders");
+
+/**
+ * Checkout
+ */
+router
+  .post("/checkout", [CheckoutController, "initializeCheckout"])
+  .as("checkout.initialize");
+router
+  .post("/checkout/vipps/callback", [CheckoutController, "vippsCallback"])
+  .as("checkout.vipps.callback");
 
 /**
  * Generate legacy bl-collection endpoints

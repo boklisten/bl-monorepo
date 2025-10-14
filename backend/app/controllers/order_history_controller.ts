@@ -39,7 +39,7 @@ export default class OrderHistoryController {
           ...order,
           orderItems: order.orderItems.map((orderItem) => ({
             ...orderItem,
-            typeLabel: TranslationService.translateOrderItemType(
+            typeLabel: TranslationService.translateOrderItemTypePastTense(
               orderItem.type,
             ),
           })),

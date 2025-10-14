@@ -112,17 +112,16 @@ export default class CheckoutController {
   }
 
   async vippsCallback(ctx: HttpContext) {
-    const authHeader = ctx.request.header("Authorization") ?? "";
-    console.log(authHeader);
-    const decryptedAuthHeader = encryption.decrypt(
-      authHeader,
-      vippsCallbackTokenPurpose,
-    );
-    console.log(decryptedAuthHeader);
-    if (!decryptedAuthHeader) {
-      throw new UnauthorizedException("Invalid callback authorization token!");
+    if (
+      !encryption.decrypt(
+        ctx.request.header("Authorization"),
+        vippsCallbackTokenPurpose,
+      )
+    ) {
+      throw new UnauthorizedException(
+        "Authorization header missing or invalid",
+      );
     }
-    console.log("valid auth header!");
     /**
      * example response
      * {

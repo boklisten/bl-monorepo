@@ -1,5 +1,5 @@
 import type { HttpContext } from "@adonisjs/core/http";
-import hash from "@adonisjs/core/services/hash";
+import encryption from "@adonisjs/core/services/encryption";
 import moment from "moment-timezone";
 
 import UnauthorizedException from "#exceptions/unauthorized_exception";
@@ -8,10 +8,10 @@ import { PermissionService } from "#services/permission_service";
 import { StorageService } from "#services/storage_service";
 import { TranslationService } from "#services/translation_service";
 import {
+  vippsCallbackTokenPurpose,
   VippsCheckoutService,
   VippsOrderLine,
 } from "#services/vipps_checkout_service";
-import env from "#start/env";
 import { initializeCheckoutValidator } from "#validators/checkout_validators";
 
 export default class CheckoutController {
@@ -111,10 +111,15 @@ export default class CheckoutController {
     });
   }
 
-  vippsCallback(ctx: HttpContext) {
+  async vippsCallback(ctx: HttpContext) {
     const authHeader = ctx.request.header("Authorization") ?? "";
     console.log(authHeader);
-    if (!hash.verify(authHeader, env.get("VIPPS_CLIENT_ID"))) {
+    const decryptedAuthHeader = encryption.decrypt(
+      authHeader,
+      vippsCallbackTokenPurpose,
+    );
+    console.log(decryptedAuthHeader);
+    if (!decryptedAuthHeader) {
       throw new UnauthorizedException("Invalid callback authorization token!");
     }
     console.log("valid auth header!");

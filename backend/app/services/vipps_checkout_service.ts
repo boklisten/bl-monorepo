@@ -1,4 +1,5 @@
-import hash from "@adonisjs/core/services/hash";
+import string from "@adonisjs/core/helpers/string";
+import encryption from "@adonisjs/core/services/encryption";
 import { Client } from "@vippsmobilepay/sdk";
 
 import { UserDetail } from "#shared/user-detail";
@@ -27,6 +28,8 @@ const client = Client({
   pluginName: env.get("API_ENV").toLowerCase(),
   pluginVersion: "1.0.0",
 });
+
+export const vippsCallbackTokenPurpose = "vipps-callback";
 
 export const VippsCheckoutService = {
   async create({
@@ -58,9 +61,11 @@ export const VippsCheckoutService = {
         merchantInfo: {
           callbackUrl: `https://${env.get("API_ENV") === "production" ? "" : "staging."}api.boklisten.no/checkout/vipps/callback`,
           returnUrl: `${env.get("NEXT_CLIENT_URI")}order-history`,
-          callbackAuthorizationToken: await hash.make(
-            env.get("VIPPS_CLIENT_ID"),
-          ), // TODO: create secure token (or signature) and validate in callback
+          callbackAuthorizationToken: encryption.encrypt(
+            string.random(32),
+            "1 day",
+            vippsCallbackTokenPurpose,
+          ),
           termsAndConditionsUrl: `${env.get("CLIENT_URI")}info/policies/conditions`,
         },
         transaction: {

@@ -1,6 +1,8 @@
 import type { HttpContext } from "@adonisjs/core/http";
+import hash from "@adonisjs/core/services/hash";
 import moment from "moment-timezone";
 
+import UnauthorizedException from "#exceptions/unauthorized_exception";
 import { SEDbQuery } from "#services/legacy/query/se.db-query";
 import { PermissionService } from "#services/permission_service";
 import { StorageService } from "#services/storage_service";
@@ -9,6 +11,7 @@ import {
   VippsCheckoutService,
   VippsOrderLine,
 } from "#services/vipps_checkout_service";
+import env from "#start/env";
 import { initializeCheckoutValidator } from "#validators/checkout_validators";
 
 export default class CheckoutController {
@@ -109,10 +112,32 @@ export default class CheckoutController {
   }
 
   vippsCallback(ctx: HttpContext) {
+    const authHeader = ctx.request.header("Authorization") ?? "";
+    console.log(authHeader);
+    if (!hash.verify(authHeader, env.get("VIPPS_CLIENT_ID"))) {
+      throw new UnauthorizedException("Invalid callback authorization token!");
+    }
+    console.log("valid auth header!");
+    /**
+     * example response
+     * {
+     *   sessionId: 'SvQmIk8nlAvswYg40tJNdM',
+     *   merchantSerialNumber: '387035',
+     *   reference: '7f96d49b-9550-4f2a-b4ba-a11a0300015c',
+     *   sessionState: 'PaymentSuccessful',
+     *   paymentMethod: 'Wallet',
+     *   paymentDetails: {
+     *     type: 'Wallet',
+     *     amount: { value: 56450, currency: 'NOK' },
+     *     state: 'AUTHORIZED'
+     *   },
+     * }
+     */
     // TODO: handle potential raised errors checkout init or vipps in FE
     // TODO: handle callback, create order, etc
     // TODO: create proper return URl that shows either success or fail
     // TODO: maybe use polling URL for something (if needed)
+    // TODO: test with production env on staging to see if everything works as intended
     console.log(ctx.request.body());
   }
 }

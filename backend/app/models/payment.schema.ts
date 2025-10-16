@@ -34,10 +34,7 @@ export const PaymentSchema: BlSchema<Payment> = new Schema({
   info: Schema.Types.Mixed,
   confirmed: Boolean,
   discount: {
-    amount: {
-      type: Number,
-      required: true,
-    },
+    amount: Number,
     coupon: String,
   },
 });

@@ -31,25 +31,33 @@ export default class CheckoutController {
     const { reference, sessionState } = await ctx.request.validateUsing(
       vippsCallbackValidator,
     );
-    await VippsCheckoutService.update(reference, sessionState);
+    const order = await OrderService.getByCheckoutReferenceOrNull(reference);
+    if (!order)
+      throw new Error("Order not found by reference in Vipps callback");
+
+    await VippsCheckoutService.update(order, sessionState);
   }
 
   async getState(ctx: HttpContext) {
     const { detailsId } = PermissionService.authenticate(ctx);
-    const { customer, checkout } = await StorageService.Orders.get(
-      ctx.request.param("orderId"),
-    );
-    if (detailsId !== customer || !checkout)
+    const orderId = ctx.request.param("orderId");
+    const order = await StorageService.Orders.get(orderId);
+    if (detailsId !== order.customer || !order.checkout)
       throw new Error("No checkout order found for customer");
 
     if (
-      checkout.state === "SessionCreated" ||
-      checkout.state === "PaymentInitiated"
+      order.checkout.state === "SessionCreated" ||
+      order.checkout.state === "PaymentInitiated"
     ) {
-      const info = await VippsPaymentService.checkout.info(checkout.reference);
-      await VippsCheckoutService.update(checkout.reference, info.sessionState);
+      const info = await VippsPaymentService.checkout.info(
+        order.checkout.reference,
+      );
+      // Important to get fresh order here to avoid duplicate updates
+      const freshOrder = await StorageService.Orders.get(orderId);
+      await VippsCheckoutService.update(freshOrder, info.sessionState);
       return info.sessionState;
     }
-    return checkout.state;
+
+    return order.checkout.state;
   }
 }

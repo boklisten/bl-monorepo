@@ -78,7 +78,7 @@ function createExtendOrderItem(
 }
 
 export const OrderService = {
-  async getByCheckoutReferenceOrNull(reference: string, detailsId?: string) {
+  async getByCheckoutReferenceOrNull(reference: string) {
     const databaseQuery = new SEDbQuery();
     databaseQuery.stringFilters = [
       {
@@ -86,15 +86,6 @@ export const OrderService = {
         value: reference,
       },
     ];
-    if (detailsId) {
-      databaseQuery.objectIdFilters = [
-        {
-          fieldName: "customer",
-          value: detailsId,
-        },
-      ];
-    }
-
     const [order] =
       (await StorageService.Orders.getByQueryOrNull(databaseQuery)) ?? [];
     return order ?? null;

@@ -1,7 +1,6 @@
 import moment from "moment-timezone";
 
 import { OrderPlacedHandler } from "#services/legacy/collections/order/helpers/order-placed-handler/order-placed-handler";
-import { OrderService } from "#services/order_service";
 import { StorageService } from "#services/storage_service";
 import { TranslationService } from "#services/translation_service";
 import { VippsPaymentService } from "#services/vipps/vipps_payment_service";
@@ -66,19 +65,19 @@ export const VippsCheckoutService = {
     });
     return { token, checkoutFrontendUrl };
   },
-  async update(reference: string, state: string) {
-    let order = await OrderService.getByCheckoutReferenceOrNull(reference);
-    if (!order)
-      throw new Error(
-        "Unknown checkout reference received from Vipps callback",
-      );
-    order = await StorageService.Orders.update(order.id, {
+  async update(order: Order, newState: string) {
+    const state = order.checkout?.state;
+    if (state === newState || state === "PaymentSuccessful") return;
+
+    await StorageService.Orders.update(order.id, {
       checkout: {
-        reference,
-        state,
+        ...order.checkout,
+        state: newState,
       },
     });
-    if (state !== "PaymentSuccessful") return;
+
+    if (newState !== "PaymentSuccessful") return;
+
     const payment = await StorageService.Payments.add({
       method: "vipps-checkout",
       order: order.id,
@@ -90,9 +89,12 @@ export const VippsCheckoutService = {
         amount: 0,
       },
     });
-    order = await StorageService.Orders.update(order.id, {
-      payments: [...(order.payments ?? []), payment.id],
-    });
-    return await new OrderPlacedHandler().placeOrder(order, order.customer);
+
+    await new OrderPlacedHandler().placeOrder(
+      await StorageService.Orders.update(order.id, {
+        payments: [...(order.payments ?? []), payment.id],
+      }),
+      order.customer,
+    );
   },
 };

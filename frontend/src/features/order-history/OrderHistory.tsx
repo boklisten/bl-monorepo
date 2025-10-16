@@ -93,7 +93,7 @@ export default function OrderHistory({ limit }: { limit?: number }) {
                     <Group gap={2}>
                       <OrderItemTypeIcon type={orderItem.type} />
                       <Text>{orderItem.typeLabel}</Text>
-                      {["rent", "partly-payment", "loan"].includes(
+                      {["rent", "partly-payment", "loan", "extend"].includes(
                         orderItem.type,
                       ) &&
                         orderItem.info?.to && (

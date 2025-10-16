@@ -38,7 +38,7 @@ export default class CheckoutController {
     await VippsCheckoutService.update(order, sessionState);
   }
 
-  async getState(ctx: HttpContext) {
+  async pollPayment(ctx: HttpContext) {
     const { detailsId } = PermissionService.authenticate(ctx);
     const orderId = ctx.request.param("orderId");
     const order = await StorageService.Orders.get(orderId);

@@ -111,7 +111,6 @@ export const OrderService = {
       branch = await StorageService.Branches.get(
         customerItem.handoutInfo?.handoutById,
       );
-      console.log("branch", branch);
       if (cartItem.type === "buyout") {
         const orderItem = createBuyoutOrderItem(
           cartItem,

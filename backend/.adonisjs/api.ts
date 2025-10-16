@@ -508,10 +508,10 @@ type CheckoutVippsCallbackPost = {
     true
   >;
 };
-type CheckoutIdGetHead = {
+type CheckoutPollIdGetHead = {
   request: unknown;
   response: MakeNonSerializedTuyauResponse<
-    import("../app/controllers/checkout_controller.ts").default["getState"],
+    import("../app/controllers/checkout_controller.ts").default["pollPayment"],
     false
   >;
 };
@@ -783,10 +783,12 @@ export interface ApiDefinition {
         $post: CheckoutVippsCallbackPost;
       };
     };
-    ":orderId": {
-      $url: {};
-      $get: CheckoutIdGetHead;
-      $head: CheckoutIdGetHead;
+    poll: {
+      ":orderId": {
+        $url: {};
+        $get: CheckoutPollIdGetHead;
+        $head: CheckoutPollIdGetHead;
+      };
     };
   };
 }
@@ -1171,10 +1173,10 @@ const routes = [
   },
   {
     params: ["orderId"],
-    name: "checkout.get.state",
-    path: "/checkout/:orderId",
+    name: "checkout.poll",
+    path: "/checkout/poll/:orderId",
     method: ["GET", "HEAD"],
-    types: {} as CheckoutIdGetHead,
+    types: {} as CheckoutPollIdGetHead,
   },
   {
     params: ["id"],

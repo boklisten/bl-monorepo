@@ -6,6 +6,7 @@ import ErrorAlert from "@/shared/components/alerts/ErrorAlert";
 import { PLEASE_TRY_AGAIN_TEXT } from "@/shared/utils/constants";
 import { showErrorNotification } from "@/shared/utils/notifications";
 
+const iFrameContainerId = "vipps-checkout-frame-container";
 export default function VippsCheckoutFrame() {
   const searchParams = useSearchParams();
 
@@ -27,10 +28,10 @@ export default function VippsCheckoutFrame() {
           try {
             /* @ts-expect-error official Vipps Checkout */
             VippsCheckout({
+              iFrameContainerId,
               checkoutFrontendUrl,
-              iFrameContainerId: "vipps-checkout-frame-container",
-              language: "nb",
               token,
+              language: "nb",
             });
           } catch (error) {
             showErrorNotification("Klarte ikke vise betalingsside");
@@ -38,7 +39,7 @@ export default function VippsCheckoutFrame() {
           }
         }}
       />
-      <section id="vipps-checkout-frame-container"></section>
+      <section id={iFrameContainerId}></section>
     </>
   );
 }

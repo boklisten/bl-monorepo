@@ -183,7 +183,7 @@ test.group("OrderPlacedHandler", (group) => {
     orderUpdate = false;
 
     orderPlacedHandler
-      .placeOrder(testOrder, testAccessToken)
+      .placeOrder(testOrder, testAccessToken.details)
       .catch((err: BlError) => {
         // @ts-expect-error fixme: auto ignored
         return expect(err.errorStack[0].getMsg()).to.be.eq(
@@ -196,7 +196,7 @@ test.group("OrderPlacedHandler", (group) => {
     paymentsConfirmed = false;
 
     orderPlacedHandler
-      .placeOrder(testOrder, testAccessToken)
+      .placeOrder(testOrder, testAccessToken.details)
       .catch((err: BlError) => {
         // @ts-expect-error fixme: auto ignored
         return expect(err.errorStack[0].getMsg()).to.be.eq(
@@ -209,7 +209,7 @@ test.group("OrderPlacedHandler", (group) => {
     testOrder.customer = "notFoundUserDetails";
 
     try {
-      await orderPlacedHandler.placeOrder(testOrder, testAccessToken);
+      await orderPlacedHandler.placeOrder(testOrder, testAccessToken.details);
     } catch (e) {
       // @ts-expect-error fixme: auto ignored
       expect(e.errorStack[0].getMsg()).to.eq("user detail not found");
@@ -220,7 +220,7 @@ test.group("OrderPlacedHandler", (group) => {
     userDeatilUpdate = false;
 
     orderPlacedHandler
-      .placeOrder(testOrder, testAccessToken)
+      .placeOrder(testOrder, testAccessToken.details)
       .catch((err: BlError) => {
         // @ts-expect-error fixme: auto ignored
         return expect(err.errorStack[0].getMsg()).to.be.eq(
@@ -240,7 +240,8 @@ test.group("OrderPlacedHandler", (group) => {
   /*});*/
 
   test("should resolve when order was placed", async () => {
-    return expect(orderPlacedHandler.placeOrder(testOrder, testAccessToken)).to
-      .be.fulfilled;
+    return expect(
+      orderPlacedHandler.placeOrder(testOrder, testAccessToken.details),
+    ).to.be.fulfilled;
   });
 });

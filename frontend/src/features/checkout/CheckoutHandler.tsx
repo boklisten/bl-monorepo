@@ -1,10 +1,13 @@
 "use client";
+import { Loader, Title } from "@mantine/core";
 import { useMounted } from "@mantine/hooks";
+import { useMutation } from "@tanstack/react-query";
 import dayjs from "dayjs";
 import { useRouter } from "next/navigation";
+import { useState } from "react";
 
 import useApiClient from "@/shared/hooks/useApiClient";
-import useCart from "@/shared/hooks/useCart";
+import useCart, { CartItem } from "@/shared/hooks/useCart";
 import { showErrorNotification } from "@/shared/utils/notifications";
 
 export default function CheckoutHandler() {
@@ -12,30 +15,40 @@ export default function CheckoutHandler() {
   const client = useApiClient();
   const mounted = useMounted();
   const router = useRouter();
+  const [hasStarted, setHasStarted] = useState(false);
 
-  async function createVippsCheckout() {
-    try {
-      const response = await client.checkout
+  const initializeCheckoutMutation = useMutation({
+    mutationFn: (cartItems: CartItem[]) =>
+      client.checkout
         .$post({
-          cartItems: cart.map((cartItem) => ({
-            itemId: cartItem.item.id,
-            type: cartItem.type,
-            date: dayjs(cartItem.deadline).format("YYYY-MM-DD"),
-          })),
+          cartItems: cartItems.map((cartItem) =>
+            cartItem.type === "buyout"
+              ? {
+                  itemId: cartItem.item.id,
+                  type: cartItem.type,
+                }
+              : {
+                  itemId: cartItem.item.id,
+                  type: cartItem.type,
+                  date: dayjs(cartItem.date).format("YYYY-MM-DD"),
+                },
+          ),
         })
-        .unwrap();
-      if (!response) {
-        showErrorNotification("Noe gikk galt under genererering av betaling!");
-        console.error("Noe gikk galt under genererering av betaling!");
-        return;
-      }
+        .unwrap(),
+    onSuccess: ({ token, checkoutFrontendUrl }) =>
       router.push(
-        `/betaling?token=${response.token}&checkoutFrontendUrl=${response.checkoutFrontendUrl}`,
-      );
-    } catch (error) {
-      showErrorNotification("Klarte ikke genererere betaling!");
-      throw error;
-    }
+        `/kasse/betaling?token=${token}&checkoutFrontendUrl=${checkoutFrontendUrl}`,
+      ),
+    onError: () => {
+      showErrorNotification("Noe gikk galt under genererering av betaling!");
+      router.push("/handlekurv");
+    },
+  });
+
+  function initializeCheckout() {
+    if (hasStarted) return;
+    setHasStarted(true);
+    initializeCheckoutMutation.mutate(cart);
   }
 
   if (!mounted) {
@@ -55,7 +68,13 @@ export default function CheckoutHandler() {
     });
     throw Error("Amounts less than or equal to 0 not implemented yet!");
   }
-  createVippsCheckout();
 
-  return null;
+  initializeCheckout();
+
+  return (
+    <>
+      <Title>Ett øyeblikk...</Title>
+      <Loader />
+    </>
+  );
 }

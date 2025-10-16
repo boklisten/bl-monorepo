@@ -498,9 +498,20 @@ type CheckoutPost = {
   >;
 };
 type CheckoutVippsCallbackPost = {
+  request: MakeTuyauRequest<
+    InferInput<
+      (typeof import("../app/validators/checkout_validators.ts"))["vippsCallbackValidator"]
+    >
+  >;
+  response: MakeNonSerializedTuyauResponse<
+    import("../app/controllers/checkout_controller.ts").default["handleVippsCallback"],
+    true
+  >;
+};
+type CheckoutIdGetHead = {
   request: unknown;
   response: MakeNonSerializedTuyauResponse<
-    import("../app/controllers/checkout_controller.ts").default["vippsCallback"],
+    import("../app/controllers/checkout_controller.ts").default["getState"],
     false
   >;
 };
@@ -771,6 +782,11 @@ export interface ApiDefinition {
         $url: {};
         $post: CheckoutVippsCallbackPost;
       };
+    };
+    ":orderId": {
+      $url: {};
+      $get: CheckoutIdGetHead;
+      $head: CheckoutIdGetHead;
     };
   };
 }
@@ -1152,6 +1168,13 @@ const routes = [
     path: "/checkout/vipps/callback",
     method: ["POST"],
     types: {} as CheckoutVippsCallbackPost,
+  },
+  {
+    params: ["orderId"],
+    name: "checkout.get.state",
+    path: "/checkout/:orderId",
+    method: ["GET", "HEAD"],
+    types: {} as CheckoutIdGetHead,
   },
   {
     params: ["id"],

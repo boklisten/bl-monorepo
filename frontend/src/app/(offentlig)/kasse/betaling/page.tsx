@@ -6,13 +6,12 @@ import VippsCheckoutFrame from "@/features/payment/VippsCheckoutFrame";
 
 export const metadata: Metadata = {
   title: "Betaling",
-  description: "Betal for din ordre med Vipps",
 };
 
 export default function PaymentPage() {
   return (
-    <Container ta={"center"}>
-      <Title>Betaling</Title>
+    <Container>
+      <Title ta={"center"}>Betaling</Title>
       <Suspense>
         <VippsCheckoutFrame />
       </Suspense>

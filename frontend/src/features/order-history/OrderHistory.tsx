@@ -16,7 +16,7 @@ import WarningAlert from "@/shared/components/alerts/WarningAlert";
 import useApiClient from "@/shared/hooks/useApiClient";
 import { PLEASE_TRY_AGAIN_TEXT } from "@/shared/utils/constants";
 
-export default function OrderHistory() {
+export default function OrderHistory({ limit }: { limit?: number }) {
   const client = useApiClient();
   const { data, isLoading, isError } = useQuery({
     queryKey: [client.order_history.me.$url()],
@@ -26,7 +26,7 @@ export default function OrderHistory() {
   if (isLoading) {
     return (
       <>
-        {[0, 1, 2, 3].map((index) => (
+        {[0, 1, 2, 3].slice(0, limit).map((index) => (
           <Skeleton h={300} key={`skeleton-${index}`} />
         ))}
       </>
@@ -51,7 +51,7 @@ export default function OrderHistory() {
 
   return (
     <>
-      {data.map((order) => (
+      {data.slice(0, limit).map((order) => (
         <Card shadow="sm" padding="md" radius="md" withBorder key={order.id}>
           <Stack>
             <Group justify={"space-between"}>

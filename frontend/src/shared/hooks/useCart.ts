@@ -1,14 +1,20 @@
 import { useSessionStorage } from "@mantine/hooks";
 
-interface CartItem {
+export type CartItem = {
   item: {
     id: string;
     title: string;
   };
-  type: "extend" | "buyout";
-  deadline?: Date | undefined;
-  price?: number | undefined;
-}
+  price: number;
+} & (
+  | {
+      type: "extend";
+      date: Date;
+    }
+  | {
+      type: "buyout";
+    }
+);
 
 export default function useCart() {
   const [cart, setCart, clearCart] = useSessionStorage<CartItem[]>({

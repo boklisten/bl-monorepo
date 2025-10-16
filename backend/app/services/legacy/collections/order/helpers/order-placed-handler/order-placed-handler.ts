@@ -5,7 +5,6 @@ import { PaymentHandler } from "#services/legacy/collections/payment/helpers/pay
 import { userHasValidSignature } from "#services/legacy/collections/signature/helpers/signature.helper";
 import { OrderEmailHandler } from "#services/legacy/order_email_handler";
 import { StorageService } from "#services/storage_service";
-import { AccessToken } from "#shared/access-token";
 import { BlError } from "#shared/bl-error";
 import { Order } from "#shared/order/order";
 import { OrderItem } from "#shared/order/order-item/order-item";
@@ -30,10 +29,7 @@ export class OrderPlacedHandler {
       orderItemMovedFromOrderHandler ?? new OrderItemMovedFromOrderHandler();
   }
 
-  public async placeOrder(
-    order: Order,
-    accessToken: AccessToken,
-  ): Promise<Order> {
+  public async placeOrder(order: Order, detailsId: string): Promise<Order> {
     try {
       const pendingSignature = await this.isSignaturePending(order);
 
@@ -47,7 +43,7 @@ export class OrderPlacedHandler {
         pendingSignature,
       });
 
-      await this.updateCustomerItemsIfPresent(placedOrder, accessToken);
+      await this.updateCustomerItemsIfPresent(placedOrder, detailsId);
       await this.orderItemMovedFromOrderHandler.updateOrderItems(placedOrder);
       await this.updateUserDetailWithPlacedOrder(placedOrder);
       await this.sendOrderConfirmationMail(placedOrder);
@@ -61,7 +57,7 @@ export class OrderPlacedHandler {
 
   private async updateCustomerItemsIfPresent(
     order: Order,
-    accessToken: AccessToken,
+    detailsId: string,
   ): Promise<Order> {
     for (const orderItem of order.orderItems) {
       if (
@@ -124,7 +120,7 @@ export class OrderPlacedHandler {
                 order.id,
                 orderItem,
                 order.branch,
-                accessToken.details,
+                detailsId,
               );
 
               break;

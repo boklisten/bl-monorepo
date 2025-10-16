@@ -21,7 +21,6 @@ export const PaymentSchema: BlSchema<Payment> = new Schema({
   customer: {
     type: Schema.Types.ObjectId,
     ref: BlSchemaName.UserDetails,
-    required: false,
   },
   branch: {
     type: Schema.Types.ObjectId,
@@ -32,22 +31,13 @@ export const PaymentSchema: BlSchema<Payment> = new Schema({
     type: Number,
     required: true,
   },
-  info: {
-    type: Schema.Types.Mixed,
-    required: false,
-  },
-  confirmed: {
-    type: Boolean,
-    default: false,
-  },
+  info: Schema.Types.Mixed,
+  confirmed: Boolean,
   discount: {
-    type: {
-      amount: {
-        type: Number,
-        required: true,
-      },
-      coupon: String,
+    amount: {
+      type: Number,
+      required: true,
     },
-    required: false,
+    coupon: String,
   },
 });

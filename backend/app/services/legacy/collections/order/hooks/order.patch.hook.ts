@@ -58,7 +58,7 @@ export class OrderPatchHook extends Hook {
     return new Promise((resolve, reject) => {
       if (order?.placed) {
         this.orderPlacedHandler
-          .placeOrder(order, accessToken)
+          .placeOrder(order, accessToken.details)
           .then((placedOrder) => {
             resolve([placedOrder]);
           })

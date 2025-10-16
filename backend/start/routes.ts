@@ -316,8 +316,11 @@ router
   .post("/checkout", [CheckoutController, "initializeCheckout"])
   .as("checkout.initialize");
 router
-  .post("/checkout/vipps/callback", [CheckoutController, "vippsCallback"])
+  .post("/checkout/vipps/callback", [CheckoutController, "handleVippsCallback"])
   .as("checkout.vipps.callback");
+router
+  .get("/checkout/:orderId", [CheckoutController, "getState"])
+  .as("checkout.get.state");
 
 /**
  * Generate legacy bl-collection endpoints

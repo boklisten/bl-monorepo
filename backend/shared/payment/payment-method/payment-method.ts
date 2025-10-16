@@ -3,6 +3,7 @@ export type PaymentMethod =
   | "cash"
   | "card"
   | "vipps"
+  | "vipps-checkout"
   | "branch"
   | "later"
   | "cashout";

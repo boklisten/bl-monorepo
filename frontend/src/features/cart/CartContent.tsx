@@ -11,7 +11,7 @@ import {
 } from "@mantine/core";
 import {
   IconBook,
-  IconCreditCardPay,
+  IconCashRegister,
   IconShoppingCart,
   IconX,
 } from "@tabler/icons-react";
@@ -82,9 +82,9 @@ export default function CartContent() {
             <Group justify={"space-between"}>
               <Group gap={5}>
                 <Text>{translations[cartItem.type]}</Text>
-                {cartItem.deadline && (
+                {"date" in cartItem && (
                   <Text fw={"bolder"}>
-                    {dayjs(cartItem.deadline).format("DD/MM/YYYY")}
+                    {dayjs(cartItem.date).format("DD/MM/YYYY")}
                   </Text>
                 )}
               </Group>
@@ -96,12 +96,12 @@ export default function CartContent() {
       <Box mt={"sm"}>
         <Button
           component={Link}
-          href={"/checkout"}
-          leftSection={<IconCreditCardPay />}
+          href={"/kasse"}
+          leftSection={<IconCashRegister />}
           size={"md"}
           bg={"green"}
         >
-          Til betaling
+          Gå til kassen
         </Button>
       </Box>
     </>

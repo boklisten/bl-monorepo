@@ -166,8 +166,8 @@ export default function CustomerItemCard({
                           title: actionableCustomerItem.item.title,
                         },
                         type: action.type,
-                        deadline: action.extendOptions?.[0]?.date,
-                        price: action.extendOptions?.[0]?.price,
+                        date: action.extendOptions?.[0]?.date ?? new Date(),
+                        price: action.extendOptions?.[0]?.price ?? 0,
                       });
                     }
                     if (action.type === "buyout") {
@@ -177,7 +177,7 @@ export default function CustomerItemCard({
                           title: actionableCustomerItem.item.title,
                         },
                         type: action.type,
-                        price: action.buyoutPrice,
+                        price: action.buyoutPrice ?? 0,
                       });
                     }
                   }}
@@ -189,12 +189,12 @@ export default function CustomerItemCard({
           </Group>
         )}
         <Stack gap={5}>
-          {extendCartItem ? (
+          {extendCartItem && "date" in extendCartItem ? (
             <Group gap={5}>
               <Text>Forleng til</Text>
               {extendOptions.length > 1 ? (
                 <SegmentedControl
-                  value={dayjs(extendCartItem.deadline).format("DD/MM/YYYY")}
+                  value={dayjs(extendCartItem.date).format("DD/MM/YYYY")}
                   data={extendOptions.map((extendOption) =>
                     dayjs(extendOption.date).format("DD/MM/YYYY"),
                   )}
@@ -205,14 +205,14 @@ export default function CustomerItemCard({
                     if (!extendOption) return;
                     addToCart({
                       ...extendCartItem,
-                      deadline: extendOption.date,
+                      date: extendOption.date,
                       price: extendOption.price,
                     });
                   }}
                 />
               ) : (
                 <Text fw={"bold"}>
-                  {dayjs(extendCartItem.deadline).format("DD/MM/YYYY")}
+                  {dayjs(extendCartItem.date).format("DD/MM/YYYY")}
                 </Text>
               )}
             </Group>

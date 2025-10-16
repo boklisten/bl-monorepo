@@ -494,12 +494,10 @@ export class OrderPlaceOperation implements Operation {
       );
     }
 
-    await this.orderPlacedHandler.placeOrder(order, {
-      // @ts-expect-error // fixme: bad enums
-      sub: blApiRequest.user,
-      // @ts-expect-error // fixme: bad enums
-      permission: blApiRequest.user.permission,
-    });
+    await this.orderPlacedHandler.placeOrder(
+      order,
+      blApiRequest.user?.details ?? "",
+    );
 
     const isAdmin =
       blApiRequest.user?.permission !== undefined &&

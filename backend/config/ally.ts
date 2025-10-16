@@ -1,6 +1,6 @@
 import { defineConfig } from "@adonisjs/ally";
 
-import { VippsDriverService } from "#services/vipps_driver_service";
+import { VippsDriverService } from "#services/vipps/vipps_driver_service";
 import env from "#start/env";
 
 const allyConfig = defineConfig({

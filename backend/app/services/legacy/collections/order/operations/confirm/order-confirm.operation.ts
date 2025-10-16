@@ -110,7 +110,7 @@ export class OrderConfirmOperation implements Operation {
     try {
       placedOrder = await this.orderPlacedHandler.placeOrder(
         order,
-        accessToken,
+        accessToken.details,
       );
     } catch (error) {
       throw new BlError("order could not be placed:" + error);

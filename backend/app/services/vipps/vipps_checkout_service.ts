@@ -9,7 +9,7 @@ import env from "#start/env";
 export const VippsCheckoutService = {
   async create(order: Order) {
     const userDetail = await StorageService.UserDetails.get(order.customer);
-    const { token, checkoutFrontendUrl, reference } =
+    const { token, checkoutFrontendUrl } =
       await VippsPaymentService.checkout.create({
         type: "PAYMENT",
         prefillCustomer: {
@@ -29,11 +29,12 @@ export const VippsCheckoutService = {
           termsAndConditionsUrl: `${env.get("CLIENT_URI")}info/policies/conditions`,
         },
         transaction: {
+          reference: order.id,
           amount: {
             currency: "NOK",
             value: order.amount * 100,
           },
-          paymentDescription: `Din ordre fra Boklisten.no #${order.id}`,
+          paymentDescription: `${userDetail.name} sin ordre fra Boklisten.no`,
           orderSummary: {
             orderLines: order.orderItems.map((orderItem) => {
               const priceInMinors = orderItem.amount * 100;
@@ -57,22 +58,19 @@ export const VippsCheckoutService = {
         },
       });
     await StorageService.Orders.update(order.id, {
-      checkout: {
-        reference,
-        state: "SessionCreated",
-      },
+      checkoutState: "SessionCreated",
     });
     return { token, checkoutFrontendUrl };
   },
   async update(order: Order, newState: string) {
-    const state = order.checkout?.state;
-    if (state === newState || state === "PaymentSuccessful") return;
+    if (
+      order.checkoutState === newState ||
+      order.checkoutState === "PaymentSuccessful"
+    )
+      return;
 
     await StorageService.Orders.update(order.id, {
-      checkout: {
-        ...order.checkout,
-        state: newState,
-      },
+      checkoutState: newState,
     });
 
     if (newState !== "PaymentSuccessful") return;

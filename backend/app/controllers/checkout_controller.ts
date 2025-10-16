@@ -42,22 +42,22 @@ export default class CheckoutController {
     const { detailsId } = PermissionService.authenticate(ctx);
     const orderId = ctx.request.param("orderId");
     const order = await StorageService.Orders.get(orderId);
-    if (detailsId !== order.customer || !order.checkout)
-      throw new Error("No checkout order found for customer");
+    if (detailsId !== order.customer)
+      throw new Error(
+        "You do not have permission to access this payment information",
+      );
 
     if (
-      order.checkout.state === "SessionCreated" ||
-      order.checkout.state === "PaymentInitiated"
+      order.checkoutState === "SessionCreated" ||
+      order.checkoutState === "PaymentInitiated"
     ) {
-      const info = await VippsPaymentService.checkout.info(
-        order.checkout.reference,
-      );
+      const info = await VippsPaymentService.checkout.info(order.id);
       // Important to get fresh order here to avoid duplicate updates
       const freshOrder = await StorageService.Orders.get(orderId);
       await VippsCheckoutService.update(freshOrder, info.sessionState);
       return info.sessionState;
     }
 
-    return order.checkout.state;
+    return order.checkoutState ?? null;
   }
 }

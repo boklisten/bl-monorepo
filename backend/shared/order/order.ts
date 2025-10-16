@@ -1,5 +1,4 @@
 import { BlDocument } from "#shared/bl-document";
-import { VippsCheckoutState } from "#shared/checkout";
 import { OrderItem } from "#shared/order/order-item/order-item";
 
 export interface Order extends BlDocument {
@@ -19,8 +18,5 @@ export interface Order extends BlDocument {
   // if set to false, the order is pending signature from customer or guardian and should not be
   //  acted on
   pendingSignature: boolean;
-  checkout?: {
-    reference: string;
-    state: VippsCheckoutState;
-  };
+  checkoutState?: string;
 }

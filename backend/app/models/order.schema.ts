@@ -133,11 +133,5 @@ export const OrderSchema: BlSchema<Order> = new Schema({
     type: Boolean,
     required: true,
   },
-  checkout: {
-    reference: {
-      type: String,
-      index: { name: "checkout_reference_unique", unique: true, sparse: true },
-    },
-    state: String,
-  },
+  checkoutState: String,
 });

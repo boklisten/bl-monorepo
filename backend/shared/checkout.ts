@@ -10,10 +10,3 @@ export interface ExtendCartItem {
 }
 
 export type BuyoutOrExtendCartItem = BuyoutCartItem | ExtendCartItem;
-
-export type VippsCheckoutState =
-  | "SessionCreated"
-  | "PaymentInitiated"
-  | "SessionExpired"
-  | "PaymentSuccessful"
-  | "PaymentTerminated";

@@ -123,15 +123,15 @@ export const OrderService = {
         continue;
       }
       if (cartItem.type === "extend") {
-        orderItems.push(
-          createExtendOrderItem(
-            customerId,
-            cartItem,
-            item,
-            customerItem,
-            branch,
-          ),
+        const orderItem = createExtendOrderItem(
+          customerId,
+          cartItem,
+          item,
+          customerItem,
+          branch,
         );
+        total += orderItem.amount;
+        orderItems.push(orderItem);
         continue;
       }
       throw new Error("Order item type not supported by checkout");

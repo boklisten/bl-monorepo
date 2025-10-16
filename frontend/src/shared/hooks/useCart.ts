@@ -38,7 +38,9 @@ export default function useCart() {
     );
   }
   function calculateTotal() {
-    return cart.reduce((total, item) => total + (item.price ?? 0), 0);
+    return Math.ceil(
+      cart.reduce((total, item) => total + (item.price ?? 0), 0),
+    );
   }
   return {
     cart,

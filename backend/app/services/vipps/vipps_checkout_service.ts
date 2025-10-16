@@ -1,6 +1,5 @@
-import moment from "moment-timezone";
-
 import { OrderPlacedHandler } from "#services/legacy/collections/order/helpers/order-placed-handler/order-placed-handler";
+import { DateService } from "#services/legacy/date.service";
 import { StorageService } from "#services/storage_service";
 import { TranslationService } from "#services/translation_service";
 import { VippsPaymentService } from "#services/vipps/vipps_payment_service";
@@ -40,7 +39,7 @@ export const VippsCheckoutService = {
               const priceInMinors = orderItem.amount * 100;
               return {
                 id: orderItem.item,
-                name: `${orderItem.title} - ${TranslationService.translateOrderItemTypeImperative(orderItem.type)}${orderItem.info?.to ? moment(orderItem.info?.to).format("DD/MM/YYYY") : ""}`,
+                name: `${orderItem.title} - ${TranslationService.translateOrderItemTypeImperative(orderItem.type)} ${orderItem.info?.to ? DateService.format(orderItem.info?.to, "Europe/Oslo", "DD/MM/YYYY") : ""}`,
                 totalAmount: priceInMinors,
                 taxRate: 0,
                 totalTaxAmount: 0,

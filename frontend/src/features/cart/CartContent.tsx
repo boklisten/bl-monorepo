@@ -1,14 +1,6 @@
 "use client";
 import { OrderItemType } from "@boklisten/backend/shared/order/order-item/order-item-type";
-import {
-  ActionIcon,
-  Box,
-  Button,
-  Card,
-  Group,
-  Stack,
-  Text,
-} from "@mantine/core";
+import { ActionIcon, Button, Card, Group, Stack, Text } from "@mantine/core";
 import {
   IconBook,
   IconCashRegister,
@@ -38,7 +30,7 @@ const translations = {
 } satisfies Record<OrderItemType, string>;
 
 export default function CartContent() {
-  const { cart, removeFromCart } = useCart();
+  const { cart, removeFromCart, calculateTotal } = useCart();
   if (cart.length === 0) {
     return (
       <>
@@ -62,38 +54,45 @@ export default function CartContent() {
     );
   }
   return (
-    <>
-      {cart.map((cartItem) => (
-        <Card withBorder shadow={"md"} key={cartItem.item.id}>
-          <Stack>
-            <Card.Section bg={"brand"} p={"xs"}>
-              <Group justify={"space-between"}>
-                <Text fw={"bolder"} c={"white"}>
-                  {cartItem.item.title}
-                </Text>
-                <ActionIcon
-                  color={"red"}
-                  onClick={() => removeFromCart(cartItem.item.id)}
-                >
-                  <IconX />
-                </ActionIcon>
-              </Group>
-            </Card.Section>
-            <Group justify={"space-between"}>
-              <Group gap={5}>
-                <Text>{translations[cartItem.type]}</Text>
-                {"date" in cartItem && (
-                  <Text fw={"bolder"}>
-                    {dayjs(cartItem.date).format("DD/MM/YYYY")}
+    <Stack gap={"xl"}>
+      <Stack>
+        {cart.map((cartItem) => (
+          <Card withBorder shadow={"md"} key={cartItem.item.id}>
+            <Stack>
+              <Card.Section bg={"brand"} p={"xs"}>
+                <Group justify={"space-between"}>
+                  <Text fw={"bolder"} c={"white"}>
+                    {cartItem.item.title}
                   </Text>
-                )}
+                  <ActionIcon
+                    color={"red"}
+                    onClick={() => removeFromCart(cartItem.item.id)}
+                  >
+                    <IconX />
+                  </ActionIcon>
+                </Group>
+              </Card.Section>
+              <Group justify={"space-between"}>
+                <Group gap={5}>
+                  <Text>{translations[cartItem.type]}</Text>
+                  {"date" in cartItem && (
+                    <Text fw={"bolder"}>
+                      {dayjs(cartItem.date).format("DD/MM/YYYY")}
+                    </Text>
+                  )}
+                </Group>
+                <Text fw={"bold"}>{cartItem.price} kr</Text>
               </Group>
-              <Text fw={"bold"}>{cartItem.price} kr</Text>
-            </Group>
-          </Stack>
-        </Card>
-      ))}
-      <Box mt={"sm"}>
+            </Stack>
+          </Card>
+        ))}
+      </Stack>
+      <Stack align={"center"}>
+        <Group gap={5}>
+          <Text>Totalt</Text>
+          <Text fw={"bold"}>{calculateTotal()}</Text>
+          <Text>kr</Text>
+        </Group>
         <Button
           component={Link}
           href={"/kasse"}
@@ -103,7 +102,7 @@ export default function CartContent() {
         >
           Gå til kassen
         </Button>
-      </Box>
-    </>
+      </Stack>
+    </Stack>
   );
 }

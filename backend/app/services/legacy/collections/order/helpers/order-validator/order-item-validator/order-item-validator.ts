@@ -107,11 +107,7 @@ export class OrderItemValidator {
         );
       }
       case "buy": {
-        return await this.orderItemBuyValidator.validate(
-          branch,
-          orderItem,
-          item,
-        );
+        return await this.orderItemBuyValidator.validate(orderItem, item);
       }
       case "extend": {
         return await this.orderItemExtendValidator.validate(branch, orderItem);

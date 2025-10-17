@@ -5,7 +5,6 @@ import chaiAsPromised from "chai-as-promised";
 import { OrderItemBuyValidator } from "#services/legacy/collections/order/helpers/order-validator/order-item-validator/order-item-buy-validator/order-item-buy-validator";
 import { PriceService } from "#services/legacy/price.service";
 import { BlError } from "#shared/bl-error";
-import { Branch } from "#shared/branch";
 import { Item } from "#shared/item";
 import { Order } from "#shared/order/order";
 
@@ -18,7 +17,6 @@ test.group("OrderItemBuyValidator", (group) => {
 
   let testOrder: Order;
   let testItem: Item;
-  let testBranch: Branch;
 
   group.each.setup(() => {
     testOrder = {
@@ -49,38 +47,6 @@ test.group("OrderItemBuyValidator", (group) => {
       pendingSignature: false,
     };
 
-    testBranch = {
-      id: "branch1",
-      type: "privatist",
-      name: "Sonans",
-      branchItems: [],
-      paymentInfo: {
-        responsible: false,
-        rentPeriods: [
-          {
-            type: "semester",
-            maxNumberOfPeriods: 2,
-            date: new Date(),
-            percentage: 0.5,
-          },
-        ],
-        extendPeriods: [
-          {
-            type: "semester",
-            price: 100,
-            date: new Date(),
-            maxNumberOfPeriods: 1,
-          },
-        ],
-        buyout: {
-          percentage: 0.5,
-        },
-      },
-      location: {
-        region: "unknown",
-      },
-    };
-
     testItem = {
       id: "item1",
       title: "Signatur 3",
@@ -108,8 +74,6 @@ test.group("OrderItemBuyValidator", (group) => {
   test("should resolve when a valid order is passed", async () => {
     return expect(
       orderItemPriceValidator.validate(
-        testBranch,
-
         // @ts-expect-error fixme: auto ignored
         testOrder.orderItems[0],
         testItem,
@@ -124,8 +88,6 @@ test.group("OrderItemBuyValidator", (group) => {
 
     return expect(
       orderItemPriceValidator.validate(
-        testBranch,
-
         // @ts-expect-error fixme: auto ignored
         testOrder.orderItems[0],
         testItem,
@@ -150,8 +112,6 @@ test.group("OrderItemBuyValidator", (group) => {
 
     return expect(
       orderItemPriceValidator.validate(
-        testBranch,
-
         // @ts-expect-error fixme: auto ignored
         testOrder.orderItems[0],
         testItem,
@@ -176,8 +136,6 @@ test.group("OrderItemBuyValidator", (group) => {
 
     return expect(
       orderItemPriceValidator.validate(
-        testBranch,
-
         // @ts-expect-error fixme: auto ignored
         testOrder.orderItems[0],
         testItem,
@@ -202,8 +160,6 @@ test.group("OrderItemBuyValidator", (group) => {
 
     return expect(
       orderItemPriceValidator.validate(
-        testBranch,
-
         // @ts-expect-error fixme: auto ignored
         testOrder.orderItems[0],
         testItem,
@@ -229,8 +185,6 @@ test.group("OrderItemBuyValidator", (group) => {
 
     return expect(
       orderItemPriceValidator.validate(
-        testBranch,
-
         // @ts-expect-error fixme: auto ignored
         testOrder.orderItems[0],
         testItem,
@@ -257,7 +211,6 @@ test.group("OrderItemBuyValidator", (group) => {
 
     return expect(
       orderItemPriceValidator.validate(
-        testBranch,
         // @ts-expect-error fixme: auto ignored
         testOrder.orderItems[0],
         testItem,

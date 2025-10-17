@@ -12,12 +12,7 @@ export class OrderItemBuyValidator {
     this.priceService = priceService ?? new PriceService({ roundDown: true });
   }
 
-  public async validate(
-    // @ts-expect-error fixme: auto ignored
-    branch: Branch,
-    orderItem: OrderItem,
-    item: Item,
-  ): Promise<boolean> {
+  public async validate(orderItem: OrderItem, item: Item): Promise<boolean> {
     try {
       this.validateOrderItemFields(orderItem, item);
 

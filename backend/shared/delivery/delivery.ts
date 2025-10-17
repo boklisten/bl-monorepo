@@ -8,5 +8,4 @@ export interface Delivery extends BlDocument {
   info: DeliveryInfoBring | DeliveryInfoBranch; //specific info for the delivery type
   order: string; //id off/or the order
   amount: number; //total amount for this delivery
-  taxAmount?: number;
 }

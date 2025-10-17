@@ -5,7 +5,6 @@ import { DibsEasyPayment } from "#services/legacy/dibs/dibs-easy-payment/dibs-ea
 import { BlError } from "#shared/bl-error";
 import { Delivery } from "#shared/delivery/delivery";
 import { Order } from "#shared/order/order";
-import { OrderItem } from "#shared/order/order-item/order-item";
 import { UserDetail } from "#shared/user-detail";
 import env from "#start/env";
 import { DibsEasyItem } from "#types/dibs-easy-item";
@@ -77,12 +76,30 @@ export class DibsPaymentService {
   ): DibsEasyOrder {
     this.validateOrder(order);
 
-    const items: DibsEasyItem[] = order.orderItems.map((orderItem) =>
-      this.orderItemToEasyItem(orderItem),
-    );
+    const items: DibsEasyItem[] = order.orderItems.map((orderItem) => ({
+      reference: orderItem.item,
+      name: orderItem.title,
+      quantity: 1,
+      unit: "book",
+      unitPrice: this.toEars(orderItem.unitPrice),
+      taxRate: 0,
+      taxAmount: 0,
+      netTotalAmount: this.toEars(orderItem.unitPrice),
+      grossTotalAmount: this.toEars(orderItem.amount),
+    }));
 
     if (order.delivery && delivery && delivery.amount > 0) {
-      items.push(this.deliveryToDibsEasyItem(delivery));
+      items.push({
+        reference: delivery.id,
+        name: "delivery",
+        quantity: 1,
+        unit: "delivery",
+        unitPrice: this.toEars(delivery.amount),
+        taxRate: 0,
+        taxAmount: 0,
+        grossTotalAmount: this.toEars(delivery.amount),
+        netTotalAmount: this.toEars(delivery.amount),
+      });
     }
 
     const dibsEasyOrder: DibsEasyOrder = new DibsEasyOrder();
@@ -130,20 +147,6 @@ export class DibsPaymentService {
     };
   }
 
-  private deliveryToDibsEasyItem(delivery: Delivery): DibsEasyItem {
-    return {
-      reference: delivery.id,
-      name: "delivery",
-      quantity: 1,
-      unit: "delivery",
-      unitPrice: this.toEars(delivery.amount),
-      taxRate: 0,
-      taxAmount: delivery.taxAmount ? this.toEars(delivery.taxAmount) : 0,
-      grossTotalAmount: this.toEars(delivery.amount),
-      netTotalAmount: this.toEars(delivery.amount),
-    };
-  }
-
   private validateOrder(order: Order) {
     if (!order.id || order.id.length <= 0)
       throw new BlError("order.id is not defined");
@@ -159,20 +162,6 @@ export class DibsPaymentService {
       (subTotal, dbi) => subTotal + dbi.grossTotalAmount,
       0,
     );
-  }
-
-  private orderItemToEasyItem(orderItem: OrderItem): DibsEasyItem {
-    return {
-      reference: orderItem.item,
-      name: orderItem.title,
-      quantity: 1,
-      unit: "book",
-      unitPrice: this.toEars(orderItem.unitPrice),
-      taxRate: 0,
-      taxAmount: 0,
-      netTotalAmount: this.toEars(orderItem.unitPrice),
-      grossTotalAmount: this.toEars(orderItem.amount),
-    };
   }
 
   private toEars(price: number): number {

@@ -64,8 +64,6 @@ test.group("OrderItemExtendValidator", (group) => {
           title: "Spinn",
           amount: 100,
           unitPrice: 100,
-          taxAmount: 0,
-          taxRate: 0,
           type: "extend",
           info: {
             from: new Date(),

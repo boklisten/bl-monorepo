@@ -126,7 +126,6 @@ export const OrderEmailHandler = {
             0,
           ),
           currency: "NOK",
-          taxAmount: 0,
           payments: payments.map((payment) =>
             this.paymentToEmailPayment(payment),
           ),
@@ -174,10 +173,6 @@ export const OrderEmailHandler = {
       method: "",
       amount: "",
       cardInfo: null,
-      // @ts-expect-error fixme: auto ignored
-      taxAmount: isNaN(payment.taxAmount)
-        ? null
-        : payment.taxAmount?.toString(),
       paymentId: "",
       status: "bekreftet",
       creationTime: payment.creationTime

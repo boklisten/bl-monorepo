@@ -27,10 +27,6 @@ export const PaymentSchema: BlSchema<Payment> = new Schema({
     ref: BlSchemaName.Branches,
     required: true,
   },
-  taxAmount: {
-    type: Number,
-    required: true,
-  },
   info: Schema.Types.Mixed,
   confirmed: Boolean,
 });

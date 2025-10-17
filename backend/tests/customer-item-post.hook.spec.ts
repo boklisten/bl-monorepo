@@ -78,8 +78,6 @@ test.group("CustomerItemPostHook", (group) => {
           title: "Signatur 1",
           amount: 100,
           unitPrice: 400,
-          taxRate: 0,
-          taxAmount: 0,
           info: {
             from: new Date(),
             to: new Date(),
@@ -231,8 +229,6 @@ test.group("CustomerItemPostHook", (group) => {
         title: "Signatur 1",
         amount: 100,
         unitPrice: 400,
-        taxRate: 0,
-        taxAmount: 0,
         info: {
           from: new Date(),
           to: new Date(),
@@ -249,8 +245,6 @@ test.group("CustomerItemPostHook", (group) => {
         title: "Signatur 1",
         amount: 100,
         unitPrice: 400,
-        taxRate: 0,
-        taxAmount: 0,
         info: {
           from: new Date(),
           to: new Date(),

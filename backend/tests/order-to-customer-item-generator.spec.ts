@@ -58,8 +58,6 @@ test.group("OrderToCustomerItemGenerator", (group) => {
       blid: "blid1",
       amount: 100,
       unitPrice: 100,
-      taxRate: 0,
-      taxAmount: 0,
       info: {
         from: today,
         to: deadline,
@@ -134,8 +132,6 @@ test.group("OrderToCustomerItemGenerator", (group) => {
       blid: "blid1",
       amount: 100,
       unitPrice: 100,
-      taxRate: 0,
-      taxAmount: 0,
       info: {
         from: today,
         to: deadline,
@@ -153,8 +149,6 @@ test.group("OrderToCustomerItemGenerator", (group) => {
       blid: "blid2",
       amount: 110,
       unitPrice: 110,
-      taxRate: 0,
-      taxAmount: 0,
       info: {
         from: today,
         to: deadline,
@@ -260,8 +254,6 @@ test.group("OrderToCustomerItemGenerator", (group) => {
       title: "signatur",
       amount: 100,
       unitPrice: 100,
-      taxRate: 0,
-      taxAmount: 0,
       info: {
         from: today,
         to: deadline,
@@ -278,8 +270,6 @@ test.group("OrderToCustomerItemGenerator", (group) => {
       title: "signatur",
       amount: 110,
       unitPrice: 110,
-      taxRate: 0,
-      taxAmount: 0,
       info: {
         from: today,
         to: deadline,
@@ -319,8 +309,6 @@ test.group("OrderToCustomerItemGenerator", (group) => {
       blid: "blid1",
       amount: 0,
       unitPrice: 0,
-      taxRate: 0,
-      taxAmount: 0,
       info: {
         from: today,
         to: deadline,
@@ -391,8 +379,6 @@ test.group("OrderToCustomerItemGenerator", (group) => {
       blid: "blid1",
       amount: 0,
       unitPrice: 0,
-      taxRate: 0,
-      taxAmount: 0,
       info: {
         from: today,
         to: deadline,
@@ -408,8 +394,6 @@ test.group("OrderToCustomerItemGenerator", (group) => {
       blid: "blid2",
       amount: 0,
       unitPrice: 0,
-      taxRate: 0,
-      taxAmount: 0,
       info: {
         from: today,
         to: deadline,
@@ -510,8 +494,6 @@ test.group("OrderToCustomerItemGenerator", (group) => {
       blid: "blid1",
       amount: 0,
       unitPrice: 0,
-      taxRate: 0,
-      taxAmount: 0,
       info: {
         from: today,
         to: deadline,
@@ -527,8 +509,6 @@ test.group("OrderToCustomerItemGenerator", (group) => {
       blid: "blid2",
       amount: 0,
       unitPrice: 0,
-      taxRate: 0,
-      taxAmount: 0,
       info: {
         from: today,
         to: deadline,
@@ -629,8 +609,6 @@ test.group("OrderToCustomerItemGenerator", (group) => {
       blid: "blid1",
       amount: 0,
       unitPrice: 0,
-      taxRate: 0,
-      taxAmount: 0,
       info: {
         from: today,
         to: deadline,
@@ -646,8 +624,6 @@ test.group("OrderToCustomerItemGenerator", (group) => {
       blid: "blid2",
       amount: 0,
       unitPrice: 0,
-      taxRate: 0,
-      taxAmount: 0,
       info: {
         from: today,
         to: deadline,
@@ -663,8 +639,6 @@ test.group("OrderToCustomerItemGenerator", (group) => {
       blid: "blid3",
       amount: 0,
       unitPrice: 0,
-      taxRate: 0,
-      taxAmount: 0,
       info: {
         from: today,
         to: deadline,
@@ -680,8 +654,6 @@ test.group("OrderToCustomerItemGenerator", (group) => {
       blid: "blid4",
       amount: 0,
       unitPrice: 0,
-      taxRate: 0,
-      taxAmount: 0,
       info: {
         from: today,
         to: deadline,

@@ -168,8 +168,8 @@ export class DibsPaymentService {
       quantity: 1,
       unit: "book",
       unitPrice: this.toEars(orderItem.unitPrice),
-      taxRate: this.toEars(orderItem.taxRate * 100),
-      taxAmount: this.toEars(orderItem.taxAmount),
+      taxRate: 0,
+      taxAmount: 0,
       netTotalAmount: this.toEars(orderItem.unitPrice),
       grossTotalAmount: this.toEars(orderItem.amount),
     };

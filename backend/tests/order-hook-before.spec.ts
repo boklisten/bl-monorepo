@@ -45,8 +45,6 @@ test.group("OrderHookBefore", async () => {
           item: "i1",
           title: "signatur",
           rentRate: 0,
-          taxRate: 0,
-          taxAmount: 0,
           unitPrice: 300,
         },
         {
@@ -56,8 +54,6 @@ test.group("OrderHookBefore", async () => {
           customerItem: "ci2",
           title: "signatur",
           rentRate: 0,
-          taxRate: 0,
-          taxAmount: 0,
           unitPrice: 300,
           rentInfo: {
             oneSemester: true,

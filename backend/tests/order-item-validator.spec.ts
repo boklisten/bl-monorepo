@@ -47,8 +47,6 @@ test.group("OrderItemValidator", (group) => {
           title: "Spinn",
           amount: 300,
           unitPrice: 600,
-          taxAmount: 0,
-          taxRate: 0,
           type: "rent",
           info: {
             from: new Date(),
@@ -157,101 +155,21 @@ test.group("OrderItemValidator", (group) => {
     );
   });
 
-  test("should reject if amount does not include taxAmount", async () => {
-    testOrder.orderItems = [
-      {
-        type: "rent",
-        item: "item1",
-        title: "signatur 3",
-        amount: 100, // this should have been (unitPrice + taxAmount)
-        unitPrice: 100,
-        taxRate: 0.25,
-        taxAmount: 25, // this should be (unitPrice * taxRate)
-        info: {
-          to: legalDeadline,
-        },
-      },
-    ];
-
-    testOrder.amount = 100;
-
-    return expect(
-      orderItemValidator.validate(testBranch, testOrder, false),
-    ).to.be.rejectedWith(
-      BlError,
-      /orderItem.amount "100" is not equal to orderItem.unitPrice "100" \+ orderItem.taxAmount "25"/,
-    );
-  });
-
-  test("should reject if amount does not includes more than unitPrice + taxAmount", async () => {
-    testOrder.orderItems = [
-      {
-        type: "rent",
-        item: "item1",
-        title: "signatur 3",
-        amount: 160, // this should have been (unitPrice + taxAmount)
-        unitPrice: 100,
-        taxRate: 0.25,
-        taxAmount: 25, // this should be (unitPrice * taxRate)
-        info: {
-          to: legalDeadline,
-        },
-      },
-    ];
-
-    testOrder.amount = 160;
-
-    return expect(
-      orderItemValidator.validate(testBranch, testOrder, false),
-    ).to.be.rejectedWith(
-      BlError,
-      /orderItem.amount "160" is not equal to orderItem.unitPrice "100" \+ orderItem.taxAmount "25"/,
-    );
-  });
-
-  test("should reject if taxAmount does not equal unitPrice * taxRate", async () => {
-    testOrder.orderItems = [
-      {
-        type: "rent",
-        item: "item1",
-        title: "signatur 3",
-        amount: 100, // this should have been (unitPrice + taxAmount)
-        unitPrice: 100,
-        taxRate: 0.25,
-        taxAmount: 0, // this should be (unitPrice * taxRate)
-        info: {
-          to: legalDeadline,
-        },
-      },
-    ];
-
-    testOrder.amount = 100;
-
-    return expect(
-      orderItemValidator.validate(testBranch, testOrder, false),
-    ).to.be.rejectedWith(
-      BlError,
-      /orderItem.taxAmount "0" is not equal to orderItem.unitPrice "100" \* orderItem.taxRate "0.25"/,
-    );
-  });
-
   test("should resolve if price amount is valid", async () => {
     testOrder.orderItems = [
       {
         type: "rent",
         item: "item1",
         title: "signatur 3",
-        amount: 125,
+        amount: 100,
         unitPrice: 100,
-        taxRate: 0.25,
-        taxAmount: 25,
         info: {
           to: legalDeadline,
         },
       },
     ];
 
-    testOrder.amount = 125;
+    testOrder.amount = 100;
 
     return expect(orderItemValidator.validate(testBranch, testOrder, false)).to
       .be.fulfilled;
@@ -263,16 +181,14 @@ test.group("OrderItemValidator", (group) => {
         type: "rent",
         item: "item1",
         title: "signatur 3",
-        amount: 125,
+        amount: 100,
         unitPrice: 100,
-        taxRate: 0.25,
-        taxAmount: 25,
         info: {
           to: new Date(1234567891011), // Friday, February 13th 2009
         },
       },
     ];
-    testOrder.amount = 125;
+    testOrder.amount = 100;
     return expect(
       orderItemValidator.validate(testBranch, testOrder, false),
     ).to.eventually.be.rejectedWith(
@@ -290,16 +206,14 @@ test.group("OrderItemValidator", (group) => {
         type: "rent",
         item: "item1",
         title: "signatur 3",
-        amount: 125,
+        amount: 100,
         unitPrice: 100,
-        taxRate: 0.25,
-        taxAmount: 25,
         info: {
           to: deadline,
         },
       },
     ];
-    testOrder.amount = 125;
+    testOrder.amount = 100;
     return expect(
       orderItemValidator.validate(testBranch, testOrder, false),
     ).to.eventually.be.rejectedWith(
@@ -314,16 +228,14 @@ test.group("OrderItemValidator", (group) => {
         type: "rent",
         item: "item1",
         title: "signatur 3",
-        amount: 125,
+        amount: 100,
         unitPrice: 100,
-        taxRate: 0.25,
-        taxAmount: 25,
         info: {
           to: new Date(1234567891011), // Friday, February 13th 2009
         },
       },
     ];
-    testOrder.amount = 125;
+    testOrder.amount = 100;
     return expect(orderItemValidator.validate(testBranch, testOrder, true)).to
       .eventually.be.fulfilled;
   });
@@ -337,16 +249,14 @@ test.group("OrderItemValidator", (group) => {
         type: "rent",
         item: "item1",
         title: "signatur 3",
-        amount: 125,
+        amount: 100,
         unitPrice: 100,
-        taxRate: 0.25,
-        taxAmount: 25,
         info: {
           to: deadline,
         },
       },
     ];
-    testOrder.amount = 125;
+    testOrder.amount = 100;
     return expect(orderItemValidator.validate(testBranch, testOrder, true)).to
       .eventually.be.fulfilled;
   });

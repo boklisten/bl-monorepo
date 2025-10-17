@@ -117,8 +117,6 @@ test.group("OrderPlacedHandler", (group) => {
           title: "Signatur 3: Tekstsammling",
           amount: 50,
           unitPrice: 100,
-          taxRate: 0.5,
-          taxAmount: 25,
           info: {
             from: new Date(),
             to: new Date(),
@@ -144,7 +142,6 @@ test.group("OrderPlacedHandler", (group) => {
       amount: 200,
       customer: "customer1",
       branch: "branch1",
-      taxAmount: 0,
       info: {
         paymentId: "dibsEasyPayment1",
       },

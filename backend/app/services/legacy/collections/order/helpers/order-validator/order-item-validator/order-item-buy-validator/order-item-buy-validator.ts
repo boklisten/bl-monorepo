@@ -14,8 +14,6 @@ export class OrderItemBuyValidator {
 
   public async validate(orderItem: OrderItem, item: Item): Promise<boolean> {
     try {
-      this.validateOrderItemFields(orderItem, item);
-
       await this.validateOrderItemPriceTypeBuy(orderItem, item);
     } catch (error) {
       if (error instanceof BlError) {
@@ -27,24 +25,6 @@ export class OrderItemBuyValidator {
             // @ts-expect-error fixme: auto ignored
             error.message,
         ).store("error", error),
-      );
-    }
-
-    return true;
-  }
-
-  private validateOrderItemFields(orderItem: OrderItem, item: Item): boolean {
-    if (orderItem.taxRate != item.taxRate) {
-      throw new BlError(
-        `orderItem.taxRate "${orderItem.taxRate}" is not equal to item.taxRate "${item.taxRate}"`,
-      );
-    }
-
-    const expectedTaxAmount = orderItem.amount * item.taxRate;
-
-    if (orderItem.taxAmount != expectedTaxAmount) {
-      throw new BlError(
-        `orderItem.taxAmount "${orderItem.taxAmount}" is not equal to (orderItem.amount "${orderItem.amount}" * item.taxRate "${item.taxRate}") "${expectedTaxAmount}"`,
       );
     }
 

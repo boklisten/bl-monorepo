@@ -24,8 +24,6 @@ test.group("OrderFieldValidator", (group) => {
           title: "Spinn",
           amount: 300,
           unitPrice: 600,
-          taxAmount: 0,
-          taxRate: 0,
           type: "rent",
           info: {
             from: new Date(),
@@ -90,30 +88,6 @@ test.group("OrderFieldValidator", (group) => {
     ).to.eventually.be.rejectedWith(
       BlError,
       /orderItem.unitPrice is not defined/,
-    );
-  });
-
-  test("should reject if orderItem.taxAmount is not defined", async () => {
-    // @ts-expect-error fixme: auto ignored
-    testOrder.orderItems[0].taxAmount = null;
-
-    return expect(
-      orderItemFieldValidator.validate(testOrder),
-    ).to.eventually.be.rejectedWith(
-      BlError,
-      /orderItem.taxAmount is not defined/,
-    );
-  });
-
-  test("should reject if orderItem.taxRate is not defined", async () => {
-    // @ts-expect-error fixme: auto ignored
-    testOrder.orderItems[0].taxRate = undefined;
-
-    return expect(
-      orderItemFieldValidator.validate(testOrder),
-    ).to.eventually.be.rejectedWith(
-      BlError,
-      /orderItem.taxRate is not defined/,
     );
   });
 

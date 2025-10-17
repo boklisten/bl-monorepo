@@ -29,8 +29,6 @@ function createBuyoutOrderItem(
     delivered: false,
     amount: price,
     unitPrice: price,
-    taxRate: 0,
-    taxAmount: 0,
     customerItem: customerItem.id,
   } as const satisfies OrderItem;
 }
@@ -65,8 +63,6 @@ function createExtendOrderItem(
     delivered: false,
     amount: extendPeriod.price,
     unitPrice: extendPeriod.price,
-    taxRate: 0,
-    taxAmount: 0,
     info: {
       from: new Date(),
       to: extendPeriod.date,

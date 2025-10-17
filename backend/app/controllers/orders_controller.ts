@@ -95,8 +95,6 @@ export default class OrdersController {
           type: "cancel",
           amount: 0,
           unitPrice: 0,
-          taxRate: 0,
-          taxAmount: 0,
         },
       ],
     });

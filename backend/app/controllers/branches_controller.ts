@@ -263,8 +263,6 @@ async function applySubjectChoices(
         amount: 0,
         unitPrice: 0,
         delivered: false,
-        taxRate: 0,
-        taxAmount: 0,
         info: {
           from: new Date(),
           to: new Date("2026-07-01"), // fixme: make customizable for future use

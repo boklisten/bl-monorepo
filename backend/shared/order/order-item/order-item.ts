@@ -8,8 +8,6 @@ export interface OrderItem {
   title: string; //the title of item
   amount: number; //the amount to pay
   unitPrice: number; //item.price * rentRate (or item.price * branchItem.partlyPaymentRate if type is "partly-payment")
-  taxRate: number; //item.taxRate
-  taxAmount: number; //amount * taxRate
   handout?: boolean; // if set, this orderItem is the "handout" of this item
   info?: OrderItemInfo; //if the type is rent or extend, this object contains info about the rental period
   delivered?: boolean; // if the orderItem is delivered out or not

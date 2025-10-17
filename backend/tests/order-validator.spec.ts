@@ -90,8 +90,6 @@ test.group("OrderValidator", (group) => {
           title: "Spinn",
           amount: 300,
           unitPrice: 600,
-          taxAmount: 0,
-          taxRate: 0,
           type: "rent",
           info: {
             from: new Date(),

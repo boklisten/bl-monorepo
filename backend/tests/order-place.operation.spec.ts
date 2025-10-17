@@ -84,8 +84,6 @@ test.group("OrderPlaceOperation", (group) => {
         amount: 100,
         unitPrice: 100,
         blid: "blid1",
-        taxRate: 0,
-        taxAmount: 0,
         handout: true,
         info: {},
         delivered: false,

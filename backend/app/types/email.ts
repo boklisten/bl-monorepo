@@ -29,13 +29,10 @@ export interface EmailOrder {
   payment: {
     total: string;
     currency: string;
-    taxRate?: string;
-    taxAmount?: string;
     payments?: {
       method: string;
       amount: string;
       cardInfo?: string;
-      taxAmount: string;
       paymentId: string;
       status: string;
       creationTime: string;

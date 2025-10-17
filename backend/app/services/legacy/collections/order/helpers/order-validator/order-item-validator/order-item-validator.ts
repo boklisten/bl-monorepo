@@ -119,23 +119,10 @@ export class OrderItemValidator {
   }
 
   private validateOrderItemAmounts(orderItem: OrderItem) {
-    const expectedTotalAmount = this.priceService.sanitize(
-      orderItem.unitPrice + orderItem.taxAmount,
-    );
-
+    const expectedTotalAmount = this.priceService.sanitize(orderItem.unitPrice);
     if (orderItem.amount !== expectedTotalAmount) {
       throw new BlError(
-        `orderItem.amount "${orderItem.amount}" is not equal to orderItem.unitPrice "${orderItem.unitPrice}" + orderItem.taxAmount "${orderItem.taxAmount}"`,
-      );
-    }
-
-    const expectedTaxAmount = this.priceService.sanitize(
-      orderItem.unitPrice * orderItem.taxRate,
-    );
-
-    if (orderItem.taxAmount !== expectedTaxAmount) {
-      throw new BlError(
-        `orderItem.taxAmount "${orderItem.taxAmount}" is not equal to orderItem.unitPrice "${orderItem.unitPrice}" * orderItem.taxRate "${orderItem.taxRate}"`,
+        `orderItem.amount "${orderItem.amount}" is not equal to orderItem.unitPrice "${orderItem.unitPrice}"`,
       );
     }
   }

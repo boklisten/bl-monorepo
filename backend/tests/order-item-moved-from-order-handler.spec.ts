@@ -44,8 +44,6 @@ test.group("OrderItemMovedFromOrderHandler", (group) => {
         title: "Signatur 3: Tekstsammling",
         amount: 100,
         unitPrice: 100,
-        taxRate: 0,
-        taxAmount: 0,
         info: {
           from: new Date(),
           to: new Date(),
@@ -66,9 +64,7 @@ test.group("OrderItemMovedFromOrderHandler", (group) => {
         title: "Signatur 3: Tekstsammling",
         amount: 0,
         unitPrice: 0,
-        taxRate: 0,
         movedFromOrder: testMovedFromOrderId,
-        taxAmount: 0,
         info: {
           from: new Date(),
           to: new Date(),

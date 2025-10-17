@@ -60,8 +60,6 @@ test.group("DeliveryPostHook", (group) => {
       id: "item1",
       title: "signatur 3",
       price: 100,
-      taxRate: 0,
-
       buyback: false,
       info: {
         isbn: 0,
@@ -87,8 +85,6 @@ test.group("DeliveryPostHook", (group) => {
           title: "signatur 3",
           amount: 100,
           unitPrice: 100,
-          taxAmount: 0,
-          taxRate: 0,
           type: "buy",
         },
       ],

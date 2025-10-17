@@ -43,14 +43,6 @@ export const OrderSchema: BlSchema<Order> = new Schema({
           required: false,
           default: false,
         },
-        taxRate: {
-          type: Number,
-          required: true,
-        },
-        taxAmount: {
-          type: Number,
-          required: true,
-        },
         customerItem: {
           type: Schema.Types.ObjectId,
           ref: BlSchemaName.CustomerItems,

@@ -148,8 +148,6 @@ export class RapidHandoutOperation implements Operation {
           type: customerOrder.relevantOrderItem?.type ?? "rent",
           amount: 0,
           unitPrice: 0,
-          taxRate: 0,
-          taxAmount: 0,
           info: {
             from: new Date(),
             to: deadline,

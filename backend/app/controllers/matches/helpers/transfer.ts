@@ -89,8 +89,6 @@ async function createMatchReceiveOrder(
         type: "match-receive",
         amount: 0,
         unitPrice: 0,
-        taxRate: 0,
-        taxAmount: 0,
         info: {
           from: new Date(),
           to: deadline,
@@ -136,8 +134,6 @@ async function createMatchDeliverOrder(
         type: "match-deliver",
         amount: 0,
         unitPrice: 0,
-        taxRate: 0,
-        taxAmount: 0,
       },
     ],
   };

@@ -3,7 +3,6 @@ import { BlDocument } from "#shared/bl-document";
 export interface Item extends BlDocument {
   title: string;
   price: number;
-  taxRate: number;
   info: {
     isbn: number;
     subject: string;

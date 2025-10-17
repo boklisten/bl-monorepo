@@ -29,7 +29,6 @@ test.group("ItemValidator", (group) => {
         distributor: "",
         publisher: "",
       },
-      taxRate: 0,
       price: 100,
       creationTime: new Date(),
       lastUpdated: new Date(),
@@ -40,8 +39,6 @@ test.group("ItemValidator", (group) => {
       item: "i1",
       title: "signatur 3",
       unitPrice: 100,
-      taxRate: 0,
-      taxAmount: 0,
       amount: 100,
       type: "rent",
     };

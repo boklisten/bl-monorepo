@@ -32,8 +32,6 @@ test.group("DibsPaymentService", (group) => {
           title: "Signatur 3",
           amount: 100,
           unitPrice: 100,
-          taxRate: 0,
-          taxAmount: 0,
           item: "i1",
         },
       ],
@@ -122,35 +120,6 @@ test.group("DibsPaymentService", (group) => {
 
     // @ts-expect-error fixme: auto ignored
     expect(deo.order.items[0].grossTotalAmount).to.eql(15000);
-  });
-
-  test("should have taxAmount equal to 5000", async () => {
-    // @ts-expect-error fixme: auto ignored
-    testOrder.orderItems[0].unitPrice = 100;
-
-    // @ts-expect-error fixme: auto ignored
-    testOrder.orderItems[0].taxRate = 0.5;
-
-    // @ts-expect-error fixme: auto ignored
-    testOrder.orderItems[0].taxAmount = 50;
-
-    const deo = dibsPaymentService.orderToDibsEasyOrder(testUser, testOrder);
-
-    // @ts-expect-error fixme: auto ignored
-    expect(deo.order.items[0].taxAmount).to.eql(5000);
-  });
-
-  test("should have taxRate equal to 2500", async () => {
-    // @ts-expect-error fixme: auto ignored
-    testOrder.orderItems[0].unitPrice = 100;
-
-    // @ts-expect-error fixme: auto ignored
-    testOrder.orderItems[0].taxRate = 0.25;
-
-    const deo = dibsPaymentService.orderToDibsEasyOrder(testUser, testOrder);
-
-    // @ts-expect-error fixme: auto ignored
-    expect(deo.order.items[0].taxRate).to.eql(2500);
   });
 
   test("should have reference equal to the order.id", async () => {

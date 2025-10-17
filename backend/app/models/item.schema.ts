@@ -13,10 +13,6 @@ export const ItemSchema: BlSchema<Item> = new Schema({
     type: Number,
     required: true,
   },
-  taxRate: {
-    type: Number,
-    required: true,
-  },
   info: {
     type: {
       isbn: {

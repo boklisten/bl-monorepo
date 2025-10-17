@@ -44,14 +44,13 @@ export const VippsCheckoutService = {
           orderSummary: {
             orderLines: order.orderItems.map((orderItem) => {
               const priceInMinors = orderItem.amount * 100;
-              const taxInMinors = orderItem.taxAmount * 100;
               return {
                 id: orderItem.item,
                 name: `${orderItem.title} - ${TranslationService.translateOrderItemTypeImperative(orderItem.type)} ${orderItem.info?.to ? DateService.format(orderItem.info?.to, "Europe/Oslo", "DD/MM/YYYY") : ""}`,
                 totalAmount: priceInMinors,
-                taxRate: orderItem.taxRate,
-                totalTaxAmount: taxInMinors,
-                totalAmountExcludingTax: priceInMinors - taxInMinors,
+                taxRate: 0,
+                totalTaxAmount: 0,
+                totalAmountExcludingTax: priceInMinors,
               };
             }),
             orderBottomLine: {
@@ -89,7 +88,6 @@ export const VippsCheckoutService = {
       amount: order.amount,
       customer: order.customer,
       branch: order.branch,
-      taxAmount: 0,
     });
 
     await new OrderPlacedHandler().placeOrder(

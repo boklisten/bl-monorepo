@@ -54,14 +54,6 @@ export class OrderFieldValidator {
       throw new BlError("orderItem.unitPrice is not defined");
     }
 
-    if (!isNumber(orderItem.taxAmount)) {
-      throw new BlError("orderItem.taxAmount is not defined");
-    }
-
-    if (!isNumber(orderItem.taxRate)) {
-      throw new BlError("orderItem.taxRate is not defined");
-    }
-
     if (isNullish(orderItem.type)) {
       throw new BlError("orderItem.type is not defined");
     }

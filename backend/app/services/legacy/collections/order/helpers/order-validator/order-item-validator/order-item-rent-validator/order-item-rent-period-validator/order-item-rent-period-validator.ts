@@ -32,11 +32,7 @@ export class OrderItemRentPeriodValidator {
     }
 
     if (branchPaymentInfo.responsible) {
-      if (
-        orderItem.amount !== 0 ||
-        orderItem.taxAmount !== 0 ||
-        orderItem.unitPrice !== 0
-      ) {
+      if (orderItem.amount !== 0 || orderItem.unitPrice !== 0) {
         throw new BlError(
           "amounts where set on orderItem when branch is responsible",
         );

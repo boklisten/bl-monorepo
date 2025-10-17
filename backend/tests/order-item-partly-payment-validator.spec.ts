@@ -21,8 +21,6 @@ test.group("OrderItemPartlyPaymentValidator", async () => {
       title: "someTitle",
       amount: 100,
       unitPrice: 100,
-      taxRate: 100,
-      taxAmount: 0,
     };
 
     const item = {

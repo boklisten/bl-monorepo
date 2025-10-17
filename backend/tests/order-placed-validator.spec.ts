@@ -31,8 +31,6 @@ test.group("OrderPlacedValidator", (group) => {
           amount: 300,
           item: "i1",
           title: "Signatur 3",
-          taxRate: 0,
-          taxAmount: 0,
           unitPrice: 300,
         },
         {
@@ -40,8 +38,6 @@ test.group("OrderPlacedValidator", (group) => {
           amount: 150,
           item: "i2",
           title: "Signatur 4",
-          taxRate: 0,
-          taxAmount: 0,
           unitPrice: 300,
         },
       ],

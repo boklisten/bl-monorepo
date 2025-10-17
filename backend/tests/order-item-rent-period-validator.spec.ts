@@ -27,8 +27,6 @@ test.group("OrderItemRentPeriodValidator", (group) => {
         item: "itemA",
         amount: 100,
         unitPrice: 100,
-        taxAmount: 0,
-        taxRate: 0,
         info: {
           to: new Date(),
           from: new Date(),
@@ -82,7 +80,6 @@ test.group("OrderItemRentPeriodValidator", (group) => {
     const orderItem = {
       type: "rent",
       amount: 100,
-      taxAmount: 20,
       unitPrice: 80,
     } as OrderItem;
 
@@ -102,7 +99,6 @@ test.group("OrderItemRentPeriodValidator", (group) => {
     const orderItem = {
       type: "rent",
       amount: 0,
-      taxAmount: 0,
       unitPrice: 0,
     } as OrderItem;
 
@@ -130,8 +126,6 @@ test.group("OrderItemRentPeriodValidator", (group) => {
     item: "itemA",
     amount: 0,
     unitPrice: 0,
-    taxAmount: 0,
-    taxRate: 0,
     info: {
       to: new Date(),
       from: new Date(),

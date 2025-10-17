@@ -55,8 +55,6 @@ test.group("OrderPostHook", (group) => {
           amount: 300,
           item: "i1",
           title: "signatur",
-          taxRate: 0,
-          taxAmount: 0,
           unitPrice: 300,
         },
         {
@@ -64,8 +62,6 @@ test.group("OrderPostHook", (group) => {
           amount: 100,
           item: "i1",
           title: "signatur",
-          taxRate: 0,
-          taxAmount: 0,
           unitPrice: 300,
         },
       ],

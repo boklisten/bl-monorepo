@@ -62,7 +62,8 @@ export const VippsCheckoutService = {
     });
     return { token, checkoutFrontendUrl };
   },
-  async update(order: Order, newState: string) {
+  async update(orderId: string, newState: string) {
+    const order = await StorageService.Orders.get(orderId);
     if (
       order.checkoutState === newState ||
       order.checkoutState === "PaymentSuccessful"

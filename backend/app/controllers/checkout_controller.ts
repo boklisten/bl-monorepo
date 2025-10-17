@@ -31,11 +31,7 @@ export default class CheckoutController {
     const { reference, sessionState } = await ctx.request.validateUsing(
       vippsCallbackValidator,
     );
-    const order = await OrderService.getByCheckoutReferenceOrNull(reference);
-    if (!order)
-      throw new Error("Order not found by reference in Vipps callback");
-
-    await VippsCheckoutService.update(order, sessionState);
+    await VippsCheckoutService.update(reference, sessionState);
   }
 
   async pollPayment(ctx: HttpContext) {
@@ -52,9 +48,7 @@ export default class CheckoutController {
       order.checkoutState === "PaymentInitiated"
     ) {
       const info = await VippsPaymentService.checkout.info(order.id);
-      // Important to get fresh order here to avoid duplicate updates
-      const freshOrder = await StorageService.Orders.get(orderId);
-      await VippsCheckoutService.update(freshOrder, info.sessionState);
+      await VippsCheckoutService.update(orderId, info.sessionState);
       return info.sessionState;
     }
 

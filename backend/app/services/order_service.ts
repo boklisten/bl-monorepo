@@ -1,5 +1,4 @@
 import { CustomerItemService } from "#services/customer_item_service";
-import { SEDbQuery } from "#services/legacy/query/se.db-query";
 import { StorageService } from "#services/storage_service";
 import { Branch } from "#shared/branch";
 import {
@@ -78,18 +77,6 @@ function createExtendOrderItem(
 }
 
 export const OrderService = {
-  async getByCheckoutReferenceOrNull(reference: string) {
-    const databaseQuery = new SEDbQuery();
-    databaseQuery.stringFilters = [
-      {
-        fieldName: "checkout.reference",
-        value: reference,
-      },
-    ];
-    const [order] =
-      (await StorageService.Orders.getByQueryOrNull(databaseQuery)) ?? [];
-    return order ?? null;
-  },
   async createCheckoutOrder(
     customerId: string,
     cartItems: BuyoutOrExtendCartItem[],

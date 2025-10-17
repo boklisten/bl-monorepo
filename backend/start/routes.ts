@@ -41,6 +41,14 @@ const OrderHistoryController = () =>
 const CheckoutController = () => import("#controllers/checkout_controller");
 
 /**
+ * static
+ */
+
+router.get("/", () => {
+  return {};
+});
+
+/**
  * auth token
  */
 router

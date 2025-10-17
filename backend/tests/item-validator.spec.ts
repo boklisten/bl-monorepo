@@ -27,6 +27,7 @@ test.group("ItemValidator", (group) => {
         price: {},
         weight: "",
         distributor: "",
+        discount: 0,
         publisher: "",
       },
       price: 100,

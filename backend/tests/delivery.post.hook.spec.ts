@@ -68,6 +68,7 @@ test.group("DeliveryPostHook", (group) => {
         price: {},
         weight: "",
         distributor: "",
+        discount: 0,
         publisher: "",
       },
     };

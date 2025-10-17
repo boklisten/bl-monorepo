@@ -10,6 +10,7 @@ export interface Item extends BlDocument {
     price: Record<string, number>;
     weight: string;
     distributor: string;
+    discount: number;
     publisher: string;
   };
   buyback: boolean;

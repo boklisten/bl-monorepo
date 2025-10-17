@@ -58,6 +58,7 @@ test.group("OrderItemBuyValidator", (group) => {
         price: {},
         weight: "",
         distributor: "",
+        discount: 0,
         publisher: "",
       },
     };

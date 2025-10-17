@@ -100,13 +100,9 @@ export const OrderSchema: BlSchema<Order> = new Schema({
     type: Schema.Types.ObjectId,
     ref: BlSchemaName.Deliveries,
   },
-  handoutByDelivery: {
-    type: Boolean,
-    required: false,
-  },
+  handoutByDelivery: Boolean,
   notification: {
-    type: Schema.Types.Mixed,
-    required: false,
+    email: Boolean,
   },
   pendingSignature: {
     type: Boolean,

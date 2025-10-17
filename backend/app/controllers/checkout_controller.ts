@@ -18,9 +18,10 @@ export default class CheckoutController {
     const { cartItems } = await ctx.request.validateUsing(
       initializeCheckoutValidator,
     );
-    return await VippsCheckoutService.create(
-      await OrderService.createCheckoutOrder(detailsId, cartItems),
-    );
+    return await VippsCheckoutService.create({
+      order: await OrderService.create(detailsId, cartItems),
+      elements: "PaymentOnly",
+    });
   }
 
   async handleVippsCallback(ctx: HttpContext) {

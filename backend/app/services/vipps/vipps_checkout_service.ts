@@ -7,7 +7,13 @@ import { Order } from "#shared/order/order";
 import env from "#start/env";
 
 export const VippsCheckoutService = {
-  async create(order: Order) {
+  async create({
+    order,
+    elements,
+  }: {
+    order: Order;
+    elements: "Full" | "PaymentAndContactInfo" | "PaymentOnly";
+  }) {
     const userDetail = await StorageService.UserDetails.get(order.customer);
     const { token, checkoutFrontendUrl } =
       await VippsPaymentService.checkout.create({
@@ -38,13 +44,14 @@ export const VippsCheckoutService = {
           orderSummary: {
             orderLines: order.orderItems.map((orderItem) => {
               const priceInMinors = orderItem.amount * 100;
+              const taxInMinors = orderItem.taxAmount * 100;
               return {
                 id: orderItem.item,
                 name: `${orderItem.title} - ${TranslationService.translateOrderItemTypeImperative(orderItem.type)} ${orderItem.info?.to ? DateService.format(orderItem.info?.to, "Europe/Oslo", "DD/MM/YYYY") : ""}`,
                 totalAmount: priceInMinors,
-                taxRate: 0,
-                totalTaxAmount: 0,
-                totalAmountExcludingTax: priceInMinors,
+                taxRate: orderItem.taxRate,
+                totalTaxAmount: taxInMinors,
+                totalAmountExcludingTax: priceInMinors - taxInMinors,
               };
             }),
             orderBottomLine: {
@@ -53,7 +60,7 @@ export const VippsCheckoutService = {
           },
         },
         configuration: {
-          elements: "PaymentOnly",
+          elements: elements,
           showOrderSummary: true,
         },
       });

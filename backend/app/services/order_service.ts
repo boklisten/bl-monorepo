@@ -77,10 +77,7 @@ function createExtendOrderItem(
 }
 
 export const OrderService = {
-  async createCheckoutOrder(
-    customerId: string,
-    cartItems: BuyoutOrExtendCartItem[],
-  ) {
+  async create(customerId: string, cartItems: BuyoutOrExtendCartItem[]) {
     let total = 0;
     let branch: Branch | null = null;
     const orderItems: OrderItem[] = [];
@@ -121,9 +118,9 @@ export const OrderService = {
         orderItems.push(orderItem);
         continue;
       }
-      throw new Error("Order item type not supported by checkout");
+      throw new Error("Order item type not supported");
     }
-    if (!branch) throw new Error("No branch for checkout order!");
+    if (!branch) throw new Error("No branch for order!");
 
     return await StorageService.Orders.add({
       amount: total,

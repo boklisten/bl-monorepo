@@ -74,19 +74,6 @@ export const OrderSchema: BlSchema<Order> = new Schema({
           ref: BlSchemaName.Orders,
           required: false,
         },
-        discount: {
-          type: {
-            amount: {
-              type: Number,
-              required: true,
-            },
-            coupon: {
-              type: String,
-              required: true,
-            },
-          },
-          required: false,
-        },
       },
     ],
     default: [],

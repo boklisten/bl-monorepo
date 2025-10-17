@@ -90,9 +90,6 @@ export const VippsCheckoutService = {
       customer: order.customer,
       branch: order.branch,
       taxAmount: 0,
-      discount: {
-        amount: 0,
-      },
     });
 
     await new OrderPlacedHandler().placeOrder(

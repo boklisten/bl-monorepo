@@ -95,7 +95,6 @@ test.group("OrderItemBuyValidator", (group) => {
         price: {},
         weight: "",
         distributor: "",
-        discount: 0,
         publisher: "",
       },
     };
@@ -120,8 +119,6 @@ test.group("OrderItemBuyValidator", (group) => {
 
   test("should reject if the orderItem.taxRate is not the same as item.taxRate", async () => {
     // @ts-expect-error fixme: auto ignored
-    testOrder.orderItems[0].discount = null;
-    // @ts-expect-error fixme: auto ignored
     testOrder.orderItems[0].taxRate = 0.75;
     testItem.taxRate = 0.33;
 
@@ -140,8 +137,6 @@ test.group("OrderItemBuyValidator", (group) => {
   });
 
   test("should reject if the orderItem.taxAmount is not equal to (item.price * item.taxRate)", async () => {
-    // @ts-expect-error fixme: auto ignored
-    testOrder.orderItems[0].discount = null;
     // @ts-expect-error fixme: auto ignored
     testOrder.orderItems[0].amount = 300;
 
@@ -169,8 +164,6 @@ test.group("OrderItemBuyValidator", (group) => {
 
   test("should reject when item.price is 200 and orderItem.amount is 100", async () => {
     // @ts-expect-error fixme: auto ignored
-    testOrder.orderItems[0].discount = null;
-    // @ts-expect-error fixme: auto ignored
     testOrder.orderItems[0].amount = 100;
 
     // @ts-expect-error fixme: auto ignored
@@ -191,13 +184,11 @@ test.group("OrderItemBuyValidator", (group) => {
       ),
     ).to.be.rejectedWith(
       BlError,
-      /orderItem.amount "100" is not equal to item.price "200" - orderItem.discount "0" = "200"/,
+      /orderItem.amount "100" is not equal to item.price "200" = "200"/,
     );
   });
 
   test("should reject if item.price is 134 and orderItem.amount is 400", async () => {
-    // @ts-expect-error fixme: auto ignored
-    testOrder.orderItems[0].discount = null;
     // @ts-expect-error fixme: auto ignored
     testOrder.orderItems[0].amount = 400;
 
@@ -219,13 +210,11 @@ test.group("OrderItemBuyValidator", (group) => {
       ),
     ).to.be.rejectedWith(
       BlError,
-      /orderItem.amount "400" is not equal to item.price "134" - orderItem.discount "0" = "134"/,
+      /orderItem.amount "400" is not equal to item.price "134" = "134"/,
     );
   });
 
   test("should resolve if a valid order is sent", async () => {
-    // @ts-expect-error fixme: auto ignored
-    testOrder.orderItems[0].discount = null;
     // @ts-expect-error fixme: auto ignored
     testOrder.orderItems[0].type = "buy";
 
@@ -249,148 +238,26 @@ test.group("OrderItemBuyValidator", (group) => {
     ).to.be.fulfilled;
   });
 
-  test("should reject if orderItem.taxAmount is not equal to ((item.price - discount.amount) * item.taxRate)", async () => {
-    // @ts-expect-error fixme: auto ignored
-    testOrder.orderItems[0].discount = {
-      amount: 100,
-    };
-
-    // @ts-expect-error fixme: auto ignored
-    testOrder.orderItems[0].taxAmount = 0;
-
-    // @ts-expect-error fixme: auto ignored
-    testOrder.orderItems[0].taxRate = 0;
-    testItem.taxRate = 0;
-    // @ts-expect-error fixme: auto ignored
-    testOrder.orderItems[0].amount = 400;
-
-    // @ts-expect-error fixme: auto ignored
-    testOrder.orderItems[0].taxRate = 0.5;
-
-    // @ts-expect-error fixme: auto ignored
-    testOrder.orderItems[0].taxAmount = 100;
-
-    // @ts-expect-error fixme: auto ignored
-    testOrder.orderItems[0].discount = {
-      amount: 100,
-    };
-    testItem.taxRate = 0.5;
-    testItem.price = 500;
-
-    return expect(
-      orderItemPriceValidator.validate(
-        testBranch,
-
-        // @ts-expect-error fixme: auto ignored
-        testOrder.orderItems[0],
-        testItem,
-      ),
-    ).to.be.rejectedWith(
-      BlError,
-      /orderItem.taxAmount "100" is not equal to \(orderItem.amount "400" \* item.taxRate "0.5"\) "200"/,
-    );
-  });
-
-  test("should reject if (item.price - discount.amount) is 400 but orderItem.amount is 100", async () => {
-    // @ts-expect-error fixme: auto ignored
-    testOrder.orderItems[0].discount = {
-      amount: 100,
-    };
-
-    // @ts-expect-error fixme: auto ignored
-    testOrder.orderItems[0].taxAmount = 0;
-
-    // @ts-expect-error fixme: auto ignored
-    testOrder.orderItems[0].taxRate = 0;
-    testItem.taxRate = 0;
-    // @ts-expect-error fixme: auto ignored
-    testOrder.orderItems[0].amount = 100;
-    testItem.price = 500;
-
-    // @ts-expect-error fixme: auto ignored
-    testOrder.orderItems[0].discount = {
-      amount: 100,
-    };
-
-    return expect(
-      orderItemPriceValidator.validate(
-        testBranch,
-
-        // @ts-expect-error fixme: auto ignored
-        testOrder.orderItems[0],
-        testItem,
-      ),
-    ).to.be.rejectedWith(
-      BlError,
-      /orderItem.amount "100" is not equal to item.price "500" - orderItem.discount "100" = "400"/,
-    );
-  });
-
-  test("should reject if (item.price - discount.amount) is 200 but orderItem.amount is 560", async () => {
-    // @ts-expect-error fixme: auto ignored
-    testOrder.orderItems[0].discount = {
-      amount: 100,
-    };
-
-    // @ts-expect-error fixme: auto ignored
-    testOrder.orderItems[0].taxAmount = 0;
-
-    // @ts-expect-error fixme: auto ignored
-    testOrder.orderItems[0].taxRate = 0;
-    testItem.taxRate = 0;
-    // @ts-expect-error fixme: auto ignored
-    testOrder.orderItems[0].amount = 560;
-    testItem.price = 500;
-
-    // @ts-expect-error fixme: auto ignored
-    testOrder.orderItems[0].discount = {
-      amount: 300,
-    };
-
-    return expect(
-      orderItemPriceValidator.validate(
-        testBranch,
-
-        // @ts-expect-error fixme: auto ignored
-        testOrder.orderItems[0],
-        testItem,
-      ),
-    ).to.be.rejectedWith(
-      BlError,
-      /orderItem.amount "560" is not equal to item.price "500" - orderItem.discount "300" = "200"/,
-    );
-  });
-
   test("should resolve if a valid order is placed", async () => {
     // @ts-expect-error fixme: auto ignored
-    testOrder.orderItems[0].discount = {
-      amount: 100,
-    };
-
-    // @ts-expect-error fixme: auto ignored
     testOrder.orderItems[0].taxAmount = 0;
 
     // @ts-expect-error fixme: auto ignored
     testOrder.orderItems[0].taxRate = 0;
     testItem.taxRate = 0;
     // @ts-expect-error fixme: auto ignored
-    testOrder.orderItems[0].amount = 300;
+    testOrder.orderItems[0].amount = 600;
 
     // @ts-expect-error fixme: auto ignored
     testOrder.orderItems[0].item = "theItem1";
 
-    // @ts-expect-error fixme: auto ignored
-    testOrder.orderItems[0].discount = {
-      amount: 300,
-    };
-    testOrder.amount = 300;
+    testOrder.amount = 600;
     testItem.id = "theItem1";
     testItem.price = 600;
 
     return expect(
       orderItemPriceValidator.validate(
         testBranch,
-
         // @ts-expect-error fixme: auto ignored
         testOrder.orderItems[0],
         testItem,

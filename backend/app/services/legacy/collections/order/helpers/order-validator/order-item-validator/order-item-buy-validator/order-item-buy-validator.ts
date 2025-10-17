@@ -114,9 +114,6 @@ export class OrderItemBuyValidator {
     orderItem: OrderItem,
     item: Item,
   ): Promise<boolean> {
-    let price;
-    let discount = 0;
-
     if (
       orderItem.movedFromOrder !== undefined &&
       orderItem.movedFromOrder !== null
@@ -124,27 +121,13 @@ export class OrderItemBuyValidator {
       return await this.validateIfMovedFromOrder(orderItem, item.price);
     }
 
-    if (orderItem.discount) {
-      if (!orderItem.discount.amount) {
-        throw new BlError(
-          "orderItem.discount was set, but no discount.amount provided",
-        );
-      }
-
-      discount = orderItem.discount.amount;
-
-      price = this.priceService.sanitize(
-        item.price - orderItem.discount.amount,
-      );
-    } else {
-      price = this.priceService.sanitize(item.price);
-    }
+    const price = this.priceService.sanitize(item.price);
 
     const expectedPrice = this.priceService.round(price);
 
     if (orderItem.amount != expectedPrice) {
       throw new BlError(
-        `orderItem.amount "${orderItem.amount}" is not equal to item.price "${item.price}" - orderItem.discount "${discount}" = "${expectedPrice}" when type is "buy"`,
+        `orderItem.amount "${orderItem.amount}" is not equal to item.price "${item.price}" = "${expectedPrice}" when type is "buy"`,
       );
     }
 

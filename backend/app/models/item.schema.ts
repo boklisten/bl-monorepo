@@ -48,10 +48,6 @@ export const ItemSchema: BlSchema<Item> = new Schema({
         type: String,
         required: true,
       },
-      discount: {
-        type: Number,
-        required: true,
-      },
       publisher: {
         type: String,
         required: true,

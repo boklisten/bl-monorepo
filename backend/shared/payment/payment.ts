@@ -1,5 +1,4 @@
 import { BlDocument } from "#shared/bl-document";
-import { PaymentDiscount } from "#shared/payment/payment-discount/payment-discount";
 import { PaymentInfo } from "#shared/payment/payment-info/payment-info";
 import { PaymentMethod } from "#shared/payment/payment-method/payment-method";
 
@@ -12,5 +11,4 @@ export interface Payment extends BlDocument {
   taxAmount?: number; //the tax amount of this payment
   info?: PaymentInfo | PaymentInfo[]; //method specific info, can also be array containing card, cash and cashout
   confirmed?: boolean; //a boolean to check if the payment is confirmed or not
-  discount?: PaymentDiscount; //payment discount
 }

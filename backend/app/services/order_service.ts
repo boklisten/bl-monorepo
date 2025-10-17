@@ -10,6 +10,7 @@ import { CustomerItem } from "#shared/customer-item/customer-item";
 import { Item } from "#shared/item";
 import { OrderItem } from "#shared/order/order-item/order-item";
 
+// TODO: move these two into order item service
 function createBuyoutOrderItem(
   cartItem: BuyoutCartItem,
   item: Item,
@@ -77,7 +78,10 @@ function createExtendOrderItem(
 }
 
 export const OrderService = {
-  async create(customerId: string, cartItems: BuyoutOrExtendCartItem[]) {
+  async createFromCart(
+    customerId: string,
+    cartItems: BuyoutOrExtendCartItem[],
+  ) {
     let total = 0;
     let branch: Branch | null = null;
     const orderItems: OrderItem[] = [];

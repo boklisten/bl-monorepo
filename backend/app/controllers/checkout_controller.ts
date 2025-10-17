@@ -19,7 +19,7 @@ export default class CheckoutController {
       initializeCheckoutValidator,
     );
     return await VippsCheckoutService.create({
-      order: await OrderService.create(detailsId, cartItems),
+      order: await OrderService.createFromCart(detailsId, cartItems),
       elements: "PaymentOnly",
     });
   }

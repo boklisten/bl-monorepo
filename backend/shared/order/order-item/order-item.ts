@@ -1,6 +1,5 @@
 import { OrderItemInfo } from "#shared/order/order-item/order-item-info";
 import { OrderItemType } from "#shared/order/order-item/order-item-type";
-import { PaymentDiscount } from "#shared/payment/payment-discount/payment-discount";
 
 export interface OrderItem {
   type: OrderItemType; //the operation on this OrderItem
@@ -13,7 +12,6 @@ export interface OrderItem {
   taxAmount: number; //amount * taxRate
   handout?: boolean; // if set, this orderItem is the "handout" of this item
   info?: OrderItemInfo; //if the type is rent or extend, this object contains info about the rental period
-  discount?: PaymentDiscount; //can also have a discount on each item
   delivered?: boolean; // if the orderItem is delivered out or not
   customerItem?: string; // if this orderItem is for a customerItem, this is the id of the customerItem
   match?: string; // if the orderItem is part of a match

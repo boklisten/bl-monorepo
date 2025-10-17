@@ -13,8 +13,9 @@ import { IconBasket, IconBook, IconRefresh } from "@tabler/icons-react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
-import { ReactNode, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 
+import OrderReceipt from "@/features/payment/OrderReceipt";
 import ErrorAlert from "@/shared/components/alerts/ErrorAlert";
 import SuccessAlert from "@/shared/components/alerts/SuccessAlert";
 import useApiClient from "@/shared/hooks/useApiClient";
@@ -40,11 +41,7 @@ function BackToCartButton() {
 const calculateTotalWait = (attempts: number) =>
   ((n) => (n * (n + 1) * (2 * n + 1)) / 6)(attempts);
 
-export default function VippsCheckoutStatus({
-  orderReceipt,
-}: {
-  orderReceipt: ReactNode;
-}) {
+export default function VippsCheckoutStatus() {
   const client = useApiClient();
   const queryClient = useQueryClient();
   const { clearCart } = useCart();
@@ -154,7 +151,7 @@ export default function VippsCheckoutStatus({
           Kvittering har blitt sendt på e-post. Du kan se dine nåværende bøker
           ved å trykke på {'"Dine bøker"'}
         </SuccessAlert>
-        {orderReceipt}
+        <OrderReceipt orderId={orderId} />
         <NavLink
           component={Link}
           href={"/items"}

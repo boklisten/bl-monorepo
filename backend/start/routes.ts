@@ -305,9 +305,13 @@ router
 /**
  * Order History
  */
+
+router
+  .get("/order_history/me/:orderId", [OrderHistoryController, "getMyOrder"])
+  .as("order_history.get.my.order");
 router
   .get("/order_history/me", [OrderHistoryController, "getMyOrders"])
-  .as("order_history.get_my_orders");
+  .as("order_history.get.my.orders");
 
 /**
  * Checkout

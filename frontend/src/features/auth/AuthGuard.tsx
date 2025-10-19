@@ -68,5 +68,12 @@ export default function AuthGuard({
     userDetail?.tasks?.signAgreement,
   ]);
 
+  if (
+    isLoading ||
+    !isLoggedIn ||
+    (requiredPermission && !canAccess(requiredPermission))
+  )
+    return null;
+
   return <>{children}</>;
 }

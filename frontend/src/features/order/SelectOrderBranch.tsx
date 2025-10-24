@@ -68,7 +68,8 @@ export default function SelectOrderBranch() {
                 leftSection={<IconSchool />}
                 active={true}
                 variant={"subtle"}
-                href={`/fastbuy/courses?branch=${branch.id}`}
+                // @ts-expect-error fixme: bad routing types
+                href={`/bestilling/${branch.id}`}
                 label={branch.name}
               />
             ))}
@@ -83,7 +84,8 @@ export default function SelectOrderBranch() {
         bg={"brand"}
         c={"#fff"}
         style={{ borderRadius: 5 }}
-        href={"/fastbuy/courses?branch=63c5715d38bbec00484aa540"}
+        // @ts-expect-error fixme: bad routing types
+        href={"/bestilling/63c5715d38bbec00484aa540"}
         label={"Fri privatist"}
       />
     </>

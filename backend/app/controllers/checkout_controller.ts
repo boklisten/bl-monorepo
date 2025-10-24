@@ -12,19 +12,31 @@ import {
 } from "#validators/checkout_validators";
 
 export default class CheckoutController {
-  // Currently only supporting extend and buyout
   async initializeCheckout(ctx: HttpContext) {
     const { detailsId } = PermissionService.authenticate(ctx);
     const { cartItems } = await ctx.request.validateUsing(
       initializeCheckoutValidator,
     );
-    return await VippsCheckoutService.create({
-      order: await OrderService.createFromCart(detailsId, cartItems),
-      elements: "PaymentOnly",
-    });
+    const order = await OrderService.createFromCart(detailsId, cartItems);
+
+    if (order.amount === 0) {
+      const branch = await StorageService.Branches.get(order.branch);
+      if (
+        !branch.deliveryMethods?.byMail ||
+        branch.paymentInfo?.responsibleForDelivery
+      ) {
+        return { nextStep: "confirm" };
+      }
+    }
+
+    const { token, checkoutFrontendUrl } =
+      await VippsCheckoutService.create(order);
+    return { nextStep: "payment", token, checkoutFrontendUrl } as const;
   }
 
+  // TODO: and handle callback with selected postal option + user/billing info
   async handleVippsCallback(ctx: HttpContext) {
+    console.log(ctx.request.body());
     if (!VippsPaymentService.token.verify(ctx.request.header("Authorization")))
       throw new UnauthorizedException(
         "Authorization header missing or invalid",

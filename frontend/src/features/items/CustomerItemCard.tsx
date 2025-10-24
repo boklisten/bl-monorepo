@@ -5,7 +5,6 @@ import {
   Card,
   Divider,
   Group,
-  SegmentedControl,
   Stack,
   Text,
   Title,
@@ -70,22 +69,10 @@ export default function CustomerItemCard({
     typeof publicApiClient.v2.customer_items.$get
   >[number];
 }) {
-  const { findItemInCart, addToCart, removeFromCart } = useCart();
-  const extendCartItem = findItemInCart({
-    item: {
-      id: actionableCustomerItem.item.id,
-    },
-    type: "extend",
-  });
-  const buyoutCartItem = findItemInCart({
-    item: {
-      id: actionableCustomerItem.item.id,
-    },
-    type: "buyout",
-  });
-  const extendOptions =
-    actionableCustomerItem.actions.find((action) => action.type === "extend")
-      ?.extendOptions ?? [];
+  const cart = useCart();
+  const cartItem = cart
+    .get()
+    .find((cartItem) => cartItem.id === actionableCustomerItem.item.id);
 
   return (
     <Card shadow={"md"} withBorder>
@@ -107,7 +94,7 @@ export default function CustomerItemCard({
         <InfoEntry
           label={"Ansvarlig filial"}
           startIcon={<IconSchool />}
-          text={actionableCustomerItem.branchName}
+          text={actionableCustomerItem.branch.name}
         />
         <InfoEntry
           label={"Utdelingstidspunkt"}
@@ -124,112 +111,68 @@ export default function CustomerItemCard({
         </Group>
         {["active", "overdue"].includes(actionableCustomerItem.status.type) && (
           <Group>
-            {actionableCustomerItem.actions.map((action) => (
-              <Tooltip
-                key={action.type}
-                label={action.tooltip}
-                disabled={!action.tooltip}
-              >
-                <Button
-                  leftSection={
-                    action.type === "extend" ? (
-                      extendCartItem ? (
-                        <IconBasketCheck />
-                      ) : (
-                        <IconClockPlus />
-                      )
-                    ) : buyoutCartItem ? (
-                      <IconBasketCheck />
-                    ) : (
-                      <IconShoppingCart />
-                    )
-                  }
-                  bg={
-                    (action.type === "extend" && extendCartItem) ||
-                    (action.type === "buyout" && buyoutCartItem)
-                      ? "green"
-                      : ""
-                  }
-                  disabled={!action.available}
-                  onClick={() => {
-                    if (
-                      (action.type === "extend" && extendCartItem) ||
-                      (action.type === "buyout" && buyoutCartItem)
-                    ) {
-                      removeFromCart(actionableCustomerItem.item.id);
-                      return;
-                    }
-                    if (action.type === "extend") {
-                      addToCart({
-                        item: {
-                          id: actionableCustomerItem.item.id,
-                          title: actionableCustomerItem.item.title,
-                        },
-                        type: action.type,
-                        date: action.extendOptions?.[0]?.date ?? new Date(),
-                        price: action.extendOptions?.[0]?.price ?? 0,
-                      });
-                    }
-                    if (action.type === "buyout") {
-                      addToCart({
-                        item: {
-                          id: actionableCustomerItem.item.id,
-                          title: actionableCustomerItem.item.title,
-                        },
-                        type: action.type,
-                        price: action.buyoutPrice ?? 0,
-                      });
-                    }
-                  }}
+            {actionableCustomerItem.actions.map((action, index) => {
+              const actionCartItem = cart
+                .get()
+                .find(
+                  (cartItem) =>
+                    cartItem.id === actionableCustomerItem.item.id &&
+                    cart.getSelectedOption(cartItem).type === action.type &&
+                    ("to" in action
+                      ? dayjs(cart.getSelectedOption(cartItem).to).isSame(
+                          action.to,
+                        )
+                      : true),
+                );
+              return (
+                <Tooltip
+                  key={action.type}
+                  label={action.tooltip}
+                  disabled={!action.tooltip}
                 >
-                  {action.buttonText}
-                </Button>
-              </Tooltip>
-            ))}
+                  <Button
+                    leftSection={
+                      actionCartItem ? (
+                        <IconBasketCheck />
+                      ) : action.type === "extend" ? (
+                        <IconClockPlus />
+                      ) : (
+                        <IconShoppingCart />
+                      )
+                    }
+                    bg={actionCartItem ? "green" : ""}
+                    disabled={!action.available}
+                    onClick={() => {
+                      if (actionCartItem) {
+                        cart.remove(actionableCustomerItem.item.id);
+                        return;
+                      }
+                      cart.add({
+                        id: actionableCustomerItem.item.id,
+                        title: actionableCustomerItem.item.title,
+                        branchId: actionableCustomerItem.branch.id,
+                        options: actionableCustomerItem.actions.map((a) => ({
+                          type: a.type,
+                          price: a.price,
+                          ...("to" in a ? { to: a.to } : {}),
+                        })),
+                        selectedOptionIndex: index,
+                      });
+                    }}
+                  >
+                    {action.label}
+                  </Button>
+                </Tooltip>
+              );
+            })}
           </Group>
         )}
-        <Stack gap={5}>
-          {extendCartItem && "date" in extendCartItem ? (
-            <Group gap={5}>
-              <Text>Forleng til</Text>
-              {extendOptions.length > 1 ? (
-                <SegmentedControl
-                  value={dayjs(extendCartItem.date).format("DD/MM/YYYY")}
-                  data={extendOptions.map((extendOption) =>
-                    dayjs(extendOption.date).format("DD/MM/YYYY"),
-                  )}
-                  onChange={(value) => {
-                    const extendOption = extendOptions.find((option) =>
-                      dayjs(option.date).isSame(dayjs(value, "DD/MM/YYYY")),
-                    );
-                    if (!extendOption) return;
-                    addToCart({
-                      ...extendCartItem,
-                      date: extendOption.date,
-                      price: extendOption.price,
-                    });
-                  }}
-                />
-              ) : (
-                <Text fw={"bold"}>
-                  {dayjs(extendCartItem.date).format("DD/MM/YYYY")}
-                </Text>
-              )}
-            </Group>
-          ) : (
-            <></>
-          )}
-          {extendCartItem || buyoutCartItem ? (
-            <Group gap={5}>
-              <Text>Pris:</Text>
-              <Text fw={"bold"}>
-                {(extendCartItem || buyoutCartItem)?.price} kr
-              </Text>
-            </Group>
-          ) : (
-            <></>
-          )}
-        </Stack>
+        {cartItem && (
+          <Group gap={5}>
+            <Text>Pris:</Text>
+            <Text fw={"bold"}>{cart.getSelectedOption(cartItem).price} kr</Text>
+          </Group>
+        )}
       </Stack>
     </Card>
   );

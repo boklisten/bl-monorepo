@@ -1,53 +1,44 @@
+import { CartItem } from "@boklisten/backend/shared/cart_item";
 import { useSessionStorage } from "@mantine/hooks";
 
-export type CartItem = {
-  item: {
-    id: string;
-    title: string;
-  };
-  price: number;
-} & (
-  | {
-      type: "extend";
-      date: Date;
-    }
-  | {
-      type: "buyout";
-    }
-);
-
 export default function useCart() {
-  const [cart, setCart, clearCart] = useSessionStorage<CartItem[]>({
+  const [cart, setCart, clear] = useSessionStorage<CartItem[]>({
     key: "cart",
     defaultValue: [],
   });
-  function addToCart(cartItem: CartItem) {
-    removeFromCart(cartItem.item.id);
-    setCart((prev) => [...prev, cartItem]);
-  }
-  function removeFromCart(itemId: string) {
-    setCart((prev) => prev.filter((cartItem) => cartItem.item.id !== itemId));
-  }
-  function findItemInCart(searchCartItem: CartItem | { item: { id: string } }) {
-    return cart.find(
-      (cartItem) =>
-        cartItem.item.id === searchCartItem.item.id &&
-        ("type" in searchCartItem
-          ? cartItem.type === searchCartItem.type
-          : true),
+  function add(cartItem: CartItem) {
+    remove(cartItem.id);
+    setCart((prev) =>
+      [...prev, cartItem].sort((a, b) => a.title.localeCompare(b.title)),
     );
+  }
+  function remove(itemId: string) {
+    setCart((prev) => prev.filter((cartItem) => cartItem.id !== itemId));
   }
   function calculateTotal() {
     return Math.ceil(
-      cart.reduce((total, item) => total + (item.price ?? 0), 0),
+      cart.reduce(
+        (total, cartItem) => total + (getSelectedOption(cartItem).price ?? 0),
+        0,
+      ),
     );
   }
+  function getSelectedOption(cartItem: CartItem) {
+    const selectedOption = cartItem.options[cartItem.selectedOptionIndex];
+    if (!selectedOption) {
+      clear();
+      throw new Error("Invalid selected option in cart!");
+    }
+    return selectedOption;
+  }
   return {
-    cart,
-    findItemInCart,
-    addToCart,
-    removeFromCart,
-    clearCart,
+    get: () => cart,
+    size: () => cart.length,
+    isEmpty: () => cart.length === 0,
+    add,
+    remove,
+    clear,
+    getSelectedOption,
     calculateTotal,
   };
 }

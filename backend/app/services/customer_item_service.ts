@@ -2,7 +2,7 @@ import { SEDbQuery } from "#services/legacy/query/se.db-query";
 import { StorageService } from "#services/storage_service";
 
 export const CustomerItemService = {
-  async getCustomerItemByItemId({
+  async getCustomerItemByItemIdOrNull({
     customerId,
     itemId,
   }: {

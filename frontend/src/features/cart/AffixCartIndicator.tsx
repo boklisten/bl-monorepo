@@ -6,8 +6,8 @@ import Link from "next/link";
 import useCart from "@/shared/hooks/useCart";
 
 export default function AffixCartIndicator() {
-  const { cart, calculateTotal } = useCart();
-  if (cart.length === 0) {
+  const cart = useCart();
+  if (cart.isEmpty()) {
     return null;
   }
   return (
@@ -16,11 +16,11 @@ export default function AffixCartIndicator() {
         <Stack align={"center"} gap={"xs"}>
           <Stack gap={5} align={"center"}>
             <Text fs={"italic"}>
-              {cart.length} {cart.length > 1 ? "bøker" : "bok"}
+              {cart.size()} {cart.size() > 1 ? "bøker" : "bok"}
             </Text>
             <Group gap={5}>
               Totalt
-              <Text fw={"bold"}>{calculateTotal()} kr</Text>
+              <Text fw={"bold"}>{cart.calculateTotal()} kr</Text>
             </Group>
           </Stack>
           <Box>

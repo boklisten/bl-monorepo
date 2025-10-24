@@ -1,5 +1,3 @@
-import moment from "moment-timezone";
-
 import DispatchService from "#services/dispatch_service";
 import { DateService } from "#services/legacy/date.service";
 import { DibsEasyPayment } from "#services/legacy/dibs/dibs-easy-payment/dibs-easy-payment";
@@ -18,11 +16,7 @@ export const OrderEmailHandler = {
   async sendOrderReceipt(customerDetail: UserDetail, order: Order) {
     const branchId = order.branch;
 
-    const withAgreement: boolean = await this.shouldSendAgreement(
-      order,
-      customerDetail,
-      branchId,
-    );
+    const withAgreement: boolean = await this.shouldSendAgreement(order);
 
     const emailOrder: EmailOrder = await this.orderToEmailOrder(order);
     emailOrder.loan = withAgreement;
@@ -287,11 +281,7 @@ export const OrderEmailHandler = {
     }`;
   },
 
-  async shouldSendAgreement(
-    order: Order,
-    customerDetail: UserDetail,
-    branchId: string,
-  ): Promise<boolean> {
+  async shouldSendAgreement(order: Order): Promise<boolean> {
     const onlyHandout = order.orderItems[0]?.handout;
     const rentFound = order.orderItems.some(
       (orderItem) => orderItem.type === "rent",
@@ -305,21 +295,6 @@ export const OrderEmailHandler = {
       return false;
     }
 
-    if (
-      customerDetail.dob &&
-      moment(customerDetail.dob).isValid() &&
-      moment(customerDetail.dob).isAfter(
-        moment(new Date()).subtract(18, "years"),
-      )
-    ) {
-      return true; // the user is under the age of 18
-    }
-
-    return await this.isBranchResponsible(branchId);
-  },
-
-  async isBranchResponsible(branchId: string): Promise<boolean> {
-    const branch = await StorageService.Branches.get(branchId);
-    return branch.paymentInfo?.responsible ?? false;
+    return true;
   },
 };

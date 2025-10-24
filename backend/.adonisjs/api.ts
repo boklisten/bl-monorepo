@@ -522,6 +522,13 @@ type CheckoutPollIdGetHead = {
     false
   >;
 };
+type SubjectsIdGetHead = {
+  request: unknown;
+  response: MakeNonSerializedTuyauResponse<
+    import("../app/controllers/subjects_controller.ts").default["getBranchSubjects"],
+    false
+  >;
+};
 export interface ApiDefinition {
   token: {
     $url: {};
@@ -801,6 +808,13 @@ export interface ApiDefinition {
         $get: CheckoutPollIdGetHead;
         $head: CheckoutPollIdGetHead;
       };
+    };
+  };
+  subjects: {
+    ":branchId": {
+      $url: {};
+      $get: SubjectsIdGetHead;
+      $head: SubjectsIdGetHead;
     };
   };
 }
@@ -1196,6 +1210,13 @@ const routes = [
     path: "/checkout/poll/:orderId",
     method: ["GET", "HEAD"],
     types: {} as CheckoutPollIdGetHead,
+  },
+  {
+    params: ["branchId"],
+    name: "subjects.get.branch.subjects",
+    path: "/subjects/:branchId",
+    method: ["GET", "HEAD"],
+    types: {} as SubjectsIdGetHead,
   },
   {
     params: ["id"],

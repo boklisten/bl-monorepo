@@ -44,7 +44,7 @@ const calculateTotalWait = (attempts: number) =>
 export default function VippsCheckoutStatus() {
   const client = useApiClient();
   const queryClient = useQueryClient();
-  const { clearCart } = useCart();
+  const cart = useCart();
   const searchParams = useSearchParams();
   const orderId = searchParams.get("orderId") ?? "";
 
@@ -86,9 +86,9 @@ export default function VippsCheckoutStatus() {
 
   useEffect(() => {
     if (data === "PaymentSuccessful") {
-      clearCart();
+      cart.clear();
     }
-  }, [clearCart, data]);
+  }, [cart, data]);
 
   if (isLoading) {
     return <Skeleton h={90} />;

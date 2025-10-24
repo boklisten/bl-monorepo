@@ -1,6 +1,7 @@
 import type { HttpContext } from "@adonisjs/core/http";
 import moment from "moment-timezone";
 
+import { DateService } from "#services/legacy/date.service";
 import { SEDbQuery } from "#services/legacy/query/se.db-query";
 import { PermissionService } from "#services/permission_service";
 import { StorageService } from "#services/storage_service";
@@ -122,7 +123,7 @@ async function calculateBuyoutStatus(
   return {
     canBuyout: true,
     feedback: "",
-    buyoutPrice: Math.ceil(item.price * branchBuyoutPercentage),
+    price: Math.ceil(item.price * branchBuyoutPercentage),
   } as const;
 }
 
@@ -148,8 +149,8 @@ export default class CustomerItemsController {
 
     return await Promise.all(
       customerItems.map(async (customerItem) => {
-        const item = await StorageService.Items.getOrNull(customerItem.item);
-        const branch = await StorageService.Branches.getOrNull(
+        const item = await StorageService.Items.get(customerItem.item);
+        const branch = await StorageService.Branches.get(
           customerItem.handoutInfo?.handoutById,
         );
         const extensionStatus = calculateExtensionStatus(customerItem, branch);
@@ -157,29 +158,48 @@ export default class CustomerItemsController {
         return {
           id: customerItem.id,
           item: {
-            id: item?.id ?? "",
-            title: item?.title ?? "Ukjent tittel",
-            isbn: item?.info.isbn.toString() ?? "",
+            id: item.id,
+            title: item.title,
+            isbn: item.info.isbn.toString(),
           },
           blid: customerItem.blid,
           deadline: customerItem.deadline,
           handoutAt: customerItem.handoutInfo?.time,
-          branchName: branch?.name ?? "",
+          branch: {
+            id: branch.id,
+            name: branch.name,
+          },
           status: calculateStatus(customerItem),
           actions: [
-            {
-              type: "extend",
-              available: extensionStatus.canExtend,
-              tooltip: extensionStatus.feedback,
-              buttonText: "Forleng",
-              extendOptions: extensionStatus.options,
-            },
+            ...(extensionStatus.options?.map(
+              (extension) =>
+                ({
+                  type: "extend",
+                  price: extension.price,
+                  to: extension.date,
+                  available: true,
+                  tooltip: "",
+                  label: `Forleng til ${DateService.format(
+                    extension.date,
+                    "Europe/Oslo",
+                    "DD/MM/YYYY",
+                  )}`,
+                }) as const,
+            ) ?? [
+              {
+                type: "extend",
+                available: false,
+                price: 0,
+                tooltip: extensionStatus.feedback,
+                label: "Forleng",
+              } as const,
+            ]),
             {
               type: "buyout",
+              price: buyoutStatus.price ?? 0,
               available: buyoutStatus.canBuyout,
               tooltip: buyoutStatus.feedback,
-              buttonText: "Kjøp ut",
-              buyoutPrice: buyoutStatus.buyoutPrice,
+              label: "Kjøp ut",
             },
           ],
         } as const;

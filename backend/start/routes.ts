@@ -39,6 +39,7 @@ const UniqueItemsController = () =>
 const OrderHistoryController = () =>
   import("#controllers/order_history_controller");
 const CheckoutController = () => import("#controllers/checkout_controller");
+const SubjectsController = () => import("#controllers/subjects_controller");
 
 /**
  * static
@@ -333,6 +334,13 @@ router
 router
   .get("/checkout/poll/:orderId", [CheckoutController, "pollPayment"])
   .as("checkout.poll");
+
+/**
+ * Subjects
+ */
+router
+  .get("/subjects/:branchId", [SubjectsController, "getBranchSubjects"])
+  .as("subjects.get.branch.subjects");
 
 /**
  * Generate legacy bl-collection endpoints

@@ -1,3 +1,4 @@
+import { APP_CONFIG } from "#services/legacy/application-config";
 import { OrderPlacedHandler } from "#services/legacy/collections/order/helpers/order-placed-handler/order-placed-handler";
 import { DateService } from "#services/legacy/date.service";
 import { StorageService } from "#services/storage_service";
@@ -6,14 +7,65 @@ import { VippsPaymentService } from "#services/vipps/vipps_payment_service";
 import { Order } from "#shared/order/order";
 import env from "#start/env";
 
+async function createLogistics(order: Order) {
+  const needLogistics = order.orderItems.some(
+    (orderItem) =>
+      orderItem.type === "rent" ||
+      orderItem.type === "partly-payment" ||
+      orderItem.type === "buy",
+  );
+  if (!needLogistics) return null;
+
+  let totalWeightInGrams = 0;
+  for (const orderItem of order.orderItems) {
+    const item = await StorageService.Items.get(orderItem.item);
+    const weightField = Number(item.info.weight);
+    totalWeightInGrams += (isNaN(weightField) ? 1 : weightField) * 1000;
+  }
+
+  const needPickupPoint =
+    Math.ceil(totalWeightInGrams) > APP_CONFIG.delivery.maxWeightLetter;
+
+  const deliveryPrice =
+    Math.ceil((totalWeightInGrams / 1000) * 20) + (needPickupPoint ? 150 : 75);
+
+  return {
+    fixedOptions: [
+      ...(order.amount > 0
+        ? [
+            {
+              id: "pickup",
+              amount: {
+                value: 0,
+                currency: "NOK",
+              },
+              brand: "OTHER",
+              title: "Hent selv på stand",
+              description: "Du finner åpningstider på våre informasjonssider",
+              priority: 0,
+              isDefault: true,
+            } as const,
+          ]
+        : []),
+      {
+        id: "mail",
+        amount: {
+          value: deliveryPrice * 100,
+          currency: "NOK",
+        },
+        brand: "POSTEN",
+        title: needPickupPoint ? "Pakke til hentested" : "Pakke i postkasse",
+        description: `Forventet levering om ${APP_CONFIG.delivery.deliveryDays + 2} dager`,
+        type: needPickupPoint ? "PICKUP_POINT" : "MAILBOX",
+        priority: 1,
+        isDefault: order.amount === 0,
+      } as const,
+    ],
+  };
+}
+
 export const VippsCheckoutService = {
-  async create({
-    order,
-    elements,
-  }: {
-    order: Order;
-    elements: "Full" | "PaymentAndContactInfo" | "PaymentOnly";
-  }) {
+  async create(order: Order) {
     const userDetail = await StorageService.UserDetails.get(order.customer);
     const { token, checkoutFrontendUrl } =
       await VippsPaymentService.checkout.create({
@@ -58,8 +110,8 @@ export const VippsCheckoutService = {
             },
           },
         },
+        logistics: await createLogistics(order),
         configuration: {
-          elements: elements,
           showOrderSummary: true,
         },
       });

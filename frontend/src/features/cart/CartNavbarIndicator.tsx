@@ -6,9 +6,9 @@ import Link from "next/link";
 import useCart from "@/shared/hooks/useCart";
 
 export default function CartNavbarIndicator() {
-  const { cart } = useCart();
+  const cart = useCart();
 
-  if (cart.length === 0) return null;
+  if (cart.isEmpty()) return null;
   return (
     <Tooltip label={"Gå til handlekurv"}>
       <Anchor component={Link} href={"/handlekurv"}>
@@ -21,7 +21,7 @@ export default function CartNavbarIndicator() {
               color={"red"}
               size={"sm"}
             >
-              {cart.length}
+              {cart.size()}
             </Badge>
           }
         >

@@ -55,6 +55,7 @@ export default function useAuth() {
   }, [pathname]);
 
   function logout() {
+    sessionStorage.clear();
     localStorage.clear();
   }
 

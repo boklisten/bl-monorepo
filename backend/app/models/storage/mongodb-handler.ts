@@ -63,7 +63,7 @@ export class MongodbHandler<T extends BlDocument> {
     allowedNestedDocuments?: NestedDocument[],
   ): Promise<T[]> {
     logger.trace(
-      `mongoose.find(${JSON.stringify(databaseQuery.getFilter())}, ${JSON.stringify(
+      `${this.path}.find(${JSON.stringify(databaseQuery.getFilter())}, ${JSON.stringify(
         databaseQuery.getOgFilter(),
       )}).limit(${databaseQuery.getLimitFilter()}).skip(${databaseQuery.getSkipFilter()}).sort(${JSON.stringify(
         databaseQuery.getSortFilter(),

@@ -1,13 +1,5 @@
 "use client";
-import {
-  Badge,
-  Burger,
-  Divider,
-  Drawer,
-  Indicator,
-  NavLink,
-  Stack,
-} from "@mantine/core";
+import { Burger, Divider, Drawer, NavLink, Stack } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import {
   IconBook,
@@ -24,41 +16,22 @@ import {
   IconUserEdit,
   IconUserPlus,
 } from "@tabler/icons-react";
-import { useQuery } from "@tanstack/react-query";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
-import useApiClient from "@/shared/hooks/useApiClient";
+import TasksIndicator from "@/features/layout/TasksIndicator";
+import TasksLink from "@/features/layout/TasksLink";
 import useAuth from "@/shared/hooks/useAuth";
 
 export default function PublicNavigationDrawer() {
   const pathname = usePathname();
   const [opened, { toggle, close }] = useDisclosure();
   const { isLoggedIn, isEmployee } = useAuth();
-  const client = useApiClient();
-
-  const {
-    data: userDetail,
-    isLoading: isLoadingUserDetail,
-    isError: isErrorUserDetail,
-  } = useQuery({
-    queryKey: [client.v2.user_details.$url(), isLoggedIn],
-    queryFn: () => {
-      if (!isLoggedIn) return null;
-      return client.v2.user_details.me.$get().unwrap();
-    },
-  });
-
-  const taskCount =
-    isLoadingUserDetail || isErrorUserDetail || !userDetail?.tasks
-      ? 0
-      : (userDetail.tasks.confirmDetails ? 1 : 0) +
-        (userDetail.tasks.signAgreement ? 1 : 0);
   return (
     <>
-      <Indicator color={"red"} disabled={taskCount === 0}>
+      <TasksIndicator>
         <Burger color={"white"} opened={opened} onClick={toggle} />
-      </Indicator>
+      </TasksIndicator>
       <Drawer
         opened={opened}
         onClose={close}
@@ -66,24 +39,7 @@ export default function PublicNavigationDrawer() {
         title={"Velg side"}
       >
         <Stack gap={5}>
-          {taskCount > 0 && (
-            <NavLink
-              label={"Oppgaver"}
-              description={`Du har ${taskCount} ${taskCount === 1 ? "oppgave" : "oppgaver"} som må fullføres.`}
-              href={"/oppgaver"}
-              leftSection={
-                <Badge color={"red"} circle>
-                  {taskCount}
-                </Badge>
-              }
-              component={Link}
-              color={"red"}
-              active
-              variant={"subtle"}
-              onClick={close}
-            />
-          )}
-
+          <TasksLink />
           <NavLink
             label={"Bestill bøker"}
             href={"/bestilling"}

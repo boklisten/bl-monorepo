@@ -29,9 +29,10 @@ async function createLogistics(order: Order) {
   const deliveryPrice =
     Math.ceil((totalWeightInGrams / 1000) * 20) + (needPickupPoint ? 150 : 75);
 
+  const branch = await StorageService.Branches.get(order.branch);
   return {
     fixedOptions: [
-      ...(order.amount > 0
+      ...(order.amount > 0 && branch.deliveryMethods?.branch
         ? [
             {
               id: "pickup",

@@ -3,9 +3,10 @@ import type { NextConfig } from "next";
 
 const NEXT_CONFIG = {
   typedRoutes: true,
+  reactCompiler: true,
   experimental: {
+    turbopackFileSystemCacheForDev: true,
     optimizePackageImports: ["@mantine/core", "@mantine/hooks"],
-    reactCompiler: true,
   },
   transpilePackages: ["@boklisten/backend"],
   turbopack: {

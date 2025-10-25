@@ -1,8 +1,8 @@
-import { Anchor, Group, Stack, Text } from "@mantine/core";
+import { Group, Stack, Text } from "@mantine/core";
 import { IconClock, IconMapPin } from "@tabler/icons-react";
-import Link from "next/link";
 
 import { FormattedDatetime } from "@/features/matches/matchesList/helper";
+import NextAnchor from "@/shared/components/NextAnchor";
 
 const MeetingInfo = ({
   meetingTime,
@@ -20,9 +20,7 @@ const MeetingInfo = ({
         )) || (
           <Text>
             Du kan møte opp når standen vår er åpen.{" "}
-            <Anchor component={Link} href="/info/branch">
-              Se åpningstider her
-            </Anchor>
+            <NextAnchor href="/info/branch">Se åpningstider her</NextAnchor>
           </Text>
         )}
       </Group>

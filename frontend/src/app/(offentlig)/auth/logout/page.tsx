@@ -1,4 +1,5 @@
 "use client";
+import { useMounted } from "@mantine/hooks";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 
@@ -8,12 +9,14 @@ import BL_CONFIG from "@/shared/utils/bl-config";
 export default function LogoutPage() {
   const router = useRouter();
   const { logout } = useAuth();
+  const mounted = useMounted();
 
   useEffect(() => {
+    if (!mounted) return;
     logout();
     // @ts-expect-error fixme: bad routing types
     router.replace(`${BL_CONFIG.blWeb.basePath}logout`);
-  }, [logout, router]);
+  }, [logout, mounted, router]);
 
   return null;
   /**

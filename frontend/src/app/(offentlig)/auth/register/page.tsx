@@ -1,10 +1,10 @@
-import { Anchor, Container, Divider, Stack, Title } from "@mantine/core";
+import { Container, Divider, Stack, Title } from "@mantine/core";
 import { Metadata } from "next";
-import Link from "next/link";
 import { Suspense } from "react";
 
 import VippsButton from "@/features/auth/VippsButton";
 import SignupForm from "@/features/user/SignupForm";
+import NextAnchor from "@/shared/components/NextAnchor";
 
 export const metadata: Metadata = {
   title: "Ny bruker",
@@ -24,9 +24,9 @@ const RegisterPage = () => {
           <Suspense>
             <SignupForm />
           </Suspense>
-          <Anchor size={"sm"} component={Link} href={"/auth/login"}>
+          <NextAnchor size={"sm"} href={"/auth/login"}>
             Har du allerede en konto? Logg inn
-          </Anchor>
+          </NextAnchor>
         </Stack>
       </Container>
     </>

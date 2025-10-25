@@ -1,9 +1,9 @@
-import { Anchor, Container, Stack, Title } from "@mantine/core";
+import { Container, Stack, Title } from "@mantine/core";
 import { Metadata } from "next";
-import Link from "next/link";
 
 import AuthLogoutComponent from "@/features/auth/AuthLogoutComponent";
 import ErrorAlert from "@/shared/components/alerts/ErrorAlert";
+import NextAnchor from "@/shared/components/NextAnchor";
 
 export const metadata: Metadata = {
   title: "Tilgang avslått",
@@ -21,9 +21,9 @@ export default function PermissionDeniedPage() {
           administrator for spørsmål.
         </ErrorAlert>
         <AuthLogoutComponent />
-        <Anchor component={Link} href={"/auth/login"}>
+        <NextAnchor href={"/auth/login"}>
           Tilbake til innloggingssiden
-        </Anchor>
+        </NextAnchor>
       </Stack>
     </Container>
   );

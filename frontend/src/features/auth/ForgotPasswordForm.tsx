@@ -1,14 +1,14 @@
 "use client";
 
-import { Anchor, Button, Stack } from "@mantine/core";
+import { Button, Stack } from "@mantine/core";
 import { IconMailFast } from "@tabler/icons-react";
 import { useMutation } from "@tanstack/react-query";
-import Link from "next/link";
 import { useState } from "react";
 import validator from "validator";
 
 import ErrorAlert from "@/shared/components/alerts/ErrorAlert";
 import SuccessAlert from "@/shared/components/alerts/SuccessAlert";
+import NextAnchor from "@/shared/components/NextAnchor";
 import { useAppForm } from "@/shared/hooks/form";
 import {
   GENERIC_ERROR_TEXT,
@@ -81,9 +81,9 @@ export default function ForgotPasswordForm() {
       >
         Reset passord
       </Button>
-      <Anchor size={"sm"} component={Link} href={"/auth/login"}>
+      <NextAnchor size={"sm"} href={"/auth/login"}>
         Tilbake til innloggingssiden
-      </Anchor>
+      </NextAnchor>
     </>
   );
 }

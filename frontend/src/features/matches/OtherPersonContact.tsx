@@ -1,8 +1,8 @@
 import { UserMatchWithDetails } from "@boklisten/backend/shared/match/match-dtos";
-import { Anchor, Group, Text } from "@mantine/core";
+import { Group, Text } from "@mantine/core";
 import { IconPhone } from "@tabler/icons-react";
-import Link from "next/link";
 
+import NextAnchor from "@/shared/components/NextAnchor";
 import { getAccessTokenBody } from "@/shared/utils/token";
 
 const OtherPersonContact = ({
@@ -20,9 +20,9 @@ const OtherPersonContact = ({
       <IconPhone />
       <Text>
         {otherPerson.name},{" "}
-        <Anchor component={Link} href={`tel:${otherPerson.phone}`}>
+        <NextAnchor href={`tel:${otherPerson.phone}`}>
           {formatPhoneNumber(otherPerson.phone)}
-        </Anchor>
+        </NextAnchor>
       </Text>
     </Group>
   );

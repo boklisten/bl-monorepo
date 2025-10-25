@@ -29,9 +29,13 @@ export default function PublicNavigationDrawer() {
   const { isLoggedIn, isEmployee } = useAuth();
   return (
     <>
-      <TasksIndicator>
+      {isLoggedIn ? (
+        <TasksIndicator>
+          <Burger color={"white"} opened={opened} onClick={toggle} />
+        </TasksIndicator>
+      ) : (
         <Burger color={"white"} opened={opened} onClick={toggle} />
-      </TasksIndicator>
+      )}
       <Drawer
         opened={opened}
         onClose={close}
@@ -39,7 +43,7 @@ export default function PublicNavigationDrawer() {
         title={"Velg side"}
       >
         <Stack gap={5}>
-          <TasksLink />
+          {isLoggedIn && <TasksLink />}
           <NavLink
             label={"Bestill bøker"}
             href={"/bestilling"}

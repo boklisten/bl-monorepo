@@ -1,14 +1,14 @@
 "use client";
 
-import { Anchor, Loader } from "@mantine/core";
+import { Loader } from "@mantine/core";
 import { useQuery } from "@tanstack/react-query";
-import Link from "next/link";
 import { Suspense } from "react";
 
 import ErrorAlert from "@/shared/components/alerts/ErrorAlert";
 import InfoAlert from "@/shared/components/alerts/InfoAlert";
 import SuccessAlert from "@/shared/components/alerts/SuccessAlert";
 import CountdownToRedirect from "@/shared/components/CountdownToRedirect";
+import NextAnchor from "@/shared/components/NextAnchor";
 import { publicApiClient } from "@/shared/utils/publicApiClient";
 
 export default function EmailConfirmer({
@@ -44,9 +44,9 @@ export default function EmailConfirmer({
           Lenken kan være utløpt. Du kan prøve å sende en ny lenke fra
           brukerinnstillinger.
         </ErrorAlert>
-        <Anchor component={Link} href={"/user-settings"}>
+        <NextAnchor href={"/user-settings"}>
           Gå til brukerinnstillinger
-        </Anchor>
+        </NextAnchor>
       </>
     );
   }

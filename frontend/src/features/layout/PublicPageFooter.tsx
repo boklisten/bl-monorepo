@@ -1,10 +1,11 @@
-import { Anchor, Group, Stack, Text } from "@mantine/core";
+"use client";
+import { Group, Stack, Text } from "@mantine/core";
 import { IconCopyright } from "@tabler/icons-react";
 import dayjs from "dayjs";
 import Image from "next/image";
-import Link from "next/link";
 
 import ContactInfo from "@/shared/components/ContactInfo";
+import NextAnchor from "@/shared/components/NextAnchor";
 
 export default function PublicPageFooter() {
   return (
@@ -25,17 +26,13 @@ export default function PublicPageFooter() {
         alt="Dibs easy logo"
       />
       <Group mt={50}>
-        <Anchor component={Link} href={"/info/policies/conditions"}>
-          Betingelser
-        </Anchor>
+        <NextAnchor href={"/info/policies/conditions"}>Betingelser</NextAnchor>
         {" | "}
-        <Anchor component={Link} href={"/info/policies/terms"}>
-          Vilkår
-        </Anchor>
+        <NextAnchor href={"/info/policies/terms"}>Vilkår</NextAnchor>
         {" | "}
-        <Anchor component={Link} href={"/info/policies/privacy"}>
+        <NextAnchor href={"/info/policies/privacy"}>
           Personvernserklæring
-        </Anchor>
+        </NextAnchor>
       </Group>
       <Text>Organisasjonsnummer: 912047385 MVA</Text>
       <Group gap={"xs"}>

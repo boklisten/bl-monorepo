@@ -1,5 +1,7 @@
 "use client";
 
+import { useEffect } from "react";
+
 import useAuthLinker from "@/shared/hooks/useAuthLinker";
 
 export default function RedirectTo(props: {
@@ -8,6 +10,8 @@ export default function RedirectTo(props: {
   retainHistory?: boolean;
 }) {
   const { redirectTo } = useAuthLinker();
-  redirectTo(props.target, props.path, props.retainHistory);
+  useEffect(() => {
+    redirectTo(props.target, props.path, props.retainHistory);
+  }, [props.path, props.retainHistory, props.target, redirectTo]);
   return null;
 }

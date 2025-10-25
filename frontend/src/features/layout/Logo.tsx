@@ -1,8 +1,8 @@
-import { Anchor, Group, Title } from "@mantine/core";
+import { Group, Title } from "@mantine/core";
 import Image from "next/image";
-import Link from "next/link";
 
 import TestVersionChip from "@/features/layout/TestVersionChip";
+import NextAnchor from "@/shared/components/NextAnchor";
 
 export default function Logo({
   variant,
@@ -12,7 +12,7 @@ export default function Logo({
   admin?: boolean;
 }) {
   return (
-    <Anchor component={Link} href={admin ? "/admin" : "/"} underline={"never"}>
+    <NextAnchor href={admin ? "/admin" : "/"} underline={"never"}>
       <Group gap={"xs"} wrap={"nowrap"}>
         <Image
           src={`/boklisten_logo_${variant}.png`}
@@ -30,6 +30,6 @@ export default function Logo({
         </Title>
         <TestVersionChip />
       </Group>
-    </Anchor>
+    </NextAnchor>
   );
 }

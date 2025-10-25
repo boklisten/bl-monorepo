@@ -1,7 +1,7 @@
-import { Anchor, Center, Group, Stack, Text } from "@mantine/core";
+import { Center, Group, Stack, Text } from "@mantine/core";
 import { IconLocation, IconMail, IconPhone } from "@tabler/icons-react";
-import Link from "next/link";
 
+import NextAnchor from "@/shared/components/NextAnchor";
 import { CONTACT_INFO } from "@/shared/utils/constants";
 
 const ContactInfo = () => {
@@ -12,9 +12,9 @@ const ContactInfo = () => {
           <IconPhone />
           <Stack gap={2}>
             <Text>Ring oss</Text>
-            <Anchor component={Link} href={`tel:${CONTACT_INFO.phone}`}>
+            <NextAnchor href={`tel:${CONTACT_INFO.phone}`}>
               {CONTACT_INFO.phone}
-            </Anchor>
+            </NextAnchor>
           </Stack>
         </Group>
 
@@ -22,9 +22,9 @@ const ContactInfo = () => {
           <IconMail />
           <Stack gap={2}>
             <Text>Send oss en e-post</Text>
-            <Anchor component={Link} href={`mailto:${CONTACT_INFO.email}`}>
+            <NextAnchor href={`mailto:${CONTACT_INFO.email}`}>
               {CONTACT_INFO.email}
-            </Anchor>
+            </NextAnchor>
           </Stack>
         </Group>
 

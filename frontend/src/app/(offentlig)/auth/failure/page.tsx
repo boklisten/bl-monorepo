@@ -1,9 +1,9 @@
-import { Anchor, Container, Stack, Title } from "@mantine/core";
+import { Container, Stack, Title } from "@mantine/core";
 import { Metadata } from "next";
-import Link from "next/link";
 import { Suspense } from "react";
 
 import AuthFailureReasonAlert from "@/features/auth/AuthFailureReasonAlert";
+import NextAnchor from "@/shared/components/NextAnchor";
 import { PLEASE_TRY_AGAIN_TEXT } from "@/shared/utils/constants";
 
 export const metadata: Metadata = {
@@ -19,9 +19,9 @@ export default function AuthFailurePage() {
         <Suspense>
           <AuthFailureReasonAlert />
         </Suspense>
-        <Anchor component={Link} href={"/auth/login"}>
+        <NextAnchor href={"/auth/login"}>
           Tilbake til innloggingssiden
-        </Anchor>
+        </NextAnchor>
       </Stack>
     </Container>
   );

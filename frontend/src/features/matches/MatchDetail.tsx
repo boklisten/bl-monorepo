@@ -1,12 +1,12 @@
 "use client";
-import { Anchor, Box, Button, Skeleton } from "@mantine/core";
+import { Box, Button, Skeleton } from "@mantine/core";
 import { IconArrowLeft } from "@tabler/icons-react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
-import Link from "next/link";
 
 import StandMatchDetail from "@/features/matches/StandMatchDetail";
 import UserMatchDetail from "@/features/matches/UserMatchDetail";
 import ErrorAlert from "@/shared/components/alerts/ErrorAlert";
+import NextAnchor from "@/shared/components/NextAnchor";
 import useApiClient from "@/shared/hooks/useApiClient";
 import {
   GENERIC_ERROR_TEXT,
@@ -63,11 +63,11 @@ const MatchDetail = ({
   return (
     <>
       <Box>
-        <Anchor component={Link} href={"/overleveringer"}>
+        <NextAnchor href={"/overleveringer"}>
           <Button variant={"subtle"} leftSection={<IconArrowLeft />}>
             Alle overleveringer
           </Button>
-        </Anchor>
+        </NextAnchor>
       </Box>
 
       {standMatch && <StandMatchDetail standMatch={standMatch} />}

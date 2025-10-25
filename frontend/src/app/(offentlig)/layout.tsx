@@ -1,17 +1,11 @@
-import {
-  Anchor,
-  AppShell,
-  AppShellHeader,
-  AppShellMain,
-  Group,
-} from "@mantine/core";
+import { AppShell, AppShellHeader, AppShellMain, Group } from "@mantine/core";
 import { Metadata } from "next";
-import Link from "next/link";
 
 import CartNavbarIndicator from "@/features/cart/CartNavbarIndicator";
 import Logo from "@/features/layout/Logo";
 import PublicNavigationDrawer from "@/features/layout/PublicNavigationDrawer";
 import PublicPageFooter from "@/features/layout/PublicPageFooter";
+import NextAnchor from "@/shared/components/NextAnchor";
 
 export const metadata: Metadata = {
   title: {
@@ -35,12 +29,12 @@ export default function PublicPageLayout({ children }: LayoutProps<"/">) {
             <Group>
               <Group gap={"xl"} visibleFrom={"sm"}>
                 <CartNavbarIndicator />
-                <Anchor c={"#fff"} component={Link} href={"/info/general"}>
+                <NextAnchor c={"#fff"} href={"/info/general"}>
                   Info
-                </Anchor>
-                <Anchor c={"#fff"} component={Link} href={"/bestilling"}>
+                </NextAnchor>
+                <NextAnchor c={"#fff"} href={"/bestilling"}>
                   Bestill bøker
-                </Anchor>
+                </NextAnchor>
               </Group>
               <PublicNavigationDrawer />
             </Group>

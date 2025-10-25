@@ -1,6 +1,7 @@
-import { Anchor, Button, Card, Stack } from "@mantine/core";
-import Link from "next/link";
+import { Button, Card, Stack } from "@mantine/core";
 import { PropsWithChildren } from "react";
+
+import NextAnchor from "@/shared/components/NextAnchor";
 
 export default function MatchListItemCard({
   finished,
@@ -13,10 +14,8 @@ export default function MatchListItemCard({
   matchType: "stand" | "user";
 }>) {
   return (
-    <Anchor
-      component={Link}
+    <NextAnchor
       underline={"never"}
-      // @ts-expect-error bad route type
       href={`/overleveringer/${matchType}/${matchId}`}
     >
       <Card
@@ -35,6 +34,6 @@ export default function MatchListItemCard({
           </Button>
         </Stack>
       </Card>
-    </Anchor>
+    </NextAnchor>
   );
 }

@@ -1,9 +1,8 @@
 "use client";
 
-import { Anchor, Button, Group, Space, Stack, Text } from "@mantine/core";
+import { Button, Group, Space, Stack, Text } from "@mantine/core";
 import { createFieldMap } from "@tanstack/react-form";
 import { useMutation } from "@tanstack/react-query";
-import Link from "next/link";
 import { useState } from "react";
 
 import UserInfoFields, {
@@ -15,6 +14,7 @@ import { emailFieldValidator } from "@/shared/components/form/fields/complex/Ema
 import { nameFieldValidator } from "@/shared/components/form/fields/complex/NameField";
 import { newPasswordFieldValidator } from "@/shared/components/form/fields/complex/NewPasswordField";
 import { phoneNumberFieldValidator } from "@/shared/components/form/fields/complex/PhoneNumberField";
+import NextAnchor from "@/shared/components/NextAnchor";
 import { useAppForm } from "@/shared/hooks/form";
 import useAuthLinker from "@/shared/hooks/useAuthLinker";
 import { isUnder18 } from "@/shared/utils/dates";
@@ -164,21 +164,16 @@ export default function SignupForm() {
               <Group gap={3}>
                 <Text size={"sm"}>
                   {"Jeg godtar Boklistens "}
-                  <Anchor
-                    component={Link}
+                  <NextAnchor
                     href={"/info/policies/conditions"}
                     target={"_blank"}
                   >
                     betingelser
-                  </Anchor>
+                  </NextAnchor>
                   {" og "}
-                  <Anchor
-                    component={Link}
-                    href={"/info/policies/terms"}
-                    target={"_blank"}
-                  >
+                  <NextAnchor href={"/info/policies/terms"} target={"_blank"}>
                     vilkår
-                  </Anchor>
+                  </NextAnchor>
                 </Text>
                 <Text size={"sm"} c={"#fa5252"}>
                   *

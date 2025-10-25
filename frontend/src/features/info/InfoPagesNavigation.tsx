@@ -1,15 +1,8 @@
 "use client";
-import {
-  Center,
-  Tabs,
-  TabsList,
-  TabsTab,
-  Select,
-  Box,
-  Anchor,
-} from "@mantine/core";
-import Link from "next/link";
+import { Center, Tabs, TabsList, TabsTab, Select, Box } from "@mantine/core";
 import { usePathname, useRouter } from "next/navigation";
+
+import NextAnchor from "@/shared/components/NextAnchor";
 
 const tabs = [
   { label: "Generell informasjon", value: "/info/general" },
@@ -43,15 +36,14 @@ const InfoPagesNavigation = () => {
         >
           <TabsList justify={"center"}>
             {tabs.map((tab) => (
-              <Anchor
-                component={Link}
+              <NextAnchor
                 underline={"never"}
                 c={"dark"}
                 key={tab.value}
                 href={tab.value}
               >
                 <TabsTab value={tab.value}>{tab.label}</TabsTab>
-              </Anchor>
+              </NextAnchor>
             ))}
           </TabsList>
         </Tabs>

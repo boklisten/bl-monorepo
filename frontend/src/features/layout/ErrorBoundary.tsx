@@ -1,9 +1,9 @@
-import { Anchor, Center, Stack } from "@mantine/core";
-import Link from "next/link";
+import { Center, Stack } from "@mantine/core";
 import { useEffect } from "react";
 
 import Logo from "@/features/layout/Logo";
 import ErrorAlert from "@/shared/components/alerts/ErrorAlert";
+import NextAnchor from "@/shared/components/NextAnchor";
 
 export default function ErrorBoundary({
   error,
@@ -28,9 +28,7 @@ export default function ErrorBoundary({
       <Center>
         {href && (
           // @ts-expect-error fixme: bad link types
-          <Anchor component={Link} href={href}>
-            Gå til forsiden
-          </Anchor>
+          <NextAnchor href={href}>Gå til forsiden</NextAnchor>
         )}
       </Center>
     </Stack>

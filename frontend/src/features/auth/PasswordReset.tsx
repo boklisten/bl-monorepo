@@ -1,13 +1,13 @@
 "use client";
-import { Anchor, Button } from "@mantine/core";
+import { Button } from "@mantine/core";
 import { useMutation, useQuery } from "@tanstack/react-query";
-import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { useState } from "react";
 
 import ErrorAlert from "@/shared/components/alerts/ErrorAlert";
 import SuccessAlert from "@/shared/components/alerts/SuccessAlert";
 import { newPasswordFieldValidator } from "@/shared/components/form/fields/complex/NewPasswordField";
+import NextAnchor from "@/shared/components/NextAnchor";
 import { useAppForm } from "@/shared/hooks/form";
 import {
   GENERIC_ERROR_TEXT,
@@ -65,9 +65,7 @@ export default function PasswordReset({ resetId }: { resetId: string }) {
           {message ??
             "Lenken har utløpt. Du kan be om å få tilsendt en ny lenke på 'glemt passord'-siden"}
         </ErrorAlert>
-        <Anchor component={Link} href={"/auth/forgot"}>
-          Gå til glemt passord
-        </Anchor>
+        <NextAnchor href={"/auth/forgot"}>Gå til glemt passord</NextAnchor>
       </>
     );
   }
@@ -75,9 +73,9 @@ export default function PasswordReset({ resetId }: { resetId: string }) {
   return resetPasswordMutation.isSuccess && !apiError ? (
     <>
       <SuccessAlert>Passordet ble oppdatert! Du kan nå logge inn.</SuccessAlert>
-      <Anchor component={Link} href={"/auth/login"}>
+      <NextAnchor href={"/auth/login"}>
         <Button>Logg inn</Button>
-      </Anchor>
+      </NextAnchor>
     </>
   ) : (
     <>
@@ -93,9 +91,7 @@ export default function PasswordReset({ resetId }: { resetId: string }) {
         {(field) => <field.NewPasswordField label={"Nytt passord"} />}
       </form.AppField>
       <Button onClick={form.handleSubmit}>Lag nytt passord</Button>
-      <Anchor component={Link} href={"/auth/login"}>
-        Tilbake til innloggingssiden
-      </Anchor>
+      <NextAnchor href={"/auth/login"}>Tilbake til innloggingssiden</NextAnchor>
     </>
   );
 }

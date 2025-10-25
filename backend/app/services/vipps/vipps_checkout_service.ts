@@ -149,7 +149,7 @@ export const VippsCheckoutService = {
     return { token, checkoutFrontendUrl };
   },
   async update(session: VippsCheckoutSession) {
-    const order = await StorageService.Orders.get(session.reference);
+    let order = await StorageService.Orders.get(session.reference);
     if (
       order.checkoutState === session.sessionState ||
       order.checkoutState === "PaymentSuccessful"
@@ -167,8 +167,9 @@ export const VippsCheckoutService = {
       order.customer,
     );
 
+    let deliveryPrice = 0;
     if (session.shippingDetails?.shippingMethodId?.includes("mail")) {
-      const deliveryPrice = Math.ceil(
+      deliveryPrice = Math.ceil(
         (session.shippingDetails.amount?.value ?? 0) / 100,
       );
       const delivery = await StorageService.Deliveries.add({
@@ -205,6 +206,10 @@ export const VippsCheckoutService = {
         },
         order: session.reference,
         amount: deliveryPrice,
+        user: {
+          id: userDetail.user?.id ?? "",
+          permission: userDetail.user?.permission ?? "customer",
+        },
       });
       await StorageService.Orders.update(order.id, {
         delivery: delivery.id,
@@ -214,16 +219,15 @@ export const VippsCheckoutService = {
     const payment = await StorageService.Payments.add({
       method: "vipps-checkout",
       order: order.id,
-      amount: order.amount,
+      amount: order.amount + deliveryPrice,
       customer: order.customer,
       branch: order.branch,
     });
 
-    await new OrderPlacedHandler().placeOrder(
-      await StorageService.Orders.update(order.id, {
-        payments: [...(order.payments ?? []), payment.id],
-      }),
-      order.customer,
-    );
+    order = await StorageService.Orders.update(order.id, {
+      payments: [...(order.payments ?? []), payment.id],
+    });
+
+    await new OrderPlacedHandler().placeOrder(order, order.customer);
   },
 };

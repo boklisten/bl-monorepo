@@ -88,7 +88,10 @@ export default function VippsCheckoutStatus() {
     if (data === "PaymentSuccessful") {
       cart.clear();
     }
-  }, [cart, data]);
+    // fixme: useEventEffect here!
+    // eslint-disable-next-line react-compiler/react-compiler
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [data]);
 
   if (isLoading) {
     return <Skeleton h={90} />;

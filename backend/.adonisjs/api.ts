@@ -514,7 +514,7 @@ type CheckoutConfirmIdPost = {
 type CheckoutVippsCallbackPost = {
   request: MakeTuyauRequest<
     InferInput<
-      (typeof import("../app/validators/checkout_validators.ts"))["vippsCallbackValidator"]
+      (typeof import("../app/validators/checkout_validators.ts"))["vippsCheckoutSessionValidator"]
     >
   >;
   response: MakeNonSerializedTuyauResponse<

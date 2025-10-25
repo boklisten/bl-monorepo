@@ -1,3 +1,6 @@
+import logger from "@adonisjs/core/services/logger";
+import moment from "moment-timezone";
+
 import { APP_CONFIG } from "#services/legacy/application-config";
 import { OrderPlacedHandler } from "#services/legacy/collections/order/helpers/order-placed-handler/order-placed-handler";
 import { DateService } from "#services/legacy/date.service";
@@ -6,6 +9,30 @@ import { TranslationService } from "#services/translation_service";
 import { VippsPaymentService } from "#services/vipps/vipps_payment_service";
 import { Order } from "#shared/order/order";
 import env from "#start/env";
+import { VippsCheckoutSession } from "#validators/checkout_validators";
+
+async function updateUserDetailWithBillingDetails(
+  session: VippsCheckoutSession,
+  customerId: string,
+) {
+  try {
+    if (session.billingDetails) {
+      const existingDetails = await StorageService.UserDetails.get(customerId);
+      await StorageService.UserDetails.update(customerId, {
+        name: `${session.billingDetails.firstName} ${session.billingDetails.lastName}`,
+        phone: session.billingDetails.phoneNumber.slice(-8),
+        email: session.billingDetails.email,
+        address:
+          session.billingDetails.streetAddress ?? existingDetails.address,
+        postCode: session.billingDetails.postalCode ?? existingDetails.postCode,
+        postCity: session.billingDetails.city ?? existingDetails.postCity,
+      });
+    }
+  } catch (error) {
+    logger.error(error);
+  }
+  return await StorageService.UserDetails.get(customerId);
+}
 
 async function createLogistics(order: Order) {
   const needLogistics = order.orderItems.some(
@@ -49,7 +76,7 @@ async function createLogistics(order: Order) {
           ]
         : []),
       {
-        id: "mail",
+        id: needPickupPoint ? "mail_pickup_point" : "mailbox",
         amount: {
           value: deliveryPrice * 100,
           currency: "NOK",
@@ -121,19 +148,68 @@ export const VippsCheckoutService = {
     });
     return { token, checkoutFrontendUrl };
   },
-  async update(orderId: string, newState: string) {
-    const order = await StorageService.Orders.get(orderId);
+  async update(session: VippsCheckoutSession) {
+    const order = await StorageService.Orders.get(session.reference);
     if (
-      order.checkoutState === newState ||
+      order.checkoutState === session.sessionState ||
       order.checkoutState === "PaymentSuccessful"
     )
       return;
 
     await StorageService.Orders.update(order.id, {
-      checkoutState: newState,
+      checkoutState: session.sessionState,
     });
 
-    if (newState !== "PaymentSuccessful") return;
+    if (session.sessionState !== "PaymentSuccessful") return;
+
+    const userDetail = await updateUserDetailWithBillingDetails(
+      session,
+      order.customer,
+    );
+
+    if (session.shippingDetails?.shippingMethodId?.includes("mail")) {
+      const deliveryPrice = Math.ceil(
+        (session.shippingDetails.amount?.value ?? 0) / 100,
+      );
+      const delivery = await StorageService.Deliveries.add({
+        method: "bring",
+        info: {
+          amount: deliveryPrice,
+          estimatedDelivery: moment()
+            .add(APP_CONFIG.delivery.deliveryDays + 2, "days")
+            .toDate(),
+          taxAmount: deliveryPrice * 0.25,
+          facilityAddress: {
+            address: "Martin Lingesvei 25",
+            postalCode: "1364",
+            postalCity: "FORNEBU",
+          },
+          shipmentAddress: {
+            name:
+              session.shippingDetails.firstName &&
+              session.shippingDetails.lastName
+                ? `${session.shippingDetails.firstName} ${session.shippingDetails.lastName}`
+                : userDetail.name,
+            address:
+              session.shippingDetails.streetAddress ?? userDetail.address,
+            postalCode:
+              session.shippingDetails.postalCode ?? userDetail.postCode,
+            postalCity: session.shippingDetails.city ?? userDetail.postCity,
+          },
+          from:
+            session.shippingDetails.shippingMethodId === "mailbox"
+              ? "1364"
+              : "SERVICEPAKKE",
+          to: session.shippingDetails.postalCode ?? userDetail.postCode,
+          product: "3584",
+        },
+        order: session.reference,
+        amount: deliveryPrice,
+      });
+      await StorageService.Orders.update(order.id, {
+        delivery: delivery.id,
+      });
+    }
 
     const payment = await StorageService.Payments.add({
       method: "vipps-checkout",

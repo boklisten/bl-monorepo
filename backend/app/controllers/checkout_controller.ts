@@ -9,7 +9,7 @@ import { VippsCheckoutService } from "#services/vipps/vipps_checkout_service";
 import { VippsPaymentService } from "#services/vipps/vipps_payment_service";
 import {
   initializeCheckoutValidator,
-  vippsCallbackValidator,
+  vippsCheckoutSessionValidator,
 } from "#validators/checkout_validators";
 
 export default class CheckoutController {
@@ -44,17 +44,15 @@ export default class CheckoutController {
     await new OrderPlacedHandler().placeOrder(order, order.customer);
   }
 
-  // TODO: and handle callback with selected postal option + user/billing info
   async handleVippsCallback(ctx: HttpContext) {
-    console.log(ctx.request.body());
     if (!VippsPaymentService.token.verify(ctx.request.header("Authorization")))
       throw new UnauthorizedException(
         "Authorization header missing or invalid",
       );
-    const { reference, sessionState } = await ctx.request.validateUsing(
-      vippsCallbackValidator,
+    const session = await ctx.request.validateUsing(
+      vippsCheckoutSessionValidator,
     );
-    await VippsCheckoutService.update(reference, sessionState);
+    await VippsCheckoutService.update(session);
   }
 
   async pollPayment(ctx: HttpContext) {
@@ -70,9 +68,9 @@ export default class CheckoutController {
       order.checkoutState === "SessionCreated" ||
       order.checkoutState === "PaymentInitiated"
     ) {
-      const info = await VippsPaymentService.checkout.info(order.id);
-      await VippsCheckoutService.update(orderId, info.sessionState);
-      return info.sessionState;
+      const session = await VippsPaymentService.checkout.info(order.id);
+      await VippsCheckoutService.update(session);
+      return session.sessionState;
     }
 
     return order.checkoutState ?? null;

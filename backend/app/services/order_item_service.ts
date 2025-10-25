@@ -118,8 +118,12 @@ export const OrderItemService = {
       item: item.id,
       title: item.title,
       delivered: false,
-      amount: branch.paymentInfo?.responsible ? 0 : item.price,
-      unitPrice: branch.paymentInfo?.responsible ? 0 : item.price,
+      amount: branch.paymentInfo?.responsible
+        ? 0
+        : Math.ceil(item.price * partlyPaymentPeriod.percentageUpFront),
+      unitPrice: branch.paymentInfo?.responsible
+        ? 0
+        : Math.ceil(item.price * partlyPaymentPeriod.percentageUpFront),
       info: {
         from: new Date(),
         to: partlyPaymentPeriod.date,

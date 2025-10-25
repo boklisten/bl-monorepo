@@ -2,7 +2,7 @@
 import { CartItem } from "@boklisten/backend/shared/cart_item";
 import { Loader, Title } from "@mantine/core";
 import { useMounted } from "@mantine/hooks";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useMutation } from "@tanstack/react-query";
 import dayjs from "dayjs";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
@@ -10,11 +10,9 @@ import { useState } from "react";
 import useApiClient from "@/shared/hooks/useApiClient";
 import useCart from "@/shared/hooks/useCart";
 import { showErrorNotification } from "@/shared/utils/notifications";
-import { publicApiClient } from "@/shared/utils/publicApiClient";
 
 export default function CheckoutHandler() {
   const cart = useCart();
-  const queryClient = useQueryClient();
   const client = useApiClient();
   const mounted = useMounted();
   const router = useRouter();
@@ -36,16 +34,10 @@ export default function CheckoutHandler() {
           }),
         })
         .unwrap(),
-    onSuccess: async ({ nextStep, token, checkoutFrontendUrl }) => {
+    onSuccess: async ({ nextStep, orderId, token, checkoutFrontendUrl }) => {
       switch (nextStep) {
-        case "tasks": {
-          await queryClient.invalidateQueries({
-            queryKey: [publicApiClient.v2.user_details.me.$url()],
-          });
-          break;
-        }
         case "confirm": {
-          router.replace("/kasse/bekreft");
+          router.replace(`/kasse/bekreft?orderId=${orderId}`);
           break;
         }
         case "payment":

@@ -1,6 +1,4 @@
 "use client";
-import { CartItemOption } from "@boklisten/backend/shared/cart_item";
-import { OrderItemType } from "@boklisten/backend/shared/order/order-item/order-item-type";
 import {
   ActionIcon,
   Button,
@@ -17,27 +15,10 @@ import {
   IconShoppingCart,
   IconX,
 } from "@tabler/icons-react";
-import dayjs from "dayjs";
 import Link from "next/link";
 
 import InfoAlert from "@/shared/components/alerts/InfoAlert";
 import useCart from "@/shared/hooks/useCart";
-
-const translations = {
-  rent: "lån til",
-  return: "returner",
-  extend: "forleng til",
-  cancel: "kanseller",
-  buy: "kjøp",
-  "partly-payment": "delbetaling til",
-  buyback: "tilbakekjøp",
-  buyout: "kjøp ut",
-  sell: "selg",
-  loan: "lån til",
-  "invoice-paid": "betale faktura",
-  "match-receive": "motta fra elev",
-  "match-deliver": "overlevere til elev",
-} satisfies Record<OrderItemType, string>;
 
 export default function CartContent() {
   const cart = useCart();
@@ -68,10 +49,6 @@ export default function CartContent() {
       <Stack>
         {cart.get().map((cartItem) => {
           const selectedOption = cart.getSelectedOption(cartItem);
-          const getLabel = (option?: CartItemOption) => {
-            if (!option) throw new Error("No option for cart item!");
-            return `${translations[option.type]} ${option.to ? dayjs(option.to).format("DD/MM/YYYY") : ""}`;
-          };
           return (
             <Card withBorder shadow={"md"} key={cartItem.id}>
               <Stack>
@@ -94,7 +71,7 @@ export default function CartContent() {
                       <SegmentedControl
                         readOnly={cartItem.options.length === 1}
                         data={cartItem.options.map((option, index) => ({
-                          label: getLabel(option),
+                          label: cart.getOptionLabel(option),
                           value: index.toString(),
                         }))}
                         onChange={(value) => {
@@ -105,7 +82,7 @@ export default function CartContent() {
                         }}
                       />
                     ) : (
-                      <Text>{getLabel(cartItem.options[0])}</Text>
+                      <Text>{cart.getOptionLabel(cartItem.options[0])}</Text>
                     )}
                   </Group>
                   <Group>

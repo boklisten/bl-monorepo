@@ -1,6 +1,7 @@
 import type { HttpContext } from "@adonisjs/core/http";
 
 import UnauthorizedException from "#exceptions/unauthorized_exception";
+import { OrderPlacedHandler } from "#services/legacy/collections/order/helpers/order-placed-handler/order-placed-handler";
 import { OrderService } from "#services/order_service";
 import { PermissionService } from "#services/permission_service";
 import { StorageService } from "#services/storage_service";
@@ -25,13 +26,22 @@ export default class CheckoutController {
         !branch.deliveryMethods?.byMail ||
         branch.paymentInfo?.responsibleForDelivery
       ) {
-        return { nextStep: "confirm" };
+        return { nextStep: "confirm", orderId: order.id } as const;
       }
     }
 
     const { token, checkoutFrontendUrl } =
       await VippsCheckoutService.create(order);
     return { nextStep: "payment", token, checkoutFrontendUrl } as const;
+  }
+  async confirmCheckout(ctx: HttpContext) {
+    const { detailsId } = PermissionService.authenticate(ctx);
+    const orderId = ctx.request.param("orderId");
+    const order = await StorageService.Orders.get(orderId);
+    if (detailsId !== order.customer || order.checkoutState || order.amount > 0)
+      throw new Error("You do not have permission to confirm this order");
+
+    await new OrderPlacedHandler().placeOrder(order, order.customer);
   }
 
   // TODO: and handle callback with selected postal option + user/billing info

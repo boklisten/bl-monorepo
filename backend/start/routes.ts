@@ -329,6 +329,9 @@ router
   .post("/checkout", [CheckoutController, "initializeCheckout"])
   .as("checkout.initialize");
 router
+  .post("/checkout/confirm/:orderId", [CheckoutController, "confirmCheckout"])
+  .as("checkout.confirm");
+router
   .post("/checkout/vipps/callback", [CheckoutController, "handleVippsCallback"])
   .as("checkout.vipps.callback");
 router

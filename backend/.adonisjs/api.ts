@@ -504,6 +504,13 @@ type CheckoutPost = {
     true
   >;
 };
+type CheckoutConfirmIdPost = {
+  request: unknown;
+  response: MakeNonSerializedTuyauResponse<
+    import("../app/controllers/checkout_controller.ts").default["confirmCheckout"],
+    false
+  >;
+};
 type CheckoutVippsCallbackPost = {
   request: MakeTuyauRequest<
     InferInput<
@@ -796,6 +803,12 @@ export interface ApiDefinition {
   checkout: {
     $url: {};
     $post: CheckoutPost;
+    confirm: {
+      ":orderId": {
+        $url: {};
+        $post: CheckoutConfirmIdPost;
+      };
+    };
     vipps: {
       callback: {
         $url: {};
@@ -1196,6 +1209,13 @@ const routes = [
     path: "/checkout",
     method: ["POST"],
     types: {} as CheckoutPost,
+  },
+  {
+    params: ["orderId"],
+    name: "checkout.confirm",
+    path: "/checkout/confirm/:orderId",
+    method: ["POST"],
+    types: {} as CheckoutConfirmIdPost,
   },
   {
     params: [],

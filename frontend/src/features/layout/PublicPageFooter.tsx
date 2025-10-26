@@ -1,7 +1,6 @@
 import { Group, Stack, Text } from "@mantine/core";
 import { IconCopyright } from "@tabler/icons-react";
 import dayjs from "dayjs";
-import Image from "next/image";
 
 import ContactInfo from "@/shared/components/ContactInfo";
 import NextAnchor from "@/shared/components/NextAnchor";
@@ -18,13 +17,6 @@ export default async function PublicPageFooter() {
       component={"footer"}
     >
       <ContactInfo />
-      <Image
-        style={{ marginTop: 30 }}
-        width={200}
-        height={72}
-        src="/DIBS_shop_vertical_EN_10.png"
-        alt="Dibs easy logo"
-      />
       <Group mt={50}>
         <NextAnchor href={"/info/policies/conditions"}>Betingelser</NextAnchor>
         {" | "}

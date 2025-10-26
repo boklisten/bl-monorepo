@@ -1,0 +1,46 @@
+.welcome-display {
+  padding-top: 2rem;
+  padding-bottom: 4rem;
+  color: white;
+  background-color: #26768f;
+  background-image:
+    linear-gradient(90deg, rgba(255, 255, 255, 0.07) 30%, transparent 30%),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.1) 50%, transparent 50%),
+    linear-gradient(90deg, transparent 50%, rgba(255, 255, 255, 0.1) 50%),
+    linear-gradient(90deg, transparent 50%, rgba(255, 255, 255, 0.1) 50%);
+  background-size: 110px, 90px, 70px, 43px;
+
+  border-bottom: 5px solid #283d3b;
+}
+
+.inner {
+  position: relative;
+  z-index: 1;
+}
+
+.title {
+  font-weight: 800;
+  font-size: 40px;
+  letter-spacing: -1px;
+  padding-left: var(--mantine-spacing-md);
+  padding-right: var(--mantine-spacing-md);
+  color: var(--mantine-color-white);
+  margin-bottom: var(--mantine-spacing-xs);
+  text-align: center;
+  font-family: Outfit, var(--mantine-font-family);
+
+  @media (max-width: $mantine-breakpoint-xs) {
+    font-size: 28px;
+    text-align: left;
+  }
+}
+
+.description {
+  color: var(--mantine-color-gray-0);
+  text-align: center;
+
+  @media (max-width: $mantine-breakpoint-xs) {
+    font-size: var(--mantine-font-size-md);
+    text-align: left;
+  }
+}

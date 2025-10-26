@@ -1,12 +1,14 @@
 // useSet does not support React Compiler yet
 "use no memo";
 "use client";
+
 import { CartItem } from "@boklisten/backend/shared/cart_item";
 import { Affix, Box, Button, Card, Stack, Text } from "@mantine/core";
 import { useSet } from "@mantine/hooks";
 import { IconBasket, IconBasketCheck } from "@tabler/icons-react";
 import { useQuery } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
+import { Activity } from "react";
 
 import useCart from "@/shared/hooks/useCart";
 import { publicApiClient } from "@/shared/utils/publicApiClient";
@@ -50,7 +52,7 @@ export default function SelectSubjects({
             {name}
           </Button>
         ))}
-      {selectedSubjects.size > 0 && (
+      <Activity mode={selectedSubjects.size > 0 ? "visible" : "hidden"}>
         <Affix w={"100%"}>
           <Card withBorder shadow={"md"}>
             <Stack align={"center"} gap={"xs"}>
@@ -65,6 +67,7 @@ export default function SelectSubjects({
                         cart.add(cartItem);
                       }
                     }
+                    selectedSubjects.clear();
                     router.push("/handlekurv");
                   }}
                   leftSection={<IconBasket />}
@@ -78,7 +81,7 @@ export default function SelectSubjects({
             </Stack>
           </Card>
         </Affix>
-      )}
+      </Activity>
     </>
   );
 }

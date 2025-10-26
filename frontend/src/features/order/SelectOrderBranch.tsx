@@ -1,20 +1,25 @@
 "use client";
 import { Branch } from "@boklisten/backend/shared/branch";
-import { Divider, NavLink, Skeleton, Text } from "@mantine/core";
+import { Divider, NavLink, Text } from "@mantine/core";
 import { IconSchool } from "@tabler/icons-react";
 import { useQuery } from "@tanstack/react-query";
 import Link from "next/link";
 
-import ErrorAlert from "@/shared/components/alerts/ErrorAlert";
 import unpack from "@/shared/utils/bl-api-request";
-import { PLEASE_TRY_AGAIN_TEXT } from "@/shared/utils/constants";
 import { publicApiClient } from "@/shared/utils/publicApiClient";
 
-export default function SelectOrderBranch() {
+const capitalize = (s: string) =>
+  s.length > 0 ? s[0]?.toUpperCase() + s.slice(1) : "";
+
+export default function SelectOrderBranch({
+  cachedBranches,
+}: {
+  cachedBranches: Branch[];
+}) {
   const branchQuery = {
     query: { active: true, "isBranchItemsLive.online": true, sort: "name" },
   };
-  const { data, isLoading, isError } = useQuery({
+  const { data } = useQuery({
     queryKey: [publicApiClient.$url("collection.branches.getAll", branchQuery)],
     queryFn: () =>
       publicApiClient
@@ -22,28 +27,10 @@ export default function SelectOrderBranch() {
         .$get(branchQuery)
         .then(unpack<Branch[]>),
   });
-  const capitalize = (s: string) =>
-    s.length > 0 ? s[0]?.toUpperCase() + s.slice(1) : "";
 
-  if (isLoading) {
-    return (
-      <>
-        {[0, 1, 2, 3, 4, 5, 6, 7, 9, 10, 11, 12].map((index) => (
-          <Skeleton height={40} key={`skeleton-${index}`} />
-        ))}
-      </>
-    );
-  }
+  const branches = data ?? cachedBranches;
 
-  if (isError || !data) {
-    return (
-      <ErrorAlert title={"Klarte ikke laste inn filialer"}>
-        {PLEASE_TRY_AGAIN_TEXT}
-      </ErrorAlert>
-    );
-  }
-
-  const groupedBranches = Map.groupBy(data ?? [], (branch) =>
+  const groupedBranches = Map.groupBy(branches, (branch) =>
     capitalize(branch.location.region),
   );
   return (

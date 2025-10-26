@@ -3,8 +3,6 @@ import { Metadata } from "next";
 import EditableTextReadOnly from "@/shared/components/EditableTextReadOnly";
 import { publicApiClient } from "@/shared/utils/publicApiClient";
 
-export const revalidate = 60;
-
 export const metadata: Metadata = {
   title: "Betingelser",
   description:
@@ -12,6 +10,7 @@ export const metadata: Metadata = {
 };
 
 export default async function ConditionsPage() {
+  "use cache";
   const dataKey = "betingelser";
   const cachedData = await publicApiClient.editable_texts
     .key({ key: dataKey })

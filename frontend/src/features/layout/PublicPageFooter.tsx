@@ -1,4 +1,3 @@
-"use client";
 import { Group, Stack, Text } from "@mantine/core";
 import { IconCopyright } from "@tabler/icons-react";
 import dayjs from "dayjs";
@@ -7,7 +6,8 @@ import Image from "next/image";
 import ContactInfo from "@/shared/components/ContactInfo";
 import NextAnchor from "@/shared/components/NextAnchor";
 
-export default function PublicPageFooter() {
+export default async function PublicPageFooter() {
+  "use cache";
   return (
     <Stack
       bg={"#1e2e2c"}

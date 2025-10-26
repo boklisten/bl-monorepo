@@ -22,6 +22,7 @@ import ReactQueryClientProvider from "@/features/layout/ReactQueryClientProvider
 import theme from "@/shared/utils/theme";
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
+  // fixme: Remove top level Suspense and suspend further down the tree
   return (
     <html lang="no" {...mantineHtmlProps}>
       <Head key={"mantine"}>
@@ -36,9 +37,11 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
             <Suspense>
               <AuthLinker />
             </Suspense>
-            <ReactQueryClientProvider>
-              <ModalsProvider>{children}</ModalsProvider>
-            </ReactQueryClientProvider>
+            <Suspense>
+              <ReactQueryClientProvider>
+                <ModalsProvider>{children}</ModalsProvider>
+              </ReactQueryClientProvider>
+            </Suspense>
           </DatesProvider>
         </MantineProvider>
       </body>

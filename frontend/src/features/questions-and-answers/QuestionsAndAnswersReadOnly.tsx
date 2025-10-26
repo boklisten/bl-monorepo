@@ -8,6 +8,7 @@ import {
   Skeleton,
 } from "@mantine/core";
 import { useQuery } from "@tanstack/react-query";
+import { Suspense } from "react";
 
 import ErrorAlert from "@/shared/components/alerts/ErrorAlert";
 import InfoAlert from "@/shared/components/alerts/InfoAlert";
@@ -64,10 +65,14 @@ export default function QuestionsAndAnswersReadOnly({
             value={questionAndAnswer.id}
           >
             <AccordionControl>
-              <RichTextEditorReadOnly content={questionAndAnswer.question} />
+              <Suspense>
+                <RichTextEditorReadOnly content={questionAndAnswer.question} />
+              </Suspense>
             </AccordionControl>
             <AccordionPanel>
-              <RichTextEditorReadOnly content={questionAndAnswer.answer} />
+              <Suspense>
+                <RichTextEditorReadOnly content={questionAndAnswer.answer} />
+              </Suspense>
             </AccordionPanel>
           </AccordionItem>
         ))}

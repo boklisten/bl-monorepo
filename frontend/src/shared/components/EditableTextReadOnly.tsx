@@ -1,5 +1,6 @@
 "use client";
 import { useQuery } from "@tanstack/react-query";
+import { Suspense } from "react";
 
 import InfoAlert from "@/shared/components/alerts/InfoAlert";
 import RichTextEditorReadOnly from "@/shared/components/RichTextEditorReadOnly";
@@ -29,5 +30,9 @@ export default function EditableTextReadOnly({
     );
   }
 
-  return <RichTextEditorReadOnly content={text} />;
+  return (
+    <Suspense>
+      <RichTextEditorReadOnly content={text} />
+    </Suspense>
+  );
 }

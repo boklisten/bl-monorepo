@@ -4,8 +4,6 @@ import { Metadata } from "next";
 import SelectSubjects from "@/features/subjects/SelectSubjects";
 import { publicApiClient } from "@/shared/utils/publicApiClient";
 
-export const revalidate = 60;
-
 export const metadata: Metadata = {
   title: "Bestill bøker",
   description:
@@ -15,6 +13,7 @@ export const metadata: Metadata = {
 export default async function SelectSubjectsPage({
   params,
 }: PageProps<"/bestilling/[branchId]">) {
+  "use cache";
   const { branchId } = await params;
   const cachedSubjects = await publicApiClient
     .subjects({ branchId })

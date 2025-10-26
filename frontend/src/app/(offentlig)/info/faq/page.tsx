@@ -4,8 +4,6 @@ import { Metadata } from "next";
 import QuestionsAndAnswersReadOnly from "@/features/questions-and-answers/QuestionsAndAnswersReadOnly";
 import { publicApiClient } from "@/shared/utils/publicApiClient";
 
-export const revalidate = 60;
-
 export const metadata: Metadata = {
   title: "Spørsmål og svar",
   description:
@@ -13,6 +11,7 @@ export const metadata: Metadata = {
 };
 
 export default async function FaqPage() {
+  "use cache";
   const cachedData = await publicApiClient.questions_and_answers
     .$get()
     .unwrap();

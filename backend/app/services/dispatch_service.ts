@@ -191,7 +191,7 @@ const DispatchService = {
         recipients: {
           to: customerDetail.guardian.email,
           dynamicTemplateData: {
-            guardianSignatureUri: `${env.get("NEXT_CLIENT_URI")}signering/${customerDetail.id}`,
+            guardianSignatureUri: `${env.get("CLIENT_URI")}signering/${customerDetail.id}`,
             customerName: customerDetail.name,
             guardianName: customerDetail.guardian.name,
             branchName: branchName,
@@ -209,7 +209,7 @@ const DispatchService = {
         recipients: {
           to: customerDetail.email,
           dynamicTemplateData: {
-            signatureUri: `${env.get("NEXT_CLIENT_URI")}signering/${customerDetail.id}`,
+            signatureUri: `${env.get("CLIENT_URI")}signering/${customerDetail.id}`,
             name: customerDetail.name,
             branchName: branchName,
           },
@@ -270,7 +270,7 @@ const DispatchService = {
         {
           to: email,
           dynamicTemplateData: {
-            passwordResetUri: `${env.get("NEXT_CLIENT_URI")}auth/reset/${resetId}?resetToken=${token}`,
+            passwordResetUri: `${env.get("CLIENT_URI")}auth/reset/${resetId}?resetToken=${token}`,
           },
         },
       ],
@@ -285,7 +285,7 @@ const DispatchService = {
         {
           to: email,
           dynamicTemplateData: {
-            emailVerificationUri: `${env.get("NEXT_CLIENT_URI")}auth/email/confirm/${confirmationCode}`,
+            emailVerificationUri: `${env.get("CLIENT_URI")}auth/email/confirm/${confirmationCode}`,
           },
         },
       ],
@@ -348,7 +348,7 @@ const DispatchService = {
         dynamicTemplateData: {
           firstName,
           branchName,
-          loginUri: `${env.get("NEXT_CLIENT_URI")}auth/login`,
+          loginUri: `${env.get("CLIENT_URI")}auth/login`,
         },
       },
     });

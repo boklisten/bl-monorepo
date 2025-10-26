@@ -110,7 +110,7 @@ export const VippsCheckoutService = {
         },
         merchantInfo: {
           callbackUrl: `https://${env.get("API_ENV") === "production" ? "" : "staging."}api.boklisten.no/checkout/vipps/callback`,
-          returnUrl: `${env.get("NEXT_CLIENT_URI")}kasse/betaling/status?orderId=${order.id}`,
+          returnUrl: `${env.get("CLIENT_URI")}kasse/betaling/status?orderId=${order.id}`,
           callbackAuthorizationToken: VippsPaymentService.token.issue(),
           termsAndConditionsUrl: `${env.get("CLIENT_URI")}info/policies/conditions`,
         },

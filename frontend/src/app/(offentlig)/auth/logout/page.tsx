@@ -21,7 +21,7 @@ export default function LogoutPage() {
     <Container size={"md"}>
       <Stack>
         <Title ta={"center"}>Du er nå logget ut</Title>
-        <CountdownToRedirect seconds={10} path={"/"} shouldReplaceInHistory />
+        <CountdownToRedirect seconds={5} path={"/"} shouldReplaceInHistory />
       </Stack>
     </Container>
   );

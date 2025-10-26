@@ -26,9 +26,6 @@ export const APP_CONFIG = {
     bring: {
       shipmentInfo: "https://api.bring.com/shippingguide/v2/products",
     },
-    blWeb: {
-      base: "https://localhost:4200",
-    },
   },
   dev: {
     server: {
@@ -38,7 +35,7 @@ export const APP_CONFIG = {
       version: "v1",
     },
     client: {
-      base: "https://localhost:4200/",
+      base: "https://localhost:3000/",
     },
     mongoDb: {
       basePath: "mongodb://",

@@ -2,9 +2,6 @@ const BL_CONFIG = {
   api: {
     basePath: process.env["NEXT_PUBLIC_API_URL"] ?? "http://localhost:1337/",
   },
-  blWeb: {
-    basePath: process.env["NEXT_PUBLIC_BL_WEB_URL"] ?? "http://localhost:4200/",
-  },
   blAdmin: {
     basePath:
       process.env["NEXT_PUBLIC_BL_ADMIN_URL"] ?? "http://localhost:8080/",

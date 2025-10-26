@@ -24,7 +24,6 @@ interface FacilityAddress {
 
 export class BringDeliveryService {
   private bringShipmentUrl = APP_CONFIG.url.bring.shipmentInfo;
-  private clientUrl = APP_CONFIG.url.blWeb.base;
 
   public async getDeliveryInfoBring(
     facilityAddress: FacilityAddress,
@@ -153,7 +152,7 @@ export class BringDeliveryService {
     const totalWeightInGrams = this.calculateTotalWeight(items);
 
     return {
-      clientUrl: this.clientUrl,
+      clientUrl: env.get("CLIENT_URI"),
       weight: totalWeightInGrams,
       frompostalcode: facilityAddress.postalCode,
       topostalcode: shipmentAddress.postalCode,

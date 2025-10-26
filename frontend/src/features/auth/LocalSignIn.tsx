@@ -55,7 +55,7 @@ export default function LocalSignIn() {
   });
 
   useEffect(() => {
-    // Next might have valid tokens, even though bl-web and bl-admin might not. If so, the user is redirected automatically
+    // Next might have valid tokens, even though bl-admin might not. If so, the user is redirected automatically
     if (isLoggedIn) {
       redirectToCaller();
     }

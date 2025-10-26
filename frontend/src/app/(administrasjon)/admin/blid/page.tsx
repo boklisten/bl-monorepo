@@ -1,11 +1,11 @@
 import { Suspense } from "react";
 
-import RedirectTo from "@/features/auth-linker/RedirectTo";
+import RedirectToBlAdmin from "@/features/auth-linker/RedirectToBlAdmin";
 
 export default function BlidSearchPage() {
   return (
     <Suspense>
-      <RedirectTo target={"bl-admin"} path={"blid"} />
+      <RedirectToBlAdmin path={"blid"} />
     </Suspense>
   );
 }

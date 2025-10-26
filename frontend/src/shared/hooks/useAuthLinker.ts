@@ -9,15 +9,11 @@ export default function useAuthLinker() {
   const searchParams = useSearchParams();
   const { isLoading, isLoggedIn } = useAuth();
 
-  function redirectTo(
-    target: "bl-admin" | "bl-web",
-    path: string,
-    retainHistory?: boolean,
-  ) {
+  function redirectToBlAdmin(path: string, retainHistory?: boolean) {
     if (isLoading) return;
 
     const url = new URL(
-      `${target === "bl-admin" ? BL_CONFIG.blAdmin.basePath : BL_CONFIG.blWeb.basePath}${path}?${searchParams.toString()}`,
+      `${BL_CONFIG.blAdmin.basePath}${path}?${searchParams.toString()}`,
     );
 
     if (isLoggedIn) {
@@ -58,11 +54,11 @@ export default function useAuthLinker() {
       return;
     }
 
-    if (caller !== "bl-web" && caller !== "bl-admin") {
+    if (caller !== "bl-admin") {
       throw new Error("Invalid caller");
     }
-    redirectTo(caller, `auth/gateway?redirect=${redirect}`);
+    redirectToBlAdmin(`auth/gateway?redirect=${redirect}`);
   }
 
-  return { redirectTo, redirectToCaller };
+  return { redirectToBlAdmin, redirectToCaller };
 }

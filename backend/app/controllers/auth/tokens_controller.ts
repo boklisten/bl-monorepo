@@ -9,7 +9,7 @@ import env from "#start/env";
 import { tokenValidator } from "#validators/auth_validators";
 
 export default class TokensController {
-  // @deprecated Only used for bl-web and bl-admin, use token for new adoptions
+  // @deprecated Only used for bl-admin, use token for new adoptions
   async legacyToken(ctx: HttpContext) {
     const { refreshToken } = await ctx.request.validateUsing(tokenValidator);
     try {

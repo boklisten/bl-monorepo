@@ -3,7 +3,7 @@
 import { Button, Group, Space, Stack, Text } from "@mantine/core";
 import { createFieldMap } from "@tanstack/react-form";
 import { useMutation } from "@tanstack/react-query";
-import { useState } from "react";
+import { Activity, useState } from "react";
 
 import UserInfoFields, {
   userInfoFieldDefaultValues,
@@ -125,16 +125,16 @@ export default function SignupForm() {
         {(field) => <field.EmailField />}
       </form.AppField>
       <form.Subscribe selector={(state) => state.values.email}>
-        {(email) =>
-          isSchoolEmail(email) && (
+        {(email) => (
+          <Activity mode={isSchoolEmail(email) ? "visible" : "hidden"}>
             <WarningAlert>
               Vi anbefaler at du bruker din personlige e-postadresse i stedet
               for skolekontoen. Da beholder du tilgangen etter endt utdanning og
               kan motta viktige varsler om eventuelle manglende
               bokinnleveringer.
             </WarningAlert>
-          )
-        }
+          </Activity>
+        )}
       </form.Subscribe>
       <form.AppField
         name={"password"}

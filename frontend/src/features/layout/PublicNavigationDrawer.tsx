@@ -18,6 +18,7 @@ import {
 } from "@tabler/icons-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { Activity } from "react";
 
 import TasksIndicator from "@/features/layout/TasksIndicator";
 import TasksLink from "@/features/layout/TasksLink";
@@ -29,13 +30,15 @@ export default function PublicNavigationDrawer() {
   const { isLoggedIn, isEmployee } = useAuth();
   return (
     <>
-      {isLoggedIn ? (
+      <Activity mode={isLoggedIn ? "visible" : "hidden"}>
         <TasksIndicator>
           <Burger color={"white"} opened={opened} onClick={toggle} />
         </TasksIndicator>
-      ) : (
+      </Activity>
+      <Activity mode={!isLoggedIn ? "visible" : "hidden"}>
         <Burger color={"white"} opened={opened} onClick={toggle} />
-      )}
+      </Activity>
+
       <Drawer
         opened={opened}
         onClose={close}
@@ -43,7 +46,9 @@ export default function PublicNavigationDrawer() {
         title={"Velg side"}
       >
         <Stack gap={5}>
-          {isLoggedIn && <TasksLink />}
+          <Activity mode={isLoggedIn ? "visible" : "hidden"}>
+            <TasksLink />
+          </Activity>
           <NavLink
             label={"Bestill bøker"}
             href={"/bestilling"}
@@ -54,49 +59,47 @@ export default function PublicNavigationDrawer() {
             onClick={close}
           />
 
-          {isLoggedIn && (
-            <>
-              <NavLink
-                label={"Dine bøker"}
-                href={"/items"}
-                active={pathname.includes("/items")}
-                variant={"subtle"}
-                leftSection={<IconBook />}
-                component={Link}
-                onClick={close}
-              />
-              <NavLink
-                label={"Ordrehistorikk"}
-                href={"/order-history"}
-                active={pathname.includes("/order-history")}
-                variant={"subtle"}
-                leftSection={<IconReceipt />}
-                component={Link}
-                onClick={close}
-              />
-              <NavLink
-                label={"Overleveringer"}
-                href={"/overleveringer"}
-                active={pathname.includes("/overleveringer")}
-                variant={"subtle"}
-                leftSection={<IconHeartHandshake />}
-                component={Link}
-                onClick={close}
-              />
-              <NavLink
-                label={"Boksøk"}
-                description={
-                  "Søk opp en bok sin unike ID for å finne ut hvem som er ansvarlig for den"
-                }
-                href={"/sjekk"}
-                active={pathname.includes("/sjekk")}
-                variant={"subtle"}
-                leftSection={<IconSearch />}
-                component={Link}
-                onClick={close}
-              />
-            </>
-          )}
+          <Activity mode={isLoggedIn ? "visible" : "hidden"}>
+            <NavLink
+              label={"Dine bøker"}
+              href={"/items"}
+              active={pathname.includes("/items")}
+              variant={"subtle"}
+              leftSection={<IconBook />}
+              component={Link}
+              onClick={close}
+            />
+            <NavLink
+              label={"Ordrehistorikk"}
+              href={"/order-history"}
+              active={pathname.includes("/order-history")}
+              variant={"subtle"}
+              leftSection={<IconReceipt />}
+              component={Link}
+              onClick={close}
+            />
+            <NavLink
+              label={"Overleveringer"}
+              href={"/overleveringer"}
+              active={pathname.includes("/overleveringer")}
+              variant={"subtle"}
+              leftSection={<IconHeartHandshake />}
+              component={Link}
+              onClick={close}
+            />
+            <NavLink
+              label={"Boksøk"}
+              description={
+                "Søk opp en bok sin unike ID for å finne ut hvem som er ansvarlig for den"
+              }
+              href={"/sjekk"}
+              active={pathname.includes("/sjekk")}
+              variant={"subtle"}
+              leftSection={<IconSearch />}
+              component={Link}
+              onClick={close}
+            />
+          </Activity>
           <Divider label={"Informasjon"} />
           <NavLink
             label={"Generell informasjon"}
@@ -128,64 +131,60 @@ export default function PublicNavigationDrawer() {
 
           <Divider label={"Bruker"} />
 
-          {isLoggedIn && (
-            <>
+          <Activity mode={isLoggedIn ? "visible" : "hidden"}>
+            <NavLink
+              label={"Brukerinnstillinger"}
+              href={"/user-settings"}
+              active={pathname.includes("/user-settings")}
+              variant={"subtle"}
+              leftSection={<IconUserEdit />}
+              component={Link}
+              onClick={close}
+            />
+            <Activity mode={isEmployee ? "visible" : "hidden"}>
               <NavLink
-                label={"Brukerinnstillinger"}
-                href={"/user-settings"}
-                active={pathname.includes("/user-settings")}
-                variant={"subtle"}
-                leftSection={<IconUserEdit />}
-                component={Link}
-                onClick={close}
-              />
-              {isEmployee && (
-                <NavLink
-                  label={"Gå til bl-admin"}
-                  description={
-                    "Her kan du søke opp kunder, samle inn og dele ut bøker."
-                  }
-                  href={"/admin"}
-                  leftSection={<IconExternalLink />}
-                  component={Link}
-                  active
-                  color={"orange"}
-                  onClick={close}
-                />
-              )}
-              <NavLink
-                label={"Logg ut"}
-                href={"/auth/logout"}
-                leftSection={<IconLogout />}
+                label={"Gå til bl-admin"}
+                description={
+                  "Her kan du søke opp kunder, samle inn og dele ut bøker."
+                }
+                href={"/admin"}
+                leftSection={<IconExternalLink />}
                 component={Link}
                 active
-                variant={"subtle"}
-                color={"red"}
+                color={"orange"}
                 onClick={close}
               />
-            </>
-          )}
+            </Activity>
+            <NavLink
+              label={"Logg ut"}
+              href={"/auth/logout"}
+              leftSection={<IconLogout />}
+              component={Link}
+              active
+              variant={"subtle"}
+              color={"red"}
+              onClick={close}
+            />
+          </Activity>
 
-          {!isLoggedIn && (
-            <>
-              <NavLink
-                label={"Registrer"}
-                href={"/auth/register"}
-                active={pathname.includes("/auth/register")}
-                variant={"subtle"}
-                leftSection={<IconUserPlus />}
-                onClick={close}
-              />
-              <NavLink
-                label={"Logg inn"}
-                href={"/auth/login"}
-                active={pathname.includes("/auth/login")}
-                variant={"subtle"}
-                leftSection={<IconLogin />}
-                onClick={close}
-              />
-            </>
-          )}
+          <Activity mode={!isLoggedIn ? "visible" : "hidden"}>
+            <NavLink
+              label={"Registrer"}
+              href={"/auth/register"}
+              active={pathname.includes("/auth/register")}
+              variant={"subtle"}
+              leftSection={<IconUserPlus />}
+              onClick={close}
+            />
+            <NavLink
+              label={"Logg inn"}
+              href={"/auth/login"}
+              active={pathname.includes("/auth/login")}
+              variant={"subtle"}
+              leftSection={<IconLogin />}
+              onClick={close}
+            />
+          </Activity>
         </Stack>
       </Drawer>
     </>

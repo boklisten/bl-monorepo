@@ -23,6 +23,7 @@ import {
 } from "@tabler/icons-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { Activity } from "react";
 
 import useAuth from "@/shared/hooks/useAuth";
 
@@ -102,99 +103,97 @@ export default function AdminPageNavigation({
             component={Link}
             onClick={onNavigate}
           />
-          {isAdmin && (
-            <>
-              <Divider label={"Admin"} />
+          <Activity mode={isAdmin ? "visible" : "hidden"}>
+            <Divider label={"Admin"} />
+            <NavLink
+              label={"Faktura"}
+              href={"/admin/faktura"}
+              active={pathname === "/admin/faktura"}
+              leftSection={<IconFileDollar />}
+              variant={"subtle"}
+              component={Link}
+              onClick={onNavigate}
+            />
+            <NavLink
+              label={"Påminnelser"}
+              href={"/admin/kommunikasjon/paminnelser"}
+              active={pathname === "/admin/kommunikasjon/paminnelser"}
+              leftSection={<IconBell />}
+              variant={"subtle"}
+              component={Link}
+              onClick={onNavigate}
+            />
+            <NavLink
+              label={"Databaseverktøy"}
+              leftSection={<IconDatabase />}
+              active={pathname.includes("database")}
+              variant={"subtle"}
+            >
               <NavLink
-                label={"Faktura"}
-                href={"/admin/faktura"}
-                active={pathname === "/admin/faktura"}
-                leftSection={<IconFileDollar />}
+                label={"Rapporter"}
+                href={"/admin/database/rapporter"}
+                active={pathname === "/admin/database/rapporter"}
+                leftSection={<IconChartBar />}
                 variant={"subtle"}
                 component={Link}
                 onClick={onNavigate}
               />
               <NavLink
-                label={"Påminnelser"}
-                href={"/admin/kommunikasjon/paminnelser"}
-                active={pathname === "/admin/kommunikasjon/paminnelser"}
-                leftSection={<IconBell />}
+                label={"Bøker"}
+                href={"/admin/database/boker"}
+                active={pathname === "/admin/database/boker"}
+                leftSection={<IconBooks />}
                 variant={"subtle"}
                 component={Link}
                 onClick={onNavigate}
               />
               <NavLink
-                label={"Databaseverktøy"}
-                leftSection={<IconDatabase />}
-                active={pathname.includes("database")}
+                label={"Filialer"}
+                href={"/admin/database/filialer"}
+                active={pathname === "/admin/database/filialer"}
+                leftSection={<IconBuildingStore />}
                 variant={"subtle"}
-              >
-                <NavLink
-                  label={"Rapporter"}
-                  href={"/admin/database/rapporter"}
-                  active={pathname === "/admin/database/rapporter"}
-                  leftSection={<IconChartBar />}
-                  variant={"subtle"}
-                  component={Link}
-                  onClick={onNavigate}
-                />
-                <NavLink
-                  label={"Bøker"}
-                  href={"/admin/database/boker"}
-                  active={pathname === "/admin/database/boker"}
-                  leftSection={<IconBooks />}
-                  variant={"subtle"}
-                  component={Link}
-                  onClick={onNavigate}
-                />
-                <NavLink
-                  label={"Filialer"}
-                  href={"/admin/database/filialer"}
-                  active={pathname === "/admin/database/filialer"}
-                  leftSection={<IconBuildingStore />}
-                  variant={"subtle"}
-                  component={Link}
-                  onClick={onNavigate}
-                />
-                <NavLink
-                  label={"Selskap"}
-                  href={"/admin/database/selskap"}
-                  active={pathname === "/admin/database/selskap"}
-                  leftSection={<IconBuildings />}
-                  variant={"subtle"}
-                  component={Link}
-                  onClick={onNavigate}
-                />
-                <NavLink
-                  label={"Dynamisk innhold"}
-                  href={"/admin/database/dynamisk_innhold"}
-                  active={pathname === "/admin/database/dynamisk_innhold"}
-                  leftSection={<IconEdit />}
-                  variant={"subtle"}
-                  component={Link}
-                  onClick={onNavigate}
-                />
-                <NavLink
-                  label={"Unike IDer"}
-                  href={"/admin/database/unik_id"}
-                  active={pathname === "/admin/database/unik_id"}
-                  leftSection={<IconQrcode />}
-                  variant={"subtle"}
-                  component={Link}
-                  onClick={onNavigate}
-                />
-                <NavLink
-                  label={"Lag brukere"}
-                  href={"/admin/database/lag_brukere"}
-                  active={pathname === "/admin/database/lag_brukere"}
-                  leftSection={<IconUserPlus />}
-                  variant={"subtle"}
-                  component={Link}
-                  onClick={onNavigate}
-                />
-              </NavLink>
-            </>
-          )}
+                component={Link}
+                onClick={onNavigate}
+              />
+              <NavLink
+                label={"Selskap"}
+                href={"/admin/database/selskap"}
+                active={pathname === "/admin/database/selskap"}
+                leftSection={<IconBuildings />}
+                variant={"subtle"}
+                component={Link}
+                onClick={onNavigate}
+              />
+              <NavLink
+                label={"Dynamisk innhold"}
+                href={"/admin/database/dynamisk_innhold"}
+                active={pathname === "/admin/database/dynamisk_innhold"}
+                leftSection={<IconEdit />}
+                variant={"subtle"}
+                component={Link}
+                onClick={onNavigate}
+              />
+              <NavLink
+                label={"Unike IDer"}
+                href={"/admin/database/unik_id"}
+                active={pathname === "/admin/database/unik_id"}
+                leftSection={<IconQrcode />}
+                variant={"subtle"}
+                component={Link}
+                onClick={onNavigate}
+              />
+              <NavLink
+                label={"Lag brukere"}
+                href={"/admin/database/lag_brukere"}
+                active={pathname === "/admin/database/lag_brukere"}
+                leftSection={<IconUserPlus />}
+                variant={"subtle"}
+                component={Link}
+                onClick={onNavigate}
+              />
+            </NavLink>
+          </Activity>
         </Stack>
       </ScrollArea>
 

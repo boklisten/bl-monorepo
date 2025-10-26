@@ -2,7 +2,7 @@
 import { Container, Stack, Title } from "@mantine/core";
 import { useMounted } from "@mantine/hooks";
 import { useRouter } from "next/navigation";
-import { useEffect } from "react";
+import { Suspense, useEffect } from "react";
 
 import CountdownToRedirect from "@/shared/components/CountdownToRedirect";
 import useAuth from "@/shared/hooks/useAuth";
@@ -21,7 +21,9 @@ export default function LogoutPage() {
     <Container size={"md"}>
       <Stack>
         <Title ta={"center"}>Du er nå logget ut</Title>
-        <CountdownToRedirect seconds={5} path={"/"} shouldReplaceInHistory />
+        <Suspense>
+          <CountdownToRedirect seconds={5} path={"/"} shouldReplaceInHistory />
+        </Suspense>
       </Stack>
     </Container>
   );

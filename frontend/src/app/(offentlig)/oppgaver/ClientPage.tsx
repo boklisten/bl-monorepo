@@ -10,7 +10,7 @@ import {
 } from "@mantine/core";
 import { IconSend } from "@tabler/icons-react";
 import { useMutation, useQuery } from "@tanstack/react-query";
-import { Suspense } from "react";
+import { Activity, Suspense } from "react";
 
 import SignAgreement from "@/features/signatures/SignAgreement";
 import UserSettingsForm from "@/features/user/UserSettingsForm";
@@ -83,14 +83,16 @@ export default function ClientPage({
         fortsette.
       </Text>
       <Stepper active={confirmDetailsTask === false ? 1 : 0}>
-        {confirmDetailsTask !== undefined && (
+        <Activity
+          mode={confirmDetailsTask !== undefined ? "visible" : "hidden"}
+        >
           <Stepper.Step label={"Bekreft din informasjon"}>
             <UserSettingsForm userDetail={data} />
           </Stepper.Step>
-        )}
-        {signAgreementTask === true && (
+        </Activity>
+        <Activity mode={signAgreementTask === true ? "visible" : "hidden"}>
           <Stepper.Step label={"Signer låneavtale"}>
-            {isUnder18(data.dob) ? (
+            <Activity mode={isUnder18(data.dob) ? "visible" : "hidden"}>
               <Stack>
                 <InfoAlert title={"Send signaturforespørsel til foresatt"}>
                   <Stack gap={5}>
@@ -127,14 +129,15 @@ export default function ClientPage({
                   {data.guardian?.name && ` til ${data.guardian?.name}`}
                 </Button>
               </Stack>
-            ) : (
+            </Activity>
+            <Activity mode={!isUnder18(data.dob) ? "visible" : "hidden"}>
               <SignAgreement
                 userDetailId={data.id}
                 cachedAgreementText={cachedAgreementText}
               />
-            )}
+            </Activity>
           </Stepper.Step>
-        )}
+        </Activity>
       </Stepper>
     </>
   );

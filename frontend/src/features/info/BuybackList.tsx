@@ -2,6 +2,7 @@
 import { Item } from "@boklisten/backend/shared/item";
 import { Table, Text, Title } from "@mantine/core";
 import { useQuery } from "@tanstack/react-query";
+import { Activity } from "react";
 
 import ErrorAlert from "@/shared/components/alerts/ErrorAlert";
 import InfoAlert from "@/shared/components/alerts/InfoAlert";
@@ -50,25 +51,26 @@ const BuybackList = ({
           </Table.Tr>
         </Table.Thead>
         <Table.Tbody>
-          {!error &&
-            items.map((item) => (
+          <Activity mode={!error ? "visible" : "hidden"}>
+            {items.map((item) => (
               <Table.Tr key={item.info.isbn}>
                 <Table.Td>{item.title}</Table.Td>
                 <Table.Td>{item.info.isbn}</Table.Td>
               </Table.Tr>
             ))}
+          </Activity>
         </Table.Tbody>
       </Table>
-      {!error && items.length === 0 && (
+      <Activity mode={!error && items.length === 0 ? "visible" : "hidden"}>
         <InfoAlert>
           Ingen bøker i listen. Kom tilbake senere for å se en oppdatert liste.
         </InfoAlert>
-      )}
-      {error && (
+      </Activity>
+      <Activity mode={error ? "visible" : "hidden"}>
         <ErrorAlert title={GENERIC_ERROR_TEXT}>
           {PLEASE_TRY_AGAIN_TEXT}
         </ErrorAlert>
-      )}
+      </Activity>
     </>
   );
 };

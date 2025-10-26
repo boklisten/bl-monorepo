@@ -1,7 +1,7 @@
 import { Branch } from "@boklisten/backend/shared/branch";
 import { NavLink, Stack, Title, Tree, TreeNodeData } from "@mantine/core";
 import { IconChevronRight } from "@tabler/icons-react";
-import { useState } from "react";
+import { Activity, useState } from "react";
 
 function toTreeNodeData(branches: Branch[]) {
   const branchById = new Map(branches.map((b) => [b.id, b]));
@@ -54,17 +54,21 @@ export default function SelectBranchTreeView({
               onSelect(node.value);
             }}
             leftSection={
-              (hasChildren && !onlyLeafs) ||
-              (hasChildren && onlyLeafs && expanded) ? (
+              <Activity
+                mode={
+                  (hasChildren && !onlyLeafs) ||
+                  (hasChildren && onlyLeafs && expanded)
+                    ? "visible"
+                    : "hidden"
+                }
+              >
                 <IconChevronRight
                   size={18}
                   style={{
                     transform: expanded ? "rotate(90deg)" : "rotate(0deg)",
                   }}
                 />
-              ) : (
-                <></>
-              )
+              </Activity>
             }
             active={selected === node.value}
           />

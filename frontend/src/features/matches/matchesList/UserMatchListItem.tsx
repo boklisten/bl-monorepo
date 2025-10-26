@@ -1,5 +1,6 @@
 import { UserMatchWithDetails } from "@boklisten/backend/shared/match/match-dtos";
 import { Text, Title } from "@mantine/core";
+import { Activity } from "react";
 
 import {
   formatActionsString,
@@ -47,35 +48,39 @@ export default function UserMatchListItem({
         <UserMatchTitle userMatchStatus={userMatchStatus} />
       </Title>
 
-      {isCurrentUserStarted && (
-        <>
-          <ProgressBar
-            percentComplete={
-              (currentUserActualItemCount * 100) / currentUserExpectedItemCount
-            }
-            subtitle={
-              <Text size={"sm"}>
-                {statusText} {currentUserActualItemCount} av{" "}
-                {currentUserExpectedItemCount} bøker
-              </Text>
-            }
-          />
-        </>
-      )}
-      {!isCurrentUserStarted && !isCurrentUserFulfilled && (
+      <Activity mode={isCurrentUserStarted ? "visible" : "hidden"}>
+        <ProgressBar
+          percentComplete={
+            (currentUserActualItemCount * 100) / currentUserExpectedItemCount
+          }
+          subtitle={
+            <Text size={"sm"}>
+              {statusText} {currentUserActualItemCount} av{" "}
+              {currentUserExpectedItemCount} bøker
+            </Text>
+          }
+        />
+      </Activity>
+      <Activity
+        mode={
+          !isCurrentUserStarted && !isCurrentUserFulfilled
+            ? "visible"
+            : "hidden"
+        }
+      >
         <Text>
           {formatActionsString(
             currentUser.items.length,
             currentUser.wantedItems.length,
           )}
         </Text>
-      )}
-      {!isCurrentUserFulfilled && (
+      </Activity>
+      <Activity mode={!isCurrentUserFulfilled ? "visible" : "hidden"}>
         <MeetingInfo
           meetingLocation={userMatch.meetingInfo.location}
           meetingTime={userMatch.meetingInfo.date}
         />
-      )}
+      </Activity>
     </MatchListItemCard>
   );
 }

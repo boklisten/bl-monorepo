@@ -1,5 +1,6 @@
 import { StandMatchWithDetails } from "@boklisten/backend/shared/match/match-dtos";
 import { Text, Title } from "@mantine/core";
+import { Activity } from "react";
 
 import {
   formatActionsString,
@@ -36,72 +37,64 @@ export default function StandMatchListItem({
       <Title order={4}>
         <StandMatchTitle standMatch={standMatch} />
       </Title>
-      {isBegun && (
-        <>
-          {hasHandoffItems && hasPickupItems ? (
-            <>
-              <ProgressBar
-                percentComplete={
-                  (fulfilledHandoffItems.length * 100) / numberHandoffItems
-                }
-                subtitle={
-                  <Text size={"sm"}>
-                    Utvekslet {fulfilledHandoffItems.length} av{" "}
-                    {numberHandoffItems} bøker
-                  </Text>
-                }
-              />
-            </>
-          ) : (
-            <></>
-          )}
-          {hasHandoffItems && !hasPickupItems ? (
-            <>
-              <ProgressBar
-                percentComplete={
-                  (fulfilledHandoffItems.length * 100) / numberHandoffItems
-                }
-                subtitle={
-                  <Text size={"sm"}>
-                    Levert {fulfilledHandoffItems.length} av{" "}
-                    {numberHandoffItems} bøker
-                  </Text>
-                }
-              />
-            </>
-          ) : (
-            <></>
-          )}
-          {hasPickupItems && !hasHandoffItems ? (
-            <>
-              <ProgressBar
-                percentComplete={
-                  (fulfilledPickupItems.length * 100) / numberPickupItems
-                }
-                subtitle={
-                  <Text size={"sm"}>
-                    Mottatt {fulfilledPickupItems.length} av {numberPickupItems}{" "}
-                    bøker
-                  </Text>
-                }
-              />
-            </>
-          ) : (
-            <></>
-          )}
-        </>
-      )}
-      {!isBegun && !isFulfilled && (
+      <Activity mode={isBegun ? "visible" : "hidden"}>
+        <Activity
+          mode={hasHandoffItems && hasPickupItems ? "visible" : "hidden"}
+        >
+          <ProgressBar
+            percentComplete={
+              (fulfilledHandoffItems.length * 100) / numberHandoffItems
+            }
+            subtitle={
+              <Text size={"sm"}>
+                Utvekslet {fulfilledHandoffItems.length} av {numberHandoffItems}{" "}
+                bøker
+              </Text>
+            }
+          />
+        </Activity>
+        <Activity
+          mode={hasHandoffItems && !hasPickupItems ? "visible" : "hidden"}
+        >
+          <ProgressBar
+            percentComplete={
+              (fulfilledHandoffItems.length * 100) / numberHandoffItems
+            }
+            subtitle={
+              <Text size={"sm"}>
+                Levert {fulfilledHandoffItems.length} av {numberHandoffItems}{" "}
+                bøker
+              </Text>
+            }
+          />
+        </Activity>
+        <Activity
+          mode={hasPickupItems && !hasHandoffItems ? "visible" : "hidden"}
+        >
+          <ProgressBar
+            percentComplete={
+              (fulfilledPickupItems.length * 100) / numberPickupItems
+            }
+            subtitle={
+              <Text size={"sm"}>
+                Mottatt {fulfilledPickupItems.length} av {numberPickupItems}{" "}
+                bøker
+              </Text>
+            }
+          />
+        </Activity>
+      </Activity>
+      <Activity mode={!isBegun && !isFulfilled ? "visible" : "hidden"}>
         <Text>
           {formatActionsString(numberHandoffItems, numberPickupItems)}
         </Text>
-      )}
-      {!isFulfilled && (
+      </Activity>
+      <Activity mode={!isFulfilled ? "visible" : "hidden"}>
         <MeetingInfo
           meetingTime={standMatch.meetingInfo.date}
           meetingLocation={standMatch.meetingInfo.location}
         />
-      )}
+      </Activity>
     </MatchListItemCard>
   );
 }

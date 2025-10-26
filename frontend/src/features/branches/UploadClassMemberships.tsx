@@ -1,6 +1,7 @@
 import { List, Stack, Title } from "@mantine/core";
 import { modals } from "@mantine/modals";
 import { useMutation } from "@tanstack/react-query";
+import { Activity } from "react";
 
 import UploadCSVFile from "@/shared/components/UploadCSVFile";
 import useApiClient from "@/shared/hooks/useApiClient";
@@ -18,30 +19,26 @@ function SuccessfulUploadDialog({
   return (
     <Stack>
       <Title order={5}>{`${matchedUsers} brukere ble oppdatert!`}</Title>
-      {unknownBranches.length > 0 && (
-        <>
-          <Title
-            order={6}
-          >{`${unknownBranches.length} filialer ble ikke funnet:`}</Title>
-          <List>
-            {unknownBranches.map((branchName) => (
-              <List.Item key={branchName}>{branchName}</List.Item>
-            ))}
-          </List>
-        </>
-      )}
-      {unknownRecords.length > 0 && (
-        <>
-          <Title
-            order={6}
-          >{`${unknownRecords.length} brukere ble ikke funnet:`}</Title>
-          <List>
-            {unknownRecords.map(({ branch, phone }) => (
-              <List.Item key={phone}>{`${branch} - ${phone}`}</List.Item>
-            ))}
-          </List>
-        </>
-      )}
+      <Activity mode={unknownBranches.length > 0 ? "visible" : "hidden"}>
+        <Title
+          order={6}
+        >{`${unknownBranches.length} filialer ble ikke funnet:`}</Title>
+        <List>
+          {unknownBranches.map((branchName) => (
+            <List.Item key={branchName}>{branchName}</List.Item>
+          ))}
+        </List>
+      </Activity>
+      <Activity mode={unknownRecords.length > 0 ? "visible" : "hidden"}>
+        <Title
+          order={6}
+        >{`${unknownRecords.length} brukere ble ikke funnet:`}</Title>
+        <List>
+          {unknownRecords.map(({ branch, phone }) => (
+            <List.Item key={phone}>{`${branch} - ${phone}`}</List.Item>
+          ))}
+        </List>
+      </Activity>
     </Stack>
   );
 }

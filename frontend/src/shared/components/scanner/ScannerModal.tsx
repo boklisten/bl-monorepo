@@ -1,7 +1,7 @@
 import { Button, Stack } from "@mantine/core";
 import { modals } from "@mantine/modals";
 import { IconForms } from "@tabler/icons-react";
-import { PropsWithChildren } from "react";
+import { Activity, PropsWithChildren } from "react";
 
 import WarningAlert from "@/shared/components/alerts/WarningAlert";
 import BlidScanner, {
@@ -78,7 +78,7 @@ const ScannerModal = ({
     <Stack>
       <BlidScanner onResult={handleRegistration} />
       {children}
-      {allowManualRegistration && (
+      <Activity mode={allowManualRegistration ? "visible" : "hidden"}>
         <Button
           variant={"outline"}
           leftSection={<IconForms />}
@@ -92,7 +92,7 @@ const ScannerModal = ({
         >
           Skriv inn blid manuelt
         </Button>
-      )}
+      </Activity>
     </Stack>
   );
 };

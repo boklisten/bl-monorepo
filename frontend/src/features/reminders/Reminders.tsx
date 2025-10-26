@@ -7,6 +7,7 @@ import { modals } from "@mantine/modals";
 import { IconMailFast, IconSend } from "@tabler/icons-react";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import dayjs from "dayjs";
+import { Activity } from "react";
 
 import { calculateSmsSegmentFeedback } from "@/features/reminders/sms";
 import { useAppForm } from "@/shared/hooks/form";
@@ -179,59 +180,70 @@ export default function Reminders() {
         </Grid.Col>
       </Grid>
       <form.Subscribe selector={(state) => state.values.messageMethod}>
-        {(messageMethod) =>
-          messageMethod === MessageMethod.SMS ? (
-            <form.AppField
-              name={"smsText"}
-              validators={{
-                onChangeListenTo: ["messageMethod"],
-                onChange: ({ value }) =>
-                  form.state.values.messageMethod === "sms" &&
-                  (!value || value.length === 0)
-                    ? "Du må fylle inn melding"
-                    : null,
-              }}
+        {(messageMethod) => (
+          <>
+            <Activity
+              mode={messageMethod === MessageMethod.SMS ? "visible" : "hidden"}
             >
-              {(field) => (
-                <field.TextAreaField
-                  label={"Melding"}
-                  description={calculateSmsSegmentFeedback(
-                    field.state.value ?? "",
-                  )}
-                  placeholder={"Hei! [...] Mvh, Boklisten.no"}
-                  autosize
-                  minRows={2}
-                  maxRows={10}
-                />
-              )}
-            </form.AppField>
-          ) : (
-            <form.AppField
-              name={"emailTemplateId"}
-              validators={{
-                onChangeListenTo: ["messageMethod"],
-                onChange: ({ value }) => {
-                  if (form.state.values.messageMethod !== "email") return null;
+              <form.AppField
+                name={"smsText"}
+                validators={{
+                  onChangeListenTo: ["messageMethod"],
+                  onChange: ({ value }) =>
+                    form.state.values.messageMethod === "sms" &&
+                    (!value || value.length === 0)
+                      ? "Du må fylle inn melding"
+                      : null,
+                }}
+              >
+                {(field) => (
+                  <field.TextAreaField
+                    label={"Melding"}
+                    description={calculateSmsSegmentFeedback(
+                      field.state.value ?? "",
+                    )}
+                    placeholder={"Hei! [...] Mvh, Boklisten.no"}
+                    autosize
+                    minRows={2}
+                    maxRows={10}
+                  />
+                )}
+              </form.AppField>
+            </Activity>
 
-                  if (!value || value.length === 0)
-                    return "Du må fylle inn template ID";
-
-                  if (!SENDGRID_TEMPLATE_ID_REGEX.test(value))
-                    return "Du må fylle inn en gyldig SendGrid Template ID";
-
-                  return null;
-                },
-              }}
+            <Activity
+              mode={
+                messageMethod === MessageMethod.EMAIL ? "visible" : "hidden"
+              }
             >
-              {(field) => (
-                <field.TextField
-                  label={"Template ID"}
-                  placeholder={"d-123456789"}
-                />
-              )}
-            </form.AppField>
-          )
-        }
+              <form.AppField
+                name={"emailTemplateId"}
+                validators={{
+                  onChangeListenTo: ["messageMethod"],
+                  onChange: ({ value }) => {
+                    if (form.state.values.messageMethod !== "email")
+                      return null;
+
+                    if (!value || value.length === 0)
+                      return "Du må fylle inn template ID";
+
+                    if (!SENDGRID_TEMPLATE_ID_REGEX.test(value))
+                      return "Du må fylle inn en gyldig SendGrid Template ID";
+
+                    return null;
+                  },
+                }}
+              >
+                {(field) => (
+                  <field.TextField
+                    label={"Template ID"}
+                    placeholder={"d-123456789"}
+                  />
+                )}
+              </form.AppField>
+            </Activity>
+          </>
+        )}
       </form.Subscribe>
       <form.AppForm>
         <form.ErrorSummary />

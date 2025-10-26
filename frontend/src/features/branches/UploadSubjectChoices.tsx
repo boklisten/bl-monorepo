@@ -1,6 +1,7 @@
 import { List, Stack, Text } from "@mantine/core";
 import { modals } from "@mantine/modals";
 import { useMutation } from "@tanstack/react-query";
+import { Activity } from "react";
 
 import UploadCSVFile from "@/shared/components/UploadCSVFile";
 import useApiClient from "@/shared/hooks/useApiClient";
@@ -20,28 +21,25 @@ function SuccessfulUploadDialog({
       <Text>
         {`${successfulOrders} har fått bestillinger for fagvalgene sine!`}
       </Text>
-      {unknownSubjects.length > 0 && (
-        <>
-          <Text>{`${unknownSubjects.length} fag ble ikke funnet:`}</Text>
-          <List>
-            {unknownSubjects.map((subject) => (
-              <List.Item key={subject}>{subject}</List.Item>
-            ))}
-          </List>
-        </>
-      )}
-      {unknownUsers.length > 0 && (
-        <>
-          <Text>{`${unknownUsers.length} brukere ble ikke funnet:`}</Text>
-          <List>
-            {unknownUsers.map(({ subjects, phone }) => (
-              <List.Item key={phone}>
-                {`${phone} - ${subjects.join(", ")}`}
-              </List.Item>
-            ))}
-          </List>
-        </>
-      )}
+
+      <Activity mode={unknownSubjects.length > 0 ? "visible" : "hidden"}>
+        <Text>{`${unknownSubjects.length} fag ble ikke funnet:`}</Text>
+        <List>
+          {unknownSubjects.map((subject) => (
+            <List.Item key={subject}>{subject}</List.Item>
+          ))}
+        </List>
+      </Activity>
+      <Activity mode={unknownUsers.length > 0 ? "visible" : "hidden"}>
+        <Text>{`${unknownUsers.length} brukere ble ikke funnet:`}</Text>
+        <List>
+          {unknownUsers.map(({ subjects, phone }) => (
+            <List.Item key={phone}>
+              {`${phone} - ${subjects.join(", ")}`}
+            </List.Item>
+          ))}
+        </List>
+      </Activity>
     </Stack>
   );
 }

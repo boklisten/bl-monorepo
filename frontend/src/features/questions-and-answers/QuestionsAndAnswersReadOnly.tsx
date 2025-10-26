@@ -8,7 +8,7 @@ import {
   Skeleton,
 } from "@mantine/core";
 import { useQuery } from "@tanstack/react-query";
-import { Suspense } from "react";
+import { Activity, Suspense } from "react";
 
 import ErrorAlert from "@/shared/components/alerts/ErrorAlert";
 import InfoAlert from "@/shared/components/alerts/InfoAlert";
@@ -55,9 +55,9 @@ export default function QuestionsAndAnswersReadOnly({
 
   return (
     <>
-      {data.length === 0 && (
+      <Activity mode={data.length === 0 ? "visible" : "hidden"}>
         <InfoAlert>Ingen spørsmål og svar er publisert enda</InfoAlert>
-      )}
+      </Activity>
       <Accordion>
         {data.map((questionAndAnswer) => (
           <AccordionItem

@@ -2,7 +2,7 @@ import { UserMatchWithDetails } from "@boklisten/backend/shared/match/match-dtos
 import { Button, Stack, Text, Title } from "@mantine/core";
 import { modals } from "@mantine/modals";
 import { IconObjectScan } from "@tabler/icons-react";
-import { Suspense, useState } from "react";
+import { Activity, Suspense, useState } from "react";
 
 import { UserMatchTitle } from "@/features/matches/matchesList/helper";
 import MeetingInfo from "@/features/matches/MeetingInfo";
@@ -76,18 +76,16 @@ const UserMatchDetail = ({
           <UserMatchTitle userMatchStatus={userMatchStatus} />
         </Title>
 
-        {isCurrentUserFulfilled && (
-          <>
-            <SuccessAlert>
-              Du har {statusText} alle bøkene for denne overleveringen.
-            </SuccessAlert>
-            {redirectCountdownStarted && (
-              <Suspense>
-                <CountdownToRedirect path={"/overleveringer"} seconds={5} />
-              </Suspense>
-            )}
-          </>
-        )}
+        <Activity mode={isCurrentUserFulfilled ? "visible" : "hidden"}>
+          <SuccessAlert>
+            Du har {statusText} alle bøkene for denne overleveringen.
+          </SuccessAlert>
+          <Activity mode={redirectCountdownStarted ? "visible" : "hidden"}>
+            <Suspense>
+              <CountdownToRedirect path={"/overleveringer"} seconds={5} />
+            </Suspense>
+          </Activity>
+        </Activity>
         <ProgressBar
           percentComplete={
             (currentUserActualItemCount * 100) / currentUserExpectedItemCount
@@ -100,9 +98,15 @@ const UserMatchDetail = ({
           }
         />
       </Stack>
-      {otherUser.receivedItems.some(
-        (item) => !currentUser.deliveredItems.includes(item),
-      ) && (
+      <Activity
+        mode={
+          otherUser.receivedItems.some(
+            (item) => !currentUser.deliveredItems.includes(item),
+          )
+            ? "visible"
+            : "hidden"
+        }
+      >
         <WarningAlert
           title={`${otherUser.name} har fått bøker som tilhørte noen andre enn deg`}
         >
@@ -115,30 +119,34 @@ const UserMatchDetail = ({
             stedet.
           </Text>
         </WarningAlert>
-      )}
+      </Activity>
 
-      {!isCurrentUserFulfilled && (
-        <>
-          <Stack gap={"xs"}>
-            <Title order={2}>Hvordan fungerer det?</Title>
-            <Text>
-              Du skal møte en annen elev og utveksle bøker. Det er viktig at den
-              som mottar bøker scanner hver bok, hvis ikke blir ikke bøkene
-              registrert som levert, og avsender kan få faktura. Hvis en bok er
-              ødelagt, skal den ikke tas imot.
-            </Text>
-          </Stack>
-          <Stack gap={"xs"}>
-            <MatchHeader>Du skal møte</MatchHeader>
-            <OtherPersonContact userMatch={userMatch} />
-            <MeetingInfo
-              meetingLocation={userMatch.meetingInfo.location}
-              meetingTime={userMatch.meetingInfo.date}
-            />
-          </Stack>
-        </>
-      )}
-      {currentUser.wantedItems.length > currentUser.receivedItems.length && (
+      <Activity mode={isCurrentUserFulfilled ? "hidden" : "visible"}>
+        <Stack gap={"xs"}>
+          <Title order={2}>Hvordan fungerer det?</Title>
+          <Text>
+            Du skal møte en annen elev og utveksle bøker. Det er viktig at den
+            som mottar bøker scanner hver bok, hvis ikke blir ikke bøkene
+            registrert som levert, og avsender kan få faktura. Hvis en bok er
+            ødelagt, skal den ikke tas imot.
+          </Text>
+        </Stack>
+        <Stack gap={"xs"}>
+          <MatchHeader>Du skal møte</MatchHeader>
+          <OtherPersonContact userMatch={userMatch} />
+          <MeetingInfo
+            meetingLocation={userMatch.meetingInfo.location}
+            meetingTime={userMatch.meetingInfo.date}
+          />
+        </Stack>
+      </Activity>
+      <Activity
+        mode={
+          currentUser.wantedItems.length > currentUser.receivedItems.length
+            ? "visible"
+            : "hidden"
+        }
+      >
         <Stack gap={"xs"}>
           <MatchHeader>Når du skal motta bøker</MatchHeader>
           <Text>For å motta bøker må du scanne dem</Text>
@@ -179,31 +187,33 @@ const UserMatchDetail = ({
             Scan bøker
           </Button>
         </Stack>
-      )}
-      {currentUser.wantedItems.length > 0 && (
+      </Activity>
+      <Activity
+        mode={currentUser.wantedItems.length > 0 ? "visible" : "hidden"}
+      >
         <Stack gap={0}>
-          {!isCurrentUserFulfilled && (
+          <Activity mode={!isCurrentUserFulfilled ? "visible" : "hidden"}>
             <MatchHeader>Du skal motta disse bøkene</MatchHeader>
-          )}
+          </Activity>
           <MatchItemTable
             itemFilter={currentUser.wantedItems}
             itemStatuses={itemStatuses}
             isSender={false}
           />
         </Stack>
-      )}
-      {currentUser.items.length > 0 && (
+      </Activity>
+      <Activity mode={currentUser.items.length > 0 ? "visible" : "hidden"}>
         <Stack gap={0}>
-          {!isCurrentUserFulfilled && (
+          <Activity mode={!isCurrentUserFulfilled ? "visible" : "hidden"}>
             <MatchHeader>Du skal levere disse bøkene</MatchHeader>
-          )}
+          </Activity>
           <MatchItemTable
             itemFilter={currentUser.items}
             itemStatuses={itemStatuses}
             isSender={true}
           />
         </Stack>
-      )}
+      </Activity>
     </Stack>
   );
 };

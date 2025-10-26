@@ -12,7 +12,7 @@ import {
 import { createFieldMap } from "@tanstack/react-form";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import dayjs from "dayjs";
-import { useState } from "react";
+import { Activity, useState } from "react";
 import QRCode from "react-qr-code";
 
 import UserInfoFields, {
@@ -139,29 +139,32 @@ export default function UserSettingsForm({
           </Tooltip>
         }
       />
-      {!userDetail.emailConfirmed && (
+      <Activity mode={!userDetail.emailConfirmed ? "visible" : "hidden"}>
         <Stack>
-          {createEmailConfirmation.isSuccess ? (
+          <Activity
+            mode={createEmailConfirmation.isSuccess ? "visible" : "hidden"}
+          >
             <InfoAlert icon={<IconMailFast />}>
               Bekreftelseslenke er sendt til din e-postadresse! Sjekk søppelpost
               om den ikke dukker opp i inbox.
             </InfoAlert>
-          ) : (
-            <>
-              <WarningAlert title={"E-postadressen er ikke bekreftet"}>
-                En bekreftelseslenke har blitt sendt til {userDetail.email}.
-                Trykk på knappen nedenfor for å sende en ny lenke.
-              </WarningAlert>
-              <Button
-                leftSection={<IconMailFast />}
-                onClick={() => createEmailConfirmation.mutate()}
-              >
-                Send bekreftelseslenke på nytt
-              </Button>
-            </>
-          )}
+          </Activity>
+          <Activity
+            mode={!createEmailConfirmation.isSuccess ? "visible" : "hidden"}
+          >
+            <WarningAlert title={"E-postadressen er ikke bekreftet"}>
+              En bekreftelseslenke har blitt sendt til {userDetail.email}. Trykk
+              på knappen nedenfor for å sende en ny lenke.
+            </WarningAlert>
+            <Button
+              leftSection={<IconMailFast />}
+              onClick={() => createEmailConfirmation.mutate()}
+            >
+              Send bekreftelseslenke på nytt
+            </Button>
+          </Activity>
         </Stack>
-      )}
+      </Activity>
       <Stack align={"center"} w={"100%"}>
         <Button
           leftSection={<IconQrcode />}

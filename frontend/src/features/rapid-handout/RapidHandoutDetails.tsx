@@ -5,7 +5,7 @@ import { Box, Button, Stack, Title } from "@mantine/core";
 import { modals } from "@mantine/modals";
 import { IconObjectScan } from "@tabler/icons-react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
-import { useEffect, useRef, useState } from "react";
+import { Activity, useEffect, useRef, useState } from "react";
 
 import InfoAlert from "@/shared/components/alerts/InfoAlert";
 import { ItemStatus } from "@/shared/components/matches/matches-helper";
@@ -106,93 +106,102 @@ export default function RapidHandoutDetails({
     }
     updateFulfilledOrderItems();
   }, [orders]);
+  return (
+    <>
+      <Activity mode={itemStatuses.length === 0 ? "visible" : "hidden"}>
+        <InfoAlert>
+          Denne kunden har for øyeblikket ingen bestilte bøker
+        </InfoAlert>
+      </Activity>
+      <Activity mode={itemStatuses.length > 0 ? "visible" : "hidden"}>
+        <Stack gap={"xs"}>
+          <Title order={2}>Bestilte bøker</Title>
+          <MatchItemTable itemStatuses={itemStatuses} isSender={true} />
+          <Box>
+            <Button
+              color={"green"}
+              leftSection={<IconObjectScan />}
+              onClick={() =>
+                modals.open({
+                  title: "Scann bøker",
+                  children: (
+                    <ScannerModal
+                      allowManualRegistration
+                      disableValidation={true}
+                      onScan={async (scannedText) => {
+                        const scannedType =
+                          determineScannedTextType(scannedText);
+                        const tempBlid = tempBlidRef.current;
 
-  return itemStatuses.length === 0 ? (
-    <InfoAlert>Denne kunden har for øyeblikket ingen bestilte bøker</InfoAlert>
-  ) : (
-    <Stack gap={"xs"}>
-      <Title order={2}>Bestilte bøker</Title>
-      <MatchItemTable itemStatuses={itemStatuses} isSender={true} />
-      <Box>
-        <Button
-          color={"green"}
-          leftSection={<IconObjectScan />}
-          onClick={() =>
-            modals.open({
-              title: "Scann bøker",
-              children: (
-                <ScannerModal
-                  allowManualRegistration
-                  disableValidation={true}
-                  onScan={async (scannedText) => {
-                    const scannedType = determineScannedTextType(scannedText);
-                    const tempBlid = tempBlidRef.current;
+                        if (tempBlid) {
+                          if (scannedType !== TextType.ISBN) {
+                            return [
+                              {
+                                feedback: `Du må skanne ISBN til ${scannedText}`,
+                              },
+                            ];
+                          }
+                          await client.unique_items.add.$post({
+                            blid: tempBlid,
+                            isbn: scannedText,
+                          });
+                          setTempBlid(null);
+                        } else if (scannedType !== TextType.BLID) {
+                          return [
+                            {
+                              feedback:
+                                "Feil strekkode. Vennligst skann bokas unike ID",
+                            },
+                          ];
+                        }
+                        const response = await client
+                          .$route(
+                            "collection.orders.operation.rapid-handout.post",
+                          )
+                          .$post({
+                            blid: tempBlid ?? scannedText,
+                            customerId: customer.id,
+                          });
 
-                    if (tempBlid) {
-                      if (scannedType !== TextType.ISBN) {
-                        return [
-                          {
-                            feedback: `Du må skanne ISBN til ${scannedText}`,
-                          },
-                        ];
+                        const res =
+                          unpack<[{ feedback: string; connectBlid?: boolean }]>(
+                            response,
+                          );
+
+                        if (res[0].connectBlid) {
+                          setTempBlid(scannedText);
+                          return [
+                            {
+                              feedback:
+                                "Denne boken er ikke knyttet til noen unik ID. Skann bokas ISBN",
+                            },
+                          ];
+                        }
+                        return res;
+                      }}
+                      onSuccessfulScan={() =>
+                        queryClient.invalidateQueries({ queryKey: [ordersUrl] })
                       }
-                      await client.unique_items.add.$post({
-                        blid: tempBlid,
-                        isbn: scannedText,
-                      });
-                      setTempBlid(null);
-                    } else if (scannedType !== TextType.BLID) {
-                      return [
-                        {
-                          feedback:
-                            "Feil strekkode. Vennligst skann bokas unike ID",
-                        },
-                      ];
-                    }
-                    const response = await client
-                      .$route("collection.orders.operation.rapid-handout.post")
-                      .$post({
-                        blid: tempBlid ?? scannedText,
-                        customerId: customer.id,
-                      });
-
-                    const res =
-                      unpack<[{ feedback: string; connectBlid?: boolean }]>(
-                        response,
-                      );
-
-                    if (res[0].connectBlid) {
-                      setTempBlid(scannedText);
-                      return [
-                        {
-                          feedback:
-                            "Denne boken er ikke knyttet til noen unik ID. Skann bokas ISBN",
-                        },
-                      ];
-                    }
-                    return res;
-                  }}
-                  onSuccessfulScan={() =>
-                    queryClient.invalidateQueries({ queryKey: [ordersUrl] })
-                  }
-                >
-                  <MatchScannerContent
-                    itemStatuses={itemStatuses}
-                    expectedItems={itemStatuses.map(
-                      (itemStatus) => itemStatus.id,
-                    )}
-                    fulfilledItems={itemStatuses
-                      .filter((itemStatus) => itemStatus.fulfilled)
-                      .map((itemStatus) => itemStatus.id)}
-                  />
-                </ScannerModal>
-              ),
-            })
-          }
-        >
-          Scan bøker
-        </Button>
-      </Box>
-    </Stack>
+                    >
+                      <MatchScannerContent
+                        itemStatuses={itemStatuses}
+                        expectedItems={itemStatuses.map(
+                          (itemStatus) => itemStatus.id,
+                        )}
+                        fulfilledItems={itemStatuses
+                          .filter((itemStatus) => itemStatus.fulfilled)
+                          .map((itemStatus) => itemStatus.id)}
+                      />
+                    </ScannerModal>
+                  ),
+                })
+              }
+            >
+              Scan bøker
+            </Button>
+          </Box>
+        </Stack>
+      </Activity>
+    </>
   );
 }

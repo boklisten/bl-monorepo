@@ -13,7 +13,7 @@ import { IconBasket, IconBook, IconRefresh } from "@tabler/icons-react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
-import { useEffect, useState } from "react";
+import { Activity, useEffect, useEffectEvent, useState } from "react";
 
 import OrderReceipt from "@/features/payment/OrderReceipt";
 import ErrorAlert from "@/shared/components/alerts/ErrorAlert";
@@ -84,13 +84,14 @@ export default function VippsCheckoutStatus() {
     };
   }, [attempt, client, data, orderId, queryClient]);
 
+  const onPaymentSuccessful = useEffectEvent(() => {
+    cart.clear();
+  });
+
   useEffect(() => {
     if (data === "PaymentSuccessful") {
-      cart.clear();
+      onPaymentSuccessful();
     }
-    // fixme: useEventEffect here!
-    // eslint-disable-next-line react-compiler/react-compiler
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data]);
 
   if (isLoading) {
@@ -106,42 +107,52 @@ export default function VippsCheckoutStatus() {
   }
 
   if (data === "PaymentInitiated") {
-    return attempt <= MAX_ATTEMPTS ? (
-      <Card withBorder shadow={"md"}>
-        <Stack>
-          <Stack gap={5}>
-            <Title order={3}>Prosesserer betaling...</Title>
-            <Text fs={"italic"}>
-              Venter på betalingsstatus fra Vipps. Vennligst ikke lukk fanen.
-            </Text>
-          </Stack>
-          {secondsBeforeNextAttempt < 1 ? (
-            <Loader type={"dots"} />
-          ) : (
-            <Text>
-              Prøver igjen om {secondsBeforeNextAttempt.toFixed(0)} sekunder
-            </Text>
-          )}
-          <Text size={"sm"} fs={"italic"}>
-            Forsøk {attempt} av {MAX_ATTEMPTS}
-          </Text>
-        </Stack>
-      </Card>
-    ) : (
+    return (
       <>
-        <ErrorAlert title={"Vipps bruke for lang tid på å svare"}>
-          Vi mottok ikke oppdatert betalingsinformasjon etter å ha ventet i{" "}
-          {calculateTotalWait(attempt)} sekunder. Du kan prøve igjen eller ta
-          kontakt hvis problemet vedvarer.
-        </ErrorAlert>
-        <Button
-          leftSection={<IconRefresh />}
-          onClick={() => {
-            setAttempt(1);
-          }}
-        >
-          Prøv igjen
-        </Button>
+        <Activity mode={attempt <= MAX_ATTEMPTS ? "visible" : "hidden"}>
+          <Card withBorder shadow={"md"}>
+            <Stack>
+              <Stack gap={5}>
+                <Title order={3}>Prosesserer betaling...</Title>
+                <Text fs={"italic"}>
+                  Venter på betalingsstatus fra Vipps. Vennligst ikke lukk
+                  fanen.
+                </Text>
+              </Stack>
+              <Activity
+                mode={secondsBeforeNextAttempt < 1 ? "visible" : "hidden"}
+              >
+                <Loader type={"dots"} />
+              </Activity>
+              <Activity
+                mode={secondsBeforeNextAttempt >= 1 ? "visible" : "hidden"}
+              >
+                <Text>
+                  Prøver igjen om {secondsBeforeNextAttempt.toFixed(0)} sekunder
+                </Text>
+              </Activity>
+              <Text size={"sm"} fs={"italic"}>
+                Forsøk {attempt} av {MAX_ATTEMPTS}
+              </Text>
+            </Stack>
+          </Card>
+        </Activity>
+
+        <Activity mode={attempt > MAX_ATTEMPTS ? "visible" : "hidden"}>
+          <ErrorAlert title={"Vipps bruke for lang tid på å svare"}>
+            Vi mottok ikke oppdatert betalingsinformasjon etter å ha ventet i{" "}
+            {calculateTotalWait(attempt)} sekunder. Du kan prøve igjen eller ta
+            kontakt hvis problemet vedvarer.
+          </ErrorAlert>
+          <Button
+            leftSection={<IconRefresh />}
+            onClick={() => {
+              setAttempt(1);
+            }}
+          >
+            Prøv igjen
+          </Button>
+        </Activity>
       </>
     );
   }

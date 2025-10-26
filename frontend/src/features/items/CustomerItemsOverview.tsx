@@ -2,7 +2,7 @@
 
 import { Accordion, Skeleton, Stack, Text, Title } from "@mantine/core";
 import { useQuery } from "@tanstack/react-query";
-import { ReactNode } from "react";
+import { Activity, ReactNode } from "react";
 
 import CustomerItemCard from "@/features/items/CustomerItemCard";
 import OpenOrdersList from "@/features/items/OpenOrdersList";
@@ -118,32 +118,34 @@ export default function CustomerItemsOverview() {
       orderedItemsSlot={<OpenOrdersList openOrderItems={openOrderItems} />}
       activeItemsSlot={
         <>
-          {activeItems.length > 0 ? (
-            activeItems.map((actionableCustomerItem) => (
+          <Activity mode={activeItems.length > 0 ? "visible" : "hidden"}>
+            {activeItems.map((actionableCustomerItem) => (
               <CustomerItemCard
                 key={actionableCustomerItem.id}
                 actionableCustomerItem={actionableCustomerItem}
               />
-            ))
-          ) : (
+            ))}
+          </Activity>
+          <Activity mode={activeItems.length === 0 ? "visible" : "hidden"}>
             <InfoAlert title={"Du har for øyeblikket ingen aktive bøker."} />
-          )}
+          </Activity>
         </>
       }
       inactiveItemsSlot={
         <>
-          {inactiveItems.length > 0 ? (
-            inactiveItems.map((actionableCustomerItem) => (
+          <Activity mode={inactiveItems.length > 0 ? "visible" : "hidden"}>
+            {inactiveItems.map((actionableCustomerItem) => (
               <CustomerItemCard
                 key={actionableCustomerItem.id}
                 actionableCustomerItem={actionableCustomerItem}
               />
-            ))
-          ) : (
+            ))}
+          </Activity>
+          <Activity mode={inactiveItems.length === 0 ? "visible" : "hidden"}>
             <InfoAlert
               title={"Du har ikke levert inn eller kjøpt ut noen bøker enda."}
             />
-          )}
+          </Activity>
         </>
       }
     />

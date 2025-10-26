@@ -1,7 +1,7 @@
 "use client";
 import { Button, Group } from "@mantine/core";
 import { useMutation } from "@tanstack/react-query";
-import { useEffect, useState } from "react";
+import { Activity, useEffect, useState } from "react";
 import validator from "validator";
 
 import ErrorAlert from "@/shared/components/alerts/ErrorAlert";
@@ -63,9 +63,9 @@ export default function LocalSignIn() {
 
   return (
     <>
-      {apiError && (
+      <Activity mode={apiError ? "visible" : "hidden"}>
         <ErrorAlert title={GENERIC_ERROR_TEXT}>{apiError}</ErrorAlert>
-      )}
+      </Activity>
       <form.AppField
         name={"username"}
         validators={{

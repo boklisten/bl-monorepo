@@ -2,7 +2,7 @@
 import { Button } from "@mantine/core";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { useSearchParams } from "next/navigation";
-import { useState } from "react";
+import { Activity, useState } from "react";
 
 import ErrorAlert from "@/shared/components/alerts/ErrorAlert";
 import SuccessAlert from "@/shared/components/alerts/SuccessAlert";
@@ -58,40 +58,55 @@ export default function PasswordReset({ resetId }: { resetId: string }) {
 
   const message = resetValidation.data?.data?.message;
   const isExpired = message || resetValidation.isError;
-  if (isExpired) {
-    return (
-      <>
+
+  return (
+    <>
+      <Activity mode={isExpired ? "visible" : "hidden"}>
         <ErrorAlert>
           {message ??
             "Lenken har utløpt. Du kan be om å få tilsendt en ny lenke på 'glemt passord'-siden"}
         </ErrorAlert>
         <NextAnchor href={"/auth/forgot"}>Gå til glemt passord</NextAnchor>
-      </>
-    );
-  }
+      </Activity>
 
-  return resetPasswordMutation.isSuccess && !apiError ? (
-    <>
-      <SuccessAlert>Passordet ble oppdatert! Du kan nå logge inn.</SuccessAlert>
-      <NextAnchor href={"/auth/login"}>
-        <Button>Logg inn</Button>
-      </NextAnchor>
-    </>
-  ) : (
-    <>
-      {apiError && (
-        <ErrorAlert title={GENERIC_ERROR_TEXT}>{apiError}</ErrorAlert>
-      )}
-      <form.AppField
-        name={"newPassword"}
-        validators={{
-          onBlur: ({ value }) => newPasswordFieldValidator(value),
-        }}
+      <Activity
+        mode={
+          !isExpired && (!resetPasswordMutation.isSuccess || apiError)
+            ? "visible"
+            : "hidden"
+        }
       >
-        {(field) => <field.NewPasswordField label={"Nytt passord"} />}
-      </form.AppField>
-      <Button onClick={form.handleSubmit}>Lag nytt passord</Button>
-      <NextAnchor href={"/auth/login"}>Tilbake til innloggingssiden</NextAnchor>
+        <Activity mode={apiError ? "visible" : "hidden"}>
+          <ErrorAlert title={GENERIC_ERROR_TEXT}>{apiError}</ErrorAlert>
+        </Activity>
+        <form.AppField
+          name={"newPassword"}
+          validators={{
+            onBlur: ({ value }) => newPasswordFieldValidator(value),
+          }}
+        >
+          {(field) => <field.NewPasswordField label={"Nytt passord"} />}
+        </form.AppField>
+        <Button onClick={form.handleSubmit}>Lag nytt passord</Button>
+        <NextAnchor href={"/auth/login"}>
+          Tilbake til innloggingssiden
+        </NextAnchor>
+      </Activity>
+
+      <Activity
+        mode={
+          !isExpired && resetPasswordMutation.isSuccess && !apiError
+            ? "visible"
+            : "hidden"
+        }
+      >
+        <SuccessAlert>
+          Passordet ble oppdatert! Du kan nå logge inn.
+        </SuccessAlert>
+        <NextAnchor href={"/auth/login"}>
+          <Button>Logg inn</Button>
+        </NextAnchor>
+      </Activity>
     </>
   );
 }

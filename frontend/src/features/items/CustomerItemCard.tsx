@@ -22,7 +22,7 @@ import {
 } from "@tabler/icons-react";
 import { InferResponseType } from "@tuyau/client";
 import dayjs from "dayjs";
-import { ReactNode } from "react";
+import { Activity, ReactNode } from "react";
 
 import useCart from "@/shared/hooks/useCart";
 import { publicApiClient } from "@/shared/utils/publicApiClient";
@@ -109,7 +109,13 @@ export default function CustomerItemCard({
             {dayjs(actionableCustomerItem.deadline).format("DD/MM/YYYY")}
           </Text>
         </Group>
-        {["active", "overdue"].includes(actionableCustomerItem.status.type) && (
+        <Activity
+          mode={
+            ["active", "overdue"].includes(actionableCustomerItem.status.type)
+              ? "visible"
+              : "hidden"
+          }
+        >
           <Group>
             {actionableCustomerItem.actions.map((action, index) => {
               const actionCartItem = cart
@@ -166,7 +172,7 @@ export default function CustomerItemCard({
               );
             })}
           </Group>
-        )}
+        </Activity>
         {cartItem && (
           <Group gap={5}>
             <Text>Pris:</Text>

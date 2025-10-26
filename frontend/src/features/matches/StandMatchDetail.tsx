@@ -3,7 +3,7 @@ import { Button, Stack, Title } from "@mantine/core";
 import { modals } from "@mantine/modals";
 import { IconQrcode } from "@tabler/icons-react";
 import dayjs from "dayjs";
-import { useEffect, useState } from "react";
+import { Activity, useEffect, useState } from "react";
 import QRCode from "react-qr-code";
 
 import { StandMatchTitle } from "@/features/matches/matchesList/helper";
@@ -81,13 +81,13 @@ const StandMatchDetail = ({
         <StandMatchTitle standMatch={standMatch} />
       </Title>
 
-      {isFulfilled && (
+      <Activity mode={isFulfilled ? "visible" : "hidden"}>
         <SuccessAlert>
           Du har mottatt og levert alle bøkene for denne overleveringen.
         </SuccessAlert>
-      )}
+      </Activity>
 
-      {hasHandoffItems && (
+      <Activity mode={hasHandoffItems ? "visible" : "hidden"}>
         <ProgressBar
           percentComplete={
             (fulfilledHandoffItems.length * 100) /
@@ -100,9 +100,9 @@ const StandMatchDetail = ({
             </>
           }
         />
-      )}
+      </Activity>
 
-      {hasPickupItems && (
+      <Activity mode={hasPickupItems ? "visible" : "hidden"}>
         <ProgressBar
           percentComplete={
             (fulfilledPickupItems.length * 100) /
@@ -115,7 +115,7 @@ const StandMatchDetail = ({
             </>
           }
         />
-      )}
+      </Activity>
 
       <Stack align={"center"} w={"100%"}>
         <Button
@@ -130,12 +130,12 @@ const StandMatchDetail = ({
                     Oppmøte{" "}
                     {dayjs(standMatch.meetingInfo?.date).format("HH:mm")}
                   </Title>
-                  {tooEarly && (
+                  <Activity mode={tooEarly ? "visible" : "hidden"}>
                     <InfoAlert title={"For tidlig ute"}>
                       Din oppmøtetid har ikke kommet enda. Vent med å stille deg
                       i kø til tidspunktet du har fått tildelt.
                     </InfoAlert>
-                  )}
+                  </Activity>
                 </Stack>
               ),
             })
@@ -145,19 +145,15 @@ const StandMatchDetail = ({
         </Button>
       </Stack>
 
-      {hasHandoffItems && (
-        <>
-          <MatchHeader>Disse bøkene skal leveres inn</MatchHeader>
-          <MatchItemTable itemStatuses={handoffItemStatuses} isSender={true} />
-        </>
-      )}
+      <Activity mode={hasHandoffItems ? "visible" : "hidden"}>
+        <MatchHeader>Disse bøkene skal leveres inn</MatchHeader>
+        <MatchItemTable itemStatuses={handoffItemStatuses} isSender={true} />
+      </Activity>
 
-      {hasPickupItems && (
-        <>
-          <MatchHeader>Disse bøkene skal hentes</MatchHeader>
-          <MatchItemTable itemStatuses={pickupItemStatuses} isSender={false} />
-        </>
-      )}
+      <Activity mode={hasPickupItems ? "visible" : "hidden"}>
+        <MatchHeader>Disse bøkene skal hentes</MatchHeader>
+        <MatchItemTable itemStatuses={pickupItemStatuses} isSender={false} />
+      </Activity>
 
       <MatchHeader>Du skal på stand:</MatchHeader>
       <MeetingInfo

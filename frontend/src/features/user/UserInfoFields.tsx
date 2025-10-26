@@ -1,5 +1,6 @@
 import { Divider, Fieldset, Stack, Title } from "@mantine/core";
 import dayjs from "dayjs";
+import { Activity } from "react";
 
 import { addressFieldValidator } from "@/shared/components/form/fields/complex/AddressField";
 import { nameFieldValidator } from "@/shared/components/form/fields/complex/NameField";
@@ -116,40 +117,43 @@ const UserInfoFields = withFieldGroup({
         </group.AppField>
         <group.Subscribe selector={(state) => state.values.birthday}>
           {(birthday) => {
-            if (!isUnder18(new Date(birthday))) return <></>;
             return (
-              <Fieldset
-                legend={`Siden ${perspective === "personal" ? "du" : "kunden"} er under 18, trenger vi informasjon om en av ${perspective === "personal" ? "dine" : "kundens"} foresatte.`}
+              <Activity
+                mode={isUnder18(new Date(birthday)) ? "visible" : "hidden"}
               >
-                <Stack gap={"xs"}>
-                  <group.AppField name={"guardianName"}>
-                    {(field) => (
-                      <field.NameField
-                        label={"Foresatt sitt fulle navn"}
-                        placeholder={"Reodor Felgen"}
-                        autoComplete={"section-guardian name"}
-                      />
-                    )}
-                  </group.AppField>
-                  <group.AppField name={"guardianEmail"}>
-                    {(field) => (
-                      <field.EmailField
-                        label={"Foresatt sin e-post"}
-                        placeholder={"reodor.felgen@gmail.com"}
-                        autoComplete={"section-guardian email"}
-                      />
-                    )}
-                  </group.AppField>
-                  <group.AppField name={"guardianPhoneNumber"}>
-                    {(field) => (
-                      <field.PhoneNumberField
-                        label={"Foresatt sitt telefonnummer"}
-                        autoComplete={"section-guardian tel-national"}
-                      />
-                    )}
-                  </group.AppField>
-                </Stack>
-              </Fieldset>
+                <Fieldset
+                  legend={`Siden ${perspective === "personal" ? "du" : "kunden"} er under 18, trenger vi informasjon om en av ${perspective === "personal" ? "dine" : "kundens"} foresatte.`}
+                >
+                  <Stack gap={"xs"}>
+                    <group.AppField name={"guardianName"}>
+                      {(field) => (
+                        <field.NameField
+                          label={"Foresatt sitt fulle navn"}
+                          placeholder={"Reodor Felgen"}
+                          autoComplete={"section-guardian name"}
+                        />
+                      )}
+                    </group.AppField>
+                    <group.AppField name={"guardianEmail"}>
+                      {(field) => (
+                        <field.EmailField
+                          label={"Foresatt sin e-post"}
+                          placeholder={"reodor.felgen@gmail.com"}
+                          autoComplete={"section-guardian email"}
+                        />
+                      )}
+                    </group.AppField>
+                    <group.AppField name={"guardianPhoneNumber"}>
+                      {(field) => (
+                        <field.PhoneNumberField
+                          label={"Foresatt sitt telefonnummer"}
+                          autoComplete={"section-guardian tel-national"}
+                        />
+                      )}
+                    </group.AppField>
+                  </Stack>
+                </Fieldset>
+              </Activity>
             );
           }}
         </group.Subscribe>

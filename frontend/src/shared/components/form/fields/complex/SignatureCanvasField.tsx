@@ -1,6 +1,6 @@
 import { ActionIcon, Box, Stack, Text, Tooltip } from "@mantine/core";
 import { IconEraser } from "@tabler/icons-react";
-import { useEffect, useRef } from "react";
+import { Activity, useEffect, useRef } from "react";
 // eslint-disable-next-line import-x/no-named-as-default
 import SignatureCanvas from "react-signature-canvas";
 
@@ -73,9 +73,11 @@ export default function SignatureCanvasField(props: { label: string }) {
           </ActionIcon>
         </Tooltip>
       </Box>
-      {field.state.meta.errors.length > 0 && (
+      <Activity
+        mode={field.state.meta.errors.length > 0 ? "visible" : "hidden"}
+      >
         <ErrorAlert>{field.state.meta.errors.join(",")}</ErrorAlert>
-      )}
+      </Activity>
     </Stack>
   );
 }

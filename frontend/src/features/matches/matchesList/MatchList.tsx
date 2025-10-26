@@ -1,6 +1,7 @@
 "use client";
 import { Skeleton, Stack, Text } from "@mantine/core";
 import { useQuery } from "@tanstack/react-query";
+import { Activity } from "react";
 
 import MatchListItemGroups from "@/features/matches/matchesList/MatchListItemGroups";
 import ErrorAlert from "@/shared/components/alerts/ErrorAlert";
@@ -102,18 +103,18 @@ export default function MatchList() {
         }
       />
 
-      {showMatchList && (
+      <Activity mode={showMatchList ? "visible" : "hidden"}>
         <MatchListItemGroups
           userMatches={unfulfilledUserMatches}
           standMatch={standMatch}
         />
-      )}
-      {fulfilledUserMatches.length > 0 && (
+      </Activity>
+      <Activity mode={fulfilledUserMatches.length > 0 ? "visible" : "hidden"}>
         <MatchListItemGroups
           userMatches={fulfilledUserMatches}
           heading="Fullførte overleveringer"
         />
-      )}
+      </Activity>
     </Stack>
   );
 }

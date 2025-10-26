@@ -5,6 +5,7 @@ import { IconShoppingCart } from "@tabler/icons-react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import dayjs from "dayjs";
 import { useRouter } from "next/navigation";
+import { Activity } from "react";
 
 import InfoAlert from "@/shared/components/alerts/InfoAlert";
 import useApiClient from "@/shared/hooks/useApiClient";
@@ -41,7 +42,7 @@ export default function OpenOrdersList({
 
   return (
     <>
-      {(openOrderItems?.length ?? 0) > 0 ? (
+      <Activity mode={(openOrderItems?.length ?? 0) > 0 ? "visible" : "hidden"}>
         <Table>
           <Table.Thead>
             <Table.Tr>
@@ -91,11 +92,17 @@ export default function OpenOrdersList({
             ))}
           </Table.Tbody>
         </Table>
-      ) : (
+      </Activity>
+
+      <Activity
+        mode={
+          !openOrderItems || openOrderItems.length === 0 ? "visible" : "hidden"
+        }
+      >
         <InfoAlert title={"Du har ingen aktive bestillinger"}>
           Trykk på {"'bestill bøker'"} for å bestille noen.
         </InfoAlert>
-      )}
+      </Activity>
       <Box>
         <Button
           leftSection={<IconShoppingCart />}

@@ -1,5 +1,5 @@
 import { Center, Stack } from "@mantine/core";
-import { useEffect } from "react";
+import { Activity, useEffect } from "react";
 
 import Logo from "@/features/layout/Logo";
 import ErrorAlert from "@/shared/components/alerts/ErrorAlert";
@@ -26,10 +26,14 @@ export default function ErrorBoundary({
         Ta kontakt på teknisk@boklisten.no dersom problemet vedvarer!
       </ErrorAlert>
       <Center>
-        {href && (
-          // @ts-expect-error fixme: bad link types
-          <NextAnchor href={href}>Gå til forsiden</NextAnchor>
-        )}
+        <Activity mode={href ? "visible" : "hidden"}>
+          <NextAnchor
+            // @ts-expect-error fixme: bad link types
+            href={href}
+          >
+            Gå til forsiden
+          </NextAnchor>
+        </Activity>
       </Center>
     </Stack>
   );

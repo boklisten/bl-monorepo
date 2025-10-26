@@ -16,6 +16,7 @@ import {
   IconX,
 } from "@tabler/icons-react";
 import Link from "next/link";
+import { Activity } from "react";
 
 import InfoAlert from "@/shared/components/alerts/InfoAlert";
 import useCart from "@/shared/hooks/useCart";
@@ -87,11 +88,13 @@ export default function CartContent() {
                   </Group>
                   <Group>
                     <Text fw={"bold"}>{selectedOption.price} kr</Text>
-                    {selectedOption.payLater && (
+                    <Activity
+                      mode={selectedOption.payLater ? "visible" : "hidden"}
+                    >
                       <Text fs={"italic"} c={"dimmed"} size={"sm"}>
                         betal senere: {selectedOption.payLater} kr
                       </Text>
-                    )}
+                    </Activity>
                   </Group>
                 </Group>
               </Stack>
@@ -115,12 +118,18 @@ export default function CartContent() {
           Gå til kassen
         </Button>
       </Stack>
-      {cart
-        .get()
-        .some(
-          (cartItem) =>
-            cart.getSelectedOption(cartItem).type === "partly-payment",
-        ) && (
+      <Activity
+        mode={
+          cart
+            .get()
+            .some(
+              (cartItem) =>
+                cart.getSelectedOption(cartItem).type === "partly-payment",
+            )
+            ? "visible"
+            : "hidden"
+        }
+      >
         <Stack>
           <Title>Om delbetaling</Title>
           <Text>
@@ -135,7 +144,7 @@ export default function CartContent() {
             samme som restbeløpet eller mer.
           </Text>
         </Stack>
-      )}
+      </Activity>
     </Stack>
   );
 }

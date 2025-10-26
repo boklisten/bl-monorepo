@@ -3,7 +3,7 @@
 import { Button, Stack } from "@mantine/core";
 import { IconMailFast } from "@tabler/icons-react";
 import { useMutation } from "@tanstack/react-query";
-import { useState } from "react";
+import { Activity, useState } from "react";
 import validator from "validator";
 
 import ErrorAlert from "@/shared/components/alerts/ErrorAlert";
@@ -46,16 +46,22 @@ export default function ForgotPasswordForm() {
   return (
     <>
       <Stack>
-        {apiError && (
+        <Activity mode={apiError ? "visible" : "hidden"}>
           <ErrorAlert title={GENERIC_ERROR_TEXT}>{apiError}</ErrorAlert>
-        )}
-        {requestPasswordResetMutation.isSuccess && !apiError && (
+        </Activity>
+        <Activity
+          mode={
+            requestPasswordResetMutation.isSuccess && !apiError
+              ? "visible"
+              : "hidden"
+          }
+        >
           <SuccessAlert icon={<IconMailFast />}>
             Vi har sendt en e-post med instruksjoner for hvordan du kan endre
             passordet ditt. Hvis e-posten ikke dukker opp innen noen få minutter
             anbefaler vi å sjekke søppelpost.
           </SuccessAlert>
-        )}
+        </Activity>
       </Stack>
       <form.AppField
         name={"email"}

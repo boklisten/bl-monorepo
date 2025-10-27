@@ -1,6 +1,5 @@
 import { DeliveryPatchHook } from "#services/legacy/collections/delivery/hooks/delivery.patch.hook";
 import { DeliveryPostHook } from "#services/legacy/collections/delivery/hooks/delivery.post.hook";
-import { PostalCodeLookupOperation } from "#services/legacy/collections/delivery/operations/postal-code-lookup.operation";
 import { StorageService } from "#services/storage_service";
 import { BlCollection } from "#types/bl-collection";
 
@@ -13,12 +12,6 @@ export const DeliveryCollection: BlCollection = {
       restriction: {
         permission: "customer",
       },
-      operations: [
-        {
-          name: "postal-code-lookup",
-          operation: new PostalCodeLookupOperation(),
-        },
-      ],
     },
     {
       method: "getAll",

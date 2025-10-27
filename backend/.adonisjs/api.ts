@@ -536,6 +536,13 @@ type SubjectsIdGetHead = {
     false
   >;
 };
+type PostalLookupPostalcodeIdGetHead = {
+  request: unknown;
+  response: MakeNonSerializedTuyauResponse<
+    import("../app/controllers/postal_controller.ts").default["lookupPostalCode"],
+    false
+  >;
+};
 export interface ApiDefinition {
   token: {
     $url: {};
@@ -828,6 +835,17 @@ export interface ApiDefinition {
       $url: {};
       $get: SubjectsIdGetHead;
       $head: SubjectsIdGetHead;
+    };
+  };
+  postal: {
+    lookup: {
+      postal_code: {
+        ":postalCode": {
+          $url: {};
+          $get: PostalLookupPostalcodeIdGetHead;
+          $head: PostalLookupPostalcodeIdGetHead;
+        };
+      };
     };
   };
 }
@@ -1239,6 +1257,13 @@ const routes = [
     types: {} as SubjectsIdGetHead,
   },
   {
+    params: ["postalCode"],
+    name: "lookup.postal.code",
+    path: "/postal/lookup/postal_code/:postalCode",
+    method: ["GET", "HEAD"],
+    types: {} as PostalLookupPostalcodeIdGetHead,
+  },
+  {
     params: ["id"],
     name: "collection.branches.getId",
     path: "/branches/:id",
@@ -1340,13 +1365,6 @@ const routes = [
     params: [],
     name: "collection.deliveries.post",
     path: "/deliveries",
-    method: ["POST"],
-    types: {} as unknown,
-  },
-  {
-    params: [],
-    name: "collection.deliveries.operation.postal-code-lookup.post",
-    path: "/deliveries/postal-code-lookup",
     method: ["POST"],
     types: {} as unknown,
   },

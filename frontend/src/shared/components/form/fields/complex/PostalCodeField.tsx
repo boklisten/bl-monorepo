@@ -3,7 +3,6 @@ import { useMutation } from "@tanstack/react-query";
 import isPostalCode from "validator/lib/isPostalCode";
 
 import { useFieldContext } from "@/shared/hooks/form";
-import unpack from "@/shared/utils/bl-api-request";
 import { showErrorNotification } from "@/shared/utils/notifications";
 import { publicApiClient } from "@/shared/utils/publicApiClient";
 
@@ -11,21 +10,14 @@ export async function postalCodeFieldValidator(value: string) {
   const illegalPostalCodeMessage = "Du må oppgi et gyldig norsk postnummer";
   if (!value || !isPostalCode(value, "NO")) return illegalPostalCodeMessage;
 
-  const response = await publicApiClient
-    .$route("collection.deliveries.operation.postal-code-lookup.post")
-    .$post({ postalCode: value });
+  const postalCity = await publicApiClient.postal.lookup
+    .postal_code({
+      postalCode: value,
+    })
+    .$get()
+    .unwrap();
 
-  const data = unpack<
-    [
-      {
-        postalCity: string | null;
-      },
-    ]
-  >(response);
-
-  if (!data[0].postalCity) return illegalPostalCodeMessage;
-
-  return null;
+  return postalCity ? null : illegalPostalCodeMessage;
 }
 
 export default function PostalCodeField() {
@@ -34,19 +26,13 @@ export default function PostalCodeField() {
 
   const lookupPostalCodeMutation = useMutation({
     mutationFn: async () => {
-      if (!isPostalCode(code, "NO")) return;
-      const response = await publicApiClient
-        .$route("collection.deliveries.operation.postal-code-lookup.post")
-        .$post({ postalCode: code });
-      const [{ postalCity: newPostalCity }] = unpack<
-        [
-          {
-            postalCity: string | null;
-          },
-        ]
-      >(response);
-
-      return newPostalCity;
+      if (!isPostalCode(code, "NO")) return null;
+      return await publicApiClient.postal.lookup
+        .postal_code({
+          postalCode: code,
+        })
+        .$get()
+        .unwrap();
     },
     onSettled: (result) => field.setValue({ code, city: result ?? "" }),
     onError: () => showErrorNotification("Klarte ikke laste inn poststed"),

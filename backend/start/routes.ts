@@ -40,6 +40,7 @@ const OrderHistoryController = () =>
   import("#controllers/order_history_controller");
 const CheckoutController = () => import("#controllers/checkout_controller");
 const SubjectsController = () => import("#controllers/subjects_controller");
+const PostalController = () => import("#controllers/postal_controller");
 
 /**
  * static
@@ -344,6 +345,16 @@ router
 router
   .get("/subjects/:branchId", [SubjectsController, "getBranchSubjects"])
   .as("subjects.get.branch.subjects");
+
+/**
+ * Postal
+ */
+router
+  .get("/postal/lookup/postal_code/:postalCode", [
+    PostalController,
+    "lookupPostalCode",
+  ])
+  .as("lookup.postal.code");
 
 /**
  * Generate legacy bl-collection endpoints

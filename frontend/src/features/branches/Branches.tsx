@@ -5,7 +5,7 @@ import { Box, Button, Divider, Grid, Stack, Title } from "@mantine/core";
 import { modals } from "@mantine/modals";
 import { IconPlus } from "@tabler/icons-react";
 import { useQuery } from "@tanstack/react-query";
-import { useState } from "react";
+import { Activity, useState } from "react";
 
 import BranchSettings from "@/features/branches/BranchSettings";
 import SelectBranchTreeView from "@/shared/components/SelectBranchTreeView";
@@ -62,15 +62,15 @@ export default function Branches() {
           />
         </Grid.Col>
         <Grid.Col span={{ base: 12, md: 9 }}>
-          {selectedBranch && (
+          <Activity mode={selectedBranch ? "visible" : "hidden"}>
             <Stack>
               <Title>Rediger filial</Title>
               <BranchSettings
-                key={selectedBranch.id}
+                key={selectedBranch?.id}
                 existingBranch={selectedBranch}
               />
             </Stack>
-          )}
+          </Activity>
         </Grid.Col>
       </Grid>
     </Stack>

@@ -153,16 +153,21 @@ export default function CustomerItemCard({
                         cart.remove(actionableCustomerItem.item.id);
                         return;
                       }
+                      const availableActions =
+                        actionableCustomerItem.actions.filter(
+                          (action) => action.available,
+                        );
                       cart.add({
                         id: actionableCustomerItem.item.id,
                         title: actionableCustomerItem.item.title,
                         branchId: actionableCustomerItem.branch.id,
-                        options: actionableCustomerItem.actions.map((a) => ({
+                        options: availableActions.map((a) => ({
                           type: a.type,
                           price: a.price,
                           ...("to" in a ? { to: a.to } : {}),
                         })),
-                        selectedOptionIndex: index,
+                        selectedOptionIndex:
+                          availableActions.length > 1 ? index : 0,
                       });
                     }}
                   >

@@ -1,8 +1,8 @@
-import { Box, Button, Stack, Title } from "@mantine/core";
-import { IconFileDownload } from "@tabler/icons-react";
+import { Box, Stack, Title } from "@mantine/core";
 import { Metadata } from "next";
 
-import { publicApiClient } from "@/shared/utils/publicApiClient";
+import AuthGuard from "@/features/auth/AuthGuard";
+import UniqueIdGeneratorButton from "@/features/unique_id_generation/UniqueIdGeneratorButton";
 
 export const metadata: Metadata = {
   title: "Unike IDer",
@@ -10,17 +10,13 @@ export const metadata: Metadata = {
 
 export default function DatabaseUniqueIdPage() {
   return (
-    <Stack>
-      <Title>Lag utskriftsklar PDF med unike IDer</Title>
-      <Box>
-        <Button
-          component={"a"}
-          href={publicApiClient.unique_ids.download_pdf.$url()}
-          leftSection={<IconFileDownload />}
-        >
-          Last ned PDF
-        </Button>
-      </Box>
-    </Stack>
+    <AuthGuard requiredPermission={"admin"}>
+      <Stack>
+        <Title>Lag utskriftsklar PDF med unike IDer</Title>
+        <Box>
+          <UniqueIdGeneratorButton />
+        </Box>
+      </Stack>
+    </AuthGuard>
   );
 }

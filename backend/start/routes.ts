@@ -295,7 +295,13 @@ router
  * Unique Ids
  */
 router
-  .get("/unique_ids/download_pdf", [UniqueIdsController, "downloadUniqueIdPdf"])
+  .get("/unique_ids/token", [UniqueIdsController, "getToken"])
+  .as("unique_ids.token");
+router
+  .get("/unique_ids/download_pdf/:token", [
+    UniqueIdsController,
+    "downloadUniqueIdPdf",
+  ])
   .as("unique_ids.download.pdf");
 
 /**

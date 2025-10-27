@@ -450,7 +450,14 @@ type SignaturesSignIdPost = {
     true
   >;
 };
-type UniqueidsDownloadpdfGetHead = {
+type UniqueidsTokenGetHead = {
+  request: unknown;
+  response: MakeNonSerializedTuyauResponse<
+    import("../app/controllers/unique_ids_controller.ts").default["getToken"],
+    false
+  >;
+};
+type UniqueidsDownloadpdfIdGetHead = {
   request: unknown;
   response: MakeNonSerializedTuyauResponse<
     import("../app/controllers/unique_ids_controller.ts").default["downloadUniqueIdPdf"],
@@ -777,10 +784,17 @@ export interface ApiDefinition {
     };
   };
   unique_ids: {
-    download_pdf: {
+    token: {
       $url: {};
-      $get: UniqueidsDownloadpdfGetHead;
-      $head: UniqueidsDownloadpdfGetHead;
+      $get: UniqueidsTokenGetHead;
+      $head: UniqueidsTokenGetHead;
+    };
+    download_pdf: {
+      ":token": {
+        $url: {};
+        $get: UniqueidsDownloadpdfIdGetHead;
+        $head: UniqueidsDownloadpdfIdGetHead;
+      };
     };
   };
   users: {
@@ -1188,10 +1202,17 @@ const routes = [
   },
   {
     params: [],
-    name: "unique_ids.download.pdf",
-    path: "/unique_ids/download_pdf",
+    name: "unique_ids.token",
+    path: "/unique_ids/token",
     method: ["GET", "HEAD"],
-    types: {} as UniqueidsDownloadpdfGetHead,
+    types: {} as UniqueidsTokenGetHead,
+  },
+  {
+    params: ["token"],
+    name: "unique_ids.download.pdf",
+    path: "/unique_ids/download_pdf/:token",
+    method: ["GET", "HEAD"],
+    types: {} as UniqueidsDownloadpdfIdGetHead,
   },
   {
     params: [],

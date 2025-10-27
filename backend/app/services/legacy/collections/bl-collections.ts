@@ -9,7 +9,6 @@ import { MessageCollection } from "#services/legacy/collections/message/message.
 import { OpeningHourCollection } from "#services/legacy/collections/opening-hour/opening-hour.collection";
 import { OrderCollection } from "#services/legacy/collections/order/order.collection";
 import { PaymentCollection } from "#services/legacy/collections/payment/payment.collection";
-import { SignatureCollection } from "#services/legacy/collections/signature/signature.collection";
 import { UniqueItemCollection } from "#services/legacy/collections/unique-item/unique-item.collection";
 import { UserDetailCollection } from "#services/legacy/collections/user-detail/user-detail.collection";
 
@@ -27,7 +26,6 @@ const BlCollections = [
   InvoiceCollection,
   CompanyCollection,
   UniqueItemCollection,
-  SignatureCollection,
 ];
 
 export default BlCollections;

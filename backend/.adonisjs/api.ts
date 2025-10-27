@@ -1739,34 +1739,6 @@ const routes = [
     method: ["GET", "HEAD"],
     types: {} as unknown,
   },
-  {
-    params: [],
-    name: "collection.signatures.post",
-    path: "/signatures",
-    method: ["POST"],
-    types: {} as unknown,
-  },
-  {
-    params: [],
-    name: "collection.signatures.operation.guardian.post",
-    path: "/signatures/guardian",
-    method: ["POST"],
-    types: {} as unknown,
-  },
-  {
-    params: [],
-    name: "collection.signatures.operation.check-guardian-signature.post",
-    path: "/signatures/check-guardian-signature",
-    method: ["POST"],
-    types: {} as unknown,
-  },
-  {
-    params: ["id"],
-    name: "collection.signatures.getId",
-    path: "/signatures/:id",
-    method: ["GET", "HEAD"],
-    types: {} as unknown,
-  },
 ] as const;
 export const api = {
   routes,

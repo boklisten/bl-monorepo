@@ -3,13 +3,13 @@ import { Transformer } from "@napi-rs/image";
 import moment from "moment-timezone";
 
 import DispatchService from "#services/dispatch_service";
+import { DateService } from "#services/legacy/date.service";
 import {
   getValidUserSignature,
   isUnderage,
   signOrders,
   userHasValidSignature,
-} from "#services/legacy/collections/signature/helpers/signature.helper";
-import { DateService } from "#services/legacy/date.service";
+} from "#services/legacy/signature.helper";
 import { PermissionService } from "#services/permission_service";
 import { StorageService } from "#services/storage_service";
 import { SIGNATURE_NUM_MONTHS_VALID } from "#shared/serialized-signature";

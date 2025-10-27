@@ -3,11 +3,11 @@ import sgMail from "@sendgrid/mail";
 import moment from "moment-timezone";
 import twilio from "twilio";
 
+import { OrderEmailHandler } from "#services/legacy/order_email_handler";
 import {
   isUnderage,
   userHasValidSignature,
-} from "#services/legacy/collections/signature/helpers/signature.helper";
-import { OrderEmailHandler } from "#services/legacy/order_email_handler";
+} from "#services/legacy/signature.helper";
 import { PermissionService } from "#services/permission_service";
 import { StorageService } from "#services/storage_service";
 import { UserDetailService } from "#services/user_detail_service";

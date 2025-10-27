@@ -1,7 +1,7 @@
 import { HttpContext } from "@adonisjs/core/http";
 
-import { userHasValidSignature } from "#services/legacy/collections/signature/helpers/signature.helper";
 import { UserDetailHelper } from "#services/legacy/collections/user-detail/helpers/user-detail.helper";
+import { userHasValidSignature } from "#services/legacy/signature.helper";
 import { PermissionService } from "#services/permission_service";
 import { StorageService } from "#services/storage_service";
 import {

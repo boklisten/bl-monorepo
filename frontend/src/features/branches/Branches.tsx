@@ -65,7 +65,10 @@ export default function Branches() {
           {selectedBranch && (
             <Stack>
               <Title>Rediger filial</Title>
-              <BranchSettings existingBranch={selectedBranch} />
+              <BranchSettings
+                key={selectedBranch.id}
+                existingBranch={selectedBranch}
+              />
             </Stack>
           )}
         </Grid.Col>

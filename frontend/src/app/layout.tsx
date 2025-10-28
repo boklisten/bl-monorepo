@@ -16,7 +16,6 @@ import Head from "next/head";
 import Script from "next/script";
 import { Suspense } from "react";
 
-import AuthLinker from "@/features/auth-linker/AuthLinker";
 import DayJsSetup from "@/features/layout/DayJsClientSetup";
 import ReactQueryClientProvider from "@/features/layout/ReactQueryClientProvider";
 import theme from "@/shared/utils/theme";
@@ -34,9 +33,6 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
           <Notifications />
           <DatesProvider settings={{ locale: "nb" }}>
             <DayJsSetup />
-            <Suspense>
-              <AuthLinker />
-            </Suspense>
             <Suspense>
               <ReactQueryClientProvider>
                 <ModalsProvider>{children}</ModalsProvider>

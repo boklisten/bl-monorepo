@@ -2,7 +2,7 @@ import { Container, Loader, Stack, Title } from "@mantine/core";
 import { Metadata } from "next";
 import { Suspense } from "react";
 
-import AuthVerifier from "@/features/auth/AuthVerifier";
+import AuthTokenHandler from "@/features/auth/AuthTokenHandler";
 
 export const metadata: Metadata = {
   title: "Logger inn...",
@@ -16,7 +16,7 @@ export default function TokenPage() {
         <Title>Du blir nå logget inn...</Title>
         <Loader />
         <Suspense>
-          <AuthVerifier />
+          <AuthTokenHandler />
         </Suspense>
       </Stack>
     </Container>

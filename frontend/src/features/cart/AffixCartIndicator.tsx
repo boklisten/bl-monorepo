@@ -2,14 +2,20 @@
 import { Affix, Box, Card, Group, NavLink, Stack, Text } from "@mantine/core";
 import { IconBasket } from "@tabler/icons-react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { Activity } from "react";
 
 import useCart from "@/shared/hooks/useCart";
 
 export default function AffixCartIndicator() {
   const cart = useCart();
+  const pathname = usePathname();
   return (
-    <Activity mode={cart.isEmpty() ? "hidden" : "visible"}>
+    <Activity
+      mode={
+        !cart.isEmpty() && pathname.includes("items") ? "visible" : "hidden"
+      }
+    >
       <Affix w={"100%"}>
         <Card withBorder shadow={"md"}>
           <Stack align={"center"} gap={"xs"}>

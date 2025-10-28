@@ -1,22 +1,11 @@
 "use client";
 import { Container, Stack, Title } from "@mantine/core";
-import { useMounted } from "@mantine/hooks";
-import { useRouter } from "next/navigation";
-import { Suspense, useEffect } from "react";
+import { Suspense } from "react";
 
+import AuthLogoutComponent from "@/features/auth/AuthLogoutComponent";
 import CountdownToRedirect from "@/shared/components/CountdownToRedirect";
-import useAuth from "@/shared/hooks/useAuth";
 
 export default function LogoutPage() {
-  const router = useRouter();
-  const { logout } = useAuth();
-  const mounted = useMounted();
-
-  useEffect(() => {
-    if (!mounted) return;
-    logout();
-  }, [logout, mounted, router]);
-
   return (
     <Container size={"md"}>
       <Stack>
@@ -24,6 +13,7 @@ export default function LogoutPage() {
         <Suspense>
           <CountdownToRedirect seconds={5} path={"/"} shouldReplaceInHistory />
         </Suspense>
+        <AuthLogoutComponent />
       </Stack>
     </Container>
   );

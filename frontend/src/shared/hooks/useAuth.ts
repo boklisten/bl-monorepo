@@ -5,67 +5,31 @@ import {
   PERMISSION_LEVELS,
   UserPermission,
 } from "@boklisten/backend/shared/user-permission";
-import { usePathname } from "next/navigation";
-import { useEffect, useState } from "react";
 import { decodeToken } from "react-jwt";
 
+import useLocalStorageSubscription from "@/shared/hooks/useLocalStorageSubscription";
 import BL_CONFIG from "@/shared/utils/bl-config";
 
 export default function useAuth() {
-  const [isLoading, setIsLoading] = useState(true);
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [isEmployee, setIsEmployee] = useState(false); // employee or above
-  const [isManager, setIsManager] = useState(false); // manager or above
-  const [isAdmin, setIsAdmin] = useState(false); // admin
-  const [canAccess, setCanAccess] = useState<
-    (required: UserPermission) => boolean
-  >(() => () => false);
+  const token = useLocalStorageSubscription(BL_CONFIG.token.accessToken);
 
-  const pathname = usePathname();
+  const accessToken = decodeToken(token ?? "") as AccessToken | null;
 
-  useEffect(() => {
-    function updateAuthStatus() {
-      setIsLoading(false);
-
-      const accessToken = decodeToken(
-        localStorage.getItem(BL_CONFIG.token.accessToken) ?? "",
-      ) as AccessToken | null;
-
-      if (!accessToken) {
-        setIsLoggedIn(false);
-        setCanAccess(() => () => false);
-        setIsEmployee(false);
-        setIsManager(false);
-        setIsAdmin(false);
-        return;
-      }
-      setIsLoggedIn(true);
-      const userPermissionLevel = PERMISSION_LEVELS[accessToken.permission];
-
-      setIsEmployee(userPermissionLevel >= PERMISSION_LEVELS.employee);
-      setIsManager(userPermissionLevel >= PERMISSION_LEVELS.manager);
-      setIsAdmin(userPermissionLevel >= PERMISSION_LEVELS.admin);
-
-      setCanAccess(
-        () => (requiredPermission: UserPermission) =>
-          userPermissionLevel >= PERMISSION_LEVELS[requiredPermission],
-      );
-    }
-    updateAuthStatus();
-  }, [pathname]);
-
-  function logout() {
-    sessionStorage.clear();
-    localStorage.clear();
-  }
+  const permissionLevel = accessToken
+    ? PERMISSION_LEVELS[accessToken.permission]
+    : -1;
 
   return {
-    isLoading,
-    isLoggedIn,
-    isEmployee,
-    isManager,
-    isAdmin,
-    canAccess,
-    logout,
+    isLoading: token === null,
+    isLoggedIn: !!accessToken,
+    isEmployee: permissionLevel >= PERMISSION_LEVELS.employee,
+    isManager: permissionLevel >= PERMISSION_LEVELS.manager,
+    isAdmin: permissionLevel >= PERMISSION_LEVELS.admin,
+    canAccess: (requiredPermission: UserPermission) =>
+      permissionLevel >= PERMISSION_LEVELS[requiredPermission],
+    logout: () => {
+      sessionStorage.clear();
+      localStorage.clear();
+    },
   };
 }

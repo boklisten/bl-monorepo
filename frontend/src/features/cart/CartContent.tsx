@@ -3,8 +3,10 @@ import {
   ActionIcon,
   Button,
   Card,
+  Grid,
   Group,
   SegmentedControl,
+  Select,
   Stack,
   Text,
   Title,
@@ -54,23 +56,32 @@ export default function CartContent() {
             <Card withBorder shadow={"md"} key={cartItem.id}>
               <Stack>
                 <Card.Section bg={"brand"} p={"xs"}>
-                  <Group justify={"space-between"}>
-                    <Text fw={"bolder"} c={"white"}>
-                      {cartItem.title}
-                    </Text>
-                    <ActionIcon
-                      color={"red"}
-                      onClick={() => cart.remove(cartItem.id)}
-                    >
-                      <IconX />
-                    </ActionIcon>
-                  </Group>
+                  <Grid>
+                    <Grid.Col span={10}>
+                      <Text fw={"bolder"} c={"white"}>
+                        {cartItem.title}
+                      </Text>
+                    </Grid.Col>
+                    <Grid.Col span={2}>
+                      <Stack align={"end"}>
+                        <ActionIcon
+                          color={"red"}
+                          onClick={() => cart.remove(cartItem.id)}
+                        >
+                          <IconX />
+                        </ActionIcon>
+                      </Stack>
+                    </Grid.Col>
+                  </Grid>
                 </Card.Section>
                 <Group justify={"space-between"}>
                   <Group gap={5}>
-                    {cartItem.options.length > 1 ? (
+                    <Activity
+                      mode={cartItem.options.length > 1 ? "visible" : "hidden"}
+                    >
                       <SegmentedControl
-                        readOnly={cartItem.options.length === 1}
+                        visibleFrom={"sm"}
+                        value={cartItem.selectedOptionIndex.toString()}
                         data={cartItem.options.map((option, index) => ({
                           label: cart.getOptionLabel(option),
                           value: index.toString(),
@@ -82,9 +93,28 @@ export default function CartContent() {
                           });
                         }}
                       />
-                    ) : (
+                      <Select
+                        hiddenFrom={"sm"}
+                        value={cartItem.selectedOptionIndex.toString()}
+                        data={cartItem.options.map((option, index) => ({
+                          label: cart.getOptionLabel(option),
+                          value: index.toString(),
+                        }))}
+                        onChange={(value) => {
+                          cart.add({
+                            ...cartItem,
+                            selectedOptionIndex: Number(value),
+                          });
+                        }}
+                      />
+                    </Activity>
+                    <Activity
+                      mode={
+                        cartItem.options.length === 1 ? "visible" : "hidden"
+                      }
+                    >
                       <Text>{cart.getOptionLabel(cartItem.options[0])}</Text>
-                    )}
+                    </Activity>
                   </Group>
                   <Group>
                     <Text fw={"bold"}>{selectedOption.price} kr</Text>

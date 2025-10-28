@@ -8,12 +8,12 @@ import { publicApiClient } from "@/shared/utils/publicApiClient";
 export default function VippsButton({ verb }: { verb: "login" | "register" }) {
   const router = useRouter();
   const searchParams = useSearchParams();
+  const caller = searchParams.get("caller");
+  const redirect = searchParams.get("redirect");
 
   return (
     <Center
       onClick={() => {
-        const caller = searchParams.get("caller");
-        const redirect = searchParams.get("redirect");
         if (caller) {
           localStorage.setItem(BL_CONFIG.login.localStorageKeys.caller, caller);
         }

@@ -2,7 +2,7 @@
 import { Progress, Stack, Title } from "@mantine/core";
 import { useWindowScroll } from "@mantine/hooks";
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect, useEffectEvent, useState } from "react";
 
 import useAuthLinker from "@/shared/hooks/useAuthLinker";
 
@@ -21,51 +21,43 @@ const CountdownToRedirect = ({
   const [progress, setProgress] = useState(100);
   const router = useRouter();
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [_, scrollTo] = useWindowScroll();
+  const [, scrollTo] = useWindowScroll();
 
-  useEffect(() => {
+  const onIntervalStart = useEffectEvent(() => {
     scrollTo({ y: 0 });
-  }, [scrollTo]);
-
-  useEffect(() => {
     const interval = setInterval(() => {
       setProgress((previousProgress) => {
         if (previousProgress <= 0) {
           clearInterval(interval);
-
           return 0;
         }
         return previousProgress - 10 / seconds;
       });
     }, 100);
-
+    return interval;
+  });
+  useEffect(() => {
+    const interval = onIntervalStart();
     return () => {
       clearInterval(interval);
     };
-  }, [path, router, seconds, shouldReplaceInHistory]);
+  }, []);
 
-  useEffect(() => {
-    if (progress <= 0) {
-      if (shouldRedirectToCaller) return redirectToCaller();
-      if (path) {
-        if (shouldReplaceInHistory) {
-          // @ts-expect-error fixme: bad routing types
-          router.replace(path);
-        } else {
-          // @ts-expect-error fixme: bad routing types
-          router.push(path);
-        }
+  const onIntervalEnd = useEffectEvent(() => {
+    if (shouldRedirectToCaller) return redirectToCaller();
+    if (path) {
+      if (shouldReplaceInHistory) {
+        // @ts-expect-error fixme: bad routing types
+        router.replace(path);
+      } else {
+        // @ts-expect-error fixme: bad routing types
+        router.push(path);
       }
     }
-  }, [
-    progress,
-    shouldReplaceInHistory,
-    router,
-    path,
-    shouldRedirectToCaller,
-    redirectToCaller,
-  ]);
+  });
+  useEffect(() => {
+    if (progress <= 0) onIntervalEnd();
+  }, [progress]);
 
   return (
     <Stack>

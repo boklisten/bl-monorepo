@@ -22,19 +22,16 @@ import ProgressBar from "@/shared/components/ProgressBar";
 import { GENERIC_ERROR_TEXT } from "@/shared/utils/constants";
 
 function useMeetingStatus(meetingTime?: string | Date) {
-  const [isTooEarly, setIsTooEarly] = useState(() =>
+  const [isTooEarly, setIsTooEarly] = useState(
     dayjs().isBefore(dayjs(meetingTime)),
   );
 
   useEffect(() => {
     if (!meetingTime) return;
 
-    const checkStatus = () => {
+    const interval = setInterval(() => {
       setIsTooEarly(dayjs().isBefore(dayjs(meetingTime)));
-    };
-
-    checkStatus();
-    const interval = setInterval(checkStatus, 10_000);
+    }, 10_000);
 
     return () => clearInterval(interval);
   }, [meetingTime]);

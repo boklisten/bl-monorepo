@@ -1,6 +1,4 @@
 import { Stack, Text } from "@mantine/core";
-import { modals } from "@mantine/modals";
-import { useEffect } from "react";
 
 import { ItemStatus } from "@/shared/components/matches/matches-helper";
 import MatchItemTable from "@/shared/components/matches/MatchItemTable";
@@ -15,11 +13,6 @@ export default function MatchScannerContent({
   expectedItems: string[];
   fulfilledItems: string[];
 }) {
-  useEffect(() => {
-    if (expectedItems.length === fulfilledItems.length) {
-      modals.closeAll();
-    }
-  }, [expectedItems.length, fulfilledItems.length]);
   return (
     <Stack mt={"xs"}>
       <ProgressBar

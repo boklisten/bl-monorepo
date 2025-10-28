@@ -34,8 +34,8 @@ export default function AppLayout({
           >
             <Logo variant={"white"} />
             <Group>
+              <CartNavbarIndicator />
               <Group gap={"xl"} visibleFrom={"sm"}>
-                <CartNavbarIndicator />
                 <NextAnchor c={"#fff"} href={"/info/general"}>
                   Info
                 </NextAnchor>

@@ -16,11 +16,11 @@ import { newPasswordFieldValidator } from "@/shared/components/form/fields/compl
 import { phoneNumberFieldValidator } from "@/shared/components/form/fields/complex/PhoneNumberField";
 import NextAnchor from "@/shared/components/NextAnchor";
 import { useAppForm } from "@/shared/hooks/form";
+import { login } from "@/shared/hooks/useAuth";
 import useAuthLinker from "@/shared/hooks/useAuthLinker";
 import { isUnder18 } from "@/shared/utils/dates";
 import { showErrorNotification } from "@/shared/utils/notifications";
 import { publicApiClient } from "@/shared/utils/publicApiClient";
-import { addAccessToken, addRefreshToken } from "@/shared/utils/token";
 
 function isSchoolEmail(email: string) {
   return [
@@ -107,8 +107,7 @@ export default function SignupForm() {
 
       setServerErrors([]);
       if (data) {
-        addAccessToken(data.accessToken);
-        addRefreshToken(data.refreshToken);
+        login(data);
         redirectToCaller();
       }
     },

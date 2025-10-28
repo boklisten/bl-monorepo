@@ -1,11 +1,13 @@
+import { AccessToken } from "@boklisten/backend/shared/access-token";
 import {
   StandMatchWithDetails,
   UserMatchWithDetails,
 } from "@boklisten/backend/shared/match/match-dtos";
 import { Title } from "@mantine/core";
 import { ReactNode } from "react";
+import { decodeToken } from "react-jwt";
 
-import { getAccessTokenBody } from "@/shared/utils/token";
+import BL_CONFIG from "@/shared/utils/bl-config";
 
 export interface ItemStatus {
   id: string;
@@ -85,8 +87,11 @@ export function calculateUserMatchStatus(
       customerB.receivedItems.push(receivedItem);
     }
   }
+  const decodedAccessToken = decodeToken<AccessToken>(
+    localStorage.getItem(BL_CONFIG.token.accessToken) ?? "",
+  );
   const currentUserIsCustomerA =
-    userMatch.customerA === getAccessTokenBody()?.details;
+    userMatch.customerA === decodedAccessToken?.details;
   return {
     currentUser: {
       items: currentUserIsCustomerA

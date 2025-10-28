@@ -1,8 +1,13 @@
 "use client";
 import { UserPermission } from "@boklisten/backend/shared/user-permission";
-import { useQuery } from "@tanstack/react-query";
 import { usePathname, useRouter } from "next/navigation";
-import { ReactNode, useEffect } from "react";
+import {
+  Activity,
+  ReactNode,
+  useEffect,
+  useEffectEvent,
+  useState,
+} from "react";
 
 import useApiClient from "@/shared/hooks/useApiClient";
 import useAuth from "@/shared/hooks/useAuth";
@@ -22,22 +27,11 @@ export default function AuthGuard({
   const router = useRouter();
   const { isLoading, isLoggedIn, canAccess } = useAuth();
   const client = useApiClient();
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
 
-  const {
-    data: userDetail,
-    isLoading: isLoadingUserDetail,
-    isError: isErrorUserDetail,
-  } = useQuery({
-    queryKey: [client.v2.user_details.$url()],
-    queryFn: () => client.v2.user_details.me.$get().unwrap(),
-  });
-
-  useEffect(() => {
-    if (isLoading) return;
-
-    const pathName = pathname.slice(1);
+  const onAuthChange = useEffectEvent(async () => {
     if (!isLoggedIn) {
-      router.replace(`/auth/login?redirect=${pathName}`);
+      router.replace(`/auth/login?redirect=${pathname.slice(1)}`);
       return;
     }
 
@@ -46,34 +40,26 @@ export default function AuthGuard({
       return;
     }
 
+    const userDetail = await client.v2.user_details.me.$get().unwrap();
     if (
-      !pathName.includes("oppgaver") &&
-      !pathName.includes("user-settings") &&
-      !isLoadingUserDetail &&
-      !isErrorUserDetail &&
+      !pathname.includes("oppgaver") &&
+      !pathname.includes("user-settings") &&
       (userDetail?.tasks?.confirmDetails || userDetail?.tasks?.signAgreement)
     ) {
-      router.replace(`/oppgaver?redirect=${pathName}`);
+      router.replace(`/oppgaver?redirect=${pathname.slice(1)}`);
+      return;
     }
-  }, [
-    canAccess,
-    isErrorUserDetail,
-    isLoading,
-    isLoadingUserDetail,
-    isLoggedIn,
-    pathname,
-    requiredPermission,
-    router,
-    userDetail?.tasks?.confirmDetails,
-    userDetail?.tasks?.signAgreement,
-  ]);
+    setIsAuthenticated(true);
+  });
 
-  if (
-    isLoading ||
-    !isLoggedIn ||
-    (requiredPermission && !canAccess(requiredPermission))
-  )
-    return null;
+  useEffect(() => {
+    if (isLoading) return;
+    void onAuthChange();
+  }, [isLoading, isLoggedIn]);
 
-  return <>{children}</>;
+  return (
+    <Activity mode={isAuthenticated ? "visible" : "hidden"}>
+      {children}
+    </Activity>
+  );
 }

@@ -9,14 +9,9 @@ import { createTuyau } from "@tuyau/client";
 import { superjson } from "@tuyau/superjson/plugin";
 import { usePathname, useRouter } from "next/navigation";
 
+import { login, logout } from "@/shared/hooks/useAuth";
 import BL_CONFIG from "@/shared/utils/bl-config";
 import { publicApiClient } from "@/shared/utils/publicApiClient";
-import {
-  addAccessToken,
-  addRefreshToken,
-  getAccessToken,
-  getRefreshToken,
-} from "@/shared/utils/token";
 
 export default function useApiClient() {
   const router = useRouter();
@@ -30,16 +25,16 @@ export default function useApiClient() {
     hooks: {
       beforeRequest: [
         (request) => {
-          const token = getAccessToken();
-          if (token) {
-            request.headers.set("Authorization", `Bearer ${token}`);
+          const accessToken = localStorage.getItem(BL_CONFIG.token.accessToken);
+          if (accessToken) {
+            request.headers.set("Authorization", `Bearer ${accessToken}`);
           }
         },
       ],
       afterResponse: [
         async (request, options, response) => {
           function redirectToLogin() {
-            localStorage.clear();
+            logout();
             router.push(`/auth/login?redirect=${pathname.slice(1)}`);
             return new Response();
           }
@@ -53,7 +48,9 @@ export default function useApiClient() {
             return response;
           }
 
-          const refreshToken = getRefreshToken();
+          const refreshToken = localStorage.getItem(
+            BL_CONFIG.token.refreshToken,
+          );
           if (
             request.headers.get("Authorization") === undefined ||
             refreshToken === null
@@ -70,8 +67,7 @@ export default function useApiClient() {
             if (!newTokens) {
               return redirectToLogin();
             }
-            addAccessToken(newTokens.accessToken);
-            addRefreshToken(newTokens.refreshToken);
+            login(newTokens);
 
             const retryRequest = new Request(request);
             retryRequest.headers.set(

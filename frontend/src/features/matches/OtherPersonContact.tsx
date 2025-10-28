@@ -1,17 +1,22 @@
+import { AccessToken } from "@boklisten/backend/shared/access-token";
 import { UserMatchWithDetails } from "@boklisten/backend/shared/match/match-dtos";
 import { Group, Text } from "@mantine/core";
 import { IconPhone } from "@tabler/icons-react";
+import { decodeToken } from "react-jwt";
 
 import NextAnchor from "@/shared/components/NextAnchor";
-import { getAccessTokenBody } from "@/shared/utils/token";
+import BL_CONFIG from "@/shared/utils/bl-config";
 
 const OtherPersonContact = ({
   userMatch,
 }: {
   userMatch: UserMatchWithDetails;
 }) => {
+  const decodedAccessToken = decodeToken<AccessToken>(
+    localStorage.getItem(BL_CONFIG.token.accessToken) ?? "",
+  );
   const otherPerson =
-    userMatch.customerA === getAccessTokenBody()?.details
+    userMatch.customerA === decodedAccessToken?.details
       ? userMatch.customerBDetails
       : userMatch.customerADetails;
 

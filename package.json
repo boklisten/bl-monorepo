@@ -10,7 +10,9 @@
     "lint:fix": "pnpm lint --fix",
     "typecheck": "pnpm -r typecheck",
     "fix": "pnpm -wr '/^(lint:fix|typecheck)$/' && pnpm prettier",
-    "test": "pnpm -r test"
+    "test": "pnpm -r test",
+    "dev": "pnpm -r --parallel dev",
+    "start": "pnpm -F backend build && (pnpm -F backend start & pnpm -F frontend build && pnpm -F frontend start)"
   },
   "devDependencies": {
     "@eslint/js": "^9.38.0",

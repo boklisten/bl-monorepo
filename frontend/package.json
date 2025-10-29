@@ -25,6 +25,7 @@
     "@tiptap/starter-kit": "^3.9.0",
     "@tuyau/client": "^0.2.10",
     "@tuyau/superjson": "^0.1.2",
+    "@vercel/analytics": "^1.5.0",
     "@vercel/speed-insights": "^1.2.0",
     "@yudiel/react-qr-scanner": "^2.4.1",
     "dayjs": "^1.11.18",

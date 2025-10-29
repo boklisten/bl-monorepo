@@ -1601,20 +1601,6 @@ const routes = [
   },
   {
     params: ["id"],
-    name: "collection.userdetails.operation.permission.patch",
-    path: "/userdetails/:id/permission",
-    method: ["PATCH"],
-    types: {} as unknown,
-  },
-  {
-    params: ["id"],
-    name: "collection.userdetails.operation.email.patch",
-    path: "/userdetails/:id/email",
-    method: ["PATCH"],
-    types: {} as unknown,
-  },
-  {
-    params: ["id"],
     name: "collection.userdetails.delete",
     path: "/userdetails/:id",
     method: ["DELETE"],

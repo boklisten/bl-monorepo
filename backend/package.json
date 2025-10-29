@@ -95,5 +95,6 @@
       "./app/controllers/**/*.ts",
       "./app/middleware/*.ts"
     ]
-  }
+  },
+  "packageManager": "pnpm@10.20.0"
 }

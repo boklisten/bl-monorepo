@@ -19,6 +19,7 @@ import PostalCodeField from "@/shared/components/form/fields/complex/PostalCodeF
 import RichTextEditorField from "@/shared/components/form/fields/complex/RichTextEditorField";
 import SegmentedControlField from "@/shared/components/form/fields/complex/SegmentedControlField";
 import SelectBranchField from "@/shared/components/form/fields/complex/SelectBranchField";
+import SelectPermissionField from "@/shared/components/form/fields/complex/SelectPermissionField";
 import SignatureCanvasField from "@/shared/components/form/fields/complex/SignatureCanvasField";
 
 const { fieldContext, formContext, useFieldContext, useFormContext } =
@@ -44,6 +45,7 @@ const { useAppForm, withFieldGroup } = createFormHook({
     PasswordField,
     NewPasswordField,
     SelectBranchField,
+    SelectPermissionField,
     SegmentedControlField,
     DeadlinePickerField,
     RichTextEditorField,

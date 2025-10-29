@@ -4,6 +4,7 @@ import { UserDetailHelper } from "#services/legacy/collections/user-detail/helpe
 import { userHasValidSignature } from "#services/legacy/signature.helper";
 import { PermissionService } from "#services/permission_service";
 import { StorageService } from "#services/storage_service";
+import { UserService } from "#services/user_service";
 import {
   customerUpdateUserDetailsValidator,
   employeeUpdateUserDetailsValidator,
@@ -23,7 +24,8 @@ async function getUserDetail(detailsId: string) {
       "tasks.signAgreement": false,
     });
   }
-  return userDetail;
+  const user = await UserService.getByUserDetailsId(detailsId);
+  return { ...userDetail, permission: user?.permission ?? "customer" };
 }
 
 export default class UserDetailsController {
@@ -65,9 +67,11 @@ export default class UserDetailsController {
   }
 
   async updateAsEmployee(ctx: HttpContext) {
-    PermissionService.employeeOrFail(ctx);
+    const { permission: employeePermission } =
+      PermissionService.employeeOrFail(ctx);
     const targetUserDetailsId = ctx.request.param("detailsId");
     const {
+      permission,
       emailVerified,
       email,
       phoneNumber,
@@ -96,5 +100,9 @@ export default class UserDetailsController {
       guardian,
       "tasks.confirmDetails": false,
     });
+    if (PermissionService.isAdmin(employeePermission)) {
+      const user = await UserService.getByUserDetailsId(targetUserDetailsId);
+      if (user) await StorageService.Users.update(user.id, { permission });
+    }
   }
 }

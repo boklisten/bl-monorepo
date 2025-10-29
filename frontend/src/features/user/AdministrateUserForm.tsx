@@ -1,12 +1,13 @@
 "use client";
 
 import { UserDetail } from "@boklisten/backend/shared/user-detail";
+import { UserPermission } from "@boklisten/backend/shared/user-permission";
 import { Button, Space, Stack, Tooltip } from "@mantine/core";
 import { IconCheck, IconInfoCircleFilled } from "@tabler/icons-react";
 import { createFieldMap } from "@tanstack/react-form";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import dayjs from "dayjs";
-import { useState } from "react";
+import { Activity, useState } from "react";
 
 import UserInfoFields, {
   UserInfoFieldValues,
@@ -16,6 +17,7 @@ import { nameFieldValidator } from "@/shared/components/form/fields/complex/Name
 import { phoneNumberFieldValidator } from "@/shared/components/form/fields/complex/PhoneNumberField";
 import { useAppForm } from "@/shared/hooks/form";
 import useApiClient from "@/shared/hooks/useApiClient";
+import useAuth from "@/shared/hooks/useAuth";
 import { isUnder18 } from "@/shared/utils/dates";
 import {
   showErrorNotification,
@@ -30,11 +32,13 @@ type AdministrateUserFormValues = {
 export default function AdministrateUserForm({
   userDetail,
 }: {
-  userDetail: UserDetail;
+  userDetail: UserDetail & { permission: UserPermission };
 }) {
+  const { isAdmin } = useAuth();
   const queryClient = useQueryClient();
   const client = useApiClient();
   const defaultValues: AdministrateUserFormValues = {
+    permission: userDetail.permission,
     email: userDetail.email,
     emailVerified: userDetail.emailConfirmed ?? false,
     name: userDetail.name,
@@ -84,6 +88,7 @@ export default function AdministrateUserForm({
       const { error } = await client.v2.employee
         .user_details({ detailsId: userDetail.id })
         .$post({
+          permission: formValues.permission,
           email: formValues.email,
           emailVerified: formValues.emailVerified,
           name: formValues.name,
@@ -148,6 +153,11 @@ export default function AdministrateUserForm({
       <form.AppField name={"emailVerified"}>
         {(field) => <field.SwitchField label={"E-post bekreftet"} />}
       </form.AppField>
+      <Activity mode={isAdmin ? "visible" : "hidden"}>
+        <form.AppField name={"permission"}>
+          {(field) => <field.SelectPermissionField />}
+        </form.AppField>
+      </Activity>
       <Space />
       <UserInfoFields
         perspective={"administrate"}

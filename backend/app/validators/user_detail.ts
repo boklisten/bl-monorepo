@@ -1,5 +1,6 @@
 import vine from "@vinejs/vine";
 
+import { USER_PERMISSION } from "#shared/user-permission";
 import {
   emailField,
   phoneField,
@@ -62,6 +63,7 @@ const employeeUpdateUserDetailsSchema = vine.object({
   ...customerUpdateUserDetailsSchema.getProperties(),
   email: emailField.clone().use(uniqueEmail()),
   emailVerified: vine.boolean(),
+  permission: vine.enum(USER_PERMISSION),
 });
 
 export const employeeUpdateUserDetailsValidator = vine

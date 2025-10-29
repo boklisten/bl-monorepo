@@ -1,5 +1,4 @@
 "use client";
-import { UserDetail } from "@boklisten/backend/shared/user-detail";
 import { Box, Button, Stack } from "@mantine/core";
 import { modals } from "@mantine/modals";
 import { IconUserEdit } from "@tabler/icons-react";
@@ -14,37 +13,31 @@ import AdministrateUserForm from "@/features/user/AdministrateUserForm";
 import useApiClient from "@/shared/hooks/useApiClient";
 
 export default function ClientPage() {
-  const [searchUserDetail, setSearchUserDetail] = useState<UserDetail | null>(
-    null,
-  );
+  const [userDetailsId, setUserDetailsId] = useState<string | null>(null);
 
   const client = useApiClient();
-  const { data: freshUserDetail } = useQuery({
+  const { data } = useQuery({
     queryKey: [
-      client.v2.user_details
-        .id({ detailsId: searchUserDetail?.id ?? "" })
-        .$url(),
-      searchUserDetail,
+      client.v2.user_details.id({ detailsId: userDetailsId ?? "" }).$url(),
+      userDetailsId,
     ],
     queryFn: () =>
-      searchUserDetail
+      userDetailsId
         ? client.v2.user_details
-            .id({ detailsId: searchUserDetail.id })
+            .id({ detailsId: userDetailsId ?? "" })
             .$get()
             .unwrap()
         : null,
   });
 
-  const userDetail = freshUserDetail ?? searchUserDetail;
-
   return (
     <Stack>
       <UserDetailSearchField
         onSelectedResult={(userDetail) => {
-          setSearchUserDetail(userDetail);
+          setUserDetailsId(userDetail?.id ?? null);
         }}
       />
-      {userDetail && (
+      {data && (
         <Box>
           <Button
             leftSection={<IconUserEdit />}
@@ -53,9 +46,11 @@ export default function ClientPage() {
                 title: "Rediger brukerdetaljer",
                 children: (
                   <Stack>
-                    <UnlockUserMatchesButton userDetailId={userDetail.id} />
-                    <AdministrateUserForm userDetail={userDetail} />
-                    <AdministrateUserSignatures userDetail={userDetail} />
+                    <UnlockUserMatchesButton
+                      userDetailId={userDetailsId ?? ""}
+                    />
+                    <AdministrateUserForm userDetail={data} />
+                    <AdministrateUserSignatures userDetail={data} />
                   </Stack>
                 ),
               })
@@ -65,7 +60,7 @@ export default function ClientPage() {
           </Button>
         </Box>
       )}
-      {userDetail && <RapidHandoutDetails customer={userDetail} />}
+      {data && <RapidHandoutDetails customer={data} />}
     </Stack>
   );
 }

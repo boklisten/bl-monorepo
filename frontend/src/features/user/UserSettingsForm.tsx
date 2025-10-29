@@ -1,6 +1,7 @@
 "use client";
 
 import { UserDetail } from "@boklisten/backend/shared/user-detail";
+import { UserPermission } from "@boklisten/backend/shared/user-permission";
 import { Button, Space, Stack, TextInput, Tooltip } from "@mantine/core";
 import { modals } from "@mantine/modals";
 import {
@@ -34,11 +35,12 @@ import {
 export default function UserSettingsForm({
   userDetail,
 }: {
-  userDetail: UserDetail;
+  userDetail: UserDetail & { permission: UserPermission };
 }) {
   const queryClient = useQueryClient();
   const client = useApiClient();
   const defaultValues: UserInfoFieldValues = {
+    permission: userDetail.permission,
     name: userDetail.name,
     phoneNumber: userDetail.phone,
     address: userDetail.address,
@@ -164,6 +166,22 @@ export default function UserSettingsForm({
             </Button>
           </Activity>
         </Stack>
+      </Activity>
+      <Activity
+        mode={
+          form.state.values.permission !== "customer" ? "visible" : "hidden"
+        }
+      >
+        <form.AppField name={"permission"}>
+          {(field) => (
+            <field.SelectPermissionField
+              description={
+                "Ditt tilgangsnivå bestemmer hva du har tilgang til å gjøre i bl-admin"
+              }
+              readOnly
+            />
+          )}
+        </form.AppField>
       </Activity>
       <Stack align={"center"} w={"100%"}>
         <Button

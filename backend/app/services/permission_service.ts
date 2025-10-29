@@ -129,30 +129,30 @@ function authenticate(
  *
  * @throws UnauthorizedException if token is not valid
  * @throws NotAllowedException if user is not admin
- * @returns the detailsId for the customer
+ * @returns the detailsId and permission for the customer
  */
 function adminOrFail(ctx: HttpContext) {
-  return authenticate(ctx, USER_PERMISSION.ADMIN).detailsId;
+  return authenticate(ctx, USER_PERMISSION.ADMIN);
 }
 
 /**
  *
  * @throws UnauthorizedException if token is not valid
  * @throws NotAllowedException if user is not manager
- * @returns the detailsId for the customer
+ * @returns the detailsId and permission for the customer
  */
 function managerOrFail(ctx: HttpContext) {
-  return authenticate(ctx, USER_PERMISSION.MANAGER).detailsId;
+  return authenticate(ctx, USER_PERMISSION.MANAGER);
 }
 
 /**
  *
  * @throws UnauthorizedException if token is not valid
  * @throws NotAllowedException if user is not employee
- * @returns the detailsId for the customer
+ * @returns the detailsId and permission for the customer
  */
 function employeeOrFail(ctx: HttpContext) {
-  return authenticate(ctx, USER_PERMISSION.EMPLOYEE).detailsId;
+  return authenticate(ctx, USER_PERMISSION.EMPLOYEE);
 }
 
 export const PermissionService = {

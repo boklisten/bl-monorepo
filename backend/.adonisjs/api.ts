@@ -550,6 +550,31 @@ type PostalLookupPostalcodeIdGetHead = {
     false
   >;
 };
+type V2CompaniesGetHead = {
+  request: unknown;
+  response: MakeNonSerializedTuyauResponse<
+    import("../app/controllers/companies_controller.ts").default["getCompanies"],
+    false
+  >;
+};
+type V2CompaniesPost = {
+  request: MakeTuyauRequest<
+    InferInput<
+      (typeof import("../app/validators/companies_validators.ts"))["companyValidator"]
+    >
+  >;
+  response: MakeNonSerializedTuyauResponse<
+    import("../app/controllers/companies_controller.ts").default["addCompany"],
+    true
+  >;
+};
+type V2CompaniesIdDelete = {
+  request: unknown;
+  response: MakeNonSerializedTuyauResponse<
+    import("../app/controllers/companies_controller.ts").default["deleteCompany"],
+    false
+  >;
+};
 export interface ApiDefinition {
   token: {
     $url: {};
@@ -615,6 +640,16 @@ export interface ApiDefinition {
       $url: {};
       $get: V2CustomeritemsGetHead;
       $head: V2CustomeritemsGetHead;
+    };
+    companies: {
+      $url: {};
+      $get: V2CompaniesGetHead;
+      $head: V2CompaniesGetHead;
+      $post: V2CompaniesPost;
+      ":companyId": {
+        $url: {};
+        $delete: V2CompaniesIdDelete;
+      };
     };
   };
   auth: {
@@ -1283,6 +1318,27 @@ const routes = [
     path: "/postal/lookup/postal_code/:postalCode",
     method: ["GET", "HEAD"],
     types: {} as PostalLookupPostalcodeIdGetHead,
+  },
+  {
+    params: [],
+    name: "companies.get",
+    path: "/v2/companies",
+    method: ["GET", "HEAD"],
+    types: {} as V2CompaniesGetHead,
+  },
+  {
+    params: [],
+    name: "companies.add",
+    path: "/v2/companies",
+    method: ["POST"],
+    types: {} as V2CompaniesPost,
+  },
+  {
+    params: ["companyId"],
+    name: "companies.delete",
+    path: "/v2/companies/:companyId",
+    method: ["DELETE"],
+    types: {} as V2CompaniesIdDelete,
   },
   {
     params: ["id"],

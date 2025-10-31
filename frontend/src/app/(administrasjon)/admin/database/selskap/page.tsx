@@ -1,11 +1,11 @@
-import { Suspense } from "react";
+import { Metadata } from "next";
 
-import RedirectToBlAdmin from "@/features/auth-linker/RedirectToBlAdmin";
+import CompanyManager from "@/features/companies/CompanyManager";
+
+export const metadata: Metadata = {
+  title: "Selskap",
+};
 
 export default function DatabaseCompaniesPage() {
-  return (
-    <Suspense>
-      <RedirectToBlAdmin path={"database/companies"} />
-    </Suspense>
-  );
+  return <CompanyManager />;
 }

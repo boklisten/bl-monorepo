@@ -41,6 +41,7 @@ const OrderHistoryController = () =>
 const CheckoutController = () => import("#controllers/checkout_controller");
 const SubjectsController = () => import("#controllers/subjects_controller");
 const PostalController = () => import("#controllers/postal_controller");
+const CompaniesController = () => import("#controllers/companies_controller");
 
 /**
  * static
@@ -361,6 +362,19 @@ router
     "lookupPostalCode",
   ])
   .as("lookup.postal.code");
+
+/**
+ * Companies
+ */
+router
+  .get("/v2/companies", [CompaniesController, "getCompanies"])
+  .as("companies.get");
+router
+  .post("/v2/companies", [CompaniesController, "addCompany"])
+  .as("companies.add");
+router
+  .delete("/v2/companies/:companyId", [CompaniesController, "deleteCompany"])
+  .as("companies.delete");
 
 /**
  * Generate legacy bl-collection endpoints

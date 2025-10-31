@@ -49,6 +49,11 @@ const NEXT_CONFIG = {
         destination: "/user-settings",
         permanent: false,
       },
+      {
+        source: "/database/companies",
+        destination: "/admin/database/selskap",
+        permanent: false,
+      },
     ];
   },
 } as const satisfies NextConfig;

@@ -9,6 +9,8 @@ import { useState } from "react";
 
 import BranchBaseSettings from "@/features/branches/BranchBaseSettings";
 import BranchSettings from "@/features/branches/BranchSettings";
+import UploadClassMemberships from "@/features/branches/UploadClassMemberships";
+import UploadSubjectChoices from "@/features/branches/UploadSubjectChoices";
 import SelectBranchTreeView from "@/shared/components/SelectBranchTreeView";
 import useApiClient from "@/shared/hooks/useApiClient";
 import unpack from "@/shared/utils/bl-api-request";
@@ -76,6 +78,7 @@ export default function BranchManager() {
                 <Tabs.List mb={"md"}>
                   <Tabs.Tab value={"base"}>Generelt</Tabs.Tab>
                   <Tabs.Tab value={"todo"}>TODO</Tabs.Tab>
+                  <Tabs.Tab value={"upload"}>Opplasting av elevdata</Tabs.Tab>
                 </Tabs.List>
                 <Tabs.Panel value={"base"}>
                   <BranchBaseSettings existingBranch={selectedBranch} />
@@ -85,6 +88,12 @@ export default function BranchManager() {
                     key={selectedBranch?.id}
                     existingBranch={selectedBranch}
                   />
+                </Tabs.Panel>
+                <Tabs.Panel value={"upload"}>
+                  <Stack>
+                    <UploadClassMemberships branchId={selectedBranch.id} />
+                    <UploadSubjectChoices branchId={selectedBranch.id} />
+                  </Stack>
                 </Tabs.Panel>
               </Tabs>
             </Stack>

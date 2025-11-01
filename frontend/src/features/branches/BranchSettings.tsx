@@ -1,12 +1,10 @@
 import { Branch } from "@boklisten/backend/shared/branch";
 import { Period } from "@boklisten/backend/shared/period";
-import { Button, Card, Fieldset, Group, Stack, Title } from "@mantine/core";
+import { Button, Card, Fieldset, Group, Stack } from "@mantine/core";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import dayjs from "dayjs";
 import { Activity } from "react";
 
-import UploadClassMemberships from "@/features/branches/UploadClassMemberships";
-import UploadSubjectChoices from "@/features/branches/UploadSubjectChoices";
 import InfoAlert from "@/shared/components/alerts/InfoAlert";
 import { useAppForm } from "@/shared/hooks/form";
 import useApiClient from "@/shared/hooks/useApiClient";
@@ -131,7 +129,7 @@ export default function BranchSettings({
   });
 
   return (
-    <>
+    <Stack>
       <Fieldset legend={"Synlighet"}>
         <Stack>
           <form.AppField name={"active"}>
@@ -483,11 +481,6 @@ export default function BranchSettings({
       >
         Lagre
       </Button>
-      <Stack gap={"xs"}>
-        <Title order={2}>Last opp informasjon</Title>
-        <UploadClassMemberships branchId={existingBranch.id} />
-        <UploadSubjectChoices branchId={existingBranch.id} />
-      </Stack>
-    </>
+    </Stack>
   );
 }

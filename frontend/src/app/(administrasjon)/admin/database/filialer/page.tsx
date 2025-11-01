@@ -1,11 +1,11 @@
 import { Metadata } from "next";
 
-import Branches from "@/features/branches/Branches";
+import BranchManager from "@/features/branches/BranchManager";
 
 export const metadata: Metadata = {
   title: "Filialer",
 };
 
 export default function DatabaseBranchesPage() {
-  return <Branches />;
+  return <BranchManager />;
 }

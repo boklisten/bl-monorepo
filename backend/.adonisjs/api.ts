@@ -151,11 +151,22 @@ type RemindersSendPost = {
 type V2BranchesPost = {
   request: MakeTuyauRequest<
     InferInput<
-      (typeof import("../app/validators/branch.ts"))["branchValidator"]
+      (typeof import("../app/validators/branch.ts"))["branchBaseValidator"]
     >
   >;
   response: MakeNonSerializedTuyauResponse<
-    import("../app/controllers/branches_controller.ts").default["add"],
+    import("../app/controllers/branch_base_controller.ts").default["add"],
+    true
+  >;
+};
+type V2BranchesBaseIdPatch = {
+  request: MakeTuyauRequest<
+    InferInput<
+      (typeof import("../app/validators/branch.ts"))["branchBaseValidator"]
+    >
+  >;
+  response: MakeNonSerializedTuyauResponse<
+    import("../app/controllers/branch_base_controller.ts").default["update"],
     true
   >;
 };
@@ -588,6 +599,12 @@ export interface ApiDefinition {
     branches: {
       $url: {};
       $post: V2BranchesPost;
+      base: {
+        ":id": {
+          $url: {};
+          $patch: V2BranchesBaseIdPatch;
+        };
+      };
       ":id": {
         $url: {};
         $patch: V2BranchesIdPatch;
@@ -1003,6 +1020,13 @@ const routes = [
     path: "/v2/branches",
     method: ["POST"],
     types: {} as V2BranchesPost,
+  },
+  {
+    params: ["id"],
+    name: "branches.base.update",
+    path: "/v2/branches/base/:id",
+    method: ["PATCH"],
+    types: {} as V2BranchesBaseIdPatch,
   },
   {
     params: ["id"],

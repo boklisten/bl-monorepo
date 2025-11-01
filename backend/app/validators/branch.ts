@@ -4,16 +4,6 @@ import { percentageField } from "#validators/common/fields";
 
 export const branchValidator = vine.compile(
   vine.object({
-    name: vine.string(),
-    localName: vine.string().optional(),
-    parentBranch: vine.string().optional(),
-    childBranches: vine.array(vine.string()).optional(),
-    childLabel: vine.string().optional(),
-    location: vine.object({
-      region: vine.string(),
-      address: vine.string().optional(),
-    }),
-    type: vine.string().optional(),
     active: vine.boolean(),
     isBranchItemsLive: vine.object({
       online: vine.boolean(),
@@ -61,5 +51,20 @@ export const branchValidator = vine.compile(
       branch: vine.boolean(),
       byMail: vine.boolean(),
     }),
+  }),
+);
+
+export const branchBaseValidator = vine.compile(
+  vine.object({
+    name: vine.string(),
+    localName: vine.string(),
+    parentBranch: vine.string().optional(),
+    childBranches: vine.array(vine.string()).optional(),
+    childLabel: vine.string().optional(),
+    location: vine.object({
+      region: vine.string(),
+      address: vine.string().optional(),
+    }),
+    type: vine.string().nullable(),
   }),
 );

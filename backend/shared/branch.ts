@@ -7,7 +7,7 @@ export interface Branch extends BlDocument {
   localName?: string | undefined; // the name of this branch in relation to its parent and/or children. E.g. "VG1"
   childBranches?: string[] | undefined; // the IDs (if any) of the child branches, could for instance point to Ullern VG1 ST
   childLabel?: string | undefined; // The descriptive title of what the children represent in the hierarchy, e.g. studieprogram
-  type?: string | undefined; // the type of branch, privatist or vgs
+  type?: string | null; // the type of branch, privatist or vgs
   openingHours?: string[]; // id of all the opening hours this branch has
   paymentInfo?: BranchPaymentInfo | undefined; // payment information for this branch
   deliveryMethods?: {

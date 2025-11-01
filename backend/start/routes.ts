@@ -13,6 +13,8 @@ const WaitingListEntriesController = () =>
   import("#controllers/waiting_list_entries_controller");
 const RemindersController = () => import("#controllers/reminders_controller");
 const BranchesController = () => import("#controllers/branches_controller");
+const BranchBaseController = () =>
+  import("#controllers/branch_base_controller");
 const MailTemplateSenderController = () =>
   import("#controllers/mail_template_sender_controller");
 const OrdersController = () => import("#controllers/orders_controller");
@@ -130,7 +132,10 @@ router
 /**
  * branches
  */
-router.post("/v2/branches", [BranchesController, "add"]).as("branches.add");
+router.post("/v2/branches", [BranchBaseController, "add"]).as("branches.add");
+router
+  .patch("/v2/branches/base/:id", [BranchBaseController, "update"])
+  .as("branches.base.update");
 router
   .patch("/v2/branches/:id", [BranchesController, "update"])
   .as("branches.update");

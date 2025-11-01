@@ -1,18 +1,19 @@
 "use client";
 
 import { Branch } from "@boklisten/backend/shared/branch";
-import { Box, Button, Divider, Grid, Stack } from "@mantine/core";
+import { Box, Button, Divider, Grid, Stack, Tabs, Title } from "@mantine/core";
 import { modals } from "@mantine/modals";
 import { IconPlus } from "@tabler/icons-react";
 import { useQuery } from "@tanstack/react-query";
-import { Activity, useState } from "react";
+import { useState } from "react";
 
+import BranchBaseSettings from "@/features/branches/BranchBaseSettings";
 import BranchSettings from "@/features/branches/BranchSettings";
 import SelectBranchTreeView from "@/shared/components/SelectBranchTreeView";
 import useApiClient from "@/shared/hooks/useApiClient";
 import unpack from "@/shared/utils/bl-api-request";
 
-export default function Branches() {
+export default function BranchManager() {
   const client = useApiClient();
   const branchQuery = {
     query: { sort: "name" },
@@ -39,9 +40,13 @@ export default function Branches() {
               modalId: createBranchModalId,
               title: "Opprett filial",
               children: (
-                <BranchSettings
-                  existingBranch={null}
-                  onSuccess={() => modals.close(createBranchModalId)}
+                <BranchBaseSettings
+                  onSuccess={(newBranch) => {
+                    if (newBranch) {
+                      setSelectedBranch(newBranch);
+                    }
+                    modals.close(createBranchModalId);
+                  }}
                 />
               ),
             })
@@ -64,12 +69,26 @@ export default function Branches() {
           />
         </Grid.Col>
         <Grid.Col span={{ base: 12, md: 9 }}>
-          <Activity mode={selectedBranch ? "visible" : "hidden"}>
-            <BranchSettings
-              key={selectedBranch?.id}
-              existingBranch={selectedBranch}
-            />
-          </Activity>
+          {selectedBranch && (
+            <Stack>
+              <Title>{selectedBranch.name}</Title>
+              <Tabs defaultValue={"base"}>
+                <Tabs.List mb={"md"}>
+                  <Tabs.Tab value={"base"}>Generelt</Tabs.Tab>
+                  <Tabs.Tab value={"todo"}>TODO</Tabs.Tab>
+                </Tabs.List>
+                <Tabs.Panel value={"base"}>
+                  <BranchBaseSettings existingBranch={selectedBranch} />
+                </Tabs.Panel>
+                <Tabs.Panel value={"todo"}>
+                  <BranchSettings
+                    key={selectedBranch?.id}
+                    existingBranch={selectedBranch}
+                  />
+                </Tabs.Panel>
+              </Tabs>
+            </Stack>
+          )}
         </Grid.Col>
       </Grid>
     </Stack>

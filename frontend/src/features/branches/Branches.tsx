@@ -28,6 +28,7 @@ export default function Branches() {
 
   const [selectedBranch, setSelectedBranch] = useState<Branch | null>(null);
 
+  const createBranchModalId = "create-branch-modal";
   return (
     <Stack>
       <Box>
@@ -35,11 +36,12 @@ export default function Branches() {
           leftSection={<IconPlus />}
           onClick={() =>
             modals.open({
+              modalId: createBranchModalId,
               title: "Opprett filial",
               children: (
                 <BranchSettings
                   existingBranch={null}
-                  afterSubmit={() => modals.closeAll()}
+                  onSuccess={() => modals.close(createBranchModalId)}
                 />
               ),
             })

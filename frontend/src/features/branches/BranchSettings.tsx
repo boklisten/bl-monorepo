@@ -12,12 +12,20 @@ import {
   showSuccessNotification,
 } from "@/shared/utils/notifications";
 
+type DetailedBranch = Omit<Branch, "id"> & {
+  active: boolean;
+  isBranchItemsLive: {
+    online: boolean;
+    atBranch: boolean;
+  };
+};
+
 export default function BranchSettings({
   existingBranch,
-  afterSubmit = () => undefined,
+  onSuccess = () => undefined,
 }: {
   existingBranch: Branch | null;
-  afterSubmit?: () => void;
+  onSuccess?: () => void;
 }) {
   const queryClient = useQueryClient();
   const client = useApiClient();
@@ -35,21 +43,24 @@ export default function BranchSettings({
   });
 
   const addBranchMutation = useMutation({
-    mutationFn: (newBranch: Omit<Branch, "id">) =>
+    mutationFn: (newBranch: DetailedBranch) =>
       client.v2.branches.$post(newBranch).unwrap(),
     onSettled: () =>
       queryClient.invalidateQueries({
         queryKey: [client.$url("collection.branches.getAll", branchQuery)],
       }),
-    onSuccess: () => {
+    onSuccess: async () => {
       showSuccessNotification("Filial ble opprettet!");
-      afterSubmit();
+      await queryClient.invalidateQueries({
+        queryKey: [client.$url("collection.branches.getAll", branchQuery)],
+      });
+      onSuccess();
     },
     onError: () => showErrorNotification("Klarte ikke opprette filial!"),
   });
 
   const updateBranchMutation = useMutation({
-    mutationFn: (updatedBranch: Partial<Branch>) =>
+    mutationFn: (updatedBranch: DetailedBranch) =>
       client.v2
         .branches({ id: existingBranch?.id ?? "" })
         .$patch(updatedBranch)
@@ -62,18 +73,26 @@ export default function BranchSettings({
     onError: () => showErrorNotification("Klarte ikke oppdatere filial!"),
   });
 
-  const form = useAppForm({
-    defaultValues: {
-      name: existingBranch?.name ?? "",
-      localName: existingBranch?.localName ?? "",
-      parentBranch: existingBranch?.parentBranch ?? "",
-      childBranches: existingBranch?.childBranches ?? [],
-      childLabel: existingBranch?.childLabel ?? "",
-      location: existingBranch?.location ?? {
-        region: "",
-        address: "",
-      },
+  const defaultValues: DetailedBranch = {
+    name: existingBranch?.name ?? "",
+    localName: existingBranch?.localName ?? "",
+    parentBranch: existingBranch?.parentBranch ?? "",
+    childBranches: existingBranch?.childBranches ?? [],
+    childLabel: existingBranch?.childLabel ?? "",
+    location: existingBranch?.location ?? {
+      region: "",
+      address: "",
     },
+    type: existingBranch?.type,
+    active: existingBranch?.active ?? false,
+    isBranchItemsLive: {
+      online: existingBranch?.isBranchItemsLive?.online ?? false,
+      atBranch: existingBranch?.isBranchItemsLive?.atBranch ?? false,
+    },
+  };
+
+  const form = useAppForm({
+    defaultValues,
     onSubmit: ({ value }) =>
       existingBranch === null
         ? addBranchMutation.mutate(value)
@@ -157,6 +176,25 @@ export default function BranchSettings({
             placeholder={"Postboks 8, 1316 Eiksmarka"}
           />
         )}
+      </form.AppField>
+      <form.AppField name={"type"}>
+        {(field) => (
+          <field.SelectField
+            data={["privatist", "VGS"]}
+            label={"Type"}
+            placeholder={"privatist eller VGS"}
+            clearable
+          />
+        )}
+      </form.AppField>
+      <form.AppField name={"active"}>
+        {(field) => <field.SwitchField label={"Aktiv"} />}
+      </form.AppField>
+      <form.AppField name={"isBranchItemsLive.online"}>
+        {(field) => <field.SwitchField label={"Synlig for kunder"} />}
+      </form.AppField>
+      <form.AppField name={"isBranchItemsLive.atBranch"}>
+        {(field) => <field.SwitchField label={"Synlig for ansatte"} />}
       </form.AppField>
       <Button
         color={"green"}

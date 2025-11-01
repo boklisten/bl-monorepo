@@ -343,7 +343,12 @@ export default class BranchesController {
     const storedBranch = await StorageService.Branches.get(branchId);
     const updatedBranch = await StorageService.Branches.update(
       ctx.params["id"],
-      { ...branchData, parentBranch: branchData.parentBranch || null }, // since parentBranch might be "" from the client, we need to convert it to null so that the database accepts the value (ObjectID or nullish)
+      {
+        ...branchData,
+        // since parentBranch might be "" from the client, we need to convert it to null so that the database accepts the value (ObjectID or nullish)
+        parentBranch: branchData.parentBranch || null,
+        type: branchData.type ?? null,
+      },
     );
 
     await updateBranchRelationships({

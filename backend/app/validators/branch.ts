@@ -11,6 +11,12 @@ export const branchValidator = vine.compile(
       region: vine.string(),
       address: vine.string().optional(),
     }),
+    type: vine.string().optional(),
+    active: vine.boolean(),
+    isBranchItemsLive: vine.object({
+      online: vine.boolean(),
+      atBranch: vine.boolean(),
+    }),
   }),
 );
 
@@ -27,5 +33,11 @@ export const updateBranchValidator = vine.compile(
         address: vine.string().optional(),
       })
       .optional(),
+    type: vine.string().optional(),
+    active: vine.boolean(),
+    isBranchItemsLive: vine.object({
+      online: vine.boolean(),
+      atBranch: vine.boolean(),
+    }),
   }),
 );

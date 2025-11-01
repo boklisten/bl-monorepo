@@ -1,7 +1,7 @@
 "use client";
 
 import { Branch } from "@boklisten/backend/shared/branch";
-import { Box, Button, Divider, Grid, Stack, Title } from "@mantine/core";
+import { Box, Button, Divider, Grid, Stack } from "@mantine/core";
 import { modals } from "@mantine/modals";
 import { IconPlus } from "@tabler/icons-react";
 import { useQuery } from "@tanstack/react-query";
@@ -65,13 +65,10 @@ export default function Branches() {
         </Grid.Col>
         <Grid.Col span={{ base: 12, md: 9 }}>
           <Activity mode={selectedBranch ? "visible" : "hidden"}>
-            <Stack>
-              <Title>Rediger filial</Title>
-              <BranchSettings
-                key={selectedBranch?.id}
-                existingBranch={selectedBranch}
-              />
-            </Stack>
+            <BranchSettings
+              key={selectedBranch?.id}
+              existingBranch={selectedBranch}
+            />
           </Activity>
         </Grid.Col>
       </Grid>

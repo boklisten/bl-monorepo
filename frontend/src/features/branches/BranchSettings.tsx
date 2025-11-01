@@ -191,6 +191,11 @@ export default function BranchSettings({
 
   return (
     <Stack>
+      <Activity mode={existingBranch ? "visible" : "hidden"}>
+        <form.Subscribe selector={(state) => state.values.name}>
+          {(field) => <Title>{field || existingBranch?.name}</Title>}
+        </form.Subscribe>
+      </Activity>
       <form.AppField name={"name"}>
         {(field) => (
           <field.TextField

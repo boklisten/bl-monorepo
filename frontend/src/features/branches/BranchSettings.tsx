@@ -1,6 +1,9 @@
 import { Branch } from "@boklisten/backend/shared/branch";
-import { Button, Stack, Title } from "@mantine/core";
+import { Period } from "@boklisten/backend/shared/period";
+import { Button, Fieldset, Stack, Title } from "@mantine/core";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import dayjs from "dayjs";
+import { Activity } from "react";
 
 import UploadClassMemberships from "@/features/branches/UploadClassMemberships";
 import UploadSubjectChoices from "@/features/branches/UploadSubjectChoices";
@@ -12,13 +15,59 @@ import {
   showSuccessNotification,
 } from "@/shared/utils/notifications";
 
-type DetailedBranch = Omit<Branch, "id"> & {
+interface DetailedBranch {
+  name: string;
+  parentBranch: string;
+  localName: string;
+  childBranches: string[];
+  childLabel: string;
+  type: string | null;
   active: boolean;
+  paymentInfo: {
+    responsible: boolean;
+    responsibleForDelivery: boolean;
+    payLater: boolean;
+    partlyPaymentPeriods: {
+      type: Period;
+      date: string;
+      percentageBuyout: number;
+      percentageBuyoutUsed: number;
+      percentageUpFront: number;
+      percentageUpFrontUsed: number;
+    }[];
+    rentPeriods: {
+      type: Period;
+      date: string;
+      maxNumberOfPeriods: number;
+      percentage: number;
+    }[];
+    extendPeriods: {
+      type: Period;
+      date: string;
+      maxNumberOfPeriods: number;
+      price: number;
+      percentage: number | null;
+    }[];
+    buyout: {
+      percentage: number;
+    };
+    sell: {
+      percentage: number;
+    };
+  };
+  deliveryMethods: {
+    branch: boolean;
+    byMail: boolean;
+  };
   isBranchItemsLive: {
     online: boolean;
     atBranch: boolean;
   };
-};
+  location: {
+    region: string;
+    address: string;
+  };
+}
 
 export default function BranchSettings({
   existingBranch,
@@ -79,15 +128,49 @@ export default function BranchSettings({
     parentBranch: existingBranch?.parentBranch ?? "",
     childBranches: existingBranch?.childBranches ?? [],
     childLabel: existingBranch?.childLabel ?? "",
-    location: existingBranch?.location ?? {
-      region: "",
-      address: "",
+    location: {
+      region: existingBranch?.location.region ?? "",
+      address: existingBranch?.location.address ?? "",
     },
-    type: existingBranch?.type,
+    type: existingBranch?.type ?? null,
     active: existingBranch?.active ?? false,
     isBranchItemsLive: {
       online: existingBranch?.isBranchItemsLive?.online ?? false,
       atBranch: existingBranch?.isBranchItemsLive?.atBranch ?? false,
+    },
+    paymentInfo: {
+      responsible: existingBranch?.paymentInfo?.responsible ?? false,
+      responsibleForDelivery:
+        existingBranch?.paymentInfo?.responsibleForDelivery ?? false,
+      payLater: existingBranch?.paymentInfo?.payLater ?? false,
+      partlyPaymentPeriods:
+        existingBranch?.paymentInfo?.partlyPaymentPeriods?.map(
+          (partlyPaymentPeriod) => ({
+            ...partlyPaymentPeriod,
+            date: dayjs(partlyPaymentPeriod.date).format("YYYY-MM-DD"),
+          }),
+        ) ?? [],
+      rentPeriods:
+        existingBranch?.paymentInfo?.rentPeriods?.map((rentPeriod) => ({
+          ...rentPeriod,
+          date: dayjs(rentPeriod.date).format("YYYY-MM-DD"),
+        })) ?? [],
+      extendPeriods:
+        existingBranch?.paymentInfo?.extendPeriods?.map((extendPeriod) => ({
+          ...extendPeriod,
+          date: dayjs(extendPeriod.date).format("YYYY-MM-DD"),
+          percentage: extendPeriod.percentage ?? null,
+        })) ?? [],
+      buyout: {
+        percentage: existingBranch?.paymentInfo?.buyout?.percentage ?? 1,
+      },
+      sell: {
+        percentage: existingBranch?.paymentInfo?.sell?.percentage ?? 1,
+      },
+    },
+    deliveryMethods: {
+      branch: existingBranch?.deliveryMethods?.branch ?? false,
+      byMail: existingBranch?.deliveryMethods?.byMail ?? false,
     },
   };
 
@@ -187,15 +270,58 @@ export default function BranchSettings({
           />
         )}
       </form.AppField>
-      <form.AppField name={"active"}>
-        {(field) => <field.SwitchField label={"Aktiv"} />}
-      </form.AppField>
-      <form.AppField name={"isBranchItemsLive.online"}>
-        {(field) => <field.SwitchField label={"Synlig for kunder"} />}
-      </form.AppField>
-      <form.AppField name={"isBranchItemsLive.atBranch"}>
-        {(field) => <field.SwitchField label={"Synlig for ansatte"} />}
-      </form.AppField>
+      <Fieldset legend={"Synlighet"}>
+        <Stack>
+          <form.AppField name={"active"}>
+            {(field) => <field.SwitchField label={"Aktiv"} />}
+          </form.AppField>
+          <form.AppField name={"isBranchItemsLive.online"}>
+            {(field) => <field.SwitchField label={"Synlig for kunder"} />}
+          </form.AppField>
+          <form.AppField name={"isBranchItemsLive.atBranch"}>
+            {(field) => <field.SwitchField label={"Synlig for ansatte"} />}
+          </form.AppField>
+        </Stack>
+      </Fieldset>
+      <Fieldset legend={"Betaling"}>
+        <Stack>
+          <form.AppField name={"paymentInfo.responsible"}>
+            {(field) => <field.SwitchField label={"Ansvarlig for betaling"} />}
+          </form.AppField>
+          <form.AppField name={"paymentInfo.payLater"}>
+            {(field) => <field.SwitchField label={"Betal senere"} />}
+          </form.AppField>
+          <form.AppField name={"paymentInfo.buyout.percentage"}>
+            {(field) => <field.PercentageField label={"Utkjøpsprosent"} />}
+          </form.AppField>
+          <form.AppField name={"paymentInfo.sell.percentage"}>
+            {(field) => <field.PercentageField label={"Innkjøpsprosent"} />}
+          </form.AppField>
+        </Stack>
+      </Fieldset>
+      <Fieldset legend={"Levering"}>
+        <Stack>
+          <form.AppField name={"deliveryMethods.branch"}>
+            {(field) => <field.SwitchField label={"Utlevering på filial"} />}
+          </form.AppField>
+          <form.AppField name={"deliveryMethods.byMail"}>
+            {(field) => <field.SwitchField label={"Levering per post"} />}
+          </form.AppField>
+          <form.Subscribe
+            selector={(state) => state.values.deliveryMethods?.byMail}
+          >
+            {(value) => (
+              <Activity mode={value ? "visible" : "hidden"}>
+                <form.AppField name={"paymentInfo.responsibleForDelivery"}>
+                  {(field) => (
+                    <field.SwitchField label={"Gratis postlevering"} />
+                  )}
+                </form.AppField>
+              </Activity>
+            )}
+          </form.Subscribe>
+        </Stack>
+      </Fieldset>
       <Button
         color={"green"}
         onClick={form.handleSubmit}

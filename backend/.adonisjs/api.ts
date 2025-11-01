@@ -162,7 +162,7 @@ type V2BranchesPost = {
 type V2BranchesIdPatch = {
   request: MakeTuyauRequest<
     InferInput<
-      (typeof import("../app/validators/branch.ts"))["updateBranchValidator"]
+      (typeof import("../app/validators/branch.ts"))["branchValidator"]
     >
   >;
   response: MakeNonSerializedTuyauResponse<

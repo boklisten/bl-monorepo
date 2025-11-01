@@ -9,7 +9,7 @@ export interface Branch extends BlDocument {
   childLabel?: string | undefined; // The descriptive title of what the children represent in the hierarchy, e.g. studieprogram
   type?: string | undefined; // the type of branch, privatist or vgs
   openingHours?: string[]; // id of all the opening hours this branch has
-  paymentInfo?: BranchPaymentInfo; // payment information for this branch
+  paymentInfo?: BranchPaymentInfo | undefined; // payment information for this branch
   deliveryMethods?: {
     branch?: boolean;
     byMail?: boolean;

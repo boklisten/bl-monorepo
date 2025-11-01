@@ -14,6 +14,7 @@ import EmailField from "@/shared/components/form/fields/complex/EmailField";
 import NameField from "@/shared/components/form/fields/complex/NameField";
 import NewPasswordField from "@/shared/components/form/fields/complex/NewPasswordField";
 import PasswordField from "@/shared/components/form/fields/complex/PasswordField";
+import PercentageField from "@/shared/components/form/fields/complex/PercentageField";
 import PhoneNumberField from "@/shared/components/form/fields/complex/PhoneNumberField";
 import PostalCodeField from "@/shared/components/form/fields/complex/PostalCodeField";
 import RichTextEditorField from "@/shared/components/form/fields/complex/RichTextEditorField";
@@ -50,6 +51,7 @@ const { useAppForm, withFieldGroup } = createFormHook({
     DeadlinePickerField,
     RichTextEditorField,
     SignatureCanvasField,
+    PercentageField,
   },
   formComponents: {
     ErrorSummary,

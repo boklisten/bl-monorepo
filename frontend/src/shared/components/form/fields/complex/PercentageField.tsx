@@ -12,6 +12,7 @@ export default function PercentageField(props: {
     <Stack gap={5} mb={"md"}>
       <Text size={"sm"}>{props.label}</Text>
       <Slider
+        miw={200}
         label={`${Math.round(field.state.value * 100)}%`}
         min={0}
         max={1}

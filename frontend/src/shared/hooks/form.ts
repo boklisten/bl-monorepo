@@ -4,11 +4,13 @@ import ErrorSummary from "@/shared/components/form/ErrorSummary";
 import CheckboxField from "@/shared/components/form/fields/basic/CheckboxField";
 import DateField from "@/shared/components/form/fields/basic/DateField";
 import MultiSelectField from "@/shared/components/form/fields/basic/MultiSelectField";
+import NumberField from "@/shared/components/form/fields/basic/NumberField";
 import SelectField from "@/shared/components/form/fields/basic/SelectField";
 import SwitchField from "@/shared/components/form/fields/basic/SwitchField";
 import TextAreaField from "@/shared/components/form/fields/basic/TextAreaField";
 import TextField from "@/shared/components/form/fields/basic/TextField";
 import AddressField from "@/shared/components/form/fields/complex/AddressField";
+import CurrencyField from "@/shared/components/form/fields/complex/CurrencyField";
 import DeadlinePickerField from "@/shared/components/form/fields/complex/DeadlinePickerField";
 import EmailField from "@/shared/components/form/fields/complex/EmailField";
 import NameField from "@/shared/components/form/fields/complex/NameField";
@@ -31,6 +33,7 @@ const { useAppForm, withFieldGroup } = createFormHook({
     // Basic
     TextField,
     TextAreaField,
+    NumberField,
     DateField,
     SelectField,
     MultiSelectField,
@@ -52,6 +55,7 @@ const { useAppForm, withFieldGroup } = createFormHook({
     RichTextEditorField,
     SignatureCanvasField,
     PercentageField,
+    CurrencyField,
   },
   formComponents: {
     ErrorSummary,

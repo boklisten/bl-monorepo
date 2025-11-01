@@ -1,12 +1,13 @@
 import { Branch } from "@boklisten/backend/shared/branch";
 import { Period } from "@boklisten/backend/shared/period";
-import { Button, Fieldset, Stack, Title } from "@mantine/core";
+import { Button, Card, Fieldset, Group, Stack, Title } from "@mantine/core";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import dayjs from "dayjs";
 import { Activity } from "react";
 
 import UploadClassMemberships from "@/features/branches/UploadClassMemberships";
 import UploadSubjectChoices from "@/features/branches/UploadSubjectChoices";
+import InfoAlert from "@/shared/components/alerts/InfoAlert";
 import { useAppForm } from "@/shared/hooks/form";
 import useApiClient from "@/shared/hooks/useApiClient";
 import unpack from "@/shared/utils/bl-api-request";
@@ -46,7 +47,6 @@ interface DetailedBranch {
       date: string;
       maxNumberOfPeriods: number;
       price: number;
-      percentage: number | null;
     }[];
     buyout: {
       percentage: number;
@@ -159,7 +159,6 @@ export default function BranchSettings({
         existingBranch?.paymentInfo?.extendPeriods?.map((extendPeriod) => ({
           ...extendPeriod,
           date: dayjs(extendPeriod.date).format("YYYY-MM-DD"),
-          percentage: extendPeriod.percentage ?? null,
         })) ?? [],
       buyout: {
         percentage: existingBranch?.paymentInfo?.buyout?.percentage ?? 1,
@@ -320,6 +319,312 @@ export default function BranchSettings({
               </Activity>
             )}
           </form.Subscribe>
+        </Stack>
+      </Fieldset>
+      <form.Subscribe selector={(state) => state.values.type}>
+        {(field) => (
+          <>
+            <Activity mode={!field ? "visible" : "hidden"}>
+              <Fieldset legend={"Perioder"}>
+                <InfoAlert title={"Ingen filialtype valgt"}>
+                  Du må velge filialtype for å kunne legge inn leie- eller
+                  delbetalingsperioder
+                </InfoAlert>
+              </Fieldset>
+            </Activity>
+            <Activity mode={field === "VGS" ? "visible" : "hidden"}>
+              <Fieldset legend={"Leieperioder"}>
+                <Stack align={"center"}>
+                  <form.AppField name="paymentInfo.rentPeriods" mode="array">
+                    {(field) => (
+                      <>
+                        {field.state.value.map((_, i) => (
+                          <Card key={`rent-${i}`} withBorder w={"100%"}>
+                            <Stack>
+                              <Group align={"end"} justify={"center"}>
+                                <form.AppField
+                                  name={`paymentInfo.rentPeriods[${i}].type`}
+                                >
+                                  {(subField) => (
+                                    <subField.SelectField
+                                      label={"Type"}
+                                      data={[
+                                        {
+                                          label: "semester",
+                                          value: "semester",
+                                        },
+                                        { label: "år", value: "year" },
+                                      ]}
+                                    />
+                                  )}
+                                </form.AppField>
+                                <form.AppField
+                                  name={`paymentInfo.rentPeriods[${i}].maxNumberOfPeriods`}
+                                >
+                                  {(subField) => (
+                                    <subField.NumberField
+                                      label={"Grense"}
+                                      allowNegative={false}
+                                      allowDecimal={false}
+                                    />
+                                  )}
+                                </form.AppField>
+                                <form.AppField
+                                  name={`paymentInfo.rentPeriods[${i}].percentage`}
+                                >
+                                  {(subField) => (
+                                    <subField.PercentageField
+                                      label={"Prosent"}
+                                    />
+                                  )}
+                                </form.AppField>
+                                <form.AppField
+                                  name={`paymentInfo.rentPeriods[${i}].date`}
+                                >
+                                  {(subField) => (
+                                    <subField.DeadlinePickerField
+                                      clearable={false}
+                                      label={"Frist"}
+                                    />
+                                  )}
+                                </form.AppField>
+                                <Button
+                                  bg={"red"}
+                                  onClick={() =>
+                                    field.setValue(
+                                      field.state.value.toSpliced(i, 1),
+                                    )
+                                  }
+                                >
+                                  Fjern
+                                </Button>
+                              </Group>
+                            </Stack>
+                          </Card>
+                        ))}
+                        <Button
+                          onClick={() =>
+                            field.setValue(
+                              field.state.value.concat([
+                                {
+                                  type: "semester",
+                                  maxNumberOfPeriods: 1,
+                                  percentage: 1,
+                                  date: dayjs().format("YYYY-MM-DD"),
+                                },
+                              ]),
+                            )
+                          }
+                        >
+                          Legg til
+                        </Button>
+                      </>
+                    )}
+                  </form.AppField>
+                </Stack>
+              </Fieldset>
+            </Activity>
+            <Activity mode={field === "privatist" ? "visible" : "hidden"}>
+              <Fieldset legend={"Delbetalingsperioder"}>
+                <Stack align={"center"}>
+                  <form.AppField
+                    name="paymentInfo.partlyPaymentPeriods"
+                    mode="array"
+                  >
+                    {(field) => (
+                      <>
+                        {field.state.value.map((_, i) => (
+                          <Card
+                            key={`partlyPayment-${i}`}
+                            withBorder
+                            w={"100%"}
+                          >
+                            <Stack>
+                              <form.AppField
+                                name={`paymentInfo.partlyPaymentPeriods[${i}].type`}
+                              >
+                                {(subField) => (
+                                  <subField.SelectField
+                                    label={"Type"}
+                                    data={[
+                                      {
+                                        label: "semester",
+                                        value: "semester",
+                                      },
+                                      { label: "år", value: "year" },
+                                    ]}
+                                  />
+                                )}
+                              </form.AppField>
+                              <form.AppField
+                                name={`paymentInfo.partlyPaymentPeriods[${i}].percentageUpFront`}
+                              >
+                                {(subField) => (
+                                  <subField.PercentageField
+                                    label={"Første betaling"}
+                                  />
+                                )}
+                              </form.AppField>
+                              <form.AppField
+                                name={`paymentInfo.partlyPaymentPeriods[${i}].percentageUpFrontUsed`}
+                              >
+                                {(subField) => (
+                                  <subField.PercentageField
+                                    label={"Første betaling (brukt)"}
+                                  />
+                                )}
+                              </form.AppField>
+                              <form.AppField
+                                name={`paymentInfo.partlyPaymentPeriods[${i}].percentageBuyout`}
+                              >
+                                {(subField) => (
+                                  <subField.PercentageField
+                                    label={"Utkjøpsprosent"}
+                                  />
+                                )}
+                              </form.AppField>
+                              <form.AppField
+                                name={`paymentInfo.partlyPaymentPeriods[${i}].percentageBuyoutUsed`}
+                              >
+                                {(subField) => (
+                                  <subField.PercentageField
+                                    label={"Utkjøpsprosent (brukt)"}
+                                  />
+                                )}
+                              </form.AppField>
+                              <form.AppField
+                                name={`paymentInfo.partlyPaymentPeriods[${i}].date`}
+                              >
+                                {(subField) => (
+                                  <subField.DeadlinePickerField
+                                    clearable={false}
+                                    label={"Frist"}
+                                  />
+                                )}
+                              </form.AppField>
+                              <Group>
+                                <Button
+                                  bg={"red"}
+                                  onClick={() =>
+                                    field.setValue(
+                                      field.state.value.toSpliced(i, 1),
+                                    )
+                                  }
+                                >
+                                  Fjern
+                                </Button>
+                              </Group>
+                            </Stack>
+                          </Card>
+                        ))}
+                        <Button
+                          onClick={() =>
+                            field.setValue(
+                              field.state.value.concat([
+                                {
+                                  type: "semester",
+                                  percentageBuyout: 1,
+                                  percentageBuyoutUsed: 1,
+                                  percentageUpFront: 1,
+                                  percentageUpFrontUsed: 1,
+                                  date: dayjs().format("YYYY-MM-DD"),
+                                },
+                              ]),
+                            )
+                          }
+                        >
+                          Legg til
+                        </Button>
+                      </>
+                    )}
+                  </form.AppField>
+                </Stack>
+              </Fieldset>
+            </Activity>
+          </>
+        )}
+      </form.Subscribe>
+      <Fieldset legend={"Forlengingsperioder"}>
+        <Stack align={"center"}>
+          <form.AppField name="paymentInfo.extendPeriods" mode="array">
+            {(field) => (
+              <>
+                {field.state.value.map((_, i) => (
+                  <Card key={`extend-${i}`} withBorder w={"100%"}>
+                    <Stack>
+                      <Group align={"end"} justify={"center"}>
+                        <form.AppField
+                          name={`paymentInfo.extendPeriods[${i}].type`}
+                        >
+                          {(subField) => (
+                            <subField.SelectField
+                              label={"Type"}
+                              data={[
+                                { label: "semester", value: "semester" },
+                                { label: "år", value: "year" },
+                              ]}
+                            />
+                          )}
+                        </form.AppField>
+                        <form.AppField
+                          name={`paymentInfo.extendPeriods[${i}].maxNumberOfPeriods`}
+                        >
+                          {(subField) => (
+                            <subField.NumberField
+                              label={"Grense"}
+                              allowNegative={false}
+                              allowDecimal={false}
+                            />
+                          )}
+                        </form.AppField>
+                        <form.AppField
+                          name={`paymentInfo.extendPeriods[${i}].price`}
+                        >
+                          {(subField) => (
+                            <subField.CurrencyField label={"Pris"} />
+                          )}
+                        </form.AppField>
+                        <form.AppField
+                          name={`paymentInfo.extendPeriods[${i}].date`}
+                        >
+                          {(subField) => (
+                            <subField.DeadlinePickerField
+                              clearable={false}
+                              label={"Dato"}
+                            />
+                          )}
+                        </form.AppField>
+                        <Button
+                          bg={"red"}
+                          onClick={() =>
+                            field.setValue(field.state.value.toSpliced(i, 1))
+                          }
+                        >
+                          Fjern
+                        </Button>
+                      </Group>
+                    </Stack>
+                  </Card>
+                ))}
+                <Button
+                  onClick={() =>
+                    field.setValue(
+                      field.state.value.concat([
+                        {
+                          type: "semester",
+                          maxNumberOfPeriods: 1,
+                          price: 0,
+                          date: dayjs().format("YYYY-MM-DD"),
+                        },
+                      ]),
+                    )
+                  }
+                >
+                  Legg til
+                </Button>
+              </>
+            )}
+          </form.AppField>
         </Stack>
       </Fieldset>
       <Button

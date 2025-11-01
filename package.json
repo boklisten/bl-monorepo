@@ -6,7 +6,7 @@
     "ace": "pnpm -F backend exec node ace",
     "prettier": "prettier --write --log-level warn '**/*.{js,mjs,ts,tsx,md,json,yml,css}' --ignore-path=.gitignore",
     "prettier:check": "prettier --check '**/*.{js,mjs,ts,tsx,md,json,yml,css}' --ignore-path=.gitignore",
-    "lint": "eslint . --ignore-pattern '**/dist/*' --ignore-pattern '**/build/*' --ignore-pattern '**/.next/*' --ignore-pattern 'frontend/next-env.d.ts' --ignore-pattern 'backend/.adonisjs/*'",
+    "lint": "eslint . --ignore-pattern '**/dist/*' --ignore-pattern '**/build/*' --ignore-pattern '**/.next/*' --ignore-pattern 'frontend/next-env.d.ts' --ignore-pattern 'backend/.adonisjs/*' --ignore-pattern 'backend/ace.js'",
     "lint:fix": "pnpm lint --fix",
     "typecheck": "pnpm -r typecheck",
     "fix": "pnpm -wr '/^(lint:fix|typecheck)$/' && pnpm prettier",

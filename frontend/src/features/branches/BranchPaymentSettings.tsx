@@ -101,7 +101,7 @@ export default function BranchPaymentSettings({
                   {field.state.value.map((_, i) => (
                     <Card key={`rent-${i}`} withBorder w={"100%"}>
                       <Stack>
-                        <Group align={"end"} justify={"center"}>
+                        <Group align={"end"}>
                           <form.AppField
                             name={`paymentInfo.rentPeriods[${i}].type`}
                           >
@@ -115,6 +115,16 @@ export default function BranchPaymentSettings({
                                   },
                                   { label: "år", value: "year" },
                                 ]}
+                              />
+                            )}
+                          </form.AppField>
+                          <form.AppField
+                            name={`paymentInfo.rentPeriods[${i}].date`}
+                          >
+                            {(subField) => (
+                              <subField.DeadlinePickerField
+                                clearable={false}
+                                label={"Frist"}
                               />
                             )}
                           </form.AppField>
@@ -136,16 +146,8 @@ export default function BranchPaymentSettings({
                               <subField.PercentageField label={"Prosent"} />
                             )}
                           </form.AppField>
-                          <form.AppField
-                            name={`paymentInfo.rentPeriods[${i}].date`}
-                          >
-                            {(subField) => (
-                              <subField.DeadlinePickerField
-                                clearable={false}
-                                label={"Frist"}
-                              />
-                            )}
-                          </form.AppField>
+                        </Group>
+                        <Group>
                           <Button
                             bg={"red"}
                             onClick={() =>
@@ -191,68 +193,74 @@ export default function BranchPaymentSettings({
                   {field.state.value.map((_, i) => (
                     <Card key={`partlyPayment-${i}`} withBorder w={"100%"}>
                       <Stack>
-                        <form.AppField
-                          name={`paymentInfo.partlyPaymentPeriods[${i}].type`}
-                        >
-                          {(subField) => (
-                            <subField.SelectField
-                              label={"Type"}
-                              data={[
-                                {
-                                  label: "semester",
-                                  value: "semester",
-                                },
-                                { label: "år", value: "year" },
-                              ]}
-                            />
-                          )}
-                        </form.AppField>
-                        <form.AppField
-                          name={`paymentInfo.partlyPaymentPeriods[${i}].percentageUpFront`}
-                        >
-                          {(subField) => (
-                            <subField.PercentageField
-                              label={"Første betaling"}
-                            />
-                          )}
-                        </form.AppField>
-                        <form.AppField
-                          name={`paymentInfo.partlyPaymentPeriods[${i}].percentageUpFrontUsed`}
-                        >
-                          {(subField) => (
-                            <subField.PercentageField
-                              label={"Første betaling (brukt)"}
-                            />
-                          )}
-                        </form.AppField>
-                        <form.AppField
-                          name={`paymentInfo.partlyPaymentPeriods[${i}].percentageBuyout`}
-                        >
-                          {(subField) => (
-                            <subField.PercentageField
-                              label={"Utkjøpsprosent"}
-                            />
-                          )}
-                        </form.AppField>
-                        <form.AppField
-                          name={`paymentInfo.partlyPaymentPeriods[${i}].percentageBuyoutUsed`}
-                        >
-                          {(subField) => (
-                            <subField.PercentageField
-                              label={"Utkjøpsprosent (brukt)"}
-                            />
-                          )}
-                        </form.AppField>
-                        <form.AppField
-                          name={`paymentInfo.partlyPaymentPeriods[${i}].date`}
-                        >
-                          {(subField) => (
-                            <subField.DeadlinePickerField
-                              clearable={false}
-                              label={"Frist"}
-                            />
-                          )}
-                        </form.AppField>
+                        <Group w={"100%"}>
+                          <form.AppField
+                            name={`paymentInfo.partlyPaymentPeriods[${i}].type`}
+                          >
+                            {(subField) => (
+                              <subField.SelectField
+                                label={"Type"}
+                                data={[
+                                  {
+                                    label: "semester",
+                                    value: "semester",
+                                  },
+                                  { label: "år", value: "year" },
+                                ]}
+                              />
+                            )}
+                          </form.AppField>
+                          <form.AppField
+                            name={`paymentInfo.partlyPaymentPeriods[${i}].date`}
+                          >
+                            {(subField) => (
+                              <subField.DeadlinePickerField
+                                clearable={false}
+                                label={"Frist"}
+                              />
+                            )}
+                          </form.AppField>
+                        </Group>
+                        <Group>
+                          <form.AppField
+                            name={`paymentInfo.partlyPaymentPeriods[${i}].percentageUpFront`}
+                          >
+                            {(subField) => (
+                              <subField.PercentageField
+                                label={"Første betaling"}
+                              />
+                            )}
+                          </form.AppField>
+                          <form.AppField
+                            name={`paymentInfo.partlyPaymentPeriods[${i}].percentageUpFrontUsed`}
+                          >
+                            {(subField) => (
+                              <subField.PercentageField
+                                label={"Første betaling (brukt)"}
+                              />
+                            )}
+                          </form.AppField>
+                        </Group>
+                        <Group>
+                          <form.AppField
+                            name={`paymentInfo.partlyPaymentPeriods[${i}].percentageBuyout`}
+                          >
+                            {(subField) => (
+                              <subField.PercentageField
+                                label={"Utkjøpsprosent"}
+                              />
+                            )}
+                          </form.AppField>
+                          <form.AppField
+                            name={`paymentInfo.partlyPaymentPeriods[${i}].percentageBuyoutUsed`}
+                          >
+                            {(subField) => (
+                              <subField.PercentageField
+                                label={"Utkjøpsprosent (brukt)"}
+                              />
+                            )}
+                          </form.AppField>
+                        </Group>
                         <Group>
                           <Button
                             bg={"red"}
@@ -298,7 +306,7 @@ export default function BranchPaymentSettings({
                 {field.state.value.map((_, i) => (
                   <Card key={`extend-${i}`} withBorder w={"100%"}>
                     <Stack>
-                      <Group align={"end"} justify={"center"}>
+                      <Group align={"end"}>
                         <form.AppField
                           name={`paymentInfo.extendPeriods[${i}].type`}
                         >
@@ -309,6 +317,16 @@ export default function BranchPaymentSettings({
                                 { label: "semester", value: "semester" },
                                 { label: "år", value: "year" },
                               ]}
+                            />
+                          )}
+                        </form.AppField>
+                        <form.AppField
+                          name={`paymentInfo.extendPeriods[${i}].date`}
+                        >
+                          {(subField) => (
+                            <subField.DeadlinePickerField
+                              clearable={false}
+                              label={"Dato"}
                             />
                           )}
                         </form.AppField>
@@ -330,16 +348,8 @@ export default function BranchPaymentSettings({
                             <subField.CurrencyField label={"Pris"} />
                           )}
                         </form.AppField>
-                        <form.AppField
-                          name={`paymentInfo.extendPeriods[${i}].date`}
-                        >
-                          {(subField) => (
-                            <subField.DeadlinePickerField
-                              clearable={false}
-                              label={"Dato"}
-                            />
-                          )}
-                        </form.AppField>
+                      </Group>
+                      <Group>
                         <Button
                           bg={"red"}
                           onClick={() =>

@@ -151,22 +151,22 @@ type RemindersSendPost = {
 type V2BranchesPost = {
   request: MakeTuyauRequest<
     InferInput<
-      (typeof import("../app/validators/branch.ts"))["branchBaseValidator"]
+      (typeof import("../app/validators/branch.ts"))["branchGeneralValidator"]
     >
   >;
   response: MakeNonSerializedTuyauResponse<
-    import("../app/controllers/branch_base_controller.ts").default["add"],
+    import("../app/controllers/branches/branch_general_controller.ts").default["add"],
     true
   >;
 };
-type V2BranchesBaseIdPatch = {
+type V2BranchesGeneralIdPatch = {
   request: MakeTuyauRequest<
     InferInput<
-      (typeof import("../app/validators/branch.ts"))["branchBaseValidator"]
+      (typeof import("../app/validators/branch.ts"))["branchGeneralValidator"]
     >
   >;
   response: MakeNonSerializedTuyauResponse<
-    import("../app/controllers/branch_base_controller.ts").default["update"],
+    import("../app/controllers/branches/branch_general_controller.ts").default["update"],
     true
   >;
 };
@@ -177,7 +177,7 @@ type V2BranchesIdPatch = {
     >
   >;
   response: MakeNonSerializedTuyauResponse<
-    import("../app/controllers/branches_controller.ts").default["update"],
+    import("../app/controllers/branches/branches_controller.ts").default["update"],
     true
   >;
 };
@@ -188,7 +188,7 @@ type V2BranchesMembershipsPost = {
     >
   >;
   response: MakeNonSerializedTuyauResponse<
-    import("../app/controllers/branches_controller.ts").default["uploadMemberships"],
+    import("../app/controllers/branches/branches_controller.ts").default["uploadMemberships"],
     true
   >;
 };
@@ -199,7 +199,7 @@ type V2BranchesSubjectchoicesPost = {
     >
   >;
   response: MakeNonSerializedTuyauResponse<
-    import("../app/controllers/branches_controller.ts").default["uploadSubjectChoices"],
+    import("../app/controllers/branches/branches_controller.ts").default["uploadSubjectChoices"],
     true
   >;
 };
@@ -599,10 +599,10 @@ export interface ApiDefinition {
     branches: {
       $url: {};
       $post: V2BranchesPost;
-      base: {
+      general: {
         ":id": {
           $url: {};
-          $patch: V2BranchesBaseIdPatch;
+          $patch: V2BranchesGeneralIdPatch;
         };
       };
       ":id": {
@@ -1023,10 +1023,10 @@ const routes = [
   },
   {
     params: ["id"],
-    name: "branches.base.update",
-    path: "/v2/branches/base/:id",
+    name: "branches.general.update",
+    path: "/v2/branches/general/:id",
     method: ["PATCH"],
-    types: {} as V2BranchesBaseIdPatch,
+    types: {} as V2BranchesGeneralIdPatch,
   },
   {
     params: ["id"],

@@ -2,7 +2,7 @@ import { HttpContext } from "@adonisjs/core/http";
 
 import { PermissionService } from "#services/permission_service";
 import { StorageService } from "#services/storage_service";
-import { branchBaseValidator } from "#validators/branch";
+import { branchGeneralValidator } from "#validators/branch";
 
 // Updates the relationship references in other branch entities
 async function updateBranchRelationships({
@@ -96,11 +96,11 @@ async function assertValidBranchUpdate(
   }
 }
 
-export default class BranchBaseController {
+export default class BranchGeneralController {
   async add(ctx: HttpContext) {
     PermissionService.adminOrFail(ctx);
 
-    const branchData = await ctx.request.validateUsing(branchBaseValidator);
+    const branchData = await ctx.request.validateUsing(branchGeneralValidator);
 
     try {
       await assertValidBranchUpdate(
@@ -128,7 +128,7 @@ export default class BranchBaseController {
   async update(ctx: HttpContext) {
     PermissionService.adminOrFail(ctx);
 
-    const branchData = await ctx.request.validateUsing(branchBaseValidator);
+    const branchData = await ctx.request.validateUsing(branchGeneralValidator);
     const branchId = ctx.params["id"];
 
     try {

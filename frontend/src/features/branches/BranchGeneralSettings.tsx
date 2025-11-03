@@ -11,7 +11,7 @@ import {
   showSuccessNotification,
 } from "@/shared/utils/notifications";
 
-export default function BranchBaseSettings({
+export default function BranchGeneralSettings({
   existingBranch,
   onSuccess,
 }: {
@@ -64,7 +64,7 @@ export default function BranchBaseSettings({
       updatedBranch: InferRequestType<typeof client.v2.branches.$post>,
     ) =>
       client.v2.branches
-        .base({ id: existingBranch?.id ?? "" })
+        .general({ id: existingBranch?.id ?? "" })
         .$patch(updatedBranch)
         .unwrap(),
     onSettled: () =>

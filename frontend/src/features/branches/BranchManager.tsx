@@ -7,7 +7,7 @@ import { IconPlus } from "@tabler/icons-react";
 import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
 
-import BranchBaseSettings from "@/features/branches/BranchBaseSettings";
+import BranchGeneralSettings from "@/features/branches/BranchGeneralSettings";
 import BranchSettings from "@/features/branches/BranchSettings";
 import UploadClassMemberships from "@/features/branches/UploadClassMemberships";
 import UploadSubjectChoices from "@/features/branches/UploadSubjectChoices";
@@ -42,7 +42,7 @@ export default function BranchManager() {
               modalId: createBranchModalId,
               title: "Opprett filial",
               children: (
-                <BranchBaseSettings
+                <BranchGeneralSettings
                   onSuccess={(newBranch) => {
                     if (newBranch) {
                       setSelectedBranch(newBranch);
@@ -76,12 +76,16 @@ export default function BranchManager() {
               <Title>{selectedBranch.name}</Title>
               <Tabs defaultValue={"base"}>
                 <Tabs.List mb={"md"}>
-                  <Tabs.Tab value={"base"}>Generelt</Tabs.Tab>
+                  <Tabs.Tab value={"general"}>Generelt</Tabs.Tab>
+                  <Tabs.Tab value={"relationships"}>Relasjoner</Tabs.Tab>
                   <Tabs.Tab value={"todo"}>TODO</Tabs.Tab>
                   <Tabs.Tab value={"upload"}>Opplasting av elevdata</Tabs.Tab>
                 </Tabs.List>
-                <Tabs.Panel value={"base"}>
-                  <BranchBaseSettings existingBranch={selectedBranch} />
+                <Tabs.Panel value={"general"}>
+                  <BranchGeneralSettings existingBranch={selectedBranch} />
+                </Tabs.Panel>
+                <Tabs.Panel value={"relationships"}>
+                  <p>TODO</p>
                 </Tabs.Panel>
                 <Tabs.Panel value={"todo"}>
                   <BranchSettings

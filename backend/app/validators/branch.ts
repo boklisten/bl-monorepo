@@ -54,7 +54,7 @@ export const branchValidator = vine.compile(
   }),
 );
 
-export const branchBaseValidator = vine.compile(
+export const branchGeneralValidator = vine.compile(
   vine.object({
     name: vine.string(),
     localName: vine.string(),

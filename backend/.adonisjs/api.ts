@@ -586,6 +586,31 @@ type V2CompaniesIdDelete = {
     false
   >;
 };
+type V2OpeninghoursIdGetHead = {
+  request: unknown;
+  response: MakeNonSerializedTuyauResponse<
+    import("../app/controllers/opening_hours_controller.ts").default["get"],
+    false
+  >;
+};
+type V2OpeninghoursPost = {
+  request: MakeTuyauRequest<
+    InferInput<
+      (typeof import("../app/validators/opening_hours.ts"))["openingHoursValidator"]
+    >
+  >;
+  response: MakeNonSerializedTuyauResponse<
+    import("../app/controllers/opening_hours_controller.ts").default["add"],
+    true
+  >;
+};
+type V2OpeninghoursIdDelete = {
+  request: unknown;
+  response: MakeNonSerializedTuyauResponse<
+    import("../app/controllers/opening_hours_controller.ts").default["delete"],
+    false
+  >;
+};
 export interface ApiDefinition {
   token: {
     $url: {};
@@ -662,6 +687,16 @@ export interface ApiDefinition {
         $url: {};
         $delete: V2CompaniesIdDelete;
       };
+    };
+    opening_hours: {
+      ":id": {
+        $url: {};
+        $get: V2OpeninghoursIdGetHead;
+        $head: V2OpeninghoursIdGetHead;
+        $delete: V2OpeninghoursIdDelete;
+      };
+      $url: {};
+      $post: V2OpeninghoursPost;
     };
   };
   auth: {
@@ -1358,6 +1393,27 @@ const routes = [
     path: "/v2/companies/:companyId",
     method: ["DELETE"],
     types: {} as V2CompaniesIdDelete,
+  },
+  {
+    params: ["id"],
+    name: "opening_hours.get",
+    path: "/v2/opening_hours/:id",
+    method: ["GET", "HEAD"],
+    types: {} as V2OpeninghoursIdGetHead,
+  },
+  {
+    params: [],
+    name: "opening_hours.add",
+    path: "/v2/opening_hours",
+    method: ["POST"],
+    types: {} as V2OpeninghoursPost,
+  },
+  {
+    params: ["id"],
+    name: "opening_hours.delete",
+    path: "/v2/opening_hours/:id",
+    method: ["DELETE"],
+    types: {} as V2OpeninghoursIdDelete,
   },
   {
     params: ["id"],

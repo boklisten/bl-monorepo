@@ -18,6 +18,7 @@ import { useState } from "react";
 import BranchGeneralSettings from "@/features/branches/BranchGeneralSettings";
 import BranchPaymentSettings from "@/features/branches/BranchPaymentSettings";
 import BranchRelationshipSettings from "@/features/branches/BranchRelationshipSettings";
+import OpeningHoursSettings from "@/features/branches/opening_hours/OpeningHoursSettings";
 import UploadClassMemberships from "@/features/branches/UploadClassMemberships";
 import UploadSubjectChoices from "@/features/branches/UploadSubjectChoices";
 import SelectBranchTreeView from "@/shared/components/SelectBranchTreeView";
@@ -130,6 +131,12 @@ export default function BranchManager() {
                   <BranchPaymentSettings
                     key={selectedBranchId}
                     existingBranch={selectedBranch}
+                  />
+                </Tabs.Panel>
+                <Tabs.Panel value={"hours"}>
+                  <OpeningHoursSettings
+                    key={selectedBranchId}
+                    branchId={selectedBranch.id}
                   />
                 </Tabs.Panel>
                 <Tabs.Panel value={"upload"}>

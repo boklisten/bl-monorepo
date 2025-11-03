@@ -1,16 +1,36 @@
-"use client";
 import { OpeningHour } from "@boklisten/backend/shared/opening-hour";
-import { Skeleton, Stack, Table } from "@mantine/core";
-import { useQuery } from "@tanstack/react-query";
+import { Button, Skeleton, Stack, Table } from "@mantine/core";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import dayjs from "dayjs";
 
 import ErrorAlert from "@/shared/components/alerts/ErrorAlert";
 import InfoAlert from "@/shared/components/alerts/InfoAlert";
-import ContactInfo from "@/shared/components/ContactInfo";
+import useApiClient from "@/shared/hooks/useApiClient";
 import { PLEASE_TRY_AGAIN_TEXT } from "@/shared/utils/constants";
+import {
+  showErrorNotification,
+  showSuccessNotification,
+} from "@/shared/utils/notifications";
 import { publicApiClient } from "@/shared/utils/publicApiClient";
 
 const OpeningHourRow = ({ openingHour }: { openingHour: OpeningHour }) => {
+  const client = useApiClient();
+  const queryClient = useQueryClient();
+  const deleteOpeningHourMutation = useMutation({
+    mutationFn: () =>
+      client.v2.opening_hours({ id: openingHour.id }).$delete().unwrap(),
+    onError: () => showErrorNotification("Klarte ikke slette åpningstid"),
+    onSuccess: () => {
+      showSuccessNotification("Åpningstid ble slettet!");
+    },
+    onSettled: () =>
+      queryClient.invalidateQueries({
+        queryKey: [
+          client.v2.opening_hours({ id: openingHour.branch }).$url(),
+          openingHour.branch,
+        ],
+      }),
+  });
   const fromDate = dayjs(openingHour.from).locale("nb");
   const toDate = dayjs(openingHour.to).locale("nb");
   const weekday = fromDate.format("dddd");
@@ -26,11 +46,16 @@ const OpeningHourRow = ({ openingHour }: { openingHour: OpeningHour }) => {
       </Table.Td>
       <Table.Td>{fromTime}</Table.Td>
       <Table.Td>{toTime}</Table.Td>
+      <Table.Td>
+        <Button bg={"red"} onClick={() => deleteOpeningHourMutation.mutate()}>
+          Slett
+        </Button>
+      </Table.Td>
     </Table.Tr>
   );
 };
 
-export default function BranchOpeningHours({ branchId }: { branchId: string }) {
+export default function OpeningHoursList({ branchId }: { branchId: string }) {
   const {
     data: openingHours,
     isLoading: isLoadingOpeningHours,
@@ -67,12 +92,9 @@ export default function BranchOpeningHours({ branchId }: { branchId: string }) {
   if (openingHours.length === 0) {
     return (
       <>
-        <InfoAlert
-          title={"Sesongen er over – eller åpningstidene er ikke klare enda"}
-        >
-          Du kan bestille bøker i Posten, eller kontakte oss for spørsmål.
+        <InfoAlert title={"Ingen fremtidige åpningstider"}>
+          Denne filialen har ingen fremtidige åpningstider.
         </InfoAlert>
-        <ContactInfo />
       </>
     );
   }
@@ -84,6 +106,7 @@ export default function BranchOpeningHours({ branchId }: { branchId: string }) {
           <Table.Th>Dato</Table.Th>
           <Table.Th>Fra</Table.Th>
           <Table.Th>Til</Table.Th>
+          <Table.Th>Handling</Table.Th>
         </Table.Tr>
       </Table.Thead>
       <Table.Tbody>

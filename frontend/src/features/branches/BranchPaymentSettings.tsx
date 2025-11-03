@@ -7,7 +7,7 @@ import useUpdateBranchMutation from "@/features/branches/useUpdateBranchMutation
 import InfoAlert from "@/shared/components/alerts/InfoAlert";
 import { useAppForm } from "@/shared/hooks/form";
 
-export default function BranchSettings({
+export default function BranchPaymentSettings({
   existingBranch,
 }: {
   existingBranch: Branch;
@@ -16,11 +16,9 @@ export default function BranchSettings({
 
   const form = useAppForm({
     defaultValues: {
-      name: existingBranch.name ?? "",
-      active: existingBranch.active ?? false,
-      isBranchItemsLive: {
-        online: existingBranch.isBranchItemsLive?.online ?? false,
-        atBranch: existingBranch.isBranchItemsLive?.atBranch ?? false,
+      deliveryMethods: {
+        branch: existingBranch.deliveryMethods?.branch ?? false,
+        byMail: existingBranch.deliveryMethods?.byMail ?? false,
       },
       paymentInfo: {
         responsible: existingBranch.paymentInfo?.responsible ?? false,
@@ -51,73 +49,41 @@ export default function BranchSettings({
           percentage: existingBranch.paymentInfo?.sell?.percentage ?? 1,
         },
       },
-      deliveryMethods: {
-        branch: existingBranch.deliveryMethods?.branch ?? false,
-        byMail: existingBranch.deliveryMethods?.byMail ?? false,
-      },
-      location: {
-        region: existingBranch.location.region ?? "",
-        address: existingBranch.location.address ?? "",
-      },
-      type: existingBranch.type ?? null,
     },
     onSubmit: ({ value }) => updateBranchMutation.mutate(value),
   });
 
   return (
     <Stack>
-      <Fieldset legend={"Synlighet"}>
-        <Stack>
-          <form.AppField name={"active"}>
-            {(field) => <field.SwitchField label={"Aktiv"} />}
-          </form.AppField>
-          <form.AppField name={"isBranchItemsLive.online"}>
-            {(field) => <field.SwitchField label={"Synlig for kunder"} />}
-          </form.AppField>
-          <form.AppField name={"isBranchItemsLive.atBranch"}>
-            {(field) => <field.SwitchField label={"Synlig for ansatte"} />}
-          </form.AppField>
-        </Stack>
-      </Fieldset>
-      <Fieldset legend={"Betaling"}>
-        <Stack>
-          <form.AppField name={"paymentInfo.responsible"}>
-            {(field) => <field.SwitchField label={"Ansvarlig for betaling"} />}
-          </form.AppField>
-          <form.AppField name={"paymentInfo.payLater"}>
-            {(field) => <field.SwitchField label={"Betal senere"} />}
-          </form.AppField>
-          <form.AppField name={"paymentInfo.buyout.percentage"}>
-            {(field) => <field.PercentageField label={"Utkjøpsprosent"} />}
-          </form.AppField>
-          <form.AppField name={"paymentInfo.sell.percentage"}>
-            {(field) => <field.PercentageField label={"Innkjøpsprosent"} />}
-          </form.AppField>
-        </Stack>
-      </Fieldset>
-      <Fieldset legend={"Levering"}>
-        <Stack>
-          <form.AppField name={"deliveryMethods.branch"}>
-            {(field) => <field.SwitchField label={"Utlevering på filial"} />}
-          </form.AppField>
-          <form.AppField name={"deliveryMethods.byMail"}>
-            {(field) => <field.SwitchField label={"Levering per post"} />}
-          </form.AppField>
-          <form.Subscribe
-            selector={(state) => state.values.deliveryMethods?.byMail}
-          >
-            {(value) => (
-              <Activity mode={value ? "visible" : "hidden"}>
-                <form.AppField name={"paymentInfo.responsibleForDelivery"}>
-                  {(field) => (
-                    <field.SwitchField label={"Gratis postlevering"} />
-                  )}
-                </form.AppField>
-              </Activity>
-            )}
-          </form.Subscribe>
-        </Stack>
-      </Fieldset>
+      <form.AppField name={"deliveryMethods.branch"}>
+        {(field) => <field.SwitchField label={"Utlevering på filial"} />}
+      </form.AppField>
+      <form.AppField name={"deliveryMethods.byMail"}>
+        {(field) => <field.SwitchField label={"Levering per post"} />}
+      </form.AppField>
+      <form.Subscribe
+        selector={(state) => state.values.deliveryMethods?.byMail}
+      >
+        {(value) => (
+          <Activity mode={value ? "visible" : "hidden"}>
+            <form.AppField name={"paymentInfo.responsibleForDelivery"}>
+              {(field) => <field.SwitchField label={"Gratis postlevering"} />}
+            </form.AppField>
+          </Activity>
+        )}
+      </form.Subscribe>
+      <form.AppField name={"paymentInfo.responsible"}>
+        {(field) => <field.SwitchField label={"Ansvarlig for betaling"} />}
+      </form.AppField>
+      <form.AppField name={"paymentInfo.payLater"}>
+        {(field) => <field.SwitchField label={"Betal senere"} />}
+      </form.AppField>
+      <form.AppField name={"paymentInfo.buyout.percentage"}>
+        {(field) => <field.PercentageField label={"Utkjøpsprosent"} />}
+      </form.AppField>
+      <form.AppField name={"paymentInfo.sell.percentage"}>
+        {(field) => <field.PercentageField label={"Innkjøpsprosent"} />}
+      </form.AppField>
       <Activity mode={!existingBranch.type ? "visible" : "hidden"}>
         <Fieldset legend={"Perioder"}>
           <InfoAlert title={"Ingen filialtype valgt"}>

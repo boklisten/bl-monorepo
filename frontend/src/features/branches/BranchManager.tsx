@@ -3,13 +3,21 @@
 import { Branch } from "@boklisten/backend/shared/branch";
 import { Box, Button, Divider, Grid, Stack, Tabs, Title } from "@mantine/core";
 import { modals } from "@mantine/modals";
-import { IconPlus } from "@tabler/icons-react";
+import {
+  IconBooks,
+  IconBuildingStore,
+  IconCashRegister,
+  IconClock,
+  IconHierarchy3,
+  IconPlus,
+  IconUpload,
+} from "@tabler/icons-react";
 import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
 
 import BranchGeneralSettings from "@/features/branches/BranchGeneralSettings";
+import BranchPaymentSettings from "@/features/branches/BranchPaymentSettings";
 import BranchRelationshipSettings from "@/features/branches/BranchRelationshipSettings";
-import BranchSettings from "@/features/branches/BranchSettings";
 import UploadClassMemberships from "@/features/branches/UploadClassMemberships";
 import UploadSubjectChoices from "@/features/branches/UploadSubjectChoices";
 import SelectBranchTreeView from "@/shared/components/SelectBranchTreeView";
@@ -30,7 +38,10 @@ export default function BranchManager() {
         .then(unpack<Branch[]>),
   });
 
-  const [selectedBranch, setSelectedBranch] = useState<Branch | null>(null);
+  const [selectedBranchId, setSelectedBranchId] = useState<string | null>(null);
+  const selectedBranch = branches?.find(
+    (branch) => branch.id === selectedBranchId,
+  );
 
   const createBranchModalId = "create-branch-modal";
   return (
@@ -46,7 +57,7 @@ export default function BranchManager() {
                 <BranchGeneralSettings
                   onSuccess={(newBranch) => {
                     if (newBranch) {
-                      setSelectedBranch(newBranch);
+                      setSelectedBranchId(newBranch?.id ?? null);
                     }
                     modals.close(createBranchModalId);
                   }}
@@ -65,9 +76,7 @@ export default function BranchManager() {
             label={"Velg filial"}
             branches={branches ?? []}
             onSelect={(branchId) => {
-              setSelectedBranch(
-                branches?.find((branch) => branch.id === branchId) ?? null,
-              );
+              setSelectedBranchId(branchId);
             }}
           />
         </Grid.Col>
@@ -77,26 +86,49 @@ export default function BranchManager() {
               <Title>{selectedBranch.name}</Title>
               <Tabs defaultValue={"general"}>
                 <Tabs.List mb={"md"}>
-                  <Tabs.Tab value={"general"}>Generelt</Tabs.Tab>
-                  <Tabs.Tab value={"relationships"}>Relasjoner</Tabs.Tab>
-                  <Tabs.Tab value={"todo"}>TODO</Tabs.Tab>
-                  <Tabs.Tab value={"upload"}>Opplasting av elevdata</Tabs.Tab>
+                  <Tabs.Tab
+                    value={"general"}
+                    leftSection={<IconBuildingStore />}
+                  >
+                    Generelt
+                  </Tabs.Tab>
+                  <Tabs.Tab
+                    value={"relationships"}
+                    leftSection={<IconHierarchy3 />}
+                  >
+                    Relasjoner
+                  </Tabs.Tab>
+                  <Tabs.Tab
+                    value={"payment"}
+                    leftSection={<IconCashRegister />}
+                  >
+                    Betaling
+                  </Tabs.Tab>
+                  <Tabs.Tab value={"books"} leftSection={<IconBooks />}>
+                    Bøker
+                  </Tabs.Tab>
+                  <Tabs.Tab value={"hours"} leftSection={<IconClock />}>
+                    Åpningstider
+                  </Tabs.Tab>
+                  <Tabs.Tab value={"upload"} leftSection={<IconUpload />}>
+                    Opplasting av elevdata
+                  </Tabs.Tab>
                 </Tabs.List>
                 <Tabs.Panel value={"general"}>
                   <BranchGeneralSettings
-                    key={selectedBranch.id}
+                    key={selectedBranchId}
                     existingBranch={selectedBranch}
                   />
                 </Tabs.Panel>
                 <Tabs.Panel value={"relationships"}>
                   <BranchRelationshipSettings
-                    key={selectedBranch.id}
+                    key={selectedBranchId}
                     branch={selectedBranch}
                   />
                 </Tabs.Panel>
-                <Tabs.Panel value={"todo"}>
-                  <BranchSettings
-                    key={selectedBranch.id}
+                <Tabs.Panel value={"payment"}>
+                  <BranchPaymentSettings
+                    key={selectedBranchId}
                     existingBranch={selectedBranch}
                   />
                 </Tabs.Panel>

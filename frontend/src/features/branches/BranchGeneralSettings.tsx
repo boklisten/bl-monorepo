@@ -2,6 +2,7 @@ import { Branch } from "@boklisten/backend/shared/branch";
 import { Button, Stack } from "@mantine/core";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { InferRequestType } from "@tuyau/client";
+import { Activity } from "react";
 
 import useUpdateBranchMutation from "@/features/branches/useUpdateBranchMutation";
 import { useAppForm } from "@/shared/hooks/form";
@@ -56,6 +57,11 @@ export default function BranchGeneralSettings({
         address: existingBranch?.location.address ?? "",
       },
       type: existingBranch?.type ?? null,
+      active: existingBranch?.active ?? false,
+      isBranchItemsLive: {
+        online: existingBranch?.isBranchItemsLive?.online ?? false,
+        atBranch: existingBranch?.isBranchItemsLive?.atBranch ?? false,
+      },
     },
     onSubmit: ({ value }) =>
       !existingBranch
@@ -101,6 +107,17 @@ export default function BranchGeneralSettings({
           />
         )}
       </form.AppField>
+      <Activity mode={existingBranch ? "visible" : "hidden"}>
+        <form.AppField name={"active"}>
+          {(field) => <field.SwitchField label={"Aktiv"} />}
+        </form.AppField>
+        <form.AppField name={"isBranchItemsLive.online"}>
+          {(field) => <field.SwitchField label={"Synlig for kunder"} />}
+        </form.AppField>
+        <form.AppField name={"isBranchItemsLive.atBranch"}>
+          {(field) => <field.SwitchField label={"Synlig for ansatte"} />}
+        </form.AppField>
+      </Activity>
       <form.AppForm>
         <form.ErrorSummary />
       </form.AppForm>

@@ -23,7 +23,7 @@ export const branchValidator = vine.compile(
         address: vine.string().optional(),
       })
       .optional(),
-    type: vine.string().nullable(),
+    type: vine.string().nullable().optional(),
     active: vine.boolean().optional(),
     isBranchItemsLive: vine
       .object({
@@ -33,42 +33,54 @@ export const branchValidator = vine.compile(
       .optional(),
     paymentInfo: vine
       .object({
-        responsible: vine.boolean(),
-        responsibleForDelivery: vine.boolean(),
-        payLater: vine.boolean(),
-        partlyPaymentPeriods: vine.array(
-          vine.object({
-            type: vine.enum(["semester", "year", "day", "month", "hour"]),
-            date: vine.date(),
-            percentageBuyout: percentageField,
-            percentageBuyoutUsed: percentageField,
-            percentageUpFront: percentageField,
-            percentageUpFrontUsed: percentageField,
-          }),
-        ),
-        rentPeriods: vine.array(
-          vine.object({
-            type: vine.enum(["semester", "year", "day", "month", "hour"]),
-            date: vine.date(),
-            maxNumberOfPeriods: vine.number().positive(),
+        responsible: vine.boolean().optional(),
+        responsibleForDelivery: vine.boolean().optional(),
+        payLater: vine.boolean().optional(),
+        partlyPaymentPeriods: vine
+          .array(
+            vine.object({
+              type: vine.enum(["semester", "year", "day", "month", "hour"]),
+              date: vine.date(),
+              percentageBuyout: percentageField,
+              percentageBuyoutUsed: percentageField,
+              percentageUpFront: percentageField,
+              percentageUpFrontUsed: percentageField,
+            }),
+          )
+          .optional(),
+        rentPeriods: vine
+          .array(
+            vine.object({
+              type: vine.enum(["semester", "year", "day", "month", "hour"]),
+              date: vine.date(),
+              maxNumberOfPeriods: vine.number().positive(),
+              percentage: percentageField,
+            }),
+          )
+          .optional(),
+        extendPeriods: vine
+          .array(
+            vine
+              .object({
+                type: vine.enum(["semester", "year", "day", "month", "hour"]),
+                date: vine.date(),
+                maxNumberOfPeriods: vine.number().positive(),
+                price: vine.number().positive(),
+                percentage: percentageField.optional(),
+              })
+              .optional(),
+          )
+          .optional(),
+        buyout: vine
+          .object({
             percentage: percentageField,
-          }),
-        ),
-        extendPeriods: vine.array(
-          vine.object({
-            type: vine.enum(["semester", "year", "day", "month", "hour"]),
-            date: vine.date(),
-            maxNumberOfPeriods: vine.number().positive(),
-            price: vine.number().positive(),
-            percentage: percentageField.optional(),
-          }),
-        ),
-        buyout: vine.object({
-          percentage: percentageField,
-        }),
-        sell: vine.object({
-          percentage: percentageField,
-        }),
+          })
+          .optional(),
+        sell: vine
+          .object({
+            percentage: percentageField,
+          })
+          .optional(),
       })
       .optional(),
     deliveryMethods: vine

@@ -2,7 +2,7 @@ import { HttpContext } from "@adonisjs/core/http";
 
 import { PermissionService } from "#services/permission_service";
 import { StorageService } from "#services/storage_service";
-import { branchGeneralValidator } from "#validators/branch";
+import { branchRelationshipValidator } from "#validators/branch";
 
 // Updates the relationship references in other branch entities
 async function updateBranchRelationships({
@@ -96,59 +96,30 @@ async function assertValidBranchUpdate(
   }
 }
 
-export default class BranchGeneralController {
-  async add(ctx: HttpContext) {
-    PermissionService.adminOrFail(ctx);
-
-    const branchData = await ctx.request.validateUsing(branchGeneralValidator);
-
-    try {
-      await assertValidBranchUpdate(
-        "new",
-        branchData.parentBranch ?? null,
-        branchData.childBranches ?? null,
-      );
-    } catch (error) {
-      return ctx.response.conflict(error);
-    }
-
-    const newBranch = await StorageService.Branches.add(branchData);
-
-    await updateBranchRelationships({
-      branchId: newBranch.id,
-      oldParentId: null,
-      oldChildrenIds: null,
-      newParentId: newBranch.parentBranch || null,
-      newChildrenIds: newBranch.childBranches || null,
-    });
-
-    return newBranch;
-  }
-
+export default class BranchRelationshipController {
   async update(ctx: HttpContext) {
     PermissionService.adminOrFail(ctx);
-
-    const branchData = await ctx.request.validateUsing(branchGeneralValidator);
-    const branchId = ctx.params["id"];
+    const relationshipData = await ctx.request.validateUsing(
+      branchRelationshipValidator,
+    );
 
     try {
       await assertValidBranchUpdate(
-        branchId,
-        branchData.parentBranch ?? null,
-        branchData.childBranches ?? null,
+        relationshipData.id,
+        relationshipData.parentBranch ?? null,
+        relationshipData.childBranches ?? null,
       );
     } catch (error) {
       return ctx.response.conflict(error);
     }
 
-    const storedBranch = await StorageService.Branches.get(branchId);
+    const storedBranch = await StorageService.Branches.get(relationshipData.id);
     const updatedBranch = await StorageService.Branches.update(
-      ctx.params["id"],
+      relationshipData.id,
       {
-        ...branchData,
+        ...relationshipData,
         // since parentBranch might be "" from the client, we need to convert it to null so that the database accepts the value (ObjectID or nullish)
-        parentBranch: branchData.parentBranch || null,
-        type: branchData.type || null,
+        parentBranch: relationshipData.parentBranch || null,
       },
     );
 

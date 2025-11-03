@@ -8,6 +8,7 @@ import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
 
 import BranchGeneralSettings from "@/features/branches/BranchGeneralSettings";
+import BranchRelationshipSettings from "@/features/branches/BranchRelationshipSettings";
 import BranchSettings from "@/features/branches/BranchSettings";
 import UploadClassMemberships from "@/features/branches/UploadClassMemberships";
 import UploadSubjectChoices from "@/features/branches/UploadSubjectChoices";
@@ -74,7 +75,7 @@ export default function BranchManager() {
           {selectedBranch && (
             <Stack>
               <Title>{selectedBranch.name}</Title>
-              <Tabs defaultValue={"base"}>
+              <Tabs defaultValue={"general"}>
                 <Tabs.List mb={"md"}>
                   <Tabs.Tab value={"general"}>Generelt</Tabs.Tab>
                   <Tabs.Tab value={"relationships"}>Relasjoner</Tabs.Tab>
@@ -82,14 +83,20 @@ export default function BranchManager() {
                   <Tabs.Tab value={"upload"}>Opplasting av elevdata</Tabs.Tab>
                 </Tabs.List>
                 <Tabs.Panel value={"general"}>
-                  <BranchGeneralSettings existingBranch={selectedBranch} />
+                  <BranchGeneralSettings
+                    key={selectedBranch.id}
+                    existingBranch={selectedBranch}
+                  />
                 </Tabs.Panel>
                 <Tabs.Panel value={"relationships"}>
-                  <p>TODO</p>
+                  <BranchRelationshipSettings
+                    key={selectedBranch.id}
+                    branch={selectedBranch}
+                  />
                 </Tabs.Panel>
                 <Tabs.Panel value={"todo"}>
                   <BranchSettings
-                    key={selectedBranch?.id}
+                    key={selectedBranch.id}
                     existingBranch={selectedBranch}
                   />
                 </Tabs.Panel>

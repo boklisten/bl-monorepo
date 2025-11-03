@@ -1,130 +1,66 @@
 import { Branch } from "@boklisten/backend/shared/branch";
-import { Period } from "@boklisten/backend/shared/period";
 import { Button, Card, Fieldset, Group, Stack } from "@mantine/core";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
 import dayjs from "dayjs";
 import { Activity } from "react";
 
+import useUpdateBranchMutation from "@/features/branches/useUpdateBranchMutation";
 import InfoAlert from "@/shared/components/alerts/InfoAlert";
 import { useAppForm } from "@/shared/hooks/form";
-import useApiClient from "@/shared/hooks/useApiClient";
-import {
-  showErrorNotification,
-  showSuccessNotification,
-} from "@/shared/utils/notifications";
-
-interface DetailedBranch {
-  active: boolean;
-  paymentInfo: {
-    responsible: boolean;
-    responsibleForDelivery: boolean;
-    payLater: boolean;
-    partlyPaymentPeriods: {
-      type: Period;
-      date: string;
-      percentageBuyout: number;
-      percentageBuyoutUsed: number;
-      percentageUpFront: number;
-      percentageUpFrontUsed: number;
-    }[];
-    rentPeriods: {
-      type: Period;
-      date: string;
-      maxNumberOfPeriods: number;
-      percentage: number;
-    }[];
-    extendPeriods: {
-      type: Period;
-      date: string;
-      maxNumberOfPeriods: number;
-      price: number;
-    }[];
-    buyout: {
-      percentage: number;
-    };
-    sell: {
-      percentage: number;
-    };
-  };
-  deliveryMethods: {
-    branch: boolean;
-    byMail: boolean;
-  };
-  isBranchItemsLive: {
-    online: boolean;
-    atBranch: boolean;
-  };
-}
 
 export default function BranchSettings({
   existingBranch,
 }: {
   existingBranch: Branch;
 }) {
-  const queryClient = useQueryClient();
-  const client = useApiClient();
-
-  const updateBranchMutation = useMutation({
-    mutationFn: (updatedBranch: DetailedBranch) =>
-      client.v2
-        .branches({ id: existingBranch.id })
-        .$patch(updatedBranch)
-        .unwrap(),
-    onSettled: () =>
-      queryClient.invalidateQueries({
-        queryKey: [
-          client.$url("collection.branches.getAll", {
-            query: { sort: "name" },
-          }),
-        ],
-      }),
-    onSuccess: () => showSuccessNotification("Filial ble oppdatert!"),
-    onError: () => showErrorNotification("Klarte ikke oppdatere filial!"),
-  });
-
-  const defaultValues: DetailedBranch = {
-    active: existingBranch.active ?? false,
-    isBranchItemsLive: {
-      online: existingBranch.isBranchItemsLive?.online ?? false,
-      atBranch: existingBranch.isBranchItemsLive?.atBranch ?? false,
-    },
-    paymentInfo: {
-      responsible: existingBranch.paymentInfo?.responsible ?? false,
-      responsibleForDelivery:
-        existingBranch.paymentInfo?.responsibleForDelivery ?? false,
-      payLater: existingBranch.paymentInfo?.payLater ?? false,
-      partlyPaymentPeriods:
-        existingBranch.paymentInfo?.partlyPaymentPeriods?.map(
-          (partlyPaymentPeriod) => ({
-            ...partlyPaymentPeriod,
-            date: dayjs(partlyPaymentPeriod.date).format("YYYY-MM-DD"),
-          }),
-        ) ?? [],
-      rentPeriods:
-        existingBranch.paymentInfo?.rentPeriods?.map((rentPeriod) => ({
-          ...rentPeriod,
-          date: dayjs(rentPeriod.date).format("YYYY-MM-DD"),
-        })) ?? [],
-      extendPeriods:
-        existingBranch.paymentInfo?.extendPeriods?.map((extendPeriod) => ({
-          ...extendPeriod,
-          date: dayjs(extendPeriod.date).format("YYYY-MM-DD"),
-        })) ?? [],
-      buyout: {
-        percentage: existingBranch.paymentInfo?.buyout?.percentage ?? 1,
-      },
-      sell: {
-        percentage: existingBranch.paymentInfo?.sell?.percentage ?? 1,
-      },
-    },
-    deliveryMethods: {
-      branch: existingBranch.deliveryMethods?.branch ?? false,
-      byMail: existingBranch.deliveryMethods?.byMail ?? false,
-    },
-  };
+  const updateBranchMutation = useUpdateBranchMutation();
 
   const form = useAppForm({
-    defaultValues,
+    defaultValues: {
+      name: existingBranch.name ?? "",
+      active: existingBranch.active ?? false,
+      isBranchItemsLive: {
+        online: existingBranch.isBranchItemsLive?.online ?? false,
+        atBranch: existingBranch.isBranchItemsLive?.atBranch ?? false,
+      },
+      paymentInfo: {
+        responsible: existingBranch.paymentInfo?.responsible ?? false,
+        responsibleForDelivery:
+          existingBranch.paymentInfo?.responsibleForDelivery ?? false,
+        payLater: existingBranch.paymentInfo?.payLater ?? false,
+        partlyPaymentPeriods:
+          existingBranch.paymentInfo?.partlyPaymentPeriods?.map(
+            (partlyPaymentPeriod) => ({
+              ...partlyPaymentPeriod,
+              date: dayjs(partlyPaymentPeriod.date).format("YYYY-MM-DD"),
+            }),
+          ) ?? [],
+        rentPeriods:
+          existingBranch.paymentInfo?.rentPeriods?.map((rentPeriod) => ({
+            ...rentPeriod,
+            date: dayjs(rentPeriod.date).format("YYYY-MM-DD"),
+          })) ?? [],
+        extendPeriods:
+          existingBranch.paymentInfo?.extendPeriods?.map((extendPeriod) => ({
+            ...extendPeriod,
+            date: dayjs(extendPeriod.date).format("YYYY-MM-DD"),
+          })) ?? [],
+        buyout: {
+          percentage: existingBranch.paymentInfo?.buyout?.percentage ?? 1,
+        },
+        sell: {
+          percentage: existingBranch.paymentInfo?.sell?.percentage ?? 1,
+        },
+      },
+      deliveryMethods: {
+        branch: existingBranch.deliveryMethods?.branch ?? false,
+        byMail: existingBranch.deliveryMethods?.byMail ?? false,
+      },
+      location: {
+        region: existingBranch.location.region ?? "",
+        address: existingBranch.location.address ?? "",
+      },
+      type: existingBranch.type ?? null,
+    },
     onSubmit: ({ value }) => updateBranchMutation.mutate(value),
   });
 

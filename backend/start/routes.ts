@@ -14,8 +14,10 @@ const WaitingListEntriesController = () =>
 const RemindersController = () => import("#controllers/reminders_controller");
 const BranchesController = () =>
   import("#controllers/branches/branches_controller");
-const BranchGeneralController = () =>
-  import("#controllers/branches/branch_general_controller");
+const BranchUploadController = () =>
+  import("#controllers/branches/branch_upload_controller");
+const BranchRelationshipController = () =>
+  import("#controllers/branches/branch_relationship_controller");
 const MailTemplateSenderController = () =>
   import("#controllers/mail_template_sender_controller");
 const OrdersController = () => import("#controllers/orders_controller");
@@ -133,24 +135,33 @@ router
 /**
  * branches
  */
+router.post("/v2/branches", [BranchesController, "add"]).as("branches.add");
 router
-  .post("/v2/branches", [BranchGeneralController, "add"])
-  .as("branches.add");
-router
-  .patch("/v2/branches/general/:id", [BranchGeneralController, "update"])
-  .as("branches.general.update");
-router
-  .patch("/v2/branches/:id", [BranchesController, "update"])
+  .patch("/v2/branches", [BranchesController, "update"])
   .as("branches.update");
+
+/**
+ * branch upload
+ */
 router
-  .post("/v2/branches/memberships", [BranchesController, "uploadMemberships"])
+  .post("/v2/branches/memberships", [
+    BranchUploadController,
+    "uploadMemberships",
+  ])
   .as("branches.addMemberships");
 router
   .post("/v2/branches/subject_choices", [
-    BranchesController,
+    BranchUploadController,
     "uploadSubjectChoices",
   ])
   .as("branches.addSubjectChoices");
+
+/**
+ * branch relationships
+ */
+router
+  .patch("/v2/branches/relationships", [BranchRelationshipController, "update"])
+  .as("branches.relationships.update");
 
 /**
  * mail template sender

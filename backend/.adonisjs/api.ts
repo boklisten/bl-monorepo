@@ -151,26 +151,15 @@ type RemindersSendPost = {
 type V2BranchesPost = {
   request: MakeTuyauRequest<
     InferInput<
-      (typeof import("../app/validators/branch.ts"))["branchGeneralValidator"]
+      (typeof import("../app/validators/branch.ts"))["branchCreateValidator"]
     >
   >;
   response: MakeNonSerializedTuyauResponse<
-    import("../app/controllers/branches/branch_general_controller.ts").default["add"],
+    import("../app/controllers/branches/branches_controller.ts").default["add"],
     true
   >;
 };
-type V2BranchesGeneralIdPatch = {
-  request: MakeTuyauRequest<
-    InferInput<
-      (typeof import("../app/validators/branch.ts"))["branchGeneralValidator"]
-    >
-  >;
-  response: MakeNonSerializedTuyauResponse<
-    import("../app/controllers/branches/branch_general_controller.ts").default["update"],
-    true
-  >;
-};
-type V2BranchesIdPatch = {
+type V2BranchesPatch = {
   request: MakeTuyauRequest<
     InferInput<
       (typeof import("../app/validators/branch.ts"))["branchValidator"]
@@ -188,7 +177,7 @@ type V2BranchesMembershipsPost = {
     >
   >;
   response: MakeNonSerializedTuyauResponse<
-    import("../app/controllers/branches/branches_controller.ts").default["uploadMemberships"],
+    import("../app/controllers/branches/branch_upload_controller.ts").default["uploadMemberships"],
     true
   >;
 };
@@ -199,7 +188,18 @@ type V2BranchesSubjectchoicesPost = {
     >
   >;
   response: MakeNonSerializedTuyauResponse<
-    import("../app/controllers/branches/branches_controller.ts").default["uploadSubjectChoices"],
+    import("../app/controllers/branches/branch_upload_controller.ts").default["uploadSubjectChoices"],
+    true
+  >;
+};
+type V2BranchesRelationshipsPatch = {
+  request: MakeTuyauRequest<
+    InferInput<
+      (typeof import("../app/validators/branch.ts"))["branchRelationshipValidator"]
+    >
+  >;
+  response: MakeNonSerializedTuyauResponse<
+    import("../app/controllers/branches/branch_relationship_controller.ts").default["update"],
     true
   >;
 };
@@ -599,16 +599,7 @@ export interface ApiDefinition {
     branches: {
       $url: {};
       $post: V2BranchesPost;
-      general: {
-        ":id": {
-          $url: {};
-          $patch: V2BranchesGeneralIdPatch;
-        };
-      };
-      ":id": {
-        $url: {};
-        $patch: V2BranchesIdPatch;
-      };
+      $patch: V2BranchesPatch;
       memberships: {
         $url: {};
         $post: V2BranchesMembershipsPost;
@@ -616,6 +607,10 @@ export interface ApiDefinition {
       subject_choices: {
         $url: {};
         $post: V2BranchesSubjectchoicesPost;
+      };
+      relationships: {
+        $url: {};
+        $patch: V2BranchesRelationshipsPatch;
       };
     };
     orders: {
@@ -1022,18 +1017,11 @@ const routes = [
     types: {} as V2BranchesPost,
   },
   {
-    params: ["id"],
-    name: "branches.general.update",
-    path: "/v2/branches/general/:id",
-    method: ["PATCH"],
-    types: {} as V2BranchesGeneralIdPatch,
-  },
-  {
-    params: ["id"],
+    params: [],
     name: "branches.update",
-    path: "/v2/branches/:id",
+    path: "/v2/branches",
     method: ["PATCH"],
-    types: {} as V2BranchesIdPatch,
+    types: {} as V2BranchesPatch,
   },
   {
     params: [],
@@ -1048,6 +1036,13 @@ const routes = [
     path: "/v2/branches/subject_choices",
     method: ["POST"],
     types: {} as V2BranchesSubjectchoicesPost,
+  },
+  {
+    params: [],
+    name: "branches.relationships.update",
+    path: "/v2/branches/relationships",
+    method: ["PATCH"],
+    types: {} as V2BranchesRelationshipsPatch,
   },
   {
     params: [],

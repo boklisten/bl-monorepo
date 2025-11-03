@@ -1,11 +1,11 @@
 import { Branch } from "@boklisten/backend/shared/branch";
 import { Button, Stack } from "@mantine/core";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { InferRequestType } from "@tuyau/client";
 
+import useUpdateBranchMutation from "@/features/branches/useUpdateBranchMutation";
 import { useAppForm } from "@/shared/hooks/form";
 import useApiClient from "@/shared/hooks/useApiClient";
-import unpack from "@/shared/utils/bl-api-request";
 import {
   showErrorNotification,
   showSuccessNotification,
@@ -21,67 +21,36 @@ export default function BranchGeneralSettings({
   const queryClient = useQueryClient();
   const client = useApiClient();
 
-  const branchQuery = {
-    query: { sort: "name" },
-  };
-  const { data: branches } = useQuery({
-    queryKey: [client.$url("collection.branches.getAll", branchQuery)],
-    queryFn: () =>
-      client
-        .$route("collection.branches.getAll")
-        .$get(branchQuery)
-        .then(unpack<Branch[]>),
-  });
-
-  const branchOptions =
-    branches
-      ?.filter((branch) => branch.id !== existingBranch?.id)
-      .map((branch) => ({
-        value: branch.id,
-        label: branch.name,
-      })) ?? [];
-
   const addBranchMutation = useMutation({
     mutationFn: (
       newBranch: InferRequestType<typeof client.v2.branches.$post>,
     ) => client.v2.branches.$post(newBranch).unwrap(),
     onSettled: () =>
       queryClient.invalidateQueries({
-        queryKey: [client.$url("collection.branches.getAll", branchQuery)],
+        queryKey: [
+          client.$url("collection.branches.getAll", {
+            query: { sort: "name" },
+          }),
+        ],
       }),
     onSuccess: async (newBranch) => {
       showSuccessNotification("Filial ble opprettet!");
       await queryClient.invalidateQueries({
-        queryKey: [client.$url("collection.branches.getAll", branchQuery)],
+        queryKey: [
+          client.$url("collection.branches.getAll", {
+            query: { sort: "name" },
+          }),
+        ],
       });
       onSuccess?.(newBranch);
     },
     onError: () => showErrorNotification("Klarte ikke opprette filial!"),
   });
-
-  const updateBranchMutation = useMutation({
-    mutationFn: (
-      updatedBranch: InferRequestType<typeof client.v2.branches.$post>,
-    ) =>
-      client.v2.branches
-        .general({ id: existingBranch?.id ?? "" })
-        .$patch(updatedBranch)
-        .unwrap(),
-    onSettled: () =>
-      queryClient.invalidateQueries({
-        queryKey: [client.$url("collection.branches.getAll", branchQuery)],
-      }),
-    onSuccess: () => showSuccessNotification("Filial ble oppdatert!"),
-    onError: () => showErrorNotification("Klarte ikke oppdatere filial!"),
-  });
+  const updateBranchMutation = useUpdateBranchMutation();
 
   const form = useAppForm({
     defaultValues: {
       name: existingBranch?.name ?? "",
-      localName: existingBranch?.localName ?? "",
-      parentBranch: existingBranch?.parentBranch ?? "",
-      childBranches: existingBranch?.childBranches ?? [],
-      childLabel: existingBranch?.childLabel ?? "",
       location: {
         region: existingBranch?.location.region ?? "",
         address: existingBranch?.location.address ?? "",
@@ -91,7 +60,7 @@ export default function BranchGeneralSettings({
     onSubmit: ({ value }) =>
       !existingBranch
         ? addBranchMutation.mutate(value)
-        : updateBranchMutation.mutate(value),
+        : updateBranchMutation.mutate({ id: existingBranch.id, ...value }),
   });
 
   return (
@@ -100,53 +69,15 @@ export default function BranchGeneralSettings({
         {(field) => (
           <field.TextField
             required
-            label={"Fullt navn"}
+            label={"Navn"}
             placeholder={"Flåklypa videregående skole"}
-          />
-        )}
-      </form.AppField>
-      <form.AppField name={"localName"}>
-        {(field) => (
-          <field.TextField
-            required
-            label={"Lokalt navn"}
-            placeholder={"Flåklypa"}
-          />
-        )}
-      </form.AppField>
-      <form.AppField name={"parentBranch"}>
-        {(field) => (
-          <field.SelectField
-            label={"Tilhører"}
-            placeholder={"Velg filial"}
-            data={branchOptions}
-            searchable
-            clearable
-          />
-        )}
-      </form.AppField>
-      <form.AppField name={"childLabel"}>
-        {(field) => (
-          <field.TextField
-            label={"Delt inn i"}
-            placeholder={"årskull, klasse, parallell"}
-          />
-        )}
-      </form.AppField>
-      <form.AppField name={"childBranches"}>
-        {(field) => (
-          <field.MultiSelectField
-            label={"Består av"}
-            placeholder={"Velg filialer"}
-            data={branchOptions}
-            searchable
-            clearable
           />
         )}
       </form.AppField>
       <form.AppField name={"location.region"}>
         {(field) => (
           <field.TextField
+            required
             label={"Region"}
             placeholder={"Oslo, Trondheim, Ski"}
           />
@@ -178,7 +109,7 @@ export default function BranchGeneralSettings({
         onClick={form.handleSubmit}
         loading={addBranchMutation.isPending || updateBranchMutation.isPending}
       >
-        {!existingBranch ? "Opprett" : "Lagre"}
+        Lagre
       </Button>
     </Stack>
   );

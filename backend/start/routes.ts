@@ -51,6 +51,7 @@ const PostalController = () => import("#controllers/postal_controller");
 const CompaniesController = () => import("#controllers/companies_controller");
 const OpeningHoursController = () =>
   import("#controllers/opening_hours_controller");
+const ItemsController = () => import("#controllers/items_controller");
 
 /**
  * static
@@ -417,6 +418,11 @@ router
 router
   .delete("/v2/opening_hours/:id", [OpeningHoursController, "delete"])
   .as("opening_hours.delete");
+
+/**
+ * Items
+ */
+router.get("/v2/items", [ItemsController, "get"]).as("items.get");
 
 /**
  * Generate legacy bl-collection endpoints

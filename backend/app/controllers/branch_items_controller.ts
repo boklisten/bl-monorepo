@@ -46,7 +46,6 @@ export default class BranchItemsController {
         branchItems.map(async (branchItem) => {
           const item = await StorageService.Items.get(branchItem.item);
           return {
-            id: branchItem.id,
             item: {
               id: item.id,
               title: item.title,

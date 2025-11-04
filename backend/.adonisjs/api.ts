@@ -629,6 +629,13 @@ type V2OpeninghoursIdDelete = {
     false
   >;
 };
+type V2ItemsGetHead = {
+  request: unknown;
+  response: MakeNonSerializedTuyauResponse<
+    import("../app/controllers/items_controller.ts").default["get"],
+    false
+  >;
+};
 export interface ApiDefinition {
   token: {
     $url: {};
@@ -715,6 +722,11 @@ export interface ApiDefinition {
       };
       $url: {};
       $post: V2OpeninghoursPost;
+    };
+    items: {
+      $url: {};
+      $get: V2ItemsGetHead;
+      $head: V2ItemsGetHead;
     };
   };
   auth: {
@@ -1455,6 +1467,13 @@ const routes = [
     path: "/v2/opening_hours/:id",
     method: ["DELETE"],
     types: {} as V2OpeninghoursIdDelete,
+  },
+  {
+    params: [],
+    name: "items.get",
+    path: "/v2/items",
+    method: ["GET", "HEAD"],
+    types: {} as V2ItemsGetHead,
   },
   {
     params: ["id"],

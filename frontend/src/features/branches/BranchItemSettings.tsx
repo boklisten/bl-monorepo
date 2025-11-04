@@ -1,9 +1,11 @@
 import { Button, Card, Group, Skeleton, Stack, Title } from "@mantine/core";
+import { modals } from "@mantine/modals";
 import { IconPlus } from "@tabler/icons-react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { InferRequestType } from "@tuyau/client";
 import { Activity } from "react";
 
+import { BranchItemCreationModal } from "@/features/branches/BranchItemCreationModal";
 import ErrorAlert from "@/shared/components/alerts/ErrorAlert";
 import InfoAlert from "@/shared/components/alerts/InfoAlert";
 import { useAppForm } from "@/shared/hooks/form";
@@ -56,10 +58,44 @@ export default function BranchItemSettings({ branchId }: { branchId: string }) {
       }),
   });
 
+  const modalId = "create-branch-items";
   return (
     <Stack>
       <Group>
-        <Button leftSection={<IconPlus />}>Legg til</Button>
+        <Button
+          leftSection={<IconPlus />}
+          onClick={() =>
+            modals.open({
+              modalId,
+              title: "Legg til bøker",
+              children: (
+                <BranchItemCreationModal
+                  modalId={modalId}
+                  onConfirm={(branchItems) => {
+                    modals.close(modalId);
+                    const newBranchItems = branchItems;
+                    for (const branchItem of form.state.values.branchItems) {
+                      if (
+                        newBranchItems.some(
+                          (nbi) => nbi.item.id === branchItem.item.id,
+                        )
+                      )
+                        continue;
+
+                      newBranchItems.push(branchItem);
+                    }
+                    newBranchItems.sort((a, b) =>
+                      a.item.title.localeCompare(b.item.title),
+                    );
+                    form.setFieldValue("branchItems", newBranchItems);
+                  }}
+                />
+              ),
+            })
+          }
+        >
+          Legg til
+        </Button>
         <Button
           bg={"green"}
           onClick={form.handleSubmit}
@@ -86,11 +122,15 @@ export default function BranchItemSettings({ branchId }: { branchId: string }) {
           {PLEASE_TRY_AGAIN_TEXT}
         </ErrorAlert>
       </Activity>
-      <Activity mode={branchItems?.length === 0 ? "visible" : "hidden"}>
-        <InfoAlert title={"Ingen bøker"}>
-          Denne filialen har ikke tilknyttet noen bøker
-        </InfoAlert>
-      </Activity>
+      <form.Subscribe selector={(state) => state.values.branchItems}>
+        {(field) => (
+          <Activity mode={field.length === 0 ? "visible" : "hidden"}>
+            <InfoAlert title={"Ingen bøker"}>
+              Denne filialen har ikke tilknyttet noen bøker
+            </InfoAlert>
+          </Activity>
+        )}
+      </form.Subscribe>
       <form.AppField name="branchItems" mode="array">
         {(field) =>
           field.state.value.map((branchItem, i) => (
@@ -102,7 +142,9 @@ export default function BranchItemSettings({ branchId }: { branchId: string }) {
                     bg={"red"}
                     onClick={() =>
                       field.setValue(
-                        field.state.value.filter((v) => v.id !== branchItem.id),
+                        field.state.value.filter(
+                          (v) => v.item.id !== branchItem.item.id,
+                        ),
                       )
                     }
                   >

@@ -7,6 +7,7 @@ export const branchItemsValidator = vine.compile(
       vine.object({
         item: vine.object({
           id: vine.string(),
+          title: vine.string(),
         }),
         rent: vine.boolean(),
         rentAtBranch: vine.boolean(),

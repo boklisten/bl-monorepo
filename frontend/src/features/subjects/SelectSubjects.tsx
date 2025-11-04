@@ -5,11 +5,17 @@
 import { CartItem } from "@boklisten/backend/shared/cart_item";
 import { Affix, Box, Button, Card, Stack, Text } from "@mantine/core";
 import { useSet } from "@mantine/hooks";
-import { IconBasket, IconBasketCheck } from "@tabler/icons-react";
+import {
+  IconArrowBack,
+  IconBasket,
+  IconBasketCheck,
+} from "@tabler/icons-react";
 import { useQuery } from "@tanstack/react-query";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { Activity } from "react";
 
+import InfoAlert from "@/shared/components/alerts/InfoAlert";
 import useCart from "@/shared/hooks/useCart";
 import { publicApiClient } from "@/shared/utils/publicApiClient";
 
@@ -32,6 +38,21 @@ export default function SelectSubjects({
 
   return (
     <>
+      <Activity
+        mode={Object.entries(subjects).length === 0 ? "visible" : "hidden"}
+      >
+        <InfoAlert title={"Ingen fag tilgjengelig"}>
+          Denne skolen har ikke satt opp noen fag enda. Ta kontakt på
+          info@boklisten.no om du har spørsmål.
+        </InfoAlert>
+        <Button
+          component={Link}
+          href={"/bestilling"}
+          leftSection={<IconArrowBack />}
+        >
+          Velg en annen skole
+        </Button>
+      </Activity>
       {Object.entries(subjects)
         .sort((a, b) => a[0].localeCompare(b[0]))
         .map(([name]) => (

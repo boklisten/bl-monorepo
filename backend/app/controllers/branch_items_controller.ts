@@ -25,6 +25,7 @@ export default class BranchItemsController {
           ...branchItem,
           branch: branchId,
           item: branchItem.item.id,
+          categories: branchItem.subjects,
         }),
       ),
     );

@@ -16,6 +16,7 @@ export default function BranchPaymentSettings({
 
   const form = useAppForm({
     defaultValues: {
+      id: existingBranch.id,
       deliveryMethods: {
         branch: existingBranch.deliveryMethods?.branch ?? false,
         byMail: existingBranch.deliveryMethods?.byMail ?? false,

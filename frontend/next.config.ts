@@ -54,6 +54,11 @@ const NEXT_CONFIG = {
         destination: "/admin/database/selskap",
         permanent: false,
       },
+      {
+        source: "/database/branches/edit",
+        destination: "/admin/database/filialer",
+        permanent: false,
+      },
     ];
   },
 } as const satisfies NextConfig;

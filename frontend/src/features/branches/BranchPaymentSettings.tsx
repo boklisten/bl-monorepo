@@ -101,52 +101,50 @@ export default function BranchPaymentSettings({
                   {field.state.value.map((_, i) => (
                     <Card key={`rent-${i}`} withBorder w={"100%"}>
                       <Stack>
-                        <Group align={"end"}>
-                          <form.AppField
-                            name={`paymentInfo.rentPeriods[${i}].type`}
-                          >
-                            {(subField) => (
-                              <subField.SelectField
-                                label={"Type"}
-                                data={[
-                                  {
-                                    label: "semester",
-                                    value: "semester",
-                                  },
-                                  { label: "år", value: "year" },
-                                ]}
-                              />
-                            )}
-                          </form.AppField>
-                          <form.AppField
-                            name={`paymentInfo.rentPeriods[${i}].date`}
-                          >
-                            {(subField) => (
-                              <subField.DeadlinePickerField
-                                clearable={false}
-                                label={"Frist"}
-                              />
-                            )}
-                          </form.AppField>
-                          <form.AppField
-                            name={`paymentInfo.rentPeriods[${i}].maxNumberOfPeriods`}
-                          >
-                            {(subField) => (
-                              <subField.NumberField
-                                label={"Grense"}
-                                allowNegative={false}
-                                allowDecimal={false}
-                              />
-                            )}
-                          </form.AppField>
-                          <form.AppField
-                            name={`paymentInfo.rentPeriods[${i}].percentage`}
-                          >
-                            {(subField) => (
-                              <subField.PercentageField label={"Prosent"} />
-                            )}
-                          </form.AppField>
-                        </Group>
+                        <form.AppField
+                          name={`paymentInfo.rentPeriods[${i}].type`}
+                        >
+                          {(subField) => (
+                            <subField.SelectField
+                              label={"Type"}
+                              data={[
+                                {
+                                  label: "semester",
+                                  value: "semester",
+                                },
+                                { label: "år", value: "year" },
+                              ]}
+                            />
+                          )}
+                        </form.AppField>
+                        <form.AppField
+                          name={`paymentInfo.rentPeriods[${i}].date`}
+                        >
+                          {(subField) => (
+                            <subField.DeadlinePickerField
+                              clearable={false}
+                              label={"Frist"}
+                            />
+                          )}
+                        </form.AppField>
+                        <form.AppField
+                          name={`paymentInfo.rentPeriods[${i}].maxNumberOfPeriods`}
+                        >
+                          {(subField) => (
+                            <subField.NumberField
+                              label={"Grense"}
+                              allowNegative={false}
+                              allowDecimal={false}
+                            />
+                          )}
+                        </form.AppField>
+                        <form.AppField
+                          name={`paymentInfo.rentPeriods[${i}].percentage`}
+                        >
+                          {(subField) => (
+                            <subField.PercentageField label={"Prosent"} />
+                          )}
+                        </form.AppField>
                         <Group>
                           <Button
                             bg={"red"}
@@ -306,49 +304,47 @@ export default function BranchPaymentSettings({
                 {field.state.value.map((_, i) => (
                   <Card key={`extend-${i}`} withBorder w={"100%"}>
                     <Stack>
-                      <Group align={"end"}>
-                        <form.AppField
-                          name={`paymentInfo.extendPeriods[${i}].type`}
-                        >
-                          {(subField) => (
-                            <subField.SelectField
-                              label={"Type"}
-                              data={[
-                                { label: "semester", value: "semester" },
-                                { label: "år", value: "year" },
-                              ]}
-                            />
-                          )}
-                        </form.AppField>
-                        <form.AppField
-                          name={`paymentInfo.extendPeriods[${i}].date`}
-                        >
-                          {(subField) => (
-                            <subField.DeadlinePickerField
-                              clearable={false}
-                              label={"Dato"}
-                            />
-                          )}
-                        </form.AppField>
-                        <form.AppField
-                          name={`paymentInfo.extendPeriods[${i}].maxNumberOfPeriods`}
-                        >
-                          {(subField) => (
-                            <subField.NumberField
-                              label={"Grense"}
-                              allowNegative={false}
-                              allowDecimal={false}
-                            />
-                          )}
-                        </form.AppField>
-                        <form.AppField
-                          name={`paymentInfo.extendPeriods[${i}].price`}
-                        >
-                          {(subField) => (
-                            <subField.CurrencyField label={"Pris"} />
-                          )}
-                        </form.AppField>
-                      </Group>
+                      <form.AppField
+                        name={`paymentInfo.extendPeriods[${i}].type`}
+                      >
+                        {(subField) => (
+                          <subField.SelectField
+                            label={"Type"}
+                            data={[
+                              { label: "semester", value: "semester" },
+                              { label: "år", value: "year" },
+                            ]}
+                          />
+                        )}
+                      </form.AppField>
+                      <form.AppField
+                        name={`paymentInfo.extendPeriods[${i}].date`}
+                      >
+                        {(subField) => (
+                          <subField.DeadlinePickerField
+                            clearable={false}
+                            label={"Dato"}
+                          />
+                        )}
+                      </form.AppField>
+                      <form.AppField
+                        name={`paymentInfo.extendPeriods[${i}].maxNumberOfPeriods`}
+                      >
+                        {(subField) => (
+                          <subField.NumberField
+                            label={"Grense"}
+                            allowNegative={false}
+                            allowDecimal={false}
+                          />
+                        )}
+                      </form.AppField>
+                      <form.AppField
+                        name={`paymentInfo.extendPeriods[${i}].price`}
+                      >
+                        {(subField) => (
+                          <subField.CurrencyField label={"Pris"} />
+                        )}
+                      </form.AppField>
                       <Group>
                         <Button
                           bg={"red"}

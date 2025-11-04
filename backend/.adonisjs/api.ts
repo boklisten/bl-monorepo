@@ -554,6 +554,24 @@ type SubjectsIdGetHead = {
     false
   >;
 };
+type BranchitemsIdGetHead = {
+  request: unknown;
+  response: MakeNonSerializedTuyauResponse<
+    import("../app/controllers/branch_items_controller.ts").default["getBranchItems"],
+    false
+  >;
+};
+type BranchItemsPost = {
+  request: MakeTuyauRequest<
+    InferInput<
+      (typeof import("../app/validators/branch_items.ts"))["branchItemsValidator"]
+    >
+  >;
+  response: MakeNonSerializedTuyauResponse<
+    import("../app/controllers/branch_items_controller.ts").default["setBranchItems"],
+    true
+  >;
+};
 type PostalLookupPostalcodeIdGetHead = {
   request: unknown;
   response: MakeNonSerializedTuyauResponse<
@@ -932,6 +950,15 @@ export interface ApiDefinition {
       $get: SubjectsIdGetHead;
       $head: SubjectsIdGetHead;
     };
+  };
+  branch_items: {
+    ":branchId": {
+      $url: {};
+      $get: BranchitemsIdGetHead;
+      $head: BranchitemsIdGetHead;
+    };
+    $url: {};
+    $post: BranchItemsPost;
   };
   postal: {
     lookup: {
@@ -1367,6 +1394,20 @@ const routes = [
     types: {} as SubjectsIdGetHead,
   },
   {
+    params: ["branchId"],
+    name: "branch_items.get",
+    path: "/branch_items/:branchId",
+    method: ["GET", "HEAD"],
+    types: {} as BranchitemsIdGetHead,
+  },
+  {
+    params: [],
+    name: "branch_items.post",
+    path: "/branch_items",
+    method: ["POST"],
+    types: {} as BranchItemsPost,
+  },
+  {
     params: ["postalCode"],
     name: "lookup.postal.code",
     path: "/postal/lookup/postal_code/:postalCode",
@@ -1448,7 +1489,7 @@ const routes = [
     name: "collection.branchitems.getId",
     path: "/branchitems/:id",
     method: ["GET", "HEAD"],
-    types: {} as unknown,
+    types: {} as BranchitemsIdGetHead,
   },
   {
     params: [],

@@ -8,6 +8,7 @@ import MultiSelectField from "@/shared/components/form/fields/basic/MultiSelectF
 import NumberField from "@/shared/components/form/fields/basic/NumberField";
 import SelectField from "@/shared/components/form/fields/basic/SelectField";
 import SwitchField from "@/shared/components/form/fields/basic/SwitchField";
+import TagsField from "@/shared/components/form/fields/basic/TagsField";
 import TextAreaField from "@/shared/components/form/fields/basic/TextAreaField";
 import TextField from "@/shared/components/form/fields/basic/TextField";
 import AddressField from "@/shared/components/form/fields/complex/AddressField";
@@ -41,6 +42,7 @@ const { useAppForm, withFieldGroup } = createFormHook({
     MultiSelectField,
     CheckboxField,
     SwitchField,
+    TagsField,
 
     // Complex
     EmailField,

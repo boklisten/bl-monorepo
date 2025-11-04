@@ -16,6 +16,7 @@ import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
 
 import BranchGeneralSettings from "@/features/branches/BranchGeneralSettings";
+import BranchItemSettings from "@/features/branches/BranchItemSettings";
 import BranchPaymentSettings from "@/features/branches/BranchPaymentSettings";
 import BranchRelationshipSettings from "@/features/branches/BranchRelationshipSettings";
 import OpeningHoursSettings from "@/features/branches/opening_hours/OpeningHoursSettings";
@@ -131,6 +132,12 @@ export default function BranchManager() {
                   <BranchPaymentSettings
                     key={selectedBranchId}
                     existingBranch={selectedBranch}
+                  />
+                </Tabs.Panel>
+                <Tabs.Panel value={"books"}>
+                  <BranchItemSettings
+                    key={selectedBranchId}
+                    branchId={selectedBranch.id}
                   />
                 </Tabs.Panel>
                 <Tabs.Panel value={"hours"}>

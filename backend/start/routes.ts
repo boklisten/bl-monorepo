@@ -45,6 +45,8 @@ const OrderHistoryController = () =>
   import("#controllers/order_history_controller");
 const CheckoutController = () => import("#controllers/checkout_controller");
 const SubjectsController = () => import("#controllers/subjects_controller");
+const BranchItemsController = () =>
+  import("#controllers/branch_items_controller");
 const PostalController = () => import("#controllers/postal_controller");
 const CompaniesController = () => import("#controllers/companies_controller");
 const OpeningHoursController = () =>
@@ -373,6 +375,12 @@ router
 router
   .get("/subjects/:branchId", [SubjectsController, "getBranchSubjects"])
   .as("subjects.get.branch.subjects");
+router
+  .get("/branch_items/:branchId", [BranchItemsController, "getBranchItems"])
+  .as("branch_items.get");
+router
+  .post("/branch_items", [BranchItemsController, "setBranchItems"])
+  .as("branch_items.post");
 
 /**
  * Postal

@@ -126,7 +126,7 @@ export default function BranchGeneralSettings({
         onClick={form.handleSubmit}
         loading={addBranchMutation.isPending || updateBranchMutation.isPending}
       >
-        Lagre
+        {existingBranch ? "Lagre" : "Opprett"}
       </Button>
     </Stack>
   );

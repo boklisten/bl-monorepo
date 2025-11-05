@@ -18,8 +18,6 @@ const BranchUploadController = () =>
   import("#controllers/branches/branch_upload_controller");
 const BranchRelationshipController = () =>
   import("#controllers/branches/branch_relationship_controller");
-const MailTemplateSenderController = () =>
-  import("#controllers/mail_template_sender_controller");
 const OrdersController = () => import("#controllers/orders_controller");
 const EditableTextsController = () =>
   import("#controllers/editable_texts_controller");
@@ -52,6 +50,7 @@ const CompaniesController = () => import("#controllers/companies_controller");
 const OpeningHoursController = () =>
   import("#controllers/opening_hours_controller");
 const ItemsController = () => import("#controllers/items_controller");
+const DispatchController = () => import("#controllers/dispatch_controller");
 
 /**
  * static
@@ -167,13 +166,6 @@ router
 router
   .patch("/v2/branches/relationships", [BranchRelationshipController, "update"])
   .as("branches.relationships.update");
-
-/**
- * mail template sender
- */
-router
-  .post("/emails/send", [MailTemplateSenderController, "sendEmails"])
-  .as("emails.send");
 
 /**
  * orders
@@ -423,6 +415,13 @@ router
  * Items
  */
 router.get("/v2/items", [ItemsController, "get"]).as("items.get");
+
+/**
+ * Dispatch
+ */
+router
+  .get("/dispatch/email_templates", [DispatchController, "getEmailTemplates"])
+  .as("dispatch.get.email_templates");
 
 /**
  * Generate legacy bl-collection endpoints

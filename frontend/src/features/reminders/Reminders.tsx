@@ -19,8 +19,6 @@ import {
   showSuccessNotification,
 } from "@/shared/utils/notifications";
 
-const SENDGRID_TEMPLATE_ID_REGEX = /^d-[0-9a-f]{32}$/;
-
 interface RemindersFormData {
   branchIds: string[];
   deadline: string | null;
@@ -221,25 +219,14 @@ export default function Reminders() {
                 validators={{
                   onChangeListenTo: ["messageMethod"],
                   onChange: ({ value }) => {
-                    if (form.state.values.messageMethod !== "email")
-                      return null;
-
-                    if (!value || value.length === 0)
-                      return "Du må fylle inn template ID";
-
-                    if (!SENDGRID_TEMPLATE_ID_REGEX.test(value))
-                      return "Du må fylle inn en gyldig SendGrid Template ID";
+                    if (form.state.values.messageMethod === "email" && !value)
+                      return "Du må velge e-postmal";
 
                     return null;
                   },
                 }}
               >
-                {(field) => (
-                  <field.TextField
-                    label={"Template ID"}
-                    placeholder={"d-123456789"}
-                  />
-                )}
+                {(field) => <field.SelectEmailTemplateField />}
               </form.AppField>
             </Activity>
           </>

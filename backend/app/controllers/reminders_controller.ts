@@ -6,10 +6,6 @@ import DispatchService from "#services/dispatch_service";
 import { PermissionService } from "#services/permission_service";
 import { StorageService } from "#services/storage_service";
 import { reminderValidator } from "#validators/reminder";
-import {
-  assertSendGridTemplateId,
-  SendGridTemplateId,
-} from "#validators/send_grid_template_id_validator";
 
 interface ReminderCustomer {
   name: string;
@@ -100,7 +96,7 @@ async function aggregateCustomersToRemind(
 }
 
 async function sendReminderEmail(
-  emailTemplateId: SendGridTemplateId,
+  emailTemplateId: string,
   customers: ReminderCustomer[],
   target: "primary" | "guardian",
 ) {
@@ -115,7 +111,7 @@ async function sendReminderEmail(
     return { success: true };
   }
   return await DispatchService.sendUserProvidedEmailTemplate({
-    maybeEmailTemplateId: emailTemplateId,
+    templateId: emailTemplateId,
     recipients: filteredCustomers.map((customer) => ({
       to:
         target === "primary" ? customer.email : (customer.guardian.email ?? ""),
@@ -165,7 +161,7 @@ export default class RemindersController {
 
     if (emailTemplateId) {
       const { success: successPrimaryEmail } = await sendReminderEmail(
-        assertSendGridTemplateId(emailTemplateId),
+        emailTemplateId,
         customers,
         "primary",
       );
@@ -175,7 +171,7 @@ export default class RemindersController {
 
       if (customerItemType === "rent") {
         const { success: successGuardianEmail } = await sendReminderEmail(
-          assertSendGridTemplateId(emailTemplateId),
+          emailTemplateId,
           customers,
           "guardian",
         );

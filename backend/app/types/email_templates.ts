@@ -1,5 +1,3 @@
-import { SendGridTemplateId } from "#validators/send_grid_template_id_validator";
-
 export const EMAIL_SENDER = {
   NO_REPLY: "ikkesvar@boklisten.no",
   INFO: "info@boklisten.no",
@@ -12,7 +10,7 @@ type AllowedEmailSender = (typeof EMAIL_SENDER)[keyof typeof EMAIL_SENDER];
 
 export interface EmailTemplate {
   sender: AllowedEmailSender;
-  templateId: SendGridTemplateId;
+  templateId: string;
 }
 
 export const EMAIL_TEMPLATES = {

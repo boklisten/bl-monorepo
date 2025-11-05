@@ -1,0 +1,32 @@
+import { Select, SelectProps } from "@mantine/core";
+import { useQuery } from "@tanstack/react-query";
+
+import { useFieldContext } from "@/shared/hooks/form";
+import useApiClient from "@/shared/hooks/useApiClient";
+
+export default function SelectEmailTemplateField(props: SelectProps) {
+  const field = useFieldContext<string | null>();
+  const client = useApiClient();
+  const { data: emailTemplateIds } = useQuery({
+    queryKey: [client.dispatch.email_templates.$url()],
+    queryFn: () => client.dispatch.email_templates.$get().unwrap(),
+  });
+
+  return (
+    <Select
+      label={"E-postmal"}
+      placeholder={"Velg mal"}
+      data={
+        emailTemplateIds?.map(({ id, name }) => ({
+          label: name,
+          value: id,
+        })) ?? []
+      }
+      {...props}
+      value={field.state.value}
+      onChange={field.handleChange}
+      onBlur={field.handleBlur}
+      error={field.state.meta.errors.join(", ")}
+    />
+  );
+}

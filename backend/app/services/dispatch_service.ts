@@ -1,4 +1,5 @@
 import logger from "@adonisjs/core/services/logger";
+import sgClient from "@sendgrid/client";
 import sgMail from "@sendgrid/mail";
 import moment from "moment-timezone";
 import twilio from "twilio";
@@ -23,7 +24,7 @@ import {
   EmailRecipient,
   EmailTemplate,
 } from "#types/email_templates";
-import { assertSendGridTemplateId } from "#validators/send_grid_template_id_validator";
+import { sendgridEmailTemplatesResponseValidator } from "#validators/dispatch";
 
 const twilioClient = twilio(
   env.get("TWILIO_SMS_SID"),
@@ -85,6 +86,19 @@ const SmsService = {
 // SendGrid allows a maximum of 1000 personalizations per request
 const SENDGRID_BATCH_SIZE = 1000;
 const EmailService = {
+  async getEmailTemplates() {
+    const [, body] = await sgClient.request({
+      method: "GET",
+      url: "/v3/templates",
+      qs: {
+        generations: "dynamic",
+        page_size: 200,
+      },
+    });
+    const [, data] =
+      await sendgridEmailTemplatesResponseValidator.tryValidate(body);
+    return data?.result ?? [];
+  },
   async sendEmail({
     template,
     recipients,
@@ -319,16 +333,16 @@ const DispatchService = {
     return { mailStatus, smsStatus };
   },
   async sendUserProvidedEmailTemplate({
-    maybeEmailTemplateId,
+    templateId,
     recipients,
   }: {
-    maybeEmailTemplateId: string;
+    templateId: string;
     recipients: EmailRecipient[];
   }) {
     return await EmailService.sendEmail({
       template: {
         sender: EMAIL_SENDER.INFO,
-        templateId: assertSendGridTemplateId(maybeEmailTemplateId),
+        templateId,
       },
       recipients,
     });
@@ -357,6 +371,9 @@ const DispatchService = {
       body: `Hei ${firstName}, velkommen til ${branchName}! Vi i Boklisten administrerer utlån av bøkene du skal bruke, og før du kan få dem trenger vi at du bekrefter informasjonen din og signerer vår låneavtale på Boklisten.no. Er du under 18 år, må en foresatt signere. Vi har opprettet en konto til deg, og du kan logge inn med Vipps eller opprette et passord for å komme i gang. Mvh. Boklisten.no`,
     });
     return { emailStatus, smsStatus };
+  },
+  async getEmailTemplates() {
+    return await EmailService.getEmailTemplates();
   },
 };
 

@@ -203,17 +203,6 @@ type V2BranchesRelationshipsPatch = {
     true
   >;
 };
-type EmailsSendPost = {
-  request: MakeTuyauRequest<
-    InferInput<
-      (typeof import("../app/validators/mail_template_sender.ts"))["emailTemplateSenderValidator"]
-    >
-  >;
-  response: MakeNonSerializedTuyauResponse<
-    import("../app/controllers/mail_template_sender_controller.ts").default["sendEmails"],
-    true
-  >;
-};
 type V2OrdersOpenordersGetHead = {
   request: unknown;
   response: MakeNonSerializedTuyauResponse<
@@ -636,6 +625,13 @@ type V2ItemsGetHead = {
     false
   >;
 };
+type DispatchEmailtemplatesGetHead = {
+  request: unknown;
+  response: MakeNonSerializedTuyauResponse<
+    import("../app/controllers/dispatch_controller.ts").default["getEmailTemplates"],
+    false
+  >;
+};
 export interface ApiDefinition {
   token: {
     $url: {};
@@ -783,12 +779,6 @@ export interface ApiDefinition {
     send: {
       $url: {};
       $post: RemindersSendPost;
-    };
-  };
-  emails: {
-    send: {
-      $url: {};
-      $post: EmailsSendPost;
     };
   };
   editable_texts: {
@@ -983,6 +973,13 @@ export interface ApiDefinition {
       };
     };
   };
+  dispatch: {
+    email_templates: {
+      $url: {};
+      $get: DispatchEmailtemplatesGetHead;
+      $head: DispatchEmailtemplatesGetHead;
+    };
+  };
 }
 const routes = [
   {
@@ -1117,13 +1114,6 @@ const routes = [
     path: "/v2/branches/relationships",
     method: ["PATCH"],
     types: {} as V2BranchesRelationshipsPatch,
-  },
-  {
-    params: [],
-    name: "emails.send",
-    path: "/emails/send",
-    method: ["POST"],
-    types: {} as EmailsSendPost,
   },
   {
     params: [],
@@ -1474,6 +1464,13 @@ const routes = [
     path: "/v2/items",
     method: ["GET", "HEAD"],
     types: {} as V2ItemsGetHead,
+  },
+  {
+    params: [],
+    name: "dispatch.get.email_templates",
+    path: "/dispatch/email_templates",
+    method: ["GET", "HEAD"],
+    types: {} as DispatchEmailtemplatesGetHead,
   },
   {
     params: ["id"],

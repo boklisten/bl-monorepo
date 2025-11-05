@@ -14,9 +14,11 @@ import {
   IconFileDollar,
   IconHourglassLow,
   IconLogout,
+  IconMailFast,
   IconQrcode,
   IconReceipt,
   IconSearch,
+  IconSend,
   IconShoppingCart,
   IconUserEdit,
   IconUserPlus,
@@ -115,14 +117,30 @@ export default function AdminPageNavigation({
               onClick={onNavigate}
             />
             <NavLink
-              label={"Påminnelser"}
-              href={"/admin/kommunikasjon/paminnelser"}
-              active={pathname === "/admin/kommunikasjon/paminnelser"}
-              leftSection={<IconBell />}
+              label={"Kommunikasjon"}
+              leftSection={<IconMailFast />}
+              active={pathname.includes("kommunikasjon")}
               variant={"subtle"}
-              component={Link}
-              onClick={onNavigate}
-            />
+            >
+              <NavLink
+                label={"Påminnelser"}
+                href={"/admin/kommunikasjon/paminnelser"}
+                active={pathname === "/admin/kommunikasjon/paminnelser"}
+                leftSection={<IconBell />}
+                variant={"subtle"}
+                component={Link}
+                onClick={onNavigate}
+              />
+              <NavLink
+                label={"Utsendelser"}
+                href={"/admin/kommunikasjon/utsendelser"}
+                active={pathname === "/admin/kommunikasjon/utsendelser"}
+                leftSection={<IconSend />}
+                variant={"subtle"}
+                component={Link}
+                onClick={onNavigate}
+              />
+            </NavLink>
             <NavLink
               label={"Databaseverktøy"}
               leftSection={<IconDatabase />}

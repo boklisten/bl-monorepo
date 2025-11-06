@@ -14,8 +14,7 @@ export default function RemindersPage() {
         <Stack gap={2}>
           <Title>Påminnelser</Title>
           <Text size={"sm"} c={"dimmed"}>
-            Send SMS eller e-post til en elever med aktive bøker på valgte
-            filialer
+            Send SMS eller e-post til elever med aktive bøker på valgte filialer
           </Text>
         </Stack>
         <Reminders />

@@ -1,5 +1,5 @@
 import { FileInput, FileInputProps, Stack, Text } from "@mantine/core";
-import { IconFileUpload } from "@tabler/icons-react";
+import { IconFileTypeCsv } from "@tabler/icons-react";
 import Papa from "papaparse";
 import { Activity, useState } from "react";
 
@@ -110,7 +110,7 @@ export default function CsvFileField(
         clearable
         placeholder={"Velg fil (csv)"}
         accept="csv,text/csv"
-        leftSection={<IconFileUpload />}
+        leftSection={<IconFileTypeCsv />}
         description={`Format: ${props.headers.map((header) => header.label).join(", ")}`}
         {...props}
         value={value}

@@ -1,4 +1,4 @@
-import { Container, Stack, Title } from "@mantine/core";
+import { Container, Stack, Title, Text } from "@mantine/core";
 import { Metadata } from "next";
 
 import Reminders from "@/features/reminders/Reminders";
@@ -11,7 +11,13 @@ export default function RemindersPage() {
   return (
     <Container size={"xs"}>
       <Stack>
-        <Title>Påminnelser</Title>
+        <Stack gap={2}>
+          <Title>Påminnelser</Title>
+          <Text size={"sm"} c={"dimmed"}>
+            Send SMS eller e-post til en elever med aktive bøker på valgte
+            filialer
+          </Text>
+        </Stack>
         <Reminders />
       </Stack>
     </Container>

@@ -167,6 +167,9 @@ const DispatchService = {
   async sendReminderSms(phoneNumbers: string[], body: string) {
     return await SmsService.sendMany(phoneNumbers.map((to) => ({ to, body })));
   },
+  async sendUserProvidedSms(phoneNumber: string, body: string) {
+    return await SmsService.sendOne({ to: phoneNumber, body });
+  },
   async sendOrderReceipt(
     emailUser: EmailUser,
     emailOrder: EmailOrder,

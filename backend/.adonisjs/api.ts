@@ -632,6 +632,17 @@ type DispatchEmailtemplatesGetHead = {
     false
   >;
 };
+type DispatchPost = {
+  request: MakeTuyauRequest<
+    InferInput<
+      (typeof import("../app/validators/dispatch.ts"))["createDispatchValidator"]
+    >
+  >;
+  response: MakeNonSerializedTuyauResponse<
+    import("../app/controllers/dispatch_controller.ts").default["createDispatch"],
+    true
+  >;
+};
 export interface ApiDefinition {
   token: {
     $url: {};
@@ -979,6 +990,8 @@ export interface ApiDefinition {
       $get: DispatchEmailtemplatesGetHead;
       $head: DispatchEmailtemplatesGetHead;
     };
+    $url: {};
+    $post: DispatchPost;
   };
 }
 const routes = [
@@ -1471,6 +1484,13 @@ const routes = [
     path: "/dispatch/email_templates",
     method: ["GET", "HEAD"],
     types: {} as DispatchEmailtemplatesGetHead,
+  },
+  {
+    params: [],
+    name: "dispatch.create",
+    path: "/dispatch",
+    method: ["POST"],
+    types: {} as DispatchPost,
   },
   {
     params: ["id"],

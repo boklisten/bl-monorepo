@@ -422,6 +422,9 @@ router.get("/v2/items", [ItemsController, "get"]).as("items.get");
 router
   .get("/dispatch/email_templates", [DispatchController, "getEmailTemplates"])
   .as("dispatch.get.email_templates");
+router
+  .post("/dispatch", [DispatchController, "createDispatch"])
+  .as("dispatch.create");
 
 /**
  * Generate legacy bl-collection endpoints

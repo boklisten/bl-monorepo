@@ -1,4 +1,4 @@
-import { Container, Stack, Title } from "@mantine/core";
+import { Container, Stack, Text, Title } from "@mantine/core";
 import { Metadata } from "next";
 
 import DispatchManager from "@/features/dispatches/DispatchManager";
@@ -9,9 +9,14 @@ export const metadata: Metadata = {
 
 export default function DispatchPage() {
   return (
-    <Container size={"xs"}>
+    <Container size={"sm"}>
       <Stack>
-        <Title>Utsendelser</Title>
+        <Stack gap={2}>
+          <Title>Utsendelser</Title>
+          <Text size={"sm"} c={"dimmed"}>
+            Send SMS og/eller e-post til en liste med mottakere
+          </Text>
+        </Stack>
         <DispatchManager />
       </Stack>
     </Container>

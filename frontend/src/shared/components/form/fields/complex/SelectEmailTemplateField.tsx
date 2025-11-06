@@ -7,7 +7,7 @@ import useApiClient from "@/shared/hooks/useApiClient";
 export default function SelectEmailTemplateField(props: SelectProps) {
   const field = useFieldContext<string | null>();
   const client = useApiClient();
-  const { data: emailTemplateIds } = useQuery({
+  const { data: emailTemplates } = useQuery({
     queryKey: [client.dispatch.email_templates.$url()],
     queryFn: () => client.dispatch.email_templates.$get().unwrap(),
   });
@@ -17,7 +17,7 @@ export default function SelectEmailTemplateField(props: SelectProps) {
       label={"E-postmal"}
       placeholder={"Velg mal"}
       data={
-        emailTemplateIds?.map(({ id, name }) => ({
+        emailTemplates?.map(({ id, name }) => ({
           label: name,
           value: id,
         })) ?? []

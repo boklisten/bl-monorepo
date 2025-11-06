@@ -11,3 +11,9 @@ export const branchMembershipValidator = vine.compile(
     ),
   }),
 );
+export const updateBranchMembershipValidator = vine.compile(
+  vine.object({
+    detailsId: vine.string(),
+    branchMembership: vine.string().nullable(),
+  }),
+);

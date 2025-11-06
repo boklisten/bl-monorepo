@@ -18,6 +18,8 @@ const BranchUploadController = () =>
   import("#controllers/branches/branch_upload_controller");
 const BranchRelationshipController = () =>
   import("#controllers/branches/branch_relationship_controller");
+const BranchMembershipController = () =>
+  import("#controllers/branches/branch_membership_controller");
 const OrdersController = () => import("#controllers/orders_controller");
 const EditableTextsController = () =>
   import("#controllers/editable_texts_controller");
@@ -166,6 +168,22 @@ router
 router
   .patch("/v2/branches/relationships", [BranchRelationshipController, "update"])
   .as("branches.relationships.update");
+
+/**
+ * branch memberships
+ */
+router
+  .get("/v2/branches/memberships/:branchId", [
+    BranchMembershipController,
+    "getMembers",
+  ])
+  .as("branches.memberships.get");
+router
+  .patch("/branches/memberships", [
+    BranchMembershipController,
+    "updateMembership",
+  ])
+  .as("branches.memberships.update");
 
 /**
  * orders

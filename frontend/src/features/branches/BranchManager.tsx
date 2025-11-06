@@ -10,13 +10,14 @@ import {
   IconClock,
   IconHierarchy3,
   IconPlus,
-  IconUpload,
+  IconUsers,
 } from "@tabler/icons-react";
 import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
 
 import BranchGeneralSettings from "@/features/branches/BranchGeneralSettings";
 import BranchItemSettings from "@/features/branches/BranchItemSettings";
+import BranchMembers from "@/features/branches/BranchMembers";
 import BranchPaymentSettings from "@/features/branches/BranchPaymentSettings";
 import BranchRelationshipSettings from "@/features/branches/BranchRelationshipSettings";
 import OpeningHoursSettings from "@/features/branches/opening_hours/OpeningHoursSettings";
@@ -112,8 +113,8 @@ export default function BranchManager() {
                   <Tabs.Tab value={"hours"} leftSection={<IconClock />}>
                     Åpningstider
                   </Tabs.Tab>
-                  <Tabs.Tab value={"upload"} leftSection={<IconUpload />}>
-                    Opplasting av elevdata
+                  <Tabs.Tab value={"members"} leftSection={<IconUsers />}>
+                    Elever
                   </Tabs.Tab>
                 </Tabs.List>
                 <Tabs.Panel value={"general"}>
@@ -146,8 +147,12 @@ export default function BranchManager() {
                     branchId={selectedBranch.id}
                   />
                 </Tabs.Panel>
-                <Tabs.Panel value={"upload"}>
+                <Tabs.Panel value={"members"}>
                   <Stack>
+                    <BranchMembers
+                      key={selectedBranch.id}
+                      branchId={selectedBranch.id}
+                    />
                     <UploadClassMemberships branchId={selectedBranch.id} />
                     <UploadSubjectChoices branchId={selectedBranch.id} />
                   </Stack>

@@ -203,6 +203,24 @@ type V2BranchesRelationshipsPatch = {
     true
   >;
 };
+type V2BranchesMembershipsIdGetHead = {
+  request: unknown;
+  response: MakeNonSerializedTuyauResponse<
+    import("../app/controllers/branches/branch_membership_controller.ts").default["getMembers"],
+    false
+  >;
+};
+type BranchesMembershipsPatch = {
+  request: MakeTuyauRequest<
+    InferInput<
+      (typeof import("../app/validators/branch_membership.ts"))["updateBranchMembershipValidator"]
+    >
+  >;
+  response: MakeNonSerializedTuyauResponse<
+    import("../app/controllers/branches/branch_membership_controller.ts").default["updateMembership"],
+    true
+  >;
+};
 type V2OrdersOpenordersGetHead = {
   request: unknown;
   response: MakeNonSerializedTuyauResponse<
@@ -660,6 +678,11 @@ export interface ApiDefinition {
       memberships: {
         $url: {};
         $post: V2BranchesMembershipsPost;
+        ":branchId": {
+          $url: {};
+          $get: V2BranchesMembershipsIdGetHead;
+          $head: V2BranchesMembershipsIdGetHead;
+        };
       };
       subject_choices: {
         $url: {};
@@ -790,6 +813,12 @@ export interface ApiDefinition {
     send: {
       $url: {};
       $post: RemindersSendPost;
+    };
+  };
+  branches: {
+    memberships: {
+      $url: {};
+      $patch: BranchesMembershipsPatch;
     };
   };
   editable_texts: {
@@ -1127,6 +1156,20 @@ const routes = [
     path: "/v2/branches/relationships",
     method: ["PATCH"],
     types: {} as V2BranchesRelationshipsPatch,
+  },
+  {
+    params: ["branchId"],
+    name: "branches.memberships.get",
+    path: "/v2/branches/memberships/:branchId",
+    method: ["GET", "HEAD"],
+    types: {} as V2BranchesMembershipsIdGetHead,
+  },
+  {
+    params: [],
+    name: "branches.memberships.update",
+    path: "/branches/memberships",
+    method: ["PATCH"],
+    types: {} as BranchesMembershipsPatch,
   },
   {
     params: [],

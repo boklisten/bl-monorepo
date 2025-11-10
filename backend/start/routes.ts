@@ -184,6 +184,18 @@ router
     "updateMembership",
   ])
   .as("branches.memberships.update");
+router
+  .delete("/branches/memberships/direct/:branchId", [
+    BranchMembershipController,
+    "removeDirectMembers",
+  ])
+  .as("branches.memberships.remove.direct");
+router
+  .delete("/branches/memberships/indirect/:branchId", [
+    BranchMembershipController,
+    "removeIndirectMembers",
+  ])
+  .as("branches.memberships.remove.indirect");
 
 /**
  * orders

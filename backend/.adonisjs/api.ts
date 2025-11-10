@@ -221,6 +221,20 @@ type BranchesMembershipsPatch = {
     true
   >;
 };
+type BranchesMembershipsDirectIdDelete = {
+  request: unknown;
+  response: MakeNonSerializedTuyauResponse<
+    import("../app/controllers/branches/branch_membership_controller.ts").default["removeDirectMembers"],
+    false
+  >;
+};
+type BranchesMembershipsIndirectIdDelete = {
+  request: unknown;
+  response: MakeNonSerializedTuyauResponse<
+    import("../app/controllers/branches/branch_membership_controller.ts").default["removeIndirectMembers"],
+    false
+  >;
+};
 type V2OrdersOpenordersGetHead = {
   request: unknown;
   response: MakeNonSerializedTuyauResponse<
@@ -819,6 +833,18 @@ export interface ApiDefinition {
     memberships: {
       $url: {};
       $patch: BranchesMembershipsPatch;
+      direct: {
+        ":branchId": {
+          $url: {};
+          $delete: BranchesMembershipsDirectIdDelete;
+        };
+      };
+      indirect: {
+        ":branchId": {
+          $url: {};
+          $delete: BranchesMembershipsIndirectIdDelete;
+        };
+      };
     };
   };
   editable_texts: {
@@ -1170,6 +1196,20 @@ const routes = [
     path: "/branches/memberships",
     method: ["PATCH"],
     types: {} as BranchesMembershipsPatch,
+  },
+  {
+    params: ["branchId"],
+    name: "branches.memberships.remove.direct",
+    path: "/branches/memberships/direct/:branchId",
+    method: ["DELETE"],
+    types: {} as BranchesMembershipsDirectIdDelete,
+  },
+  {
+    params: ["branchId"],
+    name: "branches.memberships.remove.indirect",
+    path: "/branches/memberships/indirect/:branchId",
+    method: ["DELETE"],
+    types: {} as BranchesMembershipsIndirectIdDelete,
   },
   {
     params: [],

@@ -49,4 +49,32 @@ export default class BranchMembershipController {
       branchMembership,
     });
   }
+  async removeDirectMembers(ctx: HttpContext) {
+    PermissionService.adminOrFail(ctx);
+    const branchId = ctx.request.param("branchId");
+    const directMembers = await getMembers(branchId);
+    await Promise.all(
+      directMembers.map((member) =>
+        StorageService.UserDetails.update(member.id, {
+          branchMembership: null,
+        }),
+      ),
+    );
+  }
+  async removeIndirectMembers(ctx: HttpContext) {
+    PermissionService.adminOrFail(ctx);
+    const branchId = ctx.request.param("branchId");
+    const childBranchIds =
+      await BranchRelationshipService.getNestedChildBranchIds(branchId);
+    const allMembers = (
+      await Promise.all(childBranchIds.map((childId) => getMembers(childId)))
+    ).flat();
+    await Promise.all(
+      allMembers.map((member) =>
+        StorageService.UserDetails.update(member.id, {
+          branchMembership: null,
+        }),
+      ),
+    );
+  }
 }

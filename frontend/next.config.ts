@@ -16,9 +16,14 @@ const NEXT_CONFIG = {
       "@boklisten/backend/*": "../backend/src/*",
     },
   },
-  // fixme: temporary redirects required while in tandem with bl-admin
   async redirects() {
     return [
+      {
+        source: "/welcome",
+        destination: "/",
+        permanent: true,
+      },
+      // fixme: temporary redirects required while in tandem with bl-admin
       {
         source: "/auth/login/forgot",
         destination: "/auth/forgot",

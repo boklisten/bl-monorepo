@@ -11,6 +11,7 @@ import SwitchField from "@/shared/components/form/fields/basic/SwitchField";
 import TagsField from "@/shared/components/form/fields/basic/TagsField";
 import TextAreaField from "@/shared/components/form/fields/basic/TextAreaField";
 import TextField from "@/shared/components/form/fields/basic/TextField";
+import TimePickerField from "@/shared/components/form/fields/basic/TimePickerField";
 import AddressField from "@/shared/components/form/fields/complex/AddressField";
 import CsvFileField from "@/shared/components/form/fields/complex/CsvFileField";
 import CurrencyField from "@/shared/components/form/fields/complex/CurrencyField";
@@ -41,6 +42,7 @@ const { useAppForm, withFieldGroup } = createFormHook({
     NumberField,
     DateField,
     DateTimePickerField,
+    TimePickerField,
     SelectField,
     MultiSelectField,
     CheckboxField,

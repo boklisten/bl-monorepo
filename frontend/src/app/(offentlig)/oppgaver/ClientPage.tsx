@@ -83,14 +83,12 @@ export default function ClientPage({
         fortsette.
       </Text>
       <Stepper active={confirmDetailsTask === false ? 1 : 0}>
-        <Activity
-          mode={confirmDetailsTask !== undefined ? "visible" : "hidden"}
-        >
+        {confirmDetailsTask && (
           <Stepper.Step label={"Bekreft din informasjon"}>
             <UserSettingsForm userDetail={data} />
           </Stepper.Step>
-        </Activity>
-        <Activity mode={signAgreementTask === true ? "visible" : "hidden"}>
+        )}
+        {signAgreementTask && (
           <Stepper.Step label={"Signer låneavtale"}>
             <Activity mode={isUnder18(data.dob) ? "visible" : "hidden"}>
               <Stack>
@@ -137,7 +135,7 @@ export default function ClientPage({
               />
             </Activity>
           </Stepper.Step>
-        </Activity>
+        )}
       </Stepper>
     </>
   );

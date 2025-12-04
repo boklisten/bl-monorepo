@@ -32,7 +32,7 @@ function calculateDeadlineOptions() {
   }
 
   return usualDates.map((option) => ({
-    value: option.toString(),
+    value: dayjs(option).format("YYYY-MM-DD"),
     label: dayjs(option).format("DD/MM/YYYY"),
   }));
 }

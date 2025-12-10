@@ -123,7 +123,9 @@ async function calculateBuyoutStatus(
   return {
     canBuyout: true,
     feedback: "",
-    price: Math.ceil(item.price * branchBuyoutPercentage),
+    price:
+      customerItem.amountLeftToPay ||
+      Math.ceil(item.price * branchBuyoutPercentage),
   } as const;
 }
 

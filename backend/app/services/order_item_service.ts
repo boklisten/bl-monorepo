@@ -12,7 +12,8 @@ export const OrderItemService = {
     if (!buyoutPercentage)
       throw new Error("Could not find buyout percentage in checkout!");
 
-    const price = Math.ceil(item.price * buyoutPercentage);
+    const price =
+      customerItem.amountLeftToPay ?? Math.ceil(item.price * buyoutPercentage);
     return {
       type: "buyout",
       item: item.id,

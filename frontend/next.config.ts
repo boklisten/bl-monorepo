@@ -6,7 +6,6 @@ const NEXT_CONFIG = {
   reactCompiler: true,
   cacheComponents: true,
   experimental: {
-    turbopackFileSystemCacheForDev: true,
     optimizePackageImports: ["@mantine/core", "@mantine/hooks"],
   },
   transpilePackages: ["@boklisten/backend"],

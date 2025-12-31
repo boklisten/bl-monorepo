@@ -12,14 +12,10 @@ import { CustomerItem } from "#shared/customer-item/customer-item";
 function calculateDeadlineDateWithGracePeriod(deadline: Date): string {
   const now = moment();
   const month = now.format("MM");
-  const year = now.format("YYYY");
 
   if (month === "12") {
-    return `${year}-12-31`;
-  }
-  if (month === "1") {
-    const lastYear = now.subtract(1, "year").format("YYYY");
-    return `${lastYear}-12-31`;
+    const nextYear = now.add(1, "year").format("YYYY");
+    return `${nextYear}-01-01`;
   }
 
   return moment(deadline).format("YYYY-MM-DD");

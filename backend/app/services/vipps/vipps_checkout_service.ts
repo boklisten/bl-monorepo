@@ -108,7 +108,7 @@ export const VippsCheckoutService = {
         type: "PAYMENT",
         prefillCustomer: {
           firstName: userDetail.name.split(" ")[0] ?? null,
-          lastName: userDetail.name.split(" ")[1] ?? null,
+          lastName: userDetail.name.split(" ").slice(1).join(" ") ?? null,
           email: userDetail.email,
           phoneNumber: `47${userDetail.phone}`,
           streetAddress: userDetail.address ?? null,

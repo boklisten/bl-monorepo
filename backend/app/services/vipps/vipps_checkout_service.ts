@@ -57,6 +57,8 @@ async function createLogistics(order: Order) {
     Math.ceil((totalWeightInGrams / 1000) * 20) + (needPickupPoint ? 150 : 75);
 
   const branch = await StorageService.Branches.get(order.branch);
+  console.log(branch);
+  console.log(branch.deliveryMethods);
   return {
     fixedOptions: [
       ...(order.amount > 0 && branch.deliveryMethods?.branch
@@ -75,19 +77,25 @@ async function createLogistics(order: Order) {
             } as const,
           ]
         : []),
-      {
-        id: needPickupPoint ? "mail_pickup_point" : "mailbox",
-        amount: {
-          value: deliveryPrice * 100,
-          currency: "NOK",
-        },
-        brand: "POSTEN",
-        title: needPickupPoint ? "Pakke til hentested" : "Pakke i postkasse",
-        description: `Forventet levering om ${APP_CONFIG.delivery.deliveryDays + 2} dager`,
-        type: needPickupPoint ? "PICKUP_POINT" : "MAILBOX",
-        priority: 1,
-        isDefault: order.amount === 0,
-      } as const,
+      ...(branch.deliveryMethods?.byMail
+        ? [
+            {
+              id: needPickupPoint ? "mail_pickup_point" : "mailbox",
+              amount: {
+                value: deliveryPrice * 100,
+                currency: "NOK",
+              },
+              brand: "POSTEN",
+              title: needPickupPoint
+                ? "Pakke til hentested"
+                : "Pakke i postkasse",
+              description: `Forventet levering om ${APP_CONFIG.delivery.deliveryDays + 2} dager`,
+              type: needPickupPoint ? "PICKUP_POINT" : "MAILBOX",
+              priority: 1,
+              isDefault: order.amount === 0,
+            } as const,
+          ]
+        : []),
     ],
   };
 }

@@ -8,12 +8,23 @@ export const OrderItemService = {
     const branch = await StorageService.Branches.get(
       customerItem.handoutInfo?.handoutById,
     );
-    const buyoutPercentage = branch.paymentInfo?.buyout?.percentage;
+    const order = await StorageService.Orders.getOrNull(
+      customerItem.orders?.at(-1),
+    );
+    const orderItem = order?.orderItems.find(
+      (oi) => oi.customerItem === customerItem.id,
+    );
+    const buyoutPercentage =
+      branch?.paymentInfo?.partlyPaymentPeriods?.find(
+        (period) => period.type === orderItem?.info?.periodType,
+      )?.percentageBuyout ?? branch?.paymentInfo?.buyout?.percentage;
+
     if (!buyoutPercentage)
       throw new Error("Could not find buyout percentage in checkout!");
 
     const price =
-      customerItem.amountLeftToPay ?? Math.ceil(item.price * buyoutPercentage);
+      customerItem.amountLeftToPay ||
+      Math.floor((item.price * buyoutPercentage) / 10) * 10;
     return {
       type: "buyout",
       item: item.id,
@@ -114,17 +125,17 @@ export const OrderItemService = {
         `Rent period not found in checkout branch: ${branchId} to: ${to.toISOString()} item: ${item.id}`,
       );
 
+    const priceUpFront =
+      Math.floor((item.price * partlyPaymentPeriod.percentageUpFront) / 10) *
+      10;
+
     return {
       type: "partly-payment",
       item: item.id,
       title: item.title,
       delivered: false,
-      amount: branch.paymentInfo?.responsible
-        ? 0
-        : Math.ceil(item.price * partlyPaymentPeriod.percentageUpFront),
-      unitPrice: branch.paymentInfo?.responsible
-        ? 0
-        : Math.ceil(item.price * partlyPaymentPeriod.percentageUpFront),
+      amount: branch.paymentInfo?.responsible ? 0 : priceUpFront,
+      unitPrice: branch.paymentInfo?.responsible ? 0 : priceUpFront,
       info: {
         from: new Date(),
         to: partlyPaymentPeriod.date,

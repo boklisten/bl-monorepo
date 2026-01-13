@@ -108,8 +108,18 @@ async function calculateBuyoutStatus(
     } as const;
 
   const item = await StorageService.Items.getOrNull(customerItem.item);
-  const branchBuyoutPercentage = branch?.paymentInfo?.buyout?.percentage;
-  if (!item || !branchBuyoutPercentage)
+  const order = await StorageService.Orders.getOrNull(
+    customerItem.orders?.at(-1),
+  );
+  const orderItem = order?.orderItems.find(
+    (oi) => oi.customerItem === customerItem.id,
+  );
+  const buyoutPercentage =
+    branch?.paymentInfo?.partlyPaymentPeriods?.find(
+      (period) => period.type === orderItem?.info?.periodType,
+    )?.percentageBuyout ?? branch?.paymentInfo?.buyout?.percentage;
+
+  if (!item || !buyoutPercentage)
     return {
       canBuyout: false,
       feedback:
@@ -121,7 +131,7 @@ async function calculateBuyoutStatus(
     feedback: "",
     price:
       customerItem.amountLeftToPay ||
-      Math.ceil(item.price * branchBuyoutPercentage),
+      Math.floor((item.price * buyoutPercentage) / 10) * 10,
   } as const;
 }
 

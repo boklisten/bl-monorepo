@@ -19,19 +19,19 @@ export default class CheckoutController {
       initializeCheckoutValidator,
     );
     const order = await OrderService.createFromCart(detailsId, cartItems);
+    const branch = await StorageService.Branches.get(order.branch);
+    const isDeliveryFree = branch.paymentInfo?.responsibleForDelivery ?? false;
 
     if (order.amount === 0) {
-      const branch = await StorageService.Branches.get(order.branch);
-      if (
-        !branch.deliveryMethods?.byMail ||
-        branch.paymentInfo?.responsibleForDelivery
-      ) {
+      if (!branch.deliveryMethods?.byMail || isDeliveryFree) {
         return { nextStep: "confirm", orderId: order.id } as const;
       }
     }
 
-    const { token, checkoutFrontendUrl } =
-      await VippsCheckoutService.create(order);
+    const { token, checkoutFrontendUrl } = await VippsCheckoutService.create(
+      order,
+      isDeliveryFree,
+    );
     return { nextStep: "payment", token, checkoutFrontendUrl } as const;
   }
   async confirmCheckout(ctx: HttpContext) {

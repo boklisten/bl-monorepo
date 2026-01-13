@@ -34,7 +34,7 @@ async function updateUserDetailWithBillingDetails(
   return await StorageService.UserDetails.get(customerId);
 }
 
-async function createLogistics(order: Order) {
+async function createLogistics(order: Order, isDeliveryFree: boolean) {
   const needLogistics = order.orderItems.some(
     (orderItem) =>
       orderItem.type === "rent" ||
@@ -82,7 +82,7 @@ async function createLogistics(order: Order) {
             {
               id: needPickupPoint ? "mail_pickup_point" : "mailbox",
               amount: {
-                value: deliveryPrice * 100,
+                value: isDeliveryFree ? 0 : deliveryPrice * 100,
                 currency: "NOK",
               },
               brand: "POSTEN",
@@ -101,7 +101,7 @@ async function createLogistics(order: Order) {
 }
 
 export const VippsCheckoutService = {
-  async create(order: Order) {
+  async create(order: Order, isDeliveryFree: boolean) {
     const userDetail = await StorageService.UserDetails.get(order.customer);
     const { token, checkoutFrontendUrl } =
       await VippsPaymentService.checkout.create({
@@ -146,7 +146,7 @@ export const VippsCheckoutService = {
             },
           },
         },
-        logistics: await createLogistics(order),
+        logistics: await createLogistics(order, isDeliveryFree),
         configuration: {
           showOrderSummary: true,
         },

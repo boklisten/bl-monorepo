@@ -35,9 +35,7 @@ export default function SelectOrderBranch({
   );
   return (
     <>
-      {groupedBranches
-        .entries()
-        .toArray()
+      {Array.from(groupedBranches.entries())
         .sort((a, b) => a[0].localeCompare(b[0], "no"))
         .map(([region, branches]) => (
           <NavLink

@@ -1,6 +1,6 @@
 import { ActionIcon, Box, Stack, Text, Tooltip } from "@mantine/core";
 import { IconEraser } from "@tabler/icons-react";
-import { Activity, useEffect, useRef } from "react";
+import { Activity, useEffect, useEffectEvent, useRef } from "react";
 // eslint-disable-next-line import-x/no-named-as-default
 import SignatureCanvas from "react-signature-canvas";
 
@@ -12,6 +12,8 @@ export default function SignatureCanvasField(props: { label: string }) {
   const containerRef = useRef<HTMLDivElement>(null);
   const field = useFieldContext<string>();
 
+  const clearField = useEffectEvent(() => field.setValue(""));
+
   useEffect(() => {
     const resize = () => {
       if (!sigCanvas.current) return;
@@ -21,14 +23,14 @@ export default function SignatureCanvasField(props: { label: string }) {
         canvas.width = box.offsetWidth;
         canvas.height = box.offsetHeight;
         sigCanvas.current.clear();
-        field.setValue("");
+        clearField();
       }
     };
     // Ensure everything is rendered properly before resize is called
     setTimeout(resize, 10);
     window.addEventListener("resize", resize);
     return () => window.removeEventListener("resize", resize);
-  }, [field]);
+  }, []);
 
   return (
     <Stack gap={5}>

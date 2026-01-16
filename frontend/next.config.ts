@@ -71,12 +71,7 @@ const SENTRY_CONFIG = {
   org: "boklisten",
   project: "frontend",
   widenClientFileUpload: true,
-  reactComponentAnnotation: {
-    enabled: true,
-  },
   tunnelRoute: "/monitoring",
-  disableLogger: true,
-  automaticVercelMonitors: true,
   telemetry: false,
 } as const satisfies SentryBuildOptions;
 

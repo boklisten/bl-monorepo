@@ -82,7 +82,7 @@ export default function ClientPage({
         Vi mangler noen opplysninger fra deg – fullfør oppgavene nedenfor for å
         fortsette.
       </Text>
-      <Stepper active={confirmDetailsTask === false ? 1 : 0}>
+      <Stepper active={0}>
         {confirmDetailsTask && (
           <Stepper.Step label={"Bekreft din informasjon"}>
             <UserSettingsForm userDetail={data} />

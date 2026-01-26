@@ -234,7 +234,6 @@ export class OrderPlacedHandler {
 }
 
 const orderItemTypesWhichRequireSignature = new Set<OrderItemType>([
-  "buy",
   "rent",
   "loan",
 ]);

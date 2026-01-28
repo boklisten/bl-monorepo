@@ -9,10 +9,10 @@ export class MongooseModelCreator<T> {
   ) {}
 
   create(): Model<T> {
-    return mongoose.model<T>(
+    return mongoose.model(
       this.schemaName,
       this.standardizeSchema(this.schema),
-    );
+    ) as Model<T>;
   }
 
   private standardizeSchema(schema: Schema): Schema {

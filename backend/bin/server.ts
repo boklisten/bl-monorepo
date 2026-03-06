@@ -1,5 +1,5 @@
-import "reflect-metadata";
-import { Ignitor, prettyPrintError } from "@adonisjs/core";
+await import("reflect-metadata");
+const { Ignitor, prettyPrintError } = await import("@adonisjs/core");
 
 const APP_ROOT = new URL("../", import.meta.url);
 const IMPORTER = (filePath: string) => {

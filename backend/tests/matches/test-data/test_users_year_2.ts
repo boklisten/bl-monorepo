@@ -1,153 +1,153 @@
-[
+export default [
   {
-    "items": [
+    items: [
       "Vamos 2 Tekstbok",
       "Intertekst VG3 2022",
       "Psykologi 2 2022",
       "Historie Vg3",
       "Demos : politikk og menneskerettigheter 2022",
-      "Religion og etikk 2022 (Eriksen)"
+      "Religion og etikk 2022 (Eriksen)",
     ],
-    "id": "5f3a59571a293c001ccd6b09"
+    id: "5f3a59571a293c001ccd6b09",
   },
   {
-    "items": [
+    items: [
       "Historie Vg3",
       "Psykologi 2 2022",
       "Intertekst VG3 2022",
       "Demos : politikk og menneskerettigheter 2022",
-      "Religion og etikk 2022 (Eriksen)"
+      "Religion og etikk 2022 (Eriksen)",
     ],
-    "id": "5f3bb554a80178001c21b0ae"
+    id: "5f3bb554a80178001c21b0ae",
   },
   {
-    "items": [
+    items: [
       "Intertekst VG3 2022",
       "Psykologi 2 2022",
       "Historie Vg3",
-      "Demos : politikk og menneskerettigheter 2022",
-      "Rettslære 1 2021",
-      "Religion og etikk 2022 (Eriksen)"
-    ],
-    "id": "61e7ca157ef0d20046aeeccc"
-  },
-  {
-    "items": [
-      "Historie Vg3",
-      "Psykologi 2 2022",
-      "Intertekst VG3 2022",
       "Demos : politikk og menneskerettigheter 2022",
       "Rettslære 1 2021",
-      "Religion og etikk 2022 (Eriksen)"
+      "Religion og etikk 2022 (Eriksen)",
     ],
-    "id": "5f3c383ea80178001c2209b4"
+    id: "61e7ca157ef0d20046aeeccc",
   },
   {
-    "items": [
+    items: [
+      "Historie Vg3",
+      "Psykologi 2 2022",
+      "Intertekst VG3 2022",
+      "Demos : politikk og menneskerettigheter 2022",
+      "Rettslære 1 2021",
+      "Religion og etikk 2022 (Eriksen)",
+    ],
+    id: "5f3c383ea80178001c2209b4",
+  },
+  {
+    items: [
       "Ergo 1 2021",
       "Historie Vg3",
       "Kjemien stemmer 2 grunnbok 2022",
       "Intertekst VG3 2022",
       "Matematikk R2 2022",
       "Religion og etikk 2022 (Eriksen)",
-      "Kjemien stemmer 2 studiebok 2022"
+      "Kjemien stemmer 2 studiebok 2022",
     ],
-    "id": "5f3bb58fa80178001c21b1e6"
+    id: "5f3bb58fa80178001c21b1e6",
   },
   {
-    "items": [
+    items: [
       "Psykologi 2 2022",
       "Intertekst VG3 2022",
       "Historie Vg3",
       "Demos : politikk og menneskerettigheter 2022",
       "Rettslære 1 2021",
-      "Religion og etikk 2022 (Eriksen)"
+      "Religion og etikk 2022 (Eriksen)",
     ],
-    "id": "5f3bff43a80178001c220225"
+    id: "5f3bff43a80178001c220225",
   },
   {
-    "items": [
+    items: [
       "Matematikk S2 2022",
       "Intertekst VG3 2022",
       "Historie Vg3",
       "Ergo 1 2021",
       "Kjemien stemmer 2 grunnbok 2022",
       "Religion og etikk 2022 (Eriksen)",
-      "Kjemien stemmer 2 studiebok 2022"
+      "Kjemien stemmer 2 studiebok 2022",
     ],
-    "id": "5f3a3587f90c4a001cc4ebce"
+    id: "5f3a3587f90c4a001cc4ebce",
   },
   {
-    "items": ["Visjon 2 2022", "Religion og etikk 2022 (Eriksen)"],
-    "id": "5f3bb601a80178001c21b39c"
+    items: ["Visjon 2 2022", "Religion og etikk 2022 (Eriksen)"],
+    id: "5f3bb601a80178001c21b39c",
   },
   {
-    "items": [
+    items: [
       "Historie Vg3",
       "Intertekst VG3 2022",
       "Psykologi 2 2022",
       "Demos : politikk og menneskerettigheter 2022",
-      "Religion og etikk 2022 (Eriksen)"
+      "Religion og etikk 2022 (Eriksen)",
     ],
-    "id": "61648fe2c18bd5001dbb3d70"
+    id: "61648fe2c18bd5001dbb3d70",
   },
   {
-    "items": [
+    items: [
       "Økonomi 2 2022",
       "Intertekst VG3 2022",
       "Historie Vg3",
       "Religion og etikk 2022 (Eriksen)",
       "Visjon 2 2022",
-      "Pareto 2 VG3  2013"
+      "Pareto 2 VG3  2013",
     ],
-    "id": "5f3bc2f5a80178001c21d2dc"
+    id: "5f3bc2f5a80178001c21d2dc",
   },
   {
-    "items": [
+    items: [
       "Psykologi 2 2022",
       "Intertekst VG3 2022",
       "Historie Vg3",
       "Demos : politikk og menneskerettigheter 2022",
-      "Religion og etikk 2022 (Eriksen)"
+      "Religion og etikk 2022 (Eriksen)",
     ],
-    "id": "5f3ab5e11a293c001ccd9ab0"
+    id: "5f3ab5e11a293c001ccd9ab0",
   },
   {
-    "items": [
+    items: [
       "Intertekst VG3 2022",
       "Økonomi 2 2022",
       "Pareto 2 VG3  2013",
       "Historie Vg3",
       "Visjon 2 2022",
-      "Religion og etikk 2022 (Eriksen)"
+      "Religion og etikk 2022 (Eriksen)",
     ],
-    "id": "5f3ae4c61a293c001ccda595"
+    id: "5f3ae4c61a293c001ccda595",
   },
   {
-    "items": [
+    items: [
       "Matematikk S2 2022",
       "Kjemien stemmer 2 grunnbok 2022",
       "Historie Vg3",
       "Ergo 1 2021",
       "Intertekst VG3 2022",
       "Religion og etikk 2022 (Eriksen)",
-      "Kjemien stemmer 2 studiebok 2022"
+      "Kjemien stemmer 2 studiebok 2022",
     ],
-    "id": "5f0759da53e84d001ce11345"
+    id: "5f0759da53e84d001ce11345",
   },
   {
-    "items": [
+    items: [
       "Økonomi 2 2022",
       "Intertekst VG3 2022",
       "Pareto 2 VG3  2013",
       "Historie Vg3",
       "Religion og etikk 2022 (Eriksen)",
-      "Visjon 2 2022"
+      "Visjon 2 2022",
     ],
-    "id": "5f3a35adf90c4a001cc4ec19"
+    id: "5f3a35adf90c4a001cc4ec19",
   },
   {
-    "items": [
+    items: [
       "Psykologi 2 2022",
       "Intertekst VG3 2022",
       "Pareto 2 VG3  2013",
@@ -155,128 +155,128 @@
       "Pareto 2 VG3  2013",
       "Demos : politikk og menneskerettigheter 2022",
       "Interactions 2 2022",
-      "Religion og etikk 2022 (Eriksen)"
+      "Religion og etikk 2022 (Eriksen)",
     ],
-    "id": "5f3bb619a80178001c21b465"
+    id: "5f3bb619a80178001c21b465",
   },
   {
-    "items": [
+    items: [
       "Historie Vg3",
       "Psykologi 2 2022",
       "Intertekst VG3 2022",
       "Rettslære 1 2021",
       "Demos : politikk og menneskerettigheter 2022",
-      "Religion og etikk 2022 (Eriksen)"
+      "Religion og etikk 2022 (Eriksen)",
     ],
-    "id": "5f3bb4e2a80178001c21afb2"
+    id: "5f3bb4e2a80178001c21afb2",
   },
   {
-    "items": [
+    items: [
       "Kjemien stemmer 2 grunnbok 2022",
       "Historie Vg3",
       "Intertekst VG3 2022",
       "Ergo 1 2021",
       "Matematikk S2 2022",
       "Religion og etikk 2022 (Eriksen)",
-      "Kjemien stemmer 2 studiebok 2022"
+      "Kjemien stemmer 2 studiebok 2022",
     ],
-    "id": "5f3a3630f90c4a001cc4ecbb"
+    id: "5f3a3630f90c4a001cc4ecbb",
   },
   {
-    "items": [
+    items: [
       "Psykologi 2 2022",
       "Historie Vg3",
       "Intertekst VG3 2022",
       "Demos : politikk og menneskerettigheter 2022",
-      "Religion og etikk 2022 (Eriksen)"
+      "Religion og etikk 2022 (Eriksen)",
     ],
-    "id": "5f3bdb96a80178001c21fe55"
+    id: "5f3bdb96a80178001c21fe55",
   },
   {
-    "items": [
+    items: [
       "Historie Vg3",
       "Psykologi 2 2022",
       "Intertekst VG3 2022",
       "Demos : politikk og menneskerettigheter 2022",
       "Rettslære 1 2021",
-      "Religion og etikk 2022 (Eriksen)"
+      "Religion og etikk 2022 (Eriksen)",
     ],
-    "id": "5f3a624b1a293c001ccd72d8"
+    id: "5f3a624b1a293c001ccd72d8",
   },
   {
-    "items": [
+    items: [
       "Geografi 2020",
       "Intertekst VG1 2020",
       "Sinus 1P 2020",
       "Encuentros 1 2020",
       "Kosmos SF 2020",
       "Fokus samfunnskunnskap 2020",
-      "Citizens SF 2020"
+      "Citizens SF 2020",
     ],
-    "id": "5f3a69181a293c001ccd7860"
+    id: "5f3a69181a293c001ccd7860",
   },
   {
-    "items": [
+    items: [
       "Psykologi 2 2022",
       "Intertekst VG3 2022",
       "Vamos 2 Tekstbok",
       "Historie Vg3",
       "Demos : politikk og menneskerettigheter 2022",
-      "Religion og etikk 2022 (Eriksen)"
+      "Religion og etikk 2022 (Eriksen)",
     ],
-    "id": "5f3a35a7f90c4a001cc4ec0d"
+    id: "5f3a35a7f90c4a001cc4ec0d",
   },
   {
-    "items": [
+    items: [
       "Ergo 1 2021",
       "Intertekst VG3 2022",
       "Matematikk R2 2022",
       "Kjemien stemmer 2 grunnbok 2022",
-      "Historie Vg3"
+      "Historie Vg3",
     ],
-    "id": "5f3bb5d4a80178001c21b30c"
+    id: "5f3bb5d4a80178001c21b30c",
   },
   {
-    "items": [
+    items: [
       "Historie Vg3",
       "Intertekst VG3 2022",
       "Kjemien stemmer 2 grunnbok 2022",
       "Matematikk R2 2022",
       "Ergo 1 2021",
       "Religion og etikk 2022 (Eriksen)",
-      "Kjemien stemmer 2 studiebok 2022"
+      "Kjemien stemmer 2 studiebok 2022",
     ],
-    "id": "5f3c2ef3a80178001c22080d"
+    id: "5f3c2ef3a80178001c22080d",
   },
   {
-    "items": ["Intertekst VG1 2020"],
-    "id": "62f4ca8590fa400048f49eda"
+    items: ["Intertekst VG1 2020"],
+    id: "62f4ca8590fa400048f49eda",
   },
   {
-    "items": [
+    items: [
       "Citizens SF 2020",
       "Intertekst VG1 2020",
       "Encuentros 1 2020",
       "Geografi 2020",
       "Fokus samfunnskunnskap 2020",
       "Sinus 1P 2020",
-      "Kosmos SF 2020"
+      "Kosmos SF 2020",
     ],
-    "id": "62fced6f27b32e0048183e45"
+    id: "62fced6f27b32e0048183e45",
   },
   {
-    "items": [
+    items: [
       "Historie Vg3",
       "Intertekst VG3 2022",
       "Psykologi 2 2022",
       "Rettslære 1 2021",
       "Demos : politikk og menneskerettigheter 2022",
-      "Religion og etikk 2022 (Eriksen)"
+      "Religion og etikk 2022 (Eriksen)",
     ],
-    "id": "5f3a3632f90c4a001cc4ecc5"
+    id: "5f3a3632f90c4a001cc4ecc5",
   },
   {
-    "items": [
+    items: [
       "Matematikk R2 2022",
       "Ergo 1 2021",
       "Historie Vg3",
@@ -285,143 +285,139 @@
       "Religion og etikk 2022 (Eriksen)",
       "Kjemien stemmer 2 studiebok 2022",
       "Kjemien stemmer 2 studiebok 2022",
-      "Kjemien stemmer 2 studiebok 2022"
+      "Kjemien stemmer 2 studiebok 2022",
     ],
-    "id": "5f3bb579a80178001c21b181"
+    id: "5f3bb579a80178001c21b181",
   },
   {
-    "items": ["Sigma 2P-Y 2014"],
-    "id": "62e70740a266320048682e82"
+    items: ["Sigma 2P-Y 2014"],
+    id: "62e70740a266320048682e82",
   },
   {
-    "items": [
+    items: [
       "Historie Vg3",
       "Intertekst VG3 2022",
       "Demos : politikk og menneskerettigheter 2022",
       "Psykologi 2 2022",
       "Rettslære 1 2021",
-      "Religion og etikk 2022 (Eriksen)"
+      "Religion og etikk 2022 (Eriksen)",
     ],
-    "id": "5f3a3578f90c4a001cc4ebc4"
+    id: "5f3a3578f90c4a001cc4ebc4",
   },
   {
-    "items": [
+    items: [
       "Intertekst VG3 2022",
       "Demos : politikk og menneskerettigheter 2022",
       "Psykologi 2 2022",
       "Historie Vg3",
       "Rettslære 1 2021",
-      "Religion og etikk 2022 (Eriksen)"
+      "Religion og etikk 2022 (Eriksen)",
     ],
-    "id": "5f453cde27c286001c9e7a33"
+    id: "5f453cde27c286001c9e7a33",
   },
   {
-    "items": [
+    items: [
       "Historie Vg3",
       "Pareto 2 VG3  2013",
       "Økonomi 2 2022",
       "Intertekst VG3 2022",
       "Religion og etikk 2022 (Eriksen)",
-      "Visjon 2 2022"
+      "Visjon 2 2022",
     ],
-    "id": "611a71fe153a68001c353248"
+    id: "611a71fe153a68001c353248",
   },
   {
-    "items": [
+    items: [
       "Historie Vg3",
       "Intertekst VG3 2022",
       "Pareto 2 VG3  2013",
       "Økonomi 2 2022",
       "Visjon 2 2022",
-      "Religion og etikk 2022 (Eriksen)"
+      "Religion og etikk 2022 (Eriksen)",
     ],
-    "id": "5f3a67201a293c001ccd76c7"
+    id: "5f3a67201a293c001ccd76c7",
   },
   {
-    "items": [
+    items: [
       "Økonomi 2 2022",
       "Intertekst VG3 2022",
       "Historie Vg3",
       "Pareto 2 VG3  2013",
       "Religion og etikk 2022 (Eriksen)",
-      "Visjon 2 2022"
+      "Visjon 2 2022",
     ],
-    "id": "62ff5d591de8ee0048d6539d"
+    id: "62ff5d591de8ee0048d6539d",
   },
   {
-    "items": [
+    items: [
       "Intertekst VG3 2022",
       "Historie Vg3",
       "Psykologi 2 2022",
       "Interactions 2 2022",
       "Demos : politikk og menneskerettigheter 2022",
-      "Religion og etikk 2022 (Eriksen)"
+      "Religion og etikk 2022 (Eriksen)",
     ],
-    "id": "5f3a52b3f90c4a001cc502a0"
+    id: "5f3a52b3f90c4a001cc502a0",
   },
   {
-    "items": [
+    items: [
       "Historie Vg3",
       "Intertekst VG3 2022",
       "Vamos 2 Tekstbok",
       "Psykologi 2 2022",
-      "Demos : politikk og menneskerettigheter 2022"
+      "Demos : politikk og menneskerettigheter 2022",
     ],
-    "id": "5f31c1eef1e1fe001ce025dc"
+    id: "5f31c1eef1e1fe001ce025dc",
   },
   {
-    "items": [
+    items: [
       "Intertekst VG3 2022",
       "Historie Vg3",
       "Psykologi 2 2022",
       "Rettslære 1 2021",
       "Demos : politikk og menneskerettigheter 2022",
-      "Religion og etikk 2022 (Eriksen)"
+      "Religion og etikk 2022 (Eriksen)",
     ],
-    "id": "5f3b580c1a293c001ccda921"
+    id: "5f3b580c1a293c001ccda921",
   },
   {
-    "items": [
+    items: [
       "Psykologi 2 2022",
       "Interactions 2 2022",
       "Demos : politikk og menneskerettigheter 2022",
-      "Religion og etikk 2022 (Eriksen)"
+      "Religion og etikk 2022 (Eriksen)",
     ],
-    "id": "611a7b39153a68001c3533b1"
+    id: "611a7b39153a68001c3533b1",
   },
   {
-    "items": [
-      "Momente 2 2020",
-      "Kosmos SF 2020",
-      "Fokus samfunnskunnskap 2020"
-    ],
-    "id": "62044afa651aeb00466dea8f"
+    items: ["Momente 2 2020", "Kosmos SF 2020", "Fokus samfunnskunnskap 2020"],
+    id: "62044afa651aeb00466dea8f",
   },
   {
-    "items": [
+    items: [
       "Psykologi 2 2022",
       "Intertekst VG3 2022",
       "Historie Vg3",
       "Demos : politikk og menneskerettigheter 2022",
       "Vamos 2 Tekstbok",
-      "Religion og etikk 2022 (Eriksen)"
+      "Religion og etikk 2022 (Eriksen)",
     ],
-    "id": "62ada1702b48510046248d44"
+    id: "62ada1702b48510046248d44",
   },
   {
-    "items": [
+    items: [
       "Psykologi 2 2022",
       "Intertekst VG3 2022",
       "Historie Vg3",
       "Demos : politikk og menneskerettigheter 2022",
       "Interactions 2 2022",
       "Rettslære 1 2021",
-      "Religion og etikk 2022 (Eriksen)"
+      "Religion og etikk 2022 (Eriksen)",
     ],
-    "id": "611bbdf85bcd7a001db464a6"
+    id: "611bbdf85bcd7a001db464a6",
   },
   {
-    "items": [
+    items: [
       "Økonomi 2 2022",
       "Intertekst VG3 2022",
       "Matematikk S2 2022",
@@ -429,245 +425,245 @@
       "Visjon 2 2022",
       "Religion og etikk 2022 (Eriksen)",
       "Visjon 2 2022",
-      "Visjon 2 2022"
+      "Visjon 2 2022",
     ],
-    "id": "5f69a6a44a2e3a001cdb822f"
+    id: "5f69a6a44a2e3a001cdb822f",
   },
   {
-    "items": [
+    items: [
       "Historie Vg3",
       "Intertekst VG3 2022",
       "Psykologi 2 2022",
       "Demos : politikk og menneskerettigheter 2022",
       "Interactions 2 2022",
-      "Religion og etikk 2022 (Eriksen)"
+      "Religion og etikk 2022 (Eriksen)",
     ],
-    "id": "5f3a3656f90c4a001cc4ece1"
+    id: "5f3a3656f90c4a001cc4ece1",
   },
   {
-    "items": [
+    items: [
       "Historie Vg3",
       "Intertekst VG3 2022",
       "Økonomi 2 2022",
       "Pareto 2 VG3  2013",
       "Religion og etikk 2022 (Eriksen)",
-      "Visjon 2 2022"
+      "Visjon 2 2022",
     ],
-    "id": "5f3aba351a293c001ccd9b74"
+    id: "5f3aba351a293c001ccd9b74",
   },
   {
-    "items": [
+    items: [
       "Matematikk R2 2022",
       "Historie Vg3",
       "Ergo 1 2021",
       "Kjemien stemmer 2 grunnbok 2022",
       "Intertekst VG3 2022",
       "Religion og etikk 2022 (Eriksen)",
-      "Kjemien stemmer 2 studiebok 2022"
+      "Kjemien stemmer 2 studiebok 2022",
     ],
-    "id": "5f6d077812205c001cf917cc"
+    id: "5f6d077812205c001cf917cc",
   },
   {
-    "items": [
+    items: [
       "Intertekst VG3 2022",
       "Psykologi 2 2022",
       "Historie Vg3",
       "Demos : politikk og menneskerettigheter 2022",
-      "Religion og etikk 2022 (Eriksen)"
+      "Religion og etikk 2022 (Eriksen)",
     ],
-    "id": "5f3a35b4f90c4a001cc4ec21"
+    id: "5f3a35b4f90c4a001cc4ec21",
   },
   {
-    "items": [
+    items: [
       "Kjemien stemmer 2 grunnbok 2022",
       "Ergo 1 2021",
       "Historie Vg3",
       "Matematikk R2 2022",
       "Intertekst VG3 2022",
       "Religion og etikk 2022 (Eriksen)",
-      "Kjemien stemmer 2 studiebok 2022"
+      "Kjemien stemmer 2 studiebok 2022",
     ],
-    "id": "5f3bbfa1a80178001c21c81d"
+    id: "5f3bbfa1a80178001c21c81d",
   },
   {
-    "items": [
+    items: [
       "Psykologi 2 2022",
       "Historie Vg3",
       "Intertekst VG3 2022",
       "Demos : politikk og menneskerettigheter 2022",
       "Rettslære 1 2021",
-      "Religion og etikk 2022 (Eriksen)"
+      "Religion og etikk 2022 (Eriksen)",
     ],
-    "id": "5f3bb6cda80178001c21b73f"
+    id: "5f3bb6cda80178001c21b73f",
   },
   {
-    "items": [
+    items: [
       "Historie Vg3",
       "Psykologi 2 2022",
       "Intertekst VG3 2022",
       "Demos : politikk og menneskerettigheter 2022",
-      "Religion og etikk 2022 (Eriksen)"
+      "Religion og etikk 2022 (Eriksen)",
     ],
-    "id": "5f3c283fa80178001c2206e3"
+    id: "5f3c283fa80178001c2206e3",
   },
   {
-    "items": [
+    items: [
       "Intertekst VG3 2022",
       "Historie Vg3",
       "Økonomi 2 2022",
       "Pareto 2 VG3  2013",
       "Religion og etikk 2022 (Eriksen)",
-      "Visjon 2 2022"
+      "Visjon 2 2022",
     ],
-    "id": "5f3bc2f8a80178001c21d2e1"
+    id: "5f3bc2f8a80178001c21d2e1",
   },
   {
-    "items": [
+    items: [
       "Ergo 1 2021",
       "Intertekst VG3 2022",
       "Historie Vg3",
       "Kjemien stemmer 2 grunnbok 2022",
       "Matematikk R2 2022",
       "Religion og etikk 2022 (Eriksen)",
-      "Kjemien stemmer 2 studiebok 2022"
+      "Kjemien stemmer 2 studiebok 2022",
     ],
-    "id": "62ff63f3d1d54a0048dee5a8"
+    id: "62ff63f3d1d54a0048dee5a8",
   },
   {
-    "items": [
+    items: [
       "Encuentros 2 2021",
       "Pareto 2 VG3  2013",
       "Økonomi 2 2022",
       "Intertekst VG3 2022",
       "Historie Vg3",
       "Religion og etikk 2022 (Eriksen)",
-      "Visjon 2 2022"
+      "Visjon 2 2022",
     ],
-    "id": "5f3a359bf90c4a001cc4ebdc"
+    id: "5f3a359bf90c4a001cc4ebdc",
   },
   {
-    "items": [
+    items: [
       "Historie Vg3",
       "Psykologi 2 2022",
       "Intertekst VG3 2022",
       "Demos : politikk og menneskerettigheter 2022",
       "Rettslære 1 2021",
-      "Religion og etikk 2022 (Eriksen)"
+      "Religion og etikk 2022 (Eriksen)",
     ],
-    "id": "5f3a35bcf90c4a001cc4ec2c"
+    id: "5f3a35bcf90c4a001cc4ec2c",
   },
   {
-    "items": [
+    items: [
       "Exploring English",
       "Fokus Samfunnsfag 2013",
       "Signatur 3: studiebok: norsk vg3 PÅ 2013",
       "Signatur 3: tekstsamling 2013",
       "Sinus 1P -14",
       "Naturfag SF 2016",
-      "Targets 2015"
+      "Targets 2015",
     ],
-    "id": "5c435401dc34dc001a2adecc"
+    id: "5c435401dc34dc001a2adecc",
   },
   {
-    "items": [
+    items: [
       "Historie Vg3",
       "Intertekst VG3 2022",
-      "Religion og etikk 2022 (Eriksen)"
+      "Religion og etikk 2022 (Eriksen)",
     ],
-    "id": "5d5af77e8b8504001c27601f"
+    id: "5d5af77e8b8504001c27601f",
   },
   {
-    "items": [
+    items: [
       "Historie Vg3",
       "Intertekst VG3 2022",
       "Psykologi 2 2022",
       "Rettslære 1 2021",
       "Demos : politikk og menneskerettigheter 2022",
-      "Religion og etikk 2022 (Eriksen)"
+      "Religion og etikk 2022 (Eriksen)",
     ],
-    "id": "611b95855bcd7a001db4135d"
+    id: "611b95855bcd7a001db4135d",
   },
   {
-    "items": [
+    items: [
       "Intertekst VG3 2022",
       "Psykologi 2 2022",
       "Historie Vg3",
       "Rettslære 1 2021",
       "Demos : politikk og menneskerettigheter 2022",
       "Interactions 2 2022",
-      "Religion og etikk 2022 (Eriksen)"
+      "Religion og etikk 2022 (Eriksen)",
     ],
-    "id": "5f3c2415a80178001c2205c2"
+    id: "5f3c2415a80178001c2205c2",
   },
   {
-    "items": [
+    items: [
       "Historie Vg3",
       "Psykologi 2 2022",
       "Intertekst VG3 2022",
       "Rettslære 1 2021",
       "Demos : politikk og menneskerettigheter 2022",
-      "Religion og etikk 2022 (Eriksen)"
+      "Religion og etikk 2022 (Eriksen)",
     ],
-    "id": "5f3a3599f90c4a001cc4ebd8"
+    id: "5f3a3599f90c4a001cc4ebd8",
   },
   {
-    "items": [
+    items: [
       "Intertekst VG3 2022",
       "Historie Vg3",
       "Ergo 1 2021",
       "Kjemien stemmer 2 grunnbok 2022",
       "Matematikk S2 2022",
       "Religion og etikk 2022 (Eriksen)",
-      "Kjemien stemmer 2 studiebok 2022"
+      "Kjemien stemmer 2 studiebok 2022",
     ],
-    "id": "5f3a35abf90c4a001cc4ec11"
+    id: "5f3a35abf90c4a001cc4ec11",
   },
   {
-    "items": [
+    items: [
       "Intertekst VG3 2022",
       "Psykologi 2 2022",
       "Historie Vg3",
       "Rettslære 1 2021",
       "Demos : politikk og menneskerettigheter 2022",
-      "Religion og etikk 2022 (Eriksen)"
+      "Religion og etikk 2022 (Eriksen)",
     ],
-    "id": "5f3c16bfa80178001c22044c"
+    id: "5f3c16bfa80178001c22044c",
   },
   {
-    "items": [
+    items: [
       "Psykologi 2 2022",
       "Historie Vg3",
       "Intertekst VG3 2022",
-      "Demos : politikk og menneskerettigheter 2022"
+      "Demos : politikk og menneskerettigheter 2022",
     ],
-    "id": "5f3bc42da80178001c21d7aa"
+    id: "5f3bc42da80178001c21d7aa",
   },
   {
-    "items": [
+    items: [
       "Økonomi 1 2021",
       "Visjon 1 2021",
       "Matematikk 2P 2020",
       "Encuentros 2 2021",
       "Intertekst VG2 2021",
       "Pareto 1 2021",
-      "Alle tiders historie vg2 2021"
+      "Alle tiders historie vg2 2021",
     ],
-    "id": "611aae59153a68001c353f4e"
+    id: "611aae59153a68001c353f4e",
   },
   {
-    "items": [
+    items: [
       "Historie Vg3",
       "Intertekst VG3 2022",
       "Psykologi 2 2022",
       "Pareto 2 2022",
       "Demos : politikk og menneskerettigheter 2022",
       "Interactions 2 2022",
-      "Religion og etikk 2022 (Eriksen)"
+      "Religion og etikk 2022 (Eriksen)",
     ],
-    "id": "5f3bb5f1a80178001c21b326"
+    id: "5f3bb5f1a80178001c21b326",
   },
   {
-    "items": [
+    items: [
       "Intertekst VG3 2022",
       "Pareto 2 VG3  2013",
       "Historie Vg3",
@@ -675,446 +671,446 @@
       "Pareto 2 VG3  2013",
       "Pareto 2 VG3  2013",
       "Visjon 2 2022",
-      "Religion og etikk 2022 (Eriksen)"
+      "Religion og etikk 2022 (Eriksen)",
     ],
-    "id": "5f3a69601a293c001ccd78a4"
+    id: "5f3a69601a293c001ccd78a4",
   },
   {
-    "items": [
+    items: [
       "Psykologi 2 2022",
       "Intertekst VG3 2022",
       "Historie Vg3",
       "Demos : politikk og menneskerettigheter 2022",
       "Rettslære 1 2021",
-      "Religion og etikk 2022 (Eriksen)"
+      "Religion og etikk 2022 (Eriksen)",
     ],
-    "id": "5f3b83e71a293c001ccdb629"
+    id: "5f3b83e71a293c001ccdb629",
   },
   {
-    "items": [
+    items: [
       "Intertekst VG3 2022",
       "Psykologi 2 2022",
       "Historie Vg3",
       "Demos : politikk og menneskerettigheter 2022",
       "Rettslære 1 2021",
-      "Religion og etikk 2022 (Eriksen)"
+      "Religion og etikk 2022 (Eriksen)",
     ],
-    "id": "5f3b9a0f1a293c001ccddee7"
+    id: "5f3b9a0f1a293c001ccddee7",
   },
   {
-    "items": [
+    items: [
       "Historie Vg3",
       "Psykologi 2 2022",
       "Intertekst VG3 2022",
       "Rettslære 1 2021",
       "Demos : politikk og menneskerettigheter 2022",
       "Interactions 2 2022",
-      "Religion og etikk 2022 (Eriksen)"
+      "Religion og etikk 2022 (Eriksen)",
     ],
-    "id": "5f3bb57ea80178001c21b188"
+    id: "5f3bb57ea80178001c21b188",
   },
   {
-    "items": [
+    items: [
       "Intertekst VG3 2022",
       "Psykologi 2 2022",
       "Historie Vg3",
       "Demos : politikk og menneskerettigheter 2022",
       "Interactions 2 2022",
-      "Religion og etikk 2022 (Eriksen)"
+      "Religion og etikk 2022 (Eriksen)",
     ],
-    "id": "5f3bc161a80178001c21cdce"
+    id: "5f3bc161a80178001c21cdce",
   },
   {
-    "items": [
+    items: [
       "Pareto 2 VG3  2013",
       "Historie Vg3",
       "Økonomi 2 2022",
       "Intertekst VG3 2022",
       "Visjon 2 2022",
-      "Religion og etikk 2022 (Eriksen)"
+      "Religion og etikk 2022 (Eriksen)",
     ],
-    "id": "5f71d02435a03e001c94ae28"
+    id: "5f71d02435a03e001c94ae28",
   },
   {
-    "items": [
+    items: [
       "Historie Vg3",
       "Psykologi 2 2022",
       "Intertekst VG3 2022",
       "Demos : politikk og menneskerettigheter 2022",
-      "Religion og etikk 2022 (Eriksen)"
+      "Religion og etikk 2022 (Eriksen)",
     ],
-    "id": "5f3c0fada80178001c2203b2"
+    id: "5f3c0fada80178001c2203b2",
   },
   {
-    "items": [
+    items: [
       "Kosmos SF 2020",
       "Momente 2 2020",
       "Fokus samfunnskunnskap 2020",
       "Sinus 1T 2020",
       "Citizens SF 2020",
       "Geografi 2020",
-      "Intertekst VG1 2020"
+      "Intertekst VG1 2020",
     ],
-    "id": "62fe79cd1de8ee0048d58747"
+    id: "62fe79cd1de8ee0048d58747",
   },
   {
-    "items": [
+    items: [
       "Psykologi 2 2022",
       "Intertekst VG3 2022",
       "Vamos 2 Tekstbok",
       "Historie Vg3",
       "Demos : politikk og menneskerettigheter 2022",
-      "Religion og etikk 2022 (Eriksen)"
+      "Religion og etikk 2022 (Eriksen)",
     ],
-    "id": "611c31ef5bcd7a001db4741e"
+    id: "611c31ef5bcd7a001db4741e",
   },
   {
-    "items": [
+    items: [
       "Intertekst VG3 2022",
       "Psykologi 2 2022",
       "Historie Vg3",
       "Rettslære 1 2021",
       "Demos : politikk og menneskerettigheter 2022",
-      "Religion og etikk 2022 (Eriksen)"
+      "Religion og etikk 2022 (Eriksen)",
     ],
-    "id": "5f3bffaea80178001c22023d"
+    id: "5f3bffaea80178001c22023d",
   },
   {
-    "items": [
+    items: [
       "Psykologi 2 2022",
       "Intertekst VG3 2022",
       "Demos : politikk og menneskerettigheter 2022",
       "Rettslære 1 2021",
       "Historie Vg3",
-      "Religion og etikk 2022 (Eriksen)"
+      "Religion og etikk 2022 (Eriksen)",
     ],
-    "id": "611ae183153a68001c354ec4"
+    id: "611ae183153a68001c354ec4",
   },
   {
-    "items": [
+    items: [
       "Intertekst VG3 2022",
       "Kjemien stemmer 2 grunnbok 2022",
       "Ergo 1 2021",
       "Historie Vg3",
       "Matematikk R2 2022",
       "Religion og etikk 2022 (Eriksen)",
-      "Kjemien stemmer 2 studiebok 2022"
+      "Kjemien stemmer 2 studiebok 2022",
     ],
-    "id": "5f3bb56ea80178001c21b11c"
+    id: "5f3bb56ea80178001c21b11c",
   },
   {
-    "items": [
+    items: [
       "Ergo 1 2021",
       "Kjemien stemmer 2 grunnbok 2022",
       "Intertekst VG3 2022",
       "Matematikk R2 2022",
       "Historie Vg3",
       "Religion og etikk 2022 (Eriksen)",
-      "Kjemien stemmer 2 studiebok 2022"
+      "Kjemien stemmer 2 studiebok 2022",
     ],
-    "id": "5f3a35e7f90c4a001cc4ec3e"
+    id: "5f3a35e7f90c4a001cc4ec3e",
   },
   {
-    "items": [
+    items: [
       "Historie Vg3",
       "Psykologi 2 2022",
       "Intertekst VG3 2022",
       "Demos : politikk og menneskerettigheter 2022",
       "Rettslære 1 2021",
-      "Religion og etikk 2022 (Eriksen)"
+      "Religion og etikk 2022 (Eriksen)",
     ],
-    "id": "5f3a35acf90c4a001cc4ec15"
+    id: "5f3a35acf90c4a001cc4ec15",
   },
   {
-    "items": [
+    items: [
       "Historie Vg3",
       "Matematikk R2 2022",
       "Ergo 1 2021",
       "Intertekst VG3 2022",
       "Kjemien stemmer 2 grunnbok 2022",
       "Religion og etikk 2022 (Eriksen)",
-      "Kjemien stemmer 2 studiebok 2022"
+      "Kjemien stemmer 2 studiebok 2022",
     ],
-    "id": "611bb37f5bcd7a001db458a9"
+    id: "611bb37f5bcd7a001db458a9",
   },
   {
-    "items": ["Matematikk S2 2022", "Økonomi 2 2022"],
-    "id": "5f3be081a80178001c21ff61"
+    items: ["Matematikk S2 2022", "Økonomi 2 2022"],
+    id: "5f3be081a80178001c21ff61",
   },
   {
-    "items": [
+    items: [
       "Pareto 2 VG3  2013",
       "Intertekst VG3 2022",
       "Historie Vg3",
       "Økonomi 2 2022",
       "Visjon 2 2022",
-      "Religion og etikk 2022 (Eriksen)"
+      "Religion og etikk 2022 (Eriksen)",
     ],
-    "id": "5f3bc243a80178001c21d14b"
+    id: "5f3bc243a80178001c21d14b",
   },
   {
-    "items": [
+    items: [
       "Historie Vg3",
       "Psykologi 2 2022",
       "Intertekst VG3 2022",
       "Vamos 2 Tekstbok",
       "Demos : politikk og menneskerettigheter 2022",
-      "Religion og etikk 2022 (Eriksen)"
+      "Religion og etikk 2022 (Eriksen)",
     ],
-    "id": "5f3ad9291a293c001ccda1da"
+    id: "5f3ad9291a293c001ccda1da",
   },
   {
-    "items": [
+    items: [
       "Intertekst VG3 2022",
       "Psykologi 2 2022",
       "Historie Vg3",
-      "Interactions 2 2022"
+      "Interactions 2 2022",
     ],
-    "id": "62ff29c5d1d54a0048de6b8f"
+    id: "62ff29c5d1d54a0048de6b8f",
   },
   {
-    "items": [
+    items: [
       "Intertekst VG3 2022",
       "Økonomi 2 2022",
       "Historie Vg3",
       "Pareto 2 VG3  2013",
       "Visjon 2 2022",
-      "Religion og etikk 2022 (Eriksen)"
+      "Religion og etikk 2022 (Eriksen)",
     ],
-    "id": "5f3ac7651a293c001ccd9db7"
+    id: "5f3ac7651a293c001ccd9db7",
   },
   {
-    "items": ["Matematikk R1 2021"],
-    "id": "62fd3f5b766eb40049e94fec"
+    items: ["Matematikk R1 2021"],
+    id: "62fd3f5b766eb40049e94fec",
   },
   {
-    "items": [
+    items: [
       "Økonomi 2 2022",
       "Intertekst VG3 2022",
       "Pareto 2 VG3  2013",
       "Historie Vg3",
       "Visjon 2 2022",
-      "Religion og etikk 2022 (Eriksen)"
+      "Religion og etikk 2022 (Eriksen)",
     ],
-    "id": "5f3b68d11a293c001ccda985"
+    id: "5f3b68d11a293c001ccda985",
   },
   {
-    "items": [
+    items: [
       "Kjemien stemmer 2 grunnbok 2022",
       "Intertekst VG3 2022",
       "Ergo 1 2021",
       "Matematikk R2 2022",
       "Historie Vg3",
       "Religion og etikk 2022 (Eriksen)",
-      "Kjemien stemmer 2 studiebok 2022"
+      "Kjemien stemmer 2 studiebok 2022",
     ],
-    "id": "5f3b88bd1a293c001ccdbfec"
+    id: "5f3b88bd1a293c001ccdbfec",
   },
   {
-    "items": [
+    items: [
       "Intertekst VG3 2022",
       "Historie Vg3",
       "Pareto 2 VG3  2013",
       "Økonomi 2 2022",
       "Visjon 2 2022",
-      "Religion og etikk 2022 (Eriksen)"
+      "Religion og etikk 2022 (Eriksen)",
     ],
-    "id": "5f48a1d4a81bde001cb1e52f"
+    id: "5f48a1d4a81bde001cb1e52f",
   },
   {
-    "items": [
+    items: [
       "Intertekst VG3 2022",
       "Psykologi 2 2022",
       "Historie Vg3",
       "Rettslære 1 2021",
       "Demos : politikk og menneskerettigheter 2022",
-      "Religion og etikk 2022 (Eriksen)"
+      "Religion og etikk 2022 (Eriksen)",
     ],
-    "id": "5f3a3609f90c4a001cc4ec85"
+    id: "5f3a3609f90c4a001cc4ec85",
   },
   {
-    "items": ["Matematikk 1T 2020"],
-    "id": "62c4b6f02b4851004628b155"
+    items: ["Matematikk 1T 2020"],
+    id: "62c4b6f02b4851004628b155",
   },
   {
-    "items": [
+    items: [
       "Historie Vg3",
       "Kjemien stemmer 2 grunnbok 2022",
       "Intertekst VG3 2022",
       "Ergo 1 2021",
       "Matematikk S2 2022",
       "Religion og etikk 2022 (Eriksen)",
-      "Kjemien stemmer 2 studiebok 2022"
+      "Kjemien stemmer 2 studiebok 2022",
     ],
-    "id": "5f3a359ef90c4a001cc4ebe6"
+    id: "5f3a359ef90c4a001cc4ebe6",
   },
   {
-    "items": [
+    items: [
       "Historie Vg3",
       "Intertekst VG3 2022",
       "Psykologi 2 2022",
       "Demos : politikk og menneskerettigheter 2022",
       "Rettslære 1 2021",
-      "Religion og etikk 2022 (Eriksen)"
+      "Religion og etikk 2022 (Eriksen)",
     ],
-    "id": "5f3a3590f90c4a001cc4ebd1"
+    id: "5f3a3590f90c4a001cc4ebd1",
   },
   {
-    "items": ["Demos : politikk og menneskerettigheter 2022"],
-    "id": "5d7ba575c33018001c73a684"
+    items: ["Demos : politikk og menneskerettigheter 2022"],
+    id: "5d7ba575c33018001c73a684",
   },
   {
-    "items": [
+    items: [
       "Intertekst VG3 2022",
       "Historie Vg3",
       "Matematikk S2 2022",
       "Økonomi 2 2022",
       "Religion og etikk 2022 (Eriksen)",
-      "Visjon 2 2022"
+      "Visjon 2 2022",
     ],
-    "id": "5f3a4fb5f90c4a001cc50096"
+    id: "5f3a4fb5f90c4a001cc50096",
   },
   {
-    "items": ["Weitblick 2 2012", "Weitblick 1 2013"],
-    "id": "61235c9dfdcad1001dc7ba02"
+    items: ["Weitblick 2 2012", "Weitblick 1 2013"],
+    id: "61235c9dfdcad1001dc7ba02",
   },
   {
-    "items": [
+    items: [
       "Psykologi 2 2022",
       "Demos : politikk og menneskerettigheter 2022",
       "Intertekst VG3 2022",
       "Historie Vg3",
       "Rettslære 1 2021",
-      "Religion og etikk 2022 (Eriksen)"
+      "Religion og etikk 2022 (Eriksen)",
     ],
-    "id": "5f42d4319b96d1001cd8b7de"
+    id: "5f42d4319b96d1001cd8b7de",
   },
   {
-    "items": [
+    items: [
       "Intertekst VG3 2022",
       "Historie Vg3",
       "Matematikk R2 2022",
       "Ergo 1 2021",
       "Kjemien stemmer 2 grunnbok 2022",
       "Religion og etikk 2022 (Eriksen)",
-      "Kjemien stemmer 2 studiebok 2022"
+      "Kjemien stemmer 2 studiebok 2022",
     ],
-    "id": "5f3bb55ca80178001c21b0b4"
+    id: "5f3bb55ca80178001c21b0b4",
   },
   {
-    "items": [
+    items: [
       "Historie Vg3",
       "Intertekst VG3 2022",
       "Ergo 1 2021",
       "Kjemien stemmer 2 grunnbok 2022",
       "Matematikk S2 2022",
       "Religion og etikk 2022 (Eriksen)",
-      "Kjemien stemmer 2 studiebok 2022"
+      "Kjemien stemmer 2 studiebok 2022",
     ],
-    "id": "5f3a3586f90c4a001cc4ebcb"
+    id: "5f3a3586f90c4a001cc4ebcb",
   },
   {
-    "items": [
+    items: [
       "Historie Vg3",
       "Intertekst VG3 2022",
       "Pareto 2 VG3  2013",
       "Økonomi 2 2022",
       "Visjon 2 2022",
-      "Religion og etikk 2022 (Eriksen)"
+      "Religion og etikk 2022 (Eriksen)",
     ],
-    "id": "5f3a35b1f90c4a001cc4ec1e"
+    id: "5f3a35b1f90c4a001cc4ec1e",
   },
   {
-    "items": [
+    items: [
       "Historie Vg3",
       "Intertekst VG3 2022",
       "Økonomi 2 2022",
       "Vamos 2 Tekstbok",
       "Pareto 2 VG3  2013",
-      "Religion og etikk 2022 (Eriksen)"
+      "Religion og etikk 2022 (Eriksen)",
     ],
-    "id": "611bb68b5bcd7a001db4625d"
+    id: "611bb68b5bcd7a001db4625d",
   },
   {
-    "items": [
+    items: [
       "Intertekst VG3 2022",
       "Matematikk R2 2022",
       "Ergo 1 2021",
       "Kjemien stemmer 2 grunnbok 2022",
       "Historie Vg3",
       "Religion og etikk 2022 (Eriksen)",
-      "Kjemien stemmer 2 studiebok 2022"
+      "Kjemien stemmer 2 studiebok 2022",
     ],
-    "id": "5f3a35b8f90c4a001cc4ec28"
+    id: "5f3a35b8f90c4a001cc4ec28",
   },
   {
-    "items": ["Sinus 2PY 2014"],
-    "id": "61efec747ef0d20046b135b5"
+    items: ["Sinus 2PY 2014"],
+    id: "61efec747ef0d20046b135b5",
   },
   {
-    "items": [
+    items: [
       "Psykologi 2 2022",
       "Historie Vg3",
       "Intertekst VG3 2022",
       "Demos : politikk og menneskerettigheter 2022",
-      "Religion og etikk 2022 (Eriksen)"
+      "Religion og etikk 2022 (Eriksen)",
     ],
-    "id": "5f3adaac1a293c001ccda24c"
+    id: "5f3adaac1a293c001ccda24c",
   },
   {
-    "items": [
+    items: [
       "Ergo 1 2021",
       "Kjemien stemmer 2 grunnbok 2022",
       "Matematikk S2 2022",
       "Intertekst VG3 2022",
       "Historie Vg3",
       "Religion og etikk 2022 (Eriksen)",
-      "Kjemien stemmer 2 studiebok 2022"
+      "Kjemien stemmer 2 studiebok 2022",
     ],
-    "id": "5f3a3596f90c4a001cc4ebd4"
+    id: "5f3a3596f90c4a001cc4ebd4",
   },
   {
-    "items": [
+    items: [
       "Historie Vg3",
       "Psykologi 2 2022",
       "Intertekst VG3 2022",
       "Demos : politikk og menneskerettigheter 2022",
-      "Interactions 2 2022"
+      "Interactions 2 2022",
     ],
-    "id": "62feb240d1d54a0048de5248"
+    id: "62feb240d1d54a0048de5248",
   },
   {
-    "items": ["Sinus 2PY 2014", "Alle tiders historie VG2 og VG3"],
-    "id": "6141f4febf7b92001d8d3115"
+    items: ["Sinus 2PY 2014", "Alle tiders historie VG2 og VG3"],
+    id: "6141f4febf7b92001d8d3115",
   },
   {
-    "items": [
+    items: [
       "Matematikk R2 2022",
       "Ergo 1 2021",
       "Intertekst VG3 2022",
       "Historie Vg3",
       "Kjemien stemmer 2 grunnbok 2022",
       "Religion og etikk 2022 (Eriksen)",
-      "Kjemien stemmer 2 studiebok 2022"
+      "Kjemien stemmer 2 studiebok 2022",
     ],
-    "id": "5f3a70561a293c001ccd7dd2"
+    id: "5f3a70561a293c001ccd7dd2",
   },
   {
-    "items": ["Sinus S2 2015", "Ergo 1 2012"],
-    "id": "61235a1dfdcad1001dc7b779"
+    items: ["Sinus S2 2015", "Ergo 1 2012"],
+    id: "61235a1dfdcad1001dc7b779",
   },
   {
-    "items": [
+    items: [
       "Historie Vg3",
       "Psykologi 2 2022",
       "Intertekst VG3 2022",
       "Rettslære 1 2021",
-      "Religion og etikk 2022 (Eriksen)"
+      "Religion og etikk 2022 (Eriksen)",
     ],
-    "id": "611bbd0c5bcd7a001db46463"
+    id: "611bbd0c5bcd7a001db46463",
   },
   {
-    "items": [
+    items: [
       "Økonomi 2 2022",
       "Pareto 2 VG3  2013",
       "Historie Vg3",
@@ -1124,34 +1120,34 @@
       "Historie Vg3",
       "Pareto 2 VG3  2013",
       "Intertekst VG3 2022",
-      "Økonomi 2 2022"
+      "Økonomi 2 2022",
     ],
-    "id": "5f3c3870a80178001c2209b9"
+    id: "5f3c3870a80178001c2209b9",
   },
   {
-    "items": [
+    items: [
       "Psykologi 2 2022",
       "Intertekst VG3 2022",
       "Historie Vg3",
       "Interactions 2 2022",
-      "Demos : politikk og menneskerettigheter 2022"
+      "Demos : politikk og menneskerettigheter 2022",
     ],
-    "id": "611c2cff5bcd7a001db4740f"
+    id: "611c2cff5bcd7a001db4740f",
   },
   {
-    "items": [
+    items: [
       "Kjemien stemmer 2 grunnbok 2022",
       "Ergo 1 2021",
       "Intertekst VG3 2022",
       "Matematikk R2 2022",
       "Historie Vg3",
       "Religion og etikk 2022 (Eriksen)",
-      "Kjemien stemmer 2 studiebok 2022"
+      "Kjemien stemmer 2 studiebok 2022",
     ],
-    "id": "5f3bc09ca80178001c21caf5"
+    id: "5f3bc09ca80178001c21caf5",
   },
   {
-    "items": [
+    items: [
       "Interactions 2 2022",
       "Historie Vg3",
       "Intertekst VG3 2022",
@@ -1159,23 +1155,23 @@
       "Demos : politikk og menneskerettigheter 2022",
       "Religion og etikk 2022 (Eriksen)",
       "Interactions 2 2022",
-      "Interactions 2 2022"
+      "Interactions 2 2022",
     ],
-    "id": "6123cbd58266f8001d337285"
+    id: "6123cbd58266f8001d337285",
   },
   {
-    "items": [
+    items: [
       "Intertekst VG3 2022",
       "Økonomi 2 2022",
       "Pareto 2 VG3  2013",
       "Historie Vg3",
       "Visjon 2 2022",
-      "Religion og etikk 2022 (Eriksen)"
+      "Religion og etikk 2022 (Eriksen)",
     ],
-    "id": "5f3a35e8f90c4a001cc4ec42"
+    id: "5f3a35e8f90c4a001cc4ec42",
   },
   {
-    "items": ["Kjemi 1 2021"],
-    "id": "611519440a9398001c016f12"
-  }
-]
+    items: ["Kjemi 1 2021"],
+    id: "611519440a9398001c016f12",
+  },
+];

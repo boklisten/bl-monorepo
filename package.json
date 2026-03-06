@@ -19,7 +19,7 @@
     "@next/eslint-plugin-next": "^16.1.6",
     "@tanstack/eslint-plugin-query": "^5.91.4",
     "@tsconfig/strictest": "^2.0.8",
-    "@types/node": "^25.3.2",
+    "@types/node": "^25.3.5",
     "@typescript-eslint/parser": "^8.56.1",
     "eslint": "9.39.2",
     "eslint-config-prettier": "^10.1.8",

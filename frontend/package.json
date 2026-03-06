@@ -19,7 +19,7 @@
     "@mantine/tiptap": "^8.3.16",
     "@sentry/nextjs": "^10.42.0",
     "@tabler/icons-react": "^3.39.0",
-    "@tanstack/react-form": "1.28.3",
+    "@tanstack/react-form": "^1.28.4",
     "@tanstack/react-query": "^5.90.21",
     "@tiptap/react": "^3.20.1",
     "@tiptap/starter-kit": "^3.20.1",

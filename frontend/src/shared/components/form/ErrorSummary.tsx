@@ -11,10 +11,10 @@ export default function ErrorSummary({
 }) {
   const form = useFormContext();
   return (
-    <form.Subscribe>
-      {(formState) => {
+    <form.Subscribe selector={(state) => state.fieldMeta}>
+      {(fieldMeta) => {
         const errors = [
-          ...Object.values(formState.fieldMeta).flatMap(
+          ...Object.values(fieldMeta).flatMap(
             // @ts-expect-error Object.values() does not retain type information
             (field) => field.errors,
           ),

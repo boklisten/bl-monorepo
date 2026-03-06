@@ -9,20 +9,20 @@ import {
 import { uniqueEmail, uniquePhoneNumber } from "#validators/common/rules";
 import { cleanUserInput } from "#validators/common/transformers";
 
-export const forgotPasswordValidator = vine.compile(
+export const forgotPasswordValidator = vine.create(
   vine.object({
     email: emailField.clone(),
   }),
 );
 
-export const passwordResetValidValidator = vine.compile(
+export const passwordResetValidValidator = vine.create(
   vine.object({
     resetToken: vine.string(),
     resetId: vine.string(),
   }),
 );
 
-export const passwordResetValidator = vine.compile(
+export const passwordResetValidator = vine.create(
   vine.object({
     resetToken: vine.string(),
     resetId: vine.string(),
@@ -53,16 +53,16 @@ export const registerSchema = vine.object({
     .optional(),
 });
 
-export const registerValidator = vine.compile(registerSchema);
+export const registerValidator = vine.create(registerSchema);
 
-export const localAuthValidator = vine.compile(
+export const localAuthValidator = vine.create(
   vine.object({
     username: vine.string(),
     password: vine.string(),
   }),
 );
 
-export const tokenValidator = vine.compile(
+export const tokenValidator = vine.create(
   vine.object({
     refreshToken: vine.string().jwt(),
   }),

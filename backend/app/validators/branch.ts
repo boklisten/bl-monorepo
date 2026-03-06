@@ -2,7 +2,7 @@ import vine from "@vinejs/vine";
 
 import { percentageField } from "#validators/common/fields";
 
-export const branchCreateValidator = vine.compile(
+export const branchCreateValidator = vine.create(
   vine.object({
     name: vine.string(),
     location: vine.object({
@@ -13,7 +13,7 @@ export const branchCreateValidator = vine.compile(
   }),
 );
 
-export const branchValidator = vine.compile(
+export const branchValidator = vine.create(
   vine.object({
     id: vine.string().optional(),
     name: vine.string().optional(),
@@ -92,7 +92,7 @@ export const branchValidator = vine.compile(
   }),
 );
 
-export const branchRelationshipValidator = vine.compile(
+export const branchRelationshipValidator = vine.create(
   vine.object({
     id: vine.string(),
     localName: vine.string().optional(),

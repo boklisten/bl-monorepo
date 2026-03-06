@@ -46,7 +46,7 @@
     "@sentry/profiling-node": "^10.42.0",
     "@tuyau/core": "^0.4.2",
     "@tuyau/superjson": "^0.1.2",
-    "@vinejs/vine": "^4.2.0",
+    "@vinejs/vine": "^4.3.0",
     "@vippsmobilepay/sdk": "^2.4.2",
     "argon2": "^0.44.0",
     "canvas": "^3.2.1",

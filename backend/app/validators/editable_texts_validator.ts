@@ -1,6 +1,6 @@
 import vine from "@vinejs/vine";
 
-export const editableTextsValidator = vine.compile(
+export const editableTextsValidator = vine.create(
   vine.object({
     key: vine.string().trim().toLowerCase().alpha({
       allowSpaces: false,

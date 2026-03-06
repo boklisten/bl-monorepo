@@ -1,6 +1,7 @@
 {
   "extends": "@tsconfig/strictest/tsconfig.json",
   "compilerOptions": {
+    "exactOptionalPropertyTypes": false, // fixme: delete this line for stricter checks
     "module": "NodeNext",
     "lib": ["ESNext"],
     "target": "ESNext",

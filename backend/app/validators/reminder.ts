@@ -2,7 +2,7 @@ import vine from "@vinejs/vine";
 
 import { existingEmailTemplateId } from "#validators/common/rules";
 
-export const reminderValidator = vine.compile(
+export const reminderValidator = vine.create(
   vine.object({
     deadlineISO: vine.string(),
     customerItemType: vine.enum(["partly-payment", "rent", "loan"]),

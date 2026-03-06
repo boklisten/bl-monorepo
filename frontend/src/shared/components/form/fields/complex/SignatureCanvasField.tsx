@@ -46,7 +46,6 @@ export default function SignatureCanvasField(props: { label: string }) {
           position: "relative",
         }}
       >
-        {/* @ts-expect-error bad typings from react-signature-canvas*/}
         <SignatureCanvas
           onEnd={() => {
             if (!sigCanvas.current) return;

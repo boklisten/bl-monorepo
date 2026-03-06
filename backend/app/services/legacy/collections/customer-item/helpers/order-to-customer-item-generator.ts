@@ -87,8 +87,6 @@ export class OrderToCustomerItemGenerator {
       amountLeftToPay: orderItem["info"]["amountLeftToPay"],
       totalAmount: orderItem.amount,
       orders: [order.id],
-
-      // @ts-expect-error fixme: auto ignored
       customerInfo: this.createCustomerInfo(customerDetail),
     };
   }
@@ -114,8 +112,6 @@ export class OrderToCustomerItemGenerator {
       returned: false,
       totalAmount: orderItem.amount,
       orders: [order.id],
-
-      // @ts-expect-error fixme: auto ignored
       customerInfo: this.createCustomerInfo(customerDetail),
     };
   }
@@ -141,8 +137,6 @@ export class OrderToCustomerItemGenerator {
       returned: false,
       totalAmount: orderItem.amount,
       orders: [order.id],
-
-      // @ts-expect-error fixme: auto ignored
       customerInfo: this.createCustomerInfo(customerDetail),
     };
   }

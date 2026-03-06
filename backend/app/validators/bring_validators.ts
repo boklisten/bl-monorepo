@@ -1,6 +1,6 @@
 import vine from "@vinejs/vine";
 
-export const bringPostalCodeResponseValidator = vine.compile(
+export const bringPostalCodeResponseValidator = vine.create(
   vine.object({
     postal_codes: vine.array(
       vine.object({

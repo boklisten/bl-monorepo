@@ -70,22 +70,22 @@ importers:
     dependencies:
       '@adonisjs/ally':
         specifier: ^5.1.1
-        version: 5.1.1(@adonisjs/core@6.19.3(@adonisjs/assembler@7.8.2(babel-plugin-macros@3.1.0)(typescript@5.9.3))(@vinejs/vine@4.2.0)(argon2@0.44.0))
+        version: 5.1.1(@adonisjs/core@6.19.3(@adonisjs/assembler@7.8.2(babel-plugin-macros@3.1.0)(typescript@5.9.3))(@vinejs/vine@4.3.0)(argon2@0.44.0))
       '@adonisjs/auth':
         specifier: ^9.6.0
-        version: 9.6.0(@adonisjs/assembler@7.8.2(babel-plugin-macros@3.1.0)(typescript@5.9.3))(@adonisjs/core@6.19.3(@adonisjs/assembler@7.8.2(babel-plugin-macros@3.1.0)(typescript@5.9.3))(@vinejs/vine@4.2.0)(argon2@0.44.0))(@adonisjs/session@7.7.1(@adonisjs/core@6.19.3(@adonisjs/assembler@7.8.2(babel-plugin-macros@3.1.0)(typescript@5.9.3))(@vinejs/vine@4.2.0)(argon2@0.44.0))(@japa/api-client@3.2.1(@japa/assert@4.2.0(@japa/runner@5.3.0))(@japa/runner@5.3.0)))(@japa/api-client@3.2.1(@japa/assert@4.2.0(@japa/runner@5.3.0))(@japa/runner@5.3.0))(@japa/plugin-adonisjs@4.0.0(@adonisjs/core@6.19.3(@adonisjs/assembler@7.8.2(babel-plugin-macros@3.1.0)(typescript@5.9.3))(@vinejs/vine@4.2.0)(argon2@0.44.0))(@japa/api-client@3.2.1(@japa/assert@4.2.0(@japa/runner@5.3.0))(@japa/runner@5.3.0))(@japa/runner@5.3.0))
+        version: 9.6.0(@adonisjs/assembler@7.8.2(babel-plugin-macros@3.1.0)(typescript@5.9.3))(@adonisjs/core@6.19.3(@adonisjs/assembler@7.8.2(babel-plugin-macros@3.1.0)(typescript@5.9.3))(@vinejs/vine@4.3.0)(argon2@0.44.0))(@adonisjs/session@7.7.1(@adonisjs/core@6.19.3(@adonisjs/assembler@7.8.2(babel-plugin-macros@3.1.0)(typescript@5.9.3))(@vinejs/vine@4.3.0)(argon2@0.44.0))(@japa/api-client@3.2.1(@japa/assert@4.2.0(@japa/runner@5.3.0))(@japa/runner@5.3.0)))(@japa/api-client@3.2.1(@japa/assert@4.2.0(@japa/runner@5.3.0))(@japa/runner@5.3.0))(@japa/plugin-adonisjs@4.0.0(@adonisjs/core@6.19.3(@adonisjs/assembler@7.8.2(babel-plugin-macros@3.1.0)(typescript@5.9.3))(@vinejs/vine@4.3.0)(argon2@0.44.0))(@japa/api-client@3.2.1(@japa/assert@4.2.0(@japa/runner@5.3.0))(@japa/runner@5.3.0))(@japa/runner@5.3.0))
       '@adonisjs/core':
         specifier: ^6.19.3
-        version: 6.19.3(@adonisjs/assembler@7.8.2(babel-plugin-macros@3.1.0)(typescript@5.9.3))(@vinejs/vine@4.2.0)(argon2@0.44.0)
+        version: 6.19.3(@adonisjs/assembler@7.8.2(babel-plugin-macros@3.1.0)(typescript@5.9.3))(@vinejs/vine@4.3.0)(argon2@0.44.0)
       '@adonisjs/cors':
         specifier: ^2.2.1
-        version: 2.2.1(@adonisjs/core@6.19.3(@adonisjs/assembler@7.8.2(babel-plugin-macros@3.1.0)(typescript@5.9.3))(@vinejs/vine@4.2.0)(argon2@0.44.0))
+        version: 2.2.1(@adonisjs/core@6.19.3(@adonisjs/assembler@7.8.2(babel-plugin-macros@3.1.0)(typescript@5.9.3))(@vinejs/vine@4.3.0)(argon2@0.44.0))
       '@adonisjs/session':
         specifier: ^7.7.1
-        version: 7.7.1(@adonisjs/core@6.19.3(@adonisjs/assembler@7.8.2(babel-plugin-macros@3.1.0)(typescript@5.9.3))(@vinejs/vine@4.2.0)(argon2@0.44.0))(@japa/api-client@3.2.1(@japa/assert@4.2.0(@japa/runner@5.3.0))(@japa/runner@5.3.0))
+        version: 7.7.1(@adonisjs/core@6.19.3(@adonisjs/assembler@7.8.2(babel-plugin-macros@3.1.0)(typescript@5.9.3))(@vinejs/vine@4.3.0)(argon2@0.44.0))(@japa/api-client@3.2.1(@japa/assert@4.2.0(@japa/runner@5.3.0))(@japa/runner@5.3.0))
       '@adonisjs/static':
         specifier: ^1.1.1
-        version: 1.1.1(@adonisjs/core@6.19.3(@adonisjs/assembler@7.8.2(babel-plugin-macros@3.1.0)(typescript@5.9.3))(@vinejs/vine@4.2.0)(argon2@0.44.0))
+        version: 1.1.1(@adonisjs/core@6.19.3(@adonisjs/assembler@7.8.2(babel-plugin-macros@3.1.0)(typescript@5.9.3))(@vinejs/vine@4.3.0)(argon2@0.44.0))
       '@napi-rs/image':
         specifier: ^1.12.0
         version: 1.12.0
@@ -106,13 +106,13 @@ importers:
         version: 10.42.0
       '@tuyau/core':
         specifier: ^0.4.2
-        version: 0.4.2(@adonisjs/core@6.19.3(@adonisjs/assembler@7.8.2(babel-plugin-macros@3.1.0)(typescript@5.9.3))(@vinejs/vine@4.2.0)(argon2@0.44.0))
+        version: 0.4.2(@adonisjs/core@6.19.3(@adonisjs/assembler@7.8.2(babel-plugin-macros@3.1.0)(typescript@5.9.3))(@vinejs/vine@4.3.0)(argon2@0.44.0))
       '@tuyau/superjson':
         specifier: ^0.1.2
-        version: 0.1.2(@adonisjs/core@6.19.3(@adonisjs/assembler@7.8.2(babel-plugin-macros@3.1.0)(typescript@5.9.3))(@vinejs/vine@4.2.0)(argon2@0.44.0))
+        version: 0.1.2(@adonisjs/core@6.19.3(@adonisjs/assembler@7.8.2(babel-plugin-macros@3.1.0)(typescript@5.9.3))(@vinejs/vine@4.3.0)(argon2@0.44.0))
       '@vinejs/vine':
-        specifier: ^4.2.0
-        version: 4.2.0
+        specifier: ^4.3.0
+        version: 4.3.0
       '@vippsmobilepay/sdk':
         specifier: ^2.4.2
         version: 2.4.2
@@ -173,7 +173,7 @@ importers:
         version: 4.2.0(@japa/runner@5.3.0)
       '@japa/plugin-adonisjs':
         specifier: ^4.0.0
-        version: 4.0.0(@adonisjs/core@6.19.3(@adonisjs/assembler@7.8.2(babel-plugin-macros@3.1.0)(typescript@5.9.3))(@vinejs/vine@4.2.0)(argon2@0.44.0))(@japa/api-client@3.2.1(@japa/assert@4.2.0(@japa/runner@5.3.0))(@japa/runner@5.3.0))(@japa/runner@5.3.0)
+        version: 4.0.0(@adonisjs/core@6.19.3(@adonisjs/assembler@7.8.2(babel-plugin-macros@3.1.0)(typescript@5.9.3))(@vinejs/vine@4.3.0)(argon2@0.44.0))(@japa/api-client@3.2.1(@japa/assert@4.2.0(@japa/runner@5.3.0))(@japa/runner@5.3.0))(@japa/runner@5.3.0)
       '@japa/runner':
         specifier: ^5.3.0
         version: 5.3.0
@@ -284,7 +284,7 @@ importers:
         version: 0.2.10
       '@tuyau/superjson':
         specifier: ^0.1.2
-        version: 0.1.2(@adonisjs/core@6.19.3(@adonisjs/assembler@7.8.2(babel-plugin-macros@3.1.0)(typescript@5.9.3))(@vinejs/vine@4.2.0)(argon2@0.43.1))
+        version: 0.1.2(@adonisjs/core@6.19.3(@adonisjs/assembler@7.8.2(babel-plugin-macros@3.1.0)(typescript@5.9.3))(@vinejs/vine@4.3.0)(argon2@0.43.1))
       '@vercel/analytics':
         specifier: ^1.6.1
         version: 1.6.1(next@16.1.6(@babel/core@7.29.0)(@opentelemetry/api@1.9.0)(babel-plugin-macros@3.1.0)(babel-plugin-react-compiler@1.0.0)(react-dom@19.2.4(react@19.2.4))(react@19.2.4))(react@19.2.4)
@@ -2805,12 +2805,12 @@ packages:
       vue-router:
         optional: true
 
-  '@vinejs/compiler@4.1.2':
-    resolution: {integrity: sha512-Cg5EE6wft/kYlxDti577WVCIXNb0FFsXdR+aphz1E+KXoc0pLRa4HbZydHu0bCDW5iPuRZujctmRpzEoA7/Nag==}
+  '@vinejs/compiler@4.1.3':
+    resolution: {integrity: sha512-UyH7Zn8dkTMLeU+PF2WjCnWkFb2qYaOxAcvp/uXW0njtKNcJOnVJaPsnWYwqewkTcHN47yvOdzosj3kj3RAP5w==}
     engines: {node: '>=18.0.0'}
 
-  '@vinejs/vine@4.2.0':
-    resolution: {integrity: sha512-pb6iC9jX7w42nEvKUUWOWcnF1qZDPvmEFjgHCO1hwbO9nOrFw6e3JpYiZNoJGloywXeoE1FgC4JkKk9fdNSdow==}
+  '@vinejs/vine@4.3.0':
+    resolution: {integrity: sha512-GaJY+PyTvcnjPvbL6pJhKNv4zl2vxFE5K8HoEf8LuTWrRa8WMB3jfS/MEywkbOLVQR1UlLxXNqAGcxgZfJcWkg==}
     engines: {node: '>=18.16.0'}
 
   '@vippsmobilepay/sdk@2.4.2':
@@ -6145,9 +6145,9 @@ snapshots:
       youch: 3.3.4
       youch-terminal: 2.2.3
 
-  '@adonisjs/ally@5.1.1(@adonisjs/core@6.19.3(@adonisjs/assembler@7.8.2(babel-plugin-macros@3.1.0)(typescript@5.9.3))(@vinejs/vine@4.2.0)(argon2@0.44.0))':
+  '@adonisjs/ally@5.1.1(@adonisjs/core@6.19.3(@adonisjs/assembler@7.8.2(babel-plugin-macros@3.1.0)(typescript@5.9.3))(@vinejs/vine@4.3.0)(argon2@0.44.0))':
     dependencies:
-      '@adonisjs/core': 6.19.3(@adonisjs/assembler@7.8.2(babel-plugin-macros@3.1.0)(typescript@5.9.3))(@vinejs/vine@4.2.0)(argon2@0.44.0)
+      '@adonisjs/core': 6.19.3(@adonisjs/assembler@7.8.2(babel-plugin-macros@3.1.0)(typescript@5.9.3))(@vinejs/vine@4.3.0)(argon2@0.44.0)
       '@poppinss/oauth-client': 7.0.2
       '@poppinss/utils': 6.10.1
 
@@ -6183,16 +6183,16 @@ snapshots:
     transitivePeerDependencies:
       - babel-plugin-macros
 
-  '@adonisjs/auth@9.6.0(@adonisjs/assembler@7.8.2(babel-plugin-macros@3.1.0)(typescript@5.9.3))(@adonisjs/core@6.19.3(@adonisjs/assembler@7.8.2(babel-plugin-macros@3.1.0)(typescript@5.9.3))(@vinejs/vine@4.2.0)(argon2@0.44.0))(@adonisjs/session@7.7.1(@adonisjs/core@6.19.3(@adonisjs/assembler@7.8.2(babel-plugin-macros@3.1.0)(typescript@5.9.3))(@vinejs/vine@4.2.0)(argon2@0.44.0))(@japa/api-client@3.2.1(@japa/assert@4.2.0(@japa/runner@5.3.0))(@japa/runner@5.3.0)))(@japa/api-client@3.2.1(@japa/assert@4.2.0(@japa/runner@5.3.0))(@japa/runner@5.3.0))(@japa/plugin-adonisjs@4.0.0(@adonisjs/core@6.19.3(@adonisjs/assembler@7.8.2(babel-plugin-macros@3.1.0)(typescript@5.9.3))(@vinejs/vine@4.2.0)(argon2@0.44.0))(@japa/api-client@3.2.1(@japa/assert@4.2.0(@japa/runner@5.3.0))(@japa/runner@5.3.0))(@japa/runner@5.3.0))':
+  '@adonisjs/auth@9.6.0(@adonisjs/assembler@7.8.2(babel-plugin-macros@3.1.0)(typescript@5.9.3))(@adonisjs/core@6.19.3(@adonisjs/assembler@7.8.2(babel-plugin-macros@3.1.0)(typescript@5.9.3))(@vinejs/vine@4.3.0)(argon2@0.44.0))(@adonisjs/session@7.7.1(@adonisjs/core@6.19.3(@adonisjs/assembler@7.8.2(babel-plugin-macros@3.1.0)(typescript@5.9.3))(@vinejs/vine@4.3.0)(argon2@0.44.0))(@japa/api-client@3.2.1(@japa/assert@4.2.0(@japa/runner@5.3.0))(@japa/runner@5.3.0)))(@japa/api-client@3.2.1(@japa/assert@4.2.0(@japa/runner@5.3.0))(@japa/runner@5.3.0))(@japa/plugin-adonisjs@4.0.0(@adonisjs/core@6.19.3(@adonisjs/assembler@7.8.2(babel-plugin-macros@3.1.0)(typescript@5.9.3))(@vinejs/vine@4.3.0)(argon2@0.44.0))(@japa/api-client@3.2.1(@japa/assert@4.2.0(@japa/runner@5.3.0))(@japa/runner@5.3.0))(@japa/runner@5.3.0))':
     dependencies:
-      '@adonisjs/core': 6.19.3(@adonisjs/assembler@7.8.2(babel-plugin-macros@3.1.0)(typescript@5.9.3))(@vinejs/vine@4.2.0)(argon2@0.44.0)
-      '@adonisjs/presets': 2.6.4(@adonisjs/assembler@7.8.2(babel-plugin-macros@3.1.0)(typescript@5.9.3))(@adonisjs/core@6.19.3(@adonisjs/assembler@7.8.2(babel-plugin-macros@3.1.0)(typescript@5.9.3))(@vinejs/vine@4.2.0)(argon2@0.44.0))
+      '@adonisjs/core': 6.19.3(@adonisjs/assembler@7.8.2(babel-plugin-macros@3.1.0)(typescript@5.9.3))(@vinejs/vine@4.3.0)(argon2@0.44.0)
+      '@adonisjs/presets': 2.6.4(@adonisjs/assembler@7.8.2(babel-plugin-macros@3.1.0)(typescript@5.9.3))(@adonisjs/core@6.19.3(@adonisjs/assembler@7.8.2(babel-plugin-macros@3.1.0)(typescript@5.9.3))(@vinejs/vine@4.3.0)(argon2@0.44.0))
       '@poppinss/utils': 6.10.1
       basic-auth: 2.0.1
     optionalDependencies:
-      '@adonisjs/session': 7.7.1(@adonisjs/core@6.19.3(@adonisjs/assembler@7.8.2(babel-plugin-macros@3.1.0)(typescript@5.9.3))(@vinejs/vine@4.2.0)(argon2@0.44.0))(@japa/api-client@3.2.1(@japa/assert@4.2.0(@japa/runner@5.3.0))(@japa/runner@5.3.0))
+      '@adonisjs/session': 7.7.1(@adonisjs/core@6.19.3(@adonisjs/assembler@7.8.2(babel-plugin-macros@3.1.0)(typescript@5.9.3))(@vinejs/vine@4.3.0)(argon2@0.44.0))(@japa/api-client@3.2.1(@japa/assert@4.2.0(@japa/runner@5.3.0))(@japa/runner@5.3.0))
       '@japa/api-client': 3.2.1(@japa/assert@4.2.0(@japa/runner@5.3.0))(@japa/runner@5.3.0)
-      '@japa/plugin-adonisjs': 4.0.0(@adonisjs/core@6.19.3(@adonisjs/assembler@7.8.2(babel-plugin-macros@3.1.0)(typescript@5.9.3))(@vinejs/vine@4.2.0)(argon2@0.44.0))(@japa/api-client@3.2.1(@japa/assert@4.2.0(@japa/runner@5.3.0))(@japa/runner@5.3.0))(@japa/runner@5.3.0)
+      '@japa/plugin-adonisjs': 4.0.0(@adonisjs/core@6.19.3(@adonisjs/assembler@7.8.2(babel-plugin-macros@3.1.0)(typescript@5.9.3))(@vinejs/vine@4.3.0)(argon2@0.44.0))(@japa/api-client@3.2.1(@japa/assert@4.2.0(@japa/runner@5.3.0))(@japa/runner@5.3.0))(@japa/runner@5.3.0)
     transitivePeerDependencies:
       - '@adonisjs/assembler'
 
@@ -6217,7 +6217,7 @@ snapshots:
     dependencies:
       '@poppinss/utils': 6.10.1
 
-  '@adonisjs/core@6.19.3(@adonisjs/assembler@7.8.2(babel-plugin-macros@3.1.0)(typescript@5.9.3))(@vinejs/vine@4.2.0)(argon2@0.43.1)':
+  '@adonisjs/core@6.19.3(@adonisjs/assembler@7.8.2(babel-plugin-macros@3.1.0)(typescript@5.9.3))(@vinejs/vine@4.3.0)(argon2@0.43.1)':
     dependencies:
       '@adonisjs/ace': 13.4.0
       '@adonisjs/application': 8.4.2(@adonisjs/config@5.0.3)(@adonisjs/fold@10.2.1)
@@ -6249,12 +6249,12 @@ snapshots:
       youch-terminal: 2.2.3
     optionalDependencies:
       '@adonisjs/assembler': 7.8.2(babel-plugin-macros@3.1.0)(typescript@5.9.3)
-      '@vinejs/vine': 4.2.0
+      '@vinejs/vine': 4.3.0
       argon2: 0.43.1
     transitivePeerDependencies:
       - supports-color
 
-  '@adonisjs/core@6.19.3(@adonisjs/assembler@7.8.2(babel-plugin-macros@3.1.0)(typescript@5.9.3))(@vinejs/vine@4.2.0)(argon2@0.44.0)':
+  '@adonisjs/core@6.19.3(@adonisjs/assembler@7.8.2(babel-plugin-macros@3.1.0)(typescript@5.9.3))(@vinejs/vine@4.3.0)(argon2@0.44.0)':
     dependencies:
       '@adonisjs/ace': 13.4.0
       '@adonisjs/application': 8.4.2(@adonisjs/config@5.0.3)(@adonisjs/fold@10.2.1)
@@ -6286,14 +6286,14 @@ snapshots:
       youch-terminal: 2.2.3
     optionalDependencies:
       '@adonisjs/assembler': 7.8.2(babel-plugin-macros@3.1.0)(typescript@5.9.3)
-      '@vinejs/vine': 4.2.0
+      '@vinejs/vine': 4.3.0
       argon2: 0.44.0
     transitivePeerDependencies:
       - supports-color
 
-  '@adonisjs/cors@2.2.1(@adonisjs/core@6.19.3(@adonisjs/assembler@7.8.2(babel-plugin-macros@3.1.0)(typescript@5.9.3))(@vinejs/vine@4.2.0)(argon2@0.44.0))':
+  '@adonisjs/cors@2.2.1(@adonisjs/core@6.19.3(@adonisjs/assembler@7.8.2(babel-plugin-macros@3.1.0)(typescript@5.9.3))(@vinejs/vine@4.3.0)(argon2@0.44.0))':
     dependencies:
-      '@adonisjs/core': 6.19.3(@adonisjs/assembler@7.8.2(babel-plugin-macros@3.1.0)(typescript@5.9.3))(@vinejs/vine@4.2.0)(argon2@0.44.0)
+      '@adonisjs/core': 6.19.3(@adonisjs/assembler@7.8.2(babel-plugin-macros@3.1.0)(typescript@5.9.3))(@vinejs/vine@4.3.0)(argon2@0.44.0)
 
   '@adonisjs/encryption@6.0.2':
     dependencies:
@@ -6373,9 +6373,9 @@ snapshots:
       abstract-logging: 2.0.1
       pino: 10.3.0
 
-  '@adonisjs/presets@2.6.4(@adonisjs/assembler@7.8.2(babel-plugin-macros@3.1.0)(typescript@5.9.3))(@adonisjs/core@6.19.3(@adonisjs/assembler@7.8.2(babel-plugin-macros@3.1.0)(typescript@5.9.3))(@vinejs/vine@4.2.0)(argon2@0.44.0))':
+  '@adonisjs/presets@2.6.4(@adonisjs/assembler@7.8.2(babel-plugin-macros@3.1.0)(typescript@5.9.3))(@adonisjs/core@6.19.3(@adonisjs/assembler@7.8.2(babel-plugin-macros@3.1.0)(typescript@5.9.3))(@vinejs/vine@4.3.0)(argon2@0.44.0))':
     dependencies:
-      '@adonisjs/core': 6.19.3(@adonisjs/assembler@7.8.2(babel-plugin-macros@3.1.0)(typescript@5.9.3))(@vinejs/vine@4.2.0)(argon2@0.44.0)
+      '@adonisjs/core': 6.19.3(@adonisjs/assembler@7.8.2(babel-plugin-macros@3.1.0)(typescript@5.9.3))(@vinejs/vine@4.3.0)(argon2@0.44.0)
       '@poppinss/utils': 6.10.1
     optionalDependencies:
       '@adonisjs/assembler': 7.8.2(babel-plugin-macros@3.1.0)(typescript@5.9.3)
@@ -6385,17 +6385,17 @@ snapshots:
       '@poppinss/colors': 4.1.6
       string-width: 7.2.0
 
-  '@adonisjs/session@7.7.1(@adonisjs/core@6.19.3(@adonisjs/assembler@7.8.2(babel-plugin-macros@3.1.0)(typescript@5.9.3))(@vinejs/vine@4.2.0)(argon2@0.44.0))(@japa/api-client@3.2.1(@japa/assert@4.2.0(@japa/runner@5.3.0))(@japa/runner@5.3.0))':
+  '@adonisjs/session@7.7.1(@adonisjs/core@6.19.3(@adonisjs/assembler@7.8.2(babel-plugin-macros@3.1.0)(typescript@5.9.3))(@vinejs/vine@4.3.0)(argon2@0.44.0))(@japa/api-client@3.2.1(@japa/assert@4.2.0(@japa/runner@5.3.0))(@japa/runner@5.3.0))':
     dependencies:
-      '@adonisjs/core': 6.19.3(@adonisjs/assembler@7.8.2(babel-plugin-macros@3.1.0)(typescript@5.9.3))(@vinejs/vine@4.2.0)(argon2@0.44.0)
+      '@adonisjs/core': 6.19.3(@adonisjs/assembler@7.8.2(babel-plugin-macros@3.1.0)(typescript@5.9.3))(@vinejs/vine@4.3.0)(argon2@0.44.0)
       '@poppinss/macroable': 1.1.0
       '@poppinss/utils': 6.10.1
     optionalDependencies:
       '@japa/api-client': 3.2.1(@japa/assert@4.2.0(@japa/runner@5.3.0))(@japa/runner@5.3.0)
 
-  '@adonisjs/static@1.1.1(@adonisjs/core@6.19.3(@adonisjs/assembler@7.8.2(babel-plugin-macros@3.1.0)(typescript@5.9.3))(@vinejs/vine@4.2.0)(argon2@0.44.0))':
+  '@adonisjs/static@1.1.1(@adonisjs/core@6.19.3(@adonisjs/assembler@7.8.2(babel-plugin-macros@3.1.0)(typescript@5.9.3))(@vinejs/vine@4.3.0)(argon2@0.44.0))':
     dependencies:
-      '@adonisjs/core': 6.19.3(@adonisjs/assembler@7.8.2(babel-plugin-macros@3.1.0)(typescript@5.9.3))(@vinejs/vine@4.2.0)(argon2@0.44.0)
+      '@adonisjs/core': 6.19.3(@adonisjs/assembler@7.8.2(babel-plugin-macros@3.1.0)(typescript@5.9.3))(@vinejs/vine@4.3.0)(argon2@0.44.0)
       serve-static: 1.16.3
     transitivePeerDependencies:
       - supports-color
@@ -6932,9 +6932,9 @@ snapshots:
       supports-color: 10.2.2
       youch: 4.1.0-beta.13
 
-  '@japa/plugin-adonisjs@4.0.0(@adonisjs/core@6.19.3(@adonisjs/assembler@7.8.2(babel-plugin-macros@3.1.0)(typescript@5.9.3))(@vinejs/vine@4.2.0)(argon2@0.44.0))(@japa/api-client@3.2.1(@japa/assert@4.2.0(@japa/runner@5.3.0))(@japa/runner@5.3.0))(@japa/runner@5.3.0)':
+  '@japa/plugin-adonisjs@4.0.0(@adonisjs/core@6.19.3(@adonisjs/assembler@7.8.2(babel-plugin-macros@3.1.0)(typescript@5.9.3))(@vinejs/vine@4.3.0)(argon2@0.44.0))(@japa/api-client@3.2.1(@japa/assert@4.2.0(@japa/runner@5.3.0))(@japa/runner@5.3.0))(@japa/runner@5.3.0)':
     dependencies:
-      '@adonisjs/core': 6.19.3(@adonisjs/assembler@7.8.2(babel-plugin-macros@3.1.0)(typescript@5.9.3))(@vinejs/vine@4.2.0)(argon2@0.44.0)
+      '@adonisjs/core': 6.19.3(@adonisjs/assembler@7.8.2(babel-plugin-macros@3.1.0)(typescript@5.9.3))(@vinejs/vine@4.3.0)(argon2@0.44.0)
       '@japa/runner': 5.3.0
     optionalDependencies:
       '@japa/api-client': 3.2.1(@japa/assert@4.2.0(@japa/runner@5.3.0))(@japa/runner@5.3.0)
@@ -8291,21 +8291,21 @@ snapshots:
       ky: 1.14.3
       object-to-formdata: 4.5.1
 
-  '@tuyau/core@0.4.2(@adonisjs/core@6.19.3(@adonisjs/assembler@7.8.2(babel-plugin-macros@3.1.0)(typescript@5.9.3))(@vinejs/vine@4.2.0)(argon2@0.44.0))':
+  '@tuyau/core@0.4.2(@adonisjs/core@6.19.3(@adonisjs/assembler@7.8.2(babel-plugin-macros@3.1.0)(typescript@5.9.3))(@vinejs/vine@4.3.0)(argon2@0.44.0))':
     dependencies:
-      '@adonisjs/core': 6.19.3(@adonisjs/assembler@7.8.2(babel-plugin-macros@3.1.0)(typescript@5.9.3))(@vinejs/vine@4.2.0)(argon2@0.44.0)
+      '@adonisjs/core': 6.19.3(@adonisjs/assembler@7.8.2(babel-plugin-macros@3.1.0)(typescript@5.9.3))(@vinejs/vine@4.3.0)(argon2@0.44.0)
       '@tuyau/utils': 0.0.9
       ts-morph: 26.0.0
 
-  '@tuyau/superjson@0.1.2(@adonisjs/core@6.19.3(@adonisjs/assembler@7.8.2(babel-plugin-macros@3.1.0)(typescript@5.9.3))(@vinejs/vine@4.2.0)(argon2@0.43.1))':
+  '@tuyau/superjson@0.1.2(@adonisjs/core@6.19.3(@adonisjs/assembler@7.8.2(babel-plugin-macros@3.1.0)(typescript@5.9.3))(@vinejs/vine@4.3.0)(argon2@0.43.1))':
     dependencies:
-      '@adonisjs/core': 6.19.3(@adonisjs/assembler@7.8.2(babel-plugin-macros@3.1.0)(typescript@5.9.3))(@vinejs/vine@4.2.0)(argon2@0.43.1)
+      '@adonisjs/core': 6.19.3(@adonisjs/assembler@7.8.2(babel-plugin-macros@3.1.0)(typescript@5.9.3))(@vinejs/vine@4.3.0)(argon2@0.43.1)
       '@tuyau/utils': 0.0.9
       superjson: 2.2.6
 
-  '@tuyau/superjson@0.1.2(@adonisjs/core@6.19.3(@adonisjs/assembler@7.8.2(babel-plugin-macros@3.1.0)(typescript@5.9.3))(@vinejs/vine@4.2.0)(argon2@0.44.0))':
+  '@tuyau/superjson@0.1.2(@adonisjs/core@6.19.3(@adonisjs/assembler@7.8.2(babel-plugin-macros@3.1.0)(typescript@5.9.3))(@vinejs/vine@4.3.0)(argon2@0.44.0))':
     dependencies:
-      '@adonisjs/core': 6.19.3(@adonisjs/assembler@7.8.2(babel-plugin-macros@3.1.0)(typescript@5.9.3))(@vinejs/vine@4.2.0)(argon2@0.44.0)
+      '@adonisjs/core': 6.19.3(@adonisjs/assembler@7.8.2(babel-plugin-macros@3.1.0)(typescript@5.9.3))(@vinejs/vine@4.3.0)(argon2@0.44.0)
       '@tuyau/utils': 0.0.9
       superjson: 2.2.6
 
@@ -8626,15 +8626,15 @@ snapshots:
       next: 16.1.6(@babel/core@7.29.0)(@opentelemetry/api@1.9.0)(babel-plugin-macros@3.1.0)(babel-plugin-react-compiler@1.0.0)(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
       react: 19.2.4
 
-  '@vinejs/compiler@4.1.2': {}
+  '@vinejs/compiler@4.1.3': {}
 
-  '@vinejs/vine@4.2.0':
+  '@vinejs/vine@4.3.0':
     dependencies:
       '@poppinss/macroable': 1.1.0
       '@poppinss/types': 1.2.1
       '@standard-schema/spec': 1.1.0
       '@types/validator': 13.15.10
-      '@vinejs/compiler': 4.1.2
+      '@vinejs/compiler': 4.1.3
       camelcase: 9.0.0
       dayjs: 1.11.19
       dlv: 1.1.3

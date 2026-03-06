@@ -1,6 +1,6 @@
 import vine from "@vinejs/vine";
 
-export const subjectChoicesValidator = vine.compile(
+export const subjectChoicesValidator = vine.create(
   vine.object({
     branchId: vine.string(),
     subjectChoices: vine.array(

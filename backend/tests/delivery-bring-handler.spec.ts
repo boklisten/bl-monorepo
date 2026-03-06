@@ -39,7 +39,6 @@ test.group("DeliveryBringHandler", (group) => {
   });
 
   test("should reject if delivery.info.from is empty or undefined", async () => {
-    // @ts-expect-error fixme: auto ignored
     testDelivery.info = {
       amount: 100,
       estimatedDelivery: new Date(),
@@ -54,7 +53,6 @@ test.group("DeliveryBringHandler", (group) => {
   });
 
   test("should reject if delivery.info.from is empty or undefined", async () => {
-    // @ts-expect-error fixme: auto ignored
     testDelivery.info = {
       amount: 100,
       estimatedDelivery: new Date(),

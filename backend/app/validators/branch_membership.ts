@@ -1,6 +1,6 @@
 import vine from "@vinejs/vine";
 
-export const branchMembershipValidator = vine.compile(
+export const branchMembershipValidator = vine.create(
   vine.object({
     branchId: vine.string(),
     membershipData: vine.array(
@@ -11,7 +11,7 @@ export const branchMembershipValidator = vine.compile(
     ),
   }),
 );
-export const updateBranchMembershipValidator = vine.compile(
+export const updateBranchMembershipValidator = vine.create(
   vine.object({
     detailsId: vine.string(),
     branchMembership: vine.string().nullable(),

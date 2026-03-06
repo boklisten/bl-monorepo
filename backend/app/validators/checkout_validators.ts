@@ -1,7 +1,7 @@
 import vine from "@vinejs/vine";
 import { Infer } from "@vinejs/vine/types";
 
-export const initializeCheckoutValidator = vine.compile(
+export const initializeCheckoutValidator = vine.create(
   vine.object({
     cartItems: vine.array(
       vine.object({
@@ -51,7 +51,7 @@ const vippsCheckoutSessionSchema = vine.object({
     .nullable(),
 });
 
-export const vippsCheckoutSessionValidator = vine.compile(
+export const vippsCheckoutSessionValidator = vine.create(
   vippsCheckoutSessionSchema,
 );
 export type VippsCheckoutSession = Infer<typeof vippsCheckoutSessionSchema>;

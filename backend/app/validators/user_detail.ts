@@ -10,7 +10,7 @@ import { uniqueEmail, uniquePhoneNumber } from "#validators/common/rules";
 import { cleanUserInput } from "#validators/common/transformers";
 
 // Legacy for bl-admin user detail patching
-export const userDetailPatchValidator = vine.compile(
+export const userDetailPatchValidator = vine.create(
   vine.object({
     name: vine
       .string()

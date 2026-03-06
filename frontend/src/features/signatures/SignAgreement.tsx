@@ -56,7 +56,8 @@ export default function SignAgreement({
   });
   const form = useAppForm({
     defaultValues: {
-      signingName: data && !data.isUnderage && "name" in data ? data.name : "",
+      signingName:
+        data && !data.isUnderage && "name" in data ? (data.name ?? "") : "",
       base64EncodedImage: "",
     },
     onSubmit: ({ value }) => signMutation.mutate(value),
@@ -129,7 +130,7 @@ export default function SignAgreement({
           name={"signingName"}
           validators={{
             onChange: ({ value }) => {
-              if (value.length === 0)
+              if (value?.length === 0)
                 return "Du må fylle inn foresatt sitt fulle navn";
               if (data.isUnderage && data.name === value)
                 return "Foresattes navn må være forskjellig fra elevens navn";

@@ -3,7 +3,7 @@ import vine from "@vinejs/vine";
 import { emailField, phoneField } from "#validators/common/fields";
 import { existingEmailTemplateId } from "#validators/common/rules";
 
-export const sendgridEmailTemplatesResponseValidator = vine.compile(
+export const sendgridEmailTemplatesResponseValidator = vine.create(
   vine.object({
     result: vine.array(
       vine.object({
@@ -14,7 +14,7 @@ export const sendgridEmailTemplatesResponseValidator = vine.compile(
   }),
 );
 
-export const createDispatchValidator = vine.compile(
+export const createDispatchValidator = vine.create(
   vine.object({
     recipients: vine.array(
       vine.object({

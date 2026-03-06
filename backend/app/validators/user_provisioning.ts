@@ -6,7 +6,7 @@ import {
   postalCodeField,
 } from "#validators/common/fields";
 
-export const userProvisioningValidator = vine.compile(
+export const userProvisioningValidator = vine.create(
   vine.object({
     userCandidates: vine.array(
       vine.object({

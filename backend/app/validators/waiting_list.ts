@@ -1,6 +1,6 @@
 import vine from "@vinejs/vine";
 
-export const waitingListEntryValidator = vine.compile(
+export const waitingListEntryValidator = vine.create(
   vine.object({
     customerName: vine.string(),
     customerPhone: vine.string().mobile({ locale: ["nb-NO"] }),

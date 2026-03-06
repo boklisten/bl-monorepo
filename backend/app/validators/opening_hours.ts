@@ -1,6 +1,6 @@
 import vine from "@vinejs/vine";
 
-export const openingHoursValidator = vine.compile(
+export const openingHoursValidator = vine.create(
   vine.object({
     branchId: vine.string(),
     from: vine.date({ formats: ["iso8601"] }).afterOrEqual("today"),

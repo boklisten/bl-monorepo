@@ -45,7 +45,11 @@ export default class CheckoutController {
   }
 
   async handleVippsCallback(ctx: HttpContext) {
-    if (!VippsPaymentService.token.verify(ctx.request.header("Authorization")))
+    if (
+      !VippsPaymentService.token.verify(
+        ctx.request.header("Authorization") ?? "",
+      )
+    )
       throw new UnauthorizedException(
         "Authorization header missing or invalid",
       );

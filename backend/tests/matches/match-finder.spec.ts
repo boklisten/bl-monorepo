@@ -11,10 +11,10 @@ import {
   shuffler,
 } from "#controllers/matches/helpers/match-finder/match-testing-utils";
 import { MatchableUser } from "#controllers/matches/helpers/match-finder/match-types";
-import otto_treider_test_users_year_0 from "backend/tests/matches/test-data/test_users_year_0.json" with { type: "json" };
-import otto_treider_test_users_year_1 from "backend/tests/matches/test-data/test_users_year_1.json" with { type: "json" };
-import otto_treider_test_users_year_2 from "backend/tests/matches/test-data/test_users_year_2.json" with { type: "json" };
-import ullern_test_users from "backend/tests/matches/test-data/ullern_test_users.json" with { type: "json" };
+import otto_treider_test_users_year_0 from "#tests/matches/test-data/test_users_year_0";
+import otto_treider_test_users_year_1 from "#tests/matches/test-data/test_users_year_1";
+import otto_treider_test_users_year_2 from "#tests/matches/test-data/test_users_year_2";
+import ullern_test_users from "#tests/matches/test-data/ullern_test_users";
 
 const andrine = createFakeMatchableUser("andrine", ["book1", "book2", "book3"]);
 

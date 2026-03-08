@@ -1,11 +1,14 @@
 {
-  "extends": ["../tsconfig.base.json", "@adonisjs/tsconfig/tsconfig.app.json"],
+  "extends": [
+    "@tsconfig/strictest/tsconfig.json",
+    "@adonisjs/tsconfig/tsconfig.app.json"
+  ],
   "compilerOptions": {
+    "exactOptionalPropertyTypes": false, // fixme: delete this line for stricter checks
     "noUnusedParameters": false, // fixme: delete this line for stricter checks
-    "resolveJsonModule": true,
     "rootDir": "./",
-    "types": null
+    "outDir": "./build"
   },
-  "include": [".", "./**/*.json"],
+  "include": ["."],
   "exclude": ["node_modules", "build", "shared/dist"]
 }

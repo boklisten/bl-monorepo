@@ -1,644 +1,644 @@
-[
+export default [
   {
-    "items": [
+    items: [
       "Vamos 2 Tekstbok",
       "Psykologi 2 (Larsen) 2017",
       "Politikk og makt 2018",
       "Historie Vg3",
       "Moment VG3 2016",
-      "Tro og tanke 2014"
+      "Tro og tanke 2014",
     ],
-    "id": "5d63cd1f74cab7001c409010"
+    id: "5d63cd1f74cab7001c409010",
   },
   {
-    "items": [
+    items: [
       "Access to English : literature 2015",
       "Psykologi 2 (Larsen) 2017",
       "Politikk og makt 2018",
       "Tro og tanke 2014",
       "Moment VG3 2016",
-      "Historie Vg3"
+      "Historie Vg3",
     ],
-    "id": "5d5b08018b8504001c276404"
+    id: "5d5b08018b8504001c276404",
   },
   {
-    "items": [
+    items: [
       "Tro og tanke 2014",
       "Økonomi og ledelse 2014",
       "Pareto 2 VG3  2013",
       "Visjon 2 2018",
       "Moment VG3 2016",
-      "Historie Vg3"
+      "Historie Vg3",
     ],
-    "id": "5d5ba8618b8504001c276f68"
+    id: "5d5ba8618b8504001c276f68",
   },
   {
-    "items": [
+    items: [
       "Psykologi 2 (Larsen) 2017",
       "Politikk og makt 2018",
       "Access to English : literature 2015",
       "Tro og tanke 2014",
       "Historie Vg3",
-      "Moment VG3 2016"
+      "Moment VG3 2016",
     ],
-    "id": "5d7ba575c33018001c73a684"
+    id: "5d7ba575c33018001c73a684",
   },
   {
-    "items": [
+    items: [
       "Sinus R2 2015",
       "Ergo 1 2021",
       "Kjemien stemmer : kjemi 2 grunnbok",
       "Tro og tanke 2014",
       "Historie Vg3",
       "Moment VG3 2016",
-      "Kjemien stemmer : kjemi 2 studiebok"
+      "Kjemien stemmer : kjemi 2 studiebok",
     ],
-    "id": "611b7f09d72d83001cecaafc"
+    id: "611b7f09d72d83001cecaafc",
   },
   {
-    "items": [
+    items: [
       "Access to English : literature 2015",
       "Psykologi 2 (Larsen) 2017",
       "Politikk og makt 2018",
       "Tro og tanke 2014",
       "Moment VG3 2016",
-      "Historie Vg3"
+      "Historie Vg3",
     ],
-    "id": "5d6fc8b6619aea001c601bb7"
+    id: "5d6fc8b6619aea001c601bb7",
   },
   {
-    "items": ["Kosmos SF 2020", "Geografi 2018", "Sinus 1P 2020"],
-    "id": "5f4e3ca9b46c0c001ce74330"
+    items: ["Kosmos SF 2020", "Geografi 2018", "Sinus 1P 2020"],
+    id: "5f4e3ca9b46c0c001ce74330",
   },
   {
-    "items": [
+    items: [
       "Vamos 2 Tekstbok",
       "Moment VG3 2016",
       "Pareto 2 VG3  2013",
       "Økonomi og ledelse 2014",
       "Tro og tanke 2014",
-      "Historie Vg3"
+      "Historie Vg3",
     ],
-    "id": "616fe8b4c76e00001d992985"
+    id: "616fe8b4c76e00001d992985",
   },
   {
-    "items": [
+    items: [
       "Sinus S2 2015",
       "Kjemien stemmer : kjemi 2 grunnbok",
       "Kjemien stemmer : kjemi 2 studiebok",
       "Ergo 1 2021",
       "Tro og tanke 2014",
       "Moment VG3 2016",
-      "Historie Vg3"
+      "Historie Vg3",
     ],
-    "id": "5d5ab35162c534001c434e33"
+    id: "5d5ab35162c534001c434e33",
   },
   {
-    "items": [
+    items: [
       "Tro og tanke 2014",
       "Moment VG3 2016",
       "Økonomi og ledelse 2014",
       "Visjon 2 2018",
       "Historie Vg3",
-      "Pareto 2 VG3  2013"
+      "Pareto 2 VG3  2013",
     ],
-    "id": "5d6d55edcb2d74001cc1ea88"
+    id: "5d6d55edcb2d74001cc1ea88",
   },
   {
-    "items": [
+    items: [
       "Pareto 2 VG3  2013",
       "Visjon 2 2018",
       "Økonomi og ledelse 2014",
       "Historie Vg3",
       "Moment VG3 2016",
-      "Tro og tanke 2014"
+      "Tro og tanke 2014",
     ],
-    "id": "5d5c5b0288d35b001cd5268b"
+    id: "5d5c5b0288d35b001cd5268b",
   },
   {
-    "items": [
+    items: [
       "Tro og tanke 2014",
       "Moment VG3 2016",
       "Sinus R2 2015",
       "Kjemien stemmer : kjemi 2 grunnbok",
       "Historie Vg3",
       "Ergo 1 2021",
-      "Kjemien stemmer : kjemi 2 studiebok"
+      "Kjemien stemmer : kjemi 2 studiebok",
     ],
-    "id": "5d5acca08b8504001c27574c"
+    id: "5d5acca08b8504001c27574c",
   },
   {
-    "items": [
+    items: [
       "Økonomi og ledelse 2014",
       "Pareto 2 VG3  2013",
       "Visjon 2 2018",
       "Moment VG3 2016",
       "Tro og tanke 2014",
-      "Historie Vg3"
+      "Historie Vg3",
     ],
-    "id": "5d5a7db362c534001c433c11"
+    id: "5d5a7db362c534001c433c11",
   },
   {
-    "items": [
+    items: [
       "Access to English : literature 2015",
       "Psykologi 2 (Larsen) 2017",
       "Politikk og makt 2018",
       "Tro og tanke 2014",
       "Moment VG3 2016",
-      "Historie Vg3"
+      "Historie Vg3",
     ],
-    "id": "5f3a8c391a293c001ccd8db3"
+    id: "5f3a8c391a293c001ccd8db3",
   },
   {
-    "items": [
+    items: [
       "Psykologi 2 (Larsen) 2017",
       "Politikk og makt 2018",
       "Moment VG3 2016",
       "Access to English : literature 2015",
       "Historie Vg3",
-      "Tro og tanke 2014"
+      "Tro og tanke 2014",
     ],
-    "id": "5d5a8b9662c534001c4340f1"
+    id: "5d5a8b9662c534001c4340f1",
   },
   {
-    "items": [
+    items: [
       "Tro og tanke 2014",
       "Pareto 2 VG3  2013",
       "Moment VG3 2016",
-      "Historie Vg3"
+      "Historie Vg3",
     ],
-    "id": "5e3e91cca5bb32001c65f57f"
+    id: "5e3e91cca5bb32001c65f57f",
   },
   {
-    "items": [
+    items: [
       "Access to English : literature 2015",
       "Politikk og makt 2018",
       "Psykologi 2 (Larsen) 2017",
       "Historie Vg3",
       "Moment VG3 2016",
-      "Tro og tanke 2014"
+      "Tro og tanke 2014",
     ],
-    "id": "5d5c413b88d35b001cd5232a"
+    id: "5d5c413b88d35b001cd5232a",
   },
   {
-    "items": [
+    items: [
       "Sinus S2 2015",
       "Ergo 1 2021",
       "Kjemien stemmer : kjemi 2 grunnbok",
       "Kjemien stemmer : kjemi 2 studiebok",
       "Historie Vg3",
       "Moment VG3 2016",
-      "Tro og tanke 2014"
+      "Tro og tanke 2014",
     ],
-    "id": "5d5c155f8b8504001c27a8d3"
+    id: "5d5c155f8b8504001c27a8d3",
   },
   {
-    "items": [
+    items: [
       "Moment VG3 2016",
       "Access to English : literature 2015",
       "Historie Vg3",
       "Politikk og makt 2018",
       "Tro og tanke 2014",
-      "Psykologi 2 (Larsen) 2017"
+      "Psykologi 2 (Larsen) 2017",
     ],
-    "id": "5d5af6878b8504001c275fc1"
+    id: "5d5af6878b8504001c275fc1",
   },
   {
-    "items": [
+    items: [
       "Access to English : literature 2015",
       "Psykologi 2 (Larsen) 2017",
       "Politikk og makt 2018",
       "Tro og tanke 2014",
       "Historie Vg3",
-      "Moment VG3 2016"
+      "Moment VG3 2016",
     ],
-    "id": "5f47a99deffc9e001c9ce515"
+    id: "5f47a99deffc9e001c9ce515",
   },
   {
-    "items": [
+    items: [
       "Psykologi 2 (Larsen) 2017",
       "Politikk og makt 2018",
       "Access to English : literature 2015",
       "Tro og tanke 2014",
       "Historie Vg3",
-      "Moment VG3 2016"
+      "Moment VG3 2016",
     ],
-    "id": "5d5ad4b98b8504001c2758b9"
+    id: "5d5ad4b98b8504001c2758b9",
   },
   {
-    "items": [
+    items: [
       "Visjon 2 2018",
       "Tro og tanke 2014",
       "Historie Vg3",
       "Moment VG3 2016",
       "Økonomi og ledelse 2014",
-      "Pareto 2 VG3  2013"
+      "Pareto 2 VG3  2013",
     ],
-    "id": "5d5ac36762c534001c435394"
+    id: "5d5ac36762c534001c435394",
   },
   {
-    "items": ["Sinus 1T 2020"],
-    "id": "611a8c2a153a68001c3535d4"
+    items: ["Sinus 1T 2020"],
+    id: "611a8c2a153a68001c3535d4",
   },
   {
-    "items": [
+    items: [
       "Tro og tanke 2014",
       "Moment VG3 2016",
       "Historie Vg3",
       "Økonomi og ledelse 2014",
       "Pareto 2 VG3  2013",
-      "Visjon 2 2018"
+      "Visjon 2 2018",
     ],
-    "id": "5d5c08ad8b8504001c27a678"
+    id: "5d5c08ad8b8504001c27a678",
   },
   {
-    "items": [
+    items: [
       "Psykologi 2 (Larsen) 2017",
       "Politikk og makt 2018",
       "Access to English : literature 2015",
       "Tro og tanke 2014",
       "Historie Vg3",
-      "Moment VG3 2016"
+      "Moment VG3 2016",
     ],
-    "id": "5f3a8bf81a293c001ccd8d98"
+    id: "5f3a8bf81a293c001ccd8d98",
   },
   {
-    "items": [
+    items: [
       "Access to English : literature 2015",
       "Politikk og makt 2018",
       "Psykologi 2 (Larsen) 2017",
       "Historie Vg3",
       "Moment VG3 2016",
-      "Tro og tanke 2014"
+      "Tro og tanke 2014",
     ],
-    "id": "5d5adb138b8504001c2759aa"
+    id: "5d5adb138b8504001c2759aa",
   },
   {
-    "items": [
+    items: [
       "Politikk og makt 2018",
       "Psykologi 2 (Larsen) 2017",
       "Access to English : literature 2015",
       "Tro og tanke 2014",
       "Moment VG3 2016",
-      "Historie Vg3"
+      "Historie Vg3",
     ],
-    "id": "5d5aa8f162c534001c434b2f"
+    id: "5d5aa8f162c534001c434b2f",
   },
   {
-    "items": [
+    items: [
       "Sinus S2 2015",
       "Kjemien stemmer : kjemi 2 grunnbok",
       "Kjemien stemmer : kjemi 2 studiebok",
       "Tro og tanke 2014",
       "Moment VG3 2016",
       "Historie Vg3",
-      "Ergo 1 2021"
+      "Ergo 1 2021",
     ],
-    "id": "5d5af77e8b8504001c27601f"
+    id: "5d5af77e8b8504001c27601f",
   },
   {
-    "items": [
+    items: [
       "Access to English : literature 2015",
       "Psykologi 2 (Larsen) 2017",
       "Politikk og makt 2018",
       "Tro og tanke 2014",
       "Moment VG3 2016",
-      "Historie Vg3"
+      "Historie Vg3",
     ],
-    "id": "5d5affbd8b8504001c2761e2"
+    id: "5d5affbd8b8504001c2761e2",
   },
   {
-    "items": [
+    items: [
       "Økonomi og ledelse 2014",
       "Pareto 2 VG3  2013",
       "Tro og tanke 2014",
       "Moment VG3 2016",
       "Historie Vg3",
-      "Visjon 2 2018"
+      "Visjon 2 2018",
     ],
-    "id": "5d5c421088d35b001cd5234a"
+    id: "5d5c421088d35b001cd5234a",
   },
   {
-    "items": ["Citizens SF 2020"],
-    "id": "5f3b91cb1a293c001ccdcfc7"
+    items: ["Citizens SF 2020"],
+    id: "5f3b91cb1a293c001ccdcfc7",
   },
   {
-    "items": [
+    items: [
       "Vamos 2 Tekstbok",
       "Politikk og makt 2018",
       "Psykologi 2 (Larsen) 2017",
       "Historie Vg3",
       "Moment VG3 2016",
-      "Tro og tanke 2014"
+      "Tro og tanke 2014",
     ],
-    "id": "5d5af9428b8504001c27605b"
+    id: "5d5af9428b8504001c27605b",
   },
   {
-    "items": [
+    items: [
       "Sinus R2 2015",
       "Kjemien stemmer : kjemi 2 studiebok",
       "Ergo 1 2021",
       "Historie Vg3",
       "Tro og tanke 2014",
       "Moment VG3 2016",
-      "Kjemien stemmer : kjemi 2 grunnbok"
+      "Kjemien stemmer : kjemi 2 grunnbok",
     ],
-    "id": "5d5c111f8b8504001c27a7f9"
+    id: "5d5c111f8b8504001c27a7f9",
   },
   {
-    "items": [
+    items: [
       "Økonomi og ledelse 2014",
       "Visjon 2 2018",
       "Tro og tanke 2014",
       "Historie Vg3",
       "Pareto 2 VG3  2013",
-      "Moment VG3 2016"
+      "Moment VG3 2016",
     ],
-    "id": "5d5bb9ac8b8504001c277749"
+    id: "5d5bb9ac8b8504001c277749",
   },
   {
-    "items": [
+    items: [
       "Pareto 2 VG3  2013",
       "Økonomi og ledelse 2014",
       "Visjon 2 2018",
       "Historie Vg3",
       "Tro og tanke 2014",
-      "Moment VG3 2016"
+      "Moment VG3 2016",
     ],
-    "id": "5f3c34f8a80178001c220937"
+    id: "5f3c34f8a80178001c220937",
   },
   {
-    "items": [
+    items: [
       "Visjon 2 2018",
       "Økonomi og ledelse 2014",
       "Tro og tanke 2014",
       "Historie Vg3",
       "Moment VG3 2016",
-      "Pareto 2 VG3  2013"
+      "Pareto 2 VG3  2013",
     ],
-    "id": "5d7a677e85d329001c678bc2"
+    id: "5d7a677e85d329001c678bc2",
   },
   {
-    "items": [
+    items: [
       "Pareto 2 VG3  2013",
       "Visjon 2 2018",
       "Økonomi og ledelse 2014",
       "Historie Vg3",
       "Tro og tanke 2014",
-      "Moment VG3 2016"
+      "Moment VG3 2016",
     ],
-    "id": "5d5aba2462c534001c43513b"
+    id: "5d5aba2462c534001c43513b",
   },
   {
-    "items": [
+    items: [
       "Ergo 1 2021",
       "Sinus S2 2015",
       "Kjemien stemmer : kjemi 2 studiebok",
       "Kjemien stemmer : kjemi 2 grunnbok",
       "Historie Vg3",
       "Moment VG3 2016",
-      "Tro og tanke 2014"
+      "Tro og tanke 2014",
     ],
-    "id": "5d5c40de88d35b001cd5231a"
+    id: "5d5c40de88d35b001cd5231a",
   },
   {
-    "items": [
+    items: [
       "Access to English : literature 2015",
       "Politikk og makt 2018",
       "Psykologi 2 (Larsen) 2017",
       "Tro og tanke 2014",
       "Historie Vg3",
-      "Moment VG3 2016"
+      "Moment VG3 2016",
     ],
-    "id": "5d5c0b2c8b8504001c27a70b"
+    id: "5d5c0b2c8b8504001c27a70b",
   },
   {
-    "items": [
+    items: [
       "Sinus R2 2015",
       "Ergo 1 2021",
       "Kjemien stemmer : kjemi 2 grunnbok",
       "Kjemien stemmer : kjemi 2 studiebok",
       "Moment VG3 2016",
       "Historie Vg3",
-      "Tro og tanke 2014"
+      "Tro og tanke 2014",
     ],
-    "id": "5d5abdf162c534001c4352c1"
+    id: "5d5abdf162c534001c4352c1",
   },
   {
-    "items": [
+    items: [
       "Økonomi og ledelse 2014",
       "Pareto 2 VG3  2013",
       "Tro og tanke 2014",
       "Visjon 2 2018",
       "Historie Vg3",
-      "Moment VG3 2016"
+      "Moment VG3 2016",
     ],
-    "id": "5d5b08c58b8504001c27644d"
+    id: "5d5b08c58b8504001c27644d",
   },
   {
-    "items": [
+    items: [
       "Politikk og makt 2018",
       "Historie Vg3",
       "Moment VG3 2016",
       "Psykologi 2 (Larsen) 2017",
       "Tro og tanke 2014",
-      "Access to English : literature 2015"
+      "Access to English : literature 2015",
     ],
-    "id": "5d5bddd68b8504001c2791dc"
+    id: "5d5bddd68b8504001c2791dc",
   },
   {
-    "items": [
+    items: [
       "Visjon 2 2018",
       "Pareto 2 VG3  2013",
       "Moment VG3 2016",
       "Tro og tanke 2014",
       "Økonomi og ledelse 2014",
-      "Historie Vg3"
+      "Historie Vg3",
     ],
-    "id": "5d5ac2c162c534001c435371"
+    id: "5d5ac2c162c534001c435371",
   },
   {
-    "items": [
+    items: [
       "Historie Vg3",
       "Moment VG3 2016",
       "Tro og tanke 2014",
       "Økonomi og ledelse 2014",
       "Pareto 2 VG3  2013",
-      "Visjon 2 2018"
+      "Visjon 2 2018",
     ],
-    "id": "5d5b0d658b8504001c276512"
+    id: "5d5b0d658b8504001c276512",
   },
   {
-    "items": [
+    items: [
       "Moment VG3 2016",
       "Tro og tanke 2014",
       "Økonomi og ledelse 2014",
       "Pareto 2 VG3  2013",
       "Historie Vg3",
-      "Visjon 2 2018"
+      "Visjon 2 2018",
     ],
-    "id": "5f3a66181a293c001ccd759b"
+    id: "5f3a66181a293c001ccd759b",
   },
   {
-    "items": [
+    items: [
       "Sinus R2 2015",
       "Kjemien stemmer : kjemi 2 grunnbok",
       "Kjemien stemmer : kjemi 2 studiebok",
       "Ergo 1 2021",
       "Historie Vg3",
       "Moment VG3 2016",
-      "Tro og tanke 2014"
+      "Tro og tanke 2014",
     ],
-    "id": "5d5ac7b58b8504001c27569e"
+    id: "5d5ac7b58b8504001c27569e",
   },
   {
-    "items": [
+    items: [
       "Ergo 1 2021",
       "Sinus S2 2015",
       "Kjemien stemmer : kjemi 2 grunnbok",
       "Kjemien stemmer : kjemi 2 studiebok",
       "Moment VG3 2016",
       "Tro og tanke 2014",
-      "Historie Vg3"
+      "Historie Vg3",
     ],
-    "id": "5d5a717a62c534001c4336aa"
+    id: "5d5a717a62c534001c4336aa",
   },
   {
-    "items": [
+    items: [
       "Pareto 2 VG3  2013",
       "Økonomi og ledelse 2014",
       "Moment VG3 2016",
       "Tro og tanke 2014",
       "Visjon 2 2018",
-      "Historie Vg3"
+      "Historie Vg3",
     ],
-    "id": "611bf4925bcd7a001db46b4e"
+    id: "611bf4925bcd7a001db46b4e",
   },
   {
-    "items": [
+    items: [
       "Psykologi 2 (Larsen) 2017",
       "Access to English : literature 2015",
       "Politikk og makt 2018",
       "Historie Vg3",
       "Moment VG3 2016",
-      "Tro og tanke 2014"
+      "Tro og tanke 2014",
     ],
-    "id": "5f48110ba81bde001cb1e4d2"
+    id: "5f48110ba81bde001cb1e4d2",
   },
   {
-    "items": [
+    items: [
       "Psykologi 2 (Larsen) 2017",
       "Politikk og makt 2018",
       "Tro og tanke 2014",
       "Moment VG3 2016",
       "Historie Vg3",
-      "Visjon 2 2018"
+      "Visjon 2 2018",
     ],
-    "id": "5f68385c01ae3a001c73a8f3"
+    id: "5f68385c01ae3a001c73a8f3",
   },
   {
-    "items": [
+    items: [
       "Politikk og makt 2018",
       "Access to English : literature 2015",
       "Psykologi 2 (Larsen) 2017",
       "Historie Vg3",
       "Tro og tanke 2014",
-      "Moment VG3 2016"
+      "Moment VG3 2016",
     ],
-    "id": "5d5c0be58b8504001c27a737"
+    id: "5d5c0be58b8504001c27a737",
   },
   {
-    "items": [
+    items: [
       "Sinus R2 2015",
       "Kjemien stemmer : kjemi 2 grunnbok",
       "Kjemien stemmer : kjemi 2 studiebok",
       "Ergo 1 2021",
       "Historie Vg3",
       "Moment VG3 2016",
-      "Tro og tanke 2014"
+      "Tro og tanke 2014",
     ],
-    "id": "5d5adf4f8b8504001c275a8e"
+    id: "5d5adf4f8b8504001c275a8e",
   },
   {
-    "items": [
+    items: [
       "Kjemien stemmer 1 studiebok 2018",
       "Kjemien stemmer 1 grunnbok 2018",
       "Historie vg2 : fra de eldste tider til 1700-tallet",
-      "Kontakt 2015"
+      "Kontakt 2015",
     ],
-    "id": "5d59a26962c534001c4326d3"
+    id: "5d59a26962c534001c4326d3",
   },
   {
-    "items": [
+    items: [
       "Sinus R2 2015",
       "Ergo 1 2021",
       "Kjemien stemmer : kjemi 2 grunnbok",
       "Kjemien stemmer : kjemi 2 studiebok",
       "Moment VG3 2016",
       "Tro og tanke 2014",
-      "Historie Vg3"
+      "Historie Vg3",
     ],
-    "id": "5d5b0c438b8504001c2764ff"
+    id: "5d5b0c438b8504001c2764ff",
   },
   {
-    "items": [
+    items: [
       "Sinus S2 2015",
       "Kjemien stemmer : kjemi 2 studiebok",
       "Kjemien stemmer : kjemi 2 grunnbok",
       "Ergo 1 2021",
       "Tro og tanke 2014",
       "Moment VG3 2016",
-      "Historie Vg3"
+      "Historie Vg3",
     ],
-    "id": "5d5ad3f88b8504001c27589a"
+    id: "5d5ad3f88b8504001c27589a",
   },
   {
-    "items": [
+    items: [
       "Tro og tanke 2014",
       "Historie Vg3",
       "Moment VG3 2016",
       "Økonomi og ledelse 2014",
       "Pareto 2 VG3  2013",
-      "Visjon 2 2018"
+      "Visjon 2 2018",
     ],
-    "id": "611bc30c5bcd7a001db4652f"
+    id: "611bc30c5bcd7a001db4652f",
   },
   {
-    "items": [
+    items: [
       "Historie Vg3",
       "Moment VG3 2016",
       "Tro og tanke 2014",
       "Økonomi og ledelse 2014",
       "Visjon 2 2018",
-      "Pareto 2 VG3  2013"
+      "Pareto 2 VG3  2013",
     ],
-    "id": "5d5a869762c534001c433ec0"
+    id: "5d5a869762c534001c433ec0",
   },
   {
-    "items": [
+    items: [
       "Politikk og makt 2018",
       "Psykologi 2 (Larsen) 2017",
       "Access to English : literature 2015",
       "Tro og tanke 2014",
       "Moment VG3 2016",
-      "Historie Vg3"
+      "Historie Vg3",
     ],
-    "id": "5f3aeeee1a293c001ccda752"
+    id: "5f3aeeee1a293c001ccda752",
   },
   {
-    "items": [
+    items: [
       "Sinus R2 2015",
       "Ergo 1 2021",
       "Kjemien stemmer : kjemi 2 grunnbok",
       "Kjemien stemmer : kjemi 2 studiebok",
       "Historie Vg3",
       "Tro og tanke 2014",
-      "Moment VG3 2016"
+      "Moment VG3 2016",
     ],
-    "id": "5d5a88d562c534001c433fce"
+    id: "5d5a88d562c534001c433fce",
   },
   {
-    "items": [
+    items: [
       "Psykologi 2 (Larsen) 2017",
       "Politikk og makt 2018",
       "Access to English : literature 2015",
@@ -650,35 +650,35 @@
       "Moment VG3 2016",
       "Tro og tanke 2014",
       "Politikk og makt 2018",
-      "Psykologi 2 (Larsen) 2017"
+      "Psykologi 2 (Larsen) 2017",
     ],
-    "id": "5d5af3338b8504001c275ef2"
+    id: "5d5af3338b8504001c275ef2",
   },
   {
-    "items": [
+    items: [
       "Tro og tanke 2014",
       "Politikk og makt 2018",
       "Historie Vg3",
       "Moment VG3 2016",
       "Psykologi 2 (Larsen) 2017",
-      "Access to English : literature 2015"
+      "Access to English : literature 2015",
     ],
-    "id": "5d5acb258b8504001c275708"
+    id: "5d5acb258b8504001c275708",
   },
   {
-    "items": [
+    items: [
       "Psykologi 2 (Larsen) 2017",
       "Politikk og makt 2018",
       "Access to English : literature 2015",
       "Tro og tanke 2014",
       "Historie Vg3",
       "Moment VG3 2016",
-      "Vamos 2 Tekstbok"
+      "Vamos 2 Tekstbok",
     ],
-    "id": "5f45633cff9063001c49d6e1"
+    id: "5f45633cff9063001c49d6e1",
   },
   {
-    "items": [
+    items: [
       "Sinus R2 2015",
       "Ergo 1 2021",
       "Kjemien stemmer : kjemi 2 studiebok",
@@ -686,12 +686,12 @@
       "Historie Vg3",
       "Moment VG3 2016",
       "Tro og tanke 2014",
-      "Vamos 2 Tekstbok"
+      "Vamos 2 Tekstbok",
     ],
-    "id": "5d5ab41f62c534001c434e54"
+    id: "5d5ab41f62c534001c434e54",
   },
   {
-    "items": [
+    items: [
       "Ergo 1 2021",
       "Tro og tanke 2014",
       "Historie Vg3",
@@ -699,124 +699,124 @@
       "Kjemien stemmer : kjemi 2 grunnbok",
       "Sinus R2 2015",
       "Moment VG3 2016",
-      "Ergo 1 2021"
+      "Ergo 1 2021",
     ],
-    "id": "5d5ad3a08b8504001c275892"
+    id: "5d5ad3a08b8504001c275892",
   },
   {
-    "items": [
+    items: [
       "Politikk og makt 2018",
       "Psykologi 2 (Larsen) 2017",
       "Access to English : literature 2015",
       "Moment VG3 2016",
       "Tro og tanke 2014",
-      "Historie Vg3"
+      "Historie Vg3",
     ],
-    "id": "5d56ae5af6b045001c53398e"
+    id: "5d56ae5af6b045001c53398e",
   },
   {
-    "items": [
+    items: [
       "Vamos 2 Tekstbok",
       "Psykologi 2 (Larsen) 2017",
       "Politikk og makt 2018",
       "Tro og tanke 2014",
       "Historie Vg3",
-      "Moment VG3 2016"
+      "Moment VG3 2016",
     ],
-    "id": "5f61a384299d56001c3c55ec"
+    id: "5f61a384299d56001c3c55ec",
   },
   {
-    "items": [
+    items: [
       "Access to English : literature 2015",
       "Politikk og makt 2018",
       "Psykologi 2 (Larsen) 2017",
       "Tro og tanke 2014",
       "Moment VG3 2016",
-      "Historie Vg3"
+      "Historie Vg3",
     ],
-    "id": "5d5c11748b8504001c27a80a"
+    id: "5d5c11748b8504001c27a80a",
   },
   {
-    "items": [
+    items: [
       "Pareto 2 VG3  2013",
       "Tro og tanke 2014",
       "Moment VG3 2016",
       "Historie Vg3",
       "Visjon 2 2018",
       "Økonomi og ledelse 2014",
-      "Sinus S2 2015"
+      "Sinus S2 2015",
     ],
-    "id": "5f3be081a80178001c21ff61"
+    id: "5f3be081a80178001c21ff61",
   },
   {
-    "items": [
+    items: [
       "Moment VG3 2016",
       "Økonomi og ledelse 2014",
       "Visjon 2 2018",
       "Pareto 2 VG3  2013",
       "Historie Vg3",
-      "Tro og tanke 2014"
+      "Tro og tanke 2014",
     ],
-    "id": "5d5bfe428b8504001c27a2f4"
+    id: "5d5bfe428b8504001c27a2f4",
   },
   {
-    "items": [
+    items: [
       "Pareto 2 VG3  2013",
       "Visjon 2 2018",
       "Økonomi og ledelse 2014",
       "Historie Vg3",
       "Moment VG3 2016",
-      "Tro og tanke 2014"
+      "Tro og tanke 2014",
     ],
-    "id": "5d5bb5b88b8504001c277614"
+    id: "5d5bb5b88b8504001c277614",
   },
   {
-    "items": [
+    items: [
       "Psykologi 2 (Larsen) 2017",
       "Tro og tanke 2014",
       "Politikk og makt 2018",
       "Historie Vg3",
       "Moment VG3 2016",
-      "Access to English : literature 2015"
+      "Access to English : literature 2015",
     ],
-    "id": "5d5ab42162c534001c434e58"
+    id: "5d5ab42162c534001c434e58",
   },
   {
-    "items": [
+    items: [
       "Psykologi 2 (Larsen) 2017",
       "Politikk og makt 2018",
       "Tro og tanke 2014",
       "Moment VG3 2016",
       "Historie Vg3",
-      "Access to English : literature 2015"
+      "Access to English : literature 2015",
     ],
-    "id": "5f647592553274001cb17b88"
+    id: "5f647592553274001cb17b88",
   },
   {
-    "items": [
+    items: [
       "Tro og tanke 2014",
       "Visjon 2 2018",
       "Moment VG3 2016",
       "Historie Vg3",
       "Økonomi og ledelse 2014",
-      "Pareto 2 VG3  2013"
+      "Pareto 2 VG3  2013",
     ],
-    "id": "5d5ab60662c534001c434f70"
+    id: "5d5ab60662c534001c434f70",
   },
   {
-    "items": [
+    items: [
       "Historie Vg3",
       "Sinus S2 2015",
       "Pareto 2 VG3  2013",
       "Visjon 2 2018",
       "Økonomi og ledelse 2014",
       "Moment VG3 2016",
-      "Tro og tanke 2014"
+      "Tro og tanke 2014",
     ],
-    "id": "5f3a79161a293c001ccd8423"
+    id: "5f3a79161a293c001ccd8423",
   },
   {
-    "items": [
+    items: [
       "Pareto 2 VG3  2013",
       "Økonomi og ledelse 2014",
       "Vamos 2 Tekstbok",
@@ -829,75 +829,75 @@
       "Moment VG3 2016",
       "Økonomi og ledelse 2014",
       "Pareto 2 VG3  2013",
-      "Tro og tanke 2014"
+      "Tro og tanke 2014",
     ],
-    "id": "5d5afed38b8504001c2761bd"
+    id: "5d5afed38b8504001c2761bd",
   },
   {
-    "items": [
+    items: [
       "Access to English : literature 2015",
       "Politikk og makt 2018",
       "Psykologi 2 (Larsen) 2017",
       "Tro og tanke 2014",
       "Moment VG3 2016",
-      "Historie Vg3"
+      "Historie Vg3",
     ],
-    "id": "5dc078c7579ab0001c166a9e"
+    id: "5dc078c7579ab0001c166a9e",
   },
   {
-    "items": [
+    items: [
       "Psykologi 2 (Larsen) 2017",
       "Politikk og makt 2018",
       "Tro og tanke 2014",
       "Moment VG3 2016",
       "Access to English : literature 2015",
-      "Historie Vg3"
+      "Historie Vg3",
     ],
-    "id": "5d62e97574cab7001c40824e"
+    id: "5d62e97574cab7001c40824e",
   },
   {
-    "items": [
+    items: [
       "Access to English : literature 2015",
       "Psykologi 2 (Larsen) 2017",
       "Politikk og makt 2018",
       "Historie Vg3",
       "Tro og tanke 2014",
-      "Moment VG3 2016"
+      "Moment VG3 2016",
     ],
-    "id": "5d627d5efe0fa0001ce15dd7"
+    id: "5d627d5efe0fa0001ce15dd7",
   },
   {
-    "items": [
+    items: [
       "Sinus R2 2015",
       "Ergo 1 2021",
       "Kjemien stemmer : kjemi 2 grunnbok",
       "Kjemien stemmer : kjemi 2 studiebok",
       "Historie Vg3",
       "Moment VG3 2016",
-      "Tro og tanke 2014"
+      "Tro og tanke 2014",
     ],
-    "id": "5d5ce35188d35b001cd52a72"
+    id: "5d5ce35188d35b001cd52a72",
   },
   {
-    "items": [
+    items: [
       "Politikk og makt 2018",
       "Moment VG3 2016",
       "Psykologi 2 (Larsen) 2017",
       "Historie Vg3",
       "Access to English : literature 2015",
-      "Tro og tanke 2014"
+      "Tro og tanke 2014",
     ],
-    "id": "5d5c528488d35b001cd52505"
+    id: "5d5c528488d35b001cd52505",
   },
   {
-    "items": [
+    items: [
       "Pareto 2 VG3  2013",
       "Økonomi og ledelse 2014",
       "Visjon 2 2018",
       "Moment VG3 2016",
       "Tro og tanke 2014",
-      "Historie Vg3"
+      "Historie Vg3",
     ],
-    "id": "5f3bd8a3a80178001c21fdd4"
-  }
-]
+    id: "5f3bd8a3a80178001c21fdd4",
+  },
+];

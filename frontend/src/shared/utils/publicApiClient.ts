@@ -1,11 +1,5 @@
-/* eslint-disable @typescript-eslint/triple-slash-reference */
-
-// Type references
-/// <reference path="../../../../backend/config/ally.ts" />
-/// <reference path="../../../../backend/adonisrc.ts" />
-
-import { api } from "@boklisten/backend/.adonisjs";
-import { createTuyau } from "@tuyau/client";
+import { registry } from "@boklisten/backend/registry";
+import { createTuyau } from "@tuyau/core/client";
 import { superjson } from "@tuyau/superjson/plugin";
 
 import BL_CONFIG from "@/shared/utils/bl-config";
@@ -15,7 +9,7 @@ import BL_CONFIG from "@/shared/utils/bl-config";
  */
 export const publicApiClient = createTuyau({
   timeout: 60_000,
-  api,
+  registry,
   baseUrl: BL_CONFIG.api.basePath,
   plugins: [superjson()],
 });

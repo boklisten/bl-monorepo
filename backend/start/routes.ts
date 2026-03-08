@@ -1,58 +1,8 @@
 import router from "@adonisjs/core/services/router";
 
+import { controllers } from "#generated/controllers";
 import CollectionEndpoint from "#services/legacy/collection-endpoint/collection-endpoint";
 import BlCollections from "#services/legacy/collections/bl-collections";
-
-const AuthTokensController = () =>
-  import("#controllers/auth/tokens_controller");
-const AuthVippsController = () => import("#controllers/auth/vipps_controller");
-const AuthLocalController = () => import("#controllers/auth/local_controller");
-const AuthPasswordResetController = () =>
-  import("#controllers/auth/password_reset_controller");
-const WaitingListEntriesController = () =>
-  import("#controllers/waiting_list_entries_controller");
-const RemindersController = () => import("#controllers/reminders_controller");
-const BranchesController = () =>
-  import("#controllers/branches/branches_controller");
-const BranchUploadController = () =>
-  import("#controllers/branches/branch_upload_controller");
-const BranchRelationshipController = () =>
-  import("#controllers/branches/branch_relationship_controller");
-const BranchMembershipController = () =>
-  import("#controllers/branches/branch_membership_controller");
-const OrdersController = () => import("#controllers/orders_controller");
-const EditableTextsController = () =>
-  import("#controllers/editable_texts_controller");
-const QuestionsAndAnswersController = () =>
-  import("#controllers/questions_and_answers_controller");
-const EmailValidationsController = () =>
-  import("#controllers/email_validations_controller");
-const PublicBlidLookupController = () =>
-  import("#controllers/public_blid_lookup_controller");
-const MatchesController = () =>
-  import("#controllers/matches/matches_controller");
-const UserDetailController = () =>
-  import("#controllers/user_detail_controller");
-const CustomerItemsController = () =>
-  import("#controllers/customer_items_controller");
-const SignaturesController = () => import("#controllers/signatures_controller");
-const UniqueIdsController = () => import("#controllers/unique_ids_controller");
-const UserProvisioningController = () =>
-  import("#controllers/user_provisioning_controller");
-const UniqueItemsController = () =>
-  import("#controllers/unique_items_controller");
-const OrderHistoryController = () =>
-  import("#controllers/order_history_controller");
-const CheckoutController = () => import("#controllers/checkout_controller");
-const SubjectsController = () => import("#controllers/subjects_controller");
-const BranchItemsController = () =>
-  import("#controllers/branch_items_controller");
-const PostalController = () => import("#controllers/postal_controller");
-const CompaniesController = () => import("#controllers/companies_controller");
-const OpeningHoursController = () =>
-  import("#controllers/opening_hours_controller");
-const ItemsController = () => import("#controllers/items_controller");
-const DispatchController = () => import("#controllers/dispatch_controller");
 
 /**
  * static
@@ -66,28 +16,30 @@ router.get("/", () => {
  * auth token
  */
 router
-  .post("/token", [AuthTokensController, "legacyToken"])
+  .post("/token", [controllers.auth.Tokens, "legacyToken"])
   .as("auth.legacyToken");
-router.post("/v2/token", [AuthTokensController, "token"]).as("v2.auth.token");
+router
+  .post("/v2/token", [controllers.auth.Tokens, "token"])
+  .as("v2.auth.token");
 
 /**
  * auth vipps
  */
 router
-  .get("/auth/vipps/redirect", [AuthVippsController, "redirect"])
+  .get("/auth/vipps/redirect", [controllers.auth.Vipps, "redirect"])
   .as("auth.vipps.redirect");
 router
-  .get("/auth/vipps/callback", [AuthVippsController, "callback"])
+  .get("/auth/vipps/callback", [controllers.auth.Vipps, "callback"])
   .as("auth.vipps.callback");
 
 /**
  * auth local
  */
 router
-  .post("/auth/local/login", [AuthLocalController, "login"])
+  .post("/auth/local/login", [controllers.auth.Local, "login"])
   .as("auth.local.login");
 router
-  .post("/auth/local/register", [AuthLocalController, "register"])
+  .post("/auth/local/register", [controllers.auth.Local, "register"])
   .as("auth.local.register");
 
 /**
@@ -95,35 +47,35 @@ router
  */
 router
   .post("/forgot_password", [
-    AuthPasswordResetController,
+    controllers.auth.PasswordReset,
     "requestPasswordReset",
   ])
   .as("auth.password.forgot");
 router
   .post("/reset_password/validate", [
-    AuthPasswordResetController,
+    controllers.auth.PasswordReset,
     "validatePasswordReset",
   ])
   .as("auth.password.reset.validate");
 router
-  .post("/reset_password", [AuthPasswordResetController, "resetPassword"])
+  .post("/reset_password", [controllers.auth.PasswordReset, "resetPassword"])
   .as("auth.password.reset");
 
 router
   .get("/waiting_list_entries", [
-    WaitingListEntriesController,
+    controllers.WaitingListEntries,
     "getAllWaitingListEntries",
   ])
   .as("waiting_list_entries.getAll");
 router
   .post("/waiting_list_entries", [
-    WaitingListEntriesController,
+    controllers.WaitingListEntries,
     "addWaitingListEntry",
   ])
   .as("waiting_list_entries.add");
 router
   .delete("/waiting_list_entries/:id", [
-    WaitingListEntriesController,
+    controllers.WaitingListEntries,
     "deleteWaitingListEntry",
   ])
   .as("waiting_list_entries.delete");
@@ -132,18 +84,23 @@ router
  * reminders
  */
 router
-  .post("/reminders/count_recipients", [RemindersController, "countRecipients"])
+  .post("/reminders/count_recipients", [
+    controllers.Reminders,
+    "countRecipients",
+  ])
   .as("reminders.count_recipients");
 router
-  .post("/reminders/send", [RemindersController, "remind"])
+  .post("/reminders/send", [controllers.Reminders, "remind"])
   .as("reminders.send");
 
 /**
  * branches
  */
-router.post("/v2/branches", [BranchesController, "add"]).as("branches.add");
 router
-  .patch("/v2/branches", [BranchesController, "update"])
+  .post("/v2/branches", [controllers.branches.Branches, "add"])
+  .as("branches.add");
+router
+  .patch("/v2/branches", [controllers.branches.Branches, "update"])
   .as("branches.update");
 
 /**
@@ -151,13 +108,13 @@ router
  */
 router
   .post("/v2/branches/memberships", [
-    BranchUploadController,
+    controllers.branches.BranchUpload,
     "uploadMemberships",
   ])
   .as("branches.addMemberships");
 router
   .post("/v2/branches/subject_choices", [
-    BranchUploadController,
+    controllers.branches.BranchUpload,
     "uploadSubjectChoices",
   ])
   .as("branches.addSubjectChoices");
@@ -166,7 +123,10 @@ router
  * branch relationships
  */
 router
-  .patch("/v2/branches/relationships", [BranchRelationshipController, "update"])
+  .patch("/v2/branches/relationships", [
+    controllers.branches.BranchRelationship,
+    "update",
+  ])
   .as("branches.relationships.update");
 
 /**
@@ -174,25 +134,25 @@ router
  */
 router
   .get("/v2/branches/memberships/:branchId", [
-    BranchMembershipController,
+    controllers.branches.BranchMembership,
     "getMembers",
   ])
   .as("branches.memberships.get");
 router
   .patch("/branches/memberships", [
-    BranchMembershipController,
+    controllers.branches.BranchMembership,
     "updateMembership",
   ])
   .as("branches.memberships.update");
 router
   .delete("/branches/memberships/direct/:branchId", [
-    BranchMembershipController,
+    controllers.branches.BranchMembership,
     "removeDirectMembers",
   ])
   .as("branches.memberships.remove.direct");
 router
   .delete("/branches/memberships/indirect/:branchId", [
-    BranchMembershipController,
+    controllers.branches.BranchMembership,
     "removeIndirectMembers",
   ])
   .as("branches.memberships.remove.indirect");
@@ -201,49 +161,49 @@ router
  * orders
  */
 router
-  .get("/v2/orders/open_orders", [OrdersController, "getOpenOrders"])
+  .get("/v2/orders/open_orders", [controllers.Orders, "getOpenOrders"])
   .as("open_orders.get");
 router
-  .post("/v2/orders/cancel_order_item", [OrdersController, "cancelOrderItem"])
+  .post("/v2/orders/cancel_order_item", [controllers.Orders, "cancelOrderItem"])
   .as("open_orders.cancel");
 
 /**
  * editable texts
  */
 router
-  .get("/editable_texts", [EditableTextsController, "getAll"])
+  .get("/editable_texts", [controllers.EditableTexts, "getAll"])
   .as("editable_texts.getAll");
 router
-  .get("/editable_texts/key/:key", [EditableTextsController, "getByKey"])
+  .get("/editable_texts/key/:key", [controllers.EditableTexts, "getByKey"])
   .as("editable_texts.getByKey");
 router
-  .post("/editable_texts", [EditableTextsController, "store"])
+  .post("/editable_texts", [controllers.EditableTexts, "store"])
   .as("editable_texts.store");
 router
-  .patch("/editable_texts/:id", [EditableTextsController, "update"])
+  .patch("/editable_texts/:id", [controllers.EditableTexts, "update"])
   .as("editable_texts.update");
 router
-  .delete("/editable_texts/:id", [EditableTextsController, "destroy"])
+  .delete("/editable_texts/:id", [controllers.EditableTexts, "destroy"])
   .as("editable_texts.destroy");
 
 /**
  * questions and answers
  */
 router
-  .get("/questions_and_answers", [QuestionsAndAnswersController, "getAll"])
+  .get("/questions_and_answers", [controllers.QuestionsAndAnswers, "getAll"])
   .as("questions_and_answers.getAll");
 router
-  .post("/questions_and_answers", [QuestionsAndAnswersController, "store"])
+  .post("/questions_and_answers", [controllers.QuestionsAndAnswers, "store"])
   .as("questions_and_answers.store");
 router
   .patch("/questions_and_answers/:id", [
-    QuestionsAndAnswersController,
+    controllers.QuestionsAndAnswers,
     "update",
   ])
   .as("questions_and_answers.update");
 router
   .delete("/questions_and_answers/:id", [
-    QuestionsAndAnswersController,
+    controllers.QuestionsAndAnswers,
     "destroy",
   ])
   .as("questions_and_answers.destroy");
@@ -252,53 +212,53 @@ router
  * email validations
  */
 router
-  .post("/email_validations", [EmailValidationsController, "create"])
+  .post("/email_validations", [controllers.EmailValidations, "create"])
   .as("email_validations.create");
 router
-  .get("/email_validations/:id", [EmailValidationsController, "confirm"])
+  .get("/email_validations/:id", [controllers.EmailValidations, "confirm"])
   .as("email_validations.confirm");
 
 /**
  * public blid lookup
  */
 router
-  .get("/public_blid_lookup/:blid", [PublicBlidLookupController, "lookup"])
+  .get("/public_blid_lookup/:blid", [controllers.PublicBlidLookup, "lookup"])
   .as("blid.lookup");
 
 /**
  * matches
  */
 router
-  .post("/matches/generate", [MatchesController, "generate"])
+  .post("/matches/generate", [controllers.matches.Matches, "generate"])
   .as("matches.generate");
 router
-  .post("/matches/notify", [MatchesController, "notify"])
+  .post("/matches/notify", [controllers.matches.Matches, "notify"])
   .as("matches.notify");
 router
-  .post("/user_matches/lock", [MatchesController, "lock"])
+  .post("/user_matches/lock", [controllers.matches.Matches, "lock"])
   .as("matches.lock");
 router
-  .get("/matches/me", [MatchesController, "getMyMatches"])
+  .get("/matches/me", [controllers.matches.Matches, "getMyMatches"])
   .as("matches.getMyMatches");
 router
-  .post("/matches/transfer_item", [MatchesController, "transferItem"])
+  .post("/matches/transfer_item", [controllers.matches.Matches, "transferItem"])
   .as("matches.transfer_item");
 
 /**
  * user detail
  */
 router
-  .get("/v2/user_details/id/:detailsId", [UserDetailController, "getById"])
+  .get("/v2/user_details/id/:detailsId", [controllers.UserDetail, "getById"])
   .as("user_detail.getById");
 router
-  .get("/v2/user_details/me", [UserDetailController, "getMyDetails"])
+  .get("/v2/user_details/me", [controllers.UserDetail, "getMyDetails"])
   .as("user_detail.getMyDetails");
 router
-  .post("/v2/user_details", [UserDetailController, "updateAsCustomer"])
+  .post("/v2/user_details", [controllers.UserDetail, "updateAsCustomer"])
   .as("user_detail.updateAsCustomer");
 router
   .post("/v2/employee/user_details/:detailsId", [
-    UserDetailController,
+    controllers.UserDetail,
     "updateAsEmployee",
   ])
   .as("user_detail.updateAsEmployee");
@@ -307,7 +267,7 @@ router
  * customer items
  */
 router
-  .get("/v2/customer_items", [CustomerItemsController, "getCustomerItems"])
+  .get("/v2/customer_items", [controllers.CustomerItems, "getCustomerItems"])
   .as("customer_items.get");
 
 /**
@@ -315,38 +275,38 @@ router
  */
 router
   .post("/signatures/send/:detailsId", [
-    SignaturesController,
+    controllers.Signatures,
     "sendSignatureLink",
   ])
   .as("signatures.send.link");
 router
   .post("/signatures/me/send", [
-    SignaturesController,
+    controllers.Signatures,
     "sendSignatureLinkAsCustomer",
   ])
   .as("signatures.me.send");
 router
   .get("/signatures/valid/:detailsId", [
-    SignaturesController,
+    controllers.Signatures,
     "hasValidSignature",
   ])
   .as("signatures.valid");
 router
-  .get("/signatures/get/:detailsId", [SignaturesController, "getSignature"])
+  .get("/signatures/get/:detailsId", [controllers.Signatures, "getSignature"])
   .as("signatures.get");
 router
-  .post("/signatures/sign/:detailsId", [SignaturesController, "sign"])
+  .post("/signatures/sign/:detailsId", [controllers.Signatures, "sign"])
   .as("signatures.sign");
 
 /**
  * Unique Ids
  */
 router
-  .get("/unique_ids/token", [UniqueIdsController, "getToken"])
+  .get("/unique_ids/token", [controllers.UniqueIds, "getToken"])
   .as("unique_ids.token");
 router
   .get("/unique_ids/download_pdf/:token", [
-    UniqueIdsController,
+    controllers.UniqueIds,
     "downloadUniqueIdPdf",
   ])
   .as("unique_ids.download.pdf");
@@ -355,14 +315,14 @@ router
  * User Provisioning
  */
 router
-  .post("/users/create", [UserProvisioningController, "createUsers"])
+  .post("/users/create", [controllers.UserProvisioning, "createUsers"])
   .as("users.create");
 
 /**
  * Unique Items
  */
 router
-  .post("/unique_items/add", [UniqueItemsController, "add"])
+  .post("/unique_items/add", [controllers.UniqueItems, "add"])
   .as("unique_items.add");
 
 /**
@@ -370,39 +330,42 @@ router
  */
 
 router
-  .get("/order_history/me/:orderId", [OrderHistoryController, "getMyOrder"])
+  .get("/order_history/me/:orderId", [controllers.OrderHistory, "getMyOrder"])
   .as("order_history.get.my.order");
 router
-  .get("/order_history/me", [OrderHistoryController, "getMyOrders"])
+  .get("/order_history/me", [controllers.OrderHistory, "getMyOrders"])
   .as("order_history.get.my.orders");
 
 /**
  * Checkout
  */
 router
-  .post("/checkout", [CheckoutController, "initializeCheckout"])
+  .post("/checkout", [controllers.Checkout, "initializeCheckout"])
   .as("checkout.initialize");
 router
-  .post("/checkout/confirm/:orderId", [CheckoutController, "confirmCheckout"])
+  .post("/checkout/confirm/:orderId", [controllers.Checkout, "confirmCheckout"])
   .as("checkout.confirm");
 router
-  .post("/checkout/vipps/callback", [CheckoutController, "handleVippsCallback"])
+  .post("/checkout/vipps/callback", [
+    controllers.Checkout,
+    "handleVippsCallback",
+  ])
   .as("checkout.vipps.callback");
 router
-  .get("/checkout/poll/:orderId", [CheckoutController, "pollPayment"])
+  .get("/checkout/poll/:orderId", [controllers.Checkout, "pollPayment"])
   .as("checkout.poll");
 
 /**
  * Subjects
  */
 router
-  .get("/subjects/:branchId", [SubjectsController, "getBranchSubjects"])
+  .get("/subjects/:branchId", [controllers.Subjects, "getBranchSubjects"])
   .as("subjects.get.branch.subjects");
 router
-  .get("/branch_items/:branchId", [BranchItemsController, "getBranchItems"])
+  .get("/branch_items/:branchId", [controllers.BranchItems, "getBranchItems"])
   .as("branch_items.get");
 router
-  .post("/branch_items", [BranchItemsController, "setBranchItems"])
+  .post("/branch_items", [controllers.BranchItems, "setBranchItems"])
   .as("branch_items.post");
 
 /**
@@ -410,7 +373,7 @@ router
  */
 router
   .get("/postal/lookup/postal_code/:postalCode", [
-    PostalController,
+    controllers.Postal,
     "lookupPostalCode",
   ])
   .as("lookup.postal.code");
@@ -419,41 +382,41 @@ router
  * Companies
  */
 router
-  .get("/v2/companies", [CompaniesController, "getCompanies"])
+  .get("/v2/companies", [controllers.Companies, "getCompanies"])
   .as("companies.get");
 router
-  .post("/v2/companies", [CompaniesController, "addCompany"])
+  .post("/v2/companies", [controllers.Companies, "addCompany"])
   .as("companies.add");
 router
-  .delete("/v2/companies/:companyId", [CompaniesController, "deleteCompany"])
+  .delete("/v2/companies/:companyId", [controllers.Companies, "deleteCompany"])
   .as("companies.delete");
 
 /**
  * Opening Hours
  */
 router
-  .get("/v2/opening_hours/:id", [OpeningHoursController, "get"])
+  .get("/v2/opening_hours/:id", [controllers.OpeningHours, "get"])
   .as("opening_hours.get");
 router
-  .post("/v2/opening_hours", [OpeningHoursController, "add"])
+  .post("/v2/opening_hours", [controllers.OpeningHours, "add"])
   .as("opening_hours.add");
 router
-  .delete("/v2/opening_hours/:id", [OpeningHoursController, "delete"])
+  .delete("/v2/opening_hours/:id", [controllers.OpeningHours, "delete"])
   .as("opening_hours.delete");
 
 /**
  * Items
  */
-router.get("/v2/items", [ItemsController, "get"]).as("items.get");
+router.get("/v2/items", [controllers.Items, "get"]).as("items.get");
 
 /**
  * Dispatch
  */
 router
-  .get("/dispatch/email_templates", [DispatchController, "getEmailTemplates"])
+  .get("/dispatch/email_templates", [controllers.Dispatch, "getEmailTemplates"])
   .as("dispatch.get.email_templates");
 router
-  .post("/dispatch", [DispatchController, "createDispatch"])
+  .post("/dispatch", [controllers.Dispatch, "createDispatch"])
   .as("dispatch.create");
 
 /**

@@ -14,17 +14,10 @@ import {
   passwordResetValidValidator,
 } from "#validators/auth_validators";
 
-async function getPasswordReset({
-  resetId,
-  resetToken,
-}: {
-  resetId: string;
-  resetToken: string;
-}) {
+async function getPasswordReset({ resetId, resetToken }: { resetId: string; resetToken: string }) {
   let pendingPasswordReset: PendingPasswordReset;
   try {
-    pendingPasswordReset =
-      await StorageService.PendingPasswordResets.get(resetId);
+    pendingPasswordReset = await StorageService.PendingPasswordResets.get(resetId);
   } catch {
     return {
       message: `Lenken har utløpt. Du kan be om å få tilsendt en ny lenke på 'glemt passord'-siden`,
@@ -39,19 +32,14 @@ async function getPasswordReset({
     };
   }
 
-  const userDetail = await UserDetailService.getByEmail(
-    pendingPasswordReset.email,
-  );
+  const userDetail = await UserDetailService.getByEmail(pendingPasswordReset.email);
   if (!userDetail) {
     throw new Error("Brukeren finnes ikke");
   }
 
   let user = await UserService.getByUserDetailsId(userDetail.id);
   if (!user) {
-    user = await UserService.createLocalUser(
-      userDetail.id,
-      CryptoService.random(),
-    );
+    user = await UserService.createLocalUser(userDetail.id, CryptoService.random());
   }
 
   return { user, pendingPasswordReset };
@@ -88,9 +76,8 @@ export default class PasswordResetController {
   }
 
   async resetPassword({ request }: HttpContext) {
-    const { resetId, resetToken, newPassword } = await request.validateUsing(
-      passwordResetValidator,
-    );
+    const { resetId, resetToken, newPassword } =
+      await request.validateUsing(passwordResetValidator);
     const result = await getPasswordReset({
       resetId,
       resetToken,
@@ -102,16 +89,12 @@ export default class PasswordResetController {
 
     await PasswordService.setPassword(result.user.id, newPassword);
 
-    await StorageService.PendingPasswordResets.remove(
-      result.pendingPasswordReset.id,
-    );
+    await StorageService.PendingPasswordResets.remove(result.pendingPasswordReset.id);
     return {};
   }
 
   async validatePasswordReset({ request }: HttpContext) {
-    const { resetId, resetToken } = await request.validateUsing(
-      passwordResetValidValidator,
-    );
+    const { resetId, resetToken } = await request.validateUsing(passwordResetValidValidator);
     const result = await getPasswordReset({ resetId, resetToken });
     if (!result.pendingPasswordReset) {
       return { message: result.message };

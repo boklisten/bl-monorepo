@@ -4,12 +4,8 @@ import { UserService } from "#services/user_service";
 import { AccessToken } from "#shared/access-token";
 
 export class UserCanDeleteUserDetail {
-  public async canDelete(
-    userIdToDelete: string,
-    accessToken: AccessToken,
-  ): Promise<boolean> {
-    const userDetailToDelete =
-      await StorageService.UserDetails.get(userIdToDelete);
+  public async canDelete(userIdToDelete: string, accessToken: AccessToken): Promise<boolean> {
+    const userDetailToDelete = await StorageService.UserDetails.get(userIdToDelete);
 
     if (userDetailToDelete.id === accessToken.details) {
       return true;
@@ -18,16 +14,11 @@ export class UserCanDeleteUserDetail {
     if (!PermissionService.isAdmin(accessToken.permission)) {
       return false;
     }
-    const userToDelete = await UserService.getByUserDetailsId(
-      userDetailToDelete.id,
-    );
+    const userToDelete = await UserService.getByUserDetailsId(userDetailToDelete.id);
 
     return (
       userToDelete !== null &&
-      PermissionService.isPermissionOver(
-        accessToken.permission,
-        userToDelete.permission,
-      )
+      PermissionService.isPermissionOver(accessToken.permission, userToDelete.permission)
     );
   }
 }

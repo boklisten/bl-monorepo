@@ -4,7 +4,5 @@ export function cleanUserInput(dirtyText: string) {
   const caseCorrectedWordParts = withCoalescedSpaces
     .split(/[ -]/g)
     .map((word) => word[0]?.toUpperCase() + word.slice(1).toLowerCase());
-  return caseCorrectedWordParts
-    .map((part, index) => part + (separators?.[index] ?? ""))
-    .join("");
+  return caseCorrectedWordParts.map((part, index) => part + (separators?.[index] ?? "")).join("");
 }

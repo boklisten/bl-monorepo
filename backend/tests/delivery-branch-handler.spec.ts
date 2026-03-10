@@ -28,8 +28,9 @@ test.group("DeliveryBringHandler", (group) => {
   test("should reject if delivery.amount is not equal to 0", async () => {
     testDelivery.amount = 133;
 
-    return expect(
-      deliveryBranchHandler.validate(testDelivery),
-    ).to.be.rejectedWith(BlError, /delivery.amount is "133" but should be "0"/);
+    return expect(deliveryBranchHandler.validate(testDelivery)).to.be.rejectedWith(
+      BlError,
+      /delivery.amount is "133" but should be "0"/,
+    );
   });
 });

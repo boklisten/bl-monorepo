@@ -77,9 +77,7 @@ test.group("UserDetailValidOperation", (group) => {
     assert.deepEqual(response, expected);
   });
 
-  test("should resolve with valid false if name is not defined", async ({
-    assert,
-  }) => {
+  test("should resolve with valid false if name is not defined", async ({ assert }) => {
     testUserDetail.name = "";
     const blApiRequest: BlApiRequest = {
       documentId: "userDetail1",
@@ -91,10 +89,7 @@ test.group("UserDetailValidOperation", (group) => {
       null,
       null,
     );
-    assert.deepEqual(
-      response,
-      new BlapiResponse([{ valid: false, invalidFields: ["name"] }]),
-    );
+    assert.deepEqual(response, new BlapiResponse([{ valid: false, invalidFields: ["name"] }]));
   });
 
   test("should resolve with valid false if address and postCode is not defined", async ({
@@ -107,9 +102,7 @@ test.group("UserDetailValidOperation", (group) => {
     const blApiRequest: BlApiRequest = {
       documentId: "userDetail1",
     };
-    const expected = new BlapiResponse([
-      { valid: false, invalidFields: ["address", "postCode"] },
-    ]);
+    const expected = new BlapiResponse([{ valid: false, invalidFields: ["address", "postCode"] }]);
 
     const response = await userDetailValidOperation.run(
       blApiRequest,
@@ -130,9 +123,7 @@ test.group("UserDetailValidOperation", (group) => {
     const blApiRequest: BlApiRequest = {
       documentId: "userDetail1",
     };
-    const expected = new BlapiResponse([
-      { valid: false, invalidFields: ["postCity", "phone"] },
-    ]);
+    const expected = new BlapiResponse([{ valid: false, invalidFields: ["postCity", "phone"] }]);
 
     const response = await userDetailValidOperation.run(
       blApiRequest,
@@ -143,17 +134,13 @@ test.group("UserDetailValidOperation", (group) => {
     assert.deepEqual(response, expected);
   });
 
-  test("should resolve with valid false if dob is not defined", async ({
-    assert,
-  }) => {
+  test("should resolve with valid false if dob is not defined", async ({ assert }) => {
     // @ts-expect-error fixme: auto ignored
     testUserDetail.dob = undefined;
     const blApiRequest: BlApiRequest = {
       documentId: "userDetail1",
     };
-    const expected = new BlapiResponse([
-      { valid: false, invalidFields: ["dob"] },
-    ]);
+    const expected = new BlapiResponse([{ valid: false, invalidFields: ["dob"] }]);
 
     const response = await userDetailValidOperation.run(
       blApiRequest,

@@ -8,23 +8,14 @@ import NextAnchor from "@/shared/components/NextAnchor";
 export default async function PublicPageFooter() {
   "use cache";
   return (
-    <Stack
-      bg={"#1e2e2c"}
-      c={"#fff"}
-      align={"center"}
-      mt={"xl"}
-      p={"md"}
-      component={"footer"}
-    >
+    <Stack bg={"#1e2e2c"} c={"#fff"} align={"center"} mt={"xl"} p={"md"} component={"footer"}>
       <ContactInfo />
       <Group mt={50}>
         <NextAnchor href={"/info/policies/conditions"}>Betingelser</NextAnchor>
         {" | "}
         <NextAnchor href={"/info/policies/terms"}>Vilkår</NextAnchor>
         {" | "}
-        <NextAnchor href={"/info/policies/privacy"}>
-          Personvernserklæring
-        </NextAnchor>
+        <NextAnchor href={"/info/policies/privacy"}>Personvernserklæring</NextAnchor>
       </Group>
       <Text>Organisasjonsnummer: 912047385 MVA</Text>
       <Group gap={"xs"}>

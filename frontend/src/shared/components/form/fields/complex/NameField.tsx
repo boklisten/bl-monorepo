@@ -8,13 +8,11 @@ export function nameFieldValidator(
 ) {
   if (!value) {
     if (context === "personal") return "Du må fylle inn ditt fulle navn";
-    if (context === "guardian")
-      return "Du må fylle inn foresatt sitt fulle navn";
+    if (context === "guardian") return "Du må fylle inn foresatt sitt fulle navn";
     if (context === "administrate") return "Du må fylle inn kundens fulle navn";
   }
 
-  if (value.split(" ").length <= 1)
-    return "Du må fylle inn både fornavn og etternavn";
+  if (value.split(" ").length <= 1) return "Du må fylle inn både fornavn og etternavn";
   return null;
 }
 

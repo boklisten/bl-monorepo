@@ -7,10 +7,7 @@ import { BlStorageData } from "#services/storage_service";
 import { BlError } from "#shared/bl-error";
 import { Branch } from "#shared/branch";
 import { BlApiRequest } from "#types/bl-api-request";
-import {
-  BlDocumentPermission,
-  BlEndpointRestriction,
-} from "#types/bl-collection";
+import { BlDocumentPermission, BlEndpointRestriction } from "#types/bl-collection";
 
 chaiUse(chaiAsPromised);
 should();
@@ -57,11 +54,7 @@ test.group("CollectionEndpointDocumentAuth", (group) => {
     testDocs[0].user.id = "user1";
 
     return expect(
-      CollectionEndpointDocumentAuth.validate(
-        testRestriction,
-        testDocs,
-        testBlApiRequest,
-      ),
+      CollectionEndpointDocumentAuth.validate(testRestriction, testDocs, testBlApiRequest),
     ).to.be.fulfilled;
   });
 
@@ -86,10 +79,7 @@ test.group("CollectionEndpointDocumentAuth", (group) => {
         testBlApiRequest,
         documentPermission,
       ),
-    ).to.be.rejectedWith(
-      BlError,
-      /lacking restricted permission to view or edit the document/,
-    );
+    ).to.be.rejectedWith(BlError, /lacking restricted permission to view or edit the document/);
   });
 
   test("should resolve if user permission is equal or higher than documentPermission", async () => {
@@ -127,15 +117,8 @@ test.group("CollectionEndpointDocumentAuth", (group) => {
     testDocs[0].user.permission = "employee";
 
     return expect(
-      CollectionEndpointDocumentAuth.validate(
-        testRestriction,
-        testDocs,
-        testBlApiRequest,
-      ),
-    ).to.be.rejectedWith(
-      BlError,
-      /lacking restricted permission to view or edit the document/,
-    );
+      CollectionEndpointDocumentAuth.validate(testRestriction, testDocs, testBlApiRequest),
+    ).to.be.rejectedWith(BlError, /lacking restricted permission to view or edit the document/);
   });
 
   test("should resolve if blApiRequest.user.permission is higher than document.user.permission", async () => {
@@ -149,11 +132,7 @@ test.group("CollectionEndpointDocumentAuth", (group) => {
     testDocs[0].user.permission = "employee";
 
     return expect(
-      CollectionEndpointDocumentAuth.validate(
-        testRestriction,
-        testDocs,
-        testBlApiRequest,
-      ),
+      CollectionEndpointDocumentAuth.validate(testRestriction, testDocs, testBlApiRequest),
     ).to.be.fulfilled;
   });
 
@@ -181,11 +160,7 @@ test.group("CollectionEndpointDocumentAuth", (group) => {
     testBlApiRequest.user.id = "user2";
 
     return expect(
-      CollectionEndpointDocumentAuth.validate(
-        testRestriction,
-        testDocs,
-        testBlApiRequest,
-      ),
+      CollectionEndpointDocumentAuth.validate(testRestriction, testDocs, testBlApiRequest),
     ).to.be.rejectedWith(BlError, /document is not viewable for user/);
   });
 
@@ -213,11 +188,7 @@ test.group("CollectionEndpointDocumentAuth", (group) => {
     testBlApiRequest.user.id = "user4";
 
     return expect(
-      CollectionEndpointDocumentAuth.validate(
-        testRestriction,
-        testDocs,
-        testBlApiRequest,
-      ),
+      CollectionEndpointDocumentAuth.validate(testRestriction, testDocs, testBlApiRequest),
     ).to.be.fulfilled;
   });
 });

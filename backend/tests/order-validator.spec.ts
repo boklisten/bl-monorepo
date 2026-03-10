@@ -145,9 +145,10 @@ test.group("OrderValidator", (group) => {
   test("should reject if amount is null or undefined", async () => {
     // @ts-expect-error fixme: auto ignored
     testOrder.amount = undefined;
-    return expect(
-      orderValidator.validate(testOrder, false),
-    ).to.eventually.be.rejectedWith(BlError, /order.amount is undefined/);
+    return expect(orderValidator.validate(testOrder, false)).to.eventually.be.rejectedWith(
+      BlError,
+      /order.amount is undefined/,
+    );
   });
 
   test("should reject if branch is not found", async () => {
@@ -161,9 +162,7 @@ test.group("OrderValidator", (group) => {
 
   test("should reject if orderItems is empty or undefined", async () => {
     testOrder.orderItems = [];
-    return expect(
-      orderValidator.validate(testOrder, false),
-    ).to.eventually.be.rejectedWith(
+    return expect(orderValidator.validate(testOrder, false)).to.eventually.be.rejectedWith(
       BlError,
       /order.orderItems is empty or undefined/,
     );
@@ -172,17 +171,16 @@ test.group("OrderValidator", (group) => {
   test("should reject with error", async () => {
     orderItemShouldResolve = false;
 
-    return expect(
-      orderValidator.validate(testOrder, false),
-    ).to.eventually.be.rejectedWith(BlError, /orderItems not valid/);
+    return expect(orderValidator.validate(testOrder, false)).to.eventually.be.rejectedWith(
+      BlError,
+      /orderItems not valid/,
+    );
   });
 
   test("should reject with error", async () => {
     orderPlacedShouldResolve = false;
 
-    return expect(
-      orderValidator.validate(testOrder, false),
-    ).to.eventually.be.rejectedWith(
+    return expect(orderValidator.validate(testOrder, false)).to.eventually.be.rejectedWith(
       BlError,
       /validation of order.placed failed/,
     );

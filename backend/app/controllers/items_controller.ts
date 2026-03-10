@@ -6,8 +6,6 @@ import { StorageService } from "#services/storage_service";
 export default class ItemsController {
   async get(ctx: HttpContext) {
     PermissionService.adminOrFail(ctx);
-    return (await StorageService.Items.getAll()).sort((a, b) =>
-      a.title.localeCompare(b.title),
-    );
+    return (await StorageService.Items.getAll()).sort((a, b) => a.title.localeCompare(b.title));
   }
 }

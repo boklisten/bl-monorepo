@@ -8,21 +8,19 @@ on:
 
 jobs:
   code_style:
-    name: Prettier Check
+    name: Code Style
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v6
       - uses: pnpm/action-setup@v4
-        with:
-          version: 10
       - uses: actions/setup-node@v6
         with:
-          node-version: "24"
+          node-version: lts/*
           cache: pnpm
       - name: Install dependencies
         run: pnpm install
-      - name: Prettier Check
-        run: pnpm run prettier:check
+      - name: Oxfmt
+        run: pnpm run format:check
 
   type_check:
     name: Type Check
@@ -30,11 +28,9 @@ jobs:
     steps:
       - uses: actions/checkout@v6
       - uses: pnpm/action-setup@v4
-        with:
-          version: 10
       - uses: actions/setup-node@v6
         with:
-          node-version: "24"
+          node-version: lts/*
           cache: pnpm
       - name: Install dependencies
         run: pnpm install
@@ -47,11 +43,9 @@ jobs:
     steps:
       - uses: actions/checkout@v6
       - uses: pnpm/action-setup@v4
-        with:
-          version: 10
       - uses: actions/setup-node@v6
         with:
-          node-version: "24"
+          node-version: lts/*
           cache: pnpm
       - name: Install dependencies
         run: pnpm install
@@ -64,11 +58,9 @@ jobs:
     steps:
       - uses: actions/checkout@v6
       - uses: pnpm/action-setup@v4
-        with:
-          version: 10
       - uses: actions/setup-node@v6
         with:
-          node-version: "24"
+          node-version: lts/*
           cache: pnpm
       - name: Install dependencies
         run: pnpm install
@@ -81,11 +73,9 @@ jobs:
     steps:
       - uses: actions/checkout@v6
       - uses: pnpm/action-setup@v4
-        with:
-          version: 10
       - uses: actions/setup-node@v6
         with:
-          node-version: "24"
+          node-version: lts/*
           cache: pnpm
       - name: Install dependencies
         run: pnpm install
@@ -101,11 +91,9 @@ jobs:
     steps:
       - uses: actions/checkout@v6
       - uses: pnpm/action-setup@v4
-        with:
-          version: 10
       - uses: actions/setup-node@v6
         with:
-          node-version: "24"
+          node-version: lts/*
           cache: pnpm
       - name: Install dependencies
         run: pnpm install

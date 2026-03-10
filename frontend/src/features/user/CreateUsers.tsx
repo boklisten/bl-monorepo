@@ -3,10 +3,7 @@ import { useMutation } from "@tanstack/react-query";
 
 import UploadCSVFile from "@/shared/components/UploadCSVFile";
 import useApiClient from "@/shared/hooks/useApiClient";
-import {
-  showErrorNotification,
-  showSuccessNotification,
-} from "@/shared/utils/notifications";
+import { showErrorNotification, showSuccessNotification } from "@/shared/utils/notifications";
 
 interface UserCandidate {
   name: string;

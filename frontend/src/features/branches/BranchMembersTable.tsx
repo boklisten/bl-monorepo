@@ -9,10 +9,7 @@ import { MRT_Localization_NO } from "mantine-react-table/locales/no";
 
 import { useAppForm } from "@/shared/hooks/form";
 import useApiClient from "@/shared/hooks/useApiClient";
-import {
-  showErrorNotification,
-  showSuccessNotification,
-} from "@/shared/utils/notifications";
+import { showErrorNotification, showSuccessNotification } from "@/shared/utils/notifications";
 
 export default function BranchMembersTable({
   branchId,
@@ -43,10 +40,7 @@ export default function BranchMembersTable({
     onError: () => showErrorNotification("Klarte ikke endre medlemsskap!"),
     onSettled: () =>
       queryClient.invalidateQueries({
-        queryKey: [
-          client.v2.branches.memberships({ branchId }).$url(),
-          branchId,
-        ],
+        queryKey: [client.v2.branches.memberships({ branchId }).$url(), branchId],
       }),
   });
   const table = useMantineReactTable({
@@ -80,9 +74,7 @@ export default function BranchMembersTable({
       return (
         <Group>
           <form.AppField name={"branchMembership"}>
-            {(field) => (
-              <field.SelectBranchField perspective={"administrate"} />
-            )}
+            {(field) => <field.SelectBranchField perspective={"administrate"} />}
           </form.AppField>
           <Button onClick={form.handleSubmit} bg={"green"}>
             Lagre

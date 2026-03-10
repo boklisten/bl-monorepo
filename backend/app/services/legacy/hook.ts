@@ -5,23 +5,15 @@ import { BlDocument } from "#shared/bl-document";
 
 export class Hook {
   public before(
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    body?: unknown,
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    accessToken?: JwtPayload,
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    id?: string,
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    query?: ParsedQs,
+    _body?: unknown,
+    _accessToken?: JwtPayload,
+    _id?: string,
+    _query?: ParsedQs,
   ): Promise<boolean | unknown> {
     return Promise.resolve(true);
   }
 
-  after(
-    docs: BlDocument[],
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    accessToken?: JwtPayload,
-  ): Promise<BlDocument[]> {
+  after(docs: BlDocument[], _accessToken?: JwtPayload): Promise<BlDocument[]> {
     return Promise.resolve(docs ? docs : []);
   }
 }

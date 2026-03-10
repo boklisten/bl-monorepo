@@ -5,11 +5,7 @@
 import { CartItem } from "@boklisten/backend/shared/cart_item";
 import { Affix, Box, Button, Card, Stack, Text } from "@mantine/core";
 import { useSet } from "@mantine/hooks";
-import {
-  IconArrowBack,
-  IconBasket,
-  IconBasketCheck,
-} from "@tabler/icons-react";
+import { IconArrowBack, IconBasket, IconBasketCheck } from "@tabler/icons-react";
 import { useQuery } from "@tanstack/react-query";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -38,18 +34,12 @@ export default function SelectSubjects({
 
   return (
     <>
-      <Activity
-        mode={Object.entries(subjects).length === 0 ? "visible" : "hidden"}
-      >
+      <Activity mode={Object.entries(subjects).length === 0 ? "visible" : "hidden"}>
         <InfoAlert title={"Ingen fag tilgjengelig"}>
-          Denne skolen har ikke satt opp noen fag enda. Ta kontakt på
-          info@boklisten.no om du har spørsmål.
+          Denne skolen har ikke satt opp noen fag enda. Ta kontakt på info@boklisten.no om du har
+          spørsmål.
         </InfoAlert>
-        <Button
-          component={Link}
-          href={"/bestilling"}
-          leftSection={<IconArrowBack />}
-        >
+        <Button component={Link} href={"/bestilling"} leftSection={<IconArrowBack />}>
           Velg en annen skole
         </Button>
       </Activity>
@@ -57,9 +47,7 @@ export default function SelectSubjects({
         .sort((a, b) => a[0].localeCompare(b[0]))
         .map(([name]) => (
           <Button
-            leftSection={
-              selectedSubjects.has(name) ? <IconBasketCheck /> : undefined
-            }
+            leftSection={selectedSubjects.has(name) ? <IconBasketCheck /> : undefined}
             bg={selectedSubjects.has(name) ? "green" : ""}
             key={name}
             onClick={() => {

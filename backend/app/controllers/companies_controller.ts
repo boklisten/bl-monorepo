@@ -24,14 +24,10 @@ export default class CompaniesController {
   }
   async getCompanies(ctx: HttpContext) {
     PermissionService.adminOrFail(ctx);
-    return (await StorageService.Companies.getAll()).sort((a, b) =>
-      a.name.localeCompare(b.name),
-    );
+    return (await StorageService.Companies.getAll()).sort((a, b) => a.name.localeCompare(b.name));
   }
   async deleteCompany(ctx: HttpContext) {
     PermissionService.adminOrFail(ctx);
-    return await StorageService.Companies.remove(
-      ctx.request.param("companyId"),
-    );
+    return await StorageService.Companies.remove(ctx.request.param("companyId"));
   }
 }

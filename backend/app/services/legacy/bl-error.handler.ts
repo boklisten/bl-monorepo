@@ -8,9 +8,10 @@ function createBlapiErrorResponse(error: unknown): BlapiErrorResponse {
     error instanceof BlError
       ? error
       : error instanceof Error
-        ? new BlError(
-            `unknown error: ${error.message}, stack:\n${error.stack}`,
-          ).store("error", error)
+        ? new BlError(`unknown error: ${error.message}, stack:\n${error.stack}`).store(
+            "error",
+            error,
+          )
         : new BlError(`unknown error: ${error}`).store("error", error);
 
   printErrorStack(blError);
@@ -38,15 +39,12 @@ function printError(error: unknown) {
     }
 
     logger.info(
-      `! (${error.getCode()}): ${error.getMsg()}` +
-        (error.stack ? `, stack:\n${error.stack}` : ""),
+      `! (${error.getCode()}): ${error.getMsg()}` + (error.stack ? `, stack:\n${error.stack}` : ""),
     );
 
     if (error.getStore() && error.getStore().length > 0) {
       for (const storeData of error.getStore()) {
-        logger.info(
-          `! (${error.getCode()}) ${JSON.stringify(storeData.value)}`,
-        );
+        logger.info(`! (${error.getCode()}) ${JSON.stringify(storeData.value)}`);
       }
     }
   } else if (error instanceof Error) {
@@ -127,8 +125,7 @@ function requestErrorResponse(code: number): BlapiErrorResponse {
       break;
     }
     case 804: {
-      blapiErrorResponse.msg =
-        "Boken du har scannet er ikke aktiv. Ta kontakt med stand for hjelp";
+      blapiErrorResponse.msg = "Boken du har scannet er ikke aktiv. Ta kontakt med stand for hjelp";
       blapiErrorResponse.httpStatus = 404;
       break;
     }
@@ -149,8 +146,7 @@ function requestErrorResponse(code: number): BlapiErrorResponse {
       break;
     }
     case 808: {
-      blapiErrorResponse.msg =
-        "Kan ikke sende e-post-påminnelse med egendefinert tekst, bare SMS";
+      blapiErrorResponse.msg = "Kan ikke sende e-post-påminnelse med egendefinert tekst, bare SMS";
       blapiErrorResponse.httpStatus = 400;
       break;
     }
@@ -174,8 +170,7 @@ function requestErrorResponse(code: number): BlapiErrorResponse {
     }
     case 812: {
       blapiErrorResponse.msg =
-        "Forsørger prøvde å signere for myndig, eller mindreårig prøve å signere for seg" +
-        " selv";
+        "Forsørger prøvde å signere for myndig, eller mindreårig prøve å signere for seg" + " selv";
       blapiErrorResponse.httpStatus = 409;
       break;
     }
@@ -271,13 +266,11 @@ function authErrorResponse(code: number): BlapiErrorResponse {
       break;
     }
     case 911: {
-      blapiErrorResponse.msg =
-        "bruker kan ikke endre egen e-post-bekreftet-status";
+      blapiErrorResponse.msg = "bruker kan ikke endre egen e-post-bekreftet-status";
       break;
     }
     case 912: {
-      blapiErrorResponse.msg =
-        "telefonnummer er allerede registrert på en annnen bruker";
+      blapiErrorResponse.msg = "telefonnummer er allerede registrert på en annnen bruker";
       break;
     }
   }
@@ -290,8 +283,7 @@ function fakeSuccessResponse(underlyingError: BlError): BlapiErrorResponse {
     httpStatus: 200,
     code: underlyingError.getCode(),
     msg:
-      "returning fake success for security reasons, underlying error: " +
-      underlyingError.getMsg(),
+      "returning fake success for security reasons, underlying error: " + underlyingError.getMsg(),
     data: [],
   };
 }

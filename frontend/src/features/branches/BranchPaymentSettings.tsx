@@ -7,11 +7,7 @@ import useUpdateBranchMutation from "@/features/branches/useUpdateBranchMutation
 import InfoAlert from "@/shared/components/alerts/InfoAlert";
 import { useAppForm } from "@/shared/hooks/form";
 
-export default function BranchPaymentSettings({
-  existingBranch,
-}: {
-  existingBranch: Branch;
-}) {
+export default function BranchPaymentSettings({ existingBranch }: { existingBranch: Branch }) {
   const updateBranchMutation = useUpdateBranchMutation();
 
   const form = useAppForm({
@@ -23,16 +19,13 @@ export default function BranchPaymentSettings({
       },
       paymentInfo: {
         responsible: existingBranch.paymentInfo?.responsible ?? false,
-        responsibleForDelivery:
-          existingBranch.paymentInfo?.responsibleForDelivery ?? false,
+        responsibleForDelivery: existingBranch.paymentInfo?.responsibleForDelivery ?? false,
         payLater: existingBranch.paymentInfo?.payLater ?? false,
         partlyPaymentPeriods:
-          existingBranch.paymentInfo?.partlyPaymentPeriods?.map(
-            (partlyPaymentPeriod) => ({
-              ...partlyPaymentPeriod,
-              date: dayjs(partlyPaymentPeriod.date).format("YYYY-MM-DD"),
-            }),
-          ) ?? [],
+          existingBranch.paymentInfo?.partlyPaymentPeriods?.map((partlyPaymentPeriod) => ({
+            ...partlyPaymentPeriod,
+            date: dayjs(partlyPaymentPeriod.date).format("YYYY-MM-DD"),
+          })) ?? [],
         rentPeriods:
           existingBranch.paymentInfo?.rentPeriods?.map((rentPeriod) => ({
             ...rentPeriod,
@@ -62,9 +55,7 @@ export default function BranchPaymentSettings({
       <form.AppField name={"deliveryMethods.byMail"}>
         {(field) => <field.SwitchField label={"Levering per post"} />}
       </form.AppField>
-      <form.Subscribe
-        selector={(state) => state.values.deliveryMethods?.byMail}
-      >
+      <form.Subscribe selector={(state) => state.values.deliveryMethods?.byMail}>
         {(value) => (
           <Activity mode={value ? "visible" : "hidden"}>
             <form.AppField name={"paymentInfo.responsibleForDelivery"}>
@@ -88,8 +79,7 @@ export default function BranchPaymentSettings({
       <Activity mode={!existingBranch.type ? "visible" : "hidden"}>
         <Fieldset legend={"Perioder"}>
           <InfoAlert title={"Ingen filialtype valgt"}>
-            Du må velge filialtype for å kunne legge inn leie- eller
-            delbetalingsperioder
+            Du må velge filialtype for å kunne legge inn leie- eller delbetalingsperioder
           </InfoAlert>
         </Fieldset>
       </Activity>
@@ -102,9 +92,7 @@ export default function BranchPaymentSettings({
                   {field.state.value.map((_, i) => (
                     <Card key={`rent-${i}`} withBorder w={"100%"}>
                       <Stack>
-                        <form.AppField
-                          name={`paymentInfo.rentPeriods[${i}].type`}
-                        >
+                        <form.AppField name={`paymentInfo.rentPeriods[${i}].type`}>
                           {(subField) => (
                             <subField.SelectField
                               label={"Type"}
@@ -118,19 +106,12 @@ export default function BranchPaymentSettings({
                             />
                           )}
                         </form.AppField>
-                        <form.AppField
-                          name={`paymentInfo.rentPeriods[${i}].date`}
-                        >
+                        <form.AppField name={`paymentInfo.rentPeriods[${i}].date`}>
                           {(subField) => (
-                            <subField.DeadlinePickerField
-                              clearable={false}
-                              label={"Frist"}
-                            />
+                            <subField.DeadlinePickerField clearable={false} label={"Frist"} />
                           )}
                         </form.AppField>
-                        <form.AppField
-                          name={`paymentInfo.rentPeriods[${i}].maxNumberOfPeriods`}
-                        >
+                        <form.AppField name={`paymentInfo.rentPeriods[${i}].maxNumberOfPeriods`}>
                           {(subField) => (
                             <subField.NumberField
                               label={"Grense"}
@@ -139,19 +120,13 @@ export default function BranchPaymentSettings({
                             />
                           )}
                         </form.AppField>
-                        <form.AppField
-                          name={`paymentInfo.rentPeriods[${i}].percentage`}
-                        >
-                          {(subField) => (
-                            <subField.PercentageField label={"Prosent"} />
-                          )}
+                        <form.AppField name={`paymentInfo.rentPeriods[${i}].percentage`}>
+                          {(subField) => <subField.PercentageField label={"Prosent"} />}
                         </form.AppField>
                         <Group>
                           <Button
                             bg={"red"}
-                            onClick={() =>
-                              field.setValue(field.state.value.toSpliced(i, 1))
-                            }
+                            onClick={() => field.setValue(field.state.value.toSpliced(i, 1))}
                           >
                             Fjern
                           </Button>
@@ -181,9 +156,7 @@ export default function BranchPaymentSettings({
           </Stack>
         </Fieldset>
       </Activity>
-      <Activity
-        mode={existingBranch.type === "privatist" ? "visible" : "hidden"}
-      >
+      <Activity mode={existingBranch.type === "privatist" ? "visible" : "hidden"}>
         <Fieldset legend={"Delbetalingsperioder"}>
           <Stack align={"center"}>
             <form.AppField name="paymentInfo.partlyPaymentPeriods" mode="array">
@@ -193,9 +166,7 @@ export default function BranchPaymentSettings({
                     <Card key={`partlyPayment-${i}`} withBorder w={"100%"}>
                       <Stack>
                         <Group w={"100%"}>
-                          <form.AppField
-                            name={`paymentInfo.partlyPaymentPeriods[${i}].type`}
-                          >
+                          <form.AppField name={`paymentInfo.partlyPaymentPeriods[${i}].type`}>
                             {(subField) => (
                               <subField.SelectField
                                 label={"Type"}
@@ -209,14 +180,9 @@ export default function BranchPaymentSettings({
                               />
                             )}
                           </form.AppField>
-                          <form.AppField
-                            name={`paymentInfo.partlyPaymentPeriods[${i}].date`}
-                          >
+                          <form.AppField name={`paymentInfo.partlyPaymentPeriods[${i}].date`}>
                             {(subField) => (
-                              <subField.DeadlinePickerField
-                                clearable={false}
-                                label={"Frist"}
-                              />
+                              <subField.DeadlinePickerField clearable={false} label={"Frist"} />
                             )}
                           </form.AppField>
                         </Group>
@@ -224,19 +190,13 @@ export default function BranchPaymentSettings({
                           <form.AppField
                             name={`paymentInfo.partlyPaymentPeriods[${i}].percentageUpFront`}
                           >
-                            {(subField) => (
-                              <subField.PercentageField
-                                label={"Første betaling"}
-                              />
-                            )}
+                            {(subField) => <subField.PercentageField label={"Første betaling"} />}
                           </form.AppField>
                           <form.AppField
                             name={`paymentInfo.partlyPaymentPeriods[${i}].percentageUpFrontUsed`}
                           >
                             {(subField) => (
-                              <subField.PercentageField
-                                label={"Første betaling (brukt)"}
-                              />
+                              <subField.PercentageField label={"Første betaling (brukt)"} />
                             )}
                           </form.AppField>
                         </Group>
@@ -244,28 +204,20 @@ export default function BranchPaymentSettings({
                           <form.AppField
                             name={`paymentInfo.partlyPaymentPeriods[${i}].percentageBuyout`}
                           >
-                            {(subField) => (
-                              <subField.PercentageField
-                                label={"Utkjøpsprosent"}
-                              />
-                            )}
+                            {(subField) => <subField.PercentageField label={"Utkjøpsprosent"} />}
                           </form.AppField>
                           <form.AppField
                             name={`paymentInfo.partlyPaymentPeriods[${i}].percentageBuyoutUsed`}
                           >
                             {(subField) => (
-                              <subField.PercentageField
-                                label={"Utkjøpsprosent (brukt)"}
-                              />
+                              <subField.PercentageField label={"Utkjøpsprosent (brukt)"} />
                             )}
                           </form.AppField>
                         </Group>
                         <Group>
                           <Button
                             bg={"red"}
-                            onClick={() =>
-                              field.setValue(field.state.value.toSpliced(i, 1))
-                            }
+                            onClick={() => field.setValue(field.state.value.toSpliced(i, 1))}
                           >
                             Fjern
                           </Button>
@@ -305,9 +257,7 @@ export default function BranchPaymentSettings({
                 {field.state.value.map((_, i) => (
                   <Card key={`extend-${i}`} withBorder w={"100%"}>
                     <Stack>
-                      <form.AppField
-                        name={`paymentInfo.extendPeriods[${i}].type`}
-                      >
+                      <form.AppField name={`paymentInfo.extendPeriods[${i}].type`}>
                         {(subField) => (
                           <subField.SelectField
                             label={"Type"}
@@ -318,19 +268,12 @@ export default function BranchPaymentSettings({
                           />
                         )}
                       </form.AppField>
-                      <form.AppField
-                        name={`paymentInfo.extendPeriods[${i}].date`}
-                      >
+                      <form.AppField name={`paymentInfo.extendPeriods[${i}].date`}>
                         {(subField) => (
-                          <subField.DeadlinePickerField
-                            clearable={false}
-                            label={"Dato"}
-                          />
+                          <subField.DeadlinePickerField clearable={false} label={"Dato"} />
                         )}
                       </form.AppField>
-                      <form.AppField
-                        name={`paymentInfo.extendPeriods[${i}].maxNumberOfPeriods`}
-                      >
+                      <form.AppField name={`paymentInfo.extendPeriods[${i}].maxNumberOfPeriods`}>
                         {(subField) => (
                           <subField.NumberField
                             label={"Grense"}
@@ -339,19 +282,13 @@ export default function BranchPaymentSettings({
                           />
                         )}
                       </form.AppField>
-                      <form.AppField
-                        name={`paymentInfo.extendPeriods[${i}].price`}
-                      >
-                        {(subField) => (
-                          <subField.CurrencyField label={"Pris"} />
-                        )}
+                      <form.AppField name={`paymentInfo.extendPeriods[${i}].price`}>
+                        {(subField) => <subField.CurrencyField label={"Pris"} />}
                       </form.AppField>
                       <Group>
                         <Button
                           bg={"red"}
-                          onClick={() =>
-                            field.setValue(field.state.value.toSpliced(i, 1))
-                          }
+                          onClick={() => field.setValue(field.state.value.toSpliced(i, 1))}
                         >
                           Fjern
                         </Button>
@@ -383,11 +320,7 @@ export default function BranchPaymentSettings({
       <form.AppForm>
         <form.ErrorSummary />
       </form.AppForm>
-      <Button
-        color={"green"}
-        onClick={form.handleSubmit}
-        loading={updateBranchMutation.isPending}
-      >
+      <Button color={"green"} onClick={form.handleSubmit} loading={updateBranchMutation.isPending}>
         Lagre
       </Button>
     </Stack>

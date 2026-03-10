@@ -133,9 +133,7 @@ test.group("OrderItemValidator", (group) => {
     // @ts-expect-error fixme: auto ignored
     testOrder.orderItems[0].amount = 250;
 
-    return expect(
-      orderItemValidator.validate(testBranch, testOrder, false),
-    ).to.be.rejectedWith(
+    return expect(orderItemValidator.validate(testBranch, testOrder, false)).to.be.rejectedWith(
       BlError,
       /order.amount is "500" but total of orderItems amount is "250"/,
     );
@@ -147,9 +145,7 @@ test.group("OrderItemValidator", (group) => {
     // @ts-expect-error fixme: auto ignored
     testOrder.orderItems[0].amount = 780;
 
-    return expect(
-      orderItemValidator.validate(testBranch, testOrder, false),
-    ).to.be.rejectedWith(
+    return expect(orderItemValidator.validate(testBranch, testOrder, false)).to.be.rejectedWith(
       BlError,
       /order.amount is "100" but total of orderItems amount is "780"/,
     );
@@ -171,8 +167,7 @@ test.group("OrderItemValidator", (group) => {
 
     testOrder.amount = 100;
 
-    return expect(orderItemValidator.validate(testBranch, testOrder, false)).to
-      .be.fulfilled;
+    return expect(orderItemValidator.validate(testBranch, testOrder, false)).to.be.fulfilled;
   });
 
   test("should reject if deadline is in the past and user is not admin", async () => {
@@ -191,10 +186,7 @@ test.group("OrderItemValidator", (group) => {
     testOrder.amount = 100;
     return expect(
       orderItemValidator.validate(testBranch, testOrder, false),
-    ).to.eventually.be.rejectedWith(
-      BlError,
-      /orderItem deadlines must be in the future/,
-    );
+    ).to.eventually.be.rejectedWith(BlError, /orderItem deadlines must be in the future/);
   });
 
   test("should reject if deadline is more than four years into the future and user is not admin", async () => {
@@ -236,8 +228,8 @@ test.group("OrderItemValidator", (group) => {
       },
     ];
     testOrder.amount = 100;
-    return expect(orderItemValidator.validate(testBranch, testOrder, true)).to
-      .eventually.be.fulfilled;
+    return expect(orderItemValidator.validate(testBranch, testOrder, true)).to.eventually.be
+      .fulfilled;
   });
 
   test("should fulfill if deadline is more than four years into the future and user is admin", async () => {
@@ -257,7 +249,7 @@ test.group("OrderItemValidator", (group) => {
       },
     ];
     testOrder.amount = 100;
-    return expect(orderItemValidator.validate(testBranch, testOrder, true)).to
-      .eventually.be.fulfilled;
+    return expect(orderItemValidator.validate(testBranch, testOrder, true)).to.eventually.be
+      .fulfilled;
   });
 });

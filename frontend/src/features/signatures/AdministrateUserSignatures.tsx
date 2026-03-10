@@ -1,14 +1,6 @@
 "use client";
 import { UserDetail } from "@boklisten/backend/shared/user-detail";
-import {
-  Box,
-  Button,
-  CopyButton,
-  Group,
-  Skeleton,
-  Stack,
-  Title,
-} from "@mantine/core";
+import { Box, Button, CopyButton, Group, Skeleton, Stack, Title } from "@mantine/core";
 import { IconCopy, IconSend } from "@tabler/icons-react";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import Image from "next/image";
@@ -18,42 +10,24 @@ import ErrorAlert from "@/shared/components/alerts/ErrorAlert";
 import WarningAlert from "@/shared/components/alerts/WarningAlert";
 import useApiClient from "@/shared/hooks/useApiClient";
 import { PLEASE_TRY_AGAIN_TEXT } from "@/shared/utils/constants";
-import {
-  showErrorNotification,
-  showSuccessNotification,
-} from "@/shared/utils/notifications";
+import { showErrorNotification, showSuccessNotification } from "@/shared/utils/notifications";
 
-export default function AdministrateUserSignatures({
-  userDetail,
-}: {
-  userDetail: UserDetail;
-}) {
+export default function AdministrateUserSignatures({ userDetail }: { userDetail: UserDetail }) {
   const client = useApiClient();
   const { data, isLoading, isError } = useQuery({
-    queryKey: [
-      client.signatures.get({ detailsId: userDetail.id }).$url(),
-      userDetail.id,
-    ],
-    queryFn: () =>
-      client.signatures.get({ detailsId: userDetail.id }).$get().unwrap(),
+    queryKey: [client.signatures.get({ detailsId: userDetail.id }).$url(), userDetail.id],
+    queryFn: () => client.signatures.get({ detailsId: userDetail.id }).$get().unwrap(),
   });
   const requestSignatureMutation = useMutation({
-    mutationFn: () =>
-      client.signatures.send({ detailsId: userDetail.id }).$post().unwrap(),
-    onSuccess: () =>
-      showSuccessNotification("Signaturforespørsel har blitt sendt!"),
-    onError: () =>
-      showErrorNotification("Klarte ikke sende signaturforespørsel"),
+    mutationFn: () => client.signatures.send({ detailsId: userDetail.id }).$post().unwrap(),
+    onSuccess: () => showSuccessNotification("Signaturforespørsel har blitt sendt!"),
+    onError: () => showErrorNotification("Klarte ikke sende signaturforespørsel"),
   });
   if (isLoading) {
     return <Skeleton />;
   }
   if (!data || isError) {
-    return (
-      <ErrorAlert title={"Klarte ikke laste signatur"}>
-        {PLEASE_TRY_AGAIN_TEXT}
-      </ErrorAlert>
-    );
+    return <ErrorAlert title={"Klarte ikke laste signatur"}>{PLEASE_TRY_AGAIN_TEXT}</ErrorAlert>;
   }
 
   if (data.isSignatureValid) {
@@ -84,9 +58,7 @@ export default function AdministrateUserSignatures({
       <Title order={2}>Signatur</Title>
       <WarningAlert title={"Denne kunden har ikke gyldig signatur"}>
         <Group>
-          <CopyButton
-            value={`${window.location.origin}/signering/${userDetail.id}`}
-          >
+          <CopyButton value={`${window.location.origin}/signering/${userDetail.id}`}>
             {({ copy }) => (
               <Button
                 leftSection={<IconCopy />}

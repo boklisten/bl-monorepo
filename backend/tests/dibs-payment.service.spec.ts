@@ -15,7 +15,6 @@ test.group("DibsPaymentService", (group) => {
   const dibsPaymentService: DibsPaymentService = new DibsPaymentService();
   let testOrder: Order;
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const testUser = {} as any;
   let sandbox = sinon.createSandbox();
 
@@ -80,20 +79,14 @@ test.group("DibsPaymentService", (group) => {
 
     // @ts-expect-error fixme: auto ignored
     testOrder.orderItems[0].unitPrice = 100;
-    const deo: DibsEasyOrder = dibsPaymentService.orderToDibsEasyOrder(
-      testUser,
-      testOrder,
-    );
+    const deo: DibsEasyOrder = dibsPaymentService.orderToDibsEasyOrder(testUser, testOrder);
 
     expect(deo.order.amount).to.eql(10000);
   });
 
   test('should return a dibsEasyOrder.reference equal to "103"', async () => {
     testOrder.id = "103";
-    const deo: DibsEasyOrder = dibsPaymentService.orderToDibsEasyOrder(
-      testUser,
-      testOrder,
-    );
+    const deo: DibsEasyOrder = dibsPaymentService.orderToDibsEasyOrder(testUser, testOrder);
     expect(deo.order.reference).to.eql("103");
   });
 

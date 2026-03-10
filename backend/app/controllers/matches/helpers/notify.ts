@@ -4,10 +4,7 @@ import DispatchService from "#services/dispatch_service";
 import { StorageService } from "#services/storage_service";
 import { matchNotifySchema } from "#validators/matches";
 
-export async function notify({
-  target,
-  message,
-}: Infer<typeof matchNotifySchema>) {
+export async function notify({ target, message }: Infer<typeof matchNotifySchema>) {
   const userMatches = await StorageService.UserMatches.getAll();
   const standMatches = await StorageService.StandMatches.getAll();
   if (userMatches.length === 0 && standMatches.length === 0) {
@@ -22,8 +19,7 @@ export async function notify({
   for (const standMatch of standMatches) {
     standMatchCustomers.add(standMatch.customer);
   }
-  const standMatchOnlyCustomers =
-    standMatchCustomers.difference(userMatchCustomers);
+  const standMatchOnlyCustomers = standMatchCustomers.difference(userMatchCustomers);
 
   let targetCustomerIds: Set<string>;
   switch (target) {
@@ -41,9 +37,7 @@ export async function notify({
       break;
     }
   }
-  const targetCustomers = await StorageService.UserDetails.getMany([
-    ...targetCustomerIds,
-  ]);
+  const targetCustomers = await StorageService.UserDetails.getMany([...targetCustomerIds]);
   const { mailStatus, smsStatus } = await DispatchService.sendMatchInformation({
     customers: targetCustomers,
     smsBody: message,

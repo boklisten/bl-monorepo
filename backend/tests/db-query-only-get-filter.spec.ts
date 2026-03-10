@@ -17,9 +17,7 @@ test.group("DbQueryOnlyGetFilter", async () => {
   });
 
   test("should return empty array if validOnlyGetParams is empty", async () => {
-    expect(dbQueryOnlyGetFilter.getOnlyGetFilters({ og: "name" }, [])).to.eql(
-      [],
-    );
+    expect(dbQueryOnlyGetFilter.getOnlyGetFilters({ og: "name" }, [])).to.eql([]);
   });
 
   test("should return array with correct onlyGet fields", async () => {
@@ -29,11 +27,7 @@ test.group("DbQueryOnlyGetFilter", async () => {
     ];
 
     expect(
-      dbQueryOnlyGetFilter.getOnlyGetFilters({ og: ["name", "age"] }, [
-        "name",
-        "age",
-        "desc",
-      ]),
+      dbQueryOnlyGetFilter.getOnlyGetFilters({ og: ["name", "age"] }, ["name", "age", "desc"]),
     ).to.eql(result);
   });
 

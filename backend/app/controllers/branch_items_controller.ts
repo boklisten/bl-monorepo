@@ -9,16 +9,11 @@ export default class BranchItemsController {
   async setBranchItems(ctx: HttpContext) {
     PermissionService.adminOrFail(ctx);
     const databaseQuery = new SEDbQuery();
-    const { branchId, branchItems } =
-      await ctx.request.validateUsing(branchItemsValidator);
+    const { branchId, branchItems } = await ctx.request.validateUsing(branchItemsValidator);
     databaseQuery.objectIdFilters = [{ fieldName: "branch", value: branchId }];
     const existingBranchItems =
       (await StorageService.BranchItems.getByQueryOrNull(databaseQuery)) ?? [];
-    await Promise.all(
-      existingBranchItems.map((ebi) =>
-        StorageService.BranchItems.remove(ebi.id),
-      ),
-    );
+    await Promise.all(existingBranchItems.map((ebi) => StorageService.BranchItems.remove(ebi.id)));
     const newBranchItems = await Promise.all(
       branchItems.map((branchItem) =>
         StorageService.BranchItems.add({
@@ -39,8 +34,7 @@ export default class BranchItemsController {
     const branchId = ctx.request.param("branchId");
     const databaseQuery = new SEDbQuery();
     databaseQuery.objectIdFilters = [{ fieldName: "branch", value: branchId }];
-    const branchItems =
-      (await StorageService.BranchItems.getByQueryOrNull(databaseQuery)) ?? [];
+    const branchItems = (await StorageService.BranchItems.getByQueryOrNull(databaseQuery)) ?? [];
 
     return (
       await Promise.all(

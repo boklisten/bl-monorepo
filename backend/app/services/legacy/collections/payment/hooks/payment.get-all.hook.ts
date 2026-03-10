@@ -8,7 +8,6 @@ export class PaymentGetAllHook extends Hook {
     body: unknown,
     accessToken?: AccessToken,
     id?: string,
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     query?: any,
   ): Promise<boolean> {
     if (

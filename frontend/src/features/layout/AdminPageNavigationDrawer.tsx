@@ -12,12 +12,7 @@ export default function AdminPageNavigationDrawer() {
     <Box hiddenFrom={"xs"}>
       <Burger color={"white"} opened={opened} onClick={toggle} />
 
-      <Drawer
-        opened={opened}
-        onClose={close}
-        position={"right"}
-        title={"Velg side"}
-      >
+      <Drawer opened={opened} onClose={close} position={"right"} title={"Velg side"}>
         <AdminPageNavigation onNavigate={close} />
       </Drawer>
     </Box>

@@ -3,10 +3,7 @@ import moment from "moment-timezone";
 type MomentLocation = "Europe/Oslo" | string;
 moment.tz.setDefault("Europe/London");
 
-function utcToLocalTimeString(
-  utcDate: Date | string,
-  location: MomentLocation,
-): string {
+function utcToLocalTimeString(utcDate: Date | string, location: MomentLocation): string {
   return moment.tz(utcDate, location).format("YYYY-MM-DDTHH:mm:ss.SSSZ");
 }
 
@@ -18,20 +15,11 @@ function toEndOfDay(date: Date | string, location: MomentLocation): Date {
   return moment.tz(date, location).endOf("day").toDate();
 }
 
-function format(
-  date: Date | string,
-  location: MomentLocation,
-  format: string,
-): string {
+function format(date: Date | string, location: MomentLocation, format: string): string {
   return moment.tz(date, location).format(format);
 }
 
-function between(
-  date: Date,
-  from: Date,
-  to: Date,
-  location: MomentLocation,
-): boolean {
+function between(date: Date, from: Date, to: Date, location: MomentLocation): boolean {
   return moment.tz(date, location).isBetween(from, to);
 }
 

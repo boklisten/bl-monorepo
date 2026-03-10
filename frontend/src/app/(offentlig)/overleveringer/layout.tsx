@@ -1,8 +1,6 @@
 import { Container, Stack } from "@mantine/core";
 
-export default function MatchPagesLayout({
-  children,
-}: LayoutProps<"/overleveringer">) {
+export default function MatchPagesLayout({ children }: LayoutProps<"/overleveringer">) {
   return (
     <Container>
       <Stack>{children}</Stack>

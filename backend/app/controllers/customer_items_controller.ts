@@ -22,28 +22,20 @@ function calculateDeadlineDateWithGracePeriod(deadline: Date): string {
 }
 
 function isHandedOutWithinTheLastTwoWeeks(customerItem: CustomerItem) {
-  return moment().isSameOrBefore(
-    moment(customerItem.creationTime).add(2, "weeks"),
-  );
+  return moment().isSameOrBefore(moment(customerItem.creationTime).add(2, "weeks"));
 }
 
 function isDeadlineWithGracePeriodExpired(customerItem: CustomerItem) {
   return (
     new Date().getTime() >
-    new Date(
-      calculateDeadlineDateWithGracePeriod(customerItem.deadline),
-    ).getTime()
+    new Date(calculateDeadlineDateWithGracePeriod(customerItem.deadline)).getTime()
   );
 }
 
-function branchHasExtensionsInTheFuture(
-  originalDeadline: Date,
-  branch: Branch,
-): boolean {
+function branchHasExtensionsInTheFuture(originalDeadline: Date, branch: Branch): boolean {
   return (
     branch.paymentInfo?.extendPeriods.some(
-      (extendPeriod) =>
-        originalDeadline.getTime() < extendPeriod.date.getTime(),
+      (extendPeriod) => originalDeadline.getTime() < extendPeriod.date.getTime(),
     ) ?? false
   );
 }
@@ -52,15 +44,11 @@ function hasBeenExtendedBefore(customerItem: CustomerItem) {
   return (customerItem.periodExtends ?? []).length > 0;
 }
 
-function calculateExtensionStatus(
-  customerItem: CustomerItem,
-  branch: Branch | null,
-) {
+function calculateExtensionStatus(customerItem: CustomerItem, branch: Branch | null) {
   if (!branch)
     return {
       canExtend: false,
-      feedback:
-        "Fant ikke filialen som denne boka er utdelt på. Vennligst ta kontakt for hjelp",
+      feedback: "Fant ikke filialen som denne boka er utdelt på. Vennligst ta kontakt for hjelp",
     } as const;
 
   if (isDeadlineWithGracePeriodExpired(customerItem))
@@ -91,10 +79,7 @@ function calculateExtensionStatus(
   } as const;
 }
 
-async function calculateBuyoutStatus(
-  customerItem: CustomerItem,
-  branch: Branch | null,
-) {
+async function calculateBuyoutStatus(customerItem: CustomerItem, branch: Branch | null) {
   if (isDeadlineWithGracePeriodExpired(customerItem))
     return {
       canBuyout: false,
@@ -108,12 +93,8 @@ async function calculateBuyoutStatus(
     } as const;
 
   const item = await StorageService.Items.getOrNull(customerItem.item);
-  const order = await StorageService.Orders.getOrNull(
-    customerItem.orders?.at(-1),
-  );
-  const orderItem = order?.orderItems.find(
-    (oi) => oi.customerItem === customerItem.id,
-  );
+  const order = await StorageService.Orders.getOrNull(customerItem.orders?.at(-1));
+  const orderItem = order?.orderItems.find((oi) => oi.customerItem === customerItem.id);
   const buyoutPercentage =
     branch?.paymentInfo?.partlyPaymentPeriods?.find(
       (period) => period.type === orderItem?.info?.periodType,
@@ -122,16 +103,13 @@ async function calculateBuyoutStatus(
   if (!item || !buyoutPercentage)
     return {
       canBuyout: false,
-      feedback:
-        "Klarte ikke beregne utkjøpspris. Vennligst ta kontakt hvis du vil kjøpe ut boka.",
+      feedback: "Klarte ikke beregne utkjøpspris. Vennligst ta kontakt hvis du vil kjøpe ut boka.",
     } as const;
 
   return {
     canBuyout: true,
     feedback: "",
-    price:
-      customerItem.amountLeftToPay ||
-      Math.floor((item.price * buyoutPercentage) / 10) * 10,
+    price: customerItem.amountLeftToPay || Math.floor((item.price * buyoutPercentage) / 10) * 10,
   } as const;
 }
 
@@ -151,16 +129,13 @@ export default class CustomerItemsController {
     const databaseQuery = new SEDbQuery();
     databaseQuery.stringFilters = [{ fieldName: "customer", value: detailsId }];
     databaseQuery.sortFilters = [{ fieldName: "lastUpdated", direction: -1 }];
-    const customerItems =
-      await StorageService.CustomerItems.getByQueryOrNull(databaseQuery);
+    const customerItems = await StorageService.CustomerItems.getByQueryOrNull(databaseQuery);
     if (!customerItems) return [];
 
     return await Promise.all(
       customerItems.map(async (customerItem) => {
         const item = await StorageService.Items.get(customerItem.item);
-        const branch = await StorageService.Branches.get(
-          customerItem.handoutInfo?.handoutById,
-        );
+        const branch = await StorageService.Branches.get(customerItem.handoutInfo?.handoutById);
         const extensionStatus = calculateExtensionStatus(customerItem, branch);
         const buyoutStatus = await calculateBuyoutStatus(customerItem, branch);
         return {

@@ -1,5 +1,5 @@
+// oxlint-disable-next-line unicorn/no-empty-file
 // fixme: remove this when rewriting
-/* eslint-disable import-x/no-unused-modules */
 
 /* fixme: rewrite
 import { MatchLocation } from "#services/collections/user-match/helpers/match-finder/match-enums";

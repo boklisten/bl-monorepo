@@ -5,10 +5,7 @@ import dayjs from "dayjs";
 
 import { useAppForm } from "@/shared/hooks/form";
 import useApiClient from "@/shared/hooks/useApiClient";
-import {
-  showErrorNotification,
-  showSuccessNotification,
-} from "@/shared/utils/notifications";
+import { showErrorNotification, showSuccessNotification } from "@/shared/utils/notifications";
 
 function combineDateAndTime(date: string, time: string) {
   return dayjs(`${date}T${time}`).toISOString();
@@ -18,9 +15,8 @@ export default function CreateOpeningHours({ branchId }: { branchId: string }) {
   const client = useApiClient();
   const queryClient = useQueryClient();
   const createOpeningHourMutation = useMutation({
-    mutationFn: (
-      data: InferRequestType<typeof client.v2.opening_hours.$post>,
-    ) => client.v2.opening_hours.$post(data).unwrap(),
+    mutationFn: (data: InferRequestType<typeof client.v2.opening_hours.$post>) =>
+      client.v2.opening_hours.$post(data).unwrap(),
     onError: () => showErrorNotification("Klarte ikke legg til åpningstid"),
     onSuccess: () => {
       showSuccessNotification("Åpningstid ble lagt til!");
@@ -67,8 +63,7 @@ export default function CreateOpeningHours({ branchId }: { branchId: string }) {
         <form.AppField
           name={"start"}
           validators={{
-            onBlur: ({ value }) =>
-              !value ? "Du må fylle inn starttidspunkt" : null,
+            onBlur: ({ value }) => (!value ? "Du må fylle inn starttidspunkt" : null),
           }}
         >
           {(field) => <field.TimePickerField required label={"Fra"} />}
@@ -76,8 +71,7 @@ export default function CreateOpeningHours({ branchId }: { branchId: string }) {
         <form.AppField
           name={"end"}
           validators={{
-            onBlur: ({ value }) =>
-              !value ? "Du må fylle inn slutttidspunkt" : null,
+            onBlur: ({ value }) => (!value ? "Du må fylle inn slutttidspunkt" : null),
           }}
         >
           {(field) => <field.TimePickerField required label={"Til"} />}

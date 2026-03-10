@@ -83,19 +83,13 @@ test.group("PaymentValidator", (group) => {
   test("validate() - should reject if paymentMethod is not valid", async () => {
     return expect(
       paymentValidator.validate(
-        JSON.parse(
-          JSON.stringify({ method: "something", order: testOrder.id }),
-        ),
+        JSON.parse(JSON.stringify({ method: "something", order: testOrder.id })),
       ),
-    ).to.eventually.be.rejectedWith(
-      BlError,
-      'payment.method "something" not supported',
-    );
+    ).to.eventually.be.rejectedWith(BlError, 'payment.method "something" not supported');
   });
 
   test("validate() - should resolve when payment is valid", async () => {
-    return expect(paymentValidator.validate(testPayment)).to.eventually.be
-      .fulfilled;
+    return expect(paymentValidator.validate(testPayment)).to.eventually.be.fulfilled;
   });
 
   test("validate() - should reject if order is not found", async () => {

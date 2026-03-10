@@ -9,10 +9,7 @@ import SuccessAlert from "@/shared/components/alerts/SuccessAlert";
 import { newPasswordFieldValidator } from "@/shared/components/form/fields/complex/NewPasswordField";
 import NextAnchor from "@/shared/components/NextAnchor";
 import { useAppForm } from "@/shared/hooks/form";
-import {
-  GENERIC_ERROR_TEXT,
-  PLEASE_TRY_AGAIN_TEXT,
-} from "@/shared/utils/constants";
+import { GENERIC_ERROR_TEXT, PLEASE_TRY_AGAIN_TEXT } from "@/shared/utils/constants";
 import { publicApiClient } from "@/shared/utils/publicApiClient";
 
 interface PasswordResetFields {
@@ -70,11 +67,7 @@ export default function PasswordReset({ resetId }: { resetId: string }) {
       </Activity>
 
       <Activity
-        mode={
-          !isExpired && (!resetPasswordMutation.isSuccess || apiError)
-            ? "visible"
-            : "hidden"
-        }
+        mode={!isExpired && (!resetPasswordMutation.isSuccess || apiError) ? "visible" : "hidden"}
       >
         <Activity mode={apiError ? "visible" : "hidden"}>
           <ErrorAlert title={GENERIC_ERROR_TEXT}>{apiError}</ErrorAlert>
@@ -88,21 +81,13 @@ export default function PasswordReset({ resetId }: { resetId: string }) {
           {(field) => <field.NewPasswordField label={"Nytt passord"} />}
         </form.AppField>
         <Button onClick={form.handleSubmit}>Lag nytt passord</Button>
-        <NextAnchor href={"/auth/login"}>
-          Tilbake til innloggingssiden
-        </NextAnchor>
+        <NextAnchor href={"/auth/login"}>Tilbake til innloggingssiden</NextAnchor>
       </Activity>
 
       <Activity
-        mode={
-          !isExpired && resetPasswordMutation.isSuccess && !apiError
-            ? "visible"
-            : "hidden"
-        }
+        mode={!isExpired && resetPasswordMutation.isSuccess && !apiError ? "visible" : "hidden"}
       >
-        <SuccessAlert>
-          Passordet ble oppdatert! Du kan nå logge inn.
-        </SuccessAlert>
+        <SuccessAlert>Passordet ble oppdatert! Du kan nå logge inn.</SuccessAlert>
         <NextAnchor href={"/auth/login"}>
           <Button>Logg inn</Button>
         </NextAnchor>

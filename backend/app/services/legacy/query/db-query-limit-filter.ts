@@ -3,12 +3,8 @@ export interface LimitFilter {
 }
 
 export class DbQueryLimitFilter {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   public getLimitFilter(query: any): LimitFilter {
-    if (
-      !query ||
-      (Object.keys(query).length === 0 && query.constructor === Object)
-    )
+    if (!query || (Object.keys(query).length === 0 && query.constructor === Object))
       throw new TypeError("the given query can not be null or undefined");
     if (!query.limit) return { limit: 0 };
     if (!this.validNumber(query.limit))
@@ -23,7 +19,6 @@ export class DbQueryLimitFilter {
     return { limit: limitNumber };
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   validNumber(limit: any) {
     const limitString = limit.toString();
 

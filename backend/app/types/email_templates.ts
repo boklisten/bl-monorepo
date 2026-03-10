@@ -1,10 +1,7 @@
 export const EMAIL_SENDER = {
   NO_REPLY: "ikkesvar@boklisten.no",
   INFO: "info@boklisten.no",
-} as const satisfies Record<
-  Uppercase<string>,
-  `${Lowercase<string>}@boklisten.no`
->;
+} as const satisfies Record<Uppercase<string>, `${Lowercase<string>}@boklisten.no`>;
 
 type AllowedEmailSender = (typeof EMAIL_SENDER)[keyof typeof EMAIL_SENDER];
 

@@ -10,8 +10,7 @@ export default class SubjectsController {
     const branchId = ctx.request.param("branchId");
     const databaseQuery = new SEDbQuery();
     databaseQuery.objectIdFilters = [{ fieldName: "branch", value: branchId }];
-    const branchItems =
-      (await StorageService.BranchItems.getByQueryOrNull(databaseQuery)) ?? [];
+    const branchItems = (await StorageService.BranchItems.getByQueryOrNull(databaseQuery)) ?? [];
 
     const subjectsMap = new Map<string, CartItem[]>();
 

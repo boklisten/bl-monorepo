@@ -9,10 +9,9 @@ export class CustomerInvoiceActive {
   private invoiceActive = new InvoiceActive();
 
   public async haveActiveInvoices(userId: string): Promise<boolean> {
-    const databaseQuery = this.queryBuilder.getDbQuery(
-      { "customerInfo.userDetail": userId },
-      [{ fieldName: "customerInfo.userDetail", type: "object-id" }],
-    );
+    const databaseQuery = this.queryBuilder.getDbQuery({ "customerInfo.userDetail": userId }, [
+      { fieldName: "customerInfo.userDetail", type: "object-id" },
+    ]);
     let invoices: Invoice[];
     try {
       invoices = await StorageService.Invoices.getByQuery(databaseQuery);

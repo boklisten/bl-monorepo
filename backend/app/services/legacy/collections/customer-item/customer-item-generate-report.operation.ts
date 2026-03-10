@@ -16,11 +16,10 @@ const customerItemGenerateReportValidator = vine.object({
 
 export class CustomerItemGenerateReportOperation implements Operation {
   async run(blApiRequest: BlApiRequest): Promise<BlapiResponse> {
-    const { branchFilter, createdAfter, createdBefore, returned, buyout } =
-      await vine.validate({
-        schema: customerItemGenerateReportValidator,
-        data: blApiRequest.data,
-      });
+    const { branchFilter, createdAfter, createdBefore, returned, buyout } = await vine.validate({
+      schema: customerItemGenerateReportValidator,
+      data: blApiRequest.data,
+    });
 
     const filterByHandoutBranchIfPresent = branchFilter
       ? {
@@ -38,9 +37,7 @@ export class CustomerItemGenerateReportOperation implements Operation {
       creationTimeLimiter["$lte"] = new Date(createdBefore);
     }
     const creationTimeFilter =
-      Object.keys(creationTimeLimiter).length > 0
-        ? { creationTime: creationTimeLimiter }
-        : {};
+      Object.keys(creationTimeLimiter).length > 0 ? { creationTime: creationTimeLimiter } : {};
 
     const reportData = await StorageService.CustomerItems.aggregate([
       {

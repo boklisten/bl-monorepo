@@ -8,16 +8,9 @@ import ErrorAlert from "@/shared/components/alerts/ErrorAlert";
 import InfoAlert from "@/shared/components/alerts/InfoAlert";
 import useApiClient from "@/shared/hooks/useApiClient";
 import unpack from "@/shared/utils/bl-api-request";
-import {
-  GENERIC_ERROR_TEXT,
-  PLEASE_TRY_AGAIN_TEXT,
-} from "@/shared/utils/constants";
+import { GENERIC_ERROR_TEXT, PLEASE_TRY_AGAIN_TEXT } from "@/shared/utils/constants";
 
-const BuybackList = ({
-  cachedBuybackItems,
-}: {
-  cachedBuybackItems: Item[];
-}) => {
+const BuybackList = ({ cachedBuybackItems }: { cachedBuybackItems: Item[] }) => {
   const client = useApiClient();
 
   const { data, error } = useQuery({
@@ -39,9 +32,8 @@ const BuybackList = ({
     <>
       <Title>Innkjøpsliste</Title>
       <Text>
-        Dette er listen over bøkene vi kjøper inn. Vær oppmerksom på at denne
-        listen kan endre seg fortløpende. Vi tar forbehold for eventuelle feil i
-        innkjøpslisten!
+        Dette er listen over bøkene vi kjøper inn. Vær oppmerksom på at denne listen kan endre seg
+        fortløpende. Vi tar forbehold for eventuelle feil i innkjøpslisten!
       </Text>
       <Table>
         <Table.Thead>
@@ -62,14 +54,10 @@ const BuybackList = ({
         </Table.Tbody>
       </Table>
       <Activity mode={!error && items.length === 0 ? "visible" : "hidden"}>
-        <InfoAlert>
-          Ingen bøker i listen. Kom tilbake senere for å se en oppdatert liste.
-        </InfoAlert>
+        <InfoAlert>Ingen bøker i listen. Kom tilbake senere for å se en oppdatert liste.</InfoAlert>
       </Activity>
       <Activity mode={error ? "visible" : "hidden"}>
-        <ErrorAlert title={GENERIC_ERROR_TEXT}>
-          {PLEASE_TRY_AGAIN_TEXT}
-        </ErrorAlert>
+        <ErrorAlert title={GENERIC_ERROR_TEXT}>{PLEASE_TRY_AGAIN_TEXT}</ErrorAlert>
       </Activity>
     </>
   );

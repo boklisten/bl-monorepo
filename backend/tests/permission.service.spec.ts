@@ -16,13 +16,8 @@ test.group("PermissionSerivice", async () => {
       user: { id: userId, permission: "admin" },
     };
 
-    expect(
-      PermissionService.haveRestrictedDocumentPermission(
-        userId,
-        "customer",
-        doc,
-      ),
-    ).to.be.true;
+    // oxlint-disable-next-line no-unused-expressions
+    expect(PermissionService.haveRestrictedDocumentPermission(userId, "customer", doc)).to.be.true;
   });
 
   test("should return false if userId is not equal to document.user.id and UserPermission is not valid", async () => {
@@ -32,13 +27,8 @@ test.group("PermissionSerivice", async () => {
       user: { id: "123", permission: "admin" },
     };
 
-    expect(
-      PermissionService.haveRestrictedDocumentPermission(
-        userId,
-        "employee",
-        doc,
-      ),
-    ).to.be.false;
+    // oxlint-disable-next-line no-unused-expressions
+    expect(PermissionService.haveRestrictedDocumentPermission(userId, "employee", doc)).to.be.false;
   });
 
   test("should return false if userId is not equal to document.user.id and user.permission is customer", async () => {
@@ -47,13 +37,8 @@ test.group("PermissionSerivice", async () => {
       id: "doc1",
       user: { id: "123", permission: "admin" },
     };
-    expect(
-      PermissionService.haveRestrictedDocumentPermission(
-        userId,
-        "employee",
-        doc,
-      ),
-    ).to.be.false;
+    // oxlint-disable-next-line no-unused-expressions
+    expect(PermissionService.haveRestrictedDocumentPermission(userId, "employee", doc)).to.be.false;
   });
 
   test("should return true if userId is not equal to document.user.id but UserPermission is over the document.user.permission", async () => {
@@ -63,8 +48,7 @@ test.group("PermissionSerivice", async () => {
       user: { id: "123", permission: "employee" },
     };
 
-    expect(
-      PermissionService.haveRestrictedDocumentPermission(userId, "admin", doc),
-    ).to.be.true;
+    // oxlint-disable-next-line no-unused-expressions
+    expect(PermissionService.haveRestrictedDocumentPermission(userId, "admin", doc)).to.be.true;
   });
 });

@@ -33,9 +33,10 @@ test.group("DeliveryBringHandler", (group) => {
     // @ts-expect-error fixme: auto ignored
     testDelivery.info = undefined;
 
-    return expect(
-      deliveryBringHandler.validate(testDelivery),
-    ).to.be.rejectedWith(BlError, /delivery.info not defined/);
+    return expect(deliveryBringHandler.validate(testDelivery)).to.be.rejectedWith(
+      BlError,
+      /delivery.info not defined/,
+    );
   });
 
   test("should reject if delivery.info.from is empty or undefined", async () => {
@@ -47,9 +48,10 @@ test.group("DeliveryBringHandler", (group) => {
       to: "0560",
     };
 
-    return expect(
-      deliveryBringHandler.validate(testDelivery),
-    ).to.be.rejectedWith(BlError, /delivery.info.from not defined/);
+    return expect(deliveryBringHandler.validate(testDelivery)).to.be.rejectedWith(
+      BlError,
+      /delivery.info.from not defined/,
+    );
   });
 
   test("should reject if delivery.info.from is empty or undefined", async () => {
@@ -61,8 +63,9 @@ test.group("DeliveryBringHandler", (group) => {
       to: undefined,
     };
 
-    return expect(
-      deliveryBringHandler.validate(testDelivery),
-    ).to.be.rejectedWith(BlError, /delivery.info.to not defined/);
+    return expect(deliveryBringHandler.validate(testDelivery)).to.be.rejectedWith(
+      BlError,
+      /delivery.info.to not defined/,
+    );
   });
 });

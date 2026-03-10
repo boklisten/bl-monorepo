@@ -18,10 +18,7 @@ export default function VippsButton({ verb }: { verb: "login" | "register" }) {
           localStorage.setItem(BL_CONFIG.login.localStorageKeys.caller, caller);
         }
         if (redirect) {
-          localStorage.setItem(
-            BL_CONFIG.login.localStorageKeys.redirect,
-            redirect,
-          );
+          localStorage.setItem(BL_CONFIG.login.localStorageKeys.redirect, redirect);
         }
         // @ts-expect-error fixme: bad routing types
         router.replace(publicApiClient.auth.vipps.redirect.$url());

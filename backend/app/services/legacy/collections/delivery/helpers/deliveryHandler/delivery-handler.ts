@@ -11,14 +11,10 @@ export class DeliveryHandler {
   private bringDeliveryService: BringDeliveryService;
 
   constructor(bringDeliveryService?: BringDeliveryService) {
-    this.bringDeliveryService =
-      bringDeliveryService ?? new BringDeliveryService();
+    this.bringDeliveryService = bringDeliveryService ?? new BringDeliveryService();
   }
 
-  public updateOrderBasedOnMethod(
-    delivery: Delivery,
-    order: Order,
-  ): Promise<Delivery> {
+  public updateOrderBasedOnMethod(delivery: Delivery, order: Order): Promise<Delivery> {
     switch (delivery.method) {
       case "branch": {
         return this.updateOrderWithDeliveryMethodBranch(delivery, order);
@@ -29,10 +25,7 @@ export class DeliveryHandler {
     }
   }
 
-  private updateOrderWithDeliveryMethodBranch(
-    delivery: Delivery,
-    order: Order,
-  ): Promise<Delivery> {
+  private updateOrderWithDeliveryMethodBranch(delivery: Delivery, order: Order): Promise<Delivery> {
     return this.updateOrder(order, delivery)
       .then(() => {
         return delivery;
@@ -42,10 +35,7 @@ export class DeliveryHandler {
       });
   }
 
-  private updateOrderWithDeliveryMethodBring(
-    delivery: Delivery,
-    order: Order,
-  ): Promise<Delivery> {
+  private updateOrderWithDeliveryMethodBring(delivery: Delivery, order: Order): Promise<Delivery> {
     return new Promise((resolve, reject) => {
       this.fetchItems(order).then((items: Item[]) => {
         this.getBringDeliveryInfoAndUpdateDelivery(order, delivery, items)
@@ -59,11 +49,7 @@ export class DeliveryHandler {
               });
           })
           .catch((bringDeliveryInfoError) => {
-            reject(
-              new BlError("failed to get bring delivery info").add(
-                bringDeliveryInfoError,
-              ),
-            );
+            reject(new BlError("failed to get bring delivery info").add(bringDeliveryInfoError));
           });
       });
     });
@@ -83,9 +69,7 @@ export class DeliveryHandler {
 
   private fetchItems(order: Order): Promise<Item[]> {
     return new Promise((resolve, reject) => {
-      const itemIds: string[] = order.orderItems.map(
-        (orderItem) => orderItem.item,
-      );
+      const itemIds: string[] = order.orderItems.map((orderItem) => orderItem.item);
 
       StorageService.Items.getMany(itemIds)
         .then((items: Item[]) => {

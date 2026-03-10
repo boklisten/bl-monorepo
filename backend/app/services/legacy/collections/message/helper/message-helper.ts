@@ -30,10 +30,7 @@ export class MessageHelper {
       const docs = await StorageService.Messages.getByQuery(databaseQuery);
       if (docs) {
         for (const document_ of docs) {
-          if (
-            JSON.stringify(document_.htmlContent) ===
-            JSON.stringify(message.htmlContent)
-          ) {
+          if (JSON.stringify(document_.htmlContent) === JSON.stringify(message.htmlContent)) {
             return true;
           }
         }

@@ -9,10 +9,7 @@ import { Activity } from "react";
 
 import InfoAlert from "@/shared/components/alerts/InfoAlert";
 import useApiClient from "@/shared/hooks/useApiClient";
-import {
-  showErrorNotification,
-  showSuccessNotification,
-} from "@/shared/utils/notifications";
+import { showErrorNotification, showSuccessNotification } from "@/shared/utils/notifications";
 
 export default function OpenOrdersList({
   openOrderItems,
@@ -55,9 +52,7 @@ export default function OpenOrdersList({
             {openOrderItems?.map((orderItem) => (
               <Table.Tr key={orderItem.orderId + orderItem.itemId}>
                 <Table.Td>{orderItem.title}</Table.Td>
-                <Table.Td>
-                  {dayjs(orderItem.deadline).format("DD/MM/YYYY")}
-                </Table.Td>
+                <Table.Td>{dayjs(orderItem.deadline).format("DD/MM/YYYY")}</Table.Td>
                 <Table.Td>
                   <Tooltip
                     disabled={orderItem.cancelable}
@@ -94,11 +89,7 @@ export default function OpenOrdersList({
         </Table>
       </Activity>
 
-      <Activity
-        mode={
-          !openOrderItems || openOrderItems.length === 0 ? "visible" : "hidden"
-        }
-      >
+      <Activity mode={!openOrderItems || openOrderItems.length === 0 ? "visible" : "hidden"}>
         <InfoAlert title={"Du har ingen aktive bestillinger"}>
           Trykk på {"'bestill bøker'"} for å bestille noen.
         </InfoAlert>
@@ -110,9 +101,7 @@ export default function OpenOrdersList({
             router.push("/bestilling");
           }}
         >
-          {(openOrderItems?.length ?? 0) > 0
-            ? "Bestill flere"
-            : "Bestill bøker"}
+          {(openOrderItems?.length ?? 0) > 0 ? "Bestill flere" : "Bestill bøker"}
         </Button>
       </Box>
     </>

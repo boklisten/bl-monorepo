@@ -19,18 +19,12 @@ function haveRestrictedDocumentPermission(
   document: BlDocument,
   documentPermission?: BlDocumentPermission,
 ): boolean {
-  if (
-    document.user?.id === userId ||
-    isPermissionOver(userPermission, document.user?.permission)
-  ) {
+  if (document.user?.id === userId || isPermissionOver(userPermission, document.user?.permission)) {
     return true;
   }
 
   if (documentPermission?.viewableForPermission) {
-    return isPermissionEqualOrOver(
-      userPermission,
-      documentPermission.viewableForPermission,
-    );
+    return isPermissionEqualOrOver(userPermission, documentPermission.viewableForPermission);
   }
 
   return false;
@@ -102,10 +96,7 @@ function authenticateLegacy({ request }: HttpContext) {
  * @throws NotAllowedException if user does not have permission
  * @returns the detailsId and permission for the customer
  */
-function authenticate(
-  { request }: HttpContext,
-  requiredPermission?: UserPermission,
-) {
+function authenticate({ request }: HttpContext, requiredPermission?: UserPermission) {
   const authHeader = request.headers().authorization;
   let permission: UserPermission;
   let detailsId: string;
@@ -116,10 +107,7 @@ function authenticate(
   } catch {
     throw new UnauthorizedException();
   }
-  if (
-    requiredPermission &&
-    !isPermissionEqualOrOver(permission, requiredPermission)
-  ) {
+  if (requiredPermission && !isPermissionEqualOrOver(permission, requiredPermission)) {
     throw new NotAllowedException();
   }
   return { permission, detailsId };

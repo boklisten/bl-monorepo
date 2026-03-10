@@ -104,11 +104,9 @@ test.group("CustomerItemPostHook", (group) => {
       return Promise.resolve(testOrder);
     });
 
-    orderUpdateStub = sandbox
-      .stub(StorageService.Orders, "update")
-      .callsFake(() => {
-        return Promise.resolve(testOrder);
-      });
+    orderUpdateStub = sandbox.stub(StorageService.Orders, "update").callsFake(() => {
+      return Promise.resolve(testOrder);
+    });
 
     sandbox.stub(customerItemValidator, "validate").callsFake(() => {
       if (!validateCustomerItem) {
@@ -132,11 +130,9 @@ test.group("CustomerItemPostHook", (group) => {
       return Promise.resolve(testUserDetail);
     });
 
-    userDetailStub = sandbox
-      .stub(StorageService.UserDetails, "update")
-      .callsFake(() => {
-        return Promise.resolve(testUserDetail);
-      });
+    userDetailStub = sandbox.stub(StorageService.UserDetails, "update").callsFake(() => {
+      return Promise.resolve(testUserDetail);
+    });
   });
 
   group.each.teardown(() => {
@@ -153,14 +149,14 @@ test.group("CustomerItemPostHook", (group) => {
   test("should reject if customerItemValidator.validate rejects", async () => {
     validateCustomerItem = false;
 
-    return expect(
-      customerItemPostHook.before(testCustomerItem),
-    ).to.be.rejectedWith(BlError, "could not validate customerItem");
+    return expect(customerItemPostHook.before(testCustomerItem)).to.be.rejectedWith(
+      BlError,
+      "could not validate customerItem",
+    );
   });
 
   test("should resolve with true if customerItemValidator.validate resolves", async () => {
-    return expect(customerItemPostHook.before(testCustomerItem)).to.be
-      .fulfilled;
+    return expect(customerItemPostHook.before(testCustomerItem)).to.be.fulfilled;
   });
 
   test("should reject if userDetail is not valid", async () => {
@@ -170,15 +166,17 @@ test.group("CustomerItemPostHook", (group) => {
     // @ts-expect-error fixme: auto ignored
     testUserDetail.dob = null;
 
-    return expect(
-      customerItemPostHook.before(testCustomerItem),
-    ).to.be.rejectedWith(BlError, /userDetail "userDetail1" not valid/);
+    return expect(customerItemPostHook.before(testCustomerItem)).to.be.rejectedWith(
+      BlError,
+      /userDetail "userDetail1" not valid/,
+    );
   });
 
   test("should reject if customerItems are empty", async () => {
-    return expect(
-      customerItemPostHook.after([], testAccessToken),
-    ).to.be.rejectedWith(BlError, /customerItems is empty or undefined/);
+    return expect(customerItemPostHook.after([], testAccessToken)).to.be.rejectedWith(
+      BlError,
+      /customerItems is empty or undefined/,
+    );
   });
 
   test("should reject if customerItem.customer is not defined", async () => {
@@ -215,10 +213,7 @@ test.group("CustomerItemPostHook", (group) => {
 
     return expect(
       customerItemPostHook.after([testCustomerItem], testAccessToken),
-    ).to.be.rejectedWith(
-      BlError,
-      /customerItem.orders.length is "2" but should be "1"/,
-    );
+    ).to.be.rejectedWith(BlError, /customerItem.orders.length is "2" but should be "1"/);
   });
 
   test("should update order.orderItems with the customerItem", async () => {

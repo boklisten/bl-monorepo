@@ -27,10 +27,7 @@ function createUri(
 function createRequestHandler(operation: BlEndpointOperation) {
   return async function handleRequest(ctx: HttpContext) {
     try {
-      const accessToken = await CollectionEndpointAuth.authenticate(
-        operation.restriction,
-        ctx,
-      );
+      const accessToken = await CollectionEndpointAuth.authenticate(operation.restriction, ctx);
       const blApiRequest = {
         documentId: ctx.request.params()["id"],
         query: ctx.request.qs(),
@@ -50,11 +47,7 @@ function createRequestHandler(operation: BlEndpointOperation) {
   };
 }
 
-function create(
-  collectionName: string,
-  method: BlEndpointMethod,
-  operation: BlEndpointOperation,
-) {
+function create(collectionName: string, method: BlEndpointMethod, operation: BlEndpointOperation) {
   const collectionUri = `/${collectionName}`;
   const uri = createUri(collectionUri, operation.name, method);
   const routeName = `collection.${collectionName}.operation.${operation.name}.${method}`;
@@ -80,9 +73,7 @@ function create(
       break;
     }
     default: {
-      throw new Error(
-        `endpoint operation method "${method}" is currently not supported`,
-      );
+      throw new Error(`endpoint operation method "${method}" is currently not supported`);
     }
   }
 }

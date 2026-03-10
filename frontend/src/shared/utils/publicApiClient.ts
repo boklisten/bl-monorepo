@@ -1,7 +1,7 @@
-/* eslint-disable @typescript-eslint/triple-slash-reference */
-
 // Type references
+// oxlint-disable-next-line typescript/triple-slash-reference
 /// <reference path="../../../../backend/config/ally.ts" />
+// oxlint-disable-next-line typescript/triple-slash-reference
 /// <reference path="../../../../backend/adonisrc.ts" />
 
 import { api } from "@boklisten/backend/.adonisjs";

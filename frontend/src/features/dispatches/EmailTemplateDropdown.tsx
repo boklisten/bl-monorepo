@@ -22,10 +22,8 @@ export default function EmailTemplateDropdown() {
               data={{
                 head: ["Navn", "ID"],
                 body:
-                  emailTemplates?.map((emailTemplate) => [
-                    emailTemplate.name,
-                    emailTemplate.id,
-                  ]) ?? [],
+                  emailTemplates?.map((emailTemplate) => [emailTemplate.name, emailTemplate.id]) ??
+                  [],
               }}
             />
             <Button

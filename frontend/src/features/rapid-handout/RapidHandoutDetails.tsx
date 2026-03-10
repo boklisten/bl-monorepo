@@ -37,11 +37,7 @@ function mapOrdersToItemStatuses(orders: Order[]): ItemStatus[] {
   }));
 }
 
-export default function RapidHandoutDetails({
-  customer,
-}: {
-  customer: UserDetail;
-}) {
+export default function RapidHandoutDetails({ customer }: { customer: UserDetail }) {
   const client = useApiClient();
   const queryClient = useQueryClient();
   const ordersUrl = client.$url("collection.orders.getAll", {
@@ -98,9 +94,7 @@ export default function RapidHandoutDetails({
       setItemStatuses((previousState) =>
         previousState.map((itemStatus) => ({
           ...itemStatus,
-          fulfilled: !unfulfilledOrderItems.some(
-            (orderItem) => orderItem.item === itemStatus.id,
-          ),
+          fulfilled: !unfulfilledOrderItems.some((orderItem) => orderItem.item === itemStatus.id),
         })),
       );
     }
@@ -109,9 +103,7 @@ export default function RapidHandoutDetails({
   return (
     <>
       <Activity mode={itemStatuses.length === 0 ? "visible" : "hidden"}>
-        <InfoAlert>
-          Denne kunden har for øyeblikket ingen bestilte bøker
-        </InfoAlert>
+        <InfoAlert>Denne kunden har for øyeblikket ingen bestilte bøker</InfoAlert>
       </Activity>
       <Activity mode={itemStatuses.length > 0 ? "visible" : "hidden"}>
         <Stack gap={"xs"}>
@@ -129,8 +121,7 @@ export default function RapidHandoutDetails({
                       allowManualRegistration
                       disableValidation={true}
                       onScan={async (scannedText) => {
-                        const scannedType =
-                          determineScannedTextType(scannedText);
+                        const scannedType = determineScannedTextType(scannedText);
                         const tempBlid = tempBlidRef.current;
 
                         if (tempBlid) {
@@ -149,24 +140,18 @@ export default function RapidHandoutDetails({
                         } else if (scannedType !== TextType.BLID) {
                           return [
                             {
-                              feedback:
-                                "Feil strekkode. Vennligst skann bokas unike ID",
+                              feedback: "Feil strekkode. Vennligst skann bokas unike ID",
                             },
                           ];
                         }
                         const response = await client
-                          .$route(
-                            "collection.orders.operation.rapid-handout.post",
-                          )
+                          .$route("collection.orders.operation.rapid-handout.post")
                           .$post({
                             blid: tempBlid ?? scannedText,
                             customerId: customer.id,
                           });
 
-                        const res =
-                          unpack<[{ feedback: string; connectBlid?: boolean }]>(
-                            response,
-                          );
+                        const res = unpack<[{ feedback: string; connectBlid?: boolean }]>(response);
 
                         if (res[0].connectBlid) {
                           setTempBlid(scannedText);
@@ -185,9 +170,7 @@ export default function RapidHandoutDetails({
                     >
                       <MatchScannerContent
                         itemStatuses={itemStatuses}
-                        expectedItems={itemStatuses.map(
-                          (itemStatus) => itemStatus.id,
-                        )}
+                        expectedItems={itemStatuses.map((itemStatus) => itemStatus.id)}
                         fulfilledItems={itemStatuses
                           .filter((itemStatus) => itemStatus.fulfilled)
                           .map((itemStatus) => itemStatus.id)}

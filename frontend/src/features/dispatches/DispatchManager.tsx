@@ -10,10 +10,7 @@ import { useState } from "react";
 import EmailTemplateDropdown from "@/features/dispatches/EmailTemplateDropdown";
 import { useAppForm } from "@/shared/hooks/form";
 import useApiClient from "@/shared/hooks/useApiClient";
-import {
-  showErrorNotification,
-  showSuccessNotification,
-} from "@/shared/utils/notifications";
+import { showErrorNotification, showSuccessNotification } from "@/shared/utils/notifications";
 
 const defaultValues: {
   recipients: {
@@ -31,9 +28,7 @@ export default function DispatchManager() {
   const client = useApiClient();
 
   const sendMutation = useMutation({
-    mutationFn: async (
-      formData: InferRequestType<typeof client.dispatch.$post>,
-    ) => {
+    mutationFn: async (formData: InferRequestType<typeof client.dispatch.$post>) => {
       setServerErrors([]);
       const { error } = await client.dispatch.$post(formData);
 

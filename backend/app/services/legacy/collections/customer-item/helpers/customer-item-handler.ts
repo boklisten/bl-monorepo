@@ -66,11 +66,7 @@ export class CustomerItemHandler {
    * @param orderId
    * @param orderItem
    */
-  public async buyout(
-    customerItemId: string,
-    orderId: string,
-    orderItem: OrderItem,
-  ) {
+  public async buyout(customerItemId: string, orderId: string, orderItem: OrderItem) {
     if (orderItem.type !== "buyout") {
       throw `orderItem.type is not "buyout"`;
     }
@@ -131,11 +127,7 @@ export class CustomerItemHandler {
    * @param orderId
    * @param orderItem
    */
-  public async cancel(
-    customerItemId: string,
-    orderId: string,
-    orderItem: OrderItem,
-  ) {
+  public async cancel(customerItemId: string, orderId: string, orderItem: OrderItem) {
     if (orderItem.type !== "cancel") {
       throw `orderItem.type is not "cancel"`;
     }
@@ -163,11 +155,7 @@ export class CustomerItemHandler {
    * @param orderId
    * @param orderItem
    */
-  public async buyback(
-    customerItemId: string,
-    orderId: string,
-    orderItem: OrderItem,
-  ) {
+  public async buyback(customerItemId: string, orderId: string, orderItem: OrderItem) {
     if (orderItem.type !== "buyback") {
       throw `orderItem.type is not "buyback"`;
     }
@@ -205,15 +193,9 @@ export class CustomerItemHandler {
       throw new BlError("deadline is null or undefined");
     }
 
-    const before = moment
-      .tz(deadline, "Europe/London")
-      .subtract(2, "day")
-      .format("DDMMYYYYHHmm");
+    const before = moment.tz(deadline, "Europe/London").subtract(2, "day").format("DDMMYYYYHHmm");
 
-    const after = moment
-      .tz(deadline, "Europe/London")
-      .add(2, "day")
-      .format("DDMMYYYYHHmm");
+    const after = moment.tz(deadline, "Europe/London").add(2, "day").format("DDMMYYYYHHmm");
 
     let query;
 

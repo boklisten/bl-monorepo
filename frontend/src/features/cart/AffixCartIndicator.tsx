@@ -11,11 +11,7 @@ export default function AffixCartIndicator() {
   const cart = useCart();
   const pathname = usePathname();
   return (
-    <Activity
-      mode={
-        !cart.isEmpty() && pathname.includes("items") ? "visible" : "hidden"
-      }
-    >
+    <Activity mode={!cart.isEmpty() && pathname.includes("items") ? "visible" : "hidden"}>
       <Affix w={"100%"}>
         <Card withBorder shadow={"md"}>
           <Stack align={"center"} gap={"xs"}>

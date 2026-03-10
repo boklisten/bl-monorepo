@@ -27,10 +27,7 @@ export class OrderPostHook extends Hook {
     this.userDetailHelper = userDetailHelper ?? new UserDetailHelper();
   }
 
-  public override async before(
-    requestBody: unknown,
-    accessToken: AccessToken,
-  ): Promise<boolean> {
+  public override async before(requestBody: unknown, accessToken: AccessToken): Promise<boolean> {
     const [validUserDetails, validRequestBody] = await Promise.all([
       StorageService.UserDetails.get(accessToken.details).then((userDetail) =>
         this.userDetailHelper.isValid(userDetail),
@@ -38,9 +35,7 @@ export class OrderPostHook extends Hook {
       this.orderHookBefore.validate(requestBody),
     ]);
     if (!validUserDetails) {
-      throw new BlError(
-        "UserDetail not set for user: " + accessToken.username,
-      ).code(902);
+      throw new BlError("UserDetail not set for user: " + accessToken.username).code(902);
     }
     if (!validRequestBody) {
       throw new BlError("Invalid order").code(701);
@@ -49,15 +44,10 @@ export class OrderPostHook extends Hook {
     return true;
   }
 
-  public override after(
-    orders: Order[],
-    accessToken?: AccessToken,
-  ): Promise<Order[]> {
+  public override after(orders: Order[], accessToken?: AccessToken): Promise<Order[]> {
     if (!accessToken || accessToken.sub.length <= 0) {
       return Promise.reject(
-        new BlError(
-          "accessToken was not specified when trying to process order",
-        ),
+        new BlError("accessToken was not specified when trying to process order"),
       );
     }
 
@@ -70,10 +60,7 @@ export class OrderPostHook extends Hook {
     }
 
     const order = orders[0];
-    const isAdmin = PermissionService.isPermissionEqualOrOver(
-      accessToken.permission,
-      "admin",
-    );
+    const isAdmin = PermissionService.isPermissionEqualOrOver(accessToken.permission, "admin");
 
     // @ts-expect-error fixme: auto ignored
     return this.validateOrder(order, isAdmin).then(() => {
@@ -87,9 +74,7 @@ export class OrderPostHook extends Hook {
         .validate(order, isAdmin)
         .then(() => {
           if (order.placed) {
-            return reject(
-              new BlError("order.placed is set to true on post of order"),
-            );
+            return reject(new BlError("order.placed is set to true on post of order"));
           }
 
           resolve(order);

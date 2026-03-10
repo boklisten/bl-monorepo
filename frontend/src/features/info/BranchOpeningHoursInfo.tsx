@@ -17,8 +17,7 @@ const OpeningHourRow = ({ openingHour }: { openingHour: OpeningHour }) => {
   const date = fromDate.format("DD.MM.YYYY");
   const fromTime = fromDate.format("HH:mm");
   const toTime = toDate.format("HH:mm");
-  const capitalize = (s: string) =>
-    s.length > 0 && s[0]?.toUpperCase() + s.slice(1);
+  const capitalize = (s: string) => s.length > 0 && s[0]?.toUpperCase() + s.slice(1);
   return (
     <Table.Tr key={openingHour.id}>
       <Table.Td>
@@ -36,12 +35,8 @@ export default function BranchOpeningHours({ branchId }: { branchId: string }) {
     isLoading: isLoadingOpeningHours,
     isError: isErrorOpeningHours,
   } = useQuery({
-    queryKey: [
-      publicApiClient.v2.opening_hours({ id: branchId }).$url(),
-      branchId,
-    ],
-    queryFn: () =>
-      publicApiClient.v2.opening_hours({ id: branchId }).$get().unwrap(),
+    queryKey: [publicApiClient.v2.opening_hours({ id: branchId }).$url(), branchId],
+    queryFn: () => publicApiClient.v2.opening_hours({ id: branchId }).$get().unwrap(),
   });
 
   if (isLoadingOpeningHours) {
@@ -58,18 +53,14 @@ export default function BranchOpeningHours({ branchId }: { branchId: string }) {
 
   if (isErrorOpeningHours || openingHours == undefined) {
     return (
-      <ErrorAlert title={"Klarte ikke laste inn åpningstider"}>
-        {PLEASE_TRY_AGAIN_TEXT}
-      </ErrorAlert>
+      <ErrorAlert title={"Klarte ikke laste inn åpningstider"}>{PLEASE_TRY_AGAIN_TEXT}</ErrorAlert>
     );
   }
 
   if (openingHours.length === 0) {
     return (
       <>
-        <InfoAlert
-          title={"Sesongen er over – eller åpningstidene er ikke klare enda"}
-        >
+        <InfoAlert title={"Sesongen er over – eller åpningstidene er ikke klare enda"}>
           Du kan bestille bøker i Posten, eller kontakte oss for spørsmål.
         </InfoAlert>
         <ContactInfo />

@@ -23,11 +23,7 @@ export default function MatchScannerContent({
           </Text>
         }
       />
-      <MatchItemTable
-        itemFilter={expectedItems}
-        itemStatuses={itemStatuses}
-        isSender={false}
-      />
+      <MatchItemTable itemFilter={expectedItems} itemStatuses={itemStatuses} isSender={false} />
     </Stack>
   );
 }

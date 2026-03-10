@@ -15,16 +15,14 @@ export const UserDetailService = {
   async getByPhoneNumber(phone: string): Promise<UserDetail | null> {
     const databaseQuery = new SEDbQuery();
     databaseQuery.stringFilters = [{ fieldName: "phone", value: phone }];
-    const userDetails =
-      await StorageService.UserDetails.getByQueryOrNull(databaseQuery);
+    const userDetails = await StorageService.UserDetails.getByQueryOrNull(databaseQuery);
 
     return userDetails?.[0] ?? null;
   },
   async getByEmail(email: string): Promise<UserDetail | null> {
     const databaseQuery = new SEDbQuery();
     databaseQuery.stringFilters = [{ fieldName: "email", value: email }];
-    const userDetails =
-      await StorageService.UserDetails.getByQueryOrNull(databaseQuery);
+    const userDetails = await StorageService.UserDetails.getByQueryOrNull(databaseQuery);
 
     return userDetails?.[0] ?? null;
   },

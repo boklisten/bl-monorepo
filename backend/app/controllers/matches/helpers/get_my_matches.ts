@@ -14,9 +14,7 @@ import { StandMatch } from "#shared/match/stand-match";
 import { UserMatch } from "#shared/match/user-match";
 import { UserDetail } from "#shared/user-detail";
 
-function selectMatchRelevantUserDetails(
-  userDetail?: UserDetail,
-): MatchRelevantUserDetails {
+function selectMatchRelevantUserDetails(userDetail?: UserDetail): MatchRelevantUserDetails {
   return {
     name: userDetail?.name ?? "",
     phone: userDetail?.phone ?? "",
@@ -46,9 +44,7 @@ function mapItemIdsToItemDetails(
     [...new Set(itemIds.map(String))].map((itemId) => {
       const item = itemsMap.get(itemId);
       if (item === undefined) {
-        throw new BlError(
-          `No item found with id ${itemId} when detailing match`,
-        );
+        throw new BlError(`No item found with id ${itemId} when detailing match`);
       }
       const details: MatchRelevantItemDetails = {
         id: itemId,
@@ -91,23 +87,14 @@ function addDetailsToMatch(
   };
 }
 
-async function addDetailsToUserMatches(
-  userMatches: UserMatch[],
-): Promise<UserMatchWithDetails[]> {
+async function addDetailsToUserMatches(userMatches: UserMatch[]): Promise<UserMatchWithDetails[]> {
   const customers = Array.from(
-    new Set(
-      userMatches.flatMap((userMatch) => [
-        userMatch.customerA,
-        userMatch.customerB,
-      ]),
-    ),
+    new Set(userMatches.flatMap((userMatch) => [userMatch.customerA, userMatch.customerB])),
   );
   const userDetailsMap = new Map(
     await Promise.all(
       customers.map((id) =>
-        StorageService.UserDetails.get(id).then(
-          (detail): [string, UserDetail] => [id, detail],
-        ),
+        StorageService.UserDetails.get(id).then((detail): [string, UserDetail] => [id, detail]),
       ),
     ),
   );
@@ -144,14 +131,9 @@ async function addDetailsToUserMatches(
       }),
     ),
   );
-  const allItems = Array.from(
-    new Set([...items, ...blIdsToItemIdMap.values()]),
-  );
+  const allItems = Array.from(new Set([...items, ...blIdsToItemIdMap.values()]));
   const itemsMap = new Map(
-    (await StorageService.Items.getMany(allItems)).map((item) => [
-      item.id,
-      item,
-    ]),
+    (await StorageService.Items.getMany(allItems)).map((item) => [item.id, item]),
   );
 
   return userMatches.map((userMatch) =>
@@ -159,9 +141,7 @@ async function addDetailsToUserMatches(
   );
 }
 
-async function addDetailsToStandMatch(
-  standMatch: StandMatch,
-): Promise<StandMatchWithDetails> {
+async function addDetailsToStandMatch(standMatch: StandMatch): Promise<StandMatchWithDetails> {
   const items = Array.from(
     new Set(
       [
@@ -186,10 +166,7 @@ export async function getMatches(detailsId: string) {
   const userMatches = (await StorageService.UserMatches.aggregate([
     {
       $match: {
-        $or: [
-          { customerA: new ObjectId(detailsId) },
-          { customerB: new ObjectId(detailsId) },
-        ],
+        $or: [{ customerA: new ObjectId(detailsId) }, { customerB: new ObjectId(detailsId) }],
       },
     },
   ])) as UserMatch[];
@@ -205,8 +182,7 @@ export async function getMatches(detailsId: string) {
   ])) as StandMatch[];
 
   const standMatch = standMatches[0];
-  const standMatchWithDetails =
-    standMatch && (await addDetailsToStandMatch(standMatch));
+  const standMatchWithDetails = standMatch && (await addDetailsToStandMatch(standMatch));
 
   return {
     userMatches: userMatchesWithDetails,

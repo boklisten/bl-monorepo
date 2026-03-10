@@ -16,11 +16,7 @@ export class OrderToCustomerItemGenerator {
 
     for (const orderItem of order.orderItems) {
       if (this.shouldCreateCustomerItem(orderItem)) {
-        const customerItem = this.convertOrderItemToCustomerItem(
-          customerDetail,
-          order,
-          orderItem,
-        );
+        const customerItem = this.convertOrderItemToCustomerItem(customerDetail, order, orderItem);
         customerItem.viewableFor = [customerDetail?.blid ?? ""];
         customerItems.push(customerItem);
       }
@@ -45,11 +41,7 @@ export class OrderToCustomerItemGenerator {
   ): CustomerItem {
     switch (orderItem.type) {
       case "partly-payment": {
-        return this.createPartlyPaymentCustomerItem(
-          customerDetail,
-          order,
-          orderItem,
-        );
+        return this.createPartlyPaymentCustomerItem(customerDetail, order, orderItem);
       }
       case "rent":
       case "match-receive": {

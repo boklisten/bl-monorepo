@@ -46,10 +46,7 @@ test.group("UserDetailDeleteHook", (group) => {
       "haveActiveCustomerItems",
     );
     haveActiveOrdersStub = sandbox.stub(orderActive, "haveActiveOrders");
-    haveActiveInvoicesStub = sandbox.stub(
-      customerInvoiceActive,
-      "haveActiveInvoices",
-    );
+    haveActiveInvoicesStub = sandbox.stub(customerInvoiceActive, "haveActiveInvoices");
     canDeleteStub = sandbox.stub(userCanDeleteUserDetail, "canDelete");
     deleteUserServiceStub = sandbox.stub(deleteUserService, "deleteUser");
   });
@@ -127,9 +124,7 @@ test.group("UserDetailDeleteHook", (group) => {
     haveActiveCustomerItemsStub.resolves(false);
     haveActiveInvoicesStub.resolves(false);
     canDeleteStub.resolves(true);
-    deleteUserServiceStub.rejects(
-      new BlError("user info could not be deleted"),
-    );
+    deleteUserServiceStub.rejects(new BlError("user info could not be deleted"));
 
     const accessToken = {
       iss: "",
@@ -155,8 +150,7 @@ test.group("UserDetailDeleteHook", (group) => {
       details: "user1",
     } as AccessToken;
 
-    return expect(userDetailDeleteHook.before({}, accessToken, testUserId)).to
-      .eventually.be.true;
+    return expect(userDetailDeleteHook.before({}, accessToken, testUserId)).to.eventually.be.true;
   });
   test("should resolve", async () => {
     const accessToken = {
@@ -164,8 +158,6 @@ test.group("UserDetailDeleteHook", (group) => {
       details: "user1",
     } as AccessToken;
 
-    return expect(
-      userDetailDeleteHook.after([], accessToken),
-    ).to.eventually.be.eql([]);
+    return expect(userDetailDeleteHook.after([], accessToken)).to.eventually.be.eql([]);
   });
 });

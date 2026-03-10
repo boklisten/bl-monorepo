@@ -11,10 +11,7 @@ import { DbQueryRegexFilter } from "#services/legacy/query/db-query-regex-filter
 import { DbQuerySkipFilter } from "#services/legacy/query/db-query-skip-filter";
 import { DbQuerySortFilter } from "#services/legacy/query/db-query-sort-filter";
 import { DbQueryStringFilter } from "#services/legacy/query/db-query-string-filter";
-import {
-  DbQueryValidParams,
-  ValidParameter,
-} from "#services/legacy/query/db-query-valid-params";
+import { DbQueryValidParams, ValidParameter } from "#services/legacy/query/db-query-valid-params";
 import { SEDbQuery } from "#services/legacy/query/se.db-query";
 
 export class SEDbQueryBuilder {
@@ -44,27 +41,20 @@ export class SEDbQueryBuilder {
     this.dbQueryExpandFilter = new DbQueryExpandFilter();
   }
 
-  public getDbQuery(
-    query: ParsedQs,
-    validQueryParams: ValidParameter[],
-  ): SEDbQuery {
+  public getDbQuery(query: ParsedQs, validQueryParams: ValidParameter[]): SEDbQuery {
     const dbQueryValidParams = new DbQueryValidParams(validQueryParams);
 
     const databaseQuery: SEDbQuery = new SEDbQuery();
 
-    if (
-      !query ||
-      (Object.keys(query).length === 0 && query.constructor === Object)
-    ) {
+    if (!query || (Object.keys(query).length === 0 && query.constructor === Object)) {
       return databaseQuery;
     }
 
     try {
-      databaseQuery.booleanFilters =
-        this.dbQueryBooleanFilter.getBooleanFilters(
-          query,
-          dbQueryValidParams.getValidBooleanParams(),
-        );
+      databaseQuery.booleanFilters = this.dbQueryBooleanFilter.getBooleanFilters(
+        query,
+        dbQueryValidParams.getValidBooleanParams(),
+      );
       databaseQuery.dateFilters = this.dbQueryDateFilter.getDateFilters(
         query,
         dbQueryValidParams.getValidDateParams(),
@@ -74,11 +64,10 @@ export class SEDbQueryBuilder {
         query,
         dbQueryValidParams.getValidNumberParams(),
       );
-      databaseQuery.onlyGetFilters =
-        this.dbQueryOnlyGetFilter.getOnlyGetFilters(
-          query,
-          dbQueryValidParams.getAllValidParams(),
-        );
+      databaseQuery.onlyGetFilters = this.dbQueryOnlyGetFilter.getOnlyGetFilters(
+        query,
+        dbQueryValidParams.getAllValidParams(),
+      );
       databaseQuery.regexFilters = this.dbQueryRegexFilter.getRegexFilters(
         query,
         dbQueryValidParams.getValidStringParams(),
@@ -92,26 +81,18 @@ export class SEDbQueryBuilder {
         query,
         dbQueryValidParams.getValidStringParams(),
       );
-      databaseQuery.objectIdFilters =
-        this.dbQueryObjectIdFilter.getObjectIdFilters(
-          query,
-          dbQueryValidParams.getValidObjectIdParams(),
-        );
-      databaseQuery.expandFilters =
-        this.dbQueryExpandFilter.getExpandFilters(query);
+      databaseQuery.objectIdFilters = this.dbQueryObjectIdFilter.getObjectIdFilters(
+        query,
+        dbQueryValidParams.getValidObjectIdParams(),
+      );
+      databaseQuery.expandFilters = this.dbQueryExpandFilter.getExpandFilters(query);
     } catch (error) {
       if (error instanceof TypeError)
-        throw new TypeError(
-          "TypeError when building query, reason: " + error.message,
-        );
+        throw new TypeError("TypeError when building query, reason: " + error.message);
       if (error instanceof ReferenceError)
-        throw new ReferenceError(
-          "ReferenceError when building query, reason: " + error.message,
-        );
+        throw new ReferenceError("ReferenceError when building query, reason: " + error.message);
       if (error instanceof RangeError)
-        throw new RangeError(
-          "RangeError when building query, reason: " + error.message,
-        );
+        throw new RangeError("RangeError when building query, reason: " + error.message);
 
       // @ts-expect-error fixme: auto ignored
       throw new Error("Error when building query, reason: " + error.message);

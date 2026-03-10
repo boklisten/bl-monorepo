@@ -63,9 +63,7 @@ export default class OrdersController {
   }
 
   async cancelOrderItem(ctx: HttpContext) {
-    const { orderId, itemId } = await ctx.request.validateUsing(
-      cancelOrderItemValidator,
-    );
+    const { orderId, itemId } = await ctx.request.validateUsing(cancelOrderItemValidator);
     const order = await StorageService.Orders.get(orderId);
     if (!order) {
       return ctx.response.notFound();

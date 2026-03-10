@@ -4,10 +4,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 import { useAppForm } from "@/shared/hooks/form";
 import useApiClient from "@/shared/hooks/useApiClient";
-import {
-  showErrorNotification,
-  showSuccessNotification,
-} from "@/shared/utils/notifications";
+import { showErrorNotification, showSuccessNotification } from "@/shared/utils/notifications";
 
 export default function QuestionAndAnswerEditor({
   questionAndAnswer,
@@ -37,9 +34,8 @@ export default function QuestionAndAnswerEditor({
   const client = useApiClient();
 
   const addQuestionAndAnswerMutation = useMutation({
-    mutationFn: (
-      questionAndAnswer: Pick<QuestionAndAnswer, "question" | "answer">,
-    ) => client.questions_and_answers.$post(questionAndAnswer).unwrap(),
+    mutationFn: (questionAndAnswer: Pick<QuestionAndAnswer, "question" | "answer">) =>
+      client.questions_and_answers.$post(questionAndAnswer).unwrap(),
     onSettled: () =>
       queryClient.invalidateQueries({
         queryKey: [client.questions_and_answers.$url()],
@@ -48,16 +44,12 @@ export default function QuestionAndAnswerEditor({
       showSuccessNotification("Spørsmål og svar ble opprettet!");
       onClose();
     },
-    onError: () =>
-      showErrorNotification("Klarte ikke opprette spørsmål og svar!"),
+    onError: () => showErrorNotification("Klarte ikke opprette spørsmål og svar!"),
   });
 
   const updateQuestionAndAnswerMutation = useMutation({
     mutationFn: (questionAndAnswer: QuestionAndAnswer) =>
-      client
-        .questions_and_answers({ id: questionAndAnswer.id })
-        .$patch(questionAndAnswer)
-        .unwrap(),
+      client.questions_and_answers({ id: questionAndAnswer.id }).$patch(questionAndAnswer).unwrap(),
     onSettled: () =>
       queryClient.invalidateQueries({
         queryKey: [client.questions_and_answers.$url()],
@@ -66,8 +58,7 @@ export default function QuestionAndAnswerEditor({
       showSuccessNotification("Dynamisk innhold ble oppdatert!");
       onClose();
     },
-    onError: () =>
-      showErrorNotification("Klarte ikke oppdatere dynamisk innhold!"),
+    onError: () => showErrorNotification("Klarte ikke oppdatere dynamisk innhold!"),
   });
 
   return (
@@ -84,8 +75,7 @@ export default function QuestionAndAnswerEditor({
         </Button>
         <Button
           loading={
-            addQuestionAndAnswerMutation.isPending ||
-            updateQuestionAndAnswerMutation.isPending
+            addQuestionAndAnswerMutation.isPending || updateQuestionAndAnswerMutation.isPending
           }
           onClick={form.handleSubmit}
         >

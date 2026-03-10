@@ -1,7 +1,7 @@
-/* eslint-disable @typescript-eslint/triple-slash-reference */
-
 // Type references
+// oxlint-disable-next-line typescript/triple-slash-reference
 /// <reference path="../../../../backend/config/ally.ts" />
+// oxlint-disable-next-line typescript/triple-slash-reference
 /// <reference path="../../../../backend/adonisrc.ts" />
 
 import { api } from "@boklisten/backend/.adonisjs";
@@ -48,13 +48,8 @@ export default function useApiClient() {
             return response;
           }
 
-          const refreshToken = localStorage.getItem(
-            BL_CONFIG.token.refreshToken,
-          );
-          if (
-            request.headers.get("Authorization") === undefined ||
-            refreshToken === null
-          ) {
+          const refreshToken = localStorage.getItem(BL_CONFIG.token.refreshToken);
+          if (request.headers.get("Authorization") === undefined || refreshToken === null) {
             return redirectToLogin();
           }
 
@@ -70,10 +65,7 @@ export default function useApiClient() {
             login(newTokens);
 
             const retryRequest = new Request(request);
-            retryRequest.headers.set(
-              "Authorization",
-              `Bearer ${newTokens.accessToken}`,
-            );
+            retryRequest.headers.set("Authorization", `Bearer ${newTokens.accessToken}`);
             return fetch(retryRequest);
           } catch {
             return redirectToLogin();

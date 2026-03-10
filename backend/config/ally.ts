@@ -2,6 +2,7 @@ import { defineConfig } from "@adonisjs/ally";
 
 import { VippsDriverService } from "#services/vipps/vipps_driver_service";
 import env from "#start/env";
+import { InferSocialProviders } from "@adonisjs/ally/types";
 
 const allyConfig = defineConfig({
   vipps: VippsDriverService({
@@ -14,6 +15,5 @@ const allyConfig = defineConfig({
 });
 export default allyConfig;
 declare module "@adonisjs/ally/types" {
-  // eslint-disable-next-line @typescript-eslint/no-empty-object-type
   interface SocialProviders extends InferSocialProviders<typeof allyConfig> {}
 }

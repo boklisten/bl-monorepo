@@ -9,9 +9,7 @@ import { AUTH_VIPPS_ERROR, AuthVippsError } from "#shared/auth_vipps_error";
 import env from "#start/env";
 
 function redirectToAuthFailedPage(ctx: HttpContext, reason: string) {
-  ctx.response.redirect(
-    `${env.get("CLIENT_URI")}auth/failure?reason=${reason}`,
-  );
+  ctx.response.redirect(`${env.get("CLIENT_URI")}auth/failure?reason=${reason}`);
 }
 
 export const AuthVippsService = {

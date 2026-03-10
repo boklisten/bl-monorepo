@@ -4,12 +4,8 @@ export interface StringFilter {
 }
 
 export class DbQueryStringFilter {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   getStringFilters(query: any, validStringParams: string[]): StringFilter[] {
-    if (
-      !query ||
-      (Object.keys(query).length === 0 && query.constructor === Object)
-    ) {
+    if (!query || (Object.keys(query).length === 0 && query.constructor === Object)) {
       throw new TypeError("query can not be undefined or empty");
     }
     if (validStringParams.length <= 0) return [];
@@ -33,9 +29,7 @@ export class DbQueryStringFilter {
       return stringFilters;
     } catch (error) {
       if (error instanceof TypeError) {
-        throw new TypeError(
-          "query includes bad string parameter data, reason: " + error.message,
-        );
+        throw new TypeError("query includes bad string parameter data, reason: " + error.message);
       }
 
       throw new Error(
@@ -50,9 +44,7 @@ export class DbQueryStringFilter {
     if (this.validateStringParam(parameter)) {
       return parameter;
     }
-    throw new TypeError(
-      'the paramterer of value "' + parameter + '" is not a valid string',
-    );
+    throw new TypeError('the paramterer of value "' + parameter + '" is not a valid string');
   }
 
   private validateStringParam(parameter: string): boolean {

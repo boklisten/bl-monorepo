@@ -16,8 +16,7 @@ const ScannerTutorial = () => {
               <Card withBorder>
                 <Stack gap={"xs"}>
                   <Title order={4}>
-                    1. Scan eller skriv inn en bok sin unike ID, som ser slik
-                    ut:
+                    1. Scan eller skriv inn en bok sin unike ID, som ser slik ut:
                   </Title>
                   <Image
                     style={{ borderRadius: "2%" }}
@@ -35,22 +34,20 @@ const ScannerTutorial = () => {
                     height={150}
                   />
                   <Text fs={"italic"}>
-                    Sliter du med å finne IDen? Sjekk innsiden av boka, eller be
-                    om hjelp fra kontaktelev eller stand
+                    Sliter du med å finne IDen? Sjekk innsiden av boka, eller be om hjelp fra
+                    kontaktelev eller stand
                   </Text>
                 </Stack>
               </Card>
 
               <Card withBorder>
-                <Title order={4}>
-                  2. Gjenta til du har scannet alle bøkene du skal ha
-                </Title>
+                <Title order={4}>2. Gjenta til du har scannet alle bøkene du skal ha</Title>
               </Card>
 
               <Card withBorder>
                 <Title order={4}>
-                  3. VIKTIG: Sjekk at både du og den som ga deg bøkene har fått
-                  det grønne merket{" "}
+                  3. VIKTIG: Sjekk at både du og den som ga deg bøkene har fått det grønne
+                  merket{" "}
                 </Title>
                 <Image
                   style={{ borderRadius: "2%" }}

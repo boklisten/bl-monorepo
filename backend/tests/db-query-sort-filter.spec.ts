@@ -17,9 +17,7 @@ test.group("DbQuerySortFilter", async () => {
   });
 
   test("should return empty array if query does not have the sort object", async () => {
-    expect(dbQuerySortFilter.getSortFilters({ name: "hello" }, ["age"])).to.eql(
-      [],
-    );
+    expect(dbQuerySortFilter.getSortFilters({ name: "hello" }, ["age"])).to.eql([]);
   });
 
   test("should throw ReferenceError if none of the sort params are in the ValidSortParams", async () => {
@@ -34,11 +32,8 @@ test.group("DbQuerySortFilter", async () => {
       { fieldName: "age", direction: -1 },
     ];
 
-    expect(
-      dbQuerySortFilter.getSortFilters({ sort: ["name", "-age"] }, [
-        "name",
-        "age",
-      ]),
-    ).to.eql(result);
+    expect(dbQuerySortFilter.getSortFilters({ sort: ["name", "-age"] }, ["name", "age"])).to.eql(
+      result,
+    );
   });
 });

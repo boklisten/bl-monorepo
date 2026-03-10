@@ -36,12 +36,8 @@ export class OrderItemMovedFromOrderHandler {
     return true;
   }
 
-  private async updateOrderItem(
-    orderItemToUpdate: OrderItemToUpdate,
-  ): Promise<boolean> {
-    const originalOrder = await StorageService.Orders.get(
-      orderItemToUpdate.originalOrderId,
-    );
+  private async updateOrderItem(orderItemToUpdate: OrderItemToUpdate): Promise<boolean> {
+    const originalOrder = await StorageService.Orders.get(orderItemToUpdate.originalOrderId);
 
     for (const orderItem of originalOrder.orderItems) {
       if (orderItem.item === orderItemToUpdate.itemId) {

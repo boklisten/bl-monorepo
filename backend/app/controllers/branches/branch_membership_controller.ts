@@ -9,12 +9,8 @@ import { updateBranchMembershipValidator } from "#validators/branch_membership";
 
 async function getMembers(branchId: string) {
   const databaseQuery = new SEDbQuery();
-  databaseQuery.objectIdFilters = [
-    { fieldName: "branchMembership", value: branchId },
-  ];
-  return (
-    (await StorageService.UserDetails.getByQueryOrNull(databaseQuery)) ?? []
-  );
+  databaseQuery.objectIdFilters = [{ fieldName: "branchMembership", value: branchId }];
+  return (await StorageService.UserDetails.getByQueryOrNull(databaseQuery)) ?? [];
 }
 
 export default class BranchMembershipController {
@@ -22,8 +18,7 @@ export default class BranchMembershipController {
     PermissionService.adminOrFail(ctx);
     const branchId = ctx.request.param("branchId");
     const directMembers = await getMembers(branchId);
-    const childBranchIds =
-      await BranchRelationshipService.getNestedChildBranchIds(branchId);
+    const childBranchIds = await BranchRelationshipService.getNestedChildBranchIds(branchId);
     const indirectMembers = (
       await Promise.all(childBranchIds.map((childId) => getMembers(childId)))
     ).flat();
@@ -64,8 +59,7 @@ export default class BranchMembershipController {
   async removeIndirectMembers(ctx: HttpContext) {
     PermissionService.adminOrFail(ctx);
     const branchId = ctx.request.param("branchId");
-    const childBranchIds =
-      await BranchRelationshipService.getNestedChildBranchIds(branchId);
+    const childBranchIds = await BranchRelationshipService.getNestedChildBranchIds(branchId);
     const allMembers = (
       await Promise.all(childBranchIds.map((childId) => getMembers(childId)))
     ).flat();

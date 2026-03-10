@@ -5,8 +5,7 @@ export const USER_PERMISSION = {
   ADMIN: "admin",
 } as const satisfies Record<Uppercase<string>, Lowercase<string>>;
 
-export type UserPermission =
-  (typeof USER_PERMISSION)[keyof typeof USER_PERMISSION];
+export type UserPermission = (typeof USER_PERMISSION)[keyof typeof USER_PERMISSION];
 
 export const PERMISSION_LEVELS = {
   customer: 0,

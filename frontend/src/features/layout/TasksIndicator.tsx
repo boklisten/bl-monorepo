@@ -18,8 +18,7 @@ export default function TasksIndicator({ children }: PropsWithChildren) {
   const taskCount =
     isLoadingUserDetail || isErrorUserDetail || !userDetail?.tasks
       ? 0
-      : (userDetail.tasks.confirmDetails ? 1 : 0) +
-        (userDetail.tasks.signAgreement ? 1 : 0);
+      : (userDetail.tasks.confirmDetails ? 1 : 0) + (userDetail.tasks.signAgreement ? 1 : 0);
 
   if (taskCount === 0) return <>{children}</>;
   return (

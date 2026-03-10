@@ -15,12 +15,7 @@ export default function CartNavbarIndicator() {
         <Indicator
           inline
           label={
-            <Badge
-              style={{ cursor: "pointer" }}
-              circle
-              color={"red"}
-              size={"sm"}
-            >
+            <Badge style={{ cursor: "pointer" }} circle color={"red"} size={"sm"}>
               {cart.size()}
             </Badge>
           }

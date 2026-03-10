@@ -17,25 +17,19 @@ test.group("DbQueryBooleanFilter", async () => {
   });
 
   test("should return empty filter if ValidBoomeanParams array is empty", async () => {
-    expect(
-      dbQueryBooleanFilter.getBooleanFilters({ name: "albert" }, []),
-    ).to.eql([]);
+    expect(dbQueryBooleanFilter.getBooleanFilters({ name: "albert" }, [])).to.eql([]);
   });
 
   test('should return array of [{fieldName: "haveEaten", value: true"}]', async () => {
     const result = [{ fieldName: "haveEaten", value: true }];
-    expect(
-      dbQueryBooleanFilter.getBooleanFilters({ haveEaten: "true" }, [
-        "haveEaten",
-      ]),
-    ).to.eql(result);
+    expect(dbQueryBooleanFilter.getBooleanFilters({ haveEaten: "true" }, ["haveEaten"])).to.eql(
+      result,
+    );
   });
 
   test("should throw TypeError if a value that is can not be parsed to boolean is given", async () => {
     expect(() => {
-      dbQueryBooleanFilter.getBooleanFilters({ haveEaten: "hello" }, [
-        "haveEaten",
-      ]);
+      dbQueryBooleanFilter.getBooleanFilters({ haveEaten: "hello" }, ["haveEaten"]);
     }).to.throw(TypeError);
   });
 

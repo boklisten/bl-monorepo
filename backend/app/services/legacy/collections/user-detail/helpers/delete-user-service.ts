@@ -13,18 +13,12 @@ export class DeleteUserService {
       StorageService.UserDetails.get(fromUser),
       StorageService.UserDetails.get(toUser),
     ]);
-    const newOrderRefs = [
-      ...(fromUserDetails.orders ?? []),
-      ...(toUserDetails.orders ?? []),
-    ];
+    const newOrderRefs = [...(fromUserDetails.orders ?? []), ...(toUserDetails.orders ?? [])];
     const newCustomerItemRefs = [
       ...(fromUserDetails.customerItems ?? []),
       ...(toUserDetails.customerItems ?? []),
     ];
-    const newSignatureRefs = [
-      ...fromUserDetails.signatures,
-      ...toUserDetails.signatures,
-    ];
+    const newSignatureRefs = [...fromUserDetails.signatures, ...toUserDetails.signatures];
 
     await Promise.all([
       StorageService.UserDetails.update(toUser, {
@@ -32,10 +26,7 @@ export class DeleteUserService {
         customerItems: newCustomerItemRefs,
         signatures: newSignatureRefs,
       }),
-      StorageService.CustomerItems.updateMany(
-        { customer: fromUser },
-        { customer: toUser },
-      ),
+      StorageService.CustomerItems.updateMany({ customer: fromUser }, { customer: toUser }),
       StorageService.Invoices.updateMany(
         {
           customerInfo: {
@@ -61,10 +52,7 @@ export class DeleteUserService {
         },
         { customer: toUser },
       ),
-      StorageService.StandMatches.updateMany(
-        { customer: fromUser },
-        { customer: toUser },
-      ),
+      StorageService.StandMatches.updateMany({ customer: fromUser }, { customer: toUser }),
       StorageService.UserMatches.updateMany(
         {
           customerA: fromUser,

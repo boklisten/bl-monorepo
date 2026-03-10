@@ -41,19 +41,11 @@ export class OrderItemBuyValidator {
 
     await StorageService.Orders.get(orderItem.movedFromOrder)
       .then((order: Order) => {
-        if (
-          (!order.payments || order.payments.length <= 0) &&
-          orderItem.amount === 0
-        ) {
-          throw new BlError(
-            'the original order has not been payed, but orderItem.amount is "0"',
-          );
+        if ((!order.payments || order.payments.length <= 0) && orderItem.amount === 0) {
+          throw new BlError('the original order has not been payed, but orderItem.amount is "0"');
         }
 
-        const movedFromOrderItem = this.getOrderItemFromOrder(
-          orderItem.item,
-          order,
-        );
+        const movedFromOrderItem = this.getOrderItemFromOrder(orderItem.item, order);
 
         const expectedOrderItemAmount =
           this.priceService.round(this.priceService.sanitize(itemPrice)) -
@@ -85,14 +77,8 @@ export class OrderItemBuyValidator {
     throw new BlError("not found in original orderItem");
   }
 
-  private async validateOrderItemPriceTypeBuy(
-    orderItem: OrderItem,
-    item: Item,
-  ): Promise<boolean> {
-    if (
-      orderItem.movedFromOrder !== undefined &&
-      orderItem.movedFromOrder !== null
-    ) {
+  private async validateOrderItemPriceTypeBuy(orderItem: OrderItem, item: Item): Promise<boolean> {
+    if (orderItem.movedFromOrder !== undefined && orderItem.movedFromOrder !== null) {
       return await this.validateIfMovedFromOrder(orderItem, item.price);
     }
 

@@ -15,9 +15,7 @@ export default function VippsCheckoutFrame() {
 
   if (!checkoutFrontendUrl || !token)
     return (
-      <ErrorAlert title={"Klarte ikke vise betalingsside"}>
-        {PLEASE_TRY_AGAIN_TEXT}
-      </ErrorAlert>
+      <ErrorAlert title={"Klarte ikke vise betalingsside"}>{PLEASE_TRY_AGAIN_TEXT}</ErrorAlert>
     );
 
   return (

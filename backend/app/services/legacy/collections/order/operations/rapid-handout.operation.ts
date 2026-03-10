@@ -36,31 +36,24 @@ export class RapidHandoutOperation implements Operation {
 
     const uniqueItemOrFeedback = await this.verifyUniqueItemPresent(blid);
     if (typeof uniqueItemOrFeedback === "string")
-      return new BlapiResponse([
-        { feedback: uniqueItemOrFeedback, connectBlid: true },
-      ]);
+      return new BlapiResponse([{ feedback: uniqueItemOrFeedback, connectBlid: true }]);
 
-    const placedRentOrder = await this.placeRentOrder(
-      blid,
-      uniqueItemOrFeedback.item,
-      customerId,
-    );
+    const placedRentOrder = await this.placeRentOrder(blid, uniqueItemOrFeedback.item, customerId);
     await this.createCustomerItem(placedRentOrder);
 
     return new BlapiResponse([{}]);
   }
 
   private async createCustomerItem(placedReceiverOrder: Order): Promise<void> {
-    const [generatedReceiverCustomerItem] =
-      await new OrderToCustomerItemGenerator().generate(placedReceiverOrder);
+    const [generatedReceiverCustomerItem] = await new OrderToCustomerItemGenerator().generate(
+      placedReceiverOrder,
+    );
 
     if (generatedReceiverCustomerItem === undefined) {
       throw new BlError("Failed to create new customer items");
     }
 
-    const addedCustomerItem = await StorageService.CustomerItems.add(
-      generatedReceiverCustomerItem,
-    );
+    const addedCustomerItem = await StorageService.CustomerItems.add(generatedReceiverCustomerItem);
 
     await StorageService.Orders.update(placedReceiverOrder.id, {
       orderItems: placedReceiverOrder.orderItems.map((orderItem) => ({
@@ -70,11 +63,7 @@ export class RapidHandoutOperation implements Operation {
     });
   }
 
-  private async placeRentOrder(
-    blid: string,
-    itemId: string,
-    customerId: string,
-  ): Promise<Order> {
+  private async placeRentOrder(blid: string, itemId: string, customerId: string): Promise<Order> {
     const item = await StorageService.Items.get(itemId);
     if (!item) {
       throw new BlError("Failed to get item");
@@ -84,10 +73,7 @@ export class RapidHandoutOperation implements Operation {
       order: Order;
       relevantOrderItem: OrderItem | undefined;
     }
-    const tempEquivalentItemIds = [
-      "5b6441c6d2e733002fae89eb",
-      "5b6441c1d2e733002fae8960",
-    ];
+    const tempEquivalentItemIds = ["5b6441c6d2e733002fae89eb", "5b6441c1d2e733002fae8960"];
     const orderActive = new OrderActive();
     const customerOrder: OriginalOrderInfo | undefined = (
       await orderActive.getActiveOrders(customerId)
@@ -110,9 +96,7 @@ export class RapidHandoutOperation implements Operation {
     if (!customerOrder) {
       throw new BlError("No customer order for rapid handout item").code(805);
     }
-    const branch = await StorageService.Branches.get(
-      customerOrder.order.branch,
-    );
+    const branch = await StorageService.Branches.get(customerOrder.order.branch);
 
     const movedFromOrder = customerOrder.order.id;
 
@@ -164,11 +148,8 @@ export class RapidHandoutOperation implements Operation {
     await orderMovedToHandler.updateOrderItems(placedHandoutOrder);
 
     const databaseQuery = new SEDbQuery();
-    databaseQuery.objectIdFilters = [
-      { fieldName: "customer", value: customerId },
-    ];
-    const standMatches =
-      await StorageService.StandMatches.getByQueryOrNull(databaseQuery);
+    databaseQuery.objectIdFilters = [{ fieldName: "customer", value: customerId }];
+    const standMatches = await StorageService.StandMatches.getByQueryOrNull(databaseQuery);
     const standMatch = standMatches?.[0] ?? null;
     if (standMatch) {
       await StorageService.StandMatches.update(standMatch.id, {
@@ -182,13 +163,9 @@ export class RapidHandoutOperation implements Operation {
     return placedHandoutOrder;
   }
 
-  private async verifyBlidNotActive(
-    blid: string,
-    customerId: string,
-  ): Promise<string | null> {
+  private async verifyBlidNotActive(blid: string, customerId: string): Promise<string | null> {
     try {
-      const activeCustomerItems =
-        await new CustomerItemActiveBlid().getActiveCustomerItems(blid);
+      const activeCustomerItems = await new CustomerItemActiveBlid().getActiveCustomerItems(blid);
       if (activeCustomerItems.length > 0) {
         const lastCustomerItem = activeCustomerItems[0];
         if (lastCustomerItem?.customer === customerId)
@@ -201,14 +178,11 @@ export class RapidHandoutOperation implements Operation {
     return null;
   }
 
-  private async verifyUniqueItemPresent(
-    blid: string,
-  ): Promise<string | UniqueItem> {
+  private async verifyUniqueItemPresent(blid: string): Promise<string | UniqueItem> {
     const uniqueItemQuery = new SEDbQuery();
     uniqueItemQuery.stringFilters = [{ fieldName: "blid", value: blid }];
     try {
-      const uniqueItems =
-        await StorageService.UniqueItems.getByQuery(uniqueItemQuery);
+      const uniqueItems = await StorageService.UniqueItems.getByQuery(uniqueItemQuery);
       if (uniqueItems.length === 0) return blidNotActiveFeedback;
       return uniqueItems[0] ?? "";
     } catch {

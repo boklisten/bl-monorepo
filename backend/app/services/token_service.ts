@@ -7,9 +7,7 @@ import { User } from "#types/user";
 
 const TokenService = {
   async createTokens(user: User) {
-    const userDetail = await StorageService.UserDetails.getOrNull(
-      user.userDetail,
-    );
+    const userDetail = await StorageService.UserDetails.getOrNull(user.userDetail);
     await StorageService.Users.update(user.id, {
       $set: {
         "login.lastTokenIssuedAt": new Date(),

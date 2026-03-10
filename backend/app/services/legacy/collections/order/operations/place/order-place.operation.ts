@@ -77,10 +77,8 @@ export class OrderPlaceOperation implements Operation {
     );
 
     try {
-      const existingOrders =
-        await StorageService.Orders.getByQuery(databaseQuery);
-      const alreadyOrderedItems =
-        this.filterOrdersByAlreadyOrdered(existingOrders);
+      const existingOrders = await StorageService.Orders.getByQuery(databaseQuery);
+      const alreadyOrderedItems = this.filterOrdersByAlreadyOrdered(existingOrders);
 
       for (const orderItem of order.orderItems) {
         for (const alreadyOrderedItem of alreadyOrderedItems) {
@@ -112,14 +110,9 @@ export class OrderPlaceOperation implements Operation {
    * @private
    */
   private async isSomeBlidAlreadyHandedOut(order: Order): Promise<boolean> {
-    const handoutOrderTypes = new Set<OrderItemType>([
-      "buy",
-      "rent",
-      "partly-payment",
-    ]);
+    const handoutOrderTypes = new Set<OrderItemType>(["buy", "rent", "partly-payment"]);
     const handoutItems = order.orderItems.filter(
-      (orderItem) =>
-        handoutOrderTypes.has(orderItem.type) && orderItem.blid != null,
+      (orderItem) => handoutOrderTypes.has(orderItem.type) && orderItem.blid != null,
     );
     if (handoutItems.length === 0) {
       return false;
@@ -144,9 +137,7 @@ export class OrderPlaceOperation implements Operation {
       ]);
       return unreturnedItems.length > 0;
     } catch {
-      console.error(
-        "Could not check whether some items are already handed out",
-      );
+      console.error("Could not check whether some items are already handed out");
       return false;
     }
   }
@@ -168,8 +159,7 @@ export class OrderPlaceOperation implements Operation {
         userMatches.some(
           (userMatch) =>
             userMatch.itemsLockedToMatch &&
-            (userMatch.customerA === customer ||
-              userMatch.customerB === customer) &&
+            (userMatch.customerA === customer || userMatch.customerB === customer) &&
             (userMatch.expectedAToBItems.includes(item) ||
               userMatch.expectedBToAItems.includes(item)),
         )
@@ -199,8 +189,7 @@ export class OrderPlaceOperation implements Operation {
         userMatches.some(
           (userMatch) =>
             userMatch.itemsLockedToMatch &&
-            (userMatch.customerA === customer ||
-              userMatch.customerB === customer) &&
+            (userMatch.customerA === customer || userMatch.customerB === customer) &&
             (userMatch.expectedAToBItems.includes(item) ||
               userMatch.expectedBToAItems.includes(item)),
         )
@@ -231,15 +220,11 @@ export class OrderPlaceOperation implements Operation {
     }
 
     const returnCustomerItems = await StorageService.CustomerItems.getMany(
-      returnOrderItems
-        .map((orderItem) => orderItem.customerItem)
-        .filter(isNotNullish),
+      returnOrderItems.map((orderItem) => orderItem.customerItem).filter(isNotNullish),
     );
 
     const handoutCustomerItems = await StorageService.CustomerItems.getMany(
-      handoutOrderItems
-        .map((orderItem) => orderItem.customerItem)
-        .filter(isNotNullish),
+      handoutOrderItems.map((orderItem) => orderItem.customerItem).filter(isNotNullish),
     );
 
     await this.updateStandMatchHandoffs(returnCustomerItems, standMatches);
@@ -265,10 +250,7 @@ export class OrderPlaceOperation implements Operation {
       (customerItem, match) => [...match.deliveredItems, customerItem.item],
     );
 
-    for (const [
-      standMatchId,
-      deliveredItems,
-    ] of matchToDeliveredItemsMap.entries()) {
+    for (const [standMatchId, deliveredItems] of matchToDeliveredItemsMap.entries()) {
       await StorageService.StandMatches.update(standMatchId, {
         deliveredItems: Array.from(deliveredItems),
       });
@@ -292,10 +274,7 @@ export class OrderPlaceOperation implements Operation {
       (customerItem, match) => [...match.receivedItems, customerItem.item],
     );
 
-    for (const [
-      standMatchId,
-      receivedItems,
-    ] of matchToReceivedItemsMap.entries()) {
+    for (const [standMatchId, receivedItems] of matchToReceivedItemsMap.entries()) {
       await StorageService.StandMatches.update(standMatchId, {
         receivedItems: Array.from(receivedItems),
       });
@@ -312,14 +291,10 @@ export class OrderPlaceOperation implements Operation {
         (userMatch) =>
           (userMatch.customerA === customerItem.customer &&
             userMatch.expectedBToAItems.includes(customerItem.item) &&
-            !userMatch.receivedBlIdsCustomerA.includes(
-              customerItem.blid ?? "",
-            )) ||
+            !userMatch.receivedBlIdsCustomerA.includes(customerItem.blid ?? "")) ||
           (userMatch.customerB === customerItem.customer &&
             userMatch.expectedAToBItems.includes(customerItem.item) &&
-            !userMatch.receivedBlIdsCustomerB.includes(
-              customerItem.blid ?? "",
-            )),
+            !userMatch.receivedBlIdsCustomerB.includes(customerItem.blid ?? "")),
       );
       if (!receiverUserMatch) {
         continue;
@@ -356,14 +331,10 @@ export class OrderPlaceOperation implements Operation {
         (userMatch) =>
           (userMatch.customerA === customerItem.customer &&
             userMatch.expectedAToBItems.includes(customerItem.item) &&
-            !userMatch.deliveredBlIdsCustomerA.includes(
-              customerItem.blid ?? "",
-            )) ||
+            !userMatch.deliveredBlIdsCustomerA.includes(customerItem.blid ?? "")) ||
           (userMatch.customerB === customerItem.customer &&
             userMatch.expectedBToAItems.includes(customerItem.item) &&
-            !userMatch.deliveredBlIdsCustomerB.includes(
-              customerItem.blid ?? "",
-            )),
+            !userMatch.deliveredBlIdsCustomerB.includes(customerItem.blid ?? "")),
       );
       if (!senderUserMatch) {
         continue;
@@ -404,10 +375,7 @@ export class OrderPlaceOperation implements Operation {
       if (match) {
         map.set(
           match.id,
-          new Set([
-            ...(map.get(match.id) ?? []),
-            ...valuesExtractor(value, match),
-          ]),
+          new Set([...(map.get(match.id) ?? []), ...valuesExtractor(value, match)]),
         );
       }
     }
@@ -424,19 +392,16 @@ export class OrderPlaceOperation implements Operation {
       throw new ReferenceError(`order "${blApiRequest.documentId}" not found`);
     }
 
-    const pendingSignature =
-      await this.orderPlacedHandler.isSignaturePending(order);
+    const pendingSignature = await this.orderPlacedHandler.isSignaturePending(order);
 
     if (order.byCustomer) {
-      const orderContainsActiveCustomerItems =
-        await this.hasOpenOrderWithOrderItems(order);
+      const orderContainsActiveCustomerItems = await this.hasOpenOrderWithOrderItems(order);
       if (orderContainsActiveCustomerItems) {
         throw new BlError("Order contains active customer items").code(500);
       }
     }
 
-    const someBlidAlreadyHandedOut =
-      await this.isSomeBlidAlreadyHandedOut(order);
+    const someBlidAlreadyHandedOut = await this.isSomeBlidAlreadyHandedOut(order);
 
     if (someBlidAlreadyHandedOut) {
       throw new BlError(
@@ -445,8 +410,7 @@ export class OrderPlaceOperation implements Operation {
     }
 
     const returnOrderItems = order.orderItems.filter(
-      (orderItem) =>
-        orderItem.type === "return" || orderItem.type === "buyback",
+      (orderItem) => orderItem.type === "return" || orderItem.type === "buyback",
     );
     const handoutOrderItems = order.orderItems.filter(
       (orderItem) => orderItem.handout && orderItem.type === "rent",
@@ -494,17 +458,11 @@ export class OrderPlaceOperation implements Operation {
       );
     }
 
-    await this.orderPlacedHandler.placeOrder(
-      order,
-      blApiRequest.user?.details ?? "",
-    );
+    await this.orderPlacedHandler.placeOrder(order, blApiRequest.user?.details ?? "");
 
     const isAdmin =
       blApiRequest.user?.permission !== undefined &&
-      PermissionService.isPermissionEqualOrOver(
-        blApiRequest.user?.permission,
-        "admin",
-      );
+      PermissionService.isPermissionEqualOrOver(blApiRequest.user?.permission, "admin");
 
     await this.orderValidator.validate(order, isAdmin);
 
@@ -518,7 +476,6 @@ export class OrderPlaceOperation implements Operation {
           blApiRequest.user,
         );
         // fixme: probably not a good idea to ignore this error...
-        // eslint-disable-next-line no-empty
       } catch {}
     }
     return new BlapiResponse([order]);
@@ -540,15 +497,10 @@ export class OrderPlaceOperation implements Operation {
     customerId: string,
   ) {
     const returnCustomerItems = await StorageService.CustomerItems.getMany(
-      returnOrderItems
-        .map((orderItem) => orderItem.customerItem)
-        .filter(isNotNullish),
+      returnOrderItems.map((orderItem) => orderItem.customerItem).filter(isNotNullish),
     );
     const handoutItems = handoutOrderItems.map((orderItem) => orderItem.item);
-    this.verifyCustomerItemsNotInLockedUserMatch(
-      returnCustomerItems,
-      userMatches,
-    );
+    this.verifyCustomerItemsNotInLockedUserMatch(returnCustomerItems, userMatches);
     this.verifyItemsNotInLockedUserMatch(handoutItems, userMatches, customerId);
   }
 
@@ -577,8 +529,7 @@ export class OrderPlaceOperation implements Operation {
 
     let userDetailCustomerItemsIds = userDetail.customerItems ?? [];
 
-    userDetailCustomerItemsIds =
-      userDetailCustomerItemsIds.concat(customerItemIds);
+    userDetailCustomerItemsIds = userDetailCustomerItemsIds.concat(customerItemIds);
 
     await StorageService.UserDetails.update(customerId, {
       customerItems: userDetailCustomerItemsIds,
@@ -587,10 +538,7 @@ export class OrderPlaceOperation implements Operation {
     return true;
   }
 
-  private addCustomerItemIdToOrderItems(
-    order: Order,
-    customerItems: CustomerItem[],
-  ) {
+  private addCustomerItemIdToOrderItems(order: Order, customerItems: CustomerItem[]) {
     for (const customerItem of customerItems) {
       for (const orderItem of order.orderItems) {
         if (customerItem.item === orderItem.item) {

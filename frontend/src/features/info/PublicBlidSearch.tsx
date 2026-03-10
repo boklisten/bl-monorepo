@@ -1,15 +1,6 @@
 "use client";
 import { PublicBlidLookupResult } from "@boklisten/backend/shared/public_blid_lookup";
-import {
-  ActionIcon,
-  Card,
-  Group,
-  Stack,
-  Table,
-  Text,
-  Title,
-  Tooltip,
-} from "@mantine/core";
+import { ActionIcon, Card, Group, Stack, Table, Text, Title, Tooltip } from "@mantine/core";
 import { modals } from "@mantine/modals";
 import { IconMail, IconObjectScan, IconPhone } from "@tabler/icons-react";
 import dayjs from "dayjs";
@@ -21,9 +12,9 @@ import useApiClient from "@/shared/hooks/useApiClient";
 
 export default function PublicBlidSearch() {
   const client = useApiClient();
-  const [searchResult, setSearchResult] = useState<
-    PublicBlidLookupResult | "inactive" | null
-  >(null);
+  const [searchResult, setSearchResult] = useState<PublicBlidLookupResult | "inactive" | null>(
+    null,
+  );
 
   const form = useAppForm({
     defaultValues: {
@@ -38,10 +29,7 @@ export default function PublicBlidSearch() {
       return;
     }
     try {
-      const [result] = await client
-        .public_blid_lookup({ blid })
-        .$get()
-        .unwrap();
+      const [result] = await client.public_blid_lookup({ blid }).$get().unwrap();
       if (result) {
         setSearchResult(result);
       } else {
@@ -92,8 +80,7 @@ export default function PublicBlidSearch() {
         )}
       </form.AppField>
       <Text c={"gray"} size={"sm"} ta={"center"}>
-        {searchResult === "inactive" &&
-          "Denne boken er ikke registrert som utdelt."}
+        {searchResult === "inactive" && "Denne boken er ikke registrert som utdelt."}
         {((searchResult === null &&
           form.state.values.seach.length !== 8 &&
           form.state.values.seach.length !== 12) ||
@@ -137,15 +124,11 @@ export default function PublicBlidSearch() {
                   </Table.Tr>
                   <Table.Tr>
                     <Table.Th>Utdelt den</Table.Th>
-                    <Table.Td>
-                      {dayjs(searchResult.handoutTime).format("DD/MM/YYYY")}
-                    </Table.Td>
+                    <Table.Td>{dayjs(searchResult.handoutTime).format("DD/MM/YYYY")}</Table.Td>
                   </Table.Tr>
                   <Table.Tr>
                     <Table.Th>Frist</Table.Th>
-                    <Table.Td>
-                      {dayjs(searchResult.deadline).format("DD/MM/YYYY")}
-                    </Table.Td>
+                    <Table.Td>{dayjs(searchResult.deadline).format("DD/MM/YYYY")}</Table.Td>
                   </Table.Tr>
                 </Table.Tbody>
               </Table>

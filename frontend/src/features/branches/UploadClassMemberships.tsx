@@ -20,9 +20,7 @@ function SuccessfulUploadDialog({
     <Stack>
       <Title order={5}>{`${matchedUsers} brukere ble oppdatert!`}</Title>
       <Activity mode={unknownBranches.length > 0 ? "visible" : "hidden"}>
-        <Title
-          order={6}
-        >{`${unknownBranches.length} filialer ble ikke funnet:`}</Title>
+        <Title order={6}>{`${unknownBranches.length} filialer ble ikke funnet:`}</Title>
         <List>
           {unknownBranches.map((branchName) => (
             <List.Item key={branchName}>{branchName}</List.Item>
@@ -30,9 +28,7 @@ function SuccessfulUploadDialog({
         </List>
       </Activity>
       <Activity mode={unknownRecords.length > 0 ? "visible" : "hidden"}>
-        <Title
-          order={6}
-        >{`${unknownRecords.length} brukere ble ikke funnet:`}</Title>
+        <Title order={6}>{`${unknownRecords.length} brukere ble ikke funnet:`}</Title>
         <List>
           {unknownRecords.map(({ branch, phone }) => (
             <List.Item key={phone}>{`${branch} - ${phone}`}</List.Item>
@@ -43,17 +39,11 @@ function SuccessfulUploadDialog({
   );
 }
 
-export default function UploadClassMemberships({
-  branchId,
-}: {
-  branchId: string;
-}) {
+export default function UploadClassMemberships({ branchId }: { branchId: string }) {
   const client = useApiClient();
 
   const uploadClassMembershipMutation = useMutation({
-    mutationFn: (
-      membershipData: { branch: string | string[]; phone: string | string[] }[],
-    ) =>
+    mutationFn: (membershipData: { branch: string | string[]; phone: string | string[] }[]) =>
       client.v2.branches.memberships
         .$post({
           membershipData: membershipData as { branch: string; phone: string }[],

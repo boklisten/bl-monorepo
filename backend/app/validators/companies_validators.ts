@@ -1,10 +1,6 @@
 import vine from "@vinejs/vine";
 
-import {
-  emailField,
-  phoneField,
-  postalCodeField,
-} from "#validators/common/fields";
+import { emailField, phoneField, postalCodeField } from "#validators/common/fields";
 
 export const companyValidator = vine.create(
   vine.object({

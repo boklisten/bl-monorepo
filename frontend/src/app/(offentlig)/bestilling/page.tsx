@@ -8,8 +8,7 @@ import { publicApiClient } from "@/shared/utils/publicApiClient";
 
 export const metadata: Metadata = {
   title: "Bestill bøker",
-  description:
-    "Velg hvilken skole og hvilke fag du tar, så finner vi bøkene du trenger for deg!",
+  description: "Velg hvilken skole og hvilke fag du tar, så finner vi bøkene du trenger for deg!",
 };
 
 const branchQuery = {

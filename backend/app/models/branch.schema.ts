@@ -108,9 +108,7 @@ export const BranchSchema: BlSchema<Branch> = new Schema({
     atBranch: Boolean,
   },
   branchItems: [{ type: Schema.Types.ObjectId, ref: BlSchemaName.BranchItems }],
-  openingHours: [
-    { type: Schema.Types.ObjectId, ref: BlSchemaName.OpeningHours },
-  ],
+  openingHours: [{ type: Schema.Types.ObjectId, ref: BlSchemaName.OpeningHours }],
   location: {
     type: {
       region: { type: String, trim: true, required: true },

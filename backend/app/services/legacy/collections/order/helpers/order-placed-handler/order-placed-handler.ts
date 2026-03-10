@@ -55,10 +55,7 @@ export class OrderPlacedHandler {
     }
   }
 
-  private async updateCustomerItemsIfPresent(
-    order: Order,
-    detailsId: string,
-  ): Promise<Order> {
+  private async updateCustomerItemsIfPresent(order: Order, detailsId: string): Promise<Order> {
     for (const orderItem of order.orderItems) {
       if (
         orderItem.type === "extend" ||
@@ -88,29 +85,17 @@ export class OrderPlacedHandler {
               break;
             }
             case "buyout": {
-              await this.customerItemHandler.buyout(
-                customerItemId,
-                order.id,
-                orderItem,
-              );
+              await this.customerItemHandler.buyout(customerItemId, order.id, orderItem);
 
               break;
             }
             case "buyback": {
-              await this.customerItemHandler.buyback(
-                customerItemId,
-                order.id,
-                orderItem,
-              );
+              await this.customerItemHandler.buyback(customerItemId, order.id, orderItem);
 
               break;
             }
             case "cancel": {
-              await this.customerItemHandler.cancel(
-                customerItemId,
-                order.id,
-                orderItem,
-              );
+              await this.customerItemHandler.cancel(customerItemId, order.id, orderItem);
 
               break;
             }
@@ -153,18 +138,12 @@ export class OrderPlacedHandler {
                 resolve(true);
               })
               .catch(() => {
-                reject(
-                  new BlError("could not update userDetail with placed order"),
-                );
+                reject(new BlError("could not update userDetail with placed order"));
               });
           }
         })
         .catch((getUserDetailError: BlError) => {
-          reject(
-            new BlError(`customer "${order.customer}" not found`).add(
-              getUserDetailError,
-            ),
-          );
+          reject(new BlError(`customer "${order.customer}" not found`).add(getUserDetailError));
         });
     });
   }
@@ -180,11 +159,7 @@ export class OrderPlacedHandler {
         ? await StorageService.Deliveries.get(order.delivery)
         : null;
     if (delivery?.info && "trackingNumber" in delivery.info) {
-      await DispatchService.sendDeliveryInformation(
-        customerDetail,
-        order,
-        delivery.info,
-      );
+      await DispatchService.sendDeliveryInformation(customerDetail, order, delivery.info);
     } else {
       await OrderEmailHandler.sendOrderReceipt(customerDetail, order);
     }
@@ -207,9 +182,7 @@ export class OrderPlacedHandler {
     for (const orderItem of this.orderItemsWhichRequireSignature(order)) {
       if (orderItem.handout) {
         if (orderItem.movedFromOrder) {
-          const originalOrder = await StorageService.Orders.get(
-            orderItem.movedFromOrder,
-          );
+          const originalOrder = await StorageService.Orders.get(orderItem.movedFromOrder);
           if (!originalOrder.pendingSignature) continue;
         }
         // fixme: remove this return and uncomment throw to enforce signature
@@ -233,7 +206,4 @@ export class OrderPlacedHandler {
   }
 }
 
-const orderItemTypesWhichRequireSignature = new Set<OrderItemType>([
-  "rent",
-  "loan",
-]);
+const orderItemTypesWhichRequireSignature = new Set<OrderItemType>(["rent", "loan"]);

@@ -103,9 +103,7 @@ async function sendReminderEmail(
   const filteredCustomers =
     target === "primary"
       ? customers
-      : customers.filter(
-          (customer) => (customer.guardian.email?.length ?? 0) > 0,
-        );
+      : customers.filter((customer) => (customer.guardian.email?.length ?? 0) > 0);
 
   if (filteredCustomers.length === 0) {
     return { success: true };
@@ -113,8 +111,7 @@ async function sendReminderEmail(
   return await DispatchService.sendUserProvidedEmailTemplate({
     templateId: emailTemplateId,
     recipients: filteredCustomers.map((customer) => ({
-      to:
-        target === "primary" ? customer.email : (customer.guardian.email ?? ""),
+      to: target === "primary" ? customer.email : (customer.guardian.email ?? ""),
       dynamicTemplateData: {
         name: customer.name?.split(" ")?.[0] ?? "",
         items: customer.customerItems.map((customerItem) => ({
@@ -134,30 +131,17 @@ export default class RemindersController {
 
     const { deadlineISO, customerItemType, branchIDs } =
       await ctx.request.validateUsing(reminderValidator);
-    const customers = await aggregateCustomersToRemind(
-      customerItemType,
-      branchIDs,
-      deadlineISO,
-    );
+    const customers = await aggregateCustomersToRemind(customerItemType, branchIDs, deadlineISO);
     return ctx.response.ok({ recipientCount: customers.length });
   }
 
   async remind(ctx: HttpContext) {
     PermissionService.adminOrFail(ctx);
 
-    const {
-      deadlineISO,
-      customerItemType,
-      branchIDs,
-      emailTemplateId,
-      smsText,
-    } = await ctx.request.validateUsing(reminderValidator);
+    const { deadlineISO, customerItemType, branchIDs, emailTemplateId, smsText } =
+      await ctx.request.validateUsing(reminderValidator);
 
-    const customers = await aggregateCustomersToRemind(
-      customerItemType,
-      branchIDs,
-      deadlineISO,
-    );
+    const customers = await aggregateCustomersToRemind(customerItemType, branchIDs, deadlineISO);
 
     if (emailTemplateId) {
       const { success: successPrimaryEmail } = await sendReminderEmail(

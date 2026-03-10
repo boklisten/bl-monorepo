@@ -12,21 +12,14 @@ export class DeliveryPatchHook extends Hook {
 
   private deliveryHandler: DeliveryHandler;
 
-  constructor(
-    deliveryValidator?: DeliveryValidator,
-    deliveryHandler?: DeliveryHandler,
-  ) {
+  constructor(deliveryValidator?: DeliveryValidator, deliveryHandler?: DeliveryHandler) {
     super();
     this.deliveryValidator = deliveryValidator ?? new DeliveryValidator();
 
     this.deliveryHandler = deliveryHandler ?? new DeliveryHandler();
   }
 
-  override before(
-    body: unknown,
-    accessToken?: AccessToken,
-    id?: string,
-  ): Promise<boolean> {
+  override before(body: unknown, accessToken?: AccessToken, id?: string): Promise<boolean> {
     if (!body) {
       return Promise.reject(new BlError("body is undefined"));
     }
@@ -80,11 +73,7 @@ export class DeliveryPatchHook extends Hook {
     });
   }
 
-  private tryToValidatePatch(
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    body: any,
-    id: string,
-  ): Promise<boolean> {
+  private tryToValidatePatch(body: any, id: string): Promise<boolean> {
     return new Promise((resolve, reject) => {
       StorageService.Deliveries.get(id)
         .then((delivery: Delivery) => {

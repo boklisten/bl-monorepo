@@ -14,25 +14,20 @@ import EditableTextEditor from "@/features/editable-texts/EditableTextEditor";
 import ErrorAlert from "@/shared/components/alerts/ErrorAlert";
 import useApiClient from "@/shared/hooks/useApiClient";
 import { PLEASE_TRY_AGAIN_TEXT } from "@/shared/utils/constants";
-import {
-  showErrorNotification,
-  showSuccessNotification,
-} from "@/shared/utils/notifications";
+import { showErrorNotification, showSuccessNotification } from "@/shared/utils/notifications";
 
 export default function EditableTextTable() {
   const client = useApiClient();
   const queryClient = useQueryClient();
 
   const destroyEditableTextMutation = useMutation({
-    mutationFn: (id: string) =>
-      client.editable_texts({ id: id }).$delete().unwrap(),
+    mutationFn: (id: string) => client.editable_texts({ id: id }).$delete().unwrap(),
     onSettled: () =>
       queryClient.invalidateQueries({
         queryKey: [client.editable_texts.$url()],
       }),
     onSuccess: () => showSuccessNotification("Dynamisk innhold ble slettet!"),
-    onError: () =>
-      showErrorNotification("Klarte ikke slette dynamisk innhold!"),
+    onError: () => showErrorNotification("Klarte ikke slette dynamisk innhold!"),
   });
 
   const {
@@ -60,10 +55,7 @@ export default function EditableTextTable() {
     renderRowActions: ({ row, table }) => (
       <>
         <Tooltip key={`edit-${row.id}`} label={"Endre"}>
-          <ActionIcon
-            variant={"subtle"}
-            onClick={() => table.setEditingRow(row)}
-          >
+          <ActionIcon variant={"subtle"} onClick={() => table.setEditingRow(row)}>
             <IconEdit />
           </ActionIcon>
         </Tooltip>
@@ -101,9 +93,7 @@ export default function EditableTextTable() {
     ),
     renderEditRowModalContent: ({ table, row }) => (
       <EditableTextEditor
-        editableText={editableTexts?.find(
-          (editableText) => editableText.id === row.id,
-        )}
+        editableText={editableTexts?.find((editableText) => editableText.id === row.id)}
         onClose={() => table.setEditingRow(null)}
       />
     ),

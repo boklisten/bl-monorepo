@@ -59,6 +59,7 @@ export function createUserGroup(
   wantedItems: string[],
   membership?: string,
 ): MatchableUser[] {
+  // oxlint-disable-next-line unicorn/no-useless-spread unicorn/no-new-array
   return [...new Array(size)].map((_, id) =>
     createFakeMatchableUser(id + idSuffix, items, wantedItems, membership),
   );
@@ -71,9 +72,7 @@ export const shuffler =
     for (let index = 0; index < list.length; index++) {
       const random = index + Math.floor(randomizer() * (list.length - index));
       const temporary = list[random];
-      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
       list[random] = list[index]!;
-      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
       list[index] = temporary!;
     }
     return list;

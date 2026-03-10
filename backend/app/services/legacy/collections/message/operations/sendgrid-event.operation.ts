@@ -59,8 +59,7 @@ export class SendgridEventOperation implements Operation {
     message: Message,
     sendgridEvent: SendgridEvent,
   ): Promise<boolean> {
-    const newSendgridEvents =
-      message.events && message.events.length > 0 ? message.events : [];
+    const newSendgridEvents = message.events && message.events.length > 0 ? message.events : [];
 
     newSendgridEvents.push(sendgridEvent);
 

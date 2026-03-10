@@ -25,22 +25,12 @@ export default function SignAgreement({
 }) {
   const queryClient = useQueryClient();
   const { data, isLoading, isError } = useQuery({
-    queryKey: [
-      publicApiClient.signatures.valid({ detailsId: userDetailId }).$url(),
-      userDetailId,
-    ],
-    queryFn: () =>
-      publicApiClient.signatures
-        .valid({ detailsId: userDetailId })
-        .$get()
-        .unwrap(),
+    queryKey: [publicApiClient.signatures.valid({ detailsId: userDetailId }).$url(), userDetailId],
+    queryFn: () => publicApiClient.signatures.valid({ detailsId: userDetailId }).$get().unwrap(),
   });
   const signMutation = useMutation({
     mutationFn: (payload: SignatureForm) =>
-      publicApiClient.signatures
-        .sign({ detailsId: userDetailId })
-        .$post(payload)
-        .unwrap(),
+      publicApiClient.signatures.sign({ detailsId: userDetailId }).$post(payload).unwrap(),
     onError: () => showErrorNotification("Noe gikk galt under signering"),
     onSettled: () => {
       void queryClient.invalidateQueries({
@@ -56,8 +46,7 @@ export default function SignAgreement({
   });
   const form = useAppForm({
     defaultValues: {
-      signingName:
-        data && !data.isUnderage && "name" in data ? (data.name ?? "") : "",
+      signingName: data && !data.isUnderage && "name" in data ? (data.name ?? "") : "",
       base64EncodedImage: "",
     },
     onSubmit: ({ value }) => signMutation.mutate(value),
@@ -86,10 +75,7 @@ export default function SignAgreement({
     return (
       <Stack>
         <Spoiler maxHeight={165} showLabel={"Vis mer"} hideLabel={"Vis mindre"}>
-          <EditableTextReadOnly
-            dataKey={"betingelser"}
-            cachedText={cachedAgreementText}
-          />
+          <EditableTextReadOnly dataKey={"betingelser"} cachedText={cachedAgreementText} />
         </Spoiler>
         <SignedContractDetails
           signedByGuardian={data.signedByGuardian ?? false}
@@ -105,10 +91,7 @@ export default function SignAgreement({
   return (
     <Stack>
       <Spoiler maxHeight={165} showLabel={"Vis mer"} hideLabel={"Vis mindre"}>
-        <EditableTextReadOnly
-          dataKey={"betingelser"}
-          cachedText={cachedAgreementText}
-        />
+        <EditableTextReadOnly dataKey={"betingelser"} cachedText={cachedAgreementText} />
       </Spoiler>
       <Stack gap={"xs"}>
         <form.AppField
@@ -130,8 +113,7 @@ export default function SignAgreement({
           name={"signingName"}
           validators={{
             onChange: ({ value }) => {
-              if (value?.length === 0)
-                return "Du må fylle inn foresatt sitt fulle navn";
+              if (value?.length === 0) return "Du må fylle inn foresatt sitt fulle navn";
               if (data.isUnderage && data.name === value)
                 return "Foresattes navn må være forskjellig fra elevens navn";
               return null;
@@ -142,11 +124,7 @@ export default function SignAgreement({
             <field.TextField
               required
               label={`Fullt navn ${data.isUnderage ? "(foresatt)" : ""}`}
-              description={
-                data.isUnderage
-                  ? ""
-                  : "Du kan endre navnet ditt i brukerinnstillinger"
-              }
+              description={data.isUnderage ? "" : "Du kan endre navnet ditt i brukerinnstillinger"}
               readOnly={!data.isUnderage}
             />
           )}

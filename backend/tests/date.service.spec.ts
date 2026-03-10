@@ -13,18 +13,14 @@ test.group("DateService", async () => {
     const utcDate = new Date(Date.UTC(2019, 11, 20));
     const expectedDateString = "2019-12-20T01:00:00.000+01:00";
 
-    expect(DateService.utcToLocalTimeString(utcDate, "Europe/Oslo")).equal(
-      expectedDateString,
-    );
+    expect(DateService.utcToLocalTimeString(utcDate, "Europe/Oslo")).equal(expectedDateString);
   });
 
   test("should convert datestring to correct localtime", async () => {
     const datestring = "2019-12-19T23:00:00.000+00:00";
     const expectedDateString = "2019-12-20T00:00:00.000+01:00";
 
-    expect(DateService.utcToLocalTimeString(datestring, "Europe/Oslo")).equal(
-      expectedDateString,
-    );
+    expect(DateService.utcToLocalTimeString(datestring, "Europe/Oslo")).equal(expectedDateString);
   });
 
   test("should convert datestring to correct localtime", async () => {
@@ -32,9 +28,7 @@ test.group("DateService", async () => {
     const datestring = "2020-06-30T22:00:00.000+00:00";
     const expectedDateString = "2020-07-01T00:00:00.000+02:00";
 
-    expect(DateService.utcToLocalTimeString(datestring, "Europe/Oslo")).equal(
-      expectedDateString,
-    );
+    expect(DateService.utcToLocalTimeString(datestring, "Europe/Oslo")).equal(expectedDateString);
   });
 
   test("should be possible to display returned string on local format", async () => {
@@ -62,10 +56,7 @@ test.group("DateService", async () => {
   test("should be possible to convert from timezone America/Los_Angeles to Europe/Oslo", async () => {
     const utcDate = new Date(Date.UTC(2018, 11, 20));
 
-    const americaDate = DateService.utcToLocalTimeString(
-      utcDate,
-      "America/Los_Angeles",
-    );
+    const americaDate = DateService.utcToLocalTimeString(utcDate, "America/Los_Angeles");
 
     expect(DateService.utcToLocalTimeString(americaDate, "Europe/Oslo")).equal(
       "2018-12-20T01:00:00.000+01:00",
@@ -73,21 +64,15 @@ test.group("DateService", async () => {
   });
 
   test("should convert to local time", async () => {
-    expect(
-      DateService.utcToLocalTimeString(
-        "2018-12-20T00:00:00.000+00:00",
-        "Europe/Oslo",
-      ),
-    ).equal("2018-12-20T01:00:00.000+01:00");
+    expect(DateService.utcToLocalTimeString("2018-12-20T00:00:00.000+00:00", "Europe/Oslo")).equal(
+      "2018-12-20T01:00:00.000+01:00",
+    );
   });
 
   test("should convert to correct local time", async () => {
-    expect(
-      DateService.utcToLocalTimeString(
-        "2018-12-19T23:00:00.000+00:00",
-        "Europe/Oslo",
-      ),
-    ).equal("2018-12-20T00:00:00.000+01:00");
+    expect(DateService.utcToLocalTimeString("2018-12-19T23:00:00.000+00:00", "Europe/Oslo")).equal(
+      "2018-12-20T00:00:00.000+01:00",
+    );
   });
 
   test("should return date on correct format", async () => {
@@ -104,9 +89,9 @@ test.group("DateService", async () => {
 
   test("should return date on correct format", async () => {
     const date = "2020-01-01T10:12:20.000+01:00";
-    expect(
-      DateService.format(date, "Europe/Oslo", "DD.MM.YYYY HH:mm:ss"),
-    ).equal("01.01.2020 10:12:20");
+    expect(DateService.format(date, "Europe/Oslo", "DD.MM.YYYY HH:mm:ss")).equal(
+      "01.01.2020 10:12:20",
+    );
   });
 
   test("should return true if date is between from date and to date", async () => {
@@ -114,6 +99,7 @@ test.group("DateService", async () => {
     const from = new Date(1900, 1, 10, 9);
     const to = new Date(1900, 1, 10, 20);
 
+    // oxlint-disable-next-line no-unused-expressions
     expect(DateService.between(date, from, to, "Europe/Oslo")).to.be.true;
   });
 
@@ -127,6 +113,7 @@ test.group("DateService", async () => {
     ];
 
     for (const birthday of birthdays) {
+      // oxlint-disable-next-line no-unused-expressions
       expect(DateService.isOver18(birthday)).to.be.false;
     }
   });
@@ -140,29 +127,22 @@ test.group("DateService", async () => {
     ];
 
     for (const birthday of birthdays) {
+      // oxlint-disable-next-line no-unused-expressions
       expect(DateService.isOver18(birthday)).to.be.true;
     }
   });
 
   test("should return true if date is between from hour and to hour", async () => {
-    const date = moment()
-      .tz("Europe/Oslo")
-      .hour(12)
-      .minute(15)
-      .seconds(22)
-      .toDate();
+    const date = moment().tz("Europe/Oslo").hour(12).minute(15).seconds(22).toDate();
 
+    // oxlint-disable-next-line no-unused-expressions
     expect(DateService.betweenHours(date, 8, 18, "Europe/Oslo")).to.be.true;
   });
 
   test("should return false if date is not between from hour and to hour", async () => {
-    const date = moment()
-      .tz("Europe/Oslo")
-      .hour(7)
-      .minute(15)
-      .seconds(22)
-      .toDate();
+    const date = moment().tz("Europe/Oslo").hour(7).minute(15).seconds(22).toDate();
 
+    // oxlint-disable-next-line no-unused-expressions
     expect(DateService.betweenHours(date, 8, 18, "Europe/Oslo")).to.be.false;
   });
 });

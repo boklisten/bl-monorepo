@@ -1,11 +1,6 @@
 import { OrderItem } from "@boklisten/backend/shared/order/order-item/order-item";
 import { Card, Group, Stack, Text, Title } from "@mantine/core";
-import {
-  IconCheck,
-  IconExclamationMark,
-  IconQrcode,
-  IconSignature,
-} from "@tabler/icons-react";
+import { IconCheck, IconExclamationMark, IconQrcode, IconSignature } from "@tabler/icons-react";
 import dayjs from "dayjs";
 import { Activity } from "react";
 
@@ -41,8 +36,8 @@ export default function OrderCard({
         </Group>
         <Activity mode={pendingSignature ? "visible" : "hidden"}>
           <WarningAlert title={"Denne orderen krever gyldig signatur"}>
-            Du må ha en gyldig signatur før du kan motta disse bøkene. Sjekk
-            dine oppgaver for mer informasjon
+            Du må ha en gyldig signatur før du kan motta disse bøkene. Sjekk dine oppgaver for mer
+            informasjon
           </WarningAlert>
         </Activity>
         <Activity mode={!pendingSignature ? "visible" : "hidden"}>
@@ -73,9 +68,8 @@ export default function OrderCard({
                   <Text>{orderItem.typeLabel}</Text>
                   <Activity
                     mode={
-                      ["rent", "partly-payment", "loan", "extend"].includes(
-                        orderItem.type,
-                      ) && orderItem.info?.to
+                      ["rent", "partly-payment", "loan", "extend"].includes(orderItem.type) &&
+                      orderItem.info?.to
                         ? "visible"
                         : "hidden"
                     }
@@ -87,9 +81,7 @@ export default function OrderCard({
                   </Activity>
                 </Group>
                 <Activity mode={orderItem.movedToOrder ? "visible" : "hidden"}>
-                  <Text c={"dimmed"}>
-                    Denne boken har blitt flyttet til en annen ordre.
-                  </Text>
+                  <Text c={"dimmed"}>Denne boken har blitt flyttet til en annen ordre.</Text>
                 </Activity>
               </Stack>
             </Card>
@@ -102,8 +94,8 @@ export default function OrderCard({
               <Card withBorder key={payment.id}>
                 <Group justify={"space-between"}>
                   <Text key={payment.id}>
-                    {payment.amount > 0 ? "Betalt" : "Refundert"}{" "}
-                    {Math.abs(payment.amount)} kr med {payment.methodLabel}
+                    {payment.amount > 0 ? "Betalt" : "Refundert"} {Math.abs(payment.amount)} kr med{" "}
+                    {payment.methodLabel}
                   </Text>
                   <Group gap={5}>
                     <Activity mode={payment.confirmed ? "visible" : "hidden"}>

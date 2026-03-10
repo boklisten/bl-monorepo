@@ -22,10 +22,7 @@ test.group("getNextAvailableOpeningHour()", (group) => {
   let sandbox: sinon.SinonSandbox;
   group.each.setup(() => {
     sandbox = createSandbox();
-    openingHourStorageGetMany = sandbox.stub(
-      StorageService.OpeningHours,
-      "getMany",
-    );
+    openingHourStorageGetMany = sandbox.stub(StorageService.OpeningHours, "getMany");
   });
   group.each.teardown(() => {
     sandbox.restore();
@@ -39,10 +36,7 @@ test.group("getNextAvailableOpeningHour()", (group) => {
     openingHourHelper
       .getNextAvailableOpeningHour(branch)
       // @ts-expect-error fixme: auto ignored bad test enums
-      .should.eventually.be.rejectedWith(
-        BlError,
-        /no opening hours found at branch/,
-      );
+      .should.eventually.be.rejectedWith(BlError, /no opening hours found at branch/);
   });
 
   test("should reject if all opening hours are expired", async () => {
@@ -50,28 +44,23 @@ test.group("getNextAvailableOpeningHour()", (group) => {
       openingHours: ["openingHour1", "openingHour2"],
     } as Branch;
 
-    openingHourStorageGetMany
-      .withArgs(["openingHour1", "openingHour2"])
-      .resolves([
-        {
-          from: moment("2012-01-01").toDate(),
-          to: moment("2012-01-02").toDate(),
-          branch: "branch1",
-        },
-        {
-          from: moment("2012-01-03").toDate(),
-          to: moment("2012-01-03").toDate(),
-          branch: "branch1",
-        },
-      ] as OpeningHour[]);
+    openingHourStorageGetMany.withArgs(["openingHour1", "openingHour2"]).resolves([
+      {
+        from: moment("2012-01-01").toDate(),
+        to: moment("2012-01-02").toDate(),
+        branch: "branch1",
+      },
+      {
+        from: moment("2012-01-03").toDate(),
+        to: moment("2012-01-03").toDate(),
+        branch: "branch1",
+      },
+    ] as OpeningHour[]);
 
     openingHourHelper
       .getNextAvailableOpeningHour(branch)
       // @ts-expect-error fixme: auto ignored bad test enums
-      .should.eventually.be.rejectedWith(
-        BlError,
-        /no opening hours are found to be valid/,
-      );
+      .should.eventually.be.rejectedWith(BlError, /no opening hours are found to be valid/);
   });
 
   test("should resolve with the first available opening hour", async () => {
@@ -92,9 +81,7 @@ test.group("getNextAvailableOpeningHour()", (group) => {
       },
     ] as OpeningHour[];
 
-    openingHourStorageGetMany
-      .withArgs(["openingHour3", "openingHour4"])
-      .resolves(openingHours);
+    openingHourStorageGetMany.withArgs(["openingHour3", "openingHour4"]).resolves(openingHours);
 
     openingHourHelper
       .getNextAvailableOpeningHour(branch)
@@ -125,9 +112,7 @@ test.group("getNextAvailableOpeningHour()", (group) => {
       },
     ] as OpeningHour[];
 
-    openingHourStorageGetMany
-      .withArgs(["openingHour3", "openingHour4"])
-      .resolves(openingHours);
+    openingHourStorageGetMany.withArgs(["openingHour3", "openingHour4"]).resolves(openingHours);
 
     openingHourHelper
       .getNextAvailableOpeningHour(branch)
@@ -158,15 +143,10 @@ test.group("getNextAvailableOpeningHour()", (group) => {
       },
     ] as OpeningHour[];
 
-    openingHourStorageGetMany
-      .withArgs(["openingHour3", "openingHour4"])
-      .resolves(openingHours);
+    openingHourStorageGetMany.withArgs(["openingHour3", "openingHour4"]).resolves(openingHours);
 
     openingHourHelper
-      .getNextAvailableOpeningHour(
-        branch,
-        moment().add(2, "day").add(1, "hour").toDate(),
-      )
+      .getNextAvailableOpeningHour(branch, moment().add(2, "day").add(1, "hour").toDate())
       // @ts-expect-error fixme: auto ignored bad test enums
       .should.eventually.deep.equal(openingHours[0]);
   });
@@ -194,9 +174,7 @@ test.group("getNextAvailableOpeningHour()", (group) => {
       },
     ] as OpeningHour[];
 
-    openingHourStorageGetMany
-      .withArgs(["openingHour3", "openingHour4"])
-      .resolves(openingHours);
+    openingHourStorageGetMany.withArgs(["openingHour3", "openingHour4"]).resolves(openingHours);
 
     openingHourHelper
       .getNextAvailableOpeningHour(branch, moment().add(1, "day").toDate())
@@ -227,16 +205,11 @@ test.group("getNextAvailableOpeningHour()", (group) => {
       },
     ] as OpeningHour[];
 
-    openingHourStorageGetMany
-      .withArgs(["openingHour3", "openingHour4"])
-      .resolves(openingHours);
+    openingHourStorageGetMany.withArgs(["openingHour3", "openingHour4"]).resolves(openingHours);
 
     openingHourHelper
       .getNextAvailableOpeningHour(branch, moment().add(5, "day").toDate())
       // @ts-expect-error fixme: auto ignored bad test enums
-      .should.eventually.be.rejectedWith(
-        BlError,
-        /no opening hours are found to be valid/,
-      );
+      .should.eventually.be.rejectedWith(BlError, /no opening hours are found to be valid/);
   });
 });

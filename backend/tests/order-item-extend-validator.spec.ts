@@ -216,9 +216,6 @@ test.group("OrderItemExtendValidator", (group) => {
     return expect(
       // @ts-expect-error fixme: auto ignored
       orderItemExtendValidator.validate(testBranch, testOrder.orderItems[0]),
-    ).to.be.rejectedWith(
-      BlError,
-      /orderItem can not be extended any more times/,
-    );
+    ).to.be.rejectedWith(BlError, /orderItem can not be extended any more times/);
   });
 });

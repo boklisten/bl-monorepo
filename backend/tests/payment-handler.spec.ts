@@ -45,10 +45,7 @@ test.group("PaymentHandler", (group) => {
   group.each.setup(() => {
     sandbox = createSandbox();
     paymentDibsConfirmStub = sandbox.stub(paymentDibsConfirmer, "confirm");
-    paymentStorageGetManyStub = sandbox.stub(
-      StorageService.Payments,
-      "getMany",
-    );
+    paymentStorageGetManyStub = sandbox.stub(StorageService.Payments, "getMany");
     deliveryGetStub = sandbox.stub(StorageService.Deliveries, "get");
     sandbox.stub(StorageService.Payments, "update");
   });
@@ -72,9 +69,7 @@ test.group("PaymentHandler", (group) => {
 
       paymentStorageGetManyStub.resolves(payments);
 
-      return expect(paymentHandler.confirmPayments(order)).to.eventually.be.eq(
-        payments,
-      );
+      return expect(paymentHandler.confirmPayments(order)).to.eventually.be.eq(payments);
     });
 
     test("should reject if amount is not equal to order", async () => {
@@ -83,9 +78,7 @@ test.group("PaymentHandler", (group) => {
 
       paymentStorageGetManyStub.resolves(payments);
 
-      return expect(
-        paymentHandler.confirmPayments(order),
-      ).to.eventually.be.rejectedWith(
+      return expect(paymentHandler.confirmPayments(order)).to.eventually.be.rejectedWith(
         BlError,
         /payment amounts does not equal order.amount/,
       );
@@ -103,9 +96,7 @@ test.group("PaymentHandler", (group) => {
 
       paymentStorageGetManyStub.resolves(payments);
 
-      return expect(
-        paymentHandler.confirmPayments(order),
-      ).to.eventually.be.rejectedWith(
+      return expect(paymentHandler.confirmPayments(order)).to.eventually.be.rejectedWith(
         BlError,
         `payment method "${method}" is not permitted for customer`,
       );
@@ -132,17 +123,13 @@ test.group("PaymentHandler", (group) => {
   });
 
   test("should resolve if paymentDibsValidator.validate resolves", async () => {
-    const payments = [
-      { amount: testOrder.amount, method: "dibs", confirmed: false },
-    ] as Payment[];
+    const payments = [{ amount: testOrder.amount, method: "dibs", confirmed: false }] as Payment[];
 
     paymentStorageGetManyStub.resolves(payments);
     deliveryGetStub.resolves({ id: "delivery1", amount: 0 } as Delivery);
     paymentDibsConfirmStub.resolves(true);
 
-    return expect(
-      paymentHandler.confirmPayments(testOrder),
-    ).to.eventually.be.eq(payments);
+    return expect(paymentHandler.confirmPayments(testOrder)).to.eventually.be.eq(payments);
   });
 
   test("should confirm if amount is equal to order", async () => {
@@ -158,9 +145,7 @@ test.group("PaymentHandler", (group) => {
 
     paymentStorageGetManyStub.resolves(payments);
 
-    return expect(paymentHandler.confirmPayments(order)).to.eventually.be.eq(
-      payments,
-    );
+    return expect(paymentHandler.confirmPayments(order)).to.eventually.be.eq(payments);
   });
 
   test("should reject if amount is not equal to order", async () => {
@@ -175,9 +160,7 @@ test.group("PaymentHandler", (group) => {
 
     paymentStorageGetManyStub.resolves(payments);
 
-    return expect(
-      paymentHandler.confirmPayments(order),
-    ).to.eventually.be.rejectedWith(
+    return expect(paymentHandler.confirmPayments(order)).to.eventually.be.rejectedWith(
       BlError,
       /payment amounts does not equal order.amount/,
     );
@@ -196,9 +179,7 @@ test.group("PaymentHandler", (group) => {
 
     paymentStorageGetManyStub.resolves(payments);
 
-    return expect(
-      paymentHandler.confirmPayments(order),
-    ).to.eventually.be.rejectedWith(
+    return expect(paymentHandler.confirmPayments(order)).to.eventually.be.rejectedWith(
       BlError,
       /multiple payments found but "payment2" have method dibs/,
     );
@@ -216,9 +197,7 @@ test.group("PaymentHandler", (group) => {
 
     paymentStorageGetManyStub.resolves(payments);
 
-    return expect(
-      paymentHandler.confirmPayments(order),
-    ).to.eventually.be.rejectedWith(
+    return expect(paymentHandler.confirmPayments(order)).to.eventually.be.rejectedWith(
       BlError,
       /multiple payments found but "payment1" have method dibs/,
     );

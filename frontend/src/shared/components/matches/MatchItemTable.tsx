@@ -1,8 +1,5 @@
 import { Table, Tooltip } from "@mantine/core";
-import {
-  IconAlertSquareFilled,
-  IconSquareCheckFilled,
-} from "@tabler/icons-react";
+import { IconAlertSquareFilled, IconSquareCheckFilled } from "@tabler/icons-react";
 
 import { ItemStatus } from "@/shared/components/matches/matches-helper";
 

@@ -22,8 +22,8 @@ export function HeroImageBackground() {
 
         <Container size={640}>
           <Text size="lg" c={"white"} ta={"center"}>
-            Vi i Boklisten.no er veldig opptatt av lærebøker, derfor vil vi
-            gjøre det så enkelt som mulig for deg å få tak i dem.
+            Vi i Boklisten.no er veldig opptatt av lærebøker, derfor vil vi gjøre det så enkelt som
+            mulig for deg å få tak i dem.
           </Text>
         </Container>
 

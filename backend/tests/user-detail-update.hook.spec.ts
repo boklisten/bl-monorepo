@@ -91,9 +91,7 @@ test.group("UserDetailUpdateHook", async (group) => {
     const body = {
       emailConfirmed: true,
     };
-    await assert.isRejected(
-      userDetailUpdateHook.before(body, customerAccessToken),
-    );
+    await assert.isRejected(userDetailUpdateHook.before(body, customerAccessToken));
   });
 
   test("should allow email-confirmed status change by admin", async () => {
@@ -141,11 +139,7 @@ test.group("UserDetailUpdateHook", async (group) => {
             userDetailUpdateHook
               .before(body, adminAccessToken)
               .then(() =>
-                reject(
-                  new Error(
-                    `Validator accepted wrongly typed ${JSON.stringify(body)}`,
-                  ),
-                ),
+                reject(new Error(`Validator accepted wrongly typed ${JSON.stringify(body)}`)),
               )
               .catch(() => resolve());
           }),

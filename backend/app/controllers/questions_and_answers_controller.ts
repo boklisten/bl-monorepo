@@ -12,18 +12,14 @@ export default class QuestionsAndAnswersController {
   async store(ctx: HttpContext) {
     PermissionService.adminOrFail(ctx);
 
-    const validatedData = await ctx.request.validateUsing(
-      questionsAndAnswersValidator,
-    );
+    const validatedData = await ctx.request.validateUsing(questionsAndAnswersValidator);
     return await StorageService.QuestionsAndAnswers.add(validatedData);
   }
 
   async update(ctx: HttpContext) {
     PermissionService.adminOrFail(ctx);
 
-    const validatedData = await ctx.request.validateUsing(
-      questionsAndAnswersValidator,
-    );
+    const validatedData = await ctx.request.validateUsing(questionsAndAnswersValidator);
 
     const id = ctx.request.param("id");
     return await StorageService.QuestionsAndAnswers.update(id, validatedData);

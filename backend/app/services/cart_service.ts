@@ -23,15 +23,11 @@ export const CartService = {
     }
 
     if (branchItem.partlyPayment) {
-      for (const partlyPaymentPeriod of branch.paymentInfo
-        ?.partlyPaymentPeriods ?? []) {
+      for (const partlyPaymentPeriod of branch.paymentInfo?.partlyPaymentPeriods ?? []) {
         const priceUpFront =
-          Math.floor(
-            (item.price * partlyPaymentPeriod.percentageUpFront) / 10,
-          ) * 10;
+          Math.floor((item.price * partlyPaymentPeriod.percentageUpFront) / 10) * 10;
         const priceLater =
-          Math.floor((item.price * partlyPaymentPeriod.percentageBuyout) / 10) *
-          10;
+          Math.floor((item.price * partlyPaymentPeriod.percentageBuyout) / 10) * 10;
         options.push({
           type: "partly-payment",
           price: branch.paymentInfo?.responsible ? 0 : priceUpFront,

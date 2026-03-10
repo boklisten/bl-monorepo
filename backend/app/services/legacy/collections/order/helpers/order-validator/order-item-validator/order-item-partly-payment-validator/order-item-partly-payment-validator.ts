@@ -12,9 +12,7 @@ export class OrderItemPartlyPaymentValidator {
     branch: Branch,
   ): Promise<boolean> {
     if (orderItem.type !== "partly-payment") {
-      return Promise.reject(
-        new BlError("orderItem not of type 'partly-payment'"),
-      );
+      return Promise.reject(new BlError("orderItem not of type 'partly-payment'"));
     }
 
     try {
@@ -38,11 +36,9 @@ export class OrderItemPartlyPaymentValidator {
     });
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   private isPeriodSupported(period: any, branch: Branch) {
     if (branch.paymentInfo && branch.paymentInfo.partlyPaymentPeriods) {
-      for (const partlyPaymentPeriod of branch.paymentInfo
-        .partlyPaymentPeriods) {
+      for (const partlyPaymentPeriod of branch.paymentInfo.partlyPaymentPeriods) {
         if (partlyPaymentPeriod.type === period) {
           return true;
         }

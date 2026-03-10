@@ -57,11 +57,7 @@ export default function SignupForm() {
           return {
             fields: {
               guardianName: nameFieldValidator(value.guardianName, "guardian"),
-              guardianEmail: emailFieldValidator(
-                value.guardianEmail,
-                "guardian",
-                value.email,
-              ),
+              guardianEmail: emailFieldValidator(value.guardianEmail, "guardian", value.email),
               guardianPhoneNumber: phoneNumberFieldValidator(
                 value.guardianPhoneNumber,
                 "guardian",
@@ -127,10 +123,9 @@ export default function SignupForm() {
         {(email) => (
           <Activity mode={isSchoolEmail(email) ? "visible" : "hidden"}>
             <WarningAlert>
-              Vi anbefaler at du bruker din personlige e-postadresse i stedet
-              for skolekontoen. Da beholder du tilgangen etter endt utdanning og
-              kan motta viktige varsler om eventuelle manglende
-              bokinnleveringer.
+              Vi anbefaler at du bruker din personlige e-postadresse i stedet for skolekontoen. Da
+              beholder du tilgangen etter endt utdanning og kan motta viktige varsler om eventuelle
+              manglende bokinnleveringer.
             </WarningAlert>
           </Activity>
         )}
@@ -143,17 +138,12 @@ export default function SignupForm() {
       >
         {(field) => <field.NewPasswordField />}
       </form.AppField>
-      <UserInfoFields
-        perspective={"personal"}
-        fields={createFieldMap(defaultValues)}
-        form={form}
-      />
+      <UserInfoFields perspective={"personal"} fields={createFieldMap(defaultValues)} form={form} />
       <Space />
       <form.AppField
         name={"agreeToTermsAndConditions"}
         validators={{
-          onChange: ({ value }) =>
-            !value ? "Du må godta våre betingelser og vilkår" : "",
+          onChange: ({ value }) => (!value ? "Du må godta våre betingelser og vilkår" : ""),
         }}
       >
         {(field) => (
@@ -163,10 +153,7 @@ export default function SignupForm() {
               <Group gap={3}>
                 <Text size={"sm"}>
                   {"Jeg godtar Boklistens "}
-                  <NextAnchor
-                    href={"/info/policies/conditions"}
-                    target={"_blank"}
-                  >
+                  <NextAnchor href={"/info/policies/conditions"} target={"_blank"}>
                     betingelser
                   </NextAnchor>
                   {" og "}

@@ -24,14 +24,11 @@ export class DibsPaymentService {
         }),
       })
         .then((response) => response.json())
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         .then((responseData: any) => {
           if (responseData && responseData["paymentId"]) {
             return resolve(responseData["paymentId"]);
           }
-          return reject(
-            new BlError("did not get the paymentId back from dibs"),
-          );
+          return reject(new BlError("did not get the paymentId back from dibs"));
         })
         .catch((blError: BlError) => {
           reject(new BlError("could not get paymentID from dibs").add(blError));
@@ -40,33 +37,28 @@ export class DibsPaymentService {
   }
 
   public fetchDibsPaymentData(paymentId: string): Promise<DibsEasyPayment> {
-    return (
-      fetch(
-        env.get("DIBS_URI") + APP_CONFIG.path.dibs.payment + "/" + paymentId,
-        {
-          headers: new Headers({
-            Authorization: env.get("DIBS_SECRET_KEY"),
-            Accept: "application/json",
-          }),
-        },
-      )
-        .then((response) => response.json())
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        .then((response: any) => {
-          if (!response["payment"]) {
-            throw new BlError(
-              "dibs response did not include payment information",
-            ).store("paymentId", paymentId);
-          }
+    return fetch(env.get("DIBS_URI") + APP_CONFIG.path.dibs.payment + "/" + paymentId, {
+      headers: new Headers({
+        Authorization: env.get("DIBS_SECRET_KEY"),
+        Accept: "application/json",
+      }),
+    })
+      .then((response) => response.json())
+      .then((response: any) => {
+        if (!response["payment"]) {
+          throw new BlError("dibs response did not include payment information").store(
+            "paymentId",
+            paymentId,
+          );
+        }
 
-          return response["payment"];
-        })
-        .catch((getDibsPaymentDetailError: BlError) => {
-          throw new BlError(
-            `could not get payment details for paymentId "${paymentId}"`,
-          ).add(getDibsPaymentDetailError);
-        })
-    );
+        return response["payment"];
+      })
+      .catch((getDibsPaymentDetailError: BlError) => {
+        throw new BlError(`could not get payment details for paymentId "${paymentId}"`).add(
+          getDibsPaymentDetailError,
+        );
+      });
   }
 
   public orderToDibsEasyOrder(
@@ -117,15 +109,12 @@ export class DibsPaymentService {
       termsUrl: clientUri + APP_CONFIG.path.client.agreement.rent,
       ShippingCountries: [{ countryCode: "NOR" }],
       merchantHandlesConsumerData: userDetailValid, // if userDetail is not valid, the customer must reenter data
-      consumer: userDetailValid
-        ? this.userDetailToDibsEasyConsumer(userDetail)
-        : null,
+      consumer: userDetailValid ? this.userDetailToDibsEasyConsumer(userDetail) : null,
     };
 
     return dibsEasyOrder;
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   private userDetailToDibsEasyConsumer(userDetail: UserDetail): any {
     return {
       email: userDetail.email,
@@ -148,20 +137,14 @@ export class DibsPaymentService {
   }
 
   private validateOrder(order: Order) {
-    if (!order.id || order.id.length <= 0)
-      throw new BlError("order.id is not defined");
+    if (!order.id || order.id.length <= 0) throw new BlError("order.id is not defined");
     if (!order.byCustomer)
-      throw new BlError(
-        "order.byCustomer is false, no need to make dibs easy order",
-      );
+      throw new BlError("order.byCustomer is false, no need to make dibs easy order");
     if (order.amount == 0) throw new BlError("order.amount is zero");
   }
 
   private getTotalGrossAmount(dibsEasyItems: DibsEasyItem[]): number {
-    return dibsEasyItems.reduce(
-      (subTotal, dbi) => subTotal + dbi.grossTotalAmount,
-      0,
-    );
+    return dibsEasyItems.reduce((subTotal, dbi) => subTotal + dbi.grossTotalAmount, 0);
   }
 
   private toEars(price: number): number {

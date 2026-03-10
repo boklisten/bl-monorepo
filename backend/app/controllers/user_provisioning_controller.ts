@@ -7,9 +7,7 @@ import { userProvisioningValidator } from "#validators/user_provisioning";
 export default class UserProvisioningController {
   async createUsers(ctx: HttpContext) {
     PermissionService.adminOrFail(ctx);
-    const { userCandidates } = await ctx.request.validateUsing(
-      userProvisioningValidator,
-    );
+    const { userCandidates } = await ctx.request.validateUsing(userProvisioningValidator);
 
     await UserProvisioningService.createUsers(userCandidates);
   }

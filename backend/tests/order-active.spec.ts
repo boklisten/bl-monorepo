@@ -28,8 +28,7 @@ test.group("OrderActive", (group) => {
   test("should resolve with false if no orders was found", async () => {
     getOrderByQueryStub.rejects(new BlError("not found").code(702));
 
-    return expect(orderActive.haveActiveOrders(testUserId)).to.eventually.be
-      .false;
+    return expect(orderActive.haveActiveOrders(testUserId)).to.eventually.be.false;
   });
 
   test("should resolve with false if orders was found but none was active", async () => {
@@ -46,8 +45,7 @@ test.group("OrderActive", (group) => {
 
     getOrderByQueryStub.resolves([nonActiveOrder]);
 
-    return expect(orderActive.haveActiveOrders(testUserId)).to.eventually.be
-      .false;
+    return expect(orderActive.haveActiveOrders(testUserId)).to.eventually.be.false;
   });
 
   test("should resolve with true if orders was found and at least one was active", async () => {
@@ -85,8 +83,7 @@ test.group("OrderActive", (group) => {
 
     getOrderByQueryStub.resolves([nonActiveOrder, activeOrder]);
 
-    return expect(orderActive.haveActiveOrders(testUserId)).to.eventually.be
-      .true;
+    return expect(orderActive.haveActiveOrders(testUserId)).to.eventually.be.true;
   });
 
   test("should resolve with false if orders was found and all order-items was handed out", async () => {
@@ -134,7 +131,6 @@ test.group("OrderActive", (group) => {
 
     getOrderByQueryStub.resolves([nonActiveOrder, nonActiveOrder2]);
 
-    return expect(orderActive.haveActiveOrders(testUserId)).to.eventually.be
-      .false;
+    return expect(orderActive.haveActiveOrders(testUserId)).to.eventually.be.false;
   });
 });

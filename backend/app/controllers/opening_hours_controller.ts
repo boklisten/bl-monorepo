@@ -8,9 +8,7 @@ import { openingHoursValidator } from "#validators/opening_hours";
 export default class OpeningHoursController {
   async get(ctx: HttpContext) {
     const databaseQuery = new SEDbQuery();
-    databaseQuery.objectIdFilters = [
-      { fieldName: "branch", value: ctx.request.param("id") },
-    ];
+    databaseQuery.objectIdFilters = [{ fieldName: "branch", value: ctx.request.param("id") }];
     databaseQuery.dateFilters = [
       {
         fieldName: "to",
@@ -23,15 +21,11 @@ export default class OpeningHoursController {
         direction: 1,
       },
     ];
-    return (
-      (await StorageService.OpeningHours.getByQueryOrNull(databaseQuery)) ?? []
-    );
+    return (await StorageService.OpeningHours.getByQueryOrNull(databaseQuery)) ?? [];
   }
   async add(ctx: HttpContext) {
     PermissionService.adminOrFail(ctx);
-    const { branchId, from, to } = await ctx.request.validateUsing(
-      openingHoursValidator,
-    );
+    const { branchId, from, to } = await ctx.request.validateUsing(openingHoursValidator);
     await StorageService.OpeningHours.add({
       branch: branchId,
       from,

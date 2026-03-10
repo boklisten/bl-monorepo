@@ -10,26 +10,22 @@ export class UniqueItemActiveOperation implements Operation {
   private customerItemActiveBlid: CustomerItemActiveBlid;
 
   constructor(customerItemActiveBlid?: CustomerItemActiveBlid) {
-    this.customerItemActiveBlid =
-      customerItemActiveBlid ?? new CustomerItemActiveBlid();
+    this.customerItemActiveBlid = customerItemActiveBlid ?? new CustomerItemActiveBlid();
   }
 
   async run(blApiRequest: BlApiRequest) {
     let uniqueItem: UniqueItem;
     try {
-      uniqueItem = await StorageService.UniqueItems.get(
-        blApiRequest.documentId,
-      );
+      uniqueItem = await StorageService.UniqueItems.get(blApiRequest.documentId);
     } catch {
       throw new BlError("not found").code(702);
     }
 
     let activeCustomerItemIds;
     try {
-      activeCustomerItemIds =
-        await this.customerItemActiveBlid.getActiveCustomerItemIds(
-          uniqueItem.blid,
-        );
+      activeCustomerItemIds = await this.customerItemActiveBlid.getActiveCustomerItemIds(
+        uniqueItem.blid,
+      );
     } catch {
       return new BlapiResponse([]);
     }

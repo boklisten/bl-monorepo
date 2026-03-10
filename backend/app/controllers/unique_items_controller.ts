@@ -8,8 +8,7 @@ import { uniqueItemsValidator } from "#validators/unique_item";
 export default class UniqueItemsController {
   async add(ctx: HttpContext) {
     PermissionService.employeeOrFail(ctx);
-    const { blid, isbn } =
-      await ctx.request.validateUsing(uniqueItemsValidator);
+    const { blid, isbn } = await ctx.request.validateUsing(uniqueItemsValidator);
     const databaseQuery = new SEDbQuery();
     databaseQuery.stringFilters = [{ fieldName: "info.isbn", value: isbn }];
     const [item] = await StorageService.Items.getByQuery(databaseQuery);

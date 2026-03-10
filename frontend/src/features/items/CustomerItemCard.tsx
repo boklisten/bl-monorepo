@@ -1,15 +1,5 @@
 import { CustomerItemStatus } from "@boklisten/backend/shared/customer-item/actionable_customer_item";
-import {
-  Badge,
-  Button,
-  Card,
-  Divider,
-  Group,
-  Stack,
-  Text,
-  Title,
-  Tooltip,
-} from "@mantine/core";
+import { Badge, Button, Card, Divider, Group, Stack, Text, Title, Tooltip } from "@mantine/core";
 import {
   IconBasketCheck,
   IconBook2,
@@ -65,14 +55,10 @@ function StatusChip({ status }: { status: CustomerItemStatus }) {
 export default function CustomerItemCard({
   actionableCustomerItem,
 }: {
-  actionableCustomerItem: InferResponseType<
-    typeof publicApiClient.v2.customer_items.$get
-  >[number];
+  actionableCustomerItem: InferResponseType<typeof publicApiClient.v2.customer_items.$get>[number];
 }) {
   const cart = useCart();
-  const cartItem = cart
-    .get()
-    .find((cartItem) => cartItem.id === actionableCustomerItem.item.id);
+  const cartItem = cart.get().find((cartItem) => cartItem.id === actionableCustomerItem.item.id);
 
   return (
     <Card shadow={"md"} withBorder>
@@ -105,9 +91,7 @@ export default function CustomerItemCard({
         <Group>
           <IconCalendarEvent />
           <Text>Frist: </Text>
-          <Text fw={"bold"}>
-            {dayjs(actionableCustomerItem.deadline).format("DD/MM/YYYY")}
-          </Text>
+          <Text fw={"bold"}>{dayjs(actionableCustomerItem.deadline).format("DD/MM/YYYY")}</Text>
         </Group>
         <Activity
           mode={
@@ -125,17 +109,11 @@ export default function CustomerItemCard({
                     cartItem.id === actionableCustomerItem.item.id &&
                     cart.getSelectedOption(cartItem).type === action.type &&
                     ("to" in action
-                      ? dayjs(cart.getSelectedOption(cartItem).to).isSame(
-                          action.to,
-                        )
+                      ? dayjs(cart.getSelectedOption(cartItem).to).isSame(action.to)
                       : true),
                 );
               return (
-                <Tooltip
-                  key={action.type}
-                  label={action.tooltip}
-                  disabled={!action.tooltip}
-                >
+                <Tooltip key={action.type} label={action.tooltip} disabled={!action.tooltip}>
                   <Button
                     leftSection={
                       actionCartItem ? (
@@ -153,10 +131,9 @@ export default function CustomerItemCard({
                         cart.remove(actionableCustomerItem.item.id);
                         return;
                       }
-                      const availableActions =
-                        actionableCustomerItem.actions.filter(
-                          (action) => action.available,
-                        );
+                      const availableActions = actionableCustomerItem.actions.filter(
+                        (action) => action.available,
+                      );
                       cart.add({
                         id: actionableCustomerItem.item.id,
                         title: actionableCustomerItem.item.title,
@@ -166,8 +143,7 @@ export default function CustomerItemCard({
                           price: a.price,
                           ...("to" in a ? { to: a.to } : {}),
                         })),
-                        selectedOptionIndex:
-                          availableActions.length > 1 ? index : 0,
+                        selectedOptionIndex: availableActions.length > 1 ? index : 0,
                       });
                     }}
                   >

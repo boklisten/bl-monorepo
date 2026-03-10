@@ -17,9 +17,7 @@ test.group("OrderHookBefore", async () => {
 
     // @ts-expect-error fixme: auto ignored
     orderHookBefore.validate(testRequest).catch((blError: BlError) => {
-      return expect(blError.getMsg()).to.contain(
-        "request is an array but should be a object",
-      );
+      return expect(blError.getMsg()).to.contain("request is an array but should be a object");
     });
   });
 

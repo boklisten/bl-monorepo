@@ -1,11 +1,6 @@
 import vine from "@vinejs/vine";
 
-import {
-  emailField,
-  passwordField,
-  phoneField,
-  postalCodeField,
-} from "#validators/common/fields";
+import { emailField, passwordField, phoneField, postalCodeField } from "#validators/common/fields";
 import { uniqueEmail, uniquePhoneNumber } from "#validators/common/rules";
 import { cleanUserInput } from "#validators/common/transformers";
 

@@ -34,8 +34,8 @@ test.group("UserDeleteAllInfo", (group) => {
 
     await userDeleteAllInfo.deleteUser(userDetailIdToRemove);
 
-    expect(userRemoveStub.getCall(0).calledWithMatch(userIdToRemove)).to.be
-      .true;
+    // oxlint-disable-next-line no-unused-expressions
+    expect(userRemoveStub.getCall(0).calledWithMatch(userIdToRemove)).to.be.true;
   });
 
   test("should resolve with true if user info was deleted", async () => {
@@ -46,7 +46,6 @@ test.group("UserDeleteAllInfo", (group) => {
 
     userGetByQueryStub.resolves([{ id: userIdToRemove } as User]);
 
-    return expect(userDeleteAllInfo.deleteUser(userDetailIdToRemove)).to
-      .eventually.be.fulfilled;
+    return expect(userDeleteAllInfo.deleteUser(userDetailIdToRemove)).to.eventually.be.fulfilled;
   });
 });

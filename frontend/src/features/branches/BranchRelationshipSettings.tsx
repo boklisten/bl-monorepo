@@ -6,16 +6,9 @@ import { InferRequestType } from "@tuyau/client";
 import { useAppForm } from "@/shared/hooks/form";
 import useApiClient from "@/shared/hooks/useApiClient";
 import unpack from "@/shared/utils/bl-api-request";
-import {
-  showErrorNotification,
-  showSuccessNotification,
-} from "@/shared/utils/notifications";
+import { showErrorNotification, showSuccessNotification } from "@/shared/utils/notifications";
 
-export default function BranchRelationshipSettings({
-  branch,
-}: {
-  branch: Branch;
-}) {
+export default function BranchRelationshipSettings({ branch }: { branch: Branch }) {
   const queryClient = useQueryClient();
   const client = useApiClient();
 
@@ -41,9 +34,7 @@ export default function BranchRelationshipSettings({
 
   const updateRelationshipsMutation = useMutation({
     mutationFn: (
-      updatedRelationships: InferRequestType<
-        typeof client.v2.branches.relationships.$patch
-      >,
+      updatedRelationships: InferRequestType<typeof client.v2.branches.relationships.$patch>,
     ) => client.v2.branches.relationships.$patch(updatedRelationships).unwrap(),
     onSettled: () =>
       queryClient.invalidateQueries({
@@ -70,9 +61,7 @@ export default function BranchRelationshipSettings({
   return (
     <Stack>
       <form.AppField name={"localName"}>
-        {(field) => (
-          <field.TextField label={"Lokalt navn"} placeholder={"Flåklypa"} />
-        )}
+        {(field) => <field.TextField label={"Lokalt navn"} placeholder={"Flåklypa"} />}
       </form.AppField>
       <form.AppField name={"parentBranch"}>
         {(field) => (
@@ -87,10 +76,7 @@ export default function BranchRelationshipSettings({
       </form.AppField>
       <form.AppField name={"childLabel"}>
         {(field) => (
-          <field.TextField
-            label={"Delt inn i"}
-            placeholder={"årskull, klasse, parallell"}
-          />
+          <field.TextField label={"Delt inn i"} placeholder={"årskull, klasse, parallell"} />
         )}
       </form.AppField>
       <form.AppField name={"childBranches"}>

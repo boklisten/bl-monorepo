@@ -67,9 +67,7 @@ test.group("TwilioSmsEventOperation", (group) => {
 
     messageStorageUpdateStub.resolves({} as Message);
 
-    messageStorageGetIdStub
-      .withArgs("blMessage1")
-      .resolves({ id: "blMessage1" } as Message);
+    messageStorageGetIdStub.withArgs("blMessage1").resolves({ id: "blMessage1" } as Message);
 
     twilioSmsEventOperation.run(blApiRequest).then(() => {
       const arg = messageStorageGetIdStub.lastCall.args[0];
@@ -91,9 +89,7 @@ test.group("TwilioSmsEventOperation", (group) => {
       query: { bl_message_id: "blMessage1" },
     };
 
-    messageStorageGetIdStub
-      .withArgs("blMessage1")
-      .resolves({ id: "blMessage1" } as Message);
+    messageStorageGetIdStub.withArgs("blMessage1").resolves({ id: "blMessage1" } as Message);
 
     messageStorageUpdateStub.resolves({} as Message);
 

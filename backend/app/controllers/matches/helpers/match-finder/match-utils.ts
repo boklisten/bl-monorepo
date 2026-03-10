@@ -29,12 +29,8 @@ export function sortUsers(
   standMatches: CandidateStandMatch[],
 ): MatchableUser[] {
   return users.toSorted((a, b) => {
-    const aHasStandMatch = standMatches.some(
-      (standMatch) => standMatch.customer === a.id,
-    );
-    const bHasStandMatch = standMatches.some(
-      (standMatch) => standMatch.customer === b.id,
-    );
+    const aHasStandMatch = standMatches.some((standMatch) => standMatch.customer === a.id);
+    const bHasStandMatch = standMatches.some((standMatch) => standMatch.customer === b.id);
 
     if (aHasStandMatch && !bHasStandMatch) return 1;
     if (!aHasStandMatch && bHasStandMatch) return -1;
@@ -51,12 +47,8 @@ export function sortUsers(
  * @param users the set of users to be cleaned
  * @returns a shallow copy of the users list without the fully matched users
  */
-export function removeFullyMatchedUsers(
-  users: MatchableUser[],
-): MatchableUser[] {
-  return users.filter(
-    (user) => user.items.size > 0 || user.wantedItems.size > 0,
-  );
+export function removeFullyMatchedUsers(users: MatchableUser[]): MatchableUser[] {
+  return users.filter((user) => user.items.size > 0 || user.wantedItems.size > 0);
 }
 
 /**
@@ -101,12 +93,11 @@ export function tryFindPartialMatch(
     const userToBestCandidateItems = user.items.intersection(
       bestCandidate?.wantedItems ?? new Set(),
     );
-    const bestCandidateToUserItems = (
-      bestCandidate?.items ?? new Set()
-    ).intersection(user.wantedItems);
+    const bestCandidateToUserItems = (bestCandidate?.items ?? new Set()).intersection(
+      user.wantedItems,
+    );
 
-    const candidateMatchNumberOfItems =
-      userToCandidateItems.size + candidateToUserItems.size;
+    const candidateMatchNumberOfItems = userToCandidateItems.size + candidateToUserItems.size;
     const bestCandidateMatchNumberOfItems =
       userToBestCandidateItems.size + bestCandidateToUserItems.size;
 
@@ -145,18 +136,15 @@ export function calculateItemImbalances(
   itemsCounts: Record<string, number>,
   wantedItemsCounts: Record<string, number>,
 ): Record<string, number> {
-  return Object.keys({ ...wantedItemsCounts, ...itemsCounts }).reduce(
-    (diffs, item) => {
-      const itemCount = itemsCounts[item] ?? 0;
-      const wantedItemCount = wantedItemsCounts[item] ?? 0;
+  return Object.keys({ ...wantedItemsCounts, ...itemsCounts }).reduce((diffs, item) => {
+    const itemCount = itemsCounts[item] ?? 0;
+    const wantedItemCount = wantedItemsCounts[item] ?? 0;
 
-      return {
-        ...diffs,
-        [item]: itemCount - wantedItemCount,
-      };
-    },
-    {},
-  );
+    return {
+      ...diffs,
+      [item]: itemCount - wantedItemCount,
+    };
+  }, {});
 }
 
 /**
@@ -172,9 +160,7 @@ export function canMatchPerfectlyWithStand(
   user: MatchableUser,
   itemImbalances: Record<string, number>,
 ): boolean {
-  const canDeliverItems = Array.from(user.items).every(
-    (item) => (itemImbalances[item] ?? 0) > 0,
-  );
+  const canDeliverItems = Array.from(user.items).every((item) => (itemImbalances[item] ?? 0) > 0);
   const canReceiveWantedItems = Array.from(user.wantedItems).every(
     (item) => (itemImbalances[item] ?? 0) < 0,
   );
@@ -207,9 +193,7 @@ export function updateItemImbalances(
  */
 export function calculateUnmatchableItems(users: MatchableUser[]): Set<string> {
   const items = new Set(users.flatMap((user) => Array.from(user.items)));
-  const wantedItems = new Set(
-    users.flatMap((user) => Array.from(user.wantedItems)),
-  );
+  const wantedItems = new Set(users.flatMap((user) => Array.from(user.wantedItems)));
   return items.symmetricDifference(wantedItems);
 }
 
@@ -217,10 +201,7 @@ export function countMatchesForEachUser(
   userMatches: CandidateUserMatch[],
   standMatches: CandidateStandMatch[],
 ) {
-  const matchesPerUser = new Map<
-    string,
-    { userMatches: number; standMatches: number }
-  >();
+  const matchesPerUser = new Map<string, { userMatches: number; standMatches: number }>();
   for (const userMatch of userMatches) {
     const existingCustomerA = matchesPerUser.get(userMatch.customerA);
     const existingCustomerB = matchesPerUser.get(userMatch.customerB);

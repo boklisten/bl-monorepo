@@ -2,15 +2,10 @@ import logger from "@adonisjs/core/services/logger";
 
 import { Signature } from "#models/signature.schema";
 import { StorageService } from "#services/storage_service";
-import {
-  SIGNATURE_NUM_MONTHS_VALID,
-  SignatureMetadata,
-} from "#shared/serialized-signature";
+import { SIGNATURE_NUM_MONTHS_VALID, SignatureMetadata } from "#shared/serialized-signature";
 import { UserDetail } from "#shared/user-detail";
 
-export async function getValidUserSignature(
-  userDetail: UserDetail,
-): Promise<Signature | null> {
+export async function getValidUserSignature(userDetail: UserDetail): Promise<Signature | null> {
   const newestSignatureId = userDetail.signatures.at(-1);
   if (newestSignatureId == undefined) return null;
 
@@ -22,16 +17,11 @@ export async function getValidUserSignature(
   return signature;
 }
 
-export async function userHasValidSignature(
-  userDetail: UserDetail,
-): Promise<boolean> {
+export async function userHasValidSignature(userDetail: UserDetail): Promise<boolean> {
   return (await getValidUserSignature(userDetail)) != null;
 }
 
-function signatureIsValidForUser(
-  userDetail: UserDetail,
-  signature: SignatureMetadata,
-): boolean {
+function signatureIsValidForUser(userDetail: UserDetail, signature: SignatureMetadata): boolean {
   if (isSignatureExpired(signature)) {
     return false;
   }
@@ -41,11 +31,7 @@ function signatureIsValidForUser(
 
 export function isUnderage(userDetail: UserDetail): boolean {
   const now = new Date();
-  const latestAdultBirthDate = new Date(
-    now.getFullYear() - 18,
-    now.getMonth(),
-    now.getDate(),
-  );
+  const latestAdultBirthDate = new Date(now.getFullYear() - 18, now.getMonth(), now.getDate());
   return userDetail.dob > latestAdultBirthDate;
 }
 

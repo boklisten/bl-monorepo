@@ -17,16 +17,12 @@ export default function BlidScanner({
 }: {
   onResult: (scannedText: string) => Promise<void>;
 }) {
-  const handleCodeDetection = async (
-    detectedCodes: IDetectedBarcode[],
-  ): Promise<void> => {
+  const handleCodeDetection = async (detectedCodes: IDetectedBarcode[]): Promise<void> => {
     const didFindBlid = detectedCodes.some(
       (code) => determineScannedTextType(code.rawValue) === TextType.BLID,
     );
     const codesToProcess = didFindBlid
-      ? detectedCodes.filter(
-          (code) => determineScannedTextType(code.rawValue) === TextType.BLID,
-        )
+      ? detectedCodes.filter((code) => determineScannedTextType(code.rawValue) === TextType.BLID)
       : detectedCodes;
 
     for (const code of codesToProcess) {

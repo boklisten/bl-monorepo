@@ -17,12 +17,9 @@ test.group("DbQueryNumberFilter", async () => {
   });
 
   test("should return empty array when the ValidParams are empty", async () => {
-    expect(
-      dbQueryNumberFilter.getNumberFilters(
-        { title: "test title", name: "hello" },
-        [],
-      ),
-    ).to.eql([]);
+    expect(dbQueryNumberFilter.getNumberFilters({ title: "test title", name: "hello" }, [])).to.eql(
+      [],
+    );
   });
 
   test("should throw error when query is null", async () => {
@@ -40,25 +37,19 @@ test.group("DbQueryNumberFilter", async () => {
   test('should return array containing "{fieldName: "age", op: {$lt: 60}}"', async () => {
     const result = [{ fieldName: "age", op: { $lt: 60 } }];
 
-    expect(
-      dbQueryNumberFilter.getNumberFilters({ age: "<60" }, ["age"]),
-    ).to.eql(result);
+    expect(dbQueryNumberFilter.getNumberFilters({ age: "<60" }, ["age"])).to.eql(result);
   });
 
   test('should return array equal to [{filedName: "age", op: {$lt: 86, $gt: 12}}]', async () => {
     const result = [{ fieldName: "age", op: { $lt: 86, $gt: 12 } }];
 
-    expect(
-      dbQueryNumberFilter.getNumberFilters({ age: ["<86", ">12"] }, ["age"]),
-    ).to.eql(result);
+    expect(dbQueryNumberFilter.getNumberFilters({ age: ["<86", ">12"] }, ["age"])).to.eql(result);
   });
 
   test('should return array with {fieldName: "age", op: {$eq: 10}}', async () => {
     const result = [{ fieldName: "age", op: { $eq: 10 } }];
 
-    expect(dbQueryNumberFilter.getNumberFilters({ age: "10" }, ["age"])).to.eql(
-      result,
-    );
+    expect(dbQueryNumberFilter.getNumberFilters({ age: "10" }, ["age"])).to.eql(result);
   });
 
   test("should throw error when number is not valid", async () => {
@@ -87,10 +78,7 @@ test.group("DbQueryNumberFilter", async () => {
 
   test("should return an empty array if none of the validNumberNumberParams are included in the query", async () => {
     expect(
-      dbQueryNumberFilter.getNumberFilters({ title: "test", name: "bill" }, [
-        "age",
-        "price",
-      ]),
+      dbQueryNumberFilter.getNumberFilters({ title: "test", name: "bill" }, ["age", "price"]),
     ).to.eql([]);
   });
 });

@@ -59,8 +59,7 @@ test.group("SendgridEventOperation", (group) => {
       ],
     };
 
-    return expect(sendgridEventOperation.run(blApiRequest)).to.eventually.be
-      .fulfilled;
+    return expect(sendgridEventOperation.run(blApiRequest)).to.eventually.be.fulfilled;
   });
 
   test("should get correct message based on info in sendgrid event", async () => {
@@ -80,9 +79,7 @@ test.group("SendgridEventOperation", (group) => {
 
     messageStorageUpdateStub.resolves({} as Message);
 
-    messageStorageGetIdStub
-      .withArgs("blMessage1")
-      .resolves({ id: "blMessage1" } as Message);
+    messageStorageGetIdStub.withArgs("blMessage1").resolves({ id: "blMessage1" } as Message);
 
     sendgridEventOperation.run(blApiRequest).then(() => {
       const arg = messageStorageGetIdStub.lastCall.args[0];
@@ -106,9 +103,7 @@ test.group("SendgridEventOperation", (group) => {
 
     const blApiRequest = { data: [sendgridEvent] };
 
-    messageStorageGetIdStub
-      .withArgs("blMessage1")
-      .resolves({ id: "blMessage1" } as Message);
+    messageStorageGetIdStub.withArgs("blMessage1").resolves({ id: "blMessage1" } as Message);
 
     messageStorageUpdateStub.resolves({} as Message);
 

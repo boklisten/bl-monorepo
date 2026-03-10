@@ -15,9 +15,7 @@ const MeetingInfo = ({
     <Stack gap={"xs"}>
       <Group gap={5}>
         <IconClock />
-        {(meetingTime && (
-          <FormattedDatetime date={new Date(meetingTime)} />
-        )) || (
+        {(meetingTime && <FormattedDatetime date={new Date(meetingTime)} />) || (
           <Text>
             Du kan møte opp når standen vår er åpen.{" "}
             <NextAnchor href="/info/branch">Se åpningstider her</NextAnchor>

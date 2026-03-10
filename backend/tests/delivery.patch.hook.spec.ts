@@ -18,7 +18,6 @@ test.group("DeliveryPatchHook", (group) => {
   const deliveryValidator = new DeliveryValidator();
   const deliveryPatchHook = new DeliveryPatchHook(deliveryValidator);
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   let testRequest: any;
   let testDelivery: Delivery;
   let testAccessToken: AccessToken;
@@ -98,9 +97,8 @@ test.group("DeliveryPatchHook", (group) => {
   });
 
   test("should resolve if all parameters are valid", async () => {
-    return expect(
-      deliveryPatchHook.before(testRequest, testAccessToken, "delivery1"),
-    ).to.be.fulfilled;
+    return expect(deliveryPatchHook.before(testRequest, testAccessToken, "delivery1")).to.be
+      .fulfilled;
   });
 
   test("should reject if id is undefined", async () => {
@@ -110,24 +108,22 @@ test.group("DeliveryPatchHook", (group) => {
   });
 
   test("should reject if body is empty or undefined", async () => {
-    return expect(
-      deliveryPatchHook.before(null, testAccessToken, "delivery1"),
-    ).to.be.rejectedWith(BlError, /body is undefined/);
+    return expect(deliveryPatchHook.before(null, testAccessToken, "delivery1")).to.be.rejectedWith(
+      BlError,
+      /body is undefined/,
+    );
   });
 
   test("should reject if accessToken is empty or undefined", async () => {
-    return expect(
-      deliveryPatchHook.before(testRequest, undefined, "delivery1"),
-    ).to.be.rejectedWith(BlError, /accessToken is undefined/);
+    return expect(deliveryPatchHook.before(testRequest, undefined, "delivery1")).to.be.rejectedWith(
+      BlError,
+      /accessToken is undefined/,
+    );
   });
 
   test("should reject if delivery is not found", async () => {
     return expect(
-      deliveryPatchHook.before(
-        testRequest,
-        testAccessToken,
-        "deliveryNotFound",
-      ),
+      deliveryPatchHook.before(testRequest, testAccessToken, "deliveryNotFound"),
     ).to.be.rejectedWith(BlError, /delivery "deliveryNotFound" not found/);
   });
 

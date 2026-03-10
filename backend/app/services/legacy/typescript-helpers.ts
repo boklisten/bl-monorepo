@@ -1,12 +1,8 @@
-export function isNullish(
-  maybeNullish: unknown,
-): maybeNullish is undefined | null {
+export function isNullish(maybeNullish: unknown): maybeNullish is undefined | null {
   return maybeNullish == null;
 }
 
-export function isNotNullish<T>(
-  maybeNullish: T | undefined | null,
-): maybeNullish is T {
+export function isNotNullish<T>(maybeNullish: T | undefined | null): maybeNullish is T {
   return maybeNullish != null;
 }
 

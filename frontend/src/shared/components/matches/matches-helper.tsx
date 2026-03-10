@@ -19,9 +19,7 @@ export const MatchHeader = ({ children }: { children: ReactNode }) => {
   return <Title order={2}>{children}</Title>;
 };
 
-export function calculateFulfilledStandMatchItems(
-  standMatch: StandMatchWithDetails,
-): {
+export function calculateFulfilledStandMatchItems(standMatch: StandMatchWithDetails): {
   fulfilledHandoffItems: string[];
   fulfilledPickupItems: string[];
 } {
@@ -51,9 +49,7 @@ export interface UserMatchStatus {
   };
 }
 
-export function calculateUserMatchStatus(
-  userMatch: UserMatchWithDetails,
-): UserMatchStatus {
+export function calculateUserMatchStatus(userMatch: UserMatchWithDetails): UserMatchStatus {
   const customerA = {
     deliveredItems: [] as string[],
     receivedItems: [] as string[],
@@ -90,39 +86,26 @@ export function calculateUserMatchStatus(
   const decodedAccessToken = decodeToken<AccessToken>(
     localStorage.getItem(BL_CONFIG.token.accessToken) ?? "",
   );
-  const currentUserIsCustomerA =
-    userMatch.customerA === decodedAccessToken?.details;
+  const currentUserIsCustomerA = userMatch.customerA === decodedAccessToken?.details;
   return {
     currentUser: {
-      items: currentUserIsCustomerA
-        ? userMatch.expectedAToBItems
-        : userMatch.expectedBToAItems,
+      items: currentUserIsCustomerA ? userMatch.expectedAToBItems : userMatch.expectedBToAItems,
       wantedItems: currentUserIsCustomerA
         ? userMatch.expectedBToAItems
         : userMatch.expectedAToBItems,
-      deliveredItems: currentUserIsCustomerA
-        ? customerA.deliveredItems
-        : customerB.deliveredItems,
-      receivedItems: currentUserIsCustomerA
-        ? customerA.receivedItems
-        : customerB.receivedItems,
+      deliveredItems: currentUserIsCustomerA ? customerA.deliveredItems : customerB.deliveredItems,
+      receivedItems: currentUserIsCustomerA ? customerA.receivedItems : customerB.receivedItems,
       name: currentUserIsCustomerA
         ? userMatch.customerADetails.name
         : userMatch.customerBDetails.name,
     },
     otherUser: {
-      items: currentUserIsCustomerA
-        ? userMatch.expectedBToAItems
-        : userMatch.expectedAToBItems,
+      items: currentUserIsCustomerA ? userMatch.expectedBToAItems : userMatch.expectedAToBItems,
       wantedItems: currentUserIsCustomerA
         ? userMatch.expectedAToBItems
         : userMatch.expectedBToAItems,
-      deliveredItems: currentUserIsCustomerA
-        ? customerB.deliveredItems
-        : customerA.deliveredItems,
-      receivedItems: currentUserIsCustomerA
-        ? customerB.receivedItems
-        : customerA.receivedItems,
+      deliveredItems: currentUserIsCustomerA ? customerB.deliveredItems : customerA.deliveredItems,
+      receivedItems: currentUserIsCustomerA ? customerB.receivedItems : customerA.receivedItems,
       name: currentUserIsCustomerA
         ? userMatch.customerBDetails.name
         : userMatch.customerADetails.name,
@@ -130,9 +113,7 @@ export function calculateUserMatchStatus(
   };
 }
 
-export function calculateItemStatuses<
-  T extends UserMatchWithDetails | StandMatchWithDetails,
->(
+export function calculateItemStatuses<T extends UserMatchWithDetails | StandMatchWithDetails>(
   match: T,
   expectedItemsSelector: (match: T) => string[],
   fulfilledItems: string[],
@@ -152,9 +133,7 @@ export function calculateItemStatuses<
     }));
 }
 
-export function isStandMatchFulfilled(
-  standMatch: StandMatchWithDetails | undefined,
-) {
+export function isStandMatchFulfilled(standMatch: StandMatchWithDetails | undefined) {
   if (!standMatch) return false;
 
   const { fulfilledHandoffItems, fulfilledPickupItems } =

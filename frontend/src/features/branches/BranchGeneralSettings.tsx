@@ -7,10 +7,7 @@ import { Activity } from "react";
 import useUpdateBranchMutation from "@/features/branches/useUpdateBranchMutation";
 import { useAppForm } from "@/shared/hooks/form";
 import useApiClient from "@/shared/hooks/useApiClient";
-import {
-  showErrorNotification,
-  showSuccessNotification,
-} from "@/shared/utils/notifications";
+import { showErrorNotification, showSuccessNotification } from "@/shared/utils/notifications";
 
 export default function BranchGeneralSettings({
   existingBranch,
@@ -23,9 +20,8 @@ export default function BranchGeneralSettings({
   const client = useApiClient();
 
   const addBranchMutation = useMutation({
-    mutationFn: (
-      newBranch: InferRequestType<typeof client.v2.branches.$post>,
-    ) => client.v2.branches.$post(newBranch).unwrap(),
+    mutationFn: (newBranch: InferRequestType<typeof client.v2.branches.$post>) =>
+      client.v2.branches.$post(newBranch).unwrap(),
     onSettled: () =>
       queryClient.invalidateQueries({
         queryKey: [
@@ -73,28 +69,17 @@ export default function BranchGeneralSettings({
     <Stack>
       <form.AppField name={"name"}>
         {(field) => (
-          <field.TextField
-            required
-            label={"Navn"}
-            placeholder={"Flåklypa videregående skole"}
-          />
+          <field.TextField required label={"Navn"} placeholder={"Flåklypa videregående skole"} />
         )}
       </form.AppField>
       <form.AppField name={"location.region"}>
         {(field) => (
-          <field.TextField
-            required
-            label={"Region"}
-            placeholder={"Oslo, Trondheim, Ski"}
-          />
+          <field.TextField required label={"Region"} placeholder={"Oslo, Trondheim, Ski"} />
         )}
       </form.AppField>
       <form.AppField name={"location.address"}>
         {(field) => (
-          <field.TextField
-            label={"Adresse"}
-            placeholder={"Postboks 8, 1316 Eiksmarka"}
-          />
+          <field.TextField label={"Adresse"} placeholder={"Postboks 8, 1316 Eiksmarka"} />
         )}
       </form.AppField>
       <form.AppField name={"type"}>

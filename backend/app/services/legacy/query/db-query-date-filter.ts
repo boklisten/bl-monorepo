@@ -26,12 +26,8 @@ export class DbQueryDateFilter {
     ];
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   public getDateFilters(query: any, validDateParams: string[]): DateFilter[] {
-    if (
-      !query ||
-      (Object.keys(query).length === 0 && query.constructor === Object)
-    )
+    if (!query || (Object.keys(query).length === 0 && query.constructor === Object))
       throw new TypeError("the given query can not be null or undefined");
 
     try {
@@ -57,14 +53,9 @@ export class DbQueryDateFilter {
     return undefined;
   }
 
-  private generateSingleDayFilter(
-    fieldName: string,
-    value: string,
-  ): DateFilter {
+  private generateSingleDayFilter(fieldName: string, value: string): DateFilter {
     if (!value)
-      throw new Error(
-        "QueryBuilderDateFilter.generateDateFilter(): value is not defined",
-      );
+      throw new Error("QueryBuilderDateFilter.generateDateFilter(): value is not defined");
 
     const operation = this.getOperation(value);
 
@@ -102,10 +93,7 @@ export class DbQueryDateFilter {
     return { fieldName: fieldName, op: { $eq: isoDate } };
   }
 
-  private generateMultipleDateFilter(
-    fieldName: string,
-    values: string[],
-  ): DateFilter[] {
+  private generateMultipleDateFilter(fieldName: string, values: string[]): DateFilter[] {
     const operations = {};
 
     for (const value of values) {

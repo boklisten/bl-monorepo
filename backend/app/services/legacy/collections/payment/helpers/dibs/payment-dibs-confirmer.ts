@@ -19,11 +19,10 @@ export class PaymentDibsConfirmer {
       this.validatePaymentInfo(payment);
 
       try {
-        dibsEasyPaymentDetails =
-          await this.dibsPaymentService.fetchDibsPaymentData(
-            // @ts-expect-error fixme: auto ignored
-            payment.info["paymentId"],
-          );
+        dibsEasyPaymentDetails = await this.dibsPaymentService.fetchDibsPaymentData(
+          // @ts-expect-error fixme: auto ignored
+          payment.info["paymentId"],
+        );
       } catch (getDibsPaymentError) {
         throw new BlError("could not get dibs payment from dibs api").add(
           // @ts-expect-error fixme: auto ignored
@@ -39,9 +38,7 @@ export class PaymentDibsConfirmer {
         info: dibsEasyPaymentDetails,
       });
     } catch (error) {
-      throw new BlError(
-        "payment could not be updated with dibs information:" + error,
-      );
+      throw new BlError("payment could not be updated with dibs information:" + error);
     }
 
     return true;
@@ -56,18 +53,13 @@ export class PaymentDibsConfirmer {
       isNullish(dibsEasyPaymentDetails.orderDetails) ||
       dibsEasyPaymentDetails.orderDetails.reference !== order.id
     ) {
-      throw new BlError(
-        "dibsEasyPaymentDetails.orderDetails.reference is not equal to order.id",
-      );
+      throw new BlError("dibsEasyPaymentDetails.orderDetails.reference is not equal to order.id");
     }
 
     if (
       isNullish(dibsEasyPaymentDetails.summary) ||
       isNullish(dibsEasyPaymentDetails.summary.reservedAmount) ||
-      Number.parseInt(
-        "" + dibsEasyPaymentDetails.summary.reservedAmount,
-        10,
-      ) !==
+      Number.parseInt("" + dibsEasyPaymentDetails.summary.reservedAmount, 10) !==
         payment.amount * 100
     ) {
       throw new BlError(
@@ -85,9 +77,7 @@ export class PaymentDibsConfirmer {
       // @ts-expect-error fixme: auto ignored
       isNullish(payment.info["paymentId"])
     ) {
-      throw new BlError(
-        'payment.method is "dibs" but payment.info.paymentId is undefined',
-      );
+      throw new BlError('payment.method is "dibs" but payment.info.paymentId is undefined');
     }
 
     return true;

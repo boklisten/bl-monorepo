@@ -24,8 +24,7 @@ export default function EditableTextReadOnly({
   if (!text) {
     return (
       <InfoAlert title={"Oisann, her var det tomt..."}>
-        Innholdet du ser etter er ikke publisert enda. Ta kontakt dersom du har
-        spørsmål.
+        Innholdet du ser etter er ikke publisert enda. Ta kontakt dersom du har spørsmål.
       </InfoAlert>
     );
   }

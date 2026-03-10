@@ -40,8 +40,8 @@ test.group("UserCanDeleteUserDetail", (group) => {
     };
     userDetailGetIdStub.resolves({ id: "userDetail1" } as UserDetail);
 
-    return expect(userCanDeleteUserDetail.canDelete("userDetail1", accessToken))
-      .to.eventually.be.true;
+    return expect(userCanDeleteUserDetail.canDelete("userDetail1", accessToken)).to.eventually.be
+      .true;
   });
 
   test("should not be possible to delete a user with higher permission", async () => {
@@ -63,8 +63,8 @@ test.group("UserCanDeleteUserDetail", (group) => {
 
     userGetByQueryStub.resolves([{ permission: "admin" } as User]);
 
-    return expect(userCanDeleteUserDetail.canDelete("userDetail2", accessToken))
-      .to.eventually.be.false;
+    return expect(userCanDeleteUserDetail.canDelete("userDetail2", accessToken)).to.eventually.be
+      .false;
   });
 
   test("should not be possible to delete a user with the same permission", async () => {
@@ -86,8 +86,8 @@ test.group("UserCanDeleteUserDetail", (group) => {
 
     userGetByQueryStub.resolves([{ permission: "admin" } as User]);
 
-    return expect(userCanDeleteUserDetail.canDelete("userDetail2", accessToken))
-      .to.eventually.be.false;
+    return expect(userCanDeleteUserDetail.canDelete("userDetail2", accessToken)).to.eventually.be
+      .false;
   });
 
   test("should not be possible to delete another user if your permission is below admin", async () => {
@@ -109,8 +109,8 @@ test.group("UserCanDeleteUserDetail", (group) => {
 
     userGetByQueryStub.resolves([{ permission: "customer" } as User]);
 
-    return expect(userCanDeleteUserDetail.canDelete("userDetail2", accessToken))
-      .to.eventually.be.false;
+    return expect(userCanDeleteUserDetail.canDelete("userDetail2", accessToken)).to.eventually.be
+      .false;
   });
 
   test("should be possible to delete a user with permission 'manager' if you have permission 'admin'", async () => {
@@ -132,8 +132,8 @@ test.group("UserCanDeleteUserDetail", (group) => {
 
     userGetByQueryStub.resolves([{ permission: "manager" } as unknown as User]);
 
-    return expect(userCanDeleteUserDetail.canDelete("userDetail2", accessToken))
-      .to.eventually.be.true;
+    return expect(userCanDeleteUserDetail.canDelete("userDetail2", accessToken)).to.eventually.be
+      .true;
   });
 
   test("should be possible to delete a user with permission 'employee' if you have permission 'admin'", async () => {
@@ -155,8 +155,8 @@ test.group("UserCanDeleteUserDetail", (group) => {
 
     userGetByQueryStub.resolves([{ permission: "employee" } as User]);
 
-    return expect(userCanDeleteUserDetail.canDelete("userDetail2", accessToken))
-      .to.eventually.be.true;
+    return expect(userCanDeleteUserDetail.canDelete("userDetail2", accessToken)).to.eventually.be
+      .true;
   });
 
   test("should be possible to delete a user with permission 'customer' if you have permission 'admin'", async () => {
@@ -178,7 +178,7 @@ test.group("UserCanDeleteUserDetail", (group) => {
 
     userGetByQueryStub.resolves([{ permission: "customer" } as User]);
 
-    return expect(userCanDeleteUserDetail.canDelete("userDetail2", accessToken))
-      .to.eventually.be.true;
+    return expect(userCanDeleteUserDetail.canDelete("userDetail2", accessToken)).to.eventually.be
+      .true;
   });
 });

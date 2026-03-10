@@ -32,8 +32,8 @@ function CustomerItemsOverviewWrapper({
       <Stack gap={"xs"}>
         <Title order={2}>Aktive bøker</Title>
         <Text fw={"light"} fs={"italic"}>
-          Dette er bøkene du for øyeblikket er ansvarlig for. Du får beskjed om
-          hvordan de skal leveres når fristen nærmer seg.
+          Dette er bøkene du for øyeblikket er ansvarlig for. Du får beskjed om hvordan de skal
+          leveres når fristen nærmer seg.
         </Text>
         {activeItemsSlot}
       </Stack>
@@ -98,20 +98,14 @@ export default function CustomerItemsOverview() {
 
   if (!data || isError || !openOrderItems || isErrorOpenOrderItems) {
     return (
-      <ErrorAlert
-        title={"Dette skjedde noe galt under innlastingen av dine bøker"}
-      >
+      <ErrorAlert title={"Dette skjedde noe galt under innlastingen av dine bøker"}>
         {PLEASE_TRY_AGAIN_TEXT}
       </ErrorAlert>
     );
   }
 
-  const inactiveItems = data.filter((ci) =>
-    ["returned", "buyout"].includes(ci.status.type),
-  );
-  const activeItems = data.filter((ci) =>
-    ["active", "overdue"].includes(ci.status.type),
-  );
+  const inactiveItems = data.filter((ci) => ["returned", "buyout"].includes(ci.status.type));
+  const activeItems = data.filter((ci) => ["active", "overdue"].includes(ci.status.type));
 
   return (
     <CustomerItemsOverviewWrapper
@@ -142,9 +136,7 @@ export default function CustomerItemsOverview() {
             ))}
           </Activity>
           <Activity mode={inactiveItems.length === 0 ? "visible" : "hidden"}>
-            <InfoAlert
-              title={"Du har ikke levert inn eller kjøpt ut noen bøker enda."}
-            />
+            <InfoAlert title={"Du har ikke levert inn eller kjøpt ut noen bøker enda."} />
           </Activity>
         </>
       }

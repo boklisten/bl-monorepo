@@ -16,9 +16,7 @@ interface BranchPaymentPeriod {
 }
 
 export class OrderItemRentPeriodValidator {
-  private priceService = new PriceService(
-    APP_CONFIG.payment.paymentServiceConfig,
-  );
+  private priceService = new PriceService(APP_CONFIG.payment.paymentServiceConfig);
 
   public async validate(
     orderItem: OrderItem,
@@ -26,16 +24,12 @@ export class OrderItemRentPeriodValidator {
     itemPrice: number,
   ): Promise<boolean> {
     if (orderItem.type != "rent") {
-      throw new BlError(
-        'orderItem.type is not "rent" when validating rent period',
-      );
+      throw new BlError('orderItem.type is not "rent" when validating rent period');
     }
 
     if (branchPaymentInfo.responsible) {
       if (orderItem.amount !== 0 || orderItem.unitPrice !== 0) {
-        throw new BlError(
-          "amounts where set on orderItem when branch is responsible",
-        );
+        throw new BlError("amounts where set on orderItem when branch is responsible");
       }
 
       return true;
@@ -50,11 +44,7 @@ export class OrderItemRentPeriodValidator {
         period,
         branchPaymentInfo,
       );
-      return this.validateIfMovedFromOrder(
-        orderItem,
-        branchPaymentPeriod,
-        itemPrice,
-      );
+      return this.validateIfMovedFromOrder(orderItem, branchPaymentPeriod, itemPrice);
     }
 
     const branchPaymentPeriod = this.getRentPeriodFromBranchPaymentInfo(
@@ -107,10 +97,7 @@ export class OrderItemRentPeriodValidator {
 
     return StorageService.Orders.get(orderItem.movedFromOrder)
       .then((order: Order) => {
-        if (
-          (!order.payments || order.payments.length <= 0) &&
-          orderItem.amount === 0
-        ) {
+        if ((!order.payments || order.payments.length <= 0) && orderItem.amount === 0) {
           throw new BlError(
             'the original order has not been payed, but current orderItem.amount is "0"',
           );
@@ -118,10 +105,7 @@ export class OrderItemRentPeriodValidator {
 
         if (order.payments && order.payments.length > 0) {
           // the order is payed
-          const movedFromOrderItem = this.getOrderItemFromOrder(
-            orderItem.item,
-            order,
-          );
+          const movedFromOrderItem = this.getOrderItemFromOrder(orderItem.item, order);
 
           if (
             // @ts-expect-error fixme: auto ignored
@@ -136,9 +120,7 @@ export class OrderItemRentPeriodValidator {
             // the periodType is changed after the original placed order
             const expectedOrderItemAmount =
               this.priceService.round(
-                this.priceService.sanitize(
-                  itemPrice * branchRentPeriod.percentage,
-                ),
+                this.priceService.sanitize(itemPrice * branchRentPeriod.percentage),
               ) - movedFromOrderItem.amount;
 
             if (orderItem.amount !== expectedOrderItemAmount) {

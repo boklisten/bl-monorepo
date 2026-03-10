@@ -51,9 +51,7 @@ const UserInfoFields = withFieldGroup({
     return (
       <>
         <Stack gap={3}>
-          <Title order={4}>
-            {perspective === "personal" ? "Din" : "Kundens"} informasjon
-          </Title>
+          <Title order={4}>{perspective === "personal" ? "Din" : "Kundens"} informasjon</Title>
           <Divider />
         </Stack>
         <group.AppField
@@ -67,8 +65,7 @@ const UserInfoFields = withFieldGroup({
         <group.AppField
           name={"phoneNumber"}
           validators={{
-            onBlur: ({ value }) =>
-              phoneNumberFieldValidator(value, perspective),
+            onBlur: ({ value }) => phoneNumberFieldValidator(value, perspective),
           }}
         >
           {(field) => <field.PhoneNumberField />}
@@ -94,11 +91,7 @@ const UserInfoFields = withFieldGroup({
           validators={{
             onBlur: ({ value }) => {
               if (!value) return "Du må fylle inn fødselsdato";
-              if (
-                dayjs(value, "YYYY-MM-DD").isBefore(
-                  dayjs().subtract(99, "years"),
-                )
-              )
+              if (dayjs(value, "YYYY-MM-DD").isBefore(dayjs().subtract(99, "years")))
                 return "Du må fylle inn en gyldig fødselsdato";
 
               return null;
@@ -121,9 +114,7 @@ const UserInfoFields = withFieldGroup({
         <group.Subscribe selector={(state) => state.values.birthday}>
           {(birthday) => {
             return (
-              <Activity
-                mode={isUnder18(new Date(birthday)) ? "visible" : "hidden"}
-              >
+              <Activity mode={isUnder18(new Date(birthday)) ? "visible" : "hidden"}>
                 <Fieldset
                   legend={`Siden ${perspective === "personal" ? "du" : "kunden"} er under 18, trenger vi informasjon om en av ${perspective === "personal" ? "dine" : "kundens"} foresatte.`}
                 >

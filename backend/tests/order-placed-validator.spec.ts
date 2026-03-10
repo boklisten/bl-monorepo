@@ -73,16 +73,14 @@ test.group("OrderPlacedValidator", (group) => {
     };
 
     sandbox = createSandbox();
-    sandbox
-      .stub(StorageService.Payments, "getMany")
-      .callsFake((ids: string[]) => {
-        return new Promise((resolve, reject) => {
-          if (ids[0] !== "payment1") {
-            return reject(new BlError("not found").code(702));
-          }
-          resolve([testPayment]);
-        });
+    sandbox.stub(StorageService.Payments, "getMany").callsFake((ids: string[]) => {
+      return new Promise((resolve, reject) => {
+        if (ids[0] !== "payment1") {
+          return reject(new BlError("not found").code(702));
+        }
+        resolve([testPayment]);
       });
+    });
 
     sandbox.stub(StorageService.Deliveries, "get").callsFake((id) => {
       return new Promise((resolve, reject) => {
@@ -101,8 +99,7 @@ test.group("OrderPlacedValidator", (group) => {
   test("should resolve with true", async () => {
     testOrder.placed = false;
 
-    return expect(orderPlacedValidator.validate(testOrder)).to.eventually.be
-      .true;
+    return expect(orderPlacedValidator.validate(testOrder)).to.eventually.be.true;
   });
 
   test("should resolve with true if there are no payments attached", async () => {

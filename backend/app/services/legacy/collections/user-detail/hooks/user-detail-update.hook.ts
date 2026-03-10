@@ -23,25 +23,21 @@ export class UserDetailUpdateHook extends Hook {
       branchMembership,
     } = data;
     if (emailConfirmed !== undefined && accessToken.permission === "customer") {
-      throw new BlError(
-        "bruker kan ikke endre egen e-post-bekreftet-status",
-      ).code(911);
+      throw new BlError("bruker kan ikke endre egen e-post-bekreftet-status").code(911);
     }
 
     const databaseQuery = new SEDbQuery();
     databaseQuery.stringFilters = [{ fieldName: "phone", value: phone ?? "" }];
     let existingUsers = [];
     try {
-      existingUsers = (
-        await StorageService.UserDetails.getByQuery(databaseQuery)
-      ).filter((user) => user.id !== accessToken.details);
+      existingUsers = (await StorageService.UserDetails.getByQuery(databaseQuery)).filter(
+        (user) => user.id !== accessToken.details,
+      );
     } catch {
       // Not found
     }
     if (existingUsers.length > 0 && accessToken.permission === "customer") {
-      throw new BlError(
-        "telefonnummer er allerede registrert på en annen bruker",
-      ).code(912);
+      throw new BlError("telefonnummer er allerede registrert på en annen bruker").code(912);
     }
 
     // In an update call, a value of 'undefined' will remove a key, so the key

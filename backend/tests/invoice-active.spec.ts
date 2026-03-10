@@ -40,6 +40,7 @@ test.group("InvoiceActive", async () => {
     ];
 
     for (const invoice of nonActiveInvoices) {
+      // oxlint-disable-next-line no-unused-expressions
       expect(invoiceActive.isActive(invoice)).to.be.false;
     }
   });
@@ -77,6 +78,7 @@ test.group("InvoiceActive", async () => {
     ];
 
     for (const invoice of activeInvoices) {
+      // oxlint-disable-next-line no-unused-expressions
       expect(invoiceActive.isActive(invoice)).to.be.true;
     }
   });

@@ -8,10 +8,7 @@ import { phoneNumberFieldValidator } from "@/shared/components/form/fields/compl
 import { useAppForm } from "@/shared/hooks/form";
 import useApiClient from "@/shared/hooks/useApiClient";
 import unpack from "@/shared/utils/bl-api-request";
-import {
-  showErrorNotification,
-  showSuccessNotification,
-} from "@/shared/utils/notifications";
+import { showErrorNotification, showSuccessNotification } from "@/shared/utils/notifications";
 
 interface WaitingListEntryForm {
   name: string;
@@ -65,8 +62,7 @@ export default function CreateWaitingListEntry({
       showSuccessNotification("Kunden har blitt lagt til i ventelisten");
       onClose();
     },
-    onError: () =>
-      showErrorNotification("Klarte ikke legge til kunde i venteliste"),
+    onError: () => showErrorNotification("Klarte ikke legge til kunde i venteliste"),
     onSettled: () =>
       queryClient.invalidateQueries({
         queryKey: [client.waiting_list_entries.$url()],
@@ -85,8 +81,7 @@ export default function CreateWaitingListEntry({
           <form.AppField
             name={"name"}
             validators={{
-              onSubmit: ({ value }) =>
-                nameFieldValidator(value, "administrate"),
+              onSubmit: ({ value }) => nameFieldValidator(value, "administrate"),
             }}
           >
             {(field) => <field.NameField autoComplete={"off"} />}
@@ -94,8 +89,7 @@ export default function CreateWaitingListEntry({
           <form.AppField
             name={"phoneNumber"}
             validators={{
-              onSubmit: ({ value }) =>
-                phoneNumberFieldValidator(value, "administrate"),
+              onSubmit: ({ value }) => phoneNumberFieldValidator(value, "administrate"),
             }}
           >
             {(field) => <field.PhoneNumberField autoComplete={"off"} />}
@@ -103,8 +97,7 @@ export default function CreateWaitingListEntry({
           <form.AppField
             name={"itemIds"}
             validators={{
-              onSubmit: ({ value }) =>
-                value.length === 0 ? "Du må velge minst en bok" : null,
+              onSubmit: ({ value }) => (value.length === 0 ? "Du må velge minst en bok" : null),
             }}
           >
             {(field) => (
@@ -124,8 +117,7 @@ export default function CreateWaitingListEntry({
           <form.AppField
             name={"branchId"}
             validators={{
-              onSubmit: ({ value }) =>
-                value.length === 0 ? "Du må velge en filial" : null,
+              onSubmit: ({ value }) => (value.length === 0 ? "Du må velge en filial" : null),
             }}
           >
             {(field) => (
@@ -152,10 +144,7 @@ export default function CreateWaitingListEntry({
           <Button variant={"subtle"} onClick={() => onClose()}>
             Avbryt
           </Button>
-          <Button
-            loading={addWaitingListEntryMutation.isPending}
-            onClick={form.handleSubmit}
-          >
+          <Button loading={addWaitingListEntryMutation.isPending} onClick={form.handleSubmit}>
             Legg til
           </Button>
         </Group>

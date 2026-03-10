@@ -3,10 +3,7 @@ import { NotificationData, notifications } from "@mantine/notifications";
 
 import { PLEASE_TRY_AGAIN_TEXT } from "@/shared/utils/constants";
 
-function showNotification(
-  data: string | NotificationData,
-  color: MantineColor,
-) {
+function showNotification(data: string | NotificationData, color: MantineColor) {
   if (typeof data === "string") {
     notifications.show({
       message: data,

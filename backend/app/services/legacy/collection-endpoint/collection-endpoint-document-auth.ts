@@ -3,10 +3,7 @@ import { PermissionService } from "#services/permission_service";
 import { BlStorageData } from "#services/storage_service";
 import { BlError } from "#shared/bl-error";
 import { BlApiRequest } from "#types/bl-api-request";
-import {
-  BlDocumentPermission,
-  BlEndpointRestriction,
-} from "#types/bl-collection";
+import { BlDocumentPermission, BlEndpointRestriction } from "#types/bl-collection";
 
 function validate(
   restriction: BlEndpointRestriction | undefined,
@@ -24,10 +21,7 @@ function validate(
     }
 
     for (const document_ of docs) {
-      if (
-        isNullish(document_.viewableFor) ||
-        document_.viewableFor.length <= 0
-      ) {
+      if (isNullish(document_.viewableFor) || document_.viewableFor.length <= 0) {
         if (restriction.restricted) {
           if (
             !PermissionService.haveRestrictedDocumentPermission(
@@ -40,9 +34,7 @@ function validate(
             )
           ) {
             return Promise.reject(
-              new BlError(
-                "lacking restricted permission to view or edit the document",
-              ).code(904),
+              new BlError("lacking restricted permission to view or edit the document").code(904),
             );
           }
         }

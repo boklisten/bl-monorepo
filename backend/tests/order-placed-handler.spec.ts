@@ -40,9 +40,7 @@ test.group("OrderPlacedHandler", (group) => {
   group.each.setup(() => {
     sandbox = createSandbox();
 
-    sandbox
-      .stub(orderItemMovedFromOrderHandler, "updateOrderItems")
-      .resolves(true);
+    sandbox.stub(orderItemMovedFromOrderHandler, "updateOrderItems").resolves(true);
 
     const customerItemsStub = {
       add: sandbox.stub().callsFake((customerItem) => {
@@ -179,27 +177,19 @@ test.group("OrderPlacedHandler", (group) => {
   test("should reject if order could not be updated with confirm true", async () => {
     orderUpdate = false;
 
-    orderPlacedHandler
-      .placeOrder(testOrder, testAccessToken.details)
-      .catch((err: BlError) => {
-        // @ts-expect-error fixme: auto ignored
-        return expect(err.errorStack[0].getMsg()).to.be.eq(
-          "could not update order",
-        );
-      });
+    orderPlacedHandler.placeOrder(testOrder, testAccessToken.details).catch((err: BlError) => {
+      // @ts-expect-error fixme: auto ignored
+      return expect(err.errorStack[0].getMsg()).to.be.eq("could not update order");
+    });
   });
 
   test("should reject if paymentHandler.confirmPayments rejects", async () => {
     paymentsConfirmed = false;
 
-    orderPlacedHandler
-      .placeOrder(testOrder, testAccessToken.details)
-      .catch((err: BlError) => {
-        // @ts-expect-error fixme: auto ignored
-        return expect(err.errorStack[0].getMsg()).to.be.eq(
-          "could not confirm payments",
-        );
-      });
+    orderPlacedHandler.placeOrder(testOrder, testAccessToken.details).catch((err: BlError) => {
+      // @ts-expect-error fixme: auto ignored
+      return expect(err.errorStack[0].getMsg()).to.be.eq("could not confirm payments");
+    });
   });
 
   test("should reject if order.customer is not found", async () => {
@@ -216,14 +206,12 @@ test.group("OrderPlacedHandler", (group) => {
   test("should reject if userDetailStorage.updates rejects", async () => {
     userDeatilUpdate = false;
 
-    orderPlacedHandler
-      .placeOrder(testOrder, testAccessToken.details)
-      .catch((err: BlError) => {
-        // @ts-expect-error fixme: auto ignored
-        return expect(err.errorStack[0].getMsg()).to.be.eq(
-          "could not update userDetail with placed order",
-        );
-      });
+    orderPlacedHandler.placeOrder(testOrder, testAccessToken.details).catch((err: BlError) => {
+      // @ts-expect-error fixme: auto ignored
+      return expect(err.errorStack[0].getMsg()).to.be.eq(
+        "could not update userDetail with placed order",
+      );
+    });
   });
 
   //test('should reject if userDetail.emailConfirmed is false', async () => {
@@ -237,8 +225,7 @@ test.group("OrderPlacedHandler", (group) => {
   /*});*/
 
   test("should resolve when order was placed", async () => {
-    return expect(
-      orderPlacedHandler.placeOrder(testOrder, testAccessToken.details),
-    ).to.be.fulfilled;
+    return expect(orderPlacedHandler.placeOrder(testOrder, testAccessToken.details)).to.be
+      .fulfilled;
   });
 });

@@ -11,20 +11,13 @@ export class OrderPatchHook extends Hook {
   private orderValidator: OrderValidator;
   private orderPlacedHandler: OrderPlacedHandler;
 
-  constructor(
-    orderValidator?: OrderValidator,
-    orderPlacedHandler?: OrderPlacedHandler,
-  ) {
+  constructor(orderValidator?: OrderValidator, orderPlacedHandler?: OrderPlacedHandler) {
     super();
     this.orderValidator = orderValidator ?? new OrderValidator();
     this.orderPlacedHandler = orderPlacedHandler ?? new OrderPlacedHandler();
   }
 
-  override before(
-    body: unknown,
-    accessToken: AccessToken,
-    id: string,
-  ): Promise<boolean> {
+  override before(body: unknown, accessToken: AccessToken, id: string): Promise<boolean> {
     if (!body) {
       return Promise.reject(new BlError("body not defined"));
     }
@@ -48,10 +41,7 @@ export class OrderPatchHook extends Hook {
     if (!accessToken) {
       return Promise.reject(new BlError("accessToken not defined"));
     }
-    const isAdmin = PermissionService.isPermissionEqualOrOver(
-      accessToken.permission,
-      "admin",
-    );
+    const isAdmin = PermissionService.isPermissionEqualOrOver(accessToken.permission, "admin");
 
     const order = orders[0];
 
@@ -63,9 +53,7 @@ export class OrderPatchHook extends Hook {
             resolve([placedOrder]);
           })
           .catch((orderPlacedError: BlError) => {
-            reject(
-              new BlError("order could not be placed").add(orderPlacedError),
-            );
+            reject(new BlError("order could not be placed").add(orderPlacedError));
           });
       } else {
         this.orderValidator
@@ -88,18 +76,14 @@ export class OrderPatchHook extends Hook {
                 })
                 .catch((updateError: BlError) => {
                   return reject(
-                    new BlError(
-                      "could not set order.placed to false when order validation failed",
-                    )
+                    new BlError("could not set order.placed to false when order validation failed")
                       .add(updateError)
                       .add(validationError),
                   );
                 });
             } else {
               return reject(
-                new BlError("patch of order could not be validated").add(
-                  validationError,
-                ),
+                new BlError("patch of order could not be validated").add(validationError),
               );
             }
           });

@@ -48,12 +48,10 @@ test.group("CustomerItemActiveBlid", (group) => {
     };
 
     // Grab our stub and define the return value for THIS test
-    const getByQueryStub = StorageService.CustomerItems
-      .getByQuery as sinon.SinonStub;
+    const getByQueryStub = StorageService.CustomerItems.getByQuery as sinon.SinonStub;
     getByQueryStub.resolves([customerItem1, customerItem2]);
 
-    const result =
-      await customerItemActiveBlid.getActiveCustomerItemIds("blid1");
+    const result = await customerItemActiveBlid.getActiveCustomerItemIds("blid1");
     expect(result).to.eql(["customerItem1"]);
   });
 
@@ -69,12 +67,10 @@ test.group("CustomerItemActiveBlid", (group) => {
     };
 
     // For this test, the same stub returns a different result
-    const getByQueryStub = StorageService.CustomerItems
-      .getByQuery as sinon.SinonStub;
+    const getByQueryStub = StorageService.CustomerItems.getByQuery as sinon.SinonStub;
     getByQueryStub.resolves([customerItem]);
 
-    const result =
-      await customerItemActiveBlid.getActiveCustomerItemIds("blid1");
+    const result = await customerItemActiveBlid.getActiveCustomerItemIds("blid1");
     expect(result).to.eql([]);
   });
 });

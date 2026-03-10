@@ -4,10 +4,10 @@ import Papa from "papaparse";
 
 import { showErrorNotification } from "@/shared/utils/notifications";
 
-type ParsedRow<
-  Req extends readonly string[],
-  Opt extends readonly string[] = [],
-> = Record<Req[number], string | string[]> &
+type ParsedRow<Req extends readonly string[], Opt extends readonly string[] = []> = Record<
+  Req[number],
+  string | string[]
+> &
   Partial<Record<Opt[number], string | string[]>>;
 
 export default function UploadCSVFile<
@@ -34,10 +34,7 @@ export default function UploadCSVFile<
     }
 
     const headerRow = rows[0]?.map((h) => h.trim()) ?? [];
-    const allHeaders = [
-      ...requiredHeaders,
-      ...(optionalHeaders ?? []),
-    ] as readonly string[];
+    const allHeaders = [...requiredHeaders, ...(optionalHeaders ?? [])] as readonly string[];
 
     const headerIndexMap: Record<string, number[]> = {};
     headerRow.forEach((headerName, i) => {
@@ -67,9 +64,7 @@ export default function UploadCSVFile<
 
       for (const header of requiredHeaders) {
         const indices = headerIndexMap[header] ?? [];
-        const values = indices
-          .map((i) => (row[i] ?? "").trim())
-          .filter((v) => v !== "");
+        const values = indices.map((i) => (row[i] ?? "").trim()).filter((v) => v !== "");
 
         if (values.length === 0) {
           showErrorNotification({
@@ -79,7 +74,6 @@ export default function UploadCSVFile<
           return null;
         }
 
-        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
         parsedRow[header] = values.length === 1 ? values[0]! : values;
       }
 
@@ -87,12 +81,9 @@ export default function UploadCSVFile<
         const indices = headerIndexMap[header] ?? [];
         if (indices.length === 0) continue;
 
-        const values = indices
-          .map((i) => (row[i] ?? "").trim())
-          .filter((v) => v !== "");
+        const values = indices.map((i) => (row[i] ?? "").trim()).filter((v) => v !== "");
 
         if (values.length > 0) {
-          // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
           parsedRow[header] = values.length === 1 ? values[0]! : values;
         }
       }

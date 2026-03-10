@@ -11,14 +11,8 @@ export interface ExpandFilter {
  * Order document on return
  */
 export class DbQueryExpandFilter {
-  public getExpandFilters(
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    query: any,
-  ): ExpandFilter[] {
-    if (
-      !query ||
-      (Object.keys(query).length === 0 && query.constructor === Object)
-    ) {
+  public getExpandFilters(query: any): ExpandFilter[] {
+    if (!query || (Object.keys(query).length === 0 && query.constructor === Object)) {
       throw new TypeError("query can not be undefined or empty");
     }
 

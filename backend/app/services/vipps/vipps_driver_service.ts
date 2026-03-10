@@ -39,10 +39,7 @@ function buildApiUrl(environment: VippsApiEnvironment, path: string) {
   return `https://${environment === "production" ? "api" : "apitest"}.vipps.no/${path}`;
 }
 
-class VippsDriver extends Oauth2Driver<
-  VippsDriverAccessToken,
-  VippsDriverScopes
-> {
+class VippsDriver extends Oauth2Driver<VippsDriverAccessToken, VippsDriverScopes> {
   protected authorizeUrl;
   protected accessTokenUrl;
   protected userInfoUrl;
@@ -58,25 +55,17 @@ class VippsDriver extends Oauth2Driver<
     public override config: VippsDriverConfig,
   ) {
     super(ctx, config);
-    this.authorizeUrl = buildApiUrl(
-      config.environment,
-      "access-management-1.0/access/oauth2/auth",
-    );
+    this.authorizeUrl = buildApiUrl(config.environment, "access-management-1.0/access/oauth2/auth");
     this.accessTokenUrl = buildApiUrl(
       config.environment,
       "access-management-1.0/access/oauth2/token",
     );
-    this.userInfoUrl = buildApiUrl(
-      config.environment,
-      "vipps-userinfo-api/userinfo",
-    );
+    this.userInfoUrl = buildApiUrl(config.environment, "vipps-userinfo-api/userinfo");
 
     this.loadState();
   }
 
-  protected override configureRedirectRequest(
-    request: RedirectRequestContract<VippsDriverScopes>,
-  ) {
+  protected override configureRedirectRequest(request: RedirectRequestContract<VippsDriverScopes>) {
     request.scopes(this.config.scopes);
     request.param("response_type", "code");
   }
@@ -101,10 +90,7 @@ class VippsDriver extends Oauth2Driver<
     return request;
   }
 
-  protected async getUserInfo(
-    token: string,
-    callback?: (request: ApiRequestContract) => void,
-  ) {
+  protected async getUserInfo(token: string, callback?: (request: ApiRequestContract) => void) {
     const request = this.getAuthenticatedRequest(this.userInfoUrl, token);
     if (typeof callback === "function") {
       callback(request);
@@ -157,8 +143,6 @@ class VippsDriver extends Oauth2Driver<
   }
 }
 
-export function VippsDriverService(
-  config: VippsDriverConfig,
-): (ctx: HttpContext) => VippsDriver {
+export function VippsDriverService(config: VippsDriverConfig): (ctx: HttpContext) => VippsDriver {
   return (ctx) => new VippsDriver(ctx, config);
 }

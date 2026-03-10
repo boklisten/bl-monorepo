@@ -5,10 +5,7 @@ import { CustomerItem } from "#shared/customer-item/customer-item";
 import { OrderItem } from "#shared/order/order-item/order-item";
 
 export class OrderItemExtendValidator {
-  public async validate(
-    branch: Branch,
-    orderItem: OrderItem,
-  ): Promise<boolean> {
+  public async validate(branch: Branch, orderItem: OrderItem): Promise<boolean> {
     try {
       this.validateFields(orderItem);
       this.checkPeriodType(orderItem, branch);
@@ -18,9 +15,10 @@ export class OrderItemExtendValidator {
         return Promise.reject(error);
       }
       return Promise.reject(
-        new BlError(
-          'unknown error, could not validate orderItem.type "extend"',
-        ).store("error", error),
+        new BlError('unknown error, could not validate orderItem.type "extend"').store(
+          "error",
+          error,
+        ),
       );
     }
 
@@ -43,10 +41,7 @@ export class OrderItemExtendValidator {
     return true;
   }
 
-  private validateCustomerItem(
-    branch: Branch,
-    orderItem: OrderItem,
-  ): Promise<boolean> {
+  private validateCustomerItem(branch: Branch, orderItem: OrderItem): Promise<boolean> {
     // @ts-expect-error fixme: auto ignored
     return (
       StorageService.CustomerItems
@@ -68,9 +63,7 @@ export class OrderItemExtendValidator {
                 extendPeriod.type === orderItem.info?.periodType &&
                 totalOfSelectedPeriod > extendPeriod.maxNumberOfPeriods
               ) {
-                throw new BlError(
-                  "orderItem can not be extended any more times",
-                );
+                throw new BlError("orderItem can not be extended any more times");
               }
             }
 

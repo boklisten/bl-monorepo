@@ -14,9 +14,7 @@ should();
 test.group("UniqueItemActiveOperation", (group) => {
   const customerItemActiveBlid = new CustomerItemActiveBlid();
 
-  const uniqueItemActiveOperation = new UniqueItemActiveOperation(
-    customerItemActiveBlid,
-  );
+  const uniqueItemActiveOperation = new UniqueItemActiveOperation(customerItemActiveBlid);
 
   let sandbox: sinon.SinonSandbox;
   let getUniqueItemStub: sinon.SinonStub;
@@ -24,10 +22,7 @@ test.group("UniqueItemActiveOperation", (group) => {
 
   group.each.setup(() => {
     sandbox = sinon.createSandbox();
-    getActiveCustomerItemsStub = sandbox.stub(
-      customerItemActiveBlid,
-      "getActiveCustomerItems",
-    );
+    getActiveCustomerItemsStub = sandbox.stub(customerItemActiveBlid, "getActiveCustomerItems");
 
     getUniqueItemStub = sandbox.stub(StorageService.UniqueItems, "get");
   });

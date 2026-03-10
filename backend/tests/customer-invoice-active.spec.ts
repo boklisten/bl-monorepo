@@ -19,10 +19,7 @@ test.group("CustomerInvoiceActive", (group) => {
 
   group.each.setup(() => {
     sandbox = createSandbox();
-    getInvoicesByQueryStub = sandbox.stub(
-      StorageService.Invoices,
-      "getByQuery",
-    );
+    getInvoicesByQueryStub = sandbox.stub(StorageService.Invoices, "getByQuery");
   });
   group.each.teardown(() => {
     sandbox.restore();
@@ -31,8 +28,7 @@ test.group("CustomerInvoiceActive", (group) => {
   test("should return false if no invoices was found for customer", async () => {
     getInvoicesByQueryStub.rejects(new BlError("not found").code(702));
 
-    return expect(customerInvoiceActive.haveActiveInvoices(testUserId)).to
-      .eventually.be.false;
+    return expect(customerInvoiceActive.haveActiveInvoices(testUserId)).to.eventually.be.false;
   });
 
   test("should return false if invoices was found but none was active", async () => {
@@ -68,8 +64,7 @@ test.group("CustomerInvoiceActive", (group) => {
 
     getInvoicesByQueryStub.resolves([inactiveInvoice, inactiveInvoice2]);
 
-    return expect(customerInvoiceActive.haveActiveInvoices(testUserId)).to
-      .eventually.be.false;
+    return expect(customerInvoiceActive.haveActiveInvoices(testUserId)).to.eventually.be.false;
   });
 
   test("should return true if invoices was found and at least one was active", async () => {
@@ -105,7 +100,6 @@ test.group("CustomerInvoiceActive", (group) => {
 
     getInvoicesByQueryStub.resolves([inactiveInvoice, inactiveInvoice2]);
 
-    return expect(customerInvoiceActive.haveActiveInvoices(testUserId)).to
-      .eventually.be.true;
+    return expect(customerInvoiceActive.haveActiveInvoices(testUserId)).to.eventually.be.true;
   });
 });

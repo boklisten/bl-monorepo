@@ -19,6 +19,7 @@ test.group("CustomerItemActive", async () => {
       buyout: false,
     };
 
+    // oxlint-disable-next-line no-unused-expressions
     expect(customerItemActive.isActive(customerItem)).false;
   });
 
@@ -34,6 +35,7 @@ test.group("CustomerItemActive", async () => {
       buyout: true,
     };
 
+    // oxlint-disable-next-line no-unused-expressions
     expect(customerItemActive.isActive(customerItem)).false;
   });
 
@@ -50,6 +52,7 @@ test.group("CustomerItemActive", async () => {
       cancel: true,
     };
 
+    // oxlint-disable-next-line no-unused-expressions
     expect(customerItemActive.isActive(customerItem)).false;
   });
 
@@ -67,6 +70,7 @@ test.group("CustomerItemActive", async () => {
       buyback: true,
     };
 
+    // oxlint-disable-next-line no-unused-expressions
     expect(customerItemActive.isActive(customerItem)).false;
   });
 
@@ -82,6 +86,7 @@ test.group("CustomerItemActive", async () => {
       buyout: false,
     };
 
+    // oxlint-disable-next-line no-unused-expressions
     expect(customerItemActive.isActive(customerItem)).true;
   });
 });

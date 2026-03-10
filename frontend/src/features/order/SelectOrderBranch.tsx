@@ -8,14 +8,9 @@ import Link from "next/link";
 import unpack from "@/shared/utils/bl-api-request";
 import { publicApiClient } from "@/shared/utils/publicApiClient";
 
-const capitalize = (s: string) =>
-  s.length > 0 ? s[0]?.toUpperCase() + s.slice(1) : "";
+const capitalize = (s: string) => (s.length > 0 ? s[0]?.toUpperCase() + s.slice(1) : "");
 
-export default function SelectOrderBranch({
-  cachedBranches,
-}: {
-  cachedBranches: Branch[];
-}) {
+export default function SelectOrderBranch({ cachedBranches }: { cachedBranches: Branch[] }) {
   const branchQuery = {
     query: { active: true, "isBranchItemsLive.online": true, sort: "name" },
   };
@@ -30,9 +25,7 @@ export default function SelectOrderBranch({
 
   const branches = data ?? cachedBranches;
 
-  const groupedBranches = Map.groupBy(branches, (branch) =>
-    capitalize(branch.location.region),
-  );
+  const groupedBranches = Map.groupBy(branches, (branch) => capitalize(branch.location.region));
   return (
     <>
       {Array.from(groupedBranches.entries())

@@ -22,9 +22,7 @@ async function updateBranchRelationships({
   if (oldParentId !== null) {
     const oldParent = await StorageService.Branches.get(oldParentId);
     await StorageService.Branches.update(oldParentId, {
-      childBranches: oldParent.childBranches?.filter(
-        (childId) => childId !== branchId,
-      ),
+      childBranches: oldParent.childBranches?.filter((childId) => childId !== branchId),
     });
   }
 
@@ -49,14 +47,10 @@ async function updateBranchRelationships({
   // For each new child, add this branch as a parent
   if (newChildrenIds !== null) {
     // Remove the previous parent's childBranch reference for all new children
-    const previousChildParentIds = (
-      await StorageService.Branches.getMany(newChildrenIds)
-    )
+    const previousChildParentIds = (await StorageService.Branches.getMany(newChildrenIds))
       .map((c) => c.parentBranch ?? "")
       .filter((id) => id.length > 0);
-    const previousChildParents = await StorageService.Branches.getMany(
-      previousChildParentIds,
-    );
+    const previousChildParents = await StorageService.Branches.getMany(previousChildParentIds);
     for (const previousChildParent of previousChildParents) {
       await StorageService.Branches.update(previousChildParent.id, {
         childBranches: previousChildParent.childBranches?.filter(
@@ -91,17 +85,14 @@ async function assertValidBranchUpdate(
     }
     visited.add(currentId);
 
-    currentId =
-      (await StorageService.Branches.get(currentId)).parentBranch ?? null;
+    currentId = (await StorageService.Branches.get(currentId)).parentBranch ?? null;
   }
 }
 
 export default class BranchRelationshipController {
   async update(ctx: HttpContext) {
     PermissionService.adminOrFail(ctx);
-    const relationshipData = await ctx.request.validateUsing(
-      branchRelationshipValidator,
-    );
+    const relationshipData = await ctx.request.validateUsing(branchRelationshipValidator);
 
     try {
       await assertValidBranchUpdate(
@@ -114,14 +105,11 @@ export default class BranchRelationshipController {
     }
 
     const storedBranch = await StorageService.Branches.get(relationshipData.id);
-    const updatedBranch = await StorageService.Branches.update(
-      relationshipData.id,
-      {
-        ...relationshipData,
-        // since parentBranch might be "" from the client, we need to convert it to null so that the database accepts the value (ObjectID or nullish)
-        parentBranch: relationshipData.parentBranch || null,
-      },
-    );
+    const updatedBranch = await StorageService.Branches.update(relationshipData.id, {
+      ...relationshipData,
+      // since parentBranch might be "" from the client, we need to convert it to null so that the database accepts the value (ObjectID or nullish)
+      parentBranch: relationshipData.parentBranch || null,
+    });
 
     await updateBranchRelationships({
       branchId: updatedBranch.id,

@@ -27,24 +27,16 @@ export class OrderItemValidator {
     orderItemExtendValidator?: OrderItemExtendValidator,
     orderItemPartlyPaymentValidator?: OrderItemPartlyPaymentValidator,
   ) {
-    this.orderItemFieldValidator =
-      orderItemFieldValidator ?? new OrderFieldValidator();
-    this.orderItemRentValidator =
-      orderItemRentValidator ?? new OrderItemRentValidator();
-    this.orderItemBuyValidator =
-      orderItemBuyValidator ?? new OrderItemBuyValidator();
-    this.orderItemExtendValidator =
-      orderItemExtendValidator ?? new OrderItemExtendValidator();
+    this.orderItemFieldValidator = orderItemFieldValidator ?? new OrderFieldValidator();
+    this.orderItemRentValidator = orderItemRentValidator ?? new OrderItemRentValidator();
+    this.orderItemBuyValidator = orderItemBuyValidator ?? new OrderItemBuyValidator();
+    this.orderItemExtendValidator = orderItemExtendValidator ?? new OrderItemExtendValidator();
     this.priceService = new PriceService({ roundDown: true });
     this.orderItemPartlyPaymentValidator =
       orderItemPartlyPaymentValidator ?? new OrderItemPartlyPaymentValidator();
   }
 
-  public async validate(
-    branch: Branch,
-    order: Order,
-    isAdmin: boolean,
-  ): Promise<boolean> {
+  public async validate(branch: Branch, order: Order, isAdmin: boolean): Promise<boolean> {
     try {
       if (!isAdmin) {
         this.validateDeadlines(order.orderItems ?? []);
@@ -63,10 +55,7 @@ export class OrderItemValidator {
         return Promise.reject(error);
       }
       return Promise.reject(
-        new BlError("unknown error, orderItem could not be validated").store(
-          "error",
-          error,
-        ),
+        new BlError("unknown error, orderItem could not be validated").store("error", error),
       );
     }
 
@@ -78,8 +67,7 @@ export class OrderItemValidator {
     const blids = orderItems
       .filter(
         (orderItem) =>
-          isNotNullish(orderItem.blid) &&
-          ["partly-payment", "rent"].includes(orderItem.type),
+          isNotNullish(orderItem.blid) && ["partly-payment", "rent"].includes(orderItem.type),
       )
       .map((orderItem) => orderItem.blid);
     if (blids.length > 0 && blids.length !== new Set(blids).size)
@@ -93,18 +81,10 @@ export class OrderItemValidator {
   ): Promise<boolean> {
     switch (orderItem.type) {
       case "rent": {
-        return await this.orderItemRentValidator.validate(
-          branch,
-          orderItem,
-          item,
-        );
+        return await this.orderItemRentValidator.validate(branch, orderItem, item);
       }
       case "partly-payment": {
-        return await this.orderItemPartlyPaymentValidator.validate(
-          orderItem,
-          item,
-          branch,
-        );
+        return await this.orderItemPartlyPaymentValidator.validate(orderItem, item, branch);
       }
       case "buy": {
         return await this.orderItemBuyValidator.validate(orderItem, item);
@@ -145,16 +125,8 @@ export class OrderItemValidator {
 
   private validateDeadlines(orderItems: OrderItem[]) {
     const now = new Date();
-    const nowWithGracePeriod = new Date(
-      now.getFullYear(),
-      now.getMonth(),
-      now.getDate() - 10,
-    );
-    const fourYearsFromNow = new Date(
-      now.getFullYear() + 4,
-      now.getMonth(),
-      now.getDate(),
-    );
+    const nowWithGracePeriod = new Date(now.getFullYear(), now.getMonth(), now.getDate() - 10);
+    const fourYearsFromNow = new Date(now.getFullYear() + 4, now.getMonth(), now.getDate());
     const hasExpiredDeadlines = orderItems.some((item) => {
       if (!item.info?.to) {
         return false;
@@ -176,9 +148,7 @@ export class OrderItemValidator {
     }
 
     if (hasDeadlinesTooFarInTheFuture) {
-      throw new BlError(
-        "orderItem deadlines must less than two years into the future",
-      ).code(810);
+      throw new BlError("orderItem deadlines must less than two years into the future").code(810);
     }
   }
 }

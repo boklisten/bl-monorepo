@@ -8,16 +8,8 @@ function calculateDeadlineOptions() {
   const summerDeadline = new Date(today.getFullYear(), 6, 1);
   const winterDeadline = new Date(today.getFullYear(), 11, 20);
   // Continue to show the deadline for a month afterward, with warning
-  const summerDeadlinePlusGracePeriod = new Date(
-    summerDeadline.getFullYear(),
-    7,
-    1,
-  );
-  const winterDeadlinePlusGracePeriod = new Date(
-    winterDeadline.getFullYear() + 1,
-    0,
-    20,
-  );
+  const summerDeadlinePlusGracePeriod = new Date(summerDeadline.getFullYear(), 7, 1);
+  const winterDeadlinePlusGracePeriod = new Date(winterDeadline.getFullYear() + 1, 0, 20);
 
   if (today > summerDeadlinePlusGracePeriod) {
     summerDeadline.setFullYear(today.getFullYear() + 1);

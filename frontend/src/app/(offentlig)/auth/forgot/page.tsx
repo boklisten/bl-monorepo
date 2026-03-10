@@ -16,8 +16,8 @@ const ForgotPage = () => {
           Glemt passord
         </Title>
         <Text ta={"center"}>
-          Skriv inn din e-postadresse, så sender vi deg en lenke slik at du kan
-          nullstille passordet ditt.
+          Skriv inn din e-postadresse, så sender vi deg en lenke slik at du kan nullstille passordet
+          ditt.
         </Text>
         <ForgotPasswordForm />
       </Stack>

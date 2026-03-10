@@ -26,8 +26,7 @@ export const CustomerItemService = {
       { fieldName: "cancel", value: false },
     ];
     const [customerItem] =
-      (await StorageService.CustomerItems.getByQueryOrNull(databaseQuery)) ??
-      [];
+      (await StorageService.CustomerItems.getByQueryOrNull(databaseQuery)) ?? [];
     return customerItem;
   },
 };

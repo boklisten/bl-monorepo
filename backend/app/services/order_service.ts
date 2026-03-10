@@ -20,23 +20,14 @@ export const OrderService = {
       let orderItem: OrderItem;
       switch (cartItem.type) {
         case "buyout": {
-          if (!customerItem)
-            throw new Error("No customer item found for buyout");
-          orderItem = await OrderItemService.createBuyoutOrderItem(
-            customerItem,
-            item,
-          );
+          if (!customerItem) throw new Error("No customer item found for buyout");
+          orderItem = await OrderItemService.createBuyoutOrderItem(customerItem, item);
           break;
         }
         case "extend": {
-          if (!customerItem)
-            throw new Error("customerItem is required for extensions");
+          if (!customerItem) throw new Error("customerItem is required for extensions");
           if (!cartItem.to) throw new Error("to is required for extensions");
-          orderItem = await OrderItemService.createExtendOrderItem(
-            customerItem,
-            item,
-            cartItem.to,
-          );
+          orderItem = await OrderItemService.createExtendOrderItem(customerItem, item, cartItem.to);
           break;
         }
         case "buy": {

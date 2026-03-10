@@ -17,10 +17,7 @@ export default function ClientPage() {
 
   const client = useApiClient();
   const { data } = useQuery({
-    queryKey: [
-      client.v2.user_details.id({ detailsId: userDetailsId ?? "" }).$url(),
-      userDetailsId,
-    ],
+    queryKey: [client.v2.user_details.id({ detailsId: userDetailsId ?? "" }).$url(), userDetailsId],
     queryFn: () =>
       userDetailsId
         ? client.v2.user_details
@@ -46,9 +43,7 @@ export default function ClientPage() {
                 title: "Rediger brukerdetaljer",
                 children: (
                   <Stack>
-                    <UnlockUserMatchesButton
-                      userDetailId={userDetailsId ?? ""}
-                    />
+                    <UnlockUserMatchesButton userDetailId={userDetailsId ?? ""} />
                     <AdministrateUserForm userDetail={data} />
                     <AdministrateUserSignatures userDetail={data} />
                   </Stack>

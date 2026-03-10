@@ -16,10 +16,7 @@ export class OrderFieldValidator {
         return Promise.reject(error);
       }
       return Promise.reject(
-        new BlError("unknown error, orderItem could not be validated").store(
-          "error",
-          error,
-        ),
+        new BlError("unknown error, orderItem could not be validated").store("error", error),
       );
     }
 

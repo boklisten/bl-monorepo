@@ -7,9 +7,7 @@ import { UserDetailService } from "#services/user_detail_service";
 import { userProvisioningValidator } from "#validators/user_provisioning";
 
 async function createUser(
-  candidateUser: Infer<
-    typeof userProvisioningValidator
-  >["userCandidates"][number],
+  candidateUser: Infer<typeof userProvisioningValidator>["userCandidates"][number],
 ) {
   const existingUser =
     (await UserDetailService.getByPhoneNumber(candidateUser.phone)) ??
@@ -29,8 +27,7 @@ async function createUser(
       },
     });
   }
-  const userDetail =
-    await UserDetailService.createProvisionedUserDetail(candidateUser);
+  const userDetail = await UserDetailService.createProvisionedUserDetail(candidateUser);
   await StorageService.Users.add({
     userDetail: userDetail.id,
     permission: "customer",
@@ -40,9 +37,7 @@ async function createUser(
 }
 
 export const UserProvisioningService = {
-  async createUsers(
-    userCandidates: Infer<typeof userProvisioningValidator>["userCandidates"],
-  ) {
+  async createUsers(userCandidates: Infer<typeof userProvisioningValidator>["userCandidates"]) {
     await Promise.all(
       userCandidates.map(async (candidateUser) => {
         const userDetail = await createUser(candidateUser);

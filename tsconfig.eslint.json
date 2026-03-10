@@ -1,7 +1,0 @@
-{
-  "files": ["eslint.config.mjs", "frontend/postcss.config.mjs"],
-  "compilerOptions": {
-    "allowJs": true,
-    "checkJs": false
-  }
-}

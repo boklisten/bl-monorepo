@@ -1,13 +1,7 @@
 "use client";
 import { UserPermission } from "@boklisten/backend/shared/user-permission";
 import { usePathname, useRouter } from "next/navigation";
-import {
-  Activity,
-  ReactNode,
-  useEffect,
-  useEffectEvent,
-  useState,
-} from "react";
+import { Activity, ReactNode, useEffect, useEffectEvent, useState } from "react";
 
 import useApiClient from "@/shared/hooks/useApiClient";
 import useAuth from "@/shared/hooks/useAuth";
@@ -57,9 +51,5 @@ export default function AuthGuard({
     void onAuthChange();
   }, [isLoading, isLoggedIn]);
 
-  return (
-    <Activity mode={isAuthenticated ? "visible" : "hidden"}>
-      {children}
-    </Activity>
-  );
+  return <Activity mode={isAuthenticated ? "visible" : "hidden"}>{children}</Activity>;
 }

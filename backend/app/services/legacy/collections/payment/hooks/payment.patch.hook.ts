@@ -8,10 +8,7 @@ export class PaymentPatchHook extends Hook {
   private paymentDibsHandler: PaymentDibsHandler;
   private paymentValidator: PaymentValidator;
 
-  constructor(
-    paymentDibsHandler?: PaymentDibsHandler,
-    paymentValidator?: PaymentValidator,
-  ) {
+  constructor(paymentDibsHandler?: PaymentDibsHandler, paymentValidator?: PaymentValidator) {
     super();
     this.paymentDibsHandler = paymentDibsHandler ?? new PaymentDibsHandler();
     this.paymentValidator = paymentValidator ?? new PaymentValidator();
@@ -47,9 +44,7 @@ export class PaymentPatchHook extends Hook {
         return this.paymentDibsHandler.handleDibsPayment(payment);
       }
       default: {
-        return Promise.reject(
-          new BlError(`payment.method "${payment.method}" not supported`),
-        );
+        return Promise.reject(new BlError(`payment.method "${payment.method}" not supported`));
       }
     }
   }

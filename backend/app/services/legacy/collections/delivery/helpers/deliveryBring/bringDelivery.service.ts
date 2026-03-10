@@ -32,9 +32,7 @@ export class BringDeliveryService {
     freeDelivery: boolean,
   ): Promise<DeliveryInfoBring> {
     if (isNullish(facilityAddress) || isNullish(shipmentAddress)) {
-      throw new BlError(
-        "required fields facilityAddress or shipmentAddress are null or undefined",
-      );
+      throw new BlError("required fields facilityAddress or shipmentAddress are null or undefined");
     }
     if (!items || items.length <= 0) {
       throw new BlError("items is empty or undefined");
@@ -71,9 +69,7 @@ export class BringDeliveryService {
       return {
         amount: 0,
         taxAmount: 0,
-        estimatedDelivery: moment()
-          .add(APP_CONFIG.delivery.deliveryDays, "days")
-          .toDate(),
+        estimatedDelivery: moment().add(APP_CONFIG.delivery.deliveryDays, "days").toDate(),
         facilityAddress,
         shipmentAddress,
         from: facilityAddress.postalCode,
@@ -107,9 +103,10 @@ export class BringDeliveryService {
             }
 
             return reject(
-              new BlError(
-                "unkown error, could not parse the data from bring api",
-              ).store("error", error),
+              new BlError("unkown error, could not parse the data from bring api").store(
+                "error",
+                error,
+              ),
             );
           }
 
@@ -165,7 +162,6 @@ export class BringDeliveryService {
   private getDeliveryInfoBringFromBringResponse(
     facilityAddress: FacilityAddress,
     shipmentAddress: ShipmentAddress,
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     responseData: any,
     product: string,
   ): DeliveryInfoBring {
@@ -182,10 +178,7 @@ export class BringDeliveryService {
 
     if (
       !responseData["consignments"] ||
-      !Array.isArray(
-        responseData["consignments"] ||
-          responseData["consignments"].length === 0,
-      )
+      !Array.isArray(responseData["consignments"] || responseData["consignments"].length === 0)
     ) {
       throw new BlError("no consignments provided in response from bringApi");
     }
@@ -222,15 +215,10 @@ export class BringDeliveryService {
     product,
   ): DeliveryInfoBring {
     const priceInfo = product["price"]["listPrice"];
-    const priceWithoutAdditionalService =
-      priceInfo["priceWithoutAdditionalServices"];
+    const priceWithoutAdditionalService = priceInfo["priceWithoutAdditionalServices"];
     if (priceWithoutAdditionalService) {
-      deliveryInfoBring.amount = Number.parseInt(
-        priceWithoutAdditionalService["amountWithVAT"],
-      );
-      deliveryInfoBring.taxAmount = Number.parseInt(
-        priceWithoutAdditionalService["vat"],
-      );
+      deliveryInfoBring.amount = Number.parseInt(priceWithoutAdditionalService["amountWithVAT"]);
+      deliveryInfoBring.taxAmount = Number.parseInt(priceWithoutAdditionalService["vat"]);
     }
 
     const expectedDelivery = product["expectedDelivery"];
@@ -238,10 +226,7 @@ export class BringDeliveryService {
       const workingDays = expectedDelivery["workingDays"];
       if (workingDays) {
         deliveryInfoBring.estimatedDelivery = moment()
-          .add(
-            Number.parseInt(workingDays) + APP_CONFIG.delivery.deliveryDays,
-            "days",
-          )
+          .add(Number.parseInt(workingDays) + APP_CONFIG.delivery.deliveryDays, "days")
           .toDate();
       }
     }

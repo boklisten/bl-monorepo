@@ -20,8 +20,7 @@ export class CustomerItemActiveBlid {
       { fieldName: "blid", type: "string" },
     ]);
 
-    const customerItems =
-      await StorageService.CustomerItems.getByQuery(databaseQuery);
+    const customerItems = await StorageService.CustomerItems.getByQuery(databaseQuery);
 
     const activeCustomerItems = customerItems.filter((customerItem) =>
       this.customerItemActive.isActive(customerItem),

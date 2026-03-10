@@ -51,14 +51,11 @@ async function createMatchReceiveOrder(
   if (!originalReceiverOrderInfo) {
     throw new BlError("No receiver order for match transfer item").code(200);
   }
-  const branch = await StorageService.Branches.get(
-    originalReceiverOrderInfo.order.branch,
-  );
+  const branch = await StorageService.Branches.get(originalReceiverOrderInfo.order.branch);
 
   const movedFromOrder = originalReceiverOrderInfo.order.id;
 
-  const originalOrderDeadline =
-    originalReceiverOrderInfo.relevantOrderItem.info?.to;
+  const originalOrderDeadline = originalReceiverOrderInfo.relevantOrderItem.info?.to;
   const branchRentDeadline = branch.paymentInfo?.rentPeriods?.[0]?.date;
 
   let deadline = originalOrderDeadline ?? branchRentDeadline;
@@ -113,9 +110,7 @@ async function createMatchDeliverOrder(
   if (isNullish(customerItem.handoutInfo)) {
     throw new BlError("No handout-info for customerItem").code(200);
   }
-  const branch = await StorageService.Branches.get(
-    customerItem.handoutInfo.handoutById,
-  );
+  const branch = await StorageService.Branches.get(customerItem.handoutInfo.handoutById);
 
   return {
     placed: true,
@@ -141,16 +136,12 @@ async function createMatchDeliverOrder(
 
 const wrongSenderFeedback = `Boken du skannet tilhørte en annen elev enn den som ga deg den. Du skal beholde den, men eleven som ga deg boken er fortsatt ansvarlig for at den opprinnelige boken blir levert.`;
 
-export async function transfer(
-  detailsId: string,
-  { blid }: Infer<typeof matchTransferSchema>,
-) {
+export async function transfer(detailsId: string, { blid }: Infer<typeof matchTransferSchema>) {
   let userFeedback;
 
   if (!isValidBlid(blid)) {
     return {
-      feedback:
-        "Feil strekkode. Bruk bokas unike ID. Se instruksjoner for hjelp",
+      feedback: "Feil strekkode. Bruk bokas unike ID. Se instruksjoner for hjelp",
     };
   }
 
@@ -163,26 +154,18 @@ export async function transfer(
     });
   if (!customerItem || blidNotActiveError) {
     return {
-      feedback:
-        "Boka du har skannet er ikke aktiv. Vennligst lever den på stand",
+      feedback: "Boka du har skannet er ikke aktiv. Vennligst lever den på stand",
     };
   }
 
-  const foundReceiverUserMatch = await findReceiverUserMatch(
-    detailsId,
-    customerItem,
-  );
+  const foundReceiverUserMatch = await findReceiverUserMatch(detailsId, customerItem);
   if (!foundReceiverUserMatch.success) {
     return { feedback: foundReceiverUserMatch.feedback };
   }
   const { receiverUserMatch } = foundReceiverUserMatch;
-  const { senderStandMatch, senderUserMatch } =
-    await findSenderMatch(customerItem);
+  const { senderStandMatch, senderUserMatch } = await findSenderMatch(customerItem);
 
-  if (
-    isNullish(senderUserMatch) ||
-    receiverUserMatch.id !== senderUserMatch.id
-  ) {
+  if (isNullish(senderUserMatch) || receiverUserMatch.id !== senderUserMatch.id) {
     userFeedback = wrongSenderFeedback;
   }
 
@@ -194,9 +177,7 @@ export async function transfer(
   }
 
   const orderActive = new OrderActive();
-  const originalReceiverOrderInfo = (
-    await orderActive.getActiveOrders(detailsId)
-  )
+  const originalReceiverOrderInfo = (await orderActive.getActiveOrders(detailsId))
     .map((order) => ({
       order,
       relevantOrderItem: order.orderItems.find(
@@ -210,8 +191,7 @@ export async function transfer(
 
   if (!originalReceiverOrderInfo) {
     return {
-      feedback:
-        "Du har ingen aktiv bestilling for denne boka. Ta kontakt med stand for spørsmål.",
+      feedback: "Du har ingen aktiv bestilling for denne boka. Ta kontakt med stand for spørsmål.",
     };
   }
 
@@ -273,13 +253,8 @@ async function updateSenderMatches(
 async function findReceiverUserMatch(
   receiverUserDetailId: string,
   customerItem: CustomerItem,
-): Promise<
-  | { success: true; receiverUserMatch: UserMatch }
-  | { success: false; feedback: string }
-> {
-  const receiverUserMatch = (
-    await getUserMatchesForCustomer(receiverUserDetailId)
-  ).find(
+): Promise<{ success: true; receiverUserMatch: UserMatch } | { success: false; feedback: string }> {
+  const receiverUserMatch = (await getUserMatchesForCustomer(receiverUserDetailId)).find(
     (userMatch) =>
       (userMatch.customerA === receiverUserDetailId &&
         userMatch.expectedBToAItems.includes(customerItem.item)) ||
@@ -308,8 +283,7 @@ async function findReceiverUserMatch(
     receivedBlIds.map(async (blId) => {
       const uniqueItemQuery = new SEDbQuery();
       uniqueItemQuery.stringFilters = [{ fieldName: "blid", value: blId }];
-      return (await StorageService.UniqueItems.getByQuery(uniqueItemQuery))[0]
-        ?.item;
+      return (await StorageService.UniqueItems.getByQuery(uniqueItemQuery))[0]?.item;
     }),
   );
 
@@ -323,9 +297,7 @@ async function findSenderMatch(customerItem: CustomerItem): Promise<{
   senderUserMatch: UserMatch | undefined;
   senderStandMatch: StandMatch | undefined;
 }> {
-  const senderUserMatches = await getUserMatchesForCustomer(
-    customerItem.customer,
-  );
+  const senderUserMatches = await getUserMatchesForCustomer(customerItem.customer);
   const senderUserMatch = senderUserMatches.find(
     (userMatch) =>
       (userMatch.customerB === customerItem.customer &&
@@ -334,13 +306,12 @@ async function findSenderMatch(customerItem: CustomerItem): Promise<{
         userMatch.expectedAToBItems.includes(customerItem.item)),
   );
 
-  const potentialSenderStandMatch = await getStandMatchForCustomer(
-    customerItem.customer,
-  );
-  const senderStandMatch =
-    potentialSenderStandMatch?.expectedHandoffItems.includes(customerItem.item)
-      ? potentialSenderStandMatch
-      : undefined;
+  const potentialSenderStandMatch = await getStandMatchForCustomer(customerItem.customer);
+  const senderStandMatch = potentialSenderStandMatch?.expectedHandoffItems.includes(
+    customerItem.item,
+  )
+    ? potentialSenderStandMatch
+    : undefined;
   return { senderUserMatch, senderStandMatch };
 }
 
@@ -348,10 +319,7 @@ async function placeReceiverOrder(
   customerItem: CustomerItem,
   receiverUserDetailId: string,
 ): Promise<Order> {
-  const receiverOrder = await createMatchReceiveOrder(
-    customerItem,
-    receiverUserDetailId,
-  );
+  const receiverOrder = await createMatchReceiveOrder(customerItem, receiverUserDetailId);
 
   const placedReceiverOrder = await StorageService.Orders.add(receiverOrder);
 
@@ -362,19 +330,16 @@ async function placeReceiverOrder(
   return placedReceiverOrder;
 }
 
-async function recordReceiverCustomerItem(
-  placedReceiverOrder: Order,
-): Promise<void> {
-  const [generatedReceiverCustomerItem] =
-    await new OrderToCustomerItemGenerator().generate(placedReceiverOrder);
+async function recordReceiverCustomerItem(placedReceiverOrder: Order): Promise<void> {
+  const [generatedReceiverCustomerItem] = await new OrderToCustomerItemGenerator().generate(
+    placedReceiverOrder,
+  );
 
   if (generatedReceiverCustomerItem === undefined) {
     throw new BlError("Failed to create new customer items");
   }
 
-  const addedCustomerItem = await StorageService.CustomerItems.add(
-    generatedReceiverCustomerItem,
-  );
+  const addedCustomerItem = await StorageService.CustomerItems.add(generatedReceiverCustomerItem);
 
   await StorageService.Orders.update(placedReceiverOrder.id, {
     orderItems: placedReceiverOrder.orderItems.map((orderItem) => ({
@@ -384,13 +349,8 @@ async function recordReceiverCustomerItem(
   });
 }
 
-async function returnSenderCustomerItem(
-  customerItem: CustomerItem,
-): Promise<void> {
-  const senderOrder = await createMatchDeliverOrder(
-    customerItem,
-    customerItem.customer,
-  );
+async function returnSenderCustomerItem(customerItem: CustomerItem): Promise<void> {
+  const senderOrder = await createMatchDeliverOrder(customerItem, customerItem.customer);
 
   const placedSenderOrder = await StorageService.Orders.add(senderOrder);
   await new OrderValidator().validate(placedSenderOrder, false);
@@ -400,24 +360,17 @@ async function returnSenderCustomerItem(
   });
 }
 
-async function getUserMatchesForCustomer(
-  customer: string,
-): Promise<UserMatch[]> {
+async function getUserMatchesForCustomer(customer: string): Promise<UserMatch[]> {
   return (await StorageService.UserMatches.aggregate([
     {
       $match: {
-        $or: [
-          { customerA: new ObjectId(customer) },
-          { customerB: new ObjectId(customer) },
-        ],
+        $or: [{ customerA: new ObjectId(customer) }, { customerB: new ObjectId(customer) }],
       },
     },
   ])) as UserMatch[];
 }
 
-async function getStandMatchForCustomer(
-  customer: string,
-): Promise<StandMatch | undefined> {
+async function getStandMatchForCustomer(customer: string): Promise<StandMatch | undefined> {
   const standMatches = (await StorageService.StandMatches.aggregate([
     {
       $match: {

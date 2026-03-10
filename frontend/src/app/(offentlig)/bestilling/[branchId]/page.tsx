@@ -6,19 +6,13 @@ import { publicApiClient } from "@/shared/utils/publicApiClient";
 
 export const metadata: Metadata = {
   title: "Bestill bøker",
-  description:
-    "Velg hvilken skole og hvilke fag du tar, så finner vi bøkene du trenger for deg!",
+  description: "Velg hvilken skole og hvilke fag du tar, så finner vi bøkene du trenger for deg!",
 };
 
-export default async function SelectSubjectsPage({
-  params,
-}: PageProps<"/bestilling/[branchId]">) {
+export default async function SelectSubjectsPage({ params }: PageProps<"/bestilling/[branchId]">) {
   "use cache";
   const { branchId } = await params;
-  const cachedSubjects = await publicApiClient
-    .subjects({ branchId })
-    .$get()
-    .unwrap();
+  const cachedSubjects = await publicApiClient.subjects({ branchId }).$get().unwrap();
 
   return (
     <Container size={"md"}>

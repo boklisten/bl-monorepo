@@ -9,10 +9,7 @@ export class MongooseModelCreator<T> {
   ) {}
 
   create(): Model<T> {
-    return mongoose.model(
-      this.schemaName,
-      this.standardizeSchema(this.schema),
-    ) as Model<T>;
+    return mongoose.model(this.schemaName, this.standardizeSchema(this.schema)) as Model<T>;
   }
 
   private standardizeSchema(schema: Schema): Schema {
@@ -55,10 +52,7 @@ export class MongooseModelCreator<T> {
     return schema;
   }
 
-  public static transformObject(
-    document_: unknown,
-    returnValue?: unknown,
-  ): void {
+  public static transformObject(document_: unknown, returnValue?: unknown): void {
     // Mongoose isn't sure which parameter to use, so try both :/
     if (!returnValue && document_) returnValue = document_;
     if (!returnValue) return;
@@ -67,8 +61,7 @@ export class MongooseModelCreator<T> {
       const document = returnValue as Record<string, unknown>;
       // Translate _id to id only if id does not already exist
       // (embedded documents such as BlDocument.user may have an id field which is different from the _id field)
-      if ("_id" in document && !("id" in document))
-        document["id"] = document["_id"];
+      if ("_id" in document && !("id" in document)) document["id"] = document["_id"];
       delete document["_id"];
       delete document["__v"];
       for (const key of Object.keys(document)) {

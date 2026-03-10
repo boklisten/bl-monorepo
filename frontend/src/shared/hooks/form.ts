@@ -31,8 +31,7 @@ import SelectItemsField from "@/shared/components/form/fields/complex/SelectItem
 import SelectPermissionField from "@/shared/components/form/fields/complex/SelectPermissionField";
 import SignatureCanvasField from "@/shared/components/form/fields/complex/SignatureCanvasField";
 
-const { fieldContext, formContext, useFieldContext, useFormContext } =
-  createFormHookContexts();
+const { fieldContext, formContext, useFieldContext, useFormContext } = createFormHookContexts();
 
 const { useAppForm, withFieldGroup } = createFormHook({
   fieldComponents: {

@@ -112,8 +112,7 @@ test.group("OrderPostHook", (group) => {
   });
 
   test("should resolve if requestBody is valid", async () => {
-    return expect(orderHookBefore.validate({ valid: true })).to.eventually.be
-      .fulfilled;
+    return expect(orderHookBefore.validate({ valid: true })).to.eventually.be.fulfilled;
   });
   test("should reject if accessToken is empty or undefined", async () => {
     orderPostHook.after([testOrder]).catch((blError: BlError) => {
@@ -127,29 +126,26 @@ test.group("OrderPostHook", (group) => {
     orderValidated = false;
 
     testOrder.id = "order1";
-    return expect(
-      orderPostHook.after([testOrder], testAccessToken),
-    ).to.eventually.be.rejectedWith(BlError, /not a valid order/);
+    return expect(orderPostHook.after([testOrder], testAccessToken)).to.eventually.be.rejectedWith(
+      BlError,
+      /not a valid order/,
+    );
   });
 
   test("should resolve with testOrder when orderValidator.validate is resolved", async () => {
     orderValidated = true;
     testOrder.id = "order1";
 
-    orderPostHook
-      .after([testOrder], testAccessToken)
-      .then((orders: Order[]) => {
-        expect(orders.length).to.be.eql(1);
-        return expect(orders[0]).to.eql(testOrder);
-      });
+    orderPostHook.after([testOrder], testAccessToken).then((orders: Order[]) => {
+      expect(orders.length).to.be.eql(1);
+      return expect(orders[0]).to.eql(testOrder);
+    });
   });
 
   test("should reject if order.placed is set to true", async () => {
     testOrder.placed = true;
 
-    return expect(
-      orderPostHook.after([testOrder], testAccessToken),
-    ).to.be.rejectedWith(
+    return expect(orderPostHook.after([testOrder], testAccessToken)).to.be.rejectedWith(
       BlError,
       /order.placed is set to true on post of order/,
     );

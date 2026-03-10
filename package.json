@@ -4,35 +4,21 @@
   "type": "module",
   "scripts": {
     "ace": "pnpm -F backend exec node ace",
-    "prettier": "prettier --write --log-level warn '**/*.{js,mjs,ts,tsx,md,json,yml,css}' --ignore-path=.gitignore",
-    "prettier:check": "prettier --check '**/*.{js,mjs,ts,tsx,md,json,yml,css}' --ignore-path=.gitignore",
-    "lint": "eslint . --ignore-pattern '**/dist/*' --ignore-pattern '**/build/*' --ignore-pattern '**/.next/*' --ignore-pattern 'frontend/next-env.d.ts' --ignore-pattern 'backend/.adonisjs/*' --ignore-pattern 'backend/ace.js'",
-    "lint:fix": "pnpm lint --fix",
+    "format": "oxfmt",
+    "format:check": "oxfmt --check",
+    "lint": "oxlint",
+    "lint:fix": "oxlint --fix",
     "typecheck": "pnpm -r typecheck",
-    "fix": "pnpm -wr '/^(lint:fix|typecheck)$/' && pnpm prettier",
+    "fix": "pnpm -wr '/^(lint:fix|typecheck)$/' && pnpm format",
     "test": "pnpm -r test",
     "dev": "pnpm -r --parallel dev",
     "start": "pnpm -F backend build && (pnpm -F backend start & pnpm -F frontend build && pnpm -F frontend start)"
   },
   "devDependencies": {
-    "@eslint/js": "^9.39.2",
-    "@next/eslint-plugin-next": "^16.1.6",
-    "@tanstack/eslint-plugin-query": "^5.91.4",
     "@tsconfig/strictest": "^2.0.8",
     "@types/node": "^25.3.5",
-    "@typescript-eslint/parser": "^8.56.1",
-    "eslint": "9.39.2",
-    "eslint-config-prettier": "^10.1.8",
-    "eslint-import-resolver-typescript": "^4.4.4",
-    "eslint-plugin-boundaries": "^5.4.0",
-    "eslint-plugin-chai-friendly": "^1.1.0",
-    "eslint-plugin-import-x": "^4.16.1",
-    "eslint-plugin-jsx-a11y": "^6.10.2",
-    "eslint-plugin-no-relative-import-paths": "^1.6.1",
-    "eslint-plugin-react": "^7.37.5",
-    "eslint-plugin-react-hooks": "^7.0.1",
-    "prettier": "^3.8.1",
-    "typescript": "^5.9.3",
-    "typescript-eslint": "^8.56.1"
+    "oxfmt": "^0.37.0",
+    "oxlint": "^1.52.0",
+    "typescript": "^5.9.3"
   }
 }

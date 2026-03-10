@@ -56,8 +56,7 @@ export default function SelectBranchTreeView({
             leftSection={
               <Activity
                 mode={
-                  (hasChildren && !onlyLeafs) ||
-                  (hasChildren && onlyLeafs && expanded)
+                  (hasChildren && !onlyLeafs) || (hasChildren && onlyLeafs && expanded)
                     ? "visible"
                     : "hidden"
                 }

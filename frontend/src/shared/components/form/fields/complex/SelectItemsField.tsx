@@ -22,16 +22,8 @@ export default function SelectItemsField(props: MultiSelectProps) {
       data={items?.map((item) => ({ label: item.title, value: item.id })) ?? []}
       filter={({ options, search }) => {
         return (options as ComboboxItem[]).filter((option) => {
-          if (
-            option.label
-              .toLowerCase()
-              .trim()
-              .includes(search.toLowerCase().trim())
-          )
-            return true;
-          const isbn = items
-            ?.find((item) => item.id === option.value)
-            ?.info.isbn.toString();
+          if (option.label.toLowerCase().trim().includes(search.toLowerCase().trim())) return true;
+          const isbn = items?.find((item) => item.id === option.value)?.info.isbn.toString();
           return isbn?.includes(search.trim()) ?? false;
         });
       }}

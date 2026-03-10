@@ -7,11 +7,7 @@ import { decodeToken } from "react-jwt";
 import NextAnchor from "@/shared/components/NextAnchor";
 import BL_CONFIG from "@/shared/utils/bl-config";
 
-const OtherPersonContact = ({
-  userMatch,
-}: {
-  userMatch: UserMatchWithDetails;
-}) => {
+const OtherPersonContact = ({ userMatch }: { userMatch: UserMatchWithDetails }) => {
   const decodedAccessToken = decodeToken<AccessToken>(
     localStorage.getItem(BL_CONFIG.token.accessToken) ?? "",
   );
@@ -35,9 +31,7 @@ const OtherPersonContact = ({
 
 function formatPhoneNumber(number: string): string {
   if (/\d{8}/.exec(number) !== null) {
-    return (
-      number.slice(0, 3) + " " + number.slice(3, 5) + " " + number.slice(5, 8)
-    );
+    return number.slice(0, 3) + " " + number.slice(3, 5) + " " + number.slice(5, 8);
   }
   if (/\d{10}/.exec(number) !== null) {
     return (

@@ -66,8 +66,7 @@ export default function Reminders() {
           smsText: formData.smsText,
         })
         .unwrap(),
-    onError: () =>
-      showErrorNotification("Klarte ikke beregne antall mottakere"),
+    onError: () => showErrorNotification("Klarte ikke beregne antall mottakere"),
   });
 
   const sendReminderMutation = useMutation({
@@ -93,9 +92,7 @@ export default function Reminders() {
   const form = useAppForm({
     defaultValues,
     onSubmit: async ({ value }) => {
-      const { recipientCount } = await countRecipientsMutation.mutateAsync(
-        form.state.values,
-      );
+      const { recipientCount } = await countRecipientsMutation.mutateAsync(form.state.values);
       if (recipientCount === 0) {
         showInfoNotification("Fant ingen kunder med valgte innstillinger");
         return;
@@ -105,8 +102,7 @@ export default function Reminders() {
         children: (
           <Text size="sm">
             Du er nå i ferd med å sende en påminnelse på{" "}
-            {value.messageMethod === "sms" ? "sms" : "e-post"} til{" "}
-            {recipientCount} kunder.
+            {value.messageMethod === "sms" ? "sms" : "e-post"} til {recipientCount} kunder.
           </Text>
         ),
         labels: { confirm: "Send", cancel: "Avbryt" },
@@ -121,8 +117,7 @@ export default function Reminders() {
       <form.AppField
         name={"branchIds"}
         validators={{
-          onChange: ({ value }) =>
-            value.length === 0 ? "Du må velge minst en filial" : null,
+          onChange: ({ value }) => (value.length === 0 ? "Du må velge minst en filial" : null),
         }}
       >
         {(field) => (
@@ -180,16 +175,13 @@ export default function Reminders() {
       <form.Subscribe selector={(state) => state.values.messageMethod}>
         {(messageMethod) => (
           <>
-            <Activity
-              mode={messageMethod === MessageMethod.SMS ? "visible" : "hidden"}
-            >
+            <Activity mode={messageMethod === MessageMethod.SMS ? "visible" : "hidden"}>
               <form.AppField
                 name={"smsText"}
                 validators={{
                   onChangeListenTo: ["messageMethod"],
                   onChange: ({ value }) =>
-                    form.state.values.messageMethod === "sms" &&
-                    (!value || value.length === 0)
+                    form.state.values.messageMethod === "sms" && (!value || value.length === 0)
                       ? "Du må fylle inn melding"
                       : null,
                 }}
@@ -197,9 +189,7 @@ export default function Reminders() {
                 {(field) => (
                   <field.TextAreaField
                     label={"Melding"}
-                    description={calculateSmsSegmentFeedback(
-                      field.state.value ?? "",
-                    )}
+                    description={calculateSmsSegmentFeedback(field.state.value ?? "")}
                     placeholder={"Hei! [...] Mvh, Boklisten.no"}
                     autosize
                     minRows={2}
@@ -209,11 +199,7 @@ export default function Reminders() {
               </form.AppField>
             </Activity>
 
-            <Activity
-              mode={
-                messageMethod === MessageMethod.EMAIL ? "visible" : "hidden"
-              }
-            >
+            <Activity mode={messageMethod === MessageMethod.EMAIL ? "visible" : "hidden"}>
               <form.AppField
                 name={"emailTemplateId"}
                 validators={{
@@ -238,9 +224,7 @@ export default function Reminders() {
       <Button
         leftSection={<IconSend />}
         onClick={form.handleSubmit}
-        loading={
-          countRecipientsMutation.isPending || sendReminderMutation.isPending
-        }
+        loading={countRecipientsMutation.isPending || sendReminderMutation.isPending}
       >
         Send
       </Button>

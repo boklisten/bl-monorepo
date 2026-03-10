@@ -12,12 +12,7 @@ export const metadata: Metadata = {
 export default async function PupilsPage() {
   "use cache";
   const dataKey = "vgs_elever";
-  const cachedData = await publicApiClient.editable_texts
-    .key({ key: dataKey })
-    .$get()
-    .unwrap();
+  const cachedData = await publicApiClient.editable_texts.key({ key: dataKey }).$get().unwrap();
 
-  return (
-    <EditableTextReadOnly dataKey={dataKey} cachedText={cachedData.text} />
-  );
+  return <EditableTextReadOnly dataKey={dataKey} cachedText={cachedData.text} />;
 }

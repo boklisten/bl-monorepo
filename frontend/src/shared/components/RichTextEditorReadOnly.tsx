@@ -2,11 +2,7 @@ import { RichTextEditor } from "@mantine/tiptap";
 import { useEditor } from "@tiptap/react";
 import { StarterKit } from "@tiptap/starter-kit";
 
-export default function RichTextEditorReadOnly({
-  content,
-}: {
-  content: string;
-}) {
+export default function RichTextEditorReadOnly({ content }: { content: string }) {
   const editor = useEditor({
     immediatelyRender: false,
     editable: false,

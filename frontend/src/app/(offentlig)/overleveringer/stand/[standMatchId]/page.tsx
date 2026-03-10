@@ -7,9 +7,7 @@ export const metadata: Metadata = {
   description: "Overlevering av bøker",
 };
 
-const MatchDetailPage = async ({
-  params,
-}: PageProps<"/overleveringer/stand/[standMatchId]">) => {
+const MatchDetailPage = async ({ params }: PageProps<"/overleveringer/stand/[standMatchId]">) => {
   const { standMatchId } = await params;
   return <MatchDetail standMatchId={standMatchId} />;
 };

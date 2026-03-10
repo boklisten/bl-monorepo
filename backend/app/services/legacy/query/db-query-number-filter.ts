@@ -15,17 +15,10 @@ export class DbQueryNumberFilter {
 
   private equalOperation = "$eq";
 
-  public getNumberFilters(
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    query: any,
-    validNumberParams: string[],
-  ): NumberFilter[] {
+  public getNumberFilters(query: any, validNumberParams: string[]): NumberFilter[] {
     const numberFilters: NumberFilter[] = [];
 
-    if (
-      !query ||
-      (Object.keys(query).length === 0 && query.constructor === Object)
-    )
+    if (!query || (Object.keys(query).length === 0 && query.constructor === Object))
       throw new TypeError("the given query can not be null or undefined");
     if (validNumberParams.length <= 0) return [];
 
@@ -33,14 +26,8 @@ export class DbQueryNumberFilter {
       for (const parameter in query) {
         if (validNumberParams.includes(parameter)) {
           const numberFilter = Array.isArray(query[parameter])
-            ? this.generateNumberFilterForParamWithMultipleValues(
-                parameter,
-                query[parameter],
-              )
-            : this.generateNumberFilterForParamWithSingleValue(
-                parameter,
-                query[parameter],
-              );
+            ? this.generateNumberFilterForParamWithMultipleValues(parameter, query[parameter])
+            : this.generateNumberFilterForParamWithSingleValue(parameter, query[parameter]);
 
           numberFilters.push(numberFilter);
         }
@@ -49,13 +36,9 @@ export class DbQueryNumberFilter {
       return numberFilters;
     } catch (error) {
       if (error instanceof TypeError)
-        throw new TypeError(
-          "query includes bad number data, reason: " + error.message,
-        );
+        throw new TypeError("query includes bad number data, reason: " + error.message);
       if (error instanceof SyntaxError)
-        throw new SyntaxError(
-          "query includes syntax errors, reason: " + error.message,
-        );
+        throw new SyntaxError("query includes syntax errors, reason: " + error.message);
       throw new Error(
         // @ts-expect-error fixme: auto ignored
         "failure when parsing query for number operations" + error.message,
@@ -68,13 +51,10 @@ export class DbQueryNumberFilter {
     value: string,
   ): NumberFilter {
     if (!value)
-      throw new Error(
-        "QueryBuilderNumberFilter.generateNumberFilter(): value is not defined",
-      );
+      throw new Error("QueryBuilderNumberFilter.generateNumberFilter(): value is not defined");
 
     if (this.valueHasOperationIdentifier(value)) {
       const opWithValue = this.getOperationWithValue(value);
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const op: any = {};
 
       op[opWithValue.operation] = opWithValue.value;
@@ -94,7 +74,6 @@ export class DbQueryNumberFilter {
   ): NumberFilter {
     if (values.length <= 0) throw new RangeError("the supplied array is empty");
 
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const op: any = {};
 
     for (const value of values) {
@@ -107,9 +86,7 @@ export class DbQueryNumberFilter {
 
   private validateNumberFilter(numberFilter: NumberFilter) {
     if (numberFilter.op.$eq && (numberFilter.op.$gt || numberFilter.op.$lt))
-      throw new SyntaxError(
-        "numberFilter cannot combine eq operation with other operations",
-      );
+      throw new SyntaxError("numberFilter cannot combine eq operation with other operations");
 
     return numberFilter;
   }

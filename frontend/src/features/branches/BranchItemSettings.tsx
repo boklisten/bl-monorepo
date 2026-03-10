@@ -11,18 +11,15 @@ import InfoAlert from "@/shared/components/alerts/InfoAlert";
 import { useAppForm } from "@/shared/hooks/form";
 import useApiClient from "@/shared/hooks/useApiClient";
 import { PLEASE_TRY_AGAIN_TEXT } from "@/shared/utils/constants";
-import {
-  showErrorNotification,
-  showSuccessNotification,
-} from "@/shared/utils/notifications";
+import { showErrorNotification, showSuccessNotification } from "@/shared/utils/notifications";
 
 export default function BranchItemSettings({ branchId }: { branchId: string }) {
   const client = useApiClient();
   const queryClient = useQueryClient();
   const {
     data: branchItems,
-    isLoading: isLoading,
-    isError: isError,
+    isLoading,
+    isError,
   } = useQuery({
     queryKey: [client.branch_items({ branchId }).$url(), branchId],
     queryFn: () => client.branch_items({ branchId }).$get().unwrap(),
@@ -39,9 +36,7 @@ export default function BranchItemSettings({ branchId }: { branchId: string }) {
       }),
   });
 
-  const subjects = new Set(
-    branchItems?.flatMap((branchItem) => branchItem.subjects) ?? [],
-  )
+  const subjects = new Set(branchItems?.flatMap((branchItem) => branchItem.subjects) ?? [])
     .values()
     .toArray()
     .filter((v) => v !== undefined)
@@ -75,18 +70,12 @@ export default function BranchItemSettings({ branchId }: { branchId: string }) {
                     modals.close(modalId);
                     const newBranchItems = branchItems;
                     for (const branchItem of form.state.values.branchItems) {
-                      if (
-                        newBranchItems.some(
-                          (nbi) => nbi.item.id === branchItem.item.id,
-                        )
-                      )
+                      if (newBranchItems.some((nbi) => nbi.item.id === branchItem.item.id))
                         continue;
 
                       newBranchItems.push(branchItem);
                     }
-                    newBranchItems.sort((a, b) =>
-                      a.item.title.localeCompare(b.item.title),
-                    );
+                    newBranchItems.sort((a, b) => a.item.title.localeCompare(b.item.title));
                     form.setFieldValue("branchItems", newBranchItems);
                   }}
                 />
@@ -96,11 +85,7 @@ export default function BranchItemSettings({ branchId }: { branchId: string }) {
         >
           Legg til
         </Button>
-        <Button
-          bg={"green"}
-          onClick={form.handleSubmit}
-          loading={saveMutation.isPending}
-        >
+        <Button bg={"green"} onClick={form.handleSubmit} loading={saveMutation.isPending}>
           Lagre
         </Button>
       </Group>
@@ -111,13 +96,7 @@ export default function BranchItemSettings({ branchId }: { branchId: string }) {
         <Skeleton height={280} />
         <Skeleton height={280} />
       </Activity>
-      <Activity
-        mode={
-          !isLoading && (isError || branchItems == undefined)
-            ? "visible"
-            : "hidden"
-        }
-      >
+      <Activity mode={!isLoading && (isError || branchItems == undefined) ? "visible" : "hidden"}>
         <ErrorAlert title={"Klarte ikke laste inn åpningstider"}>
           {PLEASE_TRY_AGAIN_TEXT}
         </ErrorAlert>
@@ -142,9 +121,7 @@ export default function BranchItemSettings({ branchId }: { branchId: string }) {
                     bg={"red"}
                     onClick={() =>
                       field.setValue(
-                        field.state.value.filter(
-                          (v) => v.item.id !== branchItem.item.id,
-                        ),
+                        field.state.value.filter((v) => v.item.id !== branchItem.item.id),
                       )
                     }
                   >
@@ -158,9 +135,7 @@ export default function BranchItemSettings({ branchId }: { branchId: string }) {
                       {(subField) => <subField.SwitchField label={"Leie"} />}
                     </form.AppField>
                     <form.AppField name={`branchItems[${i}].partlyPayment`}>
-                      {(subField) => (
-                        <subField.SwitchField label={"Delbetaling"} />
-                      )}
+                      {(subField) => <subField.SwitchField label={"Delbetaling"} />}
                     </form.AppField>
                     <form.AppField name={`branchItems[${i}].buy`}>
                       {(subField) => <subField.SwitchField label={"Salg"} />}
@@ -171,12 +146,8 @@ export default function BranchItemSettings({ branchId }: { branchId: string }) {
                     <form.AppField name={`branchItems[${i}].rentAtBranch`}>
                       {(subField) => <subField.SwitchField label={"Leie"} />}
                     </form.AppField>
-                    <form.AppField
-                      name={`branchItems[${i}].partlyPaymentAtBranch`}
-                    >
-                      {(subField) => (
-                        <subField.SwitchField label={"Delbetaling"} />
-                      )}
+                    <form.AppField name={`branchItems[${i}].partlyPaymentAtBranch`}>
+                      {(subField) => <subField.SwitchField label={"Delbetaling"} />}
                     </form.AppField>
                     <form.AppField name={`branchItems[${i}].buyAtBranch`}>
                       {(subField) => <subField.SwitchField label={"Salg"} />}
@@ -185,11 +156,7 @@ export default function BranchItemSettings({ branchId }: { branchId: string }) {
                 </Group>
                 <form.AppField name={`branchItems[${i}].subjects`}>
                   {(subField) => (
-                    <subField.TagsField
-                      label={"Fag"}
-                      placeholder={"Velg fag"}
-                      data={subjects}
-                    />
+                    <subField.TagsField label={"Fag"} placeholder={"Velg fag"} data={subjects} />
                   )}
                 </form.AppField>
               </Stack>

@@ -19,10 +19,7 @@ should();
 test.group("DeliveryPostHook", (group) => {
   const deliveryValidator = new DeliveryValidator();
   const deliveryHandler = new DeliveryHandler();
-  const deliveryPostHook = new DeliveryPostHook(
-    deliveryValidator,
-    deliveryHandler,
-  );
+  const deliveryPostHook = new DeliveryPostHook(deliveryValidator, deliveryHandler);
 
   let testDelivery: Delivery;
   let testOrder: Order;
@@ -138,34 +135,32 @@ test.group("DeliveryPostHook", (group) => {
 
   test("should reject if deliveryIds is empty or undefined", async () => {
     deliveryPostHook.after([]).catch((blError) => {
-      return expect(blError.getMsg()).to.contain(
-        "deliveries is empty or undefined",
-      );
+      return expect(blError.getMsg()).to.contain("deliveries is empty or undefined");
     });
   });
 
   test("should reject if delivery.order is not found", async () => {
     testDelivery.order = "notFoundOrder";
 
-    deliveryPostHook
-      .after([testDelivery], testAccessToken)
-      .catch((blError: BlError) => {
-        expect(blError.getCode()).to.be.eql(702);
+    deliveryPostHook.after([testDelivery], testAccessToken).catch((blError: BlError) => {
+      expect(blError.getCode()).to.be.eql(702);
 
-        return expect(blError.getMsg()).to.contain(`not found`);
-      });
+      return expect(blError.getMsg()).to.contain(`not found`);
+    });
   });
   test("should reject if deliveryValidator.validate rejects", async () => {
     deliveryValidated = false;
 
-    return expect(
-      deliveryPostHook.after([testDelivery], testAccessToken),
-    ).to.be.rejectedWith(BlError, /delivery could not be validated/);
+    return expect(deliveryPostHook.after([testDelivery], testAccessToken)).to.be.rejectedWith(
+      BlError,
+      /delivery could not be validated/,
+    );
   });
 
   test("should reject if DeliveryHandler.updateOrderBasedOnMethod rejects", async () => {
-    return expect(
-      deliveryPostHook.after([testDelivery], testAccessToken),
-    ).to.be.rejectedWith(BlError, /order could not be updated/);
+    return expect(deliveryPostHook.after([testDelivery], testAccessToken)).to.be.rejectedWith(
+      BlError,
+      /order could not be updated/,
+    );
   });
 });

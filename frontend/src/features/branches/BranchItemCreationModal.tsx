@@ -98,13 +98,9 @@ export function BranchItemCreationModal({
         </Stack>
       </Group>
       <form.AppField name={"subjects"}>
-        {(subField) => (
-          <subField.TagsField label={"Fag"} placeholder={"Velg fag"} />
-        )}
+        {(subField) => <subField.TagsField label={"Fag"} placeholder={"Velg fag"} />}
       </form.AppField>
-      <form.AppField name={"items"}>
-        {(field) => <field.SelectItemsField />}
-      </form.AppField>
+      <form.AppField name={"items"}>{(field) => <field.SelectItemsField />}</form.AppField>
       <Group justify={"right"} mt={"md"}>
         <Button variant={"outline"} onClick={() => modals.close(modalId)}>
           Lukk

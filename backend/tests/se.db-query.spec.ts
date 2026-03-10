@@ -33,9 +33,7 @@ test.group("SEDbQuery", async () => {
     assert.deepEqual(dbQuery.getFilter(), result);
   });
 
-  test("should return correct ogFilterObj based on ogFilter array", async ({
-    assert,
-  }) => {
+  test("should return correct ogFilterObj based on ogFilter array", async ({ assert }) => {
     const dbQuery: SEDbQuery = new SEDbQuery();
 
     dbQuery.onlyGetFilters = [
@@ -51,9 +49,7 @@ test.group("SEDbQuery", async () => {
     assert.deepEqual(dbQuery.getOgFilter(), result);
   });
 
-  test("should return correct sortFilter object based on sortFilter array", async ({
-    assert,
-  }) => {
+  test("should return correct sortFilter object based on sortFilter array", async ({ assert }) => {
     const dbQuery: SEDbQuery = new SEDbQuery();
 
     dbQuery.sortFilters = [

@@ -6,23 +6,14 @@ export interface BooleanFilter {
 }
 
 export class DbQueryBooleanFilter {
-  public getBooleanFilters(
-    query: ParsedQs,
-    validBooleanParams: string[],
-  ): BooleanFilter[] {
-    if (
-      !query ||
-      (Object.keys(query).length === 0 && query.constructor === Object)
-    )
+  public getBooleanFilters(query: ParsedQs, validBooleanParams: string[]): BooleanFilter[] {
+    if (!query || (Object.keys(query).length === 0 && query.constructor === Object))
       throw new TypeError("the given query can not be null or undefined");
 
     return this.generateBooleanFilters(query, validBooleanParams);
   }
 
-  private generateBooleanFilters(
-    query: ParsedQs,
-    validBooleanParams: string[],
-  ): BooleanFilter[] {
+  private generateBooleanFilters(query: ParsedQs, validBooleanParams: string[]): BooleanFilter[] {
     const booleanFilters: BooleanFilter[] = [];
 
     for (const parameter in query) {
@@ -33,9 +24,7 @@ export class DbQueryBooleanFilter {
         } else if (query[parameter] === "false") {
           value = false;
         } else {
-          throw new TypeError(
-            'value "' + query[parameter] + '" could not be parsed to boolean',
-          );
+          throw new TypeError('value "' + query[parameter] + '" could not be parsed to boolean');
         }
 
         booleanFilters.push({ fieldName: parameter, value: value });

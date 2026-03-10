@@ -7,12 +7,8 @@ export interface RegexFilter {
 }
 
 export class DbQueryRegexFilter {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   getRegexFilters(query: any, validRegexParams: string[]): RegexFilter[] {
-    if (
-      !query ||
-      (Object.keys(query).length === 0 && query.constructor === Object)
-    ) {
+    if (!query || (Object.keys(query).length === 0 && query.constructor === Object)) {
       throw new TypeError("query can not be undefined or empty");
     }
 
@@ -23,9 +19,7 @@ export class DbQueryRegexFilter {
     searchString = this.sanitizeSearchString(searchString);
 
     if (searchString.length < 3)
-      throw new TypeError(
-        'search string "' + searchString + '" is under 3 chars long',
-      );
+      throw new TypeError('search string "' + searchString + '" is under 3 chars long');
 
     return this.generateRegexFilters(searchString, validRegexParams);
   }
@@ -42,10 +36,7 @@ export class DbQueryRegexFilter {
     return returnString;
   }
 
-  private generateRegexFilters(
-    searchString: string,
-    validRegexParams: string[],
-  ): RegexFilter[] {
+  private generateRegexFilters(searchString: string, validRegexParams: string[]): RegexFilter[] {
     return validRegexParams.map((validRegexParameter) => ({
       fieldName: validRegexParameter,
       op: { $regex: searchString, $options: "imx" },

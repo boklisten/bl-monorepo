@@ -21,12 +21,10 @@ export class OrderValidator {
     orderUserDetailValidator?: OrderUserDetailValidator,
   ) {
     this.orderItemValidator = orderItemValidator ?? new OrderItemValidator();
-    this.orderPlacedValidator =
-      orderPlacedValidator ?? new OrderPlacedValidator();
+    this.orderPlacedValidator = orderPlacedValidator ?? new OrderPlacedValidator();
 
     this.orderFieldValidator = orderFieldValidator ?? new OrderFieldValidator();
-    this.orderUserDetailValidator =
-      orderUserDetailValidator ?? new OrderUserDetailValidator();
+    this.orderUserDetailValidator = orderUserDetailValidator ?? new OrderUserDetailValidator();
   }
 
   public async validate(order: Order, isAdmin: boolean): Promise<boolean> {
@@ -44,9 +42,7 @@ export class OrderValidator {
       if (error instanceof BlError) {
         return Promise.reject(error);
       }
-      return Promise.reject(
-        new BlError("order could not be validated").store("error", error),
-      );
+      return Promise.reject(new BlError("order could not be validated").store("error", error));
     }
     return true;
   }

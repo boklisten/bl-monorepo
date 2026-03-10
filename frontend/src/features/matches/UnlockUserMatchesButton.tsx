@@ -3,16 +3,9 @@ import { IconLockOpen } from "@tabler/icons-react";
 import { useMutation } from "@tanstack/react-query";
 
 import useApiClient from "@/shared/hooks/useApiClient";
-import {
-  showErrorNotification,
-  showSuccessNotification,
-} from "@/shared/utils/notifications";
+import { showErrorNotification, showSuccessNotification } from "@/shared/utils/notifications";
 
-export default function UnlockUserMatchesButton({
-  userDetailId,
-}: {
-  userDetailId: string;
-}) {
+export default function UnlockUserMatchesButton({ userDetailId }: { userDetailId: string }) {
   const client = useApiClient();
   const unlockUserMatchesMutation = useMutation({
     mutationFn: () =>
@@ -21,8 +14,7 @@ export default function UnlockUserMatchesButton({
         userMatchesLocked: false,
       }),
     onSuccess: () => showSuccessNotification("Overleveringene ble låst opp!"),
-    onError: () =>
-      showErrorNotification("Klarte ikke låse opp overleveringene"),
+    onError: () => showErrorNotification("Klarte ikke låse opp overleveringene"),
   });
 
   return (

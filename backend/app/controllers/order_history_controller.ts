@@ -10,9 +10,7 @@ async function toPresent(order: Order) {
   const branch = await StorageService.Branches.getOrNull(order.branch);
   const payments = (
     await Promise.all(
-      (order.payments ?? []).map((payment) =>
-        StorageService.Payments.getOrNull(payment),
-      ),
+      (order.payments ?? []).map((payment) => StorageService.Payments.getOrNull(payment)),
     )
   )
     .filter((payment) => !!payment)
@@ -27,9 +25,7 @@ async function toPresent(order: Order) {
     ...order,
     orderItems: order.orderItems.map((orderItem) => ({
       ...orderItem,
-      typeLabel: TranslationService.translateOrderItemTypePastTense(
-        orderItem.type,
-      ),
+      typeLabel: TranslationService.translateOrderItemTypePastTense(orderItem.type),
     })),
     branchName: branch?.name,
     payments,
@@ -48,13 +44,10 @@ export default class OrderHistoryController {
   async getMyOrders(ctx: HttpContext) {
     const { detailsId } = PermissionService.authenticate(ctx);
     const databaseQuery = new SEDbQuery();
-    databaseQuery.objectIdFilters = [
-      { fieldName: "customer", value: detailsId },
-    ];
+    databaseQuery.objectIdFilters = [{ fieldName: "customer", value: detailsId }];
     databaseQuery.booleanFilters = [{ fieldName: "placed", value: true }];
     databaseQuery.sortFilters = [{ fieldName: "creationTime", direction: -1 }];
-    const orders =
-      (await StorageService.Orders.getByQueryOrNull(databaseQuery)) ?? [];
+    const orders = (await StorageService.Orders.getByQueryOrNull(databaseQuery)) ?? [];
     return await Promise.all(orders.map(async (order) => toPresent(order)));
   }
 }

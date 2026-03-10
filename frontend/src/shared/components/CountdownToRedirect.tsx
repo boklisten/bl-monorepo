@@ -62,8 +62,7 @@ const CountdownToRedirect = ({
   return (
     <Stack>
       <Title order={6} ta={"center"}>
-        Du blir videresendt om {Math.ceil((progress / 100) * seconds)}{" "}
-        sekunder...
+        Du blir videresendt om {Math.ceil((progress / 100) * seconds)} sekunder...
       </Title>
       <Progress value={progress} color={"green"} />
     </Stack>

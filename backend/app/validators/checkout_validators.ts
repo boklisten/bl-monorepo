@@ -51,7 +51,5 @@ const vippsCheckoutSessionSchema = vine.object({
     .nullable(),
 });
 
-export const vippsCheckoutSessionValidator = vine.create(
-  vippsCheckoutSessionSchema,
-);
+export const vippsCheckoutSessionValidator = vine.create(vippsCheckoutSessionSchema);
 export type VippsCheckoutSession = Infer<typeof vippsCheckoutSessionSchema>;

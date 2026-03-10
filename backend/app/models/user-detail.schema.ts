@@ -68,9 +68,7 @@ export const UserDetailSchema: BlSchema<UserDetail> = new Schema({
       type: Boolean,
     },
   },
-  customerItems: [
-    { type: Schema.Types.ObjectId, ref: BlSchemaName.CustomerItems },
-  ],
+  customerItems: [{ type: Schema.Types.ObjectId, ref: BlSchemaName.CustomerItems }],
   orders: [{ type: Schema.Types.ObjectId, ref: BlSchemaName.Orders }],
   signatures: [{ type: Schema.Types.ObjectId, ref: BlSchemaName.Signatures }],
   blid: {

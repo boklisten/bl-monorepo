@@ -47,24 +47,12 @@ test.group("OrderPlaceOperation", (group) => {
     placeOrderStub = sandbox.stub(orderPlacedHandler, "placeOrder");
     getOrderStub = sandbox.stub(StorageService.Orders, "get");
     sandbox.stub(StorageService.CustomerItems, "get");
-    aggregateCustomerItemsStub = sandbox.stub(
-      StorageService.CustomerItems,
-      "aggregate",
-    );
-    getManyCustomerItemsStub = sandbox.stub(
-      StorageService.CustomerItems,
-      "getMany",
-    );
-    generateCustomerItemStub = sandbox.stub(
-      orderToCustomerItemGenerator,
-      "generate",
-    );
+    aggregateCustomerItemsStub = sandbox.stub(StorageService.CustomerItems, "aggregate");
+    getManyCustomerItemsStub = sandbox.stub(StorageService.CustomerItems, "getMany");
+    generateCustomerItemStub = sandbox.stub(orderToCustomerItemGenerator, "generate");
     validateOrderStub = sandbox.stub(orderValidator, "validate");
     getAllUserMatchesStub = sandbox.stub(StorageService.UserMatches, "getAll");
-    getAllStandMatchesStub = sandbox.stub(
-      StorageService.StandMatches,
-      "getAll",
-    );
+    getAllStandMatchesStub = sandbox.stub(StorageService.StandMatches, "getAll");
     getUserDetailStub = sandbox.stub(StorageService.UserDetails, "get");
     getSignatureStub = sandbox.stub(StorageService.Signatures, "get");
   });
@@ -131,9 +119,7 @@ test.group("OrderPlaceOperation", (group) => {
     ).to.eventually.be.rejectedWith(/order "randomOrder" not found/);
   });
 
-  test("should reject if orderPlacedHandler.placeOrder rejects", async ({
-    assert,
-  }) => {
+  test("should reject if orderPlacedHandler.placeOrder rejects", async ({ assert }) => {
     getOrderStub.resolves(validOrder);
     placeOrderStub.rejects(new BlError("order could not be placed"));
     getAllUserMatchesStub.resolves([]);

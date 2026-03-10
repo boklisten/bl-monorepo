@@ -6,24 +6,16 @@ import { Branch } from "#shared/branch";
 import { OpeningHour } from "#shared/opening-hour";
 
 export class OpeningHourHelper {
-  public async getNextAvailableOpeningHour(
-    branch: Branch,
-    after?: Date,
-  ): Promise<OpeningHour> {
+  public async getNextAvailableOpeningHour(branch: Branch, after?: Date): Promise<OpeningHour> {
     if (!branch.openingHours || branch.openingHours.length <= 0) {
       throw new BlError("no opening hours found at branch");
     }
-    const openingHours = await StorageService.OpeningHours.getMany(
-      branch.openingHours,
-    );
+    const openingHours = await StorageService.OpeningHours.getMany(branch.openingHours);
 
     return this.getFirstAvailableOpeningHour(openingHours, after);
   }
 
-  private getFirstAvailableOpeningHour(
-    openingHours: OpeningHour[],
-    after?: Date,
-  ): OpeningHour {
+  private getFirstAvailableOpeningHour(openingHours: OpeningHour[], after?: Date): OpeningHour {
     let firstAvailableOpeningHour;
 
     for (const openingHour of openingHours) {

@@ -1,10 +1,7 @@
 import { defineConfig } from "@adonisjs/core/app";
 
 export default defineConfig({
-  commands: [
-    () => import("@adonisjs/core/commands"),
-    () => import("@tuyau/core/commands"),
-  ],
+  commands: [() => import("@adonisjs/core/commands"), () => import("@tuyau/core/commands")],
   providers: [
     () => import("@adonisjs/core/providers/app_provider"),
     () => import("@adonisjs/core/providers/hash_provider"),

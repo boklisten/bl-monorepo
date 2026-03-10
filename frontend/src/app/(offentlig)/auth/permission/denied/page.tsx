@@ -17,13 +17,11 @@ export default function PermissionDeniedPage() {
       <Stack>
         <Title>Tilgang avslått</Title>
         <ErrorAlert title={"Du har ikke tilgang til å se dette innholdet"}>
-          Du forsøke å logge inn med en annen bruker eller ta kontakt med
-          administrator for spørsmål.
+          Du forsøke å logge inn med en annen bruker eller ta kontakt med administrator for
+          spørsmål.
         </ErrorAlert>
         <AuthLogoutComponent />
-        <NextAnchor href={"/auth/login"}>
-          Tilbake til innloggingssiden
-        </NextAnchor>
+        <NextAnchor href={"/auth/login"}>Tilbake til innloggingssiden</NextAnchor>
       </Stack>
     </Container>
   );

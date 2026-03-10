@@ -60,10 +60,7 @@ async function applyMembershipData(
     matchedUsers: 0,
   };
 
-  async function processMembership(membership: {
-    branch: string;
-    phone: string;
-  }) {
+  async function processMembership(membership: { branch: string; phone: string }) {
     const normalizedPhone = membership.phone.trim().slice(-8);
     const branch = findBranch(membership.branch, childBranches);
     if (!branch) {
@@ -82,18 +79,12 @@ async function applyMembershipData(
     status.matchedUsers += result.matchedCount;
   }
 
-  await Promise.allSettled(
-    membershipData.map((membership) => processMembership(membership)),
-  );
+  await Promise.allSettled(membershipData.map((membership) => processMembership(membership)));
 
   return {
     ...status,
-    unknownBranches: [...status.unknownBranches].sort((a, b) =>
-      a.localeCompare(b),
-    ),
-    unknownRecords: status.unknownRecords.sort((a, b) =>
-      a.branch.localeCompare(b.branch),
-    ),
+    unknownBranches: [...status.unknownBranches].sort((a, b) => a.localeCompare(b)),
+    unknownRecords: status.unknownRecords.sort((a, b) => a.branch.localeCompare(b.branch)),
   };
 }
 
@@ -105,14 +96,11 @@ async function applySubjectChoices(
   const databaseQuery = new SEDbQuery();
   databaseQuery.objectIdFilters = [{ fieldName: "branch", value: branchId }];
   databaseQuery.expandFilters = [{ fieldName: "item" }];
-  const branchItems = (await StorageService.BranchItems.getByQuery(
-    databaseQuery,
-    [{ field: "item", storage: StorageService.Items }],
-  )) as unknown as BranchItemWithRealItem[];
+  const branchItems = (await StorageService.BranchItems.getByQuery(databaseQuery, [
+    { field: "item", storage: StorageService.Items },
+  ])) as unknown as BranchItemWithRealItem[];
   const knownSubjects = Array.from(
-    new Set<string>(
-      branchItems.flatMap((branchItem) => branchItem.categories ?? []),
-    ),
+    new Set<string>(branchItems.flatMap((branchItem) => branchItem.categories ?? [])),
   );
 
   const status = {
@@ -121,23 +109,13 @@ async function applySubjectChoices(
     successfulOrders: 0,
   };
 
-  async function processSubjectChoice({
-    phone,
-    subjects,
-  }: {
-    phone: string;
-    subjects: string[];
-  }) {
+  async function processSubjectChoice({ phone, subjects }: { phone: string; subjects: string[] }) {
     const normalizedPhone = phone.trim().slice(-8);
     const userDetailDatabaseQuery = new SEDbQuery();
-    userDetailDatabaseQuery.stringFilters = [
-      { fieldName: "phone", value: normalizedPhone },
-    ];
+    userDetailDatabaseQuery.stringFilters = [{ fieldName: "phone", value: normalizedPhone }];
     let userDetail: UserDetail;
     try {
-      const [foundDetail] = await StorageService.UserDetails.getByQuery(
-        userDetailDatabaseQuery,
-      );
+      const [foundDetail] = await StorageService.UserDetails.getByQuery(userDetailDatabaseQuery);
       if (isNullish(foundDetail)) {
         status.unknownUsers.push({ phone, subjects });
         return;
@@ -156,9 +134,7 @@ async function applySubjectChoices(
       return false;
     });
     const requestedBranchItems = filteredSubjects.flatMap((subject) =>
-      branchItems.filter((branchItem) =>
-        branchItem.categories?.includes(subject),
-      ),
+      branchItems.filter((branchItem) => branchItem.categories?.includes(subject)),
     );
 
     await StorageService.Orders.add({
@@ -193,12 +169,8 @@ async function applySubjectChoices(
 
   return {
     ...status,
-    unknownSubjects: [...status.unknownSubjects].sort((a, b) =>
-      a.localeCompare(b),
-    ),
-    unknownUsers: status.unknownUsers.sort((a, b) =>
-      a.phone.localeCompare(b.phone),
-    ),
+    unknownSubjects: [...status.unknownSubjects].sort((a, b) => a.localeCompare(b)),
+    unknownUsers: status.unknownUsers.sort((a, b) => a.phone.localeCompare(b.phone)),
   };
 }
 
@@ -206,18 +178,14 @@ export default class BranchUploadController {
   async uploadMemberships(ctx: HttpContext) {
     PermissionService.adminOrFail(ctx);
 
-    const { branchId, membershipData } = await ctx.request.validateUsing(
-      branchMembershipValidator,
-    );
+    const { branchId, membershipData } = await ctx.request.validateUsing(branchMembershipValidator);
     return await applyMembershipData(branchId, membershipData);
   }
 
   async uploadSubjectChoices(ctx: HttpContext) {
     PermissionService.adminOrFail(ctx);
 
-    const { branchId, subjectChoices } = await ctx.request.validateUsing(
-      subjectChoicesValidator,
-    );
+    const { branchId, subjectChoices } = await ctx.request.validateUsing(subjectChoicesValidator);
     return await applySubjectChoices(branchId, subjectChoices);
   }
 }

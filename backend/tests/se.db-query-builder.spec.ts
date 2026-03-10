@@ -13,9 +13,9 @@ test.group("DbQueryBuilder", async () => {
   const dbQueryBuilder = new SEDbQueryBuilder();
 
   test("should throw return empty SeDbQuery object if no query is given", async () => {
-    expect(
-      dbQueryBuilder.getDbQuery({}, [{ fieldName: "name", type: "string" }]),
-    ).to.eql(new SEDbQuery());
+    expect(dbQueryBuilder.getDbQuery({}, [{ fieldName: "name", type: "string" }])).to.eql(
+      new SEDbQuery(),
+    );
   });
 
   test("should return SedbQuery with skip equal to 5", async () => {
@@ -63,17 +63,13 @@ test.group("DbQueryBuilder", async () => {
 
   test("should throw TypeError when a number field is not a number", async () => {
     expect(() => {
-      dbQueryBuilder.getDbQuery({ age: "albert" }, [
-        { fieldName: "age", type: "number" },
-      ]);
+      dbQueryBuilder.getDbQuery({ age: "albert" }, [{ fieldName: "age", type: "number" }]);
     }).to.Throw(TypeError);
   });
 
   test("should throw ReferenceError when a field is not in validQueryParams", async () => {
     expect(() => {
-      dbQueryBuilder.getDbQuery({ og: ["name", "age"] }, [
-        { fieldName: "age", type: "number" },
-      ]);
+      dbQueryBuilder.getDbQuery({ og: ["name", "age"] }, [{ fieldName: "age", type: "number" }]);
     }).to.throw(ReferenceError);
   });
 });

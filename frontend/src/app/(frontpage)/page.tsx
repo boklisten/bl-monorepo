@@ -57,13 +57,7 @@ export default function IndexPage() {
               }
             />
             <Dots />
-            <Stack
-              gap={"xs"}
-              p={"xl"}
-              bd={"10px solid brand"}
-              bdrs={50}
-              w={"100%"}
-            >
+            <Stack gap={"xs"} p={"xl"} bd={"10px solid brand"} bdrs={50} w={"100%"}>
               <Title ta={"center"} order={2}>
                 Hva venter du på?
               </Title>

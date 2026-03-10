@@ -22,8 +22,7 @@ async function updateUserDetailWithBillingDetails(
         name: `${session.billingDetails.firstName} ${session.billingDetails.lastName}`,
         phone: session.billingDetails.phoneNumber.slice(-8),
         email: session.billingDetails.email,
-        address:
-          session.billingDetails.streetAddress ?? existingDetails.address,
+        address: session.billingDetails.streetAddress ?? existingDetails.address,
         postCode: session.billingDetails.postalCode ?? existingDetails.postCode,
         postCity: session.billingDetails.city ?? existingDetails.postCity,
       });
@@ -37,9 +36,7 @@ async function updateUserDetailWithBillingDetails(
 async function createLogistics(order: Order, isDeliveryFree: boolean) {
   const needLogistics = order.orderItems.some(
     (orderItem) =>
-      orderItem.type === "rent" ||
-      orderItem.type === "partly-payment" ||
-      orderItem.type === "buy",
+      orderItem.type === "rent" || orderItem.type === "partly-payment" || orderItem.type === "buy",
   );
   if (!needLogistics) return null;
 
@@ -50,11 +47,9 @@ async function createLogistics(order: Order, isDeliveryFree: boolean) {
     totalWeightInGrams += (isNaN(weightField) ? 1 : weightField) * 1000;
   }
 
-  const needPickupPoint =
-    Math.ceil(totalWeightInGrams) > APP_CONFIG.delivery.maxWeightLetter;
+  const needPickupPoint = Math.ceil(totalWeightInGrams) > APP_CONFIG.delivery.maxWeightLetter;
 
-  const deliveryPrice =
-    Math.ceil((totalWeightInGrams / 1000) * 20) + (needPickupPoint ? 150 : 75);
+  const deliveryPrice = Math.ceil((totalWeightInGrams / 1000) * 20) + (needPickupPoint ? 150 : 75);
 
   const branch = await StorageService.Branches.get(order.branch);
   console.log(branch);
@@ -86,9 +81,7 @@ async function createLogistics(order: Order, isDeliveryFree: boolean) {
                 currency: "NOK",
               },
               brand: "POSTEN",
-              title: needPickupPoint
-                ? "Pakke til hentested"
-                : "Pakke i postkasse",
+              title: needPickupPoint ? "Pakke til hentested" : "Pakke i postkasse",
               description: `Forventet levering om ${APP_CONFIG.delivery.deliveryDays + 2} dager`,
               type: needPickupPoint ? "PICKUP_POINT" : "MAILBOX",
               priority: 1,
@@ -103,54 +96,53 @@ async function createLogistics(order: Order, isDeliveryFree: boolean) {
 export const VippsCheckoutService = {
   async create(order: Order, isDeliveryFree: boolean) {
     const userDetail = await StorageService.UserDetails.get(order.customer);
-    const { token, checkoutFrontendUrl } =
-      await VippsPaymentService.checkout.create({
-        type: "PAYMENT",
-        prefillCustomer: {
-          firstName: userDetail.name.split(" ")[0] ?? null,
-          lastName: userDetail.name.split(" ").slice(1).join(" ") ?? null,
-          email: userDetail.email,
-          phoneNumber: `47${userDetail.phone}`,
-          streetAddress: userDetail.address ?? null,
-          city: userDetail.postCity ?? null,
-          postalCode: userDetail.postCode ?? null,
-          country: "NO",
+    const { token, checkoutFrontendUrl } = await VippsPaymentService.checkout.create({
+      type: "PAYMENT",
+      prefillCustomer: {
+        firstName: userDetail.name.split(" ")[0] ?? null,
+        lastName: userDetail.name.split(" ").slice(1).join(" ") ?? null,
+        email: userDetail.email,
+        phoneNumber: `47${userDetail.phone}`,
+        streetAddress: userDetail.address ?? null,
+        city: userDetail.postCity ?? null,
+        postalCode: userDetail.postCode ?? null,
+        country: "NO",
+      },
+      merchantInfo: {
+        callbackUrl: `https://${env.get("API_ENV") === "production" ? "" : "staging."}api.boklisten.no/checkout/vipps/callback`,
+        returnUrl: `${env.get("CLIENT_URI")}kasse/betaling/status?orderId=${order.id}`,
+        callbackAuthorizationToken: VippsPaymentService.token.issue(),
+        termsAndConditionsUrl: `${env.get("CLIENT_URI")}info/policies/conditions`,
+      },
+      transaction: {
+        reference: order.id,
+        amount: {
+          currency: "NOK",
+          value: order.amount * 100,
         },
-        merchantInfo: {
-          callbackUrl: `https://${env.get("API_ENV") === "production" ? "" : "staging."}api.boklisten.no/checkout/vipps/callback`,
-          returnUrl: `${env.get("CLIENT_URI")}kasse/betaling/status?orderId=${order.id}`,
-          callbackAuthorizationToken: VippsPaymentService.token.issue(),
-          termsAndConditionsUrl: `${env.get("CLIENT_URI")}info/policies/conditions`,
-        },
-        transaction: {
-          reference: order.id,
-          amount: {
+        paymentDescription: `${userDetail.name} sin ordre fra Boklisten.no`,
+        orderSummary: {
+          orderLines: order.orderItems.map((orderItem) => {
+            const priceInMinors = orderItem.amount * 100;
+            return {
+              id: orderItem.item,
+              name: `${orderItem.title} - ${TranslationService.translateOrderItemTypeImperative(orderItem.type)} ${orderItem.info?.to ? DateService.format(orderItem.info?.to, "Europe/Oslo", "DD/MM/YYYY") : ""}`,
+              totalAmount: priceInMinors,
+              taxRate: 0,
+              totalTaxAmount: 0,
+              totalAmountExcludingTax: priceInMinors,
+            };
+          }),
+          orderBottomLine: {
             currency: "NOK",
-            value: order.amount * 100,
-          },
-          paymentDescription: `${userDetail.name} sin ordre fra Boklisten.no`,
-          orderSummary: {
-            orderLines: order.orderItems.map((orderItem) => {
-              const priceInMinors = orderItem.amount * 100;
-              return {
-                id: orderItem.item,
-                name: `${orderItem.title} - ${TranslationService.translateOrderItemTypeImperative(orderItem.type)} ${orderItem.info?.to ? DateService.format(orderItem.info?.to, "Europe/Oslo", "DD/MM/YYYY") : ""}`,
-                totalAmount: priceInMinors,
-                taxRate: 0,
-                totalTaxAmount: 0,
-                totalAmountExcludingTax: priceInMinors,
-              };
-            }),
-            orderBottomLine: {
-              currency: "NOK",
-            },
           },
         },
-        logistics: await createLogistics(order, isDeliveryFree),
-        configuration: {
-          showOrderSummary: true,
-        },
-      });
+      },
+      logistics: await createLogistics(order, isDeliveryFree),
+      configuration: {
+        showOrderSummary: true,
+      },
+    });
     await StorageService.Orders.update(order.id, {
       checkoutState: "SessionCreated",
     });
@@ -158,10 +150,7 @@ export const VippsCheckoutService = {
   },
   async update(session: VippsCheckoutSession) {
     let order = await StorageService.Orders.get(session.reference);
-    if (
-      order.checkoutState === session.sessionState ||
-      order.checkoutState === "PaymentSuccessful"
-    )
+    if (order.checkoutState === session.sessionState || order.checkoutState === "PaymentSuccessful")
       return;
 
     await StorageService.Orders.update(order.id, {
@@ -170,16 +159,11 @@ export const VippsCheckoutService = {
 
     if (session.sessionState !== "PaymentSuccessful") return;
 
-    const userDetail = await updateUserDetailWithBillingDetails(
-      session,
-      order.customer,
-    );
+    const userDetail = await updateUserDetailWithBillingDetails(session, order.customer);
 
     let deliveryPrice = 0;
     if (session.shippingDetails?.shippingMethodId?.includes("mail")) {
-      deliveryPrice = Math.ceil(
-        (session.shippingDetails.amount?.value ?? 0) / 100,
-      );
+      deliveryPrice = Math.ceil((session.shippingDetails.amount?.value ?? 0) / 100);
       const delivery = await StorageService.Deliveries.add({
         method: "bring",
         info: {
@@ -195,20 +179,14 @@ export const VippsCheckoutService = {
           },
           shipmentAddress: {
             name:
-              session.shippingDetails.firstName &&
-              session.shippingDetails.lastName
+              session.shippingDetails.firstName && session.shippingDetails.lastName
                 ? `${session.shippingDetails.firstName} ${session.shippingDetails.lastName}`
                 : userDetail.name,
-            address:
-              session.shippingDetails.streetAddress ?? userDetail.address,
-            postalCode:
-              session.shippingDetails.postalCode ?? userDetail.postCode,
+            address: session.shippingDetails.streetAddress ?? userDetail.address,
+            postalCode: session.shippingDetails.postalCode ?? userDetail.postCode,
             postalCity: session.shippingDetails.city ?? userDetail.postCity,
           },
-          from:
-            session.shippingDetails.shippingMethodId === "mailbox"
-              ? "1364"
-              : "SERVICEPAKKE",
+          from: session.shippingDetails.shippingMethodId === "mailbox" ? "1364" : "SERVICEPAKKE",
           to: session.shippingDetails.postalCode ?? userDetail.postCode,
           product: "3584",
         },

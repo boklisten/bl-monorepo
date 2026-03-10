@@ -93,8 +93,9 @@ test.group("OrderItemMovedFromOrderHandler", (group) => {
     getOrderStub.withArgs(testMovedFromOrderId).resolves(testMovedFromOrder);
     updateOrderStub.resolves(testMovedFromOrder);
 
-    return expect(
-      oiMovedFromOrderHandler.updateOrderItems(order),
-    ).to.be.rejectedWith(BlError, /orderItem has "movedToOrder" already set/);
+    return expect(oiMovedFromOrderHandler.updateOrderItems(order)).to.be.rejectedWith(
+      BlError,
+      /orderItem has "movedToOrder" already set/,
+    );
   });
 });

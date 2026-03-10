@@ -19,10 +19,7 @@ test.group("DeliveryValidator", (group) => {
   let testOrder: Order;
   const deliveryBranchHandler = new DeliveryBranchHandler();
   const deliveryBringHandler = new DeliveryBringHandler();
-  const deliveryValidator = new DeliveryValidator(
-    deliveryBranchHandler,
-    deliveryBringHandler,
-  );
+  const deliveryValidator = new DeliveryValidator(deliveryBranchHandler, deliveryBringHandler);
 
   let deliveryBranchValidation = true;
   let deliveryBringValidation = true;
@@ -38,18 +35,14 @@ test.group("DeliveryValidator", (group) => {
 
     sandbox.stub(deliveryBranchHandler, "validate").callsFake(() => {
       if (!deliveryBranchValidation) {
-        return Promise.reject(
-          new BlError('validation of delivery.method "branch" failed'),
-        );
+        return Promise.reject(new BlError('validation of delivery.method "branch" failed'));
       }
       return Promise.resolve(true);
     });
 
     sandbox.stub(deliveryBringHandler, "validate").callsFake(() => {
       if (!deliveryBringValidation) {
-        return Promise.reject(
-          new BlError('validation of delivery.method "bring" failed'),
-        );
+        return Promise.reject(new BlError('validation of delivery.method "bring" failed'));
       }
       return Promise.resolve(true);
     });

@@ -13,10 +13,7 @@ export default class EmailValidationsController {
     const emailValidation = await StorageService.EmailValidations.add({
       userDetailId: detailsId,
     });
-    await DispatchService.sendEmailConfirmation(
-      userDetail.email,
-      emailValidation.id,
-    );
+    await DispatchService.sendEmailConfirmation(userDetail.email, emailValidation.id);
   }
 
   async confirm({ request, response }: HttpContext) {

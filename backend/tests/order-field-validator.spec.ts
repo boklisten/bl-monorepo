@@ -44,9 +44,7 @@ test.group("OrderFieldValidator", (group) => {
   test("should reject if order.orderItems is not defined", async () => {
     testOrder.orderItems = [];
 
-    return expect(
-      orderItemFieldValidator.validate(testOrder),
-    ).to.eventually.be.rejectedWith(
+    return expect(orderItemFieldValidator.validate(testOrder)).to.eventually.be.rejectedWith(
       BlError,
       "order.orderItems is empty or undefined",
     );
@@ -56,36 +54,37 @@ test.group("OrderFieldValidator", (group) => {
     // @ts-expect-error fixme: auto ignored
     testOrder.orderItems[0].item = null;
 
-    return expect(
-      orderItemFieldValidator.validate(testOrder),
-    ).to.eventually.rejectedWith(BlError, /orderItem.item is not defined/);
+    return expect(orderItemFieldValidator.validate(testOrder)).to.eventually.rejectedWith(
+      BlError,
+      /orderItem.item is not defined/,
+    );
   });
 
   test("should reject if orderItem.title is not defined", async () => {
     // @ts-expect-error fixme: auto ignored
     testOrder.orderItems[0].title = undefined;
 
-    return expect(
-      orderItemFieldValidator.validate(testOrder),
-    ).to.eventually.be.rejectedWith(BlError, /orderItem.title is not defined/);
+    return expect(orderItemFieldValidator.validate(testOrder)).to.eventually.be.rejectedWith(
+      BlError,
+      /orderItem.title is not defined/,
+    );
   });
 
   test("should reject if orderItem.amount is not defined", async () => {
     // @ts-expect-error fixme: auto ignored
     testOrder.orderItems[0].amount = undefined;
 
-    return expect(
-      orderItemFieldValidator.validate(testOrder),
-    ).to.eventually.be.rejectedWith(BlError, /orderItem.amount is not defined/);
+    return expect(orderItemFieldValidator.validate(testOrder)).to.eventually.be.rejectedWith(
+      BlError,
+      /orderItem.amount is not defined/,
+    );
   });
 
   test("should reject if orderItem.unitPrice is not defined", async () => {
     // @ts-expect-error fixme: auto ignored
     testOrder.orderItems[0].unitPrice = null;
 
-    return expect(
-      orderItemFieldValidator.validate(testOrder),
-    ).to.eventually.be.rejectedWith(
+    return expect(orderItemFieldValidator.validate(testOrder)).to.eventually.be.rejectedWith(
       BlError,
       /orderItem.unitPrice is not defined/,
     );
@@ -95,8 +94,9 @@ test.group("OrderFieldValidator", (group) => {
     // @ts-expect-error fixme: auto ignored
     testOrder.orderItems[0].type = null;
 
-    return expect(
-      orderItemFieldValidator.validate(testOrder),
-    ).to.eventually.be.rejectedWith(BlError, /orderItem.type is not defined/);
+    return expect(orderItemFieldValidator.validate(testOrder)).to.eventually.be.rejectedWith(
+      BlError,
+      /orderItem.type is not defined/,
+    );
   });
 });

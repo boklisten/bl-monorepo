@@ -32,26 +32,14 @@ export const StorageService = {
   Branches: new MongodbHandler(BranchSchema, BlSchemaName.Branches),
   BranchItems: new MongodbHandler(BranchItemSchema, BlSchemaName.BranchItems),
   Companies: new MongodbHandler(CompanySchema, BlSchemaName.Companies),
-  CustomerItems: new MongodbHandler(
-    CustomerItemSchema,
-    BlSchemaName.CustomerItems,
-  ),
+  CustomerItems: new MongodbHandler(CustomerItemSchema, BlSchemaName.CustomerItems),
   Deliveries: new MongodbHandler(DeliverySchema, BlSchemaName.Deliveries),
-  EditableTexts: new MongodbHandler(
-    EditableTextSchema,
-    BlSchemaName.EditableTexts,
-  ),
-  EmailValidations: new MongodbHandler(
-    EmailValidationSchema,
-    BlSchemaName.EmailValidations,
-  ),
+  EditableTexts: new MongodbHandler(EditableTextSchema, BlSchemaName.EditableTexts),
+  EmailValidations: new MongodbHandler(EmailValidationSchema, BlSchemaName.EmailValidations),
   Invoices: new MongodbHandler(InvoiceSchema, BlSchemaName.Invoices),
   Items: new MongodbHandler(ItemSchema, BlSchemaName.Items),
   Messages: new MongodbHandler(MessageSchema, BlSchemaName.Messages),
-  OpeningHours: new MongodbHandler(
-    OpeningHourSchema,
-    BlSchemaName.OpeningHours,
-  ),
+  OpeningHours: new MongodbHandler(OpeningHourSchema, BlSchemaName.OpeningHours),
   Orders: new MongodbHandler(OrderSchema, BlSchemaName.Orders),
   Payments: new MongodbHandler(PaymentSchema, BlSchemaName.Payments),
   PendingPasswordResets: new MongodbHandler(
@@ -68,28 +56,20 @@ export const StorageService = {
   Users: new MongodbHandler(UserSchema, BlSchemaName.Users),
   UserDetails: new MongodbHandler(UserDetailSchema, BlSchemaName.UserDetails),
   UserMatches: new MongodbHandler(UserMatchSchema, BlSchemaName.UserMatches),
-  WaitingListEntries: new MongodbHandler(
-    WaitingListEntriesSchema,
-    BlSchemaName.WaitingListEntries,
-  ),
+  WaitingListEntries: new MongodbHandler(WaitingListEntriesSchema, BlSchemaName.WaitingListEntries),
 } as const;
 
-export type BlStorageHandler =
-  (typeof StorageService)[keyof typeof StorageService];
+export type BlStorageHandler = (typeof StorageService)[keyof typeof StorageService];
 
 type BlModelTypes = {
-  [K in keyof typeof StorageService]: (typeof StorageService)[K] extends MongodbHandler<
-    infer T
-  >
+  [K in keyof typeof StorageService]: (typeof StorageService)[K] extends MongodbHandler<infer T>
     ? T
     : never;
 }[keyof typeof StorageService];
 
 export type BlStorageData =
   | {
-      [K in keyof typeof StorageService]: (typeof StorageService)[K] extends MongodbHandler<
-        infer T
-      >
+      [K in keyof typeof StorageService]: (typeof StorageService)[K] extends MongodbHandler<infer T>
         ? T[]
         : never;
     }[keyof typeof StorageService]

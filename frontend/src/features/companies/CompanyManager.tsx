@@ -1,16 +1,6 @@
 "use client";
 import { Company } from "@boklisten/backend/shared/company";
-import {
-  Box,
-  Button,
-  Card,
-  Divider,
-  Group,
-  Skeleton,
-  Stack,
-  Text,
-  Title,
-} from "@mantine/core";
+import { Box, Button, Card, Divider, Group, Skeleton, Stack, Text, Title } from "@mantine/core";
 import { modals } from "@mantine/modals";
 import { IconBuildings, IconMapPin, IconPlus } from "@tabler/icons-react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
@@ -25,21 +15,16 @@ import { postalCodeFieldValidator } from "@/shared/components/form/fields/comple
 import { useAppForm } from "@/shared/hooks/form";
 import useApiClient from "@/shared/hooks/useApiClient";
 import { PLEASE_TRY_AGAIN_TEXT } from "@/shared/utils/constants";
-import {
-  showErrorNotification,
-  showSuccessNotification,
-} from "@/shared/utils/notifications";
+import { showErrorNotification, showSuccessNotification } from "@/shared/utils/notifications";
 
 function CompanyCard({ company }: { company: Company }) {
   const client = useApiClient();
   const queryClient = useQueryClient();
   const deleteCompanyMutation = useMutation({
-    mutationFn: () =>
-      client.v2.companies({ companyId: company.id }).$delete().unwrap(),
+    mutationFn: () => client.v2.companies({ companyId: company.id }).$delete().unwrap(),
     onSuccess: () => showSuccessNotification(`${company.name} ble slettet!`),
     onError: () => showErrorNotification(`Klarte ikke slette ${company.name}`),
-    onSettled: () =>
-      queryClient.invalidateQueries({ queryKey: [client.v2.companies.$url()] }),
+    onSettled: () => queryClient.invalidateQueries({ queryKey: [client.v2.companies.$url()] }),
   });
   return (
     <Card withBorder>
@@ -91,8 +76,7 @@ function CreateCompanyForm({ onSuccess }: { onSuccess: () => void }) {
       showSuccessNotification(`${form.state.values.name} ble opprettet!`);
       onSuccess();
     },
-    onSettled: () =>
-      queryClient.invalidateQueries({ queryKey: [client.v2.companies.$url()] }),
+    onSettled: () => queryClient.invalidateQueries({ queryKey: [client.v2.companies.$url()] }),
   });
   const form = useAppForm({
     defaultValues: {
@@ -117,49 +101,35 @@ function CreateCompanyForm({ onSuccess }: { onSuccess: () => void }) {
       <form.AppField
         name={"name"}
         validators={{
-          onBlur: ({ value }) =>
-            !value ? "Du må fylle inn navn på selskap" : null,
+          onBlur: ({ value }) => (!value ? "Du må fylle inn navn på selskap" : null),
         }}
       >
         {(field) => (
-          <field.TextField
-            label={"Navn på selskap"}
-            required
-            placeholder={"Lom kommune"}
-          />
+          <field.TextField label={"Navn på selskap"} required placeholder={"Lom kommune"} />
         )}
       </form.AppField>
       <form.AppField
         name={"organizationNumber"}
         validators={{
-          onBlur: ({ value }) =>
-            !value ? "Du må fylle inn organisasjonsnummer" : null,
+          onBlur: ({ value }) => (!value ? "Du må fylle inn organisasjonsnummer" : null),
         }}
       >
         {(field) => (
-          <field.TextField
-            label={"Organisasjonsnummer"}
-            required
-            placeholder={"912047385"}
-          />
+          <field.TextField label={"Organisasjonsnummer"} required placeholder={"912047385"} />
         )}
       </form.AppField>
       <form.AppField
         name={"customerNumber"}
         validators={{
-          onBlur: ({ value }) =>
-            !value ? "Du må fylle inn kundenummer" : null,
+          onBlur: ({ value }) => (!value ? "Du må fylle inn kundenummer" : null),
         }}
       >
-        {(field) => (
-          <field.TextField label={"Kundenummer"} required placeholder={"123"} />
-        )}
+        {(field) => <field.TextField label={"Kundenummer"} required placeholder={"123"} />}
       </form.AppField>
       <form.AppField
         name={"contactInfo.phone"}
         validators={{
-          onBlur: ({ value }) =>
-            phoneNumberFieldValidator(value, "administrate"),
+          onBlur: ({ value }) => phoneNumberFieldValidator(value, "administrate"),
         }}
       >
         {(field) => <field.PhoneNumberField />}
@@ -191,10 +161,7 @@ function CreateCompanyForm({ onSuccess }: { onSuccess: () => void }) {
       <form.AppForm>
         <form.ErrorSummary />
       </form.AppForm>
-      <Button
-        loading={addCompanyMutation.isPending}
-        onClick={form.handleSubmit}
-      >
+      <Button loading={addCompanyMutation.isPending} onClick={form.handleSubmit}>
         Opprett
       </Button>
     </Stack>
@@ -217,11 +184,7 @@ export default function CompanyManager() {
           onClick={() =>
             modals.open({
               modalId: createModalId,
-              children: (
-                <CreateCompanyForm
-                  onSuccess={() => modals.close(createModalId)}
-                />
-              ),
+              children: <CreateCompanyForm onSuccess={() => modals.close(createModalId)} />,
             })
           }
         >
@@ -235,9 +198,7 @@ export default function CompanyManager() {
         ))}
       </Activity>
       <Activity mode={isError ? "visible" : "hidden"}>
-        <ErrorAlert title={"Klarte ikke laste inn selskap"}>
-          {PLEASE_TRY_AGAIN_TEXT}
-        </ErrorAlert>
+        <ErrorAlert title={"Klarte ikke laste inn selskap"}>{PLEASE_TRY_AGAIN_TEXT}</ErrorAlert>
       </Activity>
       <Activity mode={data ? "visible" : "hidden"}>
         {data?.map((company) => (

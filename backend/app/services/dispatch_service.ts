@@ -5,10 +5,7 @@ import moment from "moment-timezone";
 import twilio from "twilio";
 
 import { OrderEmailHandler } from "#services/legacy/order_email_handler";
-import {
-  isUnderage,
-  userHasValidSignature,
-} from "#services/legacy/signature.helper";
+import { isUnderage, userHasValidSignature } from "#services/legacy/signature.helper";
 import { PermissionService } from "#services/permission_service";
 import { StorageService } from "#services/storage_service";
 import { UserDetailService } from "#services/user_detail_service";
@@ -26,14 +23,10 @@ import {
 } from "#types/email_templates";
 import { sendgridEmailTemplatesResponseValidator } from "#validators/dispatch";
 
-const twilioClient = twilio(
-  env.get("TWILIO_SMS_SID"),
-  env.get("TWILIO_SMS_AUTH_TOKEN"),
-  {
-    autoRetry: true,
-    maxRetries: 5,
-  },
-);
+const twilioClient = twilio(env.get("TWILIO_SMS_SID"), env.get("TWILIO_SMS_AUTH_TOKEN"), {
+  autoRetry: true,
+  maxRetries: 5,
+});
 
 interface SmsMessage {
   to: string;
@@ -50,10 +43,7 @@ const SmsService = {
       if (!userDetail) return { successCount: 1, failed: [] };
       const user = await UserService.getByUserDetailsId(userDetail.id);
 
-      if (
-        !user ||
-        !PermissionService.isPermissionEqualOrOver(user.permission, "employee")
-      )
+      if (!user || !PermissionService.isPermissionEqualOrOver(user.permission, "employee"))
         return { successCount: 1, failed: [] };
     }
 
@@ -71,9 +61,7 @@ const SmsService = {
     }
   },
   async sendMany(messages: SmsMessage[]) {
-    return (
-      await Promise.all(messages.map((message) => this.sendOne(message)))
-    ).reduce(
+    return (await Promise.all(messages.map((message) => this.sendOne(message)))).reduce(
       (acc, next) => ({
         successCount: acc.successCount + next.successCount,
         failed: [...acc.failed, ...next.failed],
@@ -95,8 +83,7 @@ const EmailService = {
         page_size: 200,
       },
     });
-    const [, data] =
-      await sendgridEmailTemplatesResponseValidator.tryValidate(body);
+    const [, data] = await sendgridEmailTemplatesResponseValidator.tryValidate(body);
     return data?.result ?? [];
   },
   async sendEmail({
@@ -106,9 +93,7 @@ const EmailService = {
     template: EmailTemplate;
     recipients: EmailRecipient | EmailRecipient[];
   }) {
-    const _personalizations = Array.isArray(recipients)
-      ? recipients
-      : [recipients];
+    const _personalizations = Array.isArray(recipients) ? recipients : [recipients];
 
     let personalizations = _personalizations;
     if (env.get("API_ENV") !== "production") {
@@ -117,18 +102,10 @@ const EmailService = {
       );
       personalizations = [];
       for (const personalization of _personalizations) {
-        const userDetail = await UserDetailService.getByEmail(
-          personalization.to,
-        );
+        const userDetail = await UserDetailService.getByEmail(personalization.to);
         if (!userDetail) continue;
         const user = await UserService.getByUserDetailsId(userDetail.id);
-        if (
-          !user ||
-          !PermissionService.isPermissionEqualOrOver(
-            user.permission,
-            "employee",
-          )
-        )
+        if (!user || !PermissionService.isPermissionEqualOrOver(user.permission, "employee"))
           continue;
         personalizations.push(personalization);
       }
@@ -148,9 +125,7 @@ const EmailService = {
         });
 
         if (sendGridResponse.statusCode !== 202) {
-          logger.error(
-            `SendGrid batch failed with status ${sendGridResponse.statusCode}`,
-          );
+          logger.error(`SendGrid batch failed with status ${sendGridResponse.statusCode}`);
           return { success: false };
         }
       } catch (error) {
@@ -170,11 +145,7 @@ const DispatchService = {
   async sendUserProvidedSms(phoneNumber: string, body: string) {
     return await SmsService.sendOne({ to: phoneNumber, body });
   },
-  async sendOrderReceipt(
-    emailUser: EmailUser,
-    emailOrder: EmailOrder,
-    paymentNeeded: boolean,
-  ) {
+  async sendOrderReceipt(emailUser: EmailUser, emailOrder: EmailOrder, paymentNeeded: boolean) {
     await EmailService.sendEmail({
       template: EMAIL_TEMPLATES.receipt,
       recipients: [
@@ -308,13 +279,7 @@ const DispatchService = {
       ],
     });
   },
-  async sendMatchInformation({
-    customers,
-    smsBody,
-  }: {
-    customers: UserDetail[];
-    smsBody: string;
-  }) {
+  async sendMatchInformation({ customers, smsBody }: { customers: UserDetail[]; smsBody: string }) {
     const [mailStatus, smsStatus] = await Promise.all([
       EmailService.sendEmail({
         template: EMAIL_TEMPLATES.matchNotify,

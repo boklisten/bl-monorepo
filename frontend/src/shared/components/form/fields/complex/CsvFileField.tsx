@@ -27,9 +27,7 @@ export default function CsvFileField(
     .map((header) => header.label);
   const allHeaders = [...requiredHeaders, ...optionalHeaders];
 
-  function parseRows(
-    rows: string[][],
-  ): Record<string, string | string[]>[] | null {
+  function parseRows(rows: string[][]): Record<string, string | string[]>[] | null {
     if (rows.length < 2) {
       showErrorNotification({
         title: "Valideringsfeil",
@@ -67,9 +65,7 @@ export default function CsvFileField(
 
       for (const header of requiredHeaders) {
         const indices = headerIndexMap[header] ?? [];
-        const values = indices
-          .map((i) => (row[i] ?? "").trim())
-          .filter((v) => v !== "");
+        const values = indices.map((i) => (row[i] ?? "").trim()).filter((v) => v !== "");
 
         if (values.length === 0) {
           showErrorNotification({
@@ -87,9 +83,7 @@ export default function CsvFileField(
         const indices = headerIndexMap[header] ?? [];
         if (indices.length === 0) continue;
 
-        const values = indices
-          .map((i) => (row[i] ?? "").trim())
-          .filter((v) => v !== "");
+        const values = indices.map((i) => (row[i] ?? "").trim()).filter((v) => v !== "");
 
         const firstValue = values[0];
         if (firstValue) {
@@ -167,11 +161,8 @@ export default function CsvFileField(
       />
       <Activity mode={numberOfRowsParsed > 0 ? "visible" : "hidden"}>
         <Text size={"sm"} fs={"italic"}>
-          Antall{" "}
-          {typeof props.label === "string"
-            ? props.label.toLowerCase()
-            : "rader med data"}
-          : {numberOfRowsParsed}
+          Antall {typeof props.label === "string" ? props.label.toLowerCase() : "rader med data"}:{" "}
+          {numberOfRowsParsed}
         </Text>
       </Activity>
     </Stack>

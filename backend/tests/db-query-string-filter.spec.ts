@@ -11,9 +11,7 @@ test.group("DbQueryStringFilter", async () => {
   const dbQueryStringFilter: DbQueryStringFilter = new DbQueryStringFilter();
 
   test("should return empty array if query is valid and validStringParams is empty", async () => {
-    expect(
-      dbQueryStringFilter.getStringFilters({ name: "testerman" }, []),
-    ).to.eql([]);
+    expect(dbQueryStringFilter.getStringFilters({ name: "testerman" }, [])).to.eql([]);
   });
 
   test("should throw TypeError if query is empty", async () => {
@@ -36,11 +34,9 @@ test.group("DbQueryStringFilter", async () => {
 
   test("should not change values in query that are not in ValidStringParams", async () => {
     const result = [{ fieldName: "name", value: "albert" }];
-    expect(
-      dbQueryStringFilter.getStringFilters({ name: "albert", phone: "123" }, [
-        "name",
-      ]),
-    ).to.eql(result);
+    expect(dbQueryStringFilter.getStringFilters({ name: "albert", phone: "123" }, ["name"])).to.eql(
+      result,
+    );
   });
 
   test("should return correct array given valid input", async () => {
@@ -56,13 +52,8 @@ test.group("DbQueryStringFilter", async () => {
       { fieldName: "branch", value: ["123", "83ax"] },
     ];
 
-    expect(
-      dbQueryStringFilter.getStringFilters(query, [
-        "name",
-        "desc",
-        "title",
-        "branch",
-      ]),
-    ).to.eql(result);
+    expect(dbQueryStringFilter.getStringFilters(query, ["name", "desc", "title", "branch"])).to.eql(
+      result,
+    );
   });
 });

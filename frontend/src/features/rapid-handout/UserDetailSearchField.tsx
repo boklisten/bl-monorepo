@@ -1,19 +1,7 @@
 import { UserDetail } from "@boklisten/backend/shared/user-detail";
-import {
-  ActionIcon,
-  Autocomplete,
-  ComboboxItem,
-  Group,
-  Stack,
-  Text,
-} from "@mantine/core";
+import { ActionIcon, Autocomplete, ComboboxItem, Group, Stack, Text } from "@mantine/core";
 import { modals } from "@mantine/modals";
-import {
-  IconMail,
-  IconObjectScan,
-  IconPhone,
-  IconUser,
-} from "@tabler/icons-react";
+import { IconMail, IconObjectScan, IconPhone, IconUser } from "@tabler/icons-react";
 import { useState } from "react";
 
 import ScannerModal from "@/shared/components/scanner/ScannerModal";
@@ -52,9 +40,7 @@ export default function UserDetailSearchField({
     <>
       <Autocomplete
         label={"Kundesøk"}
-        description={
-          "Søk opp en kunde eller skann kundeID for å starte utdeling"
-        }
+        description={"Søk opp en kunde eller skann kundeID for å starte utdeling"}
         placeholder={"Søk etter telefonnummer, e-post, navn eller adresse"}
         value={searchValue}
         rightSection={
@@ -91,8 +77,7 @@ export default function UserDetailSearchField({
         }))}
         filter={({ options, search }) =>
           (options as ComboboxItem[]).filter(({ value }) => {
-            const userDetail =
-              searchResults.find((sr) => sr.id === value) ?? null;
+            const userDetail = searchResults.find((sr) => sr.id === value) ?? null;
             if (!userDetail) return false;
 
             return JSON.stringify(userDetail)
@@ -106,8 +91,7 @@ export default function UserDetailSearchField({
           await handleInputChange(value);
         }}
         onOptionSubmit={(value) => {
-          const foundUserDetail =
-            searchResults.find((sr) => sr.id === value) ?? null;
+          const foundUserDetail = searchResults.find((sr) => sr.id === value) ?? null;
           onSelectedResult(foundUserDetail);
         }}
         renderOption={({ option }) => {

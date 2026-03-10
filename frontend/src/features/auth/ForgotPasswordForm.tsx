@@ -10,10 +10,7 @@ import ErrorAlert from "@/shared/components/alerts/ErrorAlert";
 import SuccessAlert from "@/shared/components/alerts/SuccessAlert";
 import NextAnchor from "@/shared/components/NextAnchor";
 import { useAppForm } from "@/shared/hooks/form";
-import {
-  GENERIC_ERROR_TEXT,
-  PLEASE_TRY_AGAIN_TEXT,
-} from "@/shared/utils/constants";
+import { GENERIC_ERROR_TEXT, PLEASE_TRY_AGAIN_TEXT } from "@/shared/utils/constants";
 import { publicApiClient } from "@/shared/utils/publicApiClient";
 
 interface ForgotFields {
@@ -49,17 +46,10 @@ export default function ForgotPasswordForm() {
         <Activity mode={apiError ? "visible" : "hidden"}>
           <ErrorAlert title={GENERIC_ERROR_TEXT}>{apiError}</ErrorAlert>
         </Activity>
-        <Activity
-          mode={
-            requestPasswordResetMutation.isSuccess && !apiError
-              ? "visible"
-              : "hidden"
-          }
-        >
+        <Activity mode={requestPasswordResetMutation.isSuccess && !apiError ? "visible" : "hidden"}>
           <SuccessAlert icon={<IconMailFast />}>
-            Vi har sendt en e-post med instruksjoner for hvordan du kan endre
-            passordet ditt. Hvis e-posten ikke dukker opp innen noen få minutter
-            anbefaler vi å sjekke søppelpost.
+            Vi har sendt en e-post med instruksjoner for hvordan du kan endre passordet ditt. Hvis
+            e-posten ikke dukker opp innen noen få minutter anbefaler vi å sjekke søppelpost.
           </SuccessAlert>
         </Activity>
       </Stack>
@@ -67,9 +57,7 @@ export default function ForgotPasswordForm() {
         name={"email"}
         validators={{
           onBlur: ({ value }) =>
-            !validator.isEmail(value)
-              ? "Du må fylle inn en gyldig e-post"
-              : null,
+            !validator.isEmail(value) ? "Du må fylle inn en gyldig e-post" : null,
         }}
       >
         {(field) => (
@@ -81,10 +69,7 @@ export default function ForgotPasswordForm() {
           />
         )}
       </form.AppField>
-      <Button
-        loading={requestPasswordResetMutation.isPending}
-        onClick={form.handleSubmit}
-      >
+      <Button loading={requestPasswordResetMutation.isPending} onClick={form.handleSubmit}>
         Reset passord
       </Button>
       <NextAnchor size={"sm"} href={"/auth/login"}>

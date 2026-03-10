@@ -21,11 +21,7 @@ async function getMatchableUsers(
   includeSenderItemsFromOtherBranches: boolean,
 ): Promise<MatchableUser[]> {
   const [senders, receivers] = await Promise.all([
-    getMatchableSender(
-      branchIds,
-      deadlineBefore,
-      includeSenderItemsFromOtherBranches,
-    ),
+    getMatchableSender(branchIds, deadlineBefore, includeSenderItemsFromOtherBranches),
     getMatchableReceivers(branchIds),
   ]);
   const matchableUsers: MatchableUser[] = [];
@@ -33,10 +29,7 @@ async function getMatchableUsers(
     const existingUser = matchableUsers.find((u) => u.id === user.id);
     if (existingUser) {
       existingUser.items = new Set([...existingUser.items, ...user.items]);
-      existingUser.wantedItems = new Set([
-        ...existingUser.wantedItems,
-        ...user.wantedItems,
-      ]);
+      existingUser.wantedItems = new Set([...existingUser.wantedItems, ...user.wantedItems]);
     } else {
       matchableUsers.push(user);
     }
@@ -122,9 +115,7 @@ async function getMatchableSender(
  *
  * @param branchIds The IDs of branches to search for users and items
  */
-async function getMatchableReceivers(
-  branchIds: string[],
-): Promise<MatchableUser[]> {
+async function getMatchableReceivers(branchIds: string[]): Promise<MatchableUser[]> {
   const aggregatedReceivers = (await StorageService.Orders.aggregate([
     {
       $match: {
@@ -227,52 +218,43 @@ export async function generateMatches({
   const [candidateUserMatches, candidateStandMatches] = new MatchFinder(
     matchableUsers,
   ).generateMatches();
-  const userMatches: UserMatch[] = candidateUserMatches.map(
-    (candidateUserMatch) => ({
-      ...candidateUserMatch,
-      id: "",
-      expectedAToBItems: Array.from(candidateUserMatch.expectedAToBItems),
-      expectedBToAItems: Array.from(candidateUserMatch.expectedBToAItems),
-      receivedBlIdsCustomerA: [],
-      deliveredBlIdsCustomerA: [],
-      receivedBlIdsCustomerB: [],
-      deliveredBlIdsCustomerB: [],
-      itemsLockedToMatch: true,
-      meetingInfo: {
-        location: "Krøllalfaen",
-        date: membershipToTime[
-          // @ts-expect-error fixme: auto ignored : temporary for this round of matching (jan 2025)
-          matchableUsers.find((u) => u.id === candidateUserMatch.customerA)
-            ?.groupMembership
-        ],
-      },
-    }),
-  );
-  const standMatches: StandMatch[] = candidateStandMatches.map(
-    (candidateStandMatch) => ({
-      ...candidateStandMatch,
-      id: "",
-      expectedHandoffItems: Array.from(
-        candidateStandMatch.expectedHandoffItems,
-      ),
-      expectedPickupItems: Array.from(candidateStandMatch.expectedPickupItems),
-      receivedItems: [],
-      deliveredItems: [],
-      meetingInfo: {
-        location: standLocation,
-        date: new Date("2025-01-17T10:45:00Z"),
-      },
-    }),
-  );
+  const userMatches: UserMatch[] = candidateUserMatches.map((candidateUserMatch) => ({
+    ...candidateUserMatch,
+    id: "",
+    expectedAToBItems: Array.from(candidateUserMatch.expectedAToBItems),
+    expectedBToAItems: Array.from(candidateUserMatch.expectedBToAItems),
+    receivedBlIdsCustomerA: [],
+    deliveredBlIdsCustomerA: [],
+    receivedBlIdsCustomerB: [],
+    deliveredBlIdsCustomerB: [],
+    itemsLockedToMatch: true,
+    meetingInfo: {
+      location: "Krøllalfaen",
+      date: membershipToTime[
+        // @ts-expect-error fixme: auto ignored : temporary for this round of matching (jan 2025)
+        matchableUsers.find((u) => u.id === candidateUserMatch.customerA)?.groupMembership
+      ],
+    },
+  }));
+  const standMatches: StandMatch[] = candidateStandMatches.map((candidateStandMatch) => ({
+    ...candidateStandMatch,
+    id: "",
+    expectedHandoffItems: Array.from(candidateStandMatch.expectedHandoffItems),
+    expectedPickupItems: Array.from(candidateStandMatch.expectedPickupItems),
+    receivedItems: [],
+    deliveredItems: [],
+    meetingInfo: {
+      location: standLocation,
+      date: new Date("2025-01-17T10:45:00Z"),
+    },
+  }));
 
   if (userMatches.length === 0 && standMatches.length === 0) {
     return "No matches generated";
   }
 
-  const addedUserMatches =
-    await StorageService.UserMatches.addMany(userMatches);
-  const addedStandMatches =
-    await StorageService.StandMatches.addMany(standMatches);
+  const addedUserMatches = await StorageService.UserMatches.addMany(userMatches);
+  const addedStandMatches = await StorageService.StandMatches.addMany(standMatches);
 
   return `Created ${addedUserMatches.length} user matches and ${addedStandMatches.length} stand matches`;
 }

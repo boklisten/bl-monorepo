@@ -7,8 +7,7 @@ import VippsButton from "@/features/auth/VippsButton";
 
 export const metadata: Metadata = {
   title: "Logg inn",
-  description:
-    "Logg inn for bestille bøker, samt se status på nåvårende bøker.",
+  description: "Logg inn for bestille bøker, samt se status på nåvårende bøker.",
 };
 
 const LoginPage = () => {

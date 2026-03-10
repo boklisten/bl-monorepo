@@ -8,10 +8,7 @@ import UserMatchDetail from "@/features/matches/UserMatchDetail";
 import ErrorAlert from "@/shared/components/alerts/ErrorAlert";
 import NextAnchor from "@/shared/components/NextAnchor";
 import useApiClient from "@/shared/hooks/useApiClient";
-import {
-  GENERIC_ERROR_TEXT,
-  PLEASE_TRY_AGAIN_TEXT,
-} from "@/shared/utils/constants";
+import { GENERIC_ERROR_TEXT, PLEASE_TRY_AGAIN_TEXT } from "@/shared/utils/constants";
 
 const MatchDetail = ({
   userMatchId,
@@ -34,30 +31,16 @@ const MatchDetail = ({
   }
 
   if (isError || !data) {
-    return (
-      <ErrorAlert title={GENERIC_ERROR_TEXT}>
-        {PLEASE_TRY_AGAIN_TEXT}
-      </ErrorAlert>
-    );
+    return <ErrorAlert title={GENERIC_ERROR_TEXT}>{PLEASE_TRY_AGAIN_TEXT}</ErrorAlert>;
   }
 
-  const userMatch = data.userMatches.find(
-    (userMatch) => userMatch.id === userMatchId,
-  );
+  const userMatch = data.userMatches.find((userMatch) => userMatch.id === userMatchId);
   if (data.userMatches && userMatchId && !userMatch) {
-    return (
-      <ErrorAlert>
-        Kunne ikke finne en elevoverlevering med ID {userMatchId}.
-      </ErrorAlert>
-    );
+    return <ErrorAlert>Kunne ikke finne en elevoverlevering med ID {userMatchId}.</ErrorAlert>;
   }
   const standMatch = standMatchId ? data.standMatch : undefined;
   if (standMatchId && !standMatch) {
-    return (
-      <ErrorAlert>
-        Kunne ikke finne en standoverlevering med ID {standMatchId}.
-      </ErrorAlert>
-    );
+    return <ErrorAlert>Kunne ikke finne en standoverlevering med ID {standMatchId}.</ErrorAlert>;
   }
 
   return (

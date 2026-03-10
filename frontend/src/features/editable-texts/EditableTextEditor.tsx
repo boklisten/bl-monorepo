@@ -4,10 +4,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 import { useAppForm } from "@/shared/hooks/form";
 import useApiClient from "@/shared/hooks/useApiClient";
-import {
-  showErrorNotification,
-  showSuccessNotification,
-} from "@/shared/utils/notifications";
+import { showErrorNotification, showSuccessNotification } from "@/shared/utils/notifications";
 
 export default function EditableTextEditor({
   editableText,
@@ -53,17 +50,13 @@ export default function EditableTextEditor({
     onError: () =>
       showErrorNotification({
         title: "Klarte ikke opprette dynamisk innhold!",
-        message:
-          'Vennligst sjekk at unik nøkkel er formattert riktig. [a-z] og "_" for mellomrom.',
+        message: 'Vennligst sjekk at unik nøkkel er formattert riktig. [a-z] og "_" for mellomrom.',
       }),
   });
 
   const updateEditableTextMutation = useMutation({
     mutationFn: (editableText: { id: string; text: string }) =>
-      client
-        .editable_texts({ id: editableText.id })
-        .$patch({ text: editableText.text })
-        .unwrap(),
+      client.editable_texts({ id: editableText.id }).$patch({ text: editableText.text }).unwrap(),
     onSettled: () =>
       queryClient.invalidateQueries({
         queryKey: [client.editable_texts.$url()],
@@ -72,8 +65,7 @@ export default function EditableTextEditor({
       showSuccessNotification("Dynamisk innhold ble oppdatert!");
       onClose();
     },
-    onError: () =>
-      showErrorNotification("Klarte ikke oppdatere dynamisk innhold!"),
+    onError: () => showErrorNotification("Klarte ikke oppdatere dynamisk innhold!"),
   });
 
   return (
@@ -81,8 +73,7 @@ export default function EditableTextEditor({
       <form.AppField
         name={"key"}
         validators={{
-          onChange: ({ value }) =>
-            value.length === 0 ? "Du fylle inn unik nøkkel" : null,
+          onChange: ({ value }) => (value.length === 0 ? "Du fylle inn unik nøkkel" : null),
         }}
       >
         {(field) => (
@@ -102,10 +93,7 @@ export default function EditableTextEditor({
           Avbryt
         </Button>
         <Button
-          loading={
-            addEditableTextMutation.isPending ||
-            updateEditableTextMutation.isPending
-          }
+          loading={addEditableTextMutation.isPending || updateEditableTextMutation.isPending}
           onClick={form.handleSubmit}
         >
           {editableText === undefined ? "Opprett" : "Lagre"}

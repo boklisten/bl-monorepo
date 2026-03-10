@@ -6,8 +6,7 @@ import { BlapiErrorResponse } from "#shared/blapi-error-response";
 import { BlapiResponse } from "#shared/blapi-response";
 
 function createErrorResponse({ response }: HttpContext, blError: unknown) {
-  const blapiErrorRes: BlapiErrorResponse =
-    BlErrorHandler.createBlapiErrorResponse(blError);
+  const blapiErrorRes: BlapiErrorResponse = BlErrorHandler.createBlapiErrorResponse(blError);
 
   response.status(blapiErrorRes.httpStatus);
   if (blapiErrorRes.httpStatus === 200) {

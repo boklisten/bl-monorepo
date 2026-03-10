@@ -19,9 +19,7 @@ export default function AuthFailurePage() {
         <Suspense>
           <AuthFailureReasonAlert />
         </Suspense>
-        <NextAnchor href={"/auth/login"}>
-          Tilbake til innloggingssiden
-        </NextAnchor>
+        <NextAnchor href={"/auth/login"}>Tilbake til innloggingssiden</NextAnchor>
       </Stack>
     </Container>
   );

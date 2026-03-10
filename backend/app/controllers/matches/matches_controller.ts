@@ -17,16 +17,13 @@ import {
 export default class MatchesController {
   async generate(ctx: HttpContext) {
     PermissionService.authenticate(ctx, USER_PERMISSION.ADMIN);
-    const matchConfiguration = await ctx.request.validateUsing(
-      matchGenerateValidator,
-    );
+    const matchConfiguration = await ctx.request.validateUsing(matchGenerateValidator);
     return await generateMatches(matchConfiguration);
   }
 
   async notify(ctx: HttpContext) {
     PermissionService.authenticate(ctx, USER_PERMISSION.ADMIN);
-    const matchNotifyConfiguration =
-      await ctx.request.validateUsing(matchNotifyValidator);
+    const matchNotifyConfiguration = await ctx.request.validateUsing(matchNotifyValidator);
     return await notify(matchNotifyConfiguration);
   }
 
@@ -44,9 +41,7 @@ export default class MatchesController {
 
   async transferItem(ctx: HttpContext) {
     const { detailsId } = PermissionService.authenticate(ctx);
-    const transferData = await ctx.request.validateUsing(
-      matchTransferValidator,
-    );
+    const transferData = await ctx.request.validateUsing(matchTransferValidator);
     return await transfer(detailsId, transferData);
   }
 }

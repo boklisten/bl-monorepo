@@ -6,10 +6,10 @@ ignoredBuiltDependencies:
   - unrs-resolver
 
 onlyBuiltDependencies:
-  - '@sentry-internal/node-cpu-profiler'
-  - '@sentry/cli'
-  - '@swc/core'
-  - '@vercel/speed-insights'
+  - "@sentry-internal/node-cpu-profiler"
+  - "@sentry/cli"
+  - "@swc/core"
+  - "@vercel/speed-insights"
   - argon2
   - canvas
   - esbuild

@@ -6,17 +6,11 @@ import { BlError } from "#shared/bl-error";
 import { UserMatch } from "#shared/match/user-match";
 import { matchLockSchema } from "#validators/matches";
 
-export async function lock({
-  customerId,
-  userMatchesLocked,
-}: Infer<typeof matchLockSchema>) {
+export async function lock({ customerId, userMatchesLocked }: Infer<typeof matchLockSchema>) {
   const userMatches = (await StorageService.UserMatches.aggregate([
     {
       $match: {
-        $or: [
-          { customerA: new ObjectId(customerId) },
-          { customerB: new ObjectId(customerId) },
-        ],
+        $or: [{ customerA: new ObjectId(customerId) }, { customerB: new ObjectId(customerId) }],
       },
     },
   ])) as UserMatch[];

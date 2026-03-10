@@ -12,9 +12,7 @@ export default function useAuthLinker() {
   function redirectToBlAdmin(path: string, retainHistory?: boolean) {
     if (isLoading) return;
 
-    const url = new URL(
-      `${BL_CONFIG.blAdmin.basePath}${path}?${searchParams.toString()}`,
-    );
+    const url = new URL(`${BL_CONFIG.blAdmin.basePath}${path}?${searchParams.toString()}`);
 
     if (isLoggedIn) {
       const accessToken = localStorage.getItem(BL_CONFIG.token.accessToken);
@@ -36,14 +34,10 @@ export default function useAuthLinker() {
   function redirectToCaller() {
     const { localStorageKeys } = BL_CONFIG.login;
 
-    const caller =
-      searchParams.get("caller") ??
-      localStorage.getItem(localStorageKeys.caller);
+    const caller = searchParams.get("caller") ?? localStorage.getItem(localStorageKeys.caller);
 
     const redirect =
-      searchParams.get("redirect") ??
-      localStorage.getItem(localStorageKeys.redirect) ??
-      "";
+      searchParams.get("redirect") ?? localStorage.getItem(localStorageKeys.redirect) ?? "";
 
     localStorage.removeItem(localStorageKeys.caller);
     localStorage.removeItem(localStorageKeys.redirect);

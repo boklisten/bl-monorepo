@@ -42,9 +42,7 @@ export default function BranchManager() {
   });
 
   const [selectedBranchId, setSelectedBranchId] = useState<string | null>(null);
-  const selectedBranch = branches?.find(
-    (branch) => branch.id === selectedBranchId,
-  );
+  const selectedBranch = branches?.find((branch) => branch.id === selectedBranchId);
 
   const createBranchModalId = "create-branch-modal";
   return (
@@ -89,22 +87,13 @@ export default function BranchManager() {
               <Title>{selectedBranch.name}</Title>
               <Tabs defaultValue={"general"}>
                 <Tabs.List mb={"md"}>
-                  <Tabs.Tab
-                    value={"general"}
-                    leftSection={<IconBuildingStore />}
-                  >
+                  <Tabs.Tab value={"general"} leftSection={<IconBuildingStore />}>
                     Generelt
                   </Tabs.Tab>
-                  <Tabs.Tab
-                    value={"relationships"}
-                    leftSection={<IconHierarchy3 />}
-                  >
+                  <Tabs.Tab value={"relationships"} leftSection={<IconHierarchy3 />}>
                     Relasjoner
                   </Tabs.Tab>
-                  <Tabs.Tab
-                    value={"payment"}
-                    leftSection={<IconCashRegister />}
-                  >
+                  <Tabs.Tab value={"payment"} leftSection={<IconCashRegister />}>
                     Betaling
                   </Tabs.Tab>
                   <Tabs.Tab value={"books"} leftSection={<IconBooks />}>
@@ -118,41 +107,23 @@ export default function BranchManager() {
                   </Tabs.Tab>
                 </Tabs.List>
                 <Tabs.Panel value={"general"}>
-                  <BranchGeneralSettings
-                    key={selectedBranchId}
-                    existingBranch={selectedBranch}
-                  />
+                  <BranchGeneralSettings key={selectedBranchId} existingBranch={selectedBranch} />
                 </Tabs.Panel>
                 <Tabs.Panel value={"relationships"}>
-                  <BranchRelationshipSettings
-                    key={selectedBranchId}
-                    branch={selectedBranch}
-                  />
+                  <BranchRelationshipSettings key={selectedBranchId} branch={selectedBranch} />
                 </Tabs.Panel>
                 <Tabs.Panel value={"payment"}>
-                  <BranchPaymentSettings
-                    key={selectedBranchId}
-                    existingBranch={selectedBranch}
-                  />
+                  <BranchPaymentSettings key={selectedBranchId} existingBranch={selectedBranch} />
                 </Tabs.Panel>
                 <Tabs.Panel value={"books"}>
-                  <BranchItemSettings
-                    key={selectedBranchId}
-                    branchId={selectedBranch.id}
-                  />
+                  <BranchItemSettings key={selectedBranchId} branchId={selectedBranch.id} />
                 </Tabs.Panel>
                 <Tabs.Panel value={"hours"}>
-                  <OpeningHoursSettings
-                    key={selectedBranchId}
-                    branchId={selectedBranch.id}
-                  />
+                  <OpeningHoursSettings key={selectedBranchId} branchId={selectedBranch.id} />
                 </Tabs.Panel>
                 <Tabs.Panel value={"members"}>
                   <Stack>
-                    <BranchMembers
-                      key={selectedBranch.id}
-                      branchId={selectedBranch.id}
-                    />
+                    <BranchMembers key={selectedBranch.id} branchId={selectedBranch.id} />
                     <UploadClassMemberships branchId={selectedBranch.id} />
                     <UploadSubjectChoices branchId={selectedBranch.id} />
                   </Stack>

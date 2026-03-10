@@ -67,9 +67,7 @@ export class MatchFinder {
       iterations++;
       this.users = sortUsers(this.users, this.standMatches);
       this.createMatches(tryFindPartialMatch, this.users);
-      this.logMatchingStatus(
-        `Partial matching iteration ${iterations} complete`,
-      );
+      this.logMatchingStatus(`Partial matching iteration ${iterations} complete`);
     }
     this.logPerformanceMetrics();
 
@@ -95,11 +93,10 @@ export class MatchFinder {
       } | null = null;
       for (let i = 0; i < this.userGroups.size - 1; i++) {
         for (let j = i + 1; j < this.userGroups.size; j++) {
-          const { successRate, numberOfMatches } =
-            this.evaluateTwoWayMatchRatio([
-              ...(iterableUserGroups[i] ?? []),
-              ...(iterableUserGroups[j] ?? []),
-            ]);
+          const { successRate, numberOfMatches } = this.evaluateTwoWayMatchRatio([
+            ...(iterableUserGroups[i] ?? []),
+            ...(iterableUserGroups[j] ?? []),
+          ]);
           if (
             bestGrouping === null ||
             (successRate > bestGrouping.successRate &&
@@ -119,8 +116,7 @@ export class MatchFinder {
           }
         }
       }
-      if (!bestGrouping)
-        throw new BlError("Failed to find a compatible userGroup pair");
+      if (!bestGrouping) throw new BlError("Failed to find a compatible userGroup pair");
 
       const joinedGroupId = [bestGrouping.groupA, bestGrouping.groupB]
         .sort((a, b) => a.localeCompare(b))
@@ -134,10 +130,7 @@ export class MatchFinder {
         }
       }
       this.groupUsersByMembership();
-      this.createMatches(
-        tryFindTwoWayMatch,
-        this.userGroups.get(joinedGroupId) ?? [],
-      );
+      this.createMatches(tryFindTwoWayMatch, this.userGroups.get(joinedGroupId) ?? []);
       this.logMatchingStatus(
         `Created ${bestGrouping.numberOfMatches} TwoWayMatches for new group ${joinedGroupId} (${(bestGrouping.successRate * 100).toPrecision(3)}% match)`,
       );
@@ -190,49 +183,34 @@ export class MatchFinder {
       if (userMatch.customerA === userMatch.customerB) {
         throw new BlError("Users cannot be matched with themselves!");
       }
-      userMatchCounts[userMatch.customerA] =
-        (userMatchCounts[userMatch.customerA] ?? 0) + 1;
-      userMatchCounts[userMatch.customerB] =
-        (userMatchCounts[userMatch.customerB] ?? 0) + 1;
+      userMatchCounts[userMatch.customerA] = (userMatchCounts[userMatch.customerA] ?? 0) + 1;
+      userMatchCounts[userMatch.customerB] = (userMatchCounts[userMatch.customerB] ?? 0) + 1;
 
-      const originalCustomerA = originalUsers.find(
-        (u) => u.id === userMatch.customerA,
-      );
-      const originalCustomerB = originalUsers.find(
-        (u) => u.id === userMatch.customerB,
-      );
+      const originalCustomerA = originalUsers.find((u) => u.id === userMatch.customerA);
+      const originalCustomerB = originalUsers.find((u) => u.id === userMatch.customerB);
 
       if (!originalCustomerA || !originalCustomerB) {
-        throw new BlError(
-          "Match participant must exist in the original MatchableUsers",
-        );
+        throw new BlError("Match participant must exist in the original MatchableUsers");
       }
 
       if (
-        userMatch.expectedAToBItems.difference(originalCustomerA.items).size >
-          0 ||
+        userMatch.expectedAToBItems.difference(originalCustomerA.items).size > 0 ||
         userMatch.expectedBToAItems.difference(originalCustomerB.items).size > 0
       ) {
         throw new BlError("Users cannot give away more books than they have!");
       }
       if (
-        userMatch.expectedBToAItems.difference(originalCustomerA.wantedItems)
-          .size > 0 ||
-        userMatch.expectedAToBItems.difference(originalCustomerB.wantedItems)
-          .size > 0
+        userMatch.expectedBToAItems.difference(originalCustomerA.wantedItems).size > 0 ||
+        userMatch.expectedAToBItems.difference(originalCustomerB.wantedItems).size > 0
       ) {
         throw new BlError("Users cannot receive books they do not want!");
       }
-      originalCustomerA.items = originalCustomerA.items.difference(
-        userMatch.expectedAToBItems,
-      );
+      originalCustomerA.items = originalCustomerA.items.difference(userMatch.expectedAToBItems);
       originalCustomerA.wantedItems = originalCustomerA.wantedItems.difference(
         userMatch.expectedBToAItems,
       );
 
-      originalCustomerB.items = originalCustomerB.items.difference(
-        userMatch.expectedBToAItems,
-      );
+      originalCustomerB.items = originalCustomerB.items.difference(userMatch.expectedBToAItems);
       originalCustomerB.wantedItems = originalCustomerB.wantedItems.difference(
         userMatch.expectedAToBItems,
       );
@@ -242,9 +220,7 @@ export class MatchFinder {
         (userMatchCount) => userMatchCount > this.MAX_USER_MATCH_COUNT,
       )
     ) {
-      throw new BlError(
-        `Users cannot have more than ${this.MAX_USER_MATCH_COUNT} user matches!`,
-      );
+      throw new BlError(`Users cannot have more than ${this.MAX_USER_MATCH_COUNT} user matches!`);
     }
 
     const usersWithStandMatch = new Set<string>();
@@ -254,32 +230,20 @@ export class MatchFinder {
       }
       usersWithStandMatch.add(standMatch.customer);
 
-      const originalCustomer = originalUsers.find(
-        (u) => u.id === standMatch.customer,
-      );
+      const originalCustomer = originalUsers.find((u) => u.id === standMatch.customer);
 
       if (!originalCustomer) {
-        throw new BlError(
-          "Stand Match user must exist in the original MatchableUsers",
-        );
+        throw new BlError("Stand Match user must exist in the original MatchableUsers");
       }
 
-      if (
-        standMatch.expectedHandoffItems.difference(originalCustomer.items)
-          .size > 0
-      ) {
+      if (standMatch.expectedHandoffItems.difference(originalCustomer.items).size > 0) {
         throw new BlError("Users cannot give away more books than they have!");
       }
-      if (
-        standMatch.expectedPickupItems.difference(originalCustomer.wantedItems)
-          .size > 0
-      ) {
+      if (standMatch.expectedPickupItems.difference(originalCustomer.wantedItems).size > 0) {
         throw new BlError("Users cannot receive books they do not want!");
       }
 
-      originalCustomer.items = originalCustomer.items.difference(
-        standMatch.expectedHandoffItems,
-      );
+      originalCustomer.items = originalCustomer.items.difference(standMatch.expectedHandoffItems);
       originalCustomer.wantedItems = originalCustomer.wantedItems.difference(
         standMatch.expectedPickupItems,
       );
@@ -299,9 +263,7 @@ export class MatchFinder {
    */
   private standMatchUnmatchableItems() {
     const newUnmatchableItems = calculateUnmatchableItems(this.users);
-    const uncheckedUnmatchableItems = newUnmatchableItems.difference(
-      this.unmatchableItems,
-    );
+    const uncheckedUnmatchableItems = newUnmatchableItems.difference(this.unmatchableItems);
 
     if (uncheckedUnmatchableItems.size > 0) {
       this.logItemDemand(this.users);
@@ -328,16 +290,11 @@ export class MatchFinder {
    * @private
    */
   private createFullStandMatches() {
-    const itemCounts = countItemOccurrences(
-      this.users.flatMap((user) => Array.from(user.items)),
-    );
+    const itemCounts = countItemOccurrences(this.users.flatMap((user) => Array.from(user.items)));
     const wantedItemCounts = countItemOccurrences(
       this.users.flatMap((user) => Array.from(user.wantedItems)),
     );
-    const itemImbalances = calculateItemImbalances(
-      itemCounts,
-      wantedItemCounts,
-    );
+    const itemImbalances = calculateItemImbalances(itemCounts, wantedItemCounts);
 
     this.logItemDemand(this.users);
     this.createImbalanceMinimizingStandMatches(this.users, itemImbalances);
@@ -365,10 +322,7 @@ export class MatchFinder {
     for (const user of users) {
       if (canMatchPerfectlyWithStand(user, itemImbalances)) {
         updateItemImbalances(user.items, user.wantedItems, itemImbalances);
-        this.createStandMatch(
-          user,
-          new Set([...user.items, ...user.wantedItems]),
-        );
+        this.createStandMatch(user, new Set([...user.items, ...user.wantedItems]));
       }
     }
   }
@@ -383,15 +337,11 @@ export class MatchFinder {
    */
   private createStandMatchIfReachedMatchLimit(user: MatchableUser) {
     const userMatches = this.userMatches.filter(
-      (userMatch) =>
-        userMatch.customerA === user.id || userMatch.customerB === user.id,
+      (userMatch) => userMatch.customerA === user.id || userMatch.customerB === user.id,
     );
 
     if (userMatches.length >= this.MAX_USER_MATCH_COUNT) {
-      this.createStandMatch(
-        user,
-        new Set([...user.items, ...user.wantedItems]),
-      );
+      this.createStandMatch(user, new Set([...user.items, ...user.wantedItems]));
     }
   }
 
@@ -406,9 +356,7 @@ export class MatchFinder {
     numberOfMatches: number;
   } {
     if (userGroup.length === 0) {
-      throw new BlError(
-        "evaluateTwoWayMatchRatio was called on a userGroup without any users!",
-      );
+      throw new BlError("evaluateTwoWayMatchRatio was called on a userGroup without any users!");
     }
     let localUserPool = copyUsers(userGroup);
     let stillFindingMatches = true;
@@ -436,9 +384,7 @@ export class MatchFinder {
     return {
       numberOfMatches: matchCount,
       successRate:
-        notMatched.length === 0
-          ? 1
-          : (userGroup.length - notMatched.length) / userGroup.length,
+        notMatched.length === 0 ? 1 : (userGroup.length - notMatched.length) / userGroup.length,
     };
   }
 
@@ -450,10 +396,7 @@ export class MatchFinder {
    * @private
    */
   private createMatches(
-    matchFinder: (
-      user: MatchableUser,
-      userGroup: MatchableUser[],
-    ) => MatchableUser | null,
+    matchFinder: (user: MatchableUser, userGroup: MatchableUser[]) => MatchableUser | null,
     userGroup: MatchableUser[],
   ) {
     const sortedUserGroup = sortUsers(userGroup, this.standMatches);
@@ -588,20 +531,16 @@ export class MatchFinder {
   }
 
   private logItemDemand(users: MatchableUser[]): void {
-    const sortedItems = Object.entries(this.calculateItemDemand(users)).sort(
-      (a, b) => {
-        const totalDiff = b[1].total - a[1].total;
-        if (totalDiff !== 0) return totalDiff;
-        return b[1].wanted - a[1].wanted;
-      },
-    );
+    const sortedItems = Object.entries(this.calculateItemDemand(users)).sort((a, b) => {
+      const totalDiff = b[1].total - a[1].total;
+      if (totalDiff !== 0) return totalDiff;
+      return b[1].wanted - a[1].wanted;
+    });
     if (sortedItems.keys().toArray().length === 0) return;
 
     logger.debug(
       `Remaining Items:\n${sortedItems
-        .map(
-          (item) => `${item[0]}: ${item[1].total} (${item[1].wanted} wanted)`,
-        )
+        .map((item) => `${item[0]}: ${item[1].total} (${item[1].wanted} wanted)`)
         .join("\n")}`,
     );
   }
@@ -627,8 +566,7 @@ export class MatchFinder {
     this.logMatchingStatus("MatchFinder is done.");
     let totalUserMatchItems = 0;
     for (const userMatch of this.userMatches) {
-      totalUserMatchItems +=
-        userMatch.expectedAToBItems.size + userMatch.expectedBToAItems.size;
+      totalUserMatchItems += userMatch.expectedAToBItems.size + userMatch.expectedBToAItems.size;
     }
 
     let totalItems = 0;
@@ -686,10 +624,7 @@ export class MatchFinder {
     );
 
     // Number of customers that need to visit stand vs not having to visit
-    const groupedUsers = countMatchesForEachUser(
-      this.userMatches,
-      this.standMatches,
-    );
+    const groupedUsers = countMatchesForEachUser(this.userMatches, this.standMatches);
     const matchConfigSetups = new Map<string, number>();
     for (const { userMatches, standMatches } of groupedUsers.values()) {
       const key = `${userMatches} UserMatches ${standMatches} StandMatches`;

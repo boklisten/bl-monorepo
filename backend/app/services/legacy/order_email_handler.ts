@@ -23,9 +23,7 @@ export const OrderEmailHandler = {
 
     const emailUser: EmailUser = {
       id: customerDetail.id,
-      dob: customerDetail.dob
-        ? DateService.toPrintFormat(customerDetail.dob, "Europe/Oslo")
-        : "",
+      dob: customerDetail.dob ? DateService.toPrintFormat(customerDetail.dob, "Europe/Oslo") : "",
       name: customerDetail.name,
       email: customerDetail.email,
       address: customerDetail.address,
@@ -33,23 +31,13 @@ export const OrderEmailHandler = {
 
     if (withAgreement) {
       const branch = await StorageService.Branches.get(branchId);
-      await DispatchService.sendSignatureLink(
-        customerDetail,
-        branch?.name ?? "en filial",
-      );
+      await DispatchService.sendSignatureLink(customerDetail, branch?.name ?? "en filial");
     }
 
-    await DispatchService.sendOrderReceipt(
-      emailUser,
-      emailOrder,
-      this.paymentNeeded(order),
-    );
+    await DispatchService.sendOrderReceipt(emailUser, emailOrder, this.paymentNeeded(order));
   },
   paymentNeeded(order: Order) {
-    return (
-      order.amount > 0 &&
-      (!Array.isArray(order.payments) || order.payments.length === 0)
-    );
+    return order.amount > 0 && (!Array.isArray(order.payments) || order.payments.length === 0);
   },
   async orderToEmailOrder(order: Order) {
     const emailOrder: EmailOrder = {
@@ -69,9 +57,7 @@ export const OrderEmailHandler = {
       payment: null,
     };
 
-    /* eslint-disable-next-line @typescript-eslint/no-explicit-any */
     let emailOrderDelivery: { showDelivery: boolean; delivery: any };
-    /* eslint-disable-next-line @typescript-eslint/no-explicit-any */
     let emailOrderPayment: { showPayment: boolean; payment: any };
 
     try {
@@ -85,8 +71,7 @@ export const OrderEmailHandler = {
     emailOrder.delivery = emailOrderDelivery.delivery;
 
     if (emailOrder.delivery) {
-      emailOrder.totalAmount =
-        order.amount + emailOrderDelivery.delivery["amount"];
+      emailOrder.totalAmount = order.amount + emailOrderDelivery.delivery["amount"];
     }
 
     emailOrder.showPayment = emailOrderPayment.showPayment;
@@ -115,14 +100,9 @@ export const OrderEmailHandler = {
     return Promise.all(paymentPromises)
       .then((payments: Payment[]) => {
         const emailPayment = {
-          total: payments.reduce(
-            (subTotal, payment) => subTotal + payment.amount,
-            0,
-          ),
+          total: payments.reduce((subTotal, payment) => subTotal + payment.amount, 0),
           currency: "NOK",
-          payments: payments.map((payment) =>
-            this.paymentToEmailPayment(payment),
-          ),
+          payments: payments.map((payment) => this.paymentToEmailPayment(payment)),
         };
 
         if (
@@ -170,19 +150,14 @@ export const OrderEmailHandler = {
       paymentId: "",
       status: "bekreftet",
       creationTime: payment.creationTime
-        ? DateService.format(
-            payment.creationTime,
-            "Europe/Oslo",
-            "DD.MM.YYYY HH.mm.ss",
-          )
+        ? DateService.format(payment.creationTime, "Europe/Oslo", "DD.MM.YYYY HH.mm.ss")
         : null,
     };
 
     if (payment.method === "dibs") {
       if (payment.info) {
         // fixme baaaad type conversion
-        const paymentInfo: DibsEasyPayment =
-          payment.info as unknown as DibsEasyPayment;
+        const paymentInfo: DibsEasyPayment = payment.info as unknown as DibsEasyPayment;
         if (paymentInfo.paymentDetails) {
           if (paymentInfo.paymentDetails.paymentMethod) {
             paymentObject.method = paymentInfo.paymentDetails.paymentMethod;
@@ -265,17 +240,11 @@ export const OrderEmailHandler = {
         orderItem.type === "rent" || orderItem.type === "extend"
           ? DateService.toPrintFormat(orderItem.info?.to ?? "", "Europe/Oslo")
           : null,
-      price:
-        orderItem.type !== "return" && orderItem.amount
-          ? orderItem.amount.toString()
-          : null,
+      price: orderItem.type !== "return" && orderItem.amount ? orderItem.amount.toString() : null,
     }));
   },
 
-  translateOrderItemType(
-    orderItemType: OrderItemType,
-    handout?: boolean,
-  ): string {
+  translateOrderItemType(orderItemType: OrderItemType, handout?: boolean): string {
     return `${TranslationService.translateOrderItemTypePastTense(orderItemType)}${
       handout && orderItemType !== "return" ? " - utlevert" : ""
     }`;
@@ -283,9 +252,7 @@ export const OrderEmailHandler = {
 
   async shouldSendAgreement(order: Order): Promise<boolean> {
     const onlyHandout = order.orderItems[0]?.handout;
-    const rentFound = order.orderItems.some(
-      (orderItem) => orderItem.type === "rent",
-    );
+    const rentFound = order.orderItems.some((orderItem) => orderItem.type === "rent");
 
     if (onlyHandout) {
       return false;

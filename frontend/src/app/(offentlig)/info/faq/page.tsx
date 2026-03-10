@@ -12,9 +12,7 @@ export const metadata: Metadata = {
 
 export default async function FaqPage() {
   "use cache";
-  const cachedData = await publicApiClient.questions_and_answers
-    .$get()
-    .unwrap();
+  const cachedData = await publicApiClient.questions_and_answers.$get().unwrap();
 
   return (
     <Stack>

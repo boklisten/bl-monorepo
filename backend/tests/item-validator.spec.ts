@@ -46,8 +46,8 @@ test.group("ItemValidator", (group) => {
   });
 
   test("should return true when using valid orderItem and valid item", async () => {
-    expect(itemValidator.validateItemInOrder(testItem, testOrderItem)).to.be
-      .true;
+    // oxlint-disable-next-line no-unused-expressions
+    expect(itemValidator.validateItemInOrder(testItem, testOrderItem)).to.be.true;
   });
 
   test("should throw BlError when orderItem.item is not the same as item.id", async () => {

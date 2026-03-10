@@ -34,10 +34,7 @@ export class TwilioSmsEventOperation implements Operation {
     return { documentName: "success", data: [] };
   }
 
-  private async parseAndAddTwilioEvent(
-    twilioEvent: unknown,
-    blMessageId: string,
-  ) {
+  private async parseAndAddTwilioEvent(twilioEvent: unknown, blMessageId: string) {
     if (!blMessageId) {
       logger.debug(`sendgrid event did not have a bl_message_id`);
       return true; // default is that the message dont have a blMessageId
@@ -59,10 +56,7 @@ export class TwilioSmsEventOperation implements Operation {
     message: Message,
     smsEvent: unknown,
   ): Promise<boolean> {
-    const newSmsEvents =
-      message.smsEvents && message.smsEvents.length > 0
-        ? message.smsEvents
-        : [];
+    const newSmsEvents = message.smsEvents && message.smsEvents.length > 0 ? message.smsEvents : [];
 
     newSmsEvents.push(smsEvent);
 

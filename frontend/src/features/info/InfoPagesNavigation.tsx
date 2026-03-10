@@ -29,19 +29,10 @@ const InfoPagesNavigation = () => {
   return (
     <Center>
       <Box visibleFrom={"sm"}>
-        <Tabs
-          value={
-            tabs.find((tab) => pathname.includes(tab.value))?.value ?? pathname
-          }
-        >
+        <Tabs value={tabs.find((tab) => pathname.includes(tab.value))?.value ?? pathname}>
           <TabsList justify={"center"}>
             {tabs.map((tab) => (
-              <NextAnchor
-                underline={"never"}
-                c={"dark"}
-                key={tab.value}
-                href={tab.value}
-              >
+              <NextAnchor underline={"never"} c={"dark"} key={tab.value} href={tab.value}>
                 <TabsTab value={tab.value}>{tab.label}</TabsTab>
               </NextAnchor>
             ))}

@@ -41,10 +41,7 @@ function onGetAll(collection: BlCollection, endpoint: BlEndpoint) {
         );
       }
 
-      return await collection.storage.getByQuery(
-        databaseQuery,
-        endpoint.nestedDocuments,
-      );
+      return await collection.storage.getByQuery(databaseQuery, endpoint.nestedDocuments);
     } else {
       // if no query, give back all objects in collection
       let permission = undefined;
@@ -159,20 +156,12 @@ async function handleEndpointRequest({
   onRequest: (blApiRequest: BlApiRequest) => Promise<BlStorageData>;
 }): Promise<BlDocument[]> {
   const hook = endpoint.hook ?? new Hook();
-  const beforeData = await hook.before(
-    requestData,
-    accessToken,
-    documentId,
-    query,
-  );
+  const beforeData = await hook.before(requestData, accessToken, documentId, query);
 
   const blApiRequest = {
     documentId,
     query: query,
-    data:
-      isNotNullish(beforeData) && !isBoolean(beforeData)
-        ? beforeData
-        : requestData,
+    data: isNotNullish(beforeData) && !isBoolean(beforeData) ? beforeData : requestData,
     user: accessToken
       ? {
           id: accessToken.sub as string,
@@ -183,11 +172,7 @@ async function handleEndpointRequest({
   };
 
   if (checkDocumentPermission) {
-    await validateDocumentPermission(
-      blApiRequest,
-      collection.storage,
-      endpoint.method,
-    );
+    await validateDocumentPermission(blApiRequest, collection.storage, endpoint.method);
   }
 
   const responseData = await onRequest(blApiRequest);

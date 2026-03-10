@@ -2,10 +2,7 @@ import { StandMatchWithDetails } from "@boklisten/backend/shared/match/match-dto
 import { Text, Title } from "@mantine/core";
 import { Activity } from "react";
 
-import {
-  formatActionsString,
-  StandMatchTitle,
-} from "@/features/matches/matchesList/helper";
+import { formatActionsString, StandMatchTitle } from "@/features/matches/matchesList/helper";
 import MatchListItemCard from "@/features/matches/matchesList/MatchListItemCard";
 import MeetingInfo from "@/features/matches/MeetingInfo";
 import {
@@ -15,11 +12,7 @@ import {
 } from "@/shared/components/matches/matches-helper";
 import ProgressBar from "@/shared/components/ProgressBar";
 
-export default function StandMatchListItem({
-  standMatch,
-}: {
-  standMatch: StandMatchWithDetails;
-}) {
+export default function StandMatchListItem({ standMatch }: { standMatch: StandMatchWithDetails }) {
   const numberHandoffItems = standMatch.expectedHandoffItems.length;
   const numberPickupItems = standMatch.expectedPickupItems.length;
   const hasHandoffItems = numberHandoffItems > 0;
@@ -29,65 +22,44 @@ export default function StandMatchListItem({
   const isBegun = isStandMatchBegun(standMatch);
   const isFulfilled = isStandMatchFulfilled(standMatch);
   return (
-    <MatchListItemCard
-      finished={isFulfilled}
-      matchId={standMatch.id}
-      matchType={"stand"}
-    >
+    <MatchListItemCard finished={isFulfilled} matchId={standMatch.id} matchType={"stand"}>
       <Title order={4}>
         <StandMatchTitle standMatch={standMatch} />
       </Title>
       <Activity mode={isBegun ? "visible" : "hidden"}>
-        <Activity
-          mode={hasHandoffItems && hasPickupItems ? "visible" : "hidden"}
-        >
+        <Activity mode={hasHandoffItems && hasPickupItems ? "visible" : "hidden"}>
           <ProgressBar
-            percentComplete={
-              (fulfilledHandoffItems.length * 100) / numberHandoffItems
-            }
+            percentComplete={(fulfilledHandoffItems.length * 100) / numberHandoffItems}
             subtitle={
               <Text size={"sm"}>
-                Utvekslet {fulfilledHandoffItems.length} av {numberHandoffItems}{" "}
-                bøker
+                Utvekslet {fulfilledHandoffItems.length} av {numberHandoffItems} bøker
               </Text>
             }
           />
         </Activity>
-        <Activity
-          mode={hasHandoffItems && !hasPickupItems ? "visible" : "hidden"}
-        >
+        <Activity mode={hasHandoffItems && !hasPickupItems ? "visible" : "hidden"}>
           <ProgressBar
-            percentComplete={
-              (fulfilledHandoffItems.length * 100) / numberHandoffItems
-            }
+            percentComplete={(fulfilledHandoffItems.length * 100) / numberHandoffItems}
             subtitle={
               <Text size={"sm"}>
-                Levert {fulfilledHandoffItems.length} av {numberHandoffItems}{" "}
-                bøker
+                Levert {fulfilledHandoffItems.length} av {numberHandoffItems} bøker
               </Text>
             }
           />
         </Activity>
-        <Activity
-          mode={hasPickupItems && !hasHandoffItems ? "visible" : "hidden"}
-        >
+        <Activity mode={hasPickupItems && !hasHandoffItems ? "visible" : "hidden"}>
           <ProgressBar
-            percentComplete={
-              (fulfilledPickupItems.length * 100) / numberPickupItems
-            }
+            percentComplete={(fulfilledPickupItems.length * 100) / numberPickupItems}
             subtitle={
               <Text size={"sm"}>
-                Mottatt {fulfilledPickupItems.length} av {numberPickupItems}{" "}
-                bøker
+                Mottatt {fulfilledPickupItems.length} av {numberPickupItems} bøker
               </Text>
             }
           />
         </Activity>
       </Activity>
       <Activity mode={!isBegun && !isFulfilled ? "visible" : "hidden"}>
-        <Text>
-          {formatActionsString(numberHandoffItems, numberPickupItems)}
-        </Text>
+        <Text>{formatActionsString(numberHandoffItems, numberPickupItems)}</Text>
       </Activity>
       <Activity mode={!isFulfilled ? "visible" : "hidden"}>
         <MeetingInfo

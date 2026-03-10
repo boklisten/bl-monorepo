@@ -1,10 +1,6 @@
 import { StandMatchWithDetails } from "@boklisten/backend/shared/match/match-dtos";
 import { Group, Text } from "@mantine/core";
-import {
-  IconChevronsLeft,
-  IconChevronsRight,
-  IconSwitchHorizontal,
-} from "@tabler/icons-react";
+import { IconChevronsLeft, IconChevronsRight, IconSwitchHorizontal } from "@tabler/icons-react";
 
 import { UserMatchStatus } from "@/shared/components/matches/matches-helper";
 
@@ -59,11 +55,7 @@ export const FormattedDatetime = ({ date }: { date: Date }) => {
   );
 };
 
-export const UserMatchTitle = ({
-  userMatchStatus,
-}: {
-  userMatchStatus: UserMatchStatus;
-}) => {
+export const UserMatchTitle = ({ userMatchStatus }: { userMatchStatus: UserMatchStatus }) => {
   const { currentUser, otherUser } = userMatchStatus;
   if (currentUser.items.length > 0 && otherUser.items.length === 0) {
     return (
@@ -78,10 +70,7 @@ export const UserMatchTitle = ({
       </Group>
     );
   }
-  if (
-    currentUser.wantedItems.length > 0 &&
-    otherUser.wantedItems.length === 0
-  ) {
+  if (currentUser.wantedItems.length > 0 && otherUser.wantedItems.length === 0) {
     return (
       <Group gap={2}>
         <Text fw={"bold"} fz={"inherit"}>
@@ -107,11 +96,7 @@ export const UserMatchTitle = ({
   );
 };
 
-export const StandMatchTitle = ({
-  standMatch,
-}: {
-  standMatch: StandMatchWithDetails;
-}) => {
+export const StandMatchTitle = ({ standMatch }: { standMatch: StandMatchWithDetails }) => {
   const hasHandoffItems = standMatch.expectedHandoffItems.length > 0;
   const hasPickupItems = standMatch.expectedPickupItems.length > 0;
 

@@ -9,9 +9,7 @@ const vippsEnv = {
   msn: env.get(isProduction ? "VIPPS_MSN" : "VIPPS_MT_MSN"),
   clientId: env.get(isProduction ? "VIPPS_CLIENT_ID" : "VIPPS_MT_CLIENT_ID"),
   clientSecret: env.get(isProduction ? "VIPPS_SECRET" : "VIPPS_MT_SECRET"),
-  subscriptionKey: env.get(
-    isProduction ? "VIPPS_SUBSCRIPTION_KEY" : "VIPPS_MT_SUBSCRIPTION_KEY",
-  ),
+  subscriptionKey: env.get(isProduction ? "VIPPS_SUBSCRIPTION_KEY" : "VIPPS_MT_SUBSCRIPTION_KEY"),
 } as const satisfies Record<string, string>;
 
 const client = Client({
@@ -44,11 +42,7 @@ export const VippsPaymentService = {
       };
     },
     info: async (reference: string) => {
-      const info = await client.checkout.info(
-        vippsEnv.clientId,
-        vippsEnv.clientSecret,
-        reference,
-      );
+      const info = await client.checkout.info(vippsEnv.clientId, vippsEnv.clientSecret, reference);
       if (!info.ok) {
         throw new Error(JSON.stringify(info.error));
       }
@@ -56,9 +50,7 @@ export const VippsPaymentService = {
     },
   },
   token: {
-    issue: () =>
-      encryption.encrypt(string.random(32), "1 day", callbackTokenPurpose),
-    verify: (token: unknown) =>
-      !!encryption.decrypt(token, callbackTokenPurpose),
+    issue: () => encryption.encrypt(string.random(32), "1 day", callbackTokenPurpose),
+    verify: (token: unknown) => !!encryption.decrypt(token, callbackTokenPurpose),
   },
 };

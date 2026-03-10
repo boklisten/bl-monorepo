@@ -1,14 +1,5 @@
 "use client";
-import {
-  Button,
-  Card,
-  Loader,
-  NavLink,
-  Skeleton,
-  Stack,
-  Text,
-  Title,
-} from "@mantine/core";
+import { Button, Card, Loader, NavLink, Skeleton, Stack, Text, Title } from "@mantine/core";
 import { IconBasket, IconBook, IconRefresh } from "@tabler/icons-react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import Link from "next/link";
@@ -38,8 +29,7 @@ function BackToCartButton() {
   );
 }
 
-const calculateTotalWait = (attempts: number) =>
-  ((n) => (n * (n + 1) * (2 * n + 1)) / 6)(attempts);
+const calculateTotalWait = (attempts: number) => ((n) => (n * (n + 1) * (2 * n + 1)) / 6)(attempts);
 
 export default function VippsCheckoutStatus() {
   const client = useApiClient();
@@ -100,9 +90,7 @@ export default function VippsCheckoutStatus() {
 
   if (isError) {
     return (
-      <ErrorAlert title={"Klarte ikke hente betalingsstatus"}>
-        {PLEASE_TRY_AGAIN_TEXT}
-      </ErrorAlert>
+      <ErrorAlert title={"Klarte ikke hente betalingsstatus"}>{PLEASE_TRY_AGAIN_TEXT}</ErrorAlert>
     );
   }
 
@@ -115,21 +103,14 @@ export default function VippsCheckoutStatus() {
               <Stack gap={5}>
                 <Title order={3}>Prosesserer betaling...</Title>
                 <Text fs={"italic"}>
-                  Venter på betalingsstatus fra Vipps. Vennligst ikke lukk
-                  fanen.
+                  Venter på betalingsstatus fra Vipps. Vennligst ikke lukk fanen.
                 </Text>
               </Stack>
-              <Activity
-                mode={secondsBeforeNextAttempt < 1 ? "visible" : "hidden"}
-              >
+              <Activity mode={secondsBeforeNextAttempt < 1 ? "visible" : "hidden"}>
                 <Loader type={"dots"} />
               </Activity>
-              <Activity
-                mode={secondsBeforeNextAttempt >= 1 ? "visible" : "hidden"}
-              >
-                <Text>
-                  Prøver igjen om {secondsBeforeNextAttempt.toFixed(0)} sekunder
-                </Text>
+              <Activity mode={secondsBeforeNextAttempt >= 1 ? "visible" : "hidden"}>
+                <Text>Prøver igjen om {secondsBeforeNextAttempt.toFixed(0)} sekunder</Text>
               </Activity>
               <Text size={"sm"} fs={"italic"}>
                 Forsøk {attempt} av {MAX_ATTEMPTS}
@@ -141,8 +122,8 @@ export default function VippsCheckoutStatus() {
         <Activity mode={attempt > MAX_ATTEMPTS ? "visible" : "hidden"}>
           <ErrorAlert title={"Vipps bruke for lang tid på å svare"}>
             Vi mottok ikke oppdatert betalingsinformasjon etter å ha ventet i{" "}
-            {calculateTotalWait(attempt)} sekunder. Du kan prøve igjen eller ta
-            kontakt hvis problemet vedvarer.
+            {calculateTotalWait(attempt)} sekunder. Du kan prøve igjen eller ta kontakt hvis
+            problemet vedvarer.
           </ErrorAlert>
           <Button
             leftSection={<IconRefresh />}
@@ -162,8 +143,8 @@ export default function VippsCheckoutStatus() {
       <>
         <Title order={2}>Kvittering</Title>
         <SuccessAlert title={"Din ordre er bekreftet!"}>
-          Kvittering har blitt sendt på e-post. Du kan se dine nåværende bøker
-          ved å trykke på {'"Dine bøker"'}
+          Kvittering har blitt sendt på e-post. Du kan se dine nåværende bøker ved å trykke på{" "}
+          {'"Dine bøker"'}
         </SuccessAlert>
         <OrderReceipt orderId={orderId} />
         <NavLink
@@ -203,9 +184,7 @@ export default function VippsCheckoutStatus() {
 
   return (
     <>
-      <ErrorAlert title={"Noe gikk galt under betalingen"}>
-        {PLEASE_TRY_AGAIN_TEXT}
-      </ErrorAlert>
+      <ErrorAlert title={"Noe gikk galt under betalingen"}>{PLEASE_TRY_AGAIN_TEXT}</ErrorAlert>
       <BackToCartButton />
     </>
   );

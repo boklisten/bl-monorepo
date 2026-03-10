@@ -12,10 +12,7 @@ export class UserDetailHelper {
     return new Promise((resolve, reject) => {
       StorageService.UserDetails.get(userDetailId)
         .then((userDetail: UserDetail) => {
-          const updateObject = this.getUserDetailUpdateObject(
-            dibsEasyPayment,
-            userDetail,
-          );
+          const updateObject = this.getUserDetailUpdateObject(dibsEasyPayment, userDetail);
 
           StorageService.UserDetails.update(userDetailId, updateObject)
             .then((updatedUserDetail: UserDetail) => {
@@ -30,20 +27,12 @@ export class UserDetailHelper {
             });
         })
         .catch((getUserDetailError: BlError) => {
-          reject(
-            new BlError(`could not get userDetail "${userDetailId}"`).add(
-              getUserDetailError,
-            ),
-          );
+          reject(new BlError(`could not get userDetail "${userDetailId}"`).add(getUserDetailError));
         });
     });
   }
 
-  private getUserDetailUpdateObject(
-    dibsEasyPayment: DibsEasyPayment,
-    userDetail: UserDetail,
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  ): any {
+  private getUserDetailUpdateObject(dibsEasyPayment: DibsEasyPayment, userDetail: UserDetail): any {
     const dibsUserDetail = dibsEasyPayment.consumer.privatePerson;
     const dibsShippingAddress = dibsEasyPayment.consumer.shippingAddress;
 
@@ -56,8 +45,7 @@ export class UserDetailHelper {
       dibsUserDetail?.lastName
     ) {
       // @ts-expect-error fixme: auto ignored
-      userDetailUpdateObject["name"] =
-        dibsUserDetail.firstName + " " + dibsUserDetail.lastName;
+      userDetailUpdateObject["name"] = dibsUserDetail.firstName + " " + dibsUserDetail.lastName;
     }
 
     if (
@@ -112,9 +100,7 @@ export class UserDetailHelper {
 
   public getFirstName(name: string) {
     const splitName = name.trimEnd().split(" ");
-    return splitName.length <= 1
-      ? name.trim()
-      : splitName.slice(0, -1).join(" ").trim();
+    return splitName.length <= 1 ? name.trim() : splitName.slice(0, -1).join(" ").trim();
   }
 
   public getLastName(name: string) {

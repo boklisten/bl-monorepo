@@ -13,11 +13,7 @@ export class OrderPlacedValidator {
       }
 
       if (!this.validateOrderItems(order)) {
-        return reject(
-          new BlError(
-            "total of order.orderItems amount is not equal to order.amount",
-          ),
-        );
+        return reject(new BlError("total of order.orderItems amount is not equal to order.amount"));
       }
 
       if (isNullish(order.payments) || order.payments.length <= 0) {
@@ -40,11 +36,7 @@ export class OrderPlacedValidator {
               });
           })
           .catch((blError: BlError) => {
-            reject(
-              new BlError(`delivery "${order.delivery}" not found`).add(
-                blError,
-              ),
-            );
+            reject(new BlError(`delivery "${order.delivery}" not found`).add(blError));
           });
       }
     });
@@ -60,10 +52,7 @@ export class OrderPlacedValidator {
     return order.amount === orderItemTotalAmount;
   }
 
-  private validatePayments(
-    order: Order,
-    delivery?: Delivery,
-  ): Promise<boolean> {
+  private validatePayments(order: Order, delivery?: Delivery): Promise<boolean> {
     return new Promise((resolve, reject) => {
       const totalOrderAmount = order.amount + (delivery ? delivery.amount : 0);
 
@@ -73,12 +62,7 @@ export class OrderPlacedValidator {
 
           for (const payment of payments) {
             if (!payment.confirmed) {
-              return reject(
-                new BlError("payment is not confirmed").store(
-                  "paymentId",
-                  payment.id,
-                ),
-              );
+              return reject(new BlError("payment is not confirmed").store("paymentId", payment.id));
             }
             paymentTotal += payment.amount;
           }
@@ -94,9 +78,7 @@ export class OrderPlacedValidator {
           resolve(true);
         })
         .catch((blError: BlError) => {
-          reject(
-            new BlError("order.payments is not found").code(702).add(blError),
-          );
+          reject(new BlError("order.payments is not found").code(702).add(blError));
         });
     });
   }

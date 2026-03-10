@@ -56,10 +56,7 @@ export default function PostalCodeField() {
       rightSection={postalCityHint}
       value={code}
       onChange={async (event) => {
-        field.setValue(
-          { code: event.target.value, city: "" },
-          { dontValidate: true },
-        );
+        field.setValue({ code: event.target.value, city: "" }, { dontValidate: true });
         lookupPostalCodeMutation.mutate();
       }}
       onBlur={field.handleBlur}

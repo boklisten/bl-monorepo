@@ -7,28 +7,21 @@ import ErrorAlert from "@/shared/components/alerts/ErrorAlert";
 import InfoAlert from "@/shared/components/alerts/InfoAlert";
 import useApiClient from "@/shared/hooks/useApiClient";
 import { PLEASE_TRY_AGAIN_TEXT } from "@/shared/utils/constants";
-import {
-  showErrorNotification,
-  showSuccessNotification,
-} from "@/shared/utils/notifications";
+import { showErrorNotification, showSuccessNotification } from "@/shared/utils/notifications";
 import { publicApiClient } from "@/shared/utils/publicApiClient";
 
 const OpeningHourRow = ({ openingHour }: { openingHour: OpeningHour }) => {
   const client = useApiClient();
   const queryClient = useQueryClient();
   const deleteOpeningHourMutation = useMutation({
-    mutationFn: () =>
-      client.v2.opening_hours({ id: openingHour.id }).$delete().unwrap(),
+    mutationFn: () => client.v2.opening_hours({ id: openingHour.id }).$delete().unwrap(),
     onError: () => showErrorNotification("Klarte ikke slette åpningstid"),
     onSuccess: () => {
       showSuccessNotification("Åpningstid ble slettet!");
     },
     onSettled: () =>
       queryClient.invalidateQueries({
-        queryKey: [
-          client.v2.opening_hours({ id: openingHour.branch }).$url(),
-          openingHour.branch,
-        ],
+        queryKey: [client.v2.opening_hours({ id: openingHour.branch }).$url(), openingHour.branch],
       }),
   });
   const fromDate = dayjs(openingHour.from).locale("nb");
@@ -37,8 +30,7 @@ const OpeningHourRow = ({ openingHour }: { openingHour: OpeningHour }) => {
   const date = fromDate.format("DD.MM.YYYY");
   const fromTime = fromDate.format("HH:mm");
   const toTime = toDate.format("HH:mm");
-  const capitalize = (s: string) =>
-    s.length > 0 && s[0]?.toUpperCase() + s.slice(1);
+  const capitalize = (s: string) => s.length > 0 && s[0]?.toUpperCase() + s.slice(1);
   return (
     <Table.Tr key={openingHour.id}>
       <Table.Td>
@@ -61,12 +53,8 @@ export default function OpeningHoursList({ branchId }: { branchId: string }) {
     isLoading: isLoadingOpeningHours,
     isError: isErrorOpeningHours,
   } = useQuery({
-    queryKey: [
-      publicApiClient.v2.opening_hours({ id: branchId }).$url(),
-      branchId,
-    ],
-    queryFn: () =>
-      publicApiClient.v2.opening_hours({ id: branchId }).$get().unwrap(),
+    queryKey: [publicApiClient.v2.opening_hours({ id: branchId }).$url(), branchId],
+    queryFn: () => publicApiClient.v2.opening_hours({ id: branchId }).$get().unwrap(),
   });
 
   if (isLoadingOpeningHours) {
@@ -83,9 +71,7 @@ export default function OpeningHoursList({ branchId }: { branchId: string }) {
 
   if (isErrorOpeningHours || openingHours == undefined) {
     return (
-      <ErrorAlert title={"Klarte ikke laste inn åpningstider"}>
-        {PLEASE_TRY_AGAIN_TEXT}
-      </ErrorAlert>
+      <ErrorAlert title={"Klarte ikke laste inn åpningstider"}>{PLEASE_TRY_AGAIN_TEXT}</ErrorAlert>
     );
   }
 

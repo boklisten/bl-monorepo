@@ -1,11 +1,7 @@
 import vine from "@vinejs/vine";
 
 import { USER_PERMISSION } from "#shared/user-permission";
-import {
-  emailField,
-  phoneField,
-  postalCodeField,
-} from "#validators/common/fields";
+import { emailField, phoneField, postalCodeField } from "#validators/common/fields";
 import { uniqueEmail, uniquePhoneNumber } from "#validators/common/rules";
 import { cleanUserInput } from "#validators/common/transformers";
 

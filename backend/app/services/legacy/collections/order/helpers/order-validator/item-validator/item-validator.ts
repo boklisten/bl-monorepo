@@ -6,11 +6,7 @@ export class ItemValidator {
   public validateItemInOrder(item: Item, orderItem: OrderItem): boolean {
     if (item.id != orderItem.item) {
       throw new BlError(
-        'item.id "' +
-          item.id +
-          '" is not equal to orderItem.item "' +
-          orderItem.item +
-          '"',
+        'item.id "' + item.id + '" is not equal to orderItem.item "' + orderItem.item + '"',
       );
     }
     if (!item.active) {

@@ -26,11 +26,7 @@ export default function MatchList() {
   }
 
   if (error || !data) {
-    return (
-      <ErrorAlert
-        title={"Klarte ikke laste inn dine overleveringer"}
-      ></ErrorAlert>
-    );
+    return <ErrorAlert title={"Klarte ikke laste inn dine overleveringer"}></ErrorAlert>;
   }
 
   const sortedUserMatches = data.userMatches.sort((a, b) => {
@@ -48,16 +44,14 @@ export default function MatchList() {
 
   const unfulfilledUserMatches = sortedUserMatches.filter((userMatch) => {
     const { currentUser } = calculateUserMatchStatus(userMatch);
-    const currentUserExpectedItemCount =
-      currentUser.items.length + currentUser.wantedItems.length;
+    const currentUserExpectedItemCount = currentUser.items.length + currentUser.wantedItems.length;
     const currentUserActualItemCount =
       currentUser.deliveredItems.length + currentUser.receivedItems.length;
     return currentUserActualItemCount < currentUserExpectedItemCount;
   });
   const fulfilledUserMatches = sortedUserMatches.filter((userMatch) => {
     const { currentUser } = calculateUserMatchStatus(userMatch);
-    const currentUserExpectedItemCount =
-      currentUser.items.length + currentUser.wantedItems.length;
+    const currentUserExpectedItemCount = currentUser.items.length + currentUser.wantedItems.length;
     const currentUserActualItemCount =
       currentUser.deliveredItems.length + currentUser.receivedItems.length;
     return currentUserActualItemCount >= currentUserExpectedItemCount;
@@ -68,46 +62,34 @@ export default function MatchList() {
       <InfoAlert title={"Du har ingen overleveringer :)"}>
         <Stack gap={"xs"}>
           <Text size={"sm"}>
-            Har du fått melding om overleveringer? Sjekk om du er logget inn med
-            riktig konto.
+            Har du fått melding om overleveringer? Sjekk om du er logget inn med riktig konto.
           </Text>
-          <Text size={"sm"}>
-            Ta kontakt med info@boklisten.no om du har spørsmål.
-          </Text>
+          <Text size={"sm"}>Ta kontakt med info@boklisten.no om du har spørsmål.</Text>
         </Stack>
       </InfoAlert>
     );
   }
 
   const standMatch = data.standMatch;
-  const showMatchList =
-    unfulfilledUserMatches.length > 0 || standMatch !== undefined;
+  const showMatchList = unfulfilledUserMatches.length > 0 || standMatch !== undefined;
 
   return (
     <Stack gap={"xl"}>
       <ProgressBar
         percentComplete={
-          (100 *
-            (fulfilledUserMatches.length +
-              (isStandMatchFulfilled(standMatch) ? 1 : 0))) /
+          (100 * (fulfilledUserMatches.length + (isStandMatchFulfilled(standMatch) ? 1 : 0))) /
           (data.userMatches.length + (standMatch !== undefined ? 1 : 0))
         }
         subtitle={
           <span>
-            Fullført{" "}
-            {fulfilledUserMatches.length +
-              (isStandMatchFulfilled(standMatch) ? 1 : 0)}{" "}
-            av {data.userMatches.length + (standMatch !== undefined ? 1 : 0)}{" "}
-            overleveringer
+            Fullført {fulfilledUserMatches.length + (isStandMatchFulfilled(standMatch) ? 1 : 0)} av{" "}
+            {data.userMatches.length + (standMatch !== undefined ? 1 : 0)} overleveringer
           </span>
         }
       />
 
       <Activity mode={showMatchList ? "visible" : "hidden"}>
-        <MatchListItemGroups
-          userMatches={unfulfilledUserMatches}
-          standMatch={standMatch}
-        />
+        <MatchListItemGroups userMatches={unfulfilledUserMatches} standMatch={standMatch} />
       </Activity>
       <Activity mode={fulfilledUserMatches.length > 0 ? "visible" : "hidden"}>
         <MatchListItemGroups

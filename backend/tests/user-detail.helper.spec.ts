@@ -19,7 +19,6 @@ test.group("UserDetailHelper", (group) => {
 
   let testUserDetail: UserDetail;
   let userDetailStorageUpdateSuccess: boolean;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   let testDibsEasyPayment: any;
 
   group.each.setup(() => {
@@ -81,11 +80,10 @@ test.group("UserDetailHelper", (group) => {
   });
 
   test(".updateUserDetailBasedOnDibsEasyPayment() should update userDetail with values from dibsEasyPayment", async () => {
-    const updatedUserDetail =
-      await userDetailHelper.updateUserDetailBasedOnDibsEasyPayment(
-        "userDetail1",
-        testDibsEasyPayment as DibsEasyPayment,
-      );
+    const updatedUserDetail = await userDetailHelper.updateUserDetailBasedOnDibsEasyPayment(
+      "userDetail1",
+      testDibsEasyPayment as DibsEasyPayment,
+    );
 
     const name =
       testDibsEasyPayment.consumer.privatePerson.firstName +
@@ -100,15 +98,12 @@ test.group("UserDetailHelper", (group) => {
     testUserDetail.name = "Jenny Jensen";
     testDibsEasyPayment.consumer.privatePerson["firstName"] = "Johnny";
 
-    const updatedUserDetail =
-      await userDetailHelper.updateUserDetailBasedOnDibsEasyPayment(
-        "userDetail1",
-        testDibsEasyPayment as DibsEasyPayment,
-      );
+    const updatedUserDetail = await userDetailHelper.updateUserDetailBasedOnDibsEasyPayment(
+      "userDetail1",
+      testDibsEasyPayment as DibsEasyPayment,
+    );
 
     expect(updatedUserDetail.name).to.eq("Jenny Jensen"); // this value was already stored
-    expect(updatedUserDetail.postCity).to.eq(
-      testDibsEasyPayment.consumer.shippingAddress.city,
-    );
+    expect(updatedUserDetail.postCity).to.eq(testDibsEasyPayment.consumer.shippingAddress.city);
   });
 });

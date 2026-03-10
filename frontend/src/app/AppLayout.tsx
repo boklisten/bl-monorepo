@@ -26,12 +26,7 @@ export default function AppLayout({
     <>
       <AppShell header={{ height: 65 }} p={padding}>
         <AppShellHeader bg={"brand"} withBorder={withBorder}>
-          <Group
-            h={"100%"}
-            justify={"space-between"}
-            align={"center"}
-            px={"md"}
-          >
+          <Group h={"100%"} justify={"space-between"} align={"center"} px={"md"}>
             <Logo variant={"white"} />
             <Group>
               <CartNavbarIndicator />

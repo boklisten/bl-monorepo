@@ -9,9 +9,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import dayjs from "dayjs";
 import { Activity, useState } from "react";
 
-import UserInfoFields, {
-  UserInfoFieldValues,
-} from "@/features/user/UserInfoFields";
+import UserInfoFields, { UserInfoFieldValues } from "@/features/user/UserInfoFields";
 import { emailFieldValidator } from "@/shared/components/form/fields/complex/EmailField";
 import { nameFieldValidator } from "@/shared/components/form/fields/complex/NameField";
 import { phoneNumberFieldValidator } from "@/shared/components/form/fields/complex/PhoneNumberField";
@@ -19,10 +17,7 @@ import { useAppForm } from "@/shared/hooks/form";
 import useApiClient from "@/shared/hooks/useApiClient";
 import useAuth from "@/shared/hooks/useAuth";
 import { isUnder18 } from "@/shared/utils/dates";
-import {
-  showErrorNotification,
-  showSuccessNotification,
-} from "@/shared/utils/notifications";
+import { showErrorNotification, showSuccessNotification } from "@/shared/utils/notifications";
 
 type AdministrateUserFormValues = {
   email: string;
@@ -63,11 +58,7 @@ export default function AdministrateUserForm({
           return {
             fields: {
               guardianName: nameFieldValidator(value.guardianName, "guardian"),
-              guardianEmail: emailFieldValidator(
-                value.guardianEmail,
-                "guardian",
-                value.email,
-              ),
+              guardianEmail: emailFieldValidator(value.guardianEmail, "guardian", value.email),
               guardianPhoneNumber: phoneNumberFieldValidator(
                 value.guardianPhoneNumber,
                 "guardian",
@@ -85,25 +76,23 @@ export default function AdministrateUserForm({
   const updateUserDetailsMutation = useMutation({
     mutationFn: async () => {
       const formValues = form.state.values;
-      const { error } = await client.v2.employee
-        .user_details({ detailsId: userDetail.id })
-        .$post({
-          permission: formValues.permission,
-          email: formValues.email,
-          emailVerified: formValues.emailVerified,
-          name: formValues.name,
-          phoneNumber: formValues.phoneNumber,
-          address: formValues.address,
-          postalCode: formValues.postal.code,
-          postalCity: formValues.postal.city,
-          dob: formValues.birthday,
-          branchMembership: formValues.branchMembership,
-          guardian: {
-            name: formValues.guardianName,
-            email: formValues.guardianEmail,
-            phone: formValues.guardianPhoneNumber,
-          },
-        });
+      const { error } = await client.v2.employee.user_details({ detailsId: userDetail.id }).$post({
+        permission: formValues.permission,
+        email: formValues.email,
+        emailVerified: formValues.emailVerified,
+        name: formValues.name,
+        phoneNumber: formValues.phoneNumber,
+        address: formValues.address,
+        postalCode: formValues.postal.code,
+        postalCity: formValues.postal.city,
+        dob: formValues.birthday,
+        branchMembership: formValues.branchMembership,
+        guardian: {
+          name: formValues.guardianName,
+          email: formValues.guardianEmail,
+          phone: formValues.guardianPhoneNumber,
+        },
+      });
 
       await queryClient.invalidateQueries({
         queryKey: ["userDetails", userDetail.id],
@@ -135,9 +124,7 @@ export default function AdministrateUserForm({
             {(field) => (
               <field.EmailField
                 rightSection={
-                  <Tooltip
-                    label={emailVerified ? "Bekreftet" : "Ikke bekreftet"}
-                  >
+                  <Tooltip label={emailVerified ? "Bekreftet" : "Ikke bekreftet"}>
                     {emailVerified ? (
                       <IconCheck color={"green"} />
                     ) : (

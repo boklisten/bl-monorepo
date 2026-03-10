@@ -14,17 +14,13 @@ export default function UniqueIdGeneratorButton() {
     queryFn: () => client.unique_ids.token.$get().unwrap(),
   });
   if (isError) {
-    showErrorNotification(
-      "Klarte ikke hente autentiseringstoken for unik ID-generering",
-    );
+    showErrorNotification("Klarte ikke hente autentiseringstoken for unik ID-generering");
   }
   return (
     <Button
       loading={isPending}
       component={"a"}
-      href={publicApiClient.unique_ids
-        .download_pdf({ token: data ?? "" })
-        .$url()}
+      href={publicApiClient.unique_ids.download_pdf({ token: data ?? "" }).$url()}
       leftSection={<IconFileDownload />}
     >
       Last ned PDF

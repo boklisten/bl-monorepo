@@ -21,7 +21,6 @@ test.group("OrderPatchHook", (group) => {
   const orderPatchHook = new OrderPatchHook(orderValidator, orderPlacedHandler);
 
   let testAccessToken: AccessToken;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   let testRequestBody: any;
   let testOrder: Order;
   let orderUpdated = true;
@@ -133,9 +132,10 @@ test.group("OrderPatchHook", (group) => {
   });
 
   test("should reject if body is empty or undefined", async () => {
-    return expect(
-      orderPatchHook.before(undefined, testAccessToken, "order1"),
-    ).to.be.rejectedWith(BlError, /body not defined/);
+    return expect(orderPatchHook.before(undefined, testAccessToken, "order1")).to.be.rejectedWith(
+      BlError,
+      /body not defined/,
+    );
   });
 
   test("should reject if accessToken is empty or undefined", async () => {
@@ -159,9 +159,7 @@ test.group("OrderPatchHook", (group) => {
     ).to.be.rejectedWith(BlError, /accessToken not defined/);
   });
 
-  test("should reject if OrderPlaced.placeOrder rejects", async ({
-    assert,
-  }) => {
+  test("should reject if OrderPlaced.placeOrder rejects", async ({ assert }) => {
     testOrder.placed = true;
     orderPlacedConfirmed = false;
 

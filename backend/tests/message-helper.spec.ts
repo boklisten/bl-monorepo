@@ -21,10 +21,7 @@ test.group("MessageHelper", (group) => {
 
   group.each.setup(() => {
     sandbox = createSandbox();
-    messageStorageGetByQueryStub = sandbox.stub(
-      StorageService.Messages,
-      "getByQuery",
-    );
+    messageStorageGetByQueryStub = sandbox.stub(StorageService.Messages, "getByQuery");
   });
   group.each.teardown(() => {
     sandbox.restore();
@@ -69,6 +66,7 @@ test.group("MessageHelper", (group) => {
     });
 
     const isAdded = await messageHelper.isAdded(message);
+    // oxlint-disable-next-line no-unused-expressions
     expect(isAdded).to.be.true;
   });
 
@@ -98,6 +96,7 @@ test.group("MessageHelper", (group) => {
     });
 
     const isAdded = await messageHelper.isAdded(message);
+    // oxlint-disable-next-line no-unused-expressions
     expect(isAdded).to.be.false;
   });
 
@@ -116,6 +115,7 @@ test.group("MessageHelper", (group) => {
     });
 
     const isAdded = await messageHelper.isAdded(message);
+    // oxlint-disable-next-line no-unused-expressions
     expect(isAdded).to.be.false;
   });
 });

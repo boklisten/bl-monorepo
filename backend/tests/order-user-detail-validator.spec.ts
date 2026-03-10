@@ -46,9 +46,7 @@ test.group("OrderUserDetailValidator", (group) => {
 
     orderUserDetailValidator.validate(testOrder).catch(async (err: BlError) => {
       // @ts-expect-error fixme: auto ignored
-      return expect(err.errorStack[0].getMsg()).to.be.eq(
-        "could not get userDetail",
-      );
+      return expect(err.errorStack[0].getMsg()).to.be.eq("could not get userDetail");
     });
   });
 

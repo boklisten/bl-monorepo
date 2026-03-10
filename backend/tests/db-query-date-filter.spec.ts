@@ -19,25 +19,17 @@ test.group("DbQueryDateFilter", async () => {
   });
 
   test("should return empty array if valid params is empty", async () => {
-    expect(dbQueryDateFilter.getDateFilters({ something: "aas" }, [])).to.eql(
-      [],
-    );
+    expect(dbQueryDateFilter.getDateFilters({ something: "aas" }, [])).to.eql([]);
   });
 
   test("should return empty array if query does not include any of the valid params", async () => {
-    expect(
-      dbQueryDateFilter.getDateFilters({ something: "" }, ["creationTime"]),
-    ).to.eql([]);
+    expect(dbQueryDateFilter.getDateFilters({ something: "" }, ["creationTime"])).to.eql([]);
   });
 
   test("should return filter with correct filedName", async () => {
     const fieldName = "creationDate";
     const query = { creationDate: "010120010000" };
-    const momentDate = moment(
-      query.creationDate,
-      validDateFormat,
-      true,
-    ).toDate();
+    const momentDate = moment(query.creationDate, validDateFormat, true).toDate();
 
     expect(dbQueryDateFilter.getDateFilters(query, [fieldName])).to.eql([
       { fieldName: fieldName, op: { $eq: momentDate } },
@@ -45,14 +37,7 @@ test.group("DbQueryDateFilter", async () => {
   });
 
   test(`should throw SyntaxError when date is ..."`)
-    .with([
-      "212121",
-      "10notvalid",
-      "kkk",
-      "albert",
-      "330120010000",
-      "2101200300001",
-    ])
+    .with(["212121", "10notvalid", "kkk", "albert", "330120010000", "2101200300001"])
     .run((ctx, date) => {
       const query = { creationTime: "" };
       query.creationTime = date;
@@ -68,9 +53,9 @@ test.group("DbQueryDateFilter", async () => {
       const dateString = validQuery.creationTime;
       const isoDate = moment(dateString, validDateFormat, true).toDate();
 
-      expect(
-        dbQueryDateFilter.getDateFilters(validQuery, ["creationTime"]),
-      ).to.eql([{ fieldName: "creationTime", op: { $eq: isoDate } }]);
+      expect(dbQueryDateFilter.getDateFilters(validQuery, ["creationTime"])).to.eql([
+        { fieldName: "creationTime", op: { $eq: isoDate } },
+      ]);
     });
 
   test("should resolve with correct date filter")
@@ -79,10 +64,7 @@ test.group("DbQueryDateFilter", async () => {
       { creationTime: ">010720180000", op: "$gt" },
     ])
     .run((ctx, validQuery) => {
-      const dateString = validQuery.creationTime.slice(
-        1,
-        validQuery.creationTime.length,
-      );
+      const dateString = validQuery.creationTime.slice(1, validQuery.creationTime.length);
       const isoDate = moment(dateString, validDateFormat, true).toDate();
 
       const expectedOp = {};
@@ -90,9 +72,9 @@ test.group("DbQueryDateFilter", async () => {
       // @ts-expect-error fixme: auto ignored
       expectedOp[validQuery.op] = isoDate;
 
-      expect(
-        dbQueryDateFilter.getDateFilters(validQuery, ["creationTime"]),
-      ).to.eql([{ fieldName: "creationTime", op: expectedOp }]);
+      expect(dbQueryDateFilter.getDateFilters(validQuery, ["creationTime"])).to.eql([
+        { fieldName: "creationTime", op: expectedOp },
+      ]);
     });
 
   test("should resolve with correct date filter")
@@ -111,9 +93,7 @@ test.group("DbQueryDateFilter", async () => {
       const gtIsoDate = moment(gtDateString, validDateFormat, true).toDate();
       const ltIsoDate = moment(ltDateString, validDateFormat, true).toDate();
 
-      expect(
-        dbQueryDateFilter.getDateFilters(validQuery, ["creationTime"]),
-      ).to.eql([
+      expect(dbQueryDateFilter.getDateFilters(validQuery, ["creationTime"])).to.eql([
         {
           fieldName: "creationTime",
           op: { $gt: gtIsoDate, $lt: ltIsoDate },

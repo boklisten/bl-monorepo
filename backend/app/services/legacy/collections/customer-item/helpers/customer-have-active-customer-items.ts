@@ -15,8 +15,7 @@ export class CustomerHaveActiveCustomerItems {
     let customerItems: CustomerItem[];
 
     try {
-      customerItems =
-        await StorageService.CustomerItems.getByQuery(databaseQuery);
+      customerItems = await StorageService.CustomerItems.getByQuery(databaseQuery);
     } catch (error) {
       if (error instanceof BlError && error.getCode() == 702) {
         return false;
@@ -24,8 +23,6 @@ export class CustomerHaveActiveCustomerItems {
       throw error;
     }
 
-    return customerItems.some((customerItem) =>
-      this.customerItemActive.isActive(customerItem),
-    );
+    return customerItems.some((customerItem) => this.customerItemActive.isActive(customerItem));
   }
 }

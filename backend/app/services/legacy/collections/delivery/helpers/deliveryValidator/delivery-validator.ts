@@ -38,9 +38,10 @@ export class DeliveryValidator {
       }
       default: {
         return Promise.reject(
-          new BlError(
-            `delivery.method "${delivery.method}" is not supported`,
-          ).store("delivery", delivery),
+          new BlError(`delivery.method "${delivery.method}" is not supported`).store(
+            "delivery",
+            delivery,
+          ),
         );
       }
     }

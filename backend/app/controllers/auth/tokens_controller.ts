@@ -13,19 +13,14 @@ export default class TokensController {
   async legacyToken(ctx: HttpContext) {
     const { refreshToken } = await ctx.request.validateUsing(tokenValidator);
     try {
-      const verifiedRefreshToken = jwt.verify(
-        refreshToken,
-        env.get("REFRESH_TOKEN_SECRET"),
-      );
+      const verifiedRefreshToken = jwt.verify(refreshToken, env.get("REFRESH_TOKEN_SECRET"));
 
       if (typeof verifiedRefreshToken === "string") {
         throw new Error("Invalid refresh token");
       }
 
       try {
-        const tokens = await TokenService.createTokens(
-          verifiedRefreshToken["username"],
-        );
+        const tokens = await TokenService.createTokens(verifiedRefreshToken["username"]);
 
         if (!tokens) {
           throw new Error("Could not create tokens");
@@ -55,19 +50,14 @@ export default class TokensController {
   async token(ctx: HttpContext) {
     const { refreshToken } = await ctx.request.validateUsing(tokenValidator);
     try {
-      const verifiedRefreshToken = jwt.verify(
-        refreshToken,
-        env.get("REFRESH_TOKEN_SECRET"),
-      );
+      const verifiedRefreshToken = jwt.verify(refreshToken, env.get("REFRESH_TOKEN_SECRET"));
 
       if (typeof verifiedRefreshToken === "string") {
         ctx.response.unauthorized();
         return;
       }
 
-      const tokens = await TokenService.createTokens(
-        verifiedRefreshToken["username"],
-      );
+      const tokens = await TokenService.createTokens(verifiedRefreshToken["username"]);
 
       if (!tokens) {
         ctx.response.unauthorized();

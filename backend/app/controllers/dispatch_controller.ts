@@ -12,17 +12,14 @@ export default class DispatchController {
       .filter(
         (emailTemplate) =>
           !Object.values(EMAIL_TEMPLATES).some(
-            (transactionalTemplate) =>
-              transactionalTemplate.templateId === emailTemplate.id,
+            (transactionalTemplate) => transactionalTemplate.templateId === emailTemplate.id,
           ),
       )
       .sort((a, b) => a.name.localeCompare(b.name));
   }
   async createDispatch(ctx: HttpContext) {
     PermissionService.adminOrFail(ctx);
-    const { recipients } = await ctx.request.validateUsing(
-      createDispatchValidator,
-    );
+    const { recipients } = await ctx.request.validateUsing(createDispatchValidator);
     await Promise.all(
       recipients.map(async (recipient) => {
         if (recipient.email && recipient.emailTemplateId)
@@ -31,10 +28,7 @@ export default class DispatchController {
             recipients: [{ to: recipient.email }],
           });
         if (recipient.phone && recipient.smsText)
-          await DispatchService.sendUserProvidedSms(
-            recipient.phone,
-            recipient.smsText,
-          );
+          await DispatchService.sendUserProvidedSms(recipient.phone, recipient.smsText);
       }),
     );
   }

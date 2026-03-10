@@ -18,9 +18,7 @@ function SuccessfulUploadDialog({
 }) {
   return (
     <Stack>
-      <Text>
-        {`${successfulOrders} har fått bestillinger for fagvalgene sine!`}
-      </Text>
+      <Text>{`${successfulOrders} har fått bestillinger for fagvalgene sine!`}</Text>
 
       <Activity mode={unknownSubjects.length > 0 ? "visible" : "hidden"}>
         <Text>{`${unknownSubjects.length} fag ble ikke funnet:`}</Text>
@@ -34,9 +32,7 @@ function SuccessfulUploadDialog({
         <Text>{`${unknownUsers.length} brukere ble ikke funnet:`}</Text>
         <List>
           {unknownUsers.map(({ subjects, phone }) => (
-            <List.Item key={phone}>
-              {`${phone} - ${subjects.join(", ")}`}
-            </List.Item>
+            <List.Item key={phone}>{`${phone} - ${subjects.join(", ")}`}</List.Item>
           ))}
         </List>
       </Activity>
@@ -44,11 +40,7 @@ function SuccessfulUploadDialog({
   );
 }
 
-export default function UploadSubjectChoices({
-  branchId,
-}: {
-  branchId: string;
-}) {
+export default function UploadSubjectChoices({ branchId }: { branchId: string }) {
   const client = useApiClient();
 
   const uploadSubjectChoicesMutation = useMutation({

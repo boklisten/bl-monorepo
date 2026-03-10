@@ -22,10 +22,7 @@ test.group("PaymentDibsConfirmer", (group) => {
 
   group.each.setup(() => {
     sandbox = createSandbox();
-    dibsPaymentFetchStub = sandbox.stub(
-      dibsPaymentService,
-      "fetchDibsPaymentData",
-    );
+    dibsPaymentFetchStub = sandbox.stub(dibsPaymentService, "fetchDibsPaymentData");
     updatePaymentStub = sandbox.stub(StorageService.Payments, "update");
   });
   group.each.teardown(() => {
@@ -52,9 +49,7 @@ test.group("PaymentDibsConfirmer", (group) => {
 
     updatePaymentStub.rejects(new BlError("could not update payment"));
 
-    return expect(
-      paymentDibsConfirmer.confirm(order, payment),
-    ).to.eventually.be.rejectedWith(
+    return expect(paymentDibsConfirmer.confirm(order, payment)).to.eventually.be.rejectedWith(
       BlError,
       /payment could not be updated with dibs information/,
     );
@@ -78,9 +73,7 @@ test.group("PaymentDibsConfirmer", (group) => {
       payments: [payment.id],
     } as Order;
 
-    return expect(
-      paymentDibsConfirmer.confirm(order, payment),
-    ).to.eventually.be.rejectedWith(
+    return expect(paymentDibsConfirmer.confirm(order, payment)).to.eventually.be.rejectedWith(
       BlError,
       /dibsEasyPaymentDetails.summary.reservedAmount "10000" is not equal to payment.amount "11000"/,
     );
@@ -106,8 +99,7 @@ test.group("PaymentDibsConfirmer", (group) => {
       payments: [payment.id],
     } as Order;
 
-    return expect(paymentDibsConfirmer.confirm(order, payment)).to.eventually.be
-      .true;
+    return expect(paymentDibsConfirmer.confirm(order, payment)).to.eventually.be.true;
   });
 
   /*

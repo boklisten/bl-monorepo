@@ -32,11 +32,7 @@ test.group("OrderItemPartlyPaymentValidator", async () => {
     };
 
     return expect(
-      orderItemPartlyPaymentValidator.validate(
-        orderItem,
-        item as Item,
-        branch as Branch,
-      ),
+      orderItemPartlyPaymentValidator.validate(orderItem, item as Item, branch as Branch),
     ).to.eventually.be.rejectedWith(BlError);
   });
 
@@ -49,11 +45,7 @@ test.group("OrderItemPartlyPaymentValidator", async () => {
     };
 
     return expect(
-      orderItemPartlyPaymentValidator.validate(
-        orderItem as OrderItem,
-        {} as Item,
-        {} as Branch,
-      ),
+      orderItemPartlyPaymentValidator.validate(orderItem as OrderItem, {} as Item, {} as Branch),
     ).to.eventually.be.rejectedWith(BlError, /orderItem.info.to not specified/);
   });
 
@@ -67,15 +59,8 @@ test.group("OrderItemPartlyPaymentValidator", async () => {
     };
 
     return expect(
-      orderItemPartlyPaymentValidator.validate(
-        orderItem as OrderItem,
-        {} as Item,
-        {} as Branch,
-      ),
-    ).to.eventually.be.rejectedWith(
-      BlError,
-      /orderItem.info.amountLeftToPay not specified/,
-    );
+      orderItemPartlyPaymentValidator.validate(orderItem as OrderItem, {} as Item, {} as Branch),
+    ).to.eventually.be.rejectedWith(BlError, /orderItem.info.amountLeftToPay not specified/);
   });
 
   test("should reject if orderItem.info is not specified", async () => {
@@ -84,11 +69,7 @@ test.group("OrderItemPartlyPaymentValidator", async () => {
     };
 
     return expect(
-      orderItemPartlyPaymentValidator.validate(
-        orderItem as OrderItem,
-        {} as Item,
-        {} as Branch,
-      ),
+      orderItemPartlyPaymentValidator.validate(orderItem as OrderItem, {} as Item, {} as Branch),
     ).to.eventually.be.rejectedWith(BlError, /orderItem.info not specified/);
   });
 
@@ -105,11 +86,7 @@ test.group("OrderItemPartlyPaymentValidator", async () => {
     };
 
     return expect(
-      orderItemPartlyPaymentValidator.validate(
-        orderItem as OrderItem,
-        {} as Item,
-        {} as Branch,
-      ),
+      orderItemPartlyPaymentValidator.validate(orderItem as OrderItem, {} as Item, {} as Branch),
     ).to.eventually.be.rejectedWith(
       BlError,
       /partly-payment period "year" not supported on branch/,

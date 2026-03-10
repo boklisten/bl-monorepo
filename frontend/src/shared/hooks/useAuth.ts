@@ -1,18 +1,14 @@
 "use client";
 
 import { AccessToken } from "@boklisten/backend/shared/access-token";
-import {
-  PERMISSION_LEVELS,
-  UserPermission,
-} from "@boklisten/backend/shared/user-permission";
+import { PERMISSION_LEVELS, UserPermission } from "@boklisten/backend/shared/user-permission";
 import { decodeToken } from "react-jwt";
 
 import useLocalStorageSubscription from "@/shared/hooks/useLocalStorageSubscription";
 import BL_CONFIG from "@/shared/utils/bl-config";
 
 export function login(tokens: { accessToken: string; refreshToken: string }) {
-  if (!decodeToken(tokens.accessToken) || !decodeToken(tokens.refreshToken))
-    return false;
+  if (!decodeToken(tokens.accessToken) || !decodeToken(tokens.refreshToken)) return false;
   localStorage.setItem(BL_CONFIG.token.accessToken, tokens.accessToken);
   localStorage.setItem(BL_CONFIG.token.refreshToken, tokens.refreshToken);
   return true;

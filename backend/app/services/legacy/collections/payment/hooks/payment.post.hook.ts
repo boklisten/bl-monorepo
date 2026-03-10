@@ -10,10 +10,7 @@ export class PaymentPostHook extends Hook {
   private paymentValidator: PaymentValidator;
   private paymentDibsHandler: PaymentDibsHandler;
 
-  constructor(
-    paymentValidator?: PaymentValidator,
-    paymentDibsHandler?: PaymentDibsHandler,
-  ) {
+  constructor(paymentValidator?: PaymentValidator, paymentDibsHandler?: PaymentDibsHandler) {
     super();
     this.paymentValidator = paymentValidator ?? new PaymentValidator();
     this.paymentDibsHandler = paymentDibsHandler ?? new PaymentDibsHandler();
@@ -47,9 +44,7 @@ export class PaymentPostHook extends Hook {
                 })
                 .catch((updateOrderError: BlError) => {
                   reject(
-                    new BlError(
-                      "order could not be updated with paymentId",
-                    ).add(updateOrderError),
+                    new BlError("order could not be updated with paymentId").add(updateOrderError),
                   );
                 });
             })
@@ -92,11 +87,7 @@ export class PaymentPostHook extends Hook {
           const paymentIds = order.payments ?? [];
 
           if (paymentIds.includes(payment.id)) {
-            reject(
-              new BlError(
-                `order.payments already includes payment "${payment.id}"`,
-              ),
-            );
+            reject(new BlError(`order.payments already includes payment "${payment.id}"`));
           } else {
             paymentIds.push(payment.id);
           }

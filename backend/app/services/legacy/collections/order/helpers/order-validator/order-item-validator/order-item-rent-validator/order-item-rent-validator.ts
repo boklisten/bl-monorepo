@@ -8,11 +8,7 @@ import { OrderItem } from "#shared/order/order-item/order-item";
 export class OrderItemRentValidator {
   private orderItemRentPeriodValidator = new OrderItemRentPeriodValidator();
 
-  public async validate(
-    branch: Branch,
-    orderItem: OrderItem,
-    item: Item,
-  ): Promise<boolean> {
+  public async validate(branch: Branch, orderItem: OrderItem, item: Item): Promise<boolean> {
     try {
       this.validateOrderItemInfoFields(orderItem);
       await this.orderItemRentPeriodValidator.validate(
@@ -27,18 +23,14 @@ export class OrderItemRentValidator {
         return Promise.reject(error);
       }
       return Promise.reject(
-        new BlError(
-          "unknown error, could not validate orderItem type rent",
-        ).store("error", error),
+        new BlError("unknown error, could not validate orderItem type rent").store("error", error),
       );
     }
   }
 
   private validateOrderItemInfoFields(orderItem: OrderItem): boolean {
     if (isNullish(orderItem.info)) {
-      throw new BlError(
-        'orderItem.info is not set when orderItem.type is "rent"',
-      );
+      throw new BlError('orderItem.info is not set when orderItem.type is "rent"');
     }
     return true;
   }

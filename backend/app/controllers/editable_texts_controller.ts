@@ -10,8 +10,7 @@ export default class EditableTextsController {
     const key = request.param("key");
     const databaseQuery = new SEDbQuery();
     databaseQuery.stringFilters = [{ fieldName: "key", value: key }];
-    const editableTexts =
-      await StorageService.EditableTexts.getByQueryOrNull(databaseQuery);
+    const editableTexts = await StorageService.EditableTexts.getByQueryOrNull(databaseQuery);
     return editableTexts?.[0] ?? { key, text: "" };
   }
 
@@ -24,9 +23,7 @@ export default class EditableTextsController {
   async store(ctx: HttpContext) {
     PermissionService.adminOrFail(ctx);
 
-    const validatedData = await ctx.request.validateUsing(
-      editableTextsValidator,
-    );
+    const validatedData = await ctx.request.validateUsing(editableTextsValidator);
     return await StorageService.EditableTexts.add(validatedData);
   }
 

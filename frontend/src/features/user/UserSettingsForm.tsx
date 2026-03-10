@@ -4,21 +4,14 @@ import { UserDetail } from "@boklisten/backend/shared/user-detail";
 import { UserPermission } from "@boklisten/backend/shared/user-permission";
 import { Button, Space, Stack, TextInput, Tooltip } from "@mantine/core";
 import { modals } from "@mantine/modals";
-import {
-  IconCheck,
-  IconInfoCircleFilled,
-  IconMailFast,
-  IconQrcode,
-} from "@tabler/icons-react";
+import { IconCheck, IconInfoCircleFilled, IconMailFast, IconQrcode } from "@tabler/icons-react";
 import { createFieldMap } from "@tanstack/react-form";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import dayjs from "dayjs";
 import { Activity, useState } from "react";
 import QRCode from "react-qr-code";
 
-import UserInfoFields, {
-  UserInfoFieldValues,
-} from "@/features/user/UserInfoFields";
+import UserInfoFields, { UserInfoFieldValues } from "@/features/user/UserInfoFields";
 import InfoAlert from "@/shared/components/alerts/InfoAlert";
 import WarningAlert from "@/shared/components/alerts/WarningAlert";
 import { emailFieldValidator } from "@/shared/components/form/fields/complex/EmailField";
@@ -27,10 +20,7 @@ import { phoneNumberFieldValidator } from "@/shared/components/form/fields/compl
 import { useAppForm } from "@/shared/hooks/form";
 import useApiClient from "@/shared/hooks/useApiClient";
 import { isUnder18 } from "@/shared/utils/dates";
-import {
-  showErrorNotification,
-  showSuccessNotification,
-} from "@/shared/utils/notifications";
+import { showErrorNotification, showSuccessNotification } from "@/shared/utils/notifications";
 
 export default function UserSettingsForm({
   userDetail,
@@ -63,11 +53,7 @@ export default function UserSettingsForm({
           return {
             fields: {
               guardianName: nameFieldValidator(value.guardianName, "guardian"),
-              guardianEmail: emailFieldValidator(
-                value.guardianEmail,
-                "guardian",
-                userDetail.email,
-              ),
+              guardianEmail: emailFieldValidator(value.guardianEmail, "guardian", userDetail.email),
               guardianPhoneNumber: phoneNumberFieldValidator(
                 value.guardianPhoneNumber,
                 "guardian",
@@ -118,8 +104,7 @@ export default function UserSettingsForm({
   });
   const createEmailConfirmation = useMutation({
     mutationFn: () => client.email_validations.$post().unwrap(),
-    onError: () =>
-      showErrorNotification("Klarte ikke sende ny bekreftelseslenke"),
+    onError: () => showErrorNotification("Klarte ikke sende ny bekreftelseslenke"),
   });
 
   return (
@@ -130,9 +115,7 @@ export default function UserSettingsForm({
         description={"Ta kontakt dersom du ønsker å endre e-postadresse"}
         value={userDetail.email}
         rightSection={
-          <Tooltip
-            label={userDetail.emailConfirmed ? "Bekreftet" : "Ikke bekreftet"}
-          >
+          <Tooltip label={userDetail.emailConfirmed ? "Bekreftet" : "Ikke bekreftet"}>
             {userDetail.emailConfirmed ? (
               <IconCheck color={"green"} />
             ) : (
@@ -143,41 +126,28 @@ export default function UserSettingsForm({
       />
       <Activity mode={!userDetail.emailConfirmed ? "visible" : "hidden"}>
         <Stack>
-          <Activity
-            mode={createEmailConfirmation.isSuccess ? "visible" : "hidden"}
-          >
+          <Activity mode={createEmailConfirmation.isSuccess ? "visible" : "hidden"}>
             <InfoAlert icon={<IconMailFast />}>
-              Bekreftelseslenke er sendt til din e-postadresse! Sjekk søppelpost
-              om den ikke dukker opp i inbox.
+              Bekreftelseslenke er sendt til din e-postadresse! Sjekk søppelpost om den ikke dukker
+              opp i inbox.
             </InfoAlert>
           </Activity>
-          <Activity
-            mode={!createEmailConfirmation.isSuccess ? "visible" : "hidden"}
-          >
+          <Activity mode={!createEmailConfirmation.isSuccess ? "visible" : "hidden"}>
             <WarningAlert title={"E-postadressen er ikke bekreftet"}>
-              En bekreftelseslenke har blitt sendt til {userDetail.email}. Trykk
-              på knappen nedenfor for å sende en ny lenke.
+              En bekreftelseslenke har blitt sendt til {userDetail.email}. Trykk på knappen nedenfor
+              for å sende en ny lenke.
             </WarningAlert>
-            <Button
-              leftSection={<IconMailFast />}
-              onClick={() => createEmailConfirmation.mutate()}
-            >
+            <Button leftSection={<IconMailFast />} onClick={() => createEmailConfirmation.mutate()}>
               Send bekreftelseslenke på nytt
             </Button>
           </Activity>
         </Stack>
       </Activity>
-      <Activity
-        mode={
-          form.state.values.permission !== "customer" ? "visible" : "hidden"
-        }
-      >
+      <Activity mode={form.state.values.permission !== "customer" ? "visible" : "hidden"}>
         <form.AppField name={"permission"}>
           {(field) => (
             <field.SelectPermissionField
-              description={
-                "Ditt tilgangsnivå bestemmer hva du har tilgang til å gjøre i bl-admin"
-              }
+              description={"Ditt tilgangsnivå bestemmer hva du har tilgang til å gjøre i bl-admin"}
               readOnly
             />
           )}
@@ -201,11 +171,7 @@ export default function UserSettingsForm({
         </Button>
       </Stack>
       <Space />
-      <UserInfoFields
-        perspective={"personal"}
-        fields={createFieldMap(defaultValues)}
-        form={form}
-      />
+      <UserInfoFields perspective={"personal"} fields={createFieldMap(defaultValues)} form={form} />
       <form.AppForm>
         <form.ErrorSummary serverErrors={serverErrors} />
       </form.AppForm>

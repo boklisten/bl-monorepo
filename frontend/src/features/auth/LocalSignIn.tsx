@@ -10,10 +10,7 @@ import NextAnchor from "@/shared/components/NextAnchor";
 import { useAppForm } from "@/shared/hooks/form";
 import useAuth, { login } from "@/shared/hooks/useAuth";
 import useAuthLinker from "@/shared/hooks/useAuthLinker";
-import {
-  GENERIC_ERROR_TEXT,
-  PLEASE_TRY_AGAIN_TEXT,
-} from "@/shared/utils/constants";
+import { GENERIC_ERROR_TEXT, PLEASE_TRY_AGAIN_TEXT } from "@/shared/utils/constants";
 import { publicApiClient } from "@/shared/utils/publicApiClient";
 
 interface SignInFields {
@@ -68,8 +65,7 @@ export default function LocalSignIn() {
         name={"username"}
         validators={{
           onBlur: ({ value }) => {
-            return (!validator.isEmail(value) &&
-              !validator.isMobilePhone(value, "nb-NO")) ||
+            return (!validator.isEmail(value) && !validator.isMobilePhone(value, "nb-NO")) ||
               value.includes("+47")
               ? "Du må fylle inn gyldig e-post eller telefonnummer (uten +47)"
               : null;

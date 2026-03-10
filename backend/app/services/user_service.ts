@@ -4,14 +4,10 @@ import { StorageService } from "#services/storage_service";
 import { User } from "#types/user";
 
 export const UserService = {
-  async getByUserDetailsId(
-    detailsId: string | undefined,
-  ): Promise<User | null> {
+  async getByUserDetailsId(detailsId: string | undefined): Promise<User | null> {
     try {
       const databaseQuery = new SEDbQuery();
-      databaseQuery.stringFilters = [
-        { fieldName: "userDetail", value: detailsId ?? "" },
-      ];
+      databaseQuery.stringFilters = [{ fieldName: "userDetail", value: detailsId ?? "" }];
       const [user] = await StorageService.Users.getByQuery(databaseQuery);
       return user ?? null;
     } catch {

@@ -13,10 +13,7 @@ import { MRT_Localization_NO } from "mantine-react-table/locales/no";
 
 import CreateWaitingListEntry from "@/features/waiting-list/CreateWaitingListEntry";
 import useApiClient from "@/shared/hooks/useApiClient";
-import {
-  showErrorNotification,
-  showSuccessNotification,
-} from "@/shared/utils/notifications";
+import { showErrorNotification, showSuccessNotification } from "@/shared/utils/notifications";
 
 export default function WaitingListTable({
   loading,
@@ -33,16 +30,13 @@ export default function WaitingListTable({
   const queryClient = useQueryClient();
 
   const destroyWaitingListEntryMutation = useMutation({
-    mutationFn: (id: string) =>
-      client.waiting_list_entries({ id }).$delete().unwrap(),
+    mutationFn: (id: string) => client.waiting_list_entries({ id }).$delete().unwrap(),
     onSettled: () =>
       queryClient.invalidateQueries({
         queryKey: [client.waiting_list_entries.$url()],
       }),
-    onSuccess: () =>
-      showSuccessNotification("Ventelisteoppføring ble slettet!"),
-    onError: async () =>
-      showErrorNotification("Klarte ikke slette ventelisteoppføring!"),
+    onSuccess: () => showSuccessNotification("Ventelisteoppføring ble slettet!"),
+    onError: async () => showErrorNotification("Klarte ikke slette ventelisteoppføring!"),
   });
 
   const table = useMantineReactTable({
@@ -62,8 +56,7 @@ export default function WaitingListTable({
       },
       {
         accessorFn: (waitingListEntry) =>
-          branches.find((branch) => branch.id === waitingListEntry.branchId)
-            ?.name,
+          branches.find((branch) => branch.id === waitingListEntry.branchId)?.name,
         header: "Filial",
       },
     ],
@@ -85,15 +78,10 @@ export default function WaitingListTable({
       </Tooltip>
     ),
     renderTopToolbarCustomActions: ({ table }) => (
-      <Button onClick={() => table.setCreatingRow(true)}>
-        Legg til i venteliste
-      </Button>
+      <Button onClick={() => table.setCreatingRow(true)}>Legg til i venteliste</Button>
     ),
     renderCreateRowModalContent: ({ table }) => (
-      <CreateWaitingListEntry
-        items={items}
-        onClose={() => table.setCreatingRow(null)}
-      />
+      <CreateWaitingListEntry items={items} onClose={() => table.setCreatingRow(null)} />
     ),
     localization: MRT_Localization_NO,
   });

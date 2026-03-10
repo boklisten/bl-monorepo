@@ -56,12 +56,7 @@ test.group("CustomerItemHandler", (group) => {
     const orderItem = {} as OrderItem;
 
     return expect(
-      customerItemHandler.extend(
-        "customerItem1",
-        orderItem,
-        "branch1",
-        "order1",
-      ),
+      customerItemHandler.extend("customerItem1", orderItem, "branch1", "order1"),
     ).to.be.rejectedWith(BlError, /can not extend when returned is true/);
   });
 
@@ -79,12 +74,7 @@ test.group("CustomerItemHandler", (group) => {
     } as OrderItem;
 
     return expect(
-      customerItemHandler.extend(
-        "customerItem1",
-        orderItem,
-        "branch1",
-        "order1",
-      ),
+      customerItemHandler.extend("customerItem1", orderItem, "branch1", "order1"),
     ).to.be.rejectedWith(BlError, /orderItem.type is not "extend"/);
   });
 
@@ -124,16 +114,8 @@ test.group("CustomerItemHandler", (group) => {
     getBranchStub.withArgs("branch1").resolves(branch);
 
     return expect(
-      customerItemHandler.extend(
-        "customerItem1",
-        orderItem,
-        "branch1",
-        "order1",
-      ),
-    ).to.be.rejectedWith(
-      BlError,
-      /extend period "year" is not present on branch/,
-    );
+      customerItemHandler.extend("customerItem1", orderItem, "branch1", "order1"),
+    ).to.be.rejectedWith(BlError, /extend period "year" is not present on branch/);
   });
 
   test('should reject if orderItem.type is not "buyout"', async () => {
@@ -150,13 +132,7 @@ test.group("CustomerItemHandler", (group) => {
       type: "rent",
     } as OrderItem;
     return expect(
-      customerItemHandler.return(
-        "customerItem1",
-        "order1",
-        orderItem,
-        "branch1",
-        "employee1",
-      ),
+      customerItemHandler.return("customerItem1", "order1", orderItem, "branch1", "employee1"),
     ).to.be.rejectedWith('orderItem.type is not "return"');
   });
 
@@ -213,17 +189,13 @@ test.group("CustomerItemHandler", (group) => {
 
     getByQueryCustomerItemStub.withArgs(expectedQuery).resolves([]);
 
-    customerItemHandler
-      .getNotReturned("5c33b6137eab87644f7e75e2", deadline)
-      .then(() => {
-        const queryArg = getByQueryCustomerItemStub.getCall(0).args[0];
+    customerItemHandler.getNotReturned("5c33b6137eab87644f7e75e2", deadline).then(() => {
+      const queryArg = getByQueryCustomerItemStub.getCall(0).args[0];
 
-        expect(queryArg.booleanFilters).to.be.eql(expectedQuery.booleanFilters);
+      expect(queryArg.booleanFilters).to.be.eql(expectedQuery.booleanFilters);
 
-        expect(queryArg.objectIdFilters).to.be.eql(
-          expectedQuery.objectIdFilters,
-        );
-      });
+      expect(queryArg.objectIdFilters).to.be.eql(expectedQuery.objectIdFilters);
+    });
   });
 
   test("should return customerItems not returned with the specified deadline", async () => {
@@ -242,9 +214,7 @@ test.group("CustomerItemHandler", (group) => {
       },
     ] as CustomerItem[];
 
-    getByQueryCustomerItemStub.returns(
-      new Promise((resolve) => resolve(customerItems)),
-    );
+    getByQueryCustomerItemStub.returns(new Promise((resolve) => resolve(customerItems)));
 
     customerItemHandler
       .getNotReturned("5c33b6137eab87644f7e75e2", new Date(2018, 11, 20))
@@ -257,10 +227,7 @@ test.group("CustomerItemHandler", (group) => {
     getByQueryCustomerItemStub.rejects(new BlError("someting wrong"));
 
     return expect(
-      customerItemHandler.getNotReturned(
-        "5c33b6137eab87644f7e75e2",
-        new Date(),
-      ),
+      customerItemHandler.getNotReturned("5c33b6137eab87644f7e75e2", new Date()),
     ).to.be.rejectedWith(BlError);
   });
 });

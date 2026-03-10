@@ -21,43 +21,38 @@ export const uniqueEmail = vine.createRule(async (value, options, field) => {
   }
 });
 
-export const uniquePhoneNumber = vine.createRule(
-  async (value, options, field) => {
-    if (typeof value !== "string") {
-      return;
-    }
-    const foundUserDetail = await UserDetailService.getByPhoneNumber(value);
-    const detailsId: string | null = field.meta["detailsId"] ?? null;
-    if (foundUserDetail?.id === detailsId) return;
+export const uniquePhoneNumber = vine.createRule(async (value, options, field) => {
+  if (typeof value !== "string") {
+    return;
+  }
+  const foundUserDetail = await UserDetailService.getByPhoneNumber(value);
+  const detailsId: string | null = field.meta["detailsId"] ?? null;
+  if (foundUserDetail?.id === detailsId) return;
 
-    if (foundUserDetail) {
-      field.report(
-        `Det eksisterer allerede en konto med telefonnummeret ${value}`,
-        "unique_phone",
-        field,
-      );
-    }
-  },
-);
-
-export const existingEmailTemplateId = vine.createRule(
-  async (value, options, field) => {
-    if (typeof value !== "string") {
-      return;
-    }
-    const allowedTemplates = (await DispatchService.getEmailTemplates()).filter(
-      (emailTemplate) =>
-        !Object.values(EMAIL_TEMPLATES).some(
-          (transactionalTemplate) =>
-            transactionalTemplate.templateId === emailTemplate.id,
-        ),
+  if (foundUserDetail) {
+    field.report(
+      `Det eksisterer allerede en konto med telefonnummeret ${value}`,
+      "unique_phone",
+      field,
     );
-    if (!allowedTemplates.some((template) => template.id === value)) {
-      field.report(
-        `Det eksisterer ingen e-postmal med ID ${value}`,
-        "valid_email_template_id",
-        field,
-      );
-    }
-  },
-);
+  }
+});
+
+export const existingEmailTemplateId = vine.createRule(async (value, options, field) => {
+  if (typeof value !== "string") {
+    return;
+  }
+  const allowedTemplates = (await DispatchService.getEmailTemplates()).filter(
+    (emailTemplate) =>
+      !Object.values(EMAIL_TEMPLATES).some(
+        (transactionalTemplate) => transactionalTemplate.templateId === emailTemplate.id,
+      ),
+  );
+  if (!allowedTemplates.some((template) => template.id === value)) {
+    field.report(
+      `Det eksisterer ingen e-postmal med ID ${value}`,
+      "valid_email_template_id",
+      field,
+    );
+  }
+});

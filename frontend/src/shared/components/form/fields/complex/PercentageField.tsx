@@ -2,10 +2,7 @@ import { Slider, SliderProps, Stack, Text } from "@mantine/core";
 
 import { useFieldContext } from "@/shared/hooks/form";
 
-export default function PercentageField(props: {
-  slider?: SliderProps;
-  label: string;
-}) {
+export default function PercentageField(props: { slider?: SliderProps; label: string }) {
   const field = useFieldContext<number>();
 
   return (

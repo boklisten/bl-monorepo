@@ -11,12 +11,7 @@ import {
   Text,
   Title,
 } from "@mantine/core";
-import {
-  IconBook,
-  IconCashRegister,
-  IconShoppingCart,
-  IconX,
-} from "@tabler/icons-react";
+import { IconBook, IconCashRegister, IconShoppingCart, IconX } from "@tabler/icons-react";
 import Link from "next/link";
 import { Activity } from "react";
 
@@ -29,15 +24,11 @@ export default function CartContent() {
     return (
       <>
         <InfoAlert title={"Handlekurven er tom"}>
-          Du kan finne nye bøker ved å trykke på {"'bestill bøker'"} eller
-          administrere dine nåværende bøker på {"'dine bøker'"}.
+          Du kan finne nye bøker ved å trykke på {"'bestill bøker'"} eller administrere dine
+          nåværende bøker på {"'dine bøker'"}.
         </InfoAlert>
         <Group>
-          <Button
-            component={Link}
-            href={"/bestilling"}
-            leftSection={<IconShoppingCart />}
-          >
+          <Button component={Link} href={"/bestilling"} leftSection={<IconShoppingCart />}>
             Bestill bøker
           </Button>
           <Button component={Link} href={"/items"} leftSection={<IconBook />}>
@@ -64,10 +55,7 @@ export default function CartContent() {
                     </Grid.Col>
                     <Grid.Col span={2}>
                       <Stack align={"end"}>
-                        <ActionIcon
-                          color={"red"}
-                          onClick={() => cart.remove(cartItem.id)}
-                        >
+                        <ActionIcon color={"red"} onClick={() => cart.remove(cartItem.id)}>
                           <IconX />
                         </ActionIcon>
                       </Stack>
@@ -76,9 +64,7 @@ export default function CartContent() {
                 </Card.Section>
                 <Group justify={"space-between"}>
                   <Group gap={5}>
-                    <Activity
-                      mode={cartItem.options.length > 1 ? "visible" : "hidden"}
-                    >
+                    <Activity mode={cartItem.options.length > 1 ? "visible" : "hidden"}>
                       <SegmentedControl
                         visibleFrom={"sm"}
                         value={cartItem.selectedOptionIndex.toString()}
@@ -108,19 +94,13 @@ export default function CartContent() {
                         }}
                       />
                     </Activity>
-                    <Activity
-                      mode={
-                        cartItem.options.length === 1 ? "visible" : "hidden"
-                      }
-                    >
+                    <Activity mode={cartItem.options.length === 1 ? "visible" : "hidden"}>
                       <Text>{cart.getOptionLabel(cartItem.options[0])}</Text>
                     </Activity>
                   </Group>
                   <Group>
                     <Text fw={"bold"}>{selectedOption.price} kr</Text>
-                    <Activity
-                      mode={selectedOption.payLater ? "visible" : "hidden"}
-                    >
+                    <Activity mode={selectedOption.payLater ? "visible" : "hidden"}>
                       <Text fs={"italic"} c={"dimmed"} size={"sm"}>
                         betal senere: {selectedOption.payLater} kr
                       </Text>
@@ -150,12 +130,7 @@ export default function CartContent() {
       </Stack>
       <Activity
         mode={
-          cart
-            .get()
-            .some(
-              (cartItem) =>
-                cart.getSelectedOption(cartItem).type === "partly-payment",
-            )
+          cart.get().some((cartItem) => cart.getSelectedOption(cartItem).type === "partly-payment")
             ? "visible"
             : "hidden"
         }
@@ -163,15 +138,14 @@ export default function CartContent() {
         <Stack>
           <Title>Om delbetaling</Title>
           <Text>
-            Du betaler restbeløpet på det oppgitte tidspunktet. Restbeløpet
-            betales ved vår bokinnkjøpsstand på din skole på slutten av
-            semesteret eller på nett. Mange privatister ønsker å selge bøkene
-            sine på slutten av semesteret og Boklisten kjøper inn bøker fra
+            Du betaler restbeløpet på det oppgitte tidspunktet. Restbeløpet betales ved vår
+            bokinnkjøpsstand på din skole på slutten av semesteret eller på nett. Mange privatister
+            ønsker å selge bøkene sine på slutten av semesteret og Boklisten kjøper inn bøker fra
             privatister.
           </Text>
           <Text>
-            Hvis du selger boken din til Boklisten vil vi vanligvis betale det
-            samme som restbeløpet eller mer.
+            Hvis du selger boken din til Boklisten vil vi vanligvis betale det samme som restbeløpet
+            eller mer.
           </Text>
         </Stack>
       </Activity>

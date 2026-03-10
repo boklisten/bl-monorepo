@@ -32,15 +32,9 @@ export default class SignaturesController {
         signingName: validSignature.signingName,
         signedAtText:
           validSignature.creationTime &&
-          DateService.format(
-            validSignature.creationTime,
-            "Europe/Oslo",
-            "DD/MM/YYYY",
-          ),
+          DateService.format(validSignature.creationTime, "Europe/Oslo", "DD/MM/YYYY"),
         expiresAtText: DateService.format(
-          moment(validSignature.creationTime)
-            .add(SIGNATURE_NUM_MONTHS_VALID, "months")
-            .toDate(),
+          moment(validSignature.creationTime).add(SIGNATURE_NUM_MONTHS_VALID, "months").toDate(),
           "Europe/Oslo",
           "DD/MM/YYYY",
         ),
@@ -55,30 +49,19 @@ export default class SignaturesController {
     PermissionService.employeeOrFail(ctx);
     const targetDetailsId = ctx.request.param("detailsId");
 
-    const userDetail =
-      await StorageService.UserDetails.getOrNull(targetDetailsId);
-    const branch = await StorageService.Branches.getOrNull(
-      userDetail?.branchMembership,
-    );
+    const userDetail = await StorageService.UserDetails.getOrNull(targetDetailsId);
+    const branch = await StorageService.Branches.getOrNull(userDetail?.branchMembership);
     if (userDetail) {
-      await DispatchService.sendSignatureLink(
-        userDetail,
-        branch?.name ?? "en filial",
-      );
+      await DispatchService.sendSignatureLink(userDetail, branch?.name ?? "en filial");
     }
   }
   async sendSignatureLinkAsCustomer(ctx: HttpContext) {
     const { detailsId } = PermissionService.authenticate(ctx);
 
     const userDetail = await StorageService.UserDetails.getOrNull(detailsId);
-    const branch = await StorageService.Branches.getOrNull(
-      userDetail?.branchMembership,
-    );
+    const branch = await StorageService.Branches.getOrNull(userDetail?.branchMembership);
     if (userDetail) {
-      await DispatchService.sendSignatureLink(
-        userDetail,
-        branch?.name ?? "en filial",
-      );
+      await DispatchService.sendSignatureLink(userDetail, branch?.name ?? "en filial");
     }
   }
   async hasValidSignature(ctx: HttpContext) {
@@ -100,15 +83,9 @@ export default class SignaturesController {
         signingName: validSignature.signingName,
         signedAtText:
           validSignature.creationTime &&
-          DateService.format(
-            validSignature.creationTime,
-            "Europe/Oslo",
-            "DD/MM/YYYY",
-          ),
+          DateService.format(validSignature.creationTime, "Europe/Oslo", "DD/MM/YYYY"),
         expiresAtText: DateService.format(
-          moment(validSignature.creationTime)
-            .add(SIGNATURE_NUM_MONTHS_VALID, "months")
-            .toDate(),
+          moment(validSignature.creationTime).add(SIGNATURE_NUM_MONTHS_VALID, "months").toDate(),
           "Europe/Oslo",
           "DD/MM/YYYY",
         ),
@@ -122,8 +99,7 @@ export default class SignaturesController {
     };
   }
   async sign(ctx: HttpContext) {
-    const { base64EncodedImage, signingName } =
-      await ctx.request.validateUsing(signValidator);
+    const { base64EncodedImage, signingName } = await ctx.request.validateUsing(signValidator);
     const detailsId = ctx.request.param("detailsId");
     const userDetail = await StorageService.UserDetails.getOrNull(detailsId);
     if (
@@ -134,9 +110,7 @@ export default class SignaturesController {
       ctx.response.badRequest();
       return;
     }
-    const image = await new Transformer(
-      Buffer.from(base64EncodedImage, "base64"),
-    ).webp(10);
+    const image = await new Transformer(Buffer.from(base64EncodedImage, "base64")).webp(10);
     const writtenSignature = await StorageService.Signatures.add({
       image,
       signingName: isUnderage(userDetail) ? signingName : userDetail.name,

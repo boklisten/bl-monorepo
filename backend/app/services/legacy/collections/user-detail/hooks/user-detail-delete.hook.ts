@@ -31,10 +31,8 @@ export class UserDetailDeleteHook extends Hook {
     this.orderActive = orderActive ?? new OrderActive();
     this.customerHaveActiveCustomerItems =
       customerHaveActiveCustomerItems ?? new CustomerHaveActiveCustomerItems();
-    this.customerInvoiceActive =
-      customerInvoiceActive ?? new CustomerInvoiceActive();
-    this.userCanDeleteUserDetail =
-      userCanDeleteUserDetail ?? new UserCanDeleteUserDetail();
+    this.customerInvoiceActive = customerInvoiceActive ?? new CustomerInvoiceActive();
+    this.userCanDeleteUserDetail = userCanDeleteUserDetail ?? new UserCanDeleteUserDetail();
     this.deleteUserService = deleteUserService ?? new DeleteUserService();
   }
 
@@ -61,14 +59,8 @@ export class UserDetailDeleteHook extends Hook {
     return true;
   }
 
-  private async checkIfUserCanDelete(
-    id: string,
-    accessToken: AccessToken,
-  ): Promise<boolean> {
-    const canDelete = await this.userCanDeleteUserDetail.canDelete(
-      id,
-      accessToken,
-    );
+  private async checkIfUserCanDelete(id: string, accessToken: AccessToken): Promise<boolean> {
+    const canDelete = await this.userCanDeleteUserDetail.canDelete(id, accessToken);
     if (!canDelete) {
       throw new BlError(
         `user "${accessToken.details}" has no permission to delete user "${id}"`,
@@ -79,8 +71,7 @@ export class UserDetailDeleteHook extends Hook {
   }
 
   private async checkActiveInvoices(userId: string): Promise<boolean> {
-    const haveActiveInvoices =
-      await this.customerInvoiceActive.haveActiveInvoices(userId);
+    const haveActiveInvoices = await this.customerInvoiceActive.haveActiveInvoices(userId);
     if (haveActiveInvoices) {
       throw new BlError("customer have active invoices");
     }
@@ -89,9 +80,7 @@ export class UserDetailDeleteHook extends Hook {
 
   private async checkActiveCustomerItems(userId: string): Promise<boolean> {
     const haveActiveCustomerItems =
-      await this.customerHaveActiveCustomerItems.haveActiveCustomerItems(
-        userId,
-      );
+      await this.customerHaveActiveCustomerItems.haveActiveCustomerItems(userId);
 
     if (haveActiveCustomerItems) {
       throw new BlError("customer have active customer-items");

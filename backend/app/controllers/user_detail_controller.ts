@@ -39,20 +39,12 @@ export default class UserDetailsController {
   }
   async updateAsCustomer(ctx: HttpContext) {
     const { detailsId } = PermissionService.authenticate(ctx);
-    const {
-      phoneNumber,
-      name,
-      address,
-      postalCode,
-      postalCity,
-      dob,
-      branchMembership,
-      guardian,
-    } = await ctx.request.validateUsing(customerUpdateUserDetailsValidator, {
-      meta: {
-        detailsId,
-      },
-    });
+    const { phoneNumber, name, address, postalCode, postalCity, dob, branchMembership, guardian } =
+      await ctx.request.validateUsing(customerUpdateUserDetailsValidator, {
+        meta: {
+          detailsId,
+        },
+      });
     await StorageService.UserDetails.update(detailsId, {
       phone: phoneNumber,
       name,
@@ -67,8 +59,7 @@ export default class UserDetailsController {
   }
 
   async updateAsEmployee(ctx: HttpContext) {
-    const { permission: employeePermission } =
-      PermissionService.employeeOrFail(ctx);
+    const { permission: employeePermission } = PermissionService.employeeOrFail(ctx);
     const targetUserDetailsId = ctx.request.param("detailsId");
     const {
       permission,

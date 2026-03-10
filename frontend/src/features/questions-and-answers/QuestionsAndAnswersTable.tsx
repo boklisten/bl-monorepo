@@ -13,25 +13,20 @@ import QuestionAndAnswerEditor from "@/features/questions-and-answers/QuestionAn
 import ErrorAlert from "@/shared/components/alerts/ErrorAlert";
 import useApiClient from "@/shared/hooks/useApiClient";
 import { PLEASE_TRY_AGAIN_TEXT } from "@/shared/utils/constants";
-import {
-  showErrorNotification,
-  showSuccessNotification,
-} from "@/shared/utils/notifications";
+import { showErrorNotification, showSuccessNotification } from "@/shared/utils/notifications";
 
 export default function QuestionsAndAnswersTable() {
   const client = useApiClient();
   const queryClient = useQueryClient();
 
   const destroyQuestionAndAnswerMutation = useMutation({
-    mutationFn: (id: string) =>
-      client.questions_and_answers({ id: id }).$delete().unwrap(),
+    mutationFn: (id: string) => client.questions_and_answers({ id: id }).$delete().unwrap(),
     onSettled: () =>
       queryClient.invalidateQueries({
         queryKey: [client.questions_and_answers.$url()],
       }),
     onSuccess: () => showSuccessNotification("Spørsmål og svar ble slettet!"),
-    onError: () =>
-      showErrorNotification("Klarte ikke slette spørsmål og svar!"),
+    onError: () => showErrorNotification("Klarte ikke slette spørsmål og svar!"),
   });
 
   const {
@@ -63,10 +58,7 @@ export default function QuestionsAndAnswersTable() {
     renderRowActions: ({ row, table }) => (
       <>
         <Tooltip key={`edit-${row.id}`} label={"Endre"}>
-          <ActionIcon
-            variant={"subtle"}
-            onClick={() => table.setEditingRow(row)}
-          >
+          <ActionIcon variant={"subtle"} onClick={() => table.setEditingRow(row)}>
             <IconEdit />
           </ActionIcon>
         </Tooltip>
@@ -74,9 +66,7 @@ export default function QuestionsAndAnswersTable() {
           <ActionIcon
             variant={"subtle"}
             color={"red"}
-            onClick={async () =>
-              destroyQuestionAndAnswerMutation.mutate(row.id)
-            }
+            onClick={async () => destroyQuestionAndAnswerMutation.mutate(row.id)}
           >
             <IconTrash />
           </ActionIcon>

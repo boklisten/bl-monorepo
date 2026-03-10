@@ -9,15 +9,11 @@ chaiUse(chaiAsPromised);
 should();
 
 test.group("DbQueryObjectIdFilter", async () => {
-  const dbQueryObjectIdFilter: DbQueryObjectIdFilter =
-    new DbQueryObjectIdFilter();
+  const dbQueryObjectIdFilter: DbQueryObjectIdFilter = new DbQueryObjectIdFilter();
 
   test("should return empty array if query is valid and validObjectIdParams is empty", async () => {
     expect(
-      dbQueryObjectIdFilter.getObjectIdFilters(
-        { name: "5c2e0e5bb311ba0701f15967" },
-        [],
-      ),
+      dbQueryObjectIdFilter.getObjectIdFilters({ name: "5c2e0e5bb311ba0701f15967" }, []),
     ).to.eql([]);
   });
 
@@ -50,10 +46,7 @@ test.group("DbQueryObjectIdFilter", async () => {
       },
     ];
     expect(
-      dbQueryObjectIdFilter.getObjectIdFilters(
-        { id: "5c2e0e5bb311ba0701f15967" },
-        ["id"],
-      ),
+      dbQueryObjectIdFilter.getObjectIdFilters({ id: "5c2e0e5bb311ba0701f15967" }, ["id"]),
     ).to.eql(result);
   });
 
@@ -89,12 +82,8 @@ test.group("DbQueryObjectIdFilter", async () => {
       },
     ];
 
-    expect(
-      dbQueryObjectIdFilter.getObjectIdFilters(query, [
-        "id",
-        "customer",
-        "branch",
-      ]),
-    ).to.eql(result);
+    expect(dbQueryObjectIdFilter.getObjectIdFilters(query, ["id", "customer", "branch"])).to.eql(
+      result,
+    );
   });
 });

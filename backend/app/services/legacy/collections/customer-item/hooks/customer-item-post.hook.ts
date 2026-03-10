@@ -13,13 +13,9 @@ export class CustomerItemPostHook extends Hook {
 
   private userDetailHelper: UserDetailHelper;
 
-  constructor(
-    customerItemValidator?: CustomerItemValidator,
-    userDetailHelper?: UserDetailHelper,
-  ) {
+  constructor(customerItemValidator?: CustomerItemValidator, userDetailHelper?: UserDetailHelper) {
     super();
-    this.customerItemValidator =
-      customerItemValidator ?? new CustomerItemValidator();
+    this.customerItemValidator = customerItemValidator ?? new CustomerItemValidator();
 
     this.userDetailHelper = userDetailHelper ?? new UserDetailHelper();
   }
@@ -41,9 +37,7 @@ export class CustomerItemPostHook extends Hook {
             return true;
           })
           .catch((customerItemValidationError: BlError) => {
-            throw new BlError("could not validate customerItem").add(
-              customerItemValidationError,
-            );
+            throw new BlError("could not validate customerItem").add(customerItemValidationError);
           });
       })
       .catch((blError: BlError) => {
@@ -62,9 +56,7 @@ export class CustomerItemPostHook extends Hook {
     }
 
     if (customerItems.length > 1) {
-      return Promise.reject(
-        new BlError("there are more than one customerItem"),
-      );
+      return Promise.reject(new BlError("there are more than one customerItem"));
     }
 
     // @ts-expect-error fixme: auto ignored
@@ -87,10 +79,7 @@ export class CustomerItemPostHook extends Hook {
         //update the corresponding orderItem with customerItem
         for (const orderItem of order.orderItems) {
           if (orderItem.item.toString() === customerItem.item.toString()) {
-            orderItem.info = Object.assign(
-              { customerItem: customerItem.id },
-              orderItem.info,
-            );
+            orderItem.info = Object.assign({ customerItem: customerItem.id }, orderItem.info);
             break;
           }
         }
@@ -110,10 +99,7 @@ export class CustomerItemPostHook extends Hook {
           (userDetail.customerItems && userDetail.customerItems.length === 0)
         ) {
           newCustomerItems.push(customerItem.id);
-        } else if (
-          userDetail.customerItems &&
-          userDetail.customerItems.length > 0
-        ) {
+        } else if (userDetail.customerItems && userDetail.customerItems.length > 0) {
           newCustomerItems = userDetail.customerItems;
           newCustomerItems.push(customerItem.id);
         }
@@ -128,9 +114,7 @@ export class CustomerItemPostHook extends Hook {
         return [customerItem];
       })
       .catch((blError: BlError) => {
-        throw blError
-          .store("userDetail", accessToken.sub)
-          .store("customerItemId", customerItem.id);
+        throw blError.store("userDetail", accessToken.sub).store("customerItemId", customerItem.id);
       });
   }
 }

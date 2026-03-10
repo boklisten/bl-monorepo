@@ -15,9 +15,7 @@ import {
 export default class CheckoutController {
   async initializeCheckout(ctx: HttpContext) {
     const { detailsId } = PermissionService.authenticate(ctx);
-    const { cartItems } = await ctx.request.validateUsing(
-      initializeCheckoutValidator,
-    );
+    const { cartItems } = await ctx.request.validateUsing(initializeCheckoutValidator);
     const order = await OrderService.createFromCart(detailsId, cartItems);
     const branch = await StorageService.Branches.get(order.branch);
     const isDeliveryFree = branch.paymentInfo?.responsibleForDelivery ?? false;
@@ -28,10 +26,7 @@ export default class CheckoutController {
       }
     }
 
-    const { token, checkoutFrontendUrl } = await VippsCheckoutService.create(
-      order,
-      isDeliveryFree,
-    );
+    const { token, checkoutFrontendUrl } = await VippsCheckoutService.create(order, isDeliveryFree);
     return { nextStep: "payment", token, checkoutFrontendUrl } as const;
   }
   async confirmCheckout(ctx: HttpContext) {
@@ -46,12 +41,8 @@ export default class CheckoutController {
 
   async handleVippsCallback(ctx: HttpContext) {
     if (!VippsPaymentService.token.verify(ctx.request.header("Authorization")))
-      throw new UnauthorizedException(
-        "Authorization header missing or invalid",
-      );
-    const session = await ctx.request.validateUsing(
-      vippsCheckoutSessionValidator,
-    );
+      throw new UnauthorizedException("Authorization header missing or invalid");
+    const session = await ctx.request.validateUsing(vippsCheckoutSessionValidator);
     await VippsCheckoutService.update(session);
   }
 
@@ -60,14 +51,9 @@ export default class CheckoutController {
     const orderId = ctx.request.param("orderId");
     const order = await StorageService.Orders.get(orderId);
     if (detailsId !== order.customer)
-      throw new Error(
-        "You do not have permission to access this payment information",
-      );
+      throw new Error("You do not have permission to access this payment information");
 
-    if (
-      order.checkoutState === "SessionCreated" ||
-      order.checkoutState === "PaymentInitiated"
-    ) {
+    if (order.checkoutState === "SessionCreated" || order.checkoutState === "PaymentInitiated") {
       const session = await VippsPaymentService.checkout.info(order.id);
       await VippsCheckoutService.update(session);
       return session.sessionState;

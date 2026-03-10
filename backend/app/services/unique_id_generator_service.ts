@@ -4,8 +4,7 @@ import PDFDocument from "pdfkit";
 import { toCanvas } from "qrcode";
 
 const UNIQUE_ID_LENGTH = 12;
-const VALID_BL_ID_CHARACTERS =
-  "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+const VALID_BL_ID_CHARACTERS = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
 
 const PRINTER_DIMENSIONS = {
   label: {
@@ -36,19 +35,13 @@ function generateUniqueIds(numberOfIds: number) {
   return Array.from({ length: numberOfIds }, () =>
     Array.from(
       { length: UNIQUE_ID_LENGTH },
-      () =>
-        VALID_BL_ID_CHARACTERS[
-          Math.floor(Math.random() * VALID_BL_ID_CHARACTERS.length)
-        ],
+      () => VALID_BL_ID_CHARACTERS[Math.floor(Math.random() * VALID_BL_ID_CHARACTERS.length)],
     ).join(""),
   );
 }
 
 function createBarcodeCanvas(id: string) {
-  const canvas = new Canvas(
-    PRINTER_DIMENSIONS.barcode.width,
-    PRINTER_DIMENSIONS.barcode.height,
-  );
+  const canvas = new Canvas(PRINTER_DIMENSIONS.barcode.width, PRINTER_DIMENSIONS.barcode.height);
   JsBarcode(canvas, id, {
     fontSize: PRINTER_DIMENSIONS.barcode.fontSize,
     width: PRINTER_DIMENSIONS.barcode.barcodeWidth,
@@ -61,10 +54,7 @@ function createBarcodeCanvas(id: string) {
 }
 
 function createQRCodeCanvas(id: string) {
-  const canvas = new Canvas(
-    PRINTER_DIMENSIONS.qrcode.width,
-    PRINTER_DIMENSIONS.qrcode.height,
-  );
+  const canvas = new Canvas(PRINTER_DIMENSIONS.qrcode.width, PRINTER_DIMENSIONS.qrcode.height);
   toCanvas(
     canvas,
     id,

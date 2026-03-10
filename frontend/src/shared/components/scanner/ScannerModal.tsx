@@ -4,15 +4,10 @@ import { IconForms } from "@tabler/icons-react";
 import { Activity, PropsWithChildren } from "react";
 
 import WarningAlert from "@/shared/components/alerts/WarningAlert";
-import BlidScanner, {
-  determineScannedTextType,
-} from "@/shared/components/scanner/BlidScanner";
+import BlidScanner, { determineScannedTextType } from "@/shared/components/scanner/BlidScanner";
 import ManualBlidSearchModal from "@/shared/components/scanner/ManualBlidSearchModal";
 import { GENERIC_ERROR_TEXT } from "@/shared/utils/constants";
-import {
-  showErrorNotification,
-  showSuccessNotification,
-} from "@/shared/utils/notifications";
+import { showErrorNotification, showSuccessNotification } from "@/shared/utils/notifications";
 import { TextType } from "@/shared/utils/types";
 
 const manualModalId = "manual-registration";

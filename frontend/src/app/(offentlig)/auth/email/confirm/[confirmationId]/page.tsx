@@ -5,8 +5,7 @@ import EmailConfirmer from "@/features/user/EmailConfirmer";
 
 export const metadata: Metadata = {
   title: "Bekreft e-post",
-  description:
-    "Bekreft din e-postadresse, slik at du får viktig informasjon fra oss.",
+  description: "Bekreft din e-postadresse, slik at du får viktig informasjon fra oss.",
 };
 
 export default async function TokenPage({

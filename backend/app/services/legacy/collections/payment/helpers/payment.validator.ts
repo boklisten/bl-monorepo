@@ -31,26 +31,21 @@ export class PaymentValidator {
       });
   }
 
-  private validateIfOrderHasDelivery(
-    payment: Payment,
-    order: Order,
-  ): Promise<boolean> {
+  private validateIfOrderHasDelivery(payment: Payment, order: Order): Promise<boolean> {
     if (!order.delivery) {
       return Promise.resolve(true);
     }
 
-    return StorageService.Deliveries.get(order.delivery).then(
-      (delivery: Delivery) => {
-        const expectedAmount = order.amount + delivery.amount;
+    return StorageService.Deliveries.get(order.delivery).then((delivery: Delivery) => {
+      const expectedAmount = order.amount + delivery.amount;
 
-        if (payment.amount !== expectedAmount) {
-          throw new BlError(
-            `payment.amount "${payment.amount}" is not equal to (order.amount + delivery.amount) "${expectedAmount}"`,
-          );
-        }
-        return true;
-      },
-    );
+      if (payment.amount !== expectedAmount) {
+        throw new BlError(
+          `payment.amount "${payment.amount}" is not equal to (order.amount + delivery.amount) "${expectedAmount}"`,
+        );
+      }
+      return true;
+    });
   }
 
   private validatePaymentBasedOnMethod(payment: Payment): boolean {

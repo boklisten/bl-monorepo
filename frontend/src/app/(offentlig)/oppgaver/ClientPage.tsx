@@ -1,13 +1,5 @@
 "use client";
-import {
-  Button,
-  Group,
-  Skeleton,
-  Stack,
-  Stepper,
-  Text,
-  Title,
-} from "@mantine/core";
+import { Button, Group, Skeleton, Stack, Stepper, Text, Title } from "@mantine/core";
 import { IconSend } from "@tabler/icons-react";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { Activity, Suspense } from "react";
@@ -21,16 +13,9 @@ import CountdownToRedirect from "@/shared/components/CountdownToRedirect";
 import useApiClient from "@/shared/hooks/useApiClient";
 import { PLEASE_TRY_AGAIN_TEXT } from "@/shared/utils/constants";
 import { isUnder18 } from "@/shared/utils/dates";
-import {
-  showErrorNotification,
-  showSuccessNotification,
-} from "@/shared/utils/notifications";
+import { showErrorNotification, showSuccessNotification } from "@/shared/utils/notifications";
 
-export default function ClientPage({
-  cachedAgreementText,
-}: {
-  cachedAgreementText: string;
-}) {
+export default function ClientPage({ cachedAgreementText }: { cachedAgreementText: string }) {
   const client = useApiClient();
   const { data, isLoading, isError } = useQuery({
     queryKey: [client.v2.user_details.$url()],
@@ -39,10 +24,8 @@ export default function ClientPage({
   });
   const requestSignatureMutation = useMutation({
     mutationFn: () => client.signatures.me.send.$post().unwrap(),
-    onSuccess: () =>
-      showSuccessNotification("Signaturforespørsel har blitt sendt!"),
-    onError: () =>
-      showErrorNotification("Klarte ikke sende signaturforespørsel"),
+    onSuccess: () => showSuccessNotification("Signaturforespørsel har blitt sendt!"),
+    onError: () => showErrorNotification("Klarte ikke sende signaturforespørsel"),
   });
 
   if (isLoading) {
@@ -61,8 +44,7 @@ export default function ClientPage({
       </ErrorAlert>
     );
   }
-  const hasTasks =
-    (data.tasks?.confirmDetails || data.tasks?.signAgreement) ?? false;
+  const hasTasks = (data.tasks?.confirmDetails || data.tasks?.signAgreement) ?? false;
 
   if (!hasTasks) {
     return (
@@ -79,8 +61,7 @@ export default function ClientPage({
   return (
     <>
       <Text fs={"italic"}>
-        Vi mangler noen opplysninger fra deg – fullfør oppgavene nedenfor for å
-        fortsette.
+        Vi mangler noen opplysninger fra deg – fullfør oppgavene nedenfor for å fortsette.
       </Text>
       <Stepper active={0}>
         {confirmDetailsTask && (
@@ -95,8 +76,7 @@ export default function ClientPage({
                 <InfoAlert title={"Send signaturforespørsel til foresatt"}>
                   <Stack gap={5}>
                     <Text>
-                      Siden du er under 18 år krever vi signatur fra en av dine
-                      foresatte.
+                      Siden du er under 18 år krever vi signatur fra en av dine foresatte.
                     </Text>
                     <Title mt={"xs"} order={4}>
                       Oppgitt foresatt
@@ -129,10 +109,7 @@ export default function ClientPage({
               </Stack>
             </Activity>
             <Activity mode={!isUnder18(data.dob) ? "visible" : "hidden"}>
-              <SignAgreement
-                userDetailId={data.id}
-                cachedAgreementText={cachedAgreementText}
-              />
+              <SignAgreement userDetailId={data.id} cachedAgreementText={cachedAgreementText} />
             </Activity>
           </Stepper.Step>
         )}

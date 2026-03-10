@@ -5,14 +5,8 @@ export interface SortFilter {
   direction: 1 | -1;
 }
 export class DbQuerySortFilter {
-  public getSortFilters(
-    query: ParsedQs,
-    validSortParams: string[],
-  ): SortFilter[] {
-    if (
-      !query ||
-      (Object.keys(query).length === 0 && query.constructor === Object)
-    ) {
+  public getSortFilters(query: ParsedQs, validSortParams: string[]): SortFilter[] {
+    if (!query || (Object.keys(query).length === 0 && query.constructor === Object)) {
       throw new TypeError("query can not be undefined or empty");
     }
 
@@ -21,15 +15,9 @@ export class DbQuerySortFilter {
     return this.generateSortFilters(query["sort"], validSortParams);
   }
 
-  private generateSortFilters(
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    sort: any,
-    validSortParams: string[],
-  ): SortFilter[] {
+  private generateSortFilters(sort: any, validSortParams: string[]): SortFilter[] {
     if (!Array.isArray(sort) && typeof sort !== "string")
-      throw new TypeError(
-        'sort of value "' + sort + '" is not of type Array[string] or string',
-      );
+      throw new TypeError('sort of value "' + sort + '" is not of type Array[string] or string');
 
     const sortArray = Array.isArray(sort) ? sort : [sort];
 
@@ -45,16 +33,11 @@ export class DbQuerySortFilter {
     };
   }
 
-  private validSortValue(
-    sortValue: string,
-    validSortParams: string[],
-  ): boolean {
+  private validSortValue(sortValue: string, validSortParams: string[]): boolean {
     const sval = this.getBaseSortParam(sortValue);
 
     if (!validSortParams.includes(sval))
-      throw new ReferenceError(
-        'sort parameter "' + sval + '" is not in validSortParams',
-      );
+      throw new ReferenceError('sort parameter "' + sval + '" is not in validSortParams');
 
     return true;
   }

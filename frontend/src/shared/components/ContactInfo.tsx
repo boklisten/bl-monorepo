@@ -12,9 +12,7 @@ const ContactInfo = () => {
           <IconPhone />
           <Stack gap={2}>
             <Text>Ring oss</Text>
-            <NextAnchor href={`tel:${CONTACT_INFO.phone}`}>
-              {CONTACT_INFO.phone}
-            </NextAnchor>
+            <NextAnchor href={`tel:${CONTACT_INFO.phone}`}>{CONTACT_INFO.phone}</NextAnchor>
           </Stack>
         </Group>
 
@@ -22,9 +20,7 @@ const ContactInfo = () => {
           <IconMail />
           <Stack gap={2}>
             <Text>Send oss en e-post</Text>
-            <NextAnchor href={`mailto:${CONTACT_INFO.email}`}>
-              {CONTACT_INFO.email}
-            </NextAnchor>
+            <NextAnchor href={`mailto:${CONTACT_INFO.email}`}>{CONTACT_INFO.email}</NextAnchor>
           </Stack>
         </Group>
 

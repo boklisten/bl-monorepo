@@ -141,35 +141,33 @@ test.group("PaymentDibsHandler", (group) => {
   test("should reject if order is not found", async () => {
     testPayment.order = "notFoundOrder";
 
-    return expect(
-      paymentDibsHandler.handleDibsPayment(testPayment),
-    ).to.be.rejectedWith(BlError, /order not found/);
+    return expect(paymentDibsHandler.handleDibsPayment(testPayment)).to.be.rejectedWith(
+      BlError,
+      /order not found/,
+    );
   });
 
   test("should reject if dibsPaymentService.orderToDibsEasyOrder rejects", async () => {
     getDibsEasyOrderConfirm = false;
 
-    return expect(
-      paymentDibsHandler.handleDibsPayment(testPayment),
-    ).to.be.rejectedWith(BlError, /could not create dibs easy order/);
+    return expect(paymentDibsHandler.handleDibsPayment(testPayment)).to.be.rejectedWith(
+      BlError,
+      /could not create dibs easy order/,
+    );
   });
 
   test("should reject if dibs paymentId could not be created", async () => {
     getPaymentIdConfirm = false;
 
-    return expect(
-      paymentDibsHandler.handleDibsPayment(testPayment),
-    ).to.be.rejectedWith(BlError);
+    return expect(paymentDibsHandler.handleDibsPayment(testPayment)).to.be.rejectedWith(BlError);
   });
 
   test("should resolve with a payment including the correct paymentId", async () => {
     testPaymentId = "testDibsPaymentId1";
 
-    paymentDibsHandler
-      .handleDibsPayment(testPayment)
-      .then((payment: Payment) => {
-        // @ts-expect-error fixme: auto ignored
-        return expect(payment.info["paymentId"]).to.eql(testPaymentId);
-      });
+    paymentDibsHandler.handleDibsPayment(testPayment).then((payment: Payment) => {
+      // @ts-expect-error fixme: auto ignored
+      return expect(payment.info["paymentId"]).to.eql(testPaymentId);
+    });
   });
 });

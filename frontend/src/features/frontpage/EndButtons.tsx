@@ -21,12 +21,7 @@ export default function EndButtons() {
         <Button component={Link} href={"/auth/register"}>
           Registrer deg
         </Button>
-        <Button
-          variant={"outline"}
-          component={Link}
-          href={"/auth/login"}
-          c={"green"}
-        >
+        <Button variant={"outline"} component={Link} href={"/auth/login"} c={"green"}>
           Logg inn
         </Button>
       </Activity>

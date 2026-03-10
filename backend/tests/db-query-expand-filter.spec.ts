@@ -21,14 +21,15 @@ test.group("DbQueryExpandFilter", async () => {
   });
 
   test("should return array of expand field when present in query", async () => {
-    expect(dbQueryExpandFilter.getExpandFilters({ expand: "customer" })).to.eql(
-      [{ fieldName: "customer" }],
-    );
+    expect(dbQueryExpandFilter.getExpandFilters({ expand: "customer" })).to.eql([
+      { fieldName: "customer" },
+    ]);
   });
 
   test("should return array of expand fields when present in query", async () => {
-    expect(
-      dbQueryExpandFilter.getExpandFilters({ expand: ["customer", "order"] }),
-    ).to.eql([{ fieldName: "customer" }, { fieldName: "order" }]);
+    expect(dbQueryExpandFilter.getExpandFilters({ expand: ["customer", "order"] })).to.eql([
+      { fieldName: "customer" },
+      { fieldName: "order" },
+    ]);
   });
 });

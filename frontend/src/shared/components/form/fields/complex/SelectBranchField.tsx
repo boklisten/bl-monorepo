@@ -59,11 +59,7 @@ export default function SelectBranchField(
                 title={`Finner du ikke ${props.perspective === "personal" ? "din" : "kundens"} skole eller klasse?`}
               >
                 Ta kontakt på{" "}
-                <NextAnchor
-                  underline={"never"}
-                  size={"sm"}
-                  href={"mailto:info@boklisten.no"}
-                >
+                <NextAnchor underline={"never"} size={"sm"} href={"mailto:info@boklisten.no"}>
                   info@boklisten.no
                 </NextAnchor>
                 , så hjelper vi deg!

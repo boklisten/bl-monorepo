@@ -17,10 +17,7 @@ should();
 test.group("PaymentPostHook", (group) => {
   const paymentValidator = new PaymentValidator();
   const paymentDibsHandler = new PaymentDibsHandler();
-  const paymentPostHook = new PaymentPostHook(
-    paymentValidator,
-    paymentDibsHandler,
-  );
+  const paymentPostHook = new PaymentPostHook(paymentValidator, paymentDibsHandler);
 
   let testOrder: Order;
   let testPayment: Payment;

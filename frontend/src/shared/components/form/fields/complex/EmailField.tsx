@@ -9,16 +9,14 @@ export function emailFieldValidator(
   primaryEmail?: string,
 ) {
   if (!value) {
-    if (context === "personal" || context === "administrate")
-      return "Du må fylle inn e-post";
+    if (context === "personal" || context === "administrate") return "Du må fylle inn e-post";
     if (context === "guardian") return "Du må fylle inn foresatt sin e-post";
   }
 
   if (!validator.isEmail(value)) {
     if (context === "personal" || context === "administrate")
       return "Du må fylle inn en gyldig e-post";
-    if (context === "guardian")
-      return "Du må fylle inn en gyldig e-post for foresatt";
+    if (context === "guardian") return "Du må fylle inn en gyldig e-post for foresatt";
   }
 
   if (context === "guardian" && value === primaryEmail)

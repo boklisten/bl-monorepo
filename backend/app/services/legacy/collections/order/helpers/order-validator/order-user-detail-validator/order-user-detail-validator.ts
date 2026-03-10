@@ -5,23 +5,18 @@ import { UserDetail } from "#shared/user-detail";
 
 export class OrderUserDetailValidator {
   public validate(order: Order): Promise<boolean> {
-    return (
-      StorageService.UserDetails.get(order.customer)
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars
-        .then((userDetail: UserDetail) => {
-          /*
+    return StorageService.UserDetails.get(order.customer)
+      .then((_userDetail: UserDetail) => {
+        /*
         if (!userDetail.emailConfirmed) {
           throw new BlError('userDetail.emailConfirmed is not true');
         }
         */
 
-          return true;
-        })
-        .catch((userDetailValidateError: BlError) => {
-          throw new BlError("userDetail could not be validated").add(
-            userDetailValidateError,
-          );
-        })
-    );
+        return true;
+      })
+      .catch((userDetailValidateError: BlError) => {
+        throw new BlError("userDetail could not be validated").add(userDetailValidateError);
+      });
   }
 }

@@ -39,12 +39,7 @@ export default function PublicNavigationDrawer() {
         <Burger color={"white"} opened={opened} onClick={toggle} />
       </Activity>
 
-      <Drawer
-        opened={opened}
-        onClose={close}
-        position={"right"}
-        title={"Velg side"}
-      >
+      <Drawer opened={opened} onClose={close} position={"right"} title={"Velg side"}>
         <Stack gap={5}>
           <Activity mode={isLoggedIn ? "visible" : "hidden"}>
             <TasksLink />
@@ -144,9 +139,7 @@ export default function PublicNavigationDrawer() {
             <Activity mode={isEmployee ? "visible" : "hidden"}>
               <NavLink
                 label={"Gå til bl-admin"}
-                description={
-                  "Her kan du søke opp kunder, samle inn og dele ut bøker."
-                }
+                description={"Her kan du søke opp kunder, samle inn og dele ut bøker."}
                 href={"/admin"}
                 leftSection={<IconExternalLink />}
                 component={Link}

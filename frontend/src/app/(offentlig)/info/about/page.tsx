@@ -12,12 +12,7 @@ export const metadata: Metadata = {
 export default async function AboutPage() {
   "use cache";
   const dataKey = "om_oss";
-  const cachedData = await publicApiClient.editable_texts
-    .key({ key: dataKey })
-    .$get()
-    .unwrap();
+  const cachedData = await publicApiClient.editable_texts.key({ key: dataKey }).$get().unwrap();
 
-  return (
-    <EditableTextReadOnly dataKey={dataKey} cachedText={cachedData.text} />
-  );
+  return <EditableTextReadOnly dataKey={dataKey} cachedText={cachedData.text} />;
 }

@@ -16,9 +16,7 @@ export default function ManualBlidSearchModal({
   });
   return (
     <Stack>
-      <InfoAlert>
-        Skal kun brukes dersom bokas unike ID ikke lar seg skanne
-      </InfoAlert>
+      <InfoAlert>Skal kun brukes dersom bokas unike ID ikke lar seg skanne</InfoAlert>
       <form.AppField name={"blid"}>
         {(field) => (
           <field.TextField

@@ -89,9 +89,7 @@ export class SEDbQuery {
         }
       } else {
         if (!ObjectId.isValid(objectIdFilter.value))
-          throw new BlError(`Invalid ObjectID: ${objectIdFilter.value}`).code(
-            701,
-          );
+          throw new BlError(`Invalid ObjectID: ${objectIdFilter.value}`).code(701);
 
         // @ts-expect-error fixme: auto ignored
         filterObject[objectIdFilter.fieldName] = objectIdFilter.value;

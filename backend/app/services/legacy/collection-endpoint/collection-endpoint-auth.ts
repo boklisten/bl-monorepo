@@ -5,16 +5,10 @@ import { PermissionService } from "#services/permission_service";
 import { BlError } from "#shared/bl-error";
 import { BlEndpointRestriction } from "#types/bl-collection";
 
-function validateAuth(
-  restriction: BlEndpointRestriction | undefined,
-  accessToken: JwtPayload,
-) {
+function validateAuth(restriction: BlEndpointRestriction | undefined, accessToken: JwtPayload) {
   if (
     restriction &&
-    !PermissionService.isPermissionEqualOrOver(
-      accessToken["permission"],
-      restriction.permission,
-    )
+    !PermissionService.isPermissionEqualOrOver(accessToken["permission"], restriction.permission)
   ) {
     throw new BlError(
       `user "${accessToken.sub}" with permission "${accessToken["permission"]}" does not have access to this endpoint`,

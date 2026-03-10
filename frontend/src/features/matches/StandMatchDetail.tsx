@@ -22,9 +22,7 @@ import ProgressBar from "@/shared/components/ProgressBar";
 import { GENERIC_ERROR_TEXT } from "@/shared/utils/constants";
 
 function useMeetingStatus(meetingTime?: string | Date) {
-  const [isTooEarly, setIsTooEarly] = useState(
-    dayjs().isBefore(dayjs(meetingTime)),
-  );
+  const [isTooEarly, setIsTooEarly] = useState(dayjs().isBefore(dayjs(meetingTime)));
 
   useEffect(() => {
     if (!meetingTime) return;
@@ -39,11 +37,7 @@ function useMeetingStatus(meetingTime?: string | Date) {
   return isTooEarly;
 }
 
-const StandMatchDetail = ({
-  standMatch,
-}: {
-  standMatch: StandMatchWithDetails;
-}) => {
+const StandMatchDetail = ({ standMatch }: { standMatch: StandMatchWithDetails }) => {
   const tooEarly = useMeetingStatus(standMatch.meetingInfo.date);
   const { fulfilledHandoffItems, fulfilledPickupItems } =
     calculateFulfilledStandMatchItems(standMatch);
@@ -64,7 +58,6 @@ const StandMatchDetail = ({
       (match) => match.expectedPickupItems,
       fulfilledPickupItems,
     );
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } catch (error: any) {
     return <ErrorAlert title={GENERIC_ERROR_TEXT}>{error?.message}</ErrorAlert>;
   }
@@ -79,21 +72,18 @@ const StandMatchDetail = ({
       </Title>
 
       <Activity mode={isFulfilled ? "visible" : "hidden"}>
-        <SuccessAlert>
-          Du har mottatt og levert alle bøkene for denne overleveringen.
-        </SuccessAlert>
+        <SuccessAlert>Du har mottatt og levert alle bøkene for denne overleveringen.</SuccessAlert>
       </Activity>
 
       <Activity mode={hasHandoffItems ? "visible" : "hidden"}>
         <ProgressBar
           percentComplete={
-            (fulfilledHandoffItems.length * 100) /
-            standMatch.expectedHandoffItems.length
+            (fulfilledHandoffItems.length * 100) / standMatch.expectedHandoffItems.length
           }
           subtitle={
             <>
-              {fulfilledHandoffItems.length} av{" "}
-              {standMatch.expectedHandoffItems.length} bøker levert
+              {fulfilledHandoffItems.length} av {standMatch.expectedHandoffItems.length} bøker
+              levert
             </>
           }
         />
@@ -102,13 +92,11 @@ const StandMatchDetail = ({
       <Activity mode={hasPickupItems ? "visible" : "hidden"}>
         <ProgressBar
           percentComplete={
-            (fulfilledPickupItems.length * 100) /
-            standMatch.expectedPickupItems.length
+            (fulfilledPickupItems.length * 100) / standMatch.expectedPickupItems.length
           }
           subtitle={
             <>
-              {fulfilledPickupItems.length} av{" "}
-              {standMatch.expectedPickupItems.length} bøker mottatt
+              {fulfilledPickupItems.length} av {standMatch.expectedPickupItems.length} bøker mottatt
             </>
           }
         />
@@ -123,14 +111,11 @@ const StandMatchDetail = ({
               children: (
                 <Stack align={"center"} w={"100%"}>
                   <QRCode value={standMatch.customer} />
-                  <Title>
-                    Oppmøte{" "}
-                    {dayjs(standMatch.meetingInfo?.date).format("HH:mm")}
-                  </Title>
+                  <Title>Oppmøte {dayjs(standMatch.meetingInfo?.date).format("HH:mm")}</Title>
                   <Activity mode={tooEarly ? "visible" : "hidden"}>
                     <InfoAlert title={"For tidlig ute"}>
-                      Din oppmøtetid har ikke kommet enda. Vent med å stille deg
-                      i kø til tidspunktet du har fått tildelt.
+                      Din oppmøtetid har ikke kommet enda. Vent med å stille deg i kø til
+                      tidspunktet du har fått tildelt.
                     </InfoAlert>
                   </Activity>
                 </Stack>

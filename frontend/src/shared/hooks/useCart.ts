@@ -26,19 +26,14 @@ export default function useCart() {
   });
   function add(cartItem: CartItem) {
     remove(cartItem.id);
-    setCart((prev) =>
-      [...prev, cartItem].sort((a, b) => a.title.localeCompare(b.title)),
-    );
+    setCart((prev) => [...prev, cartItem].sort((a, b) => a.title.localeCompare(b.title)));
   }
   function remove(itemId: string) {
     setCart((prev) => prev.filter((cartItem) => cartItem.id !== itemId));
   }
   function calculateTotal() {
     return Math.ceil(
-      cart.reduce(
-        (total, cartItem) => total + (getSelectedOption(cartItem).price ?? 0),
-        0,
-      ),
+      cart.reduce((total, cartItem) => total + (getSelectedOption(cartItem).price ?? 0), 0),
     );
   }
   function getSelectedOption(cartItem: CartItem) {

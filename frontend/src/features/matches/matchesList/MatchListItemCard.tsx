@@ -14,10 +14,7 @@ export default function MatchListItemCard({
   matchType: "stand" | "user";
 }>) {
   return (
-    <NextAnchor
-      underline={"never"}
-      href={`/overleveringer/${matchType}/${matchId}`}
-    >
+    <NextAnchor underline={"never"} href={`/overleveringer/${matchType}/${matchId}`}>
       <Card
         shadow={finished ? "xs" : "lg"}
         withBorder
@@ -25,11 +22,7 @@ export default function MatchListItemCard({
       >
         <Stack gap={"xs"}>
           {children}
-          <Button
-            mt={"md"}
-            variant={finished ? "transparent" : "filled"}
-            color={"green"}
-          >
+          <Button mt={"md"} variant={finished ? "transparent" : "filled"} color={"green"}>
             Åpne
           </Button>
         </Stack>

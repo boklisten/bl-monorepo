@@ -20,10 +20,7 @@ test.group("CustomerHaveActiveCustomerItems", (group) => {
   let customerItemByQueryStub: sinon.SinonStub;
   group.each.setup(() => {
     sandbox = createSandbox();
-    customerItemByQueryStub = sandbox.stub(
-      StorageService.CustomerItems,
-      "getByQuery",
-    );
+    customerItemByQueryStub = sandbox.stub(StorageService.CustomerItems, "getByQuery");
   });
   group.each.teardown(() => {
     sandbox.restore();
@@ -32,9 +29,8 @@ test.group("CustomerHaveActiveCustomerItems", (group) => {
   test("should resolve with false if no customerItems is found", async () => {
     customerItemByQueryStub.rejects(new BlError("not found").code(702));
 
-    return expect(
-      customerHaveActiveCustomerItems.haveActiveCustomerItems(testUserId),
-    ).to.eventually.be.false;
+    return expect(customerHaveActiveCustomerItems.haveActiveCustomerItems(testUserId)).to.eventually
+      .be.false;
   });
 
   test("should resolve with false if no customerItems was active", async () => {
@@ -49,9 +45,8 @@ test.group("CustomerHaveActiveCustomerItems", (group) => {
 
     customerItemByQueryStub.resolves([nonActiveCustomerItem]);
 
-    return expect(
-      customerHaveActiveCustomerItems.haveActiveCustomerItems(testUserId),
-    ).to.eventually.be.false;
+    return expect(customerHaveActiveCustomerItems.haveActiveCustomerItems(testUserId)).to.eventually
+      .be.false;
   });
 
   test("should resolve with true if at least one customerItem was active", async () => {
@@ -73,13 +68,9 @@ test.group("CustomerHaveActiveCustomerItems", (group) => {
       returned: false,
     };
 
-    customerItemByQueryStub.resolves([
-      nonActiveCustomerItem,
-      activeCustomerItem,
-    ]);
+    customerItemByQueryStub.resolves([nonActiveCustomerItem, activeCustomerItem]);
 
-    return expect(
-      customerHaveActiveCustomerItems.haveActiveCustomerItems(testUserId),
-    ).to.eventually.be.true;
+    return expect(customerHaveActiveCustomerItems.haveActiveCustomerItems(testUserId)).to.eventually
+      .be.true;
   });
 });

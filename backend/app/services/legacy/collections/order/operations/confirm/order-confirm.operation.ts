@@ -57,10 +57,8 @@ export class OrderConfirmOperation implements Operation {
     );
 
     try {
-      const existingOrders =
-        await StorageService.Orders.getByQuery(databaseQuery);
-      const alreadyOrderedItems =
-        this.filterOrdersByAlreadyOrdered(existingOrders);
+      const existingOrders = await StorageService.Orders.getByQuery(databaseQuery);
+      const alreadyOrderedItems = this.filterOrdersByAlreadyOrdered(existingOrders);
 
       for (const orderItem of order.orderItems) {
         for (const alreadyOrderedItem of alreadyOrderedItems) {
@@ -96,22 +94,16 @@ export class OrderConfirmOperation implements Operation {
       throw new BlError(`order "${blApiRequest.documentId}" not found`);
     }
 
-    const alreadyOrderedSomeItems =
-      await this.hasOpenOrderWithOrderItems(order);
+    const alreadyOrderedSomeItems = await this.hasOpenOrderWithOrderItems(order);
 
     if (alreadyOrderedSomeItems) {
-      throw new BlError(
-        "There already exists an order with some of these orderitems",
-      );
+      throw new BlError("There already exists an order with some of these orderitems");
     }
 
     let placedOrder;
 
     try {
-      placedOrder = await this.orderPlacedHandler.placeOrder(
-        order,
-        accessToken.details,
-      );
+      placedOrder = await this.orderPlacedHandler.placeOrder(order, accessToken.details);
     } catch (error) {
       throw new BlError("order could not be placed:" + error);
     }

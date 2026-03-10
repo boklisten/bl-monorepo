@@ -16,7 +16,6 @@ test.group("OrderItemRentPeriodValidator", (group) => {
   const orderItemRentPeriodValidator = new OrderItemRentPeriodValidator();
   let orderStorageGetStub: sinon.SinonStub;
   let sandbox: sinon.SinonSandbox;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   let branchPaymentInfo: any;
   const orderB = {
     id: "orderB",
@@ -37,7 +36,6 @@ test.group("OrderItemRentPeriodValidator", (group) => {
     ],
     payments: ["paymentA"],
     placed: true,
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } as any;
   //important to remember, if payments is set and placed is true, that means that the payments are also confirmed
 
@@ -70,10 +68,7 @@ test.group("OrderItemRentPeriodValidator", (group) => {
         branchPaymentInfo as BranchPaymentInfo,
         100,
       ),
-    ).to.be.rejectedWith(
-      BlError,
-      /rent period "semester" is not valid on branch/,
-    );
+    ).to.be.rejectedWith(BlError, /rent period "semester" is not valid on branch/);
   });
 
   test("should reject if not all amounts is equal to 0 on orderItem", async () => {
@@ -84,15 +79,8 @@ test.group("OrderItemRentPeriodValidator", (group) => {
     } as OrderItem;
 
     return expect(
-      orderItemRentPeriodValidator.validate(
-        orderItem,
-        branchPaymentInfo as BranchPaymentInfo,
-        100,
-      ),
-    ).to.be.rejectedWith(
-      BlError,
-      /amounts where set on orderItem when branch is responsible/,
-    );
+      orderItemRentPeriodValidator.validate(orderItem, branchPaymentInfo as BranchPaymentInfo, 100),
+    ).to.be.rejectedWith(BlError, /amounts where set on orderItem when branch is responsible/);
   });
 
   test("should resolve with true if all amounts is 0", async () => {
@@ -103,11 +91,7 @@ test.group("OrderItemRentPeriodValidator", (group) => {
     } as OrderItem;
 
     return expect(
-      orderItemRentPeriodValidator.validate(
-        orderItem,
-        branchPaymentInfo as BranchPaymentInfo,
-        100,
-      ),
+      orderItemRentPeriodValidator.validate(orderItem, branchPaymentInfo as BranchPaymentInfo, 100),
     ).to.be.fulfilled;
   });
 
@@ -118,7 +102,6 @@ test.group("OrderItemRentPeriodValidator", (group) => {
         type: "semester",
       },
     ],
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } as any;
 
   const orderItem = {
@@ -133,23 +116,16 @@ test.group("OrderItemRentPeriodValidator", (group) => {
       periodType: "semester",
     },
     movedFromOrder: "orderB",
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } as any;
 
   test("should reject if orderItem.amount is 0 but the movedFromOrder has not been payed for", async () => {
     orderB.payments = []; // this means no payment is provided, aka customer has not payed
     orderStorageGetStub.withArgs("orderB").resolves(orderB);
 
-    await orderItemRentPeriodValidator.validate(
-      orderItem,
-      branchPaymentInfo,
-      100,
-    );
+    await orderItemRentPeriodValidator.validate(orderItem, branchPaymentInfo, 100);
   });
 
-  test("should reject if period is the same but orderItem.amount is not 0", async ({
-    assert,
-  }) => {
+  test("should reject if period is the same but orderItem.amount is not 0", async ({ assert }) => {
     orderB.payments = ["payment1"]; // this means that the order is payed for
     orderStorageGetStub.withArgs("orderB").resolves(orderB);
 
@@ -175,7 +151,6 @@ test.group("OrderItemRentPeriodValidator", (group) => {
           type: "semester",
         },
       ],
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } as any;
     branchPaymentInfo.rentPeriods.push({
       type: "year",
@@ -197,11 +172,7 @@ test.group("OrderItemRentPeriodValidator", (group) => {
     orderItem.info.periodType = "year";
 
     await assert.rejects(() =>
-      orderItemRentPeriodValidator.validate(
-        orderItem,
-        branchPaymentInfo,
-        itemPrice,
-      ),
+      orderItemRentPeriodValidator.validate(orderItem, branchPaymentInfo, itemPrice),
     );
   });
 
@@ -231,11 +202,7 @@ test.group("OrderItemRentPeriodValidator", (group) => {
 
     // fixme, test is wrong
     await assert.doesNotReject(() =>
-      orderItemRentPeriodValidator.validate(
-        orderItem,
-        branchPaymentInfo,
-        itemPrice,
-      ),
+      orderItemRentPeriodValidator.validate(orderItem, branchPaymentInfo, itemPrice),
     );
   });
 
@@ -261,17 +228,11 @@ test.group("OrderItemRentPeriodValidator", (group) => {
     orderItem.type = "rent";
     orderItem.info.periodType = "semester";
 
-    return expect(
-      orderItemRentPeriodValidator.validate(
-        orderItem,
-        branchPaymentInfo,
-        itemPrice,
-      ),
-    ).to.be.rejected;
+    return expect(orderItemRentPeriodValidator.validate(orderItem, branchPaymentInfo, itemPrice)).to
+      .be.rejected;
   });
 
   test("should reject if orderItem.amount is not equalt to branchPayment percentage * itemPrice", async () => {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const branchPaymentInfo: any = {
       responsible: false,
       rentPeriods: [
@@ -286,7 +247,6 @@ test.group("OrderItemRentPeriodValidator", (group) => {
 
     const itemPrice = 100;
 
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const orderItem: any = {
       type: "rent",
       info: {
@@ -296,11 +256,7 @@ test.group("OrderItemRentPeriodValidator", (group) => {
     };
 
     return expect(
-      orderItemRentPeriodValidator.validate(
-        orderItem,
-        branchPaymentInfo,
-        itemPrice,
-      ),
+      orderItemRentPeriodValidator.validate(orderItem, branchPaymentInfo, itemPrice),
     ).to.be.rejectedWith(
       BlError,
       /orderItem.amount "0" is not equal to itemPrice "100" \* percentage "0.5" "50"/,
@@ -308,7 +264,6 @@ test.group("OrderItemRentPeriodValidator", (group) => {
   });
 
   test("should resolve if given valid orderItem", async () => {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const branchPaymentInfo: any = {
       responsible: false,
       rentPeriods: [
@@ -323,7 +278,6 @@ test.group("OrderItemRentPeriodValidator", (group) => {
 
     const itemPrice = 100;
 
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const orderItem: any = {
       type: "rent",
       info: {
@@ -332,12 +286,7 @@ test.group("OrderItemRentPeriodValidator", (group) => {
       amount: 50,
     };
 
-    return expect(
-      orderItemRentPeriodValidator.validate(
-        orderItem,
-        branchPaymentInfo,
-        itemPrice,
-      ),
-    ).to.be.fulfilled;
+    return expect(orderItemRentPeriodValidator.validate(orderItem, branchPaymentInfo, itemPrice)).to
+      .be.fulfilled;
   });
 });

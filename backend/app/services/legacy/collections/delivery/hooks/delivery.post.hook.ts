@@ -11,19 +11,13 @@ export class DeliveryPostHook extends Hook {
   private deliveryValidator: DeliveryValidator;
   private deliveryHandler: DeliveryHandler;
 
-  constructor(
-    deliveryValidator?: DeliveryValidator,
-    deliveryHandler?: DeliveryHandler,
-  ) {
+  constructor(deliveryValidator?: DeliveryValidator, deliveryHandler?: DeliveryHandler) {
     super();
     this.deliveryValidator = deliveryValidator ?? new DeliveryValidator();
     this.deliveryHandler = deliveryHandler ?? new DeliveryHandler();
   }
 
-  public override after(
-    deliveries: Delivery[],
-    accessToken?: AccessToken,
-  ): Promise<Delivery[]> {
+  public override after(deliveries: Delivery[], accessToken?: AccessToken): Promise<Delivery[]> {
     if (!deliveries || deliveries.length <= 0) {
       return Promise.reject(new BlError("deliveries is empty or undefined"));
     }

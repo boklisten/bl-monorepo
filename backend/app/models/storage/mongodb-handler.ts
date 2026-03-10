@@ -25,10 +25,7 @@ export class MongodbHandler<T extends BlDocument> {
 
   constructor(schema: BlSchema<T>, modelName: string) {
     this.path = modelName;
-    this.mongooseModel = new MongooseModelCreator<T>(
-      schema,
-      modelName,
-    ).create();
+    this.mongooseModel = new MongooseModelCreator<T>(schema, modelName).create();
   }
 
   // fixme: disallow undefined here, and handle missing values higher up
@@ -77,10 +74,7 @@ export class MongodbHandler<T extends BlDocument> {
       .lean({ transform: MongooseModelCreator.transformObject })
       .exec()
       .catch((error) => {
-        throw this.handleError(
-          new BlError(`could not find document by the provided query`),
-          error,
-        );
+        throw this.handleError(new BlError(`could not find document by the provided query`), error);
       })) as T[];
 
     if (docs.length <= 0) {
@@ -89,11 +83,7 @@ export class MongodbHandler<T extends BlDocument> {
 
     const expandFilters = databaseQuery.getExpandFilter();
     return allowedNestedDocuments && allowedNestedDocuments.length > 0
-      ? await this.retrieveNestedDocuments(
-          docs,
-          allowedNestedDocuments,
-          expandFilters,
-        )
+      ? await this.retrieveNestedDocuments(docs, allowedNestedDocuments, expandFilters)
       : docs;
   }
 
@@ -122,10 +112,7 @@ export class MongodbHandler<T extends BlDocument> {
         .lean({ transform: MongooseModelCreator.transformObject })
         .exec()) as T[];
     } catch (error) {
-      throw this.handleError(
-        new BlError("error when trying to find documents"),
-        error,
-      );
+      throw this.handleError(new BlError("error when trying to find documents"), error);
     }
   }
 
@@ -134,10 +121,7 @@ export class MongodbHandler<T extends BlDocument> {
       .aggregate(aggregation)
       .exec()
       .catch((error) => {
-        throw this.handleError(
-          new BlError("failed to aggregate documents"),
-          error,
-        );
+        throw this.handleError(new BlError("failed to aggregate documents"), error);
       });
 
     if (!docs) {
@@ -149,18 +133,13 @@ export class MongodbHandler<T extends BlDocument> {
 
   public async getAll(userPermission?: UserPermission) {
     const filter =
-      userPermission && PermissionService.isAdmin(userPermission)
-        ? {}
-        : { active: true };
+      userPermission && PermissionService.isAdmin(userPermission) ? {} : { active: true };
     const document_ = (await this.mongooseModel
       .find(filter)
       .lean({ transform: MongooseModelCreator.transformObject })
       .exec()
       .catch((error) => {
-        throw this.handleError(
-          new BlError("failed to get all documents"),
-          error,
-        );
+        throw this.handleError(new BlError("failed to get all documents"), error);
       })) as T[];
 
     if (!document_) {
@@ -206,10 +185,7 @@ export class MongodbHandler<T extends BlDocument> {
       .catch((error) => {
         logger.error(`failed to update document: ${error}`);
         throw this.handleError(
-          new BlError(`failed to update document with id ${id}`).store(
-            "data",
-            newData,
-          ),
+          new BlError(`failed to update document with id ${id}`).store("data", newData),
           error,
         );
       })) as T;
@@ -250,10 +226,7 @@ export class MongodbHandler<T extends BlDocument> {
       .lean({ transform: MongooseModelCreator.transformObject })
       .exec()
       .catch((error) => {
-        throw this.handleError(
-          new BlError(`could not remove document with id "${id}"`),
-          error,
-        );
+        throw this.handleError(new BlError(`could not remove document with id "${id}"`), error);
       })) as T;
 
     if (!document_) {
@@ -286,18 +259,13 @@ export class MongodbHandler<T extends BlDocument> {
     if (!expandFilters || expandFilters.length <= 0) {
       return docs;
     }
-    const expandedNestedDocuments = allowedNestedDocuments.filter(
-      (nestedDocument) =>
-        expandFilters.some(
-          (expandFilter) => expandFilter.fieldName === nestedDocument.field,
-        ),
+    const expandedNestedDocuments = allowedNestedDocuments.filter((nestedDocument) =>
+      expandFilters.some((expandFilter) => expandFilter.fieldName === nestedDocument.field),
     );
 
     try {
       return await Promise.all(
-        docs.map((document_) =>
-          this.getNestedDocuments(document_, expandedNestedDocuments),
-        ),
+        docs.map((document_) => this.getNestedDocuments(document_, expandedNestedDocuments)),
       );
     } catch (error) {
       throw (
@@ -310,10 +278,7 @@ export class MongodbHandler<T extends BlDocument> {
     }
   }
 
-  private async getNestedDocuments(
-    document_: T,
-    nestedDocuments: NestedDocument[],
-  ) {
+  private async getNestedDocuments(document_: T, nestedDocuments: NestedDocument[]) {
     const nestedDocumentsPromArray = nestedDocuments.flatMap((nestedDocument) =>
       // @ts-expect-error fixme: auto ignored
       document_ && document_[nestedDocument.field]
@@ -355,9 +320,7 @@ export class MongodbHandler<T extends BlDocument> {
         return blError.code(200);
       }
     } else {
-      return new BlError("EndpointMongoDb: unknown error")
-        .add(blError)
-        .code(200);
+      return new BlError("EndpointMongoDb: unknown error").add(blError).code(200);
     }
   }
 }

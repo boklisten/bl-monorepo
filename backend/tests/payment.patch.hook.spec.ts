@@ -16,10 +16,7 @@ should();
 test.group("PaymentPatchHook", (group) => {
   const paymentDibsHandler = new PaymentDibsHandler();
   const paymentValidator = new PaymentValidator();
-  const paymentPatchHook = new PaymentPatchHook(
-    paymentDibsHandler,
-    paymentValidator,
-  );
+  const paymentPatchHook = new PaymentPatchHook(paymentDibsHandler, paymentValidator);
 
   let testPayment: Payment;
 
@@ -86,7 +83,6 @@ test.group("PaymentPatchHook", (group) => {
   });
 
   test("should reject with error", async () => {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     testPayment.method = "something" as any;
 
     return expect(paymentPatchHook.after([testPayment])).to.be.rejectedWith(

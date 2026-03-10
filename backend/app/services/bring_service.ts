@@ -9,15 +9,11 @@ const bringAuthHeaders = {
 export const BringService = {
   async lookupPostalCode(postalCode: string) {
     const bringResponse = await (
-      await fetch(
-        `https://api.bring.com/address/api/NO/postal-codes/${postalCode}`,
-        {
-          headers: bringAuthHeaders,
-        },
-      )
+      await fetch(`https://api.bring.com/address/api/NO/postal-codes/${postalCode}`, {
+        headers: bringAuthHeaders,
+      })
     ).json();
-    const [, data] =
-      await bringPostalCodeResponseValidator.tryValidate(bringResponse);
+    const [, data] = await bringPostalCodeResponseValidator.tryValidate(bringResponse);
     return data?.postal_codes[0]?.city ?? null;
   },
 };

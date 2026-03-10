@@ -4,11 +4,7 @@ import { Activity } from "react";
 import ErrorAlert from "@/shared/components/alerts/ErrorAlert";
 import { useFormContext } from "@/shared/hooks/form";
 
-export default function ErrorSummary({
-  serverErrors = [],
-}: {
-  serverErrors?: string[];
-}) {
+export default function ErrorSummary({ serverErrors = [] }: { serverErrors?: string[] }) {
   const form = useFormContext();
   return (
     <form.Subscribe selector={(state) => state.fieldMeta}>

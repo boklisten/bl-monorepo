@@ -6,15 +6,11 @@ import { StorageService } from "#services/storage_service";
 import TokenService from "#services/token_service";
 import { UserDetailService } from "#services/user_detail_service";
 import { UserService } from "#services/user_service";
-import {
-  localAuthValidator,
-  registerValidator,
-} from "#validators/auth_validators";
+import { localAuthValidator, registerValidator } from "#validators/auth_validators";
 
 export default class LocalController {
   async login({ request }: HttpContext) {
-    const { username, password } =
-      await request.validateUsing(localAuthValidator);
+    const { username, password } = await request.validateUsing(localAuthValidator);
 
     const userDetail = vine.helpers.isEmail(username)
       ? await UserDetailService.getByEmail(username)
@@ -66,12 +62,8 @@ export default class LocalController {
 
   async register({ request }: HttpContext) {
     const registerData = await request.validateUsing(registerValidator);
-    const userDetail =
-      await UserDetailService.createLocalUserDetail(registerData);
-    const user = await UserService.createLocalUser(
-      userDetail.id,
-      registerData.password,
-    );
+    const userDetail = await UserDetailService.createLocalUserDetail(registerData);
+    const user = await UserService.createLocalUser(userDetail.id, registerData.password);
     return await TokenService.createTokens(user);
   }
 }

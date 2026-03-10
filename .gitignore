@@ -33,7 +33,6 @@ Session.vim
 
 # Editor/IDE files
 .idea/
-.vercel
 
 # Platform-specific
 *.pem

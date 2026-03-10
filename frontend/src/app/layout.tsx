@@ -8,8 +8,6 @@ import { ColorSchemeScript, mantineHtmlProps, MantineProvider } from "@mantine/c
 import { DatesProvider } from "@mantine/dates";
 import { ModalsProvider } from "@mantine/modals";
 import { Notifications } from "@mantine/notifications";
-import { Analytics } from "@vercel/analytics/next";
-import { SpeedInsights } from "@vercel/speed-insights/next";
 import Head from "next/head";
 import Script from "next/script";
 import { Suspense } from "react";
@@ -38,8 +36,6 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
             </Suspense>
           </DatesProvider>
         </MantineProvider>
-        <SpeedInsights />
-        <Analytics />
       </body>
     </html>
   );

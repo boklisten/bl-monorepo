@@ -9,7 +9,6 @@ onlyBuiltDependencies:
   - "@sentry-internal/node-cpu-profiler"
   - "@sentry/cli"
   - "@swc/core"
-  - "@vercel/speed-insights"
   - argon2
   - canvas
   - esbuild

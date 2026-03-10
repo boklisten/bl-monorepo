@@ -1,13 +1,13 @@
 {
-  "extends": ["../tsconfig.base.json", "@tsconfig/next/tsconfig.json"],
+  "extends": ["@tsconfig/strictest/tsconfig.json", "@tsconfig/next/tsconfig.json"],
   "compilerOptions": {
-    "target": "es2022",
-    "downlevelIteration": true,
+    "exactOptionalPropertyTypes": false, // fixme: delete this line for stricter checks
     "noUnusedParameters": false, // fixme: delete this line for stricter checks
+    "target": "es2022",
     "experimentalDecorators": true,
     "paths": {
-      "@/*": ["frontend/src/*"],
-      "@boklisten/backend/*": ["backend/src/*"]
+      "@/*": ["./src/*"],
+      "@boklisten/backend/*": ["../backend/src/*"]
     }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],

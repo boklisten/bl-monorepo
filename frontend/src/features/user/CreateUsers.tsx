@@ -1,4 +1,3 @@
-"use client";
 import { useMutation } from "@tanstack/react-query";
 
 import UploadCSVFile from "@/shared/components/UploadCSVFile";
@@ -32,7 +31,6 @@ export default function CreateUsers() {
       optionalHeaders={["address", "postalCode", "postalCity", "dob"] as const}
       // fixme: bad csv upload typing
       onUpload={(data) => {
-        console.log(data);
         createUsersMutation.mutate(data as UserCandidate[]);
       }}
     />

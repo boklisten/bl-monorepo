@@ -1,14 +1,13 @@
-"use client";
 import { Skeleton, Stack } from "@mantine/core";
 import { useQuery } from "@tanstack/react-query";
-import { useRouter } from "next/navigation";
 
 import UserSettingsForm from "@/features/user/UserSettingsForm";
 import useApiClient from "@/shared/hooks/useApiClient";
+import { useNavigate } from "@tanstack/react-router";
 
 const UserSettings = () => {
   const client = useApiClient();
-  const router = useRouter();
+  const navigate = useNavigate();
 
   const { data, isLoading, isError } = useQuery({
     queryKey: [client.v2.user_details.me.$url()],
@@ -27,7 +26,7 @@ const UserSettings = () => {
   }
 
   if (isError || !data) {
-    router.push("/auth/login?redirect=user-settings");
+    navigate({ to: "/auth/login", search: { redirect: "user-settings" } });
     return null;
   }
 

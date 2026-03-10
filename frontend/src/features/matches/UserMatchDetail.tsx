@@ -1,8 +1,8 @@
-import { UserMatchWithDetails } from "@boklisten/backend/shared/match/match-dtos";
+import type { UserMatchWithDetails } from "@boklisten/backend/shared/match/match-dtos";
 import { Button, Stack, Text, Title } from "@mantine/core";
 import { modals } from "@mantine/modals";
 import { IconObjectScan } from "@tabler/icons-react";
-import { Activity, Suspense, useState } from "react";
+import { Activity, useState } from "react";
 
 import { UserMatchTitle } from "@/features/matches/matchesList/helper";
 import MeetingInfo from "@/features/matches/MeetingInfo";
@@ -14,7 +14,7 @@ import CountdownToRedirect from "@/shared/components/CountdownToRedirect";
 import {
   calculateUserMatchStatus,
   calculateItemStatuses,
-  ItemStatus,
+  type ItemStatus,
   MatchHeader,
 } from "@/shared/components/matches/matches-helper";
 import MatchItemTable from "@/shared/components/matches/MatchItemTable";
@@ -72,9 +72,7 @@ const UserMatchDetail = ({
         <Activity mode={isCurrentUserFulfilled ? "visible" : "hidden"}>
           <SuccessAlert>Du har {statusText} alle bøkene for denne overleveringen.</SuccessAlert>
           <Activity mode={redirectCountdownStarted ? "visible" : "hidden"}>
-            <Suspense>
-              <CountdownToRedirect path={"/overleveringer"} seconds={5} />
-            </Suspense>
+            <CountdownToRedirect path={"/overleveringer"} seconds={5} />
           </Activity>
         </Activity>
         <ProgressBar

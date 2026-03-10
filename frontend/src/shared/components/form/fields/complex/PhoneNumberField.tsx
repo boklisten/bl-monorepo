@@ -1,4 +1,4 @@
-import { Text, TextInput, TextInputProps } from "@mantine/core";
+import { Text, TextInput, type TextInputProps } from "@mantine/core";
 import isMobilePhone from "validator/lib/isMobilePhone";
 
 import { useFieldContext } from "@/shared/hooks/form";

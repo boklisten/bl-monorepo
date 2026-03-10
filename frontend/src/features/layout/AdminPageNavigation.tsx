@@ -1,4 +1,3 @@
-"use client";
 import { Divider, NavLink, ScrollArea, Stack } from "@mantine/core";
 import {
   IconBarcode,
@@ -23,11 +22,11 @@ import {
   IconUserEdit,
   IconUserPlus,
 } from "@tabler/icons-react";
-import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { useLocation } from "@tanstack/react-router";
 import { Activity } from "react";
 
 import useAuth from "@/shared/hooks/useAuth";
+import TanStackAnchor from "@/shared/components/TanStackAnchor.tsx";
 
 export default function AdminPageNavigation({
   onNavigate = () => {
@@ -36,7 +35,7 @@ export default function AdminPageNavigation({
 }: {
   onNavigate?: () => void;
 }) {
-  const pathname = usePathname();
+  const pathname = useLocation({ select: (location) => location.pathname });
   const { isAdmin } = useAuth();
   return (
     <Stack justify={"space-between"} h={"100%"}>
@@ -44,100 +43,110 @@ export default function AdminPageNavigation({
         <Stack gap={5}>
           <NavLink
             label={"BL-ID-søk"}
-            href={"/admin/blid"}
+            to={"/admin/blid"}
             active={pathname === "/admin/blid"}
             leftSection={<IconSearch />}
-            variant={"subtle"}
-            component={Link}
+            underline={"never"}
+            c={"black"}
+            component={TanStackAnchor}
             onClick={onNavigate}
           />
           <NavLink
             label={"Handlekurv"}
-            href={"/admin/handlekurv"}
+            to={"/admin/handlekurv"}
             active={pathname === "/admin/handlekurv"}
             leftSection={<IconShoppingCart />}
-            variant={"subtle"}
-            component={Link}
+            underline={"never"}
+            c={"black"}
+            component={TanStackAnchor}
             onClick={onNavigate}
           />
           <NavLink
             label={"Hurtiginnsamling"}
-            href={"/admin/hurtiginnsamling"}
+            to={"/admin/hurtiginnsamling"}
             active={pathname === "/admin/hurtiginnsamling"}
             leftSection={<IconQrcode />}
-            variant={"subtle"}
-            component={Link}
+            underline={"never"}
+            c={"black"}
+            component={TanStackAnchor}
             onClick={onNavigate}
           />
           <NavLink
             label={"Hurtigutdeling"}
-            href={"/admin/hurtigutdeling"}
+            to={"/admin/hurtigutdeling"}
             active={pathname === "/admin/hurtigutdeling"}
             leftSection={<IconChecklist />}
-            variant={"subtle"}
-            component={Link}
+            underline={"never"}
+            c={"black"}
+            component={TanStackAnchor}
             onClick={onNavigate}
           />
           <NavLink
             label={"Ordreoversikt"}
-            href={"/admin/ordreoversikt"}
+            to={"/admin/ordreoversikt"}
             active={pathname === "/admin/ordreoversikt"}
             leftSection={<IconReceipt />}
-            variant={"subtle"}
-            component={Link}
+            underline={"never"}
+            c={"black"}
+            component={TanStackAnchor}
             onClick={onNavigate}
           />
           <NavLink
             label={"Venteliste"}
-            href={"/admin/venteliste"}
+            to={"/admin/venteliste"}
             active={pathname === "/admin/venteliste"}
             leftSection={<IconHourglassLow />}
-            variant={"subtle"}
-            component={Link}
+            underline={"never"}
+            c={"black"}
+            component={TanStackAnchor}
             onClick={onNavigate}
           />
           <NavLink
             label={"Scanner"}
-            href={"/admin/scanner"}
+            to={"/admin/scanner"}
             active={pathname === "/admin/scanner"}
             leftSection={<IconBarcode />}
-            variant={"subtle"}
-            component={Link}
+            underline={"never"}
+            c={"black"}
+            component={TanStackAnchor}
             onClick={onNavigate}
           />
           <Activity mode={isAdmin ? "visible" : "hidden"}>
             <Divider label={"Admin"} />
             <NavLink
               label={"Faktura"}
-              href={"/admin/faktura"}
+              to={"/admin/faktura"}
               active={pathname === "/admin/faktura"}
               leftSection={<IconFileDollar />}
-              variant={"subtle"}
-              component={Link}
+              underline={"never"}
+              c={"black"}
+              component={TanStackAnchor}
               onClick={onNavigate}
             />
             <NavLink
               label={"Kommunikasjon"}
               leftSection={<IconMailFast />}
               active={pathname.includes("kommunikasjon")}
-              variant={"subtle"}
+              c={"black"}
             >
               <NavLink
                 label={"Påminnelser"}
-                href={"/admin/kommunikasjon/paminnelser"}
+                to={"/admin/kommunikasjon/paminnelser"}
                 active={pathname === "/admin/kommunikasjon/paminnelser"}
                 leftSection={<IconBell />}
-                variant={"subtle"}
-                component={Link}
+                underline={"never"}
+                c={"black"}
+                component={TanStackAnchor}
                 onClick={onNavigate}
               />
               <NavLink
                 label={"Utsendelser"}
-                href={"/admin/kommunikasjon/utsendelser"}
+                to={"/admin/kommunikasjon/utsendelser"}
                 active={pathname === "/admin/kommunikasjon/utsendelser"}
                 leftSection={<IconSend />}
-                variant={"subtle"}
-                component={Link}
+                underline={"never"}
+                c={"black"}
+                component={TanStackAnchor}
                 onClick={onNavigate}
               />
             </NavLink>
@@ -145,69 +154,75 @@ export default function AdminPageNavigation({
               label={"Databaseverktøy"}
               leftSection={<IconDatabase />}
               active={pathname.includes("database")}
-              variant={"subtle"}
             >
               <NavLink
                 label={"Rapporter"}
-                href={"/admin/database/rapporter"}
+                to={"/admin/database/rapporter"}
                 active={pathname === "/admin/database/rapporter"}
                 leftSection={<IconChartBar />}
-                variant={"subtle"}
-                component={Link}
+                underline={"never"}
+                c={"black"}
+                component={TanStackAnchor}
                 onClick={onNavigate}
               />
               <NavLink
                 label={"Bøker"}
-                href={"/admin/database/boker"}
+                to={"/admin/database/boker"}
                 active={pathname === "/admin/database/boker"}
                 leftSection={<IconBooks />}
-                variant={"subtle"}
-                component={Link}
+                underline={"never"}
+                c={"black"}
+                component={TanStackAnchor}
                 onClick={onNavigate}
               />
               <NavLink
                 label={"Filialer"}
-                href={"/admin/database/filialer"}
+                to={"/admin/database/filialer"}
                 active={pathname === "/admin/database/filialer"}
                 leftSection={<IconBuildingStore />}
-                variant={"subtle"}
-                component={Link}
+                underline={"never"}
+                c={"black"}
+                component={TanStackAnchor}
                 onClick={onNavigate}
               />
               <NavLink
                 label={"Selskap"}
-                href={"/admin/database/selskap"}
+                to={"/admin/database/selskap"}
                 active={pathname === "/admin/database/selskap"}
                 leftSection={<IconBuildings />}
-                variant={"subtle"}
-                component={Link}
+                underline={"never"}
+                c={"black"}
+                component={TanStackAnchor}
                 onClick={onNavigate}
               />
               <NavLink
                 label={"Dynamisk innhold"}
-                href={"/admin/database/dynamisk_innhold"}
+                to={"/admin/database/dynamisk_innhold"}
                 active={pathname === "/admin/database/dynamisk_innhold"}
                 leftSection={<IconEdit />}
-                variant={"subtle"}
-                component={Link}
+                underline={"never"}
+                c={"black"}
+                component={TanStackAnchor}
                 onClick={onNavigate}
               />
               <NavLink
                 label={"Unike IDer"}
-                href={"/admin/database/unik_id"}
+                to={"/admin/database/unik_id"}
                 active={pathname === "/admin/database/unik_id"}
                 leftSection={<IconQrcode />}
-                variant={"subtle"}
-                component={Link}
+                underline={"never"}
+                c={"black"}
+                component={TanStackAnchor}
                 onClick={onNavigate}
               />
               <NavLink
                 label={"Lag brukere"}
-                href={"/admin/database/lag_brukere"}
+                to={"/admin/database/lag_brukere"}
                 active={pathname === "/admin/database/lag_brukere"}
                 leftSection={<IconUserPlus />}
-                variant={"subtle"}
-                component={Link}
+                underline={"never"}
+                c={"black"}
+                component={TanStackAnchor}
                 onClick={onNavigate}
               />
             </NavLink>
@@ -219,29 +234,33 @@ export default function AdminPageNavigation({
         <Divider label={"Bruker"} />
         <NavLink
           label={"Brukerinnstillinger"}
-          href={"/admin/user-settings"}
+          to={"/admin/user-settings"}
           active={pathname.includes("/user-settings")}
           leftSection={<IconUserEdit />}
           variant={"subtle"}
-          component={Link}
+          underline={"never"}
+          c={"black"}
+          component={TanStackAnchor}
           onClick={onNavigate}
         />
         <NavLink
           label={"Gå til kundeside"}
           description={"Se offentlig informasjon og egne bøker"}
-          href={"/"}
+          to={"/"}
           leftSection={<IconExternalLink />}
-          component={Link}
+          component={TanStackAnchor}
           active
+          underline={"never"}
           onClick={onNavigate}
         />
         <NavLink
           label={"Logg ut"}
-          href={"/auth/logout"}
+          to={"/auth/logout"}
           leftSection={<IconLogout />}
           variant={"subtle"}
-          component={Link}
+          component={TanStackAnchor}
           active
+          underline={"never"}
           color={"red"}
           onClick={onNavigate}
         />

@@ -1,6 +1,4 @@
-"use client";
-
-import { Branch } from "@boklisten/backend/shared/branch";
+import type { Branch } from "@boklisten/backend/shared/branch";
 import { Group, Skeleton } from "@mantine/core";
 import { IconMapPin } from "@tabler/icons-react";
 import { useQuery } from "@tanstack/react-query";

@@ -1,4 +1,3 @@
-"use client";
 import { Skeleton, Stack, Text } from "@mantine/core";
 import { useQuery } from "@tanstack/react-query";
 import { Activity } from "react";

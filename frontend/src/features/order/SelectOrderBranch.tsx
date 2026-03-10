@@ -1,20 +1,19 @@
-"use client";
-import { Branch } from "@boklisten/backend/shared/branch";
-import { Divider, NavLink, Text } from "@mantine/core";
+import { Divider, NavLink, Skeleton, Stack, Text } from "@mantine/core";
 import { IconSchool } from "@tabler/icons-react";
 import { useQuery } from "@tanstack/react-query";
-import Link from "next/link";
+import TanStackAnchor from "@/shared/components/TanStackAnchor.tsx";
 
 import unpack from "@/shared/utils/bl-api-request";
 import { publicApiClient } from "@/shared/utils/publicApiClient";
+import type { Branch } from "@boklisten/backend/shared/branch.ts";
 
 const capitalize = (s: string) => (s.length > 0 ? s[0]?.toUpperCase() + s.slice(1) : "");
 
-export default function SelectOrderBranch({ cachedBranches }: { cachedBranches: Branch[] }) {
+export default function SelectOrderBranch() {
   const branchQuery = {
     query: { active: true, "isBranchItemsLive.online": true, sort: "name" },
   };
-  const { data } = useQuery({
+  const { data: branches } = useQuery({
     queryKey: [publicApiClient.$url("collection.branches.getAll", branchQuery)],
     queryFn: () =>
       publicApiClient
@@ -23,9 +22,37 @@ export default function SelectOrderBranch({ cachedBranches }: { cachedBranches: 
         .then(unpack<Branch[]>),
   });
 
-  const branches = data ?? cachedBranches;
+  if (!branches) {
+    return (
+      <Stack>
+        <Skeleton h={35} w={"100%"} />
+        <Skeleton h={35} w={"100%"} />
+        <Skeleton h={35} w={"100%"} />
+        <Skeleton h={35} w={"100%"} />
+        <Skeleton h={35} w={"100%"} />
+        <Skeleton h={35} w={"100%"} />
+        <Skeleton h={35} w={"100%"} />
+        <Skeleton h={35} w={"100%"} />
+        <Skeleton h={35} w={"100%"} />
+        <Skeleton h={35} w={"100%"} />
+        <Skeleton h={35} w={"100%"} />
+        <Skeleton h={35} w={"100%"} />
+      </Stack>
+    );
+  }
 
-  const groupedBranches = Map.groupBy(branches, (branch) => capitalize(branch.location.region));
+  const groupedBranches = branches.reduce((m, b) => {
+    const k = capitalize(b.location.region);
+
+    if (m.has(k)) {
+      m.get(k)!.push(b);
+    } else {
+      m.set(k, [b]);
+    }
+
+    return m;
+  }, new Map<string, Branch[]>());
+
   return (
     <>
       {Array.from(groupedBranches.entries())
@@ -41,13 +68,12 @@ export default function SelectOrderBranch({ cachedBranches }: { cachedBranches: 
           >
             {branches.map((branch) => (
               <NavLink
-                component={Link}
+                component={TanStackAnchor}
                 key={branch.id}
                 leftSection={<IconSchool />}
                 active={true}
                 variant={"subtle"}
-                // @ts-expect-error fixme: bad routing types
-                href={`/bestilling/${branch.id}`}
+                to={`/bestilling/${branch.id}`}
                 label={branch.name}
               />
             ))}
@@ -56,14 +82,13 @@ export default function SelectOrderBranch({ cachedBranches }: { cachedBranches: 
       <Divider label={"eller"} my={"xs"} />
       <Text>Jeg går ikke går på noen skole (bøker til overs)</Text>
       <NavLink
-        component={Link}
+        component={TanStackAnchor}
         leftSection={<IconSchool />}
         fw={"bold"}
         bg={"brand"}
         c={"#fff"}
         style={{ borderRadius: 5 }}
-        // @ts-expect-error fixme: bad routing types
-        href={"/bestilling/63c5715d38bbec00484aa540"}
+        to={"/bestilling/63c5715d38bbec00484aa540"}
         label={"Fri privatist"}
       />
     </>

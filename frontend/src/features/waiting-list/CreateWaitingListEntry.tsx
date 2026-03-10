@@ -1,5 +1,5 @@
-import { Branch } from "@boklisten/backend/shared/branch";
-import { Item } from "@boklisten/backend/shared/item";
+import type { Branch } from "@boklisten/backend/shared/branch";
+import type { Item } from "@boklisten/backend/shared/item";
 import { Button, Group, Stack, Title } from "@mantine/core";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 

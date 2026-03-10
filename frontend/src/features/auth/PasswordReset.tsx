@@ -1,23 +1,22 @@
-"use client";
 import { Button } from "@mantine/core";
 import { useMutation, useQuery } from "@tanstack/react-query";
-import { useSearchParams } from "next/navigation";
 import { Activity, useState } from "react";
 
 import ErrorAlert from "@/shared/components/alerts/ErrorAlert";
 import SuccessAlert from "@/shared/components/alerts/SuccessAlert";
 import { newPasswordFieldValidator } from "@/shared/components/form/fields/complex/NewPasswordField";
-import NextAnchor from "@/shared/components/NextAnchor";
+import TanStackAnchor from "@/shared/components/TanStackAnchor.tsx";
 import { useAppForm } from "@/shared/hooks/form";
 import { GENERIC_ERROR_TEXT, PLEASE_TRY_AGAIN_TEXT } from "@/shared/utils/constants";
 import { publicApiClient } from "@/shared/utils/publicApiClient";
+import { useLocation } from "@tanstack/react-router";
 
 interface PasswordResetFields {
   newPassword: string;
 }
 
 export default function PasswordReset({ resetId }: { resetId: string }) {
-  const searchParams = useSearchParams();
+  const { resetToken } = useLocation({ select: (location) => location.search });
   const [apiError, setApiError] = useState<string | null>(null);
 
   const resetValidation = useQuery({
@@ -25,7 +24,7 @@ export default function PasswordReset({ resetId }: { resetId: string }) {
     queryFn: () =>
       publicApiClient.reset_password.validate.$post({
         resetId,
-        resetToken: searchParams.get("resetToken") ?? "",
+        resetToken: resetToken ?? "",
       }),
   });
 
@@ -35,7 +34,7 @@ export default function PasswordReset({ resetId }: { resetId: string }) {
       const { message } = await publicApiClient.reset_password
         .$post({
           resetId,
-          resetToken: searchParams.get("resetToken") ?? "",
+          resetToken: resetToken ?? "",
           newPassword,
         })
         .unwrap();
@@ -63,7 +62,7 @@ export default function PasswordReset({ resetId }: { resetId: string }) {
           {message ??
             "Lenken har utløpt. Du kan be om å få tilsendt en ny lenke på 'glemt passord'-siden"}
         </ErrorAlert>
-        <NextAnchor href={"/auth/forgot"}>Gå til glemt passord</NextAnchor>
+        <TanStackAnchor to={"/auth/forgot"}>Gå til glemt passord</TanStackAnchor>
       </Activity>
 
       <Activity
@@ -81,16 +80,16 @@ export default function PasswordReset({ resetId }: { resetId: string }) {
           {(field) => <field.NewPasswordField label={"Nytt passord"} />}
         </form.AppField>
         <Button onClick={form.handleSubmit}>Lag nytt passord</Button>
-        <NextAnchor href={"/auth/login"}>Tilbake til innloggingssiden</NextAnchor>
+        <TanStackAnchor to={"/auth/login"}>Tilbake til innloggingssiden</TanStackAnchor>
       </Activity>
 
       <Activity
         mode={!isExpired && resetPasswordMutation.isSuccess && !apiError ? "visible" : "hidden"}
       >
         <SuccessAlert>Passordet ble oppdatert! Du kan nå logge inn.</SuccessAlert>
-        <NextAnchor href={"/auth/login"}>
+        <TanStackAnchor to={"/auth/login"}>
           <Button>Logg inn</Button>
-        </NextAnchor>
+        </TanStackAnchor>
       </Activity>
     </>
   );

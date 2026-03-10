@@ -1,12 +1,12 @@
 import { Group, Title } from "@mantine/core";
-import Image from "next/image";
+import { Image } from "@unpic/react";
 
 import TestVersionChip from "@/features/layout/TestVersionChip";
-import NextAnchor from "@/shared/components/NextAnchor";
+import TanStackAnchor from "@/shared/components/TanStackAnchor.tsx";
 
 export default function Logo({ variant, admin }: { variant: "white" | "blue"; admin?: boolean }) {
   return (
-    <NextAnchor href={admin ? "/admin" : "/"} underline={"never"}>
+    <TanStackAnchor to={admin ? "/admin" : "/"} underline={"never"}>
       <Group gap={"xs"} wrap={"nowrap"}>
         <Image src={`/boklisten_logo_${variant}.png`} width={40} height={40} alt="Boklisten.no" />
         <Title
@@ -19,6 +19,6 @@ export default function Logo({ variant, admin }: { variant: "white" | "blue"; ad
         </Title>
         <TestVersionChip />
       </Group>
-    </NextAnchor>
+    </TanStackAnchor>
   );
 }

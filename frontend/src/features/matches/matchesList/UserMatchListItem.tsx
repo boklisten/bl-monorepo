@@ -1,4 +1,4 @@
-import { UserMatchWithDetails } from "@boklisten/backend/shared/match/match-dtos";
+import type { UserMatchWithDetails } from "@boklisten/backend/shared/match/match-dtos";
 import { Text, Title } from "@mantine/core";
 import { Activity } from "react";
 

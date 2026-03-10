@@ -1,4 +1,4 @@
-import { DatePickerInput, DatePickerInputProps } from "@mantine/dates";
+import { DatePickerInput, type DatePickerInputProps } from "@mantine/dates";
 import dayjs from "dayjs";
 
 import { useFieldContext } from "@/shared/hooks/form";

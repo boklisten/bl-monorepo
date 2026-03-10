@@ -1,5 +1,3 @@
-"use client";
-
 import { Button, Group, Space, Stack, Text } from "@mantine/core";
 import { createFieldMap } from "@tanstack/react-form";
 import { useMutation } from "@tanstack/react-query";
@@ -14,7 +12,7 @@ import { emailFieldValidator } from "@/shared/components/form/fields/complex/Ema
 import { nameFieldValidator } from "@/shared/components/form/fields/complex/NameField";
 import { newPasswordFieldValidator } from "@/shared/components/form/fields/complex/NewPasswordField";
 import { phoneNumberFieldValidator } from "@/shared/components/form/fields/complex/PhoneNumberField";
-import NextAnchor from "@/shared/components/NextAnchor";
+import TanStackAnchor from "@/shared/components/TanStackAnchor.tsx";
 import { useAppForm } from "@/shared/hooks/form";
 import { login } from "@/shared/hooks/useAuth";
 import useAuthLinker from "@/shared/hooks/useAuthLinker";
@@ -153,13 +151,13 @@ export default function SignupForm() {
               <Group gap={3}>
                 <Text size={"sm"}>
                   {"Jeg godtar Boklistens "}
-                  <NextAnchor href={"/info/policies/conditions"} target={"_blank"}>
+                  <TanStackAnchor to={"/info/policies/conditions"} target={"_blank"}>
                     betingelser
-                  </NextAnchor>
+                  </TanStackAnchor>
                   {" og "}
-                  <NextAnchor href={"/info/policies/terms"} target={"_blank"}>
+                  <TanStackAnchor to={"/info/policies/terms"} target={"_blank"}>
                     vilkår
-                  </NextAnchor>
+                  </TanStackAnchor>
                 </Text>
                 <Text size={"sm"} c={"#fa5252"}>
                   *

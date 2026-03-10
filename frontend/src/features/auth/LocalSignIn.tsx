@@ -1,4 +1,3 @@
-"use client";
 import { Button, Group } from "@mantine/core";
 import { useMutation } from "@tanstack/react-query";
 import { Activity, useEffect, useState } from "react";
@@ -6,7 +5,7 @@ import validator from "validator";
 
 import ErrorAlert from "@/shared/components/alerts/ErrorAlert";
 import { passwordFieldValidator } from "@/shared/components/form/fields/complex/PasswordField";
-import NextAnchor from "@/shared/components/NextAnchor";
+import TanStackAnchor from "@/shared/components/TanStackAnchor.tsx";
 import { useAppForm } from "@/shared/hooks/form";
 import useAuth, { login } from "@/shared/hooks/useAuth";
 import useAuthLinker from "@/shared/hooks/useAuthLinker";
@@ -93,12 +92,12 @@ export default function LocalSignIn() {
         Logg inn
       </Button>
       <Group justify={"space-between"}>
-        <NextAnchor size={"sm"} href={"/auth/forgot"}>
+        <TanStackAnchor size={"sm"} to={"/auth/forgot"}>
           Glemt passord?
-        </NextAnchor>
-        <NextAnchor size={"sm"} href={"/auth/register"}>
+        </TanStackAnchor>
+        <TanStackAnchor size={"sm"} to={"/auth/register"}>
           Har du ikke konto? Registrer deg
-        </NextAnchor>
+        </TanStackAnchor>
       </Group>
     </>
   );

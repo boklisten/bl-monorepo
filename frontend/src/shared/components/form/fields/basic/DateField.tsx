@@ -1,4 +1,4 @@
-import { CalendarLevel, DateInput, DateInputProps } from "@mantine/dates";
+import { type CalendarLevel, DateInput, type DateInputProps } from "@mantine/dates";
 import { useState } from "react";
 
 import { useFieldContext } from "@/shared/hooks/form";

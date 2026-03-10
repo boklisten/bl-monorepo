@@ -1,4 +1,4 @@
-import { AccessToken } from "@boklisten/backend/shared/access-token";
+import type { AccessToken } from "@boklisten/backend/shared/access-token";
 import {
   StandMatchWithDetails,
   UserMatchWithDetails,

@@ -1,5 +1,4 @@
-"use client";
-import { PublicBlidLookupResult } from "@boklisten/backend/shared/public_blid_lookup";
+import type { PublicBlidLookupResult } from "@boklisten/backend/shared/public_blid_lookup";
 import { ActionIcon, Card, Group, Stack, Table, Text, Title, Tooltip } from "@mantine/core";
 import { modals } from "@mantine/modals";
 import { IconMail, IconObjectScan, IconPhone } from "@tabler/icons-react";

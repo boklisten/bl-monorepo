@@ -1,7 +1,7 @@
 import { Button, Stack } from "@mantine/core";
 import { modals } from "@mantine/modals";
 import { IconForms } from "@tabler/icons-react";
-import { Activity, PropsWithChildren } from "react";
+import { Activity, type ReactNode } from "react";
 
 import WarningAlert from "@/shared/components/alerts/WarningAlert";
 import BlidScanner, { determineScannedTextType } from "@/shared/components/scanner/BlidScanner";
@@ -17,12 +17,13 @@ const ScannerModal = ({
   allowManualRegistration,
   disableValidation,
   children,
-}: PropsWithChildren<{
+}: {
   onScan: (blid: string) => Promise<[{ feedback: string }]>;
   onSuccessfulScan?: (() => void) | undefined;
   allowManualRegistration?: boolean;
   disableValidation?: boolean;
-}>) => {
+  children?: ReactNode;
+}) => {
   const handleRegistration = async (scannedText: string) => {
     const scannedTextType = determineScannedTextType(scannedText);
     if (!disableValidation && scannedTextType === TextType.ISBN) {

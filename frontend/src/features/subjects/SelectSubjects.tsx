@@ -1,36 +1,45 @@
 // useSet does not support React Compiler yet
 "use no memo";
-"use client";
 
-import { CartItem } from "@boklisten/backend/shared/cart_item";
-import { Affix, Box, Button, Card, Stack, Text } from "@mantine/core";
+import { Affix, Box, Button, Card, Skeleton, Stack, Text } from "@mantine/core";
 import { useSet } from "@mantine/hooks";
 import { IconArrowBack, IconBasket, IconBasketCheck } from "@tabler/icons-react";
 import { useQuery } from "@tanstack/react-query";
-import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { useNavigate } from "@tanstack/react-router";
 import { Activity } from "react";
 
 import InfoAlert from "@/shared/components/alerts/InfoAlert";
 import useCart from "@/shared/hooks/useCart";
 import { publicApiClient } from "@/shared/utils/publicApiClient";
+import TanStackAnchor from "@/shared/components/TanStackAnchor.tsx";
 
-export default function SelectSubjects({
-  branchId,
-  cachedSubjects,
-}: {
-  branchId: string;
-  cachedSubjects: Record<string, CartItem[]>;
-}) {
-  const router = useRouter();
+export default function SelectSubjects({ branchId }: { branchId: string }) {
+  const navigate = useNavigate();
   const cart = useCart();
   const selectedSubjects = useSet<string>();
-  const { data } = useQuery({
+  const { data: subjects } = useQuery({
     queryKey: [publicApiClient.subjects({ branchId }).$url(), branchId],
     queryFn: () => publicApiClient.subjects({ branchId }).$get().unwrap(),
   });
 
-  const subjects = data ?? cachedSubjects;
+  if (!subjects) {
+    return (
+      <Stack>
+        <Skeleton h={35} w={"100%"} />
+        <Skeleton h={35} w={"100%"} />
+        <Skeleton h={35} w={"100%"} />
+        <Skeleton h={35} w={"100%"} />
+        <Skeleton h={35} w={"100%"} />
+        <Skeleton h={35} w={"100%"} />
+        <Skeleton h={35} w={"100%"} />
+        <Skeleton h={35} w={"100%"} />
+        <Skeleton h={35} w={"100%"} />
+        <Skeleton h={35} w={"100%"} />
+        <Skeleton h={35} w={"100%"} />
+        <Skeleton h={35} w={"100%"} />
+      </Stack>
+    );
+  }
 
   return (
     <>
@@ -39,7 +48,7 @@ export default function SelectSubjects({
           Denne skolen har ikke satt opp noen fag enda. Ta kontakt på info@boklisten.no om du har
           spørsmål.
         </InfoAlert>
-        <Button component={Link} href={"/bestilling"} leftSection={<IconArrowBack />}>
+        <Button component={TanStackAnchor} to={"/bestilling"} leftSection={<IconArrowBack />}>
           Velg en annen skole
         </Button>
       </Activity>
@@ -77,7 +86,7 @@ export default function SelectSubjects({
                       }
                     }
                     selectedSubjects.clear();
-                    router.push("/handlekurv");
+                    navigate({ to: "/handlekurv" });
                   }}
                   leftSection={<IconBasket />}
                   bg={"green"}

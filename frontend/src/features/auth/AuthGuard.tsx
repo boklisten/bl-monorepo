@@ -1,10 +1,9 @@
-"use client";
-import { UserPermission } from "@boklisten/backend/shared/user-permission";
-import { usePathname, useRouter } from "next/navigation";
-import { Activity, ReactNode, useEffect, useEffectEvent, useState } from "react";
+import type { UserPermission } from "@boklisten/backend/shared/user-permission";
+import { Activity, type ReactNode, useEffect, useEffectEvent, useState } from "react";
 
 import useApiClient from "@/shared/hooks/useApiClient";
 import useAuth from "@/shared/hooks/useAuth";
+import { useLocation, useNavigate } from "@tanstack/react-router";
 
 /**
  *
@@ -17,20 +16,20 @@ export default function AuthGuard({
   children: ReactNode;
   requiredPermission?: UserPermission;
 }) {
-  const pathname = usePathname();
-  const router = useRouter();
+  const pathname = useLocation({ select: (location) => location.pathname });
+  const navigate = useNavigate();
   const { isLoading, isLoggedIn, canAccess } = useAuth();
   const client = useApiClient();
   const [isAuthenticated, setIsAuthenticated] = useState(false);
 
   const onAuthChange = useEffectEvent(async () => {
     if (!isLoggedIn) {
-      router.replace(`/auth/login?redirect=${pathname.slice(1)}`);
+      navigate({ to: "/auth/login", search: { redirect: pathname.slice(1) } });
       return;
     }
 
     if (requiredPermission && !canAccess(requiredPermission)) {
-      router.replace("/auth/permission/denied");
+      navigate({ to: "/auth/permission/denied" });
       return;
     }
 
@@ -40,7 +39,7 @@ export default function AuthGuard({
       !pathname.includes("user-settings") &&
       (userDetail?.tasks?.confirmDetails || userDetail?.tasks?.signAgreement)
     ) {
-      router.replace(`/oppgaver?redirect=${pathname.slice(1)}`);
+      navigate({ to: "/oppgaver", search: { redirect: pathname.slice(1) } });
       return;
     }
     setIsAuthenticated(true);

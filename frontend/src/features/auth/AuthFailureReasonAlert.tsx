@@ -1,6 +1,4 @@
-"use client";
-import { AuthVippsError } from "@boklisten/backend/shared/auth_vipps_error";
-import { useSearchParams } from "next/navigation";
+import type { AuthVippsError } from "@boklisten/backend/shared/auth_vipps_error";
 
 import ErrorAlert from "@/shared/components/alerts/ErrorAlert";
 import { PLEASE_TRY_AGAIN_TEXT } from "@/shared/utils/constants";
@@ -11,10 +9,7 @@ const AUTH_VIPPS_ERROR = {
   ERROR: "error",
 } as const satisfies Record<Uppercase<AuthVippsError>, AuthVippsError>;
 
-export default function AuthFailureReasonAlert() {
-  const searchParams = useSearchParams();
-  const reason = searchParams.get("reason") as AuthVippsError | null;
-
+export default function AuthFailureReasonAlert({ reason }: { reason: string }) {
   let text = "";
   switch (reason) {
     case AUTH_VIPPS_ERROR.ACCESS_DENIED: {

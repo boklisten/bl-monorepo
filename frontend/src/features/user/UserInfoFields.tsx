@@ -1,4 +1,4 @@
-import { UserPermission } from "@boklisten/backend/shared/user-permission";
+import type { UserPermission } from "@boklisten/backend/shared/user-permission";
 import { Divider, Fieldset, Stack, Title } from "@mantine/core";
 import dayjs from "dayjs";
 import { Activity } from "react";

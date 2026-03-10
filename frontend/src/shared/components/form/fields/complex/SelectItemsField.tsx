@@ -1,4 +1,4 @@
-import { ComboboxItem, MultiSelect, MultiSelectProps } from "@mantine/core";
+import { type ComboboxItem, MultiSelect, type MultiSelectProps } from "@mantine/core";
 import { useQuery } from "@tanstack/react-query";
 
 import { useFieldContext } from "@/shared/hooks/form";

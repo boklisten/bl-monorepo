@@ -1,6 +1,5 @@
-"use client";
 import { Card, Grid, Stack, Text, Title } from "@mantine/core";
-import Image from "next/image";
+import { Image } from "@unpic/react";
 
 import Dots from "@/features/frontpage/Dots";
 

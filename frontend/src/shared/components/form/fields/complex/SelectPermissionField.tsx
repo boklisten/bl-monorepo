@@ -1,4 +1,4 @@
-import { Select, SelectProps } from "@mantine/core";
+import { Select, type SelectProps } from "@mantine/core";
 
 import { useFieldContext } from "@/shared/hooks/form";
 

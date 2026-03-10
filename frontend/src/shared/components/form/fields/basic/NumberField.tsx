@@ -1,4 +1,4 @@
-import { NumberInput, NumberInputProps } from "@mantine/core";
+import { NumberInput, type NumberInputProps } from "@mantine/core";
 
 import { useFieldContext } from "@/shared/hooks/form";
 

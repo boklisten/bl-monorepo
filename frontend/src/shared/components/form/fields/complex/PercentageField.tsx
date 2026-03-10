@@ -1,4 +1,4 @@
-import { Slider, SliderProps, Stack, Text } from "@mantine/core";
+import { Slider, type SliderProps, Stack, Text } from "@mantine/core";
 
 import { useFieldContext } from "@/shared/hooks/form";
 

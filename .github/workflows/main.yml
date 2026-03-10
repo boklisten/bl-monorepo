@@ -91,8 +91,8 @@ jobs:
         run: pnpm install
       - name: Build Frontend
         env:
-          NEXT_PUBLIC_API_URL: https://staging.api.boklisten.no/
-          NEXT_PUBLIC_BL_ADMIN_URL: https://staging.bladmin.boklisten.no/
+          VITE_API_URL: https://staging.api.boklisten.no/
+          VITE_BL_ADMIN_URL: https://staging.bladmin.boklisten.no/
         run: pnpm --filter frontend build
 
   test_backend:

@@ -1,15 +1,14 @@
-"use client";
 import { Box, Button, Table, Tooltip } from "@mantine/core";
 import { modals } from "@mantine/modals";
 import { IconShoppingCart } from "@tabler/icons-react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import dayjs from "dayjs";
-import { useRouter } from "next/navigation";
 import { Activity } from "react";
 
 import InfoAlert from "@/shared/components/alerts/InfoAlert";
 import useApiClient from "@/shared/hooks/useApiClient";
 import { showErrorNotification, showSuccessNotification } from "@/shared/utils/notifications";
+import { useNavigate } from "@tanstack/react-router";
 
 export default function OpenOrdersList({
   openOrderItems,
@@ -23,7 +22,7 @@ export default function OpenOrdersList({
   }[];
 }) {
   const queryClient = useQueryClient();
-  const router = useRouter();
+  const navigate = useNavigate();
   const client = useApiClient();
 
   const cancelOrderItemMutation = useMutation({
@@ -98,7 +97,7 @@ export default function OpenOrdersList({
         <Button
           leftSection={<IconShoppingCart />}
           onClick={async () => {
-            router.push("/bestilling");
+            navigate({ to: "/bestilling" });
           }}
         >
           {(openOrderItems?.length ?? 0) > 0 ? "Bestill flere" : "Bestill bøker"}

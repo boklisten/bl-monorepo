@@ -1,4 +1,4 @@
-import { TagsInput, TagsInputProps } from "@mantine/core";
+import { TagsInput, type TagsInputProps } from "@mantine/core";
 
 import { useFieldContext } from "@/shared/hooks/form";
 

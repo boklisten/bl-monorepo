@@ -1,4 +1,4 @@
-import { Branch } from "@boklisten/backend/shared/branch";
+import type { Branch } from "@boklisten/backend/shared/branch";
 import { Button, Stack } from "@mantine/core";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { InferRequestType } from "@tuyau/client";

@@ -1,5 +1,3 @@
-"use client";
-
 import { Button, Stack } from "@mantine/core";
 import { IconMailFast } from "@tabler/icons-react";
 import { useMutation } from "@tanstack/react-query";
@@ -8,7 +6,7 @@ import validator from "validator";
 
 import ErrorAlert from "@/shared/components/alerts/ErrorAlert";
 import SuccessAlert from "@/shared/components/alerts/SuccessAlert";
-import NextAnchor from "@/shared/components/NextAnchor";
+import TanStackAnchor from "@/shared/components/TanStackAnchor.tsx";
 import { useAppForm } from "@/shared/hooks/form";
 import { GENERIC_ERROR_TEXT, PLEASE_TRY_AGAIN_TEXT } from "@/shared/utils/constants";
 import { publicApiClient } from "@/shared/utils/publicApiClient";
@@ -72,9 +70,9 @@ export default function ForgotPasswordForm() {
       <Button loading={requestPasswordResetMutation.isPending} onClick={form.handleSubmit}>
         Reset passord
       </Button>
-      <NextAnchor size={"sm"} href={"/auth/login"}>
+      <TanStackAnchor size={"sm"} to={"/auth/login"}>
         Tilbake til innloggingssiden
-      </NextAnchor>
+      </TanStackAnchor>
     </>
   );
 }

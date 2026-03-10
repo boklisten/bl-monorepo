@@ -1,4 +1,3 @@
-"use client";
 import { Button } from "@mantine/core";
 import { IconFileDownload } from "@tabler/icons-react";
 import { useQuery } from "@tanstack/react-query";

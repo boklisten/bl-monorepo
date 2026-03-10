@@ -1,6 +1,6 @@
-import { Order } from "@boklisten/backend/shared/order/order";
-import { OrderItem } from "@boklisten/backend/shared/order/order-item/order-item";
-import { UserDetail } from "@boklisten/backend/shared/user-detail";
+import type { Order } from "@boklisten/backend/shared/order/order";
+import type { OrderItem } from "@boklisten/backend/shared/order/order-item/order-item";
+import type { UserDetail } from "@boklisten/backend/shared/user-detail";
 import { Box, Button, Stack, Title } from "@mantine/core";
 import { modals } from "@mantine/modals";
 import { IconObjectScan } from "@tabler/icons-react";

@@ -1,4 +1,4 @@
-import { FileInput, FileInputProps, Stack, Text } from "@mantine/core";
+import { FileInput, type FileInputProps, Stack, Text } from "@mantine/core";
 import { IconFileTypeCsv } from "@tabler/icons-react";
 import Papa from "papaparse";
 import { Activity, useState } from "react";

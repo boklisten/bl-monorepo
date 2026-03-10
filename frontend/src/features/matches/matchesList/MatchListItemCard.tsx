@@ -1,20 +1,29 @@
 import { Button, Card, Stack } from "@mantine/core";
-import { PropsWithChildren } from "react";
 
-import NextAnchor from "@/shared/components/NextAnchor";
+import TanStackAnchor from "@/shared/components/TanStackAnchor.tsx";
+import type { ReactNode } from "react";
 
 export default function MatchListItemCard({
   finished,
   matchId,
   matchType,
   children,
-}: PropsWithChildren<{
+}: {
   finished: boolean;
   matchId: string;
   matchType: "stand" | "user";
-}>) {
+  children: ReactNode;
+}) {
   return (
-    <NextAnchor underline={"never"} href={`/overleveringer/${matchType}/${matchId}`}>
+    <TanStackAnchor
+      underline={"never"}
+      to={
+        matchType === "user"
+          ? "/overleveringer/user/$userMatchId"
+          : "/overleveringer/stand/$standMatchId"
+      }
+      params={matchType === "user" ? { userMatchId: matchId } : { standMatchId: matchId }}
+    >
       <Card
         shadow={finished ? "xs" : "lg"}
         withBorder
@@ -27,6 +36,6 @@ export default function MatchListItemCard({
           </Button>
         </Stack>
       </Card>
-    </NextAnchor>
+    </TanStackAnchor>
   );
 }

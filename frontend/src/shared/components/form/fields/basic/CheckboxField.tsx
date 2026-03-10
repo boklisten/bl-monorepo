@@ -1,4 +1,4 @@
-import { Checkbox, CheckboxProps } from "@mantine/core";
+import { Checkbox, type CheckboxProps } from "@mantine/core";
 
 import { useFieldContext } from "@/shared/hooks/form";
 

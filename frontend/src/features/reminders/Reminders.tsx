@@ -1,6 +1,5 @@
-"use client";
-import { Branch } from "@boklisten/backend/shared/branch";
-import { CustomerItemType } from "@boklisten/backend/shared/customer-item/customer-item-type";
+import type { Branch } from "@boklisten/backend/shared/branch";
+import type { CustomerItemType } from "@boklisten/backend/shared/customer-item/customer-item-type";
 import { MessageMethod } from "@boklisten/backend/shared/message/message-method/message-method";
 import { Button, Grid, Text } from "@mantine/core";
 import { modals } from "@mantine/modals";

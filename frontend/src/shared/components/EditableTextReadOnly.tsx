@@ -1,27 +1,28 @@
-"use client";
 import { useQuery } from "@tanstack/react-query";
-import { Suspense } from "react";
 
 import InfoAlert from "@/shared/components/alerts/InfoAlert";
 import RichTextEditorReadOnly from "@/shared/components/RichTextEditorReadOnly";
 import useApiClient from "@/shared/hooks/useApiClient";
+import { Skeleton, Stack } from "@mantine/core";
 
-export default function EditableTextReadOnly({
-  dataKey,
-  cachedText,
-}: {
-  dataKey: string;
-  cachedText: string;
-}) {
+export default function EditableTextReadOnly({ dataKey }: { dataKey: string }) {
   const client = useApiClient();
 
-  const { data } = useQuery({
+  const { data, isLoading } = useQuery({
     queryKey: [client.editable_texts.key({ key: dataKey }).$url(), dataKey],
     queryFn: () => client.editable_texts.key({ key: dataKey }).$get().unwrap(),
   });
-  const text = data?.text ?? cachedText;
 
-  if (!text) {
+  if (isLoading)
+    return (
+      <Stack>
+        <Skeleton h={30} w={400} />
+        <Skeleton h={200} w={800} />
+        <Skeleton h={200} w={800} />
+      </Stack>
+    );
+
+  if (!data || !data.text) {
     return (
       <InfoAlert title={"Oisann, her var det tomt..."}>
         Innholdet du ser etter er ikke publisert enda. Ta kontakt dersom du har spørsmål.
@@ -29,9 +30,5 @@ export default function EditableTextReadOnly({
     );
   }
 
-  return (
-    <Suspense>
-      <RichTextEditorReadOnly content={text} />
-    </Suspense>
-  );
+  return <RichTextEditorReadOnly content={data.text} />;
 }

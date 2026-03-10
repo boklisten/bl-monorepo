@@ -1,0 +1,25 @@
+import { Title, Stack } from "@mantine/core";
+import QuestionsAndAnswersReadOnly from "@/features/questions-and-answers/QuestionsAndAnswersReadOnly";
+import { createFileRoute } from "@tanstack/react-router";
+
+export const Route = createFileRoute("/(offentlig)/info/faq")({
+  head: () => ({
+    meta: [
+      { title: "Spørsmål og svar | Boklisten.no" },
+      {
+        description:
+          "Hva betyr det at Boklisten alltid leverer riktig bok? Hvordan bestiller jeg bøker som privatist?",
+      },
+    ],
+  }),
+  component: FaqPage,
+});
+
+function FaqPage() {
+  return (
+    <Stack>
+      <Title ta={"center"}>Spørsmål og svar</Title>
+      <QuestionsAndAnswersReadOnly />
+    </Stack>
+  );
+}

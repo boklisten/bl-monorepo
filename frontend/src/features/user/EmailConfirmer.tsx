@@ -1,14 +1,11 @@
-"use client";
-
 import { Loader } from "@mantine/core";
 import { useQuery } from "@tanstack/react-query";
-import { Suspense } from "react";
 
 import ErrorAlert from "@/shared/components/alerts/ErrorAlert";
 import InfoAlert from "@/shared/components/alerts/InfoAlert";
 import SuccessAlert from "@/shared/components/alerts/SuccessAlert";
 import CountdownToRedirect from "@/shared/components/CountdownToRedirect";
-import NextAnchor from "@/shared/components/NextAnchor";
+import TanStackAnchor from "@/shared/components/TanStackAnchor.tsx";
 import { publicApiClient } from "@/shared/utils/publicApiClient";
 
 export default function EmailConfirmer({ confirmationId }: { confirmationId: string }) {
@@ -31,7 +28,7 @@ export default function EmailConfirmer({ confirmationId }: { confirmationId: str
         <ErrorAlert title={"Klarte ikke bekrefte e-post"}>
           Lenken kan være utløpt. Du kan prøve å sende en ny lenke fra brukerinnstillinger.
         </ErrorAlert>
-        <NextAnchor href={"/user-settings"}>Gå til brukerinnstillinger</NextAnchor>
+        <TanStackAnchor to={"/user-settings"}>Gå til brukerinnstillinger</TanStackAnchor>
       </>
     );
   }
@@ -39,9 +36,7 @@ export default function EmailConfirmer({ confirmationId }: { confirmationId: str
   return (
     <>
       <SuccessAlert title={"E-postadressen ble bekreftet!"} />
-      <Suspense>
-        <CountdownToRedirect path={"/"} seconds={5} />
-      </Suspense>
+      <CountdownToRedirect path={"/"} seconds={5} />
     </>
   );
 }

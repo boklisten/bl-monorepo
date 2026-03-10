@@ -1,10 +1,9 @@
-"use client";
 import { Progress, Stack, Title } from "@mantine/core";
 import { useWindowScroll } from "@mantine/hooks";
-import { useRouter } from "next/navigation";
 import { useEffect, useEffectEvent, useState } from "react";
 
 import useAuthLinker from "@/shared/hooks/useAuthLinker";
+import { useNavigate } from "@tanstack/react-router";
 
 const CountdownToRedirect = ({
   seconds,
@@ -19,7 +18,7 @@ const CountdownToRedirect = ({
 }) => {
   const { redirectToCaller } = useAuthLinker();
   const [progress, setProgress] = useState(100);
-  const router = useRouter();
+  const navigate = useNavigate();
 
   const [, scrollTo] = useWindowScroll();
 
@@ -46,13 +45,7 @@ const CountdownToRedirect = ({
   const onIntervalEnd = useEffectEvent(() => {
     if (shouldRedirectToCaller) return redirectToCaller();
     if (path) {
-      if (shouldReplaceInHistory) {
-        // @ts-expect-error fixme: bad routing types
-        router.replace(path);
-      } else {
-        // @ts-expect-error fixme: bad routing types
-        router.push(path);
-      }
+      navigate({ to: path, replace: shouldReplaceInHistory });
     }
   });
   useEffect(() => {

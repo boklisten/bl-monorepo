@@ -1,9 +1,8 @@
-"use client";
-import { UserDetail } from "@boklisten/backend/shared/user-detail";
+import type { UserDetail } from "@boklisten/backend/shared/user-detail";
 import { Box, Button, CopyButton, Group, Skeleton, Stack, Title } from "@mantine/core";
 import { IconCopy, IconSend } from "@tabler/icons-react";
 import { useMutation, useQuery } from "@tanstack/react-query";
-import Image from "next/image";
+import { Image } from "@unpic/react";
 
 import SignedContractDetails from "@/features/signatures/SignedContractDetails";
 import ErrorAlert from "@/shared/components/alerts/ErrorAlert";

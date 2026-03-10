@@ -1,5 +1,4 @@
-"use client";
-import { OpeningHour } from "@boklisten/backend/shared/opening-hour";
+import type { OpeningHour } from "@boklisten/backend/shared/opening-hour";
 import { Skeleton, Stack, Table } from "@mantine/core";
 import { useQuery } from "@tanstack/react-query";
 import dayjs from "dayjs";

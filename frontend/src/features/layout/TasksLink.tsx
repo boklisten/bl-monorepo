@@ -1,6 +1,6 @@
 import { Badge, NavLink } from "@mantine/core";
 import { useQuery } from "@tanstack/react-query";
-import Link from "next/link";
+import TanStackAnchor from "@/shared/components/TanStackAnchor.tsx";
 
 import useApiClient from "@/shared/hooks/useApiClient";
 
@@ -26,13 +26,13 @@ export default function TasksLink() {
     <NavLink
       label={"Oppgaver"}
       description={`Du har ${taskCount} ${taskCount === 1 ? "oppgave" : "oppgaver"} som må fullføres.`}
-      href={"/oppgaver"}
+      to={"/oppgaver"}
       leftSection={
         <Badge color={"red"} circle>
           {taskCount}
         </Badge>
       }
-      component={Link}
+      component={TanStackAnchor}
       color={"red"}
       active
       variant={"subtle"}

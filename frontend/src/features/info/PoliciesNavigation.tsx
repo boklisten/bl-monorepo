@@ -1,6 +1,5 @@
-"use client";
 import { SegmentedControl } from "@mantine/core";
-import { usePathname, useRouter } from "next/navigation";
+import { useLocation, useNavigate } from "@tanstack/react-router";
 
 const tabs = [
   {
@@ -21,15 +20,9 @@ const tabs = [
 }[];
 
 export default function PoliciesNavigation() {
-  const router = useRouter();
-  const pathname = usePathname();
-
+  const navigate = useNavigate();
+  const pathname = useLocation({ select: (location) => location.pathname });
   return (
-    <SegmentedControl
-      value={pathname}
-      data={tabs}
-      // @ts-expect-error fixme: bad routing types
-      onChange={(value) => router.push(value)}
-    />
+    <SegmentedControl value={pathname} data={tabs} onChange={(value) => navigate({ to: value })} />
   );
 }

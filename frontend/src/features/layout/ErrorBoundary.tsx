@@ -10,28 +10,31 @@ import {
 } from "@mantine/hooks";
 import { IconCheck, IconCopy } from "@tabler/icons-react";
 import dayjs from "dayjs";
-import { usePathname, useSearchParams } from "next/navigation";
 import { Activity, useEffect } from "react";
 
 import Logo from "@/features/layout/Logo";
 import ErrorAlert from "@/shared/components/alerts/ErrorAlert";
-import NextAnchor from "@/shared/components/NextAnchor";
+import TanStackAnchor from "@/shared/components/TanStackAnchor.tsx";
 import useAuth from "@/shared/hooks/useAuth";
+import { useLocation } from "@tanstack/react-router";
+import * as Sentry from "@sentry/tanstackstart-react";
 
-export default function ErrorBoundary({
+function ErrorBoundary({
   error,
   withLogo,
   href,
 }: {
-  error: Error & { digest?: string };
+  error: Error;
   withLogo?: boolean;
   href?: string;
 }) {
+  useEffect(() => {
+    Sentry.captureException(error);
+  }, [error]);
   const os = useOs();
   const orientation = useOrientation();
   const { isLoggedIn } = useAuth();
-  const pathname = usePathname();
-  const searchParams = useSearchParams();
+  const { pathname, searchStr } = useLocation();
 
   const { width, height } = useViewportSize();
   const network = useNetwork();
@@ -45,7 +48,7 @@ Timestamp: ${dayjs().toISOString()}
 
 --- ROUTING ---
 Pathname: ${pathname}
-Search params: ${searchParams?.toString() || "none"}
+Search params: ${searchStr || "none"}
 
 --- AUTH ---
 isLoggedIn: ${isLoggedIn}
@@ -53,7 +56,6 @@ isLoggedIn: ${isLoggedIn}
 --- ERROR ---
 Name: ${error.name}
 Message: ${error.message}
-Digest: ${error.digest ?? "n/a"}
 Stack: ${error.stack ?? "n/a"}
 
 --- UI ---
@@ -112,14 +114,11 @@ Referrer: ${typeof document !== "undefined" ? document.referrer || "none" : "n/a
       <Code block>{debugText}</Code>
       <Center>
         <Activity mode={href ? "visible" : "hidden"}>
-          <NextAnchor
-            // @ts-expect-error fixme: bad link types
-            href={href}
-          >
-            Gå til forsiden
-          </NextAnchor>
+          <TanStackAnchor to={href}>Gå til forsiden</TanStackAnchor>
         </Activity>
       </Center>
     </Stack>
   );
 }
+
+export default Sentry.withErrorBoundary(ErrorBoundary, {});

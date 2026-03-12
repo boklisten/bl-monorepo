@@ -1,5 +1,4 @@
-"use client";
-import { Company } from "@boklisten/backend/shared/company";
+import type { Company } from "@boklisten/backend/shared/company";
 import { Box, Button, Card, Divider, Group, Skeleton, Stack, Text, Title } from "@mantine/core";
 import { modals } from "@mantine/modals";
 import { IconBuildings, IconMapPin, IconPlus } from "@tabler/icons-react";

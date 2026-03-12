@@ -1,9 +1,6 @@
-"use client";
 import { Button, Card, Loader, NavLink, Skeleton, Stack, Text, Title } from "@mantine/core";
 import { IconBasket, IconBook, IconRefresh } from "@tabler/icons-react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
-import Link from "next/link";
-import { useSearchParams } from "next/navigation";
 import { Activity, useEffect, useEffectEvent, useState } from "react";
 
 import OrderReceipt from "@/features/payment/OrderReceipt";
@@ -12,12 +9,13 @@ import SuccessAlert from "@/shared/components/alerts/SuccessAlert";
 import useApiClient from "@/shared/hooks/useApiClient";
 import useCart from "@/shared/hooks/useCart";
 import { PLEASE_TRY_AGAIN_TEXT } from "@/shared/utils/constants";
+import TanStackAnchor from "@/shared/components/TanStackAnchor.tsx";
 
 function BackToCartButton() {
   return (
     <NavLink
-      component={Link}
-      href={"/handlekurv"}
+      component={TanStackAnchor}
+      to={"/handlekurv"}
       leftSection={<IconBasket />}
       active
       bdrs={5}
@@ -31,12 +29,10 @@ function BackToCartButton() {
 
 const calculateTotalWait = (attempts: number) => ((n) => (n * (n + 1) * (2 * n + 1)) / 6)(attempts);
 
-export default function VippsCheckoutStatus() {
+export default function VippsCheckoutStatus({ orderId }: { orderId: string }) {
   const client = useApiClient();
   const queryClient = useQueryClient();
   const cart = useCart();
-  const searchParams = useSearchParams();
-  const orderId = searchParams.get("orderId") ?? "";
 
   const MAX_ATTEMPTS = 5;
   const [attempt, setAttempt] = useState(1);
@@ -148,8 +144,8 @@ export default function VippsCheckoutStatus() {
         </SuccessAlert>
         <OrderReceipt orderId={orderId} />
         <NavLink
-          component={Link}
-          href={"/items"}
+          component={TanStackAnchor}
+          to={"/items"}
           leftSection={<IconBook />}
           active
           variant={"filled"}

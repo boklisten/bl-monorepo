@@ -1,10 +1,10 @@
 import { Indicator } from "@mantine/core";
 import { useQuery } from "@tanstack/react-query";
-import { PropsWithChildren } from "react";
 
 import useApiClient from "@/shared/hooks/useApiClient";
+import type { ReactNode } from "react";
 
-export default function TasksIndicator({ children }: PropsWithChildren) {
+export default function TasksIndicator({ children }: { children: ReactNode }) {
   const client = useApiClient();
   const {
     data: userDetail,

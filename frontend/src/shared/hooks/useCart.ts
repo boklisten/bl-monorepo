@@ -1,5 +1,5 @@
-import { CartItem, CartItemOption } from "@boklisten/backend/shared/cart_item";
-import { OrderItemType } from "@boklisten/backend/shared/order/order-item/order-item-type";
+import type { CartItem, CartItemOption } from "@boklisten/backend/shared/cart_item";
+import type { OrderItemType } from "@boklisten/backend/shared/order/order-item/order-item-type";
 import { useSessionStorage } from "@mantine/hooks";
 import dayjs from "dayjs";
 

@@ -1,5 +1,5 @@
-import { Branch } from "@boklisten/backend/shared/branch";
-import { NavLink, Stack, Title, Tree, TreeNodeData } from "@mantine/core";
+import type { Branch } from "@boklisten/backend/shared/branch";
+import { NavLink, Stack, Title, Tree, type TreeNodeData } from "@mantine/core";
 import { IconChevronRight } from "@tabler/icons-react";
 import { Activity, useState } from "react";
 

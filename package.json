@@ -16,9 +16,9 @@
   },
   "devDependencies": {
     "@tsconfig/strictest": "^2.0.8",
-    "@types/node": "^25.3.5",
-    "oxfmt": "^0.37.0",
-    "oxlint": "^1.52.0",
+    "@types/node": "^25.4.0",
+    "oxfmt": "^0.38.0",
+    "oxlint": "^1.53.0",
     "typescript": "^5.9.3"
   }
 }

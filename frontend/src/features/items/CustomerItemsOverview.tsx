@@ -1,8 +1,6 @@
-"use client";
-
 import { Accordion, Skeleton, Stack, Text, Title } from "@mantine/core";
 import { useQuery } from "@tanstack/react-query";
-import { Activity, ReactNode } from "react";
+import { Activity, type ReactNode } from "react";
 
 import CustomerItemCard from "@/features/items/CustomerItemCard";
 import OpenOrdersList from "@/features/items/OpenOrdersList";

@@ -1,15 +1,25 @@
 {
-  "extends": ["@tsconfig/strictest/tsconfig.json", "@tsconfig/next/tsconfig.json"],
+  "extends": ["@tsconfig/strictest/tsconfig.json"],
   "compilerOptions": {
+    "target": "ESNext",
+    "jsx": "react-jsx",
+    "module": "ESNext", // fixme: consider using an older target to prevent errors in outdated browsers
+    "baseUrl": ".",
+    "lib": ["ESNext", "DOM", "DOM.Iterable"],
+    "types": ["vite/client"],
+    "moduleResolution": "bundler",
+    "allowImportingTsExtensions": true,
+    // "verbatimModuleSyntax": true, fixme: enable to improve imports
+    "noEmit": true,
+
     "exactOptionalPropertyTypes": false, // fixme: delete this line for stricter checks
     "noUnusedParameters": false, // fixme: delete this line for stricter checks
-    "target": "es2022",
     "experimentalDecorators": true,
     "paths": {
       "@/*": ["./src/*"],
       "@boklisten/backend/*": ["../backend/src/*"]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
+  "include": ["**/*.ts", "**/*.tsx"],
   "exclude": ["node_modules"]
 }

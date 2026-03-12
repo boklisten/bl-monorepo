@@ -1,7 +1,5 @@
-"use client";
-
-import { AccessToken } from "@boklisten/backend/shared/access-token";
-import { PERMISSION_LEVELS, UserPermission } from "@boklisten/backend/shared/user-permission";
+import type { AccessToken } from "@boklisten/backend/shared/access-token";
+import { PERMISSION_LEVELS, type UserPermission } from "@boklisten/backend/shared/user-permission";
 import { decodeToken } from "react-jwt";
 
 import useLocalStorageSubscription from "@/shared/hooks/useLocalStorageSubscription";

@@ -14,7 +14,6 @@ export default defineConfig({
     "unicorn",
     "react",
     "react-perf",
-    "nextjs",
     "oxc",
     // "import", fixme: enable for stricter checks
     "jsx-a11y",

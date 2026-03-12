@@ -1,4 +1,4 @@
-import { EditableText } from "@boklisten/backend/shared/editable-text";
+import type { EditableText } from "@boklisten/backend/shared/editable-text";
 import { Button, Group, Stack } from "@mantine/core";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 

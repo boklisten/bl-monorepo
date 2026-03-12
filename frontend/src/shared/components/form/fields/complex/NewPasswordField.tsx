@@ -1,4 +1,4 @@
-import { PasswordInput, PasswordInputProps, Stack } from "@mantine/core";
+import { PasswordInput, type PasswordInputProps, Stack } from "@mantine/core";
 import PasswordStrengthBar from "react-password-strength-bar";
 
 import { useFieldContext } from "@/shared/hooks/form";

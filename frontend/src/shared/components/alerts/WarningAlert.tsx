@@ -1,4 +1,4 @@
-import { Alert, AlertProps } from "@mantine/core";
+import { Alert, type AlertProps } from "@mantine/core";
 import { IconAlertTriangle } from "@tabler/icons-react";
 
 export default function WarningAlert(props: AlertProps) {

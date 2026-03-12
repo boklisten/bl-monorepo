@@ -1,4 +1,3 @@
-"use client";
 import { Box, Button, Skeleton } from "@mantine/core";
 import { IconArrowLeft } from "@tabler/icons-react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
@@ -6,7 +5,7 @@ import { useQuery, useQueryClient } from "@tanstack/react-query";
 import StandMatchDetail from "@/features/matches/StandMatchDetail";
 import UserMatchDetail from "@/features/matches/UserMatchDetail";
 import ErrorAlert from "@/shared/components/alerts/ErrorAlert";
-import NextAnchor from "@/shared/components/NextAnchor";
+import TanStackAnchor from "@/shared/components/TanStackAnchor.tsx";
 import useApiClient from "@/shared/hooks/useApiClient";
 import { GENERIC_ERROR_TEXT, PLEASE_TRY_AGAIN_TEXT } from "@/shared/utils/constants";
 
@@ -46,11 +45,11 @@ const MatchDetail = ({
   return (
     <>
       <Box>
-        <NextAnchor href={"/overleveringer"}>
+        <TanStackAnchor to={"/overleveringer"}>
           <Button variant={"subtle"} leftSection={<IconArrowLeft />}>
             Alle overleveringer
           </Button>
-        </NextAnchor>
+        </TanStackAnchor>
       </Box>
 
       {standMatch && <StandMatchDetail standMatch={standMatch} />}

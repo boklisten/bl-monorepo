@@ -1,4 +1,4 @@
-import { QuestionAndAnswer } from "@boklisten/backend/shared/question-and-answer";
+import type { QuestionAndAnswer } from "@boklisten/backend/shared/question-and-answer";
 import { Button, Group, Stack } from "@mantine/core";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 

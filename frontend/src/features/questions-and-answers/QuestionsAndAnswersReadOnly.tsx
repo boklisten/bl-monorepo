@@ -1,5 +1,3 @@
-"use client";
-import { QuestionAndAnswer } from "@boklisten/backend/shared/question-and-answer";
 import {
   Accordion,
   AccordionControl,
@@ -8,7 +6,7 @@ import {
   Skeleton,
 } from "@mantine/core";
 import { useQuery } from "@tanstack/react-query";
-import { Activity, Suspense } from "react";
+import { Activity } from "react";
 
 import ErrorAlert from "@/shared/components/alerts/ErrorAlert";
 import InfoAlert from "@/shared/components/alerts/InfoAlert";
@@ -16,23 +14,13 @@ import RichTextEditorReadOnly from "@/shared/components/RichTextEditorReadOnly";
 import useApiClient from "@/shared/hooks/useApiClient";
 import { PLEASE_TRY_AGAIN_TEXT } from "@/shared/utils/constants";
 
-export default function QuestionsAndAnswersReadOnly({
-  cachedData,
-}: {
-  cachedData?: QuestionAndAnswer[];
-}) {
+export default function QuestionsAndAnswersReadOnly() {
   const client = useApiClient();
 
-  const {
-    data: freshData,
-    isLoading,
-    isError,
-  } = useQuery({
+  const { data, isLoading, isError } = useQuery({
     queryKey: [client.questions_and_answers.$url()],
     queryFn: () => client.questions_and_answers.$get().unwrap(),
   });
-
-  const data = freshData ?? cachedData;
 
   if (isLoading && data === undefined) {
     return (
@@ -60,14 +48,10 @@ export default function QuestionsAndAnswersReadOnly({
         {data.map((questionAndAnswer) => (
           <AccordionItem key={questionAndAnswer.id} value={questionAndAnswer.id}>
             <AccordionControl>
-              <Suspense>
-                <RichTextEditorReadOnly content={questionAndAnswer.question} />
-              </Suspense>
+              <RichTextEditorReadOnly content={questionAndAnswer.question} />
             </AccordionControl>
             <AccordionPanel>
-              <Suspense>
-                <RichTextEditorReadOnly content={questionAndAnswer.answer} />
-              </Suspense>
+              <RichTextEditorReadOnly content={questionAndAnswer.answer} />
             </AccordionPanel>
           </AccordionItem>
         ))}

@@ -2,7 +2,7 @@ import { Group, Stack, Text } from "@mantine/core";
 import { IconClock, IconMapPin } from "@tabler/icons-react";
 
 import { FormattedDatetime } from "@/features/matches/matchesList/helper";
-import NextAnchor from "@/shared/components/NextAnchor";
+import TanStackAnchor from "@/shared/components/TanStackAnchor.tsx";
 
 const MeetingInfo = ({
   meetingTime,
@@ -18,7 +18,7 @@ const MeetingInfo = ({
         {(meetingTime && <FormattedDatetime date={new Date(meetingTime)} />) || (
           <Text>
             Du kan møte opp når standen vår er åpen.{" "}
-            <NextAnchor href="/info/branch">Se åpningstider her</NextAnchor>
+            <TanStackAnchor to="/info/branch">Se åpningstider her</TanStackAnchor>
           </Text>
         )}
       </Group>

@@ -1,4 +1,4 @@
-import { Select, SelectProps } from "@mantine/core";
+import { Select, type SelectProps } from "@mantine/core";
 import { useQuery } from "@tanstack/react-query";
 
 import { useFieldContext } from "@/shared/hooks/form";

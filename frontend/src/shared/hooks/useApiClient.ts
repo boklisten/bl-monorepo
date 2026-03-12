@@ -7,15 +7,17 @@
 import { api } from "@boklisten/backend/.adonisjs";
 import { createTuyau } from "@tuyau/client";
 import { superjson } from "@tuyau/superjson/plugin";
-import { usePathname, useRouter } from "next/navigation";
 
 import { login, logout } from "@/shared/hooks/useAuth";
 import BL_CONFIG from "@/shared/utils/bl-config";
 import { publicApiClient } from "@/shared/utils/publicApiClient";
+import { useLocation, useNavigate } from "@tanstack/react-router";
 
 export default function useApiClient() {
-  const router = useRouter();
-  const pathname = usePathname();
+  const navigate = useNavigate();
+  const pathname = useLocation({
+    select: (location) => location.pathname,
+  });
 
   return createTuyau({
     timeout: 60_000,
@@ -35,12 +37,12 @@ export default function useApiClient() {
         async (request, options, response) => {
           function redirectToLogin() {
             logout();
-            router.push(`/auth/login?redirect=${pathname.slice(1)}`);
+            navigate({ to: "/auth/login", search: { redirect: pathname.slice(1) } });
             return new Response();
           }
 
           if (response.status === 403) {
-            router.push("/auth/permission/denied");
+            navigate({ to: "/auth/permission/denied" });
             return response;
           }
 

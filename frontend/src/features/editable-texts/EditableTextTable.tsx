@@ -1,4 +1,3 @@
-"use client";
 // MRT does not support React Compiler yet
 "use no memo";
 

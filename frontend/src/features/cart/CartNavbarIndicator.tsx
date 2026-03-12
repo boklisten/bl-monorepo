@@ -1,8 +1,7 @@
-"use client";
 import { Badge, Indicator, Tooltip } from "@mantine/core";
 import { IconBasket } from "@tabler/icons-react";
 
-import NextAnchor from "@/shared/components/NextAnchor";
+import TanStackAnchor from "@/shared/components/TanStackAnchor.tsx";
 import useCart from "@/shared/hooks/useCart";
 
 export default function CartNavbarIndicator() {
@@ -11,7 +10,7 @@ export default function CartNavbarIndicator() {
   if (cart.isEmpty()) return null;
   return (
     <Tooltip label={"Gå til handlekurv"}>
-      <NextAnchor href={"/handlekurv"}>
+      <TanStackAnchor to={"/handlekurv"}>
         <Indicator
           inline
           label={
@@ -22,7 +21,7 @@ export default function CartNavbarIndicator() {
         >
           <IconBasket color={"white"} />
         </Indicator>
-      </NextAnchor>
+      </TanStackAnchor>
     </Tooltip>
   );
 }

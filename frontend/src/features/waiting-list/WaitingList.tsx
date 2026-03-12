@@ -1,7 +1,5 @@
-"use client";
-
-import { Branch } from "@boklisten/backend/shared/branch";
-import { Item } from "@boklisten/backend/shared/item";
+import type { Branch } from "@boklisten/backend/shared/branch";
+import type { Item } from "@boklisten/backend/shared/item";
 import { useQuery } from "@tanstack/react-query";
 
 import WaitingListTable from "@/features/waiting-list/WaitingListTable";

@@ -1,21 +1,20 @@
-"use client";
-import { CartItem } from "@boklisten/backend/shared/cart_item";
+import type { CartItem } from "@boklisten/backend/shared/cart_item";
 import { Loader, Title } from "@mantine/core";
 import { useMounted } from "@mantine/hooks";
 import { useMutation } from "@tanstack/react-query";
 import dayjs from "dayjs";
-import { useRouter } from "next/navigation";
 import { useState } from "react";
 
 import useApiClient from "@/shared/hooks/useApiClient";
 import useCart from "@/shared/hooks/useCart";
 import { showErrorNotification } from "@/shared/utils/notifications";
+import { useNavigate } from "@tanstack/react-router";
 
 export default function CheckoutHandler() {
   const cart = useCart();
   const client = useApiClient();
   const mounted = useMounted();
-  const router = useRouter();
+  const navigate = useNavigate();
   const [hasStarted, setHasStarted] = useState(false);
 
   const initializeCheckoutMutation = useMutation({
@@ -37,13 +36,14 @@ export default function CheckoutHandler() {
     onSuccess: async ({ nextStep, orderId, token, checkoutFrontendUrl }) => {
       switch (nextStep) {
         case "confirm": {
-          router.replace(`/kasse/bekreft?orderId=${orderId}`);
+          navigate({ to: "/kasse/bekreft", search: { orderId } });
           break;
         }
         case "payment":
-          router.replace(
-            `/kasse/betaling?token=${token}&checkoutFrontendUrl=${checkoutFrontendUrl}`,
-          );
+          navigate({
+            to: "/kasse/betaling",
+            search: { token, checkoutFrontendUrl },
+          });
           break;
         default:
           throw new Error("Unknown checkout step");
@@ -51,7 +51,7 @@ export default function CheckoutHandler() {
     },
     onError: () => {
       showErrorNotification("Noe gikk galt under genererering av betaling!");
-      router.push("/handlekurv");
+      navigate({ to: "/handlekurv" });
     },
   });
 
@@ -66,7 +66,7 @@ export default function CheckoutHandler() {
   }
 
   if (cart.isEmpty()) {
-    router.push("/handlekurv");
+    navigate({ to: "/handlekurv" });
     return null;
   }
 

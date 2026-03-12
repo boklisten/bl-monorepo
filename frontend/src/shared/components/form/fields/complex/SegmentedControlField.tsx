@@ -1,4 +1,4 @@
-import { SegmentedControlProps } from "@mantine/core";
+import { type SegmentedControlProps } from "@mantine/core";
 
 import SegmentedControlWithLabel from "@/shared/components/SegmentedControlWithLabel";
 import { useFieldContext } from "@/shared/hooks/form";

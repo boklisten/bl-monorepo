@@ -1,4 +1,3 @@
-"use client";
 import {
   ActionIcon,
   Button,
@@ -12,7 +11,7 @@ import {
   Title,
 } from "@mantine/core";
 import { IconBook, IconCashRegister, IconShoppingCart, IconX } from "@tabler/icons-react";
-import Link from "next/link";
+import TanStackAnchor from "@/shared/components/TanStackAnchor.tsx";
 import { Activity } from "react";
 
 import InfoAlert from "@/shared/components/alerts/InfoAlert";
@@ -28,10 +27,10 @@ export default function CartContent() {
           nåværende bøker på {"'dine bøker'"}.
         </InfoAlert>
         <Group>
-          <Button component={Link} href={"/bestilling"} leftSection={<IconShoppingCart />}>
+          <Button component={TanStackAnchor} to={"/bestilling"} leftSection={<IconShoppingCart />}>
             Bestill bøker
           </Button>
-          <Button component={Link} href={"/items"} leftSection={<IconBook />}>
+          <Button component={TanStackAnchor} to={"/items"} leftSection={<IconBook />}>
             Dine bøker
           </Button>
         </Group>
@@ -119,11 +118,12 @@ export default function CartContent() {
           <Text>kr</Text>
         </Group>
         <Button
-          component={Link}
-          href={"/kasse"}
+          component={TanStackAnchor}
+          to={"/kasse"}
           leftSection={<IconCashRegister />}
           size={"md"}
           bg={"green"}
+          underline={"never"}
         >
           Gå til kassen
         </Button>

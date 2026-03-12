@@ -1,5 +1,3 @@
-"use client";
-
 import { Button } from "@mantine/core";
 import { modals } from "@mantine/modals";
 import { IconMailFast, IconSend } from "@tabler/icons-react";

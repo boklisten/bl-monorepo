@@ -1,25 +1,27 @@
-"use client";
 import { Button, Table } from "@mantine/core";
 import { useMutation } from "@tanstack/react-query";
-import { useRouter, useSearchParams } from "next/navigation";
 
 import useApiClient from "@/shared/hooks/useApiClient";
 import useCart from "@/shared/hooks/useCart";
 import { showErrorNotification } from "@/shared/utils/notifications";
+import { useLocation, useNavigate } from "@tanstack/react-router";
 
 export default function ConfirmOrder() {
   const cart = useCart();
-  const router = useRouter();
   const client = useApiClient();
-  const searchParams = useSearchParams();
-  const orderId = searchParams.get("orderId") ?? "";
+  const { orderId } = useLocation({ select: (location) => location.search });
+  const navigate = useNavigate();
 
   const confirmCheckoutMutation = useMutation({
-    mutationFn: () => client.checkout.confirm({ orderId }).$post().unwrap(),
+    mutationFn: () =>
+      client.checkout
+        .confirm({ orderId: orderId ?? "" })
+        .$post()
+        .unwrap(),
     onError: () => showErrorNotification("Klarte ikke bekrefte ordre!"),
     onSuccess: () => {
       cart.clear();
-      router.push("/order-history");
+      navigate({ to: "/order-history" });
     },
   });
   return (

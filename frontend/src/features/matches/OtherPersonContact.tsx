@@ -1,10 +1,9 @@
-import { AccessToken } from "@boklisten/backend/shared/access-token";
-import { UserMatchWithDetails } from "@boklisten/backend/shared/match/match-dtos";
-import { Group, Text } from "@mantine/core";
+import type { AccessToken } from "@boklisten/backend/shared/access-token";
+import type { UserMatchWithDetails } from "@boklisten/backend/shared/match/match-dtos";
+import { Anchor, Group, Text } from "@mantine/core";
 import { IconPhone } from "@tabler/icons-react";
 import { decodeToken } from "react-jwt";
 
-import NextAnchor from "@/shared/components/NextAnchor";
 import BL_CONFIG from "@/shared/utils/bl-config";
 
 const OtherPersonContact = ({ userMatch }: { userMatch: UserMatchWithDetails }) => {
@@ -21,9 +20,7 @@ const OtherPersonContact = ({ userMatch }: { userMatch: UserMatchWithDetails }) 
       <IconPhone />
       <Text>
         {otherPerson.name},{" "}
-        <NextAnchor href={`tel:${otherPerson.phone}`}>
-          {formatPhoneNumber(otherPerson.phone)}
-        </NextAnchor>
+        <Anchor href={`tel:${otherPerson.phone}`}>{formatPhoneNumber(otherPerson.phone)}</Anchor>
       </Text>
     </Group>
   );

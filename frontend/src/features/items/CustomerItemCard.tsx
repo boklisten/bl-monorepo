@@ -1,4 +1,4 @@
-import { CustomerItemStatus } from "@boklisten/backend/shared/customer-item/actionable_customer_item";
+import type { CustomerItemStatus } from "@boklisten/backend/shared/customer-item/actionable_customer_item";
 import { Badge, Button, Card, Divider, Group, Stack, Text, Title, Tooltip } from "@mantine/core";
 import {
   IconBasketCheck,
@@ -12,7 +12,7 @@ import {
 } from "@tabler/icons-react";
 import { InferResponseType } from "@tuyau/client";
 import dayjs from "dayjs";
-import { Activity, ReactNode } from "react";
+import { Activity, type ReactNode } from "react";
 
 import useCart from "@/shared/hooks/useCart";
 import { publicApiClient } from "@/shared/utils/publicApiClient";

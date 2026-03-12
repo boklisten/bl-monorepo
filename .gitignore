@@ -8,10 +8,11 @@
 **/build/
 .build/
 .out/
-.next/
+.output/
+nitro/
+.tanstack/
 .tscache
 *.tsbuildinfo
-frontend/next-env.d.ts
 
 # Coverage and test outputs
 coverage/

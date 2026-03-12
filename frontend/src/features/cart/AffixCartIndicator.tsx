@@ -1,15 +1,14 @@
-"use client";
 import { Affix, Box, Card, Group, NavLink, Stack, Text } from "@mantine/core";
 import { IconBasket } from "@tabler/icons-react";
-import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { useLocation } from "@tanstack/react-router";
 import { Activity } from "react";
 
 import useCart from "@/shared/hooks/useCart";
+import TanStackAnchor from "@/shared/components/TanStackAnchor.tsx";
 
 export default function AffixCartIndicator() {
   const cart = useCart();
-  const pathname = usePathname();
+  const pathname = useLocation({ select: (location) => location.pathname });
   return (
     <Activity mode={!cart.isEmpty() && pathname.includes("items") ? "visible" : "hidden"}>
       <Affix w={"100%"}>
@@ -26,8 +25,8 @@ export default function AffixCartIndicator() {
             </Stack>
             <Box>
               <NavLink
-                component={Link}
-                href={"/handlekurv"}
+                component={TanStackAnchor}
+                to={"/handlekurv"}
                 leftSection={<IconBasket />}
                 active
                 bdrs={5}

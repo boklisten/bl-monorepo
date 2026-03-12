@@ -1,4 +1,4 @@
-import { StandMatchWithDetails } from "@boklisten/backend/shared/match/match-dtos";
+import type { StandMatchWithDetails } from "@boklisten/backend/shared/match/match-dtos";
 import { Button, Stack, Title } from "@mantine/core";
 import { modals } from "@mantine/modals";
 import { IconQrcode } from "@tabler/icons-react";

@@ -1,13 +1,12 @@
-"use client";
-import { Branch } from "@boklisten/backend/shared/branch";
+import type { Branch } from "@boklisten/backend/shared/branch";
 import { Select } from "@mantine/core";
 import { useLocalStorage } from "@mantine/hooks";
 import { useQuery } from "@tanstack/react-query";
-import { usePathname, useRouter } from "next/navigation";
 import { useEffect } from "react";
 
 import useApiClient from "@/shared/hooks/useApiClient";
 import unpack from "@/shared/utils/bl-api-request";
+import { useLocation, useNavigate } from "@tanstack/react-router";
 
 const OpeningHoursBranchSelect = () => {
   const client = useApiClient();
@@ -32,14 +31,14 @@ const OpeningHoursBranchSelect = () => {
     key: "selectedBranchId",
   });
 
-  const router = useRouter();
-  const pathName = usePathname();
+  const pathName = useLocation({ select: (location) => location.pathname });
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (selectedBranchId && pathName.includes("info/branch")) {
-      router.replace(`/info/branch/${selectedBranchId}`);
+      navigate({ to: "/info/branch/$branchId", params: { branchId: selectedBranchId } });
     }
-  }, [pathName, router, selectedBranchId]);
+  }, [pathName, navigate, selectedBranchId]);
 
   return (
     <Select

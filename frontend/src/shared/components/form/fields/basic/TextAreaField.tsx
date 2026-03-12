@@ -1,4 +1,4 @@
-import { Textarea, TextareaProps } from "@mantine/core";
+import { Textarea, type TextareaProps } from "@mantine/core";
 
 import { useFieldContext } from "@/shared/hooks/form";
 

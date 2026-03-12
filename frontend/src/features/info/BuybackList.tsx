@@ -1,5 +1,4 @@
-"use client";
-import { Item } from "@boklisten/backend/shared/item";
+import type { Item } from "@boklisten/backend/shared/item";
 import { Table, Text, Title } from "@mantine/core";
 import { useQuery } from "@tanstack/react-query";
 import { Activity } from "react";
@@ -10,10 +9,10 @@ import useApiClient from "@/shared/hooks/useApiClient";
 import unpack from "@/shared/utils/bl-api-request";
 import { GENERIC_ERROR_TEXT, PLEASE_TRY_AGAIN_TEXT } from "@/shared/utils/constants";
 
-const BuybackList = ({ cachedBuybackItems }: { cachedBuybackItems: Item[] }) => {
+const BuybackList = () => {
   const client = useApiClient();
 
-  const { data, error } = useQuery({
+  const { data: items, error } = useQuery({
     queryKey: [
       client.$url("collection.items.getAll", {
         query: { buyback: true, sort: "title" },
@@ -27,7 +26,6 @@ const BuybackList = ({ cachedBuybackItems }: { cachedBuybackItems: Item[] }) => 
         })
         .then(unpack<Item[]>),
   });
-  const items = data ?? cachedBuybackItems;
   return (
     <>
       <Title>Innkjøpsliste</Title>
@@ -44,7 +42,7 @@ const BuybackList = ({ cachedBuybackItems }: { cachedBuybackItems: Item[] }) => 
         </Table.Thead>
         <Table.Tbody>
           <Activity mode={!error ? "visible" : "hidden"}>
-            {items.map((item) => (
+            {items?.map((item) => (
               <Table.Tr key={item.info.isbn}>
                 <Table.Td>{item.title}</Table.Td>
                 <Table.Td>{item.info.isbn}</Table.Td>
@@ -53,7 +51,7 @@ const BuybackList = ({ cachedBuybackItems }: { cachedBuybackItems: Item[] }) => 
           </Activity>
         </Table.Tbody>
       </Table>
-      <Activity mode={!error && items.length === 0 ? "visible" : "hidden"}>
+      <Activity mode={!error && items && items.length === 0 ? "visible" : "hidden"}>
         <InfoAlert>Ingen bøker i listen. Kom tilbake senere for å se en oppdatert liste.</InfoAlert>
       </Activity>
       <Activity mode={error ? "visible" : "hidden"}>

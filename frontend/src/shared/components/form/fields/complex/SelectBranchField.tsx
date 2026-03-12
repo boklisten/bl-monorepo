@@ -1,10 +1,9 @@
-import { Branch } from "@boklisten/backend/shared/branch";
-import { Button, Divider, Select, SelectProps, Stack } from "@mantine/core";
+import type { Branch } from "@boklisten/backend/shared/branch";
+import { Anchor, Button, Divider, Select, type SelectProps, Stack } from "@mantine/core";
 import { modals } from "@mantine/modals";
 import { useQuery } from "@tanstack/react-query";
 
 import InfoAlert from "@/shared/components/alerts/InfoAlert";
-import NextAnchor from "@/shared/components/NextAnchor";
 import SelectBranchTreeView from "@/shared/components/SelectBranchTreeView";
 import { useFieldContext } from "@/shared/hooks/form";
 import unpack from "@/shared/utils/bl-api-request";
@@ -59,9 +58,9 @@ export default function SelectBranchField(
                 title={`Finner du ikke ${props.perspective === "personal" ? "din" : "kundens"} skole eller klasse?`}
               >
                 Ta kontakt på{" "}
-                <NextAnchor underline={"never"} size={"sm"} href={"mailto:info@boklisten.no"}>
+                <Anchor underline={"never"} size={"sm"} href={"mailto:info@boklisten.no"}>
                   info@boklisten.no
-                </NextAnchor>
+                </Anchor>
                 , så hjelper vi deg!
               </InfoAlert>
               <Divider w={"100%"} label={"eller"} />

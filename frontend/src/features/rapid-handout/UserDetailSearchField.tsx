@@ -1,5 +1,5 @@
-import { UserDetail } from "@boklisten/backend/shared/user-detail";
-import { ActionIcon, Autocomplete, ComboboxItem, Group, Stack, Text } from "@mantine/core";
+import type { UserDetail } from "@boklisten/backend/shared/user-detail";
+import { ActionIcon, Autocomplete, type ComboboxItem, Group, Stack, Text } from "@mantine/core";
 import { modals } from "@mantine/modals";
 import { IconMail, IconObjectScan, IconPhone, IconUser } from "@tabler/icons-react";
 import { useState } from "react";

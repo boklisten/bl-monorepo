@@ -1,27 +1,25 @@
-"use client";
 import { Center } from "@mantine/core";
-import { useRouter, useSearchParams } from "next/navigation";
 
 import BL_CONFIG from "@/shared/utils/bl-config";
 import { publicApiClient } from "@/shared/utils/publicApiClient";
+import { useLocation, useNavigate } from "@tanstack/react-router";
 
 export default function VippsButton({ verb }: { verb: "login" | "register" }) {
-  const router = useRouter();
-  const searchParams = useSearchParams();
-  const caller = searchParams.get("caller");
-  const redirect = searchParams.get("redirect");
+  const navigate = useNavigate();
+  const search = useLocation({ select: (location) => location.search });
 
   return (
     <Center
       onClick={() => {
-        if (caller) {
-          localStorage.setItem(BL_CONFIG.login.localStorageKeys.caller, caller);
+        if (search.caller) {
+          localStorage.setItem(BL_CONFIG.login.localStorageKeys.caller, search.caller);
         }
-        if (redirect) {
-          localStorage.setItem(BL_CONFIG.login.localStorageKeys.redirect, redirect);
+        if (search.redirect) {
+          localStorage.setItem(BL_CONFIG.login.localStorageKeys.redirect, search.redirect);
         }
-        // @ts-expect-error fixme: bad routing types
-        router.replace(publicApiClient.auth.vipps.redirect.$url());
+        navigate({
+          href: publicApiClient.auth.vipps.redirect.$url(),
+        });
       }}
     >
       {/* @ts-expect-error official Vipps button */}

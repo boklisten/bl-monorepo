@@ -1,9 +1,9 @@
 // MRT does not support React Compiler yet
 "use no memo";
 
-import { Branch } from "@boklisten/backend/shared/branch";
-import { Item } from "@boklisten/backend/shared/item";
-import { WaitingListEntry } from "@boklisten/backend/shared/waiting-list-entry";
+import type { Branch } from "@boklisten/backend/shared/branch";
+import type { Item } from "@boklisten/backend/shared/item";
+import type { WaitingListEntry } from "@boklisten/backend/shared/waiting-list-entry";
 import { ActionIcon, Button, Tooltip } from "@mantine/core";
 import { IconTrash } from "@tabler/icons-react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";

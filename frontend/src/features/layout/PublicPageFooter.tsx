@@ -3,19 +3,18 @@ import { IconCopyright } from "@tabler/icons-react";
 import dayjs from "dayjs";
 
 import ContactInfo from "@/shared/components/ContactInfo";
-import NextAnchor from "@/shared/components/NextAnchor";
+import TanStackAnchor from "@/shared/components/TanStackAnchor.tsx";
 
-export default async function PublicPageFooter() {
-  "use cache";
+export default function PublicPageFooter() {
   return (
     <Stack bg={"#1e2e2c"} c={"#fff"} align={"center"} mt={"xl"} p={"md"} component={"footer"}>
       <ContactInfo />
       <Group mt={50}>
-        <NextAnchor href={"/info/policies/conditions"}>Betingelser</NextAnchor>
+        <TanStackAnchor to={"/info/policies/conditions"}>Betingelser</TanStackAnchor>
         {" | "}
-        <NextAnchor href={"/info/policies/terms"}>Vilkår</NextAnchor>
+        <TanStackAnchor to={"/info/policies/terms"}>Vilkår</TanStackAnchor>
         {" | "}
-        <NextAnchor href={"/info/policies/privacy"}>Personvernserklæring</NextAnchor>
+        <TanStackAnchor to={"/info/policies/privacy"}>Personvernserklæring</TanStackAnchor>
       </Group>
       <Text>Organisasjonsnummer: 912047385 MVA</Text>
       <Group gap={"xs"}>

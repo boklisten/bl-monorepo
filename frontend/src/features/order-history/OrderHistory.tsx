@@ -1,4 +1,3 @@
-"use client";
 import { Skeleton } from "@mantine/core";
 import { useQuery } from "@tanstack/react-query";
 

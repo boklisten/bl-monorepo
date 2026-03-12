@@ -1,4 +1,4 @@
-import { Alert, AlertProps } from "@mantine/core";
+import { Alert, type AlertProps } from "@mantine/core";
 import { IconExclamationCircle } from "@tabler/icons-react";
 
 export default function ErrorAlert(props: AlertProps) {

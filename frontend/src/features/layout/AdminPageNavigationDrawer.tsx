@@ -1,5 +1,3 @@
-"use client";
-
 import { Box, Burger, Drawer } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 

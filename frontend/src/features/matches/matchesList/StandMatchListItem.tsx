@@ -1,4 +1,4 @@
-import { StandMatchWithDetails } from "@boklisten/backend/shared/match/match-dtos";
+import type { StandMatchWithDetails } from "@boklisten/backend/shared/match/match-dtos";
 import { Text, Title } from "@mantine/core";
 import { Activity } from "react";
 

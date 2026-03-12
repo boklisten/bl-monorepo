@@ -1,8 +1,7 @@
-"use client";
 import { Center, Tabs, TabsList, TabsTab, Select, Box } from "@mantine/core";
-import { usePathname, useRouter } from "next/navigation";
 
-import NextAnchor from "@/shared/components/NextAnchor";
+import TanStackAnchor from "@/shared/components/TanStackAnchor.tsx";
+import { useLocation, useNavigate } from "@tanstack/react-router";
 
 const tabs = [
   { label: "Generell informasjon", value: "/info/general" },
@@ -19,12 +18,14 @@ const tabs = [
   { label: "Kontakt oss", value: "/info/contact" },
 ] as const satisfies {
   label: string;
-  value: `/${string}`;
+  value: `/info/${string}`;
 }[];
 
 const InfoPagesNavigation = () => {
-  const router = useRouter();
-  const pathname = usePathname();
+  const navigate = useNavigate();
+  const pathname = useLocation({
+    select: (location) => location.pathname,
+  });
 
   return (
     <Center>
@@ -32,9 +33,9 @@ const InfoPagesNavigation = () => {
         <Tabs value={tabs.find((tab) => pathname.includes(tab.value))?.value ?? pathname}>
           <TabsList justify={"center"}>
             {tabs.map((tab) => (
-              <NextAnchor underline={"never"} c={"dark"} key={tab.value} href={tab.value}>
+              <TanStackAnchor underline={"never"} c={"dark"} key={tab.value} to={tab.value}>
                 <TabsTab value={tab.value}>{tab.label}</TabsTab>
-              </NextAnchor>
+              </TanStackAnchor>
             ))}
           </TabsList>
         </Tabs>
@@ -44,9 +45,9 @@ const InfoPagesNavigation = () => {
           data={tabs}
           label={"Velg side"}
           value={pathname}
-          onChange={(href) => {
-            // @ts-expect-error fixme: bad routing types
-            router.push(href);
+          onChange={(value) => {
+            if (!value) return;
+            navigate({ to: value });
           }}
         />
       </Box>

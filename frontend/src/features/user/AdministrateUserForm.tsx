@@ -1,7 +1,5 @@
-"use client";
-
-import { UserDetail } from "@boklisten/backend/shared/user-detail";
-import { UserPermission } from "@boklisten/backend/shared/user-permission";
+import type { UserDetail } from "@boklisten/backend/shared/user-detail";
+import type { UserPermission } from "@boklisten/backend/shared/user-permission";
 import { Button, Space, Stack, Tooltip } from "@mantine/core";
 import { IconCheck, IconInfoCircleFilled } from "@tabler/icons-react";
 import { createFieldMap } from "@tanstack/react-form";

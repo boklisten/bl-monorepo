@@ -1,4 +1,4 @@
-import { OrderItem } from "@boklisten/backend/shared/order/order-item/order-item";
+import type { OrderItem } from "@boklisten/backend/shared/order/order-item/order-item";
 import { Card, Group, Stack, Text, Title } from "@mantine/core";
 import { IconCheck, IconExclamationMark, IconQrcode, IconSignature } from "@tabler/icons-react";
 import dayjs from "dayjs";

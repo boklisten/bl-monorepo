@@ -1,4 +1,3 @@
-"use client";
 import { Button, Skeleton, Spoiler, Stack } from "@mantine/core";
 import { IconChecks } from "@tabler/icons-react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
@@ -16,13 +15,7 @@ interface SignatureForm {
   base64EncodedImage: string;
 }
 
-export default function SignAgreement({
-  userDetailId,
-  cachedAgreementText,
-}: {
-  userDetailId: string;
-  cachedAgreementText: string;
-}) {
+export default function SignAgreement({ userDetailId }: { userDetailId: string }) {
   const queryClient = useQueryClient();
   const { data, isLoading, isError } = useQuery({
     queryKey: [publicApiClient.signatures.valid({ detailsId: userDetailId }).$url(), userDetailId],
@@ -75,7 +68,7 @@ export default function SignAgreement({
     return (
       <Stack>
         <Spoiler maxHeight={165} showLabel={"Vis mer"} hideLabel={"Vis mindre"}>
-          <EditableTextReadOnly dataKey={"betingelser"} cachedText={cachedAgreementText} />
+          <EditableTextReadOnly dataKey={"betingelser"} />
         </Spoiler>
         <SignedContractDetails
           signedByGuardian={data.signedByGuardian ?? false}
@@ -91,7 +84,7 @@ export default function SignAgreement({
   return (
     <Stack>
       <Spoiler maxHeight={165} showLabel={"Vis mer"} hideLabel={"Vis mindre"}>
-        <EditableTextReadOnly dataKey={"betingelser"} cachedText={cachedAgreementText} />
+        <EditableTextReadOnly dataKey={"betingelser"} />
       </Spoiler>
       <Stack gap={"xs"}>
         <form.AppField

@@ -1,4 +1,4 @@
-import { OrderItemType } from "@boklisten/backend/shared/order/order-item/order-item-type";
+import type { OrderItemType } from "@boklisten/backend/shared/order/order-item/order-item-type";
 import {
   IconCalendar,
   IconCalendarPlus,

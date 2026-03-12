@@ -1,6 +1,4 @@
-"use client";
-
-import { Branch } from "@boklisten/backend/shared/branch";
+import type { Branch } from "@boklisten/backend/shared/branch";
 import { Box, Button, Divider, Grid, Stack, Tabs, Title } from "@mantine/core";
 import { modals } from "@mantine/modals";
 import {

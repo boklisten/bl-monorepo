@@ -1,4 +1,4 @@
-import { StandMatchWithDetails } from "@boklisten/backend/shared/match/match-dtos";
+import type { StandMatchWithDetails } from "@boklisten/backend/shared/match/match-dtos";
 import { Group, Text } from "@mantine/core";
 import { IconChevronsLeft, IconChevronsRight, IconSwitchHorizontal } from "@tabler/icons-react";
 

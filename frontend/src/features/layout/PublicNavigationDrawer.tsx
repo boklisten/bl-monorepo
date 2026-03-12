@@ -1,4 +1,3 @@
-"use client";
 import { Burger, Divider, Drawer, NavLink, Stack } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import {
@@ -16,16 +15,19 @@ import {
   IconUserEdit,
   IconUserPlus,
 } from "@tabler/icons-react";
-import Link from "next/link";
-import { usePathname } from "next/navigation";
 import { Activity } from "react";
 
 import TasksIndicator from "@/features/layout/TasksIndicator";
 import TasksLink from "@/features/layout/TasksLink";
 import useAuth from "@/shared/hooks/useAuth";
+import { useLocation } from "@tanstack/react-router";
+import TanStackAnchor from "@/shared/components/TanStackAnchor.tsx";
 
 export default function PublicNavigationDrawer() {
-  const pathname = usePathname();
+  const pathname = useLocation({
+    select: (location) => location.pathname,
+  });
+  console.log(pathname);
   const [opened, { toggle, close }] = useDisclosure();
   const { isLoggedIn, isEmployee } = useAuth();
   return (
@@ -46,40 +48,44 @@ export default function PublicNavigationDrawer() {
           </Activity>
           <NavLink
             label={"Bestill bøker"}
-            href={"/bestilling"}
+            to={"/bestilling"}
             active={pathname.includes("/bestilling")}
-            variant={"subtle"}
+            underline={"never"}
+            c={"black"}
             leftSection={<IconShoppingCart />}
-            component={Link}
+            component={TanStackAnchor}
             onClick={close}
           />
 
           <Activity mode={isLoggedIn ? "visible" : "hidden"}>
             <NavLink
               label={"Dine bøker"}
-              href={"/items"}
+              to={"/items"}
               active={pathname.includes("/items")}
-              variant={"subtle"}
+              underline={"never"}
+              c={"black"}
               leftSection={<IconBook />}
-              component={Link}
+              component={TanStackAnchor}
               onClick={close}
             />
             <NavLink
               label={"Ordrehistorikk"}
-              href={"/order-history"}
+              to={"/order-history"}
               active={pathname.includes("/order-history")}
-              variant={"subtle"}
+              underline={"never"}
+              c={"black"}
               leftSection={<IconReceipt />}
-              component={Link}
+              component={TanStackAnchor}
               onClick={close}
             />
             <NavLink
               label={"Overleveringer"}
-              href={"/overleveringer"}
+              to={"/overleveringer"}
               active={pathname.includes("/overleveringer")}
-              variant={"subtle"}
+              underline={"never"}
+              c={"black"}
               leftSection={<IconHeartHandshake />}
-              component={Link}
+              component={TanStackAnchor}
               onClick={close}
             />
             <NavLink
@@ -87,40 +93,47 @@ export default function PublicNavigationDrawer() {
               description={
                 "Søk opp en bok sin unike ID for å finne ut hvem som er ansvarlig for den"
               }
-              href={"/sjekk"}
+              to={"/sjekk"}
               active={pathname.includes("/sjekk")}
-              variant={"subtle"}
+              underline={"never"}
+              c={"black"}
               leftSection={<IconSearch />}
-              component={Link}
+              component={TanStackAnchor}
               onClick={close}
             />
           </Activity>
           <Divider label={"Informasjon"} />
           <NavLink
             label={"Generell informasjon"}
-            href={"/info/general"}
+            to={"/info/general"}
             active={pathname.includes("/info/general")}
             variant={"subtle"}
+            underline={"never"}
+            c={"black"}
             leftSection={<IconInfoCircle />}
-            component={Link}
+            component={TanStackAnchor}
             onClick={close}
           />
           <NavLink
             label={"Åpningstider"}
-            href={"/info/branch"}
+            to={"/info/branch"}
             active={pathname.includes("/info/branch")}
             variant={"subtle"}
+            underline={"never"}
+            c={"black"}
             leftSection={<IconClock />}
-            component={Link}
+            component={TanStackAnchor}
             onClick={close}
           />
           <NavLink
             label={"Kontaktinformasjon"}
-            href={"/info/contact"}
+            to={"/info/contact"}
             active={pathname.includes("/info/contact")}
             variant={"subtle"}
+            underline={"never"}
+            c={"black"}
             leftSection={<IconMail />}
-            component={Link}
+            component={TanStackAnchor}
             onClick={close}
           />
 
@@ -129,32 +142,35 @@ export default function PublicNavigationDrawer() {
           <Activity mode={isLoggedIn ? "visible" : "hidden"}>
             <NavLink
               label={"Brukerinnstillinger"}
-              href={"/user-settings"}
+              to={"/user-settings"}
               active={pathname.includes("/user-settings")}
-              variant={"subtle"}
+              underline={"never"}
+              c={"black"}
               leftSection={<IconUserEdit />}
-              component={Link}
+              component={TanStackAnchor}
               onClick={close}
             />
             <Activity mode={isEmployee ? "visible" : "hidden"}>
               <NavLink
                 label={"Gå til bl-admin"}
                 description={"Her kan du søke opp kunder, samle inn og dele ut bøker."}
-                href={"/admin"}
+                to={"/admin"}
                 leftSection={<IconExternalLink />}
-                component={Link}
+                component={TanStackAnchor}
                 active
                 color={"orange"}
+                underline={"never"}
                 onClick={close}
               />
             </Activity>
             <NavLink
               label={"Logg ut"}
-              href={"/auth/logout"}
+              to={"/auth/logout"}
               leftSection={<IconLogout />}
-              component={Link}
+              component={TanStackAnchor}
               active
               variant={"subtle"}
+              underline={"never"}
               color={"red"}
               onClick={close}
             />
@@ -163,17 +179,21 @@ export default function PublicNavigationDrawer() {
           <Activity mode={!isLoggedIn ? "visible" : "hidden"}>
             <NavLink
               label={"Registrer"}
-              href={"/auth/register"}
+              component={TanStackAnchor}
+              to={"/auth/register"}
               active={pathname.includes("/auth/register")}
               variant={"subtle"}
+              underline={"never"}
               leftSection={<IconUserPlus />}
               onClick={close}
             />
             <NavLink
               label={"Logg inn"}
-              href={"/auth/login"}
+              component={TanStackAnchor}
+              to={"/auth/login"}
               active={pathname.includes("/auth/login")}
               variant={"subtle"}
+              underline={"never"}
               leftSection={<IconLogin />}
               onClick={close}
             />

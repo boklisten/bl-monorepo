@@ -1,0 +1,35 @@
+import { createFileRoute, Outlet } from "@tanstack/react-router";
+import { USER_PERMISSION } from "@boklisten/backend/shared/user-permission";
+import { AppShell, AppShellHeader, AppShellMain, AppShellNavbar } from "@mantine/core";
+import AuthGuard from "@/features/auth/AuthGuard";
+import AdminPageHeader from "@/features/layout/AdminPageHeader";
+import AdminPageNavigation from "@/features/layout/AdminPageNavigation";
+
+export const Route = createFileRoute("/(administrasjon)/admin")({
+  head: () => ({
+    meta: [{ title: "bl-admin" }],
+  }),
+  component: AdminPageLayout,
+});
+
+function AdminPageLayout() {
+  return (
+    <AppShell
+      header={{ height: 65 }}
+      navbar={{ breakpoint: "xs", width: 200, collapsed: { mobile: true } }}
+      padding={"md"}
+    >
+      <AppShellHeader bg={"brand"}>
+        <AdminPageHeader />
+      </AppShellHeader>
+      <AppShellNavbar>
+        <AdminPageNavigation />
+      </AppShellNavbar>
+      <AppShellMain>
+        <AuthGuard requiredPermission={USER_PERMISSION.EMPLOYEE}>
+          <Outlet />
+        </AuthGuard>
+      </AppShellMain>
+    </AppShell>
+  );
+}

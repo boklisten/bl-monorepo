@@ -1,4 +1,4 @@
-import { Branch } from "@boklisten/backend/shared/branch";
+import type { Branch } from "@boklisten/backend/shared/branch";
 import { Button, Card, Fieldset, Group, Stack } from "@mantine/core";
 import dayjs from "dayjs";
 import { Activity } from "react";

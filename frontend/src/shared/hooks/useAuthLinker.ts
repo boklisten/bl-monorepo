@@ -33,7 +33,7 @@ export default function useAuthLinker() {
     localStorage.removeItem(localStorageKeys.caller);
     localStorage.removeItem(localStorageKeys.redirect);
 
-    if (caller === null) {
+    if (!caller) {
       navigate({ to: `/${redirect}` });
       return;
     }

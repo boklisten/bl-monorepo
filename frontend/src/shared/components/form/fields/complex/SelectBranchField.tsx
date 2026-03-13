@@ -1,4 +1,3 @@
-import type { Branch } from "@boklisten/backend/shared/branch";
 import { Anchor, Button, Divider, Select, type SelectProps, Stack } from "@mantine/core";
 import { modals } from "@mantine/modals";
 import { useQuery } from "@tanstack/react-query";
@@ -6,24 +5,13 @@ import { useQuery } from "@tanstack/react-query";
 import InfoAlert from "@/shared/components/alerts/InfoAlert";
 import SelectBranchTreeView from "@/shared/components/SelectBranchTreeView";
 import { useFieldContext } from "@/shared/hooks/form";
-import unpack from "@/shared/utils/bl-api-request";
-import { publicApiClient } from "@/shared/utils/publicApiClient";
+import { publicApi } from "@/shared/utils/publicApiClient";
 
 export default function SelectBranchField(
   props: SelectProps & { perspective: "personal" | "administrate" | string },
 ) {
   const field = useFieldContext<string | null>();
-  const branchQuery = {
-    query: { active: true, sort: "name" },
-  };
-  const { data: branches } = useQuery({
-    queryKey: [publicApiClient.$url("collection.branches.getAll", branchQuery)],
-    queryFn: () =>
-      publicApiClient
-        .$route("collection.branches.getAll")
-        .$get(branchQuery)
-        .then(unpack<Branch[]>),
-  });
+  const { data: branches } = useQuery(publicApi.branches.getPublic.queryOptions());
 
   const placeholder = `Velg ${props.perspective === "personal" ? "din" : "kundens"} skole`;
   const modalId = "select-school";

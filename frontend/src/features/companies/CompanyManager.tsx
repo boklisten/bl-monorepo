@@ -3,7 +3,6 @@ import { Box, Button, Card, Divider, Group, Skeleton, Stack, Text, Title } from 
 import { modals } from "@mantine/modals";
 import { IconBuildings, IconMapPin, IconPlus } from "@tabler/icons-react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { InferRequestType } from "@tuyau/client";
 import { Activity } from "react";
 
 import ErrorAlert from "@/shared/components/alerts/ErrorAlert";
@@ -17,14 +16,16 @@ import { PLEASE_TRY_AGAIN_TEXT } from "@/shared/utils/constants";
 import { showErrorNotification, showSuccessNotification } from "@/shared/utils/notifications";
 
 function CompanyCard({ company }: { company: Company }) {
-  const client = useApiClient();
+  const { api } = useApiClient();
   const queryClient = useQueryClient();
-  const deleteCompanyMutation = useMutation({
-    mutationFn: () => client.v2.companies({ companyId: company.id }).$delete().unwrap(),
-    onSuccess: () => showSuccessNotification(`${company.name} ble slettet!`),
-    onError: () => showErrorNotification(`Klarte ikke slette ${company.name}`),
-    onSettled: () => queryClient.invalidateQueries({ queryKey: [client.v2.companies.$url()] }),
-  });
+  const deleteCompanyMutation = useMutation(
+    api.companies.deleteCompany.mutationOptions({
+      onSuccess: () => showSuccessNotification(`${company.name} ble slettet!`),
+      onError: () => showErrorNotification(`Klarte ikke slette ${company.name}`),
+      onSettled: () =>
+        queryClient.invalidateQueries({ queryKey: api.companies.getCompanies.pathKey() }),
+    }),
+  );
   return (
     <Card withBorder>
       <Group justify={"space-between"}>
@@ -43,7 +44,7 @@ function CompanyCard({ company }: { company: Company }) {
               confirmProps: {
                 bg: "red",
               },
-              onConfirm: deleteCompanyMutation.mutate,
+              onConfirm: () => deleteCompanyMutation.mutate({ params: { companyId: company.id } }),
             })
           }
         >
@@ -65,18 +66,19 @@ function CompanyCard({ company }: { company: Company }) {
 }
 
 function CreateCompanyForm({ onSuccess }: { onSuccess: () => void }) {
-  const client = useApiClient();
+  const { api } = useApiClient();
   const queryClient = useQueryClient();
-  const addCompanyMutation = useMutation({
-    mutationFn: (data: InferRequestType<typeof client.v2.companies.$post>) =>
-      client.v2.companies.$post(data),
-    onError: () => showErrorNotification("Klarte ikke opprette selskap!"),
-    onSuccess: () => {
-      showSuccessNotification(`${form.state.values.name} ble opprettet!`);
-      onSuccess();
-    },
-    onSettled: () => queryClient.invalidateQueries({ queryKey: [client.v2.companies.$url()] }),
-  });
+  const addCompanyMutation = useMutation(
+    api.companies.addCompany.mutationOptions({
+      onError: () => showErrorNotification("Klarte ikke opprette selskap!"),
+      onSuccess: () => {
+        showSuccessNotification(`${form.state.values.name} ble opprettet!`);
+        onSuccess();
+      },
+      onSettled: () =>
+        queryClient.invalidateQueries({ queryKey: api.companies.getCompanies.pathKey() }),
+    }),
+  );
   const form = useAppForm({
     defaultValues: {
       name: "",
@@ -92,7 +94,7 @@ function CreateCompanyForm({ onSuccess }: { onSuccess: () => void }) {
         },
       },
     },
-    onSubmit: (data) => addCompanyMutation.mutate(data.value),
+    onSubmit: (data) => addCompanyMutation.mutate({ body: data.value }),
   });
   return (
     <Stack>
@@ -168,11 +170,8 @@ function CreateCompanyForm({ onSuccess }: { onSuccess: () => void }) {
 }
 
 export default function CompanyManager() {
-  const client = useApiClient();
-  const { data, isLoading, isError } = useQuery({
-    queryKey: [client.v2.companies.$url()],
-    queryFn: () => client.v2.companies.$get().unwrap(),
-  });
+  const { api } = useApiClient();
+  const { data, isLoading, isError } = useQuery(api.companies.getCompanies.queryOptions());
 
   const createModalId = "create-company";
   return (

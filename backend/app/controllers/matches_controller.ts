@@ -1,10 +1,10 @@
 import type { HttpContext } from "@adonisjs/core/http";
 
-import { generateMatches } from "#controllers/matches/helpers/generate";
-import { getMatches } from "#controllers/matches/helpers/get_my_matches";
-import { lock } from "#controllers/matches/helpers/lock";
-import { notify } from "#controllers/matches/helpers/notify";
-import { transfer } from "#controllers/matches/helpers/transfer";
+import { generateMatches } from "#services/match_helpers/generate";
+import { getMatches } from "#services/match_helpers/get_my_matches";
+import { lock } from "#services/match_helpers/lock";
+import { notify } from "#services/match_helpers/notify";
+import { transfer } from "#services/match_helpers/transfer";
 import { PermissionService } from "#services/permission_service";
 import { USER_PERMISSION } from "#shared/user-permission";
 import {

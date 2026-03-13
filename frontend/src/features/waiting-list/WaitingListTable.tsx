@@ -26,18 +26,19 @@ export default function WaitingListTable({
   branches: Branch[];
   waitingList: WaitingListEntry[];
 }) {
-  const client = useApiClient();
+  const { api } = useApiClient();
   const queryClient = useQueryClient();
 
-  const destroyWaitingListEntryMutation = useMutation({
-    mutationFn: (id: string) => client.waiting_list_entries({ id }).$delete().unwrap(),
-    onSettled: () =>
-      queryClient.invalidateQueries({
-        queryKey: [client.waiting_list_entries.$url()],
-      }),
-    onSuccess: () => showSuccessNotification("Ventelisteoppføring ble slettet!"),
-    onError: async () => showErrorNotification("Klarte ikke slette ventelisteoppføring!"),
-  });
+  const destroyWaitingListEntryMutation = useMutation(
+    api.waitingListEntries.deleteWaitingListEntry.mutationOptions({
+      onSettled: () =>
+        queryClient.invalidateQueries({
+          queryKey: api.waitingListEntries.getAllWaitingListEntries.pathKey(),
+        }),
+      onSuccess: () => showSuccessNotification("Ventelisteoppføring ble slettet!"),
+      onError: async () => showErrorNotification("Klarte ikke slette ventelisteoppføring!"),
+    }),
+  );
 
   const table = useMantineReactTable({
     columns: [
@@ -70,7 +71,7 @@ export default function WaitingListTable({
       <Tooltip key={`delete-${row.id}`} label={"Slett"}>
         <ActionIcon
           variant={"subtle"}
-          onClick={() => destroyWaitingListEntryMutation.mutate(row.id)}
+          onClick={() => destroyWaitingListEntryMutation.mutate({ params: { id: row.id } })}
           color={"red"}
         >
           <IconTrash />

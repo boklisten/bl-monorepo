@@ -19,7 +19,7 @@ export default function AuthGuard({
   const pathname = useLocation({ select: (location) => location.pathname });
   const navigate = useNavigate();
   const { isLoading, isLoggedIn, canAccess } = useAuth();
-  const client = useApiClient();
+  const { client } = useApiClient();
   const [isAuthenticated, setIsAuthenticated] = useState(false);
 
   const onAuthChange = useEffectEvent(async () => {
@@ -33,7 +33,7 @@ export default function AuthGuard({
       return;
     }
 
-    const userDetail = await client.v2.user_details.me.$get().unwrap();
+    const userDetail = await client.api.userDetail.getMyDetails({});
     if (
       !pathname.includes("oppgaver") &&
       !pathname.includes("user-settings") &&

@@ -12,7 +12,7 @@ import { emailFieldValidator } from "@/shared/components/form/fields/complex/Ema
 import { nameFieldValidator } from "@/shared/components/form/fields/complex/NameField";
 import { newPasswordFieldValidator } from "@/shared/components/form/fields/complex/NewPasswordField";
 import { phoneNumberFieldValidator } from "@/shared/components/form/fields/complex/PhoneNumberField";
-import TanStackAnchor from "@/shared/components/TanStackAnchor.tsx";
+import TanStackAnchor from "@/shared/components/TanStackAnchor";
 import { useAppForm } from "@/shared/hooks/form";
 import { login } from "@/shared/hooks/useAuth";
 import useAuthLinker from "@/shared/hooks/useAuthLinker";
@@ -73,27 +73,31 @@ export default function SignupForm() {
   const registerMutation = useMutation({
     mutationFn: async () => {
       const formValues = form.state.values;
-      const { data, error } = await publicApiClient.auth.local.register.$post({
-        email: formValues.email,
-        phoneNumber: formValues.phoneNumber,
-        password: formValues.password,
+      const [data, error] = await publicApiClient.api.local
+        .register({
+          body: {
+            email: formValues.email,
+            phoneNumber: formValues.phoneNumber,
+            password: formValues.password,
 
-        name: formValues.name,
-        address: formValues.address,
-        postalCode: formValues.postal.code,
-        postalCity: formValues.postal.city,
-        dob: formValues.birthday,
-        branchMembership: formValues.branchMembership,
-        guardian: {
-          name: formValues.guardianName,
-          email: formValues.guardianEmail,
-          phone: formValues.guardianPhoneNumber,
-        },
-      });
+            name: formValues.name,
+            address: formValues.address,
+            postalCode: formValues.postal.code,
+            postalCity: formValues.postal.city,
+            dob: formValues.birthday,
+            branchMembership: formValues.branchMembership,
+            guardian: {
+              name: formValues.guardianName,
+              email: formValues.guardianEmail,
+              phone: formValues.guardianPhoneNumber,
+            },
+          },
+        })
+        .safe();
 
       if (error) {
-        if (error.status === 422) {
-          setServerErrors(error.value.errors.map((err) => err.message));
+        if (error.isValidationError()) {
+          setServerErrors(error.response.errors.map((err) => err.message));
           return;
         }
         showErrorNotification("Noe gikk galt under registreringen!");

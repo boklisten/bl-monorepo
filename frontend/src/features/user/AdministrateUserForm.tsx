@@ -29,7 +29,7 @@ export default function AdministrateUserForm({
 }) {
   const { isAdmin } = useAuth();
   const queryClient = useQueryClient();
-  const client = useApiClient();
+  const { api, client } = useApiClient();
   const defaultValues: AdministrateUserFormValues = {
     permission: userDetail.permission,
     email: userDetail.email,
@@ -74,31 +74,36 @@ export default function AdministrateUserForm({
   const updateUserDetailsMutation = useMutation({
     mutationFn: async () => {
       const formValues = form.state.values;
-      const { error } = await client.v2.employee.user_details({ detailsId: userDetail.id }).$post({
-        permission: formValues.permission,
-        email: formValues.email,
-        emailVerified: formValues.emailVerified,
-        name: formValues.name,
-        phoneNumber: formValues.phoneNumber,
-        address: formValues.address,
-        postalCode: formValues.postal.code,
-        postalCity: formValues.postal.city,
-        dob: formValues.birthday,
-        branchMembership: formValues.branchMembership,
-        guardian: {
-          name: formValues.guardianName,
-          email: formValues.guardianEmail,
-          phone: formValues.guardianPhoneNumber,
-        },
-      });
+      const [, error] = await client.api.userDetail
+        .updateAsEmployee({
+          params: { detailsId: userDetail.id },
+          body: {
+            permission: formValues.permission,
+            email: formValues.email,
+            emailVerified: formValues.emailVerified,
+            name: formValues.name,
+            phoneNumber: formValues.phoneNumber,
+            address: formValues.address,
+            postalCode: formValues.postal.code,
+            postalCity: formValues.postal.city,
+            dob: formValues.birthday,
+            branchMembership: formValues.branchMembership,
+            guardian: {
+              name: formValues.guardianName,
+              email: formValues.guardianEmail,
+              phone: formValues.guardianPhoneNumber,
+            },
+          },
+        })
+        .safe();
 
       await queryClient.invalidateQueries({
-        queryKey: ["userDetails", userDetail.id],
+        queryKey: api.userDetail.getById.queryKey({ params: { detailsId: userDetail.id } }),
       });
 
       if (error) {
-        if (error.status === 422) {
-          setServerErrors(error.value.errors.map((err) => err.message));
+        if (error.isValidationError()) {
+          setServerErrors(error.response.errors.map((err) => err.message));
           return;
         }
         showErrorNotification("Noe gikk galt under registreringen!");

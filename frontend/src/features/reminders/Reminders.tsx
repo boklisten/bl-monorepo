@@ -1,4 +1,3 @@
-import type { Branch } from "@boklisten/backend/shared/branch";
 import type { CustomerItemType } from "@boklisten/backend/shared/customer-item/customer-item-type";
 import { MessageMethod } from "@boklisten/backend/shared/message/message-method/message-method";
 import { Button, Grid, Text } from "@mantine/core";
@@ -11,7 +10,6 @@ import { Activity } from "react";
 import { calculateSmsSegmentFeedback } from "@/features/reminders/sms";
 import { useAppForm } from "@/shared/hooks/form";
 import useApiClient from "@/shared/hooks/useApiClient";
-import unpack from "@/shared/utils/bl-api-request";
 import {
   showErrorNotification,
   showInfoNotification,
@@ -37,61 +35,41 @@ const defaultValues: RemindersFormData = {
 };
 
 export default function Reminders() {
-  const client = useApiClient();
+  const { api } = useApiClient();
 
-  const { data: branches } = useQuery({
-    queryKey: [
-      client.$url("collection.branches.getAll", {
-        query: { active: true, sort: "name" },
-      }),
-    ],
-    queryFn: () =>
-      client
-        .$route("collection.branches.getAll")
-        .$get({
-          query: { active: true, sort: "name" },
-        })
-        .then(unpack<Branch[]>),
-  });
+  const { data: branches } = useQuery(api.branches.getPublic.queryOptions());
+  const countRecipientsMutation = useMutation(
+    api.reminders.countRecipients.mutationOptions({
+      onError: () => showErrorNotification("Klarte ikke beregne antall mottakere"),
+    }),
+  );
 
-  const countRecipientsMutation = useMutation({
-    mutationFn: (formData: RemindersFormData) =>
-      client.reminders.count_recipients
-        .$post({
-          deadlineISO: dayjs(formData.deadline).toISOString(),
-          customerItemType: formData.customerItemType,
-          branchIDs: formData.branchIds,
-          emailTemplateId: formData.emailTemplateId,
-          smsText: formData.smsText,
-        })
-        .unwrap(),
-    onError: () => showErrorNotification("Klarte ikke beregne antall mottakere"),
-  });
-
-  const sendReminderMutation = useMutation({
-    mutationFn: (formData: RemindersFormData) =>
-      client.reminders.send
-        .$post({
-          deadlineISO: dayjs(formData.deadline).toISOString(),
-          customerItemType: formData.customerItemType,
-          branchIDs: formData.branchIds,
-          emailTemplateId: formData.emailTemplateId,
-          smsText: formData.smsText,
-        })
-        .unwrap(),
-    onError: () => showErrorNotification("Klarte ikke sende påminnelse"),
-    onSuccess: () =>
-      showSuccessNotification({
-        icon: <IconMailFast />,
-        title: "Påminnelse ble sendt!",
-        message: `Husk å sjekke status hos Twilio / SendGrid for å bekrefte at påminnelsen har kommet frem`,
-      }),
-  });
+  const sendReminderMutation = useMutation(
+    api.reminders.remind.mutationOptions({
+      onError: () => showErrorNotification("Klarte ikke sende påminnelse"),
+      onSuccess: () =>
+        showSuccessNotification({
+          icon: <IconMailFast />,
+          title: "Påminnelse ble sendt!",
+          message: `Husk å sjekke status hos Twilio / SendGrid for å bekrefte at påminnelsen har kommet frem`,
+        }),
+    }),
+  );
 
   const form = useAppForm({
     defaultValues,
     onSubmit: async ({ value }) => {
-      const { recipientCount } = await countRecipientsMutation.mutateAsync(form.state.values);
+      const formData = form.state.values;
+      const payload = {
+        deadlineISO: dayjs(formData.deadline).toISOString(),
+        customerItemType: formData.customerItemType,
+        branchIDs: formData.branchIds,
+        emailTemplateId: formData.emailTemplateId,
+        smsText: formData.smsText,
+      };
+      const { recipientCount } = await countRecipientsMutation.mutateAsync({
+        body: payload,
+      });
       if (recipientCount === 0) {
         showInfoNotification("Fant ingen kunder med valgte innstillinger");
         return;
@@ -106,7 +84,10 @@ export default function Reminders() {
         ),
         labels: { confirm: "Send", cancel: "Avbryt" },
         confirmProps: { leftSection: <IconSend /> },
-        onConfirm: () => sendReminderMutation.mutate(value),
+        onConfirm: () =>
+          sendReminderMutation.mutate({
+            body: payload,
+          }),
       });
     },
   });

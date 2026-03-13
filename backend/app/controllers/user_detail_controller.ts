@@ -8,6 +8,7 @@ import { UserService } from "#services/user_service";
 import {
   customerUpdateUserDetailsValidator,
   employeeUpdateUserDetailsValidator,
+  userDetailSearchValidator,
 } from "#validators/user_detail";
 
 async function getUserDetail(detailsId: string) {
@@ -36,6 +37,11 @@ export default class UserDetailsController {
   async getById(ctx: HttpContext) {
     PermissionService.employeeOrFail(ctx);
     return getUserDetail(ctx.request.param("detailsId"));
+  }
+  async search(ctx: HttpContext) {
+    PermissionService.employeeOrFail(ctx);
+    const { searchStr } = await ctx.request.validateUsing(userDetailSearchValidator);
+    return await StorageService.UserDetails.search(searchStr);
   }
   async updateAsCustomer(ctx: HttpContext) {
     const { detailsId } = PermissionService.authenticate(ctx);

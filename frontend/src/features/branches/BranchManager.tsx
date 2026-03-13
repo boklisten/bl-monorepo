@@ -1,4 +1,3 @@
-import type { Branch } from "@boklisten/backend/shared/branch";
 import { Box, Button, Divider, Grid, Stack, Tabs, Title } from "@mantine/core";
 import { modals } from "@mantine/modals";
 import {
@@ -23,21 +22,10 @@ import UploadClassMemberships from "@/features/branches/UploadClassMemberships";
 import UploadSubjectChoices from "@/features/branches/UploadSubjectChoices";
 import SelectBranchTreeView from "@/shared/components/SelectBranchTreeView";
 import useApiClient from "@/shared/hooks/useApiClient";
-import unpack from "@/shared/utils/bl-api-request";
 
 export default function BranchManager() {
-  const client = useApiClient();
-  const branchQuery = {
-    query: { sort: "name" },
-  };
-  const { data: branches } = useQuery({
-    queryKey: [client.$url("collection.branches.getAll", branchQuery)],
-    queryFn: () =>
-      client
-        .$route("collection.branches.getAll")
-        .$get(branchQuery)
-        .then(unpack<Branch[]>),
-  });
+  const { api } = useApiClient();
+  const { data: branches } = useQuery(api.branches.getAll.queryOptions());
 
   const [selectedBranchId, setSelectedBranchId] = useState<string | null>(null);
   const selectedBranch = branches?.find((branch) => branch.id === selectedBranchId);

@@ -1,8 +1,8 @@
 import { Infer } from "@vinejs/vine/types";
 import { ObjectId } from "mongodb";
 
-import { MatchFinder } from "#controllers/matches/helpers/match-finder/match-finder";
-import { MatchableUser } from "#controllers/matches/helpers/match-finder/match-types";
+import { MatchFinder } from "#services/match_helpers//match-finder/match-finder";
+import { MatchableUser } from "#services/match_helpers//match-finder/match-types";
 import { StorageService } from "#services/storage_service";
 import { StandMatch } from "#shared/match/stand-match";
 import { UserMatch } from "#shared/match/user-match";

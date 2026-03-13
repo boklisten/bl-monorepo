@@ -1,7 +1,7 @@
 import { Text, TextInput, type TextInputProps } from "@mantine/core";
-import isMobilePhone from "validator/lib/isMobilePhone";
 
 import { useFieldContext } from "@/shared/hooks/form";
+import validator from "validator";
 
 export function phoneNumberFieldValidator(
   value: string,
@@ -14,7 +14,7 @@ export function phoneNumberFieldValidator(
     if (context === "guardian") return "Du må fylle inn foresatt sitt telefonnummer";
   }
 
-  if (!isMobilePhone(value, "nb-NO") || value.length !== 8 || value.includes("+47")) {
+  if (!validator.isMobilePhone(value, "nb-NO") || value.length !== 8 || value.includes("+47")) {
     if (context === "personal" || context === "administrate")
       return "Du må fylle inn et gyldig norsk telefonnummer (8 tall uten mellomrom og +47)";
     if (context === "guardian")

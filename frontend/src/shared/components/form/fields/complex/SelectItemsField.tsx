@@ -6,11 +6,8 @@ import useApiClient from "@/shared/hooks/useApiClient";
 
 export default function SelectItemsField(props: MultiSelectProps) {
   const field = useFieldContext<{ id: string; title: string }[]>();
-  const client = useApiClient();
-  const { data: items } = useQuery({
-    queryKey: [client.v2.items.$url()],
-    queryFn: () => client.v2.items.$get().unwrap(),
-  });
+  const { api } = useApiClient();
+  const { data: items } = useQuery(api.items.get.queryOptions());
 
   return (
     <MultiSelect

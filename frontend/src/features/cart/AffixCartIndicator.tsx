@@ -4,7 +4,7 @@ import { useLocation } from "@tanstack/react-router";
 import { Activity } from "react";
 
 import useCart from "@/shared/hooks/useCart";
-import TanStackAnchor from "@/shared/components/TanStackAnchor.tsx";
+import TanStackAnchor from "@/shared/components/TanStackAnchor";
 
 export default function AffixCartIndicator() {
   const cart = useCart();

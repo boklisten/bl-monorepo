@@ -18,7 +18,7 @@ export default function VippsButton({ verb }: { verb: "login" | "register" }) {
           localStorage.setItem(BL_CONFIG.login.localStorageKeys.redirect, search.redirect);
         }
         navigate({
-          href: publicApiClient.auth.vipps.redirect.$url(),
+          href: BL_CONFIG.api.basePath.slice(0, -1) + publicApiClient.urlFor("vipps.redirect"),
         });
       }}
     >

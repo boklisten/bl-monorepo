@@ -13,12 +13,15 @@ import ProgressBar from "@/shared/components/ProgressBar";
 import useApiClient from "@/shared/hooks/useApiClient";
 
 export default function MatchList() {
-  const client = useApiClient();
-  const { data, error, isLoading } = useQuery({
-    queryKey: [client.matches.me.$url()],
-    queryFn: () => client.matches.me.$get().unwrap(),
-    staleTime: 5000,
-  });
+  const { api } = useApiClient();
+  const { data, error, isLoading } = useQuery(
+    api.matches.getMyMatches.queryOptions(
+      {},
+      {
+        staleTime: 5000,
+      },
+    ),
+  );
 
   if (isLoading) {
     return <Skeleton height={110} />;

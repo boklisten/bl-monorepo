@@ -2,16 +2,13 @@ import { useQuery } from "@tanstack/react-query";
 
 import InfoAlert from "@/shared/components/alerts/InfoAlert";
 import RichTextEditorReadOnly from "@/shared/components/RichTextEditorReadOnly";
-import useApiClient from "@/shared/hooks/useApiClient";
 import { Skeleton, Stack } from "@mantine/core";
+import { publicApi } from "@/shared/utils/publicApiClient";
 
 export default function EditableTextReadOnly({ dataKey }: { dataKey: string }) {
-  const client = useApiClient();
-
-  const { data, isLoading } = useQuery({
-    queryKey: [client.editable_texts.key({ key: dataKey }).$url(), dataKey],
-    queryFn: () => client.editable_texts.key({ key: dataKey }).$get().unwrap(),
-  });
+  const { data, isLoading } = useQuery(
+    publicApi.editableTexts.getByKey.queryOptions({ params: { key: dataKey } }),
+  );
 
   if (isLoading)
     return (

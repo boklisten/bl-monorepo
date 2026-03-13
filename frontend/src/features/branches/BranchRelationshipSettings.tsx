@@ -1,28 +1,16 @@
 import type { Branch } from "@boklisten/backend/shared/branch";
 import { Button, Stack } from "@mantine/core";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { InferRequestType } from "@tuyau/client";
 
 import { useAppForm } from "@/shared/hooks/form";
 import useApiClient from "@/shared/hooks/useApiClient";
-import unpack from "@/shared/utils/bl-api-request";
 import { showErrorNotification, showSuccessNotification } from "@/shared/utils/notifications";
 
 export default function BranchRelationshipSettings({ branch }: { branch: Branch }) {
   const queryClient = useQueryClient();
-  const client = useApiClient();
+  const { api } = useApiClient();
 
-  const branchQuery = {
-    query: { sort: "name" },
-  };
-  const { data: branches } = useQuery({
-    queryKey: [client.$url("collection.branches.getAll", branchQuery)],
-    queryFn: () =>
-      client
-        .$route("collection.branches.getAll")
-        .$get(branchQuery)
-        .then(unpack<Branch[]>),
-  });
+  const { data: branches } = useQuery(api.branches.getAll.queryOptions());
 
   const branchOptions =
     branches
@@ -32,17 +20,16 @@ export default function BranchRelationshipSettings({ branch }: { branch: Branch 
         label: b.name,
       })) ?? [];
 
-  const updateRelationshipsMutation = useMutation({
-    mutationFn: (
-      updatedRelationships: InferRequestType<typeof client.v2.branches.relationships.$patch>,
-    ) => client.v2.branches.relationships.$patch(updatedRelationships).unwrap(),
-    onSettled: () =>
-      queryClient.invalidateQueries({
-        queryKey: [client.$url("collection.branches.getAll", branchQuery)],
-      }),
-    onSuccess: () => showSuccessNotification("Filial ble oppdatert!"),
-    onError: () => showErrorNotification("Klarte ikke oppdatere filial!"),
-  });
+  const updateRelationshipsMutation = useMutation(
+    api.branchRelationship.update.mutationOptions({
+      onSettled: () =>
+        queryClient.invalidateQueries({
+          queryKey: api.branches.getAll.pathKey(),
+        }),
+      onSuccess: () => showSuccessNotification("Filial ble oppdatert!"),
+      onError: () => showErrorNotification("Klarte ikke oppdatere filial!"),
+    }),
+  );
 
   const form = useAppForm({
     defaultValues: {
@@ -53,8 +40,10 @@ export default function BranchRelationshipSettings({ branch }: { branch: Branch 
     },
     onSubmit: ({ value }) =>
       updateRelationshipsMutation.mutate({
-        id: branch.id,
-        ...value,
+        body: {
+          id: branch.id,
+          ...value,
+        },
       }),
   });
 

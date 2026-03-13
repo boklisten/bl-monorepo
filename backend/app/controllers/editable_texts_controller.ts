@@ -29,9 +29,9 @@ export default class EditableTextsController {
 
   async update(ctx: HttpContext) {
     PermissionService.adminOrFail(ctx);
+    const { text } = await ctx.request.validateUsing(editableTextsValidator);
 
     const id = ctx.request.param("id");
-    const { text } = ctx.request.only(["text"]);
     return await StorageService.EditableTexts.update(id, { text });
   }
 

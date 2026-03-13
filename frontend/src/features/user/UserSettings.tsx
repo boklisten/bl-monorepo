@@ -6,13 +6,10 @@ import useApiClient from "@/shared/hooks/useApiClient";
 import { useNavigate } from "@tanstack/react-router";
 
 const UserSettings = () => {
-  const client = useApiClient();
+  const { api } = useApiClient();
   const navigate = useNavigate();
 
-  const { data, isLoading, isError } = useQuery({
-    queryKey: [client.v2.user_details.me.$url()],
-    queryFn: () => client.v2.user_details.me.$get().unwrap(),
-  });
+  const { data, isLoading, isError } = useQuery(api.userDetail.getMyDetails.queryOptions());
 
   if (isLoading) {
     return (

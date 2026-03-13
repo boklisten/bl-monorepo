@@ -51,21 +51,15 @@ function CustomerItemsOverviewWrapper({
 }
 
 export default function CustomerItemsOverview() {
-  const client = useApiClient();
+  const { api } = useApiClient();
 
-  const { data, isLoading, isError } = useQuery({
-    queryKey: [client.v2.customer_items.$url()],
-    queryFn: () => client.v2.customer_items.$get().unwrap(),
-  });
+  const { data, isLoading, isError } = useQuery(api.customerItems.getCustomerItems.queryOptions());
 
   const {
     data: openOrderItems,
     isLoading: isLoadingOpenOrderItems,
     isError: isErrorOpenOrderItems,
-  } = useQuery({
-    queryKey: [client.v2.orders.open_orders.$url()],
-    queryFn: () => client.v2.orders.open_orders.$get().unwrap(),
-  });
+  } = useQuery(api.orders.getOpenOrders.queryOptions());
 
   if (isLoading || isLoadingOpenOrderItems) {
     return (

@@ -6,6 +6,7 @@ import { PermissionService } from "#services/permission_service";
 import { StorageService } from "#services/storage_service";
 import { OrderItem } from "#shared/order/order-item/order-item";
 import { cancelOrderItemValidator } from "#validators/cancel_order_item_validator";
+import { SEDbQuery } from "#services/legacy/query/se.db-query";
 
 export default class OrdersController {
   async getOpenOrders(ctx: HttpContext) {
@@ -60,6 +61,25 @@ export default class OrdersController {
       deadline: string;
       cancelable: boolean;
     }[];
+  }
+
+  async getPlacedOrders(ctx: HttpContext) {
+    PermissionService.employeeOrFail(ctx);
+    const detailsId = ctx.request.param("detailsId");
+    const databaseQuery = new SEDbQuery();
+    databaseQuery.booleanFilters = [
+      {
+        fieldName: "placed",
+        value: true,
+      },
+    ];
+    databaseQuery.stringFilters = [
+      {
+        fieldName: "customer",
+        value: detailsId,
+      },
+    ];
+    return await StorageService.Orders.getByQuery(databaseQuery);
   }
 
   async cancelOrderItem(ctx: HttpContext) {

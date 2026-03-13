@@ -1,6 +1,6 @@
 import { Container, Stack, Title, Text } from "@mantine/core";
-import AuthGuard from "@/features/auth/AuthGuard.tsx";
-import PublicBlidSearch from "@/features/info/PublicBlidSearch.tsx";
+import AuthGuard from "@/features/auth/AuthGuard";
+import PublicBlidSearch from "@/features/info/PublicBlidSearch";
 import { createFileRoute } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/(offentlig)/sjekk")({

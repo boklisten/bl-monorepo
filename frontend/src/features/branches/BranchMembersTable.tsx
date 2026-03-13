@@ -20,29 +20,18 @@ export default function BranchMembersTable({
   members: { id: string; name: string; yearOfBirth: string }[];
   isLoading: boolean;
 }) {
-  const client = useApiClient();
+  const { api } = useApiClient();
   const queryClient = useQueryClient();
-  const updateBranchMembershipMutation = useMutation({
-    mutationFn: async ({
-      detailsId,
-      branchMembership,
-    }: {
-      detailsId: string;
-      branchMembership: string;
-    }) =>
-      client.branches.memberships
-        .$patch({
-          detailsId,
-          branchMembership,
-        })
-        .unwrap(),
-    onSuccess: () => showSuccessNotification("Medlemsskapet ble endret!"),
-    onError: () => showErrorNotification("Klarte ikke endre medlemsskap!"),
-    onSettled: () =>
-      queryClient.invalidateQueries({
-        queryKey: [client.v2.branches.memberships({ branchId }).$url(), branchId],
-      }),
-  });
+  const updateBranchMembershipMutation = useMutation(
+    api.branchMembership.updateMembership.mutationOptions({
+      onSuccess: () => showSuccessNotification("Medlemsskapet ble endret!"),
+      onError: () => showErrorNotification("Klarte ikke endre medlemsskap!"),
+      onSettled: () =>
+        queryClient.invalidateQueries({
+          queryKey: api.branchMembership.getMembers.queryKey({ params: { branchId } }),
+        }),
+    }),
+  );
   const table = useMantineReactTable({
     columns: [
       {
@@ -67,8 +56,10 @@ export default function BranchMembersTable({
         },
         onSubmit: ({ value }) =>
           updateBranchMembershipMutation.mutate({
-            detailsId: row.id,
-            branchMembership: value.branchMembership,
+            body: {
+              detailsId: row.id,
+              branchMembership: value.branchMembership,
+            },
           }),
       });
       return (

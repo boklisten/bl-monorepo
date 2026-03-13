@@ -6,14 +6,13 @@ import { useState } from "react";
 
 import ScannerModal from "@/shared/components/scanner/ScannerModal";
 import useApiClient from "@/shared/hooks/useApiClient";
-import unpack from "@/shared/utils/bl-api-request";
 
 export default function UserDetailSearchField({
   onSelectedResult,
 }: {
   onSelectedResult: (userDetail: UserDetail | null) => void;
 }) {
-  const client = useApiClient();
+  const { client } = useApiClient();
   const [searchValue, setSearchValue] = useState("");
   const [searchResults, setSearchResults] = useState<UserDetail[]>([]);
 
@@ -24,12 +23,9 @@ export default function UserDetailSearchField({
       return;
     }
     try {
-      const result = await client
-        .$route("collection.userdetails.getAll")
-        .$get({
-          query: { s: newInputValue },
-        })
-        .then(unpack<UserDetail[]>);
+      const result = await client.api.userDetail.search({
+        body: { searchStr: newInputValue },
+      });
       setSearchResults(result ?? []);
     } catch {
       setSearchResults([]);
@@ -52,10 +48,9 @@ export default function UserDetailSearchField({
                 children: (
                   <ScannerModal
                     onScan={async (scannedText) => {
-                      const userDetail = await client.v2.user_details
-                        .id({ detailsId: scannedText })
-                        .$get()
-                        .unwrap();
+                      const userDetail = await client.api.userDetail.getById({
+                        params: { detailsId: scannedText },
+                      });
                       setSearchValue(userDetail?.name ?? "");
                       onSelectedResult(userDetail);
                       return [{ feedback: "" }];

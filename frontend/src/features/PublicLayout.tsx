@@ -11,7 +11,7 @@ import CartNavbarIndicator from "@/features/cart/CartNavbarIndicator";
 import Logo from "@/features/layout/Logo";
 import PublicNavigationDrawer from "@/features/layout/PublicNavigationDrawer";
 import PublicPageFooter from "@/features/layout/PublicPageFooter";
-import TanStackAnchor from "@/shared/components/TanStackAnchor.tsx";
+import TanStackAnchor from "@/shared/components/TanStackAnchor";
 import type { ReactNode } from "react";
 
 export default function PublicLayout({

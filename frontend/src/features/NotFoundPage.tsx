@@ -1,6 +1,6 @@
-import PublicLayout from "@/features/PublicLayout.tsx";
+import PublicLayout from "@/features/PublicLayout";
 import { Stack } from "@mantine/core";
-import ErrorAlert from "@/shared/components/alerts/ErrorAlert.tsx";
+import ErrorAlert from "@/shared/components/alerts/ErrorAlert";
 
 export default function NotFoundPage() {
   return (

@@ -1,7 +1,7 @@
 import { Container, Stack, Title } from "@mantine/core";
 
-import Tasks from "@/features/Tasks.tsx";
-import AuthGuard from "@/features/auth/AuthGuard.tsx";
+import Tasks from "@/features/Tasks";
+import AuthGuard from "@/features/auth/AuthGuard";
 import { createFileRoute } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/(offentlig)/oppgaver")({

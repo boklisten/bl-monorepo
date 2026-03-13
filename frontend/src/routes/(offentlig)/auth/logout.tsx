@@ -1,7 +1,7 @@
 import { Container, Stack, Title } from "@mantine/core";
 
-import AuthLogoutComponent from "@/features/auth/AuthLogoutComponent.tsx";
-import CountdownToRedirect from "@/shared/components/CountdownToRedirect.tsx";
+import AuthLogoutComponent from "@/features/auth/AuthLogoutComponent";
+import CountdownToRedirect from "@/shared/components/CountdownToRedirect";
 import { createFileRoute } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/(offentlig)/auth/logout")({

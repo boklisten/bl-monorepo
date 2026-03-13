@@ -1,5 +1,5 @@
 import { Button } from "@mantine/core";
-import TanStackAnchor from "@/shared/components/TanStackAnchor.tsx";
+import TanStackAnchor from "@/shared/components/TanStackAnchor";
 
 export default function OrderButton() {
   return (

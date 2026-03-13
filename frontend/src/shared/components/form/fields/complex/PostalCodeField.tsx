@@ -1,21 +1,20 @@
 import { Loader, Text, TextInput } from "@mantine/core";
 import { useMutation } from "@tanstack/react-query";
-import isPostalCode from "validator/lib/isPostalCode";
 
 import { useFieldContext } from "@/shared/hooks/form";
 import { showErrorNotification } from "@/shared/utils/notifications";
 import { publicApiClient } from "@/shared/utils/publicApiClient";
+import validator from "validator";
 
 export async function postalCodeFieldValidator(value: string) {
   const illegalPostalCodeMessage = "Du må oppgi et gyldig norsk postnummer";
-  if (!value || !isPostalCode(value, "NO")) return illegalPostalCodeMessage;
+  if (!value || !validator.isPostalCode(value, "NO")) return illegalPostalCodeMessage;
 
-  const postalCity = await publicApiClient.postal.lookup
-    .postal_code({
+  const postalCity = await publicApiClient.api.postal.lookupPostalCode({
+    params: {
       postalCode: value,
-    })
-    .$get()
-    .unwrap();
+    },
+  });
 
   return postalCity ? null : illegalPostalCodeMessage;
 }
@@ -26,13 +25,12 @@ export default function PostalCodeField() {
 
   const lookupPostalCodeMutation = useMutation({
     mutationFn: async () => {
-      if (!isPostalCode(code, "NO")) return null;
-      return await publicApiClient.postal.lookup
-        .postal_code({
+      if (!validator.isPostalCode(code, "NO")) return null;
+      return publicApiClient.api.postal.lookupPostalCode({
+        params: {
           postalCode: code,
-        })
-        .$get()
-        .unwrap();
+        },
+      });
     },
     onSettled: (result) => field.setValue({ code, city: result ?? "" }),
     onError: () => showErrorNotification("Klarte ikke laste inn poststed"),

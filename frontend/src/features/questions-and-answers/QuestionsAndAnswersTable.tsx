@@ -15,27 +15,25 @@ import { PLEASE_TRY_AGAIN_TEXT } from "@/shared/utils/constants";
 import { showErrorNotification, showSuccessNotification } from "@/shared/utils/notifications";
 
 export default function QuestionsAndAnswersTable() {
-  const client = useApiClient();
+  const { api } = useApiClient();
   const queryClient = useQueryClient();
 
-  const destroyQuestionAndAnswerMutation = useMutation({
-    mutationFn: (id: string) => client.questions_and_answers({ id: id }).$delete().unwrap(),
-    onSettled: () =>
-      queryClient.invalidateQueries({
-        queryKey: [client.questions_and_answers.$url()],
-      }),
-    onSuccess: () => showSuccessNotification("Spørsmål og svar ble slettet!"),
-    onError: () => showErrorNotification("Klarte ikke slette spørsmål og svar!"),
-  });
+  const destroyQuestionAndAnswerMutation = useMutation(
+    api.questionsAndAnswers.destroy.mutationOptions({
+      onSettled: () =>
+        queryClient.invalidateQueries({
+          queryKey: api.questionsAndAnswers.getAll.pathKey(),
+        }),
+      onSuccess: () => showSuccessNotification("Spørsmål og svar ble slettet!"),
+      onError: () => showErrorNotification("Klarte ikke slette spørsmål og svar!"),
+    }),
+  );
 
   const {
     data: questionsAndAnswers,
     isLoading,
     error,
-  } = useQuery({
-    queryKey: [client.questions_and_answers.$url()],
-    queryFn: () => client.questions_and_answers.$get().unwrap(),
-  });
+  } = useQuery(api.questionsAndAnswers.getAll.queryOptions({}));
 
   const table = useMantineReactTable({
     columns: [
@@ -65,7 +63,9 @@ export default function QuestionsAndAnswersTable() {
           <ActionIcon
             variant={"subtle"}
             color={"red"}
-            onClick={async () => destroyQuestionAndAnswerMutation.mutate(row.id)}
+            onClick={async () =>
+              destroyQuestionAndAnswerMutation.mutate({ params: { id: row.id } })
+            }
           >
             <IconTrash />
           </ActionIcon>

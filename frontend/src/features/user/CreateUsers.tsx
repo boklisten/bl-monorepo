@@ -16,13 +16,13 @@ interface UserCandidate {
 }
 
 export default function CreateUsers() {
-  const client = useApiClient();
-  const createUsersMutation = useMutation({
-    mutationFn: (userCandidates: UserCandidate[]) =>
-      client.users.create.$post({ userCandidates }).unwrap(),
-    onSuccess: () => showSuccessNotification("Brukerne ble lastet opp!"),
-    onError: () => showErrorNotification("Klarte ikke laste opp brukere!"),
-  });
+  const { api } = useApiClient();
+  const createUsersMutation = useMutation(
+    api.userProvisioning.createUsers.mutationOptions({
+      onSuccess: () => showSuccessNotification("Brukerne ble lastet opp!"),
+      onError: () => showErrorNotification("Klarte ikke laste opp brukere!"),
+    }),
+  );
 
   return (
     <UploadCSVFile
@@ -31,7 +31,7 @@ export default function CreateUsers() {
       optionalHeaders={["address", "postalCode", "postalCity", "dob"] as const}
       // fixme: bad csv upload typing
       onUpload={(data) => {
-        createUsersMutation.mutate(data as UserCandidate[]);
+        createUsersMutation.mutate({ body: { userCandidates: data as UserCandidate[] } });
       }}
     />
   );

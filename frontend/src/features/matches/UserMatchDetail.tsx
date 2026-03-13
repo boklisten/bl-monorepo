@@ -32,7 +32,7 @@ const UserMatchDetail = ({
   userMatch: UserMatchWithDetails;
   handleItemTransferred?: (() => void) | undefined;
 }) => {
-  const client = useApiClient();
+  const { client } = useApiClient();
   const [redirectCountdownStarted, setRedirectCountdownStarted] = useState(false);
   const userMatchStatus = calculateUserMatchStatus(userMatch);
   const { currentUser, otherUser } = userMatchStatus;
@@ -138,7 +138,7 @@ const UserMatchDetail = ({
                   <ScannerModal
                     allowManualRegistration
                     onScan={async (blid) => {
-                      const response = await client.matches.transfer_item.$post({ blid }).unwrap();
+                      const response = await client.api.matches.transferItem({ body: { blid } });
                       return [{ feedback: response.feedback ?? "" }];
                     }}
                     onSuccessfulScan={() => {

@@ -1,17 +1,12 @@
-// Type references
-// oxlint-disable-next-line typescript/triple-slash-reference
-/// <reference path="../../../../backend/config/ally.ts" />
-// oxlint-disable-next-line typescript/triple-slash-reference
-/// <reference path="../../../../backend/adonisrc.ts" />
-
-import { api } from "@boklisten/backend/.adonisjs";
-import { createTuyau } from "@tuyau/client";
+import { createTuyau } from "@tuyau/core/client";
+import { registry } from "@boklisten/backend/registry";
 import { superjson } from "@tuyau/superjson/plugin";
 
 import { login, logout } from "@/shared/hooks/useAuth";
 import BL_CONFIG from "@/shared/utils/bl-config";
 import { publicApiClient } from "@/shared/utils/publicApiClient";
 import { useLocation, useNavigate } from "@tanstack/react-router";
+import { createTuyauReactQueryClient } from "@tuyau/react-query";
 
 export default function useApiClient() {
   const navigate = useNavigate();
@@ -19,10 +14,11 @@ export default function useApiClient() {
     select: (location) => location.pathname,
   });
 
-  return createTuyau({
-    timeout: 60_000,
-    api,
+  const client = createTuyau({
     baseUrl: BL_CONFIG.api.basePath,
+    registry,
+    headers: { Accept: "application/json" },
+    timeout: 60_000,
     plugins: [superjson()],
     hooks: {
       beforeRequest: [
@@ -56,11 +52,11 @@ export default function useApiClient() {
           }
 
           try {
-            const newTokens = await publicApiClient.v2.token
-              .$post({
+            const newTokens = await publicApiClient.api.tokens.token({
+              body: {
                 refreshToken,
-              })
-              .unwrap();
+              },
+            });
             if (!newTokens) {
               return redirectToLogin();
             }
@@ -76,4 +72,10 @@ export default function useApiClient() {
       ],
     },
   });
+  return {
+    client,
+    api: createTuyauReactQueryClient({
+      client,
+    }),
+  };
 }

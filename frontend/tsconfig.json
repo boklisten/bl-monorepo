@@ -7,7 +7,6 @@
     "lib": ["ESNext", "DOM"],
     "types": ["vite/client"],
     "moduleResolution": "bundler",
-    "allowImportingTsExtensions": true,
     // "verbatimModuleSyntax": true, fixme: enable to improve imports
     "noEmit": true,
 
@@ -19,6 +18,6 @@
       "@boklisten/backend/*": ["../backend/src/*"]
     }
   },
-  "include": ["**/*.ts", "**/*.tsx"],
-  "exclude": ["node_modules"]
+  "include": ["**/*.ts", "**/*.tsx", "../backend/**/*.ts", "../backend/.adonisjs/**/*.ts"],
+  "exclude": ["node_modules", "../backend/build", "../backend/node_modules"]
 }

@@ -1,5 +1,5 @@
 import { Container, Stack, Text, Title } from "@mantine/core";
-import ForgotPasswordForm from "@/features/auth/ForgotPasswordForm.tsx";
+import ForgotPasswordForm from "@/features/auth/ForgotPasswordForm";
 import { createFileRoute } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/(offentlig)/auth/forgot")({

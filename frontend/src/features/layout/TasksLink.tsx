@@ -1,20 +1,17 @@
 import { Badge, NavLink } from "@mantine/core";
 import { useQuery } from "@tanstack/react-query";
-import TanStackAnchor from "@/shared/components/TanStackAnchor.tsx";
+import TanStackAnchor from "@/shared/components/TanStackAnchor";
 
 import useApiClient from "@/shared/hooks/useApiClient";
 
 export default function TasksLink() {
-  const client = useApiClient();
+  const { api } = useApiClient();
 
   const {
     data: userDetail,
     isLoading: isLoadingUserDetail,
     isError: isErrorUserDetail,
-  } = useQuery({
-    queryKey: [client.v2.user_details.$url()],
-    queryFn: () => client.v2.user_details.me.$get().unwrap(),
-  });
+  } = useQuery(api.userDetail.getMyDetails.queryOptions());
 
   const taskCount =
     isLoadingUserDetail || isErrorUserDetail || !userDetail?.tasks

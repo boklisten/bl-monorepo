@@ -1,5 +1,5 @@
 import { Container, Stack, Text, Title } from "@mantine/core";
-import DispatchManager from "@/features/dispatches/DispatchManager.tsx";
+import DispatchManager from "@/features/dispatches/DispatchManager";
 import { createFileRoute } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/(administrasjon)/admin/kommunikasjon/utsendelser")({

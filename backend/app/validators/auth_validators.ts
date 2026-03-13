@@ -10,13 +10,6 @@ export const forgotPasswordValidator = vine.create(
   }),
 );
 
-export const passwordResetValidValidator = vine.create(
-  vine.object({
-    resetToken: vine.string(),
-    resetId: vine.string(),
-  }),
-);
-
 export const passwordResetValidator = vine.create(
   vine.object({
     resetToken: vine.string(),

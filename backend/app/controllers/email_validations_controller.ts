@@ -16,8 +16,8 @@ export default class EmailValidationsController {
     await DispatchService.sendEmailConfirmation(userDetail.email, emailValidation.id);
   }
 
-  async confirm({ request, response }: HttpContext) {
-    const id = request.param("id");
+  async confirm(ctx: HttpContext) {
+    const id = ctx.request.param("id");
     try {
       const emailValidation = await StorageService.EmailValidations.get(id);
       await StorageService.UserDetails.update(emailValidation.userDetailId, {
@@ -25,7 +25,7 @@ export default class EmailValidationsController {
       });
       return { confirmed: true };
     } catch {
-      response.status(404);
+      ctx.response.status(404);
     }
     return { confirmed: false };
   }

@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { Container, Stack, Title } from "@mantine/core";
-import UserSettings from "@/features/user/UserSettings.tsx";
+import UserSettings from "@/features/user/UserSettings";
 
 export const Route = createFileRoute("/(administrasjon)/admin/user-settings")({
   head: () => ({

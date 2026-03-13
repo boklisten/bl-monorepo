@@ -1,6 +1,6 @@
 import { Button, Group } from "@mantine/core";
 import { IconBook } from "@tabler/icons-react";
-import TanStackAnchor from "@/shared/components/TanStackAnchor.tsx";
+import TanStackAnchor from "@/shared/components/TanStackAnchor";
 import { Activity } from "react";
 
 import useAuth from "@/shared/hooks/useAuth";

@@ -4,7 +4,7 @@ import { modals } from "@mantine/modals";
 import { IconQrcode } from "@tabler/icons-react";
 import dayjs from "dayjs";
 import { Activity, useEffect, useState } from "react";
-import QRCode from "react-qr-code";
+import { QRCodeSVG } from "qrcode.react";
 
 import { StandMatchTitle } from "@/features/matches/matchesList/helper";
 import MeetingInfo from "@/features/matches/MeetingInfo";
@@ -110,7 +110,7 @@ const StandMatchDetail = ({ standMatch }: { standMatch: StandMatchWithDetails })
               title: "Kunde-ID",
               children: (
                 <Stack align={"center"} w={"100%"}>
-                  <QRCode value={standMatch.customer} />
+                  <QRCodeSVG value={standMatch.customer} />
                   <Title>Oppmøte {dayjs(standMatch.meetingInfo?.date).format("HH:mm")}</Title>
                   <Activity mode={tooEarly ? "visible" : "hidden"}>
                     <InfoAlert title={"For tidlig ute"}>

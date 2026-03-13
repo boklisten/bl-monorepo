@@ -40,16 +40,16 @@ function SuccessfulUploadDialog({
 }
 
 export default function UploadClassMemberships({ branchId }: { branchId: string }) {
-  const client = useApiClient();
+  const { client } = useApiClient();
 
   const uploadClassMembershipMutation = useMutation({
-    mutationFn: (membershipData: { branch: string | string[]; phone: string | string[] }[]) =>
-      client.v2.branches.memberships
-        .$post({
+    mutationFn: async (membershipData: { branch: string | string[]; phone: string | string[] }[]) =>
+      client.api.branchUpload.uploadMemberships({
+        body: {
           membershipData: membershipData as { branch: string; phone: string }[],
           branchId,
-        })
-        .unwrap(),
+        },
+      }),
     onSuccess: (data) =>
       modals.open({
         title: "Opplasting av klassevalg var vellykket",

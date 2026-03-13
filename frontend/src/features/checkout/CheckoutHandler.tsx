@@ -12,15 +12,15 @@ import { useNavigate } from "@tanstack/react-router";
 
 export default function CheckoutHandler() {
   const cart = useCart();
-  const client = useApiClient();
+  const { client } = useApiClient();
   const mounted = useMounted();
   const navigate = useNavigate();
   const [hasStarted, setHasStarted] = useState(false);
 
   const initializeCheckoutMutation = useMutation({
-    mutationFn: (cartItems: CartItem[]) =>
-      client.checkout
-        .$post({
+    mutationFn: async (cartItems: CartItem[]) =>
+      client.api.checkout.initializeCheckout({
+        body: {
           cartItems: cartItems.map((cartItem) => {
             const selectedOption = cart.getSelectedOption(cartItem);
             return {
@@ -31,8 +31,8 @@ export default function CheckoutHandler() {
               to: dayjs(selectedOption.to).format("YYYY-MM-DD"),
             };
           }),
-        })
-        .unwrap(),
+        },
+      }),
     onSuccess: async ({ nextStep, orderId, token, checkoutFrontendUrl }) => {
       switch (nextStep) {
         case "confirm": {

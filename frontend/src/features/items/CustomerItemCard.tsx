@@ -10,12 +10,11 @@ import {
   IconSchool,
   IconShoppingCart,
 } from "@tabler/icons-react";
-import { InferResponseType } from "@tuyau/client";
 import dayjs from "dayjs";
 import { Activity, type ReactNode } from "react";
 
 import useCart from "@/shared/hooks/useCart";
-import { publicApiClient } from "@/shared/utils/publicApiClient";
+import { Route } from "@tuyau/core/types";
 
 function InfoEntry({
   startIcon,
@@ -55,7 +54,7 @@ function StatusChip({ status }: { status: CustomerItemStatus }) {
 export default function CustomerItemCard({
   actionableCustomerItem,
 }: {
-  actionableCustomerItem: InferResponseType<typeof publicApiClient.v2.customer_items.$get>[number];
+  actionableCustomerItem: Route.Response<"customer_items.get_customer_items">[number];
 }) {
   const cart = useCart();
   const cartItem = cart.get().find((cartItem) => cartItem.id === actionableCustomerItem.item.id);

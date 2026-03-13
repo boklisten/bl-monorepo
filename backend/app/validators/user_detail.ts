@@ -50,6 +50,10 @@ const customerUpdateUserDetailsSchema = vine.object({
     .optional(),
 });
 
+export const userDetailSearchValidator = vine.create({
+  searchStr: vine.string(),
+});
+
 export const customerUpdateUserDetailsValidator = vine
   .withMetaData<{ detailsId: string }>()
   .compile(customerUpdateUserDetailsSchema);

@@ -44,7 +44,7 @@ export default function BranchPaymentSettings({ existingBranch }: { existingBran
         },
       },
     },
-    onSubmit: ({ value }) => updateBranchMutation.mutate(value),
+    onSubmit: ({ value }) => updateBranchMutation.mutate({ body: value }),
   });
 
   return (

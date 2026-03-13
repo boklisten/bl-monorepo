@@ -12,16 +12,16 @@ import { PLEASE_TRY_AGAIN_TEXT } from "@/shared/utils/constants";
 import { showErrorNotification, showSuccessNotification } from "@/shared/utils/notifications";
 
 export default function AdministrateUserSignatures({ userDetail }: { userDetail: UserDetail }) {
-  const client = useApiClient();
-  const { data, isLoading, isError } = useQuery({
-    queryKey: [client.signatures.get({ detailsId: userDetail.id }).$url(), userDetail.id],
-    queryFn: () => client.signatures.get({ detailsId: userDetail.id }).$get().unwrap(),
-  });
-  const requestSignatureMutation = useMutation({
-    mutationFn: () => client.signatures.send({ detailsId: userDetail.id }).$post().unwrap(),
-    onSuccess: () => showSuccessNotification("Signaturforespørsel har blitt sendt!"),
-    onError: () => showErrorNotification("Klarte ikke sende signaturforespørsel"),
-  });
+  const { api } = useApiClient();
+  const { data, isLoading, isError } = useQuery(
+    api.signatures.getSignature.queryOptions({ params: { detailsId: userDetail.id } }),
+  );
+  const requestSignatureMutation = useMutation(
+    api.signatures.sendSignatureLink.mutationOptions({
+      onSuccess: () => showSuccessNotification("Signaturforespørsel har blitt sendt!"),
+      onError: () => showErrorNotification("Klarte ikke sende signaturforespørsel"),
+    }),
+  );
   if (isLoading) {
     return <Skeleton />;
   }
@@ -73,7 +73,9 @@ export default function AdministrateUserSignatures({ userDetail }: { userDetail:
           <Button
             leftSection={<IconSend />}
             loading={requestSignatureMutation.isPending}
-            onClick={() => requestSignatureMutation.mutate()}
+            onClick={() =>
+              requestSignatureMutation.mutate({ params: { detailsId: userDetail.id } })
+            }
           >
             Send signeringslenke
           </Button>

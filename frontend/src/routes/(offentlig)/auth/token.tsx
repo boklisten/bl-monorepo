@@ -1,10 +1,10 @@
 import { Container, Loader, Stack, Title } from "@mantine/core";
 
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
-import useApiClient from "@/shared/hooks/useApiClient.ts";
-import useAuthLinker from "@/shared/hooks/useAuthLinker.ts";
+import useApiClient from "@/shared/hooks/useApiClient";
+import useAuthLinker from "@/shared/hooks/useAuthLinker";
 import { useEffect, useEffectEvent } from "react";
-import { login } from "@/shared/hooks/useAuth.ts";
+import { login } from "@/shared/hooks/useAuth";
 
 export const Route = createFileRoute("/(offentlig)/auth/token")({
   head: () => ({
@@ -23,7 +23,7 @@ export const Route = createFileRoute("/(offentlig)/auth/token")({
 });
 
 function TokenPage() {
-  const client = useApiClient();
+  const { client } = useApiClient();
   const { redirectToCaller } = useAuthLinker();
   const { refreshToken, accessToken } = Route.useSearch();
   const navigate = useNavigate();
@@ -34,7 +34,7 @@ function TokenPage() {
       navigate({ to: "/auth/failure" });
       return;
     }
-    const userDetail = await client.v2.user_details.me.$get().unwrap();
+    const userDetail = await client.api.userDetail.getMyDetails({});
     if (userDetail?.tasks?.confirmDetails || userDetail?.tasks?.signAgreement) {
       navigate({ to: "/oppgaver" });
     } else {

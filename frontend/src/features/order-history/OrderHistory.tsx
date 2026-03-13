@@ -8,11 +8,8 @@ import useApiClient from "@/shared/hooks/useApiClient";
 import { PLEASE_TRY_AGAIN_TEXT } from "@/shared/utils/constants";
 
 export default function OrderHistory() {
-  const client = useApiClient();
-  const { data, isLoading, isError } = useQuery({
-    queryKey: [client.order_history.me.$url()],
-    queryFn: () => client.order_history.me.$get().unwrap(),
-  });
+  const { api } = useApiClient();
+  const { data, isLoading, isError } = useQuery(api.orderHistory.getMyOrders.queryOptions());
 
   if (isLoading) {
     return (

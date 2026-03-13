@@ -1,6 +1,6 @@
 import { Container, Stack, Title } from "@mantine/core";
-import AuthGuard from "@/features/auth/AuthGuard.tsx";
-import OrderHistory from "@/features/order-history/OrderHistory.tsx";
+import AuthGuard from "@/features/auth/AuthGuard";
+import OrderHistory from "@/features/order-history/OrderHistory";
 import { createFileRoute } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/(offentlig)/order-history")({

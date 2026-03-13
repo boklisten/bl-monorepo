@@ -2,13 +2,13 @@
 
 ![Uptime Robot ratio (30 days)](https://img.shields.io/uptimerobot/ratio/m790106369-0ed2a627f24343cf93d2bba7)
 
-Library and book management services and administration for upper secondary schools. Built with Next.js with Mantine using an AdonisJS backend. This project is the successor for the bl-web and bl-admin projects, with the aim to unify the administration site with the customer site.
+Library and book management services and administration for upper secondary schools. Built with TanStack Start with Mantine using an AdonisJS backend. This project is the successor for the bl-web and bl-admin projects, with the aim to unify the administration site with the customer site.
 
 ## Workspaces
 
 This repository consists of two workspaces.
 
-- _frontend_ is the Next.js frontend responsible for all user facing UI
+- _frontend_ is the TanStack Start frontend responsible for all user facing UI
 - _backend_ is the AdonisJS server responsible for business logic and database access
 
 The frontend only depends on the shared types located in backend/shared. Code style and linting is handled on root level for both workspaces.

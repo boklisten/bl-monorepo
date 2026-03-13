@@ -1,14 +1,14 @@
 import { Box, Button, Container, Stack, Title } from "@mantine/core";
 import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
-import useApiClient from "@/shared/hooks/useApiClient.ts";
+import useApiClient from "@/shared/hooks/useApiClient";
 import { modals } from "@mantine/modals";
-import UserDetailSearchField from "@/features/rapid-handout/UserDetailSearchField.tsx";
+import UserDetailSearchField from "@/features/rapid-handout/UserDetailSearchField";
 import { IconUserEdit } from "@tabler/icons-react";
-import UnlockUserMatchesButton from "@/features/matches/UnlockUserMatchesButton.tsx";
-import AdministrateUserForm from "@/features/user/AdministrateUserForm.tsx";
-import AdministrateUserSignatures from "@/features/signatures/AdministrateUserSignatures.tsx";
-import RapidHandoutDetails from "@/features/rapid-handout/RapidHandoutDetails.tsx";
+import UnlockUserMatchesButton from "@/features/matches/UnlockUserMatchesButton";
+import AdministrateUserForm from "@/features/user/AdministrateUserForm";
+import AdministrateUserSignatures from "@/features/signatures/AdministrateUserSignatures";
+import RapidHandoutDetails from "@/features/rapid-handout/RapidHandoutDetails";
 import { createFileRoute } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/(administrasjon)/admin/hurtigutdeling")({
@@ -21,15 +21,12 @@ export const Route = createFileRoute("/(administrasjon)/admin/hurtigutdeling")({
 function RapidHandoutPage() {
   const [userDetailsId, setUserDetailsId] = useState<string | null>(null);
 
-  const client = useApiClient();
+  const { client, api } = useApiClient();
   const { data } = useQuery({
-    queryKey: [client.v2.user_details.id({ detailsId: userDetailsId ?? "" }).$url(), userDetailsId],
-    queryFn: () =>
+    queryKey: api.userDetail.getById.queryKey({ params: { detailsId: userDetailsId ?? "" } }),
+    queryFn: async () =>
       userDetailsId
-        ? client.v2.user_details
-            .id({ detailsId: userDetailsId ?? "" })
-            .$get()
-            .unwrap()
+        ? client.api.userDetail.getById({ params: { detailsId: userDetailsId ?? "" } })
         : null,
   });
 

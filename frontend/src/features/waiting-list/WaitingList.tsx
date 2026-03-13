@@ -1,56 +1,30 @@
-import type { Branch } from "@boklisten/backend/shared/branch";
-import type { Item } from "@boklisten/backend/shared/item";
 import { useQuery } from "@tanstack/react-query";
 
 import WaitingListTable from "@/features/waiting-list/WaitingListTable";
 import ErrorAlert from "@/shared/components/alerts/ErrorAlert";
 import useApiClient from "@/shared/hooks/useApiClient";
-import unpack from "@/shared/utils/bl-api-request";
 import { PLEASE_TRY_AGAIN_TEXT } from "@/shared/utils/constants";
 
 export default function WaitingList() {
-  const client = useApiClient();
+  const { api } = useApiClient();
 
   const {
     data: items,
     isLoading: isLoadingItems,
     error: itemsError,
-  } = useQuery({
-    queryKey: [client.$url("collection.items.getAll")],
-    queryFn: () =>
-      client
-        .$route("collection.items.getAll")
-        .$get()
-        .then(unpack<Item[]>),
-  });
+  } = useQuery(api.items.get.queryOptions());
 
   const {
     data: branches,
     isLoading: isLoadingBranches,
     error: branchesError,
-  } = useQuery({
-    queryKey: [
-      client.$url("collection.branches.getAll", {
-        query: { active: true, sort: "name" },
-      }),
-    ],
-    queryFn: () =>
-      client
-        .$route("collection.branches.getAll")
-        .$get({
-          query: { active: true, sort: "name" },
-        })
-        .then(unpack<Branch[]>),
-  });
+  } = useQuery(api.branches.getPublic.queryOptions());
 
   const {
     data: waitingList,
     isLoading: isLoadingWaitingList,
     error: waitingListError,
-  } = useQuery({
-    queryKey: [client.waiting_list_entries.$url()],
-    queryFn: () => client.waiting_list_entries.$get().unwrap(),
-  });
+  } = useQuery(api.waitingListEntries.getAllWaitingListEntries.queryOptions());
 
   if (itemsError || branchesError || waitingListError) {
     return (

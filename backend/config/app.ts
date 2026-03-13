@@ -1,10 +1,9 @@
-import { Secret } from "@adonisjs/core/helpers";
 import { defineConfig } from "@adonisjs/core/http";
 import app from "@adonisjs/core/services/app";
 
 import env from "#start/env";
 
-export const appKey = new Secret(env.get("APP_KEY"));
+export const appKey = env.get("APP_KEY");
 
 export const http = defineConfig({
   generateRequestId: true,

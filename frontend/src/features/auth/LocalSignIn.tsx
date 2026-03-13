@@ -5,47 +5,38 @@ import validator from "validator";
 
 import ErrorAlert from "@/shared/components/alerts/ErrorAlert";
 import { passwordFieldValidator } from "@/shared/components/form/fields/complex/PasswordField";
-import TanStackAnchor from "@/shared/components/TanStackAnchor.tsx";
+import TanStackAnchor from "@/shared/components/TanStackAnchor";
 import { useAppForm } from "@/shared/hooks/form";
 import useAuth, { login } from "@/shared/hooks/useAuth";
 import useAuthLinker from "@/shared/hooks/useAuthLinker";
 import { GENERIC_ERROR_TEXT, PLEASE_TRY_AGAIN_TEXT } from "@/shared/utils/constants";
-import { publicApiClient } from "@/shared/utils/publicApiClient";
-
-interface SignInFields {
-  username: string;
-  password: string;
-}
+import { publicApi } from "@/shared/utils/publicApiClient";
 
 export default function LocalSignIn() {
   const [apiError, setApiError] = useState<string | null>(null);
   const { isLoggedIn } = useAuth();
   const { redirectToCaller } = useAuthLinker();
 
-  const signInMutation = useMutation({
-    mutationFn: async ({ username, password }: SignInFields) => {
-      setApiError(null);
-      const { message, tokens } = await publicApiClient.auth.local.login
-        .$post({
-          username,
-          password,
-        })
-        .unwrap();
-      setApiError(message ?? null);
-      if (tokens) {
-        login(tokens);
-        redirectToCaller();
-      }
-    },
-    onError: () => setApiError(PLEASE_TRY_AGAIN_TEXT),
-  });
+  const signInMutation = useMutation(
+    publicApi.local.login.mutationOptions({
+      onMutate: () => setApiError(null),
+      onSuccess: ({ message, tokens }) => {
+        setApiError(message ?? null);
+        if (tokens) {
+          login(tokens);
+          redirectToCaller();
+        }
+      },
+      onError: () => setApiError(PLEASE_TRY_AGAIN_TEXT),
+    }),
+  );
 
   const form = useAppForm({
     defaultValues: {
       username: "",
       password: "",
     },
-    onSubmit: ({ value }) => signInMutation.mutate(value),
+    onSubmit: ({ value }) => signInMutation.mutate({ body: value }),
   });
 
   useEffect(() => {

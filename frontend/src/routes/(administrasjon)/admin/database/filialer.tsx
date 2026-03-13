@@ -1,4 +1,4 @@
-import BranchManager from "@/features/branches/BranchManager.tsx";
+import BranchManager from "@/features/branches/BranchManager";
 import { createFileRoute } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/(administrasjon)/admin/database/filialer")({

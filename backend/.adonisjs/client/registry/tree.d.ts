@@ -214,7 +214,6 @@ export interface ApiDefinition {
       post: typeof routes['collection.payments.post']
       getAll: typeof routes['collection.payments.getAll']
       getId: typeof routes['collection.payments.getId']
-      patch: typeof routes['collection.payments.patch']
       delete: typeof routes['collection.payments.delete']
     }
     userdetails: {

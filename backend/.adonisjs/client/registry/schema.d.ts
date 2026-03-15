@@ -1447,18 +1447,6 @@ export interface Registry {
       errorResponse: unknown
     }
   }
-  'collection.payments.patch': {
-    methods: ["PATCH"]
-    pattern: '/payments/:id'
-    types: {
-      body: {}
-      paramsTuple: [ParamValue]
-      params: { id: ParamValue }
-      query: {}
-      response: unknown
-      errorResponse: unknown
-    }
-  }
   'collection.payments.delete': {
     methods: ["DELETE"]
     pattern: '/payments/:id'

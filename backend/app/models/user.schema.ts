@@ -17,7 +17,6 @@ const LoginSchema = new Schema<Login>(
     local: {
       type: {
         hashedPassword: { type: String, required: true },
-        salt: { type: String }, // fixme: Legacy, only used for the old sha256 hashing, remove when most of our hashes have been converted to argon2
         lastLogin: Date,
       },
       required: false,

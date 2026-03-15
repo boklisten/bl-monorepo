@@ -1,12 +1,12 @@
 import { HttpContext } from "@adonisjs/core/http";
 import vine from "@vinejs/vine";
 
-import { PasswordService } from "#services/password_service";
 import { StorageService } from "#services/storage_service";
 import TokenService from "#services/token_service";
 import { UserDetailService } from "#services/user_detail_service";
 import { UserService } from "#services/user_service";
 import { localAuthValidator, registerValidator } from "#validators/auth_validators";
+import hash from "@adonisjs/core/services/hash";
 
 export default class LocalController {
   async login({ request }: HttpContext) {
@@ -30,12 +30,7 @@ export default class LocalController {
           "Brukeren du forsøker å logge inn med har ikke satt opp passord-innlogging. Du kan forsøke å logge inn med Vipps, eller et lage et nytt passord ved å trykke på 'glemt passord'",
       };
     }
-    const isCorrectPassword = await PasswordService.verifyPassword({
-      userId: user.id,
-      password,
-      hashedPassword: user.login.local.hashedPassword,
-      salt: user.login.local.salt,
-    });
+    const isCorrectPassword = await hash.verify(user.login.local.hashedPassword, password);
 
     if (!isCorrectPassword) {
       return {

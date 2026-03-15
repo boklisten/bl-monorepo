@@ -124,7 +124,6 @@ export type ScannedRoutes = {
     'collection.payments.post': { paramsTuple?: []; params?: {} }
     'collection.payments.getAll': { paramsTuple?: []; params?: {} }
     'collection.payments.getId': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
-    'collection.payments.patch': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
     'collection.payments.delete': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
     'collection.userdetails.getId': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
     'collection.userdetails.operation.valid.getId': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
@@ -368,7 +367,6 @@ export type ScannedRoutes = {
     'collection.orders.patch': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
     'collection.orders.operation.place.patch': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
     'collection.orders.operation.confirm.patch': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
-    'collection.payments.patch': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
     'collection.userdetails.patch': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
     'collection.invoices.patch': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
     'collection.companies.patch': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }

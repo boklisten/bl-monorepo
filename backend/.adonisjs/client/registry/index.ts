@@ -726,12 +726,6 @@ const routes = {
     tokens: [{"old":"/payments/:id","type":0,"val":"payments","end":""},{"old":"/payments/:id","type":1,"val":"id","end":""}],
     types: placeholder as Registry['collection.payments.getId']['types'],
   },
-  'collection.payments.patch': {
-    methods: ["PATCH"],
-    pattern: '/payments/:id',
-    tokens: [{"old":"/payments/:id","type":0,"val":"payments","end":""},{"old":"/payments/:id","type":1,"val":"id","end":""}],
-    types: placeholder as Registry['collection.payments.patch']['types'],
-  },
   'collection.payments.delete': {
     methods: ["DELETE"],
     pattern: '/payments/:id',

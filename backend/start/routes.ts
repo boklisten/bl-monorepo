@@ -12,6 +12,10 @@ router.get("/", () => {
   return {};
 });
 
+router.get("/health", () => {
+  return { status: "ok" };
+});
+
 /**
  * auth token
  */

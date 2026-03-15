@@ -7,7 +7,8 @@ export const Route = createFileRoute("/robots.txt")({
       GET: async () => {
         const productionRobots = `User-agent: *
 Allow: /
-Disallow: /admin/`;
+Disallow: /admin/
+Disallow: /health`;
         const stagingRobots = `User-agent: *
 Disallow: /`;
 

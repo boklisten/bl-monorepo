@@ -10,6 +10,7 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as RobotsDottxtRouteImport } from './routes/robots[.]txt'
+import { Route as HealthRouteImport } from './routes/health'
 import { Route as offentligRouteRouteImport } from './routes/(offentlig)/route'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as offentligUserSettingsRouteImport } from './routes/(offentlig)/user-settings'
@@ -85,6 +86,11 @@ import { Route as offentligAuthEmailConfirmConfirmationIdRouteImport } from './r
 const RobotsDottxtRoute = RobotsDottxtRouteImport.update({
   id: '/robots.txt',
   path: '/robots.txt',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const HealthRoute = HealthRouteImport.update({
+  id: '/health',
+  path: '/health',
   getParentRoute: () => rootRouteImport,
 } as any)
 const offentligRouteRoute = offentligRouteRouteImport.update({
@@ -483,6 +489,7 @@ const offentligAuthEmailConfirmConfirmationIdRoute =
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/health': typeof HealthRoute
   '/robots.txt': typeof RobotsDottxtRoute
   '/admin': typeof administrasjonAdminRouteRouteWithChildren
   '/info': typeof offentligInfoRouteRouteWithChildren
@@ -556,6 +563,7 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/health': typeof HealthRoute
   '/robots.txt': typeof RobotsDottxtRoute
   '/info': typeof offentligInfoRouteRouteWithChildren
   '/welcome': typeof legacyWelcomeRoute
@@ -629,6 +637,7 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/(offentlig)': typeof offentligRouteRouteWithChildren
+  '/health': typeof HealthRoute
   '/robots.txt': typeof RobotsDottxtRoute
   '/(administrasjon)/admin': typeof administrasjonAdminRouteRouteWithChildren
   '/(offentlig)/info': typeof offentligInfoRouteRouteWithChildren
@@ -704,6 +713,7 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/health'
     | '/robots.txt'
     | '/admin'
     | '/info'
@@ -777,6 +787,7 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/health'
     | '/robots.txt'
     | '/info'
     | '/welcome'
@@ -849,6 +860,7 @@ export interface FileRouteTypes {
     | '__root__'
     | '/'
     | '/(offentlig)'
+    | '/health'
     | '/robots.txt'
     | '/(administrasjon)/admin'
     | '/(offentlig)/info'
@@ -924,6 +936,7 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   offentligRouteRoute: typeof offentligRouteRouteWithChildren
+  HealthRoute: typeof HealthRoute
   RobotsDottxtRoute: typeof RobotsDottxtRoute
   administrasjonAdminRouteRoute: typeof administrasjonAdminRouteRouteWithChildren
   legacyWelcomeRoute: typeof legacyWelcomeRoute
@@ -944,6 +957,13 @@ declare module '@tanstack/react-router' {
       path: '/robots.txt'
       fullPath: '/robots.txt'
       preLoaderRoute: typeof RobotsDottxtRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/health': {
+      id: '/health'
+      path: '/health'
+      fullPath: '/health'
+      preLoaderRoute: typeof HealthRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/(offentlig)': {
@@ -1650,6 +1670,7 @@ const administrasjonAdminRouteRouteWithChildren =
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   offentligRouteRoute: offentligRouteRouteWithChildren,
+  HealthRoute: HealthRoute,
   RobotsDottxtRoute: RobotsDottxtRoute,
   administrasjonAdminRouteRoute: administrasjonAdminRouteRouteWithChildren,
   legacyWelcomeRoute: legacyWelcomeRoute,

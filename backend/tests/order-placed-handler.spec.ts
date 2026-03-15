@@ -135,13 +135,13 @@ test.group("OrderPlacedHandler", (group) => {
 
     testPayment = {
       id: "payment1",
-      method: "dibs",
+      method: "vipps-checkout",
       order: "order1",
       amount: 200,
       customer: "customer1",
       branch: "branch1",
       info: {
-        paymentId: "dibsEasyPayment1",
+        paymentId: "vipps-checkout1",
       },
     };
 

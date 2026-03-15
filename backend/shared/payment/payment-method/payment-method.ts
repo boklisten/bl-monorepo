@@ -1,5 +1,4 @@
 export type PaymentMethod =
-  | "dibs"
   | "cash"
   | "card"
   | "vipps"
@@ -7,8 +6,6 @@ export type PaymentMethod =
   | "branch"
   | "later"
   | "cashout";
-
-//dibs is a online payment method, used in bl-web, if dibs is used, no other method can be used
 
 //cash and card are payment methods used when a customer pays at branch
 // if a customer wants to pay 100 kr on cash and 50 kr by card this is possible

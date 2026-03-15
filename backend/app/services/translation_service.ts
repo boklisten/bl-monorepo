@@ -38,7 +38,6 @@ export const TranslationService = {
   },
   translatePaymentMethod(paymentMethod: PaymentMethod) {
     return {
-      dibs: "DIBS",
       cash: "kontanter",
       card: "kort",
       vipps: "Vipps",

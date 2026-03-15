@@ -5,7 +5,7 @@ import { Order } from "#shared/order/order";
 import { Payment } from "#shared/payment/payment";
 
 export class PaymentValidator {
-  public validate(payment: Payment): Promise<boolean> {
+  public validate(payment?: Payment): Promise<boolean> {
     if (!payment) {
       return Promise.reject(new BlError("payment is not defined"));
     }
@@ -49,7 +49,7 @@ export class PaymentValidator {
   }
 
   private validatePaymentBasedOnMethod(payment: Payment): boolean {
-    if (["dibs", "card", "cash", "vipps"].includes(payment.method)) return true;
+    if (["card", "cash", "vipps"].includes(payment.method)) return true;
     throw new BlError(`payment.method "${payment.method}" not supported`);
   }
 }

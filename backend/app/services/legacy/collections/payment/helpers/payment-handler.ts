@@ -1,16 +1,9 @@
-import { PaymentDibsConfirmer } from "#services/legacy/collections/payment/helpers/dibs/payment-dibs-confirmer";
 import { StorageService } from "#services/storage_service";
 import { BlError } from "#shared/bl-error";
 import { Order } from "#shared/order/order";
 import { Payment } from "#shared/payment/payment";
 
 export class PaymentHandler {
-  private paymentDibsConfirmer: PaymentDibsConfirmer;
-
-  constructor(paymentDibsConfirmer?: PaymentDibsConfirmer) {
-    this.paymentDibsConfirmer = paymentDibsConfirmer ?? new PaymentDibsConfirmer();
-  }
-
   public async confirmPayments(order: Order): Promise<Payment[]> {
     if (!order.payments || order.payments.length <= 0) {
       return [];
@@ -29,7 +22,6 @@ export class PaymentHandler {
 
   private async confirmAllPayments(order: Order, payments: Payment[]): Promise<Payment[]> {
     await this.validateOrderAmount(order, payments);
-    this.validatePaymentMethods(payments);
 
     for (const payment of payments) {
       if (payment.confirmed) {
@@ -43,10 +35,6 @@ export class PaymentHandler {
   }
 
   private confirmPayment(order: Order, payment: Payment): Promise<boolean> {
-    if (payment.method === "dibs") {
-      return this.confirmMethodDibs(order, payment);
-    }
-
     if (["card", "cash", "vipps"].includes(payment.method)) {
       if (order.byCustomer) {
         throw new BlError(`payment method "${payment.method}" is not permitted for customer`);
@@ -57,17 +45,6 @@ export class PaymentHandler {
     if (payment.method === "vipps-checkout") return Promise.resolve(true);
 
     return Promise.reject(new BlError(`payment method "${payment.method}" not supported`));
-  }
-
-  private validatePaymentMethods(payments: Payment[]) {
-    if (payments.length > 1) {
-      for (const payment of payments) {
-        if (payment.method == "dibs") {
-          throw new BlError(`multiple payments found but "${payment.id}" have method dibs`);
-        }
-      }
-    }
-    return true;
   }
 
   private async validateOrderAmount(order: Order, payments: Payment[]): Promise<boolean> {
@@ -84,9 +61,5 @@ export class PaymentHandler {
     }
 
     return true;
-  }
-
-  private async confirmMethodDibs(order: Order, payment: Payment): Promise<boolean> {
-    return this.paymentDibsConfirmer.confirm(order, payment);
   }
 }

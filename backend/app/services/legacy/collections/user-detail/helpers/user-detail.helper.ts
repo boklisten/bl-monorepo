@@ -1,111 +1,12 @@
-import { DibsEasyPayment } from "#services/legacy/dibs/dibs-easy-payment/dibs-easy-payment";
 import { isNullish } from "#services/legacy/typescript-helpers";
-import { StorageService } from "#services/storage_service";
-import { BlError } from "#shared/bl-error";
 import { UserDetail } from "#shared/user-detail";
 
 export class UserDetailHelper {
-  public updateUserDetailBasedOnDibsEasyPayment(
-    userDetailId: string,
-    dibsEasyPayment: DibsEasyPayment,
-  ): Promise<UserDetail> {
-    return new Promise((resolve, reject) => {
-      StorageService.UserDetails.get(userDetailId)
-        .then((userDetail: UserDetail) => {
-          const updateObject = this.getUserDetailUpdateObject(dibsEasyPayment, userDetail);
-
-          StorageService.UserDetails.update(userDetailId, updateObject)
-            .then((updatedUserDetail: UserDetail) => {
-              resolve(updatedUserDetail);
-            })
-            .catch((updateUserDetailError: BlError) => {
-              reject(
-                new BlError(
-                  `could not update userDetail "${userDetailId}" with user details from dibsPayment`,
-                ).add(updateUserDetailError),
-              );
-            });
-        })
-        .catch((getUserDetailError: BlError) => {
-          reject(new BlError(`could not get userDetail "${userDetailId}"`).add(getUserDetailError));
-        });
-    });
-  }
-
-  private getUserDetailUpdateObject(dibsEasyPayment: DibsEasyPayment, userDetail: UserDetail): any {
-    const dibsUserDetail = dibsEasyPayment.consumer.privatePerson;
-    const dibsShippingAddress = dibsEasyPayment.consumer.shippingAddress;
-
-    const userDetailUpdateObject = {};
-
-    if (
-      (isNullish(userDetail.name) || userDetail.name.length <= 0) &&
-      // @ts-expect-error fixme: auto ignored
-      dibsUserDetail.firstName &&
-      dibsUserDetail?.lastName
-    ) {
-      // @ts-expect-error fixme: auto ignored
-      userDetailUpdateObject["name"] = dibsUserDetail.firstName + " " + dibsUserDetail.lastName;
-    }
-
-    if (
-      (isNullish(userDetail.phone) || userDetail.phone.length <= 0) &&
-      dibsUserDetail?.phoneNumber.number
-    ) {
-      // @ts-expect-error fixme: auto ignored
-      userDetailUpdateObject["phone"] = dibsUserDetail.phoneNumber.number;
-    }
-
-    if (
-      (isNullish(userDetail.address) || userDetail.address.length <= 0) &&
-      // @ts-expect-error fixme: auto ignored
-      dibsShippingAddress.addressLine1
-    ) {
-      // @ts-expect-error fixme: auto ignored
-      userDetailUpdateObject["address"] =
-        // @ts-expect-error fixme: auto ignored
-        dibsShippingAddress.addressLine1 +
-        " " +
-        // @ts-expect-error fixme: auto ignored
-        dibsShippingAddress.addressLine2;
-    }
-
-    if (
-      (isNullish(userDetail.postCity) || userDetail.postCity.length <= 0) &&
-      // @ts-expect-error fixme: auto ignored
-      dibsShippingAddress.city
-    ) {
-      // @ts-expect-error fixme: auto ignored
-      userDetailUpdateObject["postCity"] = dibsShippingAddress.city;
-    }
-
-    if (
-      (isNullish(userDetail.postCode) || userDetail.postCode.length <= 0) &&
-      // @ts-expect-error fixme: auto ignored
-      dibsShippingAddress.postalCode
-    ) {
-      // @ts-expect-error fixme: auto ignored
-      userDetailUpdateObject["postCode"] = dibsShippingAddress.postalCode;
-    }
-
-    return userDetailUpdateObject;
-  }
-
   public isValid(userDetail: UserDetail): boolean {
     const invalidUserDetailFields = this.getInvalidUserDetailFields(userDetail);
 
     // @ts-expect-error fixme: auto ignored
     return invalidUserDetailFields.length <= 0 && userDetail.active;
-  }
-
-  public getFirstName(name: string) {
-    const splitName = name.trimEnd().split(" ");
-    return splitName.length <= 1 ? name.trim() : splitName.slice(0, -1).join(" ").trim();
-  }
-
-  public getLastName(name: string) {
-    const splitName = name.trimEnd().split(" ");
-    return splitName.length <= 1 ? "" : splitName.slice(-1).join(" ");
   }
 
   public getInvalidUserDetailFields(userDetail: UserDetail) {

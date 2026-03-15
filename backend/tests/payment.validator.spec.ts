@@ -23,10 +23,10 @@ test.group("PaymentValidator", (group) => {
   group.each.setup(() => {
     testPayment = {
       id: "payment1",
-      method: "dibs",
+      method: "vipps",
       order: "order1",
       info: {
-        paymentId: "dibs1",
+        paymentId: "vipps1",
       },
       amount: 100,
       confirmed: false,
@@ -74,10 +74,10 @@ test.group("PaymentValidator", (group) => {
   });
 
   test("validate() - should reject if payment is undefined", async () => {
-    return expect(
-      // @ts-expect-error fixme: auto ignored
-      paymentValidator.validate(undefined),
-    ).to.eventually.be.rejectedWith(BlError, /payment is not defined/);
+    return expect(paymentValidator.validate(undefined)).to.eventually.be.rejectedWith(
+      BlError,
+      /payment is not defined/,
+    );
   });
 
   test("validate() - should reject if paymentMethod is not valid", async () => {

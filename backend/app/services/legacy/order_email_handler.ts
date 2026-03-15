@@ -1,6 +1,5 @@
 import DispatchService from "#services/dispatch_service";
 import { DateService } from "#services/legacy/date.service";
-import { DibsEasyPayment } from "#services/legacy/dibs/dibs-easy-payment/dibs-easy-payment";
 import { StorageService } from "#services/storage_service";
 import { TranslationService } from "#services/translation_service";
 import { BlError } from "#shared/bl-error";
@@ -154,48 +153,16 @@ export const OrderEmailHandler = {
         : null,
     };
 
-    if (payment.method === "dibs") {
-      if (payment.info) {
-        // fixme baaaad type conversion
-        const paymentInfo: DibsEasyPayment = payment.info as unknown as DibsEasyPayment;
-        if (paymentInfo.paymentDetails) {
-          if (paymentInfo.paymentDetails.paymentMethod) {
-            paymentObject.method = paymentInfo.paymentDetails.paymentMethod;
-          }
+    if (payment.method) {
+      paymentObject.method = payment.method;
+    }
 
-          if (paymentInfo.paymentDetails.cardDetails?.maskedPan) {
-            // @ts-expect-error fixme: auto ignored
-            paymentObject.cardInfo = `***${
-              paymentInfo.paymentDetails.cardDetails.maskedPan &&
-              paymentInfo.paymentDetails.cardDetails.maskedPan.length > 4
-                ? paymentInfo.paymentDetails.cardDetails.maskedPan.slice(-4)
-                : paymentInfo.paymentDetails.cardDetails.maskedPan
-            }`;
-          }
-        }
+    if (payment.amount) {
+      paymentObject.amount = payment.amount.toString();
+    }
 
-        if (paymentInfo.orderDetails?.amount) {
-          paymentObject.amount = (
-            Number.parseInt(paymentInfo.orderDetails.amount.toString()) / 100
-          ).toString();
-        }
-
-        if (paymentInfo.paymentId) {
-          paymentObject.paymentId = paymentInfo.paymentId;
-        }
-      }
-    } else {
-      if (payment.method) {
-        paymentObject.method = payment.method;
-      }
-
-      if (payment.amount) {
-        paymentObject.amount = payment.amount.toString();
-      }
-
-      if (payment.id) {
-        paymentObject.paymentId = payment.id;
-      }
+    if (payment.id) {
+      paymentObject.paymentId = payment.id;
     }
 
     return paymentObject;

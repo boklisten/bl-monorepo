@@ -11,9 +11,6 @@ export const APP_CONFIG = {
         failure: "auth/authentication/failure",
       },
     },
-    dibs: {
-      payment: "payments",
-    },
     host: "boklisten",
     local: {
       host: "localhost",

@@ -3,7 +3,6 @@ import { expect, use as chaiUse, should } from "chai";
 import chaiAsPromised from "chai-as-promised";
 import sinon, { createSandbox } from "sinon";
 
-import { PaymentDibsHandler } from "#services/legacy/collections/payment/helpers/dibs/payment-dibs-handler";
 import { PaymentValidator } from "#services/legacy/collections/payment/helpers/payment.validator";
 import { PaymentPostHook } from "#services/legacy/collections/payment/hooks/payment.post.hook";
 import { StorageService } from "#services/storage_service";
@@ -16,8 +15,7 @@ should();
 
 test.group("PaymentPostHook", (group) => {
   const paymentValidator = new PaymentValidator();
-  const paymentDibsHandler = new PaymentDibsHandler();
-  const paymentPostHook = new PaymentPostHook(paymentValidator, paymentDibsHandler);
+  const paymentPostHook = new PaymentPostHook(paymentValidator);
 
   let testOrder: Order;
   let testPayment: Payment;
@@ -25,7 +23,6 @@ test.group("PaymentPostHook", (group) => {
   // @ts-expect-error fixme: auto ignored
   let testAccessToken;
   let paymentValidated: boolean;
-  let handleDibsPaymentValid: boolean;
   let sandbox: sinon.SinonSandbox;
 
   group.each.setup(() => {
@@ -55,7 +52,6 @@ test.group("PaymentPostHook", (group) => {
     };
 
     paymentValidated = true;
-    handleDibsPaymentValid = true;
     sandbox = createSandbox();
 
     sandbox.stub(StorageService.Payments, "get").callsFake((id) => {
@@ -66,13 +62,6 @@ test.group("PaymentPostHook", (group) => {
       return Promise.resolve(testPayment);
     });
     sandbox.stub(StorageService.Payments, "update").callsFake(() => {
-      return Promise.resolve(testPayment);
-    });
-
-    sandbox.stub(paymentDibsHandler, "handleDibsPayment").callsFake(() => {
-      if (!handleDibsPaymentValid) {
-        return Promise.reject(new BlError("could not create dibs payment"));
-      }
       return Promise.resolve(testPayment);
     });
 
@@ -114,15 +103,5 @@ test.group("PaymentPostHook", (group) => {
       // @ts-expect-error fixme: auto ignored
       paymentPostHook.after([testPayment], testAccessToken),
     ).to.be.rejectedWith(BlError, /payment could not be validated/);
-  });
-
-  test("should reject if paymentDibsHandler.handleDibsPayment rejects", async () => {
-    testPayment.method = "dibs";
-    handleDibsPaymentValid = false;
-
-    return expect(
-      // @ts-expect-error fixme: auto ignored
-      paymentPostHook.after([testPayment], testAccessToken),
-    ).to.be.rejectedWith(BlError, /could not create dibs payment/);
   });
 });

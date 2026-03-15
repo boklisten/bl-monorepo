@@ -1,5 +1,4 @@
 import { PaymentGetAllHook } from "#services/legacy/collections/payment/hooks/payment.get-all.hook";
-import { PaymentPatchHook } from "#services/legacy/collections/payment/hooks/payment.patch.hook";
 import { PaymentPostHook } from "#services/legacy/collections/payment/hooks/payment.post.hook";
 import { StorageService } from "#services/storage_service";
 import { BlCollection } from "#types/bl-collection";
@@ -35,14 +34,6 @@ export const PaymentCollection: BlCollection = {
     },
     {
       method: "getId",
-      restriction: {
-        permission: "customer",
-        restricted: true,
-      },
-    },
-    {
-      method: "patch",
-      hook: new PaymentPatchHook(),
       restriction: {
         permission: "customer",
         restricted: true,

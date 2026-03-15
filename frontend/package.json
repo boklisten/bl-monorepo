@@ -5,11 +5,9 @@
   "type": "module",
   "scripts": {
     "dev": "vite dev",
-    "build": "vite build",
-    "serve": "vite preview",
-    "start": "node .output/server/index.mjs",
     "typecheck": "pnpm exec tsc --noEmit",
-    "generate-routes": "tsr generate"
+    "build": "vite build",
+    "start": "node .output/server/index.mjs"
   },
   "dependencies": {
     "@boklisten/backend": "workspace:*",

@@ -23,18 +23,18 @@ export default function OpenOrdersList({
 }) {
   const queryClient = useQueryClient();
   const navigate = useNavigate();
-  const client = useApiClient();
+  const { api } = useApiClient();
 
-  const cancelOrderItemMutation = useMutation({
-    mutationFn: ({ orderId, itemId }: { orderId: string; itemId: string }) =>
-      client.v2.orders.cancel_order_item.$post({ orderId, itemId }).unwrap(),
-    onSettled: () =>
-      queryClient.invalidateQueries({
-        queryKey: [client.v2.orders.open_orders.$url()],
-      }),
-    onSuccess: () => showSuccessNotification("Avbestillingen var vellykket!"),
-    onError: () => showErrorNotification("Klarte ikke avbestille bok!"),
-  });
+  const cancelOrderItemMutation = useMutation(
+    api.orders.cancelOrderItem.mutationOptions({
+      onSettled: () =>
+        queryClient.invalidateQueries({
+          queryKey: api.orders.getOpenOrders.pathKey(),
+        }),
+      onSuccess: () => showSuccessNotification("Avbestillingen var vellykket!"),
+      onError: () => showErrorNotification("Klarte ikke avbestille bok!"),
+    }),
+  );
 
   return (
     <>
@@ -72,8 +72,10 @@ export default function OpenOrdersList({
                           labels: { cancel: "Avbryt", confirm: "Avbestill" },
                           onConfirm: () =>
                             cancelOrderItemMutation.mutate({
-                              orderId: orderItem.orderId,
-                              itemId: orderItem.itemId,
+                              body: {
+                                orderId: orderItem.orderId,
+                                itemId: orderItem.itemId,
+                              },
                             }),
                         });
                       }}

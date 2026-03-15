@@ -3,7 +3,6 @@ import { OrderPostHook } from "#services/legacy/collections/order/hooks/order.po
 import { OrderConfirmOperation } from "#services/legacy/collections/order/operations/confirm/order-confirm.operation";
 import { GetCustomerOrdersOperation } from "#services/legacy/collections/order/operations/get-customer-orders.operation";
 import { OrderPlaceOperation } from "#services/legacy/collections/order/operations/place/order-place.operation";
-import { RapidHandoutOperation } from "#services/legacy/collections/order/operations/rapid-handout.operation";
 import { StorageService } from "#services/storage_service";
 import { BlCollection } from "#types/bl-collection";
 
@@ -20,15 +19,6 @@ export const OrderCollection: BlCollection = {
         permission: "customer",
         restricted: true,
       },
-      operations: [
-        {
-          name: "rapid-handout",
-          operation: new RapidHandoutOperation(),
-          restriction: {
-            permission: "employee",
-          },
-        },
-      ],
     },
     {
       method: "delete",

@@ -8,22 +8,23 @@ import InfoAlert from "@/shared/components/alerts/InfoAlert";
 import useApiClient from "@/shared/hooks/useApiClient";
 import { PLEASE_TRY_AGAIN_TEXT } from "@/shared/utils/constants";
 import { showErrorNotification, showSuccessNotification } from "@/shared/utils/notifications";
-import { publicApiClient } from "@/shared/utils/publicApiClient";
+import { publicApi } from "@/shared/utils/publicApiClient";
 
 const OpeningHourRow = ({ openingHour }: { openingHour: OpeningHour }) => {
-  const client = useApiClient();
+  const { api } = useApiClient();
   const queryClient = useQueryClient();
-  const deleteOpeningHourMutation = useMutation({
-    mutationFn: () => client.v2.opening_hours({ id: openingHour.id }).$delete().unwrap(),
-    onError: () => showErrorNotification("Klarte ikke slette åpningstid"),
-    onSuccess: () => {
-      showSuccessNotification("Åpningstid ble slettet!");
-    },
-    onSettled: () =>
-      queryClient.invalidateQueries({
-        queryKey: [client.v2.opening_hours({ id: openingHour.branch }).$url(), openingHour.branch],
-      }),
-  });
+  const deleteOpeningHourMutation = useMutation(
+    api.openingHours.delete.mutationOptions({
+      onError: () => showErrorNotification("Klarte ikke slette åpningstid"),
+      onSuccess: () => {
+        showSuccessNotification("Åpningstid ble slettet!");
+      },
+      onSettled: () =>
+        queryClient.invalidateQueries({
+          queryKey: api.openingHours.get.queryKey({ params: { id: openingHour.id } }),
+        }),
+    }),
+  );
   const fromDate = dayjs(openingHour.from).locale("nb");
   const toDate = dayjs(openingHour.to).locale("nb");
   const weekday = fromDate.format("dddd");
@@ -39,7 +40,16 @@ const OpeningHourRow = ({ openingHour }: { openingHour: OpeningHour }) => {
       <Table.Td>{fromTime}</Table.Td>
       <Table.Td>{toTime}</Table.Td>
       <Table.Td>
-        <Button bg={"red"} onClick={() => deleteOpeningHourMutation.mutate()}>
+        <Button
+          bg={"red"}
+          onClick={() =>
+            deleteOpeningHourMutation.mutate({
+              params: {
+                id: openingHour.id,
+              },
+            })
+          }
+        >
           Slett
         </Button>
       </Table.Td>
@@ -52,10 +62,7 @@ export default function OpeningHoursList({ branchId }: { branchId: string }) {
     data: openingHours,
     isLoading: isLoadingOpeningHours,
     isError: isErrorOpeningHours,
-  } = useQuery({
-    queryKey: [publicApiClient.v2.opening_hours({ id: branchId }).$url(), branchId],
-    queryFn: () => publicApiClient.v2.opening_hours({ id: branchId }).$get().unwrap(),
-  });
+  } = useQuery(publicApi.openingHours.get.queryOptions({ params: { id: branchId } }));
 
   if (isLoadingOpeningHours) {
     return (

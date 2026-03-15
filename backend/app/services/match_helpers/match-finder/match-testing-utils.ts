@@ -1,5 +1,5 @@
 // mulberry32 PRNG: https://stackoverflow.com/a/47593316
-import { MatchableUser } from "#controllers/matches/helpers/match-finder/match-types";
+import { MatchableUser } from "#services/match_helpers/match-finder/match-types";
 import { CandidateStandMatch } from "#shared/match/stand-match";
 import { CandidateUserMatch } from "#shared/match/user-match";
 

@@ -1,5 +1,5 @@
-import AuthGuard from "@/features/auth/AuthGuard.tsx";
-import CreateUsers from "@/features/user/CreateUsers.tsx";
+import AuthGuard from "@/features/auth/AuthGuard";
+import CreateUsers from "@/features/user/CreateUsers";
 import { createFileRoute } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/(administrasjon)/admin/database/lag_brukere")({

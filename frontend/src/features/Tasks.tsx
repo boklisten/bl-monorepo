@@ -3,29 +3,33 @@ import { IconSend } from "@tabler/icons-react";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { Activity } from "react";
 
-import SignAgreement from "@/features/signatures/SignAgreement.tsx";
-import UserSettingsForm from "@/features/user/UserSettingsForm.tsx";
-import ErrorAlert from "@/shared/components/alerts/ErrorAlert.tsx";
-import InfoAlert from "@/shared/components/alerts/InfoAlert.tsx";
-import SuccessAlert from "@/shared/components/alerts/SuccessAlert.tsx";
-import CountdownToRedirect from "@/shared/components/CountdownToRedirect.tsx";
-import useApiClient from "@/shared/hooks/useApiClient.ts";
-import { PLEASE_TRY_AGAIN_TEXT } from "@/shared/utils/constants.ts";
-import { isUnder18 } from "@/shared/utils/dates.ts";
-import { showErrorNotification, showSuccessNotification } from "@/shared/utils/notifications.ts";
+import SignAgreement from "@/features/signatures/SignAgreement";
+import UserSettingsForm from "@/features/user/UserSettingsForm";
+import ErrorAlert from "@/shared/components/alerts/ErrorAlert";
+import InfoAlert from "@/shared/components/alerts/InfoAlert";
+import SuccessAlert from "@/shared/components/alerts/SuccessAlert";
+import CountdownToRedirect from "@/shared/components/CountdownToRedirect";
+import useApiClient from "@/shared/hooks/useApiClient";
+import { PLEASE_TRY_AGAIN_TEXT } from "@/shared/utils/constants";
+import { isUnder18 } from "@/shared/utils/dates";
+import { showErrorNotification, showSuccessNotification } from "@/shared/utils/notifications";
 
 export default function Tasks() {
-  const client = useApiClient();
-  const { data, isLoading, isError } = useQuery({
-    queryKey: [client.v2.user_details.$url()],
-    queryFn: () => client.v2.user_details.me.$get().unwrap(),
-    refetchInterval: 5000,
-  });
-  const requestSignatureMutation = useMutation({
-    mutationFn: () => client.signatures.me.send.$post().unwrap(),
-    onSuccess: () => showSuccessNotification("Signaturforespørsel har blitt sendt!"),
-    onError: () => showErrorNotification("Klarte ikke sende signaturforespørsel"),
-  });
+  const { api } = useApiClient();
+  const { data, isLoading, isError } = useQuery(
+    api.userDetail.getMyDetails.queryOptions(
+      {},
+      {
+        refetchInterval: 5000,
+      },
+    ),
+  );
+  const requestSignatureMutation = useMutation(
+    api.signatures.sendSignatureLinkAsCustomer.mutationOptions({
+      onSuccess: () => showSuccessNotification("Signaturforespørsel har blitt sendt!"),
+      onError: () => showErrorNotification("Klarte ikke sende signaturforespørsel"),
+    }),
+  );
 
   if (isLoading) {
     return (
@@ -98,7 +102,7 @@ export default function Tasks() {
                 <Button
                   leftSection={<IconSend />}
                   loading={requestSignatureMutation.isPending}
-                  onClick={() => requestSignatureMutation.mutate()}
+                  onClick={() => requestSignatureMutation.mutate({})}
                 >
                   Send signeringsforespørsel
                   {data.guardian?.name && ` til ${data.guardian?.name}`}

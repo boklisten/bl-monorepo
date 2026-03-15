@@ -1,4 +1,4 @@
-import RedirectToBlAdmin from "@/features/auth-linker/RedirectToBlAdmin.tsx";
+import RedirectToBlAdmin from "@/features/auth-linker/RedirectToBlAdmin";
 import { createFileRoute } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/(administrasjon)/admin/scanner")({

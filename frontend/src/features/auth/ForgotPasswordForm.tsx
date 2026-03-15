@@ -6,7 +6,7 @@ import validator from "validator";
 
 import ErrorAlert from "@/shared/components/alerts/ErrorAlert";
 import SuccessAlert from "@/shared/components/alerts/SuccessAlert";
-import TanStackAnchor from "@/shared/components/TanStackAnchor.tsx";
+import TanStackAnchor from "@/shared/components/TanStackAnchor";
 import { useAppForm } from "@/shared/hooks/form";
 import { GENERIC_ERROR_TEXT, PLEASE_TRY_AGAIN_TEXT } from "@/shared/utils/constants";
 import { publicApiClient } from "@/shared/utils/publicApiClient";
@@ -21,11 +21,11 @@ export default function ForgotPasswordForm() {
   const requestPasswordResetMutation = useMutation({
     mutationFn: async ({ email }: ForgotFields) => {
       setApiError(null);
-      const { message } = await publicApiClient.forgot_password
-        .$post({
+      const { message } = await publicApiClient.api.passwordReset.requestPasswordReset({
+        body: {
           email,
-        })
-        .unwrap();
+        },
+      });
       setApiError(message ?? null);
     },
     onError: () => setApiError(PLEASE_TRY_AGAIN_TEXT),

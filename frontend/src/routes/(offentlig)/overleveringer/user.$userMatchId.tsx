@@ -1,4 +1,4 @@
-import MatchDetail from "@/features/matches/MatchDetail.tsx";
+import MatchDetail from "@/features/matches/MatchDetail";
 import { createFileRoute } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/(offentlig)/overleveringer/user/$userMatchId")({

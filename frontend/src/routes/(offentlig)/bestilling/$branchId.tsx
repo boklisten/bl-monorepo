@@ -1,5 +1,5 @@
 import { Container, Stack, Title } from "@mantine/core";
-import SelectSubjects from "@/features/subjects/SelectSubjects.tsx";
+import SelectSubjects from "@/features/subjects/SelectSubjects";
 import { createFileRoute } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/(offentlig)/bestilling/$branchId")({

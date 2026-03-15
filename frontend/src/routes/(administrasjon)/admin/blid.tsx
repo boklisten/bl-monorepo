@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import RedirectToBlAdmin from "@/features/auth-linker/RedirectToBlAdmin.tsx";
+import RedirectToBlAdmin from "@/features/auth-linker/RedirectToBlAdmin";
 
 export const Route = createFileRoute("/(administrasjon)/admin/blid")({
   component: BlidSearchPage,

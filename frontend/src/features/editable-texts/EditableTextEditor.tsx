@@ -21,52 +21,58 @@ export default function EditableTextEditor({
     onSubmit: ({ value }) => {
       if (editableText === undefined) {
         addEditableTextMutation.mutate({
-          key: value.key,
-          text: value.text,
+          body: {
+            key: value.key,
+            text: value.text,
+          },
         });
       } else {
         updateEditableTextMutation.mutate({
-          id: editableText.id,
-          text: value.text,
+          params: { id: editableText.id },
+          body: {
+            key: editableText.id,
+            text: value.text,
+          },
         });
       }
     },
   });
 
   const queryClient = useQueryClient();
-  const client = useApiClient();
+  const { api } = useApiClient();
 
-  const addEditableTextMutation = useMutation({
-    mutationFn: (editableText: { text: string; key: string }) =>
-      client.editable_texts.$post(editableText).unwrap(),
-    onSettled: () =>
-      queryClient.invalidateQueries({
-        queryKey: [client.editable_texts.$url()],
-      }),
-    onSuccess: () => {
-      showSuccessNotification("Dynamisk innhold ble opprettet!");
-      onClose();
-    },
-    onError: () =>
-      showErrorNotification({
-        title: "Klarte ikke opprette dynamisk innhold!",
-        message: 'Vennligst sjekk at unik nøkkel er formattert riktig. [a-z] og "_" for mellomrom.',
-      }),
-  });
+  const addEditableTextMutation = useMutation(
+    api.editableTexts.store.mutationOptions({
+      onSettled: () =>
+        queryClient.invalidateQueries({
+          queryKey: api.editableTexts.getAll.pathKey(),
+        }),
+      onSuccess: () => {
+        showSuccessNotification("Dynamisk innhold ble opprettet!");
+        onClose();
+      },
+      onError: () =>
+        showErrorNotification({
+          title: "Klarte ikke opprette dynamisk innhold!",
+          message:
+            'Vennligst sjekk at unik nøkkel er formattert riktig. [a-z] og "_" for mellomrom.',
+        }),
+    }),
+  );
 
-  const updateEditableTextMutation = useMutation({
-    mutationFn: (editableText: { id: string; text: string }) =>
-      client.editable_texts({ id: editableText.id }).$patch({ text: editableText.text }).unwrap(),
-    onSettled: () =>
-      queryClient.invalidateQueries({
-        queryKey: [client.editable_texts.$url()],
-      }),
-    onSuccess: () => {
-      showSuccessNotification("Dynamisk innhold ble oppdatert!");
-      onClose();
-    },
-    onError: () => showErrorNotification("Klarte ikke oppdatere dynamisk innhold!"),
-  });
+  const updateEditableTextMutation = useMutation(
+    api.editableTexts.update.mutationOptions({
+      onSettled: () =>
+        queryClient.invalidateQueries({
+          queryKey: api.editableTexts.getAll.pathKey(),
+        }),
+      onSuccess: () => {
+        showSuccessNotification("Dynamisk innhold ble oppdatert!");
+        onClose();
+      },
+      onError: () => showErrorNotification("Klarte ikke oppdatere dynamisk innhold!"),
+    }),
+  );
 
   return (
     <Stack>

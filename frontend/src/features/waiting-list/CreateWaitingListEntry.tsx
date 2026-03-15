@@ -1,4 +1,3 @@
-import type { Branch } from "@boklisten/backend/shared/branch";
 import type { Item } from "@boklisten/backend/shared/item";
 import { Button, Group, Stack, Title } from "@mantine/core";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
@@ -7,7 +6,6 @@ import { nameFieldValidator } from "@/shared/components/form/fields/complex/Name
 import { phoneNumberFieldValidator } from "@/shared/components/form/fields/complex/PhoneNumberField";
 import { useAppForm } from "@/shared/hooks/form";
 import useApiClient from "@/shared/hooks/useApiClient";
-import unpack from "@/shared/utils/bl-api-request";
 import { showErrorNotification, showSuccessNotification } from "@/shared/utils/notifications";
 
 interface WaitingListEntryForm {
@@ -30,32 +28,22 @@ export default function CreateWaitingListEntry({
   items: Item[];
   onClose: () => void;
 }) {
-  const client = useApiClient();
+  const { api, client } = useApiClient();
   const queryClient = useQueryClient();
 
-  const branchQuery = {
-    query: { active: true, "isBranchItemsLive.online": true, sort: "name" },
-  };
-  const { data: branches } = useQuery({
-    queryKey: [client.$url("collection.branches.getAll", branchQuery)],
-    queryFn: () =>
-      client
-        .$route("collection.branches.getAll")
-        .$get(branchQuery)
-        .then(unpack<Branch[]>),
-  });
+  const { data: branches } = useQuery(api.branches.getPublic.queryOptions());
 
   const addWaitingListEntryMutation = useMutation({
     mutationFn: async (data: WaitingListEntryForm) => {
       for (const itemId of data.itemIds) {
-        await client.waiting_list_entries
-          .$post({
+        await client.api.waitingListEntries.addWaitingListEntry({
+          body: {
             customerName: data.name,
             customerPhone: data.phoneNumber,
             branchId: data.branchId,
             itemId,
-          })
-          .unwrap();
+          },
+        });
       }
     },
     onSuccess: () => {
@@ -65,7 +53,7 @@ export default function CreateWaitingListEntry({
     onError: () => showErrorNotification("Klarte ikke legge til kunde i venteliste"),
     onSettled: () =>
       queryClient.invalidateQueries({
-        queryKey: [client.waiting_list_entries.$url()],
+        queryKey: api.waitingListEntries.getAllWaitingListEntries.pathKey(),
       }),
   });
   const form = useAppForm({

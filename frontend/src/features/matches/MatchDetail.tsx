@@ -5,7 +5,7 @@ import { useQuery, useQueryClient } from "@tanstack/react-query";
 import StandMatchDetail from "@/features/matches/StandMatchDetail";
 import UserMatchDetail from "@/features/matches/UserMatchDetail";
 import ErrorAlert from "@/shared/components/alerts/ErrorAlert";
-import TanStackAnchor from "@/shared/components/TanStackAnchor.tsx";
+import TanStackAnchor from "@/shared/components/TanStackAnchor";
 import useApiClient from "@/shared/hooks/useApiClient";
 import { GENERIC_ERROR_TEXT, PLEASE_TRY_AGAIN_TEXT } from "@/shared/utils/constants";
 
@@ -16,14 +16,17 @@ const MatchDetail = ({
   userMatchId?: string;
   standMatchId?: string;
 }) => {
-  const client = useApiClient();
+  const { api } = useApiClient();
   const queryClient = useQueryClient();
 
-  const { data, isLoading, isError } = useQuery({
-    queryKey: [client.matches.me.$url()],
-    queryFn: () => client.matches.me.$get().unwrap(),
-    staleTime: 5000,
-  });
+  const { data, isLoading, isError } = useQuery(
+    api.matches.getMyMatches.queryOptions(
+      {},
+      {
+        staleTime: 5000,
+      },
+    ),
+  );
 
   if (isLoading) {
     return <Skeleton height={500} />;
@@ -58,7 +61,7 @@ const MatchDetail = ({
           userMatch={userMatch}
           handleItemTransferred={() =>
             queryClient.invalidateQueries({
-              queryKey: [client.matches.me.$url()],
+              queryKey: api.matches.getMyMatches.queryKey(),
             })
           }
         />

@@ -15,12 +15,9 @@ import useApiClient from "@/shared/hooks/useApiClient";
 import { PLEASE_TRY_AGAIN_TEXT } from "@/shared/utils/constants";
 
 export default function QuestionsAndAnswersReadOnly() {
-  const client = useApiClient();
+  const { api } = useApiClient();
 
-  const { data, isLoading, isError } = useQuery({
-    queryKey: [client.questions_and_answers.$url()],
-    queryFn: () => client.questions_and_answers.$get().unwrap(),
-  });
+  const { data, isLoading, isError } = useQuery(api.questionsAndAnswers.getAll.queryOptions());
 
   if (isLoading && data === undefined) {
     return (

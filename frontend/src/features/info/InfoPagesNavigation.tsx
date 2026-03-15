@@ -1,6 +1,6 @@
 import { Center, Tabs, TabsList, TabsTab, Select, Box } from "@mantine/core";
 
-import TanStackAnchor from "@/shared/components/TanStackAnchor.tsx";
+import TanStackAnchor from "@/shared/components/TanStackAnchor";
 import { useLocation, useNavigate } from "@tanstack/react-router";
 
 const tabs = [

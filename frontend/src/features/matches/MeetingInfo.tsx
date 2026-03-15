@@ -2,7 +2,7 @@ import { Group, Stack, Text } from "@mantine/core";
 import { IconClock, IconMapPin } from "@tabler/icons-react";
 
 import { FormattedDatetime } from "@/features/matches/matchesList/helper";
-import TanStackAnchor from "@/shared/components/TanStackAnchor.tsx";
+import TanStackAnchor from "@/shared/components/TanStackAnchor";
 
 const MeetingInfo = ({
   meetingTime,

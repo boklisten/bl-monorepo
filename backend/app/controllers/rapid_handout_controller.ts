@@ -1,47 +1,40 @@
-import vine from "@vinejs/vine";
-
-import { CustomerItemActiveBlid } from "#services/legacy/collections/customer-item/helpers/customer-item-active-blid";
-import { OrderToCustomerItemGenerator } from "#services/legacy/collections/customer-item/helpers/order-to-customer-item-generator";
-import { OrderActive } from "#services/legacy/collections/order/helpers/order-active/order-active";
-import { OrderItemMovedFromOrderHandler } from "#services/legacy/collections/order/helpers/order-item-moved-from-order-handler/order-item-moved-from-order-handler";
-import { OrderValidator } from "#services/legacy/collections/order/helpers/order-validator/order-validator";
-import { SEDbQuery } from "#services/legacy/query/se.db-query";
-import { StorageService } from "#services/storage_service";
+import type { HttpContext } from "@adonisjs/core/http";
 import { BlError } from "#shared/bl-error";
-import { BlapiResponse } from "#shared/blapi-response";
-import { Order } from "#shared/order/order";
-import { OrderItem } from "#shared/order/order-item/order-item";
-import { UniqueItem } from "#shared/unique-item";
-import { BlApiRequest } from "#types/bl-api-request";
-import { Operation } from "#types/operation";
+import { OrderToCustomerItemGenerator } from "#services/legacy/collections/customer-item/helpers/order-to-customer-item-generator";
+import type { Order } from "#shared/order/order";
+import type { UniqueItem } from "#shared/unique-item";
+import { StorageService } from "#services/storage_service";
+import type { OrderItem } from "#shared/order/order-item/order-item";
+import { OrderActive } from "#services/legacy/collections/order/helpers/order-active/order-active";
+import { OrderValidator } from "#services/legacy/collections/order/helpers/order-validator/order-validator";
+import { OrderItemMovedFromOrderHandler } from "#services/legacy/collections/order/helpers/order-item-moved-from-order-handler/order-item-moved-from-order-handler";
+import { SEDbQuery } from "#services/legacy/query/se.db-query";
+import { CustomerItemActiveBlid } from "#services/legacy/collections/customer-item/helpers/customer-item-active-blid";
+import { rapidHandoutValidator } from "#validators/rapid_handout_validator";
+import { PermissionService } from "#services/permission_service";
 
 const blidNotActiveFeedback =
   "Denne bliden er ikke tilknyttet noen bok. Registrer den i bl-admin for å dele den ut.";
 
-export class RapidHandoutOperation implements Operation {
-  async run(blApiRequest: BlApiRequest): Promise<BlapiResponse> {
-    const { blid, customerId } = await vine.validate({
-      schema: vine.object({
-        blid: vine.string(),
-        customerId: vine.string(),
-      }),
-      data: blApiRequest.data,
-    });
+export default class RapidHandoutController {
+  async handout(ctx: HttpContext) {
+    PermissionService.employeeOrFail(ctx);
+    const { blid, customerId } = await ctx.request.validateUsing(rapidHandoutValidator);
 
     if (!this.isValidBlid(blid)) {
-      throw new BlError("blid is not a valid blid").code(803);
+      return { feedback: "Denne bliden er ikke gyldig." };
     }
     const userFeedback = await this.verifyBlidNotActive(blid, customerId);
-    if (userFeedback) return new BlapiResponse([{ feedback: userFeedback }]);
+    if (userFeedback) return { feedback: userFeedback };
 
     const uniqueItemOrFeedback = await this.verifyUniqueItemPresent(blid);
     if (typeof uniqueItemOrFeedback === "string")
-      return new BlapiResponse([{ feedback: uniqueItemOrFeedback, connectBlid: true }]);
+      return { feedback: uniqueItemOrFeedback, connectBlid: true };
 
     const placedRentOrder = await this.placeRentOrder(blid, uniqueItemOrFeedback.item, customerId);
     await this.createCustomerItem(placedRentOrder);
 
-    return new BlapiResponse([{}]);
+    return { feedback: "" };
   }
 
   private async createCustomerItem(placedReceiverOrder: Order): Promise<void> {

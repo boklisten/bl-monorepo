@@ -1,7 +1,6 @@
 import type { Branch } from "@boklisten/backend/shared/branch";
 import { Button, Stack } from "@mantine/core";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { InferRequestType } from "@tuyau/client";
 import { Activity } from "react";
 
 import useUpdateBranchMutation from "@/features/branches/useUpdateBranchMutation";
@@ -17,32 +16,24 @@ export default function BranchGeneralSettings({
   onSuccess?: (newBranch?: Branch) => void;
 }) {
   const queryClient = useQueryClient();
-  const client = useApiClient();
+  const { api } = useApiClient();
 
-  const addBranchMutation = useMutation({
-    mutationFn: (newBranch: InferRequestType<typeof client.v2.branches.$post>) =>
-      client.v2.branches.$post(newBranch).unwrap(),
-    onSettled: () =>
-      queryClient.invalidateQueries({
-        queryKey: [
-          client.$url("collection.branches.getAll", {
-            query: { sort: "name" },
-          }),
-        ],
-      }),
-    onSuccess: async (newBranch) => {
-      showSuccessNotification("Filial ble opprettet!");
-      await queryClient.invalidateQueries({
-        queryKey: [
-          client.$url("collection.branches.getAll", {
-            query: { sort: "name" },
-          }),
-        ],
-      });
-      onSuccess?.(newBranch);
-    },
-    onError: () => showErrorNotification("Klarte ikke opprette filial!"),
-  });
+  const addBranchMutation = useMutation(
+    api.branches.add.mutationOptions({
+      onSettled: () =>
+        queryClient.invalidateQueries({
+          queryKey: api.branches.getAll.pathKey(),
+        }),
+      onSuccess: async (newBranch) => {
+        showSuccessNotification("Filial ble opprettet!");
+        await queryClient.invalidateQueries({
+          queryKey: api.branches.getAll.pathKey(),
+        });
+        onSuccess?.(newBranch);
+      },
+      onError: () => showErrorNotification("Klarte ikke opprette filial!"),
+    }),
+  );
   const updateBranchMutation = useUpdateBranchMutation();
 
   const form = useAppForm({
@@ -61,8 +52,8 @@ export default function BranchGeneralSettings({
     },
     onSubmit: ({ value }) =>
       !existingBranch
-        ? addBranchMutation.mutate(value)
-        : updateBranchMutation.mutate({ id: existingBranch.id, ...value }),
+        ? addBranchMutation.mutate({ body: value })
+        : updateBranchMutation.mutate({ body: { id: existingBranch.id, ...value } }),
   });
 
   return (

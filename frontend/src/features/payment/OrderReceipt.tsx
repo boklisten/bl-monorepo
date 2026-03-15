@@ -7,11 +7,10 @@ import useApiClient from "@/shared/hooks/useApiClient";
 import { PLEASE_TRY_AGAIN_TEXT } from "@/shared/utils/constants";
 
 export default function OrderReceipt({ orderId }: { orderId: string }) {
-  const client = useApiClient();
-  const { data, isLoading, isError } = useQuery({
-    queryKey: [client.order_history.me({ orderId }).$url(), orderId],
-    queryFn: () => client.order_history.me({ orderId }).$get().unwrap(),
-  });
+  const { api } = useApiClient();
+  const { data, isLoading, isError } = useQuery(
+    api.orderHistory.getMyOrder.queryOptions({ params: { orderId } }),
+  );
 
   if (isLoading) {
     return <Skeleton h={300} />;

@@ -7,7 +7,6 @@ import { createFieldMap } from "@tanstack/react-form";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import dayjs from "dayjs";
 import { Activity, useState } from "react";
-import QRCode from "react-qr-code";
 
 import UserInfoFields, { UserInfoFieldValues } from "@/features/user/UserInfoFields";
 import InfoAlert from "@/shared/components/alerts/InfoAlert";
@@ -19,6 +18,8 @@ import { useAppForm } from "@/shared/hooks/form";
 import useApiClient from "@/shared/hooks/useApiClient";
 import { isUnder18 } from "@/shared/utils/dates";
 import { showErrorNotification, showSuccessNotification } from "@/shared/utils/notifications";
+import { QRCodeSVG } from "qrcode.react";
+import { Route } from "@tuyau/core/types";
 
 export default function UserSettingsForm({
   userDetail,
@@ -26,7 +27,7 @@ export default function UserSettingsForm({
   userDetail: UserDetail & { permission: UserPermission };
 }) {
   const queryClient = useQueryClient();
-  const client = useApiClient();
+  const { api, client } = useApiClient();
   const defaultValues: UserInfoFieldValues = {
     permission: userDetail.permission,
     name: userDetail.name,
@@ -44,7 +45,21 @@ export default function UserSettingsForm({
   };
   const form = useAppForm({
     defaultValues,
-    onSubmit: () => updateUserDetailsMutation.mutate(),
+    onSubmit: ({ value }) =>
+      updateUserDetailsMutation.mutate({
+        name: value.name,
+        phoneNumber: value.phoneNumber,
+        address: value.address,
+        postalCode: value.postal.code,
+        postalCity: value.postal.city,
+        dob: value.birthday,
+        branchMembership: value.branchMembership,
+        guardian: {
+          name: value.guardianName,
+          email: value.guardianEmail,
+          phone: value.guardianPhoneNumber,
+        },
+      }),
     validators: {
       onSubmit: ({ value }) => {
         if (isUnder18(new Date(value.birthday))) {
@@ -67,30 +82,16 @@ export default function UserSettingsForm({
   const [serverErrors, setServerErrors] = useState<string[]>([]);
 
   const updateUserDetailsMutation = useMutation({
-    mutationFn: async () => {
-      const formValues = form.state.values;
-      const { error } = await client.v2.user_details.$post({
-        name: formValues.name,
-        phoneNumber: formValues.phoneNumber,
-        address: formValues.address,
-        postalCode: formValues.postal.code,
-        postalCity: formValues.postal.city,
-        dob: formValues.birthday,
-        branchMembership: formValues.branchMembership,
-        guardian: {
-          name: formValues.guardianName,
-          email: formValues.guardianEmail,
-          phone: formValues.guardianPhoneNumber,
-        },
-      });
+    mutationFn: async (payload: Route.Request<"user_detail.update_as_customer">["body"]) => {
+      const [, error] = await client.api.userDetail.updateAsCustomer({ body: payload }).safe();
 
       await queryClient.invalidateQueries({
-        queryKey: [client.v2.user_details.me.$url()],
+        queryKey: api.userDetail.getMyDetails.pathKey(),
       });
 
       if (error) {
-        if (error.status === 422) {
-          setServerErrors(error.value.errors.map((err) => err.message));
+        if (error.isValidationError()) {
+          setServerErrors(error.response.errors.map((err) => err.message));
           return;
         }
         showErrorNotification("Noe gikk galt under registreringen!");
@@ -100,10 +101,11 @@ export default function UserSettingsForm({
       }
     },
   });
-  const createEmailConfirmation = useMutation({
-    mutationFn: () => client.email_validations.$post().unwrap(),
-    onError: () => showErrorNotification("Klarte ikke sende ny bekreftelseslenke"),
-  });
+  const createEmailConfirmation = useMutation(
+    api.emailValidations.create.mutationOptions({
+      onError: () => showErrorNotification("Klarte ikke sende ny bekreftelseslenke"),
+    }),
+  );
 
   return (
     <Stack gap={"xs"}>
@@ -135,7 +137,10 @@ export default function UserSettingsForm({
               En bekreftelseslenke har blitt sendt til {userDetail.email}. Trykk på knappen nedenfor
               for å sende en ny lenke.
             </WarningAlert>
-            <Button leftSection={<IconMailFast />} onClick={() => createEmailConfirmation.mutate()}>
+            <Button
+              leftSection={<IconMailFast />}
+              onClick={() => createEmailConfirmation.mutate({})}
+            >
               Send bekreftelseslenke på nytt
             </Button>
           </Activity>
@@ -159,7 +164,7 @@ export default function UserSettingsForm({
               title: `Kunde-ID for ${userDetail.name}`,
               children: (
                 <Stack align={"center"}>
-                  <QRCode value={userDetail.id} />
+                  <QRCodeSVG value={userDetail.id} />
                 </Stack>
               ),
             })

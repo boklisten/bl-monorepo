@@ -243,7 +243,28 @@ export class MongodbHandler<T extends BlDocument> {
       throw new BlError(`document with id ${id} does not exist`).code(702);
     }
   }
+  public async search(searchStr: string): Promise<T[]> {
+    const normalized = searchStr.trim().toLowerCase();
 
+    const stringPaths = Object.entries(this.mongooseModel.schema.paths)
+      .filter(([path, schemaType]) => {
+        return !["_id", "__v"].includes(path) && schemaType.instance === "String";
+      })
+      .map(([path]) => path);
+
+    if (stringPaths.length === 0) {
+      throw new BlError("no searchable fields found").code(701);
+    }
+
+    const regex = new RegExp(normalized.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"), "i");
+
+    return (await this.mongooseModel
+      .find({
+        $or: stringPaths.map((path) => ({ [path]: regex })),
+      })
+      .lean({ transform: MongooseModelCreator.transformObject })
+      .exec()) as T[];
+  }
   /**
    * Tries to fetch all nested values on the specified documents.
    * @param {BlDocument[]} docs the documents to search through

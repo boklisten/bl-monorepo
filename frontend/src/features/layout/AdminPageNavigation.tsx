@@ -26,7 +26,7 @@ import { useLocation } from "@tanstack/react-router";
 import { Activity } from "react";
 
 import useAuth from "@/shared/hooks/useAuth";
-import TanStackAnchor from "@/shared/components/TanStackAnchor.tsx";
+import TanStackAnchor from "@/shared/components/TanStackAnchor";
 
 export default function AdminPageNavigation({
   onNavigate = () => {

@@ -1,6 +1,6 @@
 import { Container, Stack, Title } from "@mantine/core";
 
-import ConfirmOrder from "@/features/checkout/ConfirmOrder.tsx";
+import ConfirmOrder from "@/features/checkout/ConfirmOrder";
 import { createFileRoute } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/(offentlig)/kasse/bekreft")({
@@ -14,11 +14,12 @@ export const Route = createFileRoute("/(offentlig)/kasse/bekreft")({
 });
 
 function CheckoutConfirmPage() {
+  const { orderId } = Route.useSearch();
   return (
     <Container size={"md"}>
       <Stack>
         <Title>Bekreft bestilling</Title>
-        <ConfirmOrder />
+        <ConfirmOrder orderId={orderId} />
       </Stack>
     </Container>
   );

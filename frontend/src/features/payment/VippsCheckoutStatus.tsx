@@ -9,7 +9,7 @@ import SuccessAlert from "@/shared/components/alerts/SuccessAlert";
 import useApiClient from "@/shared/hooks/useApiClient";
 import useCart from "@/shared/hooks/useCart";
 import { PLEASE_TRY_AGAIN_TEXT } from "@/shared/utils/constants";
-import TanStackAnchor from "@/shared/components/TanStackAnchor.tsx";
+import TanStackAnchor from "@/shared/components/TanStackAnchor";
 
 function BackToCartButton() {
   return (
@@ -30,7 +30,7 @@ function BackToCartButton() {
 const calculateTotalWait = (attempts: number) => ((n) => (n * (n + 1) * (2 * n + 1)) / 6)(attempts);
 
 export default function VippsCheckoutStatus({ orderId }: { orderId: string }) {
-  const client = useApiClient();
+  const { api } = useApiClient();
   const queryClient = useQueryClient();
   const cart = useCart();
 
@@ -38,10 +38,9 @@ export default function VippsCheckoutStatus({ orderId }: { orderId: string }) {
   const [attempt, setAttempt] = useState(1);
   const [secondsBeforeNextAttempt, setSecondsBeforeNextAttempt] = useState(0);
 
-  const { data, isLoading, isError } = useQuery({
-    queryKey: [client.checkout.poll({ orderId }).$url(), orderId],
-    queryFn: () => client.checkout.poll({ orderId }).$get().unwrap(),
-  });
+  const { data, isLoading, isError } = useQuery(
+    api.checkout.pollPayment.queryOptions({ params: { orderId } }),
+  );
 
   useEffect(() => {
     if (data !== "PaymentInitiated" || attempt > MAX_ATTEMPTS) return;
@@ -56,7 +55,7 @@ export default function VippsCheckoutStatus({ orderId }: { orderId: string }) {
       const timeout = setTimeout(async () => {
         clearInterval(interval);
         await queryClient.invalidateQueries({
-          queryKey: [client.checkout.poll({ orderId }).$url(), orderId],
+          queryKey: api.checkout.pollPayment.queryKey({ params: { orderId } }),
         });
         setAttempt((a) => a + 1);
       }, waitInSeconds * 1000);
@@ -68,7 +67,7 @@ export default function VippsCheckoutStatus({ orderId }: { orderId: string }) {
       clearInterval(interval);
       clearTimeout(timeout);
     };
-  }, [attempt, client, data, orderId, queryClient]);
+  }, [attempt, api, data, orderId, queryClient]);
 
   const onPaymentSuccessful = useEffectEvent(() => {
     cart.clear();

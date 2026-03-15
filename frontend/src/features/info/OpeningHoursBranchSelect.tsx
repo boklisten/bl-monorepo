@@ -1,31 +1,13 @@
-import type { Branch } from "@boklisten/backend/shared/branch";
 import { Select } from "@mantine/core";
 import { useLocalStorage } from "@mantine/hooks";
 import { useQuery } from "@tanstack/react-query";
 import { useEffect } from "react";
 
-import useApiClient from "@/shared/hooks/useApiClient";
-import unpack from "@/shared/utils/bl-api-request";
 import { useLocation, useNavigate } from "@tanstack/react-router";
+import { publicApi } from "@/shared/utils/publicApiClient";
 
 const OpeningHoursBranchSelect = () => {
-  const client = useApiClient();
-  const branchQuery = {
-    query: {
-      active: true,
-      "isBranchItemsLive.online": true,
-      type: "privatist",
-      sort: "name",
-    },
-  };
-  const { data: branches } = useQuery({
-    queryKey: [client.$url("collection.branches.getAll", branchQuery)],
-    queryFn: () =>
-      client
-        .$route("collection.branches.getAll")
-        .$get(branchQuery)
-        .then(unpack<Branch[]>),
-  });
+  const { data: branches } = useQuery(publicApi.branches.getPublic.queryOptions());
 
   const [selectedBranchId, setSelectedBranchId] = useLocalStorage({
     key: "selectedBranchId",
@@ -46,10 +28,12 @@ const OpeningHoursBranchSelect = () => {
       label="Valgt skole"
       placeholder={"Din skole"}
       onChange={(value) => value && setSelectedBranchId(value)}
-      data={(branches ?? []).map((branch) => ({
-        value: branch.id,
-        label: branch.name,
-      }))}
+      data={(branches ?? [])
+        .filter((branch) => branch.type === "privatist")
+        .map((branch) => ({
+          value: branch.id,
+          label: branch.name,
+        }))}
     ></Select>
   );
 };

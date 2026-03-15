@@ -2,8 +2,8 @@ import * as Sentry from "@sentry/tanstackstart-react";
 import { createRouter } from "@tanstack/react-router";
 
 import { routeTree } from "@/routeTree.gen";
-import ErrorBoundary from "@/features/layout/ErrorBoundary.tsx";
-import NotFoundPage from "@/features/NotFoundPage.tsx";
+import ErrorBoundary from "@/features/layout/ErrorBoundary";
+import NotFoundPage from "@/features/NotFoundPage";
 
 export function getRouter() {
   const router = createRouter({

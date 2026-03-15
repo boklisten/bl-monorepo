@@ -11,7 +11,7 @@ import {
   Title,
 } from "@mantine/core";
 import { IconBook, IconCashRegister, IconShoppingCart, IconX } from "@tabler/icons-react";
-import TanStackAnchor from "@/shared/components/TanStackAnchor.tsx";
+import TanStackAnchor from "@/shared/components/TanStackAnchor";
 import { Activity } from "react";
 
 import InfoAlert from "@/shared/components/alerts/InfoAlert";

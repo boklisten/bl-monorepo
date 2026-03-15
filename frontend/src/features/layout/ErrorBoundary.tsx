@@ -14,7 +14,7 @@ import { Activity, useEffect } from "react";
 
 import Logo from "@/features/layout/Logo";
 import ErrorAlert from "@/shared/components/alerts/ErrorAlert";
-import TanStackAnchor from "@/shared/components/TanStackAnchor.tsx";
+import TanStackAnchor from "@/shared/components/TanStackAnchor";
 import useAuth from "@/shared/hooks/useAuth";
 import { useLocation } from "@tanstack/react-router";
 import * as Sentry from "@sentry/tanstackstart-react";

@@ -20,46 +20,46 @@ export default function QuestionAndAnswerEditor({
     },
     onSubmit: ({ value }) => {
       if (questionAndAnswer === undefined) {
-        addQuestionAndAnswerMutation.mutate(value);
+        addQuestionAndAnswerMutation.mutate({ body: value });
       } else {
         updateQuestionAndAnswerMutation.mutate({
-          id: questionAndAnswer.id,
-          ...value,
+          params: { id: questionAndAnswer.id },
+          body: value,
         });
       }
     },
   });
 
   const queryClient = useQueryClient();
-  const client = useApiClient();
+  const { api } = useApiClient();
 
-  const addQuestionAndAnswerMutation = useMutation({
-    mutationFn: (questionAndAnswer: Pick<QuestionAndAnswer, "question" | "answer">) =>
-      client.questions_and_answers.$post(questionAndAnswer).unwrap(),
-    onSettled: () =>
-      queryClient.invalidateQueries({
-        queryKey: [client.questions_and_answers.$url()],
-      }),
-    onSuccess: () => {
-      showSuccessNotification("Spørsmål og svar ble opprettet!");
-      onClose();
-    },
-    onError: () => showErrorNotification("Klarte ikke opprette spørsmål og svar!"),
-  });
+  const addQuestionAndAnswerMutation = useMutation(
+    api.questionsAndAnswers.store.mutationOptions({
+      onSettled: () =>
+        queryClient.invalidateQueries({
+          queryKey: api.questionsAndAnswers.getAll.queryKey(),
+        }),
+      onSuccess: () => {
+        showSuccessNotification("Spørsmål og svar ble opprettet!");
+        onClose();
+      },
+      onError: () => showErrorNotification("Klarte ikke opprette spørsmål og svar!"),
+    }),
+  );
 
-  const updateQuestionAndAnswerMutation = useMutation({
-    mutationFn: (questionAndAnswer: QuestionAndAnswer) =>
-      client.questions_and_answers({ id: questionAndAnswer.id }).$patch(questionAndAnswer).unwrap(),
-    onSettled: () =>
-      queryClient.invalidateQueries({
-        queryKey: [client.questions_and_answers.$url()],
-      }),
-    onSuccess: () => {
-      showSuccessNotification("Dynamisk innhold ble oppdatert!");
-      onClose();
-    },
-    onError: () => showErrorNotification("Klarte ikke oppdatere dynamisk innhold!"),
-  });
+  const updateQuestionAndAnswerMutation = useMutation(
+    api.questionsAndAnswers.update.mutationOptions({
+      onSettled: () =>
+        queryClient.invalidateQueries({
+          queryKey: api.questionsAndAnswers.getAll.pathKey(),
+        }),
+      onSuccess: () => {
+        showSuccessNotification("Dynamisk innhold ble oppdatert!");
+        onClose();
+      },
+      onError: () => showErrorNotification("Klarte ikke oppdatere dynamisk innhold!"),
+    }),
+  );
 
   return (
     <Stack>

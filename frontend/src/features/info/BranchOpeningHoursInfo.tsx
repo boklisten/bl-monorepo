@@ -7,7 +7,7 @@ import ErrorAlert from "@/shared/components/alerts/ErrorAlert";
 import InfoAlert from "@/shared/components/alerts/InfoAlert";
 import ContactInfo from "@/shared/components/ContactInfo";
 import { PLEASE_TRY_AGAIN_TEXT } from "@/shared/utils/constants";
-import { publicApiClient } from "@/shared/utils/publicApiClient";
+import { publicApi } from "@/shared/utils/publicApiClient";
 
 const OpeningHourRow = ({ openingHour }: { openingHour: OpeningHour }) => {
   const fromDate = dayjs(openingHour.from).locale("nb");
@@ -33,10 +33,7 @@ export default function BranchOpeningHours({ branchId }: { branchId: string }) {
     data: openingHours,
     isLoading: isLoadingOpeningHours,
     isError: isErrorOpeningHours,
-  } = useQuery({
-    queryKey: [publicApiClient.v2.opening_hours({ id: branchId }).$url(), branchId],
-    queryFn: () => publicApiClient.v2.opening_hours({ id: branchId }).$get().unwrap(),
-  });
+  } = useQuery(publicApi.openingHours.get.queryOptions({ params: { id: branchId } }));
 
   if (isLoadingOpeningHours) {
     return (

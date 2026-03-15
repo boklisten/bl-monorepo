@@ -1,5 +1,5 @@
 import { Container, Stack, Title } from "@mantine/core";
-import SignAgreement from "@/features/signatures/SignAgreement.tsx";
+import SignAgreement from "@/features/signatures/SignAgreement";
 import { createFileRoute } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/(offentlig)/signering/$userDetailId")({

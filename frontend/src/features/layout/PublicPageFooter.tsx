@@ -3,7 +3,7 @@ import { IconCopyright } from "@tabler/icons-react";
 import dayjs from "dayjs";
 
 import ContactInfo from "@/shared/components/ContactInfo";
-import TanStackAnchor from "@/shared/components/TanStackAnchor.tsx";
+import TanStackAnchor from "@/shared/components/TanStackAnchor";
 
 export default function PublicPageFooter() {
   return (

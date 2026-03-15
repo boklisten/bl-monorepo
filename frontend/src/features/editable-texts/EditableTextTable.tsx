@@ -16,27 +16,25 @@ import { PLEASE_TRY_AGAIN_TEXT } from "@/shared/utils/constants";
 import { showErrorNotification, showSuccessNotification } from "@/shared/utils/notifications";
 
 export default function EditableTextTable() {
-  const client = useApiClient();
+  const { api } = useApiClient();
   const queryClient = useQueryClient();
 
-  const destroyEditableTextMutation = useMutation({
-    mutationFn: (id: string) => client.editable_texts({ id: id }).$delete().unwrap(),
-    onSettled: () =>
-      queryClient.invalidateQueries({
-        queryKey: [client.editable_texts.$url()],
-      }),
-    onSuccess: () => showSuccessNotification("Dynamisk innhold ble slettet!"),
-    onError: () => showErrorNotification("Klarte ikke slette dynamisk innhold!"),
-  });
+  const destroyEditableTextMutation = useMutation(
+    api.editableTexts.destroy.mutationOptions({
+      onSettled: () =>
+        queryClient.invalidateQueries({
+          queryKey: api.editableTexts.getAll.queryKey(),
+        }),
+      onSuccess: () => showSuccessNotification("Dynamisk innhold ble slettet!"),
+      onError: () => showErrorNotification("Klarte ikke slette dynamisk innhold!"),
+    }),
+  );
 
   const {
     data: editableTexts,
     isLoading,
     error,
-  } = useQuery({
-    queryKey: [client.editable_texts.$url()],
-    queryFn: () => client.editable_texts.$get().unwrap(),
-  });
+  } = useQuery(api.editableTexts.getAll.queryOptions({}));
 
   const table = useMantineReactTable({
     columns: [
@@ -69,7 +67,7 @@ export default function EditableTextTable() {
                   "Hvis du sletter dette innholdet, vil sider som bruker denne teksten slutte å fungere. Sjekk at ingen sider er avhengige av denne nøkkelen før du fortsetter.",
                 confirmProps: { color: "red" },
                 labels: { cancel: "Avbryt", confirm: "Slett" },
-                onConfirm: () => destroyEditableTextMutation.mutate(row.id),
+                onConfirm: () => destroyEditableTextMutation.mutate({ params: { id: row.id } }),
               });
             }}
           >

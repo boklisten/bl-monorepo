@@ -8,41 +8,35 @@ import EditableTextReadOnly from "@/shared/components/EditableTextReadOnly";
 import { useAppForm } from "@/shared/hooks/form";
 import { PLEASE_TRY_AGAIN_TEXT } from "@/shared/utils/constants";
 import { showErrorNotification } from "@/shared/utils/notifications";
-import { publicApiClient } from "@/shared/utils/publicApiClient";
-
-interface SignatureForm {
-  signingName: string;
-  base64EncodedImage: string;
-}
+import { publicApi } from "@/shared/utils/publicApiClient";
 
 export default function SignAgreement({ userDetailId }: { userDetailId: string }) {
   const queryClient = useQueryClient();
-  const { data, isLoading, isError } = useQuery({
-    queryKey: [publicApiClient.signatures.valid({ detailsId: userDetailId }).$url(), userDetailId],
-    queryFn: () => publicApiClient.signatures.valid({ detailsId: userDetailId }).$get().unwrap(),
-  });
-  const signMutation = useMutation({
-    mutationFn: (payload: SignatureForm) =>
-      publicApiClient.signatures.sign({ detailsId: userDetailId }).$post(payload).unwrap(),
-    onError: () => showErrorNotification("Noe gikk galt under signering"),
-    onSettled: () => {
-      void queryClient.invalidateQueries({
-        queryKey: [
-          publicApiClient.signatures.valid({ detailsId: userDetailId }).$url(),
-          userDetailId,
-        ],
-      });
-      void queryClient.invalidateQueries({
-        queryKey: [publicApiClient.v2.user_details.$url()],
-      });
-    },
-  });
+  const { data, isLoading, isError } = useQuery(
+    publicApi.signatures.hasValidSignature.queryOptions({ params: { detailsId: userDetailId } }),
+  );
+  const signMutation = useMutation(
+    publicApi.signatures.sign.mutationOptions({
+      onError: () => showErrorNotification("Noe gikk galt under signering"),
+      onSettled: () => {
+        void queryClient.invalidateQueries({
+          queryKey: publicApi.signatures.hasValidSignature.queryKey({
+            params: { detailsId: userDetailId },
+          }),
+        });
+        void queryClient.invalidateQueries({
+          queryKey: publicApi.userDetail.getMyDetails.pathKey(),
+        });
+      },
+    }),
+  );
   const form = useAppForm({
     defaultValues: {
       signingName: data && !data.isUnderage && "name" in data ? (data.name ?? "") : "",
       base64EncodedImage: "",
     },
-    onSubmit: ({ value }) => signMutation.mutate(value),
+    onSubmit: ({ value }) =>
+      signMutation.mutate({ params: { detailsId: userDetailId }, body: value }),
   });
 
   if (isLoading) {

@@ -1,12 +1,7 @@
-// Type references
-// oxlint-disable-next-line typescript/triple-slash-reference
-/// <reference path="../../../../backend/config/ally.ts" />
-// oxlint-disable-next-line typescript/triple-slash-reference
-/// <reference path="../../../../backend/adonisrc.ts" />
-
-import { api } from "@boklisten/backend/.adonisjs";
-import { createTuyau } from "@tuyau/client";
+import { createTuyau } from "@tuyau/core/client";
+import { registry } from "@boklisten/backend/registry";
 import { superjson } from "@tuyau/superjson/plugin";
+import { createTuyauReactQueryClient } from "@tuyau/react-query";
 
 import BL_CONFIG from "@/shared/utils/bl-config";
 
@@ -14,8 +9,13 @@ import BL_CONFIG from "@/shared/utils/bl-config";
  * API client with no authentication mechanisms, use useApiClient for authenticated requests
  */
 export const publicApiClient = createTuyau({
-  timeout: 60_000,
-  api,
   baseUrl: BL_CONFIG.api.basePath,
+  registry,
+  headers: { Accept: "application/json" },
+  timeout: 60_000,
   plugins: [superjson()],
+});
+
+export const publicApi = createTuyauReactQueryClient({
+  client: publicApiClient,
 });

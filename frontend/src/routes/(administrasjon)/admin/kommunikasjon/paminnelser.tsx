@@ -1,5 +1,5 @@
 import { Container, Stack, Title, Text } from "@mantine/core";
-import Reminders from "@/features/reminders/Reminders.tsx";
+import Reminders from "@/features/reminders/Reminders";
 import { createFileRoute } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/(administrasjon)/admin/kommunikasjon/paminnelser")({

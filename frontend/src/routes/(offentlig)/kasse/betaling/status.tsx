@@ -1,6 +1,6 @@
 import { Container, Stack, Title } from "@mantine/core";
 
-import VippsCheckoutStatus from "@/features/payment/VippsCheckoutStatus.tsx";
+import VippsCheckoutStatus from "@/features/payment/VippsCheckoutStatus";
 import { createFileRoute } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/(offentlig)/kasse/betaling/status")({

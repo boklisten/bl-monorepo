@@ -5,10 +5,10 @@ import { Activity, useState } from "react";
 import ErrorAlert from "@/shared/components/alerts/ErrorAlert";
 import SuccessAlert from "@/shared/components/alerts/SuccessAlert";
 import { newPasswordFieldValidator } from "@/shared/components/form/fields/complex/NewPasswordField";
-import TanStackAnchor from "@/shared/components/TanStackAnchor.tsx";
+import TanStackAnchor from "@/shared/components/TanStackAnchor";
 import { useAppForm } from "@/shared/hooks/form";
 import { GENERIC_ERROR_TEXT, PLEASE_TRY_AGAIN_TEXT } from "@/shared/utils/constants";
-import { publicApiClient } from "@/shared/utils/publicApiClient";
+import { publicApi, publicApiClient } from "@/shared/utils/publicApiClient";
 import { useLocation } from "@tanstack/react-router";
 
 interface PasswordResetFields {
@@ -19,25 +19,22 @@ export default function PasswordReset({ resetId }: { resetId: string }) {
   const { resetToken } = useLocation({ select: (location) => location.search });
   const [apiError, setApiError] = useState<string | null>(null);
 
-  const resetValidation = useQuery({
-    queryKey: [publicApiClient.reset_password.validate.$url(), resetId],
-    queryFn: () =>
-      publicApiClient.reset_password.validate.$post({
-        resetId,
-        resetToken: resetToken ?? "",
-      }),
-  });
+  const { data, isError } = useQuery(
+    publicApi.passwordReset.validatePasswordReset.queryOptions({
+      params: { resetId, resetToken: resetToken ?? "" },
+    }),
+  );
 
   const resetPasswordMutation = useMutation({
     mutationFn: async ({ newPassword }: PasswordResetFields) => {
       setApiError(null);
-      const { message } = await publicApiClient.reset_password
-        .$post({
+      const { message } = await publicApiClient.api.passwordReset.resetPassword({
+        body: {
           resetId,
           resetToken: resetToken ?? "",
           newPassword,
-        })
-        .unwrap();
+        },
+      });
       setApiError(message ?? null);
     },
     onError: () => {
@@ -52,8 +49,8 @@ export default function PasswordReset({ resetId }: { resetId: string }) {
     onSubmit: async ({ value }) => resetPasswordMutation.mutate(value),
   });
 
-  const message = resetValidation.data?.data?.message;
-  const isExpired = message || resetValidation.isError;
+  const message = data?.message;
+  const isExpired = message || isError;
 
   return (
     <>

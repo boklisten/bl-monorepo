@@ -2,7 +2,6 @@ import { Button, Card, Group, Skeleton, Stack, Title } from "@mantine/core";
 import { modals } from "@mantine/modals";
 import { IconPlus } from "@tabler/icons-react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { InferRequestType } from "@tuyau/client";
 import { Activity } from "react";
 
 import { BranchItemCreationModal } from "@/features/branches/BranchItemCreationModal";
@@ -14,27 +13,24 @@ import { PLEASE_TRY_AGAIN_TEXT } from "@/shared/utils/constants";
 import { showErrorNotification, showSuccessNotification } from "@/shared/utils/notifications";
 
 export default function BranchItemSettings({ branchId }: { branchId: string }) {
-  const client = useApiClient();
+  const { api } = useApiClient();
   const queryClient = useQueryClient();
   const {
     data: branchItems,
     isLoading,
     isError,
-  } = useQuery({
-    queryKey: [client.branch_items({ branchId }).$url(), branchId],
-    queryFn: () => client.branch_items({ branchId }).$get().unwrap(),
-  });
+  } = useQuery(api.branchItems.getBranchItems.queryOptions({ params: { branchId } }));
 
-  const saveMutation = useMutation({
-    mutationFn: (data: InferRequestType<typeof client.branch_items.$post>) =>
-      client.branch_items.$post(data),
-    onSuccess: () => showSuccessNotification("Endringene ble lagret!"),
-    onError: () => showErrorNotification("Klarte ikke lagre endringene"),
-    onSettled: () =>
-      queryClient.invalidateQueries({
-        queryKey: [client.branch_items({ branchId }).$url(), branchId],
-      }),
-  });
+  const saveMutation = useMutation(
+    api.branchItems.setBranchItems.mutationOptions({
+      onSuccess: () => showSuccessNotification("Endringene ble lagret!"),
+      onError: () => showErrorNotification("Klarte ikke lagre endringene"),
+      onSettled: () =>
+        queryClient.invalidateQueries({
+          queryKey: api.branchItems.getBranchItems.pathKey(),
+        }),
+    }),
+  );
 
   const subjects = new Set(branchItems?.flatMap((branchItem) => branchItem.subjects) ?? [])
     .values()
@@ -48,8 +44,10 @@ export default function BranchItemSettings({ branchId }: { branchId: string }) {
     },
     onSubmit: ({ value }) =>
       saveMutation.mutate({
-        branchId,
-        branchItems: value.branchItems,
+        body: {
+          branchId,
+          branchItems: value.branchItems,
+        },
       }),
   });
 

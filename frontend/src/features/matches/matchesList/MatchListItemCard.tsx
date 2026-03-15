@@ -1,6 +1,6 @@
 import { Button, Card, Stack } from "@mantine/core";
 
-import TanStackAnchor from "@/shared/components/TanStackAnchor.tsx";
+import TanStackAnchor from "@/shared/components/TanStackAnchor";
 import type { ReactNode } from "react";
 
 export default function MatchListItemCard({

@@ -1,26 +1,15 @@
 import { Divider, NavLink, Skeleton, Stack, Text } from "@mantine/core";
 import { IconSchool } from "@tabler/icons-react";
 import { useQuery } from "@tanstack/react-query";
-import TanStackAnchor from "@/shared/components/TanStackAnchor.tsx";
+import TanStackAnchor from "@/shared/components/TanStackAnchor";
 
-import unpack from "@/shared/utils/bl-api-request";
-import { publicApiClient } from "@/shared/utils/publicApiClient";
-import type { Branch } from "@boklisten/backend/shared/branch.ts";
+import { publicApi } from "@/shared/utils/publicApiClient";
+import type { Branch } from "@boklisten/backend/shared/branch";
 
 const capitalize = (s: string) => (s.length > 0 ? s[0]?.toUpperCase() + s.slice(1) : "");
 
 export default function SelectOrderBranch() {
-  const branchQuery = {
-    query: { active: true, "isBranchItemsLive.online": true, sort: "name" },
-  };
-  const { data: branches } = useQuery({
-    queryKey: [publicApiClient.$url("collection.branches.getAll", branchQuery)],
-    queryFn: () =>
-      publicApiClient
-        .$route("collection.branches.getAll")
-        .$get(branchQuery)
-        .then(unpack<Branch[]>),
-  });
+  const { data: branches } = useQuery(publicApi.branches.getPublic.queryOptions());
 
   if (!branches) {
     return (

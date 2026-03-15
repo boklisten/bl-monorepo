@@ -41,24 +41,24 @@ function SuccessfulUploadDialog({
 }
 
 export default function UploadSubjectChoices({ branchId }: { branchId: string }) {
-  const client = useApiClient();
+  const { client } = useApiClient();
 
   const uploadSubjectChoicesMutation = useMutation({
-    mutationFn: (
+    mutationFn: async (
       subjectChoices: {
         phone: string | string[];
         subjects: string | string[];
       }[],
     ) =>
-      client.v2.branches.subject_choices
-        .$post({
+      client.api.branchUpload.uploadSubjectChoices({
+        body: {
           subjectChoices: subjectChoices.map((subjectChoice) => ({
             phone: subjectChoice.phone as string,
             subjects: [subjectChoice.subjects].flat(),
           })),
           branchId,
-        })
-        .unwrap(),
+        },
+      }),
     onSuccess: (data) =>
       modals.open({
         title: "Opplasting av fagvalg var vellykket",

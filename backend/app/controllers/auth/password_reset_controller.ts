@@ -8,11 +8,7 @@ import { StorageService } from "#services/storage_service";
 import { UserDetailService } from "#services/user_detail_service";
 import { UserService } from "#services/user_service";
 import { PendingPasswordReset } from "#shared/pending-password-reset";
-import {
-  forgotPasswordValidator,
-  passwordResetValidator,
-  passwordResetValidValidator,
-} from "#validators/auth_validators";
+import { forgotPasswordValidator, passwordResetValidator } from "#validators/auth_validators";
 
 async function getPasswordReset({ resetId, resetToken }: { resetId: string; resetToken: string }) {
   let pendingPasswordReset: PendingPasswordReset;
@@ -93,8 +89,9 @@ export default class PasswordResetController {
     return {};
   }
 
-  async validatePasswordReset({ request }: HttpContext) {
-    const { resetId, resetToken } = await request.validateUsing(passwordResetValidValidator);
+  async validatePasswordReset(ctx: HttpContext) {
+    const resetId = ctx.request.param("resetId");
+    const resetToken = ctx.request.param("resetToken");
     const result = await getPasswordReset({ resetId, resetToken });
     if (!result.pendingPasswordReset) {
       return { message: result.message };

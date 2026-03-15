@@ -5,14 +5,13 @@ import ErrorAlert from "@/shared/components/alerts/ErrorAlert";
 import InfoAlert from "@/shared/components/alerts/InfoAlert";
 import SuccessAlert from "@/shared/components/alerts/SuccessAlert";
 import CountdownToRedirect from "@/shared/components/CountdownToRedirect";
-import TanStackAnchor from "@/shared/components/TanStackAnchor.tsx";
-import { publicApiClient } from "@/shared/utils/publicApiClient";
+import TanStackAnchor from "@/shared/components/TanStackAnchor";
+import { publicApi } from "@/shared/utils/publicApiClient";
 
 export default function EmailConfirmer({ confirmationId }: { confirmationId: string }) {
-  const { data, isPending, isError } = useQuery({
-    queryKey: [publicApiClient.email_validations({ id: confirmationId }).$url(), confirmationId],
-    queryFn: () => publicApiClient.email_validations({ id: confirmationId }).$get().unwrap(),
-  });
+  const { data, isPending, isError } = useQuery(
+    publicApi.emailValidations.confirm.queryOptions({ params: { id: confirmationId } }),
+  );
 
   if (isPending) {
     return (

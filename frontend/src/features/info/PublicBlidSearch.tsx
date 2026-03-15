@@ -10,7 +10,7 @@ import { useAppForm } from "@/shared/hooks/form";
 import useApiClient from "@/shared/hooks/useApiClient";
 
 export default function PublicBlidSearch() {
-  const client = useApiClient();
+  const { client } = useApiClient();
   const [searchResult, setSearchResult] = useState<PublicBlidLookupResult | "inactive" | null>(
     null,
   );
@@ -28,7 +28,7 @@ export default function PublicBlidSearch() {
       return;
     }
     try {
-      const [result] = await client.public_blid_lookup({ blid }).$get().unwrap();
+      const [result] = await client.api.publicBlidLookup.lookup({ params: { blid } });
       if (result) {
         setSearchResult(result);
       } else {

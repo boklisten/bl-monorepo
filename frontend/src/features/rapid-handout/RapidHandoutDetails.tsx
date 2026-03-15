@@ -14,7 +14,6 @@ import MatchScannerContent from "@/shared/components/matches/MatchScannerContent
 import { determineScannedTextType } from "@/shared/components/scanner/BlidScanner";
 import ScannerModal from "@/shared/components/scanner/ScannerModal";
 import useApiClient from "@/shared/hooks/useApiClient";
-import unpack from "@/shared/utils/bl-api-request";
 import { TextType } from "@/shared/utils/types";
 
 function calculateUnfulfilledOrderItems(orders: Order[]): OrderItem[] {
@@ -38,29 +37,16 @@ function mapOrdersToItemStatuses(orders: Order[]): ItemStatus[] {
 }
 
 export default function RapidHandoutDetails({ customer }: { customer: UserDetail }) {
-  const client = useApiClient();
+  const { api, client } = useApiClient();
   const queryClient = useQueryClient();
-  const ordersUrl = client.$url("collection.orders.getAll", {
-    query: { placed: true, customer: customer.id },
-  });
-  const { data: orders } = useQuery({
-    queryKey: [
-      client.$url("collection.orders.getAll", {
-        query: { placed: true, customer: customer.id },
-      }),
-    ],
-    queryFn: () =>
-      client
-        .$route("collection.orders.getAll")
-        .$get({
-          query: {
-            placed: true,
-            customer: customer.id,
-          },
-        })
-        .then((res) => unpack<Order[]>(res) ?? []),
-    staleTime: 5000,
-  });
+  const { data: orders } = useQuery(
+    api.orders.getPlacedOrders.queryOptions(
+      { params: { detailsId: customer.id } },
+      {
+        staleTime: 5000,
+      },
+    ),
+  );
   const [itemStatuses, setItemStatuses] = useState<ItemStatus[]>([]);
   const tempBlidRef = useRef<string | null>(null);
   const setTempBlid = (v: string | null) => {
@@ -68,15 +54,8 @@ export default function RapidHandoutDetails({ customer }: { customer: UserDetail
   };
 
   useEffect(() => {
-    client
-      .$route("collection.orders.getAll")
-      .$get({
-        query: {
-          placed: true,
-          customer: customer.id,
-        },
-      })
-      .then((res) => unpack<Order[]>(res) ?? [])
+    client.api.orders
+      .getPlacedOrders({ params: { detailsId: customer.id } })
       .then((originalOrders) => {
         return setItemStatuses(mapOrdersToItemStatuses(originalOrders));
       })
@@ -132,9 +111,11 @@ export default function RapidHandoutDetails({ customer }: { customer: UserDetail
                               },
                             ];
                           }
-                          await client.unique_items.add.$post({
-                            blid: tempBlid,
-                            isbn: scannedText,
+                          await client.api.uniqueItems.add({
+                            body: {
+                              blid: tempBlid,
+                              isbn: scannedText,
+                            },
                           });
                           setTempBlid(null);
                         } else if (scannedType !== TextType.BLID) {
@@ -144,16 +125,14 @@ export default function RapidHandoutDetails({ customer }: { customer: UserDetail
                             },
                           ];
                         }
-                        const response = await client
-                          .$route("collection.orders.operation.rapid-handout.post")
-                          .$post({
+                        const response = await client.api.rapidHandout.handout({
+                          body: {
                             blid: tempBlid ?? scannedText,
                             customerId: customer.id,
-                          });
+                          },
+                        });
 
-                        const res = unpack<[{ feedback: string; connectBlid?: boolean }]>(response);
-
-                        if (res[0].connectBlid) {
+                        if (response.connectBlid) {
                           setTempBlid(scannedText);
                           return [
                             {
@@ -162,10 +141,14 @@ export default function RapidHandoutDetails({ customer }: { customer: UserDetail
                             },
                           ];
                         }
-                        return res;
+                        return [{ feedback: response.feedback }];
                       }}
                       onSuccessfulScan={() =>
-                        queryClient.invalidateQueries({ queryKey: [ordersUrl] })
+                        queryClient.invalidateQueries({
+                          queryKey: api.orders.getPlacedOrders.queryKey({
+                            params: { detailsId: customer.id },
+                          }),
+                        })
                       }
                     >
                       <MatchScannerContent

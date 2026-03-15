@@ -1,8 +1,8 @@
 import { Container, Divider, Stack, Title } from "@mantine/core";
 
-import VippsButton from "@/features/auth/VippsButton.tsx";
-import SignupForm from "@/features/user/SignupForm.tsx";
-import TanStackAnchor from "@/shared/components/TanStackAnchor.tsx";
+import VippsButton from "@/features/auth/VippsButton";
+import SignupForm from "@/features/user/SignupForm";
+import TanStackAnchor from "@/shared/components/TanStackAnchor";
 import { createFileRoute } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/(offentlig)/auth/register")({

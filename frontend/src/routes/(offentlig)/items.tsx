@@ -1,7 +1,7 @@
 import { Container, Stack, Title } from "@mantine/core";
-import AuthGuard from "@/features/auth/AuthGuard.tsx";
-import AffixCartIndicator from "@/features/cart/AffixCartIndicator.tsx";
-import CustomerItemsOverview from "@/features/items/CustomerItemsOverview.tsx";
+import AuthGuard from "@/features/auth/AuthGuard";
+import AffixCartIndicator from "@/features/cart/AffixCartIndicator";
+import CustomerItemsOverview from "@/features/items/CustomerItemsOverview";
 import { createFileRoute } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/(offentlig)/items")({

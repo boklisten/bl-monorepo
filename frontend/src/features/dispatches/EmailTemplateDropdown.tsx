@@ -1,16 +1,13 @@
 import { Accordion, Button, Stack, Table } from "@mantine/core";
 import { IconExternalLink } from "@tabler/icons-react";
 import { useQuery } from "@tanstack/react-query";
-import TanStackAnchor from "@/shared/components/TanStackAnchor.tsx";
+import TanStackAnchor from "@/shared/components/TanStackAnchor";
 
 import useApiClient from "@/shared/hooks/useApiClient";
 
 export default function EmailTemplateDropdown() {
-  const client = useApiClient();
-  const { data: emailTemplates } = useQuery({
-    queryKey: [client.dispatch.email_templates.$url()],
-    queryFn: () => client.dispatch.email_templates.$get().unwrap(),
-  });
+  const { api } = useApiClient();
+  const { data: emailTemplates } = useQuery(api.dispatch.getEmailTemplates.queryOptions());
 
   return (
     <Accordion>

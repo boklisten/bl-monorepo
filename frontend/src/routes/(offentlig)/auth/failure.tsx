@@ -1,8 +1,8 @@
 import { Container, Stack, Title } from "@mantine/core";
 
-import AuthFailureReasonAlert from "@/features/auth/AuthFailureReasonAlert.tsx";
-import TanStackAnchor from "@/shared/components/TanStackAnchor.tsx";
-import { PLEASE_TRY_AGAIN_TEXT } from "@/shared/utils/constants.ts";
+import AuthFailureReasonAlert from "@/features/auth/AuthFailureReasonAlert";
+import TanStackAnchor from "@/shared/components/TanStackAnchor";
+import { PLEASE_TRY_AGAIN_TEXT } from "@/shared/utils/constants";
 import { createFileRoute } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/(offentlig)/auth/failure")({

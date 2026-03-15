@@ -19,4 +19,5 @@ export default defineConfig({
     "jsx-a11y",
     "promise",
   ],
+  ignorePatterns: [".adonisjs"],
 });

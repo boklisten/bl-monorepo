@@ -1,6 +1,5 @@
 import { Button, Group, Stack } from "@mantine/core";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { InferRequestType } from "@tuyau/client";
 import dayjs from "dayjs";
 
 import { useAppForm } from "@/shared/hooks/form";
@@ -12,21 +11,21 @@ function combineDateAndTime(date: string, time: string) {
 }
 
 export default function CreateOpeningHours({ branchId }: { branchId: string }) {
-  const client = useApiClient();
+  const { api } = useApiClient();
   const queryClient = useQueryClient();
-  const createOpeningHourMutation = useMutation({
-    mutationFn: (data: InferRequestType<typeof client.v2.opening_hours.$post>) =>
-      client.v2.opening_hours.$post(data).unwrap(),
-    onError: () => showErrorNotification("Klarte ikke legg til åpningstid"),
-    onSuccess: () => {
-      showSuccessNotification("Åpningstid ble lagt til!");
-      form.reset();
-    },
-    onSettled: () =>
-      queryClient.invalidateQueries({
-        queryKey: [client.v2.opening_hours({ id: branchId }).$url(), branchId],
-      }),
-  });
+  const createOpeningHourMutation = useMutation(
+    api.openingHours.add.mutationOptions({
+      onError: () => showErrorNotification("Klarte ikke legg til åpningstid"),
+      onSuccess: () => {
+        showSuccessNotification("Åpningstid ble lagt til!");
+        form.reset();
+      },
+      onSettled: () =>
+        queryClient.invalidateQueries({
+          queryKey: api.openingHours.get.queryKey({ params: { id: branchId } }),
+        }),
+    }),
+  );
   const form = useAppForm({
     defaultValues: {
       date: "",
@@ -35,9 +34,11 @@ export default function CreateOpeningHours({ branchId }: { branchId: string }) {
     },
     onSubmit: ({ value }) =>
       createOpeningHourMutation.mutate({
-        from: combineDateAndTime(value.date, value.start),
-        to: combineDateAndTime(value.date, value.end),
-        branchId,
+        body: {
+          from: combineDateAndTime(value.date, value.start),
+          to: combineDateAndTime(value.date, value.end),
+          branchId,
+        },
       }),
   });
 

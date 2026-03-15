@@ -1,31 +1,15 @@
-import type { Item } from "@boklisten/backend/shared/item";
 import { Table, Text, Title } from "@mantine/core";
 import { useQuery } from "@tanstack/react-query";
 import { Activity } from "react";
 
 import ErrorAlert from "@/shared/components/alerts/ErrorAlert";
 import InfoAlert from "@/shared/components/alerts/InfoAlert";
-import useApiClient from "@/shared/hooks/useApiClient";
-import unpack from "@/shared/utils/bl-api-request";
 import { GENERIC_ERROR_TEXT, PLEASE_TRY_AGAIN_TEXT } from "@/shared/utils/constants";
+import { publicApi } from "@/shared/utils/publicApiClient";
 
 const BuybackList = () => {
-  const client = useApiClient();
+  const { data: items, error } = useQuery(publicApi.items.getBuybackItems.queryOptions());
 
-  const { data: items, error } = useQuery({
-    queryKey: [
-      client.$url("collection.items.getAll", {
-        query: { buyback: true, sort: "title" },
-      }),
-    ],
-    queryFn: () =>
-      client
-        .$route("collection.items.getAll")
-        .$get({
-          query: { buyback: true, sort: "title" },
-        })
-        .then(unpack<Item[]>),
-  });
   return (
     <>
       <Title>Innkjøpsliste</Title>
@@ -43,9 +27,9 @@ const BuybackList = () => {
         <Table.Tbody>
           <Activity mode={!error ? "visible" : "hidden"}>
             {items?.map((item) => (
-              <Table.Tr key={item.info.isbn}>
+              <Table.Tr key={item.isbn}>
                 <Table.Td>{item.title}</Table.Td>
-                <Table.Td>{item.info.isbn}</Table.Td>
+                <Table.Td>{item.isbn}</Table.Td>
               </Table.Tr>
             ))}
           </Activity>

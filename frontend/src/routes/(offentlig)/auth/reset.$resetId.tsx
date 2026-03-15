@@ -1,6 +1,6 @@
 import { Container, Stack, Title } from "@mantine/core";
 
-import PasswordReset from "@/features/auth/PasswordReset.tsx";
+import PasswordReset from "@/features/auth/PasswordReset";
 import { createFileRoute } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/(offentlig)/auth/reset/$resetId")({

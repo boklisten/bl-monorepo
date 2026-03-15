@@ -10,17 +10,16 @@ import { Activity } from "react";
 
 import InfoAlert from "@/shared/components/alerts/InfoAlert";
 import useCart from "@/shared/hooks/useCart";
-import { publicApiClient } from "@/shared/utils/publicApiClient";
-import TanStackAnchor from "@/shared/components/TanStackAnchor.tsx";
+import { publicApi } from "@/shared/utils/publicApiClient";
+import TanStackAnchor from "@/shared/components/TanStackAnchor";
 
 export default function SelectSubjects({ branchId }: { branchId: string }) {
   const navigate = useNavigate();
   const cart = useCart();
   const selectedSubjects = useSet<string>();
-  const { data: subjects } = useQuery({
-    queryKey: [publicApiClient.subjects({ branchId }).$url(), branchId],
-    queryFn: () => publicApiClient.subjects({ branchId }).$get().unwrap(),
-  });
+  const { data: subjects } = useQuery(
+    publicApi.subjects.getBranchSubjects.queryOptions({ params: { branchId } }),
+  );
 
   if (!subjects) {
     return (

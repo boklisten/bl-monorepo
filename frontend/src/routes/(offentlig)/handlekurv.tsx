@@ -1,5 +1,5 @@
 import { Container, Stack, Title } from "@mantine/core";
-import CartContent from "@/features/cart/CartContent.tsx";
+import CartContent from "@/features/cart/CartContent";
 import { createFileRoute } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/(offentlig)/handlekurv")({

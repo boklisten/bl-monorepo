@@ -1,7 +1,7 @@
 import { Badge, Indicator, Tooltip } from "@mantine/core";
 import { IconBasket } from "@tabler/icons-react";
 
-import TanStackAnchor from "@/shared/components/TanStackAnchor.tsx";
+import TanStackAnchor from "@/shared/components/TanStackAnchor";
 import useCart from "@/shared/hooks/useCart";
 
 export default function CartNavbarIndicator() {

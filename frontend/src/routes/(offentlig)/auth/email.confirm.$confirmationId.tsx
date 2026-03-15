@@ -1,5 +1,5 @@
 import { Container, Stack, Title } from "@mantine/core";
-import EmailConfirmer from "@/features/user/EmailConfirmer.tsx";
+import EmailConfirmer from "@/features/user/EmailConfirmer";
 import { createFileRoute } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/(offentlig)/auth/email/confirm/$confirmationId")({

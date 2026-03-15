@@ -1,5 +1,5 @@
 import { Stack, Title } from "@mantine/core";
-import WaitingList from "@/features/waiting-list/WaitingList.tsx";
+import WaitingList from "@/features/waiting-list/WaitingList";
 import { createFileRoute } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/(administrasjon)/admin/venteliste")({

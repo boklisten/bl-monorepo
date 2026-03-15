@@ -21,13 +21,12 @@ import TasksIndicator from "@/features/layout/TasksIndicator";
 import TasksLink from "@/features/layout/TasksLink";
 import useAuth from "@/shared/hooks/useAuth";
 import { useLocation } from "@tanstack/react-router";
-import TanStackAnchor from "@/shared/components/TanStackAnchor.tsx";
+import TanStackAnchor from "@/shared/components/TanStackAnchor";
 
 export default function PublicNavigationDrawer() {
   const pathname = useLocation({
     select: (location) => location.pathname,
   });
-  console.log(pathname);
   const [opened, { toggle, close }] = useDisclosure();
   const { isLoggedIn, isEmployee } = useAuth();
   return (

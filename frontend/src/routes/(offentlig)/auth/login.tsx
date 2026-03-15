@@ -1,7 +1,7 @@
 import { Center, Container, Divider, Stack, Title } from "@mantine/core";
 
-import LocalSignIn from "@/features/auth/LocalSignIn.tsx";
-import VippsButton from "@/features/auth/VippsButton.tsx";
+import LocalSignIn from "@/features/auth/LocalSignIn";
+import VippsButton from "@/features/auth/VippsButton";
 import { createFileRoute } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/(offentlig)/auth/login")({

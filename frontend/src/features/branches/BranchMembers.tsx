@@ -9,23 +9,22 @@ import useApiClient from "@/shared/hooks/useApiClient";
 import { showErrorNotification, showSuccessNotification } from "@/shared/utils/notifications";
 
 export default function BranchMembers({ branchId }: { branchId: string }) {
-  const client = useApiClient();
+  const { api, client } = useApiClient();
   const queryClient = useQueryClient();
-  const { data, isLoading } = useQuery({
-    queryKey: [client.v2.branches.memberships({ branchId }).$url(), branchId],
-    queryFn: () => client.v2.branches.memberships({ branchId }).$get().unwrap(),
-  });
+  const { data, isLoading } = useQuery(
+    api.branchMembership.getMembers.queryOptions({ params: { branchId } }),
+  );
 
   const removeMembersMutation = useMutation({
-    mutationFn: ({ branchId, scope }: { branchId: string; scope: "direct" | "indirect" }) =>
+    mutationFn: async ({ branchId, scope }: { branchId: string; scope: "direct" | "indirect" }) =>
       scope === "direct"
-        ? client.branches.memberships.direct({ branchId }).$delete()
-        : client.branches.memberships.indirect({ branchId }).$delete(),
+        ? client.api.branchMembership.removeDirectMembers({ params: { branchId } })
+        : client.api.branchMembership.removeIndirectMembers({ params: { branchId } }),
     onSuccess: () => showSuccessNotification("Medlemsliste ble oppdatert"),
     onError: () => showErrorNotification("Klarte ikke oppdatere medlemsliste"),
     onSettled: () =>
       queryClient.invalidateQueries({
-        queryKey: [client.v2.branches.memberships({ branchId }).$url(), branchId],
+        queryKey: api.branchMembership.getMembers.queryKey({ params: { branchId } }),
       }),
   });
   return (

@@ -1,8 +1,8 @@
 import { Container, Title } from "@mantine/core";
 
-import { showErrorNotification } from "@/shared/utils/notifications.ts";
-import { PLEASE_TRY_AGAIN_TEXT } from "@/shared/utils/constants.ts";
-import ErrorAlert from "@/shared/components/alerts/ErrorAlert.tsx";
+import { showErrorNotification } from "@/shared/utils/notifications";
+import { PLEASE_TRY_AGAIN_TEXT } from "@/shared/utils/constants";
+import ErrorAlert from "@/shared/components/alerts/ErrorAlert";
 import { createFileRoute } from "@tanstack/react-router";
 import { useEffect } from "react";
 

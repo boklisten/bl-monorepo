@@ -1,8 +1,8 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { Container, Stack, Title } from "@mantine/core";
-import AuthLogoutComponent from "@/features/auth/AuthLogoutComponent.tsx";
-import ErrorAlert from "@/shared/components/alerts/ErrorAlert.tsx";
-import TanStackAnchor from "@/shared/components/TanStackAnchor.tsx";
+import AuthLogoutComponent from "@/features/auth/AuthLogoutComponent";
+import ErrorAlert from "@/shared/components/alerts/ErrorAlert";
+import TanStackAnchor from "@/shared/components/TanStackAnchor";
 
 export const Route = createFileRoute("/(offentlig)/auth/permission/denied")({
   head: () => ({

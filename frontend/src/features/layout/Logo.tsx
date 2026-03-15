@@ -2,7 +2,7 @@ import { Group, Title } from "@mantine/core";
 import { Image } from "@unpic/react";
 
 import TestVersionChip from "@/features/layout/TestVersionChip";
-import TanStackAnchor from "@/shared/components/TanStackAnchor.tsx";
+import TanStackAnchor from "@/shared/components/TanStackAnchor";
 
 export default function Logo({ variant, admin }: { variant: "white" | "blue"; admin?: boolean }) {
   return (

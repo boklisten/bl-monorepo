@@ -2,13 +2,13 @@ import { Button } from "@mantine/core";
 import { modals } from "@mantine/modals";
 import { IconMailFast, IconSend } from "@tabler/icons-react";
 import { useMutation } from "@tanstack/react-query";
-import { InferRequestType } from "@tuyau/client";
 import { useState } from "react";
 
 import EmailTemplateDropdown from "@/features/dispatches/EmailTemplateDropdown";
 import { useAppForm } from "@/shared/hooks/form";
 import useApiClient from "@/shared/hooks/useApiClient";
 import { showErrorNotification, showSuccessNotification } from "@/shared/utils/notifications";
+import { Route } from "@tuyau/core/types";
 
 const defaultValues: {
   recipients: {
@@ -23,16 +23,16 @@ const defaultValues: {
 
 export default function DispatchManager() {
   const [serverErrors, setServerErrors] = useState<string[]>([]);
-  const client = useApiClient();
+  const { client } = useApiClient();
 
   const sendMutation = useMutation({
-    mutationFn: async (formData: InferRequestType<typeof client.dispatch.$post>) => {
+    mutationFn: async (formData: Route.Request<"dispatch.create_dispatch">) => {
       setServerErrors([]);
-      const { error } = await client.dispatch.$post(formData);
+      const [, error] = await client.api.dispatch.createDispatch(formData).safe();
 
       if (error) {
-        if (error.status === 422) {
-          setServerErrors(error.value.errors.map((err) => err.message));
+        if (error.isValidationError()) {
+          setServerErrors(error.response.errors.map((err) => err.message));
           return;
         }
         showErrorNotification("Noe gikk galt under utsendingen!");
@@ -51,12 +51,14 @@ export default function DispatchManager() {
     defaultValues,
     onSubmit: ({ value }) =>
       sendMutation.mutate({
-        recipients: value.recipients.map((recipient) => ({
-          phone: recipient.phone,
-          email: recipient.email,
-          smsText: recipient.sms_text,
-          emailTemplateId: recipient.email_template_id,
-        })),
+        body: {
+          recipients: value.recipients.map((recipient) => ({
+            phone: recipient.phone,
+            email: recipient.email,
+            smsText: recipient.sms_text,
+            emailTemplateId: recipient.email_template_id,
+          })),
+        },
       }),
   });
   return (

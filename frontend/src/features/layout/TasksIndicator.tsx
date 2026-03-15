@@ -5,15 +5,12 @@ import useApiClient from "@/shared/hooks/useApiClient";
 import type { ReactNode } from "react";
 
 export default function TasksIndicator({ children }: { children: ReactNode }) {
-  const client = useApiClient();
+  const { api } = useApiClient();
   const {
     data: userDetail,
     isLoading: isLoadingUserDetail,
     isError: isErrorUserDetail,
-  } = useQuery({
-    queryKey: [client.v2.user_details.$url()],
-    queryFn: () => client.v2.user_details.me.$get().unwrap(),
-  });
+  } = useQuery(api.userDetail.getMyDetails.queryOptions());
 
   const taskCount =
     isLoadingUserDetail || isErrorUserDetail || !userDetail?.tasks

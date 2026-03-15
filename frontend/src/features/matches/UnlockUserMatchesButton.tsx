@@ -6,12 +6,14 @@ import useApiClient from "@/shared/hooks/useApiClient";
 import { showErrorNotification, showSuccessNotification } from "@/shared/utils/notifications";
 
 export default function UnlockUserMatchesButton({ userDetailId }: { userDetailId: string }) {
-  const client = useApiClient();
+  const { client } = useApiClient();
   const unlockUserMatchesMutation = useMutation({
-    mutationFn: () =>
-      client.user_matches.lock.$post({
-        customerId: userDetailId,
-        userMatchesLocked: false,
+    mutationFn: async () =>
+      client.api.matches.lock({
+        body: {
+          customerId: userDetailId,
+          userMatchesLocked: false,
+        },
       }),
     onSuccess: () => showSuccessNotification("Overleveringene ble låst opp!"),
     onError: () => showErrorNotification("Klarte ikke låse opp overleveringene"),

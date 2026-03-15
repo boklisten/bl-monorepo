@@ -14,11 +14,10 @@ export class DibsPaymentService {
 
   public getPaymentId(dibsEasyOrder: DibsEasyOrder): Promise<string> {
     return new Promise((resolve, reject) => {
-      fetch(env.get("DIBS_URI") + APP_CONFIG.path.dibs.payment, {
+      fetch(APP_CONFIG.path.dibs.payment, {
         method: "POST",
         body: JSON.stringify(dibsEasyOrder),
         headers: new Headers({
-          Authorization: env.get("DIBS_SECRET_KEY"),
           Accept: "application/json",
           "Content-Type": "application/json",
         }),
@@ -37,9 +36,8 @@ export class DibsPaymentService {
   }
 
   public fetchDibsPaymentData(paymentId: string): Promise<DibsEasyPayment> {
-    return fetch(env.get("DIBS_URI") + APP_CONFIG.path.dibs.payment + "/" + paymentId, {
+    return fetch(APP_CONFIG.path.dibs.payment + "/" + paymentId, {
       headers: new Headers({
-        Authorization: env.get("DIBS_SECRET_KEY"),
         Accept: "application/json",
       }),
     })

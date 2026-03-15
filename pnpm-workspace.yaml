@@ -2,16 +2,10 @@ packages:
   - frontend
   - backend
 
-ignoredBuiltDependencies:
-  - unrs-resolver
-
-onlyBuiltDependencies:
-  - "@sentry-internal/node-cpu-profiler"
-  - "@sentry/cli"
-  - "@swc/core"
-  - argon2
-  - canvas
-  - esbuild
-  - inotify
-  - puppeteer
-  - sharp
+allowBuilds:
+  "@sentry-internal/node-cpu-profiler": true
+  "@sentry/cli": true
+  "@swc/core": true
+  argon2: true
+  canvas: true
+  esbuild: true

@@ -7,6 +7,7 @@ import useUpdateBranchMutation from "@/features/branches/useUpdateBranchMutation
 import { useAppForm } from "@/shared/hooks/form";
 import useApiClient from "@/shared/hooks/useApiClient";
 import { showErrorNotification, showSuccessNotification } from "@/shared/utils/notifications";
+import { imageFieldValidator } from "@/shared/components/form/fields/complex/ImageField";
 
 export default function BranchGeneralSettings({
   existingBranch,
@@ -39,6 +40,7 @@ export default function BranchGeneralSettings({
   const form = useAppForm({
     defaultValues: {
       name: existingBranch?.name ?? "",
+      logo: existingBranch?.logo ?? "",
       location: {
         region: existingBranch?.location.region ?? "",
         address: existingBranch?.location.address ?? "",
@@ -62,6 +64,14 @@ export default function BranchGeneralSettings({
         {(field) => (
           <field.TextField required label={"Navn"} placeholder={"Flåklypa videregående skole"} />
         )}
+      </form.AppField>
+      <form.AppField
+        name={"logo"}
+        validators={{
+          onChange: ({ value }) => imageFieldValidator(value),
+        }}
+      >
+        {(field) => <field.ImageField label={"Logo"} />}
       </form.AppField>
       <form.AppField name={"location.region"}>
         {(field) => (

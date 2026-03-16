@@ -10,6 +10,10 @@ export const BranchSchema: BlSchema<Branch> = new Schema({
     trim: true,
     required: true,
   },
+  logo: {
+    type: String,
+    trim: true,
+  },
   type: {
     type: String,
     trim: true,

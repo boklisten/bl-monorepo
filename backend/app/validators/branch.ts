@@ -1,10 +1,15 @@
 import vine from "@vinejs/vine";
 
 import { percentageField } from "#validators/common/fields";
+import env from "#start/env";
 
 export const branchCreateValidator = vine.create(
   vine.object({
     name: vine.string(),
+    logo: vine
+      .string()
+      .url({ require_tld: env.get("API_ENV") !== "dev", require_protocol: true })
+      .optional(),
     location: vine.object({
       region: vine.string(),
       address: vine.string().optional(),
@@ -17,6 +22,10 @@ export const branchValidator = vine.create(
   vine.object({
     id: vine.string().optional(),
     name: vine.string().optional(),
+    logo: vine
+      .string()
+      .url({ require_tld: env.get("API_ENV") !== "dev", require_protocol: true })
+      .optional(),
     location: vine
       .object({
         region: vine.string().optional(),

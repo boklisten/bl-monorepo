@@ -3,6 +3,7 @@ import { BranchPaymentInfo } from "#shared/branch-payment-info";
 
 export interface Branch extends BlDocument {
   name: string; // the fully qualified name of the branch e.g. Ullern Oslo VG1
+  logo?: string; // the URL to the logo of the branch
   parentBranch?: string | undefined; // the ID of the parent branch for the current branch, if any e.g. Ullern Oslo
   localName?: string | undefined; // the name of this branch in relation to its parent and/or children. E.g. "VG1"
   childBranches?: string[] | undefined; // the IDs (if any) of the child branches, could for instance point to Ullern VG1 ST

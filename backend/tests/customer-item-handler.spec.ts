@@ -148,7 +148,7 @@ test.group("CustomerItemHandler", (group) => {
   test("should return emtpy array if there are no customerItems", async () => {
     getByQueryCustomerItemStub.onFirstCall().resolves([]);
 
-    customerItemHandler
+    void customerItemHandler
       .getNotReturned("5c33b6137eab87644f7e75e2", new Date(2012, 1, 1))
       .then((notReturnedCustomerItems) => {
         return expect(notReturnedCustomerItems).to.eql([]);
@@ -189,7 +189,7 @@ test.group("CustomerItemHandler", (group) => {
 
     getByQueryCustomerItemStub.withArgs(expectedQuery).resolves([]);
 
-    customerItemHandler.getNotReturned("5c33b6137eab87644f7e75e2", deadline).then(() => {
+    void customerItemHandler.getNotReturned("5c33b6137eab87644f7e75e2", deadline).then(() => {
       const queryArg = getByQueryCustomerItemStub.getCall(0).args[0];
 
       expect(queryArg.booleanFilters).to.be.eql(expectedQuery.booleanFilters);
@@ -216,7 +216,7 @@ test.group("CustomerItemHandler", (group) => {
 
     getByQueryCustomerItemStub.returns(new Promise((resolve) => resolve(customerItems)));
 
-    customerItemHandler
+    void customerItemHandler
       .getNotReturned("5c33b6137eab87644f7e75e2", new Date(2018, 11, 20))
       .then((result) => {
         return expect(result).to.eql(customerItems);

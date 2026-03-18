@@ -7,9 +7,7 @@ import SelectBranchTreeView from "@/shared/components/SelectBranchTreeView";
 import { useFieldContext } from "@/shared/hooks/form";
 import { publicApi } from "@/shared/utils/publicApiClient";
 
-export default function SelectBranchField(
-  props: SelectProps & { perspective: "personal" | "administrate" | string },
-) {
+export default function SelectBranchField(props: SelectProps & { perspective: string }) {
   const field = useFieldContext<string | null>();
   const { data: branches } = useQuery(publicApi.branches.getPublic.queryOptions());
 

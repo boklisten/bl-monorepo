@@ -99,7 +99,7 @@ export default function OpenOrdersList({
         <Button
           leftSection={<IconShoppingCart />}
           onClick={async () => {
-            navigate({ to: "/bestilling" });
+            void navigate({ to: "/bestilling" });
           }}
         >
           {(openOrderItems?.length ?? 0) > 0 ? "Bestill flere" : "Bestill bøker"}

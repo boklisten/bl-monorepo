@@ -37,7 +37,7 @@ export class DeliveryHandler {
 
   private updateOrderWithDeliveryMethodBring(delivery: Delivery, order: Order): Promise<Delivery> {
     return new Promise((resolve, reject) => {
-      this.fetchItems(order).then((items: Item[]) => {
+      void this.fetchItems(order).then((items: Item[]) => {
         this.getBringDeliveryInfoAndUpdateDelivery(order, delivery, items)
           .then((updatedDelivery: Delivery) => {
             this.updateOrder(order, updatedDelivery)

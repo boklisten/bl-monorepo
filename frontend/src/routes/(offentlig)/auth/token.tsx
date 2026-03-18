@@ -31,12 +31,12 @@ function TokenPage() {
   const onLogin = useEffectEvent(async (tokens: { accessToken: string; refreshToken: string }) => {
     const success = login(tokens);
     if (!success) {
-      navigate({ to: "/auth/failure" });
+      void navigate({ to: "/auth/failure" });
       return;
     }
     const userDetail = await client.api.userDetail.getMyDetails({});
     if (userDetail?.tasks?.confirmDetails || userDetail?.tasks?.signAgreement) {
-      navigate({ to: "/oppgaver" });
+      void navigate({ to: "/oppgaver" });
     } else {
       redirectToCaller();
     }

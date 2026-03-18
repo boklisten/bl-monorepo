@@ -9,7 +9,7 @@ export class Hook {
     _accessToken?: JwtPayload,
     _id?: string,
     _query?: ParsedQs,
-  ): Promise<boolean | unknown> {
+  ): Promise<boolean> {
     return Promise.resolve(true);
   }
 

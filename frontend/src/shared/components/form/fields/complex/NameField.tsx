@@ -2,10 +2,7 @@ import { TextInput, type TextInputProps } from "@mantine/core";
 
 import { useFieldContext } from "@/shared/hooks/form";
 
-export function nameFieldValidator(
-  value: string,
-  context: "personal" | "guardian" | "administrate" | string,
-) {
+export function nameFieldValidator(value: string, context: string) {
   if (!value) {
     if (context === "personal") return "Du må fylle inn ditt fulle navn";
     if (context === "guardian") return "Du må fylle inn foresatt sitt fulle navn";

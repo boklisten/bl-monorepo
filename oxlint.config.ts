@@ -1,13 +1,10 @@
 import { defineConfig } from "oxlint";
 
 export default defineConfig({
-  /*
-  fixme: enable for stricter checks
   options: {
     typeAware: true,
     typeCheck: true,
   },
-   */
   plugins: [
     "eslint",
     "typescript",
@@ -15,9 +12,15 @@ export default defineConfig({
     "react",
     "react-perf",
     "oxc",
-    // "import", fixme: enable for stricter checks
+    "import",
     "jsx-a11y",
     "promise",
   ],
+  rules: {
+    // fixme: remove these to improve linting
+    "@typescript-eslint/unbound-method": "off",
+    "@typescript-eslint/no-base-to-string": "off",
+    "@typescript-eslint/restrict-template-expressions": "off",
+  },
   ignorePatterns: [".adonisjs"],
 });

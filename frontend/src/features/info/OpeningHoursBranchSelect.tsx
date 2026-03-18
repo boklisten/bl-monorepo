@@ -18,7 +18,7 @@ const OpeningHoursBranchSelect = () => {
 
   useEffect(() => {
     if (selectedBranchId && pathName.includes("info/branch")) {
-      navigate({ to: "/info/branch/$branchId", params: { branchId: selectedBranchId } });
+      void navigate({ to: "/info/branch/$branchId", params: { branchId: selectedBranchId } });
     }
   }, [pathName, navigate, selectedBranchId]);
 

@@ -71,7 +71,7 @@ test.group("OrderHookBefore", async () => {
       creationTime: new Date(),
     };
 
-    orderHookBefore.validate(testRequest).then((valid) => {
+    void orderHookBefore.validate(testRequest).then((valid) => {
       return expect(valid).to.be.true;
     });
   });

@@ -36,11 +36,11 @@ export default function CheckoutHandler() {
     onSuccess: async ({ nextStep, orderId, token, checkoutFrontendUrl }) => {
       switch (nextStep) {
         case "confirm": {
-          navigate({ to: "/kasse/bekreft", search: { orderId } });
+          void navigate({ to: "/kasse/bekreft", search: { orderId } });
           break;
         }
         case "payment":
-          navigate({
+          void navigate({
             to: "/kasse/betaling",
             search: { token, checkoutFrontendUrl },
           });
@@ -51,7 +51,7 @@ export default function CheckoutHandler() {
     },
     onError: () => {
       showErrorNotification("Noe gikk galt under genererering av betaling!");
-      navigate({ to: "/handlekurv" });
+      void navigate({ to: "/handlekurv" });
     },
   });
 
@@ -66,7 +66,7 @@ export default function CheckoutHandler() {
   }
 
   if (cart.isEmpty()) {
-    navigate({ to: "/handlekurv" });
+    void navigate({ to: "/handlekurv" });
     return null;
   }
 

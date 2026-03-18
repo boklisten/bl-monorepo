@@ -136,7 +136,7 @@ test.group("OrderPostHook", (group) => {
     orderValidated = true;
     testOrder.id = "order1";
 
-    orderPostHook.after([testOrder], testAccessToken).then((orders: Order[]) => {
+    void orderPostHook.after([testOrder], testAccessToken).then((orders: Order[]) => {
       expect(orders.length).to.be.eql(1);
       return expect(orders[0]).to.eql(testOrder);
     });

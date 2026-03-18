@@ -47,7 +47,7 @@ const InfoPagesNavigation = () => {
           value={pathname}
           onChange={(value) => {
             if (!value) return;
-            navigate({ to: value });
+            void navigate({ to: value });
           }}
         />
       </Box>

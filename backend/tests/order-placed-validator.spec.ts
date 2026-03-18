@@ -166,7 +166,7 @@ test.group("OrderPlacedValidator", (group) => {
   });
 
   test("should resolve if delivery and payments are valid according to order information", async () => {
-    orderPlacedValidator.validate(testOrder).then((resolved) => {
+    void orderPlacedValidator.validate(testOrder).then((resolved) => {
       return expect(resolved).to.be.true;
     });
   });

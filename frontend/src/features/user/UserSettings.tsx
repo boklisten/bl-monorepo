@@ -23,7 +23,7 @@ const UserSettings = () => {
   }
 
   if (isError || !data) {
-    navigate({ to: "/auth/login", search: { redirect: "user-settings" } });
+    void navigate({ to: "/auth/login", search: { redirect: "user-settings" } });
     return null;
   }
 

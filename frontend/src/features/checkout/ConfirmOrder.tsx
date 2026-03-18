@@ -16,7 +16,7 @@ export default function ConfirmOrder({ orderId }: { orderId: string }) {
       onError: () => showErrorNotification("Klarte ikke bekrefte ordre!"),
       onSuccess: () => {
         cart.clear();
-        navigate({ to: "/order-history" });
+        void navigate({ to: "/order-history" });
       },
     }),
   );

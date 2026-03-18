@@ -16,7 +16,7 @@ export const Route = createFileRoute("/(offentlig)/bestilling/")({
     ],
   }),
   loader: async () => {
-    rootQueryClient.prefetchQuery(queryOptions(publicApi.branches.getPublic.queryOptions()));
+    void rootQueryClient.prefetchQuery(queryOptions(publicApi.branches.getPublic.queryOptions()));
   },
   component: OrderPage,
 });

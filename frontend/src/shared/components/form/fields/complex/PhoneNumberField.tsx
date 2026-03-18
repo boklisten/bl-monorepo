@@ -5,7 +5,7 @@ import validator from "validator";
 
 export function phoneNumberFieldValidator(
   value: string,
-  context: "personal" | "guardian" | "administrate" | string,
+  context: string,
   primaryPhoneNumber?: string,
 ) {
   if (!value) {

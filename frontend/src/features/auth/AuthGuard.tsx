@@ -24,12 +24,12 @@ export default function AuthGuard({
 
   const onAuthChange = useEffectEvent(async () => {
     if (!isLoggedIn) {
-      navigate({ to: "/auth/login", search: { redirect: pathname.slice(1) } });
+      void navigate({ to: "/auth/login", search: { redirect: pathname.slice(1) } });
       return;
     }
 
     if (requiredPermission && !canAccess(requiredPermission)) {
-      navigate({ to: "/auth/permission/denied" });
+      void navigate({ to: "/auth/permission/denied" });
       return;
     }
 
@@ -39,7 +39,7 @@ export default function AuthGuard({
       !pathname.includes("user-settings") &&
       (userDetail?.tasks?.confirmDetails || userDetail?.tasks?.signAgreement)
     ) {
-      navigate({ to: "/oppgaver", search: { redirect: pathname.slice(1) } });
+      void navigate({ to: "/oppgaver", search: { redirect: pathname.slice(1) } });
       return;
     }
     setIsAuthenticated(true);

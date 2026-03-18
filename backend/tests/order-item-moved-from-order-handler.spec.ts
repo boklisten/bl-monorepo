@@ -82,7 +82,7 @@ test.group("OrderItemMovedFromOrderHandler", (group) => {
     getOrderStub.withArgs(testMovedFromOrderId).resolves(testMovedFromOrder);
     updateOrderStub.resolves(testMovedFromOrder);
 
-    oiMovedFromOrderHandler.updateOrderItems(order).then(() => {
+    void oiMovedFromOrderHandler.updateOrderItems(order).then(() => {
       return expect(updateOrderStub).to.have.been.called;
     });
   });

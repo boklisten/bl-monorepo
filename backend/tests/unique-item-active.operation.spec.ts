@@ -35,7 +35,7 @@ test.group("UniqueItemActiveOperation", (group) => {
 
     getActiveCustomerItemsStub.resolves([]);
 
-    assert.doesNotReject(() =>
+    void assert.doesNotReject(() =>
       uniqueItemActiveOperation.run({
         documentId: "uniqueItem1",
       }),

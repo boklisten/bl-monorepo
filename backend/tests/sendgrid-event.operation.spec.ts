@@ -81,7 +81,7 @@ test.group("SendgridEventOperation", (group) => {
 
     messageStorageGetIdStub.withArgs("blMessage1").resolves({ id: "blMessage1" } as Message);
 
-    sendgridEventOperation.run(blApiRequest).then(() => {
+    void sendgridEventOperation.run(blApiRequest).then(() => {
       const arg = messageStorageGetIdStub.lastCall.args[0];
 
       return expect(arg).to.eq("blMessage1");
@@ -107,7 +107,7 @@ test.group("SendgridEventOperation", (group) => {
 
     messageStorageUpdateStub.resolves({} as Message);
 
-    sendgridEventOperation.run(blApiRequest).then(() => {
+    void sendgridEventOperation.run(blApiRequest).then(() => {
       const args = messageStorageUpdateStub.lastCall.args;
       expect(args[0]).to.eq("blMessage1");
       return expect(args[1]).to.eql({ events: [sendgridEvent] });

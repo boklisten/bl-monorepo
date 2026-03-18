@@ -45,7 +45,7 @@ const CountdownToRedirect = ({
   const onIntervalEnd = useEffectEvent(() => {
     if (shouldRedirectToCaller) return redirectToCaller();
     if (path) {
-      navigate({ to: path, replace: shouldReplaceInHistory });
+      void navigate({ to: path, replace: shouldReplaceInHistory });
     }
   });
   useEffect(() => {

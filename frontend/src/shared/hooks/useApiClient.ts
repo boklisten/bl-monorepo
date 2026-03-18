@@ -33,12 +33,12 @@ export default function useApiClient() {
         async (request, options, response) => {
           function redirectToLogin() {
             logout();
-            navigate({ to: "/auth/login", search: { redirect: pathname.slice(1) } });
+            void navigate({ to: "/auth/login", search: { redirect: pathname.slice(1) } });
             return new Response();
           }
 
           if (response.status === 403) {
-            navigate({ to: "/auth/permission/denied" });
+            void navigate({ to: "/auth/permission/denied" });
             return response;
           }
 

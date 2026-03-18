@@ -85,7 +85,7 @@ export default function SelectSubjects({ branchId }: { branchId: string }) {
                       }
                     }
                     selectedSubjects.clear();
-                    navigate({ to: "/handlekurv" });
+                    void navigate({ to: "/handlekurv" });
                   }}
                   leftSection={<IconBasket />}
                   bg={"green"}

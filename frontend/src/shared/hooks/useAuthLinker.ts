@@ -20,7 +20,7 @@ export default function useAuthLinker() {
         url.searchParams.append("access_token", accessToken);
       }
     }
-    navigate({ href: url.toString(), replace: !retainHistory });
+    void navigate({ href: url.toString(), replace: !retainHistory });
   }
 
   function redirectToCaller() {
@@ -34,7 +34,7 @@ export default function useAuthLinker() {
     localStorage.removeItem(localStorageKeys.redirect);
 
     if (!caller) {
-      navigate({ to: `/${redirect}` });
+      void navigate({ to: `/${redirect}` });
       return;
     }
 

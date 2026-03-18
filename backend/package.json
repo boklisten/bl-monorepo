@@ -31,8 +31,9 @@
     "./shared/*": "./shared/*.ts"
   },
   "scripts": {
+    "ace": "node ace",
     "dev": "node ace serve --hmr",
-    "typecheck": "pnpm exec tsc --noEmit",
+    "typecheck": "bun tsc --noEmit",
     "test": "node ace test",
     "build": "node ace build",
     "start": "ENV_PATH=../ node build/bin/server.js"
@@ -49,8 +50,8 @@
     "@sendgrid/mail": "^8.1.6",
     "@sentry/cli": "^3.3.3",
     "@sentry/node": "^10.43.0",
-    "@tuyau/core": "^1.2.2",
-    "@tuyau/superjson": "^1.0.0",
+    "@tuyau/core": "catalog:",
+    "@tuyau/superjson": "catalog:",
     "@vinejs/vine": "^4.3.0",
     "@vippsmobilepay/sdk": "^2.4.2",
     "argon2": "^0.44.0",

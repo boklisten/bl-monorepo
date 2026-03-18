@@ -12,102 +12,84 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v6
-      - uses: pnpm/action-setup@v4
-        with:
-          version: 10
+      - uses: oven-sh/setup-bun@v2
       - uses: actions/setup-node@v6
         with:
           node-version: lts/*
-          cache: pnpm
       - name: Install dependencies
-        run: pnpm install
+        run: bun ci
       - name: Oxfmt
-        run: pnpm run format:check
+        run: bun format:check
 
   type_check:
     name: Type Check
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v6
-      - uses: pnpm/action-setup@v4
-        with:
-          version: 10
+      - uses: oven-sh/setup-bun@v2
       - uses: actions/setup-node@v6
         with:
           node-version: lts/*
-          cache: pnpm
       - name: Install dependencies
-        run: pnpm install
+        run: bun ci
       - name: Type Check
-        run: pnpm run typecheck
+        run: bun typecheck
 
   lint:
     name: Lint
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v6
-      - uses: pnpm/action-setup@v4
-        with:
-          version: 10
+      - uses: oven-sh/setup-bun@v2
       - uses: actions/setup-node@v6
         with:
           node-version: lts/*
-          cache: pnpm
       - name: Install dependencies
-        run: pnpm install
+        run: bun ci
       - name: Lint
-        run: pnpm run lint
+        run: bun lint
 
   build_backend:
     name: Build Backend
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v6
-      - uses: pnpm/action-setup@v4
-        with:
-          version: 10
+      - uses: oven-sh/setup-bun@v2
       - uses: actions/setup-node@v6
         with:
           node-version: lts/*
-          cache: pnpm
       - name: Install dependencies
-        run: pnpm install
+        run: bun ci
       - name: Build Backend
-        run: pnpm --filter backend build
+        run: bun build:backend
 
   build_frontend:
     name: Build Frontend
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v6
-      - uses: pnpm/action-setup@v4
-        with:
-          version: 10
+      - uses: oven-sh/setup-bun@v2
       - uses: actions/setup-node@v6
         with:
           node-version: lts/*
-          cache: pnpm
       - name: Install dependencies
-        run: pnpm install
+        run: bun ci
       - name: Build Frontend
         env:
           VITE_API_URL: https://staging.api.boklisten.no/
           VITE_BL_ADMIN_URL: https://staging.bladmin.boklisten.no/
-        run: pnpm --filter frontend build
+        run: bun build:frontend
 
   test_backend:
     name: Test Backend
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v6
-      - uses: pnpm/action-setup@v4
-        with:
-          version: 10
+      - uses: oven-sh/setup-bun@v2
       - uses: actions/setup-node@v6
         with:
           node-version: lts/*
-          cache: pnpm
       - name: Install dependencies
-        run: pnpm install
+        run: bun ci
       - name: Test Backend
-        run: pnpm --filter backend test
+        run: bun run test

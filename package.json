@@ -2,18 +2,31 @@
   "name": "boklisten.no",
   "private": true,
   "license": "UNLICENSED",
+  "workspaces": {
+    "packages": [
+      "frontend",
+      "backend"
+    ],
+    "catalog": {
+      "@tuyau/core": "^1.2.2",
+      "@tuyau/superjson": "^1.0.0"
+    }
+  },
   "type": "module",
   "scripts": {
-    "ace": "pnpm -F backend exec node ace",
+    "ace": "bun --filter './backend' ace",
     "format": "oxfmt",
     "format:check": "oxfmt --check",
     "lint": "oxlint",
     "lint:fix": "oxlint --fix",
-    "typecheck": "pnpm -r typecheck",
-    "fix": "pnpm -wr '/^(lint:fix|typecheck)$/' && pnpm format",
-    "test": "pnpm -r test",
-    "dev": "pnpm -r --parallel dev",
-    "start": "pnpm -F backend build && (pnpm -F backend start & pnpm -F frontend build && pnpm -F frontend start)"
+    "typecheck": "bun --workspaces --parallel run typecheck",
+    "fix": "bun --parallel lint:fix typecheck && bun format",
+    "test": "bun --workspaces run test",
+    "dev": "bun --workspaces --parallel dev",
+    "build:frontend": "bun --filter './frontend' build",
+    "build:backend": "bun --filter './backend' build",
+    "build": "bun --workspaces --parallel build",
+    "start": "bun --workspaces --parallel start"
   },
   "devDependencies": {
     "@tsconfig/strictest": "^2.0.8",

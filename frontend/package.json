@@ -5,7 +5,8 @@
   "type": "module",
   "scripts": {
     "dev": "vite dev",
-    "typecheck": "pnpm exec tsc --noEmit",
+    "typecheck": "bun tsc --noEmit",
+    "test": "echo success",
     "build": "vite build",
     "start": "node .output/server/index.mjs"
   },
@@ -25,9 +26,9 @@
     "@tanstack/react-start": "^1.166.16",
     "@tiptap/react": "^3.20.4",
     "@tiptap/starter-kit": "^3.20.4",
-    "@tuyau/core": "^1.2.2",
+    "@tuyau/core": "catalog:",
     "@tuyau/react-query": "^1.1.0",
-    "@tuyau/superjson": "^1.0.0",
+    "@tuyau/superjson": "catalog:",
     "@unpic/react": "^1.0.2",
     "@yudiel/react-qr-scanner": "^2.5.1",
     "dayjs": "^1.11.20",

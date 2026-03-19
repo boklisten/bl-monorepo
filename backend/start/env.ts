@@ -13,7 +13,6 @@ import { Env } from "@adonisjs/core/env";
 
 export default await Env.create(new URL("../", import.meta.url), {
   APP_KEY: Env.schema.string(),
-  PORT: Env.schema.number(),
   API_ENV: Env.schema.enum(["dev", "test", "staging", "production"] as const),
   LOG_LEVEL: Env.schema.enum([
     "fatal",

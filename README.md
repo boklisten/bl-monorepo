@@ -21,7 +21,7 @@ $ bun install
 
 # Copy .env.example to .env.local for both packages and fill in the correct keys
 
-# Run the development server on http://localhost:3000 (frontend) and http://localhost:1337 (backend)
+# Run the development server on http://localhost:3000 (frontend) and http://localhost:3333 (backend)
 $ bun dev dev
 
 # For production

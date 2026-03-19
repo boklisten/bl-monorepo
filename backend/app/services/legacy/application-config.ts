@@ -17,7 +17,7 @@ export const APP_CONFIG = {
     },
   },
   server: {
-    basePath: "http://localhost:1337",
+    basePath: "http://localhost:3333",
   },
   url: {
     bring: {
@@ -27,7 +27,7 @@ export const APP_CONFIG = {
   dev: {
     server: {
       host: "https://localhost",
-      port: 1337,
+      port: 3333,
       path: "api",
       version: "v1",
     },

@@ -1,6 +1,6 @@
 const BL_CONFIG = {
   api: {
-    basePath: import.meta.env["VITE_API_URL"] ?? "http://localhost:1337/",
+    basePath: import.meta.env["VITE_API_URL"] ?? "http://localhost:3333/",
   },
   blAdmin: {
     basePath: import.meta.env["VITE_BL_ADMIN_URL"] ?? "http://localhost:8080/",

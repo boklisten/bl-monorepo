@@ -22,8 +22,8 @@
     "@tabler/icons-react": "^3.40.0",
     "@tanstack/react-form": "^1.28.5",
     "@tanstack/react-query": "^5.91.0",
-    "@tanstack/react-router": "^1.167.4",
-    "@tanstack/react-start": "^1.166.16",
+    "@tanstack/react-router": "^1.167.5",
+    "@tanstack/react-start": "^1.166.17",
     "@tiptap/react": "^3.20.4",
     "@tiptap/starter-kit": "^3.20.4",
     "@tuyau/core": "catalog:",
@@ -56,7 +56,7 @@
     "postcss": "^8.5.8",
     "postcss-preset-mantine": "^1.18.0",
     "postcss-simple-vars": "^7.0.1",
-    "vite": "^8.0.0"
+    "vite": "^8.0.1"
   },
   "browserslist": [
     "defaults",

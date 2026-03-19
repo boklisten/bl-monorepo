@@ -17,38 +17,32 @@ The frontend only depends on the shared types located in backend/shared. Code st
 
 ```bash
 # Install dependencies
-$ pnpm install
+$ bun install
 
-# Frontend
-# Copy .env.example to .env and fill in the correct keys
-# Run the development server on http://localhost:3000
-$ pnpm -F frontend dev
-# For production builds, use
-$ pnpm -F frontend build
-$ pnpm -F frontend serve
+# Copy .env.example to .env.local for both packages and fill in the correct keys
 
-# Backend
-# Copy .env.example to .env and fill in the correct keys
-# Run the development server on http://localhost:1337
-$ pnpm -F backend dev
-# For production builds, use
-$ pnpm -F backend build
-$ pnpm -F backend start
+# Run the development server on http://localhost:3000 (frontend) and http://localhost:1337 (backend)
+$ bun dev dev
 
+# For production
+$ bun build:backend
+$ bun start:backend
+$ bun build:frontend
+$ bun start:frontend
 ```
 
 ## Code style, linting and type checking
 
 ```bash
 # All checks and fixes for both workspaces can be run with
-$ pnpm fix
+$ bun fix
 ```
 
 ## Testing
 
 ```bash
 # Run backend tests
-$ pnpm test
+$ bun run test
 ```
 
 ## Branches

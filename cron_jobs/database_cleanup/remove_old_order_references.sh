@@ -1,4 +1,4 @@
-mongosh "${MONGO_URL}" --eval '
+mongosh "${MONGO_URI}" --eval '
 console.log("Removing old order references...")
 db.userdetails.aggregate([
     {

@@ -17,6 +17,7 @@ if (env.get("API_ENV") !== "test") {
   });
 
   await mongoose.connect(env.get("MONGODB_URI"), {
+    dbName: env.get("API_ENV") === "production" ? "production" : "staging",
     maxPoolSize: 10,
     connectTimeoutMS: 10_000,
     socketTimeoutMS: 45_000,

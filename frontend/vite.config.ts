@@ -11,7 +11,7 @@ export default defineConfig({
   },
   plugins: [
     tanstackStart(),
-    nitro(),
+    nitro({ preset: "bun" }),
     react(),
     babel({ presets: [reactCompilerPreset()] }),
     sentryTanstackStart({

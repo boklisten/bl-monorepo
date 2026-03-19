@@ -4,11 +4,11 @@
   "license": "UNLICENSED",
   "type": "module",
   "scripts": {
-    "dev": "vite dev",
+    "dev": "bun --bun vite dev",
     "typecheck": "bun tsc --noEmit",
     "test": "echo success",
-    "build": "vite build",
-    "start": "node .output/server/index.mjs"
+    "build": "bun --bun vite build",
+    "start": "bun run .output/server/index.mjs"
   },
   "dependencies": {
     "@boklisten/backend": "workspace:*",

@@ -25,7 +25,7 @@
     "dev": "bun --workspaces --parallel dev",
     "build:frontend": "bun --filter './frontend' build",
     "build:backend": "bun --filter './backend' build",
-    "build": "bun --workspaces --parallel build",
+    "build": "bun --workspaces --parallel run build",
     "start": "bun --workspaces --parallel start"
   },
   "devDependencies": {

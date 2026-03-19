@@ -8,6 +8,7 @@
       "backend"
     ],
     "catalog": {
+      "@tsconfig/strictest": "^2.0.8",
       "@tuyau/core": "^1.2.2",
       "@tuyau/superjson": "^1.0.0"
     }
@@ -31,8 +32,6 @@
     "start": "bun --workspaces --parallel start"
   },
   "devDependencies": {
-    "@tsconfig/strictest": "^2.0.8",
-    "@types/node": "^25.5.0",
     "oxfmt": "^0.41.0",
     "oxlint": "^1.56.0",
     "oxlint-tsgolint": "^0.17.0",

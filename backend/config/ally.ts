@@ -9,7 +9,7 @@ const allyConfig = defineConfig({
     environment: "production",
     clientId: env.get("VIPPS_CLIENT_ID"),
     clientSecret: env.get("VIPPS_SECRET"),
-    callbackUrl: `${env.get("BL_API_URI")}/auth/vipps/callback`,
+    callbackUrl: `${env.get("BL_API_URI")}auth/vipps/callback`,
     scopes: ["openid", "email", "phoneNumber", "address", "name"],
   }),
 });

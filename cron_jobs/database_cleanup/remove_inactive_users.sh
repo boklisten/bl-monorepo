@@ -1,5 +1,5 @@
 # shellcheck disable=SC2016
-mongosh "${MONGO_URL}" --eval '
+mongosh "${MONGO_URI}" --eval '
 console.log("Removing inactive users...")
 const lastActivityThreshold = new Date(new Date().setFullYear(new Date().getFullYear() - 3));
 

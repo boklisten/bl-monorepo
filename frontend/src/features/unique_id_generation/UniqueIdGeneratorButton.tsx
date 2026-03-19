@@ -5,6 +5,7 @@ import { useQuery } from "@tanstack/react-query";
 import useApiClient from "@/shared/hooks/useApiClient";
 import { showErrorNotification } from "@/shared/utils/notifications";
 import { publicApiClient } from "@/shared/utils/publicApiClient";
+import BL_CONFIG from "@/shared/utils/bl-config";
 
 export default function UniqueIdGeneratorButton() {
   const { api } = useApiClient();
@@ -17,7 +18,7 @@ export default function UniqueIdGeneratorButton() {
       loading={isPending}
       component={"a"}
       href={
-        import.meta.env["VITE_API_URL"] +
+        BL_CONFIG.api.basePath.slice(0, -1) +
         publicApiClient.urlFor("unique_ids.download_unique_id_pdf", {
           token: data ?? "",
         })

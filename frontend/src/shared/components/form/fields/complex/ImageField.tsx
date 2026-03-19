@@ -35,7 +35,7 @@ export default function ImageField(props: TextInputProps) {
       </Activity>
       <TextInput
         label={"Bildelenke"}
-        placeholder={`${import.meta.env["VITE_API_URL"]}/mitt_bilde.png`}
+        placeholder={`${import.meta.env["VITE_API_URL"]}mitt_bilde.png`}
         autoComplete={"photo"}
         {...props}
         value={field.state.value}

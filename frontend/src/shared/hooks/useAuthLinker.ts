@@ -10,7 +10,7 @@ export default function useAuthLinker() {
   function redirectToBlAdmin(path: string, retainHistory?: boolean) {
     if (isLoading) return;
 
-    const url = new URL(`${import.meta.env["VITE_BL_ADMIN_URL"]}/${path}${searchStr}`);
+    const url = new URL(`${BL_CONFIG.blAdmin.basePath}${path}${searchStr}`);
 
     if (isLoggedIn) {
       const accessToken = localStorage.getItem(BL_CONFIG.token.accessToken);

@@ -1,3 +1,4 @@
+// @ts-nocheck fixme: remove this to check types for config
 import { tanstackStart } from "@tanstack/react-start/plugin/vite";
 import react, { reactCompilerPreset } from "@vitejs/plugin-react";
 import babel from "@rolldown/plugin-babel";

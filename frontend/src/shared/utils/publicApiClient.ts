@@ -7,7 +7,7 @@ import { createTuyauReactQueryClient } from "@tuyau/react-query";
  * API client with no authentication mechanisms, use useApiClient for authenticated requests
  */
 export const publicApiClient = createTuyau({
-  baseUrl: import.meta.env["VITE_API_ENV"] ?? "",
+  baseUrl: import.meta.env["VITE_API_URL"] ?? "",
   registry,
   headers: { Accept: "application/json" },
   timeout: 60_000,

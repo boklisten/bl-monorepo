@@ -15,7 +15,7 @@ export default function useApiClient() {
   });
 
   const client = createTuyau({
-    baseUrl: BL_CONFIG.api.basePath,
+    baseUrl: import.meta.env["VITE_API_ENV"] ?? "",
     registry,
     headers: { Accept: "application/json" },
     timeout: 60_000,

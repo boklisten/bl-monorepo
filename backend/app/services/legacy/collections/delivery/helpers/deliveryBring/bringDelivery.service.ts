@@ -149,7 +149,7 @@ export class BringDeliveryService {
     const totalWeightInGrams = this.calculateTotalWeight(items);
 
     return {
-      clientUrl: env.get("CLIENT_URI"),
+      clientUrl: env.get("CLIENT_URI") + "/",
       weight: totalWeightInGrams,
       frompostalcode: facilityAddress.postalCode,
       topostalcode: shipmentAddress.postalCode,

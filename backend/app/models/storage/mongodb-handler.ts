@@ -1,6 +1,7 @@
 import logger from "@adonisjs/core/services/logger";
 import {
-  FilterQuery,
+  SchemaType,
+  QueryFilter,
   Model,
   PipelineStage,
   Types,
@@ -198,7 +199,7 @@ export class MongodbHandler<T extends BlDocument> {
   }
 
   public async updateMany(
-    filter: FilterQuery<T>,
+    filter: QueryFilter<T>,
     update: UpdateWithAggregationPipeline | UpdateQuery<T>,
   ): Promise<UpdateWriteOpResult> {
     return this.mongooseModel.updateMany(filter, update);
@@ -244,23 +245,34 @@ export class MongodbHandler<T extends BlDocument> {
     }
   }
   public async search(searchStr: string): Promise<T[]> {
-    const normalized = searchStr.trim().toLowerCase();
+    const normalized = searchStr.trim();
 
-    const stringPaths = Object.entries(this.mongooseModel.schema.paths)
-      .filter(([path, schemaType]) => {
-        return !["_id", "__v"].includes(path) && schemaType.instance === "String";
-      })
-      .map(([path]) => path);
+    if (!normalized) {
+      return [];
+    }
 
-    if (stringPaths.length === 0) {
+    const searchPaths: string[] = [];
+
+    this.mongooseModel.schema.eachPath((path: string, schemaType: SchemaType) => {
+      if (["_id", "__v"].includes(path)) {
+        return;
+      }
+
+      if (schemaType.instance === "String") {
+        searchPaths.push(path);
+      }
+    });
+
+    if (searchPaths.length === 0) {
       throw new BlError("no searchable fields found").code(701);
     }
 
-    const regex = new RegExp(normalized.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"), "i");
+    const escaped = normalized.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+    const regex = new RegExp(escaped, "i");
 
     return (await this.mongooseModel
       .find({
-        $or: stringPaths.map((path) => ({ [path]: regex })),
+        $or: searchPaths.map((path) => ({ [path]: regex })),
       })
       .lean({ transform: MongooseModelCreator.transformObject })
       .exec()) as T[];

@@ -1,2 +1,4 @@
 mongodump --uri="${FROM_MONGODB_URI}"
-mongorestore --host "$MONGOHOST:$MONGOPORT" --username "$MONGOUSER" --password "$MONGOPASSWORD" --authenticationDatabase admin --drop --nsFrom="production.*" --nsTo="staging.*" dump/
+rm -r dump/admin
+rm dump/prelude.json
+mongorestore --drop --uri="${TO_MONGODB_URI}" --nsFrom="production.*" --nsTo="staging.*" dump/

@@ -1,2 +1,2 @@
 mongodump --uri="${FROM_MONGODB_URI}"
-mongorestore --drop --uri="${TO_MONGODB_URI}" --nsFrom="production.*" --nsTo="staging.*" dump/
+mongorestore --host "$MONGO_HOST:$MONGO_PORT" --username "$MONGO_USERNAME" --password "$MONGO_PASSWORD" --authenticationDatabase admin --drop --nsFrom="production.*" --nsTo="staging.*" dump/

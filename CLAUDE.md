@@ -33,11 +33,13 @@ bun ace              # AdonisJS CLI (e.g. bun ace make:controller Foo)
 ```
 
 **Run a single backend test file:**
+
 ```bash
 cd backend && bun run test --files tests/blid_service.spec.ts
 ```
 
 **Production start (backend requires custom ENV_PATH):**
+
 ```bash
 bun build:backend && ENV_PATH=../ bun start:backend
 bun build:frontend && bun start:frontend
@@ -46,6 +48,7 @@ bun build:frontend && bun start:frontend
 ## Environment Setup
 
 Copy `.env.example` → `.env.local` in both `backend/` and `frontend/`. Minimum required:
+
 - `backend/.env.local`: `MONGODB_URI`, `APP_KEY`, `ACCESS_TOKEN_SECRET`, `REFRESH_TOKEN_SECRET`
 - `frontend/.env.local`: `VITE_API_URL` (point to backend, e.g. `http://localhost:3333`)
 
@@ -54,6 +57,7 @@ Copy `.env.example` → `.env.local` in both `backend/` and `frontend/`. Minimum
 ### Backend (`backend/`)
 
 AdonisJS follows a standard MVC layout:
+
 - `app/models/` — Mongoose schemas (`*.schema.ts`)
 - `app/controllers/` — Route handlers; auth has its own subdirectory
 - `app/services/` — Business logic
@@ -71,6 +75,7 @@ AdonisJS follows a standard MVC layout:
 ### Frontend (`frontend/`)
 
 TanStack Start uses file-based routing:
+
 - `src/routes/` — Pages; route groups in parentheses: `(administrasjon)`, `(offentlig)`, `(legacy)`
 - `src/features/` — Feature modules (auth, order, checkout, payment, cart, items, branches, matches, etc.); each encapsulates its own components, hooks, and queries
 - `src/shared/` — Cross-feature hooks, utilities, and components
@@ -86,10 +91,10 @@ GitHub Actions runs: format check → typecheck → lint → build backend → b
 
 ## Key External Integrations
 
-| Service | Purpose |
-|---|---|
-| Vipps Mobile Pay | Payment processing |
-| SendGrid | Transactional email |
-| Twilio | SMS notifications |
-| Bring | Shipping/logistics |
-| Sentry | Error tracking (both frontend and backend) |
+| Service          | Purpose                                    |
+| ---------------- | ------------------------------------------ |
+| Vipps Mobile Pay | Payment processing                         |
+| SendGrid         | Transactional email                        |
+| Twilio           | SMS notifications                          |
+| Bring            | Shipping/logistics                         |
+| Sentry           | Error tracking (both frontend and backend) |

@@ -1,8 +1,6 @@
 {
   "extends": ["@tsconfig/strictest/tsconfig.json"],
   "compilerOptions": {
-    "module": "ESNext",
-    "target": "ESNext",
     "jsx": "react-jsx",
     "lib": ["ESNext", "DOM"],
     "types": ["vite/client"],

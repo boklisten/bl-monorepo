@@ -2,9 +2,8 @@
   "extends": ["@tsconfig/strictest/tsconfig.json", "@adonisjs/tsconfig/tsconfig.app.json"],
   "compilerOptions": {
     "exactOptionalPropertyTypes": false, // fixme: delete this line for stricter checks
-    "noUnusedParameters": false, // fixme: delete this line for stricter checks
-    "rootDir": "./"
+    "noUnusedParameters": false // fixme: delete this line for stricter checks
   },
-  "include": [".", "./**/*.json"],
+  "include": ["."],
   "exclude": ["node_modules", "build", "shared/dist"]
 }

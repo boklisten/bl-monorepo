@@ -41,3 +41,6 @@ Session.vim
 # Sentry
 .sentryclirc
 .env.sentry-build-plugin
+
+.claude/worktrees/
+.claude/memory/

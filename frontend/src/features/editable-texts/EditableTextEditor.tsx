@@ -30,7 +30,7 @@ export default function EditableTextEditor({
         updateEditableTextMutation.mutate({
           params: { id: editableText.id },
           body: {
-            key: editableText.id,
+            key: editableText.key,
             text: value.text,
           },
         });

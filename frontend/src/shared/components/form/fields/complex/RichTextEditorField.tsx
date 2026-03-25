@@ -1,7 +1,5 @@
-// The toolbar icons are as of writing buggy with React Compiler. Might be possible to remove this in the future
-"use no memo";
 import { Stack, Text } from "@mantine/core";
-import { RichTextEditor } from "@mantine/tiptap";
+import { RichTextEditor, Link } from "@mantine/tiptap";
 import { useEditor } from "@tiptap/react";
 import { StarterKit } from "@tiptap/starter-kit";
 
@@ -11,8 +9,9 @@ export default function RichTextEditorField(props: { label: string }) {
   const field = useFieldContext<string>();
 
   const editor = useEditor({
+    shouldRerenderOnTransaction: true,
     immediatelyRender: false,
-    extensions: [StarterKit],
+    extensions: [StarterKit.configure({ link: false }), Link],
     content: field.state.value,
     onUpdate: ({ editor }) => {
       field.handleChange(editor.getHTML());

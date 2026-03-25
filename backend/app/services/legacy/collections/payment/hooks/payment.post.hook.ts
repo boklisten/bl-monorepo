@@ -25,9 +25,14 @@ export class PaymentPostHook extends Hook {
 
       const payment = payments[0];
 
-      this.paymentValidator.validate(payment).catch((blError: BlError) => {
-        reject(new BlError("payment could not be validated").add(blError));
-      });
+      this.paymentValidator
+        .validate(payment)
+        .then(() => {
+          resolve(payment ? [payment] : []);
+        })
+        .catch((blError: BlError) => {
+          reject(new BlError("payment could not be validated").add(blError));
+        });
     });
   }
 }

@@ -44,7 +44,6 @@ export const branchValidator = vine.create(
       .object({
         responsible: vine.boolean().optional(),
         responsibleForDelivery: vine.boolean().optional(),
-        payLater: vine.boolean().optional(),
         partlyPaymentPeriods: vine
           .array(
             vine.object({

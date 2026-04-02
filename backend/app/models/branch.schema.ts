@@ -95,7 +95,6 @@ export const BranchSchema: BlSchema<Branch> = new Schema({
         default: 1,
       },
     },
-    payLater: Boolean,
   },
   deliveryMethods: {
     branch: {

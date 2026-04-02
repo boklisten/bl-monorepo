@@ -20,7 +20,6 @@ export default function BranchPaymentSettings({ existingBranch }: { existingBran
       paymentInfo: {
         responsible: existingBranch.paymentInfo?.responsible ?? false,
         responsibleForDelivery: existingBranch.paymentInfo?.responsibleForDelivery ?? false,
-        payLater: existingBranch.paymentInfo?.payLater ?? false,
         partlyPaymentPeriods:
           existingBranch.paymentInfo?.partlyPaymentPeriods?.map((partlyPaymentPeriod) => ({
             ...partlyPaymentPeriod,
@@ -66,9 +65,6 @@ export default function BranchPaymentSettings({ existingBranch }: { existingBran
       </form.Subscribe>
       <form.AppField name={"paymentInfo.responsible"}>
         {(field) => <field.SwitchField label={"Ansvarlig for betaling"} />}
-      </form.AppField>
-      <form.AppField name={"paymentInfo.payLater"}>
-        {(field) => <field.SwitchField label={"Betal senere"} />}
       </form.AppField>
       <form.AppField name={"paymentInfo.buyout.percentage"}>
         {(field) => <field.PercentageField label={"Utkjøpsprosent"} />}

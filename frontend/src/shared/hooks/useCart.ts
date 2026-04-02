@@ -36,6 +36,11 @@ export default function useCart() {
       cart.reduce((total, cartItem) => total + (getSelectedOption(cartItem).price ?? 0), 0),
     );
   }
+  function calculatePayLater() {
+    return Math.ceil(
+      cart.reduce((total, cartItem) => total + (getSelectedOption(cartItem).payLater ?? 0), 0),
+    );
+  }
   function getSelectedOption(cartItem: CartItem) {
     const selectedOption = cartItem.options[cartItem.selectedOptionIndex];
     if (!selectedOption) {
@@ -59,5 +64,6 @@ export default function useCart() {
     getSelectedOption,
     getOptionLabel,
     calculateTotal,
+    calculatePayLater,
   };
 }

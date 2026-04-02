@@ -9,7 +9,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 ## Workspaces
 
 - **`backend/`** — AdonisJS v7 REST API with MongoDB/Mongoose v9
-- **`frontend/`** — TanStack Start (React 19) SPA with Mantine v8 UI
+- **`frontend/`** — TanStack Start (React 19) SPA with Mantine v9 UI
 - **`cron_jobs/`** — Standalone scheduled tasks (DB cleanup, prod→staging sync)
 
 The frontend imports shared types directly from `backend/shared/`.

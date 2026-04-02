@@ -112,11 +112,18 @@ export default function CartContent() {
         })}
       </Stack>
       <Stack align={"center"}>
-        <Group gap={5}>
-          <Text>Totalt</Text>
-          <Text fw={"bold"}>{cart.calculateTotal()}</Text>
-          <Text>kr</Text>
-        </Group>
+        <Stack gap={5}>
+          <Group gap={5}>
+            <Text>Betal nå</Text>
+            <Text fw={"bold"}>{cart.calculateTotal()}</Text>
+            <Text>kr</Text>
+          </Group>
+          <Activity mode={cart.calculatePayLater() > 0 ? "visible" : "hidden"}>
+            <Text fs={"italic"} c={"dimmed"} size={"sm"}>
+              betal senere: {cart.calculatePayLater()} kr
+            </Text>
+          </Activity>
+        </Stack>
         <Button
           component={TanStackAnchor}
           to={"/kasse"}

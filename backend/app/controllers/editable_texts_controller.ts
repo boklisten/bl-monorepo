@@ -1,44 +1,34 @@
 import { HttpContext } from "@adonisjs/core/http";
 
-import { SEDbQuery } from "#services/legacy/query/se.db-query";
 import { PermissionService } from "#services/permission_service";
-import { StorageService } from "#services/storage_service";
 import { editableTextsValidator } from "#validators/editable_texts_validator";
+import EditableText from "#models/editable_text";
 
+// fixme: use AdonisJS Transformer here
 export default class EditableTextsController {
-  async getByKey({ request }: HttpContext) {
-    const key = request.param("key");
-    const databaseQuery = new SEDbQuery();
-    databaseQuery.stringFilters = [{ fieldName: "key", value: key }];
-    const editableTexts = await StorageService.EditableTexts.getByQueryOrNull(databaseQuery);
-    return editableTexts?.[0] ?? { key, text: "" };
+  async get(ctx: HttpContext) {
+    const { id, text } = await EditableText.findOrFail(ctx.request.param("id"));
+    return { id, text };
   }
 
   async getAll(ctx: HttpContext) {
     PermissionService.adminOrFail(ctx);
-
-    return await StorageService.EditableTexts.getAll();
+    return (await EditableText.all()).map(({ id, text }) => ({ id, text }));
   }
 
-  async store(ctx: HttpContext) {
+  async upsert(ctx: HttpContext) {
     PermissionService.adminOrFail(ctx);
-
-    const validatedData = await ctx.request.validateUsing(editableTextsValidator);
-    return await StorageService.EditableTexts.add(validatedData);
-  }
-
-  async update(ctx: HttpContext) {
-    PermissionService.adminOrFail(ctx);
-    const { text } = await ctx.request.validateUsing(editableTextsValidator);
-
-    const id = ctx.request.param("id");
-    return await StorageService.EditableTexts.update(id, { text });
+    const payload = await ctx.request.validateUsing(editableTextsValidator);
+    const { id, text } = await EditableText.updateOrCreate(
+      { id: payload.params.id },
+      { text: payload.text },
+    );
+    return { id, text };
   }
 
   async destroy(ctx: HttpContext) {
     PermissionService.adminOrFail(ctx);
-
-    const id = ctx.request.param("id");
-    return await StorageService.EditableTexts.remove(id);
+    const editableText = await EditableText.findOrFail(ctx.request.param("id"));
+    await editableText.delete();
   }
 }

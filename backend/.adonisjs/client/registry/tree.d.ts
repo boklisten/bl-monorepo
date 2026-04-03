@@ -54,10 +54,9 @@ export interface ApiDefinition {
     cancelOrderItem: typeof routes['orders.cancel_order_item']
   }
   editableTexts: {
+    get: typeof routes['editable_texts.get']
     getAll: typeof routes['editable_texts.get_all']
-    getByKey: typeof routes['editable_texts.get_by_key']
-    store: typeof routes['editable_texts.store']
-    update: typeof routes['editable_texts.update']
+    upsert: typeof routes['editable_texts.upsert']
     destroy: typeof routes['editable_texts.destroy']
   }
   questionsAndAnswers: {

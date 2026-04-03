@@ -33,10 +33,9 @@ export type ScannedRoutes = {
     'orders.get_open_orders': { paramsTuple?: []; params?: {} }
     'orders.get_placed_orders': { paramsTuple: [ParamValue]; params: {'detailsId': ParamValue} }
     'orders.cancel_order_item': { paramsTuple?: []; params?: {} }
+    'editable_texts.get': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
     'editable_texts.get_all': { paramsTuple?: []; params?: {} }
-    'editable_texts.get_by_key': { paramsTuple: [ParamValue]; params: {'key': ParamValue} }
-    'editable_texts.store': { paramsTuple?: []; params?: {} }
-    'editable_texts.update': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
+    'editable_texts.upsert': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
     'editable_texts.destroy': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
     'questions_and_answers.get_all': { paramsTuple?: []; params?: {} }
     'questions_and_answers.store': { paramsTuple?: []; params?: {} }
@@ -162,8 +161,8 @@ export type ScannedRoutes = {
     'branch_membership.get_members': { paramsTuple: [ParamValue]; params: {'branchId': ParamValue} }
     'orders.get_open_orders': { paramsTuple?: []; params?: {} }
     'orders.get_placed_orders': { paramsTuple: [ParamValue]; params: {'detailsId': ParamValue} }
+    'editable_texts.get': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
     'editable_texts.get_all': { paramsTuple?: []; params?: {} }
-    'editable_texts.get_by_key': { paramsTuple: [ParamValue]; params: {'key': ParamValue} }
     'questions_and_answers.get_all': { paramsTuple?: []; params?: {} }
     'email_validations.confirm': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
     'public_blid_lookup.lookup': { paramsTuple: [ParamValue]; params: {'blid': ParamValue} }
@@ -228,8 +227,8 @@ export type ScannedRoutes = {
     'branch_membership.get_members': { paramsTuple: [ParamValue]; params: {'branchId': ParamValue} }
     'orders.get_open_orders': { paramsTuple?: []; params?: {} }
     'orders.get_placed_orders': { paramsTuple: [ParamValue]; params: {'detailsId': ParamValue} }
+    'editable_texts.get': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
     'editable_texts.get_all': { paramsTuple?: []; params?: {} }
-    'editable_texts.get_by_key': { paramsTuple: [ParamValue]; params: {'key': ParamValue} }
     'questions_and_answers.get_all': { paramsTuple?: []; params?: {} }
     'email_validations.confirm': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
     'public_blid_lookup.lookup': { paramsTuple: [ParamValue]; params: {'blid': ParamValue} }
@@ -297,7 +296,6 @@ export type ScannedRoutes = {
     'branch_upload.upload_memberships': { paramsTuple?: []; params?: {} }
     'branch_upload.upload_subject_choices': { paramsTuple?: []; params?: {} }
     'orders.cancel_order_item': { paramsTuple?: []; params?: {} }
-    'editable_texts.store': { paramsTuple?: []; params?: {} }
     'questions_and_answers.store': { paramsTuple?: []; params?: {} }
     'email_validations.create': { paramsTuple?: []; params?: {} }
     'matches.generate': { paramsTuple?: []; params?: {} }
@@ -356,7 +354,6 @@ export type ScannedRoutes = {
     'branches.update': { paramsTuple?: []; params?: {} }
     'branch_relationship.update': { paramsTuple?: []; params?: {} }
     'branch_membership.update_membership': { paramsTuple?: []; params?: {} }
-    'editable_texts.update': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
     'questions_and_answers.update': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
     'collection.branches.patch': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
     'collection.branchitems.patch': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
@@ -370,6 +367,9 @@ export type ScannedRoutes = {
     'collection.userdetails.patch': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
     'collection.invoices.patch': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
     'collection.companies.patch': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
+  }
+  PUT: {
+    'editable_texts.upsert': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
   }
 }
 declare module '@adonisjs/core/types/http' {

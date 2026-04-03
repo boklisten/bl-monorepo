@@ -22,5 +22,5 @@ export default defineConfig({
     "@typescript-eslint/no-base-to-string": "off",
     "@typescript-eslint/restrict-template-expressions": "off",
   },
-  ignorePatterns: [".adonisjs"],
+  ignorePatterns: [".adonisjs", "database/schema.ts"],
 });

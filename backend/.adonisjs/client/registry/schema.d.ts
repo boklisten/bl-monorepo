@@ -355,6 +355,18 @@ export interface Registry {
       errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/orders_controller').default['cancelOrderItem']>>> | { status: 422; response: { errors: SimpleError[] } }
     }
   }
+  'editable_texts.get': {
+    methods: ["GET","HEAD"]
+    pattern: '/editable_texts/:id'
+    types: {
+      body: {}
+      paramsTuple: [ParamValue]
+      params: { id: ParamValue }
+      query: {}
+      response: ExtractResponse<Awaited<ReturnType<import('#controllers/editable_texts_controller').default['get']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/editable_texts_controller').default['get']>>>
+    }
+  }
   'editable_texts.get_all': {
     methods: ["GET","HEAD"]
     pattern: '/editable_texts'
@@ -367,40 +379,16 @@ export interface Registry {
       errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/editable_texts_controller').default['getAll']>>>
     }
   }
-  'editable_texts.get_by_key': {
-    methods: ["GET","HEAD"]
-    pattern: '/editable_texts/key/:key'
-    types: {
-      body: {}
-      paramsTuple: [ParamValue]
-      params: { key: ParamValue }
-      query: {}
-      response: ExtractResponse<Awaited<ReturnType<import('#controllers/editable_texts_controller').default['getByKey']>>>
-      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/editable_texts_controller').default['getByKey']>>>
-    }
-  }
-  'editable_texts.store': {
-    methods: ["POST"]
-    pattern: '/editable_texts'
-    types: {
-      body: ExtractBody<InferInput<(typeof import('#validators/editable_texts_validator').editableTextsValidator)>>
-      paramsTuple: []
-      params: {}
-      query: ExtractQuery<InferInput<(typeof import('#validators/editable_texts_validator').editableTextsValidator)>>
-      response: ExtractResponse<Awaited<ReturnType<import('#controllers/editable_texts_controller').default['store']>>>
-      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/editable_texts_controller').default['store']>>> | { status: 422; response: { errors: SimpleError[] } }
-    }
-  }
-  'editable_texts.update': {
-    methods: ["PATCH"]
+  'editable_texts.upsert': {
+    methods: ["PUT"]
     pattern: '/editable_texts/:id'
     types: {
       body: ExtractBody<InferInput<(typeof import('#validators/editable_texts_validator').editableTextsValidator)>>
       paramsTuple: [ParamValue]
       params: { id: ParamValue }
       query: ExtractQuery<InferInput<(typeof import('#validators/editable_texts_validator').editableTextsValidator)>>
-      response: ExtractResponse<Awaited<ReturnType<import('#controllers/editable_texts_controller').default['update']>>>
-      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/editable_texts_controller').default['update']>>> | { status: 422; response: { errors: SimpleError[] } }
+      response: ExtractResponse<Awaited<ReturnType<import('#controllers/editable_texts_controller').default['upsert']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/editable_texts_controller').default['upsert']>>> | { status: 422; response: { errors: SimpleError[] } }
     }
   }
   'editable_texts.destroy': {

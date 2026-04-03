@@ -30,6 +30,7 @@ export default await Env.create(new URL("../", import.meta.url), {
   BL_API_URI: Env.schema.string(),
   CLIENT_URI: Env.schema.string(),
   MONGODB_URI: Env.schema.string(),
+  POSTGRES_URL: Env.schema.string(),
   VIPPS_MSN: Env.schema.string(),
   VIPPS_CLIENT_ID: Env.schema.string(),
   VIPPS_SECRET: Env.schema.string(),

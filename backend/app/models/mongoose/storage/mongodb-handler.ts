@@ -10,7 +10,7 @@ import {
   UpdateWriteOpResult,
 } from "mongoose";
 
-import { MongooseModelCreator } from "#models/storage/mongoose-schema-creator";
+import { MongooseModelCreator } from "#models/mongoose/storage/mongoose-schema-creator";
 import { ExpandFilter } from "#services/legacy/query/db-query-expand-filter";
 import { SEDbQuery } from "#services/legacy/query/se.db-query";
 import { PermissionService } from "#services/permission_service";

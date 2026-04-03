@@ -1,83 +1,59 @@
-import type { EditableText } from "@boklisten/backend/shared/editable-text";
 import { Button, Group, Stack } from "@mantine/core";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 import { useAppForm } from "@/shared/hooks/form";
 import useApiClient from "@/shared/hooks/useApiClient";
 import { showErrorNotification, showSuccessNotification } from "@/shared/utils/notifications";
+import { Route } from "@tuyau/core/types";
 
 export default function EditableTextEditor({
   editableText,
   onClose,
 }: {
-  editableText?: EditableText | undefined;
+  editableText?: Route.Response<"editable_texts.get_all">[number] | undefined;
   onClose: () => void;
 }) {
   const form = useAppForm({
     defaultValues: {
-      key: editableText?.key ?? "",
+      id: editableText?.id ?? "",
       text: editableText?.text ?? "",
     },
     onSubmit: ({ value }) => {
-      if (editableText === undefined) {
-        addEditableTextMutation.mutate({
-          body: {
-            key: value.key,
-            text: value.text,
-          },
-        });
-      } else {
-        updateEditableTextMutation.mutate({
-          params: { id: editableText.id },
-          body: {
-            key: editableText.key,
-            text: value.text,
-          },
-        });
-      }
+      upsertEditableTextMutation.mutate({
+        params: { id: editableText?.id ?? value.id },
+        body: {
+          text: value.text,
+        },
+      });
     },
   });
 
   const queryClient = useQueryClient();
   const { api } = useApiClient();
 
-  const addEditableTextMutation = useMutation(
-    api.editableTexts.store.mutationOptions({
+  const upsertEditableTextMutation = useMutation(
+    api.editableTexts.upsert.mutationOptions({
       onSettled: () =>
         queryClient.invalidateQueries({
           queryKey: api.editableTexts.getAll.pathKey(),
         }),
       onSuccess: () => {
-        showSuccessNotification("Dynamisk innhold ble opprettet!");
+        showSuccessNotification("Dynamisk innhold ble lagret!");
         onClose();
       },
       onError: () =>
         showErrorNotification({
-          title: "Klarte ikke opprette dynamisk innhold!",
+          title: "Klarte ikke lagre dynamisk innhold!",
           message:
             'Vennligst sjekk at unik nøkkel er formattert riktig. [a-z] og "_" for mellomrom.',
         }),
     }),
   );
 
-  const updateEditableTextMutation = useMutation(
-    api.editableTexts.update.mutationOptions({
-      onSettled: () =>
-        queryClient.invalidateQueries({
-          queryKey: api.editableTexts.getAll.pathKey(),
-        }),
-      onSuccess: () => {
-        showSuccessNotification("Dynamisk innhold ble oppdatert!");
-        onClose();
-      },
-      onError: () => showErrorNotification("Klarte ikke oppdatere dynamisk innhold!"),
-    }),
-  );
-
   return (
     <Stack>
       <form.AppField
-        name={"key"}
+        name={"id"}
         validators={{
           onChange: ({ value }) => (value.length === 0 ? "Du fylle inn unik nøkkel" : null),
         }}
@@ -98,10 +74,7 @@ export default function EditableTextEditor({
         <Button variant={"subtle"} onClick={() => onClose()}>
           Avbryt
         </Button>
-        <Button
-          loading={addEditableTextMutation.isPending || updateEditableTextMutation.isPending}
-          onClick={form.handleSubmit}
-        >
+        <Button loading={upsertEditableTextMutation.isPending} onClick={form.handleSubmit}>
           {editableText === undefined ? "Opprett" : "Lagre"}
         </Button>
       </Group>

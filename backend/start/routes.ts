@@ -116,12 +116,9 @@ router.post("/v2/orders/cancel_order_item", [controllers.Orders, "cancelOrderIte
 /**
  * editable texts
  */
+router.get("/editable_texts/:id", [controllers.EditableTexts, "get"]);
 router.get("/editable_texts", [controllers.EditableTexts, "getAll"]);
-router.get("/editable_texts/key/:key", [controllers.EditableTexts, "getByKey"]);
-
-router.post("/editable_texts", [controllers.EditableTexts, "store"]);
-router.patch("/editable_texts/:id", [controllers.EditableTexts, "update"]);
-
+router.put("/editable_texts/:id", [controllers.EditableTexts, "upsert"]);
 router.delete("/editable_texts/:id", [controllers.EditableTexts, "destroy"]);
 
 /**

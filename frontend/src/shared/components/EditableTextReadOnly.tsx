@@ -7,7 +7,7 @@ import { publicApi } from "@/shared/utils/publicApiClient";
 
 export default function EditableTextReadOnly({ dataKey }: { dataKey: string }) {
   const { data, isLoading } = useQuery(
-    publicApi.editableTexts.getByKey.queryOptions({ params: { key: dataKey } }),
+    publicApi.editableTexts.get.queryOptions({ params: { id: dataKey } }),
   );
 
   if (isLoading)

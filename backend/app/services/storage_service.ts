@@ -1,30 +1,29 @@
 import { ObjectId } from "mongodb";
 import { Schema } from "mongoose";
 
-import { BranchItemSchema } from "#models/branch-item.schema";
-import { BranchSchema } from "#models/branch.schema";
-import { CompanySchema } from "#models/company.schema";
-import { CustomerItemSchema } from "#models/customer-item.schema";
-import { DeliverySchema } from "#models/delivery.schema";
-import { EditableTextSchema } from "#models/editable-text.schema";
-import { EmailValidationSchema } from "#models/email-validation.schema";
-import { InvoiceSchema } from "#models/invoice.schema";
-import { ItemSchema } from "#models/item.schema";
-import { MessageSchema } from "#models/message.schema";
-import { OpeningHourSchema } from "#models/opening-hour.schema";
-import { OrderSchema } from "#models/order.schema";
-import { PaymentSchema } from "#models/payment.schema";
-import { PendingPasswordResetSchema } from "#models/pending-password-reset.schema";
-import { QuestionsAndAnswersSchema } from "#models/questions-and-answers.schema";
-import { SignatureSchema } from "#models/signature.schema";
-import { StandMatchSchema } from "#models/stand-match.schema";
-import { BlSchemaName } from "#models/storage/bl-schema-names";
-import { MongodbHandler } from "#models/storage/mongodb-handler";
-import { UniqueItemSchema } from "#models/unique-item.schema";
-import { UserDetailSchema } from "#models/user-detail.schema";
-import { UserMatchSchema } from "#models/user-match.schema";
-import { UserSchema } from "#models/user.schema";
-import { WaitingListEntriesSchema } from "#models/waiting-list-entries.schema";
+import { BranchItemSchema } from "#models/mongoose/branch-item.schema";
+import { BranchSchema } from "#models/mongoose/branch.schema";
+import { CompanySchema } from "#models/mongoose/company.schema";
+import { CustomerItemSchema } from "#models/mongoose/customer-item.schema";
+import { DeliverySchema } from "#models/mongoose/delivery.schema";
+import { EmailValidationSchema } from "#models/mongoose/email-validation.schema";
+import { InvoiceSchema } from "#models/mongoose/invoice.schema";
+import { ItemSchema } from "#models/mongoose/item.schema";
+import { MessageSchema } from "#models/mongoose/message.schema";
+import { OpeningHourSchema } from "#models/mongoose/opening-hour.schema";
+import { OrderSchema } from "#models/mongoose/order.schema";
+import { PaymentSchema } from "#models/mongoose/payment.schema";
+import { PendingPasswordResetSchema } from "#models/mongoose/pending-password-reset.schema";
+import { QuestionsAndAnswersSchema } from "#models/mongoose/questions-and-answers.schema";
+import { SignatureSchema } from "#models/mongoose/signature.schema";
+import { StandMatchSchema } from "#models/mongoose/stand-match.schema";
+import { BlSchemaName } from "#models/mongoose/storage/bl-schema-names";
+import { MongodbHandler } from "#models/mongoose/storage/mongodb-handler";
+import { UniqueItemSchema } from "#models/mongoose/unique-item.schema";
+import { UserDetailSchema } from "#models/mongoose/user-detail.schema";
+import { UserMatchSchema } from "#models/mongoose/user-match.schema";
+import { UserSchema } from "#models/mongoose/user.schema";
+import { WaitingListEntriesSchema } from "#models/mongoose/waiting-list-entries.schema";
 
 export type BlSchema<T> = Schema<ToSchema<T>>;
 
@@ -34,7 +33,6 @@ export const StorageService = {
   Companies: new MongodbHandler(CompanySchema, BlSchemaName.Companies),
   CustomerItems: new MongodbHandler(CustomerItemSchema, BlSchemaName.CustomerItems),
   Deliveries: new MongodbHandler(DeliverySchema, BlSchemaName.Deliveries),
-  EditableTexts: new MongodbHandler(EditableTextSchema, BlSchemaName.EditableTexts),
   EmailValidations: new MongodbHandler(EmailValidationSchema, BlSchemaName.EmailValidations),
   Invoices: new MongodbHandler(InvoiceSchema, BlSchemaName.Invoices),
   Items: new MongodbHandler(ItemSchema, BlSchemaName.Items),

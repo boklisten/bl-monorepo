@@ -1,6 +1,6 @@
 import { Schema } from "mongoose";
 
-import { BlSchemaName } from "#models/storage/bl-schema-names";
+import { BlSchemaName } from "#models/mongoose/storage/bl-schema-names";
 import { BlSchema } from "#services/storage_service";
 import { Invoice } from "#shared/invoice";
 

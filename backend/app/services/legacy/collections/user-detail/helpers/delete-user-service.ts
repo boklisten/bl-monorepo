@@ -29,9 +29,7 @@ export class DeleteUserService {
       StorageService.CustomerItems.updateMany({ customer: fromUser }, { customer: toUser }),
       StorageService.Invoices.updateMany(
         {
-          customerInfo: {
-            userDetail: fromUser,
-          },
+          "customerInfo.userDetail": fromUser,
         },
         {
           customerInfo: {

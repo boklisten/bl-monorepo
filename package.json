@@ -27,6 +27,7 @@
     "build:frontend": "bun --filter './frontend' build",
     "build:backend": "bun --filter './backend' build",
     "build": "bun --workspaces --parallel run build",
+    "migrate:backend": "bun --filter './backend' migrate",
     "start:frontend": "bun --filter './frontend' start",
     "start:backend": "bun --filter './backend' start",
     "start": "bun --workspaces --parallel start"
@@ -36,5 +37,10 @@
     "oxlint": "^1.58.0",
     "oxlint-tsgolint": "^0.18.1",
     "typescript": "6.0.2"
+  },
+  "overrides": {
+    "@adonisjs/assembler": "^8.4.0",
+    "@tanstack/query-core": "5.96.0",
+    "@tanstack/react-query": "5.96.0"
   }
 }

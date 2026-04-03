@@ -180,29 +180,23 @@ const routes = {
     tokens: [{"old":"/v2/orders/cancel_order_item","type":0,"val":"v2","end":""},{"old":"/v2/orders/cancel_order_item","type":0,"val":"orders","end":""},{"old":"/v2/orders/cancel_order_item","type":0,"val":"cancel_order_item","end":""}],
     types: placeholder as Registry['orders.cancel_order_item']['types'],
   },
+  'editable_texts.get': {
+    methods: ["GET","HEAD"],
+    pattern: '/editable_texts/:id',
+    tokens: [{"old":"/editable_texts/:id","type":0,"val":"editable_texts","end":""},{"old":"/editable_texts/:id","type":1,"val":"id","end":""}],
+    types: placeholder as Registry['editable_texts.get']['types'],
+  },
   'editable_texts.get_all': {
     methods: ["GET","HEAD"],
     pattern: '/editable_texts',
     tokens: [{"old":"/editable_texts","type":0,"val":"editable_texts","end":""}],
     types: placeholder as Registry['editable_texts.get_all']['types'],
   },
-  'editable_texts.get_by_key': {
-    methods: ["GET","HEAD"],
-    pattern: '/editable_texts/key/:key',
-    tokens: [{"old":"/editable_texts/key/:key","type":0,"val":"editable_texts","end":""},{"old":"/editable_texts/key/:key","type":0,"val":"key","end":""},{"old":"/editable_texts/key/:key","type":1,"val":"key","end":""}],
-    types: placeholder as Registry['editable_texts.get_by_key']['types'],
-  },
-  'editable_texts.store': {
-    methods: ["POST"],
-    pattern: '/editable_texts',
-    tokens: [{"old":"/editable_texts","type":0,"val":"editable_texts","end":""}],
-    types: placeholder as Registry['editable_texts.store']['types'],
-  },
-  'editable_texts.update': {
-    methods: ["PATCH"],
+  'editable_texts.upsert': {
+    methods: ["PUT"],
     pattern: '/editable_texts/:id',
     tokens: [{"old":"/editable_texts/:id","type":0,"val":"editable_texts","end":""},{"old":"/editable_texts/:id","type":1,"val":"id","end":""}],
-    types: placeholder as Registry['editable_texts.update']['types'],
+    types: placeholder as Registry['editable_texts.upsert']['types'],
   },
   'editable_texts.destroy': {
     methods: ["DELETE"],

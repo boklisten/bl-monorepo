@@ -39,7 +39,7 @@ export default function EditableTextTable() {
   const table = useMantineReactTable({
     columns: [
       {
-        accessorKey: "key",
+        accessorKey: "id",
         header: "Unik nøkkel",
       },
     ],

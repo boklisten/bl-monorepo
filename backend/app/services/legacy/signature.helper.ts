@@ -1,6 +1,6 @@
 import logger from "@adonisjs/core/services/logger";
 
-import { Signature } from "#models/signature.schema";
+import { Signature } from "#models/mongoose/signature.schema";
 import { StorageService } from "#services/storage_service";
 import { SIGNATURE_NUM_MONTHS_VALID, SignatureMetadata } from "#shared/serialized-signature";
 import { UserDetail } from "#shared/user-detail";

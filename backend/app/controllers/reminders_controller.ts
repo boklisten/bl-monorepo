@@ -132,7 +132,7 @@ export default class RemindersController {
     const { deadlineISO, customerItemType, branchIDs } =
       await ctx.request.validateUsing(reminderValidator);
     const customers = await aggregateCustomersToRemind(customerItemType, branchIDs, deadlineISO);
-    return ctx.response.ok({ recipientCount: customers.length });
+    return { recipientCount: customers.length };
   }
 
   async remind(ctx: HttpContext) {
@@ -180,6 +180,6 @@ export default class RemindersController {
       }
     }
 
-    return ctx.response.ok({ success: true });
+    return { success: true };
   }
 }

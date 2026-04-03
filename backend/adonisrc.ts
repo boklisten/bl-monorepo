@@ -22,7 +22,10 @@ export default defineConfig({
     () => import("#start/instrument"),
     () => import("#start/routes"),
     () => import("#start/kernel"),
-    () => import("#start/mongoose"),
+    {
+      file: () => import("#start/mongoose"),
+      environment: ["web"],
+    },
     () => import("#start/profiler"),
     () => import("#start/sendgrid"),
     () => import("#start/validator"),

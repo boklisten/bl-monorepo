@@ -4,18 +4,18 @@
  * Run "node ace migration:run" command to re-generate this file
  */
 
-import { BaseModel, column } from "@adonisjs/lucid/orm";
-import { DateTime } from "luxon";
+import { BaseModel, column } from '@adonisjs/lucid/orm'
+import { DateTime } from 'luxon'
 
 export class EditableTextSchema extends BaseModel {
-  static $columns = ["createdAt", "id", "text", "updatedAt"] as const;
-  $columns = EditableTextSchema.$columns;
+  static $columns = ['createdAt', 'id', 'text', 'updatedAt'] as const
+  $columns = EditableTextSchema.$columns
   @column.dateTime({ autoCreate: true })
-  declare createdAt: DateTime | null;
+  declare createdAt: DateTime | null
   @column({ isPrimary: true })
-  declare id: string;
+  declare id: string
   @column()
-  declare text: string | null;
+  declare text: string | null
   @column.dateTime({ autoCreate: true, autoUpdate: true })
-  declare updatedAt: DateTime | null;
+  declare updatedAt: DateTime | null
 }

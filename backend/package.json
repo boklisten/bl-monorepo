@@ -36,7 +36,7 @@
     "typecheck": "bun tsc --noEmit",
     "test": "node ace test",
     "build": "node ace build",
-    "migrate": "node ace migration:run",
+    "migrate": "node ace migration:run --force",
     "start": "ENV_PATH=../ node build/bin/server.js"
   },
   "dependencies": {

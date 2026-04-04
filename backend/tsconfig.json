@@ -3,7 +3,5 @@
   "compilerOptions": {
     "exactOptionalPropertyTypes": false, // fixme: delete this line for stricter checks
     "noUnusedParameters": false // fixme: delete this line for stricter checks
-  },
-  "include": ["."],
-  "exclude": ["node_modules", "build", "shared/dist"]
+  }
 }

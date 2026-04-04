@@ -446,20 +446,20 @@ const routes = {
   },
   'opening_hours.get': {
     methods: ["GET","HEAD"],
-    pattern: '/v2/opening_hours/:id',
-    tokens: [{"old":"/v2/opening_hours/:id","type":0,"val":"v2","end":""},{"old":"/v2/opening_hours/:id","type":0,"val":"opening_hours","end":""},{"old":"/v2/opening_hours/:id","type":1,"val":"id","end":""}],
+    pattern: '/opening_hours/branch/:branchId',
+    tokens: [{"old":"/opening_hours/branch/:branchId","type":0,"val":"opening_hours","end":""},{"old":"/opening_hours/branch/:branchId","type":0,"val":"branch","end":""},{"old":"/opening_hours/branch/:branchId","type":1,"val":"branchId","end":""}],
     types: placeholder as Registry['opening_hours.get']['types'],
   },
   'opening_hours.add': {
     methods: ["POST"],
-    pattern: '/v2/opening_hours',
-    tokens: [{"old":"/v2/opening_hours","type":0,"val":"v2","end":""},{"old":"/v2/opening_hours","type":0,"val":"opening_hours","end":""}],
+    pattern: '/opening_hours',
+    tokens: [{"old":"/opening_hours","type":0,"val":"opening_hours","end":""}],
     types: placeholder as Registry['opening_hours.add']['types'],
   },
   'opening_hours.delete': {
     methods: ["DELETE"],
-    pattern: '/v2/opening_hours/:id',
-    tokens: [{"old":"/v2/opening_hours/:id","type":0,"val":"v2","end":""},{"old":"/v2/opening_hours/:id","type":0,"val":"opening_hours","end":""},{"old":"/v2/opening_hours/:id","type":1,"val":"id","end":""}],
+    pattern: '/opening_hours/:id',
+    tokens: [{"old":"/opening_hours/:id","type":0,"val":"opening_hours","end":""},{"old":"/opening_hours/:id","type":1,"val":"id","end":""}],
     types: placeholder as Registry['opening_hours.delete']['types'],
   },
   'items.get': {
@@ -629,30 +629,6 @@ const routes = {
     pattern: '/items/:id',
     tokens: [{"old":"/items/:id","type":0,"val":"items","end":""},{"old":"/items/:id","type":1,"val":"id","end":""}],
     types: placeholder as Registry['collection.items.patch']['types'],
-  },
-  'collection.openinghours.getId': {
-    methods: ["GET","HEAD"],
-    pattern: '/openinghours/:id',
-    tokens: [{"old":"/openinghours/:id","type":0,"val":"openinghours","end":""},{"old":"/openinghours/:id","type":1,"val":"id","end":""}],
-    types: placeholder as Registry['collection.openinghours.getId']['types'],
-  },
-  'collection.openinghours.getAll': {
-    methods: ["GET","HEAD"],
-    pattern: '/openinghours',
-    tokens: [{"old":"/openinghours","type":0,"val":"openinghours","end":""}],
-    types: placeholder as Registry['collection.openinghours.getAll']['types'],
-  },
-  'collection.openinghours.post': {
-    methods: ["POST"],
-    pattern: '/openinghours',
-    tokens: [{"old":"/openinghours","type":0,"val":"openinghours","end":""}],
-    types: placeholder as Registry['collection.openinghours.post']['types'],
-  },
-  'collection.openinghours.patch': {
-    methods: ["PATCH"],
-    pattern: '/openinghours/:id',
-    tokens: [{"old":"/openinghours/:id","type":0,"val":"openinghours","end":""},{"old":"/openinghours/:id","type":1,"val":"id","end":""}],
-    types: placeholder as Registry['collection.openinghours.patch']['types'],
   },
   'collection.orders.post': {
     methods: ["POST"],

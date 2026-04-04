@@ -185,12 +185,6 @@ export interface ApiDefinition {
       post: typeof routes['collection.items.post']
       patch: typeof routes['collection.items.patch']
     }
-    openinghours: {
-      getId: typeof routes['collection.openinghours.getId']
-      getAll: typeof routes['collection.openinghours.getAll']
-      post: typeof routes['collection.openinghours.post']
-      patch: typeof routes['collection.openinghours.patch']
-    }
     orders: {
       post: typeof routes['collection.orders.post']
       delete: typeof routes['collection.orders.delete']

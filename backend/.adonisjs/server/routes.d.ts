@@ -77,7 +77,7 @@ export type ScannedRoutes = {
     'companies.get_companies': { paramsTuple?: []; params?: {} }
     'companies.add_company': { paramsTuple?: []; params?: {} }
     'companies.delete_company': { paramsTuple: [ParamValue]; params: {'companyId': ParamValue} }
-    'opening_hours.get': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
+    'opening_hours.get': { paramsTuple: [ParamValue]; params: {'branchId': ParamValue} }
     'opening_hours.add': { paramsTuple?: []; params?: {} }
     'opening_hours.delete': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
     'items.get': { paramsTuple?: []; params?: {} }
@@ -108,10 +108,6 @@ export type ScannedRoutes = {
     'collection.items.getAll': { paramsTuple?: []; params?: {} }
     'collection.items.post': { paramsTuple?: []; params?: {} }
     'collection.items.patch': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
-    'collection.openinghours.getId': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
-    'collection.openinghours.getAll': { paramsTuple?: []; params?: {} }
-    'collection.openinghours.post': { paramsTuple?: []; params?: {} }
-    'collection.openinghours.patch': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
     'collection.orders.post': { paramsTuple?: []; params?: {} }
     'collection.orders.delete': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
     'collection.orders.patch': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
@@ -181,7 +177,7 @@ export type ScannedRoutes = {
     'branch_items.get_branch_items': { paramsTuple: [ParamValue]; params: {'branchId': ParamValue} }
     'postal.lookup_postal_code': { paramsTuple: [ParamValue]; params: {'postalCode': ParamValue} }
     'companies.get_companies': { paramsTuple?: []; params?: {} }
-    'opening_hours.get': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
+    'opening_hours.get': { paramsTuple: [ParamValue]; params: {'branchId': ParamValue} }
     'items.get': { paramsTuple?: []; params?: {} }
     'items.get_buyback_items': { paramsTuple?: []; params?: {} }
     'dispatch.get_email_templates': { paramsTuple?: []; params?: {} }
@@ -195,8 +191,6 @@ export type ScannedRoutes = {
     'collection.deliveries.getId': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
     'collection.items.getId': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
     'collection.items.getAll': { paramsTuple?: []; params?: {} }
-    'collection.openinghours.getId': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
-    'collection.openinghours.getAll': { paramsTuple?: []; params?: {} }
     'collection.orders.getId': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
     'collection.orders.operation.get_customer_orders.getId': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
     'collection.orders.getAll': { paramsTuple?: []; params?: {} }
@@ -247,7 +241,7 @@ export type ScannedRoutes = {
     'branch_items.get_branch_items': { paramsTuple: [ParamValue]; params: {'branchId': ParamValue} }
     'postal.lookup_postal_code': { paramsTuple: [ParamValue]; params: {'postalCode': ParamValue} }
     'companies.get_companies': { paramsTuple?: []; params?: {} }
-    'opening_hours.get': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
+    'opening_hours.get': { paramsTuple: [ParamValue]; params: {'branchId': ParamValue} }
     'items.get': { paramsTuple?: []; params?: {} }
     'items.get_buyback_items': { paramsTuple?: []; params?: {} }
     'dispatch.get_email_templates': { paramsTuple?: []; params?: {} }
@@ -261,8 +255,6 @@ export type ScannedRoutes = {
     'collection.deliveries.getId': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
     'collection.items.getId': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
     'collection.items.getAll': { paramsTuple?: []; params?: {} }
-    'collection.openinghours.getId': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
-    'collection.openinghours.getAll': { paramsTuple?: []; params?: {} }
     'collection.orders.getId': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
     'collection.orders.operation.get_customer_orders.getId': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
     'collection.orders.getAll': { paramsTuple?: []; params?: {} }
@@ -324,7 +316,6 @@ export type ScannedRoutes = {
     'collection.customeritems.operation.generate-report.post': { paramsTuple?: []; params?: {} }
     'collection.deliveries.post': { paramsTuple?: []; params?: {} }
     'collection.items.post': { paramsTuple?: []; params?: {} }
-    'collection.openinghours.post': { paramsTuple?: []; params?: {} }
     'collection.orders.post': { paramsTuple?: []; params?: {} }
     'collection.payments.post': { paramsTuple?: []; params?: {} }
     'collection.messages.post': { paramsTuple?: []; params?: {} }
@@ -360,7 +351,6 @@ export type ScannedRoutes = {
     'collection.customeritems.patch': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
     'collection.deliveries.patch': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
     'collection.items.patch': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
-    'collection.openinghours.patch': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
     'collection.orders.patch': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
     'collection.orders.operation.place.patch': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
     'collection.orders.operation.confirm.patch': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }

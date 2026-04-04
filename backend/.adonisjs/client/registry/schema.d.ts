@@ -885,11 +885,11 @@ export interface Registry {
   }
   'opening_hours.get': {
     methods: ["GET","HEAD"]
-    pattern: '/v2/opening_hours/:id'
+    pattern: '/opening_hours/branch/:branchId'
     types: {
       body: {}
       paramsTuple: [ParamValue]
-      params: { id: ParamValue }
+      params: { branchId: ParamValue }
       query: {}
       response: ExtractResponse<Awaited<ReturnType<import('#controllers/opening_hours_controller').default['get']>>>
       errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/opening_hours_controller').default['get']>>>
@@ -897,7 +897,7 @@ export interface Registry {
   }
   'opening_hours.add': {
     methods: ["POST"]
-    pattern: '/v2/opening_hours'
+    pattern: '/opening_hours'
     types: {
       body: ExtractBody<InferInput<(typeof import('#validators/opening_hours').openingHoursValidator)>>
       paramsTuple: []
@@ -909,7 +909,7 @@ export interface Registry {
   }
   'opening_hours.delete': {
     methods: ["DELETE"]
-    pattern: '/v2/opening_hours/:id'
+    pattern: '/opening_hours/:id'
     types: {
       body: {}
       paramsTuple: [ParamValue]
@@ -1246,54 +1246,6 @@ export interface Registry {
   'collection.items.patch': {
     methods: ["PATCH"]
     pattern: '/items/:id'
-    types: {
-      body: {}
-      paramsTuple: [ParamValue]
-      params: { id: ParamValue }
-      query: {}
-      response: unknown
-      errorResponse: unknown
-    }
-  }
-  'collection.openinghours.getId': {
-    methods: ["GET","HEAD"]
-    pattern: '/openinghours/:id'
-    types: {
-      body: {}
-      paramsTuple: [ParamValue]
-      params: { id: ParamValue }
-      query: {}
-      response: unknown
-      errorResponse: unknown
-    }
-  }
-  'collection.openinghours.getAll': {
-    methods: ["GET","HEAD"]
-    pattern: '/openinghours'
-    types: {
-      body: {}
-      paramsTuple: []
-      params: {}
-      query: {}
-      response: unknown
-      errorResponse: unknown
-    }
-  }
-  'collection.openinghours.post': {
-    methods: ["POST"]
-    pattern: '/openinghours'
-    types: {
-      body: {}
-      paramsTuple: []
-      params: {}
-      query: {}
-      response: unknown
-      errorResponse: unknown
-    }
-  }
-  'collection.openinghours.patch': {
-    methods: ["PATCH"]
-    pattern: '/openinghours/:id'
     types: {
       body: {}
       paramsTuple: [ParamValue]

@@ -8,7 +8,6 @@ export const BlSchemaName = {
   Invoices: "invoices",
   Items: "items",
   Messages: "messages",
-  OpeningHours: "openinghours",
   Orders: "orders",
   Payments: "payments",
   PendingPasswordResets: "pendingpasswordresets",

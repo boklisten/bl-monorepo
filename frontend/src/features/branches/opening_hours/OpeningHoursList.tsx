@@ -1,4 +1,3 @@
-import type { OpeningHour } from "@boklisten/backend/shared/opening-hour";
 import { Button, Skeleton, Stack, Table } from "@mantine/core";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import dayjs from "dayjs";
@@ -9,8 +8,13 @@ import useApiClient from "@/shared/hooks/useApiClient";
 import { PLEASE_TRY_AGAIN_TEXT } from "@/shared/utils/constants";
 import { showErrorNotification, showSuccessNotification } from "@/shared/utils/notifications";
 import { publicApi } from "@/shared/utils/publicApiClient";
+import { Route } from "@tuyau/core/types";
 
-const OpeningHourRow = ({ openingHour }: { openingHour: OpeningHour }) => {
+const OpeningHourRow = ({
+  openingHour,
+}: {
+  openingHour: Route.Response<"opening_hours.get">[number];
+}) => {
   const { api } = useApiClient();
   const queryClient = useQueryClient();
   const deleteOpeningHourMutation = useMutation(
@@ -21,7 +25,7 @@ const OpeningHourRow = ({ openingHour }: { openingHour: OpeningHour }) => {
       },
       onSettled: () =>
         queryClient.invalidateQueries({
-          queryKey: api.openingHours.get.queryKey({ params: { id: openingHour.id } }),
+          queryKey: api.openingHours.get.queryKey({ params: { branchId: openingHour.branchId } }),
         }),
     }),
   );
@@ -62,7 +66,7 @@ export default function OpeningHoursList({ branchId }: { branchId: string }) {
     data: openingHours,
     isLoading: isLoadingOpeningHours,
     isError: isErrorOpeningHours,
-  } = useQuery(publicApi.openingHours.get.queryOptions({ params: { id: branchId } }));
+  } = useQuery(publicApi.openingHours.get.queryOptions({ params: { branchId: branchId } }));
 
   if (isLoadingOpeningHours) {
     return (

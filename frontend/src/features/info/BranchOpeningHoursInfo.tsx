@@ -1,4 +1,3 @@
-import type { OpeningHour } from "@boklisten/backend/shared/opening-hour";
 import { Skeleton, Stack, Table } from "@mantine/core";
 import { useQuery } from "@tanstack/react-query";
 import dayjs from "dayjs";
@@ -8,8 +7,13 @@ import InfoAlert from "@/shared/components/alerts/InfoAlert";
 import ContactInfo from "@/shared/components/ContactInfo";
 import { PLEASE_TRY_AGAIN_TEXT } from "@/shared/utils/constants";
 import { publicApi } from "@/shared/utils/publicApiClient";
+import { Route } from "@tuyau/core/types";
 
-const OpeningHourRow = ({ openingHour }: { openingHour: OpeningHour }) => {
+const OpeningHourRow = ({
+  openingHour,
+}: {
+  openingHour: Route.Response<"opening_hours.get">[number];
+}) => {
   const fromDate = dayjs(openingHour.from).locale("nb");
   const toDate = dayjs(openingHour.to).locale("nb");
   const weekday = fromDate.format("dddd");
@@ -33,7 +37,7 @@ export default function BranchOpeningHours({ branchId }: { branchId: string }) {
     data: openingHours,
     isLoading: isLoadingOpeningHours,
     isError: isErrorOpeningHours,
-  } = useQuery(publicApi.openingHours.get.queryOptions({ params: { id: branchId } }));
+  } = useQuery(publicApi.openingHours.get.queryOptions({ params: { branchId } }));
 
   if (isLoadingOpeningHours) {
     return (

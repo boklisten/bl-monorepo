@@ -22,7 +22,7 @@ export default function CreateOpeningHours({ branchId }: { branchId: string }) {
       },
       onSettled: () =>
         queryClient.invalidateQueries({
-          queryKey: api.openingHours.get.queryKey({ params: { id: branchId } }),
+          queryKey: api.openingHours.get.queryKey({ params: { branchId } }),
         }),
     }),
   );

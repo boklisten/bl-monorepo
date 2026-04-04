@@ -19,3 +19,20 @@ export class EditableTextSchema extends BaseModel {
   @column.dateTime({ autoCreate: true, autoUpdate: true })
   declare updatedAt: DateTime | null
 }
+
+export class OpeningHourSchema extends BaseModel {
+  static $columns = ['branchId', 'createdAt', 'from', 'id', 'to', 'updatedAt'] as const
+  $columns = OpeningHourSchema.$columns
+  @column()
+  declare branchId: string
+  @column.dateTime({ autoCreate: true })
+  declare createdAt: DateTime | null
+  @column.dateTime()
+  declare from: DateTime
+  @column({ isPrimary: true })
+  declare id: number
+  @column.dateTime()
+  declare to: DateTime
+  @column.dateTime({ autoCreate: true, autoUpdate: true })
+  declare updatedAt: DateTime | null
+}

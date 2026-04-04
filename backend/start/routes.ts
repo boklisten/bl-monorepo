@@ -241,9 +241,9 @@ router.delete("/v2/companies/:companyId", [controllers.Companies, "deleteCompany
 /**
  * Opening Hours
  */
-router.get("/v2/opening_hours/:id", [controllers.OpeningHours, "get"]);
-router.post("/v2/opening_hours", [controllers.OpeningHours, "add"]);
-router.delete("/v2/opening_hours/:id", [controllers.OpeningHours, "delete"]);
+router.get("/opening_hours/branch/:branchId", [controllers.OpeningHours, "get"]);
+router.post("/opening_hours", [controllers.OpeningHours, "add"]);
+router.delete("/opening_hours/:id", [controllers.OpeningHours, "delete"]);
 
 /**
  * Items

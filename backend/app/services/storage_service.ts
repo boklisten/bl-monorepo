@@ -10,7 +10,6 @@ import { EmailValidationSchema } from "#models/mongoose/email-validation.schema"
 import { InvoiceSchema } from "#models/mongoose/invoice.schema";
 import { ItemSchema } from "#models/mongoose/item.schema";
 import { MessageSchema } from "#models/mongoose/message.schema";
-import { OpeningHourSchema } from "#models/mongoose/opening-hour.schema";
 import { OrderSchema } from "#models/mongoose/order.schema";
 import { PaymentSchema } from "#models/mongoose/payment.schema";
 import { PendingPasswordResetSchema } from "#models/mongoose/pending-password-reset.schema";
@@ -37,7 +36,6 @@ export const StorageService = {
   Invoices: new MongodbHandler(InvoiceSchema, BlSchemaName.Invoices),
   Items: new MongodbHandler(ItemSchema, BlSchemaName.Items),
   Messages: new MongodbHandler(MessageSchema, BlSchemaName.Messages),
-  OpeningHours: new MongodbHandler(OpeningHourSchema, BlSchemaName.OpeningHours),
   Orders: new MongodbHandler(OrderSchema, BlSchemaName.Orders),
   Payments: new MongodbHandler(PaymentSchema, BlSchemaName.Payments),
   PendingPasswordResets: new MongodbHandler(

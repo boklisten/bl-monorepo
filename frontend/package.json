@@ -24,8 +24,8 @@
     "@tanstack/react-query": "^5.96.0",
     "@tanstack/react-router": "^1.168.10",
     "@tanstack/react-start": "^1.167.16",
-    "@tiptap/react": "^3.21.0",
-    "@tiptap/starter-kit": "^3.21.0",
+    "@tiptap/react": "^3.22.2",
+    "@tiptap/starter-kit": "^3.22.2",
     "@tuyau/core": "^1.2.2",
     "@tuyau/react-query": "^1.1.0",
     "@tuyau/superjson": "^1.0.0",
@@ -40,12 +40,12 @@
     "react-jwt": "^2.0.0",
     "react-password-strength-bar": "^0.4.1",
     "react-signature-canvas": "1.1.0-alpha.2",
-    "validator": "^13.15.26"
+    "validator": "^13.15.35"
   },
   "devDependencies": {
     "@babel/core": "^7.29.0",
     "@rolldown/plugin-babel": "^0.2.2",
-    "@tanstack/react-query-devtools": "^5.96.0",
+    "@tanstack/react-query-devtools": "^5.96.2",
     "@tsconfig/strictest": "^2.0.8",
     "@types/babel__core": "^7.20.5",
     "@types/bun": "^1.3.11",

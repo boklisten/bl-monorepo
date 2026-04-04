@@ -9,7 +9,7 @@ import {
   createUserGroup,
   seededRandom,
   shuffler,
-} from "#services/match_helpers/match-finder/match-testing-utils";
+} from "#tests/matches/match-testing-utils";
 import { MatchableUser } from "#services/match_helpers/match-finder/match-types";
 import otto_treider_test_users_year_0 from "#tests/matches/test-data/test_users_year_0";
 import otto_treider_test_users_year_1 from "#tests/matches/test-data/test_users_year_1";

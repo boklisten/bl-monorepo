@@ -28,7 +28,7 @@ export default class SubjectsController {
           {
             id: item.id,
             title: item.title,
-            branchId: branchId,
+            branchId,
             subject: category,
             options,
             selectedOptionIndex: 0,

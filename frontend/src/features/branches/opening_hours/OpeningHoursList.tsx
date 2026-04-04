@@ -66,7 +66,7 @@ export default function OpeningHoursList({ branchId }: { branchId: string }) {
     data: openingHours,
     isLoading: isLoadingOpeningHours,
     isError: isErrorOpeningHours,
-  } = useQuery(publicApi.openingHours.get.queryOptions({ params: { branchId: branchId } }));
+  } = useQuery(publicApi.openingHours.get.queryOptions({ params: { branchId } }));
 
   if (isLoadingOpeningHours) {
     return (

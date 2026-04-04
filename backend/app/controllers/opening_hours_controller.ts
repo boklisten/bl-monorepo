@@ -7,14 +7,17 @@ import { DateTime } from "luxon";
 
 export default class OpeningHoursController {
   async get(ctx: HttpContext) {
-    return (await OpeningHour.findManyBy("branchId", ctx.request.param("branchId"))).map(
-      ({ id, branchId, from, to }) => ({
-        id,
-        branchId,
-        from: from.toJSDate(),
-        to: to.toJSDate(),
-      }),
-    );
+    return (
+      await OpeningHour.query()
+        .where("branchId", ctx.request.param("branchId"))
+        .where("to", ">", DateTime.now().toSQL())
+        .orderBy("to", "asc")
+    ).map(({ id, branchId, from, to }) => ({
+      id,
+      branchId,
+      from: from.toJSDate(),
+      to: to.toJSDate(),
+    }));
   }
   async add(ctx: HttpContext) {
     PermissionService.adminOrFail(ctx);

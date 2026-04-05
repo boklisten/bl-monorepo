@@ -16,6 +16,7 @@ export default defineConfig({
     () => import("@adonisjs/ally/ally_provider"),
     () => import("@adonisjs/static/static_provider"),
     () => import("@adonisjs/lucid/database_provider"),
+    () => import("@adonisjs/limiter/limiter_provider"),
   ],
 
   preloads: [

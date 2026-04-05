@@ -27,7 +27,13 @@ export default function LocalSignIn() {
           redirectToCaller();
         }
       },
-      onError: () => setApiError(PLEASE_TRY_AGAIN_TEXT),
+      onError: (error) => {
+        if (error.isStatus(429)) {
+          setApiError("For mange innloggingsforsøk. Vennligst prøv igjen om 60 sekunder.");
+        } else {
+          setApiError(PLEASE_TRY_AGAIN_TEXT);
+        }
+      },
     }),
   );
 

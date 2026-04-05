@@ -3,6 +3,7 @@ import router from "@adonisjs/core/services/router";
 import { controllers } from "#generated/controllers";
 import CollectionEndpoint from "#services/legacy/collection-endpoint/collection-endpoint";
 import BlCollections from "#services/legacy/collections/bl-collections";
+import { throttle } from "#start/limiter";
 
 /**
  * static
@@ -31,13 +32,15 @@ router.get("/auth/vipps/callback", [controllers.auth.Vipps, "callback"]);
 /**
  * auth local
  */
-router.post("/auth/local/login", [controllers.auth.Local, "login"]);
-router.post("/auth/local/register", [controllers.auth.Local, "register"]);
+router.post("/auth/local/login", [controllers.auth.Local, "login"]).use(throttle);
+router.post("/auth/local/register", [controllers.auth.Local, "register"]).use(throttle);
 
 /**
  * password reset
  */
-router.post("/forgot_password", [controllers.auth.PasswordReset, "requestPasswordReset"]);
+router
+  .post("/forgot_password", [controllers.auth.PasswordReset, "requestPasswordReset"])
+  .use(throttle);
 router.get("/password_reset/validate/:id/:token", [
   controllers.auth.PasswordReset,
   "validatePasswordReset",

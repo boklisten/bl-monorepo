@@ -80,6 +80,17 @@ export class QuestionAndAnswerSchema extends BaseModel {
   declare updatedAt: DateTime | null
 }
 
+export class RateLimitSchema extends BaseModel {
+  static $columns = ['expire', 'key', 'points'] as const
+  $columns = RateLimitSchema.$columns
+  @column()
+  declare expire: bigint | number | null
+  @column({ isPrimary: true })
+  declare key: string
+  @column()
+  declare points: number
+}
+
 export class WaitingListCustomerSchema extends BaseModel {
   static $columns = ['branchId', 'createdAt', 'id', 'itemId', 'name', 'phoneNumber', 'updatedAt'] as const
   $columns = WaitingListCustomerSchema.$columns

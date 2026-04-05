@@ -451,28 +451,28 @@ export interface Registry {
       errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/questions_and_answers_controller').default['destroy']>>>
     }
   }
-  'email_validations.create': {
+  'email_verification.send': {
     methods: ["POST"]
-    pattern: '/email_validations'
+    pattern: '/email_verification'
     types: {
       body: {}
       paramsTuple: []
       params: {}
       query: {}
-      response: ExtractResponse<Awaited<ReturnType<import('#controllers/email_validations_controller').default['create']>>>
-      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/email_validations_controller').default['create']>>>
+      response: ExtractResponse<Awaited<ReturnType<import('#controllers/email_verification_controller').default['send']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/email_verification_controller').default['send']>>>
     }
   }
-  'email_validations.confirm': {
+  'email_verification.verify': {
     methods: ["GET","HEAD"]
-    pattern: '/email_validations/:id'
+    pattern: '/email_verification/:id'
     types: {
       body: {}
       paramsTuple: [ParamValue]
       params: { id: ParamValue }
       query: {}
-      response: ExtractResponse<Awaited<ReturnType<import('#controllers/email_validations_controller').default['confirm']>>>
-      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/email_validations_controller').default['confirm']>>>
+      response: ExtractResponse<Awaited<ReturnType<import('#controllers/email_verification_controller').default['verify']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/email_verification_controller').default['verify']>>>
     }
   }
   'public_blid_lookup.lookup': {

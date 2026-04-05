@@ -15,7 +15,7 @@ export const EMAIL_TEMPLATES = {
     sender: EMAIL_SENDER.NO_REPLY,
     templateId: "d-dc8ab3365a0f4fd8a69b6a38e6eb83f9",
   },
-  emailConfirmation: {
+  emailVerification: {
     sender: EMAIL_SENDER.NO_REPLY,
     templateId: "d-8734d0fdf5fc4d99bf22553c3a0c724a",
   },

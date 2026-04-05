@@ -1,8 +1,8 @@
 import { Container, Stack, Title } from "@mantine/core";
-import EmailConfirmer from "@/features/user/EmailConfirmer";
+import EmailVerifier from "@/features/user/EmailVerifier";
 import { createFileRoute } from "@tanstack/react-router";
 
-export const Route = createFileRoute("/(offentlig)/auth/email/confirm/$confirmationId")({
+export const Route = createFileRoute("/(offentlig)/auth/email/verify/$verificationId")({
   head: () => ({
     meta: [
       { title: "Bekreft e-post | Boklisten.no" },
@@ -15,12 +15,12 @@ export const Route = createFileRoute("/(offentlig)/auth/email/confirm/$confirmat
 });
 
 function TokenPage() {
-  const { confirmationId } = Route.useParams();
+  const { verificationId } = Route.useParams();
   return (
     <Container>
       <Stack>
         <Title>Bekreft e-post</Title>
-        <EmailConfirmer confirmationId={confirmationId} />
+        <EmailVerifier verificationId={verificationId} />
       </Stack>
     </Container>
   );

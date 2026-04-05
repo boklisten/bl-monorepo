@@ -133,11 +133,11 @@ router.patch("/questions_and_answers/:id", [controllers.QuestionsAndAnswers, "up
 router.delete("/questions_and_answers/:id", [controllers.QuestionsAndAnswers, "destroy"]);
 
 /**
- * email validations
+ * email verification
  */
-router.post("/email_validations", [controllers.EmailValidations, "create"]);
+router.post("/email_verification", [controllers.EmailVerification, "send"]);
 
-router.get("/email_validations/:id", [controllers.EmailValidations, "confirm"]);
+router.get("/email_verification/:id", [controllers.EmailVerification, "verify"]);
 
 /**
  * public blid lookup

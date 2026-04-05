@@ -4,7 +4,6 @@ export const BlSchemaName = {
   Companies: "companies",
   CustomerItems: "customeritems",
   Deliveries: "deliveries",
-  EmailValidations: "email_validations",
   Invoices: "invoices",
   Items: "items",
   Messages: "messages",

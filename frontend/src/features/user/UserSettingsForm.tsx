@@ -101,8 +101,8 @@ export default function UserSettingsForm({
       }
     },
   });
-  const createEmailConfirmation = useMutation(
-    api.emailValidations.create.mutationOptions({
+  const sendEmailVerification = useMutation(
+    api.emailVerification.send.mutationOptions({
       onError: () => showErrorNotification("Klarte ikke sende ny bekreftelseslenke"),
     }),
   );
@@ -126,21 +126,18 @@ export default function UserSettingsForm({
       />
       <Activity mode={!userDetail.emailConfirmed ? "visible" : "hidden"}>
         <Stack>
-          <Activity mode={createEmailConfirmation.isSuccess ? "visible" : "hidden"}>
+          <Activity mode={sendEmailVerification.isSuccess ? "visible" : "hidden"}>
             <InfoAlert icon={<IconMailFast />}>
               Bekreftelseslenke er sendt til din e-postadresse! Sjekk søppelpost om den ikke dukker
               opp i inbox.
             </InfoAlert>
           </Activity>
-          <Activity mode={!createEmailConfirmation.isSuccess ? "visible" : "hidden"}>
+          <Activity mode={!sendEmailVerification.isSuccess ? "visible" : "hidden"}>
             <WarningAlert title={"E-postadressen er ikke bekreftet"}>
               En bekreftelseslenke har blitt sendt til {userDetail.email}. Trykk på knappen nedenfor
               for å sende en ny lenke.
             </WarningAlert>
-            <Button
-              leftSection={<IconMailFast />}
-              onClick={() => createEmailConfirmation.mutate({})}
-            >
+            <Button leftSection={<IconMailFast />} onClick={() => sendEmailVerification.mutate({})}>
               Send bekreftelseslenke på nytt
             </Button>
           </Activity>

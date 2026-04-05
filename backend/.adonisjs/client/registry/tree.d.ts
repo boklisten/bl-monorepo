@@ -65,9 +65,9 @@ export interface ApiDefinition {
     update: typeof routes['questions_and_answers.update']
     destroy: typeof routes['questions_and_answers.destroy']
   }
-  emailValidations: {
-    create: typeof routes['email_validations.create']
-    confirm: typeof routes['email_validations.confirm']
+  emailVerification: {
+    send: typeof routes['email_verification.send']
+    verify: typeof routes['email_verification.verify']
   }
   publicBlidLookup: {
     lookup: typeof routes['public_blid_lookup.lookup']

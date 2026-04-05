@@ -81,7 +81,7 @@ import { Route as administrasjonAdminDatabaseLag_brukereRouteImport } from './ro
 import { Route as administrasjonAdminDatabaseFilialerRouteImport } from './routes/(administrasjon)/admin/database/filialer'
 import { Route as administrasjonAdminDatabaseDynamisk_innholdRouteImport } from './routes/(administrasjon)/admin/database/dynamisk_innhold'
 import { Route as administrasjonAdminDatabaseBokerRouteImport } from './routes/(administrasjon)/admin/database/boker'
-import { Route as offentligAuthEmailConfirmConfirmationIdRouteImport } from './routes/(offentlig)/auth/email.confirm.$confirmationId'
+import { Route as offentligAuthEmailVerifyVerificationIdRouteImport } from './routes/(offentlig)/auth/email.verify.$verificationId'
 
 const RobotsDottxtRoute = RobotsDottxtRouteImport.update({
   id: '/robots.txt',
@@ -480,10 +480,10 @@ const administrasjonAdminDatabaseBokerRoute =
     path: '/database/boker',
     getParentRoute: () => administrasjonAdminRouteRoute,
   } as any)
-const offentligAuthEmailConfirmConfirmationIdRoute =
-  offentligAuthEmailConfirmConfirmationIdRouteImport.update({
-    id: '/auth/email/confirm/$confirmationId',
-    path: '/auth/email/confirm/$confirmationId',
+const offentligAuthEmailVerifyVerificationIdRoute =
+  offentligAuthEmailVerifyVerificationIdRouteImport.update({
+    id: '/auth/email/verify/$verificationId',
+    path: '/auth/email/verify/$verificationId',
     getParentRoute: () => offentligRouteRoute,
   } as any)
 
@@ -559,7 +559,7 @@ export interface FileRoutesByFullPath {
   '/overleveringer/stand/$standMatchId': typeof offentligOverleveringerStandStandMatchIdRoute
   '/overleveringer/user/$userMatchId': typeof offentligOverleveringerUserUserMatchIdRoute
   '/kasse/betaling/': typeof offentligKasseBetalingIndexRoute
-  '/auth/email/confirm/$confirmationId': typeof offentligAuthEmailConfirmConfirmationIdRoute
+  '/auth/email/verify/$verificationId': typeof offentligAuthEmailVerifyVerificationIdRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -631,7 +631,7 @@ export interface FileRoutesByTo {
   '/overleveringer/stand/$standMatchId': typeof offentligOverleveringerStandStandMatchIdRoute
   '/overleveringer/user/$userMatchId': typeof offentligOverleveringerUserUserMatchIdRoute
   '/kasse/betaling': typeof offentligKasseBetalingIndexRoute
-  '/auth/email/confirm/$confirmationId': typeof offentligAuthEmailConfirmConfirmationIdRoute
+  '/auth/email/verify/$verificationId': typeof offentligAuthEmailVerifyVerificationIdRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -707,7 +707,7 @@ export interface FileRoutesById {
   '/(offentlig)/overleveringer/stand/$standMatchId': typeof offentligOverleveringerStandStandMatchIdRoute
   '/(offentlig)/overleveringer/user/$userMatchId': typeof offentligOverleveringerUserUserMatchIdRoute
   '/(offentlig)/kasse/betaling/': typeof offentligKasseBetalingIndexRoute
-  '/(offentlig)/auth/email/confirm/$confirmationId': typeof offentligAuthEmailConfirmConfirmationIdRoute
+  '/(offentlig)/auth/email/verify/$verificationId': typeof offentligAuthEmailVerifyVerificationIdRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -783,7 +783,7 @@ export interface FileRouteTypes {
     | '/overleveringer/stand/$standMatchId'
     | '/overleveringer/user/$userMatchId'
     | '/kasse/betaling/'
-    | '/auth/email/confirm/$confirmationId'
+    | '/auth/email/verify/$verificationId'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -855,7 +855,7 @@ export interface FileRouteTypes {
     | '/overleveringer/stand/$standMatchId'
     | '/overleveringer/user/$userMatchId'
     | '/kasse/betaling'
-    | '/auth/email/confirm/$confirmationId'
+    | '/auth/email/verify/$verificationId'
   id:
     | '__root__'
     | '/'
@@ -930,7 +930,7 @@ export interface FileRouteTypes {
     | '/(offentlig)/overleveringer/stand/$standMatchId'
     | '/(offentlig)/overleveringer/user/$userMatchId'
     | '/(offentlig)/kasse/betaling/'
-    | '/(offentlig)/auth/email/confirm/$confirmationId'
+    | '/(offentlig)/auth/email/verify/$verificationId'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -1456,11 +1456,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof administrasjonAdminDatabaseBokerRouteImport
       parentRoute: typeof administrasjonAdminRouteRoute
     }
-    '/(offentlig)/auth/email/confirm/$confirmationId': {
-      id: '/(offentlig)/auth/email/confirm/$confirmationId'
-      path: '/auth/email/confirm/$confirmationId'
-      fullPath: '/auth/email/confirm/$confirmationId'
-      preLoaderRoute: typeof offentligAuthEmailConfirmConfirmationIdRouteImport
+    '/(offentlig)/auth/email/verify/$verificationId': {
+      id: '/(offentlig)/auth/email/verify/$verificationId'
+      path: '/auth/email/verify/$verificationId'
+      fullPath: '/auth/email/verify/$verificationId'
+      preLoaderRoute: typeof offentligAuthEmailVerifyVerificationIdRouteImport
       parentRoute: typeof offentligRouteRoute
     }
   }
@@ -1569,7 +1569,7 @@ interface offentligRouteRouteChildren {
   offentligAuthResetResetIdRoute: typeof offentligAuthResetResetIdRoute
   offentligKasseBetalingStatusRoute: typeof offentligKasseBetalingStatusRoute
   offentligKasseBetalingIndexRoute: typeof offentligKasseBetalingIndexRoute
-  offentligAuthEmailConfirmConfirmationIdRoute: typeof offentligAuthEmailConfirmConfirmationIdRoute
+  offentligAuthEmailVerifyVerificationIdRoute: typeof offentligAuthEmailVerifyVerificationIdRoute
 }
 
 const offentligRouteRouteChildren: offentligRouteRouteChildren = {
@@ -1597,8 +1597,8 @@ const offentligRouteRouteChildren: offentligRouteRouteChildren = {
   offentligAuthResetResetIdRoute: offentligAuthResetResetIdRoute,
   offentligKasseBetalingStatusRoute: offentligKasseBetalingStatusRoute,
   offentligKasseBetalingIndexRoute: offentligKasseBetalingIndexRoute,
-  offentligAuthEmailConfirmConfirmationIdRoute:
-    offentligAuthEmailConfirmConfirmationIdRoute,
+  offentligAuthEmailVerifyVerificationIdRoute:
+    offentligAuthEmailVerifyVerificationIdRoute,
 }
 
 const offentligRouteRouteWithChildren = offentligRouteRoute._addFileChildren(

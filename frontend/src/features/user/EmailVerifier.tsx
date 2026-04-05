@@ -8,9 +8,9 @@ import CountdownToRedirect from "@/shared/components/CountdownToRedirect";
 import TanStackAnchor from "@/shared/components/TanStackAnchor";
 import { publicApi } from "@/shared/utils/publicApiClient";
 
-export default function EmailConfirmer({ confirmationId }: { confirmationId: string }) {
-  const { data, isPending, isError } = useQuery(
-    publicApi.emailValidations.confirm.queryOptions({ params: { id: confirmationId } }),
+export default function EmailVerifier({ verificationId }: { verificationId: string }) {
+  const { isPending, isError } = useQuery(
+    publicApi.emailVerification.verify.queryOptions({ params: { id: verificationId } }),
   );
 
   if (isPending) {
@@ -21,7 +21,7 @@ export default function EmailConfirmer({ confirmationId }: { confirmationId: str
     );
   }
 
-  if (isError || !data?.confirmed) {
+  if (isError) {
     return (
       <>
         <ErrorAlert title={"Klarte ikke bekrefte e-post"}>

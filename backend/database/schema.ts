@@ -20,6 +20,19 @@ export class EditableTextSchema extends BaseModel {
   declare updatedAt: DateTime | null
 }
 
+export class EmailVerificationSchema extends BaseModel {
+  static $columns = ['createdAt', 'id', 'updatedAt', 'userDetailId'] as const
+  $columns = EmailVerificationSchema.$columns
+  @column.dateTime({ autoCreate: true })
+  declare createdAt: DateTime | null
+  @column({ isPrimary: true })
+  declare id: string
+  @column.dateTime({ autoCreate: true, autoUpdate: true })
+  declare updatedAt: DateTime | null
+  @column()
+  declare userDetailId: string
+}
+
 export class OpeningHourSchema extends BaseModel {
   static $columns = ['branchId', 'createdAt', 'from', 'id', 'to', 'updatedAt'] as const
   $columns = OpeningHourSchema.$columns

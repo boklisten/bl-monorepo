@@ -6,7 +6,6 @@ import { BranchSchema } from "#models/mongoose/branch.schema";
 import { CompanySchema } from "#models/mongoose/company.schema";
 import { CustomerItemSchema } from "#models/mongoose/customer-item.schema";
 import { DeliverySchema } from "#models/mongoose/delivery.schema";
-import { EmailValidationSchema } from "#models/mongoose/email-validation.schema";
 import { InvoiceSchema } from "#models/mongoose/invoice.schema";
 import { ItemSchema } from "#models/mongoose/item.schema";
 import { MessageSchema } from "#models/mongoose/message.schema";
@@ -31,7 +30,6 @@ export const StorageService = {
   Companies: new MongodbHandler(CompanySchema, BlSchemaName.Companies),
   CustomerItems: new MongodbHandler(CustomerItemSchema, BlSchemaName.CustomerItems),
   Deliveries: new MongodbHandler(DeliverySchema, BlSchemaName.Deliveries),
-  EmailValidations: new MongodbHandler(EmailValidationSchema, BlSchemaName.EmailValidations),
   Invoices: new MongodbHandler(InvoiceSchema, BlSchemaName.Invoices),
   Items: new MongodbHandler(ItemSchema, BlSchemaName.Items),
   Messages: new MongodbHandler(MessageSchema, BlSchemaName.Messages),

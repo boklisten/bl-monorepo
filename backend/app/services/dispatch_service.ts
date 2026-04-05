@@ -265,15 +265,14 @@ const DispatchService = {
     });
   },
 
-  // fixme: rename confirmation to verification everywhere
-  async sendEmailConfirmation(email: string, confirmationCode: string) {
+  async sendEmailVerification(email: string, verificationId: string) {
     await EmailService.sendEmail({
-      template: EMAIL_TEMPLATES.emailConfirmation,
+      template: EMAIL_TEMPLATES.emailVerification,
       recipients: [
         {
           to: email,
           dynamicTemplateData: {
-            emailVerificationUri: `${env.get("CLIENT_URI")}/auth/email/confirm/${confirmationCode}`,
+            emailVerificationUri: `${env.get("CLIENT_URI")}/auth/email/verify/${verificationId}`,
           },
         },
       ],

@@ -228,17 +228,17 @@ const routes = {
     tokens: [{"old":"/questions_and_answers/:id","type":0,"val":"questions_and_answers","end":""},{"old":"/questions_and_answers/:id","type":1,"val":"id","end":""}],
     types: placeholder as Registry['questions_and_answers.destroy']['types'],
   },
-  'email_validations.create': {
+  'email_verification.send': {
     methods: ["POST"],
-    pattern: '/email_validations',
-    tokens: [{"old":"/email_validations","type":0,"val":"email_validations","end":""}],
-    types: placeholder as Registry['email_validations.create']['types'],
+    pattern: '/email_verification',
+    tokens: [{"old":"/email_verification","type":0,"val":"email_verification","end":""}],
+    types: placeholder as Registry['email_verification.send']['types'],
   },
-  'email_validations.confirm': {
+  'email_verification.verify': {
     methods: ["GET","HEAD"],
-    pattern: '/email_validations/:id',
-    tokens: [{"old":"/email_validations/:id","type":0,"val":"email_validations","end":""},{"old":"/email_validations/:id","type":1,"val":"id","end":""}],
-    types: placeholder as Registry['email_validations.confirm']['types'],
+    pattern: '/email_verification/:id',
+    tokens: [{"old":"/email_verification/:id","type":0,"val":"email_verification","end":""},{"old":"/email_verification/:id","type":1,"val":"id","end":""}],
+    types: placeholder as Registry['email_verification.verify']['types'],
   },
   'public_blid_lookup.lookup': {
     methods: ["GET","HEAD"],

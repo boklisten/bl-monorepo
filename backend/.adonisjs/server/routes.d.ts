@@ -41,8 +41,8 @@ export type ScannedRoutes = {
     'questions_and_answers.store': { paramsTuple?: []; params?: {} }
     'questions_and_answers.update': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
     'questions_and_answers.destroy': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
-    'email_validations.create': { paramsTuple?: []; params?: {} }
-    'email_validations.confirm': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
+    'email_verification.send': { paramsTuple?: []; params?: {} }
+    'email_verification.verify': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
     'public_blid_lookup.lookup': { paramsTuple: [ParamValue]; params: {'blid': ParamValue} }
     'matches.generate': { paramsTuple?: []; params?: {} }
     'matches.notify': { paramsTuple?: []; params?: {} }
@@ -160,7 +160,7 @@ export type ScannedRoutes = {
     'editable_texts.get': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
     'editable_texts.get_all': { paramsTuple?: []; params?: {} }
     'questions_and_answers.get_all': { paramsTuple?: []; params?: {} }
-    'email_validations.confirm': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
+    'email_verification.verify': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
     'public_blid_lookup.lookup': { paramsTuple: [ParamValue]; params: {'blid': ParamValue} }
     'matches.get_my_matches': { paramsTuple?: []; params?: {} }
     'user_detail.get_by_id': { paramsTuple: [ParamValue]; params: {'detailsId': ParamValue} }
@@ -224,7 +224,7 @@ export type ScannedRoutes = {
     'editable_texts.get': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
     'editable_texts.get_all': { paramsTuple?: []; params?: {} }
     'questions_and_answers.get_all': { paramsTuple?: []; params?: {} }
-    'email_validations.confirm': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
+    'email_verification.verify': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
     'public_blid_lookup.lookup': { paramsTuple: [ParamValue]; params: {'blid': ParamValue} }
     'matches.get_my_matches': { paramsTuple?: []; params?: {} }
     'user_detail.get_by_id': { paramsTuple: [ParamValue]; params: {'detailsId': ParamValue} }
@@ -289,7 +289,7 @@ export type ScannedRoutes = {
     'branch_upload.upload_subject_choices': { paramsTuple?: []; params?: {} }
     'orders.cancel_order_item': { paramsTuple?: []; params?: {} }
     'questions_and_answers.store': { paramsTuple?: []; params?: {} }
-    'email_validations.create': { paramsTuple?: []; params?: {} }
+    'email_verification.send': { paramsTuple?: []; params?: {} }
     'matches.generate': { paramsTuple?: []; params?: {} }
     'matches.notify': { paramsTuple?: []; params?: {} }
     'matches.lock': { paramsTuple?: []; params?: {} }

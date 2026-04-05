@@ -10,6 +10,7 @@ import { UserDetail } from "#shared/user-detail";
 import { VippsUser } from "#types/user";
 import { registerSchema } from "#validators/auth_validators";
 import { userProvisioningValidator } from "#validators/user_provisioning";
+import EmailVerification from "#models/email_verification";
 
 export const UserDetailService = {
   async getByPhoneNumber(phone: string): Promise<UserDetail | null> {
@@ -75,10 +76,10 @@ export const UserDetailService = {
       },
       { id: blid, permission: "customer" },
     );
-    const emailValidation = await StorageService.EmailValidations.add({
+    const emailVerification = await EmailVerification.create({
       userDetailId: userDetail.id,
     });
-    await DispatchService.sendEmailConfirmation(email, emailValidation.id);
+    await DispatchService.sendEmailVerification(email, emailVerification.id);
 
     return userDetail;
   },

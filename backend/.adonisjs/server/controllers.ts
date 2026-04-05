@@ -39,5 +39,5 @@ export const controllers = {
   UniqueItems: () => import('#controllers/unique_items_controller'),
   UserDetail: () => import('#controllers/user_detail_controller'),
   UserProvisioning: () => import('#controllers/user_provisioning_controller'),
-  WaitingListEntries: () => import('#controllers/waiting_list_entries_controller'),
+  WaitingListCustomer: () => import('#controllers/waiting_list_customer_controller'),
 }

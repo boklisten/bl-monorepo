@@ -60,23 +60,23 @@ const routes = {
     tokens: [{"old":"/password_reset/:id","type":0,"val":"password_reset","end":""},{"old":"/password_reset/:id","type":1,"val":"id","end":""}],
     types: placeholder as Registry['password_reset.reset_password']['types'],
   },
-  'waiting_list_entries.get_all_waiting_list_entries': {
+  'waiting_list_customer.get_all': {
     methods: ["GET","HEAD"],
-    pattern: '/waiting_list_entries',
-    tokens: [{"old":"/waiting_list_entries","type":0,"val":"waiting_list_entries","end":""}],
-    types: placeholder as Registry['waiting_list_entries.get_all_waiting_list_entries']['types'],
+    pattern: '/waiting_list_customer',
+    tokens: [{"old":"/waiting_list_customer","type":0,"val":"waiting_list_customer","end":""}],
+    types: placeholder as Registry['waiting_list_customer.get_all']['types'],
   },
-  'waiting_list_entries.add_waiting_list_entry': {
+  'waiting_list_customer.create': {
     methods: ["POST"],
-    pattern: '/waiting_list_entries',
-    tokens: [{"old":"/waiting_list_entries","type":0,"val":"waiting_list_entries","end":""}],
-    types: placeholder as Registry['waiting_list_entries.add_waiting_list_entry']['types'],
+    pattern: '/waiting_list_customer',
+    tokens: [{"old":"/waiting_list_customer","type":0,"val":"waiting_list_customer","end":""}],
+    types: placeholder as Registry['waiting_list_customer.create']['types'],
   },
-  'waiting_list_entries.delete_waiting_list_entry': {
+  'waiting_list_customer.destroy': {
     methods: ["DELETE"],
-    pattern: '/waiting_list_entries/:id',
-    tokens: [{"old":"/waiting_list_entries/:id","type":0,"val":"waiting_list_entries","end":""},{"old":"/waiting_list_entries/:id","type":1,"val":"id","end":""}],
-    types: placeholder as Registry['waiting_list_entries.delete_waiting_list_entry']['types'],
+    pattern: '/waiting_list_customer/:id',
+    tokens: [{"old":"/waiting_list_customer/:id","type":0,"val":"waiting_list_customer","end":""},{"old":"/waiting_list_customer/:id","type":1,"val":"id","end":""}],
+    types: placeholder as Registry['waiting_list_customer.destroy']['types'],
   },
   'reminders.count_recipients': {
     methods: ["POST"],

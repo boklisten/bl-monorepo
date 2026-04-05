@@ -15,5 +15,4 @@ export const BlSchemaName = {
   Users: "users",
   UserDetails: "userdetails",
   UserMatches: "user_matches",
-  WaitingListEntries: "waiting_list_entries",
 } as const satisfies Record<string, string>;

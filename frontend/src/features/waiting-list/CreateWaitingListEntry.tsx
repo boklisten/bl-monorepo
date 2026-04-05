@@ -33,13 +33,13 @@ export default function CreateWaitingListEntry({
 
   const { data: branches } = useQuery(api.branches.getPublic.queryOptions());
 
-  const addWaitingListEntryMutation = useMutation({
+  const addWaitingListCustomer = useMutation({
     mutationFn: async (data: WaitingListEntryForm) => {
       for (const itemId of data.itemIds) {
-        await client.api.waitingListEntries.addWaitingListEntry({
+        await client.api.waitingListCustomer.create({
           body: {
-            customerName: data.name,
-            customerPhone: data.phoneNumber,
+            name: data.name,
+            phoneNumber: data.phoneNumber,
             branchId: data.branchId,
             itemId,
           },
@@ -53,12 +53,12 @@ export default function CreateWaitingListEntry({
     onError: () => showErrorNotification("Klarte ikke legge til kunde i venteliste"),
     onSettled: () =>
       queryClient.invalidateQueries({
-        queryKey: api.waitingListEntries.getAllWaitingListEntries.pathKey(),
+        queryKey: api.waitingListCustomer.getAll.pathKey(),
       }),
   });
   const form = useAppForm({
     defaultValues,
-    onSubmit: ({ value }) => addWaitingListEntryMutation.mutate(value),
+    onSubmit: ({ value }) => addWaitingListCustomer.mutate(value),
   });
 
   return (
@@ -132,7 +132,7 @@ export default function CreateWaitingListEntry({
           <Button variant={"subtle"} onClick={() => onClose()}>
             Avbryt
           </Button>
-          <Button loading={addWaitingListEntryMutation.isPending} onClick={form.handleSubmit}>
+          <Button loading={addWaitingListCustomer.isPending} onClick={form.handleSubmit}>
             Legg til
           </Button>
         </Group>

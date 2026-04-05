@@ -24,7 +24,7 @@ export default function WaitingList() {
     data: waitingList,
     isLoading: isLoadingWaitingList,
     error: waitingListError,
-  } = useQuery(api.waitingListEntries.getAllWaitingListEntries.queryOptions());
+  } = useQuery(api.waitingListCustomer.getAll.queryOptions());
 
   if (itemsError || branchesError || waitingListError) {
     return (

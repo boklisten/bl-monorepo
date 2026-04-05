@@ -19,7 +19,6 @@ import { UniqueItemSchema } from "#models/mongoose/unique-item.schema";
 import { UserDetailSchema } from "#models/mongoose/user-detail.schema";
 import { UserMatchSchema } from "#models/mongoose/user-match.schema";
 import { UserSchema } from "#models/mongoose/user.schema";
-import { WaitingListEntriesSchema } from "#models/mongoose/waiting-list-entries.schema";
 
 export type BlSchema<T> = Schema<ToSchema<T>>;
 
@@ -40,7 +39,6 @@ export const StorageService = {
   Users: new MongodbHandler(UserSchema, BlSchemaName.Users),
   UserDetails: new MongodbHandler(UserDetailSchema, BlSchemaName.UserDetails),
   UserMatches: new MongodbHandler(UserMatchSchema, BlSchemaName.UserMatches),
-  WaitingListEntries: new MongodbHandler(WaitingListEntriesSchema, BlSchemaName.WaitingListEntries),
 } as const;
 
 export type BlStorageHandler = (typeof StorageService)[keyof typeof StorageService];

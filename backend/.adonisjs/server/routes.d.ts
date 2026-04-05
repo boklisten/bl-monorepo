@@ -13,9 +13,9 @@ export type ScannedRoutes = {
     'password_reset.request_password_reset': { paramsTuple?: []; params?: {} }
     'password_reset.validate_password_reset': { paramsTuple: [ParamValue,ParamValue]; params: {'id': ParamValue,'token': ParamValue} }
     'password_reset.reset_password': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
-    'waiting_list_entries.get_all_waiting_list_entries': { paramsTuple?: []; params?: {} }
-    'waiting_list_entries.add_waiting_list_entry': { paramsTuple?: []; params?: {} }
-    'waiting_list_entries.delete_waiting_list_entry': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
+    'waiting_list_customer.get_all': { paramsTuple?: []; params?: {} }
+    'waiting_list_customer.create': { paramsTuple?: []; params?: {} }
+    'waiting_list_customer.destroy': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
     'reminders.count_recipients': { paramsTuple?: []; params?: {} }
     'reminders.remind': { paramsTuple?: []; params?: {} }
     'branches.get_public': { paramsTuple?: []; params?: {} }
@@ -150,7 +150,7 @@ export type ScannedRoutes = {
     'vipps.redirect': { paramsTuple?: []; params?: {} }
     'vipps.callback': { paramsTuple?: []; params?: {} }
     'password_reset.validate_password_reset': { paramsTuple: [ParamValue,ParamValue]; params: {'id': ParamValue,'token': ParamValue} }
-    'waiting_list_entries.get_all_waiting_list_entries': { paramsTuple?: []; params?: {} }
+    'waiting_list_customer.get_all': { paramsTuple?: []; params?: {} }
     'branches.get_public': { paramsTuple?: []; params?: {} }
     'branches.get_all': { paramsTuple?: []; params?: {} }
     'branches.get_by_id': { paramsTuple: [ParamValue]; params: {'branchId': ParamValue} }
@@ -214,7 +214,7 @@ export type ScannedRoutes = {
     'vipps.redirect': { paramsTuple?: []; params?: {} }
     'vipps.callback': { paramsTuple?: []; params?: {} }
     'password_reset.validate_password_reset': { paramsTuple: [ParamValue,ParamValue]; params: {'id': ParamValue,'token': ParamValue} }
-    'waiting_list_entries.get_all_waiting_list_entries': { paramsTuple?: []; params?: {} }
+    'waiting_list_customer.get_all': { paramsTuple?: []; params?: {} }
     'branches.get_public': { paramsTuple?: []; params?: {} }
     'branches.get_all': { paramsTuple?: []; params?: {} }
     'branches.get_by_id': { paramsTuple: [ParamValue]; params: {'branchId': ParamValue} }
@@ -281,7 +281,7 @@ export type ScannedRoutes = {
     'local.register': { paramsTuple?: []; params?: {} }
     'password_reset.request_password_reset': { paramsTuple?: []; params?: {} }
     'password_reset.reset_password': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
-    'waiting_list_entries.add_waiting_list_entry': { paramsTuple?: []; params?: {} }
+    'waiting_list_customer.create': { paramsTuple?: []; params?: {} }
     'reminders.count_recipients': { paramsTuple?: []; params?: {} }
     'reminders.remind': { paramsTuple?: []; params?: {} }
     'branches.add': { paramsTuple?: []; params?: {} }
@@ -326,7 +326,7 @@ export type ScannedRoutes = {
     'collection.uniqueitems.post': { paramsTuple?: []; params?: {} }
   }
   DELETE: {
-    'waiting_list_entries.delete_waiting_list_entry': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
+    'waiting_list_customer.destroy': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
     'branch_membership.remove_direct_members': { paramsTuple: [ParamValue]; params: {'branchId': ParamValue} }
     'branch_membership.remove_indirect_members': { paramsTuple: [ParamValue]; params: {'branchId': ParamValue} }
     'editable_texts.destroy': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }

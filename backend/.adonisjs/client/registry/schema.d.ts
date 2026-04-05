@@ -115,40 +115,40 @@ export interface Registry {
       errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/auth/password_reset_controller').default['resetPassword']>>> | { status: 422; response: { errors: SimpleError[] } }
     }
   }
-  'waiting_list_entries.get_all_waiting_list_entries': {
+  'waiting_list_customer.get_all': {
     methods: ["GET","HEAD"]
-    pattern: '/waiting_list_entries'
+    pattern: '/waiting_list_customer'
     types: {
       body: {}
       paramsTuple: []
       params: {}
       query: {}
-      response: ExtractResponse<Awaited<ReturnType<import('#controllers/waiting_list_entries_controller').default['getAllWaitingListEntries']>>>
-      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/waiting_list_entries_controller').default['getAllWaitingListEntries']>>>
+      response: ExtractResponse<Awaited<ReturnType<import('#controllers/waiting_list_customer_controller').default['getAll']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/waiting_list_customer_controller').default['getAll']>>>
     }
   }
-  'waiting_list_entries.add_waiting_list_entry': {
+  'waiting_list_customer.create': {
     methods: ["POST"]
-    pattern: '/waiting_list_entries'
+    pattern: '/waiting_list_customer'
     types: {
-      body: ExtractBody<InferInput<(typeof import('#validators/waiting_list').waitingListEntryValidator)>>
+      body: ExtractBody<InferInput<(typeof import('#validators/waiting_list_customer').waitingListCustomerValidator)>>
       paramsTuple: []
       params: {}
-      query: ExtractQuery<InferInput<(typeof import('#validators/waiting_list').waitingListEntryValidator)>>
-      response: ExtractResponse<Awaited<ReturnType<import('#controllers/waiting_list_entries_controller').default['addWaitingListEntry']>>>
-      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/waiting_list_entries_controller').default['addWaitingListEntry']>>> | { status: 422; response: { errors: SimpleError[] } }
+      query: ExtractQuery<InferInput<(typeof import('#validators/waiting_list_customer').waitingListCustomerValidator)>>
+      response: ExtractResponse<Awaited<ReturnType<import('#controllers/waiting_list_customer_controller').default['create']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/waiting_list_customer_controller').default['create']>>> | { status: 422; response: { errors: SimpleError[] } }
     }
   }
-  'waiting_list_entries.delete_waiting_list_entry': {
+  'waiting_list_customer.destroy': {
     methods: ["DELETE"]
-    pattern: '/waiting_list_entries/:id'
+    pattern: '/waiting_list_customer/:id'
     types: {
       body: {}
       paramsTuple: [ParamValue]
       params: { id: ParamValue }
       query: {}
-      response: ExtractResponse<Awaited<ReturnType<import('#controllers/waiting_list_entries_controller').default['deleteWaitingListEntry']>>>
-      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/waiting_list_entries_controller').default['deleteWaitingListEntry']>>>
+      response: ExtractResponse<Awaited<ReturnType<import('#controllers/waiting_list_customer_controller').default['destroy']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/waiting_list_customer_controller').default['destroy']>>>
     }
   }
   'reminders.count_recipients': {

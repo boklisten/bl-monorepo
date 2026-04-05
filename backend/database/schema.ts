@@ -79,3 +79,22 @@ export class QuestionAndAnswerSchema extends BaseModel {
   @column.dateTime({ autoCreate: true, autoUpdate: true })
   declare updatedAt: DateTime | null
 }
+
+export class WaitingListCustomerSchema extends BaseModel {
+  static $columns = ['branchId', 'createdAt', 'id', 'itemId', 'name', 'phoneNumber', 'updatedAt'] as const
+  $columns = WaitingListCustomerSchema.$columns
+  @column()
+  declare branchId: string
+  @column.dateTime({ autoCreate: true })
+  declare createdAt: DateTime | null
+  @column({ isPrimary: true })
+  declare id: number
+  @column()
+  declare itemId: string
+  @column()
+  declare name: string
+  @column()
+  declare phoneNumber: string
+  @column.dateTime({ autoCreate: true, autoUpdate: true })
+  declare updatedAt: DateTime | null
+}

@@ -44,14 +44,12 @@ router.get("/password_reset/validate/:id/:token", [
 ]);
 router.post("/password_reset/:id", [controllers.auth.PasswordReset, "resetPassword"]);
 
-router.get("/waiting_list_entries", [controllers.WaitingListEntries, "getAllWaitingListEntries"]);
-
-router.post("/waiting_list_entries", [controllers.WaitingListEntries, "addWaitingListEntry"]);
-
-router.delete("/waiting_list_entries/:id", [
-  controllers.WaitingListEntries,
-  "deleteWaitingListEntry",
-]);
+/**
+ * waiting list customers
+ */
+router.get("/waiting_list_customer", [controllers.WaitingListCustomer, "getAll"]);
+router.post("/waiting_list_customer", [controllers.WaitingListCustomer, "create"]);
+router.delete("/waiting_list_customer/:id", [controllers.WaitingListCustomer, "destroy"]);
 
 /**
  * reminders

@@ -3,7 +3,6 @@
 
 import type { Branch } from "@boklisten/backend/shared/branch";
 import type { Item } from "@boklisten/backend/shared/item";
-import type { WaitingListEntry } from "@boklisten/backend/shared/waiting-list-entry";
 import { ActionIcon, Button, Tooltip } from "@mantine/core";
 import { IconTrash } from "@tabler/icons-react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
@@ -14,6 +13,7 @@ import { MRT_Localization_NO } from "mantine-react-table/locales/no";
 import CreateWaitingListEntry from "@/features/waiting-list/CreateWaitingListEntry";
 import useApiClient from "@/shared/hooks/useApiClient";
 import { showErrorNotification, showSuccessNotification } from "@/shared/utils/notifications";
+import { Route } from "@tuyau/core/types";
 
 export default function WaitingListTable({
   loading,
@@ -24,16 +24,16 @@ export default function WaitingListTable({
   loading: boolean;
   items: Item[];
   branches: Branch[];
-  waitingList: WaitingListEntry[];
+  waitingList: Route.Response<"waiting_list_customer.get_all">;
 }) {
   const { api } = useApiClient();
   const queryClient = useQueryClient();
 
   const destroyWaitingListEntryMutation = useMutation(
-    api.waitingListEntries.deleteWaitingListEntry.mutationOptions({
+    api.waitingListCustomer.destroy.mutationOptions({
       onSettled: () =>
         queryClient.invalidateQueries({
-          queryKey: api.waitingListEntries.getAllWaitingListEntries.pathKey(),
+          queryKey: api.waitingListCustomer.getAll.pathKey(),
         }),
       onSuccess: () => showSuccessNotification("Ventelisteoppføring ble slettet!"),
       onError: async () => showErrorNotification("Klarte ikke slette ventelisteoppføring!"),
@@ -43,11 +43,11 @@ export default function WaitingListTable({
   const table = useMantineReactTable({
     columns: [
       {
-        accessorKey: "customerName",
+        accessorKey: "name",
         header: "Navn",
       },
       {
-        accessorKey: "customerPhone",
+        accessorKey: "phoneNumber",
         header: "Telefonnummer",
       },
       {
@@ -66,7 +66,7 @@ export default function WaitingListTable({
     state: {
       isLoading: loading || destroyWaitingListEntryMutation.isPending,
     },
-    getRowId: (waitingListEntry) => waitingListEntry.id,
+    getRowId: (waitingListCustomer) => waitingListCustomer.id,
     renderRowActions: ({ row }) => (
       <Tooltip key={`delete-${row.id}`} label={"Slett"}>
         <ActionIcon

@@ -19,10 +19,10 @@ export interface ApiDefinition {
     validatePasswordReset: typeof routes['password_reset.validate_password_reset']
     resetPassword: typeof routes['password_reset.reset_password']
   }
-  waitingListEntries: {
-    getAllWaitingListEntries: typeof routes['waiting_list_entries.get_all_waiting_list_entries']
-    addWaitingListEntry: typeof routes['waiting_list_entries.add_waiting_list_entry']
-    deleteWaitingListEntry: typeof routes['waiting_list_entries.delete_waiting_list_entry']
+  waitingListCustomer: {
+    getAll: typeof routes['waiting_list_customer.get_all']
+    create: typeof routes['waiting_list_customer.create']
+    destroy: typeof routes['waiting_list_customer.destroy']
   }
   reminders: {
     countRecipients: typeof routes['reminders.count_recipients']

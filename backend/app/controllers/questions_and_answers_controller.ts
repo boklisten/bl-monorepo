@@ -1,34 +1,36 @@
 import { HttpContext } from "@adonisjs/core/http";
 
 import { PermissionService } from "#services/permission_service";
-import { StorageService } from "#services/storage_service";
 import { questionsAndAnswersValidator } from "#validators/questions_and_answers_validator";
+import QuestionAndAnswer from "#models/question_and_answer";
 
 export default class QuestionsAndAnswersController {
   async getAll() {
-    return await StorageService.QuestionsAndAnswers.getAll();
+    return (await QuestionAndAnswer.query().orderBy("createdAt", "asc")).map(
+      ({ id, question, answer }) => ({
+        id: id.toString(),
+        question,
+        answer,
+      }),
+    );
   }
 
   async store(ctx: HttpContext) {
     PermissionService.adminOrFail(ctx);
-
-    const validatedData = await ctx.request.validateUsing(questionsAndAnswersValidator);
-    return await StorageService.QuestionsAndAnswers.add(validatedData);
+    const { question, answer } = await ctx.request.validateUsing(questionsAndAnswersValidator);
+    await QuestionAndAnswer.create({ question, answer });
   }
 
   async update(ctx: HttpContext) {
     PermissionService.adminOrFail(ctx);
-
-    const validatedData = await ctx.request.validateUsing(questionsAndAnswersValidator);
-
-    const id = ctx.request.param("id");
-    return await StorageService.QuestionsAndAnswers.update(id, validatedData);
+    const { question, answer } = await ctx.request.validateUsing(questionsAndAnswersValidator);
+    const questionAndAnswer = await QuestionAndAnswer.findOrFail(ctx.request.param("id"));
+    await questionAndAnswer.merge({ question, answer }).save();
   }
 
   async destroy(ctx: HttpContext) {
     PermissionService.adminOrFail(ctx);
-
-    const id = ctx.request.param("id");
-    return await StorageService.QuestionsAndAnswers.remove(id);
+    const questionAndAnswer = await QuestionAndAnswer.findOrFail(ctx.request.param("id"));
+    await questionAndAnswer.delete();
   }
 }

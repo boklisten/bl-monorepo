@@ -13,7 +13,6 @@ import { MessageSchema } from "#models/mongoose/message.schema";
 import { OrderSchema } from "#models/mongoose/order.schema";
 import { PaymentSchema } from "#models/mongoose/payment.schema";
 import { PendingPasswordResetSchema } from "#models/mongoose/pending-password-reset.schema";
-import { QuestionsAndAnswersSchema } from "#models/mongoose/questions-and-answers.schema";
 import { SignatureSchema } from "#models/mongoose/signature.schema";
 import { StandMatchSchema } from "#models/mongoose/stand-match.schema";
 import { BlSchemaName } from "#models/mongoose/storage/bl-schema-names";
@@ -41,10 +40,6 @@ export const StorageService = {
   PendingPasswordResets: new MongodbHandler(
     PendingPasswordResetSchema,
     BlSchemaName.PendingPasswordResets,
-  ),
-  QuestionsAndAnswers: new MongodbHandler(
-    QuestionsAndAnswersSchema,
-    BlSchemaName.QuestionsAndAnswers,
   ),
   Signatures: new MongodbHandler(SignatureSchema, BlSchemaName.Signatures),
   StandMatches: new MongodbHandler(StandMatchSchema, BlSchemaName.StandMatches),

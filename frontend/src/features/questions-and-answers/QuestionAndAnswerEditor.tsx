@@ -40,10 +40,10 @@ export default function QuestionAndAnswerEditor({
           queryKey: api.questionsAndAnswers.getAll.queryKey(),
         }),
       onSuccess: () => {
-        showSuccessNotification("Spørsmål og svar ble opprettet!");
+        showSuccessNotification("Spørsmål og svar ble lagret!");
         onClose();
       },
-      onError: () => showErrorNotification("Klarte ikke opprette spørsmål og svar!"),
+      onError: () => showErrorNotification("Klarte ikke lagre spørsmål og svar!"),
     }),
   );
 

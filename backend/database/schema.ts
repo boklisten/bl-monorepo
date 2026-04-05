@@ -36,3 +36,18 @@ export class OpeningHourSchema extends BaseModel {
   @column.dateTime({ autoCreate: true, autoUpdate: true })
   declare updatedAt: DateTime | null
 }
+
+export class QuestionAndAnswerSchema extends BaseModel {
+  static $columns = ['answer', 'createdAt', 'id', 'question', 'updatedAt'] as const
+  $columns = QuestionAndAnswerSchema.$columns
+  @column()
+  declare answer: string
+  @column.dateTime({ autoCreate: true })
+  declare createdAt: DateTime | null
+  @column({ isPrimary: true })
+  declare id: number
+  @column()
+  declare question: string
+  @column.dateTime({ autoCreate: true, autoUpdate: true })
+  declare updatedAt: DateTime | null
+}

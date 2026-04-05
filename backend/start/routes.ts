@@ -38,13 +38,11 @@ router.post("/auth/local/register", [controllers.auth.Local, "register"]);
  * password reset
  */
 router.post("/forgot_password", [controllers.auth.PasswordReset, "requestPasswordReset"]);
-
-router.get("/reset_password/validate/:resetId/:resetToken", [
+router.get("/password_reset/validate/:id/:token", [
   controllers.auth.PasswordReset,
   "validatePasswordReset",
 ]);
-
-router.post("/reset_password", [controllers.auth.PasswordReset, "resetPassword"]);
+router.post("/password_reset/:id", [controllers.auth.PasswordReset, "resetPassword"]);
 
 router.get("/waiting_list_entries", [controllers.WaitingListEntries, "getAllWaitingListEntries"]);
 

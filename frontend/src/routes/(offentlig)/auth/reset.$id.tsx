@@ -3,7 +3,7 @@ import { Container, Stack, Title } from "@mantine/core";
 import PasswordReset from "@/features/auth/PasswordReset";
 import { createFileRoute } from "@tanstack/react-router";
 
-export const Route = createFileRoute("/(offentlig)/auth/reset/$resetId")({
+export const Route = createFileRoute("/(offentlig)/auth/reset/$id")({
   head: () => ({
     meta: [
       { title: "Lag nytt passord | Boklisten.no" },
@@ -13,18 +13,18 @@ export const Route = createFileRoute("/(offentlig)/auth/reset/$resetId")({
     ],
   }),
   validateSearch: (search) => ({
-    resetToken: (search["resetToken"] as string) || "",
+    resetToken: (search["token"] as string) || "",
   }),
   component: PasswordResetPage,
 });
 
 function PasswordResetPage() {
-  const { resetId } = Route.useParams();
+  const { id } = Route.useParams();
   return (
     <Container size={"xs"}>
       <Stack>
         <Title>Lag nytt passord</Title>
-        <PasswordReset resetId={resetId} />
+        <PasswordReset id={id} />
       </Stack>
     </Container>
   );

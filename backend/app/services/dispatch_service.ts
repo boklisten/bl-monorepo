@@ -243,22 +243,14 @@ const DispatchService = {
     });
   },
 
-  async sendPasswordReset({
-    email,
-    resetId,
-    token,
-  }: {
-    email: string;
-    resetId: string;
-    token: string;
-  }) {
+  async sendPasswordReset({ id, email, token }: { id: number; email: string; token: string }) {
     return await EmailService.sendEmail({
       template: EMAIL_TEMPLATES.passwordReset,
       recipients: [
         {
           to: email,
           dynamicTemplateData: {
-            passwordResetUri: `${env.get("CLIENT_URI")}/auth/reset/${resetId}?resetToken=${token}`,
+            passwordResetUri: `${env.get("CLIENT_URI")}/auth/reset/${id}?token=${token}`,
           },
         },
       ],

@@ -10,13 +10,13 @@ export const forgotPasswordValidator = vine.create(
   }),
 );
 
-export const passwordResetValidator = vine.create(
-  vine.object({
-    resetToken: vine.string(),
-    resetId: vine.string(),
-    newPassword: passwordField.clone(),
+export const passwordResetValidator = vine.create({
+  params: vine.object({
+    id: vine.string(),
   }),
-);
+  token: vine.string(),
+  newPassword: passwordField.clone(),
+});
 
 export const registerSchema = vine.object({
   email: emailField.clone().use(uniqueEmail()),

@@ -11,8 +11,8 @@ export type ScannedRoutes = {
     'local.login': { paramsTuple?: []; params?: {} }
     'local.register': { paramsTuple?: []; params?: {} }
     'password_reset.request_password_reset': { paramsTuple?: []; params?: {} }
-    'password_reset.validate_password_reset': { paramsTuple: [ParamValue,ParamValue]; params: {'resetId': ParamValue,'resetToken': ParamValue} }
-    'password_reset.reset_password': { paramsTuple?: []; params?: {} }
+    'password_reset.validate_password_reset': { paramsTuple: [ParamValue,ParamValue]; params: {'id': ParamValue,'token': ParamValue} }
+    'password_reset.reset_password': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
     'waiting_list_entries.get_all_waiting_list_entries': { paramsTuple?: []; params?: {} }
     'waiting_list_entries.add_waiting_list_entry': { paramsTuple?: []; params?: {} }
     'waiting_list_entries.delete_waiting_list_entry': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
@@ -149,7 +149,7 @@ export type ScannedRoutes = {
   GET: {
     'vipps.redirect': { paramsTuple?: []; params?: {} }
     'vipps.callback': { paramsTuple?: []; params?: {} }
-    'password_reset.validate_password_reset': { paramsTuple: [ParamValue,ParamValue]; params: {'resetId': ParamValue,'resetToken': ParamValue} }
+    'password_reset.validate_password_reset': { paramsTuple: [ParamValue,ParamValue]; params: {'id': ParamValue,'token': ParamValue} }
     'waiting_list_entries.get_all_waiting_list_entries': { paramsTuple?: []; params?: {} }
     'branches.get_public': { paramsTuple?: []; params?: {} }
     'branches.get_all': { paramsTuple?: []; params?: {} }
@@ -213,7 +213,7 @@ export type ScannedRoutes = {
   HEAD: {
     'vipps.redirect': { paramsTuple?: []; params?: {} }
     'vipps.callback': { paramsTuple?: []; params?: {} }
-    'password_reset.validate_password_reset': { paramsTuple: [ParamValue,ParamValue]; params: {'resetId': ParamValue,'resetToken': ParamValue} }
+    'password_reset.validate_password_reset': { paramsTuple: [ParamValue,ParamValue]; params: {'id': ParamValue,'token': ParamValue} }
     'waiting_list_entries.get_all_waiting_list_entries': { paramsTuple?: []; params?: {} }
     'branches.get_public': { paramsTuple?: []; params?: {} }
     'branches.get_all': { paramsTuple?: []; params?: {} }
@@ -280,7 +280,7 @@ export type ScannedRoutes = {
     'local.login': { paramsTuple?: []; params?: {} }
     'local.register': { paramsTuple?: []; params?: {} }
     'password_reset.request_password_reset': { paramsTuple?: []; params?: {} }
-    'password_reset.reset_password': { paramsTuple?: []; params?: {} }
+    'password_reset.reset_password': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
     'waiting_list_entries.add_waiting_list_entry': { paramsTuple?: []; params?: {} }
     'reminders.count_recipients': { paramsTuple?: []; params?: {} }
     'reminders.remind': { paramsTuple?: []; params?: {} }

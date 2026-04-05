@@ -66,7 +66,7 @@ import { Route as offentligInfoPoliciesTermsRouteImport } from './routes/(offent
 import { Route as offentligInfoPoliciesPrivacyRouteImport } from './routes/(offentlig)/info/policies/privacy'
 import { Route as offentligInfoPoliciesConditionsRouteImport } from './routes/(offentlig)/info/policies/conditions'
 import { Route as offentligInfoBranchBranchIdRouteImport } from './routes/(offentlig)/info/branch/$branchId'
-import { Route as offentligAuthResetResetIdRouteImport } from './routes/(offentlig)/auth/reset.$resetId'
+import { Route as offentligAuthResetIdRouteImport } from './routes/(offentlig)/auth/reset.$id'
 import { Route as offentligAuthPermissionDeniedRouteImport } from './routes/(offentlig)/auth/permission.denied'
 import { Route as legacyDatabaseBranchesEditRouteImport } from './routes/(legacy)/database.branches.edit'
 import { Route as legacyAuthSocialFailureRouteImport } from './routes/(legacy)/auth/social.failure'
@@ -392,12 +392,11 @@ const offentligInfoBranchBranchIdRoute =
     path: '/$branchId',
     getParentRoute: () => offentligInfoBranchRouteRoute,
   } as any)
-const offentligAuthResetResetIdRoute =
-  offentligAuthResetResetIdRouteImport.update({
-    id: '/auth/reset/$resetId',
-    path: '/auth/reset/$resetId',
-    getParentRoute: () => offentligRouteRoute,
-  } as any)
+const offentligAuthResetIdRoute = offentligAuthResetIdRouteImport.update({
+  id: '/auth/reset/$id',
+  path: '/auth/reset/$id',
+  getParentRoute: () => offentligRouteRoute,
+} as any)
 const offentligAuthPermissionDeniedRoute =
   offentligAuthPermissionDeniedRouteImport.update({
     id: '/auth/permission/denied',
@@ -550,7 +549,7 @@ export interface FileRoutesByFullPath {
   '/auth/social/failure': typeof legacyAuthSocialFailureRoute
   '/database/branches/edit': typeof legacyDatabaseBranchesEditRoute
   '/auth/permission/denied': typeof offentligAuthPermissionDeniedRoute
-  '/auth/reset/$resetId': typeof offentligAuthResetResetIdRoute
+  '/auth/reset/$id': typeof offentligAuthResetIdRoute
   '/info/branch/$branchId': typeof offentligInfoBranchBranchIdRoute
   '/info/policies/conditions': typeof offentligInfoPoliciesConditionsRoute
   '/info/policies/privacy': typeof offentligInfoPoliciesPrivacyRoute
@@ -622,7 +621,7 @@ export interface FileRoutesByTo {
   '/auth/social/failure': typeof legacyAuthSocialFailureRoute
   '/database/branches/edit': typeof legacyDatabaseBranchesEditRoute
   '/auth/permission/denied': typeof offentligAuthPermissionDeniedRoute
-  '/auth/reset/$resetId': typeof offentligAuthResetResetIdRoute
+  '/auth/reset/$id': typeof offentligAuthResetIdRoute
   '/info/branch/$branchId': typeof offentligInfoBranchBranchIdRoute
   '/info/policies/conditions': typeof offentligInfoPoliciesConditionsRoute
   '/info/policies/privacy': typeof offentligInfoPoliciesPrivacyRoute
@@ -698,7 +697,7 @@ export interface FileRoutesById {
   '/(legacy)/auth/social/failure': typeof legacyAuthSocialFailureRoute
   '/(legacy)/database/branches/edit': typeof legacyDatabaseBranchesEditRoute
   '/(offentlig)/auth/permission/denied': typeof offentligAuthPermissionDeniedRoute
-  '/(offentlig)/auth/reset/$resetId': typeof offentligAuthResetResetIdRoute
+  '/(offentlig)/auth/reset/$id': typeof offentligAuthResetIdRoute
   '/(offentlig)/info/branch/$branchId': typeof offentligInfoBranchBranchIdRoute
   '/(offentlig)/info/policies/conditions': typeof offentligInfoPoliciesConditionsRoute
   '/(offentlig)/info/policies/privacy': typeof offentligInfoPoliciesPrivacyRoute
@@ -774,7 +773,7 @@ export interface FileRouteTypes {
     | '/auth/social/failure'
     | '/database/branches/edit'
     | '/auth/permission/denied'
-    | '/auth/reset/$resetId'
+    | '/auth/reset/$id'
     | '/info/branch/$branchId'
     | '/info/policies/conditions'
     | '/info/policies/privacy'
@@ -846,7 +845,7 @@ export interface FileRouteTypes {
     | '/auth/social/failure'
     | '/database/branches/edit'
     | '/auth/permission/denied'
-    | '/auth/reset/$resetId'
+    | '/auth/reset/$id'
     | '/info/branch/$branchId'
     | '/info/policies/conditions'
     | '/info/policies/privacy'
@@ -921,7 +920,7 @@ export interface FileRouteTypes {
     | '/(legacy)/auth/social/failure'
     | '/(legacy)/database/branches/edit'
     | '/(offentlig)/auth/permission/denied'
-    | '/(offentlig)/auth/reset/$resetId'
+    | '/(offentlig)/auth/reset/$id'
     | '/(offentlig)/info/branch/$branchId'
     | '/(offentlig)/info/policies/conditions'
     | '/(offentlig)/info/policies/privacy'
@@ -1351,11 +1350,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof offentligInfoBranchBranchIdRouteImport
       parentRoute: typeof offentligInfoBranchRouteRoute
     }
-    '/(offentlig)/auth/reset/$resetId': {
-      id: '/(offentlig)/auth/reset/$resetId'
-      path: '/auth/reset/$resetId'
-      fullPath: '/auth/reset/$resetId'
-      preLoaderRoute: typeof offentligAuthResetResetIdRouteImport
+    '/(offentlig)/auth/reset/$id': {
+      id: '/(offentlig)/auth/reset/$id'
+      path: '/auth/reset/$id'
+      fullPath: '/auth/reset/$id'
+      preLoaderRoute: typeof offentligAuthResetIdRouteImport
       parentRoute: typeof offentligRouteRoute
     }
     '/(offentlig)/auth/permission/denied': {
@@ -1566,7 +1565,7 @@ interface offentligRouteRouteChildren {
   offentligBestillingIndexRoute: typeof offentligBestillingIndexRoute
   offentligKasseIndexRoute: typeof offentligKasseIndexRoute
   offentligAuthPermissionDeniedRoute: typeof offentligAuthPermissionDeniedRoute
-  offentligAuthResetResetIdRoute: typeof offentligAuthResetResetIdRoute
+  offentligAuthResetIdRoute: typeof offentligAuthResetIdRoute
   offentligKasseBetalingStatusRoute: typeof offentligKasseBetalingStatusRoute
   offentligKasseBetalingIndexRoute: typeof offentligKasseBetalingIndexRoute
   offentligAuthEmailVerifyVerificationIdRoute: typeof offentligAuthEmailVerifyVerificationIdRoute
@@ -1594,7 +1593,7 @@ const offentligRouteRouteChildren: offentligRouteRouteChildren = {
   offentligBestillingIndexRoute: offentligBestillingIndexRoute,
   offentligKasseIndexRoute: offentligKasseIndexRoute,
   offentligAuthPermissionDeniedRoute: offentligAuthPermissionDeniedRoute,
-  offentligAuthResetResetIdRoute: offentligAuthResetResetIdRoute,
+  offentligAuthResetIdRoute: offentligAuthResetIdRoute,
   offentligKasseBetalingStatusRoute: offentligKasseBetalingStatusRoute,
   offentligKasseBetalingIndexRoute: offentligKasseBetalingIndexRoute,
   offentligAuthEmailVerifyVerificationIdRoute:

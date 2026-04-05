@@ -9,7 +9,6 @@ export const BlSchemaName = {
   Messages: "messages",
   Orders: "orders",
   Payments: "payments",
-  PendingPasswordResets: "pendingpasswordresets",
   Signatures: "signatures",
   StandMatches: "stand_matches",
   UniqueItems: "uniqueitems",

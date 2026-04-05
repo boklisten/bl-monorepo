@@ -4,41 +4,37 @@ import hash from "@adonisjs/core/services/hash";
 import CryptoService from "#services/crypto_service";
 import DispatchService from "#services/dispatch_service";
 import { PasswordService } from "#services/password_service";
-import { StorageService } from "#services/storage_service";
 import { UserDetailService } from "#services/user_detail_service";
 import { UserService } from "#services/user_service";
-import { PendingPasswordReset } from "#shared/pending-password-reset";
 import { forgotPasswordValidator, passwordResetValidator } from "#validators/auth_validators";
+import PasswordReset from "#models/password_reset";
+import { DateTime } from "luxon";
 
-async function getPasswordReset({ resetId, resetToken }: { resetId: string; resetToken: string }) {
-  let pendingPasswordReset: PendingPasswordReset;
-  try {
-    pendingPasswordReset = await StorageService.PendingPasswordResets.get(resetId);
-  } catch {
+async function getPasswordReset({ id, token }: { id: string; token: string }) {
+  const passwordReset = await PasswordReset.query()
+    .where("id", id)
+    .where("createdAt", ">", DateTime.now().minus({ minutes: 30 }).toSQL())
+    .first();
+
+  if (!passwordReset)
     return {
       message: `Lenken har utløpt. Du kan be om å få tilsendt en ny lenke på 'glemt passord'-siden`,
     };
-  }
 
   try {
-    await hash.assertEquals(pendingPasswordReset.tokenHash, resetToken);
+    await hash.assertEquals(passwordReset.tokenHash, token);
   } catch {
     return {
       message: `Lenken er ugyldig. Du kan be om å få tilsendt en ny lenke på 'glemt passord'-siden`,
     };
   }
 
-  const userDetail = await UserDetailService.getByEmail(pendingPasswordReset.email);
-  if (!userDetail) {
-    throw new Error("Brukeren finnes ikke");
-  }
-
-  let user = await UserService.getByUserDetailsId(userDetail.id);
+  let user = await UserService.getByUserDetailsId(passwordReset.userDetailId);
   if (!user) {
-    user = await UserService.createLocalUser(userDetail.id, CryptoService.random());
+    user = await UserService.createLocalUser(passwordReset.userDetailId, CryptoService.random());
   }
 
-  return { user, pendingPasswordReset };
+  return { user, passwordReset };
 }
 
 export default class PasswordResetController {
@@ -55,14 +51,14 @@ export default class PasswordResetController {
       };
     }
 
-    const passwordReset = await StorageService.PendingPasswordResets.add({
-      email,
+    const passwordReset = await PasswordReset.create({
+      userDetailId: userDetail.id,
       tokenHash,
     });
 
     const mailStatus = await DispatchService.sendPasswordReset({
+      id: passwordReset.id,
       email,
-      resetId: passwordReset.id,
       token,
     });
     if (!mailStatus.success) {
@@ -72,28 +68,31 @@ export default class PasswordResetController {
   }
 
   async resetPassword({ request }: HttpContext) {
-    const { resetId, resetToken, newPassword } =
-      await request.validateUsing(passwordResetValidator);
+    const {
+      params: { id },
+      token,
+      newPassword,
+    } = await request.validateUsing(passwordResetValidator);
     const result = await getPasswordReset({
-      resetId,
-      resetToken,
+      id,
+      token,
     });
 
-    if (!result.pendingPasswordReset) {
+    if (!result.passwordReset) {
       return { message: `Klarte ikke sette nytt passord. ${result.message}` };
     }
 
     await PasswordService.setPassword(result.user.id, newPassword);
 
-    await StorageService.PendingPasswordResets.remove(result.pendingPasswordReset.id);
+    await result.passwordReset.delete();
     return {};
   }
 
   async validatePasswordReset(ctx: HttpContext) {
-    const resetId = ctx.request.param("resetId");
-    const resetToken = ctx.request.param("resetToken");
-    const result = await getPasswordReset({ resetId, resetToken });
-    if (!result.pendingPasswordReset) {
+    const id = ctx.request.param("id");
+    const token = ctx.request.param("token");
+    const result = await getPasswordReset({ id, token });
+    if (!result.passwordReset) {
       return { message: result.message };
     }
     return {};

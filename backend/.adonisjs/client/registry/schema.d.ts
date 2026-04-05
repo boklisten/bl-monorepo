@@ -93,11 +93,11 @@ export interface Registry {
   }
   'password_reset.validate_password_reset': {
     methods: ["GET","HEAD"]
-    pattern: '/reset_password/validate/:resetId/:resetToken'
+    pattern: '/password_reset/validate/:id/:token'
     types: {
       body: {}
       paramsTuple: [ParamValue, ParamValue]
-      params: { resetId: ParamValue; resetToken: ParamValue }
+      params: { id: ParamValue; token: ParamValue }
       query: {}
       response: ExtractResponse<Awaited<ReturnType<import('#controllers/auth/password_reset_controller').default['validatePasswordReset']>>>
       errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/auth/password_reset_controller').default['validatePasswordReset']>>>
@@ -105,11 +105,11 @@ export interface Registry {
   }
   'password_reset.reset_password': {
     methods: ["POST"]
-    pattern: '/reset_password'
+    pattern: '/password_reset/:id'
     types: {
       body: ExtractBody<InferInput<(typeof import('#validators/auth_validators').passwordResetValidator)>>
-      paramsTuple: []
-      params: {}
+      paramsTuple: [ParamValue]
+      params: { id: ParamValue }
       query: ExtractQuery<InferInput<(typeof import('#validators/auth_validators').passwordResetValidator)>>
       response: ExtractResponse<Awaited<ReturnType<import('#controllers/auth/password_reset_controller').default['resetPassword']>>>
       errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/auth/password_reset_controller').default['resetPassword']>>> | { status: 422; response: { errors: SimpleError[] } }

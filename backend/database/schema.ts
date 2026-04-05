@@ -50,6 +50,21 @@ export class OpeningHourSchema extends BaseModel {
   declare updatedAt: DateTime | null
 }
 
+export class PasswordResetSchema extends BaseModel {
+  static $columns = ['createdAt', 'id', 'tokenHash', 'updatedAt', 'userDetailId'] as const
+  $columns = PasswordResetSchema.$columns
+  @column.dateTime({ autoCreate: true })
+  declare createdAt: DateTime | null
+  @column({ isPrimary: true })
+  declare id: number
+  @column()
+  declare tokenHash: string
+  @column.dateTime({ autoCreate: true, autoUpdate: true })
+  declare updatedAt: DateTime | null
+  @column()
+  declare userDetailId: string
+}
+
 export class QuestionAndAnswerSchema extends BaseModel {
   static $columns = ['answer', 'createdAt', 'id', 'question', 'updatedAt'] as const
   $columns = QuestionAndAnswerSchema.$columns

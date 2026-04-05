@@ -15,13 +15,13 @@ interface PasswordResetFields {
   newPassword: string;
 }
 
-export default function PasswordReset({ resetId }: { resetId: string }) {
-  const { resetToken } = useLocation({ select: (location) => location.search });
+export default function PasswordReset({ id }: { id: string }) {
+  const { token } = useLocation({ select: (location) => location.search });
   const [apiError, setApiError] = useState<string | null>(null);
 
   const { data, isError } = useQuery(
     publicApi.passwordReset.validatePasswordReset.queryOptions({
-      params: { resetId, resetToken: resetToken ?? "" },
+      params: { id, token: token ?? "" },
     }),
   );
 
@@ -29,9 +29,11 @@ export default function PasswordReset({ resetId }: { resetId: string }) {
     mutationFn: async ({ newPassword }: PasswordResetFields) => {
       setApiError(null);
       const { message } = await publicApiClient.api.passwordReset.resetPassword({
+        params: {
+          id,
+        },
         body: {
-          resetId,
-          resetToken: resetToken ?? "",
+          token: token ?? "",
           newPassword,
         },
       });

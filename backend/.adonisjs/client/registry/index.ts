@@ -50,14 +50,14 @@ const routes = {
   },
   'password_reset.validate_password_reset': {
     methods: ["GET","HEAD"],
-    pattern: '/reset_password/validate/:resetId/:resetToken',
-    tokens: [{"old":"/reset_password/validate/:resetId/:resetToken","type":0,"val":"reset_password","end":""},{"old":"/reset_password/validate/:resetId/:resetToken","type":0,"val":"validate","end":""},{"old":"/reset_password/validate/:resetId/:resetToken","type":1,"val":"resetId","end":""},{"old":"/reset_password/validate/:resetId/:resetToken","type":1,"val":"resetToken","end":""}],
+    pattern: '/password_reset/validate/:id/:token',
+    tokens: [{"old":"/password_reset/validate/:id/:token","type":0,"val":"password_reset","end":""},{"old":"/password_reset/validate/:id/:token","type":0,"val":"validate","end":""},{"old":"/password_reset/validate/:id/:token","type":1,"val":"id","end":""},{"old":"/password_reset/validate/:id/:token","type":1,"val":"token","end":""}],
     types: placeholder as Registry['password_reset.validate_password_reset']['types'],
   },
   'password_reset.reset_password': {
     methods: ["POST"],
-    pattern: '/reset_password',
-    tokens: [{"old":"/reset_password","type":0,"val":"reset_password","end":""}],
+    pattern: '/password_reset/:id',
+    tokens: [{"old":"/password_reset/:id","type":0,"val":"password_reset","end":""},{"old":"/password_reset/:id","type":1,"val":"id","end":""}],
     types: placeholder as Registry['password_reset.reset_password']['types'],
   },
   'waiting_list_entries.get_all_waiting_list_entries': {

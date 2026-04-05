@@ -4,20 +4,18 @@ import { PermissionService } from "#services/permission_service";
 import { openingHoursValidator } from "#validators/opening_hours";
 import OpeningHour from "#models/opening_hour";
 import { DateTime } from "luxon";
+import OpeningHourTransformer from "#transformers/opening_hour_transformer";
 
 export default class OpeningHoursController {
   async get(ctx: HttpContext) {
-    return (
-      await OpeningHour.query()
-        .where("branchId", ctx.request.param("branchId"))
-        .where("to", ">", DateTime.now().toSQL())
-        .orderBy("to", "asc")
-    ).map(({ id, branchId, from, to }) => ({
-      id,
-      branchId,
-      from: from.toJSDate(),
-      to: to.toJSDate(),
-    }));
+    return ctx.serialize(
+      OpeningHourTransformer.transform(
+        await OpeningHour.query()
+          .where("branchId", ctx.request.param("branchId"))
+          .where("to", ">", DateTime.now().toSQL())
+          .orderBy("to", "asc"),
+      ),
+    );
   }
   async add(ctx: HttpContext) {
     PermissionService.adminOrFail(ctx);

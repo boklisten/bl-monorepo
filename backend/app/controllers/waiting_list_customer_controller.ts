@@ -3,17 +3,12 @@ import { HttpContext } from "@adonisjs/core/http";
 import { PermissionService } from "#services/permission_service";
 import { waitingListCustomerValidator } from "#validators/waiting_list_customer";
 import WaitingListCustomer from "#models/waiting_list_customer";
+import WaitingListCustomerTransformer from "#transformers/waiting_list_customer_transformer";
 
 export default class WaitingListCustomerController {
   async getAll(ctx: HttpContext) {
     PermissionService.employeeOrFail(ctx);
-    return (await WaitingListCustomer.all()).map(({ id, name, phoneNumber, itemId, branchId }) => ({
-      id: id.toString(),
-      name,
-      phoneNumber,
-      itemId,
-      branchId,
-    }));
+    return ctx.serialize(WaitingListCustomerTransformer.transform(await WaitingListCustomer.all()));
   }
 
   async create(ctx: HttpContext) {

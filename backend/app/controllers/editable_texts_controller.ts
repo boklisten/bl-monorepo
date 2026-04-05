@@ -3,32 +3,29 @@ import { HttpContext } from "@adonisjs/core/http";
 import { PermissionService } from "#services/permission_service";
 import { editableTextsValidator } from "#validators/editable_texts_validator";
 import EditableText from "#models/editable_text";
+import EditableTextTransformer from "#transformers/editable_text_transformer";
 
-// fixme: use AdonisJS Transformer here
 export default class EditableTextsController {
-  async get(ctx: HttpContext) {
-    const { id, text } = await EditableText.findOrFail(ctx.request.param("id"));
-    return { id, text };
+  async get({ serialize, params }: HttpContext) {
+    return serialize(
+      EditableTextTransformer.transform(await EditableText.findOrFail(params["id"])),
+    );
   }
 
   async getAll(ctx: HttpContext) {
     PermissionService.adminOrFail(ctx);
-    return (await EditableText.all()).map(({ id, text }) => ({ id, text }));
+    return ctx.serialize(EditableTextTransformer.transform(await EditableText.all()));
   }
 
   async upsert(ctx: HttpContext) {
     PermissionService.adminOrFail(ctx);
-    const payload = await ctx.request.validateUsing(editableTextsValidator);
-    const { id, text } = await EditableText.updateOrCreate(
-      { id: payload.params.id },
-      { text: payload.text },
-    );
-    return { id, text };
+    const { params, text } = await ctx.request.validateUsing(editableTextsValidator);
+    await EditableText.updateOrCreate(params, { text });
   }
 
   async destroy(ctx: HttpContext) {
     PermissionService.adminOrFail(ctx);
-    const editableText = await EditableText.findOrFail(ctx.request.param("id"));
+    const editableText = await EditableText.findOrFail(ctx.params["id"]);
     await editableText.delete();
   }
 }

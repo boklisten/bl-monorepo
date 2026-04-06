@@ -12,16 +12,16 @@
   },
   "dependencies": {
     "@boklisten/backend": "workspace:*",
-    "@mantine/core": "^9.0.0",
-    "@mantine/dates": "^9.0.0",
-    "@mantine/hooks": "^9.0.0",
-    "@mantine/modals": "^9.0.0",
-    "@mantine/notifications": "^9.0.0",
-    "@mantine/tiptap": "^9.0.0",
+    "@mantine/core": "^9.0.1",
+    "@mantine/dates": "^9.0.1",
+    "@mantine/hooks": "^9.0.1",
+    "@mantine/modals": "^9.0.1",
+    "@mantine/notifications": "^9.0.1",
+    "@mantine/tiptap": "^9.0.1",
     "@sentry/tanstackstart-react": "^10.47.0",
     "@tabler/icons-react": "^3.41.1",
     "@tanstack/react-form": "^1.28.6",
-    "@tanstack/react-query": "^5.96.0",
+    "@tanstack/react-query": "^5.96.2",
     "@tanstack/react-router": "^1.168.10",
     "@tanstack/react-start": "^1.167.16",
     "@tiptap/react": "^3.22.2",
@@ -37,7 +37,7 @@
     "qrcode.react": "^4.2.0",
     "react": "19.2.4",
     "react-dom": "19.2.4",
-    "react-jwt": "^2.0.0",
+    "react-jwt": "^2.1.1",
     "react-password-strength-bar": "^0.4.1",
     "react-signature-canvas": "1.1.0-alpha.2",
     "validator": "^13.15.35"
@@ -58,7 +58,7 @@
     "postcss": "^8.5.8",
     "postcss-preset-mantine": "^1.18.0",
     "postcss-simple-vars": "^7.0.1",
-    "vite": "^8.0.3"
+    "vite": "^8.0.5"
   },
   "browserslist": [
     "defaults",

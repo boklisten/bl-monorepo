@@ -775,6 +775,18 @@ export interface Registry {
       errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/kustom_checkout_controller').default['initializeCheckout']>>> | { status: 422; response: { errors: SimpleError[] } }
     }
   }
+  'kustom_checkout.get_snippet': {
+    methods: ["GET","HEAD"]
+    pattern: '/v2/checkout/snippet/:kustomOrderId'
+    types: {
+      body: {}
+      paramsTuple: [ParamValue]
+      params: { kustomOrderId: ParamValue }
+      query: {}
+      response: ExtractResponse<Awaited<ReturnType<import('#controllers/kustom_checkout_controller').default['getSnippet']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/kustom_checkout_controller').default['getSnippet']>>>
+    }
+  }
   'checkout.confirm_checkout': {
     methods: ["POST"]
     pattern: '/checkout/confirm/:orderId'

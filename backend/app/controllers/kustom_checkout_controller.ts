@@ -5,7 +5,7 @@ import { OrderService } from "#services/order_service";
 import { StorageService } from "#services/storage_service";
 import { KustomCheckoutService } from "#services/kustom/kustom_checkout_service";
 
-export default class CheckoutV2Controller {
+export default class KustomCheckoutController {
   async initializeCheckout(ctx: HttpContext) {
     const { detailsId } = PermissionService.authenticate(ctx);
     const { cartItems } = await ctx.request.validateUsing(initializeCheckoutValidator);
@@ -17,8 +17,11 @@ export default class CheckoutV2Controller {
         return { nextStep: "confirm", orderId: order.id } as const;
       }
     }
-
-    const data = await KustomCheckoutService.createOrder(order, isDeliveryFree);
-    return { nextStep: "payment", data } as const;
+    const { data } = await KustomCheckoutService.createOrder(order, isDeliveryFree);
+    return { nextStep: "payment", kustomOrderId: data?.order_id } as const;
+  }
+  async getSnippet(ctx: HttpContext) {
+    const { data } = await KustomCheckoutService.getOrder(ctx.request.param("kustomOrderId"));
+    return data?.html_snippet;
   }
 }

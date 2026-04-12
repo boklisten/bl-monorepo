@@ -37,7 +37,7 @@ function RouteComponent() {
           }),
         },
       }),
-    onSuccess: async ({ nextStep, orderId }) => {
+    onSuccess: async ({ nextStep, orderId, kustomOrderId }) => {
       switch (nextStep) {
         case "confirm": {
           void navigate({ to: "/kasse/bekreft", search: { orderId } });
@@ -45,7 +45,10 @@ function RouteComponent() {
         }
         case "payment":
           void navigate({
-            to: "/kasse/betaling/v2",
+            to: "/kasse/betaling/v2/$kustomOrderId",
+            params: {
+              kustomOrderId: kustomOrderId ?? "",
+            },
           });
           break;
         default:

@@ -25,9 +25,9 @@ export const KustomCheckoutService = {
     const userDetail = await StorageService.UserDetails.get(order.customer);
     return await client.POST("/checkout/v3/orders", {
       body: {
-        purchase_country: "NO",
+        purchase_country: "no",
         purchase_currency: "NOK",
-        locale: "no-NB",
+        locale: "no-NO",
         order_amount: order.amount * 100,
         order_tax_amount: 0,
         order_lines: order.orderItems.map((orderItem) => {
@@ -58,6 +58,15 @@ export const KustomCheckoutService = {
         merchant_reference1: order.id,
         options: {
           auto_capture: true,
+        },
+      },
+    });
+  },
+  async getOrder(kustomOrderId: string) {
+    return await client.GET(`/checkout/v3/orders/{order_id}`, {
+      params: {
+        path: {
+          order_id: kustomOrderId,
         },
       },
     });

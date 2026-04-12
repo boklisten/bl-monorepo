@@ -139,11 +139,6 @@
   "overrides": {
     "@adonisjs/assembler": "^8.4.0",
   },
-  "catalog": {
-    "@tsconfig/strictest": "^2.0.8",
-    "@tuyau/core": "^1.2.2",
-    "@tuyau/superjson": "^1.0.0",
-  },
   "packages": {
     "@adonisjs/ace": ["@adonisjs/ace@14.1.0", "", { "dependencies": { "@poppinss/cliui": "^6.8.0", "@poppinss/hooks": "^7.3.0", "@poppinss/macroable": "^1.1.2", "@poppinss/prompts": "^3.1.6", "@poppinss/utils": "^7.0.1", "fastest-levenshtein": "^1.0.16", "jsonschema": "^1.5.0", "string-width": "^8.2.0", "yargs-parser": "^22.0.0" }, "peerDependencies": { "youch": "^4.1.0-beta.11 || ^4.1.0" } }, "sha512-8N8z1YKePBiXz7wLxHFz/HSqjCRSL/9Vzs4XQt8gk8G17u4PXwNncWt0vSgYEcDrvPAt+QOavY1vMeKOOWe29w=="],
 

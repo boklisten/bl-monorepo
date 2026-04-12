@@ -6,12 +6,7 @@
     "packages": [
       "frontend",
       "backend"
-    ],
-    "catalog": {
-      "@tsconfig/strictest": "^2.0.8",
-      "@tuyau/core": "^1.2.2",
-      "@tuyau/superjson": "^1.0.0"
-    }
+    ]
   },
   "type": "module",
   "scripts": {

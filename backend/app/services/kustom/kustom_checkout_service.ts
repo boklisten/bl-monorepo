@@ -108,13 +108,14 @@ export const KustomCheckoutService = {
         },
         merchant_urls: {
           terms: `${env.get("CLIENT_URI")}/info/policies/terms`,
-          checkout: `${env.get("CLIENT_URI")}/kasse/betaling/v2`,
-          confirmation: `https://${env.get("API_ENV") === "production" ? "" : "staging."}boklisten.no/kasse/betaling/status/v2`, // TODO: make it possible to use localhost
-          push: `https://${env.get("API_ENV") === "production" ? "" : "staging."}api.boklisten.no/kustom/push`, // TODO: implement this endpoint
+          checkout: `${env.get("CLIENT_URI")}/kasse/betaling/v2/{checkout.order.id}`,
+          confirmation: `https://${env.get("API_ENV") === "production" ? "" : "staging."}boklisten.no/kasse/betaling/v2/{checkout.order.id}`, // fixme: would be great to be able to use localhost here
+          push: `https://${env.get("API_ENV") === "production" ? "" : "staging."}api.boklisten.no/v2/checkout/push`,
         },
         merchant_reference1: order.id,
         options: {
           auto_capture: true,
+          vat_removed: true,
         },
         shipping_options: await createShippingOptions(order, userDetail.postCode, isDeliveryFree),
       },

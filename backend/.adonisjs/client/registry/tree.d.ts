@@ -119,6 +119,7 @@ export interface ApiDefinition {
   kustomCheckout: {
     initializeCheckout: typeof routes['kustom_checkout.initialize_checkout']
     getSnippet: typeof routes['kustom_checkout.get_snippet']
+    receivePush: typeof routes['kustom_checkout.receive_push']
   }
   subjects: {
     getBranchSubjects: typeof routes['subjects.get_branch_subjects']

@@ -787,6 +787,18 @@ export interface Registry {
       errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/kustom_checkout_controller').default['getSnippet']>>>
     }
   }
+  'kustom_checkout.receive_push': {
+    methods: ["POST"]
+    pattern: '/v2/checkout/push'
+    types: {
+      body: {}
+      paramsTuple: []
+      params: {}
+      query: {}
+      response: ExtractResponse<Awaited<ReturnType<import('#controllers/kustom_checkout_controller').default['receivePush']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/kustom_checkout_controller').default['receivePush']>>>
+    }
+  }
   'checkout.confirm_checkout': {
     methods: ["POST"]
     pattern: '/checkout/confirm/:orderId'

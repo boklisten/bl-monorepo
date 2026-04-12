@@ -396,6 +396,12 @@ const routes = {
     tokens: [{"old":"/v2/checkout/snippet/:kustomOrderId","type":0,"val":"v2","end":""},{"old":"/v2/checkout/snippet/:kustomOrderId","type":0,"val":"checkout","end":""},{"old":"/v2/checkout/snippet/:kustomOrderId","type":0,"val":"snippet","end":""},{"old":"/v2/checkout/snippet/:kustomOrderId","type":1,"val":"kustomOrderId","end":""}],
     types: placeholder as Registry['kustom_checkout.get_snippet']['types'],
   },
+  'kustom_checkout.receive_push': {
+    methods: ["POST"],
+    pattern: '/v2/checkout/push',
+    tokens: [{"old":"/v2/checkout/push","type":0,"val":"v2","end":""},{"old":"/v2/checkout/push","type":0,"val":"checkout","end":""},{"old":"/v2/checkout/push","type":0,"val":"push","end":""}],
+    types: placeholder as Registry['kustom_checkout.receive_push']['types'],
+  },
   'checkout.confirm_checkout': {
     methods: ["POST"],
     pattern: '/checkout/confirm/:orderId',

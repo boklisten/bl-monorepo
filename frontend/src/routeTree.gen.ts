@@ -83,7 +83,6 @@ import { Route as administrasjonAdminDatabaseFilialerRouteImport } from './route
 import { Route as administrasjonAdminDatabaseDynamisk_innholdRouteImport } from './routes/(administrasjon)/admin/database/dynamisk_innhold'
 import { Route as administrasjonAdminDatabaseBokerRouteImport } from './routes/(administrasjon)/admin/database/boker'
 import { Route as offentligKasseBetalingV2KustomOrderIdRouteImport } from './routes/(offentlig)/kasse/betaling/v2.$kustomOrderId'
-import { Route as offentligKasseBetalingStatusV2RouteImport } from './routes/(offentlig)/kasse/betaling/status.v2'
 import { Route as offentligAuthEmailVerifyVerificationIdRouteImport } from './routes/(offentlig)/auth/email.verify.$verificationId'
 
 const RobotsDottxtRoute = RobotsDottxtRouteImport.update({
@@ -493,12 +492,6 @@ const offentligKasseBetalingV2KustomOrderIdRoute =
     path: '/kasse/betaling/v2/$kustomOrderId',
     getParentRoute: () => offentligRouteRoute,
   } as any)
-const offentligKasseBetalingStatusV2Route =
-  offentligKasseBetalingStatusV2RouteImport.update({
-    id: '/v2',
-    path: '/v2',
-    getParentRoute: () => offentligKasseBetalingStatusRoute,
-  } as any)
 const offentligAuthEmailVerifyVerificationIdRoute =
   offentligAuthEmailVerifyVerificationIdRouteImport.update({
     id: '/auth/email/verify/$verificationId',
@@ -575,12 +568,11 @@ export interface FileRoutesByFullPath {
   '/info/policies/conditions': typeof offentligInfoPoliciesConditionsRoute
   '/info/policies/privacy': typeof offentligInfoPoliciesPrivacyRoute
   '/info/policies/terms': typeof offentligInfoPoliciesTermsRoute
-  '/kasse/betaling/status': typeof offentligKasseBetalingStatusRouteWithChildren
+  '/kasse/betaling/status': typeof offentligKasseBetalingStatusRoute
   '/overleveringer/stand/$standMatchId': typeof offentligOverleveringerStandStandMatchIdRoute
   '/overleveringer/user/$userMatchId': typeof offentligOverleveringerUserUserMatchIdRoute
   '/kasse/betaling/': typeof offentligKasseBetalingIndexRoute
   '/auth/email/verify/$verificationId': typeof offentligAuthEmailVerifyVerificationIdRoute
-  '/kasse/betaling/status/v2': typeof offentligKasseBetalingStatusV2Route
   '/kasse/betaling/v2/$kustomOrderId': typeof offentligKasseBetalingV2KustomOrderIdRoute
 }
 export interface FileRoutesByTo {
@@ -650,12 +642,11 @@ export interface FileRoutesByTo {
   '/info/policies/conditions': typeof offentligInfoPoliciesConditionsRoute
   '/info/policies/privacy': typeof offentligInfoPoliciesPrivacyRoute
   '/info/policies/terms': typeof offentligInfoPoliciesTermsRoute
-  '/kasse/betaling/status': typeof offentligKasseBetalingStatusRouteWithChildren
+  '/kasse/betaling/status': typeof offentligKasseBetalingStatusRoute
   '/overleveringer/stand/$standMatchId': typeof offentligOverleveringerStandStandMatchIdRoute
   '/overleveringer/user/$userMatchId': typeof offentligOverleveringerUserUserMatchIdRoute
   '/kasse/betaling': typeof offentligKasseBetalingIndexRoute
   '/auth/email/verify/$verificationId': typeof offentligAuthEmailVerifyVerificationIdRoute
-  '/kasse/betaling/status/v2': typeof offentligKasseBetalingStatusV2Route
   '/kasse/betaling/v2/$kustomOrderId': typeof offentligKasseBetalingV2KustomOrderIdRoute
 }
 export interface FileRoutesById {
@@ -729,12 +720,11 @@ export interface FileRoutesById {
   '/(offentlig)/info/policies/conditions': typeof offentligInfoPoliciesConditionsRoute
   '/(offentlig)/info/policies/privacy': typeof offentligInfoPoliciesPrivacyRoute
   '/(offentlig)/info/policies/terms': typeof offentligInfoPoliciesTermsRoute
-  '/(offentlig)/kasse/betaling/status': typeof offentligKasseBetalingStatusRouteWithChildren
+  '/(offentlig)/kasse/betaling/status': typeof offentligKasseBetalingStatusRoute
   '/(offentlig)/overleveringer/stand/$standMatchId': typeof offentligOverleveringerStandStandMatchIdRoute
   '/(offentlig)/overleveringer/user/$userMatchId': typeof offentligOverleveringerUserUserMatchIdRoute
   '/(offentlig)/kasse/betaling/': typeof offentligKasseBetalingIndexRoute
   '/(offentlig)/auth/email/verify/$verificationId': typeof offentligAuthEmailVerifyVerificationIdRoute
-  '/(offentlig)/kasse/betaling/status/v2': typeof offentligKasseBetalingStatusV2Route
   '/(offentlig)/kasse/betaling/v2/$kustomOrderId': typeof offentligKasseBetalingV2KustomOrderIdRoute
 }
 export interface FileRouteTypes {
@@ -813,7 +803,6 @@ export interface FileRouteTypes {
     | '/overleveringer/user/$userMatchId'
     | '/kasse/betaling/'
     | '/auth/email/verify/$verificationId'
-    | '/kasse/betaling/status/v2'
     | '/kasse/betaling/v2/$kustomOrderId'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -888,7 +877,6 @@ export interface FileRouteTypes {
     | '/overleveringer/user/$userMatchId'
     | '/kasse/betaling'
     | '/auth/email/verify/$verificationId'
-    | '/kasse/betaling/status/v2'
     | '/kasse/betaling/v2/$kustomOrderId'
   id:
     | '__root__'
@@ -966,7 +954,6 @@ export interface FileRouteTypes {
     | '/(offentlig)/overleveringer/user/$userMatchId'
     | '/(offentlig)/kasse/betaling/'
     | '/(offentlig)/auth/email/verify/$verificationId'
-    | '/(offentlig)/kasse/betaling/status/v2'
     | '/(offentlig)/kasse/betaling/v2/$kustomOrderId'
   fileRoutesById: FileRoutesById
 }
@@ -1507,13 +1494,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof offentligKasseBetalingV2KustomOrderIdRouteImport
       parentRoute: typeof offentligRouteRoute
     }
-    '/(offentlig)/kasse/betaling/status/v2': {
-      id: '/(offentlig)/kasse/betaling/status/v2'
-      path: '/v2'
-      fullPath: '/kasse/betaling/status/v2'
-      preLoaderRoute: typeof offentligKasseBetalingStatusV2RouteImport
-      parentRoute: typeof offentligKasseBetalingStatusRoute
-    }
     '/(offentlig)/auth/email/verify/$verificationId': {
       id: '/(offentlig)/auth/email/verify/$verificationId'
       path: '/auth/email/verify/$verificationId'
@@ -1603,20 +1583,6 @@ const offentligOverleveringerRouteRouteWithChildren =
     offentligOverleveringerRouteRouteChildren,
   )
 
-interface offentligKasseBetalingStatusRouteChildren {
-  offentligKasseBetalingStatusV2Route: typeof offentligKasseBetalingStatusV2Route
-}
-
-const offentligKasseBetalingStatusRouteChildren: offentligKasseBetalingStatusRouteChildren =
-  {
-    offentligKasseBetalingStatusV2Route: offentligKasseBetalingStatusV2Route,
-  }
-
-const offentligKasseBetalingStatusRouteWithChildren =
-  offentligKasseBetalingStatusRoute._addFileChildren(
-    offentligKasseBetalingStatusRouteChildren,
-  )
-
 interface offentligRouteRouteChildren {
   offentligInfoRouteRoute: typeof offentligInfoRouteRouteWithChildren
   offentligOverleveringerRouteRoute: typeof offentligOverleveringerRouteRouteWithChildren
@@ -1640,7 +1606,7 @@ interface offentligRouteRouteChildren {
   offentligKasseIndexRoute: typeof offentligKasseIndexRoute
   offentligAuthPermissionDeniedRoute: typeof offentligAuthPermissionDeniedRoute
   offentligAuthResetIdRoute: typeof offentligAuthResetIdRoute
-  offentligKasseBetalingStatusRoute: typeof offentligKasseBetalingStatusRouteWithChildren
+  offentligKasseBetalingStatusRoute: typeof offentligKasseBetalingStatusRoute
   offentligKasseBetalingIndexRoute: typeof offentligKasseBetalingIndexRoute
   offentligAuthEmailVerifyVerificationIdRoute: typeof offentligAuthEmailVerifyVerificationIdRoute
   offentligKasseBetalingV2KustomOrderIdRoute: typeof offentligKasseBetalingV2KustomOrderIdRoute
@@ -1670,8 +1636,7 @@ const offentligRouteRouteChildren: offentligRouteRouteChildren = {
   offentligKasseIndexRoute: offentligKasseIndexRoute,
   offentligAuthPermissionDeniedRoute: offentligAuthPermissionDeniedRoute,
   offentligAuthResetIdRoute: offentligAuthResetIdRoute,
-  offentligKasseBetalingStatusRoute:
-    offentligKasseBetalingStatusRouteWithChildren,
+  offentligKasseBetalingStatusRoute: offentligKasseBetalingStatusRoute,
   offentligKasseBetalingIndexRoute: offentligKasseBetalingIndexRoute,
   offentligAuthEmailVerifyVerificationIdRoute:
     offentligAuthEmailVerifyVerificationIdRoute,

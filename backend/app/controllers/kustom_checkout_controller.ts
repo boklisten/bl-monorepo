@@ -24,4 +24,7 @@ export default class KustomCheckoutController {
     const { data } = await KustomCheckoutService.getOrder(ctx.request.param("kustomOrderId"));
     return data?.html_snippet;
   }
+  async receivePush(ctx: HttpContext) {
+    console.log(ctx.request.body());
+  }
 }

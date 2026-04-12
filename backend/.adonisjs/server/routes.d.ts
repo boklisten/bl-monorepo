@@ -67,6 +67,7 @@ export type ScannedRoutes = {
     'order_history.get_my_order': { paramsTuple: [ParamValue]; params: {'orderId': ParamValue} }
     'order_history.get_my_orders': { paramsTuple?: []; params?: {} }
     'checkout.initialize_checkout': { paramsTuple?: []; params?: {} }
+    'kustom_checkout.initialize_checkout': { paramsTuple?: []; params?: {} }
     'checkout.confirm_checkout': { paramsTuple: [ParamValue]; params: {'orderId': ParamValue} }
     'checkout.handle_vipps_callback': { paramsTuple?: []; params?: {} }
     'checkout.poll_payment': { paramsTuple: [ParamValue]; params: {'orderId': ParamValue} }
@@ -303,6 +304,7 @@ export type ScannedRoutes = {
     'user_provisioning.create_users': { paramsTuple?: []; params?: {} }
     'unique_items.add': { paramsTuple?: []; params?: {} }
     'checkout.initialize_checkout': { paramsTuple?: []; params?: {} }
+    'kustom_checkout.initialize_checkout': { paramsTuple?: []; params?: {} }
     'checkout.confirm_checkout': { paramsTuple: [ParamValue]; params: {'orderId': ParamValue} }
     'checkout.handle_vipps_callback': { paramsTuple?: []; params?: {} }
     'branch_items.set_branch_items': { paramsTuple?: []; params?: {} }

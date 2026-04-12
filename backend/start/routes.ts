@@ -210,6 +210,7 @@ router.get("/order_history/me", [controllers.OrderHistory, "getMyOrders"]);
  * Checkout
  */
 router.post("/checkout", [controllers.Checkout, "initializeCheckout"]);
+router.post("/v2/checkout", [controllers.KustomCheckout, "initializeCheckout"]);
 router.post("/checkout/confirm/:orderId", [controllers.Checkout, "confirmCheckout"]);
 
 router.post("/checkout/vipps/callback", [controllers.Checkout, "handleVippsCallback"]);

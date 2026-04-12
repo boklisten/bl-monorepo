@@ -40,4 +40,5 @@ export const controllers = {
   UserDetail: () => import('#controllers/user_detail_controller'),
   UserProvisioning: () => import('#controllers/user_provisioning_controller'),
   WaitingListCustomer: () => import('#controllers/waiting_list_customer_controller'),
+  KustomCheckout: () => import('#controllers/kustom_checkout_controller'),
 }

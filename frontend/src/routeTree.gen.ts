@@ -28,6 +28,7 @@ import { Route as offentligKasseIndexRouteImport } from './routes/(offentlig)/ka
 import { Route as offentligBestillingIndexRouteImport } from './routes/(offentlig)/bestilling/index'
 import { Route as administrasjonAdminIndexRouteImport } from './routes/(administrasjon)/admin/index'
 import { Route as offentligSigneringUserDetailIdRouteImport } from './routes/(offentlig)/signering.$userDetailId'
+import { Route as offentligKasseV2RouteImport } from './routes/(offentlig)/kasse/v2'
 import { Route as offentligKasseBekreftRouteImport } from './routes/(offentlig)/kasse/bekreft'
 import { Route as offentligInfoPupilsRouteImport } from './routes/(offentlig)/info/pupils'
 import { Route as offentligInfoGeneralRouteImport } from './routes/(offentlig)/info/general'
@@ -61,6 +62,7 @@ import { Route as offentligInfoBranchRouteRouteImport } from './routes/(offentli
 import { Route as offentligKasseBetalingIndexRouteImport } from './routes/(offentlig)/kasse/betaling/index'
 import { Route as offentligOverleveringerUserUserMatchIdRouteImport } from './routes/(offentlig)/overleveringer/user.$userMatchId'
 import { Route as offentligOverleveringerStandStandMatchIdRouteImport } from './routes/(offentlig)/overleveringer/stand.$standMatchId'
+import { Route as offentligKasseBetalingV2RouteImport } from './routes/(offentlig)/kasse/betaling/v2'
 import { Route as offentligKasseBetalingStatusRouteImport } from './routes/(offentlig)/kasse/betaling/status'
 import { Route as offentligInfoPoliciesTermsRouteImport } from './routes/(offentlig)/info/policies/terms'
 import { Route as offentligInfoPoliciesPrivacyRouteImport } from './routes/(offentlig)/info/policies/privacy'
@@ -81,6 +83,7 @@ import { Route as administrasjonAdminDatabaseLag_brukereRouteImport } from './ro
 import { Route as administrasjonAdminDatabaseFilialerRouteImport } from './routes/(administrasjon)/admin/database/filialer'
 import { Route as administrasjonAdminDatabaseDynamisk_innholdRouteImport } from './routes/(administrasjon)/admin/database/dynamisk_innhold'
 import { Route as administrasjonAdminDatabaseBokerRouteImport } from './routes/(administrasjon)/admin/database/boker'
+import { Route as offentligKasseBetalingStatusV2RouteImport } from './routes/(offentlig)/kasse/betaling/status.v2'
 import { Route as offentligAuthEmailVerifyVerificationIdRouteImport } from './routes/(offentlig)/auth/email.verify.$verificationId'
 
 const RobotsDottxtRoute = RobotsDottxtRouteImport.update({
@@ -183,6 +186,11 @@ const offentligSigneringUserDetailIdRoute =
     path: '/signering/$userDetailId',
     getParentRoute: () => offentligRouteRoute,
   } as any)
+const offentligKasseV2Route = offentligKasseV2RouteImport.update({
+  id: '/kasse/v2',
+  path: '/kasse/v2',
+  getParentRoute: () => offentligRouteRoute,
+} as any)
 const offentligKasseBekreftRoute = offentligKasseBekreftRouteImport.update({
   id: '/kasse/bekreft',
   path: '/kasse/bekreft',
@@ -362,6 +370,12 @@ const offentligOverleveringerStandStandMatchIdRoute =
     path: '/stand/$standMatchId',
     getParentRoute: () => offentligOverleveringerRouteRoute,
   } as any)
+const offentligKasseBetalingV2Route =
+  offentligKasseBetalingV2RouteImport.update({
+    id: '/kasse/betaling/v2',
+    path: '/kasse/betaling/v2',
+    getParentRoute: () => offentligRouteRoute,
+  } as any)
 const offentligKasseBetalingStatusRoute =
   offentligKasseBetalingStatusRouteImport.update({
     id: '/kasse/betaling/status',
@@ -479,6 +493,12 @@ const administrasjonAdminDatabaseBokerRoute =
     path: '/database/boker',
     getParentRoute: () => administrasjonAdminRouteRoute,
   } as any)
+const offentligKasseBetalingStatusV2Route =
+  offentligKasseBetalingStatusV2RouteImport.update({
+    id: '/v2',
+    path: '/v2',
+    getParentRoute: () => offentligKasseBetalingStatusRoute,
+  } as any)
 const offentligAuthEmailVerifyVerificationIdRoute =
   offentligAuthEmailVerifyVerificationIdRouteImport.update({
     id: '/auth/email/verify/$verificationId',
@@ -530,6 +550,7 @@ export interface FileRoutesByFullPath {
   '/info/general': typeof offentligInfoGeneralRoute
   '/info/pupils': typeof offentligInfoPupilsRoute
   '/kasse/bekreft': typeof offentligKasseBekreftRoute
+  '/kasse/v2': typeof offentligKasseV2Route
   '/signering/$userDetailId': typeof offentligSigneringUserDetailIdRoute
   '/admin/': typeof administrasjonAdminIndexRoute
   '/bestilling/': typeof offentligBestillingIndexRoute
@@ -554,11 +575,13 @@ export interface FileRoutesByFullPath {
   '/info/policies/conditions': typeof offentligInfoPoliciesConditionsRoute
   '/info/policies/privacy': typeof offentligInfoPoliciesPrivacyRoute
   '/info/policies/terms': typeof offentligInfoPoliciesTermsRoute
-  '/kasse/betaling/status': typeof offentligKasseBetalingStatusRoute
+  '/kasse/betaling/status': typeof offentligKasseBetalingStatusRouteWithChildren
+  '/kasse/betaling/v2': typeof offentligKasseBetalingV2Route
   '/overleveringer/stand/$standMatchId': typeof offentligOverleveringerStandStandMatchIdRoute
   '/overleveringer/user/$userMatchId': typeof offentligOverleveringerUserUserMatchIdRoute
   '/kasse/betaling/': typeof offentligKasseBetalingIndexRoute
   '/auth/email/verify/$verificationId': typeof offentligAuthEmailVerifyVerificationIdRoute
+  '/kasse/betaling/status/v2': typeof offentligKasseBetalingStatusV2Route
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -602,6 +625,7 @@ export interface FileRoutesByTo {
   '/info/general': typeof offentligInfoGeneralRoute
   '/info/pupils': typeof offentligInfoPupilsRoute
   '/kasse/bekreft': typeof offentligKasseBekreftRoute
+  '/kasse/v2': typeof offentligKasseV2Route
   '/signering/$userDetailId': typeof offentligSigneringUserDetailIdRoute
   '/admin': typeof administrasjonAdminIndexRoute
   '/bestilling': typeof offentligBestillingIndexRoute
@@ -626,11 +650,13 @@ export interface FileRoutesByTo {
   '/info/policies/conditions': typeof offentligInfoPoliciesConditionsRoute
   '/info/policies/privacy': typeof offentligInfoPoliciesPrivacyRoute
   '/info/policies/terms': typeof offentligInfoPoliciesTermsRoute
-  '/kasse/betaling/status': typeof offentligKasseBetalingStatusRoute
+  '/kasse/betaling/status': typeof offentligKasseBetalingStatusRouteWithChildren
+  '/kasse/betaling/v2': typeof offentligKasseBetalingV2Route
   '/overleveringer/stand/$standMatchId': typeof offentligOverleveringerStandStandMatchIdRoute
   '/overleveringer/user/$userMatchId': typeof offentligOverleveringerUserUserMatchIdRoute
   '/kasse/betaling': typeof offentligKasseBetalingIndexRoute
   '/auth/email/verify/$verificationId': typeof offentligAuthEmailVerifyVerificationIdRoute
+  '/kasse/betaling/status/v2': typeof offentligKasseBetalingStatusV2Route
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -678,6 +704,7 @@ export interface FileRoutesById {
   '/(offentlig)/info/general': typeof offentligInfoGeneralRoute
   '/(offentlig)/info/pupils': typeof offentligInfoPupilsRoute
   '/(offentlig)/kasse/bekreft': typeof offentligKasseBekreftRoute
+  '/(offentlig)/kasse/v2': typeof offentligKasseV2Route
   '/(offentlig)/signering/$userDetailId': typeof offentligSigneringUserDetailIdRoute
   '/(administrasjon)/admin/': typeof administrasjonAdminIndexRoute
   '/(offentlig)/bestilling/': typeof offentligBestillingIndexRoute
@@ -702,11 +729,13 @@ export interface FileRoutesById {
   '/(offentlig)/info/policies/conditions': typeof offentligInfoPoliciesConditionsRoute
   '/(offentlig)/info/policies/privacy': typeof offentligInfoPoliciesPrivacyRoute
   '/(offentlig)/info/policies/terms': typeof offentligInfoPoliciesTermsRoute
-  '/(offentlig)/kasse/betaling/status': typeof offentligKasseBetalingStatusRoute
+  '/(offentlig)/kasse/betaling/status': typeof offentligKasseBetalingStatusRouteWithChildren
+  '/(offentlig)/kasse/betaling/v2': typeof offentligKasseBetalingV2Route
   '/(offentlig)/overleveringer/stand/$standMatchId': typeof offentligOverleveringerStandStandMatchIdRoute
   '/(offentlig)/overleveringer/user/$userMatchId': typeof offentligOverleveringerUserUserMatchIdRoute
   '/(offentlig)/kasse/betaling/': typeof offentligKasseBetalingIndexRoute
   '/(offentlig)/auth/email/verify/$verificationId': typeof offentligAuthEmailVerifyVerificationIdRoute
+  '/(offentlig)/kasse/betaling/status/v2': typeof offentligKasseBetalingStatusV2Route
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -754,6 +783,7 @@ export interface FileRouteTypes {
     | '/info/general'
     | '/info/pupils'
     | '/kasse/bekreft'
+    | '/kasse/v2'
     | '/signering/$userDetailId'
     | '/admin/'
     | '/bestilling/'
@@ -779,10 +809,12 @@ export interface FileRouteTypes {
     | '/info/policies/privacy'
     | '/info/policies/terms'
     | '/kasse/betaling/status'
+    | '/kasse/betaling/v2'
     | '/overleveringer/stand/$standMatchId'
     | '/overleveringer/user/$userMatchId'
     | '/kasse/betaling/'
     | '/auth/email/verify/$verificationId'
+    | '/kasse/betaling/status/v2'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -826,6 +858,7 @@ export interface FileRouteTypes {
     | '/info/general'
     | '/info/pupils'
     | '/kasse/bekreft'
+    | '/kasse/v2'
     | '/signering/$userDetailId'
     | '/admin'
     | '/bestilling'
@@ -851,10 +884,12 @@ export interface FileRouteTypes {
     | '/info/policies/privacy'
     | '/info/policies/terms'
     | '/kasse/betaling/status'
+    | '/kasse/betaling/v2'
     | '/overleveringer/stand/$standMatchId'
     | '/overleveringer/user/$userMatchId'
     | '/kasse/betaling'
     | '/auth/email/verify/$verificationId'
+    | '/kasse/betaling/status/v2'
   id:
     | '__root__'
     | '/'
@@ -901,6 +936,7 @@ export interface FileRouteTypes {
     | '/(offentlig)/info/general'
     | '/(offentlig)/info/pupils'
     | '/(offentlig)/kasse/bekreft'
+    | '/(offentlig)/kasse/v2'
     | '/(offentlig)/signering/$userDetailId'
     | '/(administrasjon)/admin/'
     | '/(offentlig)/bestilling/'
@@ -926,10 +962,12 @@ export interface FileRouteTypes {
     | '/(offentlig)/info/policies/privacy'
     | '/(offentlig)/info/policies/terms'
     | '/(offentlig)/kasse/betaling/status'
+    | '/(offentlig)/kasse/betaling/v2'
     | '/(offentlig)/overleveringer/stand/$standMatchId'
     | '/(offentlig)/overleveringer/user/$userMatchId'
     | '/(offentlig)/kasse/betaling/'
     | '/(offentlig)/auth/email/verify/$verificationId'
+    | '/(offentlig)/kasse/betaling/status/v2'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -1082,6 +1120,13 @@ declare module '@tanstack/react-router' {
       path: '/signering/$userDetailId'
       fullPath: '/signering/$userDetailId'
       preLoaderRoute: typeof offentligSigneringUserDetailIdRouteImport
+      parentRoute: typeof offentligRouteRoute
+    }
+    '/(offentlig)/kasse/v2': {
+      id: '/(offentlig)/kasse/v2'
+      path: '/kasse/v2'
+      fullPath: '/kasse/v2'
+      preLoaderRoute: typeof offentligKasseV2RouteImport
       parentRoute: typeof offentligRouteRoute
     }
     '/(offentlig)/kasse/bekreft': {
@@ -1315,6 +1360,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof offentligOverleveringerStandStandMatchIdRouteImport
       parentRoute: typeof offentligOverleveringerRouteRoute
     }
+    '/(offentlig)/kasse/betaling/v2': {
+      id: '/(offentlig)/kasse/betaling/v2'
+      path: '/kasse/betaling/v2'
+      fullPath: '/kasse/betaling/v2'
+      preLoaderRoute: typeof offentligKasseBetalingV2RouteImport
+      parentRoute: typeof offentligRouteRoute
+    }
     '/(offentlig)/kasse/betaling/status': {
       id: '/(offentlig)/kasse/betaling/status'
       path: '/kasse/betaling/status'
@@ -1455,6 +1507,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof administrasjonAdminDatabaseBokerRouteImport
       parentRoute: typeof administrasjonAdminRouteRoute
     }
+    '/(offentlig)/kasse/betaling/status/v2': {
+      id: '/(offentlig)/kasse/betaling/status/v2'
+      path: '/v2'
+      fullPath: '/kasse/betaling/status/v2'
+      preLoaderRoute: typeof offentligKasseBetalingStatusV2RouteImport
+      parentRoute: typeof offentligKasseBetalingStatusRoute
+    }
     '/(offentlig)/auth/email/verify/$verificationId': {
       id: '/(offentlig)/auth/email/verify/$verificationId'
       path: '/auth/email/verify/$verificationId'
@@ -1544,6 +1603,20 @@ const offentligOverleveringerRouteRouteWithChildren =
     offentligOverleveringerRouteRouteChildren,
   )
 
+interface offentligKasseBetalingStatusRouteChildren {
+  offentligKasseBetalingStatusV2Route: typeof offentligKasseBetalingStatusV2Route
+}
+
+const offentligKasseBetalingStatusRouteChildren: offentligKasseBetalingStatusRouteChildren =
+  {
+    offentligKasseBetalingStatusV2Route: offentligKasseBetalingStatusV2Route,
+  }
+
+const offentligKasseBetalingStatusRouteWithChildren =
+  offentligKasseBetalingStatusRoute._addFileChildren(
+    offentligKasseBetalingStatusRouteChildren,
+  )
+
 interface offentligRouteRouteChildren {
   offentligInfoRouteRoute: typeof offentligInfoRouteRouteWithChildren
   offentligOverleveringerRouteRoute: typeof offentligOverleveringerRouteRouteWithChildren
@@ -1561,12 +1634,14 @@ interface offentligRouteRouteChildren {
   offentligAuthTokenRoute: typeof offentligAuthTokenRoute
   offentligBestillingBranchIdRoute: typeof offentligBestillingBranchIdRoute
   offentligKasseBekreftRoute: typeof offentligKasseBekreftRoute
+  offentligKasseV2Route: typeof offentligKasseV2Route
   offentligSigneringUserDetailIdRoute: typeof offentligSigneringUserDetailIdRoute
   offentligBestillingIndexRoute: typeof offentligBestillingIndexRoute
   offentligKasseIndexRoute: typeof offentligKasseIndexRoute
   offentligAuthPermissionDeniedRoute: typeof offentligAuthPermissionDeniedRoute
   offentligAuthResetIdRoute: typeof offentligAuthResetIdRoute
-  offentligKasseBetalingStatusRoute: typeof offentligKasseBetalingStatusRoute
+  offentligKasseBetalingStatusRoute: typeof offentligKasseBetalingStatusRouteWithChildren
+  offentligKasseBetalingV2Route: typeof offentligKasseBetalingV2Route
   offentligKasseBetalingIndexRoute: typeof offentligKasseBetalingIndexRoute
   offentligAuthEmailVerifyVerificationIdRoute: typeof offentligAuthEmailVerifyVerificationIdRoute
 }
@@ -1589,12 +1664,15 @@ const offentligRouteRouteChildren: offentligRouteRouteChildren = {
   offentligAuthTokenRoute: offentligAuthTokenRoute,
   offentligBestillingBranchIdRoute: offentligBestillingBranchIdRoute,
   offentligKasseBekreftRoute: offentligKasseBekreftRoute,
+  offentligKasseV2Route: offentligKasseV2Route,
   offentligSigneringUserDetailIdRoute: offentligSigneringUserDetailIdRoute,
   offentligBestillingIndexRoute: offentligBestillingIndexRoute,
   offentligKasseIndexRoute: offentligKasseIndexRoute,
   offentligAuthPermissionDeniedRoute: offentligAuthPermissionDeniedRoute,
   offentligAuthResetIdRoute: offentligAuthResetIdRoute,
-  offentligKasseBetalingStatusRoute: offentligKasseBetalingStatusRoute,
+  offentligKasseBetalingStatusRoute:
+    offentligKasseBetalingStatusRouteWithChildren,
+  offentligKasseBetalingV2Route: offentligKasseBetalingV2Route,
   offentligKasseBetalingIndexRoute: offentligKasseBetalingIndexRoute,
   offentligAuthEmailVerifyVerificationIdRoute:
     offentligAuthEmailVerifyVerificationIdRoute,

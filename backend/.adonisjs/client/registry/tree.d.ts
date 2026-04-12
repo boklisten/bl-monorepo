@@ -116,6 +116,9 @@ export interface ApiDefinition {
     handleVippsCallback: typeof routes['checkout.handle_vipps_callback']
     pollPayment: typeof routes['checkout.poll_payment']
   }
+  kustomCheckout: {
+    initializeCheckout: typeof routes['kustom_checkout.initialize_checkout']
+  }
   subjects: {
     getBranchSubjects: typeof routes['subjects.get_branch_subjects']
   }

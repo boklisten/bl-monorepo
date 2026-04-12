@@ -16,9 +16,11 @@ import { Activity } from "react";
 
 import InfoAlert from "@/shared/components/alerts/InfoAlert";
 import useCart from "@/shared/hooks/useCart";
+import useAuth from "@/shared/hooks/useAuth";
 
 export default function CartContent() {
   const cart = useCart();
+  const { isEmployee } = useAuth();
   if (cart.isEmpty()) {
     return (
       <>
@@ -134,6 +136,18 @@ export default function CartContent() {
         >
           Gå til kassen
         </Button>
+        <Activity mode={isEmployee ? "visible" : "hidden"}>
+          <Button
+            component={TanStackAnchor}
+            to={"/kasse/v2"}
+            leftSection={<IconCashRegister />}
+            size={"md"}
+            bg={"green"}
+            underline={"never"}
+          >
+            Gå til kassen (Kustom)
+          </Button>
+        </Activity>
       </Stack>
       <Activity
         mode={

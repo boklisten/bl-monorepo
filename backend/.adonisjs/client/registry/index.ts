@@ -384,6 +384,12 @@ const routes = {
     tokens: [{"old":"/checkout","type":0,"val":"checkout","end":""}],
     types: placeholder as Registry['checkout.initialize_checkout']['types'],
   },
+  'kustom_checkout.initialize_checkout': {
+    methods: ["POST"],
+    pattern: '/v2/checkout',
+    tokens: [{"old":"/v2/checkout","type":0,"val":"v2","end":""},{"old":"/v2/checkout","type":0,"val":"checkout","end":""}],
+    types: placeholder as Registry['kustom_checkout.initialize_checkout']['types'],
+  },
   'checkout.confirm_checkout': {
     methods: ["POST"],
     pattern: '/checkout/confirm/:orderId',

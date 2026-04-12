@@ -763,6 +763,18 @@ export interface Registry {
       errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/checkout_controller').default['initializeCheckout']>>> | { status: 422; response: { errors: SimpleError[] } }
     }
   }
+  'kustom_checkout.initialize_checkout': {
+    methods: ["POST"]
+    pattern: '/v2/checkout'
+    types: {
+      body: ExtractBody<InferInput<(typeof import('#validators/checkout_validators').initializeCheckoutValidator)>>
+      paramsTuple: []
+      params: {}
+      query: ExtractQuery<InferInput<(typeof import('#validators/checkout_validators').initializeCheckoutValidator)>>
+      response: ExtractResponse<Awaited<ReturnType<import('#controllers/kustom_checkout_controller').default['initializeCheckout']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/kustom_checkout_controller').default['initializeCheckout']>>> | { status: 422; response: { errors: SimpleError[] } }
+    }
+  }
   'checkout.confirm_checkout': {
     methods: ["POST"]
     pattern: '/checkout/confirm/:orderId'

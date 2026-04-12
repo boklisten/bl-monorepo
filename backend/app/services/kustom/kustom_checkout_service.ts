@@ -23,6 +23,22 @@ export const KustomCheckoutService = {
   async createOrder(order: Order, isDeliveryFree: boolean) {
     console.log(isDeliveryFree); // TODO: use this
     const userDetail = await StorageService.UserDetails.get(order.customer);
+    const items = await Promise.all(
+      order.orderItems.map((oi) => StorageService.Items.get(oi.item)),
+    );
+    const nameParts = userDetail.name.split(" ");
+    const givenName = nameParts.length > 1 ? nameParts.slice(0, -1).join(" ") : userDetail.name;
+    const familyName = nameParts.length > 1 ? nameParts.at(-1) : undefined;
+    const address = {
+      given_name: givenName,
+      family_name: familyName,
+      email: userDetail.email,
+      phone: userDetail.phone,
+      street_address: userDetail.address,
+      postal_code: userDetail.postCode,
+      city: userDetail.postCity,
+      country: "NO",
+    };
     return await client.POST("/checkout/v3/orders", {
       body: {
         purchase_country: "no",
@@ -42,10 +58,15 @@ export const KustomCheckoutService = {
             total_amount: priceInMinors,
             total_tax_amount: 0,
             shipping_attributes: {
-              weight: 0, // TODO calculate by item weight
+              weight:
+                Math.round(
+                  Number(items.find((item) => item.id === orderItem.item)?.info.weight) * 1000,
+                ) || 1000,
             },
           };
         }),
+        billing_address: address,
+        shipping_address: address,
         customer: {
           date_of_birth: DateTime.fromJSDate(userDetail.dob).toISODate() ?? undefined,
         },

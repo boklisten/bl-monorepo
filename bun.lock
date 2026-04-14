@@ -5,10 +5,10 @@
     "": {
       "name": "boklisten.no",
       "devDependencies": {
-        "oxfmt": "latest",
-        "oxlint": "latest",
-        "oxlint-tsgolint": "latest",
-        "typescript": "latest",
+        "oxfmt": "^0.45.0",
+        "oxlint": "^1.60.0",
+        "oxlint-tsgolint": "^0.21.0",
+        "typescript": "6.0.2",
       },
     },
     "backend": {

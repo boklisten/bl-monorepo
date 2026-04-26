@@ -4,6 +4,7 @@ import dayjs from "dayjs";
 
 import ContactInfo from "@/shared/components/ContactInfo";
 import TanStackAnchor from "@/shared/components/TanStackAnchor";
+import { Image } from "@unpic/react";
 
 export default function PublicPageFooter() {
   return (
@@ -22,6 +23,8 @@ export default function PublicPageFooter() {
         <IconCopyright />
         {dayjs().format("YYYY")}
       </Group>
+      <Text fw={"bold"}>Støttet av</Text>
+      <Image src={"/skattefunn.jpg"} width={146} height={82} />
     </Stack>
   );
 }

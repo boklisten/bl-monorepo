@@ -6,7 +6,7 @@ import type { paths } from "#services/kustom/openapi/checkout";
 import { TranslationService } from "#services/translation_service";
 import { DateService } from "#services/legacy/date.service";
 import { DateTime } from "luxon";
-import { BringService } from "#services/bring_service";
+import { BringService } from "#services/bring/bring_service";
 
 const KUSTOM_BASE_URL =
   env.get("API_ENV") === "production"
@@ -35,25 +35,32 @@ async function createShippingOptions(order: Order, toPostalCode: string, isDeliv
     return sum + weight;
   }, 0);
 
-  const shippingInfo = await BringService.getShippingInfo({ toPostalCode, weightInGrams });
+  const shippingInfo = await BringService.getShippingInfo({
+    toPostalCode,
+    isPostal: weightInGrams < 3000 || items.length <= 3,
+    weightInGrams,
+  });
 
   return [
     {
       id: "posten",
-      name: shippingInfo?.guiInformation.displayName ?? "Pakke til hentested",
+      name: shippingInfo?.guiInformation?.displayName ?? "Pakke til hentested",
       description:
-        (shippingInfo?.guiInformation.descriptionText ??
+        (shippingInfo?.guiInformation?.descriptionText ??
           "Pakke til hentested leveres til mottakers valgte hentested (pakkeboks, post i butikk eller postkontor). Mottaker følger pakken og varsles når sendingen er ankommet via Posten-appen eller hentemelding i postkassen.") +
         " Forventet levering: " +
-        shippingInfo?.expectedDelivery.formattedExpectedDeliveryDate,
+        shippingInfo?.expectedDelivery?.formattedExpectedDeliveryDate,
       price: isDeliveryFree
         ? 0
-        : Number(shippingInfo?.price.listPrice.priceWithAdditionalServices.amountWithVAT ?? 200) *
-          100,
+        : Math.round(
+            Number(
+              shippingInfo?.price?.listPrice?.priceWithAdditionalServices?.amountWithVAT ?? 200,
+            ),
+          ) * 100,
       tax_amount: 0,
       tax_rate: 0,
-      shipping_method: shippingInfo?.guiInformation.deliveryType
-        .toLocaleLowerCase()
+      shipping_method: shippingInfo?.guiInformation?.deliveryType
+        ?.toLocaleLowerCase()
         .includes("postkasse")
         ? "Postal"
         : "PickUpPoint",
@@ -116,6 +123,8 @@ export const KustomCheckoutService = {
         options: {
           auto_capture: true,
           vat_removed: true,
+          allow_separate_shipping_address: true,
+          show_subtotal_detail: true,
         },
         shipping_options: await createShippingOptions(order, userDetail.postCode, isDeliveryFree),
       },

@@ -1,6 +1,6 @@
 import { HttpContext } from "@adonisjs/core/http";
 
-import { BringService } from "#services/bring_service";
+import { BringService } from "#services/bring/bring_service";
 
 export default class PostalController {
   async lookupPostalCode(ctx: HttpContext) {

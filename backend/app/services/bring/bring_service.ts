@@ -1,23 +1,27 @@
 import env from "#start/env";
-import {
-  bringPostalCodeResponseValidator,
-  bringShippingInfoResponseValidator,
-} from "#validators/bring_validators";
+import { bringPostalCodeResponseValidator } from "#validators/bring_validators";
 import { DateTime } from "luxon";
 import { APP_CONFIG } from "#services/legacy/application-config";
+import createClient from "openapi-fetch";
+import type { paths as shippingGuidePaths } from "#services/bring/openapi/shippingguide";
 
-const bringAuthHeaders = {
+const bringHeaders = {
   "X-MyBring-API-Key": env.get("BRING_API_KEY"),
   "X-MyBring-API-Uid": env.get("BRING_API_ID"),
   "Content-Type": "application/json",
   Accept: "application/json",
-};
+} as const;
+
+const shippingGuideClient = createClient<shippingGuidePaths>({
+  baseUrl: "https://api.bring.com/shippingguide",
+  headers: bringHeaders,
+});
 
 export const BringService = {
   async lookupPostalCode(postalCode: string) {
     const bringResponse = await (
       await fetch(`https://api.bring.com/address/api/NO/postal-codes/${postalCode}`, {
-        headers: bringAuthHeaders,
+        headers: bringHeaders,
       })
     ).json();
     const [, data] = await bringPostalCodeResponseValidator.tryValidate(bringResponse);
@@ -25,16 +29,25 @@ export const BringService = {
   },
   async getShippingInfo({
     toPostalCode,
+    isPostal,
     weightInGrams,
   }: {
     toPostalCode: string;
+    isPostal: boolean;
     weightInGrams: number;
   }) {
     const expectedShippingDate = DateTime.now().plus({ days: APP_CONFIG.delivery.deliveryDays });
-    const response = await fetch("https://api.bring.com/shippingguide/v2/products", {
-      method: "POST",
-      headers: bringAuthHeaders,
-      body: JSON.stringify({
+    const { data } = await shippingGuideClient.POST("/api/v2/products", {
+      params: {
+        header: bringHeaders,
+      },
+      body: {
+        language: "NO",
+        numberOfAlternativeDeliveryDates: null,
+        edi: true,
+        postingAtPostoffice: true,
+        withEstimatedDeliveryTime: false,
+        withEnvironmentalData: false,
         withPrice: true,
         withExpectedDelivery: true,
         withGuiInformation: true,
@@ -42,17 +55,20 @@ export const BringService = {
           {
             products: [
               {
-                id: weightInGrams < 5000 ? "3584" : "5800",
+                id: isPostal ? "3584" : "5800",
               },
             ],
             shippingDate: {
-              day: expectedShippingDate.day,
-              month: expectedShippingDate.month,
-              year: expectedShippingDate.year,
+              day: expectedShippingDate.day.toString(),
+              month: expectedShippingDate.month.toString(),
+              year: expectedShippingDate.year.toString(),
             },
             packages: [
               {
                 grossWeight: weightInGrams,
+                volumeSpecial: null,
+                nonStackable: null,
+                numberOfPallets: null,
               },
             ],
             fromCountryCode: "NO",
@@ -61,10 +77,8 @@ export const BringService = {
             toPostalCode,
           },
         ],
-      }),
+      },
     });
-    const json = await response.json();
-    const [, data] = await bringShippingInfoResponseValidator.tryValidate(json);
-    return data?.consignments[0]?.products[0];
+    return data?.consignments?.[0]?.products?.[0];
   },
 };

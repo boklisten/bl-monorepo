@@ -777,11 +777,11 @@ export interface Registry {
   }
   'kustom_checkout.get_snippet': {
     methods: ["GET","HEAD"]
-    pattern: '/v2/checkout/snippet/:kustomOrderId'
+    pattern: '/v2/checkout/snippet/:orderId'
     types: {
       body: {}
       paramsTuple: [ParamValue]
-      params: { kustomOrderId: ParamValue }
+      params: { orderId: ParamValue }
       query: {}
       response: ExtractResponse<Awaited<ReturnType<import('#controllers/kustom_checkout_controller').default['getSnippet']>>>
       errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/kustom_checkout_controller').default['getSnippet']>>>

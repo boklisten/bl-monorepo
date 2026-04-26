@@ -392,8 +392,8 @@ const routes = {
   },
   'kustom_checkout.get_snippet': {
     methods: ["GET","HEAD"],
-    pattern: '/v2/checkout/snippet/:kustomOrderId',
-    tokens: [{"old":"/v2/checkout/snippet/:kustomOrderId","type":0,"val":"v2","end":""},{"old":"/v2/checkout/snippet/:kustomOrderId","type":0,"val":"checkout","end":""},{"old":"/v2/checkout/snippet/:kustomOrderId","type":0,"val":"snippet","end":""},{"old":"/v2/checkout/snippet/:kustomOrderId","type":1,"val":"kustomOrderId","end":""}],
+    pattern: '/v2/checkout/snippet/:orderId',
+    tokens: [{"old":"/v2/checkout/snippet/:orderId","type":0,"val":"v2","end":""},{"old":"/v2/checkout/snippet/:orderId","type":0,"val":"checkout","end":""},{"old":"/v2/checkout/snippet/:orderId","type":0,"val":"snippet","end":""},{"old":"/v2/checkout/snippet/:orderId","type":1,"val":"orderId","end":""}],
     types: placeholder as Registry['kustom_checkout.get_snippet']['types'],
   },
   'kustom_checkout.receive_push': {

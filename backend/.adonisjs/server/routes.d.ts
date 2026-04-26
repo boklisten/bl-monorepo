@@ -68,7 +68,7 @@ export type ScannedRoutes = {
     'order_history.get_my_orders': { paramsTuple?: []; params?: {} }
     'checkout.initialize_checkout': { paramsTuple?: []; params?: {} }
     'kustom_checkout.initialize_checkout': { paramsTuple?: []; params?: {} }
-    'kustom_checkout.get_snippet': { paramsTuple: [ParamValue]; params: {'kustomOrderId': ParamValue} }
+    'kustom_checkout.get_snippet': { paramsTuple: [ParamValue]; params: {'orderId': ParamValue} }
     'kustom_checkout.receive_push': { paramsTuple?: []; params?: {} }
     'checkout.confirm_checkout': { paramsTuple: [ParamValue]; params: {'orderId': ParamValue} }
     'checkout.handle_vipps_callback': { paramsTuple?: []; params?: {} }
@@ -175,7 +175,7 @@ export type ScannedRoutes = {
     'unique_ids.download_unique_id_pdf': { paramsTuple: [ParamValue]; params: {'token': ParamValue} }
     'order_history.get_my_order': { paramsTuple: [ParamValue]; params: {'orderId': ParamValue} }
     'order_history.get_my_orders': { paramsTuple?: []; params?: {} }
-    'kustom_checkout.get_snippet': { paramsTuple: [ParamValue]; params: {'kustomOrderId': ParamValue} }
+    'kustom_checkout.get_snippet': { paramsTuple: [ParamValue]; params: {'orderId': ParamValue} }
     'checkout.poll_payment': { paramsTuple: [ParamValue]; params: {'orderId': ParamValue} }
     'subjects.get_branch_subjects': { paramsTuple: [ParamValue]; params: {'branchId': ParamValue} }
     'branch_items.get_branch_items': { paramsTuple: [ParamValue]; params: {'branchId': ParamValue} }
@@ -240,7 +240,7 @@ export type ScannedRoutes = {
     'unique_ids.download_unique_id_pdf': { paramsTuple: [ParamValue]; params: {'token': ParamValue} }
     'order_history.get_my_order': { paramsTuple: [ParamValue]; params: {'orderId': ParamValue} }
     'order_history.get_my_orders': { paramsTuple?: []; params?: {} }
-    'kustom_checkout.get_snippet': { paramsTuple: [ParamValue]; params: {'kustomOrderId': ParamValue} }
+    'kustom_checkout.get_snippet': { paramsTuple: [ParamValue]; params: {'orderId': ParamValue} }
     'checkout.poll_payment': { paramsTuple: [ParamValue]; params: {'orderId': ParamValue} }
     'subjects.get_branch_subjects': { paramsTuple: [ParamValue]; params: {'branchId': ParamValue} }
     'branch_items.get_branch_items': { paramsTuple: [ParamValue]; params: {'branchId': ParamValue} }

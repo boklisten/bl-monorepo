@@ -92,7 +92,7 @@ export const KustomCheckoutService = {
       body: {
         purchase_country: "no",
         purchase_currency: "NOK",
-        locale: "no-NO",
+        locale: "nb-NO",
         order_amount: order.amount * 100,
         order_tax_amount: 0,
         order_lines: order.orderItems.map((orderItem) => {
@@ -115,8 +115,8 @@ export const KustomCheckoutService = {
         },
         merchant_urls: {
           terms: `${env.get("CLIENT_URI")}/info/policies/terms`,
-          checkout: `${env.get("CLIENT_URI")}/kasse/betaling/v2/{checkout.order.id}`,
-          confirmation: `https://${env.get("API_ENV") === "production" ? "" : "staging."}boklisten.no/kasse/betaling/v2/{checkout.order.id}`, // fixme: would be great to be able to use localhost here
+          checkout: `${env.get("CLIENT_URI")}/kasse/betaling/v2/${order.id}`,
+          confirmation: `https://${env.get("API_ENV") === "production" ? "" : "staging."}boklisten.no/kasse/betaling/v2/${order.id}`,
           push: `https://${env.get("API_ENV") === "production" ? "" : "staging."}api.boklisten.no/v2/checkout/push`,
         },
         merchant_reference1: order.id,

@@ -211,7 +211,7 @@ router.get("/order_history/me", [controllers.OrderHistory, "getMyOrders"]);
  */
 router.post("/checkout", [controllers.Checkout, "initializeCheckout"]);
 router.post("/v2/checkout", [controllers.KustomCheckout, "initializeCheckout"]);
-router.get("/v2/checkout/snippet/:kustomOrderId", [controllers.KustomCheckout, "getSnippet"]);
+router.get("/v2/checkout/snippet/:orderId", [controllers.KustomCheckout, "getSnippet"]);
 router.post("/v2/checkout/push", [controllers.KustomCheckout, "receivePush"]);
 router.post("/checkout/confirm/:orderId", [controllers.Checkout, "confirmCheckout"]);
 

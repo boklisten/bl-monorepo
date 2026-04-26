@@ -42,7 +42,8 @@ export class PaymentHandler {
       return Promise.resolve(true);
     }
 
-    if (payment.method === "vipps-checkout") return Promise.resolve(true);
+    if (payment.method === "vipps-checkout" || payment.method === "kustom-checkout")
+      return Promise.resolve(true);
 
     return Promise.reject(new BlError(`payment method "${payment.method}" not supported`));
   }

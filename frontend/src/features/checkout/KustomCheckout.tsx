@@ -1,11 +1,12 @@
 import { useEffect, useRef } from "react";
 import { useQuery } from "@tanstack/react-query";
-import { publicApi } from "@/shared/utils/publicApiClient";
+import useApiClient from "@/shared/hooks/useApiClient";
 
-export default function KustomCheckout({ kustomOrderId }: { kustomOrderId: string }) {
+export default function KustomCheckout({ orderId }: { orderId: string }) {
+  const { api } = useApiClient();
   const { data } = useQuery(
-    publicApi.kustomCheckout.getSnippet.queryOptions({
-      params: { kustomOrderId },
+    api.kustomCheckout.getSnippet.queryOptions({
+      params: { orderId },
     }),
   );
 

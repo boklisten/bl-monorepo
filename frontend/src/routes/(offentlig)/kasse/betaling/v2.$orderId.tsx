@@ -1,7 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import KustomCheckout from "@/features/checkout/KustomCheckout";
 
-export const Route = createFileRoute("/(offentlig)/kasse/betaling/v2/$kustomOrderId")({
+export const Route = createFileRoute("/(offentlig)/kasse/betaling/v2/$orderId")({
   head: () => ({
     meta: [{ title: "Betaling | Boklisten.no" }],
   }),
@@ -9,7 +9,7 @@ export const Route = createFileRoute("/(offentlig)/kasse/betaling/v2/$kustomOrde
 });
 
 function RouteComponent() {
-  const { kustomOrderId } = Route.useParams();
+  const { orderId } = Route.useParams();
 
-  return <KustomCheckout kustomOrderId={kustomOrderId ?? ""} />;
+  return <KustomCheckout orderId={orderId ?? ""} />;
 }

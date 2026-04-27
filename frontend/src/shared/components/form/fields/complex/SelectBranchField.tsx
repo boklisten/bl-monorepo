@@ -9,7 +9,7 @@ import { publicApi } from "@/shared/utils/publicApiClient";
 
 export default function SelectBranchField(props: SelectProps & { perspective: string }) {
   const field = useFieldContext<string | null>();
-  const { data: branches } = useQuery(publicApi.branches.getPublic.queryOptions());
+  const { data: branches } = useQuery(publicApi.branches.getAll.queryOptions());
 
   const placeholder = `Velg ${props.perspective === "personal" ? "din" : "kundens"} skole`;
   const modalId = "select-school";

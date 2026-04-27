@@ -13,8 +13,7 @@ export default class BranchesController {
     databaseQuery.sortFilters = [{ fieldName: "name", direction: 1 }];
     return await StorageService.Branches.getByQuery(databaseQuery);
   }
-  async getAll(ctx: HttpContext) {
-    PermissionService.adminOrFail(ctx);
+  async getAll() {
     const databaseQuery = new SEDbQuery();
     databaseQuery.sortFilters = [{ fieldName: "name", direction: 1 }];
     return await StorageService.Branches.getByQuery(databaseQuery);

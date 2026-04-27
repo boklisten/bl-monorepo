@@ -1,0 +1,17 @@
+{
+  "$schema": "https://railway.com/railway.schema.json",
+  "build": {
+    "buildCommand": "bun build:frontend",
+    "watchPatterns": [
+      "frontend/**",
+      "backend/shared/**",
+      "backend/.adonisjs/**",
+      "package.json",
+      "bun.lock"
+    ]
+  },
+  "deploy": {
+    "startCommand": "bun start:frontend",
+    "healthcheckPath": "/health"
+  }
+}

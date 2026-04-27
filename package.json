@@ -9,7 +9,6 @@
     ]
   },
   "type": "module",
-  "packageManager": "bun@1.3.13",
   "scripts": {
     "ace": "bun --filter './backend' ace",
     "format": "oxfmt",
@@ -36,5 +35,6 @@
   },
   "overrides": {
     "@adonisjs/assembler": "^8.4.0"
-  }
+  },
+  "packageManager": "bun@1.3.13"
 }

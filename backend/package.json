@@ -42,7 +42,7 @@
   "dependencies": {
     "@adonisjs/ally": "^6.3.0",
     "@adonisjs/auth": "^10.1.0",
-    "@adonisjs/core": "^7.3.1",
+    "@adonisjs/core": "^7.3.2",
     "@adonisjs/cors": "^3.0.0",
     "@adonisjs/limiter": "^3.0.1",
     "@adonisjs/lucid": "^22.4.2",
@@ -55,7 +55,7 @@
     "@sentry/node": "^10.50.0",
     "@tuyau/core": "^1.2.2",
     "@tuyau/superjson": "^1.0.0",
-    "@vinejs/vine": "^4.3.1",
+    "@vinejs/vine": "^4.4.0",
     "@vippsmobilepay/sdk": "^2.4.2",
     "argon2": "^0.44.0",
     "canvas": "^3.2.3",

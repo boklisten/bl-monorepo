@@ -8,7 +8,8 @@
       "backend/shared/**",
       "backend/.adonisjs/**",
       "package.json",
-      "bun.lock"
+      "bun.lock",
+      ".nvmrc"
     ]
   },
   "deploy": {

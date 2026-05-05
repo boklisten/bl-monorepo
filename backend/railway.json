@@ -3,7 +3,7 @@
   "build": {
     "builder": "RAILPACK",
     "buildCommand": "bun build:backend",
-    "watchPatterns": ["backend/**", "package.json", "bun.lock"]
+    "watchPatterns": ["backend/**", "package.json", "bun.lock", ".nvmrc"]
   },
   "deploy": {
     "preDeployCommand": "bun migrate:backend",

@@ -59,8 +59,7 @@ export function createUserGroup(
   wantedItems: string[],
   membership?: string,
 ): MatchableUser[] {
-  // oxlint-disable-next-line unicorn/no-useless-spread unicorn/no-new-array
-  return [...new Array(size)].map((_, id) =>
+  return Array.from({ length: size }, (_, id) =>
     createFakeMatchableUser(id + idSuffix, items, wantedItems, membership),
   );
 }
